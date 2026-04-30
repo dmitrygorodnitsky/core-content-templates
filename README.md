@@ -22,6 +22,7 @@ This repository is for Core-related artifacts that can be shared, reviewed, vers
 - Configuration scripts and examples for Core deployments.
 - Sample media metadata needed by CMS template packages.
 - Documentation explaining how a package is intended to be imported or used.
+- Test cases for scripts
 
 ## What Does Not Belong Here
 
@@ -45,14 +46,18 @@ This repository is for Core-related artifacts that can be shared, reviewed, vers
 |   +-- TEMPLATE_CODE/
 +-- entity-types/
 |   +-- TYPE_CODE.json
+|   +-- README.md
 +-- workflows/
 |   +-- WORKFLOW_CODE/
 |       +-- workflow.json
-|       +-- states.json
-|       +-- events.json
+|       +-- README.md
 +-- configuration/
 |   +-- examples/
 +-- docs/
+|-- test/
+    +-- js/
+    +-- java/
+    +-- css
 ```
 
 CMS template directories should keep the Core export shape whenever possible. A template package should include `block_template_config.json` and any referenced media or library metadata required for import.
