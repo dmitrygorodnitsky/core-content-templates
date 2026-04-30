@@ -15,7 +15,7 @@
  *     formTypeCode: "MY_FORM",
  *     organizationId: 1,
  *     submitLabel: "Send",
- *     presetValues: {
+ *     presetAttributes: {
  *       COMPANY_SIZE: "50-200",
  *       INTERESTS: ["FIELD_SERVICE", "CRM"],
  *     },
@@ -37,8 +37,7 @@ class DynamicForm {
    * @param {string}  [config.prevLabel]
    * @param {string}  [config.nextLabel]
    * @param {boolean} [config.withLabel]
-   * @param {object}  [config.presetValues] Attributes to prefill, keyed by attribute code.
-   * @param {object}  [config.presetAttributes] Alias for presetValues.
+   * @param {object}  [config.presetAttributes] Attributes to prefill, keyed by attribute code.
    * @param {function} [config.onSubmit]
    * @param {string} [config.descriptionRender]
    */
@@ -299,7 +298,7 @@ class DynamicForm {
    */
   _getPresetValue(attr) {
     const code = attr?.code;
-    const maps = [this.cfg.presetValues, this.cfg.presetAttributes];
+    const maps = [this.cfg.presetAttributes];
 
     for (const map of maps) {
       if (!map || typeof map !== "object" || !Object.prototype.hasOwnProperty.call(map, code)) {
@@ -313,7 +312,7 @@ class DynamicForm {
 
   _mergePresetValues(data) {
     const merged = { ...data };
-    [this.cfg.presetAttributes, this.cfg.presetValues].forEach((map) => {
+    [this.cfg.presetAttributes].forEach((map) => {
       if (!map || typeof map !== "object") return;
       Object.entries(map).forEach(([code, value]) => {
         if (!Object.prototype.hasOwnProperty.call(merged, code)) {
@@ -757,7 +756,12 @@ class DynamicForm {
       } else if (multi) {
         control = DynamicForm._buildMultiselect(attr.code, choices, fieldPlaceholder, initialValue);
       } else {
-        control = DynamicForm._buildSingleSelect(attr.code, choices, fieldPlaceholder, initialValue);
+        control = DynamicForm._buildSingleSelect(
+          attr.code,
+          choices,
+          fieldPlaceholder,
+          initialValue,
+        );
       }
     } else if (type === "entity") {
       // Entity: native select with options.
