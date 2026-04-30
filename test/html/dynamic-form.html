@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DynamicForm Demo</title>
+    <link rel="stylesheet" href="../css/corporate-landing.css" />
+    <link rel="stylesheet" href="../css/dynamic-form.css" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: #17171b;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 60px 20px;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      #form-container {
+        min-height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card" style="max-width: 744px">
+      <div id="form-container"></div>
+    </div>
+    <script src="../../js/dynamic-form.js"></script>
+    <script>
+      const container = document.getElementById("form-container");
+
+      new DynamicForm({
+        type: "multiple",
+        apiBaseUrl: "https://servicewand.com",
+        lang: "en",
+        formTypeCode: "GENERAL_PARTNERS_FORM",
+        organizationId: 2,
+        submitLabel: "Send a request",
+        withLabel: true,
+        descriptionRender: "node",
+        presetAttributes: {
+          PARTNER_TYPE: "IMPLEMENTATION_PARTNER",
+        },
+        onSubmit: function (data) {
+          console.log("[DynamicForm] Submitted:", data);
+          alert("✅ Submitted!\n\n" + JSON.stringify(data, null, 2));
+        },
+      }).mount("#form-container");
+    </script>
+  </body>
+</html>

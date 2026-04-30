@@ -1,0 +1,11 @@
+{
+	"liveServer.settings.root": "",
+	"liveServer.settings.port": 8080,
+	"liveServer.settings.host": "localhost",
+	"cSpell.words": ["Ateliersulphurpool", "clsx", "LUCIDEICONS", "solarizedlight"],
+  "editor.folding": true,
+  "tailwindCSS.lint.invalidConfigPath": "ignore",
+  "markdown.validate.enabled": true,
+  "editor.scrollbar.vertical": "visible",
+  "editor.scrollbar.verticalScrollbarSize": 10,
+}
