@@ -1,24 +1,24 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   DynamicForm — стили
+   DynamicForm — styles
    ═══════════════════════════════════════════════════════════════════════════
 
-   Оглавление:
-     1. CSS-переменные
-     2. Базовые элементы (секция, поле, лейбл)
-     3. Анимация
-     4. Текстовые инпуты (input, textarea, select)
+   Table of contents:
+     1. CSS Variables
+     2. Basic Elements (section, field, label)
+     3. Animation
+     4. Text Inputs (input, textarea, select)
      5. Choice list (expanded radio/checkbox)
-     6. Слайдер
+     6. Slider
      7. Entity picker
      8. Custom Single Select (df-customselect)
      9. Custom Multiselect (df-multiselect)
-    10. Ошибки и кнопки
-    11. Wizard: степпер и навигация
-    12. Лоадер
-    13. Адаптив
+    10. Errors and Buttons
+    11. Wizard: Stepper and Navigation
+    12. Loader
+    13. Responsive
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── 1. CSS-переменные ───────────────────────────────────────────────────── */
+/* ─── 1. CSS Variables ─────────────────────────────────────────────────────── */
 
 .df-wrapper {
   --df-font: var(--font-family);
@@ -46,10 +46,15 @@
   --df-accent-glow: rgba(79, 149, 255, 0.15);
 }
 
-/* ─── 2. Базовые элементы ─────────────────────────────────────────────────── */
+/* ─── 2. Basic Elements ────────────────────────────────────────────────────── */
 
 .df-section {
   margin-bottom: 2rem;
+}
+
+:root[data-theme="light"] .df-section-title {
+  color: var(--color-blue);
+  border-bottom-color: var(--color-blue);
 }
 
 .df-section-title {
@@ -62,6 +67,11 @@
   margin: 0 0 1.25rem;
   padding-bottom: 0.625rem;
   border-bottom: 1px solid var(--color-cyan);
+}
+
+:root[data-theme="light"] .df-multiple-section-title {
+  color: var(--color-black); /* Make section heading more contrasting */
+  border-bottom-color: rgba(0, 0, 0, 0.1);
 }
 
 .df-multiple-section-title {
@@ -79,17 +89,17 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1rem;
-  /* Без animation на самом .df-field — иначе создаётся stacking context
-     и z-index дропдаунов перестаёт работать корректно */
+  /* No animation on .df-field itself — otherwise it creates a stacking context
+     and z-index of dropdowns won't work correctly */
 }
 
-/* Поднимаем z-index поля когда его дропдаун открыт */
+/* Raise z-index of the field when its dropdown is open */
 .df-field:has(.df-multiselect--open),
 .df-field:has(.df-customselect--open) {
   z-index: 200;
 }
 
-/* Анимируем содержимое поля, а не само поле */
+/* Animate field content, not the field itself */
 .df-field > .df-input-wrap,
 .df-field > .df-customselect,
 .df-field > .df-multiselect,
@@ -99,6 +109,10 @@
 .df-field > .df-choice-label {
   opacity: 0;
   animation: df-in 0.4s ease both;
+}
+
+:root[data-theme="light"] .df-label {
+  color: var(--color-black);
 }
 
 .df-label {
@@ -111,7 +125,7 @@
   margin-left: 2px;
 }
 
-/* ─── 3. Анимация ─────────────────────────────────────────────────────────── */
+/* ─── 3. Animation ────────────────────────────────────────────────────────── */
 
 @keyframes df-in {
   from {
@@ -124,9 +138,9 @@
   }
 }
 
-/* ─── 4. Текстовые инпуты ─────────────────────────────────────────────────── */
+/* ─── 4. Text Inputs ───────────────────────────────────────────────────────── */
 
-/* Обёртка с градиентной рамкой */
+/* Wrapper with gradient border */
 .df-input-wrap {
   position: relative;
   border-radius: var(--df-radius);
@@ -183,7 +197,7 @@
   border-radius: var(--df-radius);
 }
 
-/* Базовый input */
+/* Basic input */
 .df-input {
   background: var(--input-bg);
   border-radius: var(--df-radius);
@@ -210,7 +224,7 @@
   box-shadow: 0 0 0 1px var(--color-red) !important;
 }
 
-/* Textarea */
+/* Text area */
 .df-textarea {
   height: auto;
   min-height: 8rem;
@@ -219,7 +233,7 @@
   padding: 1.25rem 2.1875rem;
 }
 
-/* Нативный select (entity picker) */
+/* Native select (entity picker) */
 .df-select {
   cursor: pointer;
 }
@@ -256,7 +270,7 @@
   position: relative;
 }
 
-/* Градиентная рамка */
+/* Gradient border */
 .df-choice-list::before,
 .df-choice-list::after,
 .df-radio-group::before,
@@ -329,7 +343,7 @@
   opacity: 0 !important;
 }
 
-/* Элемент выбора */
+/* Choice element */
 .df-choice-label {
   display: flex;
   align-items: center;
@@ -349,7 +363,7 @@
   background: rgb(107 234 249 / 0.06);
 }
 
-/* Скрытый нативный input */
+/* Hidden native input */
 .df-choice-input {
   position: absolute;
   opacity: 0;
@@ -358,7 +372,7 @@
   pointer-events: none;
 }
 
-/* Кастомная точка/галочка */
+/* Custom dot/checkmark */
 .df-choice-custom {
   position: relative;
   width: 1.25rem;
@@ -401,7 +415,7 @@
   background: rgb(107 234 249 / 0.08);
 }
 
-/* Boolean (одиночный чекбокс) — без рамки */
+/* Boolean (single checkbox) — no border */
 .df-field[data-type="boolean"] .df-choice-label {
   background: transparent;
   border: none;
@@ -414,7 +428,7 @@
   background: transparent;
 }
 
-/* ─── 6. Слайдер ──────────────────────────────────────────────────────────── */
+/* ─── 6. Slider ────────────────────────────────────────────────────────────── */
 
 .df-slider-wrap {
   display: flex;
@@ -468,7 +482,7 @@
   text-align: right;
 }
 
-/* ─── 7. Entity picker ────────────────────────────────────────────────────── */
+/* ─── 7. Entity Picker ────────────────────────────────────────────────────────── */
 
 .df-entity-picker {
   display: flex;
@@ -489,7 +503,7 @@
   width: 100%;
 }
 
-/* Триггер */
+/* Trigger */
 .df-customselect__trigger {
   display: flex;
   align-items: center;
@@ -505,7 +519,7 @@
   transition: box-shadow 0.2s ease;
 }
 
-/* Градиентная рамка триггера */
+/* Gradient border of the trigger */
 .df-customselect__trigger::before,
 .df-customselect__trigger::after {
   content: "";
@@ -548,7 +562,7 @@
   opacity: 1;
 }
 
-/* Стрелка */
+/* Arrow */
 .df-customselect__arrow {
   flex-shrink: 0;
   display: flex;
@@ -561,7 +575,7 @@
   transform: rotate(180deg);
 }
 
-/* Текст триггера */
+/* Trigger text */
 .df-customselect__placeholder,
 .df-customselect__value {
   font-size: 1rem;
@@ -580,7 +594,7 @@
   color: var(--color-gray);
 }
 
-/* Дропдаун */
+/* Dropdown */
 .df-customselect__dropdown {
   position: absolute;
   top: calc(100% + 6px);
@@ -615,7 +629,7 @@
   border-radius: 99px;
 }
 
-/* Опции */
+/* Options */
 .df-customselect__option {
   padding: 0.625rem 0.75rem;
   border-radius: 0.625rem;
@@ -662,7 +676,7 @@
   width: 100%;
 }
 
-/* Триггер */
+/* Trigger */
 .df-multiselect__trigger {
   display: flex;
   align-items: center;
@@ -678,7 +692,7 @@
   transition: box-shadow 0.2s ease;
 }
 
-/* Градиентная рамка триггера */
+/* Gradient border of the trigger */
 .df-multiselect__trigger::before,
 .df-multiselect__trigger::after {
   content: "";
@@ -721,7 +735,7 @@
   opacity: 1;
 }
 
-/* Стрелка */
+/* Arrow */
 .df-multiselect__arrow {
   flex-shrink: 0;
   display: flex;
@@ -734,7 +748,7 @@
   transform: rotate(180deg);
 }
 
-/* Плейсхолдер */
+/* Placeholder */
 .df-multiselect__placeholder {
   color: var(--color-gray-second);
   font-size: 1rem;
@@ -742,7 +756,7 @@
   line-height: 1.35;
 }
 
-/* Контейнер тегов */
+/* Tags container */
 .df-multiselect__tags {
   display: flex;
   flex-wrap: wrap;
@@ -751,7 +765,7 @@
   min-width: 0;
 }
 
-/* Тег */
+/* Tag */
 .df-multiselect__tag {
   display: inline-flex;
   align-items: center;
@@ -775,7 +789,7 @@
   white-space: nowrap;
 }
 
-/* Кнопка удаления тега */
+/* Tag remove button */
 .df-multiselect__tag-remove {
   display: inline-flex;
   align-items: center;
@@ -799,7 +813,7 @@
   background: rgb(107 234 249 / 0.2);
 }
 
-/* Дропдаун */
+/* Dropdown */
 .df-multiselect__dropdown {
   position: absolute;
   top: calc(100% + 6px);
@@ -869,7 +883,7 @@
     0 8px 32px rgb(0 0 0 / 0.1);
 }
 
-/* ─── 10. Ошибки и кнопки ─────────────────────────────────────────────────── */
+/* ─── 10. Errors and Buttons ───────────────────────────────────────────────── */
 
 .df-error {
   font-size: 0.8125rem;
@@ -909,7 +923,7 @@
   pointer-events: none;
 }
 
-/* Hover-свечение под кнопкой */
+/* Hover glow under button */
 .df-btn::after {
   content: "";
   position: absolute;
@@ -931,7 +945,7 @@
   opacity: 1;
 }
 
-/* Primary */
+/* Primary button */
 .df-btn--primary {
   background: transparent;
   color: var(--color-heading);
@@ -967,7 +981,7 @@
   width: 100%;
 }
 
-/* Ghost */
+/* Ghost button */
 .df-btn--ghost {
   background: transparent;
   color: var(--color-gray-second);
@@ -981,15 +995,15 @@
   border-color: var(--color-gray-blue);
 }
 
-/* ─── 11. Wizard: степпер и навигация ─────────────────────────────────────── */
+/* ─── 11. Wizard: Stepper and Navigation ───────────────────────────────────── */
 
-/* Скрываем устаревшие элементы */
+/* Hide deprecated elements */
 .df-progress,
 .df-step-counter {
   display: none;
 }
 
-/* Шаги */
+/* Steps */
 .df-step {
   display: none;
 }
@@ -998,7 +1012,7 @@
   display: block;
 }
 
-/* Степпер */
+/* Stepper */
 .df-stepper {
   display: flex;
   align-items: flex-start;
@@ -1020,6 +1034,7 @@
   flex-shrink: 0;
 }
 
+/* Stepper circle */
 .df-stepper__circle {
   width: 3rem;
   height: 3rem;
@@ -1047,6 +1062,7 @@
   color: var(--color-cyan);
 }
 
+/* Stepper label */
 .df-stepper__label {
   font-size: 0.75rem;
   color: rgb(255 255 255 / 0.3);
@@ -1067,17 +1083,53 @@
   color: rgb(107 234 249 / 0.6);
 }
 
-/* Линия между шагами */
+/* Line between steps */
 .df-stepper__line {
   flex: 1;
   height: 1px;
   background: rgb(255 255 255 / 0.12);
   align-self: center;
-  margin-bottom: 1.5rem; /* компенсация высоты лейбла */
+  margin-bottom: 1.5rem; /* compensates for label height */
   min-width: 1.5rem;
 }
 
-/* Навигация */
+/* ─── Light Theme Overrides for Stepper ───────────────────────────────────── */
+
+:root[data-theme="light"] .df-stepper__circle {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] .df-stepper__item--active .df-stepper__circle {
+  border-color: var(--color-black);
+  color: var(--color-black);
+  background: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="light"] .df-stepper__item--done .df-stepper__circle {
+  border-color: var(--color-blue);
+  color: var(--color-blue);
+}
+
+:root[data-theme="light"] .df-stepper__label {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+:root[data-theme="light"] .df-stepper__item--active .df-stepper__label {
+  color: var(--color-black);
+  font-weight: 500;
+}
+
+:root[data-theme="light"] .df-stepper__item--done .df-stepper__label {
+  color: var(--color-blue);
+}
+
+:root[data-theme="light"] .df-stepper__line {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation */
 .df-nav {
   display: flex;
   gap: 0.625rem;
@@ -1086,7 +1138,7 @@
   flex-wrap: wrap;
 }
 
-/* ─── 12. Лоадер ──────────────────────────────────────────────────────────── */
+/* ─── 12. Loader ───────────────────────────────────────────────────────────── */
 
 .df-loader {
   display: flex;
@@ -1127,7 +1179,7 @@
   font-size: 0.875rem;
 }
 
-/* ─── 13. Адаптив ─────────────────────────────────────────────────────────── */
+/* ─── 13. Responsive ───────────────────────────────────────────────────────── */
 
 @media (width < 48rem) {
   .df-label {
@@ -1166,6 +1218,7 @@
 
 /* ─── 14. Tooltip (label description) ────────────────────────────────────── */
 
+/* Tooltip wrapper */
 .df-tooltip-wrap {
   position: relative;
   display: inline-flex;
@@ -1174,6 +1227,7 @@
   vertical-align: middle;
 }
 
+/* Tooltip icon */
 .df-tooltip-icon {
   display: inline-flex;
   align-items: center;
@@ -1199,8 +1253,9 @@
   color: var(--color-cyan);
 }
 
+/* Tooltip body */
 .df-tooltip-body {
-  position: fixed; /* fixed чтобы не уходил под viewport */
+  position: fixed; /* fixed to prevent going under viewport */
   background: var(--color-bg, #1a1a2e);
   color: var(--color-text);
   font-size: 0.8125rem;
@@ -1210,7 +1265,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.625rem;
   width: max-content;
-  max-width: min(18rem, calc(100vw - 2rem)); /* адаптив на малых экранах */
+  max-width: min(18rem, calc(100vw - 2rem)); /* responsive on small screens */
   text-align: left;
   pointer-events: none;
   opacity: 0;
