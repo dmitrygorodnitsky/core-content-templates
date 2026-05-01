@@ -15,28 +15,82 @@
         padding: 0;
       }
 
+      :root {
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
       body {
-        background: #17171b;
+        background: var(--color-bg, #17171b);
         min-height: 100vh;
         display: flex;
-        align-items: flex-start;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
         padding: 60px 20px;
-        gap: 40px;
-        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .theme-toggle-btn {
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: 1px solid var(--df-border);
+        background: var(--df-surface);
+        color: var(--df-text);
+        cursor: pointer;
+        font-family: var(--font-family);
+        font-weight: 500;
+        transition: all 0.2s ease;
+        margin-bottom: 20px;
+      }
+
+      .theme-toggle-btn:hover {
+        border-color: var(--color-cyan);
+        box-shadow: 0 0 10px var(--df-accent-glow);
       }
 
       #form-container {
         min-height: 200px;
+        width: 100%;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 744px;
+        background: var(--card-bg);
+        border: 1px solid var(--df-border);
+        border-radius: 20px;
+        padding: 40px;
       }
     </style>
   </head>
   <body>
-    <div class="card" style="max-width: 744px">
+    <button class="theme-toggle-btn" id="theme-toggle">Toggle Light/Dark Mode</button>
+
+    <div class="card">
       <div id="form-container"></div>
     </div>
+
     <script src="../../js/dynamic-form.js"></script>
     <script>
+      const themeToggle = document.getElementById("theme-toggle");
+      const htmlElement = document.documentElement;
+
+      themeToggle.addEventListener("click", () => {
+        const currentTheme = htmlElement.getAttribute("data-theme");
+        const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+        htmlElement.setAttribute("data-theme", newTheme);
+
+        localStorage.setItem("preferred-theme", newTheme);
+      });
+
+      const savedTheme = localStorage.getItem("preferred-theme");
+      if (savedTheme) {
+        htmlElement.setAttribute("data-theme", savedTheme);
+      }
+
       const container = document.getElementById("form-container");
 
       new DynamicForm({
