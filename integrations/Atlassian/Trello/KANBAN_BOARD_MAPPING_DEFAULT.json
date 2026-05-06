@@ -1,0 +1,440 @@
+{
+  "source": {
+    "format": "KANBAN_BOARD_EXPORT",
+    "vendor": "Atlassian",
+    "product": "Trello",
+    "version": 1
+  },
+  "organization": {
+    "code": "SERVICEWAND"
+  },
+  "mediaLibrary": {
+    "code": "SERVICE_WAND_KANBAN",
+    "createIfMissing": true,
+    "projectScoped": true,
+    "codePattern": "${projectCode}_MEDIA",
+    "downloadExternalUrls": true,
+    "associateLibraryWithProject": true,
+    "nls": {
+      "en": {
+        "NAME": "Kanban Import Media",
+        "DESCRIPTION": "Media imported from external Kanban boards"
+      }
+    }
+  },
+  "contentConversion": {
+    "sourceDescriptionFormat": "MARKDOWN",
+    "targetDescriptionFormat": "HTML",
+    "convertDescriptionsToHtml": true,
+    "convertDialogMessagesToHtml": true
+  },
+  "projectType": {
+    "code": "GENERIC_KANBAN",
+    "createIfMissing": true,
+    "strictValidation": true,
+    "nls": {
+      "en": {
+        "NAME": "Generic Kanban Board",
+        "DESCRIPTION": "Imported Kanban board"
+      }
+    },
+    "attributes": [
+      {
+        "code": "TASK_TYPES",
+        "className": "com.pixelnation.svc.domain.TaskType",
+        "multiselect": true,
+        "required": false,
+        "hidden": false,
+        "nls": {
+          "en": {
+            "NAME": "Task Types",
+            "DESCRIPTION": "Task types allowed for projects of this type"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_SOURCE_BOARD_ID",
+        "className": "java.lang.String",
+        "hidden": true,
+        "nls": {
+          "en": {
+            "NAME": "Source Board ID"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_SOURCE_UPDATED_AT",
+        "className": "java.lang.String",
+        "hidden": true,
+        "nls": {
+          "en": {
+            "NAME": "Source Updated At"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_BOARD_MEMBERS",
+        "className": "com.pixelnation.common.domain.User",
+        "multiselect": true,
+        "nls": {
+          "en": {
+            "NAME": "Board Members"
+          }
+        }
+      }
+    ]
+  },
+  "taskType": {
+    "code": "GENERIC_KANBAN_TASK",
+    "createIfMissing": true,
+    "strictValidation": true,
+    "nls": {
+      "en": {
+        "NAME": "Generic Kanban Task",
+        "DESCRIPTION": "Imported Kanban card"
+      }
+    },
+    "attributes": [
+      {
+        "code": "KANBAN_SOURCE_CARD_ID",
+        "className": "java.lang.String",
+        "hidden": true,
+        "nls": {
+          "en": {
+            "NAME": "Source Card ID"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_SOURCE_LIST_ID",
+        "className": "java.lang.String",
+        "hidden": true,
+        "nls": {
+          "en": {
+            "NAME": "Source List ID"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_SOURCE_UPDATED_AT",
+        "className": "java.lang.String",
+        "hidden": true,
+        "nls": {
+          "en": {
+            "NAME": "Source Updated At"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_LABELS",
+        "className": "java.lang.String",
+        "multiselect": true,
+        "freeValue": false,
+        "options": [],
+        "nls": {
+          "en": {
+            "NAME": "Labels"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_CHECKLISTS",
+        "className": "java.lang.String",
+        "multiselect": true,
+        "nls": {
+          "en": {
+            "NAME": "Checklists"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_ATTACHMENTS",
+        "className": "com.pixelnation.common.domain.Media",
+        "multiselect": true,
+        "entityTypes": [
+          {
+            "value": "image",
+            "nls": {
+              "en": {
+                "NAME": "image"
+              }
+            }
+          },
+          {
+            "value": "video",
+            "nls": {
+              "en": {
+                "NAME": "video"
+              }
+            }
+          },
+          {
+            "value": "sound",
+            "nls": {
+              "en": {
+                "NAME": "sound"
+              }
+            }
+          },
+          {
+            "value": "mediaAsset",
+            "nls": {
+              "en": {
+                "NAME": "mediaAsset"
+              }
+            }
+          }
+        ],
+        "nls": {
+          "en": {
+            "NAME": "Attachments"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_DUE",
+        "className": "java.time.LocalDateTime",
+        "nls": {
+          "en": {
+            "NAME": "Due Date"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_START",
+        "className": "java.time.LocalDateTime",
+        "nls": {
+          "en": {
+            "NAME": "Start Date"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_DUE_COMPLETE",
+        "className": "java.lang.Boolean",
+        "nls": {
+          "en": {
+            "NAME": "Due Complete"
+          }
+        }
+      },
+      {
+        "code": "KANBAN_CLOSED",
+        "className": "java.lang.Boolean",
+        "nls": {
+          "en": {
+            "NAME": "Archived"
+          }
+        }
+      }
+    ]
+  },
+  "projectWorkflow": {
+    "code": "GENERIC_KANBAN_PROJECT_WORKFLOW",
+    "createIfMissing": true,
+    "entityType": "com.pixelnation.svc.domain.Project",
+    "scriptLanguage": "Java",
+    "nls": {
+      "en": {
+        "NAME": "Generic Kanban Project Workflow",
+        "DESCRIPTION": "Project lifecycle for imported Kanban boards"
+      }
+    },
+    "image": null,
+    "style": {},
+    "attributes": [],
+    "attributeGroups": [],
+    "attributeOrder": [],
+    "initialState": "INITIAL",
+    "states": [
+      {
+        "code": "INITIAL",
+        "nls": {
+          "en": {
+            "NAME": "Initial"
+          }
+        },
+        "image": null,
+        "style": {},
+        "attributes": [],
+        "events": [
+          {
+            "code": "INITIAL_TO_ACTIVE",
+            "target": "ACTIVE",
+            "nls": {
+              "en": {
+                "NAME": "Activate"
+              }
+            },
+            "image": null,
+            "style": {},
+            "attributes": []
+          }
+        ]
+      },
+      {
+        "code": "ACTIVE",
+        "nls": {
+          "en": {
+            "NAME": "Active"
+          }
+        },
+        "image": null,
+        "style": {},
+        "attributes": [],
+        "events": [
+          {
+            "code": "ACTIVE_TO_ARCHIVED",
+            "target": "ARCHIVED",
+            "nls": {
+              "en": {
+                "NAME": "Archive"
+              }
+            },
+            "image": null,
+            "style": {},
+            "attributes": []
+          }
+        ]
+      },
+      {
+        "code": "ARCHIVED",
+        "nls": {
+          "en": {
+            "NAME": "Archived"
+          }
+        },
+        "image": null,
+        "style": {},
+        "attributes": [],
+        "events": [
+          {
+            "code": "ARCHIVED_TO_ACTIVE",
+            "target": "ACTIVE",
+            "nls": {
+              "en": {
+                "NAME": "Restore"
+              }
+            },
+            "image": null,
+            "style": {},
+            "attributes": []
+          }
+        ]
+      }
+    ]
+  },
+  "taskWorkflow": {
+    "code": "GENERIC_KANBAN_TASK_FLOW",
+    "createIfMissing": true,
+    "entityType": "com.pixelnation.svc.domain.Task",
+    "scriptLanguage": "Java",
+    "nls": {
+      "en": {
+        "NAME": "Generic Kanban Task Flow",
+        "DESCRIPTION": "Task flow generated from source board lists"
+      }
+    },
+    "image": null,
+    "style": {},
+    "attributes": [],
+    "attributeGroups": [],
+    "attributeOrder": [],
+    "initialState": "INITIAL",
+    "statesFrom": "$.lists",
+    "stateCodePath": "$.name",
+    "stateNamePath": "$.name",
+    "includeArchivedState": true,
+    "states": [],
+    "events": {
+      "mode": "ANY_STATE_TO_ANY_STATE",
+      "definitions": []
+    }
+  },
+  "mappings": {
+    "project": {
+      "fixedFields": [
+        {
+          "source": "$.name",
+          "target": "nls.en.NAME"
+        },
+        {
+          "source": "$.desc",
+          "target": "nls.en.DESCRIPTION",
+          "convert": "MARKDOWN_TO_HTML"
+        }
+      ],
+      "attributes": [
+        {
+          "source": "$.id",
+          "target": "KANBAN_SOURCE_BOARD_ID"
+        }
+      ]
+    },
+    "task": {
+      "fixedFields": [
+        {
+          "source": "$.cards[*].name",
+          "target": "nls.en.NAME"
+        },
+        {
+          "source": "$.cards[*].desc",
+          "target": "nls.en.DESCRIPTION",
+          "convert": "MARKDOWN_TO_HTML"
+        }
+      ],
+      "attributes": [
+        {
+          "source": "$.cards[*].id",
+          "target": "KANBAN_SOURCE_CARD_ID"
+        },
+        {
+          "source": "$.cards[*].idList",
+          "target": "KANBAN_SOURCE_LIST_ID"
+        }
+      ]
+    },
+    "users": {
+      "boardMembersAreProjectMembers": true,
+      "createMissingUsers": true,
+      "matchBy": [
+        "email",
+        "fullName",
+        "username"
+      ]
+    },
+    "media": {
+      "downloadExternalUrls": true,
+      "associateLibraryWithProject": true
+    },
+    "ignored": [
+      {
+        "path": "$.idOrganization",
+        "reason": "Core organization is supplied by mapping/runtime context"
+      },
+      {
+        "path": "$..shortLink",
+        "reason": "Source short links are not useful Core data"
+      },
+      {
+        "path": "$..shortUrl",
+        "reason": "Source short URLs are not useful Core data"
+      },
+      {
+        "path": "$..url",
+        "reason": "Non-media page URLs are ignored unless traceability is enabled"
+      }
+    ]
+  },
+  "sync": {
+    "identity": {
+      "project": "$.id",
+      "task": "$.cards[*].id",
+      "state": "$.lists[*].id",
+      "member": "$.members[*].id"
+    },
+    "deletePolicy": "ARCHIVE",
+    "closedPolicy": "ARCHIVE",
+    "missingCardPolicy": "ARCHIVE"
+  }
+}

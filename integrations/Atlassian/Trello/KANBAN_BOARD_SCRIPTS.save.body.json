@@ -1,0 +1,484 @@
+{
+  "entities": [
+    {
+      "code": "KANBAN_BOARD_IMPORTER",
+      "language": "Java",
+      "executable": true,
+      "templatable": false,
+      "runInTx": false,
+      "timeout": 600000,
+      "readonly": false,
+      "predefined": false,
+      "debug": false,
+      "contentFile": "KANBAN_BOARD_IMPORTER.java",
+      "metadata": {
+        "FUNCTIONS": [
+          {
+            "nls": {
+              "en": {
+                "NAME": "Export board",
+                "DESCRIPTION": "Download a Kanban board JSON extract and source assets into a Core media library."
+              }
+            },
+            "name": "exportBoard",
+            "parameters": [
+              {
+                "nls": { "en": { "NAME": "Source board ID" } },
+                "name": "sourceBoardId",
+                "type": "java.lang.String",
+                "required": true,
+                "defaultValue": "BOARD_ID_OR_SHORT_LINK"
+              },
+              {
+                "nls": { "en": { "NAME": "AtlassianApi secret ID" } },
+                "name": "sourceSecretId",
+                "type": "java.lang.Integer",
+                "required": true
+              },
+              {
+                "nls": { "en": { "NAME": "Organization code" } },
+                "name": "organizationCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "SERVICEWAND"
+              },
+              {
+                "nls": { "en": { "NAME": "Project name" } },
+                "name": "projectName",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Project code" } },
+                "name": "projectCode",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Media library code" } },
+                "name": "mediaLibraryCode",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Include actions" } },
+                "name": "includeActions",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": true
+              },
+              {
+                "nls": { "en": { "NAME": "Download board assets" } },
+                "name": "downloadBoardAssets",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": true
+              },
+              {
+                "nls": { "en": { "NAME": "Download attachments" } },
+                "name": "downloadAttachments",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": true
+              },
+              {
+                "nls": { "en": { "NAME": "Download external URLs" } },
+                "name": "downloadExternalUrls",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Uploaded files",
+                    "DESCRIPTION": "Temporary file URI list supplied by exec-multipart.json."
+                  }
+                },
+                "name": "files",
+                "type": "java.util.List",
+                "required": false
+              }
+            ]
+          },
+          {
+            "nls": {
+              "en": {
+                "NAME": "Prepare mapping template",
+                "DESCRIPTION": "Infer or merge an editable JSON mapping script from a Kanban board export."
+              }
+            },
+            "name": "prepareTemplate",
+            "parameters": [
+              {
+                "nls": { "en": { "NAME": "Mapping script code" } },
+                "name": "mappingScriptCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "KANBAN_BOARD_MAPPING_MY_BOARD"
+              },
+              {
+                "nls": { "en": { "NAME": "Board media ID" } },
+                "name": "boardMediaId",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Source media ID" } },
+                "name": "sourceMediaId",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Project type code" } },
+                "name": "projectTypeCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN"
+              },
+              {
+                "nls": { "en": { "NAME": "Task type code" } },
+                "name": "taskTypeCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN_TASK"
+              },
+              {
+                "nls": { "en": { "NAME": "Organization code" } },
+                "name": "organizationCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "SERVICEWAND"
+              },
+              {
+                "nls": { "en": { "NAME": "Overwrite mapping" } },
+                "name": "overwrite",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Uploaded files",
+                    "DESCRIPTION": "Temporary file URI list supplied by exec-multipart.json."
+                  }
+                },
+                "name": "files",
+                "type": "java.util.List",
+                "required": false
+              }
+            ]
+          },
+          {
+            "nls": {
+              "en": {
+                "NAME": "Import or synchronize board",
+                "DESCRIPTION": "Create or synchronize Core Project, Task, workflows, types, attributes, users, and media from a Kanban board export."
+              }
+            },
+            "name": "importBoard",
+            "parameters": [
+              {
+                "nls": { "en": { "NAME": "Mapping script code" } },
+                "name": "mappingScriptCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "KANBAN_BOARD_MAPPING_DEFAULT"
+              },
+              {
+                "nls": { "en": { "NAME": "Board media ID" } },
+                "name": "boardMediaId",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Source media ID" } },
+                "name": "sourceMediaId",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Project name" } },
+                "name": "projectName",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Project code" } },
+                "name": "projectCode",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": { "en": { "NAME": "Dry run" } },
+                "name": "dryRun",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": true
+              },
+              {
+                "nls": { "en": { "NAME": "Download media" } },
+                "name": "downloadMedia",
+                "type": "java.lang.Boolean",
+                "required": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Uploaded files",
+                    "DESCRIPTION": "Temporary file URI list supplied by exec-multipart.json."
+                  }
+                },
+                "name": "files",
+                "type": "java.util.List",
+                "required": false
+              }
+            ]
+          },
+          {
+            "nls": {
+              "en": {
+                "NAME": "Revert import",
+                "DESCRIPTION": "Remove Core artifacts created by a Kanban import, including project tasks, project, media library assets, and optionally shared type/workflow definitions."
+              }
+            },
+            "name": "revertImport",
+            "label": "Revert import",
+            "value": "revertImport",
+            "parameters": [
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Project code",
+                    "DESCRIPTION": "Core project code created or synchronized by the import. Tasks under this project are removed before the project."
+                  }
+                },
+                "name": "projectCode",
+                "type": "java.lang.String",
+                "required": true
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Media library code",
+                    "DESCRIPTION": "Core media library code that contains exported JSON and downloaded assets. Defaults to <projectCode>_MEDIA when blank."
+                  }
+                },
+                "name": "mediaLibraryCode",
+                "type": "java.lang.String",
+                "required": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Project type code",
+                    "DESCRIPTION": "ProjectType code to delete only when Delete shared definitions is enabled and reference checks pass."
+                  }
+                },
+                "name": "projectTypeCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN"
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Task type code",
+                    "DESCRIPTION": "TaskType code to delete only when Delete shared definitions is enabled and reference checks pass."
+                  }
+                },
+                "name": "taskTypeCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN_TASK"
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Project workflow code",
+                    "DESCRIPTION": "Project workflow code to delete only when Delete shared definitions is enabled and reference checks pass."
+                  }
+                },
+                "name": "projectWorkflowCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN_PROJECT_WORKFLOW"
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Task workflow code",
+                    "DESCRIPTION": "Task workflow code to delete only when Delete shared definitions is enabled and reference checks pass."
+                  }
+                },
+                "name": "taskWorkflowCode",
+                "type": "java.lang.String",
+                "required": false,
+                "defaultValue": "GENERIC_KANBAN_TASK_FLOW"
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Delete shared definitions",
+                    "DESCRIPTION": "When true, delete ProjectType, TaskType, and workflows after reference checks pass."
+                  }
+                },
+                "name": "deleteSharedDefinitions",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Force definition deletion",
+                    "DESCRIPTION": "When true, delete requested type/workflow definitions even if other objects still reference them."
+                  }
+                },
+                "name": "force",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": false
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Dry run",
+                    "DESCRIPTION": "When true, returns the deletion plan and reference counts without deleting any artifacts."
+                  }
+                },
+                "name": "dryRun",
+                "type": "java.lang.Boolean",
+                "required": false,
+                "defaultValue": true
+              },
+              {
+                "nls": {
+                  "en": {
+                    "NAME": "Uploaded files",
+                    "DESCRIPTION": "Unused temporary file URI list supplied by exec-multipart.json."
+                  }
+                },
+                "name": "files",
+                "type": "java.util.List",
+                "required": false
+              }
+            ]
+          }
+        ],
+        "CAPABILITIES": [
+          "CORE-SVC"
+        ]
+      },
+      "nls": {
+        "en": {
+          "NAME": "Kanban Board Importer",
+          "DESCRIPTION": "<p>Exports authenticated Kanban board source data and imports or synchronizes it into Core Project and Task entities using a JSON mapping script.</p>"
+        }
+      },
+      "organization": {
+        "id": 1
+      },
+      "category": {
+        "id": 5
+      },
+      "dependencies": []
+    },
+    {
+      "code": "KANBAN_BOARD_MAPPING_DEFAULT",
+      "language": "JSON",
+      "executable": false,
+      "templatable": false,
+      "runInTx": false,
+      "timeout": 0,
+      "readonly": false,
+      "predefined": false,
+      "debug": false,
+      "contentFile": "KANBAN_BOARD_MAPPING_DEFAULT.json",
+      "metadata": {
+        "CAPABILITIES": [
+          "CORE"
+        ],
+        "SCRIPT_KIND": "KANBAN_BOARD_MAPPING",
+        "SOURCE_FORMAT": "Atlassian.Trello.BoardExport",
+        "USED_BY": "KANBAN_BOARD_IMPORTER"
+      },
+      "nls": {
+        "en": {
+          "NAME": "Default Kanban Board Mapping",
+          "DESCRIPTION": "<p>Editable default JSON mapping used by KANBAN_BOARD_IMPORTER to create or synchronize generic Kanban project and task types, workflows, attributes, users, permissions, and media.</p>"
+        }
+      },
+      "organization": {
+        "id": 1
+      },
+      "category": {
+        "id": 5
+      },
+      "dependencies": []
+    }
+  ],
+  "mappings": [
+    {
+      "name": "id"
+    },
+    {
+      "name": "code"
+    },
+    {
+      "name": "language",
+      "type": "enumeration"
+    },
+    {
+      "name": "content"
+    },
+    {
+      "name": "metadata"
+    },
+    {
+      "name": "nls"
+    },
+    {
+      "name": "organization",
+      "type": "identifier",
+      "key": "id"
+    },
+    {
+      "name": "category",
+      "type": "identifier",
+      "key": "id"
+    },
+    {
+      "name": "dependencies",
+      "type": "collection",
+      "key": "id",
+      "mappings": [
+        {
+          "name": "id"
+        }
+      ]
+    },
+    {
+      "name": "predefined"
+    },
+    {
+      "name": "readonly"
+    },
+    {
+      "name": "debug"
+    },
+    {
+      "name": "runInTx"
+    },
+    {
+      "name": "timeout"
+    },
+    {
+      "name": "templatable"
+    },
+    {
+      "name": "executable"
+    }
+  ]
+}
