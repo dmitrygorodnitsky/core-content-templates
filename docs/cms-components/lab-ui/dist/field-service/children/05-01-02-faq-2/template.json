@@ -2,7 +2,7 @@
   "code": "FAQ_2",
   "nls": {
     "en": {
-      "NAME": "Does ServiceWand replace a CRM?"
+      "NAME": "What does field service management software do?"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Does ServiceWand replace a CRM?"
+        "en": "What does field service management software do?"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+        "en": "Field service management software coordinates the complete service lifecycle: service requests, scheduling, assigning technicians, dispatching crews, tracking work orders, managing customer history, collecting field updates, creating invoices, and reporting on performance."
       }
     }
   ]

@@ -2,7 +2,7 @@
   "code": "FAQ_3",
   "nls": {
     "en": {
-      "NAME": "Can crews use ServiceWand from the field?"
+      "NAME": "What makes good field service software?"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Can crews use ServiceWand from the field?"
+        "en": "What makes good field service software?"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+        "en": "A strong platform balances operational depth with ease of use for field teams. It should include real-time scheduling, dispatching, mobile workflows, customer history, automated communication, invoicing, payments, reporting, integrations, and scalability."
       }
     }
   ]

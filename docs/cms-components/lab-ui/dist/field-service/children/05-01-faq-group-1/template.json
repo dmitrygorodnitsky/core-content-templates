@@ -1,0 +1,118 @@
+{
+  "code": "FAQ_GROUP_1",
+  "nls": {
+    "en": {
+      "NAME": "Field service basics"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FAQ"
+  },
+  "children": [
+    {
+      "code": "FAQ_1",
+      "nls": {
+        "en": {
+          "NAME": "What is field service software?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item is-open\" data-faq-slot=\"01\" open>\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_1_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_1_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "What is field service software?"
+          }
+        },
+        {
+          "code": "FAQ_1_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "Field service software helps businesses manage work performed outside the office. It connects scheduling, dispatching, work orders, mobile technicians, customer information, routing, invoicing, payments, reporting, and job status updates in one operational system."
+          }
+        }
+      ]
+    },
+    {
+      "code": "FAQ_2",
+      "nls": {
+        "en": {
+          "NAME": "What does field service management software do?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item\" data-faq-slot=\"02\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_2_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_2_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "What does field service management software do?"
+          }
+        },
+        {
+          "code": "FAQ_2_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "Field service management software coordinates the complete service lifecycle: service requests, scheduling, assigning technicians, dispatching crews, tracking work orders, managing customer history, collecting field updates, creating invoices, and reporting on performance."
+          }
+        }
+      ]
+    }
+  ],
+  "head": "",
+  "html": "<article class=\"faq-group\" data-faq-group=\"01\">\n  <header class=\"faq-group-head\">\n    <span class=\"faq-group-num\">G.01</span>\n    <h3 class=\"faq-group-title\">${FAQ_GROUP_1_TITLE@LOCALIZED_STRING_SS}</h3>\n  </header>\n  <div class=\"faq-group-body\">\n    <!-- cms-child-slot:FAQ_ITEMS -->\n  </div>\n</article>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "FAQ_GROUP_1_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE"
+        }
+      },
+      "value": {
+        "en": "Field service basics"
+      }
+    }
+  ]
+}

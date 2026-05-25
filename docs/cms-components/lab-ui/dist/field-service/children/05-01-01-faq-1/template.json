@@ -2,7 +2,7 @@
   "code": "FAQ_1",
   "nls": {
     "en": {
-      "NAME": "Can ServiceWand support multiple service lines?"
+      "NAME": "What is field service software?"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Can ServiceWand support multiple service lines?"
+        "en": "What is field service software?"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+        "en": "Field service software helps businesses manage work performed outside the office. It connects scheduling, dispatching, work orders, mobile technicians, customer information, routing, invoicing, payments, reporting, and job status updates in one operational system."
       }
     }
   ]

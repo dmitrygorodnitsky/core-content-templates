@@ -8,9 +8,12 @@
     "HEADER",
     "HERO",
     "FEATURES",
+    "FEATURE_COL_LEFT",
     "FEATURE_1",
-    "FEATURE_2",
     "FEATURE_3",
+    "FEATURE_5",
+    "FEATURE_COL_RIGHT",
+    "FEATURE_2",
     "FEATURE_4",
     "COMPARISON",
     "COMPARE_ROW_1",
@@ -18,9 +21,12 @@
     "COMPARE_ROW_3",
     "COMPARE_ROW_4",
     "COMPARE_ROW_5",
+    "COMPARE_ROW_6",
     "FAQ",
+    "FAQ_GROUP_1",
     "FAQ_1",
     "FAQ_2",
+    "FAQ_GROUP_2",
     "FAQ_3",
     "FAQ_4",
     "CTA",
@@ -172,19 +178,19 @@
       "en": "Field Service Software"
     },
     "HERO_TITLE_ACCENT": {
-      "en": "Real-World Operations"
+      "en": "Intelligent Field Service Operations"
     },
     "HERO_TITLE_LINE_2": {
-      "en": "Operations"
+      "en": ""
     },
     "HERO_LEAD_1": {
-      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+      "en": "Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day."
     },
     "HERO_LEAD_2": {
-      "en": "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day."
+      "en": "ServiceWand is field service software built for service businesses that need more than a basic scheduling app. It connects scheduling, dispatching, routing, mobile workforce operations, customer management, billing, reporting, automation, and AI-assisted workflows in one operational platform."
     },
     "HERO_LEAD_3": {
-      "en": "Book a Demo Explore Platform"
+      "en": "Whether your business manages seasonal crews, recurring service routes, emergency dispatch, multi-location teams, or complex customer workflows, ServiceWand helps create a connected operating environment for the office, field, and customer experience."
     },
     "HERO_CTA_PRIMARY_HREF": "/request-demo",
     "HERO_CTA_PRIMARY_LABEL": {
@@ -201,27 +207,33 @@
       "en": "Product screenshot / operational view"
     },
     "FEATURE_1_TITLE": {
-      "en": "Scheduling and Dispatch"
+      "en": "Field Service Scheduling Software"
     },
     "FEATURE_1_BODY": {
-      "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+      "en": "Plan jobs, manage appointments, assign technicians, account for route context, and adjust schedules as priorities change."
     },
     "FEATURE_2_TITLE": {
-      "en": "Mobile Workforce"
+      "en": "Field Service Dispatch Software"
     },
     "FEATURE_2_BODY": {
-      "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+      "en": "Assign the right technician, crew, vehicle, or resource to the right job while coordinating route changes, emergency requests, job status updates, and office-to-field communication."
     },
     "FEATURE_3_TITLE": {
-      "en": "Customer Management"
+      "en": "Mobile Field Service Software"
     },
     "FEATURE_3_BODY": {
-      "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+      "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
     },
     "FEATURE_4_TITLE": {
-      "en": "Billing and Reporting"
+      "en": "Field Service CRM"
     },
     "FEATURE_4_BODY": {
+      "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+    },
+    "FEATURE_5_TITLE": {
+      "en": "Field Service Billing Software"
+    },
+    "FEATURE_5_BODY": {
       "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
     },
     "FEATURES_EYEBROW": {
@@ -231,7 +243,7 @@
       "en": "Features"
     },
     "FEATURES_LEDE": {
-      "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+      "en": "ServiceWand includes the operational features field service businesses need to coordinate work from request to completion, without forcing every team into a rigid workflow. Unlike narrow field service software solutions that handle only one part of the workflow, ServiceWand connects scheduling, dispatching, mobile work, customer history, billing, reporting, and automation in one operational platform."
     },
     "COMPARE_ROW_1_CAPABILITY": {
       "en": "Customer & CRM"
@@ -338,6 +350,27 @@
     "COMPARE_ROW_5_ENTERPRISE_PLATFORMS": {
       "en": "partial"
     },
+    "COMPARE_ROW_6_CAPABILITY": {
+      "en": "Reporting & Visibility"
+    },
+    "COMPARE_ROW_6_SW": {
+      "en": "built-in"
+    },
+    "COMPARE_ROW_6_CRM_SYSTEMS": {
+      "en": "partial"
+    },
+    "COMPARE_ROW_6_FIELD_SERVICE_TOOLS": {
+      "en": "limited"
+    },
+    "COMPARE_ROW_6_MONITORING_TOOLS": {
+      "en": "native"
+    },
+    "COMPARE_ROW_6_CMS_AND_PORTALS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_6_ENTERPRISE_PLATFORMS": {
+      "en": "complex"
+    },
     "COMPARISON_EYEBROW": {
       "en": "Comparison"
     },
@@ -345,7 +378,7 @@
       "en": "ServiceWand unifies it all"
     },
     "COMPARISON_LEDE": {
-      "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+      "en": "ServiceWand is built for companies that need operational depth without being forced into a rigid enterprise system. It connects scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, integrations, and automation in one scalable environment."
     },
     "COMPARISON_COLUMN_1": {
       "en": "ServiceWand"
@@ -366,28 +399,28 @@
       "en": "Enterprise Platforms"
     },
     "FAQ_1_QUESTION": {
-      "en": "Can ServiceWand support multiple service lines?"
+      "en": "What is field service software?"
     },
     "FAQ_1_ANSWER": {
-      "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+      "en": "Field service software helps businesses manage work performed outside the office. It connects scheduling, dispatching, work orders, mobile technicians, customer information, routing, invoicing, payments, reporting, and job status updates in one operational system."
     },
     "FAQ_2_QUESTION": {
-      "en": "Does ServiceWand replace a CRM?"
+      "en": "What does field service management software do?"
     },
     "FAQ_2_ANSWER": {
-      "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+      "en": "Field service management software coordinates the complete service lifecycle: service requests, scheduling, assigning technicians, dispatching crews, tracking work orders, managing customer history, collecting field updates, creating invoices, and reporting on performance."
     },
     "FAQ_3_QUESTION": {
-      "en": "Can crews use ServiceWand from the field?"
+      "en": "What makes good field service software?"
     },
     "FAQ_3_ANSWER": {
-      "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+      "en": "A strong platform balances operational depth with ease of use for field teams. It should include real-time scheduling, dispatching, mobile workflows, customer history, automated communication, invoicing, payments, reporting, integrations, and scalability."
     },
     "FAQ_4_QUESTION": {
-      "en": "Is this only for one vertical?"
+      "en": "Can field service software support multiple industries?"
     },
     "FAQ_4_ANSWER": {
-      "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+      "en": "Yes. Many field service industries share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination."
     },
     "FAQ_EYEBROW": {
       "en": "FAQ"
@@ -398,19 +431,22 @@
     "FAQ_LEDE": {
       "en": ""
     },
-    "FAQ_GROUP_TITLE": {
-      "en": "Field service operations"
+    "FAQ_GROUP_1_TITLE": {
+      "en": "Field service basics"
+    },
+    "FAQ_GROUP_2_TITLE": {
+      "en": "Platform fit"
     },
     "CTA_EYEBROW": {
-      "en": "Next step"
+      "en": "Build the next layer"
     },
     "CTA_TITLE": {
-      "en": "See how ServiceWand can connect your office, field, and customer workflows."
+      "en": "Field service operations are becoming more complex, distributed, and operationally demanding. ServiceWand creates the operational foundation for scalable field service management."
     },
-    "CTA_PRIMARY_LABEL": {
+    "CTA_HREF": "/request-demo",
+    "CTA_LABEL": {
       "en": "Book a Demo"
     },
-    "CTA_PRIMARY_HREF": "/request-demo",
     "FOOTER_BRAND_HREF": "/",
     "FOOTER_BRAND_NAME": {
       "en": "ServiceWand"
@@ -477,7 +513,7 @@
       "en": "Field Service Landing | ServiceWand"
     },
     "ROOT_META_DESCRIPTION": {
-      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+      "en": "Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day."
     }
   },
   "organization": {

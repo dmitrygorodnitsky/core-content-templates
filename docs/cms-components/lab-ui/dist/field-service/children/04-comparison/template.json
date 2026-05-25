@@ -524,10 +524,113 @@
           }
         }
       ]
+    },
+    {
+      "code": "COMPARE_ROW_6",
+      "nls": {
+        "en": {
+          "NAME": "Reporting & Visibility"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "COMPARISON"
+      },
+      "children": [],
+      "head": "",
+      "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_6_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_6_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "COMPARE_ROW_6_CAPABILITY",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "CAPABILITY"
+            }
+          },
+          "value": {
+            "en": "Reporting & Visibility"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_SW",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "SW"
+            }
+          },
+          "value": {
+            "en": "built-in"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_CRM_SYSTEMS",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "CRM_SYSTEMS"
+            }
+          },
+          "value": {
+            "en": "partial"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_FIELD_SERVICE_TOOLS",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "FIELD_SERVICE_TOOLS"
+            }
+          },
+          "value": {
+            "en": "limited"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_MONITORING_TOOLS",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "MONITORING_TOOLS"
+            }
+          },
+          "value": {
+            "en": "native"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_CMS_AND_PORTALS",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "CMS_AND_PORTALS"
+            }
+          },
+          "value": {
+            "en": "no"
+          }
+        },
+        {
+          "code": "COMPARE_ROW_6_ENTERPRISE_PLATFORMS",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ENTERPRISE_PLATFORMS"
+            }
+          },
+          "value": {
+            "en": "complex"
+          }
+        }
+      ]
     }
   ],
   "head": "",
-  "html": "<section class=\"compare\" id=\"compare\" data-block=\"comparison.three-col-with-mobile-cards\">\n  <div class=\"container\">\n    <header class=\"compare-top\">\n      <p class=\"eyebrow\">${COMPARISON_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"compare-title\">${COMPARISON_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"compare-lede\">${COMPARISON_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n    <div class=\"compare-grid\" role=\"table\" aria-label=\"ServiceWand platform comparison\">\n      <div class=\"compare-head\" role=\"rowgroup\">\n        <div class=\"compare-row compare-row--head\" role=\"row\">\n          <div class=\"compare-cell compare-cell--capability compare-cell--empty\" role=\"columnheader\"></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_1@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_2@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_3@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_4@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_5@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_6@LOCALIZED_STRING_SS}</div>\n        </div>\n      </div>\n      <div class=\"compare-body\" role=\"rowgroup\" data-compare-body>\n        <!-- cms-child-slot:COMPARE_ROWS -->\n      </div>\n    </div>\n  </div>\n</section>",
+  "html": "<section class=\"compare\" id=\"compare\" data-block=\"comparison.three-col-with-mobile-cards\">\n  <div class=\"container\">\n    <header class=\"compare-top\">\n      <p class=\"eyebrow\">${COMPARISON_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"compare-title\">${COMPARISON_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"compare-lede\">${COMPARISON_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n    <div class=\"compare-grid\" role=\"table\" aria-label=\"ServiceWand platform comparison\">\n      <div class=\"compare-head\" role=\"rowgroup\">\n        <div class=\"compare-row compare-row--head\" role=\"row\">\n          <div class=\"compare-cell compare-cell--capability compare-cell--empty\" role=\"columnheader\"></div>\n          <div class=\"compare-cell compare-cell--sw compare-cell--head\" role=\"columnheader\"><span class=\"compare-brand\" aria-label=\"${COMPARISON_COLUMN_1@LOCALIZED_STRING_SS}\"><span>Service</span><strong>Wand</strong></span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_2@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_3@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_4@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_5@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_6@LOCALIZED_STRING_SS}</div>\n        </div>\n      </div>\n      <div class=\"compare-body\" role=\"rowgroup\" data-compare-body>\n        <!-- cms-child-slot:COMPARE_ROWS -->\n      </div>\n    </div>\n  </div>\n</section>",
   "css": "",
   "javascript": "",
   "parameters": [
@@ -564,7 +667,7 @@
         }
       },
       "value": {
-        "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+        "en": "ServiceWand is built for companies that need operational depth without being forced into a rigid enterprise system. It connects scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, integrations, and automation in one scalable environment."
       }
     },
     {

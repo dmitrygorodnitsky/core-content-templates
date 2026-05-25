@@ -2,7 +2,7 @@
   "code": "FEATURE_3",
   "nls": {
     "en": {
-      "NAME": "Customer Management"
+      "NAME": "Mobile Field Service Software"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Customer Management"
+        "en": "Mobile Field Service Software"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+        "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
       }
     }
   ]

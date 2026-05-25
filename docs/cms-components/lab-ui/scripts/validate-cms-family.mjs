@@ -125,8 +125,14 @@ const main = () => {
 
   const faq = payloadChildren.find((template) => template.code === "FAQ");
   if (!faq) fail("FAQ parent template is missing");
-  if (faq && !faq.children?.some((child) => /^FAQ_\d+$/.test(child.code))) fail("FAQ parent must contain nested FAQ_N children");
-  if (faq && !faq.html.includes("cms-child-slot:FAQ_ITEMS")) fail("FAQ parent html must include FAQ child slot marker");
+  if (faq && !flatten(faq.children || []).some((child) => /^FAQ_\d+$/.test(child.code))) fail("FAQ family must contain nested FAQ_N children");
+  if (faq && !faq.html.includes("cms-child-slot:FAQ_GROUPS")) fail("FAQ parent html must include FAQ group slot marker");
+  if (
+    faq &&
+    !(faq.children || []).every((child) => !child.code.startsWith("FAQ_GROUP_") || child.html.includes("cms-child-slot:FAQ_ITEMS"))
+  ) {
+    fail("FAQ group templates must include FAQ item slot markers");
+  }
 
   const compare = payloadChildren.find((template) => template.code === "COMPARISON");
   if (compare && !compare.children?.some((child) => /^COMPARE_ROW_\d+$/.test(child.code))) {
@@ -134,8 +140,17 @@ const main = () => {
   }
 
   const features = payloadChildren.find((template) => template.code === "FEATURES");
-  if (features && !features.children?.some((child) => /^FEATURE_\d+$/.test(child.code))) {
-    fail("FEATURES parent must contain nested FEATURE_N children");
+  if (features && !flatten(features.children || []).some((child) => /^FEATURE_\d+$/.test(child.code))) {
+    fail("FEATURES family must contain nested FEATURE_N children");
+  }
+  if (features && !features.html.includes("cms-child-slot:FEATURE_COLUMNS")) {
+    fail("FEATURES parent html must include feature column slot marker");
+  }
+  if (
+    features &&
+    !(features.children || []).every((child) => !child.code.startsWith("FEATURE_COL_") || child.html.includes("cms-child-slot:FEATURE_ITEMS"))
+  ) {
+    fail("FEATURE column templates must include feature item slot markers");
   }
 
   if (fileChildren.length !== payloadChildren.length) {

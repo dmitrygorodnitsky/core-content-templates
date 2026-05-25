@@ -2,7 +2,7 @@
   "code": "FEATURE_1",
   "nls": {
     "en": {
-      "NAME": "Scheduling and Dispatch"
+      "NAME": "Field Service Scheduling Software"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Scheduling and Dispatch"
+        "en": "Field Service Scheduling Software"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+        "en": "Plan jobs, manage appointments, assign technicians, account for route context, and adjust schedules as priorities change."
       }
     }
   ]

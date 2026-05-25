@@ -2,7 +2,7 @@
   "code": "FAQ_4",
   "nls": {
     "en": {
-      "NAME": "Is this only for one vertical?"
+      "NAME": "Can field service software support multiple industries?"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Is this only for one vertical?"
+        "en": "Can field service software support multiple industries?"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+        "en": "Yes. Many field service industries share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination."
       }
     }
   ]

@@ -1,3 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Service Landing | ServiceWand</title>
+<meta name="description" content="Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day.">
+<style>
 /* generated root CSS: 00-tokens/tokens.css */
 /* ============================================================
    lab-ui · canonical tokens · light theme
@@ -2740,3 +2748,918 @@ body.is-open .bc-chip {
   .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 
+</style>
+</head>
+<body>
+<div id="root" data-cms-family="FIELD_SERVICE_LANDING">
+  <div class="header-host">
+<!-- lab-ui block · header.sw-default
+     Canonical header for ALL ServiceWand pages.
+     Brand + multi-level nav + locale + ring CTA + burger.
+     Each nav item declares its kind via data-kind:
+       link     · plain anchor                                        (Pricing, Customers, ...)
+       dropdown · single-column panel of links                         (Resources)
+       mega     · multi-column panel with section headings + links     (Platform, Verticals)
+     One renderer / one CSS file handles all three.
+     Light theme (sw tokens).
+     Composes: cta.btn-primary-ring + language.sw-locale-dropdown.
+     Optional breadcrumb chip is owned here so header + breadcrumb stay
+     a single source of truth.
+-->
+<header class="header header--default" role="banner" data-block="header.sw-default">
+  <div class="container">
+    <div class="header-inner">
+
+      <a class="header-logo" href="/" aria-label="ServiceWand">
+        <svg viewBox="0 0 33 31" width="22" height="22" fill="none" aria-hidden="true">
+          <path d="M25.6 1.7l1.9 4.7 4.8 1.9-4.8 1.9-1.9 4.7-1.9-4.7L19 8.3l4.8-1.9 1.9-4.7zM8.3 0l2.3 5.9 6 2.3-6 2.3L8.3 16.5 5.9 10.6 0 8.3l5.9-2.3L8.3 0zM25.6 17.5l1.4 3.6 3.7 1.4-3.7 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4 1.4-3.6zM20.4 13.5c.2.2.3.4.3.7s-.1.5-.3.7c-.2.3-.4.5-.7.8-2 2.3-3.9 4.7-6 6.9-2.1 2.2-4.3 4.4-6.4 6.6-.2.2-.5.5-.7.7-.4.4-.8.6-1.3.6-.5 0-1-.2-1.3-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.3.3-.2.5-.5.8-.7C7 24.4 9.1 22.2 11.3 20.1c2.2-2.1 4.6-4 6.9-6 .3-.2.5-.4.8-.6.2-.2.5-.3.7-.3.3 0 .5.1.7.3z" fill="currentColor"/>
+        </svg>
+        <span class="header-logo-text">ServiceWand</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Primary" data-nav>
+        <!--
+          Each <li> declares its kind. CMS generator emits the right
+          inner markup based on the kind. Unfilled slots auto-hide.
+
+          item kinds:
+            link      · single <a class="nav-link">
+            dropdown  · trigger + <ul class="nav-panel nav-panel--list">
+            mega      · trigger + <div class="nav-panel nav-panel--mega"> with <section> columns
+        -->
+
+        <!-- 1 · MEGA — Platform -->
+        <div class="nav-item" data-kind="mega" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            Platform
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="nav-panel nav-panel--mega" role="menu">
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">Operations</h4>
+              <a class="nav-mega-link" role="menuitem" href="/platform/scheduling">Scheduling &amp; Dispatch</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/mobile">Mobile Workforce</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/crm">Customer Management</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/billing">Billing &amp; Invoicing</a>
+            </section>
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">Intelligence</h4>
+              <a class="nav-mega-link" role="menuitem" href="/platform/reporting">Reporting</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/automation">Automation</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/ai">AI Assist</a>
+              <a class="nav-mega-link" role="menuitem" href="/platform/portal">Customer Portal</a>
+            </section>
+          </div>
+        </div>
+
+        <!-- 2 · MEGA — Industries -->
+        <div class="nav-item" data-kind="mega" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            Industries
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="nav-panel nav-panel--mega" role="menu">
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">Outdoor &amp; Seasonal</h4>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/snow-removal">Snow Removal</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/lawn-care">Lawn Care</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/pest-control">Pest Control</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/tree-care">Tree Care</a>
+            </section>
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">Mechanical &amp; Building</h4>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/hvac">HVAC</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/plumbing">Plumbing</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/electrical">Electrical</a>
+              <a class="nav-mega-link" role="menuitem" href="/verticals/cleaning">Cleaning</a>
+            </section>
+          </div>
+        </div>
+
+        <!-- 3 · LINK — How It Works -->
+        <div class="nav-item" data-kind="link" data-nav-item>
+          <a class="nav-link" href="/#features">How It Works</a>
+        </div>
+
+        <!-- 4 · LINK — Partners -->
+        <div class="nav-item" data-kind="link" data-nav-item>
+          <a class="nav-link" href="/#partners">Partners</a>
+        </div>
+
+        <!-- 5 · DROPDOWN — Resources -->
+        <div class="nav-item" data-kind="dropdown" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            Resources
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <ul class="nav-panel nav-panel--list" role="menu">
+            <li><a class="nav-list-link" role="menuitem" href="/#faq">FAQs</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="/help">Help Center</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="/docs">API Docs</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="https://status.servicewand.com">Status</a></li>
+          </ul>
+        </div>
+
+      </nav>
+
+      <div class="header-actions">
+        <!-- Slot: locale (block: language.sw-locale-dropdown) -->
+        <div class="locale-selector" data-block="language.sw-locale-dropdown">
+          <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <div class="locale-trigger-left">
+              <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+                <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span class="locale-trigger-label">English</span>
+            </div>
+          </button>
+          <div class="locale-dropdown" role="listbox" aria-label="Select language">
+            <ul class="locale-list"></ul>
+          </div>
+        </div>
+
+        <!-- Slot: primary CTA (block: cta.btn-primary-ring) -->
+        <a class="btn btn-primary btn-primary-ring header-cta" href="/request-demo">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          Book a Demo
+        </a>
+
+        <button class="burger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<div class="bc-chip" data-block="header.sw-default-breadcrumb" role="navigation" aria-label="Breadcrumb">
+  <a class="bc-link bc-root" href="/">ServiceWand</a>
+  <span class="bc-sep" data-sep-for="mid_1" aria-hidden="true">&gt;</span>
+  <a class="bc-link" data-mid="1" href="#"></a>
+  <span class="bc-sep" data-sep-for="mid_2" aria-hidden="true">&gt;</span>
+  <a class="bc-link" data-mid="2" href="#"></a>
+  <span class="bc-sep" data-sep-for="current" aria-hidden="true">&gt;</span>
+  <span class="bc-current" aria-current="page">Field Service Landing</span>
+</div>
+
+</div>
+<!-- lab-ui block · hero.operational-diagram
+     Signature hub hero. Left: eyebrow + H1 + 3 lead paragraphs + CTA pair.
+     Right: neutral screenshot/image placeholder. Replace the placeholder
+     with an actual product image when the CMS/media layer provides one.
+     Theme: light (sw tokens). Adapted from v5 dark variant.
+     Composes: cta.btn-primary-ring + cta.btn-secondary-filled (CTA pair).
+     Param contract: see block.json.
+-->
+<section class="hero hero--diagram" id="hero" data-block="hero.operational-diagram">
+  <div class="container hero-grid">
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span>ServiceWand</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-cur">Field Service Landing</span>
+      </div>
+      <h1 class="hero-title">
+        Field Service Software<br/>
+        for <span class="accent">Intelligent Field Service Operations</span><br/>
+        
+      </h1>
+      <div class="hero-leads">
+        <p>Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day.</p>
+        <p>ServiceWand is field service software built for service businesses that need more than a basic scheduling app. It connects scheduling, dispatching, routing, mobile workforce operations, customer management, billing, reporting, automation, and AI-assisted workflows in one operational platform.</p>
+        <p>Whether your business manages seasonal crews, recurring service routes, emergency dispatch, multi-location teams, or complex customer workflows, ServiceWand helps create a connected operating environment for the office, field, and customer experience.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-primary-ring" href="/request-demo">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          Book a Demo
+        </a>
+        <a class="btn btn-secondary btn-secondary-filled" href="/platform">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          Explore Platform
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-media-placeholder" data-screenshot-slot>
+        <div class="hero-media-surface">
+          <div class="hero-placeholder-copy">
+            <span>520 × 650</span>
+            <span>Product screenshot / operational view</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="features features--accordion" id="features" data-block="features.accordion-2col-numbered">
+  <div class="container">
+    <header class="features-top">
+      <div>
+        <p class="eyebrow">Features</p>
+        <h2 class="features-title">Features</h2>
+      </div>
+      <div class="features-lede"><p>ServiceWand includes the operational features field service businesses need to coordinate work from request to completion, without forcing every team into a rigid workflow. Unlike narrow field service software solutions that handle only one part of the workflow, ServiceWand connects scheduling, dispatching, mobile work, customer history, billing, reporting, and automation in one operational platform.</p></div>
+    </header>
+    <div class="features-list" data-features-list>
+      <div class="features-col" data-feature-col="left">
+  <article class="f-row is-open" data-feature-slot="01">
+  <button class="f-row-head" type="button" aria-expanded="true">
+    <span class="f-num">F.01</span>
+    <span class="f-title">Field Service Scheduling Software</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">Plan jobs, manage appointments, assign technicians, account for route context, and adjust schedules as priorities change.</div></div>
+</article>
+<article class="f-row" data-feature-slot="03">
+  <button class="f-row-head" type="button" aria-expanded="false">
+    <span class="f-num">F.03</span>
+    <span class="f-title">Mobile Field Service Software</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow.</div></div>
+</article>
+<article class="f-row" data-feature-slot="05">
+  <button class="f-row-head" type="button" aria-expanded="false">
+    <span class="f-num">F.05</span>
+    <span class="f-title">Field Service Billing Software</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">Turn completed work into invoices and operational reporting without re-entering data across systems.</div></div>
+</article>
+</div>
+<div class="features-col" data-feature-col="right">
+  <article class="f-row" data-feature-slot="02">
+  <button class="f-row-head" type="button" aria-expanded="false">
+    <span class="f-num">F.02</span>
+    <span class="f-title">Field Service Dispatch Software</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">Assign the right technician, crew, vehicle, or resource to the right job while coordinating route changes, emergency requests, job status updates, and office-to-field communication.</div></div>
+</article>
+<article class="f-row" data-feature-slot="04">
+  <button class="f-row-head" type="button" aria-expanded="false">
+    <span class="f-num">F.04</span>
+    <span class="f-title">Field Service CRM</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed.</div></div>
+</article>
+</div>
+    </div>
+  </div>
+</section>
+<section class="compare" id="compare" data-block="comparison.three-col-with-mobile-cards">
+  <div class="container">
+    <header class="compare-top">
+      <p class="eyebrow">Comparison</p>
+      <h2 class="compare-title">ServiceWand unifies it all</h2>
+      <p class="compare-lede">ServiceWand is built for companies that need operational depth without being forced into a rigid enterprise system. It connects scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, integrations, and automation in one scalable environment.</p>
+    </header>
+    <div class="compare-grid" role="table" aria-label="ServiceWand platform comparison">
+      <div class="compare-head" role="rowgroup">
+        <div class="compare-row compare-row--head" role="row">
+          <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
+          <div class="compare-cell compare-cell--sw compare-cell--head" role="columnheader"><span class="compare-brand" aria-label="ServiceWand"><span>Service</span><strong>Wand</strong></span></div>
+          <div class="compare-cell compare-cell--head" role="columnheader">CRM Systems</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Field Service Tools</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Monitoring Tools</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">CMS &amp; Portals</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Enterprise Platforms</div>
+        </div>
+      </div>
+      <div class="compare-body" role="rowgroup" data-compare-body>
+        <article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Customer &amp; CRM</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>enterprise</span></span></div>
+  </article>
+<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Billing &amp; Revenue</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>enterprise</span></span></div>
+  </article>
+<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Operations &amp; Workflows</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>unified</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>limited</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>manual config</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>manual config</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>complex</span></span></div>
+  </article>
+<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Portals &amp; Content</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>integrated</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>add-ons</span></span></div>
+  </article>
+<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">AI &amp; Intelligence</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>built-in</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+  </article>
+<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Reporting &amp; Visibility</span></div>
+    <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>built-in</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>limited</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>no</span></span></div>
+    <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>complex</span></span></div>
+  </article>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="faq" id="faq" data-block="faq.bubble-light-grouped">
+  <div class="container">
+    <header class="faq-top">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="faq-title">Frequently asked questions</h2>
+      <p class="faq-lede"></p>
+    </header>
+    <div class="faq-groups">
+      <article class="faq-group" data-faq-group="01">
+  <header class="faq-group-head">
+    <span class="faq-group-num">G.01</span>
+    <h3 class="faq-group-title">Field service basics</h3>
+  </header>
+  <div class="faq-group-body">
+    <details class="faq-item is-open" data-faq-slot="01" open>
+  <summary class="faq-q"><span class="faq-q-text">What is field service software?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+  <div class="faq-a">Field service software helps businesses manage work performed outside the office. It connects scheduling, dispatching, work orders, mobile technicians, customer information, routing, invoicing, payments, reporting, and job status updates in one operational system.</div>
+</details>
+<details class="faq-item" data-faq-slot="02">
+  <summary class="faq-q"><span class="faq-q-text">What does field service management software do?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+  <div class="faq-a">Field service management software coordinates the complete service lifecycle: service requests, scheduling, assigning technicians, dispatching crews, tracking work orders, managing customer history, collecting field updates, creating invoices, and reporting on performance.</div>
+</details>
+  </div>
+</article>
+<article class="faq-group" data-faq-group="02">
+  <header class="faq-group-head">
+    <span class="faq-group-num">G.02</span>
+    <h3 class="faq-group-title">Platform fit</h3>
+  </header>
+  <div class="faq-group-body">
+    <details class="faq-item" data-faq-slot="03">
+  <summary class="faq-q"><span class="faq-q-text">What makes good field service software?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+  <div class="faq-a">A strong platform balances operational depth with ease of use for field teams. It should include real-time scheduling, dispatching, mobile workflows, customer history, automated communication, invoicing, payments, reporting, integrations, and scalability.</div>
+</details>
+<details class="faq-item" data-faq-slot="04">
+  <summary class="faq-q"><span class="faq-q-text">Can field service software support multiple industries?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+  <div class="faq-a">Yes. Many field service industries share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination.</div>
+</details>
+  </div>
+</article>
+    </div>
+  </div>
+</section>
+<section class="generated-cta" id="cta">
+  <div class="container">
+    <div class="callout-band generated-cta-callout" data-block="decorative.callout-band">
+      <p class="callout-band-eyebrow">Build the next layer</p>
+      <p class="callout-band-body generated-cta-title">Field service operations are becoming more complex, distributed, and operationally demanding. ServiceWand creates the operational foundation for scalable field service management.</p>
+      <div class="generated-cta-actions">
+        <!-- lab-ui block · cta.btn-primary-ring
+     Primary CTA pill with rainbow gradient ring.
+     Theme: light (works on dark backgrounds too — the ring uses
+     mask-composite over the parent background).
+
+     Param contract (see block.json for full spec):
+       - href          URL          link target
+       - label         SS           button text (e.g. "Book a Demo")
+       - icon          enum         star | none (default: star)
+
+     Example usage in a hub page:
+       <a class="btn btn-primary btn-primary-ring" href="#demo">
+         <svg class="btn-star" …></svg>
+         Book a Demo
+       </a>
+-->
+<a class="btn btn-primary btn-primary-ring" href="/request-demo" data-block="cta.btn-primary-ring">
+  <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+    <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+  </svg>
+  Book a Demo
+</a>
+
+      </div>
+    </div>
+  </div>
+</section>
+<!-- lab-ui block · footer.sw-default
+     ServiceWand canonical site footer. Dark surface. 3-column grid
+     (brand+tagline+address / 5-nav / socials+emails) + legal bottom row.
+     Param contract: see block.json.
+-->
+<footer class="footer" role="contentinfo">
+  <div class="container footer-container">
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <div class="footer-brand-head">
+          <a href="/" class="footer-logo footer-logo--2xl" aria-label="ServiceWand">
+            <svg viewBox="0 0 33 31" width="32" height="32" fill="none" aria-hidden="true">
+              <path d="M25.6 1.7l1.9 4.7 4.8 1.9-4.8 1.9-1.9 4.7-1.9-4.7L19 8.3l4.8-1.9 1.9-4.7zM8.3 0l2.3 5.9 6 2.3-6 2.3L8.3 16.5 5.9 10.6 0 8.3l5.9-2.3L8.3 0zM25.6 17.5l1.4 3.6 3.7 1.4-3.7 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4 1.4-3.6zM20.4 13.5c.2.2.3.4.3.7s-.1.5-.3.7c-.2.3-.4.5-.7.8-2 2.3-3.9 4.7-6 6.9-2.1 2.2-4.3 4.4-6.4 6.6-.2.2-.5.5-.7.7-.4.4-.8.6-1.3.6-.5 0-1-.2-1.3-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.3.3-.2.5-.5.8-.7C7 24.4 9.1 22.2 11.3 20.1c2.2-2.1 4.6-4 6.9-6 .3-.2.5-.4.8-.6.2-.2.5-.3.7-.3.3 0 .5.1.7.3z" fill="currentColor"/>
+            </svg>
+            <span>ServiceWand</span>
+          </a>
+        </div>
+        <p class="footer-tagline">Where everything you build and operate stays connected</p>
+        <address class="footer-address">
+          <p><strong>ServiceWand Inc.</strong></p>
+          <p>Operational platform for modern businesses</p>
+          <p>Registered in Wyoming, USA</p>
+          <p>Offices in Canada &amp; EU</p>
+        </address>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a class="footer-nav-link" href="#hero">Platform</a>
+        <a class="footer-nav-link" href="#features">How It Works</a>
+        <a class="footer-nav-link" href="#industries">Industries</a>
+        <a class="footer-nav-link" href="#compare">Compare</a>
+        <a class="footer-nav-link" href="#faq">FAQ</a>
+      </nav>
+
+      <div class="footer-contacts">
+        <div class="footer-socials">
+          <a class="footer-social-link" href="https://www.linkedin.com/company/servicewand" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43c-1.14 0-2.07-.93-2.07-2.07s.93-2.07 2.07-2.07 2.07.93 2.07 2.07-.93 2.07-2.07 2.07zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+          </a>
+          <a class="footer-social-link" href="https://github.com/servicewand" aria-label="GitHub">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.72.08-.72 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22 0 1.6-.02 2.89-.02 3.29 0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a class="footer-social-link" href="https://www.youtube.com/@servicewand" aria-label="YouTube">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 0 0 .5 6.5C.1 8.4.1 12 .1 12s0 3.6.4 5.5a3 3 0 0 0 2.1 2.1c1.9.4 9.4.4 9.4.4s7.5 0 9.4-.4a3 3 0 0 0 2.1-2.1c.4-1.9.4-5.5.4-5.5s0-3.6-.4-5.5zM9.6 15.5v-7l6.3 3.5-6.3 3.5z"/></svg>
+          </a>
+          <a class="footer-social-link" href="https://x.com/servicewand" aria-label="X">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21.5l-7.5 8.57L23 22h-6.844l-5.36-7L4.66 22H1.4l8.04-9.17L1 2h7.02l4.84 6.4L18.244 2zm-1.2 18h1.86L7 4h-2L17.044 20z"/></svg>
+          </a>
+        </div>
+        <div class="footer-emails">
+          <div class="footer-email-group">
+            <p class="footer-email-label">Partnerships</p>
+            <a class="footer-email-link" href="mailto:partners@servicewand.com">partners@servicewand.com</a>
+          </div>
+          <div class="footer-email-group">
+            <p class="footer-email-label">Support</p>
+            <a class="footer-email-link" href="mailto:support@servicewand.com">support@servicewand.com</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 ServiceWand Inc. All rights reserved.</p>
+      <div class="footer-legal-mobile">
+        <a class="footer-legal-link" href="/legal/privacy">Privacy Policy</a>
+        <a class="footer-legal-link" href="/legal/terms">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div>
+<script>
+(() => {
+  if (window.__LAB_UI_CMS_FAMILY_INIT__) return;
+  window.__LAB_UI_CMS_FAMILY_INIT__ = true;
+})();
+
+/* generated root JS: 04-language/language.sw-locale-dropdown/block.js */
+// lab-ui block · language.sw-locale-dropdown
+// Toggle + outside-click close + active-locale state + optional API hydration.
+// Idempotent: safe to load multiple times (uses dataset flag to dedupe).
+
+(() => {
+  const FALLBACK = [
+    { code: "en-US", name: "English (US)" },
+    { code: "fr-CA", name: "Français (CA)" },
+    { code: "es",    name: "Español" },
+  ];
+
+  const shortCodeForLocale = (code) => {
+    const language = String(code || "en")
+      .replace("_", "-")
+      .split("-")[0]
+      .slice(0, 2)
+      .toUpperCase();
+    return /^[A-Z]{2}$/.test(language) ? language : "EN";
+  };
+
+  const init = (selector) => {
+    if (selector.dataset.localeInit === "1") return;
+    selector.dataset.localeInit = "1";
+
+    const trigger = selector.querySelector(".locale-trigger");
+    const label   = selector.querySelector(".locale-trigger-label");
+    const list    = selector.querySelector(".locale-list");
+    if (!trigger || !label || !list) return;
+
+    const close = () => {
+      selector.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
+    };
+    const open = () => {
+      document.querySelectorAll(".locale-selector.is-open").forEach((s) => {
+        if (s !== selector) s.classList.remove("is-open");
+      });
+      selector.classList.add("is-open");
+      trigger.setAttribute("aria-expanded", "true");
+    };
+
+    const apply = (code, name) => {
+      label.textContent = name;
+      trigger.dataset.shortCode = shortCodeForLocale(code);
+      trigger.dataset.locale = code;
+      list.querySelectorAll(".locale-item").forEach((item) => {
+        const active = item.dataset.locale === code;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-selected", String(active));
+      });
+    };
+
+    const render = (langs) => {
+      const current = new URL(window.location.href).searchParams.get("locale") || "en-US";
+      list.replaceChildren();
+      langs.forEach((l) => {
+        const code = l.code || l.locale || l.id || "en-US";
+        const name = l.name || l.label || l.title || code;
+        const li = document.createElement("li");
+        li.className = "locale-item";
+        li.dataset.locale = code;
+        li.dataset.shortCode = shortCodeForLocale(code);
+        li.setAttribute("role", "option");
+        li.innerHTML =
+          `<span class="locale-item-code" aria-hidden="true">${shortCodeForLocale(code)}</span>` +
+          `<span class="locale-item-label">${name}</span>` +
+          `<svg class="locale-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">` +
+            `<path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
+          `</svg>`;
+        li.addEventListener("click", () => {
+          try {
+            const url = new URL(window.location.href);
+            url.searchParams.set("locale", code);
+            window.history.replaceState({}, "", url.toString());
+          } catch {}
+          apply(code, name);
+          close();
+        });
+        list.appendChild(li);
+      });
+      const active = langs.find((l) => (l.code || l.locale || l.id) === current) || langs[0];
+      apply(active.code || active.locale || active.id || "en-US",
+            active.name || active.label || active.title || "English (US)");
+    };
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      selector.classList.contains("is-open") ? close() : open();
+    });
+    document.addEventListener("click", (e) => {
+      if (!selector.contains(e.target)) close();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") close();
+    });
+
+    if (window.location.protocol === "file:") {
+      // Static preview / harness — render fallback.
+      render(FALLBACK);
+      return;
+    }
+    fetch("/core/api/language/active.json", { credentials: "same-origin" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+      .then((p) => {
+        const langs = Array.isArray(p) ? p : p?.items || p?.data || p?.result;
+        render(Array.isArray(langs) && langs.length ? langs : FALLBACK);
+      })
+      .catch(() => render(FALLBACK));
+  };
+
+  const ready = (fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else fn();
+  };
+
+  ready(() => {
+    document.querySelectorAll('[data-block="language.sw-locale-dropdown"]').forEach(init);
+  });
+})();
+
+
+/* generated root JS: 01-header/header.sw-default/block.js */
+// lab-ui block · header.sw-default
+// - Tap-toggle desktop panels on touch devices
+// - Click-outside closes the open panel
+// - Esc closes the open panel
+// - Burger toggles .is-open on the header host (mobile full-width menu)
+// - Auto-hide empty mega columns + mega/list/link slots whose label
+//   is empty / still a handlebars placeholder
+
+(() => {
+  const ready = (fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else fn();
+  };
+
+  const isPlaceholder = (s) =>
+    !s || /^\{\{[a-z0-9_]+\}\}$/i.test(s.trim());
+
+  function pruneEmptySlots(header) {
+    // Hide mega-links whose label is unset
+    header.querySelectorAll(".nav-mega-link, .nav-list-link").forEach((a) => {
+      if (isPlaceholder(a.textContent)) a.hidden = true;
+    });
+    // Hide mega columns whose title is unset OR whose links are all hidden
+    header.querySelectorAll(".nav-mega-col").forEach((col) => {
+      const title = col.querySelector(".nav-mega-title")?.textContent ?? "";
+      const allLinksHidden = [...col.querySelectorAll(".nav-mega-link")]
+        .every((a) => a.hidden);
+      if (isPlaceholder(title) && allLinksHidden) col.hidden = true;
+    });
+    // Hide whole nav-item if its label / trigger / anchor is empty
+    header.querySelectorAll("[data-nav-item]").forEach((item) => {
+      const label =
+        item.querySelector(".nav-trigger")?.firstChild?.textContent ??
+        item.querySelector("a.nav-link")?.textContent ??
+        "";
+      if (isPlaceholder(label)) item.hidden = true;
+    });
+  }
+
+  function pruneBreadcrumb(chip) {
+    ["1", "2"].forEach((idx) => {
+      const link = chip.querySelector(`[data-mid="${idx}"]`);
+      const text = link?.textContent?.trim();
+      if (link && isPlaceholder(text)) {
+        link.hidden = true;
+        const sep = chip.querySelector(`[data-sep-for="mid_${idx}"]`);
+        if (sep) sep.hidden = true;
+      }
+    });
+
+    const root = chip.querySelector(".bc-root")?.textContent?.trim();
+    const current = chip.querySelector(".bc-current")?.textContent?.trim();
+    if (isPlaceholder(root) || isPlaceholder(current)) {
+      chip.hidden = true;
+    }
+  }
+
+  function wireTapToggle(header) {
+    // Tap toggle for coarse-pointer desktop widths. Narrow viewports
+    // render panel links inline inside the burger menu, without accordion
+    // state.
+    let openItem = null;
+    const shouldClickToggle = () =>
+      window.matchMedia("(pointer: coarse)").matches &&
+      !window.matchMedia("(max-width: 1024px)").matches;
+    const closeOpen = () => {
+      if (!openItem) return;
+      openItem.dataset.open = "false";
+      const trig = openItem.querySelector(".nav-trigger");
+      trig?.setAttribute("aria-expanded", "false");
+      openItem = null;
+    };
+
+    header.querySelectorAll('[data-nav-item][data-kind="dropdown"], [data-nav-item][data-kind="mega"]').forEach((item) => {
+      const trigger = item.querySelector(".nav-trigger");
+      if (!trigger) return;
+      trigger.addEventListener("click", (e) => {
+        if (!shouldClickToggle()) return;
+        e.preventDefault();
+        const willOpen = openItem !== item;
+        closeOpen();
+        if (willOpen) {
+          item.dataset.open = "true";
+          trigger.setAttribute("aria-expanded", "true");
+          openItem = item;
+        }
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (openItem && !openItem.contains(e.target)) closeOpen();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeOpen();
+    });
+  }
+
+  function wireBurger(header) {
+    const burger = header.querySelector(".burger");
+    if (!burger) return;
+    // Prefer .header-host wrapper if present (older harness pattern),
+    // fall back to <body> (recommended page pattern — body is host).
+    const host =
+      header.closest(".header-host") ||
+      document.body;
+    const setMobilePanelState = (open) => {
+      if (!window.matchMedia("(max-width: 1024px)").matches) return;
+      header.querySelectorAll(".nav-trigger").forEach((trigger) => {
+        trigger.setAttribute("aria-expanded", String(open));
+      });
+    };
+    burger.addEventListener("click", () => {
+      const open = host.classList.toggle("is-open");
+      burger.setAttribute("aria-expanded", String(open));
+      burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      setMobilePanelState(open);
+    });
+    header.querySelectorAll('.header-nav a[href]').forEach((link) => {
+      link.addEventListener("click", () => {
+        host.classList.remove("is-open");
+        burger.setAttribute("aria-expanded", "false");
+        burger.setAttribute("aria-label", "Open menu");
+        setMobilePanelState(false);
+      });
+    });
+  }
+
+  ready(() => {
+    document.querySelectorAll('[data-block="header.sw-default"]').forEach((header) => {
+      pruneEmptySlots(header);
+      wireTapToggle(header);
+      wireBurger(header);
+    });
+    document.querySelectorAll('[data-block="header.sw-default-breadcrumb"]').forEach(pruneBreadcrumb);
+  });
+})();
+
+
+/* generated root JS: 06-features/features.accordion-2col-numbered/block.js */
+// lab-ui block · features.accordion-2col-numbered
+// Toggle .is-open on click. Multiple rows can be open at the same time
+// (matches v5 design source — no one-open rule).
+// Hides empty slots automatically (slots whose title is empty / handlebars).
+
+(() => {
+  const ready = (fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else fn();
+  };
+
+  ready(() => {
+    document
+      .querySelectorAll('[data-block="features.accordion-2col-numbered"]')
+      .forEach((section) => {
+        section.querySelectorAll(".f-row").forEach((row) => {
+          // Hide empty slots
+          const title = row.querySelector(".f-title")?.textContent?.trim();
+          if (!title || /^\{\{slot_\d+_title\}\}$/.test(title)) {
+            row.hidden = true;
+            return;
+          }
+          const btn = row.querySelector(".f-row-head");
+          if (!btn) return;
+          btn.addEventListener("click", () => {
+            const isOpen = row.classList.toggle("is-open");
+            btn.setAttribute("aria-expanded", String(isOpen));
+          });
+        });
+      });
+  });
+})();
+
+
+/* generated root JS: 07-comparison/comparison.three-col-with-mobile-cards/block.js */
+// lab-ui block · comparison.three-col-with-mobile-cards
+// Auto-hides empty rows and adds mobile expanders for secondary columns.
+
+(() => {
+  const ready = (fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else fn();
+  };
+
+  ready(() => {
+    document
+      .querySelectorAll('[data-block="comparison.three-col-with-mobile-cards"]')
+      .forEach((section) => {
+        section.querySelectorAll(".compare-body .compare-row").forEach((row) => {
+          const cap = row.querySelector(".compare-capability")?.textContent?.trim();
+          if (!cap || /^\{\{slot_\d+_capability\}\}$/.test(cap)) {
+            row.hidden = true;
+            return;
+          }
+
+          const secondaryCells = row.querySelectorAll(
+            ".compare-cell:not(.compare-cell--capability):not(.compare-cell--sw)"
+          );
+          const swCell = row.querySelector(".compare-cell--sw");
+          if (!swCell || !secondaryCells.length || row.querySelector(".compare-toggle")) return;
+
+          const button = document.createElement("button");
+          button.className = "compare-toggle";
+          button.type = "button";
+          button.setAttribute("aria-expanded", "false");
+          button.innerHTML = [
+            '<span class="compare-toggle-open">Show other platforms</span>',
+            '<span class="compare-toggle-close">Hide other platforms</span>',
+            '<span class="compare-toggle-icon" aria-hidden="true"></span>',
+          ].join("");
+          button.addEventListener("click", () => {
+            const isOpen = row.classList.toggle("is-expanded");
+            button.setAttribute("aria-expanded", String(isOpen));
+          });
+          swCell.insertAdjacentElement("afterend", button);
+        });
+      });
+  });
+})();
+
+
+/* generated root JS: 08-faq/faq.bubble-light-grouped/block.js */
+// lab-ui block · faq.bubble-light-grouped
+// Hides empty FAQ items (q empty / unfilled handlebars). Hides whole groups
+// whose title is empty or that have no visible items left.
+//
+// Toggle behavior is native <details>; we add `is-open` mirror class so CSS
+// not relying on `[open]` still works.
+
+(() => {
+  const ready = (fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn, { once: true });
+    } else fn();
+  };
+
+  const isPlaceholder = (s) =>
+    !s || /^\{\{[a-z0-9_]+\}\}$/i.test(s);
+
+  ready(() => {
+    document
+      .querySelectorAll('[data-block="faq.bubble-light-grouped"]')
+      .forEach((section) => {
+        section.querySelectorAll(".faq-group").forEach((group) => {
+          // Hide empty items
+          group.querySelectorAll(".faq-item").forEach((item) => {
+            const q = item.querySelector(".faq-q-text")?.textContent?.trim();
+            if (isPlaceholder(q)) {
+              item.hidden = true;
+            }
+            item.addEventListener("toggle", () => {
+              item.classList.toggle("is-open", item.open);
+            });
+            // Sync initial state
+            item.classList.toggle("is-open", item.open);
+          });
+
+          // Hide group with no visible items or empty title
+          const groupTitle = group
+            .querySelector(".faq-group-title")
+            ?.textContent?.trim();
+          const visibleItems = group.querySelectorAll(
+            ".faq-item:not([hidden])"
+          ).length;
+          if (isPlaceholder(groupTitle) || visibleItems === 0) {
+            group.hidden = true;
+          }
+        });
+      });
+  });
+})();
+
+
+</script>
+</body>
+</html>

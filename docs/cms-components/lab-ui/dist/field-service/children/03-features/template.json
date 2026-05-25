@@ -11,180 +11,261 @@
   },
   "children": [
     {
-      "code": "FEATURE_1",
+      "code": "FEATURE_COL_LEFT",
       "nls": {
         "en": {
-          "NAME": "Scheduling and Dispatch"
+          "NAME": "Feature column left"
         }
       },
       "templateLanguage": "JTE",
       "parent": {
         "code": "FEATURES"
       },
-      "children": [],
-      "head": "",
-      "html": "<article class=\"f-row is-open\" data-feature-slot=\"01\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"true\">\n    <span class=\"f-num\">F.01</span>\n    <span class=\"f-title\">${FEATURE_1_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_1_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
-      "css": "",
-      "javascript": "",
-      "parameters": [
+      "children": [
         {
-          "code": "FEATURE_1_TITLE",
-          "type": "LOCALIZED_STRING_SS",
+          "code": "FEATURE_1",
           "nls": {
             "en": {
-              "NAME": "TITLE"
+              "NAME": "Field Service Scheduling Software"
             }
           },
-          "value": {
-            "en": "Scheduling and Dispatch"
-          }
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row is-open\" data-feature-slot=\"01\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"true\">\n    <span class=\"f-num\">F.01</span>\n    <span class=\"f-title\">${FEATURE_1_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_1_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_1_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Field Service Scheduling Software"
+              }
+            },
+            {
+              "code": "FEATURE_1_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Plan jobs, manage appointments, assign technicians, account for route context, and adjust schedules as priorities change."
+              }
+            }
+          ]
         },
         {
-          "code": "FEATURE_1_BODY",
-          "type": "LOCALIZED_STRING_SS",
+          "code": "FEATURE_3",
           "nls": {
             "en": {
-              "NAME": "BODY"
+              "NAME": "Mobile Field Service Software"
             }
           },
-          "value": {
-            "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
-          }
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"03\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.03</span>\n    <span class=\"f-title\">${FEATURE_3_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_3_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_3_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Mobile Field Service Software"
+              }
+            },
+            {
+              "code": "FEATURE_3_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FEATURE_5",
+          "nls": {
+            "en": {
+              "NAME": "Field Service Billing Software"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"05\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.05</span>\n    <span class=\"f-title\">${FEATURE_5_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_5_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_5_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Field Service Billing Software"
+              }
+            },
+            {
+              "code": "FEATURE_5_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
+              }
+            }
+          ]
         }
-      ]
+      ],
+      "head": "",
+      "html": "<div class=\"features-col\" data-feature-col=\"left\">\n  <!-- cms-child-slot:FEATURE_ITEMS -->\n</div>",
+      "css": "",
+      "javascript": "",
+      "parameters": []
     },
     {
-      "code": "FEATURE_2",
+      "code": "FEATURE_COL_RIGHT",
       "nls": {
         "en": {
-          "NAME": "Mobile Workforce"
+          "NAME": "Feature column right"
         }
       },
       "templateLanguage": "JTE",
       "parent": {
         "code": "FEATURES"
       },
-      "children": [],
-      "head": "",
-      "html": "<article class=\"f-row\" data-feature-slot=\"02\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.02</span>\n    <span class=\"f-title\">${FEATURE_2_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_2_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
-      "css": "",
-      "javascript": "",
-      "parameters": [
+      "children": [
         {
-          "code": "FEATURE_2_TITLE",
-          "type": "LOCALIZED_STRING_SS",
+          "code": "FEATURE_2",
           "nls": {
             "en": {
-              "NAME": "TITLE"
+              "NAME": "Field Service Dispatch Software"
             }
           },
-          "value": {
-            "en": "Mobile Workforce"
-          }
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"02\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.02</span>\n    <span class=\"f-title\">${FEATURE_2_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_2_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_2_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Field Service Dispatch Software"
+              }
+            },
+            {
+              "code": "FEATURE_2_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Assign the right technician, crew, vehicle, or resource to the right job while coordinating route changes, emergency requests, job status updates, and office-to-field communication."
+              }
+            }
+          ]
         },
         {
-          "code": "FEATURE_2_BODY",
-          "type": "LOCALIZED_STRING_SS",
+          "code": "FEATURE_4",
           "nls": {
             "en": {
-              "NAME": "BODY"
+              "NAME": "Field Service CRM"
             }
           },
-          "value": {
-            "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
-          }
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"04\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.04</span>\n    <span class=\"f-title\">${FEATURE_4_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_4_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_4_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Field Service CRM"
+              }
+            },
+            {
+              "code": "FEATURE_4_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+              }
+            }
+          ]
         }
-      ]
-    },
-    {
-      "code": "FEATURE_3",
-      "nls": {
-        "en": {
-          "NAME": "Customer Management"
-        }
-      },
-      "templateLanguage": "JTE",
-      "parent": {
-        "code": "FEATURES"
-      },
-      "children": [],
+      ],
       "head": "",
-      "html": "<article class=\"f-row\" data-feature-slot=\"03\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.03</span>\n    <span class=\"f-title\">${FEATURE_3_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_3_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+      "html": "<div class=\"features-col\" data-feature-col=\"right\">\n  <!-- cms-child-slot:FEATURE_ITEMS -->\n</div>",
       "css": "",
       "javascript": "",
-      "parameters": [
-        {
-          "code": "FEATURE_3_TITLE",
-          "type": "LOCALIZED_STRING_SS",
-          "nls": {
-            "en": {
-              "NAME": "TITLE"
-            }
-          },
-          "value": {
-            "en": "Customer Management"
-          }
-        },
-        {
-          "code": "FEATURE_3_BODY",
-          "type": "LOCALIZED_STRING_SS",
-          "nls": {
-            "en": {
-              "NAME": "BODY"
-            }
-          },
-          "value": {
-            "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
-          }
-        }
-      ]
-    },
-    {
-      "code": "FEATURE_4",
-      "nls": {
-        "en": {
-          "NAME": "Billing and Reporting"
-        }
-      },
-      "templateLanguage": "JTE",
-      "parent": {
-        "code": "FEATURES"
-      },
-      "children": [],
-      "head": "",
-      "html": "<article class=\"f-row\" data-feature-slot=\"04\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.04</span>\n    <span class=\"f-title\">${FEATURE_4_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_4_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
-      "css": "",
-      "javascript": "",
-      "parameters": [
-        {
-          "code": "FEATURE_4_TITLE",
-          "type": "LOCALIZED_STRING_SS",
-          "nls": {
-            "en": {
-              "NAME": "TITLE"
-            }
-          },
-          "value": {
-            "en": "Billing and Reporting"
-          }
-        },
-        {
-          "code": "FEATURE_4_BODY",
-          "type": "LOCALIZED_STRING_SS",
-          "nls": {
-            "en": {
-              "NAME": "BODY"
-            }
-          },
-          "value": {
-            "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
-          }
-        }
-      ]
+      "parameters": []
     }
   ],
   "head": "",
-  "html": "<section class=\"features features--accordion\" id=\"features\" data-block=\"features.accordion-2col-numbered\">\n  <div class=\"container\">\n    <header class=\"features-top\">\n      <div>\n        <p class=\"eyebrow\">${FEATURES_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"features-title\">${FEATURES_TITLE@LOCALIZED_STRING_SS}</h2>\n      </div>\n      <div class=\"features-lede\"><p>${FEATURES_LEDE@LOCALIZED_STRING_SS}</p></div>\n    </header>\n    <div class=\"features-list\" data-features-list>\n      <!-- cms-child-slot:FEATURE_ITEMS -->\n    </div>\n  </div>\n</section>",
+  "html": "<section class=\"features features--accordion\" id=\"features\" data-block=\"features.accordion-2col-numbered\">\n  <div class=\"container\">\n    <header class=\"features-top\">\n      <div>\n        <p class=\"eyebrow\">${FEATURES_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"features-title\">${FEATURES_TITLE@LOCALIZED_STRING_SS}</h2>\n      </div>\n      <div class=\"features-lede\"><p>${FEATURES_LEDE@LOCALIZED_STRING_SS}</p></div>\n    </header>\n    <div class=\"features-list\" data-features-list>\n      <!-- cms-child-slot:FEATURE_COLUMNS -->\n    </div>\n  </div>\n</section>",
   "css": "",
   "javascript": "",
   "parameters": [
@@ -221,7 +302,7 @@
         }
       },
       "value": {
-        "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+        "en": "ServiceWand includes the operational features field service businesses need to coordinate work from request to completion, without forcing every team into a rigid workflow. Unlike narrow field service software solutions that handle only one part of the workflow, ServiceWand connects scheduling, dispatching, mobile work, customer history, billing, reporting, and automation in one operational platform."
       }
     }
   ]

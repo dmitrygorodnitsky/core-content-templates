@@ -11,6 +11,7 @@ const sectionBlockIds = {
   faq: "faq.bubble-light-grouped",
   ctaPrimary: "cta.btn-primary-ring",
   ctaSecondary: "cta.btn-secondary-filled",
+  callout: "decorative.callout-band",
   footer: "footer.sw-default",
 };
 
@@ -200,6 +201,29 @@ const loadCatalog = () => {
   return { manifest, byId };
 };
 
+const collectAssetBlocks = (blockIds, catalog) => {
+  const assets = [];
+  const visiting = new Set();
+  const visited = new Set();
+
+  const visit = (id) => {
+    if (visited.has(id)) return;
+    if (visiting.has(id)) throw new Error(`Circular lab-ui block dependency detected: ${id}`);
+    const block = catalog.byId.get(id);
+    if (!block) throw new Error(`Required block is missing from manifest: ${id}`);
+
+    visiting.add(id);
+    for (const depId of block.json.depends_on?.other_blocks || []) visit(depId);
+    visiting.delete(id);
+
+    visited.add(id);
+    assets.push(block);
+  };
+
+  blockIds.forEach(visit);
+  return assets;
+};
+
 const cmsType = (type) => {
   if (type === "URL") return "STRING";
   return type || "LOCALIZED_STRING_SS";
@@ -236,13 +260,8 @@ const replaceBlockPlaceholders = (html, block, prefix, overrides, locale) => {
 
 const splitHeroTitle = (title) => {
   const match = title.match(/^(.+?)\s+for\s+(.+)$/i);
-  if (!match) return { line1: title, accent: "ServiceWand", line2: "Operations" };
-  const rest = match[2].trim().split(/\s+/);
-  return {
-    line1: match[1].trim(),
-    accent: rest.slice(0, Math.min(2, rest.length)).join(" "),
-    line2: rest.slice(Math.min(2, rest.length)).join(" ") || "Operations",
-  };
+  if (!match) return { line1: title, accent: "", line2: "" };
+  return { line1: match[1].trim(), accent: match[2].trim(), line2: "" };
 };
 
 const makeTemplate = ({ code, name, parentCode, html, params = [], children = [] }) => ({
@@ -325,7 +344,7 @@ const buildFamily = (model, catalog) => {
     return block;
   };
 
-  const selected = [
+  const selectedIds = [
     sectionBlockIds.header,
     sectionBlockIds.hero,
     sectionBlockIds.features,
@@ -333,16 +352,77 @@ const buildFamily = (model, catalog) => {
     sectionBlockIds.faq,
     sectionBlockIds.ctaPrimary,
     sectionBlockIds.ctaSecondary,
+    sectionBlockIds.callout,
     sectionBlockIds.footer,
-  ].map(requireBlock);
+  ];
+  const selected = selectedIds.map(requireBlock);
+  const assetBlocks = collectAssetBlocks(selectedIds, catalog);
 
   const css = [
     "/* generated root CSS: 00-tokens/tokens.css */",
     readFileSync(join(labRoot, "00-tokens/tokens.css"), "utf8"),
-    ...selected.map((block) => `\n/* generated root CSS: ${block.path}/block.css */\n${block.css}`),
+    `
+/* generated preview/CMS composition glue */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  position: relative;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+.generated-cta {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  background: var(--color-bg);
+}
+.generated-cta .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+.generated-cta-callout {
+  margin-top: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+.generated-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.generated-cta-actions .btn {
+  min-width: 13rem;
+}
+@media (max-width: 600px) {
+  .generated-cta-actions,
+  .generated-cta-actions .btn {
+    width: 100%;
+  }
+}
+.generated-cta-title {
+  margin: 0;
+}
+`,
+    ...assetBlocks.map((block) => `\n/* generated root CSS: ${block.path}/block.css */\n${block.css}`),
   ].join("\n");
 
-  const jsParts = selected.filter((block) => block.js.trim()).map((block) => `\n/* generated root JS: ${block.path}/block.js */\n${block.js}`);
+  const jsParts = assetBlocks.filter((block) => block.js.trim()).map((block) => `\n/* generated root JS: ${block.path}/block.js */\n${block.js}`);
   const javascript = `(() => {\n  if (window.__LAB_UI_CMS_FAMILY_INIT__) return;\n  window.__LAB_UI_CMS_FAMILY_INIT__ = true;\n})();\n${jsParts.join("\n")}\n`;
 
   const children = [];
@@ -352,9 +432,10 @@ const buildFamily = (model, catalog) => {
     for (const param of params) values[param.code] = param.value;
   };
 
-  const addBlockChild = ({ code, name, block, overrides }) => {
+  const addBlockChild = ({ code, name, block, overrides, wrapHtml }) => {
     const rendered = replaceBlockPlaceholders(block.html, block, code, overrides, locale);
-    const template = makeTemplate({ code, name, parentCode: rootCode, html: rendered.html, params: rendered.params });
+    const html = wrapHtml ? wrapHtml(rendered.html) : rendered.html;
+    const template = makeTemplate({ code, name, parentCode: rootCode, html, params: rendered.params });
     addValues(rendered.params);
     children.push(template);
     return template;
@@ -374,6 +455,7 @@ const buildFamily = (model, catalog) => {
       breadcrumb_mid_1_label: "",
       breadcrumb_current_label: model.frontmatter.name || model.title,
     },
+    wrapHtml: (html) => `<div class="header-host">\n${html}\n</div>`,
   });
 
   const hero = requireBlock(sectionBlockIds.hero);
@@ -418,6 +500,28 @@ const buildFamily = (model, catalog) => {
     makeTextParam("FEATURES", "LEDE", featureSection.paragraphs.join(" "), locale),
   ];
   addValues(featureParams);
+  const leftFeatureItems = featureItems.filter((_, index) => index % 2 === 0);
+  const rightFeatureItems = featureItems.filter((_, index) => index % 2 === 1);
+  const featureColumns = [
+    makeTemplate({
+      code: "FEATURE_COL_LEFT",
+      name: "Feature column left",
+      parentCode: "FEATURES",
+      html: `<div class="features-col" data-feature-col="left">
+  <!-- cms-child-slot:FEATURE_ITEMS -->
+</div>`,
+      children: leftFeatureItems,
+    }),
+    makeTemplate({
+      code: "FEATURE_COL_RIGHT",
+      name: "Feature column right",
+      parentCode: "FEATURES",
+      html: `<div class="features-col" data-feature-col="right">
+  <!-- cms-child-slot:FEATURE_ITEMS -->
+</div>`,
+      children: rightFeatureItems,
+    }),
+  ].filter((column) => column.children.length);
   children.push(
     makeTemplate({
       code: "FEATURES",
@@ -433,12 +537,12 @@ const buildFamily = (model, catalog) => {
       <div class="features-lede"><p>${placeholder("FEATURES_LEDE", "LOCALIZED_STRING_SS")}</p></div>
     </header>
     <div class="features-list" data-features-list>
-      <!-- cms-child-slot:FEATURE_ITEMS -->
+      <!-- cms-child-slot:FEATURE_COLUMNS -->
     </div>
   </div>
 </section>`,
       params: featureParams,
-      children: featureItems,
+      children: featureColumns,
     }),
   );
 
@@ -484,7 +588,13 @@ const buildFamily = (model, catalog) => {
       <div class="compare-head" role="rowgroup">
         <div class="compare-row compare-row--head" role="row">
           <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
-          ${comparisonColumns.map((_, index) => `<div class="compare-cell compare-cell--head" role="columnheader">${placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS")}</div>`).join("\n          ")}
+          ${comparisonColumns.map((column, index) => {
+            const isServiceWand = codeSlug(column) === "SERVICEWAND";
+            const content = isServiceWand
+              ? `<span class="compare-brand" aria-label="${placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS")}"><span>Service</span><strong>Wand</strong></span>`
+              : placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS");
+            return `<div class="compare-cell${isServiceWand ? " compare-cell--sw" : ""} compare-cell--head" role="columnheader">${content}</div>`;
+          }).join("\n          ")}
         </div>
       </div>
       <div class="compare-body" role="rowgroup" data-compare-body>
@@ -517,9 +627,33 @@ const buildFamily = (model, catalog) => {
     makeTextParam("FAQ", "EYEBROW", faqSection.title, locale),
     makeTextParam("FAQ", "TITLE", "Frequently asked questions", locale),
     makeTextParam("FAQ", "LEDE", faqSection.paragraphs.join(" "), locale),
-    makeTextParam("FAQ", "GROUP_TITLE", "Field service operations", locale),
   ];
   addValues(faqParams);
+  const faqMidpoint = Math.ceil(faqItems.length / 2);
+  const faqGroupDefs = [
+    { code: "FAQ_GROUP_1", label: "G.01", title: "Field service basics", items: faqItems.slice(0, faqMidpoint) },
+    { code: "FAQ_GROUP_2", label: "G.02", title: "Platform fit", items: faqItems.slice(faqMidpoint) },
+  ].filter((group) => group.items.length);
+  const faqGroups = faqGroupDefs.map((group, index) => {
+    const params = [makeTextParam(group.code, "TITLE", group.title, locale)];
+    addValues(params);
+    return makeTemplate({
+      code: group.code,
+      name: group.title,
+      parentCode: "FAQ",
+      html: `<article class="faq-group" data-faq-group="${pad(index + 1)}">
+  <header class="faq-group-head">
+    <span class="faq-group-num">${group.label}</span>
+    <h3 class="faq-group-title">${placeholder(`${group.code}_TITLE`, "LOCALIZED_STRING_SS")}</h3>
+  </header>
+  <div class="faq-group-body">
+    <!-- cms-child-slot:FAQ_ITEMS -->
+  </div>
+</article>`,
+      params,
+      children: group.items,
+    });
+  });
   children.push(
     makeTemplate({
       code: "FAQ",
@@ -533,28 +667,30 @@ const buildFamily = (model, catalog) => {
       <p class="faq-lede">${placeholder("FAQ_LEDE", "LOCALIZED_STRING_SS")}</p>
     </header>
     <div class="faq-groups">
-      <article class="faq-group" data-faq-group="01">
-        <header class="faq-group-head">
-          <span class="faq-group-num">G.01</span>
-          <h3 class="faq-group-title">${placeholder("FAQ_GROUP_TITLE", "LOCALIZED_STRING_SS")}</h3>
-        </header>
-        <div class="faq-group-body">
-          <!-- cms-child-slot:FAQ_ITEMS -->
-        </div>
-      </article>
+      <!-- cms-child-slot:FAQ_GROUPS -->
     </div>
   </div>
 </section>`,
       params: faqParams,
-      children: faqItems,
+      children: faqGroups,
     }),
   );
 
+  const ctaPrimary = requireBlock(sectionBlockIds.ctaPrimary);
+  const ctaRendered = replaceBlockPlaceholders(
+    ctaPrimary.html,
+    ctaPrimary,
+    "CTA",
+    {
+      href: finalCta.links[0]?.href || heroLinks[0]?.href || "/request-demo",
+      label: finalCta.links[0]?.label || heroLinks[0]?.label || "Book a Demo",
+    },
+    locale,
+  );
   const ctaParams = [
-    makeTextParam("CTA", "EYEBROW", "Next step", locale),
+    makeTextParam("CTA", "EYEBROW", "Build the next layer", locale),
     makeTextParam("CTA", "TITLE", finalCta.paragraphs[0] || "Ready to see ServiceWand?", locale),
-    makeTextParam("CTA", "PRIMARY_LABEL", finalCta.links[0]?.label || heroLinks[0]?.label || "Book a Demo", locale),
-    makeStringParam("CTA", "PRIMARY_HREF", finalCta.links[0]?.href || heroLinks[0]?.href || "/request-demo", locale),
+    ...ctaRendered.params,
   ];
   addValues(ctaParams);
   children.push(
@@ -562,14 +698,15 @@ const buildFamily = (model, catalog) => {
       code: "CTA",
       name: "CTA",
       parentCode: rootCode,
-      html: `<section class="section section--cta" id="cta">
+      html: `<section class="generated-cta" id="cta">
   <div class="container">
-    <p class="eyebrow">${placeholder("CTA_EYEBROW", "LOCALIZED_STRING_SS")}</p>
-    <h2 class="section-title">${placeholder("CTA_TITLE", "LOCALIZED_STRING_SS")}</h2>
-    <a class="btn btn-primary btn-primary-ring" href="${placeholder("CTA_PRIMARY_HREF", "STRING")}">
-      <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>
-      ${placeholder("CTA_PRIMARY_LABEL", "LOCALIZED_STRING_SS")}
-    </a>
+    <div class="callout-band generated-cta-callout" data-block="decorative.callout-band">
+      <p class="callout-band-eyebrow">${placeholder("CTA_EYEBROW", "LOCALIZED_STRING_SS")}</p>
+      <p class="callout-band-body generated-cta-title">${placeholder("CTA_TITLE", "LOCALIZED_STRING_SS")}</p>
+      <div class="generated-cta-actions">
+        ${ctaRendered.html}
+      </div>
+    </div>
   </div>
 </section>`,
       params: ctaParams,
@@ -624,6 +761,7 @@ const buildFamily = (model, catalog) => {
     sourceCopy: model.sourceFile,
     root: { code: rootTemplate.code, name: rootName, templateLanguage: "JTE" },
     selectedBlocks: selected.map((block) => ({ id: block.id, path: block.path, hasJs: Boolean(block.js.trim()) })),
+    assetBlocks: assetBlocks.map((block) => ({ id: block.id, path: block.path, hasJs: Boolean(block.js.trim()) })),
     tree: {
       code: rootTemplate.code,
       children: children.map((child) => ({

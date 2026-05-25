@@ -2,7 +2,7 @@
   "code": "FEATURE_2",
   "nls": {
     "en": {
-      "NAME": "Mobile Workforce"
+      "NAME": "Field Service Dispatch Software"
     }
   },
   "templateLanguage": "JTE",
@@ -24,7 +24,7 @@
         }
       },
       "value": {
-        "en": "Mobile Workforce"
+        "en": "Field Service Dispatch Software"
       }
     },
     {
@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+        "en": "Assign the right technician, crew, vehicle, or resource to the right job while coordinating route changes, emergency requests, job status updates, and office-to-field communication."
       }
     }
   ]
