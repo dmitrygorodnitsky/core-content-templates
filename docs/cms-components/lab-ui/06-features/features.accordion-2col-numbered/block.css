@@ -26,7 +26,10 @@
   font-size: 0.8125rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-cyan);
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   margin: 0 0 14px;
 }
 .features-title {
@@ -79,7 +82,7 @@
   text-align: left;
   color: var(--color-heading);
 }
-.f-row-head:hover .f-title { color: var(--color-link); }
+.f-row-head:hover .f-title { color: var(--color-heading); }
 
 .f-num {
   font-family: var(--font-mono);

@@ -56,11 +56,11 @@
   color: var(--color-heading);
 }
 .hero-title .accent {
-  font-style: italic;
-  background: linear-gradient(120deg, #1A6FB8, #6BC0F9);
-  -webkit-background-clip: text;
-          background-clip: text;
-  color: transparent;
+  font-style: inherit;
+  background: none;
+  -webkit-background-clip: initial;
+          background-clip: initial;
+  color: inherit;
 }
 
 .hero-leads { display: grid; gap: 12px; max-width: 36rem; }
