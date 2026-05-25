@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>section.axes-grid · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=secondary-accent-halo">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); padding: 60px var(--container-padding-x); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue); margin-bottom: 20px;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .stage-wrap { max-width: calc(var(--container-width) + var(--container-padding-x) * 2); margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div class="harness-label">section.axes-grid · live</div>
+
+<div class="stage-wrap">
+<div class="axes-grid" data-block="section.axes-grid">
+  <article class="axis" data-axis="01">
+    <div class="axis-head"><span class="axis-num">Axis 01</span><span class="axis-label">Locations</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">Single office</span><span class="arrow" aria-hidden="true">→</span><span class="to">Multi-branch · multi-region</span></div>
+    <p class="axis-body">Service businesses scale from a single office to multiple branches and eventually multi-region operations. ServiceWand supports each shape — one team, several territories, or many regions with separate data residency.</p>
+  </article>
+
+  <article class="axis" data-axis="02">
+    <div class="axis-head"><span class="axis-num">Axis 02</span><span class="axis-label">Crews</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">1 owner + apprentice</span><span class="arrow" aria-hidden="true">→</span><span class="to">Hundreds of techs across crews</span></div>
+    <p class="axis-body">Crews grow from a couple of techs into territory-level workforce. Scheduling, dispatch, mobile workflows, and reporting all need to keep working at every count without a tool swap.</p>
+  </article>
+
+  <article class="axis" data-axis="03">
+    <div class="axis-head"><span class="axis-num">Axis 03</span><span class="axis-label">Customer Complexity</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">One-off residential calls</span><span class="arrow" aria-hidden="true">→</span><span class="to">Recurring contracts · multi-property</span></div>
+    <p class="axis-body">Customer models evolve from individual one-off jobs to recurring contracts, multi-property accounts, and tiered service agreements. The customer model supports all of those without redesigning the data.</p>
+  </article>
+
+  <article class="axis" data-axis="04">
+    <div class="axis-head"><span class="axis-num">Axis 04</span><span class="axis-label">Billing Surface</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">Invoice on completion</span><span class="arrow" aria-hidden="true">→</span><span class="to">Subscriptions · partial payments · multi-currency</span></div>
+    <p class="axis-body">Billing starts simple (invoice when the job is done) and gets richer as operations grow: recurring contracts, partial payments, multi-currency, accounting integrations, and audit trails.</p>
+  </article>
+
+  <article class="axis" data-axis="05">
+    <div class="axis-head"><span class="axis-num">Axis 05</span><span class="axis-label">Operational Visibility</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">End-of-week summary</span><span class="arrow" aria-hidden="true">→</span><span class="to">Live dashboards · drill-through</span></div>
+    <p class="axis-body">Reporting starts as a Friday spreadsheet and ends as live operational dashboards across routes, crews, billing, customer satisfaction, and asset performance — drillable to the underlying work order.</p>
+  </article>
+
+  <article class="axis" data-axis="06">
+    <div class="axis-head"><span class="axis-num">Axis 06</span><span class="axis-label">Integrations</span></div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span><span class="axis-tick" style="opacity:0.29"></span><span class="axis-tick" style="opacity:0.43"></span><span class="axis-tick" style="opacity:0.57"></span><span class="axis-tick" style="opacity:0.71"></span><span class="axis-tick" style="opacity:0.85"></span><span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range"><span class="from">Standalone</span><span class="arrow" aria-hidden="true">→</span><span class="to">ERP · CRM · payments · maps · comms</span></div>
+    <p class="axis-body">Most operations start standalone and gradually connect into the rest of the business: accounting, CRM, mapping, payments, communications. ServiceWand connects through APIs, webhooks, and configurable workflows.</p>
+  </article>
+</div>
+</div>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

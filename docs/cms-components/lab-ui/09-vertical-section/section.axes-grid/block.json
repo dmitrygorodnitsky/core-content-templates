@@ -1,0 +1,226 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "section.axes-grid",
+  "category": "09-vertical-section",
+  "title": "Section · Axes grid (multi-axis from→to)",
+  "description": "Multi-axis matrix of scaling dimensions. Up to 6 axes (cards with auto-hide for empty slots). Each axis: numbered eyebrow + label, a full-width tick track (7 ticks with opacity ramp suggesting growth), from→to range labels in mono, and a short body paragraph. 3-col grid → 2-col at ≤980 → 1-col at ≤640. Used for 'how the platform scales along these axes' sections after StagesList.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/landing-template-design/src/kit/stages-axes.jsx (AxesGrid)",
+    "adapted_from": "designer kit 2026-05-24 → light tokens",
+    "decision": "PM lock 2026-05-24 — axes-grid adopted as canonical scalability pattern"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--color-gray-second",
+      "--cta-secondary-fill",
+      "--cta-accent",
+      "--transition-duration",
+      "--font-family",
+      "--font-mono",
+      "--radius-card"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width narrative section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "axis_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Axis"
+    },
+    {
+      "code": "axis_1_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "01"
+    },
+    {
+      "code": "axis_1_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Locations"
+    },
+    {
+      "code": "axis_1_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Single office"
+    },
+    {
+      "code": "axis_1_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Multi-branch · multi-region"
+    },
+    {
+      "code": "axis_1_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Service businesses scale from a single office to multiple branches and eventually multi-region operations. ServiceWand supports each shape — one team, several territories, or many regions with separate data residency."
+    },
+    {
+      "code": "axis_2_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "02"
+    },
+    {
+      "code": "axis_2_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Crews"
+    },
+    {
+      "code": "axis_2_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "1 owner + apprentice"
+    },
+    {
+      "code": "axis_2_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Hundreds of techs across crews"
+    },
+    {
+      "code": "axis_2_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Crews grow from a couple of techs into territory-level workforce. Scheduling, dispatch, mobile workflows, and reporting all need to keep working at every count without a tool swap."
+    },
+    {
+      "code": "axis_3_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "03"
+    },
+    {
+      "code": "axis_3_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Customer Complexity"
+    },
+    {
+      "code": "axis_3_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "One-off residential calls"
+    },
+    {
+      "code": "axis_3_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring contracts · multi-property"
+    },
+    {
+      "code": "axis_3_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Customer models evolve from individual one-off jobs to recurring contracts, multi-property accounts, and tiered service agreements. The customer model supports all of those without redesigning the data."
+    },
+    {
+      "code": "axis_4_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "04"
+    },
+    {
+      "code": "axis_4_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billing Surface"
+    },
+    {
+      "code": "axis_4_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Invoice on completion"
+    },
+    {
+      "code": "axis_4_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Subscriptions · partial payments · multi-currency"
+    },
+    {
+      "code": "axis_4_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billing starts simple (invoice when the job is done) and gets richer as operations grow: recurring contracts, partial payments, multi-currency, accounting integrations, and audit trails."
+    },
+    {
+      "code": "axis_5_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "05"
+    },
+    {
+      "code": "axis_5_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Operational Visibility"
+    },
+    {
+      "code": "axis_5_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "End-of-week summary"
+    },
+    {
+      "code": "axis_5_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Live dashboards · drill-through"
+    },
+    {
+      "code": "axis_5_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reporting starts as a Friday spreadsheet and ends as live operational dashboards across routes, crews, billing, customer satisfaction, and asset performance — drillable to the underlying work order."
+    },
+    {
+      "code": "axis_6_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "06"
+    },
+    {
+      "code": "axis_6_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Integrations"
+    },
+    {
+      "code": "axis_6_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Standalone"
+    },
+    {
+      "code": "axis_6_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ERP · CRM · payments · maps · comms"
+    },
+    {
+      "code": "axis_6_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Most operations start standalone and gradually connect into the rest of the business: accounting, CRM, mapping, payments, communications. ServiceWand connects through APIs, webhooks, and configurable workflows."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "6 axes by default. Empty axis labels auto-hide via :has(.axis-label:empty), so admins can ship 3 or 4 axes without editing markup.",
+    "Each axis has a 7-tick track with opacity ramp (0.15 → 1.00) — visually suggests 'growth along this axis' without claiming a specific measurement.",
+    "from → to is mono-typed so it reads as a spec, not a sentence."
+  ]
+}

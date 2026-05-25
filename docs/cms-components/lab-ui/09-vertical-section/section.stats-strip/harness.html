@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>section.stats-strip · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=secondary-accent">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); padding: 60px var(--container-padding-x); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue); margin-bottom: 20px;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .stage-wrap { max-width: calc(var(--container-width) + var(--container-padding-x) * 2); margin: 0 auto; }
+</style>
+</head>
+<body>
+
+<div class="harness-label">section.stats-strip · live</div>
+
+<div class="stage-wrap">
+  <div class="stats-strip" data-block="section.stats-strip">
+    <div class="stat-cell">
+      <span class="stat-num">12k+</span>
+      <span class="stat-label">// active crews</span>
+      <p class="stat-body">Field teams running daily ops on the platform across 7 verticals.</p>
+    </div>
+    <div class="stat-cell is-accent">
+      <span class="stat-num">38k</span>
+      <span class="stat-label">// jobs / day</span>
+      <p class="stat-body">Operational throughput across the platform on a typical weekday.</p>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">94%</span>
+      <span class="stat-label">// first-time fix</span>
+      <p class="stat-body">Average across pilot cohort after 8 weeks on the platform — up from 71% pre-migration.</p>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">// platform reach</span>
+      <p class="stat-body">Configurable workflows scale from a 2-person crew to multi-region operations without a migration.</p>
+    </div>
+  </div>
+</div>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

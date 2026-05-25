@@ -1,0 +1,67 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "footer.sw-default",
+  "category": "02-footer",
+  "title": "Footer · ServiceWand canonical",
+  "description": "Dark site footer used across servicewand.com and all ServiceWand landings. 3-column grid: brand+tagline+address / 5-link nav / socials+emails. Bottom row: copyright + legal links. Used regardless of page theme (light/dark) — the footer itself is always dark.",
+  "canonical": true,
+  "theme": "dark-always",
+  "source": {
+    "primary": "tmp/sw-footer.html",
+    "css": "tmp/sw-styles.css (.footer-*)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-black-bg",
+      "--color-white",
+      "--color-gray-light",
+      "--color-gray-blue",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--transition-duration"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    { "code": "brand_name", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand" },
+    { "code": "brand_href", "type": "URL", "default": "https://servicewand.com" },
+    { "code": "tagline", "type": "LOCALIZED_STRING_SS", "default": "Where everything you build and operate stays connected" },
+    { "code": "address_line_1", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand Inc." },
+    { "code": "address_line_2", "type": "LOCALIZED_STRING_SS", "default": "Operational platform for modern businesses" },
+    { "code": "address_line_3", "type": "LOCALIZED_STRING_SS", "default": "Registered in Wyoming, USA" },
+    { "code": "address_line_4", "type": "LOCALIZED_STRING_SS", "default": "Offices in Canada & EU" },
+    { "code": "nav_1_label", "type": "LOCALIZED_STRING_SS", "default": "Platform" },
+    { "code": "nav_1_href", "type": "URL", "default": "#hero" },
+    { "code": "nav_2_label", "type": "LOCALIZED_STRING_SS", "default": "How It Works" },
+    { "code": "nav_2_href", "type": "URL", "default": "#features" },
+    { "code": "nav_3_label", "type": "LOCALIZED_STRING_SS", "default": "Industries" },
+    { "code": "nav_3_href", "type": "URL", "default": "#industries" },
+    { "code": "nav_4_label", "type": "LOCALIZED_STRING_SS", "default": "Compare" },
+    { "code": "nav_4_href", "type": "URL", "default": "#compare" },
+    { "code": "nav_5_label", "type": "LOCALIZED_STRING_SS", "default": "FAQ" },
+    { "code": "nav_5_href", "type": "URL", "default": "#faq" },
+    { "code": "social_linkedin", "type": "URL", "default": "https://www.linkedin.com/company/servicewand" },
+    { "code": "social_github",   "type": "URL", "default": "https://github.com/servicewand" },
+    { "code": "social_youtube",  "type": "URL", "default": "https://www.youtube.com/@servicewand" },
+    { "code": "social_x",        "type": "URL", "default": "https://x.com/servicewand" },
+    { "code": "partnerships_label", "type": "LOCALIZED_STRING_SS", "default": "Partnerships" },
+    { "code": "partnerships_email", "type": "STRING", "default": "partners@servicewand.com" },
+    { "code": "support_label", "type": "LOCALIZED_STRING_SS", "default": "Support" },
+    { "code": "support_email", "type": "STRING", "default": "support@servicewand.com" },
+    { "code": "copyright", "type": "LOCALIZED_STRING_SS", "default": "© 2025 ServiceWand Inc. All rights reserved." },
+    { "code": "legal_1_label", "type": "LOCALIZED_STRING_SS", "default": "Privacy Policy" },
+    { "code": "legal_1_href", "type": "URL", "default": "/legal/privacy" },
+    { "code": "legal_2_label", "type": "LOCALIZED_STRING_SS", "default": "Terms & Conditions" },
+    { "code": "legal_2_href", "type": "URL", "default": "/legal/terms" }
+  ],
+  "preview": {
+    "1440": "preview-1440.png",
+    "390": "preview-390.png"
+  },
+  "notes": [
+    "Footer is dark on every theme — semantic tokens are not consumed here, only raw palette ones.",
+    "At ≤900px the 3-col grid becomes 2-col with contacts spanning both. At ≤600px everything stacks."
+  ]
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>features.accordion-2col-numbered · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=independent-columns">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">features.accordion-2col-numbered · live</div>
+
+<section class="features features--accordion" id="features" data-block="features.accordion-2col-numbered">
+  <div class="container">
+    <header class="features-top">
+      <div>
+        <p class="eyebrow">How It Works</p>
+        <h2 class="features-title">Field Service Software That Powers Real Field Operations</h2>
+      </div>
+      <div class="features-lede">
+        <p>ServiceWand connects every part of a field service workflow. Scheduling, dispatching, mobile workforce coordination, customer management, billing, reporting, and AI-assisted operations all run from one operational core.</p>
+        <p>Service businesses use ServiceWand to keep their daily work moving even when conditions change.</p>
+        <p>Built for crews, routes, recurring service, emergency dispatch, multi-location teams, and customer experiences that span office, field, and digital.</p>
+      </div>
+    </header>
+
+    <div class="features-list" data-features-list>
+      <div class="features-col" data-feature-col="left">
+        <article class="f-row is-open" data-feature-slot="01"><button class="f-row-head" type="button" aria-expanded="true">
+          <span class="f-num">F.01</span><span class="f-title">Intelligent Scheduling</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Plan crew capacity, recurring routes, and emergency dispatch from one calendar. Constraints — skills, vehicles, territories, time windows — are respected automatically.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="03"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.03</span><span class="f-title">Mobile Workforce</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Techs run the day from a phone — jobs, notes, photos, signatures, parts, invoicing. Works offline and syncs when connection returns.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="05"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.05</span><span class="f-title">Billing &amp; Invoicing</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Generate invoices from completed work, recurring contracts, or material usage. Tax, multi-currency, and partial-payment workflows handled in one place.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="07"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.07</span><span class="f-title">Automation &amp; Workflows</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Trigger reminders, follow-ups, renewals, and escalation flows based on status, time, or business rules — without hand-built integrations.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="09"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.09</span><span class="f-title">Routing &amp; Territories</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Define service territories, optimize multi-stop routes, and rebalance loads when teams or vehicles change.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="11"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.11</span><span class="f-title">Inventory &amp; Parts</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Track stock across warehouses, trucks, and job sites. Trigger reorders when usage drops thresholds.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="13"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.13</span><span class="f-title">Customer Portal</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Customers see upcoming visits, invoices, service history, and contracts — and self-serve approvals and payments.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="15"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.15</span><span class="f-title">Security &amp; Roles</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Granular role and territory permissions, SSO, audit log. Each user sees only the work and data they're authorized for.</div></div>
+        </article>
+      </div>
+      <div class="features-col" data-feature-col="right">
+        <article class="f-row" data-feature-slot="02"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.02</span><span class="f-title">Live Dispatch</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Route changes, reassignments, and ETA updates push to the field instantly. Dispatchers see who is where and what's next.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="04"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.04</span><span class="f-title">Customer Management</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Every property, contact, contract, recurring service, and history is stored against the customer so the next visit picks up exactly where the last one ended.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="06"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.06</span><span class="f-title">Reporting &amp; Insights</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Dashboards for revenue, crew productivity, route efficiency, customer churn, and operational health. Drill into any number to the underlying work order.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="08"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.08</span><span class="f-title">AI-Assisted Operations</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Schedule suggestions, anomaly alerts, and natural-language search across jobs, customers, and history.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="10"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.10</span><span class="f-title">Recurring &amp; Contract Work</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Model seasonal routes, annual service plans, and tiered contracts. ServiceWand generates the work, the bills, and the renewals on schedule.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="12"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.12</span><span class="f-title">Estimates &amp; Quoting</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Send branded estimates from the field or the office. Approved quotes turn into jobs without re-entry.</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="14"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.14</span><span class="f-title">Integrations</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">Accounting, payments, mapping, communications — connect the systems you already use rather than replacing them.</div></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./block.js?v=independent-columns"></script>
+
+</body>
+</html>

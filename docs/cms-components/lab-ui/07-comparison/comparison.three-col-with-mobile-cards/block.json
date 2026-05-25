@@ -1,0 +1,407 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "comparison.three-col-with-mobile-cards",
+  "category": "07-comparison",
+  "title": "Comparison · ServiceWand matrix",
+  "description": "ServiceWand.com-style comparison matrix with six external platform columns, status icons, a highlighted ServiceWand column, and stacked mobile cards below 860px.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "https://servicewand.com/ comparison section",
+    "adapted_from": "Live ServiceWand comparison matrix, normalized as a lab-ui block contract",
+    "decision": "PM lock 2026-05-25 — comparison should match ServiceWand matrix, not the old 3-way FSM table"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card-sm",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width comparison section background; gradient mode preferred over image because the table already has strong surface styling.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Comparison"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand unifies it all"
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "From operations to customer experience - seamlessly connected."
+    },
+    {
+      "code": "col_sw_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand"
+    },
+    {
+      "code": "col_sw_service",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Service"
+    },
+    {
+      "code": "col_sw_wand",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Wand"
+    },
+    {
+      "code": "col_crm_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "CRM Systems"
+    },
+    {
+      "code": "col_field_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field Service Tools"
+    },
+    {
+      "code": "col_monitoring_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Monitoring Tools"
+    },
+    {
+      "code": "col_cms_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "CMS & Portals"
+    },
+    {
+      "code": "col_enterprise_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise Platforms"
+    },
+    {
+      "code": "slot_01_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Customer & CRM"
+    },
+    {
+      "code": "slot_01_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_01_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_01_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_01_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_01_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_01_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_02_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billing & Revenue"
+    },
+    {
+      "code": "slot_02_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_02_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_02_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_02_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_02_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "enterprise"
+    },
+    {
+      "code": "slot_03_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Operations & Workflows"
+    },
+    {
+      "code": "slot_03_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "unified"
+    },
+    {
+      "code": "slot_03_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "limited"
+    },
+    {
+      "code": "slot_03_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "manual config"
+    },
+    {
+      "code": "slot_03_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "manual config"
+    },
+    {
+      "code": "slot_03_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "complex"
+    },
+    {
+      "code": "slot_04_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Portals & Content"
+    },
+    {
+      "code": "slot_04_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "integrated"
+    },
+    {
+      "code": "slot_04_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_04_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_04_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_04_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_04_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "add-ons"
+    },
+    {
+      "code": "slot_05_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "AI & Intelligence"
+    },
+    {
+      "code": "slot_05_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "built-in"
+    },
+    {
+      "code": "slot_05_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_05_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_05_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_05_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Products, Assets & Inventory"
+    },
+    {
+      "code": "slot_06_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "unified"
+    },
+    {
+      "code": "slot_06_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_06_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_06_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_06_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "enterprise"
+    },
+    {
+      "code": "slot_07_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Monitoring & Diagnostics"
+    },
+    {
+      "code": "slot_07_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_07_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_07_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_07_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_07_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_07_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Ecosystem & Extensibility"
+    },
+    {
+      "code": "slot_08_sw",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "modular & scalable"
+    },
+    {
+      "code": "slot_08_crm",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "fragmented"
+    },
+    {
+      "code": "slot_08_field",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "niche"
+    },
+    {
+      "code": "slot_08_monitoring",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "limited"
+    },
+    {
+      "code": "slot_08_cms",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "limited"
+    },
+    {
+      "code": "slot_08_enterprise",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "heavy / complex"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "The matrix mirrors the live ServiceWand comparison: 8 capabilities, ServiceWand highlighted, and six adjacent platform columns.",
+    "Status colors are encoded in the block markup/classes because they are part of the comparison claim, while labels remain localized params.",
+    "Mobile keeps capability and ServiceWand visible, then collapses secondary platform columns behind per-row expanders."
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "section.h2-narrative-only",
+  "category": "09-vertical-section",
+  "title": "Section · H2 narrative",
+  "description": "Single-purpose narrative section: eyebrow + H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual. The canonical variant is text-first; an optional side SVG glyph remains available through data-has-glyph='true'.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Field Service Ops/src/sections-2.jsx (NarrativeSection)",
+    "adapted_from": "v5 dark → light tokens. Glyph slot generalized to allow any inline SVG.",
+    "decision": "PM lock 2026-05-25 — canonical narrative block is text-first; glyph is optional variant, not default"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size",
+      "--type-lead-leading",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1200",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width narrative section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "AI-Native Operations"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field Service Software That Thinks With You"
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand uses AI where the operational data is rich enough for it to be genuinely useful — schedule suggestions, anomaly alerts, natural-language search across jobs, properties, and history."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Not a chatbot wrapper, not generic LLM marketing. AI features are surfaced inside the actual workflows your team already runs."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "You stay in control of what the system suggests and what gets accepted. AI augments operational judgment; it does not replace it."
+    },
+    {
+      "code": "has_glyph",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "false"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Canonical harness uses data-has-glyph='false' and presents a text-first narrative block with a secondary-accent rule.",
+    "Set data-has-glyph='true' on the section to restore the optional glyph column. Replace the inline SVG inside [data-glyph-slot] only for page-specific variants.",
+    "At ≤900px the glyph moves above the text (order: -1) and shrinks to 220px max."
+  ]
+}

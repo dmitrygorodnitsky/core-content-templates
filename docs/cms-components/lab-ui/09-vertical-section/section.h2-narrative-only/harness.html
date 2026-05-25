@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>section.h2-narrative-only · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=text-first-secondary">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">section.h2-narrative-only · live</div>
+
+<section class="snarr" data-block="section.h2-narrative-only" data-has-glyph="false">
+  <div class="container">
+    <div class="snarr-grid">
+      <div class="snarr-text">
+        <p class="eyebrow">AI-Native Operations</p>
+        <h2 class="snarr-title">Field Service Software That Thinks With You</h2>
+        <div class="snarr-body">
+          <p>ServiceWand uses AI where the operational data is rich enough for it to be genuinely useful — schedule suggestions, anomaly alerts, natural-language search across jobs, properties, and history.</p>
+          <p>Not a chatbot wrapper, not generic LLM marketing. AI features are surfaced inside the actual workflows your team already runs.</p>
+          <p>You stay in control of what the system suggests and what gets accepted. AI augments operational judgment; it does not replace it.</p>
+        </div>
+      </div>
+
+      <aside class="snarr-glyph" aria-hidden="true" data-glyph-slot>
+        <svg viewBox="0 0 240 240" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <radialGradient id="snarrCenter" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#6BEAF9" stop-opacity="0.55"/>
+              <stop offset="60%" stop-color="#6BEAF9" stop-opacity="0.12"/>
+              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="120" cy="120" r="100" fill="url(#snarrCenter)"/>
+          <circle cx="120" cy="120" r="70" fill="none" stroke="#6BC0F9" stroke-opacity="0.35" stroke-dasharray="2 6"/>
+          <circle cx="120" cy="120" r="44" fill="none" stroke="#6BC0F9" stroke-opacity="0.5" stroke-dasharray="2 6"/>
+          <circle cx="120" cy="120" r="10" fill="#FFFFFF" stroke="#6BC0F9" stroke-opacity="0.6"/>
+          <circle cx="120" cy="120" r="3" fill="#6BC0F9"/>
+        </svg>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

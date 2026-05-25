@@ -1,0 +1,763 @@
+window.LAB_UI_MANIFEST = {
+  "$schema": "lab-ui/manifest@1",
+  "name": "lab-ui",
+  "mode": "normalized-block-catalog",
+  "source": "Generated from per-block block.json files. Do not edit block lists in gallery.html by hand.",
+  "categories": [
+    {
+      "id": "01-header",
+      "label": "01 · Header",
+      "count": 1
+    },
+    {
+      "id": "02-footer",
+      "label": "02 · Footer",
+      "count": 1
+    },
+    {
+      "id": "03-cta",
+      "label": "03 · CTA",
+      "count": 2
+    },
+    {
+      "id": "04-language",
+      "label": "04 · Language",
+      "count": 1
+    },
+    {
+      "id": "05-hero",
+      "label": "05 · Hero",
+      "count": 2
+    },
+    {
+      "id": "06-features",
+      "label": "06 · Features",
+      "count": 3
+    },
+    {
+      "id": "07-comparison",
+      "label": "07 · Comparison",
+      "count": 1
+    },
+    {
+      "id": "08-faq",
+      "label": "08 · FAQ",
+      "count": 1
+    },
+    {
+      "id": "09-vertical-section",
+      "label": "09 · Vertical section",
+      "count": 4
+    },
+    {
+      "id": "10-verticals-grid",
+      "label": "10 · Verticals grid",
+      "count": 1
+    },
+    {
+      "id": "11-mobile-section",
+      "label": "11 · Mobile section",
+      "count": 1
+    },
+    {
+      "id": "12-decorative",
+      "label": "12 · Decorative",
+      "count": 3
+    },
+    {
+      "id": "13-signature",
+      "label": "13 · Signature",
+      "count": 1
+    }
+  ],
+  "blocks": [
+    {
+      "id": "header.sw-default",
+      "category": "01-header",
+      "path": "01-header/header.sw-default",
+      "title": "Header · ServiceWand canonical (multi-level)",
+      "description": "Canonical light-theme ServiceWand header. Uses the live servicewand.com header proportions and compact mobile reveal behavior, while extending the nav contract to support link, dropdown, and mega items. Panels open on hover + focus-within on desktop; below 1024px the burger reveals a full-width menu with nested panel links shown inline as indented subitems. Composes cta.btn-primary-ring + language.sw-locale-dropdown. Owns the optional floating breadcrumb chip for non-root pages.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "servicewand.com (live, fetched 2026-05-18)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "footer.sw-default",
+      "category": "02-footer",
+      "path": "02-footer/footer.sw-default",
+      "title": "Footer · ServiceWand canonical",
+      "description": "Dark site footer used across servicewand.com and all ServiceWand landings. 3-column grid: brand+tagline+address / 5-link nav / socials+emails. Bottom row: copyright + legal links. Used regardless of page theme (light/dark) — the footer itself is always dark.",
+      "canonical": true,
+      "theme": "dark-always",
+      "sourceLabel": "tmp/sw-footer.html",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "cta.btn-primary-ring",
+      "category": "03-cta",
+      "path": "03-cta/cta.btn-primary-ring",
+      "title": "Primary CTA · rainbow ring pill",
+      "description": "Pill button with a 1.5 px rainbow gradient ring (cyan → orange → magenta, 249.99deg base, flips to 264.85deg on hover) and a sparkle star icon that rotates 180° on hover. The outer hover glow is tinted by the current vertical's --cta-accent token (cyan default; lawn-care → green; hvac → orange; etc). Uses the same tight bottom-centered radial hover glow as cta.btn-secondary-filled.",
+      "canonical": true,
+      "theme": "light+dark-compatible",
+      "sourceLabel": "servicewand.com (.button-primary)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "cta.btn-secondary-filled",
+      "category": "03-cta",
+      "path": "03-cta/cta.btn-secondary-filled",
+      "title": "Secondary CTA · filled pill (vertical-themed)",
+      "description": "Secondary CTA paired with primary. Fully filled pill — background is a 90° dark gradient that re-themes per vertical via --cta-secondary-fill (snow-removal: bronze/olive; lawn-care: dark green; hvac: dark amber; etc). Light text, 1 px soft border, always-on soft halo that strengthens on hover, sparkle icon that rotates 180° on hover. Inner bottom hover-rise comes from effect.hover-rise. No rainbow ring — explicitly a different visual primitive than primary so the pair reads as two distinct affordances.",
+      "canonical": true,
+      "theme": "light+dark-compatible",
+      "sourceLabel": "lsrc.pixelnation.com/.../winter-services.html (.vl-button--secondary)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "language.sw-locale-dropdown",
+      "category": "04-language",
+      "path": "04-language/language.sw-locale-dropdown",
+      "title": "Locale selector · dropdown",
+      "description": "Pill button with chevron-down + current language label on desktop. On mobile it compacts to a two-letter locale code and code-only dropdown. Hydrates from /core/api/language/active.json on a real server; falls back to en/fr/es when offline (file:// or no API).",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/sw-header.html (.locale-selector + inline JS)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "hero.composite-photo",
+      "category": "05-hero",
+      "path": "05-hero/hero.composite-photo",
+      "title": "Hero · composite photo (vertical-landing)",
+      "description": "Hero for vertical-landings (Snow Removal, Lawn Care, HVAC, etc). Left column: breadcrumb eyebrow, 3-line H1 with italic-blue accent, 2 lede paragraphs, CTA pair. Right column: 5:6 photo slot with overlays — dark stat chip (bottom-left) and two person cards (top-right). Photo defaults to a neutral striped media placeholder; replace via {{photo_url}} (IMAGE param).",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/field-service-landing-v3/src/HeroSection.jsx",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1600",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width vertical hero background; separate from the main photo slot.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "hero.operational-diagram",
+      "category": "05-hero",
+      "path": "05-hero/hero.operational-diagram",
+      "title": "Hero · operational hub",
+      "description": "Signature hub hero. Left column: breadcrumb-style eyebrow, three-line H1 with italic-cyan accent on the middle word, three lede paragraphs, primary + secondary CTA pair. Right column: neutral rectangular product screenshot placeholder. Light theme adaptation of v5 hero variant B (designer default).",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (HeroArtB + Hero)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1600",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width hero section background; separate from the product screenshot slot.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "features.accordion-2col-numbered",
+      "category": "06-features",
+      "path": "06-features/features.accordion-2col-numbered",
+      "title": "Features · 2-col numbered accordion",
+      "description": "Two independent accordion columns of feature rows. Each row carries a monospace F.NN badge, a title, and a plus-icon toggle that rotates 45° and inverts on open. Multiple rows can be open at the same time (matches v5 design source — no one-open rule). 20 slot capacity (15 wired here, easy to extend); empty slots auto-hide via block.js.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (FeaturesAccordion)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "features.card-grid-3",
+      "category": "06-features",
+      "path": "06-features/features.card-grid-3",
+      "title": "Features · 3-card horizontal grid",
+      "description": "H2 + 3 lede paragraphs + 3 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Connected Operations' / 'How ServiceWand Works' framing pattern. 3 fixed slots (use features.accordion-2col-numbered for variable counts).",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid3)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width features section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "features.card-grid-4",
+      "category": "06-features",
+      "path": "06-features/features.card-grid-4",
+      "title": "Features · 4-card horizontal grid",
+      "description": "H2 + 3 lede paragraphs + 4 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Unified Platform' / 'What's Inside' framing pattern. 4 fixed slots; collapses to 2 columns at ≤1180px, single column at ≤720px.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid4)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width features section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "comparison.three-col-with-mobile-cards",
+      "category": "07-comparison",
+      "path": "07-comparison/comparison.three-col-with-mobile-cards",
+      "title": "Comparison · ServiceWand matrix",
+      "description": "ServiceWand.com-style comparison matrix with six external platform columns, status icons, a highlighted ServiceWand column, and stacked mobile cards below 860px.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "https://servicewand.com/ comparison section",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width comparison section background; gradient mode preferred over image because the table already has strong surface styling.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": true
+    },
+    {
+      "id": "faq.bubble-light-grouped",
+      "category": "08-faq",
+      "path": "08-faq/faq.bubble-light-grouped",
+      "title": "FAQ · bubble light grouped",
+      "description": "FAQ section organized into 4 categories × 5 questions (20 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship 1 group of 3 questions just as easily as 4 groups of 5.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-3.jsx (FAQGrouped)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "section.axes-grid",
+      "category": "09-vertical-section",
+      "path": "09-vertical-section/section.axes-grid",
+      "title": "Section · Axes grid (multi-axis from→to)",
+      "description": "Multi-axis matrix of scaling dimensions. Up to 6 axes (cards with auto-hide for empty slots). Each axis: numbered eyebrow + label, a full-width tick track (7 ticks with opacity ramp suggesting growth), from→to range labels in mono, and a short body paragraph. 3-col grid → 2-col at ≤980 → 1-col at ≤640. Used for 'how the platform scales along these axes' sections after StagesList.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/stages-axes.jsx (AxesGrid)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width narrative section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "section.h2-narrative-only",
+      "category": "09-vertical-section",
+      "path": "09-vertical-section/section.h2-narrative-only",
+      "title": "Section · H2 narrative",
+      "description": "Single-purpose narrative section: eyebrow + H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual. The canonical variant is text-first; an optional side SVG glyph remains available through data-has-glyph='true'.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-2.jsx (NarrativeSection)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1200",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width narrative section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "section.stages-list",
+      "category": "09-vertical-section",
+      "path": "09-vertical-section/section.stages-list",
+      "title": "Section · Stages list (growth ladder, 01→04)",
+      "description": "Vertical growth ladder with 4 stages (01–04). Each stage has a left rail with stage eyebrow, big number, and a 4-tick progression scale (lv1 lights 1 tick, lv4 lights all 4 + accent glow). Main area: title + users pill + lead + capability chips. Stage 01 uses plain chips; stages 02–04 use additive chips with '+' prefix to signal new-capabilities-on-top-of-previous-stage. Typically paired with decorative.cycle-strip above + decorative.callout-band below.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/stages-axes.jsx (StagesList)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width growth/stages section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "section.stats-strip",
+      "category": "09-vertical-section",
+      "path": "09-vertical-section/section.stats-strip",
+      "title": "Section · Stats strip (KPI metrics row)",
+      "description": "4-cell KPI metrics row. Each cell: large display-typed number + mono label + short body. Cells separated by 1px hairlines (top + bottom + verticals between). One cell can be marked .is-accent to tint its number with the secondary CTA accent (typically the headline metric). Collapses to 2×2 at ≤880, 1-col at ≤480.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/grids.jsx (StatsStrip)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1200",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width stats section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "verticals.glyph-grid-20-slots",
+      "category": "10-verticals-grid",
+      "path": "10-verticals-grid/verticals.glyph-grid-20-slots",
+      "title": "Verticals grid · photo-card catalog",
+      "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Snow Removal ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "/Users/imighty/Downloads/Field Service Ops (2)/src/kit/catalog-compare.jsx (CardCatalog)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1800",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width industries grid background; separate from per-card media slots.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": true
+    },
+    {
+      "id": "mobile.4-card-glyph",
+      "category": "11-mobile-section",
+      "path": "11-mobile-section/mobile.4-card-glyph",
+      "title": "Mobile section · 4 cards with glyphs",
+      "description": "Mobile-experience section for hub pages. Centered H2 + 3 ledes + 4 cards, each with a glyph chip, title, and 2 body paragraphs. Light tinted background (--color-gray-bg) so the section sits visually between white sections.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/Field Service Ops/src/sections-3.jsx (MobileExperience4Cards)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1400",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width mobile section background.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    },
+    {
+      "id": "decorative.callout-band",
+      "category": "12-decorative",
+      "path": "12-decorative/decorative.callout-band",
+      "title": "Decorative · callout band (accent-tinted closing strip)",
+      "description": "Soft accent-tinted closing band — mono eyebrow + one paragraph at 1.0625rem capped at 76ch reading width. Sits at the bottom of SMB / scale / 'where this leads' sections to summarize the takeaway. Subtle outer accent glow + 1 px accent-tinted border. Light theme.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/signature-blocks.jsx (Callout, smb tone)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "decorative.cycle-strip",
+      "category": "12-decorative",
+      "path": "12-decorative/decorative.cycle-strip",
+      "title": "Decorative · cycle strip (this replaces …)",
+      "description": "Small horizontal flow with a label and a series of mono-typed items joined by arrows. Two tones via data-tone: 'warn' (secondary-gradient eyebrow + accent struck-through items, default — used for 'the cycle this replaces' patterns) and 'neutral' (gray eyebrow + plain items — used for positive 'this flows into' patterns). Up to 5 slot items; empty slots auto-hide.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/signature-blocks.jsx (CycleStrip)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "effect.hover-rise",
+      "category": "12-decorative",
+      "path": "12-decorative/effect.hover-rise",
+      "title": "Effect · hover-rise (CTA halo + inner bottom glow)",
+      "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-vertical overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
+      "canonical": true,
+      "theme": "theme-agnostic",
+      "sourceLabel": "servicewand.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "signature.ai-shell",
+      "category": "13-signature",
+      "path": "13-signature/signature.ai-shell",
+      "title": "Signature · AI-shell (stream + side panel + capability cards)",
+      "description": "Hub-page signature AI section. Three stacked layers: eyebrow + H2 + 2 leads on top; a 2-column 'AI shell' (terminal-style activity stream on the left + media placeholder side-panel on the right) in the middle; 3 capability cards (A.NN numbered) at the bottom. Light theme. This is the platform's biggest visual differentiator on the hub landing.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "tmp/landing-template-design/src/kit/signature-blocks.jsx (AiStream + AiSidePanel + AiShell + CapabilityCards)",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": {
+        "optional": true,
+        "default": "none",
+        "modes": [
+          "none",
+          "gradient",
+          "image"
+        ],
+        "role": "decorative section background",
+        "image": {
+          "recommended_size": "2880 × 1600",
+          "fit": "cover",
+          "position": "center",
+          "alt": ""
+        },
+        "gradient": {
+          "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+        },
+        "url_params": {
+          "mode": "bg",
+          "image": "bgImage",
+          "gradient": "bgGradient"
+        },
+        "notes": [
+          "Full-width signature AI section background; separate from the side-panel media slot.",
+          "Background is decorative and must not replace content media slots or block copy.",
+          "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+        ]
+      },
+      "hasJs": false
+    }
+  ]
+};

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lab-ui · live gallery</title>
+<style>
+  :root {
+    --bg: #0E1117;
+    --bg-2: #17171B;
+    --panel: #1d1d22;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(107, 234, 249, 0.55);
+    --text: #D9D9D9;
+    --text-dim: #97A2B8;
+    --text-bright: #fff;
+    --accent: #6BEAF9;
+    --green: #7DDE8E;
+    --orange: #FFA72C;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sans: "Inter", "Manrope", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, .mono { font-family: var(--mono); font-size: 12px; }
+
+  /* ─── App header (sticky toolbar) ─── */
+  header.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  header.app-header h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+  }
+  header.app-header .crumb {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  header.app-header .stats {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    background: rgba(125,222,142,0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .filters {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .filters label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .filters select {
+    font-family: inherit;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  /* Segmented control — used both globally and per-card */
+  .seg {
+    display: inline-flex;
+    padding: 2px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    gap: 2px;
+  }
+  .seg button {
+    background: transparent;
+    border: 0;
+    color: var(--text-dim);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .seg button:hover { color: var(--text); }
+  .seg button.is-active {
+    background: rgba(107,234,249,0.16);
+    color: var(--accent);
+  }
+  .seg button svg {
+    width: 12px; height: 12px;
+    display: block;
+  }
+
+  .back-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .back-link:hover { color: var(--accent); border-color: var(--border-hover); text-decoration: none; }
+
+  /* ─── Main / single-column grid ─── */
+  main {
+    padding: 24px;
+    max-width: 1800px;
+    margin: 0 auto;
+  }
+
+  .group-head {
+    margin: 32px 0 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-head:first-of-type { margin-top: 0; }
+  .group-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .group-name {
+    margin: 0;
+    color: var(--text-bright);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .group-count {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* Single column, full width */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s ease;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card[hidden] { display: none !important; }
+
+  .card-head {
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .card-id {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .card-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: auto;
+  }
+  .card-views {
+    /* per-card segmented control */
+  }
+  .card-scale-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .card-open {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .card-open:hover { color: var(--accent); border-color: var(--border-hover); text-decoration: none; }
+
+  /* ─── Viewport (native size, no scaling) ─── */
+  /* The frame is sized to the native viewport (1440 / 768 / 390).
+     Content renders at 1:1, just like in a real browser of that
+     width — no CSS transform scaling. The frame sits inside a
+     wrapper that centers it and shows the surrounding "stage" so
+     the smaller frames read as device mockups, not as broken layout. */
+  .viewport-wrap {
+    background:
+      radial-gradient(ellipse at top, rgba(255,255,255,0.04), transparent 60%),
+      #0A0B0F;
+    padding: 18px;
+    overflow: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 240px;
+  }
+  .viewport {
+    flex: 0 0 auto;
+    margin-inline: auto;
+    background: #FFFFFF;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px -10px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+  .viewport iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  /* Frame size per view — pure CSS driven by data-view on the card. */
+  .card[data-view="desktop"] .viewport { width: 1440px; height: 800px; }
+  .card[data-view="tablet"]  .viewport { width: 768px;  height: 900px; }
+  .card[data-view="mobile"]  .viewport { width: 390px;  height: 700px; }
+
+  footer.app-foot {
+    padding: 32px 24px;
+    text-align: center;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <h1>lab-ui · live gallery</h1>
+  <span class="crumb">ServiceWand block catalog</span>
+  <span class="stats" id="block-count">— blocks ready</span>
+
+  <div class="filters">
+    <label for="category">Category</label>
+    <select id="category">
+      <option value="all">All categories</option>
+    </select>
+
+    <label>Set all</label>
+    <span class="seg" role="tablist" aria-label="Set all viewports">
+      <button type="button" data-set-all="desktop" title="Set all to Desktop">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="1" y="2.5" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.4"/>
+          <line x1="5" y1="14" x2="11" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        Desktop
+      </button>
+      <button type="button" data-set-all="tablet" title="Set all to Tablet">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="3" y="1.5" width="10" height="13" rx="1.4" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="8" cy="12.5" r="0.7" fill="currentColor"/>
+        </svg>
+        Tablet
+      </button>
+      <button type="button" data-set-all="mobile" title="Set all to Mobile">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="4.5" y="1.5" width="7" height="13" rx="1.2" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="8" cy="12.5" r="0.6" fill="currentColor"/>
+        </svg>
+        Mobile
+      </button>
+    </span>
+
+    <label>Background</label>
+    <span class="seg" role="tablist" aria-label="Preview optional backgrounds">
+      <button type="button" data-set-bg="none" title="No optional section background">None</button>
+      <button type="button" data-set-bg="gradient" title="Preview optional gradient background">Gradient</button>
+      <button type="button" data-set-bg="image" title="Preview optional image background">Image</button>
+    </span>
+
+    <button class="back-link" type="button" id="reload-frames">reload frames</button>
+
+    <a class="back-link" href="./index.html">← index</a>
+  </div>
+</header>
+
+<main id="gallery">
+  <!-- Groups rendered by manifest below -->
+</main>
+
+<footer class="app-foot">
+  lab-ui · iframes rendered live from per-block harness.html · resize the window to re-fit
+</footer>
+
+<script src="./manifest-data.js"></script>
+<script>
+  // ─── Block manifest ───
+  const MANIFEST = window.LAB_UI_MANIFEST;
+  if (!MANIFEST) throw new Error("manifest-data.js did not define window.LAB_UI_MANIFEST");
+
+  const BLOCKS = MANIFEST.blocks.map((block) => ({
+    ...block,
+    cat: block.category,
+    src: block.sourceLabel || "source recorded in block.json",
+  }));
+
+  const CATEGORY_NAMES = Object.fromEntries(
+    MANIFEST.categories.map((category) => [category.id, category.label])
+  );
+
+  const CACHE_TOKEN = new URLSearchParams(window.location.search).get("v") || String(Date.now());
+  let currentBackground = new URLSearchParams(window.location.search).get("bg") || "none";
+  if (!["none", "gradient", "image"].includes(currentBackground)) currentBackground = "none";
+
+  const cacheBust = (url, token = CACHE_TOKEN) =>
+    `${url}${url.includes("?") ? "&" : "?"}v=${encodeURIComponent(token)}`;
+
+  const withBackgroundPreview = (url, block) => {
+    if (!block.background?.optional || currentBackground === "none") return url;
+    const params = new URLSearchParams(window.location.search);
+    const separator = url.includes("?") ? "&" : "?";
+    const out = new URLSearchParams();
+    out.set("bg", currentBackground);
+    if (currentBackground === "image" && params.get("bgImage")) out.set("bgImage", params.get("bgImage"));
+    if (currentBackground === "gradient" && params.get("bgGradient")) out.set("bgGradient", params.get("bgGradient"));
+    return `${url}${separator}${out.toString()}`;
+  };
+
+  const frameSrc = (block, token = CACHE_TOKEN) =>
+    withBackgroundPreview(cacheBust(`./${block.path}/harness.html`, token), block);
+
+  const openHref = (block) =>
+    withBackgroundPreview(`./${block.path}/harness.html`, block);
+
+  // Native viewport sizes. Width matches the actual device width
+  // (1440 desktop / 768 tablet / 390 mobile). Height is "above the
+  // fold" — enough to show what users see when they land on the page.
+  const VIEWS = {
+    desktop: { w: 1440, h: 800 },
+    tablet:  { w: 768,  h: 900 },
+    mobile:  { w: 390,  h: 700 },
+  };
+
+  // ─── Viewport icons (re-used in per-card seg) ───
+  const ICONS = {
+    desktop: '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="2.5" width="14" height="9" rx="1" stroke="currentColor" stroke-width="1.4"/><line x1="5" y1="14" x2="11" y2="14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>',
+    tablet:  '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.4" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="12.5" r="0.7" fill="currentColor"/></svg>',
+    mobile:  '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="4.5" y="1.5" width="7" height="13" rx="1.2" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="12.5" r="0.6" fill="currentColor"/></svg>',
+  };
+
+  // ─── Render ───
+  document.getElementById("block-count").textContent = `${BLOCKS.length} blocks ready`;
+
+  const catSelect = document.getElementById("category");
+  for (const category of MANIFEST.categories) {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.label;
+    catSelect.append(option);
+  }
+
+  const main = document.getElementById("gallery");
+  const grouped = {};
+  for (const b of BLOCKS) {
+    (grouped[b.cat] ??= []).push(b);
+  }
+
+  const sortedCats = Object.keys(grouped).sort();
+  for (const cat of sortedCats) {
+    const groupEl = document.createElement("section");
+    groupEl.className = "group";
+    groupEl.dataset.category = cat;
+
+    const head = document.createElement("header");
+    head.className = "group-head";
+    head.innerHTML = `
+      <span class="group-num">${cat}</span>
+      <h2 class="group-name">${CATEGORY_NAMES[cat] ?? cat}</h2>
+      <span class="group-count">${grouped[cat].length} block${grouped[cat].length === 1 ? "" : "s"}</span>
+    `;
+    groupEl.append(head);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    for (const b of grouped[cat]) {
+      const card = document.createElement("article");
+      card.className = "card";
+      card.dataset.category = b.cat;
+      card.dataset.view = "desktop";
+      card.innerHTML = `
+        <header class="card-head">
+          <span class="card-id">${b.id}</span>
+          <span class="card-meta">${b.theme} · ${b.src}</span>
+          <span class="seg card-views" role="tablist" aria-label="Viewport size">
+            <button type="button" data-card-view="desktop" class="is-active" title="Desktop 1440">${ICONS.desktop}<span class="card-view-w">1440</span></button>
+            <button type="button" data-card-view="tablet" title="Tablet 768">${ICONS.tablet}<span class="card-view-w">768</span></button>
+            <button type="button" data-card-view="mobile" title="Mobile 390">${ICONS.mobile}<span class="card-view-w">390</span></button>
+          </span>
+          <span class="card-scale-label" data-card-dims></span>
+          <a class="card-open" href="${openHref(b)}" target="_blank" rel="noopener">open ↗</a>
+        </header>
+        <div class="viewport-wrap">
+          <div class="viewport">
+            <iframe src="${frameSrc(b)}" data-src="./${b.path}/harness.html" data-block-id="${b.id}" loading="lazy" title="${b.id}"></iframe>
+          </div>
+        </div>
+      `;
+      grid.append(card);
+    }
+    groupEl.append(grid);
+    main.append(groupEl);
+  }
+
+  // ─── Apply view (sync the UI for the chosen view) ───
+  // No scaling math anymore — the frame's actual size is driven by
+  // CSS selectors keyed on .card[data-view="..."]. JS only updates
+  // the active button + the dim label.
+  function applyView(card) {
+    const view = card.dataset.view || "desktop";
+    const { w, h } = VIEWS[view];
+    const label = card.querySelector("[data-card-dims]");
+    if (label) label.textContent = `${w} × ${h}`;
+    card.querySelectorAll("[data-card-view]").forEach((b) =>
+      b.classList.toggle("is-active", b.dataset.cardView === view)
+    );
+  }
+
+  function applyAll() {
+    document.querySelectorAll(".card").forEach(applyView);
+  }
+
+  // ─── Per-card view toggle ───
+  document.querySelectorAll("[data-card-view]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest(".card");
+      if (!card) return;
+      card.dataset.view = btn.dataset.cardView;
+      applyView(card);
+    });
+  });
+
+  // ─── Global "set all to X" ───
+  document.querySelectorAll("[data-set-all]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const view = btn.dataset.setAll;
+      document.querySelectorAll(".card").forEach((card) => {
+        card.dataset.view = view;
+        applyView(card);
+      });
+      document.querySelectorAll("[data-set-all]").forEach((b) =>
+        b.classList.toggle("is-active", b.dataset.setAll === view)
+      );
+    });
+  });
+  // Mark the default Desktop as active on load
+  document.querySelector('[data-set-all="desktop"]').classList.add("is-active");
+
+  const blockById = Object.fromEntries(BLOCKS.map((block) => [block.id, block]));
+
+  function reloadFrames(token = String(Date.now())) {
+    document.querySelectorAll(".card iframe").forEach((frame) => {
+      const block = blockById[frame.dataset.blockId];
+      frame.src = block ? frameSrc(block, token) : cacheBust(frame.dataset.src, token);
+    });
+    document.querySelectorAll(".card-open").forEach((link) => {
+      const card = link.closest(".card");
+      const id = card?.querySelector(".card-id")?.textContent.trim();
+      const block = blockById[id];
+      if (block) link.href = openHref(block);
+    });
+  }
+
+  document.querySelectorAll("[data-set-bg]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      currentBackground = btn.dataset.setBg;
+      document.querySelectorAll("[data-set-bg]").forEach((b) =>
+        b.classList.toggle("is-active", b.dataset.setBg === currentBackground)
+      );
+      reloadFrames();
+    });
+  });
+  document.querySelector(`[data-set-bg="${currentBackground}"]`)?.classList.add("is-active");
+
+  // ─── Category filter ───
+  catSelect.addEventListener("change", () => {
+    const v = catSelect.value;
+    document.querySelectorAll(".group").forEach((g) => {
+      g.hidden = v !== "all" && g.dataset.category !== v;
+    });
+  });
+
+  document.getElementById("reload-frames").addEventListener("click", () => {
+    reloadFrames();
+  });
+
+  // ─── Initial label render ───
+  applyAll();
+</script>
+
+</body>
+</html>

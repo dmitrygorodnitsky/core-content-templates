@@ -1,0 +1,495 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "verticals.glyph-grid-20-slots",
+  "category": "10-verticals-grid",
+  "title": "Verticals grid · photo-card catalog",
+  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Snow Removal ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "/Users/imighty/Downloads/Field Service Ops (2)/src/kit/catalog-compare.jsx (CardCatalog)",
+    "extensibility_pattern": "20 numbered slots with [hidden] spare cards",
+    "decision": "PM lock 2026-05-25 — verticals grid uses Field Service Ops photo-card catalog pattern, not small SVG glyph cards"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--color-gray-second",
+      "--cta-secondary-fill",
+      "--cta-secondary-color",
+      "--cta-accent",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--transition-duration"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1800",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width industries grid background; separate from per-card media slots.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Section 11 · Industries"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field Service Industries ServiceWand Supports"
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Different field service industries often share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination."
+    },
+    {
+      "code": "body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand is designed to support different operational models while allowing industry-specific workflows and processes. For companies researching field service industry software, the key question is whether the platform can adapt to different service models without becoming fragmented."
+    },
+    {
+      "code": "slot_01_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Snow Removal"
+    },
+    {
+      "code": "slot_01_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Route-based dispatch, seasonal crews, weather-triggered service, customer updates, billing, and operational visibility."
+    },
+    {
+      "code": "slot_01_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plow truck / snowy lot at dawn"
+    },
+    {
+      "code": "slot_01_href",
+      "type": "URL",
+      "default": "/snow-removal"
+    },
+    {
+      "code": "slot_02_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "HVAC Service Platform"
+    },
+    {
+      "code": "slot_02_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Technician scheduling, service appointments, recurring maintenance, customer history, invoices, and field documentation."
+    },
+    {
+      "code": "slot_02_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Technician at rooftop unit"
+    },
+    {
+      "code": "slot_02_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_03_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lawn Care Operations"
+    },
+    {
+      "code": "slot_03_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring routes, crew scheduling, customer communication, service notes, and mobile job tracking."
+    },
+    {
+      "code": "slot_03_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Crew with ride-on mower"
+    },
+    {
+      "code": "slot_03_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_04_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plumbing Service"
+    },
+    {
+      "code": "slot_04_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Urgent requests, scheduled jobs, dispatching, estimates, work orders, invoices, and customer records."
+    },
+    {
+      "code": "slot_04_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Tech under sink, tools out"
+    },
+    {
+      "code": "slot_04_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_05_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Electrical Contractor"
+    },
+    {
+      "code": "slot_05_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field teams, service requests, job documentation, customer communication, and billing workflows."
+    },
+    {
+      "code": "slot_05_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Electrician at panel box"
+    },
+    {
+      "code": "slot_05_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_06_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Property Maintenance"
+    },
+    {
+      "code": "slot_06_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring work, inspections, repairs, crews, routes, customer requests, and completion reporting."
+    },
+    {
+      "code": "slot_06_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Tech walking property exterior"
+    },
+    {
+      "code": "slot_06_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_07_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Cleaning Services"
+    },
+    {
+      "code": "slot_07_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring schedules, mobile teams, checklists, customer communication, job tracking, and billing."
+    },
+    {
+      "code": "slot_07_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Cleaning crew in lobby"
+    },
+    {
+      "code": "slot_07_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_08_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Pest Control"
+    },
+    {
+      "code": "slot_08_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring service visits, technician routes, customer communication, inspection notes, treatment records, billing, and reporting."
+    },
+    {
+      "code": "slot_08_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Tech with sprayer, exterior"
+    },
+    {
+      "code": "slot_08_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_09_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Landscaping"
+    },
+    {
+      "code": "slot_09_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Crews, recurring routes, seasonal work, job notes, customer communication, field documentation, and route-based service delivery."
+    },
+    {
+      "code": "slot_09_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Crew planting / hedge work"
+    },
+    {
+      "code": "slot_09_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_10_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Appliance Repair"
+    },
+    {
+      "code": "slot_10_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Service calls, technician schedules, customer history, parts visibility, job notes, invoices, and completion reporting."
+    },
+    {
+      "code": "slot_10_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Tech repairing appliance"
+    },
+    {
+      "code": "slot_10_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_11_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Commercial Services"
+    },
+    {
+      "code": "slot_11_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Multi-site customers, recurring agreements, service teams, documentation, billing workflows, and operational visibility."
+    },
+    {
+      "code": "slot_11_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Service truck at storefront"
+    },
+    {
+      "code": "slot_11_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_12_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Telecom Field Ops"
+    },
+    {
+      "code": "slot_12_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field-based teams, service areas, job assignments, equipment, routing, and operational reporting."
+    },
+    {
+      "code": "slot_12_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lineman at tower / cabinet"
+    },
+    {
+      "code": "slot_12_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_13_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Facility Services"
+    },
+    {
+      "code": "slot_13_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Multi-site work, recurring service, asset records, mobile documentation, and customer-facing workflows."
+    },
+    {
+      "code": "slot_13_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Facility manager walkthrough"
+    },
+    {
+      "code": "slot_13_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_14_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_14_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_14_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_14_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_15_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_15_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_15_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_15_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_16_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_16_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_16_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_16_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_17_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_17_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_17_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_17_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_18_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_18_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_18_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_18_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_19_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_19_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_19_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_19_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "slot_20_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_20_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_20_photo",
+      "type": "LOCALIZED_STRING_SS",
+      "default": ""
+    },
+    {
+      "code": "slot_20_href",
+      "type": "URL",
+      "default": "#"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Empty-title slots are hidden via [hidden] + block.js (covers the case where the slot ships with the {{handlebar}} unfilled).",
+    "Media slots default to neutral striped placeholders with dimension + photo hint. Replace .vertical-photo content with an image when real assets are available.",
+    "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
+    "The 'live' state changes border treatment, photo meta accent, arrow, and Live badge. Apply by adding class 'is-live' to the slot card.",
+    "Coming-soon waitlist CTAs are visual/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal."
+  ]
+}

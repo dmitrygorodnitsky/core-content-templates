@@ -1,0 +1,139 @@
+<!-- lab-ui block · section.axes-grid
+     Multi-axis matrix of scaling dimensions. 6 axes (configurable count via
+     hiding empty slots). Each axis: number + label, full-width tick track,
+     from→to range labels, short body. Used for "how the platform scales
+     along these axes" sections. Light theme. Designer kit AxesGrid.
+-->
+<div class="axes-grid" data-block="section.axes-grid">
+  <article class="axis" data-axis="01">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_1_num}}</span>
+      <span class="axis-label">{{axis_1_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_1_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_1_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_1_body}}</p>
+  </article>
+
+  <article class="axis" data-axis="02">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_2_num}}</span>
+      <span class="axis-label">{{axis_2_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_2_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_2_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_2_body}}</p>
+  </article>
+
+  <article class="axis" data-axis="03">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_3_num}}</span>
+      <span class="axis-label">{{axis_3_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_3_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_3_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_3_body}}</p>
+  </article>
+
+  <article class="axis" data-axis="04">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_4_num}}</span>
+      <span class="axis-label">{{axis_4_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_4_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_4_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_4_body}}</p>
+  </article>
+
+  <article class="axis" data-axis="05">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_5_num}}</span>
+      <span class="axis-label">{{axis_5_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_5_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_5_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_5_body}}</p>
+  </article>
+
+  <article class="axis" data-axis="06">
+    <div class="axis-head">
+      <span class="axis-num">{{axis_label}} {{axis_6_num}}</span>
+      <span class="axis-label">{{axis_6_label}}</span>
+    </div>
+    <div class="axis-track" aria-hidden="true">
+      <span class="axis-tick" style="opacity:0.15"></span>
+      <span class="axis-tick" style="opacity:0.29"></span>
+      <span class="axis-tick" style="opacity:0.43"></span>
+      <span class="axis-tick" style="opacity:0.57"></span>
+      <span class="axis-tick" style="opacity:0.71"></span>
+      <span class="axis-tick" style="opacity:0.85"></span>
+      <span class="axis-tick" style="opacity:1.00"></span>
+    </div>
+    <div class="axis-range">
+      <span class="from">{{axis_6_from}}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="to">{{axis_6_to}}</span>
+    </div>
+    <p class="axis-body">{{axis_6_body}}</p>
+  </article>
+</div>

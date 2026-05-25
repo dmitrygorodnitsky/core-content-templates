@@ -1,0 +1,124 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "header.sw-default",
+  "category": "01-header",
+  "title": "Header · ServiceWand canonical (multi-level)",
+  "description": "Canonical light-theme ServiceWand header. Uses the live servicewand.com header proportions and compact mobile reveal behavior, while extending the nav contract to support link, dropdown, and mega items. Panels open on hover + focus-within on desktop; below 1024px the burger reveals a full-width menu with nested panel links shown inline as indented subitems. Composes cta.btn-primary-ring + language.sw-locale-dropdown. Owns the optional floating breadcrumb chip for non-root pages.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "servicewand.com (live, fetched 2026-05-18)",
+    "adapted_from": "servicewand.com live header proportions and behavior, adapted to lab-ui canonical light theme and restructured to support a unified nav model — every item declares data-kind so link / dropdown / mega all render through the same markup contract.",
+    "decision": "PM lock 2026-05-22 — sw-default = canonical header for all pages (hub + vertical + product). Breadcrumb is now an optional header-owned chip, not a separate block source of truth."
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-heading",
+      "--color-text",
+      "--color-light-card-bg",
+      "--color-gray-blue",
+      "--header-bg",
+      "--header-height",
+      "--container-width",
+      "--container-padding-x",
+      "--backdrop-blur-header",
+      "--transition-duration",
+      "--font-family",
+      "--font-mono"
+    ],
+    "other_blocks": [
+      "cta.btn-primary-ring",
+      "language.sw-locale-dropdown"
+    ]
+  },
+  "params": [
+    { "code": "brand_name", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand" },
+    { "code": "brand_href", "type": "URL", "default": "/" },
+
+    { "code": "item_1_label", "type": "LOCALIZED_STRING_SS", "default": "Platform" },
+    { "code": "item_1_col_1_title", "type": "LOCALIZED_STRING_SS", "default": "Operations" },
+    { "code": "item_1_col_1_link_1_label", "type": "LOCALIZED_STRING_SS", "default": "Scheduling & Dispatch" },
+    { "code": "item_1_col_1_link_1_href",  "type": "URL", "default": "/platform/scheduling" },
+    { "code": "item_1_col_1_link_2_label", "type": "LOCALIZED_STRING_SS", "default": "Mobile Workforce" },
+    { "code": "item_1_col_1_link_2_href",  "type": "URL", "default": "/platform/mobile" },
+    { "code": "item_1_col_1_link_3_label", "type": "LOCALIZED_STRING_SS", "default": "Customer Management" },
+    { "code": "item_1_col_1_link_3_href",  "type": "URL", "default": "/platform/crm" },
+    { "code": "item_1_col_1_link_4_label", "type": "LOCALIZED_STRING_SS", "default": "Billing & Invoicing" },
+    { "code": "item_1_col_1_link_4_href",  "type": "URL", "default": "/platform/billing" },
+    { "code": "item_1_col_2_title", "type": "LOCALIZED_STRING_SS", "default": "Intelligence" },
+    { "code": "item_1_col_2_link_1_label", "type": "LOCALIZED_STRING_SS", "default": "Reporting" },
+    { "code": "item_1_col_2_link_1_href",  "type": "URL", "default": "/platform/reporting" },
+    { "code": "item_1_col_2_link_2_label", "type": "LOCALIZED_STRING_SS", "default": "Automation" },
+    { "code": "item_1_col_2_link_2_href",  "type": "URL", "default": "/platform/automation" },
+    { "code": "item_1_col_2_link_3_label", "type": "LOCALIZED_STRING_SS", "default": "AI Assist" },
+    { "code": "item_1_col_2_link_3_href",  "type": "URL", "default": "/platform/ai" },
+    { "code": "item_1_col_2_link_4_label", "type": "LOCALIZED_STRING_SS", "default": "Customer Portal" },
+    { "code": "item_1_col_2_link_4_href",  "type": "URL", "default": "/platform/portal" },
+
+    { "code": "item_2_label", "type": "LOCALIZED_STRING_SS", "default": "Industries" },
+    { "code": "item_2_col_1_title", "type": "LOCALIZED_STRING_SS", "default": "Outdoor & Seasonal" },
+    { "code": "item_2_col_1_link_1_label", "type": "LOCALIZED_STRING_SS", "default": "Snow Removal" },
+    { "code": "item_2_col_1_link_1_href",  "type": "URL", "default": "/verticals/snow-removal" },
+    { "code": "item_2_col_1_link_2_label", "type": "LOCALIZED_STRING_SS", "default": "Lawn Care" },
+    { "code": "item_2_col_1_link_2_href",  "type": "URL", "default": "/verticals/lawn-care" },
+    { "code": "item_2_col_1_link_3_label", "type": "LOCALIZED_STRING_SS", "default": "Pest Control" },
+    { "code": "item_2_col_1_link_3_href",  "type": "URL", "default": "/verticals/pest-control" },
+    { "code": "item_2_col_1_link_4_label", "type": "LOCALIZED_STRING_SS", "default": "Tree Care" },
+    { "code": "item_2_col_1_link_4_href",  "type": "URL", "default": "/verticals/tree-care" },
+    { "code": "item_2_col_2_title", "type": "LOCALIZED_STRING_SS", "default": "Mechanical & Building" },
+    { "code": "item_2_col_2_link_1_label", "type": "LOCALIZED_STRING_SS", "default": "HVAC" },
+    { "code": "item_2_col_2_link_1_href",  "type": "URL", "default": "/verticals/hvac" },
+    { "code": "item_2_col_2_link_2_label", "type": "LOCALIZED_STRING_SS", "default": "Plumbing" },
+    { "code": "item_2_col_2_link_2_href",  "type": "URL", "default": "/verticals/plumbing" },
+    { "code": "item_2_col_2_link_3_label", "type": "LOCALIZED_STRING_SS", "default": "Electrical" },
+    { "code": "item_2_col_2_link_3_href",  "type": "URL", "default": "/verticals/electrical" },
+    { "code": "item_2_col_2_link_4_label", "type": "LOCALIZED_STRING_SS", "default": "Cleaning" },
+    { "code": "item_2_col_2_link_4_href",  "type": "URL", "default": "/verticals/cleaning" },
+
+    { "code": "item_3_label", "type": "LOCALIZED_STRING_SS", "default": "How It Works" },
+    { "code": "item_3_href",  "type": "URL", "default": "/#features" },
+
+    { "code": "item_4_label", "type": "LOCALIZED_STRING_SS", "default": "Partners" },
+    { "code": "item_4_href",  "type": "URL", "default": "/#partners" },
+
+    { "code": "item_5_label", "type": "LOCALIZED_STRING_SS", "default": "Resources" },
+    { "code": "item_5_link_1_label", "type": "LOCALIZED_STRING_SS", "default": "FAQs" },
+    { "code": "item_5_link_1_href",  "type": "URL", "default": "/#faq" },
+    { "code": "item_5_link_2_label", "type": "LOCALIZED_STRING_SS", "default": "Help Center" },
+    { "code": "item_5_link_2_href",  "type": "URL", "default": "/help" },
+    { "code": "item_5_link_3_label", "type": "LOCALIZED_STRING_SS", "default": "API Docs" },
+    { "code": "item_5_link_3_href",  "type": "URL", "default": "/docs" },
+    { "code": "item_5_link_4_label", "type": "LOCALIZED_STRING_SS", "default": "Status" },
+    { "code": "item_5_link_4_href",  "type": "URL", "default": "https://status.servicewand.com" },
+
+    { "code": "locale_label", "type": "LOCALIZED_STRING_SS", "default": "English" },
+
+    { "code": "cta_label", "type": "LOCALIZED_STRING_SS", "default": "Book Demo" },
+    { "code": "cta_href",  "type": "URL", "default": "request-demo.html" },
+
+    { "code": "breadcrumb_root_label", "type": "LOCALIZED_STRING_SS", "default": "" },
+    { "code": "breadcrumb_root_href", "type": "URL", "default": "/" },
+    { "code": "breadcrumb_mid_1_label", "type": "LOCALIZED_STRING_SS", "default": "" },
+    { "code": "breadcrumb_mid_1_href", "type": "URL", "default": "#" },
+    { "code": "breadcrumb_mid_2_label", "type": "LOCALIZED_STRING_SS", "default": "" },
+    { "code": "breadcrumb_mid_2_href", "type": "URL", "default": "#" },
+    { "code": "breadcrumb_current_label", "type": "LOCALIZED_STRING_SS", "default": "" }
+  ],
+  "preview": {
+    "1440": "preview-1440.png",
+    "390": "preview-390.png"
+  },
+  "notes": [
+    "Nav-item kinds: 'link' (plain), 'dropdown' (single-column panel of links), 'mega' (multi-column panel with section headings). The five default items follow the live ServiceWand header order while extending Platform and Industries into mega-capable items: mega, mega, link, link, dropdown.",
+    "All items are slot-driven. To remove an item, leave its label blank — block.js hides the whole .nav-item via [hidden].",
+    "Mega columns auto-hide if title + all 4 links are empty. Individual mega-links auto-hide if their label is empty.",
+    "Desktop: hover or keyboard focus opens dropdown/mega panels; click-toggle remains available for coarse pointers and narrow iframe debugging, but mobile CSS renders nested panel links inline rather than as accordions.",
+    "Optional breadcrumb is part of this header block. Set breadcrumb_root_label and breadcrumb_current_label to show it; empty mid labels and separators auto-hide.",
+    "Wrap header + breadcrumb in <div class=\"header-host\"> (position: relative) or use body as the positioned host so the breadcrumb can hang from the header's bottom-left edge.",
+    "Below 1024 px the desktop nav collapses and the burger appears. The existing header action row remains visible as Book Demo, two-letter locale selector, and burger. The burger toggles .is-open on .header-host or body, and .is-open reveals a full-width .header-nav below the header with opacity / transform / clip-path animation; height and padding are not animated.",
+    "Below 1024 px the header action row stays visible as Book Demo, two-letter locale selector, and burger. The mobile menu itself contains navigation only.",
+    "Mobile dropdown/mega content is not an accordion: nested links are always visible inside the opened burger menu and are left-aligned with a subitem indent."
+  ]
+}

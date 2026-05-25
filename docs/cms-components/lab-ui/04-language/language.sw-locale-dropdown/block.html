@@ -1,0 +1,40 @@
+<!-- lab-ui block · language.sw-locale-dropdown
+     Locale selector pill + dropdown list.
+     Theme: light canonical (uses --locale-selector-bg + --color-heading).
+     JS: see block.js (toggle + outside-click close + active-locale state).
+     Param contract: see block.json.
+
+     Run-time enhancement (when on a real CMS server):
+       fetch('/core/api/language/active.json') populates .locale-list
+       with [{ code, name }, …]. Falls back to defaults if unreachable.
+-->
+<div class="locale-selector" data-block="language.sw-locale-dropdown">
+  <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="false" data-short-code="EN">
+    <div class="locale-trigger-left">
+      <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+        <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <span class="locale-trigger-label">{{current_label}}</span>
+    </div>
+  </button>
+  <div class="locale-dropdown" role="listbox" aria-label="Select language">
+    <ul class="locale-list">
+      <!-- Default fallback items. JS hydrates from /core/api/language/active.json when available. -->
+      <li class="locale-item is-active" role="option" data-locale="en-US" data-short-code="EN">
+        <span class="locale-item-code" aria-hidden="true">EN</span>
+        <span class="locale-item-label">English (US)</span>
+        <svg class="locale-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </li>
+      <li class="locale-item" role="option" data-locale="fr-CA" data-short-code="FR">
+        <span class="locale-item-code" aria-hidden="true">FR</span>
+        <span class="locale-item-label">Français (CA)</span>
+      </li>
+      <li class="locale-item" role="option" data-locale="es" data-short-code="ES">
+        <span class="locale-item-code" aria-hidden="true">ES</span>
+        <span class="locale-item-label">Español</span>
+      </li>
+    </ul>
+  </div>
+</div>

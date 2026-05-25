@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>comparison.three-col-with-mobile-cards · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=servicewand-matrix">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">comparison.three-col-with-mobile-cards · live</div>
+
+<section class="compare" id="compare" data-block="comparison.three-col-with-mobile-cards">
+  <div class="container">
+    <header class="compare-top">
+      <p class="eyebrow">Comparison</p>
+      <h2 class="compare-title">ServiceWand unifies it all</h2>
+      <p class="compare-lede">From operations to customer experience - seamlessly connected.</p>
+    </header>
+
+    <div class="compare-grid" role="table" aria-label="ServiceWand platform comparison">
+      <div class="compare-head" role="rowgroup">
+        <div class="compare-row compare-row--head" role="row">
+          <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
+          <div class="compare-cell compare-cell--sw compare-cell--head" role="columnheader"><span class="compare-brand"><span>Service</span><strong>Wand</strong></span></div>
+          <div class="compare-cell compare-cell--head" role="columnheader">CRM Systems</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Field Service Tools</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Monitoring Tools</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">CMS &amp; Portals</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">Enterprise Platforms</div>
+        </div>
+      </div>
+
+      <div class="compare-body" role="rowgroup" data-compare-body>
+        <article class="compare-row" role="row" data-compare-slot="01">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Customer &amp; CRM</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="02">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Billing &amp; Revenue</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>enterprise</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="03">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Operations &amp; Workflows</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>unified</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>limited</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>manual config</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>manual config</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>complex</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="04">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Portals &amp; Content</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>integrated</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>add-ons</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="05">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">AI &amp; Intelligence</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>built-in</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="06">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Products, Assets &amp; Inventory</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>unified</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>enterprise</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="07">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Monitoring &amp; Diagnostics</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>native</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span></span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>partial</span></span></div>
+        </article>
+        <article class="compare-row" role="row" data-compare-slot="08">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">Ecosystem &amp; Extensibility</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">ServiceWand</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>modular &amp; scalable</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CRM Systems</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>fragmented</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Field Service Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>niche</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Monitoring Tools</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>limited</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">CMS &amp; Portals</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>limited</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">Enterprise Platforms</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>heavy / complex</span></span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="./block.js?v=mobile-collapse"></script>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "features.card-grid-4",
+  "category": "06-features",
+  "title": "Features · 4-card horizontal grid",
+  "description": "H2 + 3 lede paragraphs + 4 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Unified Platform' / 'What's Inside' framing pattern. 4 fixed slots; collapses to 2 columns at ≤1180px, single column at ≤720px.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid4)",
+    "adapted_from": "v5 dark + v4 light → unified light tokens",
+    "decision": "PM lock 2026-05-21 — 4-card framing pattern = v5 horizontal layout"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-cyan",
+      "--color-white",
+      "--cta-accent",
+      "--cta-secondary-fill",
+      "--cta-secondary-color",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width features section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Unified Platform"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "What ServiceWand Replaces"
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Most service businesses run their operations across 4–6 separate tools that don't speak to each other. ServiceWand replaces the stack with a single connected system."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Each replaced surface keeps its strengths and adds the context the others lacked."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "The result is fewer tabs, fewer copies of the same data, and less context-switching during the day."
+    },
+    {
+      "code": "card_1_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "01"
+    },
+    {
+      "code": "card_1_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scheduling Tool"
+    },
+    {
+      "code": "card_1_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "ServiceWand handles scheduling, dispatch, routes, and recurring service in one calendar."
+    },
+    {
+      "code": "card_1_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Constraint-aware so the calendar respects skills, vehicles, and territories automatically."
+    },
+    {
+      "code": "card_2_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "02"
+    },
+    {
+      "code": "card_2_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Field Mobile App"
+    },
+    {
+      "code": "card_2_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "A full field operations app — not a read-only schedule. Techs complete work, capture, invoice, and update from anywhere."
+    },
+    {
+      "code": "card_2_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Offline-capable so connectivity gaps don't stop the day."
+    },
+    {
+      "code": "card_3_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "03"
+    },
+    {
+      "code": "card_3_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "CRM & Billing"
+    },
+    {
+      "code": "card_3_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Properties, contacts, contracts, invoices, and payments live with the operational data — no separate CRM or billing console."
+    },
+    {
+      "code": "card_3_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Recurring contracts and multi-currency billing handled natively."
+    },
+    {
+      "code": "card_4_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "04"
+    },
+    {
+      "code": "card_4_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reporting & Automation"
+    },
+    {
+      "code": "card_4_p1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Live dashboards, drill-through to underlying work, and rule-based automations."
+    },
+    {
+      "code": "card_4_p2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "AI assists where the data is rich enough to be useful — not just for show."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "4 fixed cards by design. For variable counts use features.accordion-2col-numbered.",
+    "Eyebrow and number badges use --cta-secondary-fill / --cta-secondary-color so this section follows the same palette as secondary CTAs.",
+    "Two breakpoints: 4-col → 2-col at 1180px, 2-col → 1-col at 720px. Avoids the 'card row of 1 hanging' problem.",
+    "Cards are tighter than card-grid-3 (denser typography) since 4 across leaves less width."
+  ]
+}

@@ -1,0 +1,178 @@
+/* lab-ui block · section.stages-list
+   Depends: 00-tokens/tokens.css. Light theme.
+   Adapted from designer styles.css §smb-stages (lines 1097–1217, 1242–1256). */
+
+.stages-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: var(--font-family);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 24px;
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: var(--color-bg);
+  padding: 28px 32px;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.stage:hover {
+  border-color: rgba(0, 0, 0, 0.14);
+  background: var(--color-gray-bg);
+}
+
+/* Left rail (3 px) — opacity ramps up by level, lv4 gets a glow */
+.stage::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--cta-secondary-fill, linear-gradient(180deg, #56422D 0%, #494938 100%));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.stage--lv1::before { opacity: 0.25; }
+.stage--lv2::before { opacity: 0.45; }
+.stage--lv3::before { opacity: 0.7; }
+.stage--lv4::before { opacity: 1; box-shadow: 0 0 24px var(--cta-accent, #6BEAF9); }
+
+.stage-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  padding-right: 24px;
+}
+
+.stage-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.stage-num {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--color-heading);
+  letter-spacing: -0.04em;
+}
+
+.stage-scale {
+  display: flex;
+  gap: 4px;
+  margin-top: auto;
+}
+.stage-tick {
+  width: 28px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(15, 17, 22, 0.09);
+}
+.stage-tick.is-on {
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  box-shadow: 0 0 8px var(--cta-accent, #6BEAF9);
+}
+
+.stage-main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.stage-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.stage-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: clamp(1.125rem, 1.6vw, 1.5625rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.stage-users {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray-blue);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.stage-lead {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-gray-blue);
+  line-height: 1.5;
+  max-width: 56ch;
+}
+
+.stage-caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.stage-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(15, 17, 22, 0.045);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  letter-spacing: -0.005em;
+}
+.stage-chip-plus {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+/* Hide empty chip slots — left as a JS-driven concern; block.js could
+   set [hidden] on empty chips. Manual hide for now via CSS works too. */
+.stage-chip[hidden] { display: none !important; }
+.stage-chip:has(> span:empty:last-child) { display: none; }
+
+@media (max-width: 880px) {
+  .stage { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+  .stage-side {
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+  .stage-num { font-size: 2.5rem; }
+  .stage-scale { margin-top: 0; margin-left: auto; }
+}

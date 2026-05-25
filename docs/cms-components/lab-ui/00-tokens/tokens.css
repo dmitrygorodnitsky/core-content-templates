@@ -1,0 +1,184 @@
+/* ============================================================
+   lab-ui · canonical tokens · light theme
+   ----------------------------------------------------------------
+   Source-of-truth design tokens for the ServiceWand block catalog.
+   Extracted from sw-styles.css (servicewand.com light theme) +
+   additive --font-mono from v5 (JetBrains Mono).
+   ============================================================ */
+
+:root {
+  /* ─── Palette (raw brand colors) ─────────────────────────── */
+  --color-black:        #1B1D25;
+  --color-white:        #FFFFFF;
+  --color-gray:         #BEC5D3;
+  --color-gray-second:  #5C6474;
+  --color-gray-blue:    #97A2B8;
+  --color-gray-light:   #D9D9D9;
+
+  --color-cyan:         #6BEAF9;
+  --color-blue:         #4F95FF;
+  --color-red:          #FF6C56;
+  --color-green:        #7DDE8E;
+  --color-orange:       #FFA72C;
+  --color-magenta:      #EF5CFF;
+
+  --color-black-bg:           #17171B;
+  --color-gray-bg:            #F9F9F9;
+  --color-light-card-bg:      #F7F7F74D;
+  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);
+
+  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);
+  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);
+  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);
+
+  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */
+  --gradient-cta-ring:
+    linear-gradient(250deg,
+      rgba(107, 237, 249, 0)   4.98%,
+      #6bedf9                 37.35%,
+      #ffa72c                 72.51%,
+      rgba(239, 92, 255, 0)   96.41%);
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  --font-family:        "Vela Sans", sans-serif;
+  --font-mono:          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale */
+  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);
+  --type-h1-weight:     500;
+  --type-h1-tracking:   -0.025em;
+  --type-h1-leading:    1.04;
+
+  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);
+  --type-h2-weight:     600;
+  --type-h2-tracking:   -0.022em;
+  --type-h2-leading:    1.15;
+
+  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);
+  --type-h3-weight:     600;
+  --type-h3-tracking:   -0.015em;
+  --type-h3-leading:    1.25;
+
+  --type-h4-size:       1.125rem;
+  --type-h4-weight:     600;
+  --type-h4-tracking:   -0.01em;
+
+  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);
+  --type-lead-weight:   400;
+  --type-lead-leading:  1.5;
+
+  --type-body-size:     1rem;
+  --type-body-leading:  1.55;
+
+  --type-eyebrow-size:  0.8125rem;
+  --type-eyebrow-tracking: 0.12em;
+
+  /* ─── Layout ─────────────────────────────────────────────── */
+  --container-width:     105rem;
+  --container-padding-x: 1.875rem;
+  --header-height:       4.6875rem;
+
+  /* Backdrop blur — header chrome */
+  --backdrop-blur-header:    1.25rem;
+  --backdrop-blur-table:     2.5rem;
+  --backdrop-blur-ecosystem: 5rem;
+
+  /* ─── Radii ──────────────────────────────────────────────── */
+  --radius-pill:    6.25rem;
+  --radius-card:    1.25rem;
+  --radius-card-sm: 0.9375rem;
+
+  /* ─── Motion ─────────────────────────────────────────────── */
+  --transition-duration: 0.4s;
+
+  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */
+  --color-bg:           var(--color-white);
+  --color-bg-invert:    var(--color-black-bg);
+  --color-text:         var(--color-gray-second);
+  --color-heading:      var(--color-black);
+  --color-link:         var(--color-black);
+  --color-link-hover:   var(--color-gray-second);
+
+  --header-bg:          var(--color-light-card-bg);
+  --card-bg:            var(--color-gray-bg);
+  --card-border:        var(--color-light-gray-stroke);
+  --locale-selector-bg: var(--color-gray-bg);
+
+  --button-primary-bg:        transparent;
+  --button-primary-color:     var(--color-black);
+
+  --button-secondary-bg:      transparent;
+  --button-secondary-color:   var(--color-black);
+  --button-secondary-border:  var(--color-black);
+
+  --button-burger-button-bg:  var(--color-black);
+
+  --input-bg:           var(--color-light-card-bg);
+
+  /* ─── CTA · vertical accent system ─────────────────────────
+     --cta-accent is the page-wide interactive accent. It tints:
+       · hover-rise glow (effect.hover-rise)
+       · primary CTA outer hover glow (box-shadow)
+       · secondary CTA always-on halo
+       · italic accent word in hero titles
+     --cta-secondary-fill is the filled background of secondary CTAs.
+     Per-vertical overrides go through [data-vertical="..."] below.   */
+  --cta-accent:          var(--color-cyan);
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border:rgba(255, 255, 255, 0.18);
+}
+
+/* ─── Vertical accent overlays ────────────────────────────────
+   Set on <body data-vertical="..."> or any wrapper. Cascades into
+   every CTA, hover-rise effect, and accent text inside the scope. */
+
+[data-vertical="snow-removal"] {
+  /* Default cyan — kept explicit so authors see the slot exists. */
+  --cta-accent:          #6BEAF9;
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+}
+
+[data-vertical="lawn-care"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);
+}
+
+[data-vertical="hvac"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);
+}
+
+[data-vertical="pest-control"] {
+  --cta-accent:          #FF6C56;
+  --cta-accent-soft:     rgba(255, 108, 86, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);
+}
+
+[data-vertical="tree-care"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);
+}
+
+[data-vertical="plumbing"] {
+  --cta-accent:          #4F95FF;
+  --cta-accent-soft:     rgba(79, 149, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);
+}
+
+[data-vertical="electrical"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);
+}
+
+[data-vertical="cleaning"] {
+  --cta-accent:          #EF5CFF;
+  --cta-accent-soft:     rgba(239, 92, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);
+}

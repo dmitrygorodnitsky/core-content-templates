@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cta.btn-secondary-filled · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="../../12-decorative/effect.hover-rise/block.css">
+<link rel="stylesheet" href="../../03-cta/cta.btn-primary-ring/block.css?v=white-inner-glow-centered-58-78-60">
+<link rel="stylesheet" href="./block.css?v=glow-contract-58-78-60">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 64px 32px;
+    font-family: var(--font-family, "Manrope", sans-serif);
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    gap: 56px;
+    overflow-x: hidden;
+  }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--color-gray-blue);
+  }
+  .stage {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .pair { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; max-width: 100%; }
+  .verticals-grid {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px;
+    width: 100%; max-width: 1100px;
+  }
+  .vert {
+    padding: 24px 18px;
+    border-radius: 16px;
+    background: var(--color-gray-bg);
+    border: 1px solid rgba(0,0,0,0.06);
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+  }
+  .vert-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-gray-blue);
+  }
+  .stage .btn {
+    max-width: 100%;
+  }
+  @media (max-width: 720px) {
+    body {
+      padding: 56px 24px;
+      place-items: stretch;
+    }
+    .pair {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .pair .btn {
+      width: 100%;
+    }
+    .verticals-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .vert .btn {
+      width: 100%;
+    }
+  }
+  @media (max-width: 420px) {
+    body { padding-inline: 20px; }
+    .harness-label {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="harness-label">cta.btn-secondary-filled · default (snow-removal default)</div>
+  <a class="btn btn-secondary btn-secondary-filled" href="#">
+    <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>
+    Explore Platform
+  </a>
+</div>
+
+<div class="stage">
+  <div class="harness-label">paired with primary</div>
+  <div class="pair">
+    <a class="btn btn-primary btn-primary-ring" href="#">
+      <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>
+      Book a Demo
+    </a>
+    <a class="btn btn-secondary btn-secondary-filled" href="#">
+      <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>
+      Explore
+    </a>
+  </div>
+</div>
+
+<div class="stage" style="width: 100%;">
+  <div class="harness-label">vertical-themed pair (4 verticals, hover to see accent shift)</div>
+  <div class="verticals-grid">
+    <div class="vert" data-vertical="snow-removal">
+      <p class="vert-label">snow-removal · cyan</p>
+      <a class="btn btn-secondary btn-secondary-filled" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Snow Removal</a>
+    </div>
+    <div class="vert" data-vertical="lawn-care">
+      <p class="vert-label">lawn-care · green</p>
+      <a class="btn btn-secondary btn-secondary-filled" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Lawn Care</a>
+    </div>
+    <div class="vert" data-vertical="hvac">
+      <p class="vert-label">hvac · orange</p>
+      <a class="btn btn-secondary btn-secondary-filled" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>HVAC</a>
+    </div>
+    <div class="vert" data-vertical="pest-control">
+      <p class="vert-label">pest-control · red</p>
+      <a class="btn btn-secondary btn-secondary-filled" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Pest Control</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

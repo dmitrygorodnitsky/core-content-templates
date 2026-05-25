@@ -1,0 +1,103 @@
+<!-- lab-ui block · features.accordion-2col-numbered
+     15-row 2-col accordion list with F.NN mono badges. Light theme.
+     Multiple-open behavior (no one-open rule — matches v5 design source).
+     JS: see block.js — toggles .is-open per row.
+     Param contract: see block.json.
+-->
+<section class="features features--accordion" id="features" data-block="features.accordion-2col-numbered">
+  <div class="container">
+    <header class="features-top">
+      <div>
+        <p class="eyebrow">{{eyebrow}}</p>
+        <h2 class="features-title">{{title}}</h2>
+      </div>
+      <div class="features-lede">
+        <p>{{lede_1}}</p>
+        <p>{{lede_2}}</p>
+        <p>{{lede_3}}</p>
+      </div>
+    </header>
+
+    <div class="features-list" data-features-list>
+      <div class="features-col" data-feature-col="left">
+        <article class="f-row is-open" data-feature-slot="01"><button class="f-row-head" type="button" aria-expanded="true">
+          <span class="f-num">F.01</span><span class="f-title">{{slot_01_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_01_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="03"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.03</span><span class="f-title">{{slot_03_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_03_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="05"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.05</span><span class="f-title">{{slot_05_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_05_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="07"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.07</span><span class="f-title">{{slot_07_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_07_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="09"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.09</span><span class="f-title">{{slot_09_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_09_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="11"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.11</span><span class="f-title">{{slot_11_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_11_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="13"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.13</span><span class="f-title">{{slot_13_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_13_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="15"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.15</span><span class="f-title">{{slot_15_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_15_body}}</div></div>
+        </article>
+      </div>
+      <div class="features-col" data-feature-col="right">
+        <article class="f-row" data-feature-slot="02"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.02</span><span class="f-title">{{slot_02_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_02_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="04"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.04</span><span class="f-title">{{slot_04_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_04_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="06"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.06</span><span class="f-title">{{slot_06_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_06_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="08"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.08</span><span class="f-title">{{slot_08_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_08_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="10"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.10</span><span class="f-title">{{slot_10_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_10_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="12"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.12</span><span class="f-title">{{slot_12_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_12_body}}</div></div>
+        </article>
+        <article class="f-row" data-feature-slot="14"><button class="f-row-head" type="button" aria-expanded="false">
+          <span class="f-num">F.14</span><span class="f-title">{{slot_14_title}}</span><span class="f-toggle" aria-hidden="true">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span></button><div class="f-body"><div class="f-body-inner">{{slot_14_body}}</div></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cta.btn-primary-ring · lab-ui harness</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="../../12-decorative/effect.hover-rise/block.css">
+<link rel="stylesheet" href="./block.css?v=white-inner-glow-centered-58-78-60">
+
+<style>
+  /* Harness chrome — NOT part of the block. Removed when block is embedded
+     in a real page. */
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 64px 32px;
+    font-family: var(--font-family, "Manrope", sans-serif);
+    background: var(--color-bg, #FFFFFF);
+    color: var(--color-text, #5C6474);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    gap: 48px;
+  }
+  .harness-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-gray-blue, #97A2B8);
+  }
+  .harness-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .harness-stage--dark {
+    padding: 48px;
+    border-radius: 16px;
+    background: var(--color-black-bg, #17171B);
+    color: var(--color-gray-light, #D9D9D9);
+  }
+  .harness-stage--dark .btn-primary { color: var(--color-white, #fff); }
+</style>
+</head>
+<body>
+
+<div class="harness-stage">
+  <div class="harness-label">cta.btn-primary-ring · default</div>
+  <a class="btn btn-primary btn-primary-ring" href="#">
+    <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+      <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+    </svg>
+    Book a Demo
+  </a>
+</div>
+
+<div class="harness-stage harness-stage--dark">
+  <div class="harness-label">cta.btn-primary-ring · on dark surface</div>
+  <a class="btn btn-primary btn-primary-ring" href="#">
+    <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+      <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+    </svg>
+    Book a Demo
+  </a>
+</div>
+
+<div class="harness-stage">
+  <div class="harness-label">cta.btn-primary-ring · vertical-themed (hover for accent glow)</div>
+  <div style="display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;">
+    <div data-vertical="snow-removal" style="text-align:center">
+      <a class="btn btn-primary btn-primary-ring" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Snow</a>
+      <div style="font-family: var(--font-mono); font-size: 10px; margin-top: 8px; color: var(--color-gray-blue); text-transform: uppercase; letter-spacing: 0.12em;">snow · cyan</div>
+    </div>
+    <div data-vertical="lawn-care" style="text-align:center">
+      <a class="btn btn-primary btn-primary-ring" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Lawn</a>
+      <div style="font-family: var(--font-mono); font-size: 10px; margin-top: 8px; color: var(--color-gray-blue); text-transform: uppercase; letter-spacing: 0.12em;">lawn · green</div>
+    </div>
+    <div data-vertical="hvac" style="text-align:center">
+      <a class="btn btn-primary btn-primary-ring" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>HVAC</a>
+      <div style="font-family: var(--font-mono); font-size: 10px; margin-top: 8px; color: var(--color-gray-blue); text-transform: uppercase; letter-spacing: 0.12em;">hvac · orange</div>
+    </div>
+    <div data-vertical="pest-control" style="text-align:center">
+      <a class="btn btn-primary btn-primary-ring" href="#"><svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true"><path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/></svg>Pest</a>
+      <div style="font-family: var(--font-mono); font-size: 10px; margin-top: 8px; color: var(--color-gray-blue); text-transform: uppercase; letter-spacing: 0.12em;">pest · red</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

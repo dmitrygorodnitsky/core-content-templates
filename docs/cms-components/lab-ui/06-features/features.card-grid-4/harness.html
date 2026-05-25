@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>features.card-grid-4 · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css?v=secondary-accent">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">features.card-grid-4 · live</div>
+
+<section class="cards4" data-block="features.card-grid-4">
+  <div class="container">
+    <header class="cards4-top">
+      <div>
+        <p class="eyebrow">Unified Platform</p>
+        <h2 class="cards4-title">What ServiceWand Replaces</h2>
+      </div>
+      <div class="cards4-lede">
+        <p>Most service businesses run their operations across 4–6 separate tools that don't speak to each other. ServiceWand replaces the stack with a single connected system.</p>
+        <p>Each replaced surface keeps its strengths and adds the context the others lacked.</p>
+        <p>The result is fewer tabs, fewer copies of the same data, and less context-switching during the day.</p>
+      </div>
+    </header>
+
+    <div class="cards4-grid">
+      <article class="cards4-card" data-slot="01">
+        <span class="cards4-num">01</span>
+        <h3 class="cards4-card-title">Scheduling Tool</h3>
+        <p class="cards4-card-p">ServiceWand handles scheduling, dispatch, routes, and recurring service in one calendar.</p>
+        <p class="cards4-card-p">Constraint-aware so the calendar respects skills, vehicles, and territories automatically.</p>
+      </article>
+      <article class="cards4-card" data-slot="02">
+        <span class="cards4-num">02</span>
+        <h3 class="cards4-card-title">Field Mobile App</h3>
+        <p class="cards4-card-p">A full field operations app — not a read-only schedule. Techs complete work, capture, invoice, and update from anywhere.</p>
+        <p class="cards4-card-p">Offline-capable so connectivity gaps don't stop the day.</p>
+      </article>
+      <article class="cards4-card" data-slot="03">
+        <span class="cards4-num">03</span>
+        <h3 class="cards4-card-title">CRM &amp; Billing</h3>
+        <p class="cards4-card-p">Properties, contacts, contracts, invoices, and payments live with the operational data — no separate CRM or billing console.</p>
+        <p class="cards4-card-p">Recurring contracts and multi-currency billing handled natively.</p>
+      </article>
+      <article class="cards4-card" data-slot="04">
+        <span class="cards4-num">04</span>
+        <h3 class="cards4-card-title">Reporting &amp; Automation</h3>
+        <p class="cards4-card-p">Live dashboards, drill-through to underlying work, and rule-based automations.</p>
+        <p class="cards4-card-p">AI assists where the data is rich enough to be useful — not just for show.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

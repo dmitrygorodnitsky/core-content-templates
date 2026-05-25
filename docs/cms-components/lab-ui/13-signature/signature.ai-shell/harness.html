@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>signature.ai-shell · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">signature.ai-shell · live</div>
+
+<section class="ai-section" data-block="signature.ai-shell">
+  <div class="container">
+    <header class="ai-top">
+      <p class="eyebrow">AI-Native</p>
+      <h2 class="ai-title">AI-Native Operational Automation</h2>
+      <div class="ai-leads">
+        <p>ServiceWand is designed as an AI-native operational platform, not a traditional field service tool with AI added as an afterthought. AI is most useful when it has access to structured operational data.</p>
+        <p>ServiceWand supports AI-assisted workflows, operational automation, intelligent routing support, and workflow intelligence — built around real operational data, not surface-level chat.</p>
+      </div>
+    </header>
+
+    <div class="ai-shell">
+      <article class="ai-stream">
+        <header class="ai-stream-head">
+          <span class="ai-stream-title"><span class="dot-live" aria-hidden="true"></span>Operational AI · sample activity</span>
+          <span class="ai-stream-meta">agents · 4 active · 11 actions today</span>
+        </header>
+        <div class="ai-stream-body" role="list">
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">10:42</span>
+            <span class="ai-stream-kind">Route</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>Tech 04 idle 28 min; emergency at 1244 Elm flagged urgent.</p>
+              <p class="act"><span class="lead-mark">→</span>Drafted route swap. Tech 04 → 1244 Elm; Tech 11 picks up 03:15 PM tune-up. Waiting on dispatch approval.</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">10:51</span>
+            <span class="ai-stream-kind">Billing</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>WO-8842 marked complete; no invoice generated after 90 min.</p>
+              <p class="act"><span class="lead-mark">→</span>Drafted invoice from WO line items + service agreement. Saved to drafts for the controller's review.</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">11:08</span>
+            <span class="ai-stream-kind">Customer</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>ETA delta on appointment 4421 exceeded SLA window by 18 min.</p>
+              <p class="act"><span class="lead-mark">→</span>Sent customer-facing update with revised window + 'on the way' status. No human follow-up required.</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">11:23</span>
+            <span class="ai-stream-kind">Pattern</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>Asset HV-552 has 3 repeat failures in 60 days.</p>
+              <p class="act"><span class="lead-mark">→</span>Drafted replacement quote with parts + labor estimate. Tagged customer record for review by sales.</p>
+            </div>
+          </div>
+        </div>
+        <footer class="ai-stream-foot"><span>All actions stay reviewable. Nothing leaves the platform until your team confirms.</span></footer>
+      </article>
+
+      <aside class="ai-side-panel">
+        <div class="ai-media-placeholder" data-ai-media-slot aria-hidden="true">
+          <span>420 × 260</span>
+          <span>AI workflow screenshot / assistant panel</span>
+        </div>
+        <h3 class="ai-side-heading">One operational model. Every domain feeds it.</h3>
+        <ul class="ai-feeds">
+          <li><span class="mono tag">Jobs</span><span>Status, type, history, completion notes — written by techs in the field.</span></li>
+          <li><span class="mono tag">Routes</span><span>Live position, load, ETA delta, vehicle and crew assignment.</span></li>
+          <li><span class="mono tag">Customers</span><span>Properties, contracts, recurring service, communication history.</span></li>
+          <li><span class="mono tag">Billing</span><span>Invoices, payments, recurring agreements, payment lifecycle state.</span></li>
+          <li><span class="mono tag">Assets</span><span>Equipment records, service history, repeat-failure detection.</span></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="ai-caps">
+      <article class="ai-cap">
+        <span class="ai-cap-num">A.01</span>
+        <h3 class="ai-cap-title">Draft &amp; Reviewable</h3>
+        <p>AI proposes; humans approve. Every action lands in a draft surface — dispatch, billing, customer comms — until a team member confirms.</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">A.02</span>
+        <h3 class="ai-cap-title">Operational Data, Not Chat</h3>
+        <p>AI reads jobs, routes, customers, assets, and billing as one model. Patterns surface across domains, not inside a single chat window.</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">A.03</span>
+        <h3 class="ai-cap-title">Audit Trail by Default</h3>
+        <p>Every AI decision is logged with the trigger, the data it saw, and what your team did with it. Compliance, training, and trust come from the same record.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "effect.hover-rise",
+  "category": "12-decorative",
+  "title": "Effect · hover-rise (CTA halo + inner bottom glow)",
+  "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-vertical overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
+  "canonical": true,
+  "theme": "theme-agnostic",
+  "source": {
+    "primary": "servicewand.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
+    "adapted_from": "Reproduced as pure CSS gradient — no external image. Generalized to a set of brand selectors + opt-in attribute so the same effect applies to nav links, locale, breadcrumb, and any custom enrolled element. Updated to match the 2026-05-25 CTA glow contract.",
+    "decision": "PM lock 2026-05-22 — hover-rise is a brand-level interaction primitive (not button-specific). One CSS file, broad selector list, tint via --cta-accent."
+  },
+  "depends_on": {
+    "tokens": [
+      "--cta-accent",
+      "--transition-duration"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    { "code": "fx_rise_color_override", "type": "LOCALIZED_STRING_SS", "default": "" }
+  ],
+  "preview": {
+    "1440": "preview-1440.png",
+    "390": "preview-390.png"
+  },
+  "notes": [
+    "Auto-applied selectors: .btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link. Their host blocks list effect.hover-rise in depends_on.other_blocks so a CMS generator knows to import this CSS whenever any of those appear on the page.",
+    "Opt-in: add data-fx=\"rise\" to any custom interactive element to enroll it. The element must be position: relative (the rule sets it explicitly via :where() so it works automatically).",
+    "Tint: --fx-rise-color > --cta-accent > #6BEAF9 (fallback chain). Set --fx-rise-color on a specific element to override per-element; set --cta-accent on a section/page to re-theme everything inside it.",
+    "Stacking: the ::after sits at z-index 1 inside the host. Host's direct children are bumped to z-index 2 so the effect stays behind content. Host gets overflow: hidden to keep the glow contained. Outer halo uses box-shadow 0 0 32px -4px.",
+    "Accessibility: activates on :focus-visible too, so keyboard users see the same affordance. Reduced-motion removes the opacity transition but keeps the effect.",
+    "The hover opacity caps at 0.48 to match the canonical CTA inner glow. Adjust per-element with .my-class::after { opacity: ... } if needed."
+  ]
+}

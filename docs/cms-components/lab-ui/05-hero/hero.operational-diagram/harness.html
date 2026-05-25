@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hero.operational-diagram · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="../../12-decorative/effect.hover-rise/block.css">
+<link rel="stylesheet" href="../../03-cta/cta.btn-primary-ring/block.css?v=white-inner-glow-centered-58-78-60">
+<link rel="stylesheet" href="../../03-cta/cta.btn-secondary-filled/block.css">
+<link rel="stylesheet" href="./block.css?v=tall-sticky-placeholder">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">hero.operational-diagram · live</div>
+
+<section class="hero hero--diagram" id="hero">
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span>Field Service</span>
+        <span class="crumb-sep">/</span>
+        <span class="crumb-cur">Operations Hub</span>
+      </div>
+      <h1 class="hero-title">
+        Field Service Software<br/>
+        for <span class="accent">Intelligent</span><br/>
+        Field Service Operations
+      </h1>
+      <div class="hero-leads">
+        <p>Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day.</p>
+        <p>ServiceWand is field service software built for service businesses that need more than a basic scheduling app. It connects scheduling, dispatching, routing, mobile workforce operations, customer management, billing, reporting, automation, and AI-assisted workflows in one operational platform.</p>
+        <p>Whether your business manages seasonal crews, recurring service routes, emergency dispatch, multi-location teams, or complex customer workflows, ServiceWand helps create a connected operating environment for the office, field, and customer experience.</p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-primary-ring" href="#cta">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          Book a Demo
+        </a>
+        <a class="btn btn-secondary btn-secondary-filled" href="#features">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          Explore Platform
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-media-placeholder" data-screenshot-slot>
+        <div class="hero-media-surface">
+          <div class="hero-placeholder-copy">
+            <span>520 × 650</span>
+            <span>Product screenshot / operational view</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

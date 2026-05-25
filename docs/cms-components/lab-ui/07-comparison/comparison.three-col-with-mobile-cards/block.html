@@ -1,0 +1,111 @@
+<!-- lab-ui block · comparison.three-col-with-mobile-cards
+     ServiceWand comparison matrix.
+     Desktop = ServiceWand.com-style wide matrix. <= 860px = stacked cards.
+-->
+<section class="compare" id="compare" data-block="comparison.three-col-with-mobile-cards">
+  <div class="container">
+    <header class="compare-top">
+      <p class="eyebrow">{{eyebrow}}</p>
+      <h2 class="compare-title">{{title}}</h2>
+      <p class="compare-lede">{{lede}}</p>
+    </header>
+
+    <div class="compare-grid" role="table" aria-label="ServiceWand platform comparison">
+      <div class="compare-head" role="rowgroup">
+        <div class="compare-row compare-row--head" role="row">
+          <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
+          <div class="compare-cell compare-cell--sw compare-cell--head" role="columnheader">
+            <span class="compare-brand"><span>{{col_sw_service}}</span><strong>{{col_sw_wand}}</strong></span>
+          </div>
+          <div class="compare-cell compare-cell--head" role="columnheader">{{col_crm_name}}</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">{{col_field_name}}</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">{{col_monitoring_name}}</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">{{col_cms_name}}</div>
+          <div class="compare-cell compare-cell--head" role="columnheader">{{col_enterprise_name}}</div>
+        </div>
+      </div>
+
+      <div class="compare-body" role="rowgroup" data-compare-body>
+        <article class="compare-row" role="row" data-compare-slot="01">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_01_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_01_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="02">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_02_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_02_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="03">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_03_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_03_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="04">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_04_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_04_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="05">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_05_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_05_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="06">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_06_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_06_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="07">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_07_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--no"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_07_enterprise}}</span></span></div>
+        </article>
+
+        <article class="compare-row" role="row" data-compare-slot="08">
+          <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">{{slot_08_capability}}</span></div>
+          <div class="compare-cell compare-cell--sw" role="cell"><span class="compare-mobile-label">{{col_sw_name}}</span><span class="compare-status compare-status--yes"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_sw}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_crm_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_crm}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_field_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_field}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_monitoring_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_monitoring}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_cms_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_cms}}</span></span></div>
+          <div class="compare-cell" role="cell"><span class="compare-mobile-label">{{col_enterprise_name}}</span><span class="compare-status compare-status--partial"><span class="compare-icon" aria-hidden="true"></span><span>{{slot_08_enterprise}}</span></span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

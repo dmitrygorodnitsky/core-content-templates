@@ -1,0 +1,41 @@
+<!-- lab-ui block · features.card-grid-3
+     H2 + 3 ledes + 3 horizontal cards. Each card: mono number badge,
+     title, two body paragraphs. Light theme. Used for "Connected
+     Operations" / "How ServiceWand Works" framing sections.
+-->
+<section class="cards3" id="cards3" data-block="features.card-grid-3">
+  <div class="container">
+    <header class="cards3-top">
+      <div>
+        <p class="eyebrow">{{eyebrow}}</p>
+        <h2 class="cards3-title">{{title}}</h2>
+      </div>
+      <div class="cards3-lede">
+        <p>{{lede_1}}</p>
+        <p>{{lede_2}}</p>
+        <p>{{lede_3}}</p>
+      </div>
+    </header>
+
+    <div class="cards3-grid">
+      <article class="cards3-card" data-slot="01">
+        <span class="cards3-num">{{card_1_num}}</span>
+        <h3 class="cards3-card-title">{{card_1_title}}</h3>
+        <p class="cards3-card-p">{{card_1_p1}}</p>
+        <p class="cards3-card-p">{{card_1_p2}}</p>
+      </article>
+      <article class="cards3-card" data-slot="02">
+        <span class="cards3-num">{{card_2_num}}</span>
+        <h3 class="cards3-card-title">{{card_2_title}}</h3>
+        <p class="cards3-card-p">{{card_2_p1}}</p>
+        <p class="cards3-card-p">{{card_2_p2}}</p>
+      </article>
+      <article class="cards3-card" data-slot="03">
+        <span class="cards3-num">{{card_3_num}}</span>
+        <h3 class="cards3-card-title">{{card_3_title}}</h3>
+        <p class="cards3-card-p">{{card_3_p1}}</p>
+        <p class="cards3-card-p">{{card_3_p2}}</p>
+      </article>
+    </div>
+  </div>
+</section>

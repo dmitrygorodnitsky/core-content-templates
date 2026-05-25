@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>effect.hover-rise · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); padding: 40px var(--container-padding-x); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue); margin-bottom: 28px;
+  }
+  h3 {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    margin: 32px 0 12px;
+  }
+  .row {
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+    padding: 24px; background: var(--color-gray-bg);
+    border-radius: 16px;
+    min-width: 0;
+  }
+  .row.dark { background: var(--color-black-bg); color: var(--color-white); }
+
+  /* Stand-in primitives, just for the harness. The real blocks
+     ship their own CSS — here we only need shapes to show the effect. */
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .bc-link,
+  .custom-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--color-heading);
+    background: var(--color-bg);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-primary-ring { background: var(--color-black-bg); color: var(--color-white); }
+  .btn-secondary-filled { background: var(--cta-secondary-fill); color: var(--cta-secondary-color); border-color: var(--cta-secondary-border); }
+  .nav-link { height: 36px; padding: 0 14px; background: transparent; border-color: transparent; }
+  .bc-link { height: 32px; padding: 0 12px; font-size: 0.8125rem; }
+  .custom-pill { background: var(--color-bg); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); gap: 14px; }
+  .vert {
+    padding: 18px;
+    border-radius: 14px;
+    background: var(--color-bg);
+    border: 1px solid rgba(0,0,0,0.06);
+    text-align: center;
+  }
+  .vert-label {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--color-gray-blue);
+    margin-bottom: 10px;
+  }
+  .vert .btn-primary-ring { display: inline-flex; }
+  @media (max-width: 560px) {
+    body { padding-inline: 18px; }
+    .row { padding: 18px; }
+    .btn-primary-ring,
+    .btn-secondary-filled,
+    .nav-link,
+    .bc-link,
+    .custom-pill {
+      max-width: 100%;
+      min-height: 44px;
+      height: auto;
+      white-space: normal;
+      text-align: center;
+      padding-block: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">effect.hover-rise · live (hover or focus any element to see the glow)</div>
+
+<h3>Auto-applied selectors (no markup change needed)</h3>
+<div class="row">
+  <a class="btn-primary-ring">Primary ring</a>
+  <a class="btn-secondary-filled">Secondary filled</a>
+  <a class="nav-link">Nav link</a>
+  <a class="bc-link">Breadcrumb link</a>
+</div>
+
+<h3>Opt-in via data-fx="rise"</h3>
+<div class="row">
+  <button class="custom-pill" data-fx="rise">Custom button</button>
+  <button class="custom-pill" data-fx="rise" style="--fx-rise-color: #FFA72C;">Per-element tint (orange)</button>
+  <a class="custom-pill" data-fx="rise" style="--fx-rise-color: #EF5CFF;">Magenta tint</a>
+</div>
+
+<h3>Vertical-themed (page-level via [data-vertical])</h3>
+<div class="grid">
+  <div class="vert" data-vertical="snow-removal">
+    <p class="vert-label">snow-removal · cyan</p>
+    <a class="btn-primary-ring">Hover me</a>
+  </div>
+  <div class="vert" data-vertical="lawn-care">
+    <p class="vert-label">lawn-care · green</p>
+    <a class="btn-primary-ring">Hover me</a>
+  </div>
+  <div class="vert" data-vertical="hvac">
+    <p class="vert-label">hvac · orange</p>
+    <a class="btn-primary-ring">Hover me</a>
+  </div>
+  <div class="vert" data-vertical="pest-control">
+    <p class="vert-label">pest-control · red</p>
+    <a class="btn-primary-ring">Hover me</a>
+  </div>
+</div>
+
+</body>
+</html>

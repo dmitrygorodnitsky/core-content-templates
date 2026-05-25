@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>faq.bubble-light-grouped · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">faq.bubble-light-grouped · live</div>
+
+<section class="faq" id="faq" data-block="faq.bubble-light-grouped">
+  <div class="container">
+    <header class="faq-top">
+      <p class="eyebrow">Frequently Asked</p>
+      <h2 class="faq-title">ServiceWand FAQ</h2>
+      <p class="faq-lede">Common questions from field service businesses evaluating ServiceWand — grouped by what you're trying to learn.</p>
+    </header>
+
+    <div class="faq-groups">
+      <article class="faq-group" data-faq-group="01">
+        <header class="faq-group-head">
+          <span class="faq-group-num">G.01</span>
+          <h3 class="faq-group-title">Platform overview</h3>
+        </header>
+        <div class="faq-group-body">
+          <details class="faq-item is-open" data-faq-slot="01-01" open>
+            <summary class="faq-q"><span class="faq-q-text">What is ServiceWand?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">ServiceWand is an operational platform for field service businesses. It connects scheduling, dispatching, mobile workforce operations, customer management, billing, reporting, and automation in one system rather than stitching together separate apps.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="01-02">
+            <summary class="faq-q"><span class="faq-q-text">Who is it built for?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Service businesses that run crews, routes, recurring service, multi-location operations, and field teams — and need the office, the field, and the customer to stay connected.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="01-03">
+            <summary class="faq-q"><span class="faq-q-text">How is it different from a scheduling app?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Scheduling is one of many connected workflows. ServiceWand treats scheduling, dispatch, mobile, billing, reporting, and automation as one operational system instead of separate tools that need glue.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="01-04">
+            <summary class="faq-q"><span class="faq-q-text">Is it built for service businesses specifically?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes — the data model is service-first (properties, contracts, recurring routes, work orders, technicians) rather than generic CRM bolted onto a calendar.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="01-05">
+            <summary class="faq-q"><span class="faq-q-text">Does it work for multi-location operations?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Native multi-location, territories, branches, and crews. Permissions and reporting follow the structure of your business automatically.</div>
+          </details>
+        </div>
+      </article>
+
+      <article class="faq-group" data-faq-group="02">
+        <header class="faq-group-head">
+          <span class="faq-group-num">G.02</span>
+          <h3 class="faq-group-title">Operations</h3>
+        </header>
+        <div class="faq-group-body">
+          <details class="faq-item is-open" data-faq-slot="02-01" open>
+            <summary class="faq-q"><span class="faq-q-text">How does scheduling work?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Constraint-aware scheduling that respects skills, vehicles, territories, time windows, and recurring work. Dispatchers can adjust manually; the system optimizes around constraints rather than ignoring them.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="02-02">
+            <summary class="faq-q"><span class="faq-q-text">Does the mobile app work offline?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes. Techs can view, complete, and update work without connectivity. Changes sync automatically when the device comes back online.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="02-03">
+            <summary class="faq-q"><span class="faq-q-text">Can it handle recurring routes and seasonal work?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Recurring service, seasonal routes, and annual contracts are modeled natively. Jobs, invoices, and renewals are generated on schedule without manual duplication.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="02-04">
+            <summary class="faq-q"><span class="faq-q-text">How do customers see what's happening?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">The customer portal shows upcoming visits, invoices, contracts, and service history — plus self-serve approvals and payments.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="02-05">
+            <summary class="faq-q"><span class="faq-q-text">Does it support emergency dispatch?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes. Emergency work integrates with the regular schedule so existing routes adjust around urgent jobs instead of breaking your day.</div>
+          </details>
+        </div>
+      </article>
+
+      <article class="faq-group" data-faq-group="03">
+        <header class="faq-group-head">
+          <span class="faq-group-num">G.03</span>
+          <h3 class="faq-group-title">Billing &amp; plans</h3>
+        </header>
+        <div class="faq-group-body">
+          <details class="faq-item is-open" data-faq-slot="03-01" open>
+            <summary class="faq-q"><span class="faq-q-text">How does billing work?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Invoicing is built in. Bills generate from completed work, contracts, or material usage. Tax, multi-currency, and partial-payment workflows are handled in the same place as the operations data.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="03-02">
+            <summary class="faq-q"><span class="faq-q-text">Can I send estimates and quotes?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes. Branded estimates can be sent from the field or the office. Approved quotes convert into jobs without re-entry.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="03-03">
+            <summary class="faq-q"><span class="faq-q-text">What does pricing look like?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Pricing is per-seat with bundled platform features. Talk to us for a configuration matched to your team size, locations, and modules.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="03-04">
+            <summary class="faq-q"><span class="faq-q-text">Is there a free trial?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Guided trials are available for qualified service businesses. A trial covers your real workflows so you evaluate the platform on operational fit rather than a demo dataset.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="03-05">
+            <summary class="faq-q"><span class="faq-q-text">Does it integrate with accounting?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes — common accounting and payment systems connect directly so invoices, payments, and reconciliations stay in sync without manual export.</div>
+          </details>
+        </div>
+      </article>
+
+      <article class="faq-group" data-faq-group="04">
+        <header class="faq-group-head">
+          <span class="faq-group-num">G.04</span>
+          <h3 class="faq-group-title">Implementation &amp; support</h3>
+        </header>
+        <div class="faq-group-body">
+          <details class="faq-item is-open" data-faq-slot="04-01" open>
+            <summary class="faq-q"><span class="faq-q-text">How long does it take to get set up?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Most service businesses get core operations running in 2–6 weeks, depending on existing data and the workflows you bring in. We run guided onboarding rather than tossing you the keys.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="04-02">
+            <summary class="faq-q"><span class="faq-q-text">Can I migrate from my current system?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Yes. Customer, property, contract, recurring service, and historical job data can all be migrated from common FSM tools and spreadsheets.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="04-03">
+            <summary class="faq-q"><span class="faq-q-text">What does support look like?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Real humans, knowledgeable about field service operations, available across channels. Higher tiers include a named operational partner.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="04-04">
+            <summary class="faq-q"><span class="faq-q-text">Is my data secure?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">Granular role and territory permissions, SSO, audit log, and standard cloud security practices. Each user only sees what their role and territory permit.</div>
+          </details>
+          <details class="faq-item" data-faq-slot="04-05">
+            <summary class="faq-q"><span class="faq-q-text">Where is ServiceWand based?</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+            <div class="faq-a">ServiceWand Inc. is registered in Wyoming, USA, with offices in Canada and the EU.</div>
+          </details>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="./block.js"></script>
+
+</body>
+</html>

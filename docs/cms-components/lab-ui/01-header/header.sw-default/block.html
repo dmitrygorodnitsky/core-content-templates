@@ -1,0 +1,157 @@
+<!-- lab-ui block · header.sw-default
+     Canonical header for ALL ServiceWand pages.
+     Brand + multi-level nav + locale + ring CTA + burger.
+     Each nav item declares its kind via data-kind:
+       link     · plain anchor                                        (Pricing, Customers, ...)
+       dropdown · single-column panel of links                         (Resources)
+       mega     · multi-column panel with section headings + links     (Platform, Verticals)
+     One renderer / one CSS file handles all three.
+     Light theme (sw tokens).
+     Composes: cta.btn-primary-ring + language.sw-locale-dropdown.
+     Optional breadcrumb chip is owned here so header + breadcrumb stay
+     a single source of truth.
+-->
+<header class="header header--default" role="banner" data-block="header.sw-default">
+  <div class="container">
+    <div class="header-inner">
+
+      <a class="header-logo" href="{{brand_href}}" aria-label="ServiceWand">
+        <svg viewBox="0 0 33 31" width="22" height="22" fill="none" aria-hidden="true">
+          <path d="M25.6 1.7l1.9 4.7 4.8 1.9-4.8 1.9-1.9 4.7-1.9-4.7L19 8.3l4.8-1.9 1.9-4.7zM8.3 0l2.3 5.9 6 2.3-6 2.3L8.3 16.5 5.9 10.6 0 8.3l5.9-2.3L8.3 0zM25.6 17.5l1.4 3.6 3.7 1.4-3.7 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4 1.4-3.6zM20.4 13.5c.2.2.3.4.3.7s-.1.5-.3.7c-.2.3-.4.5-.7.8-2 2.3-3.9 4.7-6 6.9-2.1 2.2-4.3 4.4-6.4 6.6-.2.2-.5.5-.7.7-.4.4-.8.6-1.3.6-.5 0-1-.2-1.3-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.3.3-.2.5-.5.8-.7C7 24.4 9.1 22.2 11.3 20.1c2.2-2.1 4.6-4 6.9-6 .3-.2.5-.4.8-.6.2-.2.5-.3.7-.3.3 0 .5.1.7.3z" fill="currentColor"/>
+        </svg>
+        <span class="header-logo-text">{{brand_name}}</span>
+      </a>
+
+      <nav class="header-nav" aria-label="Primary" data-nav>
+        <!--
+          Each <li> declares its kind. CMS generator emits the right
+          inner markup based on the kind. Unfilled slots auto-hide.
+
+          item kinds:
+            link      · single <a class="nav-link">
+            dropdown  · trigger + <ul class="nav-panel nav-panel--list">
+            mega      · trigger + <div class="nav-panel nav-panel--mega"> with <section> columns
+        -->
+
+        <!-- 1 · MEGA — Platform -->
+        <div class="nav-item" data-kind="mega" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            {{item_1_label}}
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="nav-panel nav-panel--mega" role="menu">
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">{{item_1_col_1_title}}</h4>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_1_link_1_href}}">{{item_1_col_1_link_1_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_1_link_2_href}}">{{item_1_col_1_link_2_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_1_link_3_href}}">{{item_1_col_1_link_3_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_1_link_4_href}}">{{item_1_col_1_link_4_label}}</a>
+            </section>
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">{{item_1_col_2_title}}</h4>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_2_link_1_href}}">{{item_1_col_2_link_1_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_2_link_2_href}}">{{item_1_col_2_link_2_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_2_link_3_href}}">{{item_1_col_2_link_3_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_1_col_2_link_4_href}}">{{item_1_col_2_link_4_label}}</a>
+            </section>
+          </div>
+        </div>
+
+        <!-- 2 · MEGA — Industries -->
+        <div class="nav-item" data-kind="mega" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            {{item_2_label}}
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="nav-panel nav-panel--mega" role="menu">
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">{{item_2_col_1_title}}</h4>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_1_link_1_href}}">{{item_2_col_1_link_1_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_1_link_2_href}}">{{item_2_col_1_link_2_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_1_link_3_href}}">{{item_2_col_1_link_3_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_1_link_4_href}}">{{item_2_col_1_link_4_label}}</a>
+            </section>
+            <section class="nav-mega-col">
+              <h4 class="nav-mega-title">{{item_2_col_2_title}}</h4>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_2_link_1_href}}">{{item_2_col_2_link_1_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_2_link_2_href}}">{{item_2_col_2_link_2_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_2_link_3_href}}">{{item_2_col_2_link_3_label}}</a>
+              <a class="nav-mega-link" role="menuitem" href="{{item_2_col_2_link_4_href}}">{{item_2_col_2_link_4_label}}</a>
+            </section>
+          </div>
+        </div>
+
+        <!-- 3 · LINK — How It Works -->
+        <div class="nav-item" data-kind="link" data-nav-item>
+          <a class="nav-link" href="{{item_3_href}}">{{item_3_label}}</a>
+        </div>
+
+        <!-- 4 · LINK — Partners -->
+        <div class="nav-item" data-kind="link" data-nav-item>
+          <a class="nav-link" href="{{item_4_href}}">{{item_4_label}}</a>
+        </div>
+
+        <!-- 5 · DROPDOWN — Resources -->
+        <div class="nav-item" data-kind="dropdown" data-nav-item>
+          <button class="nav-link nav-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+            {{item_5_label}}
+            <svg class="nav-chev" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <ul class="nav-panel nav-panel--list" role="menu">
+            <li><a class="nav-list-link" role="menuitem" href="{{item_5_link_1_href}}">{{item_5_link_1_label}}</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="{{item_5_link_2_href}}">{{item_5_link_2_label}}</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="{{item_5_link_3_href}}">{{item_5_link_3_label}}</a></li>
+            <li><a class="nav-list-link" role="menuitem" href="{{item_5_link_4_href}}">{{item_5_link_4_label}}</a></li>
+          </ul>
+        </div>
+
+      </nav>
+
+      <div class="header-actions">
+        <!-- Slot: locale (block: language.sw-locale-dropdown) -->
+        <div class="locale-selector" data-block="language.sw-locale-dropdown">
+          <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="false">
+            <div class="locale-trigger-left">
+              <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+                <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span class="locale-trigger-label">{{locale_label}}</span>
+            </div>
+          </button>
+          <div class="locale-dropdown" role="listbox" aria-label="Select language">
+            <ul class="locale-list"></ul>
+          </div>
+        </div>
+
+        <!-- Slot: primary CTA (block: cta.btn-primary-ring) -->
+        <a class="btn btn-primary btn-primary-ring header-cta" href="{{cta_href}}">
+          <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+            <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+          </svg>
+          {{cta_label}}
+        </a>
+
+        <button class="burger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<div class="bc-chip" data-block="header.sw-default-breadcrumb" role="navigation" aria-label="Breadcrumb">
+  <a class="bc-link bc-root" href="{{breadcrumb_root_href}}">{{breadcrumb_root_label}}</a>
+  <span class="bc-sep" data-sep-for="mid_1" aria-hidden="true">&gt;</span>
+  <a class="bc-link" data-mid="1" href="{{breadcrumb_mid_1_href}}">{{breadcrumb_mid_1_label}}</a>
+  <span class="bc-sep" data-sep-for="mid_2" aria-hidden="true">&gt;</span>
+  <a class="bc-link" data-mid="2" href="{{breadcrumb_mid_2_href}}">{{breadcrumb_mid_2_label}}</a>
+  <span class="bc-sep" data-sep-for="current" aria-hidden="true">&gt;</span>
+  <span class="bc-current" aria-current="page">{{breadcrumb_current_label}}</span>
+</div>

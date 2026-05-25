@@ -1,0 +1,144 @@
+/* ============================================================
+   lab-ui block · effect.hover-rise
+   ----------------------------------------------------------------
+   Brand interaction primitive — standard CTA halo + inner bottom-glow
+   that fades in on :hover. Applied via CSS, no markup.
+
+   ## Where it auto-applies (brand primitives)
+   - .btn-primary-ring          (cta.btn-primary-ring)
+   - .btn-secondary-filled      (cta.btn-secondary-filled)
+   - .nav-link, .nav-trigger    (header.sw-default nav items)
+   - .locale-trigger            (language.sw-locale-dropdown)
+   - .bc-link                   (header.sw-default breadcrumb)
+
+   ## Opt-in for custom elements
+   - [data-fx="rise"]
+
+   ## Tint
+   Default uses --cta-accent (which is --color-cyan by default and
+   re-themed via [data-vertical="..."] overlays). Override per element
+   via --fx-rise-color: <color>.
+
+   ## Implementation
+   Each target element gets a ::after pseudo with the canonical
+   bottom-centered radial glow used by current CTA blocks, plus an
+   outer hover halo via box-shadow. No external image asset.
+
+   ## Stacking
+   Container must be position:relative (or rely on the host block
+   making itself relative — all brand-primitive blocks already do).
+   The ::after is z-index:1 with pointer-events:none so it never
+   blocks interaction.
+   ============================================================ */
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-duration, 0.25s) ease;
+
+  /* Canonical inner glow: same bottom-centered radial used by
+     cta.btn-primary-ring and cta.btn-secondary-filled. */
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--fx-rise-color, var(--cta-accent, #6BEAF9)) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: normal;
+  filter: none;
+}
+
+/* Activate on hover + on keyboard focus-visible (a11y). */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):is(:hover, :focus-visible)::after {
+  opacity: 0.48;
+}
+
+/* Brand-primitive base — they all need to be relative for the
+   ::after to anchor inside. Each block also sets this in its own
+   block.css, but we re-declare here so the effect works even when
+   only this CSS is imported. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) {
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow var(--transition-duration, 0.25s) ease,
+    transform var(--transition-duration, 0.25s) ease;
+}
+
+/* Standard outer halo, paired with the inner radial. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+/* The hover-rise must stay BEHIND the element's own contents.
+   We use overflow:hidden + ::after with z-index 1 — content sits
+   at z-index 2. Brand primitives bump their direct children to
+   z-index 2 here so we don't have to touch every block.css. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Reduced-motion: keep the effect but kill the transition so it
+   appears instantly on hover with no animation. */
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .btn-primary-ring,
+    .btn-secondary-filled,
+    .nav-link,
+    .nav-trigger,
+    .locale-trigger,
+    .bc-link,
+    [data-fx="rise"]
+  )::after {
+    transition: none;
+  }
+}
