@@ -97,7 +97,31 @@
     transform var(--transition-duration, 0.25s) ease;
 }
 
-/* Standard outer halo, paired with the inner radial. */
+/* Outer halo — two intensities so the same effect doesn't look
+   aggressive on a 32 px nav link AND on a 52 px pill button.
+
+   Strong (default): pills, cards, opt-in via [data-fx="rise"].
+   Soft: header chrome — nav links, dropdown triggers, breadcrumb,
+   locale chip. Override per element via --fx-rise-color. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+:where(
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 18px -6px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+/* Keyboard-only focus ring (a11y). Distinct from the hover halo so that
+   keyboard navigation is unambiguously visible — sighted hover users do
+   not get the ring, only the soft glow. */
 :where(
   .btn-primary-ring,
   .btn-secondary-filled,
@@ -106,8 +130,9 @@
   .locale-trigger,
   .bc-link,
   [data-fx="rise"]
-):is(:hover, :focus-visible) {
-  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+):focus-visible {
+  outline: 2px solid var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+  outline-offset: 2px;
 }
 
 /* The hover-rise must stay BEHIND the element's own contents.

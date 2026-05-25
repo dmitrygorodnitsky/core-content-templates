@@ -1,6 +1,6 @@
 /* lab-ui block · hero.composite-photo
    Depends: 00-tokens/tokens.css. Light theme.
-   Composes: cta.btn-primary-ring + cta.btn-secondary-filled. */
+   Composes: cta.btn-base + cta.btn-primary-ring + cta.btn-secondary-filled. */
 
 .herop {
   padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5rem);

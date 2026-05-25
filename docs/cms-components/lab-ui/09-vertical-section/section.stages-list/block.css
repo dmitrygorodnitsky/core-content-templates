@@ -34,7 +34,7 @@
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  background: var(--cta-secondary-fill, linear-gradient(180deg, #56422D 0%, #494938 100%));
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
   opacity: 0;
   transition: opacity 0.2s ease;
 }

@@ -57,7 +57,7 @@
 .ai-stream {
   border-radius: var(--radius-card);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  background: linear-gradient(180deg, #FFFFFF 0%, #F4F6FA 100%);
+  background: linear-gradient(180deg, var(--color-white) 0%, #F4F6FA 100%);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -84,8 +84,8 @@
 }
 .ai-stream-title .dot-live {
   width: 7px; height: 7px; border-radius: 50%;
-  background: #16A34A;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+  background: var(--color-status-live, #16A34A);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-status-live, #16A34A) 18%, transparent);
 }
 .ai-stream-meta {
   font-family: var(--font-mono);

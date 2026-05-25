@@ -1,28 +1,7 @@
 /* lab-ui block · cta.btn-primary-ring
    Depends: 00-tokens/tokens.css (--color-black, --radius-pill,
    --font-family, --gradient-cta-ring, --transition-duration,
-   --cta-accent, --cta-accent-soft). */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-width: 13rem;
-  height: 3.25rem;
-  padding: 0 1.625rem;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 1rem;
-  white-space: nowrap;
-  position: relative;
-  text-decoration: none;
-  cursor: pointer;
-  border: 0;
-  transition: box-shadow var(--transition-duration) ease,
-              transform var(--transition-duration) ease;
-}
+   --cta-accent, --cta-accent-soft) + 03-cta/cta.btn-base (.btn, .btn-star). */
 
 .btn-primary {
   background: var(--button-primary-bg, transparent);
@@ -68,8 +47,7 @@
    it (matches the production reference). Tinted by --cta-accent so
    each vertical paints its own color. */
 .btn-primary-ring:hover {
-  box-shadow:
-    0 0 32px -4px var(--cta-accent, rgba(107, 234, 249, 0.45));
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
 }
 
 /* Match cta.btn-secondary-filled's hover affordance: a tighter
@@ -100,10 +78,6 @@
   opacity: 0.48;
 }
 
-.btn-star {
-  flex-shrink: 0;
-  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);
-}
 .btn-primary-ring:hover .btn-star {
   transform: rotate(180deg);
 }

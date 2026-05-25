@@ -2,32 +2,8 @@
    Depends: 00-tokens/tokens.css
      (--cta-secondary-fill, --cta-secondary-color, --cta-secondary-border,
       --cta-accent-soft, --radius-pill, --font-family, --transition-duration)
-   + 12-decorative/effect.hover-rise (inner bottom glow).
-
-   The base .btn rules typically come from cta.btn-primary-ring/block.css
-   when both are on the page. We re-declare the geometry here so this
-   block also works standalone. */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-width: 13rem;
-  height: 3.25rem;
-  padding: 0 1.625rem;
-  border-radius: var(--radius-pill);
-  font-family: var(--font-family);
-  font-weight: 500;
-  font-size: 1rem;
-  white-space: nowrap;
-  position: relative;
-  text-decoration: none;
-  cursor: pointer;
-  border: 0;
-  transition: box-shadow var(--transition-duration) ease,
-              transform var(--transition-duration) ease;
-}
+   + 03-cta/cta.btn-base (.btn, .btn-star)
+   + 12-decorative/effect.hover-rise (inner bottom glow). */
 
 .btn-secondary-filled {
   /* Filled background — re-themed per vertical via tokens */

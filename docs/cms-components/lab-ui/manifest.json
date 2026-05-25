@@ -17,7 +17,7 @@
     {
       "id": "03-cta",
       "label": "03 · CTA",
-      "count": 2
+      "count": 3
     },
     {
       "id": "04-language",
@@ -96,6 +96,22 @@
       "canonical": true,
       "theme": "dark-always",
       "sourceLabel": "tmp/sw-footer.html",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "cta.btn-base",
+      "category": "03-cta",
+      "path": "03-cta/cta.btn-base",
+      "title": "CTA · button geometry base",
+      "description": "Shared geometry and .btn-star base for every CTA variant. Defines .btn (pill shape, height 3.25rem, padding, transition) and .btn-star (icon flex + rotation transition). Variant blocks (cta.btn-primary-ring, cta.btn-secondary-filled) extend this base.",
+      "canonical": true,
+      "theme": "light+dark-compatible",
+      "sourceLabel": "",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"

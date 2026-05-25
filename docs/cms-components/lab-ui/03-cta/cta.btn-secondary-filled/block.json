@@ -23,6 +23,7 @@
       "--cta-accent-soft"
     ],
     "other_blocks": [
+      "cta.btn-base",
       "effect.hover-rise"
     ]
   },
@@ -39,7 +40,6 @@
     "Replaces cta.btn-secondary-ghost (removed 2026-05-22 as 'недостаточно ярко').",
     "Vertical-themed via tokens: set <body data-vertical=\"lawn-care\"> on the page and the secondary background, halo, and accent shift together.",
     "Always-on halo uses --cta-accent-soft (low alpha). On hover the halo switches to --cta-accent (full color) — the same accent that tints the primary's outer hover glow, so the pair feels cohesive.",
-    "Re-declares the base .btn geometry inline so the block works standalone — when paired with cta.btn-primary-ring, the second copy of those rules is harmless (specificity equal, identical values).",
-    "::before is explicitly nullified (content: none + background: none) in case markup includes both .btn-primary-ring and .btn-secondary-filled on the same element by accident."
+    "Inherits .btn geometry and .btn-star transition from cta.btn-base. Variant only defines the filled background, color tokens, hover halo, and inner bottom radial glow."
   ]
 }

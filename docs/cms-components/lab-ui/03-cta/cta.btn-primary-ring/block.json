@@ -24,6 +24,7 @@
       "--cta-accent-soft"
     ],
     "other_blocks": [
+      "cta.btn-base",
       "effect.hover-rise"
     ]
   },

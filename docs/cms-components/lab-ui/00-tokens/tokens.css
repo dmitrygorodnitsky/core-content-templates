@@ -90,6 +90,32 @@
 
   /* ─── Motion ─────────────────────────────────────────────── */
   --transition-duration: 0.4s;
+  --transition-fast:     0.2s;
+  --transition-base:     var(--transition-duration);
+  --transition-slow:     0.6s;
+
+  /* ─── Elevation scale ────────────────────────────────────── */
+  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);
+  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);
+  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);
+  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */
+  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */
+  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */
+
+  /* ─── Status palette (yes / partial / no / live) ─────────── */
+  --color-status-yes:     #76D98F;
+  --color-status-partial: #D7D9DC;
+  --color-status-no:      #FF6B6B;
+  --color-status-live:    #16A34A;
+
+  /* ─── Surfaces · backdrop blur ───────────────────────────── */
+  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */
+
+  /* ─── Text accent (warm brown) ─────────────────────────────
+     Pulled out so the first stop of --cta-secondary-fill is not
+     re-used as a raw text color across blocks. */
+  --color-text-accent:   #56422D;
 
   /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */
   --color-bg:           var(--color-white);
@@ -181,4 +207,17 @@
   --cta-accent:          #EF5CFF;
   --cta-accent-soft:     rgba(239, 92, 255, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);
+}
+
+/* ─── A11y · reduced motion ────────────────────────────────────
+   Honour user's OS-level motion preference across every block. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

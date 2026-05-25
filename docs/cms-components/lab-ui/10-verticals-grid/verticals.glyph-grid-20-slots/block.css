@@ -68,7 +68,7 @@
   overflow: hidden;
   border-radius: var(--radius-card, 1.25rem);
   border: 1px solid rgba(15, 17, 22, 0.08);
-  background: #ffffff;
+  background: var(--color-white);
   color: inherit;
   text-decoration: none;
   transition:
@@ -119,7 +119,7 @@
   padding: 1.5px;
   border-radius: inherit;
   pointer-events: none;
-  background: var(--cta-secondary-fill, linear-gradient(135deg, #56422D 0%, #494938 100%));
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;

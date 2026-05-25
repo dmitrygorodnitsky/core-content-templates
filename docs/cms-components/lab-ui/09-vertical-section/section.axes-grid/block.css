@@ -1,5 +1,6 @@
 /* lab-ui block · section.axes-grid
-   Depends: 00-tokens/tokens.css. Light theme.
+   Depends: 00-tokens/tokens.css + 12-decorative/effect.hover-rise/block.css
+   (hover glow + halo delegated via data-fx="rise"). Light theme.
    Adapted from designer styles.css §scale-axes (lines 1301–1372, 1397). */
 
 .axes-grid {
@@ -11,44 +12,19 @@
 }
 
 .axis {
-  position: relative;
   padding: 28px;
   border-radius: var(--radius-card);
   background: var(--color-bg);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow var(--transition-duration, 0.25s) ease;
+  transition: border-color 0.2s ease, background 0.2s ease,
+              box-shadow var(--transition-duration, 0.25s) ease;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-.axis::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 58% 78% at 50% 100%,
-    var(--cta-accent, #6BEAF9) 0%,
-    transparent 60%
-  );
-  opacity: 0;
-  mix-blend-mode: screen;
-  transition: opacity var(--transition-duration, 0.25s) ease;
-}
-.axis > * {
-  position: relative;
-  z-index: 1;
-}
 .axis:hover {
   border-color: rgba(86, 66, 45, 0.28);
   background: var(--color-gray-bg);
-  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
-}
-.axis:hover::before {
-  opacity: 0.48;
 }
 
 .axis-head {
@@ -96,7 +72,7 @@
   flex-wrap: wrap;
 }
 .axis-range .from { color: var(--color-gray-second); }
-.axis-range .arrow { color: #56422D; font-weight: 600; }
+.axis-range .arrow { color: var(--color-text-accent, #56422D); font-weight: 600; }
 .axis-range .to { color: var(--color-heading); }
 
 .axis-body {

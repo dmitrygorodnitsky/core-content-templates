@@ -1,6 +1,6 @@
 /* lab-ui block · hero.operational-diagram
-   Depends: 00-tokens/tokens.css + cta.btn-primary-ring/block.css
-   + cta.btn-secondary-filled/block.css. */
+   Depends: 00-tokens/tokens.css + cta.btn-base/block.css
+   + cta.btn-primary-ring/block.css + cta.btn-secondary-filled/block.css. */
 
 .hero--diagram {
   padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 6vw, 5.5rem);

@@ -490,6 +490,7 @@
     "Media slots default to neutral striped placeholders with dimension + photo hint. Replace .vertical-photo content with an image when real assets are available.",
     "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
     "The 'live' state changes border treatment, photo meta accent, arrow, and Live badge. Apply by adding class 'is-live' to the slot card.",
-    "Coming-soon waitlist CTAs are visual/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal."
+    "Coming-soon waitlist CTAs are visual/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
+    "Hover glow + halo are intentionally NOT delegated to effect.hover-rise: vertical-card's hover composes a depth shadow with the halo, and the .is-live ::after border ring would collide with effect.hover-rise's ::after. The local copy stays byte-identical to the effect's canonical values; if effect.hover-rise's geometry changes, update this block too."
   ]
 }

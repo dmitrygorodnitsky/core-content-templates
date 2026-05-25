@@ -30,7 +30,7 @@
   bottom: 0.35rem;
   width: 3px;
   border-radius: 999px;
-  background: var(--cta-secondary-fill, linear-gradient(180deg, #56422D 0%, #494938 100%));
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
 }
 .snarr[data-has-glyph="true"] .snarr-grid {
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);

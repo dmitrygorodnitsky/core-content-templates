@@ -116,8 +116,8 @@
   border: 1px solid rgba(27, 29, 37, 0.08);
   border-radius: 18px;
   box-shadow: 0 24px 60px -26px rgba(27, 29, 37, 0.34);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(var(--backdrop-blur-panel, 18px));
+  -webkit-backdrop-filter: blur(var(--backdrop-blur-panel, 18px));
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
@@ -326,6 +326,11 @@ body.is-open .bc-chip {
   padding: 0;
 }
 .burger span { width: 18px; height: 1.5px; background: var(--color-heading); border-radius: 1px; }
+.burger:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
 
 /* ─── Responsive ─── */
 
@@ -385,13 +390,13 @@ body.is-open .bc-chip {
     visibility: hidden;
     transform: translateY(-8px);
     clip-path: inset(0 0 100% 0 round 0 0 1.75rem 1.75rem);
-    background: #fff;
+    background: var(--color-white);
     border: 0;
     border-bottom-left-radius: 1.75rem;
     border-bottom-right-radius: 1.75rem;
     box-shadow: 0 24px 60px -34px rgba(27, 29, 37, 0.32);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(var(--backdrop-blur-panel, 18px));
+    -webkit-backdrop-filter: blur(var(--backdrop-blur-panel, 18px));
     z-index: 80;
     scrollbar-width: none;
     -ms-overflow-style: none;

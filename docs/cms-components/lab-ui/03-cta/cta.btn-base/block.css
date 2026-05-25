@@ -1,0 +1,32 @@
+/* lab-ui block · cta.btn-base
+   Depends: 00-tokens/tokens.css (--radius-pill, --font-family,
+   --transition-duration). Shared geometry + .btn-star base for every
+   CTA variant. Variant blocks (cta.btn-primary-ring,
+   cta.btn-secondary-filled) layer their own ::before/::after, halo
+   shadows and color tokens on top. */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 13rem;
+  height: 3.25rem;
+  padding: 0 1.625rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 1rem;
+  white-space: nowrap;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  transition: box-shadow var(--transition-duration) ease,
+              transform var(--transition-duration) ease;
+}
+
+.btn-star {
+  flex-shrink: 0;
+  transition: transform var(--transition-duration) cubic-bezier(.4, 0, .2, 1);
+}
