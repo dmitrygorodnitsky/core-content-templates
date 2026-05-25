@@ -1,0 +1,487 @@
+{
+  "url": "/field-service",
+  "template": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "enabledTemplates": [
+    "FIELD_SERVICE_LANDING",
+    "HEADER",
+    "HERO",
+    "FEATURES",
+    "FEATURE_1",
+    "FEATURE_2",
+    "FEATURE_3",
+    "FEATURE_4",
+    "COMPARISON",
+    "COMPARE_ROW_1",
+    "COMPARE_ROW_2",
+    "COMPARE_ROW_3",
+    "COMPARE_ROW_4",
+    "COMPARE_ROW_5",
+    "FAQ",
+    "FAQ_1",
+    "FAQ_2",
+    "FAQ_3",
+    "FAQ_4",
+    "CTA",
+    "FOOTER"
+  ],
+  "values": {
+    "HEADER_BRAND_HREF": "/",
+    "HEADER_BRAND_NAME": {
+      "en": "ServiceWand"
+    },
+    "HEADER_ITEM_1_LABEL": {
+      "en": "Platform"
+    },
+    "HEADER_ITEM_1_COL_1_TITLE": {
+      "en": "Operations"
+    },
+    "HEADER_ITEM_1_COL_1_LINK_1_HREF": "/platform/scheduling",
+    "HEADER_ITEM_1_COL_1_LINK_1_LABEL": {
+      "en": "Scheduling & Dispatch"
+    },
+    "HEADER_ITEM_1_COL_1_LINK_2_HREF": "/platform/mobile",
+    "HEADER_ITEM_1_COL_1_LINK_2_LABEL": {
+      "en": "Mobile Workforce"
+    },
+    "HEADER_ITEM_1_COL_1_LINK_3_HREF": "/platform/crm",
+    "HEADER_ITEM_1_COL_1_LINK_3_LABEL": {
+      "en": "Customer Management"
+    },
+    "HEADER_ITEM_1_COL_1_LINK_4_HREF": "/platform/billing",
+    "HEADER_ITEM_1_COL_1_LINK_4_LABEL": {
+      "en": "Billing & Invoicing"
+    },
+    "HEADER_ITEM_1_COL_2_TITLE": {
+      "en": "Intelligence"
+    },
+    "HEADER_ITEM_1_COL_2_LINK_1_HREF": "/platform/reporting",
+    "HEADER_ITEM_1_COL_2_LINK_1_LABEL": {
+      "en": "Reporting"
+    },
+    "HEADER_ITEM_1_COL_2_LINK_2_HREF": "/platform/automation",
+    "HEADER_ITEM_1_COL_2_LINK_2_LABEL": {
+      "en": "Automation"
+    },
+    "HEADER_ITEM_1_COL_2_LINK_3_HREF": "/platform/ai",
+    "HEADER_ITEM_1_COL_2_LINK_3_LABEL": {
+      "en": "AI Assist"
+    },
+    "HEADER_ITEM_1_COL_2_LINK_4_HREF": "/platform/portal",
+    "HEADER_ITEM_1_COL_2_LINK_4_LABEL": {
+      "en": "Customer Portal"
+    },
+    "HEADER_ITEM_2_LABEL": {
+      "en": "Industries"
+    },
+    "HEADER_ITEM_2_COL_1_TITLE": {
+      "en": "Outdoor & Seasonal"
+    },
+    "HEADER_ITEM_2_COL_1_LINK_1_HREF": "/verticals/snow-removal",
+    "HEADER_ITEM_2_COL_1_LINK_1_LABEL": {
+      "en": "Snow Removal"
+    },
+    "HEADER_ITEM_2_COL_1_LINK_2_HREF": "/verticals/lawn-care",
+    "HEADER_ITEM_2_COL_1_LINK_2_LABEL": {
+      "en": "Lawn Care"
+    },
+    "HEADER_ITEM_2_COL_1_LINK_3_HREF": "/verticals/pest-control",
+    "HEADER_ITEM_2_COL_1_LINK_3_LABEL": {
+      "en": "Pest Control"
+    },
+    "HEADER_ITEM_2_COL_1_LINK_4_HREF": "/verticals/tree-care",
+    "HEADER_ITEM_2_COL_1_LINK_4_LABEL": {
+      "en": "Tree Care"
+    },
+    "HEADER_ITEM_2_COL_2_TITLE": {
+      "en": "Mechanical & Building"
+    },
+    "HEADER_ITEM_2_COL_2_LINK_1_HREF": "/verticals/hvac",
+    "HEADER_ITEM_2_COL_2_LINK_1_LABEL": {
+      "en": "HVAC"
+    },
+    "HEADER_ITEM_2_COL_2_LINK_2_HREF": "/verticals/plumbing",
+    "HEADER_ITEM_2_COL_2_LINK_2_LABEL": {
+      "en": "Plumbing"
+    },
+    "HEADER_ITEM_2_COL_2_LINK_3_HREF": "/verticals/electrical",
+    "HEADER_ITEM_2_COL_2_LINK_3_LABEL": {
+      "en": "Electrical"
+    },
+    "HEADER_ITEM_2_COL_2_LINK_4_HREF": "/verticals/cleaning",
+    "HEADER_ITEM_2_COL_2_LINK_4_LABEL": {
+      "en": "Cleaning"
+    },
+    "HEADER_ITEM_3_HREF": "/#features",
+    "HEADER_ITEM_3_LABEL": {
+      "en": "How It Works"
+    },
+    "HEADER_ITEM_4_HREF": "/#partners",
+    "HEADER_ITEM_4_LABEL": {
+      "en": "Partners"
+    },
+    "HEADER_ITEM_5_LABEL": {
+      "en": "Resources"
+    },
+    "HEADER_ITEM_5_LINK_1_HREF": "/#faq",
+    "HEADER_ITEM_5_LINK_1_LABEL": {
+      "en": "FAQs"
+    },
+    "HEADER_ITEM_5_LINK_2_HREF": "/help",
+    "HEADER_ITEM_5_LINK_2_LABEL": {
+      "en": "Help Center"
+    },
+    "HEADER_ITEM_5_LINK_3_HREF": "/docs",
+    "HEADER_ITEM_5_LINK_3_LABEL": {
+      "en": "API Docs"
+    },
+    "HEADER_ITEM_5_LINK_4_HREF": "https://status.servicewand.com",
+    "HEADER_ITEM_5_LINK_4_LABEL": {
+      "en": "Status"
+    },
+    "HEADER_LOCALE_LABEL": {
+      "en": "English"
+    },
+    "HEADER_CTA_HREF": "/request-demo",
+    "HEADER_CTA_LABEL": {
+      "en": "Book a Demo"
+    },
+    "HEADER_BREADCRUMB_ROOT_HREF": "/",
+    "HEADER_BREADCRUMB_ROOT_LABEL": {
+      "en": "ServiceWand"
+    },
+    "HEADER_BREADCRUMB_MID_1_HREF": "#",
+    "HEADER_BREADCRUMB_MID_1_LABEL": {
+      "en": ""
+    },
+    "HEADER_BREADCRUMB_MID_2_HREF": "#",
+    "HEADER_BREADCRUMB_MID_2_LABEL": {
+      "en": ""
+    },
+    "HEADER_BREADCRUMB_CURRENT_LABEL": {
+      "en": "Field Service Landing"
+    },
+    "HERO_EYEBROW_ROOT": {
+      "en": "ServiceWand"
+    },
+    "HERO_EYEBROW_LEAF": {
+      "en": "Field Service Landing"
+    },
+    "HERO_TITLE_LINE_1": {
+      "en": "Field Service Software"
+    },
+    "HERO_TITLE_ACCENT": {
+      "en": "Real-World Operations"
+    },
+    "HERO_TITLE_LINE_2": {
+      "en": "Operations"
+    },
+    "HERO_LEAD_1": {
+      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+    },
+    "HERO_LEAD_2": {
+      "en": "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day."
+    },
+    "HERO_LEAD_3": {
+      "en": "Book a Demo Explore Platform"
+    },
+    "HERO_CTA_PRIMARY_HREF": "/request-demo",
+    "HERO_CTA_PRIMARY_LABEL": {
+      "en": "Book a Demo"
+    },
+    "HERO_CTA_SECONDARY_HREF": "/platform",
+    "HERO_CTA_SECONDARY_LABEL": {
+      "en": "Explore Platform"
+    },
+    "HERO_PLACEHOLDER_SIZE": {
+      "en": "520 × 650"
+    },
+    "HERO_PLACEHOLDER_LABEL": {
+      "en": "Product screenshot / operational view"
+    },
+    "FEATURE_1_TITLE": {
+      "en": "Scheduling and Dispatch"
+    },
+    "FEATURE_1_BODY": {
+      "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+    },
+    "FEATURE_2_TITLE": {
+      "en": "Mobile Workforce"
+    },
+    "FEATURE_2_BODY": {
+      "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+    },
+    "FEATURE_3_TITLE": {
+      "en": "Customer Management"
+    },
+    "FEATURE_3_BODY": {
+      "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+    },
+    "FEATURE_4_TITLE": {
+      "en": "Billing and Reporting"
+    },
+    "FEATURE_4_BODY": {
+      "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
+    },
+    "FEATURES_EYEBROW": {
+      "en": "Features"
+    },
+    "FEATURES_TITLE": {
+      "en": "Features"
+    },
+    "FEATURES_LEDE": {
+      "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+    },
+    "COMPARE_ROW_1_CAPABILITY": {
+      "en": "Customer & CRM"
+    },
+    "COMPARE_ROW_1_SW": {
+      "en": "native"
+    },
+    "COMPARE_ROW_1_CRM_SYSTEMS": {
+      "en": "native"
+    },
+    "COMPARE_ROW_1_FIELD_SERVICE_TOOLS": {
+      "en": "partial"
+    },
+    "COMPARE_ROW_1_MONITORING_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_1_CMS_AND_PORTALS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_1_ENTERPRISE_PLATFORMS": {
+      "en": "enterprise"
+    },
+    "COMPARE_ROW_2_CAPABILITY": {
+      "en": "Billing & Revenue"
+    },
+    "COMPARE_ROW_2_SW": {
+      "en": "native"
+    },
+    "COMPARE_ROW_2_CRM_SYSTEMS": {
+      "en": "partial"
+    },
+    "COMPARE_ROW_2_FIELD_SERVICE_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_2_MONITORING_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_2_CMS_AND_PORTALS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_2_ENTERPRISE_PLATFORMS": {
+      "en": "enterprise"
+    },
+    "COMPARE_ROW_3_CAPABILITY": {
+      "en": "Operations & Workflows"
+    },
+    "COMPARE_ROW_3_SW": {
+      "en": "unified"
+    },
+    "COMPARE_ROW_3_CRM_SYSTEMS": {
+      "en": "limited"
+    },
+    "COMPARE_ROW_3_FIELD_SERVICE_TOOLS": {
+      "en": "partial"
+    },
+    "COMPARE_ROW_3_MONITORING_TOOLS": {
+      "en": "manual config"
+    },
+    "COMPARE_ROW_3_CMS_AND_PORTALS": {
+      "en": "manual config"
+    },
+    "COMPARE_ROW_3_ENTERPRISE_PLATFORMS": {
+      "en": "complex"
+    },
+    "COMPARE_ROW_4_CAPABILITY": {
+      "en": "Portals & Content"
+    },
+    "COMPARE_ROW_4_SW": {
+      "en": "integrated"
+    },
+    "COMPARE_ROW_4_CRM_SYSTEMS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_4_FIELD_SERVICE_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_4_MONITORING_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_4_CMS_AND_PORTALS": {
+      "en": "native"
+    },
+    "COMPARE_ROW_4_ENTERPRISE_PLATFORMS": {
+      "en": "add-ons"
+    },
+    "COMPARE_ROW_5_CAPABILITY": {
+      "en": "AI & Intelligence"
+    },
+    "COMPARE_ROW_5_SW": {
+      "en": "built-in"
+    },
+    "COMPARE_ROW_5_CRM_SYSTEMS": {
+      "en": "partial"
+    },
+    "COMPARE_ROW_5_FIELD_SERVICE_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_5_MONITORING_TOOLS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_5_CMS_AND_PORTALS": {
+      "en": "no"
+    },
+    "COMPARE_ROW_5_ENTERPRISE_PLATFORMS": {
+      "en": "partial"
+    },
+    "COMPARISON_EYEBROW": {
+      "en": "Comparison"
+    },
+    "COMPARISON_TITLE": {
+      "en": "ServiceWand unifies it all"
+    },
+    "COMPARISON_LEDE": {
+      "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+    },
+    "COMPARISON_COLUMN_1": {
+      "en": "ServiceWand"
+    },
+    "COMPARISON_COLUMN_2": {
+      "en": "CRM Systems"
+    },
+    "COMPARISON_COLUMN_3": {
+      "en": "Field Service Tools"
+    },
+    "COMPARISON_COLUMN_4": {
+      "en": "Monitoring Tools"
+    },
+    "COMPARISON_COLUMN_5": {
+      "en": "CMS & Portals"
+    },
+    "COMPARISON_COLUMN_6": {
+      "en": "Enterprise Platforms"
+    },
+    "FAQ_1_QUESTION": {
+      "en": "Can ServiceWand support multiple service lines?"
+    },
+    "FAQ_1_ANSWER": {
+      "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+    },
+    "FAQ_2_QUESTION": {
+      "en": "Does ServiceWand replace a CRM?"
+    },
+    "FAQ_2_ANSWER": {
+      "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+    },
+    "FAQ_3_QUESTION": {
+      "en": "Can crews use ServiceWand from the field?"
+    },
+    "FAQ_3_ANSWER": {
+      "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+    },
+    "FAQ_4_QUESTION": {
+      "en": "Is this only for one vertical?"
+    },
+    "FAQ_4_ANSWER": {
+      "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+    },
+    "FAQ_EYEBROW": {
+      "en": "FAQ"
+    },
+    "FAQ_TITLE": {
+      "en": "Frequently asked questions"
+    },
+    "FAQ_LEDE": {
+      "en": ""
+    },
+    "FAQ_GROUP_TITLE": {
+      "en": "Field service operations"
+    },
+    "CTA_EYEBROW": {
+      "en": "Next step"
+    },
+    "CTA_TITLE": {
+      "en": "See how ServiceWand can connect your office, field, and customer workflows."
+    },
+    "CTA_PRIMARY_LABEL": {
+      "en": "Book a Demo"
+    },
+    "CTA_PRIMARY_HREF": "/request-demo",
+    "FOOTER_BRAND_HREF": "/",
+    "FOOTER_BRAND_NAME": {
+      "en": "ServiceWand"
+    },
+    "FOOTER_TAGLINE": {
+      "en": "Where everything you build and operate stays connected"
+    },
+    "FOOTER_ADDRESS_LINE_1": {
+      "en": "ServiceWand Inc."
+    },
+    "FOOTER_ADDRESS_LINE_2": {
+      "en": "Operational platform for modern businesses"
+    },
+    "FOOTER_ADDRESS_LINE_3": {
+      "en": "Registered in Wyoming, USA"
+    },
+    "FOOTER_ADDRESS_LINE_4": {
+      "en": "Offices in Canada & EU"
+    },
+    "FOOTER_NAV_1_HREF": "#hero",
+    "FOOTER_NAV_1_LABEL": {
+      "en": "Platform"
+    },
+    "FOOTER_NAV_2_HREF": "#features",
+    "FOOTER_NAV_2_LABEL": {
+      "en": "How It Works"
+    },
+    "FOOTER_NAV_3_HREF": "#industries",
+    "FOOTER_NAV_3_LABEL": {
+      "en": "Industries"
+    },
+    "FOOTER_NAV_4_HREF": "#compare",
+    "FOOTER_NAV_4_LABEL": {
+      "en": "Compare"
+    },
+    "FOOTER_NAV_5_HREF": "#faq",
+    "FOOTER_NAV_5_LABEL": {
+      "en": "FAQ"
+    },
+    "FOOTER_SOCIAL_LINKEDIN": "https://www.linkedin.com/company/servicewand",
+    "FOOTER_SOCIAL_GITHUB": "https://github.com/servicewand",
+    "FOOTER_SOCIAL_YOUTUBE": "https://www.youtube.com/@servicewand",
+    "FOOTER_SOCIAL_X": "https://x.com/servicewand",
+    "FOOTER_PARTNERSHIPS_LABEL": {
+      "en": "Partnerships"
+    },
+    "FOOTER_PARTNERSHIPS_EMAIL": "partners@servicewand.com",
+    "FOOTER_SUPPORT_LABEL": {
+      "en": "Support"
+    },
+    "FOOTER_SUPPORT_EMAIL": "support@servicewand.com",
+    "FOOTER_COPYRIGHT": {
+      "en": "© 2025 ServiceWand Inc. All rights reserved."
+    },
+    "FOOTER_LEGAL_1_HREF": "/legal/privacy",
+    "FOOTER_LEGAL_1_LABEL": {
+      "en": "Privacy Policy"
+    },
+    "FOOTER_LEGAL_2_HREF": "/legal/terms",
+    "FOOTER_LEGAL_2_LABEL": {
+      "en": "Terms & Conditions"
+    },
+    "ROOT_META_TITLE": {
+      "en": "Field Service Landing | ServiceWand"
+    },
+    "ROOT_META_DESCRIPTION": {
+      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+    }
+  },
+  "organization": {
+    "code": "SYSTEM"
+  },
+  "excludeFromSeo": false
+}

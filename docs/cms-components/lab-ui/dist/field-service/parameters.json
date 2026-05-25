@@ -1,0 +1,2074 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META_TITLE"
+      }
+    },
+    "value": {
+      "en": "Field Service Landing | ServiceWand"
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META_DESCRIPTION"
+      }
+    },
+    "value": {
+      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+    }
+  },
+  {
+    "code": "HEADER_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "brand_href"
+      }
+    },
+    "value": "/"
+  },
+  {
+    "code": "HEADER_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "brand_name"
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_label"
+      }
+    },
+    "value": {
+      "en": "Platform"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_title"
+      }
+    },
+    "value": {
+      "en": "Operations"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_1_href"
+      }
+    },
+    "value": "/platform/scheduling"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Scheduling & Dispatch"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_2_href"
+      }
+    },
+    "value": "/platform/mobile"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Mobile Workforce"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_3_href"
+      }
+    },
+    "value": "/platform/crm"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Customer Management"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_4_href"
+      }
+    },
+    "value": "/platform/billing"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Billing & Invoicing"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_title"
+      }
+    },
+    "value": {
+      "en": "Intelligence"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_1_href"
+      }
+    },
+    "value": "/platform/reporting"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Reporting"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_2_href"
+      }
+    },
+    "value": "/platform/automation"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Automation"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_3_href"
+      }
+    },
+    "value": "/platform/ai"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_3_label"
+      }
+    },
+    "value": {
+      "en": "AI Assist"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_4_href"
+      }
+    },
+    "value": "/platform/portal"
+  },
+  {
+    "code": "HEADER_ITEM_1_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Customer Portal"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_label"
+      }
+    },
+    "value": {
+      "en": "Industries"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_title"
+      }
+    },
+    "value": {
+      "en": "Outdoor & Seasonal"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_1_href"
+      }
+    },
+    "value": "/verticals/snow-removal"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Snow Removal"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_2_href"
+      }
+    },
+    "value": "/verticals/lawn-care"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lawn Care"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_3_href"
+      }
+    },
+    "value": "/verticals/pest-control"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Pest Control"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_4_href"
+      }
+    },
+    "value": "/verticals/tree-care"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Tree Care"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_title"
+      }
+    },
+    "value": {
+      "en": "Mechanical & Building"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_1_href"
+      }
+    },
+    "value": "/verticals/hvac"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_1_label"
+      }
+    },
+    "value": {
+      "en": "HVAC"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_2_href"
+      }
+    },
+    "value": "/verticals/plumbing"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Plumbing"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_3_href"
+      }
+    },
+    "value": "/verticals/electrical"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Electrical"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_4_href"
+      }
+    },
+    "value": "/verticals/cleaning"
+  },
+  {
+    "code": "HEADER_ITEM_2_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Cleaning"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_3_href"
+      }
+    },
+    "value": "/#features"
+  },
+  {
+    "code": "HEADER_ITEM_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_3_label"
+      }
+    },
+    "value": {
+      "en": "How It Works"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_4_href"
+      }
+    },
+    "value": "/#partners"
+  },
+  {
+    "code": "HEADER_ITEM_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_4_label"
+      }
+    },
+    "value": {
+      "en": "Partners"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_label"
+      }
+    },
+    "value": {
+      "en": "Resources"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_1_href"
+      }
+    },
+    "value": "/#faq"
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_1_label"
+      }
+    },
+    "value": {
+      "en": "FAQs"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_2_href"
+      }
+    },
+    "value": "/help"
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Help Center"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_3_href"
+      }
+    },
+    "value": "/docs"
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_3_label"
+      }
+    },
+    "value": {
+      "en": "API Docs"
+    }
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_4_href"
+      }
+    },
+    "value": "https://status.servicewand.com"
+  },
+  {
+    "code": "HEADER_ITEM_5_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Status"
+    }
+  },
+  {
+    "code": "HEADER_LOCALE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "locale_label"
+      }
+    },
+    "value": {
+      "en": "English"
+    }
+  },
+  {
+    "code": "HEADER_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_href"
+      }
+    },
+    "value": "/request-demo"
+  },
+  {
+    "code": "HEADER_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_label"
+      }
+    },
+    "value": {
+      "en": "Book a Demo"
+    }
+  },
+  {
+    "code": "HEADER_BREADCRUMB_ROOT_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_root_href"
+      }
+    },
+    "value": "/"
+  },
+  {
+    "code": "HEADER_BREADCRUMB_ROOT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_root_label"
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "HEADER_BREADCRUMB_MID_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "HEADER_BREADCRUMB_MID_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_1_label"
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "HEADER_BREADCRUMB_MID_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "HEADER_BREADCRUMB_MID_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_2_label"
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "HEADER_BREADCRUMB_CURRENT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_current_label"
+      }
+    },
+    "value": {
+      "en": "Field Service Landing"
+    }
+  },
+  {
+    "code": "HERO_EYEBROW_ROOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow_root"
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "HERO_EYEBROW_LEAF",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow_leaf"
+      }
+    },
+    "value": {
+      "en": "Field Service Landing"
+    }
+  },
+  {
+    "code": "HERO_TITLE_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_line_1"
+      }
+    },
+    "value": {
+      "en": "Field Service Software"
+    }
+  },
+  {
+    "code": "HERO_TITLE_ACCENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_accent"
+      }
+    },
+    "value": {
+      "en": "Real-World Operations"
+    }
+  },
+  {
+    "code": "HERO_TITLE_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_line_2"
+      }
+    },
+    "value": {
+      "en": "Operations"
+    }
+  },
+  {
+    "code": "HERO_LEAD_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lead_1"
+      }
+    },
+    "value": {
+      "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+    }
+  },
+  {
+    "code": "HERO_LEAD_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lead_2"
+      }
+    },
+    "value": {
+      "en": "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day."
+    }
+  },
+  {
+    "code": "HERO_LEAD_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lead_3"
+      }
+    },
+    "value": {
+      "en": "Book a Demo Explore Platform"
+    }
+  },
+  {
+    "code": "HERO_CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_primary_href"
+      }
+    },
+    "value": "/request-demo"
+  },
+  {
+    "code": "HERO_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_primary_label"
+      }
+    },
+    "value": {
+      "en": "Book a Demo"
+    }
+  },
+  {
+    "code": "HERO_CTA_SECONDARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_secondary_href"
+      }
+    },
+    "value": "/platform"
+  },
+  {
+    "code": "HERO_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_secondary_label"
+      }
+    },
+    "value": {
+      "en": "Explore Platform"
+    }
+  },
+  {
+    "code": "HERO_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "placeholder_size"
+      }
+    },
+    "value": {
+      "en": "520 × 650"
+    }
+  },
+  {
+    "code": "HERO_PLACEHOLDER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "placeholder_label"
+      }
+    },
+    "value": {
+      "en": "Product screenshot / operational view"
+    }
+  },
+  {
+    "code": "FEATURES_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW"
+      }
+    },
+    "value": {
+      "en": "Features"
+    }
+  },
+  {
+    "code": "FEATURES_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Features"
+    }
+  },
+  {
+    "code": "FEATURES_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEDE"
+      }
+    },
+    "value": {
+      "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+    }
+  },
+  {
+    "code": "FEATURE_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Scheduling and Dispatch"
+    }
+  },
+  {
+    "code": "FEATURE_1_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BODY"
+      }
+    },
+    "value": {
+      "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+    }
+  },
+  {
+    "code": "FEATURE_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Mobile Workforce"
+    }
+  },
+  {
+    "code": "FEATURE_2_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BODY"
+      }
+    },
+    "value": {
+      "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+    }
+  },
+  {
+    "code": "FEATURE_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Customer Management"
+    }
+  },
+  {
+    "code": "FEATURE_3_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BODY"
+      }
+    },
+    "value": {
+      "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+    }
+  },
+  {
+    "code": "FEATURE_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Billing and Reporting"
+    }
+  },
+  {
+    "code": "FEATURE_4_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BODY"
+      }
+    },
+    "value": {
+      "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
+    }
+  },
+  {
+    "code": "COMPARISON_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW"
+      }
+    },
+    "value": {
+      "en": "Comparison"
+    }
+  },
+  {
+    "code": "COMPARISON_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "ServiceWand unifies it all"
+    }
+  },
+  {
+    "code": "COMPARISON_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEDE"
+      }
+    },
+    "value": {
+      "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_1"
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_2"
+      }
+    },
+    "value": {
+      "en": "CRM Systems"
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_3"
+      }
+    },
+    "value": {
+      "en": "Field Service Tools"
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_4"
+      }
+    },
+    "value": {
+      "en": "Monitoring Tools"
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_5"
+      }
+    },
+    "value": {
+      "en": "CMS & Portals"
+    }
+  },
+  {
+    "code": "COMPARISON_COLUMN_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COLUMN_6"
+      }
+    },
+    "value": {
+      "en": "Enterprise Platforms"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_CAPABILITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CAPABILITY"
+      }
+    },
+    "value": {
+      "en": "Customer & CRM"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_SW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SW"
+      }
+    },
+    "value": {
+      "en": "native"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_CRM_SYSTEMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CRM_SYSTEMS"
+      }
+    },
+    "value": {
+      "en": "native"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_FIELD_SERVICE_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FIELD_SERVICE_TOOLS"
+      }
+    },
+    "value": {
+      "en": "partial"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_MONITORING_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MONITORING_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_CMS_AND_PORTALS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CMS_AND_PORTALS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1_ENTERPRISE_PLATFORMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ENTERPRISE_PLATFORMS"
+      }
+    },
+    "value": {
+      "en": "enterprise"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_CAPABILITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CAPABILITY"
+      }
+    },
+    "value": {
+      "en": "Billing & Revenue"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_SW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SW"
+      }
+    },
+    "value": {
+      "en": "native"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_CRM_SYSTEMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CRM_SYSTEMS"
+      }
+    },
+    "value": {
+      "en": "partial"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_FIELD_SERVICE_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FIELD_SERVICE_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_MONITORING_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MONITORING_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_CMS_AND_PORTALS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CMS_AND_PORTALS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2_ENTERPRISE_PLATFORMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ENTERPRISE_PLATFORMS"
+      }
+    },
+    "value": {
+      "en": "enterprise"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_CAPABILITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CAPABILITY"
+      }
+    },
+    "value": {
+      "en": "Operations & Workflows"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_SW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SW"
+      }
+    },
+    "value": {
+      "en": "unified"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_CRM_SYSTEMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CRM_SYSTEMS"
+      }
+    },
+    "value": {
+      "en": "limited"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_FIELD_SERVICE_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FIELD_SERVICE_TOOLS"
+      }
+    },
+    "value": {
+      "en": "partial"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_MONITORING_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MONITORING_TOOLS"
+      }
+    },
+    "value": {
+      "en": "manual config"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_CMS_AND_PORTALS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CMS_AND_PORTALS"
+      }
+    },
+    "value": {
+      "en": "manual config"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3_ENTERPRISE_PLATFORMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ENTERPRISE_PLATFORMS"
+      }
+    },
+    "value": {
+      "en": "complex"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_CAPABILITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CAPABILITY"
+      }
+    },
+    "value": {
+      "en": "Portals & Content"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_SW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SW"
+      }
+    },
+    "value": {
+      "en": "integrated"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_CRM_SYSTEMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CRM_SYSTEMS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_FIELD_SERVICE_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FIELD_SERVICE_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_MONITORING_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MONITORING_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_CMS_AND_PORTALS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CMS_AND_PORTALS"
+      }
+    },
+    "value": {
+      "en": "native"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4_ENTERPRISE_PLATFORMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ENTERPRISE_PLATFORMS"
+      }
+    },
+    "value": {
+      "en": "add-ons"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_CAPABILITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CAPABILITY"
+      }
+    },
+    "value": {
+      "en": "AI & Intelligence"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_SW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SW"
+      }
+    },
+    "value": {
+      "en": "built-in"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_CRM_SYSTEMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CRM_SYSTEMS"
+      }
+    },
+    "value": {
+      "en": "partial"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_FIELD_SERVICE_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FIELD_SERVICE_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_MONITORING_TOOLS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MONITORING_TOOLS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_CMS_AND_PORTALS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CMS_AND_PORTALS"
+      }
+    },
+    "value": {
+      "en": "no"
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5_ENTERPRISE_PLATFORMS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ENTERPRISE_PLATFORMS"
+      }
+    },
+    "value": {
+      "en": "partial"
+    }
+  },
+  {
+    "code": "FAQ_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW"
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "FAQ_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "Frequently asked questions"
+    }
+  },
+  {
+    "code": "FAQ_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEDE"
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "FAQ_GROUP_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "GROUP_TITLE"
+      }
+    },
+    "value": {
+      "en": "Field service operations"
+    }
+  },
+  {
+    "code": "FAQ_1_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "QUESTION"
+      }
+    },
+    "value": {
+      "en": "Can ServiceWand support multiple service lines?"
+    }
+  },
+  {
+    "code": "FAQ_1_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ANSWER"
+      }
+    },
+    "value": {
+      "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+    }
+  },
+  {
+    "code": "FAQ_2_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "QUESTION"
+      }
+    },
+    "value": {
+      "en": "Does ServiceWand replace a CRM?"
+    }
+  },
+  {
+    "code": "FAQ_2_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ANSWER"
+      }
+    },
+    "value": {
+      "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+    }
+  },
+  {
+    "code": "FAQ_3_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "QUESTION"
+      }
+    },
+    "value": {
+      "en": "Can crews use ServiceWand from the field?"
+    }
+  },
+  {
+    "code": "FAQ_3_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ANSWER"
+      }
+    },
+    "value": {
+      "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+    }
+  },
+  {
+    "code": "FAQ_4_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "QUESTION"
+      }
+    },
+    "value": {
+      "en": "Is this only for one vertical?"
+    }
+  },
+  {
+    "code": "FAQ_4_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ANSWER"
+      }
+    },
+    "value": {
+      "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+    }
+  },
+  {
+    "code": "CTA_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW"
+      }
+    },
+    "value": {
+      "en": "Next step"
+    }
+  },
+  {
+    "code": "CTA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE"
+      }
+    },
+    "value": {
+      "en": "See how ServiceWand can connect your office, field, and customer workflows."
+    }
+  },
+  {
+    "code": "CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY_LABEL"
+      }
+    },
+    "value": {
+      "en": "Book a Demo"
+    }
+  },
+  {
+    "code": "CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY_HREF"
+      }
+    },
+    "value": "/request-demo"
+  },
+  {
+    "code": "FOOTER_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "brand_href"
+      }
+    },
+    "value": "/"
+  },
+  {
+    "code": "FOOTER_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "brand_name"
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "FOOTER_TAGLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "tagline"
+      }
+    },
+    "value": {
+      "en": "Where everything you build and operate stays connected"
+    }
+  },
+  {
+    "code": "FOOTER_ADDRESS_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_1"
+      }
+    },
+    "value": {
+      "en": "ServiceWand Inc."
+    }
+  },
+  {
+    "code": "FOOTER_ADDRESS_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_2"
+      }
+    },
+    "value": {
+      "en": "Operational platform for modern businesses"
+    }
+  },
+  {
+    "code": "FOOTER_ADDRESS_LINE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_3"
+      }
+    },
+    "value": {
+      "en": "Registered in Wyoming, USA"
+    }
+  },
+  {
+    "code": "FOOTER_ADDRESS_LINE_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_4"
+      }
+    },
+    "value": {
+      "en": "Offices in Canada & EU"
+    }
+  },
+  {
+    "code": "FOOTER_NAV_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_1_href"
+      }
+    },
+    "value": "#hero"
+  },
+  {
+    "code": "FOOTER_NAV_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_1_label"
+      }
+    },
+    "value": {
+      "en": "Platform"
+    }
+  },
+  {
+    "code": "FOOTER_NAV_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_2_href"
+      }
+    },
+    "value": "#features"
+  },
+  {
+    "code": "FOOTER_NAV_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_2_label"
+      }
+    },
+    "value": {
+      "en": "How It Works"
+    }
+  },
+  {
+    "code": "FOOTER_NAV_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_3_href"
+      }
+    },
+    "value": "#industries"
+  },
+  {
+    "code": "FOOTER_NAV_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_3_label"
+      }
+    },
+    "value": {
+      "en": "Industries"
+    }
+  },
+  {
+    "code": "FOOTER_NAV_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_4_href"
+      }
+    },
+    "value": "#compare"
+  },
+  {
+    "code": "FOOTER_NAV_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_4_label"
+      }
+    },
+    "value": {
+      "en": "Compare"
+    }
+  },
+  {
+    "code": "FOOTER_NAV_5_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_5_href"
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "FOOTER_NAV_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_5_label"
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "FOOTER_SOCIAL_LINKEDIN",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_linkedin"
+      }
+    },
+    "value": "https://www.linkedin.com/company/servicewand"
+  },
+  {
+    "code": "FOOTER_SOCIAL_GITHUB",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_github"
+      }
+    },
+    "value": "https://github.com/servicewand"
+  },
+  {
+    "code": "FOOTER_SOCIAL_YOUTUBE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_youtube"
+      }
+    },
+    "value": "https://www.youtube.com/@servicewand"
+  },
+  {
+    "code": "FOOTER_SOCIAL_X",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_x"
+      }
+    },
+    "value": "https://x.com/servicewand"
+  },
+  {
+    "code": "FOOTER_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "partnerships_label"
+      }
+    },
+    "value": {
+      "en": "Partnerships"
+    }
+  },
+  {
+    "code": "FOOTER_PARTNERSHIPS_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "partnerships_email"
+      }
+    },
+    "value": "partners@servicewand.com"
+  },
+  {
+    "code": "FOOTER_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "support_label"
+      }
+    },
+    "value": {
+      "en": "Support"
+    }
+  },
+  {
+    "code": "FOOTER_SUPPORT_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "support_email"
+      }
+    },
+    "value": "support@servicewand.com"
+  },
+  {
+    "code": "FOOTER_COPYRIGHT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "copyright"
+      }
+    },
+    "value": {
+      "en": "© 2025 ServiceWand Inc. All rights reserved."
+    }
+  },
+  {
+    "code": "FOOTER_LEGAL_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "legal_1_href"
+      }
+    },
+    "value": "/legal/privacy"
+  },
+  {
+    "code": "FOOTER_LEGAL_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "legal_1_label"
+      }
+    },
+    "value": {
+      "en": "Privacy Policy"
+    }
+  },
+  {
+    "code": "FOOTER_LEGAL_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "legal_2_href"
+      }
+    },
+    "value": "/legal/terms"
+  },
+  {
+    "code": "FOOTER_LEGAL_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "legal_2_label"
+      }
+    },
+    "value": {
+      "en": "Terms & Conditions"
+    }
+  }
+]

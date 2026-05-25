@@ -1,0 +1,3022 @@
+{
+  "generatedAt": "2026-05-25T11:45:13.026Z",
+  "mode": "dry-run",
+  "root": {
+    "code": "FIELD_SERVICE_LANDING",
+    "nls": {
+      "en": {
+        "NAME": "Field Service Landing"
+      }
+    },
+    "templateLanguage": "JTE",
+    "parent": null,
+    "children": [
+      {
+        "code": "HEADER",
+        "nls": {
+          "en": {
+            "NAME": "Header"
+          }
+        }
+      },
+      {
+        "code": "HERO",
+        "nls": {
+          "en": {
+            "NAME": "Hero"
+          }
+        }
+      },
+      {
+        "code": "FEATURES",
+        "nls": {
+          "en": {
+            "NAME": "Features"
+          }
+        }
+      },
+      {
+        "code": "COMPARISON",
+        "nls": {
+          "en": {
+            "NAME": "Comparison"
+          }
+        }
+      },
+      {
+        "code": "FAQ",
+        "nls": {
+          "en": {
+            "NAME": "FAQ"
+          }
+        }
+      },
+      {
+        "code": "CTA",
+        "nls": {
+          "en": {
+            "NAME": "CTA"
+          }
+        }
+      },
+      {
+        "code": "FOOTER",
+        "nls": {
+          "en": {
+            "NAME": "Footer"
+          }
+        }
+      }
+    ],
+    "head": "<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>${ROOT_META_TITLE@LOCALIZED_STRING_SS}</title>\n<meta name=\"description\" content=\"${ROOT_META_DESCRIPTION@LOCALIZED_STRING_SS}\">",
+    "html": "<div id=\"root\" data-cms-family=\"FIELD_SERVICE_LANDING\">\n  <!-- cms-child-slot:ROOT_SECTIONS -->\n</div>",
+    "css": "/* generated root CSS: 00-tokens/tokens.css */\n/* ============================================================\n   lab-ui · canonical tokens · light theme\n   ----------------------------------------------------------------\n   Source-of-truth design tokens for the ServiceWand block catalog.\n   Extracted from sw-styles.css (servicewand.com light theme) +\n   additive --font-mono from v5 (JetBrains Mono).\n   ============================================================ */\n\n:root {\n  /* ─── Palette (raw brand colors) ─────────────────────────── */\n  --color-black:        #1B1D25;\n  --color-white:        #FFFFFF;\n  --color-gray:         #BEC5D3;\n  --color-gray-second:  #5C6474;\n  --color-gray-blue:    #97A2B8;\n  --color-gray-light:   #D9D9D9;\n\n  --color-cyan:         #6BEAF9;\n  --color-blue:         #4F95FF;\n  --color-red:          #FF6C56;\n  --color-green:        #7DDE8E;\n  --color-orange:       #FFA72C;\n  --color-magenta:      #EF5CFF;\n\n  --color-black-bg:           #17171B;\n  --color-gray-bg:            #F9F9F9;\n  --color-light-card-bg:      #F7F7F74D;\n  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);\n\n  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);\n  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);\n  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);\n\n  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */\n  --gradient-cta-ring:\n    linear-gradient(250deg,\n      rgba(107, 237, 249, 0)   4.98%,\n      #6bedf9                 37.35%,\n      #ffa72c                 72.51%,\n      rgba(239, 92, 255, 0)   96.41%);\n\n  /* ─── Typography ─────────────────────────────────────────── */\n  --font-family:        \"Vela Sans\", sans-serif;\n  --font-mono:          \"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, monospace;\n\n  /* Type scale */\n  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);\n  --type-h1-weight:     500;\n  --type-h1-tracking:   -0.025em;\n  --type-h1-leading:    1.04;\n\n  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);\n  --type-h2-weight:     600;\n  --type-h2-tracking:   -0.022em;\n  --type-h2-leading:    1.15;\n\n  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);\n  --type-h3-weight:     600;\n  --type-h3-tracking:   -0.015em;\n  --type-h3-leading:    1.25;\n\n  --type-h4-size:       1.125rem;\n  --type-h4-weight:     600;\n  --type-h4-tracking:   -0.01em;\n\n  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);\n  --type-lead-weight:   400;\n  --type-lead-leading:  1.5;\n\n  --type-body-size:     1rem;\n  --type-body-leading:  1.55;\n\n  --type-eyebrow-size:  0.8125rem;\n  --type-eyebrow-tracking: 0.12em;\n\n  /* ─── Layout ─────────────────────────────────────────────── */\n  --container-width:     105rem;\n  --container-padding-x: 1.875rem;\n  --header-height:       4.6875rem;\n\n  /* Backdrop blur — header chrome */\n  --backdrop-blur-header:    1.25rem;\n  --backdrop-blur-table:     2.5rem;\n  --backdrop-blur-ecosystem: 5rem;\n\n  /* ─── Radii ──────────────────────────────────────────────── */\n  --radius-pill:    6.25rem;\n  --radius-card:    1.25rem;\n  --radius-card-sm: 0.9375rem;\n\n  /* ─── Motion ─────────────────────────────────────────────── */\n  --transition-duration: 0.4s;\n\n  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */\n  --color-bg:           var(--color-white);\n  --color-bg-invert:    var(--color-black-bg);\n  --color-text:         var(--color-gray-second);\n  --color-heading:      var(--color-black);\n  --color-link:         var(--color-black);\n  --color-link-hover:   var(--color-gray-second);\n\n  --header-bg:          var(--color-light-card-bg);\n  --card-bg:            var(--color-gray-bg);\n  --card-border:        var(--color-light-gray-stroke);\n  --locale-selector-bg: var(--color-gray-bg);\n\n  --button-primary-bg:        transparent;\n  --button-primary-color:     var(--color-black);\n\n  --button-secondary-bg:      transparent;\n  --button-secondary-color:   var(--color-black);\n  --button-secondary-border:  var(--color-black);\n\n  --button-burger-button-bg:  var(--color-black);\n\n  --input-bg:           var(--color-light-card-bg);\n\n  /* ─── CTA · vertical accent system ─────────────────────────\n     --cta-accent is the page-wide interactive accent. It tints:\n       · hover-rise glow (effect.hover-rise)\n       · primary CTA outer hover glow (box-shadow)\n       · secondary CTA always-on halo\n       · italic accent word in hero titles\n     --cta-secondary-fill is the filled background of secondary CTAs.\n     Per-vertical overrides go through [data-vertical=\"...\"] below.   */\n  --cta-accent:          var(--color-cyan);\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n  --cta-secondary-color: var(--color-white);\n  --cta-secondary-border:rgba(255, 255, 255, 0.18);\n}\n\n/* ─── Vertical accent overlays ────────────────────────────────\n   Set on <body data-vertical=\"...\"> or any wrapper. Cascades into\n   every CTA, hover-rise effect, and accent text inside the scope. */\n\n[data-vertical=\"snow-removal\"] {\n  /* Default cyan — kept explicit so authors see the slot exists. */\n  --cta-accent:          #6BEAF9;\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n}\n\n[data-vertical=\"lawn-care\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);\n}\n\n[data-vertical=\"hvac\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);\n}\n\n[data-vertical=\"pest-control\"] {\n  --cta-accent:          #FF6C56;\n  --cta-accent-soft:     rgba(255, 108, 86, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);\n}\n\n[data-vertical=\"tree-care\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);\n}\n\n[data-vertical=\"plumbing\"] {\n  --cta-accent:          #4F95FF;\n  --cta-accent-soft:     rgba(79, 149, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);\n}\n\n[data-vertical=\"electrical\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);\n}\n\n[data-vertical=\"cleaning\"] {\n  --cta-accent:          #EF5CFF;\n  --cta-accent-soft:     rgba(239, 92, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);\n}\n\n\n/* generated root CSS: 01-header/header.sw-default/block.css */\n/* lab-ui block · header.sw-default\n   Depends: 00-tokens/tokens.css + 03-cta/cta.btn-primary-ring/block.css\n   + 04-language/language.sw-locale-dropdown/block.css. Light theme.\n\n   Multi-level nav model:\n     .nav-item[data-kind=\"link\"]      — plain anchor (no panel)\n     .nav-item[data-kind=\"dropdown\"]  — trigger + .nav-panel--list  (single-column)\n     .nav-item[data-kind=\"mega\"]      — trigger + .nav-panel--mega  (multi-column)\n\n   Desktop panels open on :hover + :focus-within and on [data-open=\"true\"]\n   (the latter is for click/tap toggling via block.js). Below 1024px,\n   the burger reveals a full-width menu and nested panel links are shown\n   inline instead of as accordions. */\n\n.header--default {\n  position: sticky;\n  top: 0;\n  z-index: 40;\n  background: rgba(255, 255, 255, 0.78);\n  backdrop-filter: blur(var(--backdrop-blur-header, 1.25rem));\n  -webkit-backdrop-filter: blur(var(--backdrop-blur-header, 1.25rem));\n  border-bottom-left-radius: 2rem;\n  border-bottom-right-radius: 2rem;\n  box-shadow: 0 18px 46px -34px rgba(27, 29, 37, 0.42);\n  transition: background-color var(--transition-duration) ease,\n              box-shadow var(--transition-duration) ease;\n}\n\n.header--default .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.header--default .header-inner {\n  position: relative;\n  display: grid;\n  grid-template-columns: auto 1fr auto;\n  align-items: center;\n  gap: 26px;\n  min-height: 4.375rem;\n  font-family: var(--font-family);\n}\n\n.header--default .header-logo {\n  display: inline-flex;\n  align-items: center;\n  gap: 7px;\n  color: var(--color-heading);\n  text-decoration: none;\n}\n.header--default .header-logo svg {\n  width: 20px;\n  height: 20px;\n}\n.header--default .header-logo-text {\n  font-size: 1.125rem;\n  font-weight: 600;\n  letter-spacing: -0.018em;\n}\n\n/* ─── Nav (unified) ─── */\n.header-nav {\n  display: inline-flex;\n  align-items: center;\n  gap: 4px;\n  justify-self: center;\n}\n\n.nav-item { position: relative; }\n\n.nav-link {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  padding: 8px 12px;\n  border-radius: 999px;\n  font-size: 0.875rem;\n  font-weight: 500;\n  color: var(--color-heading);\n  text-decoration: none;\n  transition: background 0.2s ease, color 0.2s ease;\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n  font-family: inherit;\n  line-height: 1;\n}\n.nav-link:hover,\n.nav-item:hover > .nav-link,\n.nav-item[data-open=\"true\"] > .nav-link {\n  background: rgba(27, 29, 37, 0.045);\n}\n\n.nav-chev { transition: transform 0.2s ease; }\n.nav-item:hover .nav-chev,\n.nav-item:focus-within .nav-chev,\n.nav-item[data-open=\"true\"] .nav-chev { transform: rotate(180deg); }\n\n/* ─── Panels (shared base) ─── */\n.nav-panel {\n  position: absolute;\n  top: calc(100% + 8px);\n  background: rgba(255, 255, 255, 0.94);\n  border: 1px solid rgba(27, 29, 37, 0.08);\n  border-radius: 18px;\n  box-shadow: 0 24px 60px -26px rgba(27, 29, 37, 0.34);\n  backdrop-filter: blur(18px);\n  -webkit-backdrop-filter: blur(18px);\n  opacity: 0;\n  pointer-events: none;\n  transform: translateY(-4px);\n  transition: opacity 0.18s ease, transform 0.18s ease;\n  z-index: 50;\n}\n\n/* Invisible hover-bridge that spans the 8 px gap between the trigger\n   and the panel. Without it, mouse moving from trigger down into the\n   panel leaves nav-item's bounding box mid-gap, :hover drops, panel\n   closes before the mouse arrives. The bridge is a child of .nav-panel\n   (so it inherits the parent's pointer-events:auto when the panel is\n   open) and extends UP from the panel's top edge by 10 px so it covers\n   the visual gap. Stays full panel width so diagonal mouse paths still\n   land in it. */\n.nav-panel::before {\n  content: \"\";\n  position: absolute;\n  top: -10px;\n  left: 0;\n  right: 0;\n  height: 10px;\n  /* background: rgba(255,0,0,0.15);  ← uncomment to debug */\n}\n\n.nav-item:hover > .nav-panel,\n.nav-item:focus-within > .nav-panel,\n.nav-item[data-open=\"true\"] > .nav-panel {\n  opacity: 1;\n  pointer-events: auto;\n  transform: translateY(0);\n}\n\n/* ─── List panel (dropdown) ─── */\n.nav-panel--list {\n  left: 50%;\n  transform: translateX(-50%) translateY(-4px);\n  min-width: 220px;\n  padding: 8px;\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n  list-style: none;\n  margin: 0;\n}\n.nav-item:hover > .nav-panel--list,\n.nav-item:focus-within > .nav-panel--list,\n.nav-item[data-open=\"true\"] > .nav-panel--list {\n  transform: translateX(-50%) translateY(0);\n}\n.nav-list-link {\n  display: block;\n  padding: 10px 14px;\n  border-radius: 12px;\n  font-size: 0.875rem;\n  font-weight: 500;\n  color: var(--color-heading);\n  text-decoration: none;\n  transition: background 0.15s ease;\n}\n.nav-list-link:hover { background: rgba(27, 29, 37, 0.045); }\n\n/* ─── Mega panel ─── */\n.nav-panel--mega {\n  left: 50%;\n  transform: translateX(-50%) translateY(-4px);\n  width: max-content;\n  max-width: min(680px, 92vw);\n  padding: 14px;\n  display: grid;\n  grid-template-columns: repeat(2, minmax(176px, 1fr));\n  gap: 12px 16px;\n}\n.nav-item:hover > .nav-panel--mega,\n.nav-item:focus-within > .nav-panel--mega,\n.nav-item[data-open=\"true\"] > .nav-panel--mega {\n  transform: translateX(-50%) translateY(0);\n}\n.nav-mega-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }\n.nav-mega-title {\n  margin: 0 0 5px;\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n  font-weight: 500;\n}\n.nav-mega-link {\n  display: block;\n  padding: 8px 10px;\n  border-radius: 12px;\n  font-size: 0.875rem;\n  font-weight: 500;\n  color: var(--color-heading);\n  text-decoration: none;\n  transition: background 0.15s ease;\n}\n.nav-mega-link:hover { background: rgba(27, 29, 37, 0.045); }\n\n/* Hide empty mega columns / links via block.js (sets [hidden]) */\n.nav-panel [hidden] { display: none !important; }\n\n/* ─── Optional Breadcrumb Chip ───\n   Breadcrumb is owned by header.sw-default. It hangs from the sticky\n   header's bottom edge inside the same page/header host. */\n.bc-chip {\n  position: absolute;\n  top: var(--header-height, 4.6875rem);\n  left: var(--container-padding-x);\n  z-index: 30;\n  display: inline-flex;\n  align-items: center;\n  gap: 14px;\n  height: 38px;\n  padding: 0 18px;\n  border-radius: 0 0 18px 18px;\n  font-family: var(--font-family);\n  font-size: 13px;\n  color: var(--color-text);\n  background: linear-gradient(\n    188.96deg,\n    rgba(255, 255, 255, 0.85) 15.85%,\n    rgba(224, 224, 224, 0.17) 92.84%\n  );\n  backdrop-filter: blur(3.125rem);\n  -webkit-backdrop-filter: blur(3.125rem);\n  border: 1px solid rgba(0, 0, 0, 0.04);\n  border-top: 0;\n  box-shadow: 0 6px 16px -12px rgba(0, 0, 0, 0.18);\n  white-space: nowrap;\n  min-width: 0;\n  max-width: calc(100vw - var(--container-padding-x) * 2);\n}\n\n.bc-chip .bc-link {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  color: var(--color-text);\n  text-decoration: none;\n  transition: color 0.15s ease;\n}\n\n.bc-chip .bc-link:hover { color: var(--color-heading); }\n\n.bc-chip .bc-root {\n  font-weight: 500;\n  color: var(--color-heading);\n}\n\n.bc-chip .bc-sep {\n  color: var(--color-gray-blue);\n  font-family: var(--font-mono);\n  font-size: 11px;\n}\n\n.bc-chip .bc-current {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  color: var(--color-heading);\n  font-weight: 500;\n}\n\n.bc-chip [data-mid][hidden],\n.bc-chip [data-sep-for][hidden] {\n  display: none !important;\n}\n\n.header-host.is-open .bc-chip,\nbody.is-open .bc-chip {\n  display: none;\n  opacity: 0;\n  pointer-events: none;\n}\n\n/* ─── Actions ─── */\n.header-actions {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n}\n.header-cta { min-width: auto; height: 2.625rem; padding: 0 1.2rem; font-size: 0.9375rem; }\n\n/* ─── Burger ─── */\n.burger {\n  display: none;\n  flex-direction: column;\n  gap: 4px;\n  width: 2.625rem;\n  height: 2.625rem;\n  align-items: center;\n  justify-content: center;\n  border-radius: 0;\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n  color: var(--color-heading);\n  padding: 0;\n}\n.burger span { width: 18px; height: 1.5px; background: var(--color-heading); border-radius: 1px; }\n\n/* ─── Responsive ─── */\n\n/* 1280→1100 px : tighten gaps + nav-link padding so the row still\n   fits when the viewport gets closer to tablet width. Mega panel\n   reflows to 1-col at the same threshold so it doesn't overflow\n   the (now narrower) container. */\n@media (max-width: 1280px) {\n  .header--default .header-inner { gap: 18px; }\n  .header-nav { gap: 0; }\n  .nav-link { padding: 8px 10px; font-size: 0.8125rem; }\n}\n@media (max-width: 1100px) {\n  .nav-panel--mega { grid-template-columns: 1fr; max-width: 280px; }\n  .header-cta { min-width: 0; padding: 0 14px; font-size: 0.875rem; }\n}\n\n/* ≤1024 px : tablet portrait + everything below. The nav collapses\n   into the burger sheet, while CTA + locale stay compact in the header.\n   The burger toggle is wired by block.js (.header-host.is-open). */\n@media (max-width: 1024px) {\n  .header--default {\n    border-bottom-left-radius: 1.75rem;\n    border-bottom-right-radius: 1.75rem;\n  }\n  .header--default .container {\n    padding-inline: 1.5rem;\n  }\n  .header--default .header-inner {\n    grid-template-columns: minmax(0, auto) auto;\n    justify-content: space-between;\n    gap: 12px;\n    min-height: 3.75rem;\n  }\n  .header--default .header-logo {\n    min-width: 0;\n  }\n  .header--default .header-logo-text {\n    font-size: 1.0625rem;\n  }\n  .header-nav {\n    position: absolute;\n    top: 100%;\n    left: -1.5rem;\n    right: -1.5rem;\n    width: auto;\n    display: flex;\n    flex-direction: column;\n    align-items: stretch;\n    justify-self: stretch;\n    gap: 18px;\n    max-height: calc(100vh - 3.75rem);\n    padding: 1.25rem clamp(1.5rem, 6vw, 3rem) 1.5rem;\n    overflow-y: auto;\n    opacity: 0;\n    pointer-events: none;\n    visibility: hidden;\n    transform: translateY(-8px);\n    clip-path: inset(0 0 100% 0 round 0 0 1.75rem 1.75rem);\n    background: #fff;\n    border: 0;\n    border-bottom-left-radius: 1.75rem;\n    border-bottom-right-radius: 1.75rem;\n    box-shadow: 0 24px 60px -34px rgba(27, 29, 37, 0.32);\n    backdrop-filter: blur(18px);\n    -webkit-backdrop-filter: blur(18px);\n    z-index: 80;\n    scrollbar-width: none;\n    -ms-overflow-style: none;\n    transition:\n      opacity 0.28s ease,\n      transform 0.28s ease,\n      clip-path 0.28s ease,\n      visibility 0s linear 0.28s;\n  }\n  .header-nav::-webkit-scrollbar {\n    display: none;\n    width: 0;\n    height: 0;\n  }\n  body.is-open .header--default .header-nav,\n  .header-host.is-open .header--default .header-nav {\n    opacity: 1;\n    pointer-events: auto;\n    visibility: visible;\n    transform: translateY(0);\n    clip-path: inset(0 0 0 0 round 0 0 1.75rem 1.75rem);\n    transition-delay: 0s;\n  }\n  body.is-open,\n  .header-host.is-open {\n    overflow-x: clip;\n  }\n  .nav-item { width: 100%; }\n  .nav-link {\n    width: 100%;\n    justify-content: flex-start;\n    padding: 0;\n    border-radius: 0;\n    font-size: 1.0625rem;\n    font-weight: 500;\n    line-height: 1.25;\n    text-align: left;\n  }\n  .nav-link:hover,\n  .nav-item:hover > .nav-link,\n  .nav-item[data-open=\"true\"] > .nav-link {\n    background: transparent;\n  }\n  .nav-chev { display: none; }\n  .nav-panel,\n  .nav-panel--list,\n  .nav-panel--mega {\n    position: static;\n    width: 100%;\n    max-width: none;\n    min-width: 0;\n    margin: 10px 0 0 18px;\n    box-shadow: none;\n    border: 0;\n    border-radius: 0;\n    transform: none;\n    opacity: 1;\n    pointer-events: auto;\n    background: transparent;\n    backdrop-filter: none;\n    -webkit-backdrop-filter: none;\n  }\n  .nav-panel::before { display: none; }\n  .nav-panel--list { display: flex; }\n  .nav-panel--mega { display: grid; }\n  .nav-item:hover > .nav-panel,\n  .nav-item:focus-within > .nav-panel,\n  .nav-item[data-open=\"true\"] > .nav-panel,\n  .nav-item:hover > .nav-panel--list,\n  .nav-item:focus-within > .nav-panel--list,\n  .nav-item[data-open=\"true\"] > .nav-panel--list,\n  .nav-item:hover > .nav-panel--mega,\n  .nav-item:focus-within > .nav-panel--mega,\n  .nav-item[data-open=\"true\"] > .nav-panel--mega {\n    transform: none;\n  }\n  .nav-panel--mega {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n    gap: 12px 22px;\n    padding: 0;\n  }\n  .nav-panel--list {\n    gap: 7px;\n    padding: 0;\n  }\n  .nav-mega-col { gap: 7px; }\n  .nav-mega-title {\n    margin-bottom: 2px;\n    font-size: 0.625rem;\n  }\n  .nav-mega-link,\n  .nav-list-link {\n    padding: 0;\n    border-radius: 0;\n    font-size: 0.8125rem;\n    line-height: 1.35;\n    color: var(--color-text);\n  }\n  .nav-mega-link:hover,\n  .nav-list-link:hover { background: transparent; color: var(--color-heading); }\n  .header-actions {\n    gap: 8px;\n    justify-self: end;\n  }\n  .header-cta {\n    order: 1;\n    display: inline-flex;\n    height: 2.25rem;\n    min-width: 0;\n    padding: 0 0.9rem;\n    font-size: 0.8125rem;\n    white-space: nowrap;\n  }\n  .header-cta .btn-star {\n    width: 13px;\n    height: 13px;\n  }\n  .header-actions .locale-selector {\n    order: 2;\n    display: block;\n  }\n  .header-actions .locale-trigger {\n    width: 2.25rem;\n    min-width: 0;\n    height: 2.25rem;\n    justify-content: center;\n    padding: 0;\n    border: 0;\n    border-radius: 999px;\n    background: rgba(27, 29, 37, 0.045);\n  }\n  .header-actions .locale-selector.is-open .locale-trigger {\n    border-radius: 999px;\n  }\n  .header-actions .locale-trigger::before {\n    content: attr(data-short-code);\n    display: block;\n    font-family: var(--font-mono);\n    font-size: 0.6875rem;\n    font-weight: 500;\n    letter-spacing: 0;\n    line-height: 1;\n  }\n  .header-actions .locale-trigger:not([data-short-code])::before,\n  .header-actions .locale-trigger[data-short-code=\"\"]::before {\n    content: \"EN\";\n  }\n  .header-actions .locale-trigger-left {\n    display: none;\n  }\n  .header-actions .locale-dropdown {\n    left: auto;\n    right: 0;\n    min-width: 3rem;\n    border-radius: 1rem;\n    border-top: 1px solid var(--card-border, rgba(0, 0, 0, 0.05));\n  }\n  .header-actions .locale-list {\n    align-items: center;\n    padding: 0.35rem;\n  }\n  .header-actions .locale-item {\n    width: 2.25rem;\n    height: 2.25rem;\n    justify-content: center;\n    padding: 0;\n    border-radius: 0.75rem;\n  }\n  .header-actions .locale-item::before {\n    content: attr(data-short-code);\n    color: var(--color-heading);\n    font-family: var(--font-mono);\n    font-size: 0.6875rem;\n    font-weight: 500;\n    letter-spacing: 0;\n    line-height: 1;\n  }\n  .header-actions .locale-item:has(.locale-item-code)::before {\n    display: none;\n  }\n  .header-actions .locale-item-code {\n    display: block;\n    color: var(--color-heading);\n    font-family: var(--font-mono);\n    font-size: 0.6875rem;\n    font-weight: 500;\n    letter-spacing: 0;\n    line-height: 1;\n  }\n  .header-actions .locale-item-label,\n  .header-actions .locale-check {\n    display: none;\n  }\n  .burger { display: inline-flex; }\n  .header-actions .burger { order: 3; }\n  body.is-open .burger span:nth-child(1),\n  .header-host.is-open .burger span:nth-child(1) {\n    transform: translateY(5.5px) rotate(45deg);\n  }\n  body.is-open .burger span:nth-child(2),\n  .header-host.is-open .burger span:nth-child(2) {\n    opacity: 0;\n  }\n  body.is-open .burger span:nth-child(3),\n  .header-host.is-open .burger span:nth-child(3) {\n    transform: translateY(-5.5px) rotate(-45deg);\n  }\n  .burger span { transition: transform 0.18s ease, opacity 0.18s ease; }\n}\n\n@media (max-width: 880px) {\n  .bc-chip {\n    top: 3.125rem;\n    left: 50%;\n    transform: translateX(-50%);\n    gap: 8px;\n    height: 30px;\n    padding: 0 12px;\n    border-radius: 0 0 14px 14px;\n    font-size: 11px;\n    min-width: 0;\n    max-width: calc(100vw - 32px);\n    overflow: hidden;\n    background-color: var(--color-gray-bg);\n    justify-content: center;\n  }\n\n  .bc-chip .bc-sep {\n    flex: 0 0 auto;\n    font-size: 9px;\n  }\n\n  .bc-chip .bc-root {\n    flex: 0 1 auto;\n    max-width: 26vw;\n  }\n\n  .bc-chip [data-mid] {\n    flex: 0 2 auto;\n    max-width: 22vw;\n  }\n\n  .bc-chip .bc-current {\n    flex: 1 1 auto;\n    max-width: 32vw;\n  }\n\n  .bc-chip .bc-link,\n  .bc-chip .bc-current {\n    min-width: 0;\n    overflow: hidden;\n    text-overflow: ellipsis;\n  }\n}\n\n@media (max-width: 600px) {\n  .header--default {\n    border-bottom-left-radius: 1.5rem;\n    border-bottom-right-radius: 1.5rem;\n  }\n  .header--default .container {\n    padding-inline: 1.875rem;\n  }\n  .header--default .header-inner {\n    min-height: 3.125rem;\n  }\n  .header--default .header-logo {\n    gap: 6px;\n  }\n  .header--default .header-logo svg {\n    width: 17px;\n    height: 17px;\n  }\n  .header--default .header-logo-text {\n    font-size: 1rem;\n  }\n  .burger {\n    width: 2rem;\n    height: 2rem;\n    gap: 3.5px;\n  }\n  .burger span {\n    width: 16px;\n  }\n  .header-nav {\n    left: -1.875rem;\n    right: -1.875rem;\n    gap: 16px;\n    max-height: calc(100vh - 3.125rem);\n    padding-top: 1.125rem;\n    padding-bottom: 1.375rem;\n    border-bottom-left-radius: 1.5rem;\n    border-bottom-right-radius: 1.5rem;\n    clip-path: inset(0 0 100% 0 round 0 0 1.5rem 1.5rem);\n  }\n  body.is-open .header--default .header-nav,\n  .header-host.is-open .header--default .header-nav {\n    clip-path: inset(0 0 0 0 round 0 0 1.5rem 1.5rem);\n  }\n  .nav-link {\n    padding: 0;\n    font-size: 1rem;\n  }\n  .header-actions {\n    gap: 7px;\n  }\n  .header-cta {\n    height: 2rem;\n    padding: 0 0.72rem;\n    font-size: 0.75rem;\n  }\n  .header-cta .btn-star {\n    display: none;\n  }\n  .header-actions .locale-trigger {\n    width: 2rem;\n    height: 2rem;\n  }\n  .header-actions .locale-trigger::before,\n  .header-actions .locale-item-code {\n    font-size: 0.625rem;\n  }\n  .nav-panel,\n  .nav-panel--list,\n  .nav-panel--mega {\n    margin-left: 16px;\n  }\n  .nav-panel--mega {\n    grid-template-columns: 1fr;\n  }\n  .nav-mega-link,\n  .nav-list-link {\n    padding: 0;\n    font-size: 0.8125rem;\n  }\n  body.is-open .burger span:nth-child(1),\n  .header-host.is-open .burger span:nth-child(1) {\n    transform: translateY(5px) rotate(45deg);\n  }\n  body.is-open .burger span:nth-child(3),\n  .header-host.is-open .burger span:nth-child(3) {\n    transform: translateY(-5px) rotate(-45deg);\n  }\n}\n\n@media (max-width: 360px) {\n  .header--default .header-logo-text {\n    display: none;\n  }\n}\n\n\n/* generated root CSS: 05-hero/hero.operational-diagram/block.css */\n/* lab-ui block · hero.operational-diagram\n   Depends: 00-tokens/tokens.css + cta.btn-primary-ring/block.css\n   + cta.btn-secondary-filled/block.css. */\n\n.hero--diagram {\n  padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 6vw, 5.5rem);\n  background:\n    radial-gradient(60% 70% at 70% 30%, rgba(107, 192, 249, 0.10), transparent 70%),\n    radial-gradient(50% 60% at 10% 90%, rgba(125, 222, 142, 0.06), transparent 70%),\n    var(--color-bg, #FFFFFF);\n  font-family: var(--font-family);\n  color: var(--color-text);\n  position: relative;\n  overflow-x: clip;\n  overflow-y: visible;\n}\n\n.hero--diagram .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.hero-grid {\n  display: grid;\n  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);\n  gap: clamp(2rem, 4vw, 4rem);\n  align-items: center;\n}\n\n.hero-content { display: grid; gap: 24px; max-width: 38rem; }\n\n.hero-eyebrow {\n  display: inline-flex;\n  align-items: center;\n  gap: 8px;\n  padding: 6px 12px;\n  border-radius: 999px;\n  background: rgba(0, 0, 0, 0.04);\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-text);\n  width: fit-content;\n}\n.hero-eyebrow .crumb-sep { color: var(--color-gray-blue); }\n.hero-eyebrow .crumb-cur { color: var(--color-heading); font-weight: 500; }\n\n.hero-title {\n  margin: 0;\n  font-size: var(--type-h1-size, clamp(2.25rem, 5.2vw, 5rem));\n  font-weight: var(--type-h1-weight, 500);\n  letter-spacing: var(--type-h1-tracking, -0.025em);\n  line-height: var(--type-h1-leading, 1.04);\n  color: var(--color-heading);\n}\n.hero-title .accent {\n  font-style: italic;\n  background: linear-gradient(120deg, #1A6FB8, #6BC0F9);\n  -webkit-background-clip: text;\n          background-clip: text;\n  color: transparent;\n}\n\n.hero-leads { display: grid; gap: 12px; max-width: 36rem; }\n.hero-leads p {\n  margin: 0;\n  font-size: var(--type-lead-size, 1.0625rem);\n  line-height: var(--type-lead-leading, 1.5);\n  color: var(--color-text);\n}\n\n.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }\n\n.hero-art {\n  position: sticky;\n  top: clamp(5.5rem, 8vw, 7rem);\n  align-self: start;\n  display: grid;\n  place-items: center;\n  width: min(520px, 100%);\n  aspect-ratio: 4 / 5;\n  margin-inline: auto;\n}\n\n.hero-media-placeholder {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  border-radius: var(--radius-card, 1.5rem);\n  padding: 12px;\n  background:\n    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(246,248,252,0.92));\n  border: 1px solid rgba(27, 29, 37, 0.08);\n  box-shadow:\n    0 28px 42px -32px rgba(27, 29, 37, 0.38),\n    0 0 0 1px rgba(255,255,255,0.85) inset;\n}\n\n.hero-media-surface {\n  position: relative;\n  width: 100%;\n  height: 100%;\n  display: grid;\n  place-items: center;\n  overflow: hidden;\n  border-radius: calc(var(--radius-card, 1.5rem) - 0.375rem);\n  background:\n    repeating-linear-gradient(\n      135deg,\n      rgba(255,255,255,0.22) 0,\n      rgba(255,255,255,0.22) 12px,\n      rgba(215,226,236,0.16) 12px,\n      rgba(215,226,236,0.16) 24px\n    ),\n    linear-gradient(180deg, #EAF3F8 0%, #F4F8FB 100%);\n}\n\n.hero-placeholder-copy {\n  display: grid;\n  gap: 16px;\n  max-width: 70%;\n  text-align: center;\n  font-family: var(--font-mono, monospace);\n  color: #5C6474;\n  font-size: clamp(0.875rem, 2.1vw, 1.25rem);\n  line-height: 1.55;\n  letter-spacing: 0.22em;\n  text-transform: uppercase;\n}\n\n@media (max-width: 900px) {\n  .hero-grid { grid-template-columns: 1fr; }\n  .hero-art {\n    position: relative;\n    top: auto;\n    width: min(520px, 100%);\n  }\n}\n@media (max-width: 540px) {\n  .hero-cta {\n    display: grid;\n    grid-template-columns: 1fr;\n    width: 100%;\n  }\n\n  .hero-cta .btn {\n    width: 100%;\n    min-width: 0;\n  }\n\n  .hero-art { width: 100%; }\n  .hero-media-placeholder { padding: 10px; }\n  .hero-placeholder-copy { font-size: 0.8125rem; letter-spacing: 0.18em; }\n}\n\n\n/* generated root CSS: 06-features/features.accordion-2col-numbered/block.css */\n/* lab-ui block · features.accordion-2col-numbered\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.features--accordion {\n  padding-block: clamp(4rem, 7vw, 6.5rem);\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.features--accordion .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.features-top {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);\n  gap: clamp(2rem, 4vw, 4rem);\n  align-items: start;\n  margin-bottom: clamp(2rem, 4vw, 3.5rem);\n}\n.features-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-cyan);\n  margin: 0 0 14px;\n}\n.features-title {\n  font-weight: 600;\n  font-size: clamp(1.75rem, 3.4vw, 3.125rem);\n  line-height: 1.15;\n  letter-spacing: -0.022em;\n  color: var(--color-heading);\n  margin: 0;\n}\n.features-lede { display: grid; gap: 14px; max-width: 44rem; }\n.features-lede p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--color-text); }\n\n.features-list {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 16px;\n  align-items: start;\n}\n\n.features-col {\n  display: grid;\n  gap: 12px;\n  align-content: start;\n}\n\n.f-row {\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  border-radius: 12px;\n  background: var(--color-bg);\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n  overflow: hidden;\n}\n.f-row.is-open {\n  border-color: rgba(0, 0, 0, 0.16);\n  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.18);\n}\n\n.f-row-head {\n  display: grid;\n  grid-template-columns: auto 1fr auto;\n  gap: 12px;\n  align-items: center;\n  width: 100%;\n  padding: 14px 16px;\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n  font: inherit;\n  text-align: left;\n  color: var(--color-heading);\n}\n.f-row-head:hover .f-title { color: var(--color-link); }\n\n.f-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  color: var(--color-gray-blue);\n  letter-spacing: 0.08em;\n}\n\n.f-title {\n  font-size: 0.9375rem;\n  font-weight: 500;\n  letter-spacing: -0.01em;\n  color: var(--color-heading);\n}\n\n.f-toggle {\n  width: 26px;\n  height: 26px;\n  border-radius: 999px;\n  display: inline-grid;\n  place-items: center;\n  background: rgba(0, 0, 0, 0.04);\n  color: var(--color-heading);\n  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;\n}\n.f-row.is-open .f-toggle {\n  transform: rotate(45deg);\n  background: var(--color-heading);\n  color: var(--color-white);\n}\n\n.f-body {\n  display: grid;\n  grid-template-rows: 0fr;\n  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.f-row.is-open .f-body { grid-template-rows: 1fr; }\n\n.f-body-inner {\n  overflow: hidden;\n  min-height: 0;\n  padding: 0 16px;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.55;\n}\n.f-row.is-open .f-body-inner {\n  padding-bottom: 16px;\n}\n\n@media (max-width: 880px) {\n  .features-top { grid-template-columns: 1fr; }\n  .features-list { grid-template-columns: 1fr; }\n}\n\n\n/* generated root CSS: 07-comparison/comparison.three-col-with-mobile-cards/block.css */\n/* lab-ui block · comparison.three-col-with-mobile-cards\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.compare {\n  padding-block: clamp(4rem, 7vw, 6.5rem);\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.compare .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.compare-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.25rem);\n  text-align: center;\n}\n.compare-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.compare-title {\n  margin: 0 0 14px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.compare-lede {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n\n.compare-grid {\n  position: relative;\n  overflow: hidden;\n  border: 1px solid rgba(146, 170, 205, 0.42);\n  border-radius: 22px;\n  background:\n    radial-gradient(circle at 52% 8%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 34%),\n    linear-gradient(180deg, #ffffff 0%, #fbfcfe 62%, #f6f8fb 100%);\n  box-shadow: 0 20px 60px rgba(17, 24, 39, 0.06);\n}\n.compare-grid::after {\n  content: \"\";\n  position: absolute;\n  inset: auto 0 0;\n  height: 30%;\n  pointer-events: none;\n  z-index: 3;\n  background:\n    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(98, 111, 135, 0.18) 58%, rgba(17, 24, 50, 0.48) 100%);\n}\n\n.compare-row {\n  position: relative;\n  display: grid;\n  grid-template-columns: minmax(210px, 1.62fr) minmax(150px, 1.15fr) repeat(5, minmax(140px, 1fr));\n  min-height: 72px;\n  z-index: 1;\n}\n\n.compare-cell {\n  min-width: 0;\n  padding: 16px 18px;\n  display: flex;\n  align-items: center;\n  color: #171b23;\n  font-size: clamp(0.875rem, 0.74vw, 1rem);\n  line-height: 1.34;\n}\n.compare-cell--head {\n  align-items: flex-start;\n  padding-top: 20px;\n  color: #1e232d;\n  font-weight: 500;\n  white-space: nowrap;\n}\n.compare-cell--empty {\n  visibility: hidden;\n}\n\n.compare-brand {\n  display: inline-flex;\n  align-items: baseline;\n  color: #171b23;\n  font-size: clamp(0.9375rem, 0.86vw, 1.0625rem);\n  letter-spacing: -0.02em;\n}\n.compare-brand strong {\n  font-weight: 800;\n}\n\n.compare-cell--capability {\n  padding-left: clamp(1.5rem, 2.4vw, 2.75rem);\n  font-size: clamp(1rem, 1.03vw, 1.1875rem);\n  font-weight: 500;\n  letter-spacing: -0.02em;\n  color: #171b23;\n}\n.compare-capability {\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n.compare-cell--sw {\n  position: relative;\n  z-index: 2;\n  margin-inline: 0.28rem;\n  background: rgba(255, 255, 255, 0.96);\n  border-left: 1px solid rgba(86, 66, 45, 0.45);\n  border-right: 1px solid rgba(86, 66, 45, 0.45);\n  box-shadow: 0 20px 52px rgba(73, 73, 56, 0.12);\n}\n.compare-row--head .compare-cell--sw {\n  margin-top: 18px;\n  padding-top: 16px;\n  border-top: 1px solid rgba(86, 66, 45, 0.45);\n  border-radius: 12px 12px 0 0;\n}\n.compare-body .compare-row:last-child .compare-cell--sw {\n  margin-bottom: 18px;\n  border-bottom: 1px solid rgba(86, 66, 45, 0.45);\n  border-radius: 0 0 12px 12px;\n}\n\n.compare-status {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n  white-space: nowrap;\n}\n.compare-status > span:last-child {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.compare-icon {\n  width: 19px;\n  height: 19px;\n  flex: 0 0 19px;\n  position: relative;\n  border-radius: 999px;\n}\n.compare-status--yes .compare-icon {\n  background: #76d98f;\n}\n.compare-status--partial .compare-icon {\n  background: #d7d9dc;\n}\n.compare-status--no .compare-icon {\n  background: #FF6B6B;\n}\n.compare-status--yes .compare-icon::before,\n.compare-status--partial .compare-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8px;\n  width: 8px;\n  height: 4px;\n  border-left: 2px solid #F9F9F9;\n  border-bottom: 2px solid #F9F9F9;\n  border-radius: 1px;\n  transform: rotate(-45deg);\n}\n.compare-status--no .compare-icon::before,\n.compare-status--no .compare-icon::after {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8.5px;\n  width: 9px;\n  height: 2px;\n  border-radius: 999px;\n  background: #F9F9F9;\n}\n.compare-status--no .compare-icon::before {\n  transform: rotate(45deg);\n}\n.compare-status--no .compare-icon::after {\n  transform: rotate(-45deg);\n}\n.compare-status > span:last-child:empty {\n  display: none;\n}\n.compare-mobile-label {\n  display: none;\n}\n.compare-toggle {\n  display: none;\n}\n\n@media (max-width: 1180px) {\n  .compare-row {\n    grid-template-columns: minmax(172px, 1.5fr) minmax(118px, 1.05fr) repeat(5, minmax(104px, 1fr));\n    min-height: 66px;\n  }\n  .compare-cell {\n    padding-inline: 12px;\n    font-size: clamp(0.78rem, 1.08vw, 0.92rem);\n  }\n  .compare-cell--head {\n    font-size: clamp(0.76rem, 1.02vw, 0.88rem);\n    white-space: normal;\n  }\n  .compare-cell--capability {\n    padding-left: clamp(1rem, 1.7vw, 1.5rem);\n    font-size: clamp(0.9rem, 1.28vw, 1.04rem);\n  }\n  .compare-status {\n    gap: 8px;\n  }\n  .compare-status > span:last-child {\n    max-width: 100%;\n  }\n  .compare-row--head .compare-cell--sw {\n    margin-top: 14px;\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 14px;\n  }\n}\n\n@media (max-width: 860px) {\n  .compare {\n    padding-block: clamp(3.25rem, 12vw, 4.5rem);\n  }\n  .compare-top {\n    text-align: left;\n    margin-bottom: 1.5rem;\n  }\n  .compare-grid {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n    overflow: visible;\n    border: 0;\n    border-radius: 0;\n    background: transparent;\n    box-shadow: none;\n  }\n  .compare-grid::after,\n  .compare-head {\n    display: none;\n  }\n  .compare-body {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n  }\n  .compare-row {\n    min-width: 0;\n    min-height: 0;\n    grid-template-columns: 1fr;\n    overflow: hidden;\n    border: 1px solid rgba(146, 170, 205, 0.32);\n    border-radius: var(--radius-card-sm);\n    background: #ffffff;\n    box-shadow: 0 16px 42px rgba(17, 24, 39, 0.06);\n  }\n  .compare-cell {\n    justify-content: space-between;\n    gap: 18px;\n    padding: 12px 16px;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    font-size: 0.9375rem;\n  }\n  .compare-cell:first-child {\n    border-top: 0;\n  }\n  .compare-cell--capability {\n    padding: 16px;\n    background: #f7fafc;\n    font-size: 1.05rem;\n  }\n  .compare-cell--sw {\n    margin: 0;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    border-radius: 0;\n    box-shadow: inset 3px 0 0 rgba(86, 66, 45, 0.62);\n    background: rgba(244, 250, 255, 0.8);\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 0;\n    border-bottom: 0;\n    border-radius: 0;\n  }\n  .compare-row:not(.is-expanded) .compare-cell:not(.compare-cell--capability):not(.compare-cell--sw) {\n    display: none;\n  }\n  .compare-toggle {\n    width: 100%;\n    min-height: 42px;\n    padding: 0 16px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    background: #ffffff;\n    color: var(--color-gray-blue);\n    font: inherit;\n    font-size: 0.75rem;\n    font-weight: 800;\n    line-height: 1;\n    text-align: left;\n    text-transform: uppercase;\n    cursor: pointer;\n  }\n  .compare-toggle-close {\n    display: none;\n  }\n  .compare-toggle-icon {\n    width: 18px;\n    height: 18px;\n    flex: 0 0 18px;\n    position: relative;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.12);\n  }\n  .compare-toggle-icon::before,\n  .compare-toggle-icon::after {\n    content: \"\";\n    position: absolute;\n    inset: 50% auto auto 50%;\n    width: 9px;\n    height: 2px;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.92);\n    transform: translate(-50%, -50%);\n  }\n  .compare-toggle-icon::after {\n    transform: translate(-50%, -50%) rotate(90deg);\n  }\n  .compare-row.is-expanded .compare-toggle-open,\n  .compare-row.is-expanded .compare-toggle-icon::after {\n    display: none;\n  }\n  .compare-row.is-expanded .compare-toggle-close {\n    display: inline;\n  }\n  .compare-mobile-label {\n    display: inline;\n    flex: 0 1 auto;\n    max-width: 46%;\n    color: var(--color-gray-blue);\n    font-size: 0.75rem;\n    font-weight: 700;\n    line-height: 1.2;\n    text-transform: uppercase;\n  }\n  .compare-status {\n    flex-direction: row-reverse;\n    justify-content: flex-end;\n    text-align: right;\n    white-space: normal;\n  }\n  .compare-status > span:last-child {\n    overflow: visible;\n    text-overflow: clip;\n  }\n}\n\n\n/* generated root CSS: 08-faq/faq.bubble-light-grouped/block.css */\n/* lab-ui block · faq.bubble-light-grouped\n   Depends: 00-tokens/tokens.css. Light theme.\n   Uses native <details> so works without JS; block.js only handles slot hiding + toggle icon sync. */\n\n.faq {\n  padding-block: clamp(4rem, 7vw, 6.5rem);\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.faq .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.faq-top {\n  max-width: 56rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.5rem);\n  text-align: center;\n}\n.faq-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.faq-title {\n  margin: 0 0 14px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.faq-lede {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n\n/* ─── Groups ───────────────────────────────────────────────── */\n.faq-groups {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 28px 32px;\n}\n\n.faq-group {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-group-head {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  padding-bottom: 6px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.06);\n}\n.faq-group-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n}\n.faq-group-title {\n  margin: 0;\n  font-size: 1.0625rem;\n  font-weight: 600;\n  letter-spacing: -0.01em;\n  color: var(--color-heading);\n}\n\n.faq-group-body {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n/* ─── Items ────────────────────────────────────────────────── */\n.faq-item {\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  border-radius: 18px;\n  background: var(--color-bg);\n  overflow: hidden;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n.faq-item[open] {\n  border-color: rgba(0, 0, 0, 0.16);\n  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.18);\n}\n\n.faq-q {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 12px;\n  align-items: center;\n  padding: 14px 18px;\n  cursor: pointer;\n  list-style: none;\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  font-weight: 500;\n  letter-spacing: -0.01em;\n  user-select: none;\n}\n.faq-q::-webkit-details-marker { display: none; }\n.faq-q:hover .faq-q-text { color: #56422D; }\n\n.faq-q-text {\n  display: inline-block;\n}\n\n.faq-q-toggle {\n  width: 26px;\n  height: 26px;\n  border-radius: 999px;\n  display: inline-grid;\n  place-items: center;\n  background: rgba(0, 0, 0, 0.04);\n  color: var(--color-heading);\n  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;\n}\n.faq-item[open] .faq-q-toggle {\n  transform: rotate(45deg);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, var(--color-white));\n}\n\n.faq-a {\n  padding: 0 18px 16px;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.55;\n}\n\n@media (max-width: 860px) {\n  .faq-groups { grid-template-columns: 1fr; gap: 24px; }\n}\n\n\n/* generated root CSS: 03-cta/cta.btn-primary-ring/block.css */\n/* lab-ui block · cta.btn-primary-ring\n   Depends: 00-tokens/tokens.css (--color-black, --radius-pill,\n   --font-family, --gradient-cta-ring, --transition-duration,\n   --cta-accent, --cta-accent-soft). */\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.5rem;\n  min-width: 13rem;\n  height: 3.25rem;\n  padding: 0 1.625rem;\n  border-radius: var(--radius-pill);\n  font-family: var(--font-family);\n  font-weight: 500;\n  font-size: 1rem;\n  white-space: nowrap;\n  position: relative;\n  text-decoration: none;\n  cursor: pointer;\n  border: 0;\n  transition: box-shadow var(--transition-duration) ease,\n              transform var(--transition-duration) ease;\n}\n\n.btn-primary {\n  background: var(--button-primary-bg, transparent);\n  color: var(--button-primary-color, var(--color-black));\n}\n\n.btn-primary-ring {\n  position: relative;\n  overflow: hidden;\n}\n\n.btn-primary-ring::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  padding: 1.5px;\n  background: var(--gradient-cta-ring);\n  -webkit-mask:\n    linear-gradient(#000 0 0) content-box,\n    linear-gradient(#000 0 0);\n  -webkit-mask-composite: xor;\n          mask-composite: exclude;\n  pointer-events: none;\n  z-index: 3;                          /* above hover-rise ::after */\n  transition: background var(--transition-duration) ease;\n}\n\n/* On hover the rainbow ring rotates direction 249° → 264° (matches\n   live ServiceWand .button-primary:hover::before). */\n.btn-primary-ring:hover::before {\n  background: linear-gradient(\n    264.85deg,\n    rgba(239, 92, 255, 0)   -6.54%,\n    #FFA72C                 24.73%,\n    #6BEDF9                 70.73%,\n    rgba(107, 237, 249, 0) 113.1%\n  );\n}\n\n/* Outer brand glow on hover — tighter than sw's stock 41 px so it\n   reads as a halo hugging the pill, not a rectangular smear behind\n   it (matches the production reference). Tinted by --cta-accent so\n   each vertical paints its own color. */\n.btn-primary-ring:hover {\n  box-shadow:\n    0 0 32px -4px var(--cta-accent, rgba(107, 234, 249, 0.45));\n}\n\n/* Match cta.btn-secondary-filled's hover affordance: a tighter\n   bottom-centered radial glow that fades in, instead of the shared\n   effect.hover-rise strip. The ring remains on ::before above it.\n   Keep normal blending so the glow stays visible on white buttons. */\n.btn-primary-ring::after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  transform: none;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 1;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  filter: none;\n  background-blend-mode: normal;\n  mix-blend-mode: normal;\n  transition: opacity var(--transition-duration) ease;\n}\n\n.btn-primary-ring:hover::after {\n  opacity: 0.48;\n}\n\n.btn-star {\n  flex-shrink: 0;\n  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);\n}\n.btn-primary-ring:hover .btn-star {\n  transform: rotate(180deg);\n}\n\n\n/* generated root CSS: 03-cta/cta.btn-secondary-filled/block.css */\n/* lab-ui block · cta.btn-secondary-filled\n   Depends: 00-tokens/tokens.css\n     (--cta-secondary-fill, --cta-secondary-color, --cta-secondary-border,\n      --cta-accent-soft, --radius-pill, --font-family, --transition-duration)\n   + 12-decorative/effect.hover-rise (inner bottom glow).\n\n   The base .btn rules typically come from cta.btn-primary-ring/block.css\n   when both are on the page. We re-declare the geometry here so this\n   block also works standalone. */\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.5rem;\n  min-width: 13rem;\n  height: 3.25rem;\n  padding: 0 1.625rem;\n  border-radius: var(--radius-pill);\n  font-family: var(--font-family);\n  font-weight: 500;\n  font-size: 1rem;\n  white-space: nowrap;\n  position: relative;\n  text-decoration: none;\n  cursor: pointer;\n  border: 0;\n  transition: box-shadow var(--transition-duration) ease,\n              transform var(--transition-duration) ease;\n}\n\n.btn-secondary-filled {\n  /* Filled background — re-themed per vertical via tokens */\n  background: var(--cta-secondary-fill);\n  color: var(--cta-secondary-color);\n  border: 1px solid var(--cta-secondary-border);\n\n  /* Idle: no glow at all. Both halos fade in only on :hover. */\n  box-shadow: none;\n\n  transition: box-shadow var(--transition-duration) ease;\n  position: relative;\n  overflow: hidden;        /* keeps ::before contained */\n}\n\n/* Inner glow — radial-gradient ellipse pinned to the bottom-center.\n   ~58 % wide so the rounded end caps stay dark even when active.\n   Lives in the DOM at all times but starts at opacity 0; fades in\n   on :hover (along with the outer halo) so the pill looks \"lit\"\n   under the cursor and quiet at rest. */\n.btn-secondary-filled::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 1;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  mix-blend-mode: screen;\n  transition: opacity var(--transition-duration) ease;\n}\n\n.btn-secondary-filled:hover {\n  /* Outer halo fades in on hover. Spread -4 px + blur 32 px gives\n     a round soft glow that hugs the pill instead of smearing\n     rectangularly. Tinted by current vertical's --cta-accent. */\n  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n\n.btn-secondary-filled:hover::before {\n  /* Inner radial fades in to match the outer halo. */\n  opacity: 0.48;\n}\n\n/* Suppress the auto-applied effect.hover-rise ::after on this block —\n   we draw a tighter, 65 %-wide bottom glow via ::before that already\n   covers the same affordance. Stacking both reads as \"double glow\". */\n.btn-secondary-filled::after {\n  display: none;\n}\n\n.btn-secondary-filled .btn-star {\n  flex-shrink: 0;\n  color: var(--cta-secondary-color);\n  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);\n}\n.btn-secondary-filled:hover .btn-star {\n  transform: rotate(180deg);\n}\n\n\n/* generated root CSS: 02-footer/footer.sw-default/block.css */\n/* lab-ui block · footer.sw-default\n   Depends: 00-tokens/tokens.css (--color-black-bg, --color-white,\n   --color-gray-blue, --font-family, --container-*).\n   Dark surface regardless of host page theme. */\n\n.footer {\n  background: var(--color-black-bg, #17171B);\n  color: var(--color-gray-light, #D9D9D9);\n  padding: 64px 0 32px;\n  font-family: var(--font-family);\n  border-top-left-radius: 2.5rem;\n  border-top-right-radius: 2.5rem;\n}\n\n.footer .container,\n.footer .footer-container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.footer-top {\n  display: grid;\n  grid-template-columns: 1.4fr 1fr 1fr;\n  gap: 48px;\n  align-items: start;\n  padding-bottom: 48px;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.08);\n}\n\n.footer-brand-head {\n  margin-bottom: 16px;\n}\n.footer-logo {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n  color: var(--color-white);\n  text-decoration: none;\n  font-size: 1.5rem;\n  font-weight: 600;\n  letter-spacing: -0.02em;\n}\n.footer-tagline {\n  font-size: 0.9375rem;\n  color: var(--color-gray-light);\n  max-width: 22rem;\n  margin: 0 0 24px;\n  line-height: 1.5;\n}\n.footer-address {\n  font-style: normal;\n  font-size: 0.8125rem;\n  color: var(--color-gray-blue);\n  line-height: 1.65;\n}\n.footer-address p { margin: 0; }\n.footer-address strong { color: var(--color-white); font-weight: 600; }\n\n.footer-nav {\n  display: grid;\n  gap: 14px;\n  font-size: 0.9375rem;\n}\n.footer-nav-link {\n  color: var(--color-gray-light);\n  text-decoration: none;\n  transition: color var(--transition-duration) ease;\n}\n.footer-nav-link:hover { color: var(--color-white); }\n\n.footer-contacts { display: grid; gap: 32px; }\n.footer-socials {\n  display: inline-flex;\n  gap: 8px;\n}\n.footer-social-link {\n  display: inline-grid;\n  place-items: center;\n  width: 32px;\n  height: 32px;\n  border-radius: 999px;\n  background: rgba(255, 255, 255, 0.06);\n  color: var(--color-white);\n  transition: background var(--transition-duration) ease;\n}\n.footer-social-link:hover { background: rgba(255, 255, 255, 0.12); }\n\n.footer-emails {\n  display: grid;\n  gap: 16px;\n}\n.footer-email-label {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-gray-blue);\n  margin: 0 0 4px;\n}\n.footer-email-link {\n  font-size: 0.9375rem;\n  color: var(--color-white);\n  text-decoration: none;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.16);\n  padding-bottom: 1px;\n}\n.footer-email-link:hover { border-bottom-color: var(--color-white); }\n\n.footer-bottom {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 16px;\n  padding-top: 24px;\n  font-size: 0.8125rem;\n}\n.footer-copy { color: var(--color-gray-blue); margin: 0; }\n.footer-legal-mobile { display: inline-flex; gap: 16px; }\n.footer-legal-link {\n  color: var(--color-gray-blue);\n  text-decoration: none;\n  transition: color var(--transition-duration) ease;\n}\n.footer-legal-link:hover { color: var(--color-white); }\n\n@media (max-width: 900px) {\n  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }\n  .footer-contacts { grid-column: span 2; }\n}\n@media (max-width: 600px) {\n  .footer-top { grid-template-columns: 1fr; }\n  .footer-contacts { grid-column: span 1; }\n  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }\n}\n",
+    "javascript": "(() => {\n  if (window.__LAB_UI_CMS_FAMILY_INIT__) return;\n  window.__LAB_UI_CMS_FAMILY_INIT__ = true;\n})();\n\n/* generated root JS: 01-header/header.sw-default/block.js */\n// lab-ui block · header.sw-default\n// - Tap-toggle desktop panels on touch devices\n// - Click-outside closes the open panel\n// - Esc closes the open panel\n// - Burger toggles .is-open on the header host (mobile full-width menu)\n// - Auto-hide empty mega columns + mega/list/link slots whose label\n//   is empty / still a handlebars placeholder\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isPlaceholder = (s) =>\n    !s || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(s.trim());\n\n  function pruneEmptySlots(header) {\n    // Hide mega-links whose label is unset\n    header.querySelectorAll(\".nav-mega-link, .nav-list-link\").forEach((a) => {\n      if (isPlaceholder(a.textContent)) a.hidden = true;\n    });\n    // Hide mega columns whose title is unset OR whose links are all hidden\n    header.querySelectorAll(\".nav-mega-col\").forEach((col) => {\n      const title = col.querySelector(\".nav-mega-title\")?.textContent ?? \"\";\n      const allLinksHidden = [...col.querySelectorAll(\".nav-mega-link\")]\n        .every((a) => a.hidden);\n      if (isPlaceholder(title) && allLinksHidden) col.hidden = true;\n    });\n    // Hide whole nav-item if its label / trigger / anchor is empty\n    header.querySelectorAll(\"[data-nav-item]\").forEach((item) => {\n      const label =\n        item.querySelector(\".nav-trigger\")?.firstChild?.textContent ??\n        item.querySelector(\"a.nav-link\")?.textContent ??\n        \"\";\n      if (isPlaceholder(label)) item.hidden = true;\n    });\n  }\n\n  function pruneBreadcrumb(chip) {\n    [\"1\", \"2\"].forEach((idx) => {\n      const link = chip.querySelector(`[data-mid=\"${idx}\"]`);\n      const text = link?.textContent?.trim();\n      if (link && isPlaceholder(text)) {\n        link.hidden = true;\n        const sep = chip.querySelector(`[data-sep-for=\"mid_${idx}\"]`);\n        if (sep) sep.hidden = true;\n      }\n    });\n\n    const root = chip.querySelector(\".bc-root\")?.textContent?.trim();\n    const current = chip.querySelector(\".bc-current\")?.textContent?.trim();\n    if (isPlaceholder(root) || isPlaceholder(current)) {\n      chip.hidden = true;\n    }\n  }\n\n  function wireTapToggle(header) {\n    // Tap toggle for coarse-pointer desktop widths. Narrow viewports\n    // render panel links inline inside the burger menu, without accordion\n    // state.\n    let openItem = null;\n    const shouldClickToggle = () =>\n      window.matchMedia(\"(pointer: coarse)\").matches &&\n      !window.matchMedia(\"(max-width: 1024px)\").matches;\n    const closeOpen = () => {\n      if (!openItem) return;\n      openItem.dataset.open = \"false\";\n      const trig = openItem.querySelector(\".nav-trigger\");\n      trig?.setAttribute(\"aria-expanded\", \"false\");\n      openItem = null;\n    };\n\n    header.querySelectorAll('[data-nav-item][data-kind=\"dropdown\"], [data-nav-item][data-kind=\"mega\"]').forEach((item) => {\n      const trigger = item.querySelector(\".nav-trigger\");\n      if (!trigger) return;\n      trigger.addEventListener(\"click\", (e) => {\n        if (!shouldClickToggle()) return;\n        e.preventDefault();\n        const willOpen = openItem !== item;\n        closeOpen();\n        if (willOpen) {\n          item.dataset.open = \"true\";\n          trigger.setAttribute(\"aria-expanded\", \"true\");\n          openItem = item;\n        }\n      });\n    });\n\n    document.addEventListener(\"click\", (e) => {\n      if (openItem && !openItem.contains(e.target)) closeOpen();\n    });\n    document.addEventListener(\"keydown\", (e) => {\n      if (e.key === \"Escape\") closeOpen();\n    });\n  }\n\n  function wireBurger(header) {\n    const burger = header.querySelector(\".burger\");\n    if (!burger) return;\n    // Prefer .header-host wrapper if present (older harness pattern),\n    // fall back to <body> (recommended page pattern — body is host).\n    const host =\n      header.closest(\".header-host\") ||\n      document.body;\n    const setMobilePanelState = (open) => {\n      if (!window.matchMedia(\"(max-width: 1024px)\").matches) return;\n      header.querySelectorAll(\".nav-trigger\").forEach((trigger) => {\n        trigger.setAttribute(\"aria-expanded\", String(open));\n      });\n    };\n    burger.addEventListener(\"click\", () => {\n      const open = host.classList.toggle(\"is-open\");\n      burger.setAttribute(\"aria-expanded\", String(open));\n      burger.setAttribute(\"aria-label\", open ? \"Close menu\" : \"Open menu\");\n      setMobilePanelState(open);\n    });\n    header.querySelectorAll('.header-nav a[href]').forEach((link) => {\n      link.addEventListener(\"click\", () => {\n        host.classList.remove(\"is-open\");\n        burger.setAttribute(\"aria-expanded\", \"false\");\n        burger.setAttribute(\"aria-label\", \"Open menu\");\n        setMobilePanelState(false);\n      });\n    });\n  }\n\n  ready(() => {\n    document.querySelectorAll('[data-block=\"header.sw-default\"]').forEach((header) => {\n      pruneEmptySlots(header);\n      wireTapToggle(header);\n      wireBurger(header);\n    });\n    document.querySelectorAll('[data-block=\"header.sw-default-breadcrumb\"]').forEach(pruneBreadcrumb);\n  });\n})();\n\n\n/* generated root JS: 06-features/features.accordion-2col-numbered/block.js */\n// lab-ui block · features.accordion-2col-numbered\n// Toggle .is-open on click. Multiple rows can be open at the same time\n// (matches v5 design source — no one-open rule).\n// Hides empty slots automatically (slots whose title is empty / handlebars).\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"features.accordion-2col-numbered\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".f-row\").forEach((row) => {\n          // Hide empty slots\n          const title = row.querySelector(\".f-title\")?.textContent?.trim();\n          if (!title || /^\\{\\{slot_\\d+_title\\}\\}$/.test(title)) {\n            row.hidden = true;\n            return;\n          }\n          const btn = row.querySelector(\".f-row-head\");\n          if (!btn) return;\n          btn.addEventListener(\"click\", () => {\n            const isOpen = row.classList.toggle(\"is-open\");\n            btn.setAttribute(\"aria-expanded\", String(isOpen));\n          });\n        });\n      });\n  });\n})();\n\n\n/* generated root JS: 07-comparison/comparison.three-col-with-mobile-cards/block.js */\n// lab-ui block · comparison.three-col-with-mobile-cards\n// Auto-hides empty rows and adds mobile expanders for secondary columns.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"comparison.three-col-with-mobile-cards\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".compare-body .compare-row\").forEach((row) => {\n          const cap = row.querySelector(\".compare-capability\")?.textContent?.trim();\n          if (!cap || /^\\{\\{slot_\\d+_capability\\}\\}$/.test(cap)) {\n            row.hidden = true;\n            return;\n          }\n\n          const secondaryCells = row.querySelectorAll(\n            \".compare-cell:not(.compare-cell--capability):not(.compare-cell--sw)\"\n          );\n          const swCell = row.querySelector(\".compare-cell--sw\");\n          if (!swCell || !secondaryCells.length || row.querySelector(\".compare-toggle\")) return;\n\n          const button = document.createElement(\"button\");\n          button.className = \"compare-toggle\";\n          button.type = \"button\";\n          button.setAttribute(\"aria-expanded\", \"false\");\n          button.innerHTML = [\n            '<span class=\"compare-toggle-open\">Show other platforms</span>',\n            '<span class=\"compare-toggle-close\">Hide other platforms</span>',\n            '<span class=\"compare-toggle-icon\" aria-hidden=\"true\"></span>',\n          ].join(\"\");\n          button.addEventListener(\"click\", () => {\n            const isOpen = row.classList.toggle(\"is-expanded\");\n            button.setAttribute(\"aria-expanded\", String(isOpen));\n          });\n          swCell.insertAdjacentElement(\"afterend\", button);\n        });\n      });\n  });\n})();\n\n\n/* generated root JS: 08-faq/faq.bubble-light-grouped/block.js */\n// lab-ui block · faq.bubble-light-grouped\n// Hides empty FAQ items (q empty / unfilled handlebars). Hides whole groups\n// whose title is empty or that have no visible items left.\n//\n// Toggle behavior is native <details>; we add `is-open` mirror class so CSS\n// not relying on `[open]` still works.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isPlaceholder = (s) =>\n    !s || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(s);\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"faq.bubble-light-grouped\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".faq-group\").forEach((group) => {\n          // Hide empty items\n          group.querySelectorAll(\".faq-item\").forEach((item) => {\n            const q = item.querySelector(\".faq-q-text\")?.textContent?.trim();\n            if (isPlaceholder(q)) {\n              item.hidden = true;\n            }\n            item.addEventListener(\"toggle\", () => {\n              item.classList.toggle(\"is-open\", item.open);\n            });\n            // Sync initial state\n            item.classList.toggle(\"is-open\", item.open);\n          });\n\n          // Hide group with no visible items or empty title\n          const groupTitle = group\n            .querySelector(\".faq-group-title\")\n            ?.textContent?.trim();\n          const visibleItems = group.querySelectorAll(\n            \".faq-item:not([hidden])\"\n          ).length;\n          if (isPlaceholder(groupTitle) || visibleItems === 0) {\n            group.hidden = true;\n          }\n        });\n      });\n  });\n})();\n\n",
+    "parameters": [
+      {
+        "code": "ROOT_META_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "nls": {
+          "en": {
+            "NAME": "META_TITLE"
+          }
+        },
+        "value": {
+          "en": "Field Service Landing | ServiceWand"
+        }
+      },
+      {
+        "code": "ROOT_META_DESCRIPTION",
+        "type": "LOCALIZED_STRING_SS",
+        "nls": {
+          "en": {
+            "NAME": "META_DESCRIPTION"
+          }
+        },
+        "value": {
+          "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+        }
+      }
+    ]
+  },
+  "children": [
+    {
+      "code": "HEADER",
+      "nls": {
+        "en": {
+          "NAME": "Header"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [],
+      "head": "",
+      "html": "<!-- lab-ui block · header.sw-default\n     Canonical header for ALL ServiceWand pages.\n     Brand + multi-level nav + locale + ring CTA + burger.\n     Each nav item declares its kind via data-kind:\n       link     · plain anchor                                        (Pricing, Customers, ...)\n       dropdown · single-column panel of links                         (Resources)\n       mega     · multi-column panel with section headings + links     (Platform, Verticals)\n     One renderer / one CSS file handles all three.\n     Light theme (sw tokens).\n     Composes: cta.btn-primary-ring + language.sw-locale-dropdown.\n     Optional breadcrumb chip is owned here so header + breadcrumb stay\n     a single source of truth.\n-->\n<header class=\"header header--default\" role=\"banner\" data-block=\"header.sw-default\">\n  <div class=\"container\">\n    <div class=\"header-inner\">\n\n      <a class=\"header-logo\" href=\"${HEADER_BRAND_HREF@STRING}\" aria-label=\"ServiceWand\">\n        <svg viewBox=\"0 0 33 31\" width=\"22\" height=\"22\" fill=\"none\" aria-hidden=\"true\">\n          <path d=\"M25.6 1.7l1.9 4.7 4.8 1.9-4.8 1.9-1.9 4.7-1.9-4.7L19 8.3l4.8-1.9 1.9-4.7zM8.3 0l2.3 5.9 6 2.3-6 2.3L8.3 16.5 5.9 10.6 0 8.3l5.9-2.3L8.3 0zM25.6 17.5l1.4 3.6 3.7 1.4-3.7 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4 1.4-3.6zM20.4 13.5c.2.2.3.4.3.7s-.1.5-.3.7c-.2.3-.4.5-.7.8-2 2.3-3.9 4.7-6 6.9-2.1 2.2-4.3 4.4-6.4 6.6-.2.2-.5.5-.7.7-.4.4-.8.6-1.3.6-.5 0-1-.2-1.3-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.3.3-.2.5-.5.8-.7C7 24.4 9.1 22.2 11.3 20.1c2.2-2.1 4.6-4 6.9-6 .3-.2.5-.4.8-.6.2-.2.5-.3.7-.3.3 0 .5.1.7.3z\" fill=\"currentColor\"/>\n        </svg>\n        <span class=\"header-logo-text\">${HEADER_BRAND_NAME@LOCALIZED_STRING_SS}</span>\n      </a>\n\n      <nav class=\"header-nav\" aria-label=\"Primary\" data-nav>\n        <!--\n          Each <li> declares its kind. CMS generator emits the right\n          inner markup based on the kind. Unfilled slots auto-hide.\n\n          item kinds:\n            link      · single <a class=\"nav-link\">\n            dropdown  · trigger + <ul class=\"nav-panel nav-panel--list\">\n            mega      · trigger + <div class=\"nav-panel nav-panel--mega\"> with <section> columns\n        -->\n\n        <!-- 1 · MEGA — Platform -->\n        <div class=\"nav-item\" data-kind=\"mega\" data-nav-item>\n          <button class=\"nav-link nav-trigger\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            ${HEADER_ITEM_1_LABEL@LOCALIZED_STRING_SS}\n            <svg class=\"nav-chev\" width=\"10\" height=\"6\" viewBox=\"0 0 10 6\" fill=\"none\" aria-hidden=\"true\">\n              <path d=\"M1 1l4 4 4-4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/>\n            </svg>\n          </button>\n          <div class=\"nav-panel nav-panel--mega\" role=\"menu\">\n            <section class=\"nav-mega-col\">\n              <h4 class=\"nav-mega-title\">${HEADER_ITEM_1_COL_1_TITLE@LOCALIZED_STRING_SS}</h4>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_1_LINK_1_HREF@STRING}\">${HEADER_ITEM_1_COL_1_LINK_1_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_1_LINK_2_HREF@STRING}\">${HEADER_ITEM_1_COL_1_LINK_2_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_1_LINK_3_HREF@STRING}\">${HEADER_ITEM_1_COL_1_LINK_3_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_1_LINK_4_HREF@STRING}\">${HEADER_ITEM_1_COL_1_LINK_4_LABEL@LOCALIZED_STRING_SS}</a>\n            </section>\n            <section class=\"nav-mega-col\">\n              <h4 class=\"nav-mega-title\">${HEADER_ITEM_1_COL_2_TITLE@LOCALIZED_STRING_SS}</h4>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_2_LINK_1_HREF@STRING}\">${HEADER_ITEM_1_COL_2_LINK_1_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_2_LINK_2_HREF@STRING}\">${HEADER_ITEM_1_COL_2_LINK_2_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_2_LINK_3_HREF@STRING}\">${HEADER_ITEM_1_COL_2_LINK_3_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_1_COL_2_LINK_4_HREF@STRING}\">${HEADER_ITEM_1_COL_2_LINK_4_LABEL@LOCALIZED_STRING_SS}</a>\n            </section>\n          </div>\n        </div>\n\n        <!-- 2 · MEGA — Industries -->\n        <div class=\"nav-item\" data-kind=\"mega\" data-nav-item>\n          <button class=\"nav-link nav-trigger\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            ${HEADER_ITEM_2_LABEL@LOCALIZED_STRING_SS}\n            <svg class=\"nav-chev\" width=\"10\" height=\"6\" viewBox=\"0 0 10 6\" fill=\"none\" aria-hidden=\"true\">\n              <path d=\"M1 1l4 4 4-4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/>\n            </svg>\n          </button>\n          <div class=\"nav-panel nav-panel--mega\" role=\"menu\">\n            <section class=\"nav-mega-col\">\n              <h4 class=\"nav-mega-title\">${HEADER_ITEM_2_COL_1_TITLE@LOCALIZED_STRING_SS}</h4>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_1_LINK_1_HREF@STRING}\">${HEADER_ITEM_2_COL_1_LINK_1_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_1_LINK_2_HREF@STRING}\">${HEADER_ITEM_2_COL_1_LINK_2_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_1_LINK_3_HREF@STRING}\">${HEADER_ITEM_2_COL_1_LINK_3_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_1_LINK_4_HREF@STRING}\">${HEADER_ITEM_2_COL_1_LINK_4_LABEL@LOCALIZED_STRING_SS}</a>\n            </section>\n            <section class=\"nav-mega-col\">\n              <h4 class=\"nav-mega-title\">${HEADER_ITEM_2_COL_2_TITLE@LOCALIZED_STRING_SS}</h4>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_2_LINK_1_HREF@STRING}\">${HEADER_ITEM_2_COL_2_LINK_1_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_2_LINK_2_HREF@STRING}\">${HEADER_ITEM_2_COL_2_LINK_2_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_2_LINK_3_HREF@STRING}\">${HEADER_ITEM_2_COL_2_LINK_3_LABEL@LOCALIZED_STRING_SS}</a>\n              <a class=\"nav-mega-link\" role=\"menuitem\" href=\"${HEADER_ITEM_2_COL_2_LINK_4_HREF@STRING}\">${HEADER_ITEM_2_COL_2_LINK_4_LABEL@LOCALIZED_STRING_SS}</a>\n            </section>\n          </div>\n        </div>\n\n        <!-- 3 · LINK — How It Works -->\n        <div class=\"nav-item\" data-kind=\"link\" data-nav-item>\n          <a class=\"nav-link\" href=\"${HEADER_ITEM_3_HREF@STRING}\">${HEADER_ITEM_3_LABEL@LOCALIZED_STRING_SS}</a>\n        </div>\n\n        <!-- 4 · LINK — Partners -->\n        <div class=\"nav-item\" data-kind=\"link\" data-nav-item>\n          <a class=\"nav-link\" href=\"${HEADER_ITEM_4_HREF@STRING}\">${HEADER_ITEM_4_LABEL@LOCALIZED_STRING_SS}</a>\n        </div>\n\n        <!-- 5 · DROPDOWN — Resources -->\n        <div class=\"nav-item\" data-kind=\"dropdown\" data-nav-item>\n          <button class=\"nav-link nav-trigger\" type=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">\n            ${HEADER_ITEM_5_LABEL@LOCALIZED_STRING_SS}\n            <svg class=\"nav-chev\" width=\"10\" height=\"6\" viewBox=\"0 0 10 6\" fill=\"none\" aria-hidden=\"true\">\n              <path d=\"M1 1l4 4 4-4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/>\n            </svg>\n          </button>\n          <ul class=\"nav-panel nav-panel--list\" role=\"menu\">\n            <li><a class=\"nav-list-link\" role=\"menuitem\" href=\"${HEADER_ITEM_5_LINK_1_HREF@STRING}\">${HEADER_ITEM_5_LINK_1_LABEL@LOCALIZED_STRING_SS}</a></li>\n            <li><a class=\"nav-list-link\" role=\"menuitem\" href=\"${HEADER_ITEM_5_LINK_2_HREF@STRING}\">${HEADER_ITEM_5_LINK_2_LABEL@LOCALIZED_STRING_SS}</a></li>\n            <li><a class=\"nav-list-link\" role=\"menuitem\" href=\"${HEADER_ITEM_5_LINK_3_HREF@STRING}\">${HEADER_ITEM_5_LINK_3_LABEL@LOCALIZED_STRING_SS}</a></li>\n            <li><a class=\"nav-list-link\" role=\"menuitem\" href=\"${HEADER_ITEM_5_LINK_4_HREF@STRING}\">${HEADER_ITEM_5_LINK_4_LABEL@LOCALIZED_STRING_SS}</a></li>\n          </ul>\n        </div>\n\n      </nav>\n\n      <div class=\"header-actions\">\n        <!-- Slot: locale (block: language.sw-locale-dropdown) -->\n        <div class=\"locale-selector\" data-block=\"language.sw-locale-dropdown\">\n          <button class=\"locale-trigger\" aria-haspopup=\"listbox\" aria-expanded=\"false\">\n            <div class=\"locale-trigger-left\">\n              <svg class=\"locale-chevron\" width=\"13\" height=\"8\" viewBox=\"0 0 13 8\" fill=\"none\" aria-hidden=\"true\">\n                <path d=\"M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999\" stroke=\"currentColor\" stroke-width=\"2\"/>\n              </svg>\n              <span class=\"locale-trigger-label\">${HEADER_LOCALE_LABEL@LOCALIZED_STRING_SS}</span>\n            </div>\n          </button>\n          <div class=\"locale-dropdown\" role=\"listbox\" aria-label=\"Select language\">\n            <ul class=\"locale-list\"></ul>\n          </div>\n        </div>\n\n        <!-- Slot: primary CTA (block: cta.btn-primary-ring) -->\n        <a class=\"btn btn-primary btn-primary-ring header-cta\" href=\"${HEADER_CTA_HREF@STRING}\">\n          <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n          </svg>\n          ${HEADER_CTA_LABEL@LOCALIZED_STRING_SS}\n        </a>\n\n        <button class=\"burger\" aria-label=\"Open menu\" aria-expanded=\"false\">\n          <span></span><span></span><span></span>\n        </button>\n      </div>\n\n    </div>\n  </div>\n</header>\n\n<div class=\"bc-chip\" data-block=\"header.sw-default-breadcrumb\" role=\"navigation\" aria-label=\"Breadcrumb\">\n  <a class=\"bc-link bc-root\" href=\"${HEADER_BREADCRUMB_ROOT_HREF@STRING}\">${HEADER_BREADCRUMB_ROOT_LABEL@LOCALIZED_STRING_SS}</a>\n  <span class=\"bc-sep\" data-sep-for=\"mid_1\" aria-hidden=\"true\">&gt;</span>\n  <a class=\"bc-link\" data-mid=\"1\" href=\"${HEADER_BREADCRUMB_MID_1_HREF@STRING}\">${HEADER_BREADCRUMB_MID_1_LABEL@LOCALIZED_STRING_SS}</a>\n  <span class=\"bc-sep\" data-sep-for=\"mid_2\" aria-hidden=\"true\">&gt;</span>\n  <a class=\"bc-link\" data-mid=\"2\" href=\"${HEADER_BREADCRUMB_MID_2_HREF@STRING}\">${HEADER_BREADCRUMB_MID_2_LABEL@LOCALIZED_STRING_SS}</a>\n  <span class=\"bc-sep\" data-sep-for=\"current\" aria-hidden=\"true\">&gt;</span>\n  <span class=\"bc-current\" aria-current=\"page\">${HEADER_BREADCRUMB_CURRENT_LABEL@LOCALIZED_STRING_SS}</span>\n</div>\n",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "HEADER_BRAND_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "brand_href"
+            }
+          },
+          "value": "/"
+        },
+        {
+          "code": "HEADER_BRAND_NAME",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "brand_name"
+            }
+          },
+          "value": {
+            "en": "ServiceWand"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_label"
+            }
+          },
+          "value": {
+            "en": "Platform"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_title"
+            }
+          },
+          "value": {
+            "en": "Operations"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_1_href"
+            }
+          },
+          "value": "/platform/scheduling"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_1_label"
+            }
+          },
+          "value": {
+            "en": "Scheduling & Dispatch"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_2_href"
+            }
+          },
+          "value": "/platform/mobile"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_2_label"
+            }
+          },
+          "value": {
+            "en": "Mobile Workforce"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_3_href"
+            }
+          },
+          "value": "/platform/crm"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_3_label"
+            }
+          },
+          "value": {
+            "en": "Customer Management"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_4_href"
+            }
+          },
+          "value": "/platform/billing"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_1_LINK_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_1_link_4_label"
+            }
+          },
+          "value": {
+            "en": "Billing & Invoicing"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_title"
+            }
+          },
+          "value": {
+            "en": "Intelligence"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_1_href"
+            }
+          },
+          "value": "/platform/reporting"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_1_label"
+            }
+          },
+          "value": {
+            "en": "Reporting"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_2_href"
+            }
+          },
+          "value": "/platform/automation"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_2_label"
+            }
+          },
+          "value": {
+            "en": "Automation"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_3_href"
+            }
+          },
+          "value": "/platform/ai"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_3_label"
+            }
+          },
+          "value": {
+            "en": "AI Assist"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_4_href"
+            }
+          },
+          "value": "/platform/portal"
+        },
+        {
+          "code": "HEADER_ITEM_1_COL_2_LINK_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_1_col_2_link_4_label"
+            }
+          },
+          "value": {
+            "en": "Customer Portal"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_label"
+            }
+          },
+          "value": {
+            "en": "Industries"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_title"
+            }
+          },
+          "value": {
+            "en": "Outdoor & Seasonal"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_1_href"
+            }
+          },
+          "value": "/verticals/snow-removal"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_1_label"
+            }
+          },
+          "value": {
+            "en": "Snow Removal"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_2_href"
+            }
+          },
+          "value": "/verticals/lawn-care"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_2_label"
+            }
+          },
+          "value": {
+            "en": "Lawn Care"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_3_href"
+            }
+          },
+          "value": "/verticals/pest-control"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_3_label"
+            }
+          },
+          "value": {
+            "en": "Pest Control"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_4_href"
+            }
+          },
+          "value": "/verticals/tree-care"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_1_LINK_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_1_link_4_label"
+            }
+          },
+          "value": {
+            "en": "Tree Care"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_title"
+            }
+          },
+          "value": {
+            "en": "Mechanical & Building"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_1_href"
+            }
+          },
+          "value": "/verticals/hvac"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_1_label"
+            }
+          },
+          "value": {
+            "en": "HVAC"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_2_href"
+            }
+          },
+          "value": "/verticals/plumbing"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_2_label"
+            }
+          },
+          "value": {
+            "en": "Plumbing"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_3_href"
+            }
+          },
+          "value": "/verticals/electrical"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_3_label"
+            }
+          },
+          "value": {
+            "en": "Electrical"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_4_href"
+            }
+          },
+          "value": "/verticals/cleaning"
+        },
+        {
+          "code": "HEADER_ITEM_2_COL_2_LINK_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_2_col_2_link_4_label"
+            }
+          },
+          "value": {
+            "en": "Cleaning"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_3_href"
+            }
+          },
+          "value": "/#features"
+        },
+        {
+          "code": "HEADER_ITEM_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_3_label"
+            }
+          },
+          "value": {
+            "en": "How It Works"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_4_href"
+            }
+          },
+          "value": "/#partners"
+        },
+        {
+          "code": "HEADER_ITEM_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_4_label"
+            }
+          },
+          "value": {
+            "en": "Partners"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_5_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_5_label"
+            }
+          },
+          "value": {
+            "en": "Resources"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_1_href"
+            }
+          },
+          "value": "/#faq"
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_1_label"
+            }
+          },
+          "value": {
+            "en": "FAQs"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_2_href"
+            }
+          },
+          "value": "/help"
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_2_label"
+            }
+          },
+          "value": {
+            "en": "Help Center"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_3_href"
+            }
+          },
+          "value": "/docs"
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_3_label"
+            }
+          },
+          "value": {
+            "en": "API Docs"
+          }
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_4_href"
+            }
+          },
+          "value": "https://status.servicewand.com"
+        },
+        {
+          "code": "HEADER_ITEM_5_LINK_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "item_5_link_4_label"
+            }
+          },
+          "value": {
+            "en": "Status"
+          }
+        },
+        {
+          "code": "HEADER_LOCALE_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "locale_label"
+            }
+          },
+          "value": {
+            "en": "English"
+          }
+        },
+        {
+          "code": "HEADER_CTA_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "cta_href"
+            }
+          },
+          "value": "/request-demo"
+        },
+        {
+          "code": "HEADER_CTA_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "cta_label"
+            }
+          },
+          "value": {
+            "en": "Book a Demo"
+          }
+        },
+        {
+          "code": "HEADER_BREADCRUMB_ROOT_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_root_href"
+            }
+          },
+          "value": "/"
+        },
+        {
+          "code": "HEADER_BREADCRUMB_ROOT_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_root_label"
+            }
+          },
+          "value": {
+            "en": "ServiceWand"
+          }
+        },
+        {
+          "code": "HEADER_BREADCRUMB_MID_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_mid_1_href"
+            }
+          },
+          "value": "#"
+        },
+        {
+          "code": "HEADER_BREADCRUMB_MID_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_mid_1_label"
+            }
+          },
+          "value": {
+            "en": ""
+          }
+        },
+        {
+          "code": "HEADER_BREADCRUMB_MID_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_mid_2_href"
+            }
+          },
+          "value": "#"
+        },
+        {
+          "code": "HEADER_BREADCRUMB_MID_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_mid_2_label"
+            }
+          },
+          "value": {
+            "en": ""
+          }
+        },
+        {
+          "code": "HEADER_BREADCRUMB_CURRENT_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "breadcrumb_current_label"
+            }
+          },
+          "value": {
+            "en": "Field Service Landing"
+          }
+        }
+      ]
+    },
+    {
+      "code": "HERO",
+      "nls": {
+        "en": {
+          "NAME": "Hero"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [],
+      "head": "",
+      "html": "<!-- lab-ui block · hero.operational-diagram\n     Signature hub hero. Left: eyebrow + H1 + 3 lead paragraphs + CTA pair.\n     Right: neutral screenshot/image placeholder. Replace the placeholder\n     with an actual product image when the CMS/media layer provides one.\n     Theme: light (sw tokens). Adapted from v5 dark variant.\n     Composes: cta.btn-primary-ring + cta.btn-secondary-filled (CTA pair).\n     Param contract: see block.json.\n-->\n<section class=\"hero hero--diagram\" id=\"hero\" data-block=\"hero.operational-diagram\">\n  <div class=\"container hero-grid\">\n\n    <div class=\"hero-content\">\n      <div class=\"hero-eyebrow\">\n        <span>${HERO_EYEBROW_ROOT@LOCALIZED_STRING_SS}</span>\n        <span class=\"crumb-sep\">/</span>\n        <span class=\"crumb-cur\">${HERO_EYEBROW_LEAF@LOCALIZED_STRING_SS}</span>\n      </div>\n      <h1 class=\"hero-title\">\n        ${HERO_TITLE_LINE_1@LOCALIZED_STRING_SS}<br/>\n        for <span class=\"accent\">${HERO_TITLE_ACCENT@LOCALIZED_STRING_SS}</span><br/>\n        ${HERO_TITLE_LINE_2@LOCALIZED_STRING_SS}\n      </h1>\n      <div class=\"hero-leads\">\n        <p>${HERO_LEAD_1@LOCALIZED_STRING_SS}</p>\n        <p>${HERO_LEAD_2@LOCALIZED_STRING_SS}</p>\n        <p>${HERO_LEAD_3@LOCALIZED_STRING_SS}</p>\n      </div>\n      <div class=\"hero-cta\">\n        <a class=\"btn btn-primary btn-primary-ring\" href=\"${HERO_CTA_PRIMARY_HREF@STRING}\">\n          <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n          </svg>\n          ${HERO_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}\n        </a>\n        <a class=\"btn btn-secondary btn-secondary-filled\" href=\"${HERO_CTA_SECONDARY_HREF@STRING}\">\n          <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n          </svg>\n          ${HERO_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}\n        </a>\n      </div>\n    </div>\n\n    <div class=\"hero-art\" aria-hidden=\"true\">\n      <div class=\"hero-media-placeholder\" data-screenshot-slot>\n        <div class=\"hero-media-surface\">\n          <div class=\"hero-placeholder-copy\">\n            <span>${HERO_PLACEHOLDER_SIZE@LOCALIZED_STRING_SS}</span>\n            <span>${HERO_PLACEHOLDER_LABEL@LOCALIZED_STRING_SS}</span>\n          </div>\n        </div>\n      </div>\n    </div>\n\n  </div>\n</section>\n",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "HERO_EYEBROW_ROOT",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "eyebrow_root"
+            }
+          },
+          "value": {
+            "en": "ServiceWand"
+          }
+        },
+        {
+          "code": "HERO_EYEBROW_LEAF",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "eyebrow_leaf"
+            }
+          },
+          "value": {
+            "en": "Field Service Landing"
+          }
+        },
+        {
+          "code": "HERO_TITLE_LINE_1",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "title_line_1"
+            }
+          },
+          "value": {
+            "en": "Field Service Software"
+          }
+        },
+        {
+          "code": "HERO_TITLE_ACCENT",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "title_accent"
+            }
+          },
+          "value": {
+            "en": "Real-World Operations"
+          }
+        },
+        {
+          "code": "HERO_TITLE_LINE_2",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "title_line_2"
+            }
+          },
+          "value": {
+            "en": "Operations"
+          }
+        },
+        {
+          "code": "HERO_LEAD_1",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "lead_1"
+            }
+          },
+          "value": {
+            "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+          }
+        },
+        {
+          "code": "HERO_LEAD_2",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "lead_2"
+            }
+          },
+          "value": {
+            "en": "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day."
+          }
+        },
+        {
+          "code": "HERO_LEAD_3",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "lead_3"
+            }
+          },
+          "value": {
+            "en": "Book a Demo Explore Platform"
+          }
+        },
+        {
+          "code": "HERO_CTA_PRIMARY_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "cta_primary_href"
+            }
+          },
+          "value": "/request-demo"
+        },
+        {
+          "code": "HERO_CTA_PRIMARY_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "cta_primary_label"
+            }
+          },
+          "value": {
+            "en": "Book a Demo"
+          }
+        },
+        {
+          "code": "HERO_CTA_SECONDARY_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "cta_secondary_href"
+            }
+          },
+          "value": "/platform"
+        },
+        {
+          "code": "HERO_CTA_SECONDARY_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "cta_secondary_label"
+            }
+          },
+          "value": {
+            "en": "Explore Platform"
+          }
+        },
+        {
+          "code": "HERO_PLACEHOLDER_SIZE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "placeholder_size"
+            }
+          },
+          "value": {
+            "en": "520 × 650"
+          }
+        },
+        {
+          "code": "HERO_PLACEHOLDER_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "placeholder_label"
+            }
+          },
+          "value": {
+            "en": "Product screenshot / operational view"
+          }
+        }
+      ]
+    },
+    {
+      "code": "FEATURES",
+      "nls": {
+        "en": {
+          "NAME": "Features"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [
+        {
+          "code": "FEATURE_1",
+          "nls": {
+            "en": {
+              "NAME": "Scheduling and Dispatch"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row is-open\" data-feature-slot=\"01\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"true\">\n    <span class=\"f-num\">F.01</span>\n    <span class=\"f-title\">${FEATURE_1_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_1_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_1_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Scheduling and Dispatch"
+              }
+            },
+            {
+              "code": "FEATURE_1_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FEATURE_2",
+          "nls": {
+            "en": {
+              "NAME": "Mobile Workforce"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"02\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.02</span>\n    <span class=\"f-title\">${FEATURE_2_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_2_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_2_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Mobile Workforce"
+              }
+            },
+            {
+              "code": "FEATURE_2_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FEATURE_3",
+          "nls": {
+            "en": {
+              "NAME": "Customer Management"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"03\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.03</span>\n    <span class=\"f-title\">${FEATURE_3_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_3_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_3_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Customer Management"
+              }
+            },
+            {
+              "code": "FEATURE_3_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FEATURE_4",
+          "nls": {
+            "en": {
+              "NAME": "Billing and Reporting"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FEATURES"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"f-row\" data-feature-slot=\"04\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.04</span>\n    <span class=\"f-title\">${FEATURE_4_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_4_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FEATURE_4_TITLE",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "TITLE"
+                }
+              },
+              "value": {
+                "en": "Billing and Reporting"
+              }
+            },
+            {
+              "code": "FEATURE_4_BODY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "BODY"
+                }
+              },
+              "value": {
+                "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
+              }
+            }
+          ]
+        }
+      ],
+      "head": "",
+      "html": "<section class=\"features features--accordion\" id=\"features\" data-block=\"features.accordion-2col-numbered\">\n  <div class=\"container\">\n    <header class=\"features-top\">\n      <div>\n        <p class=\"eyebrow\">${FEATURES_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"features-title\">${FEATURES_TITLE@LOCALIZED_STRING_SS}</h2>\n      </div>\n      <div class=\"features-lede\"><p>${FEATURES_LEDE@LOCALIZED_STRING_SS}</p></div>\n    </header>\n    <div class=\"features-list\" data-features-list>\n      <!-- cms-child-slot:FEATURE_ITEMS -->\n    </div>\n  </div>\n</section>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FEATURES_EYEBROW",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "EYEBROW"
+            }
+          },
+          "value": {
+            "en": "Features"
+          }
+        },
+        {
+          "code": "FEATURES_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "TITLE"
+            }
+          },
+          "value": {
+            "en": "Features"
+          }
+        },
+        {
+          "code": "FEATURES_LEDE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "LEDE"
+            }
+          },
+          "value": {
+            "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+          }
+        }
+      ]
+    },
+    {
+      "code": "COMPARISON",
+      "nls": {
+        "en": {
+          "NAME": "Comparison"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [
+        {
+          "code": "COMPARE_ROW_1",
+          "nls": {
+            "en": {
+              "NAME": "Customer & CRM"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "COMPARISON"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_1_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "COMPARE_ROW_1_CAPABILITY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CAPABILITY"
+                }
+              },
+              "value": {
+                "en": "Customer & CRM"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_SW",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "SW"
+                }
+              },
+              "value": {
+                "en": "native"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_CRM_SYSTEMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CRM_SYSTEMS"
+                }
+              },
+              "value": {
+                "en": "native"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_FIELD_SERVICE_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "FIELD_SERVICE_TOOLS"
+                }
+              },
+              "value": {
+                "en": "partial"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_MONITORING_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "MONITORING_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_CMS_AND_PORTALS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CMS_AND_PORTALS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_1_ENTERPRISE_PLATFORMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ENTERPRISE_PLATFORMS"
+                }
+              },
+              "value": {
+                "en": "enterprise"
+              }
+            }
+          ]
+        },
+        {
+          "code": "COMPARE_ROW_2",
+          "nls": {
+            "en": {
+              "NAME": "Billing & Revenue"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "COMPARISON"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_2_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_2_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "COMPARE_ROW_2_CAPABILITY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CAPABILITY"
+                }
+              },
+              "value": {
+                "en": "Billing & Revenue"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_SW",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "SW"
+                }
+              },
+              "value": {
+                "en": "native"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_CRM_SYSTEMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CRM_SYSTEMS"
+                }
+              },
+              "value": {
+                "en": "partial"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_FIELD_SERVICE_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "FIELD_SERVICE_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_MONITORING_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "MONITORING_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_CMS_AND_PORTALS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CMS_AND_PORTALS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_2_ENTERPRISE_PLATFORMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ENTERPRISE_PLATFORMS"
+                }
+              },
+              "value": {
+                "en": "enterprise"
+              }
+            }
+          ]
+        },
+        {
+          "code": "COMPARE_ROW_3",
+          "nls": {
+            "en": {
+              "NAME": "Operations & Workflows"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "COMPARISON"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_3_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_3_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "COMPARE_ROW_3_CAPABILITY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CAPABILITY"
+                }
+              },
+              "value": {
+                "en": "Operations & Workflows"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_SW",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "SW"
+                }
+              },
+              "value": {
+                "en": "unified"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_CRM_SYSTEMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CRM_SYSTEMS"
+                }
+              },
+              "value": {
+                "en": "limited"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_FIELD_SERVICE_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "FIELD_SERVICE_TOOLS"
+                }
+              },
+              "value": {
+                "en": "partial"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_MONITORING_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "MONITORING_TOOLS"
+                }
+              },
+              "value": {
+                "en": "manual config"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_CMS_AND_PORTALS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CMS_AND_PORTALS"
+                }
+              },
+              "value": {
+                "en": "manual config"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_3_ENTERPRISE_PLATFORMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ENTERPRISE_PLATFORMS"
+                }
+              },
+              "value": {
+                "en": "complex"
+              }
+            }
+          ]
+        },
+        {
+          "code": "COMPARE_ROW_4",
+          "nls": {
+            "en": {
+              "NAME": "Portals & Content"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "COMPARISON"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_4_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_4_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "COMPARE_ROW_4_CAPABILITY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CAPABILITY"
+                }
+              },
+              "value": {
+                "en": "Portals & Content"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_SW",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "SW"
+                }
+              },
+              "value": {
+                "en": "integrated"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_CRM_SYSTEMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CRM_SYSTEMS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_FIELD_SERVICE_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "FIELD_SERVICE_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_MONITORING_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "MONITORING_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_CMS_AND_PORTALS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CMS_AND_PORTALS"
+                }
+              },
+              "value": {
+                "en": "native"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_4_ENTERPRISE_PLATFORMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ENTERPRISE_PLATFORMS"
+                }
+              },
+              "value": {
+                "en": "add-ons"
+              }
+            }
+          ]
+        },
+        {
+          "code": "COMPARE_ROW_5",
+          "nls": {
+            "en": {
+              "NAME": "AI & Intelligence"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "COMPARISON"
+          },
+          "children": [],
+          "head": "",
+          "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_5_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_5_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "COMPARE_ROW_5_CAPABILITY",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CAPABILITY"
+                }
+              },
+              "value": {
+                "en": "AI & Intelligence"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_SW",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "SW"
+                }
+              },
+              "value": {
+                "en": "built-in"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_CRM_SYSTEMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CRM_SYSTEMS"
+                }
+              },
+              "value": {
+                "en": "partial"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_FIELD_SERVICE_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "FIELD_SERVICE_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_MONITORING_TOOLS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "MONITORING_TOOLS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_CMS_AND_PORTALS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "CMS_AND_PORTALS"
+                }
+              },
+              "value": {
+                "en": "no"
+              }
+            },
+            {
+              "code": "COMPARE_ROW_5_ENTERPRISE_PLATFORMS",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ENTERPRISE_PLATFORMS"
+                }
+              },
+              "value": {
+                "en": "partial"
+              }
+            }
+          ]
+        }
+      ],
+      "head": "",
+      "html": "<section class=\"compare\" id=\"compare\" data-block=\"comparison.three-col-with-mobile-cards\">\n  <div class=\"container\">\n    <header class=\"compare-top\">\n      <p class=\"eyebrow\">${COMPARISON_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"compare-title\">${COMPARISON_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"compare-lede\">${COMPARISON_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n    <div class=\"compare-grid\" role=\"table\" aria-label=\"ServiceWand platform comparison\">\n      <div class=\"compare-head\" role=\"rowgroup\">\n        <div class=\"compare-row compare-row--head\" role=\"row\">\n          <div class=\"compare-cell compare-cell--capability compare-cell--empty\" role=\"columnheader\"></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_1@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_2@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_3@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_4@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_5@LOCALIZED_STRING_SS}</div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\">${COMPARISON_COLUMN_6@LOCALIZED_STRING_SS}</div>\n        </div>\n      </div>\n      <div class=\"compare-body\" role=\"rowgroup\" data-compare-body>\n        <!-- cms-child-slot:COMPARE_ROWS -->\n      </div>\n    </div>\n  </div>\n</section>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "COMPARISON_EYEBROW",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "EYEBROW"
+            }
+          },
+          "value": {
+            "en": "Comparison"
+          }
+        },
+        {
+          "code": "COMPARISON_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "TITLE"
+            }
+          },
+          "value": {
+            "en": "ServiceWand unifies it all"
+          }
+        },
+        {
+          "code": "COMPARISON_LEDE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "LEDE"
+            }
+          },
+          "value": {
+            "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_1",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_1"
+            }
+          },
+          "value": {
+            "en": "ServiceWand"
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_2",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_2"
+            }
+          },
+          "value": {
+            "en": "CRM Systems"
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_3",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_3"
+            }
+          },
+          "value": {
+            "en": "Field Service Tools"
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_4",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_4"
+            }
+          },
+          "value": {
+            "en": "Monitoring Tools"
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_5",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_5"
+            }
+          },
+          "value": {
+            "en": "CMS & Portals"
+          }
+        },
+        {
+          "code": "COMPARISON_COLUMN_6",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "COLUMN_6"
+            }
+          },
+          "value": {
+            "en": "Enterprise Platforms"
+          }
+        }
+      ]
+    },
+    {
+      "code": "FAQ",
+      "nls": {
+        "en": {
+          "NAME": "FAQ"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [
+        {
+          "code": "FAQ_1",
+          "nls": {
+            "en": {
+              "NAME": "Can ServiceWand support multiple service lines?"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FAQ"
+          },
+          "children": [],
+          "head": "",
+          "html": "<details class=\"faq-item is-open\" data-faq-slot=\"01\" open>\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_1_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FAQ_1_QUESTION",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "QUESTION"
+                }
+              },
+              "value": {
+                "en": "Can ServiceWand support multiple service lines?"
+              }
+            },
+            {
+              "code": "FAQ_1_ANSWER",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ANSWER"
+                }
+              },
+              "value": {
+                "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FAQ_2",
+          "nls": {
+            "en": {
+              "NAME": "Does ServiceWand replace a CRM?"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FAQ"
+          },
+          "children": [],
+          "head": "",
+          "html": "<details class=\"faq-item\" data-faq-slot=\"02\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_2_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FAQ_2_QUESTION",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "QUESTION"
+                }
+              },
+              "value": {
+                "en": "Does ServiceWand replace a CRM?"
+              }
+            },
+            {
+              "code": "FAQ_2_ANSWER",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ANSWER"
+                }
+              },
+              "value": {
+                "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FAQ_3",
+          "nls": {
+            "en": {
+              "NAME": "Can crews use ServiceWand from the field?"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FAQ"
+          },
+          "children": [],
+          "head": "",
+          "html": "<details class=\"faq-item\" data-faq-slot=\"03\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_3_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FAQ_3_QUESTION",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "QUESTION"
+                }
+              },
+              "value": {
+                "en": "Can crews use ServiceWand from the field?"
+              }
+            },
+            {
+              "code": "FAQ_3_ANSWER",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ANSWER"
+                }
+              },
+              "value": {
+                "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+              }
+            }
+          ]
+        },
+        {
+          "code": "FAQ_4",
+          "nls": {
+            "en": {
+              "NAME": "Is this only for one vertical?"
+            }
+          },
+          "templateLanguage": "JTE",
+          "parent": {
+            "code": "FAQ"
+          },
+          "children": [],
+          "head": "",
+          "html": "<details class=\"faq-item\" data-faq-slot=\"04\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_4_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_4_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+          "css": "",
+          "javascript": "",
+          "parameters": [
+            {
+              "code": "FAQ_4_QUESTION",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "QUESTION"
+                }
+              },
+              "value": {
+                "en": "Is this only for one vertical?"
+              }
+            },
+            {
+              "code": "FAQ_4_ANSWER",
+              "type": "LOCALIZED_STRING_SS",
+              "nls": {
+                "en": {
+                  "NAME": "ANSWER"
+                }
+              },
+              "value": {
+                "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+              }
+            }
+          ]
+        }
+      ],
+      "head": "",
+      "html": "<section class=\"faq\" id=\"faq\" data-block=\"faq.bubble-light-grouped\">\n  <div class=\"container\">\n    <header class=\"faq-top\">\n      <p class=\"eyebrow\">${FAQ_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"faq-title\">${FAQ_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"faq-lede\">${FAQ_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n    <div class=\"faq-groups\">\n      <article class=\"faq-group\" data-faq-group=\"01\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.01</span>\n          <h3 class=\"faq-group-title\">${FAQ_GROUP_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <!-- cms-child-slot:FAQ_ITEMS -->\n        </div>\n      </article>\n    </div>\n  </div>\n</section>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_EYEBROW",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "EYEBROW"
+            }
+          },
+          "value": {
+            "en": "FAQ"
+          }
+        },
+        {
+          "code": "FAQ_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "TITLE"
+            }
+          },
+          "value": {
+            "en": "Frequently asked questions"
+          }
+        },
+        {
+          "code": "FAQ_LEDE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "LEDE"
+            }
+          },
+          "value": {
+            "en": ""
+          }
+        },
+        {
+          "code": "FAQ_GROUP_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "GROUP_TITLE"
+            }
+          },
+          "value": {
+            "en": "Field service operations"
+          }
+        }
+      ]
+    },
+    {
+      "code": "CTA",
+      "nls": {
+        "en": {
+          "NAME": "CTA"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [],
+      "head": "",
+      "html": "<section class=\"section section--cta\" id=\"cta\">\n  <div class=\"container\">\n    <p class=\"eyebrow\">${CTA_EYEBROW@LOCALIZED_STRING_SS}</p>\n    <h2 class=\"section-title\">${CTA_TITLE@LOCALIZED_STRING_SS}</h2>\n    <a class=\"btn btn-primary btn-primary-ring\" href=\"${CTA_PRIMARY_HREF@STRING}\">\n      <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/></svg>\n      ${CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}\n    </a>\n  </div>\n</section>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "CTA_EYEBROW",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "EYEBROW"
+            }
+          },
+          "value": {
+            "en": "Next step"
+          }
+        },
+        {
+          "code": "CTA_TITLE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "TITLE"
+            }
+          },
+          "value": {
+            "en": "See how ServiceWand can connect your office, field, and customer workflows."
+          }
+        },
+        {
+          "code": "CTA_PRIMARY_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "PRIMARY_LABEL"
+            }
+          },
+          "value": {
+            "en": "Book a Demo"
+          }
+        },
+        {
+          "code": "CTA_PRIMARY_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "PRIMARY_HREF"
+            }
+          },
+          "value": "/request-demo"
+        }
+      ]
+    },
+    {
+      "code": "FOOTER",
+      "nls": {
+        "en": {
+          "NAME": "Footer"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FIELD_SERVICE_LANDING"
+      },
+      "children": [],
+      "head": "",
+      "html": "<!-- lab-ui block · footer.sw-default\n     ServiceWand canonical site footer. Dark surface. 3-column grid\n     (brand+tagline+address / 5-nav / socials+emails) + legal bottom row.\n     Param contract: see block.json.\n-->\n<footer class=\"footer\" role=\"contentinfo\">\n  <div class=\"container footer-container\">\n    <div class=\"footer-top\">\n\n      <div class=\"footer-brand\">\n        <div class=\"footer-brand-head\">\n          <a href=\"${FOOTER_BRAND_HREF@STRING}\" class=\"footer-logo footer-logo--2xl\" aria-label=\"ServiceWand\">\n            <svg viewBox=\"0 0 33 31\" width=\"32\" height=\"32\" fill=\"none\" aria-hidden=\"true\">\n              <path d=\"M25.6 1.7l1.9 4.7 4.8 1.9-4.8 1.9-1.9 4.7-1.9-4.7L19 8.3l4.8-1.9 1.9-4.7zM8.3 0l2.3 5.9 6 2.3-6 2.3L8.3 16.5 5.9 10.6 0 8.3l5.9-2.3L8.3 0zM25.6 17.5l1.4 3.6 3.7 1.4-3.7 1.4-1.4 3.6-1.4-3.6-3.6-1.4 3.6-1.4 1.4-3.6zM20.4 13.5c.2.2.3.4.3.7s-.1.5-.3.7c-.2.3-.4.5-.7.8-2 2.3-3.9 4.7-6 6.9-2.1 2.2-4.3 4.4-6.4 6.6-.2.2-.5.5-.7.7-.4.4-.8.6-1.3.6-.5 0-1-.2-1.3-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.3.3-.2.5-.5.8-.7C7 24.4 9.1 22.2 11.3 20.1c2.2-2.1 4.6-4 6.9-6 .3-.2.5-.4.8-.6.2-.2.5-.3.7-.3.3 0 .5.1.7.3z\" fill=\"currentColor\"/>\n            </svg>\n            <span>${FOOTER_BRAND_NAME@LOCALIZED_STRING_SS}</span>\n          </a>\n        </div>\n        <p class=\"footer-tagline\">${FOOTER_TAGLINE@LOCALIZED_STRING_SS}</p>\n        <address class=\"footer-address\">\n          <p><strong>${FOOTER_ADDRESS_LINE_1@LOCALIZED_STRING_SS}</strong></p>\n          <p>${FOOTER_ADDRESS_LINE_2@LOCALIZED_STRING_SS}</p>\n          <p>${FOOTER_ADDRESS_LINE_3@LOCALIZED_STRING_SS}</p>\n          <p>${FOOTER_ADDRESS_LINE_4@LOCALIZED_STRING_SS}</p>\n        </address>\n      </div>\n\n      <nav class=\"footer-nav\" aria-label=\"Footer navigation\">\n        <a class=\"footer-nav-link\" href=\"${FOOTER_NAV_1_HREF@STRING}\">${FOOTER_NAV_1_LABEL@LOCALIZED_STRING_SS}</a>\n        <a class=\"footer-nav-link\" href=\"${FOOTER_NAV_2_HREF@STRING}\">${FOOTER_NAV_2_LABEL@LOCALIZED_STRING_SS}</a>\n        <a class=\"footer-nav-link\" href=\"${FOOTER_NAV_3_HREF@STRING}\">${FOOTER_NAV_3_LABEL@LOCALIZED_STRING_SS}</a>\n        <a class=\"footer-nav-link\" href=\"${FOOTER_NAV_4_HREF@STRING}\">${FOOTER_NAV_4_LABEL@LOCALIZED_STRING_SS}</a>\n        <a class=\"footer-nav-link\" href=\"${FOOTER_NAV_5_HREF@STRING}\">${FOOTER_NAV_5_LABEL@LOCALIZED_STRING_SS}</a>\n      </nav>\n\n      <div class=\"footer-contacts\">\n        <div class=\"footer-socials\">\n          <a class=\"footer-social-link\" href=\"${FOOTER_SOCIAL_LINKEDIN@STRING}\" aria-label=\"LinkedIn\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43c-1.14 0-2.07-.93-2.07-2.07s.93-2.07 2.07-2.07 2.07.93 2.07 2.07-.93 2.07-2.07 2.07zM7.12 20.45H3.56V9h3.56v11.45z\"/></svg>\n          </a>\n          <a class=\"footer-social-link\" href=\"${FOOTER_SOCIAL_GITHUB@STRING}\" aria-label=\"GitHub\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.04-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.72.08-.72 1.2.08 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.31 3.5 1 .11-.78.42-1.31.76-1.61-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02.01 2.04.14 3 .41 2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.82 1.1.82 2.22 0 1.6-.02 2.89-.02 3.29 0 .32.22.7.83.58C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z\"/></svg>\n          </a>\n          <a class=\"footer-social-link\" href=\"${FOOTER_SOCIAL_YOUTUBE@STRING}\" aria-label=\"YouTube\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M23.5 6.5a3 3 0 0 0-2.1-2.1C19.5 4 12 4 12 4s-7.5 0-9.4.4A3 3 0 0 0 .5 6.5C.1 8.4.1 12 .1 12s0 3.6.4 5.5a3 3 0 0 0 2.1 2.1c1.9.4 9.4.4 9.4.4s7.5 0 9.4-.4a3 3 0 0 0 2.1-2.1c.4-1.9.4-5.5.4-5.5s0-3.6-.4-5.5zM9.6 15.5v-7l6.3 3.5-6.3 3.5z\"/></svg>\n          </a>\n          <a class=\"footer-social-link\" href=\"${FOOTER_SOCIAL_X@STRING}\" aria-label=\"X\">\n            <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M18.244 2H21.5l-7.5 8.57L23 22h-6.844l-5.36-7L4.66 22H1.4l8.04-9.17L1 2h7.02l4.84 6.4L18.244 2zm-1.2 18h1.86L7 4h-2L17.044 20z\"/></svg>\n          </a>\n        </div>\n        <div class=\"footer-emails\">\n          <div class=\"footer-email-group\">\n            <p class=\"footer-email-label\">${FOOTER_PARTNERSHIPS_LABEL@LOCALIZED_STRING_SS}</p>\n            <a class=\"footer-email-link\" href=\"mailto:${FOOTER_PARTNERSHIPS_EMAIL@STRING}\">${FOOTER_PARTNERSHIPS_EMAIL@STRING}</a>\n          </div>\n          <div class=\"footer-email-group\">\n            <p class=\"footer-email-label\">${FOOTER_SUPPORT_LABEL@LOCALIZED_STRING_SS}</p>\n            <a class=\"footer-email-link\" href=\"mailto:${FOOTER_SUPPORT_EMAIL@STRING}\">${FOOTER_SUPPORT_EMAIL@STRING}</a>\n          </div>\n        </div>\n      </div>\n\n    </div>\n\n    <div class=\"footer-bottom\">\n      <p class=\"footer-copy\">${FOOTER_COPYRIGHT@LOCALIZED_STRING_SS}</p>\n      <div class=\"footer-legal-mobile\">\n        <a class=\"footer-legal-link\" href=\"${FOOTER_LEGAL_1_HREF@STRING}\">${FOOTER_LEGAL_1_LABEL@LOCALIZED_STRING_SS}</a>\n        <a class=\"footer-legal-link\" href=\"${FOOTER_LEGAL_2_HREF@STRING}\">${FOOTER_LEGAL_2_LABEL@LOCALIZED_STRING_SS}</a>\n      </div>\n    </div>\n  </div>\n</footer>\n",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FOOTER_BRAND_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "brand_href"
+            }
+          },
+          "value": "/"
+        },
+        {
+          "code": "FOOTER_BRAND_NAME",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "brand_name"
+            }
+          },
+          "value": {
+            "en": "ServiceWand"
+          }
+        },
+        {
+          "code": "FOOTER_TAGLINE",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "tagline"
+            }
+          },
+          "value": {
+            "en": "Where everything you build and operate stays connected"
+          }
+        },
+        {
+          "code": "FOOTER_ADDRESS_LINE_1",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "address_line_1"
+            }
+          },
+          "value": {
+            "en": "ServiceWand Inc."
+          }
+        },
+        {
+          "code": "FOOTER_ADDRESS_LINE_2",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "address_line_2"
+            }
+          },
+          "value": {
+            "en": "Operational platform for modern businesses"
+          }
+        },
+        {
+          "code": "FOOTER_ADDRESS_LINE_3",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "address_line_3"
+            }
+          },
+          "value": {
+            "en": "Registered in Wyoming, USA"
+          }
+        },
+        {
+          "code": "FOOTER_ADDRESS_LINE_4",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "address_line_4"
+            }
+          },
+          "value": {
+            "en": "Offices in Canada & EU"
+          }
+        },
+        {
+          "code": "FOOTER_NAV_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "nav_1_href"
+            }
+          },
+          "value": "#hero"
+        },
+        {
+          "code": "FOOTER_NAV_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "nav_1_label"
+            }
+          },
+          "value": {
+            "en": "Platform"
+          }
+        },
+        {
+          "code": "FOOTER_NAV_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "nav_2_href"
+            }
+          },
+          "value": "#features"
+        },
+        {
+          "code": "FOOTER_NAV_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "nav_2_label"
+            }
+          },
+          "value": {
+            "en": "How It Works"
+          }
+        },
+        {
+          "code": "FOOTER_NAV_3_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "nav_3_href"
+            }
+          },
+          "value": "#industries"
+        },
+        {
+          "code": "FOOTER_NAV_3_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "nav_3_label"
+            }
+          },
+          "value": {
+            "en": "Industries"
+          }
+        },
+        {
+          "code": "FOOTER_NAV_4_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "nav_4_href"
+            }
+          },
+          "value": "#compare"
+        },
+        {
+          "code": "FOOTER_NAV_4_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "nav_4_label"
+            }
+          },
+          "value": {
+            "en": "Compare"
+          }
+        },
+        {
+          "code": "FOOTER_NAV_5_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "nav_5_href"
+            }
+          },
+          "value": "#faq"
+        },
+        {
+          "code": "FOOTER_NAV_5_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "nav_5_label"
+            }
+          },
+          "value": {
+            "en": "FAQ"
+          }
+        },
+        {
+          "code": "FOOTER_SOCIAL_LINKEDIN",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "social_linkedin"
+            }
+          },
+          "value": "https://www.linkedin.com/company/servicewand"
+        },
+        {
+          "code": "FOOTER_SOCIAL_GITHUB",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "social_github"
+            }
+          },
+          "value": "https://github.com/servicewand"
+        },
+        {
+          "code": "FOOTER_SOCIAL_YOUTUBE",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "social_youtube"
+            }
+          },
+          "value": "https://www.youtube.com/@servicewand"
+        },
+        {
+          "code": "FOOTER_SOCIAL_X",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "social_x"
+            }
+          },
+          "value": "https://x.com/servicewand"
+        },
+        {
+          "code": "FOOTER_PARTNERSHIPS_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "partnerships_label"
+            }
+          },
+          "value": {
+            "en": "Partnerships"
+          }
+        },
+        {
+          "code": "FOOTER_PARTNERSHIPS_EMAIL",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "partnerships_email"
+            }
+          },
+          "value": "partners@servicewand.com"
+        },
+        {
+          "code": "FOOTER_SUPPORT_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "support_label"
+            }
+          },
+          "value": {
+            "en": "Support"
+          }
+        },
+        {
+          "code": "FOOTER_SUPPORT_EMAIL",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "support_email"
+            }
+          },
+          "value": "support@servicewand.com"
+        },
+        {
+          "code": "FOOTER_COPYRIGHT",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "copyright"
+            }
+          },
+          "value": {
+            "en": "© 2025 ServiceWand Inc. All rights reserved."
+          }
+        },
+        {
+          "code": "FOOTER_LEGAL_1_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "legal_1_href"
+            }
+          },
+          "value": "/legal/privacy"
+        },
+        {
+          "code": "FOOTER_LEGAL_1_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "legal_1_label"
+            }
+          },
+          "value": {
+            "en": "Privacy Policy"
+          }
+        },
+        {
+          "code": "FOOTER_LEGAL_2_HREF",
+          "type": "STRING",
+          "nls": {
+            "en": {
+              "NAME": "legal_2_href"
+            }
+          },
+          "value": "/legal/terms"
+        },
+        {
+          "code": "FOOTER_LEGAL_2_LABEL",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "legal_2_label"
+            }
+          },
+          "value": {
+            "en": "Terms & Conditions"
+          }
+        }
+      ]
+    }
+  ],
+  "pageContext": {
+    "url": "/field-service",
+    "template": {
+      "code": "FIELD_SERVICE_LANDING"
+    },
+    "enabledTemplates": [
+      "FIELD_SERVICE_LANDING",
+      "HEADER",
+      "HERO",
+      "FEATURES",
+      "FEATURE_1",
+      "FEATURE_2",
+      "FEATURE_3",
+      "FEATURE_4",
+      "COMPARISON",
+      "COMPARE_ROW_1",
+      "COMPARE_ROW_2",
+      "COMPARE_ROW_3",
+      "COMPARE_ROW_4",
+      "COMPARE_ROW_5",
+      "FAQ",
+      "FAQ_1",
+      "FAQ_2",
+      "FAQ_3",
+      "FAQ_4",
+      "CTA",
+      "FOOTER"
+    ],
+    "values": {
+      "HEADER_BRAND_HREF": "/",
+      "HEADER_BRAND_NAME": {
+        "en": "ServiceWand"
+      },
+      "HEADER_ITEM_1_LABEL": {
+        "en": "Platform"
+      },
+      "HEADER_ITEM_1_COL_1_TITLE": {
+        "en": "Operations"
+      },
+      "HEADER_ITEM_1_COL_1_LINK_1_HREF": "/platform/scheduling",
+      "HEADER_ITEM_1_COL_1_LINK_1_LABEL": {
+        "en": "Scheduling & Dispatch"
+      },
+      "HEADER_ITEM_1_COL_1_LINK_2_HREF": "/platform/mobile",
+      "HEADER_ITEM_1_COL_1_LINK_2_LABEL": {
+        "en": "Mobile Workforce"
+      },
+      "HEADER_ITEM_1_COL_1_LINK_3_HREF": "/platform/crm",
+      "HEADER_ITEM_1_COL_1_LINK_3_LABEL": {
+        "en": "Customer Management"
+      },
+      "HEADER_ITEM_1_COL_1_LINK_4_HREF": "/platform/billing",
+      "HEADER_ITEM_1_COL_1_LINK_4_LABEL": {
+        "en": "Billing & Invoicing"
+      },
+      "HEADER_ITEM_1_COL_2_TITLE": {
+        "en": "Intelligence"
+      },
+      "HEADER_ITEM_1_COL_2_LINK_1_HREF": "/platform/reporting",
+      "HEADER_ITEM_1_COL_2_LINK_1_LABEL": {
+        "en": "Reporting"
+      },
+      "HEADER_ITEM_1_COL_2_LINK_2_HREF": "/platform/automation",
+      "HEADER_ITEM_1_COL_2_LINK_2_LABEL": {
+        "en": "Automation"
+      },
+      "HEADER_ITEM_1_COL_2_LINK_3_HREF": "/platform/ai",
+      "HEADER_ITEM_1_COL_2_LINK_3_LABEL": {
+        "en": "AI Assist"
+      },
+      "HEADER_ITEM_1_COL_2_LINK_4_HREF": "/platform/portal",
+      "HEADER_ITEM_1_COL_2_LINK_4_LABEL": {
+        "en": "Customer Portal"
+      },
+      "HEADER_ITEM_2_LABEL": {
+        "en": "Industries"
+      },
+      "HEADER_ITEM_2_COL_1_TITLE": {
+        "en": "Outdoor & Seasonal"
+      },
+      "HEADER_ITEM_2_COL_1_LINK_1_HREF": "/verticals/snow-removal",
+      "HEADER_ITEM_2_COL_1_LINK_1_LABEL": {
+        "en": "Snow Removal"
+      },
+      "HEADER_ITEM_2_COL_1_LINK_2_HREF": "/verticals/lawn-care",
+      "HEADER_ITEM_2_COL_1_LINK_2_LABEL": {
+        "en": "Lawn Care"
+      },
+      "HEADER_ITEM_2_COL_1_LINK_3_HREF": "/verticals/pest-control",
+      "HEADER_ITEM_2_COL_1_LINK_3_LABEL": {
+        "en": "Pest Control"
+      },
+      "HEADER_ITEM_2_COL_1_LINK_4_HREF": "/verticals/tree-care",
+      "HEADER_ITEM_2_COL_1_LINK_4_LABEL": {
+        "en": "Tree Care"
+      },
+      "HEADER_ITEM_2_COL_2_TITLE": {
+        "en": "Mechanical & Building"
+      },
+      "HEADER_ITEM_2_COL_2_LINK_1_HREF": "/verticals/hvac",
+      "HEADER_ITEM_2_COL_2_LINK_1_LABEL": {
+        "en": "HVAC"
+      },
+      "HEADER_ITEM_2_COL_2_LINK_2_HREF": "/verticals/plumbing",
+      "HEADER_ITEM_2_COL_2_LINK_2_LABEL": {
+        "en": "Plumbing"
+      },
+      "HEADER_ITEM_2_COL_2_LINK_3_HREF": "/verticals/electrical",
+      "HEADER_ITEM_2_COL_2_LINK_3_LABEL": {
+        "en": "Electrical"
+      },
+      "HEADER_ITEM_2_COL_2_LINK_4_HREF": "/verticals/cleaning",
+      "HEADER_ITEM_2_COL_2_LINK_4_LABEL": {
+        "en": "Cleaning"
+      },
+      "HEADER_ITEM_3_HREF": "/#features",
+      "HEADER_ITEM_3_LABEL": {
+        "en": "How It Works"
+      },
+      "HEADER_ITEM_4_HREF": "/#partners",
+      "HEADER_ITEM_4_LABEL": {
+        "en": "Partners"
+      },
+      "HEADER_ITEM_5_LABEL": {
+        "en": "Resources"
+      },
+      "HEADER_ITEM_5_LINK_1_HREF": "/#faq",
+      "HEADER_ITEM_5_LINK_1_LABEL": {
+        "en": "FAQs"
+      },
+      "HEADER_ITEM_5_LINK_2_HREF": "/help",
+      "HEADER_ITEM_5_LINK_2_LABEL": {
+        "en": "Help Center"
+      },
+      "HEADER_ITEM_5_LINK_3_HREF": "/docs",
+      "HEADER_ITEM_5_LINK_3_LABEL": {
+        "en": "API Docs"
+      },
+      "HEADER_ITEM_5_LINK_4_HREF": "https://status.servicewand.com",
+      "HEADER_ITEM_5_LINK_4_LABEL": {
+        "en": "Status"
+      },
+      "HEADER_LOCALE_LABEL": {
+        "en": "English"
+      },
+      "HEADER_CTA_HREF": "/request-demo",
+      "HEADER_CTA_LABEL": {
+        "en": "Book a Demo"
+      },
+      "HEADER_BREADCRUMB_ROOT_HREF": "/",
+      "HEADER_BREADCRUMB_ROOT_LABEL": {
+        "en": "ServiceWand"
+      },
+      "HEADER_BREADCRUMB_MID_1_HREF": "#",
+      "HEADER_BREADCRUMB_MID_1_LABEL": {
+        "en": ""
+      },
+      "HEADER_BREADCRUMB_MID_2_HREF": "#",
+      "HEADER_BREADCRUMB_MID_2_LABEL": {
+        "en": ""
+      },
+      "HEADER_BREADCRUMB_CURRENT_LABEL": {
+        "en": "Field Service Landing"
+      },
+      "HERO_EYEBROW_ROOT": {
+        "en": "ServiceWand"
+      },
+      "HERO_EYEBROW_LEAF": {
+        "en": "Field Service Landing"
+      },
+      "HERO_TITLE_LINE_1": {
+        "en": "Field Service Software"
+      },
+      "HERO_TITLE_ACCENT": {
+        "en": "Real-World Operations"
+      },
+      "HERO_TITLE_LINE_2": {
+        "en": "Operations"
+      },
+      "HERO_LEAD_1": {
+        "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+      },
+      "HERO_LEAD_2": {
+        "en": "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day."
+      },
+      "HERO_LEAD_3": {
+        "en": "Book a Demo Explore Platform"
+      },
+      "HERO_CTA_PRIMARY_HREF": "/request-demo",
+      "HERO_CTA_PRIMARY_LABEL": {
+        "en": "Book a Demo"
+      },
+      "HERO_CTA_SECONDARY_HREF": "/platform",
+      "HERO_CTA_SECONDARY_LABEL": {
+        "en": "Explore Platform"
+      },
+      "HERO_PLACEHOLDER_SIZE": {
+        "en": "520 × 650"
+      },
+      "HERO_PLACEHOLDER_LABEL": {
+        "en": "Product screenshot / operational view"
+      },
+      "FEATURE_1_TITLE": {
+        "en": "Scheduling and Dispatch"
+      },
+      "FEATURE_1_BODY": {
+        "en": "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+      },
+      "FEATURE_2_TITLE": {
+        "en": "Mobile Workforce"
+      },
+      "FEATURE_2_BODY": {
+        "en": "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+      },
+      "FEATURE_3_TITLE": {
+        "en": "Customer Management"
+      },
+      "FEATURE_3_BODY": {
+        "en": "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+      },
+      "FEATURE_4_TITLE": {
+        "en": "Billing and Reporting"
+      },
+      "FEATURE_4_BODY": {
+        "en": "Turn completed work into invoices and operational reporting without re-entering data across systems."
+      },
+      "FEATURES_EYEBROW": {
+        "en": "Features"
+      },
+      "FEATURES_TITLE": {
+        "en": "Features"
+      },
+      "FEATURES_LEDE": {
+        "en": "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+      },
+      "COMPARE_ROW_1_CAPABILITY": {
+        "en": "Customer & CRM"
+      },
+      "COMPARE_ROW_1_SW": {
+        "en": "native"
+      },
+      "COMPARE_ROW_1_CRM_SYSTEMS": {
+        "en": "native"
+      },
+      "COMPARE_ROW_1_FIELD_SERVICE_TOOLS": {
+        "en": "partial"
+      },
+      "COMPARE_ROW_1_MONITORING_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_1_CMS_AND_PORTALS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_1_ENTERPRISE_PLATFORMS": {
+        "en": "enterprise"
+      },
+      "COMPARE_ROW_2_CAPABILITY": {
+        "en": "Billing & Revenue"
+      },
+      "COMPARE_ROW_2_SW": {
+        "en": "native"
+      },
+      "COMPARE_ROW_2_CRM_SYSTEMS": {
+        "en": "partial"
+      },
+      "COMPARE_ROW_2_FIELD_SERVICE_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_2_MONITORING_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_2_CMS_AND_PORTALS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_2_ENTERPRISE_PLATFORMS": {
+        "en": "enterprise"
+      },
+      "COMPARE_ROW_3_CAPABILITY": {
+        "en": "Operations & Workflows"
+      },
+      "COMPARE_ROW_3_SW": {
+        "en": "unified"
+      },
+      "COMPARE_ROW_3_CRM_SYSTEMS": {
+        "en": "limited"
+      },
+      "COMPARE_ROW_3_FIELD_SERVICE_TOOLS": {
+        "en": "partial"
+      },
+      "COMPARE_ROW_3_MONITORING_TOOLS": {
+        "en": "manual config"
+      },
+      "COMPARE_ROW_3_CMS_AND_PORTALS": {
+        "en": "manual config"
+      },
+      "COMPARE_ROW_3_ENTERPRISE_PLATFORMS": {
+        "en": "complex"
+      },
+      "COMPARE_ROW_4_CAPABILITY": {
+        "en": "Portals & Content"
+      },
+      "COMPARE_ROW_4_SW": {
+        "en": "integrated"
+      },
+      "COMPARE_ROW_4_CRM_SYSTEMS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_4_FIELD_SERVICE_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_4_MONITORING_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_4_CMS_AND_PORTALS": {
+        "en": "native"
+      },
+      "COMPARE_ROW_4_ENTERPRISE_PLATFORMS": {
+        "en": "add-ons"
+      },
+      "COMPARE_ROW_5_CAPABILITY": {
+        "en": "AI & Intelligence"
+      },
+      "COMPARE_ROW_5_SW": {
+        "en": "built-in"
+      },
+      "COMPARE_ROW_5_CRM_SYSTEMS": {
+        "en": "partial"
+      },
+      "COMPARE_ROW_5_FIELD_SERVICE_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_5_MONITORING_TOOLS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_5_CMS_AND_PORTALS": {
+        "en": "no"
+      },
+      "COMPARE_ROW_5_ENTERPRISE_PLATFORMS": {
+        "en": "partial"
+      },
+      "COMPARISON_EYEBROW": {
+        "en": "Comparison"
+      },
+      "COMPARISON_TITLE": {
+        "en": "ServiceWand unifies it all"
+      },
+      "COMPARISON_LEDE": {
+        "en": "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+      },
+      "COMPARISON_COLUMN_1": {
+        "en": "ServiceWand"
+      },
+      "COMPARISON_COLUMN_2": {
+        "en": "CRM Systems"
+      },
+      "COMPARISON_COLUMN_3": {
+        "en": "Field Service Tools"
+      },
+      "COMPARISON_COLUMN_4": {
+        "en": "Monitoring Tools"
+      },
+      "COMPARISON_COLUMN_5": {
+        "en": "CMS & Portals"
+      },
+      "COMPARISON_COLUMN_6": {
+        "en": "Enterprise Platforms"
+      },
+      "FAQ_1_QUESTION": {
+        "en": "Can ServiceWand support multiple service lines?"
+      },
+      "FAQ_1_ANSWER": {
+        "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+      },
+      "FAQ_2_QUESTION": {
+        "en": "Does ServiceWand replace a CRM?"
+      },
+      "FAQ_2_ANSWER": {
+        "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+      },
+      "FAQ_3_QUESTION": {
+        "en": "Can crews use ServiceWand from the field?"
+      },
+      "FAQ_3_ANSWER": {
+        "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+      },
+      "FAQ_4_QUESTION": {
+        "en": "Is this only for one vertical?"
+      },
+      "FAQ_4_ANSWER": {
+        "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+      },
+      "FAQ_EYEBROW": {
+        "en": "FAQ"
+      },
+      "FAQ_TITLE": {
+        "en": "Frequently asked questions"
+      },
+      "FAQ_LEDE": {
+        "en": ""
+      },
+      "FAQ_GROUP_TITLE": {
+        "en": "Field service operations"
+      },
+      "CTA_EYEBROW": {
+        "en": "Next step"
+      },
+      "CTA_TITLE": {
+        "en": "See how ServiceWand can connect your office, field, and customer workflows."
+      },
+      "CTA_PRIMARY_LABEL": {
+        "en": "Book a Demo"
+      },
+      "CTA_PRIMARY_HREF": "/request-demo",
+      "FOOTER_BRAND_HREF": "/",
+      "FOOTER_BRAND_NAME": {
+        "en": "ServiceWand"
+      },
+      "FOOTER_TAGLINE": {
+        "en": "Where everything you build and operate stays connected"
+      },
+      "FOOTER_ADDRESS_LINE_1": {
+        "en": "ServiceWand Inc."
+      },
+      "FOOTER_ADDRESS_LINE_2": {
+        "en": "Operational platform for modern businesses"
+      },
+      "FOOTER_ADDRESS_LINE_3": {
+        "en": "Registered in Wyoming, USA"
+      },
+      "FOOTER_ADDRESS_LINE_4": {
+        "en": "Offices in Canada & EU"
+      },
+      "FOOTER_NAV_1_HREF": "#hero",
+      "FOOTER_NAV_1_LABEL": {
+        "en": "Platform"
+      },
+      "FOOTER_NAV_2_HREF": "#features",
+      "FOOTER_NAV_2_LABEL": {
+        "en": "How It Works"
+      },
+      "FOOTER_NAV_3_HREF": "#industries",
+      "FOOTER_NAV_3_LABEL": {
+        "en": "Industries"
+      },
+      "FOOTER_NAV_4_HREF": "#compare",
+      "FOOTER_NAV_4_LABEL": {
+        "en": "Compare"
+      },
+      "FOOTER_NAV_5_HREF": "#faq",
+      "FOOTER_NAV_5_LABEL": {
+        "en": "FAQ"
+      },
+      "FOOTER_SOCIAL_LINKEDIN": "https://www.linkedin.com/company/servicewand",
+      "FOOTER_SOCIAL_GITHUB": "https://github.com/servicewand",
+      "FOOTER_SOCIAL_YOUTUBE": "https://www.youtube.com/@servicewand",
+      "FOOTER_SOCIAL_X": "https://x.com/servicewand",
+      "FOOTER_PARTNERSHIPS_LABEL": {
+        "en": "Partnerships"
+      },
+      "FOOTER_PARTNERSHIPS_EMAIL": "partners@servicewand.com",
+      "FOOTER_SUPPORT_LABEL": {
+        "en": "Support"
+      },
+      "FOOTER_SUPPORT_EMAIL": "support@servicewand.com",
+      "FOOTER_COPYRIGHT": {
+        "en": "© 2025 ServiceWand Inc. All rights reserved."
+      },
+      "FOOTER_LEGAL_1_HREF": "/legal/privacy",
+      "FOOTER_LEGAL_1_LABEL": {
+        "en": "Privacy Policy"
+      },
+      "FOOTER_LEGAL_2_HREF": "/legal/terms",
+      "FOOTER_LEGAL_2_LABEL": {
+        "en": "Terms & Conditions"
+      },
+      "ROOT_META_TITLE": {
+        "en": "Field Service Landing | ServiceWand"
+      },
+      "ROOT_META_DESCRIPTION": {
+        "en": "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform."
+      }
+    },
+    "organization": {
+      "code": "SYSTEM"
+    },
+    "excludeFromSeo": false
+  }
+}

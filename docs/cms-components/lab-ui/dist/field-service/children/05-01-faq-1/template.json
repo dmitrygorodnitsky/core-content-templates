@@ -1,0 +1,43 @@
+{
+  "code": "FAQ_1",
+  "nls": {
+    "en": {
+      "NAME": "Can ServiceWand support multiple service lines?"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FAQ"
+  },
+  "children": [],
+  "head": "",
+  "html": "<details class=\"faq-item is-open\" data-faq-slot=\"01\" open>\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_1_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "FAQ_1_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "QUESTION"
+        }
+      },
+      "value": {
+        "en": "Can ServiceWand support multiple service lines?"
+      }
+    },
+    {
+      "code": "FAQ_1_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ANSWER"
+        }
+      },
+      "value": {
+        "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+      }
+    }
+  ]
+}

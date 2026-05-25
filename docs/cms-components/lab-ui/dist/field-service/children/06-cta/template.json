@@ -1,0 +1,65 @@
+{
+  "code": "CTA",
+  "nls": {
+    "en": {
+      "NAME": "CTA"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"section section--cta\" id=\"cta\">\n  <div class=\"container\">\n    <p class=\"eyebrow\">${CTA_EYEBROW@LOCALIZED_STRING_SS}</p>\n    <h2 class=\"section-title\">${CTA_TITLE@LOCALIZED_STRING_SS}</h2>\n    <a class=\"btn btn-primary btn-primary-ring\" href=\"${CTA_PRIMARY_HREF@STRING}\">\n      <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/></svg>\n      ${CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}\n    </a>\n  </div>\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CTA_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW"
+        }
+      },
+      "value": {
+        "en": "Next step"
+      }
+    },
+    {
+      "code": "CTA_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE"
+        }
+      },
+      "value": {
+        "en": "See how ServiceWand can connect your office, field, and customer workflows."
+      }
+    },
+    {
+      "code": "CTA_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "PRIMARY_LABEL"
+        }
+      },
+      "value": {
+        "en": "Book a Demo"
+      }
+    },
+    {
+      "code": "CTA_PRIMARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "PRIMARY_HREF"
+        }
+      },
+      "value": "/request-demo"
+    }
+  ]
+}

@@ -59,6 +59,29 @@ query params only to blocks whose manifest entry has `background.optional`.
 Image backgrounds are decorative and separate from content media slots such as
 hero photos, card images, or signature side-panel screenshots.
 
+## CMS Family Generator
+
+The first dry-run generator lives under `generator/` and `scripts/`. It accepts
+normalized landing copy and emits a root + children CMS family without uploading
+anything to CMS.
+
+```bash
+node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \
+  --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md \
+  --out docs/cms-components/lab-ui/dist/field-service
+
+node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/field-service
+```
+
+The generated root template owns `head`, bundled CSS, and bundled JavaScript.
+Section and item children own HTML and parameters only. FAQ, comparison rows,
+and feature rows are emitted as nested child templates because CMS repeater
+semantics are not assumed.
+
+See `docs/cms-components/lab-ui/generator/README.md` for the input copy format,
+tree model, and generated artifact layout.
+
 ## Locked Decisions
 
 - Default theme is light. `00-tokens/dark.overlay.css` is parked reference for

@@ -1,0 +1,186 @@
+{
+  "sourceFile": "docs/cms-components/lab-ui/compositions/examples/field-service-copy.md",
+  "frontmatter": {
+    "code": "FIELD_SERVICE_LANDING",
+    "name": "Field Service Landing",
+    "url": "/field-service",
+    "locale": "en",
+    "theme": "light",
+    "background": "gradient"
+  },
+  "title": "Field Service Software for Real-World Operations",
+  "hero": {
+    "paragraphs": [
+      "ServiceWand connects scheduling, dispatching, routing, mobile work, billing, reporting, and customer management in one operational platform.",
+      "It is built for service businesses that coordinate crews, customers, routes, recurring work, emergency requests, and operational decisions throughout the day.",
+      "Book a Demo Explore Platform"
+    ],
+    "links": [
+      {
+        "label": "Book a Demo",
+        "href": "/request-demo"
+      },
+      {
+        "label": "Explore Platform",
+        "href": "/platform"
+      }
+    ]
+  },
+  "sections": {
+    "features": {
+      "title": "Features",
+      "paragraphs": [
+        "ServiceWand gives teams one operating layer for office, field, and customer workflows."
+      ],
+      "links": [],
+      "items": [
+        {
+          "title": "Scheduling and Dispatch",
+          "paragraphs": [
+            "Plan appointments, crew capacity, recurring routes, and emergency work from one live operational calendar."
+          ],
+          "links": []
+        },
+        {
+          "title": "Mobile Workforce",
+          "paragraphs": [
+            "Give field teams job context, customer history, notes, photos, signatures, and invoices from a mobile workflow."
+          ],
+          "links": []
+        },
+        {
+          "title": "Customer Management",
+          "paragraphs": [
+            "Keep properties, contacts, service history, contracts, and customer communication connected to the work being performed."
+          ],
+          "links": []
+        },
+        {
+          "title": "Billing and Reporting",
+          "paragraphs": [
+            "Turn completed work into invoices and operational reporting without re-entering data across systems."
+          ],
+          "links": []
+        }
+      ],
+      "table": null
+    },
+    "comparison": {
+      "title": "Comparison",
+      "paragraphs": [
+        "ServiceWand keeps operational workflows connected instead of spreading them across disconnected tools."
+      ],
+      "links": [],
+      "items": [],
+      "table": {
+        "headers": [
+          "Capability",
+          "ServiceWand",
+          "CRM Systems",
+          "Field Service Tools",
+          "Monitoring Tools",
+          "CMS & Portals",
+          "Enterprise Platforms"
+        ],
+        "rows": [
+          [
+            "Customer & CRM",
+            "native",
+            "native",
+            "partial",
+            "no",
+            "no",
+            "enterprise"
+          ],
+          [
+            "Billing & Revenue",
+            "native",
+            "partial",
+            "no",
+            "no",
+            "no",
+            "enterprise"
+          ],
+          [
+            "Operations & Workflows",
+            "unified",
+            "limited",
+            "partial",
+            "manual config",
+            "manual config",
+            "complex"
+          ],
+          [
+            "Portals & Content",
+            "integrated",
+            "no",
+            "no",
+            "no",
+            "native",
+            "add-ons"
+          ],
+          [
+            "AI & Intelligence",
+            "built-in",
+            "partial",
+            "no",
+            "no",
+            "no",
+            "partial"
+          ]
+        ]
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "paragraphs": [],
+      "links": [],
+      "items": [
+        {
+          "title": "Can ServiceWand support multiple service lines?",
+          "paragraphs": [
+            "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+          ],
+          "links": []
+        },
+        {
+          "title": "Does ServiceWand replace a CRM?",
+          "paragraphs": [
+            "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+          ],
+          "links": []
+        },
+        {
+          "title": "Can crews use ServiceWand from the field?",
+          "paragraphs": [
+            "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+          ],
+          "links": []
+        },
+        {
+          "title": "Is this only for one vertical?",
+          "paragraphs": [
+            "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+          ],
+          "links": []
+        }
+      ],
+      "table": null
+    },
+    "final-cta": {
+      "title": "Final CTA",
+      "paragraphs": [
+        "See how ServiceWand can connect your office, field, and customer workflows.",
+        "Book a Demo"
+      ],
+      "links": [
+        {
+          "label": "Book a Demo",
+          "href": "/request-demo"
+        }
+      ],
+      "items": [],
+      "table": null
+    }
+  }
+}

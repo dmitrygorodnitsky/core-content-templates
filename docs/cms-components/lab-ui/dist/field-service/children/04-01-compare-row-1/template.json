@@ -1,0 +1,103 @@
+{
+  "code": "COMPARE_ROW_1",
+  "nls": {
+    "en": {
+      "NAME": "Customer & CRM"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "COMPARISON"
+  },
+  "children": [],
+  "head": "",
+  "html": "<article class=\"compare-row\" role=\"row\">\n    <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><span class=\"compare-capability\">${COMPARE_ROW_1_CAPABILITY@LOCALIZED_STRING_SS}</span></div>\n    <div class=\"compare-cell compare-cell--sw\" role=\"cell\"><span class=\"compare-mobile-label\">ServiceWand</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_SW@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CRM Systems</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_CRM_SYSTEMS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Field Service Tools</span><span class=\"compare-status compare-status--partial\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_FIELD_SERVICE_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Monitoring Tools</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_MONITORING_TOOLS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">CMS &amp; Portals</span><span class=\"compare-status compare-status--no\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_CMS_AND_PORTALS@LOCALIZED_STRING_SS}</span></span></div>\n    <div class=\"compare-cell\" role=\"cell\"><span class=\"compare-mobile-label\">Enterprise Platforms</span><span class=\"compare-status compare-status--yes\"><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_ROW_1_ENTERPRISE_PLATFORMS@LOCALIZED_STRING_SS}</span></span></div>\n  </article>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "COMPARE_ROW_1_CAPABILITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "CAPABILITY"
+        }
+      },
+      "value": {
+        "en": "Customer & CRM"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_SW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "SW"
+        }
+      },
+      "value": {
+        "en": "native"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_CRM_SYSTEMS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "CRM_SYSTEMS"
+        }
+      },
+      "value": {
+        "en": "native"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_FIELD_SERVICE_TOOLS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "FIELD_SERVICE_TOOLS"
+        }
+      },
+      "value": {
+        "en": "partial"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_MONITORING_TOOLS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "MONITORING_TOOLS"
+        }
+      },
+      "value": {
+        "en": "no"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_CMS_AND_PORTALS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "CMS_AND_PORTALS"
+        }
+      },
+      "value": {
+        "en": "no"
+      }
+    },
+    {
+      "code": "COMPARE_ROW_1_ENTERPRISE_PLATFORMS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ENTERPRISE_PLATFORMS"
+        }
+      },
+      "value": {
+        "en": "enterprise"
+      }
+    }
+  ]
+}

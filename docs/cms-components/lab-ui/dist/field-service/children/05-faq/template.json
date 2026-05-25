@@ -1,0 +1,240 @@
+{
+  "code": "FAQ",
+  "nls": {
+    "en": {
+      "NAME": "FAQ"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [
+    {
+      "code": "FAQ_1",
+      "nls": {
+        "en": {
+          "NAME": "Can ServiceWand support multiple service lines?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item is-open\" data-faq-slot=\"01\" open>\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_1_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_1_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "Can ServiceWand support multiple service lines?"
+          }
+        },
+        {
+          "code": "FAQ_1_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "Yes. ServiceWand is designed for teams that share scheduling, dispatching, routing, billing, and reporting foundations across multiple service models."
+          }
+        }
+      ]
+    },
+    {
+      "code": "FAQ_2",
+      "nls": {
+        "en": {
+          "NAME": "Does ServiceWand replace a CRM?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item\" data-faq-slot=\"02\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_2_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_2_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "Does ServiceWand replace a CRM?"
+          }
+        },
+        {
+          "code": "FAQ_2_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "It can own field-service operational CRM workflows or integrate with an existing CRM, depending on how your organization is structured."
+          }
+        }
+      ]
+    },
+    {
+      "code": "FAQ_3",
+      "nls": {
+        "en": {
+          "NAME": "Can crews use ServiceWand from the field?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item\" data-faq-slot=\"03\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_3_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_3_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "Can crews use ServiceWand from the field?"
+          }
+        },
+        {
+          "code": "FAQ_3_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+          }
+        }
+      ]
+    },
+    {
+      "code": "FAQ_4",
+      "nls": {
+        "en": {
+          "NAME": "Is this only for one vertical?"
+        }
+      },
+      "templateLanguage": "JTE",
+      "parent": {
+        "code": "FAQ"
+      },
+      "children": [],
+      "head": "",
+      "html": "<details class=\"faq-item\" data-faq-slot=\"04\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_4_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_4_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+      "css": "",
+      "javascript": "",
+      "parameters": [
+        {
+          "code": "FAQ_4_QUESTION",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "QUESTION"
+            }
+          },
+          "value": {
+            "en": "Is this only for one vertical?"
+          }
+        },
+        {
+          "code": "FAQ_4_ANSWER",
+          "type": "LOCALIZED_STRING_SS",
+          "nls": {
+            "en": {
+              "NAME": "ANSWER"
+            }
+          },
+          "value": {
+            "en": "No. The same operating model can support snow removal, HVAC, lawn care, cleaning, plumbing, electrical, pest control, and other field service operations."
+          }
+        }
+      ]
+    }
+  ],
+  "head": "",
+  "html": "<section class=\"faq\" id=\"faq\" data-block=\"faq.bubble-light-grouped\">\n  <div class=\"container\">\n    <header class=\"faq-top\">\n      <p class=\"eyebrow\">${FAQ_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"faq-title\">${FAQ_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"faq-lede\">${FAQ_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n    <div class=\"faq-groups\">\n      <article class=\"faq-group\" data-faq-group=\"01\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.01</span>\n          <h3 class=\"faq-group-title\">${FAQ_GROUP_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <!-- cms-child-slot:FAQ_ITEMS -->\n        </div>\n      </article>\n    </div>\n  </div>\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "FAQ_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW"
+        }
+      },
+      "value": {
+        "en": "FAQ"
+      }
+    },
+    {
+      "code": "FAQ_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE"
+        }
+      },
+      "value": {
+        "en": "Frequently asked questions"
+      }
+    },
+    {
+      "code": "FAQ_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "LEDE"
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "FAQ_GROUP_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "GROUP_TITLE"
+        }
+      },
+      "value": {
+        "en": "Field service operations"
+      }
+    }
+  ]
+}

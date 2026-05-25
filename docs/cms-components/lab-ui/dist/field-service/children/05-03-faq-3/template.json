@@ -1,0 +1,43 @@
+{
+  "code": "FAQ_3",
+  "nls": {
+    "en": {
+      "NAME": "Can crews use ServiceWand from the field?"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FAQ"
+  },
+  "children": [],
+  "head": "",
+  "html": "<details class=\"faq-item\" data-faq-slot=\"03\">\n  <summary class=\"faq-q\"><span class=\"faq-q-text\">${FAQ_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n  <div class=\"faq-a\">${FAQ_3_ANSWER@LOCALIZED_STRING_SS}</div>\n</details>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "FAQ_3_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "QUESTION"
+        }
+      },
+      "value": {
+        "en": "Can crews use ServiceWand from the field?"
+      }
+    },
+    {
+      "code": "FAQ_3_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ANSWER"
+        }
+      },
+      "value": {
+        "en": "Yes. Mobile workflows keep technicians connected to job details, customer history, notes, photos, signatures, and billing steps."
+      }
+    }
+  ]
+}
