@@ -17,10 +17,23 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
   position: relative;
 }
-.stat-cell:last-child { border-right: none; }
+/* Dividers as pseudo-elements instead of border-right — CSS Grid +
+   gap:0 + 1px borders rounds inconsistently at sub-pixel column
+   widths, leaving some hairlines visible and others missing. The
+   pseudo sits at the right edge with explicit top/bottom inset, so
+   it always renders at full opacity and at a uniform position. */
+.stat-cell:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  right: 0;
+  width: 1px;
+  background: rgba(0, 0, 0, 0.10);
+  pointer-events: none;
+}
 
 .stat-num {
   font-family: var(--font-family);
@@ -58,13 +71,32 @@
 
 @media (max-width: 880px) {
   .stats-strip { grid-template-columns: repeat(2, 1fr); }
-  .stat-cell:nth-child(odd)  { border-right: 1px solid rgba(0, 0, 0, 0.08); }
-  .stat-cell:nth-child(even) { border-right: none; }
-  .stat-cell:nth-child(1),
-  .stat-cell:nth-child(2)    { border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+  /* Hide the desktop right-divider on every even (last in row) cell. */
+  .stat-cell:nth-child(even)::after { display: none; }
+  /* 1px bottom divider for the first row, also as a pseudo for parity. */
+  .stat-cell:nth-child(1)::before,
+  .stat-cell:nth-child(2)::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.10);
+    pointer-events: none;
+  }
 }
 @media (max-width: 480px) {
   .stats-strip { grid-template-columns: 1fr; }
-  .stat-cell { border-right: none; border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
-  .stat-cell:last-child { border-bottom: none; }
+  .stat-cell::after { display: none; }
+  .stat-cell:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 0;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.10);
+    pointer-events: none;
+  }
 }

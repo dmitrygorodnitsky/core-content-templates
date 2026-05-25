@@ -39,6 +39,15 @@
   border-bottom-right-radius: 0;
 }
 
+/* Opt out of effect.hover-rise's halo + inner radial — the locale chip
+   is a quiet chrome element. Keyboard focus outline from effect.hover-rise
+   is preserved for a11y. */
+.locale-trigger::after { display: none; }
+.locale-trigger:hover,
+.locale-trigger:focus-visible {
+  box-shadow: none;
+}
+
 .locale-chevron {
   flex-shrink: 0;
   transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);

@@ -41,7 +41,7 @@
 .stage--lv1::before { opacity: 0.25; }
 .stage--lv2::before { opacity: 0.45; }
 .stage--lv3::before { opacity: 0.7; }
-.stage--lv4::before { opacity: 1; box-shadow: 0 0 24px var(--cta-accent, #6BEAF9); }
+.stage--lv4::before { opacity: 1; }
 
 .stage-side {
   display: flex;
@@ -84,7 +84,6 @@
 }
 .stage-tick.is-on {
   background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
-  box-shadow: 0 0 8px var(--cta-accent, #6BEAF9);
 }
 
 .stage-main {

@@ -26,6 +26,13 @@
   border-color: rgba(86, 66, 45, 0.28);
   background: var(--color-gray-bg);
 }
+/* Opt out of effect.hover-rise's inner bottom radial — we keep the outer
+   halo (box-shadow), but the inset cyan glow inside the card competes
+   visually with the brown tick track + brown-tinted accents in this
+   section. */
+.axis::after {
+  display: none;
+}
 
 .axis-head {
   display: flex;
