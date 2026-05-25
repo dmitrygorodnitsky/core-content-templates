@@ -126,8 +126,8 @@ Out of scope:
 
 ## Delivery Notes
 
-- Package creation commit: included with implementation package on this branch.
-- Implementation commit: pending final git commit.
+- Package creation commit: `a33901d` (`Add lab-ui CMS family generator`).
+- Implementation commit: `a33901d` (`Add lab-ui CMS family generator`).
 - Closeout artifacts:
   - `docs/stream-tasks/landing-copy-cms-generator-wave/audits/A1.md`
   - `docs/stream-tasks/landing-copy-cms-generator-wave/evidence/closeout.md`
