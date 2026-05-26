@@ -62,6 +62,20 @@
       "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
     ]
   },
+  "image_slots": [
+    {
+      "id": "ai-media",
+      "selector": "[data-ai-media-slot] img",
+      "src_param": "media_url",
+      "alt_param": "media_alt",
+      "fallback_label_param": "media_placeholder_label",
+      "fallback_size_param": "media_placeholder_size",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    }
+  ],
   "params": [
     {
       "code": "eyebrow",
@@ -242,6 +256,20 @@
       "code": "media_placeholder_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "media_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "AI Media Image",
+      "description": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "media_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum AI operations panel.",
+      "name": "AI Media Alt Text",
+      "description": "Alternative text for the AI side-panel media image."
     },
     {
       "code": "cap_prefix",

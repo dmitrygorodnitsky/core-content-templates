@@ -1,6 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { NESTED_CODE_PATTERNS, SLOT_MARKERS } from "./cms-family-contract.mjs";
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -16,7 +15,7 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \\
-  --out docs/cms-components/lab-ui/dist/sample-landing`;
+  --out docs/cms-components/lab-ui/dist/<slug>`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 
@@ -61,7 +60,6 @@ const main = () => {
   if (!existsSync(args.out)) throw new Error(`Output directory not found: ${args.out}`);
 
   const required = [
-    "landing.model.json",
     "composition.resolved.json",
     "root.template.json",
     "cms-family.payload.json",
@@ -71,6 +69,9 @@ const main = () => {
   ];
   for (const file of required) {
     if (!existsSync(join(args.out, file))) fail(`missing ${file}`);
+  }
+  if (!existsSync(join(args.out, "landing.model.json")) && !existsSync(join(args.out, "landing.spec.json"))) {
+    fail("missing landing.model.json or landing.spec.json");
   }
 
   const root = readJson(join(args.out, "root.template.json"));
@@ -82,17 +83,19 @@ const main = () => {
   const payloadChildren = flatten(payload.children || []);
   const allTemplates = [root, ...payloadChildren];
 
-  if (!root.css || root.css.length < 1000) fail("root template must own bundled CSS");
-  if (!root.javascript || root.javascript.length < 50) fail("root template must own bundled JavaScript");
+  if (!root.css || root.css.length < 1000) fail("root template must contain shared CSS infrastructure");
+  if (!root.javascript || root.javascript.length < 50) fail("root template must contain shared JavaScript infrastructure");
   if (!root.head.includes("<meta")) fail("root head should contain CMS head fragment");
   if (root.html.includes("<!doctype") || root.html.includes("<html")) fail("root html must be a body fragment");
   if (root.css.includes("<style")) fail("root css must not include <style>");
   if (root.javascript.includes("<script")) fail("root javascript must not include <script>");
+  if (/generated root CSS: .*\/block\.css/.test(root.css)) fail("root css must not bundle block-specific block.css files");
+  if (/generated root JS: .*\/block\.js/.test(root.javascript)) fail("root javascript must not bundle block-specific block.js files");
 
   for (const child of payloadChildren) {
     if (child.head) fail(`${child.code}: child head must be empty`);
-    if (child.css) fail(`${child.code}: child css must be empty; root owns CSS`);
-    if (child.javascript) fail(`${child.code}: child javascript must be empty; root owns JS`);
+    if (child.css?.includes("<style")) fail(`${child.code}: child css must not include <style>`);
+    if (child.javascript?.includes("<script")) fail(`${child.code}: child javascript must not include <script>`);
   }
 
   const declared = new Map();
@@ -100,6 +103,11 @@ const main = () => {
   for (const param of parameters) {
     if (declared.has(param.code)) duplicateCodes.push(param.code);
     declared.set(param.code, param.type);
+    if (!param.nls?.en?.NAME || !String(param.nls.en.NAME).trim()) fail(`${param.code}: missing English parameter name`);
+    if (!param.nls?.en?.DESCRIPTION || !String(param.nls.en.DESCRIPTION).trim()) fail(`${param.code}: missing English parameter description`);
+    if (param.type === "STRING" && /_ICON$/.test(param.code) && (!Array.isArray(param.options) || !param.options.length)) {
+      fail(`${param.code}: enum-style icon parameter must expose options metadata`);
+    }
   }
   for (const code of duplicateCodes) fail(`duplicate parameter code ${code}`);
 
@@ -124,34 +132,20 @@ const main = () => {
     if (!templateCodes.has(code)) fail(`page-context.sample.json has unknown enabled template ${code}`);
   }
 
-  const faq = payloadChildren.find((template) => template.code === "FAQ");
-  if (!faq) fail("FAQ parent template is missing");
-  if (faq && !flatten(faq.children || []).some((child) => NESTED_CODE_PATTERNS.FAQ_ITEM.test(child.code))) fail("FAQ family must contain nested FAQ_N children");
-  if (faq && !faq.html.includes(`cms-child-slot:${SLOT_MARKERS.faqGroups}`)) fail("FAQ parent html must include FAQ group slot marker");
-  if (
-    faq &&
-    !(faq.children || []).every((child) => !NESTED_CODE_PATTERNS.FAQ_GROUP.test(child.code) || child.html.includes(`cms-child-slot:${SLOT_MARKERS.faqItems}`))
-  ) {
-    fail("FAQ group templates must include FAQ item slot markers");
-  }
-
-  const compare = payloadChildren.find((template) => template.code === "COMPARISON");
-  if (compare && !compare.children?.some((child) => NESTED_CODE_PATTERNS.COMPARE_ROW.test(child.code))) {
-    fail("COMPARISON parent must contain nested COMPARE_ROW_N children");
-  }
-
-  const features = payloadChildren.find((template) => template.code === "FEATURES");
-  if (features && !flatten(features.children || []).some((child) => NESTED_CODE_PATTERNS.FEATURE_ITEM.test(child.code))) {
-    fail("FEATURES family must contain nested FEATURE_N children");
-  }
-  if (features && !features.html.includes(`cms-child-slot:${SLOT_MARKERS.featureColumns}`)) {
-    fail("FEATURES parent html must include feature column slot marker");
-  }
-  if (
-    features &&
-    !(features.children || []).every((child) => !NESTED_CODE_PATTERNS.FEATURE_COL.test(child.code) || child.html.includes(`cms-child-slot:${SLOT_MARKERS.featureItems}`))
-  ) {
-    fail("FEATURE column templates must include feature item slot markers");
+  for (const template of allTemplates) {
+    if (/\{\{[A-Za-z0-9_-]+\}\}/.test(`${template.head || ""}\n${template.html || ""}\n${template.css || ""}\n${template.javascript || ""}`)) {
+      fail(`${template.code}: unresolved lab-ui handlebars placeholder`);
+    }
+    for (const match of String(template.html || "").matchAll(/<img\b[^>]*\bsrc="\$\{([A-Z0-9_]+)@IMAGE\}"[^>]*>/g)) {
+      const tag = match[0];
+      if (!/\balt="\$\{[A-Z0-9_]+@(?:LOCALIZED_STRING_SS|STRING)\}"/.test(tag)) {
+        fail(`${template.code}: image ${match[1]} must have parameterized alt text`);
+      }
+      const imageCode = match[1];
+      if (!parameters.some((param) => param.code === imageCode && param.type === "IMAGE")) {
+        fail(`${template.code}: image ${imageCode} missing IMAGE parameter declaration`);
+      }
+    }
   }
 
   if (fileChildren.length !== payloadChildren.length) {

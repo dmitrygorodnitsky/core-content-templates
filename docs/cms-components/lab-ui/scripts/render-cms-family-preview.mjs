@@ -17,7 +17,7 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/render-cms-family-preview.mjs \\
-  --out docs/cms-components/lab-ui/dist/sample-landing \\
+  --out docs/cms-components/lab-ui/dist/<slug> \\
   --file preview.html`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
@@ -80,6 +80,8 @@ const renderTemplate = (template, values, locale) => {
   return html.replace(/<!--\s*cms-child-slot:[A-Z0-9_]+\s*-->/g, "");
 };
 
+const flattenTemplates = (templates) => templates.flatMap((template) => [template, ...flattenTemplates(template.children || [])]);
+
 const main = () => {
   const args = parseArgs();
   if (args.help) {
@@ -105,8 +107,20 @@ const main = () => {
     locale,
   );
   const head = renderPlaceholders(payload.root.head, values, locale);
-  const css = payload.root.css || "";
-  const js = payload.root.javascript || "";
+  const allTemplates = [payload.root, ...flattenTemplates(payload.children || [])];
+  const css = allTemplates
+    .map((template) => template?.css || "")
+    .filter((value) => value.trim())
+    .join("\n\n");
+  const js = allTemplates
+    .map((template) => template?.javascript || "")
+    .filter((value) => value.trim())
+    .join("\n\n");
+  // Pick up the theme color from page context so the right
+  // [data-theme="…"] overlay activates from tokens.css.
+  const theme = pageContext.theme || "";
+  const bodyAttrs = theme ? ` data-theme="${theme}"` : "";
+
   const file = join(args.out, args.file || "preview.html");
   const html = `<!doctype html>
 <html lang="${locale}">
@@ -116,7 +130,7 @@ ${head}
 ${css}
 </style>
 </head>
-<body>
+<body${bodyAttrs}>
 ${body}
 <script>
 ${js}

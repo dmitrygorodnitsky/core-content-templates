@@ -59,28 +59,58 @@ query params only to blocks whose manifest entry has `background.optional`.
 Image backgrounds are decorative and separate from content media slots such as
 hero photos, card images, or signature side-panel screenshots.
 
-## CMS Family Generator
+## CMS Family Composer
 
-The first dry-run generator lives under `generator/` and `scripts/`. It accepts
-normalized landing copy and emits a root + children CMS family without uploading
-anything to CMS.
+The dry-run composer lives under `generator/` and `scripts/`. It accepts an
+operator request or explicit landing spec and emits a root + children CMS family
+without uploading anything to CMS.
 
-```bash
-node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \
-  --copy docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md \
-  --out docs/cms-components/lab-ui/dist/sample-landing
+The only structural invariant is:
 
-node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/sample-landing
+```text
+header.default
+  ...any selected gallery blocks...
+footer.default
 ```
 
-The generated root template owns `head`, bundled CSS, and bundled JavaScript.
-Section and item children own HTML and parameters only. FAQ, comparison rows,
-and feature rows are emitted as nested child templates because CMS repeater
-semantics are not assumed.
+Everything between header and footer is selected from `manifest.json`.
 
-See `docs/cms-components/lab-ui/generator/README.md` for the input copy format,
-tree model, and generated artifact layout.
+Operator-style flow:
+
+```bash
+node docs/cms-components/lab-ui/scripts/build-landing.mjs \
+  --request "HVAC vertical landing, ~2500 words"
+```
+
+This writes a generated spec file under
+`docs/cms-components/lab-ui/compositions/generated/`, then runs composition,
+validation, and preview rendering.
+
+Explicit block override:
+
+```bash
+node docs/cms-components/lab-ui/scripts/build-landing.mjs \
+  --topic hvac \
+  --sections hero.composite-photo,features.card-grid-4,section.axes-grid,faq.bubble-light-grouped
+```
+
+Lower-level flow:
+
+```bash
+node docs/cms-components/lab-ui/scripts/compose-cms-family.mjs \
+  --spec docs/cms-components/lab-ui/compositions/generated/hvac.spec.json \
+  --out docs/cms-components/lab-ui/dist/hvac
+
+node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/hvac
+```
+
+The generated root template owns `head`, shared CSS/JS infrastructure, shell
+HTML, and root parameters. Section children own their block HTML, block-specific
+CSS/JS, dependency CSS/JS, and block parameters.
+
+See `docs/cms-components/lab-ui/generator/README.md` for the spec format, tree
+model, and generated artifact layout.
 
 ## Locked Decisions
 

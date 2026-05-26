@@ -3,7 +3,7 @@
   "id": "comparison.three-col-with-mobile-cards",
   "category": "07-comparison",
   "title": "Comparison · the platform matrix",
-  "description": "the platform.com-style comparison matrix with six external platform columns, status icons, a highlighted the platform column, and stacked mobile cards below 860px.",
+  "description": "ServiceWand-style comparison matrix with 2-6 product columns, per-cell icon status parameters, a highlighted primary column, and stacked mobile cards below 860px.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -75,44 +75,46 @@
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
     },
     {
-      "code": "col_sw_name",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "code": "column_count",
+      "type": "ENUM",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "default": "6"
     },
     {
-      "code": "col_sw_service",
+      "code": "col_01_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "ServiceWand"
     },
     {
-      "code": "col_sw_wand",
+      "code": "col_02_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
+      "default": "CRM Systems"
     },
     {
-      "code": "col_crm_name",
+      "code": "col_03_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "Field Service Tools"
     },
     {
-      "code": "col_field_name",
+      "code": "col_04_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "Monitoring Tools"
     },
     {
-      "code": "col_monitoring_name",
+      "code": "col_05_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum"
+      "default": "CMS & Portals"
     },
     {
-      "code": "col_cms_name",
+      "code": "col_06_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum"
-    },
-    {
-      "code": "col_enterprise_name",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "Enterprise Platforms"
     },
     {
       "code": "slot_01_capability",
@@ -120,34 +122,100 @@
       "default": "Lorem ipsum"
     },
     {
-      "code": "slot_01_sw",
+      "code": "slot_01_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_01_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "code": "slot_01_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_01_field",
+      "code": "slot_01_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_01_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_01_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_01_cms",
+      "code": "slot_01_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_01_enterprise",
+      "code": "slot_01_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_01_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_01_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_01_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_01_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
       "code": "slot_02_capability",
@@ -155,69 +223,201 @@
       "default": "Lorem ipsum"
     },
     {
-      "code": "slot_02_sw",
+      "code": "slot_02_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_02_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "code": "slot_02_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_02_field",
+      "code": "slot_02_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_02_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_02_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     },
     {
-      "code": "slot_02_cms",
+      "code": "slot_02_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_02_enterprise",
+      "code": "slot_02_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_02_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_02_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
       "code": "slot_03_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_03_sw",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_03_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_03_field",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_03_monitoring",
-      "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
     },
     {
-      "code": "slot_03_cms",
+      "code": "slot_03_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum"
+      "default": "native"
     },
     {
-      "code": "slot_03_enterprise",
+      "code": "slot_03_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_03_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_03_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_03_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
       "code": "slot_04_capability",
@@ -225,34 +425,100 @@
       "default": "Lorem ipsum"
     },
     {
-      "code": "slot_04_sw",
+      "code": "slot_04_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_04_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_04_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_04_field",
+      "code": "slot_04_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_04_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_04_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
     },
     {
-      "code": "slot_04_cms",
+      "code": "slot_04_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
     },
     {
-      "code": "slot_04_enterprise",
+      "code": "slot_04_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_04_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_04_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_04_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_04_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     },
     {
       "code": "slot_05_capability",
@@ -260,148 +526,436 @@
       "default": "Lorem ipsum"
     },
     {
-      "code": "slot_05_sw",
+      "code": "slot_05_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_05_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "code": "slot_05_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_05_field",
+      "code": "slot_05_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_05_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_05_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     },
     {
-      "code": "slot_05_cms",
+      "code": "slot_05_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_05_enterprise",
+      "code": "slot_05_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_05_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_05_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     },
     {
       "code": "slot_06_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet."
+      "default": "Lorem ipsum"
     },
     {
-      "code": "slot_06_sw",
+      "code": "slot_06_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_06_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_06_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_06_field",
+      "code": "slot_06_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
     },
     {
-      "code": "slot_06_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_06_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
     },
     {
-      "code": "slot_06_cms",
+      "code": "slot_06_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_06_enterprise",
+      "code": "slot_06_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_06_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_06_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_06_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_06_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
       "code": "slot_07_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "Lorem ipsum"
     },
     {
-      "code": "slot_07_sw",
+      "code": "slot_07_col_01",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "native"
     },
     {
-      "code": "slot_07_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "code": "slot_07_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
     },
     {
-      "code": "slot_07_field",
+      "code": "slot_07_col_02",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_07_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "code": "slot_07_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
     },
     {
-      "code": "slot_07_cms",
+      "code": "slot_07_col_03",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": "partial"
     },
     {
-      "code": "slot_07_enterprise",
+      "code": "slot_07_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_07_col_04",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_07_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "cross"
+    },
+    {
+      "code": "slot_07_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_07_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     },
     {
       "code": "slot_08_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_08_sw",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_08_crm",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_08_field",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
-    },
-    {
-      "code": "slot_08_monitoring",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_08_cms",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "slot_08_enterprise",
-      "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_08_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_08_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_08_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_08_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_08_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     }
   ],
   "preview": {
     "390": "preview-390.png",
     "1440": "preview-1440.png"
   },
+  "previewVariants": [
+    {
+      "id": "2-columns",
+      "label": "2 columns",
+      "query": {
+        "columns": "2"
+      }
+    },
+    {
+      "id": "4-columns",
+      "label": "4 columns",
+      "query": {
+        "columns": "4"
+      }
+    },
+    {
+      "id": "6-columns",
+      "label": "6 columns",
+      "query": {
+        "columns": "6"
+      }
+    }
+  ],
   "notes": [
-    "The matrix mirrors the live the platform comparison: 8 capabilities, the platform highlighted, and six adjacent platform columns.",
-    "Status colors are encoded in the block markup/classes because they are part of the comparison claim, while labels remain localized params.",
-    "Mobile keeps capability and the platform visible, then collapses secondary platform columns behind per-row expanders."
+    "column_count controls product columns only; the left capability label column is structural and not counted.",
+    "Column 01 is the highlighted primary platform column. Columns above column_count are hidden in header, desktop rows, and mobile cards.",
+    "Each cell exposes text and icon params. Icon enum: check, neutral, cross, none.",
+    "Mobile keeps capability and column 01 visible, then collapses visible secondary columns behind per-row expanders."
   ]
 }

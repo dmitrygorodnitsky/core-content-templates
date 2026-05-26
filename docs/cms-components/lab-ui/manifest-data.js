@@ -84,6 +84,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": true
     },
@@ -100,6 +101,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -116,6 +118,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -132,6 +135,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -148,6 +152,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -164,6 +169,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": true
     },
@@ -180,6 +186,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -224,6 +231,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -268,6 +276,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": true
     },
@@ -284,6 +293,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -328,6 +338,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -364,7 +375,7 @@ window.LAB_UI_MANIFEST = {
       "category": "07-comparison",
       "path": "07-comparison/comparison.three-col-with-mobile-cards",
       "title": "Comparison · the platform matrix",
-      "description": "the platform.com-style comparison matrix with six external platform columns, status icons, a highlighted the platform column, and stacked mobile cards below 860px.",
+      "description": "ServiceWand-style comparison matrix with 2-6 product columns, per-cell icon status parameters, a highlighted primary column, and stacked mobile cards below 860px.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "https://example.com/ comparison section",
@@ -372,6 +383,29 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [
+        {
+          "id": "2-columns",
+          "label": "2 columns",
+          "query": {
+            "columns": "2"
+          }
+        },
+        {
+          "id": "4-columns",
+          "label": "4 columns",
+          "query": {
+            "columns": "4"
+          }
+        },
+        {
+          "id": "6-columns",
+          "label": "6 columns",
+          "query": {
+            "columns": "6"
+          }
+        }
+      ],
       "background": {
         "optional": true,
         "default": "none",
@@ -416,6 +450,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": true
     },
@@ -432,6 +467,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -476,6 +512,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -520,6 +557,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -564,6 +602,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -608,6 +647,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -652,6 +692,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",
@@ -696,6 +737,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -712,6 +754,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -728,6 +771,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": null,
       "hasJs": false
     },
@@ -744,6 +788,7 @@ window.LAB_UI_MANIFEST = {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
       "background": {
         "optional": true,
         "default": "none",

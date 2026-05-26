@@ -1,0 +1,422 @@
+{
+  "code": "SECTION_11_SECTION_AXES_GRID",
+  "nls": {
+    "en": {
+      "NAME": "Section · Axes grid (multi-axis from→to)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--section-axes-grid\" data-composition-block=\"section.axes-grid\">\n<div class=\"stage-wrap\">\n<!-- lab-ui block · section.axes-grid\n     Multi-axis matrix of scaling dimensions. 6 axes (configurable count via\n     hiding empty slots). Each axis: number + label, full-width tick track,\n     from→to range labels, short body. Used for \"how the platform scales\n     along these axes\" sections. Light theme. Designer kit AxesGrid.\n-->\n<div class=\"axes-grid\" data-block=\"section.axes-grid\">\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"01\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_1_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_1_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_1_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_1_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"02\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_2_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_2_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_2_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_2_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_2_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"03\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_3_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_3_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_3_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_3_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_3_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"04\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_4_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_4_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_4_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_4_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_4_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"05\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_5_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_5_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_5_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_5_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_5_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n\n  <article class=\"axis\" data-fx=\"rise\" data-axis=\"06\">\n    <div class=\"axis-head\">\n      <span class=\"axis-num\">${SECTION_11_SECTION_AXES_GRID_AXIS_LABEL@LOCALIZED_STRING_SS} ${SECTION_11_SECTION_AXES_GRID_AXIS_6_NUM@LOCALIZED_STRING_SS}</span>\n      <span class=\"axis-label\">${SECTION_11_SECTION_AXES_GRID_AXIS_6_LABEL@LOCALIZED_STRING_SS}</span>\n    </div>\n    <div class=\"axis-track\" aria-hidden=\"true\">\n      <span class=\"axis-tick\" style=\"opacity:0.15\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.29\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.43\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.57\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.71\"></span>\n      <span class=\"axis-tick\" style=\"opacity:0.85\"></span>\n      <span class=\"axis-tick\" style=\"opacity:1.00\"></span>\n    </div>\n    <div class=\"axis-range\">\n      <span class=\"from\">${SECTION_11_SECTION_AXES_GRID_AXIS_6_FROM@LOCALIZED_STRING_SS}</span>\n      <span class=\"arrow\" aria-hidden=\"true\">→</span>\n      <span class=\"to\">${SECTION_11_SECTION_AXES_GRID_AXIS_6_TO@LOCALIZED_STRING_SS}</span>\n    </div>\n    <p class=\"axis-body\">${SECTION_11_SECTION_AXES_GRID_AXIS_6_BODY@LOCALIZED_STRING_SS}</p>\n  </article>\n</div>\n\n</div>\n</section>",
+  "css": "/* generated child CSS: 12-decorative/effect.hover-rise/block.css */\n/* ============================================================\n   lab-ui block · effect.hover-rise\n   ----------------------------------------------------------------\n   Brand interaction primitive — standard CTA halo + inner bottom-glow\n   that fades in on :hover. Applied via CSS, no markup.\n\n   ## Where it auto-applies (brand primitives)\n   - .btn-primary-ring          (cta.btn-primary-ring)\n   - .btn-secondary-filled      (cta.btn-secondary-filled)\n   - .nav-link, .nav-trigger    (header.default nav items)\n   - .locale-trigger            (language.locale-dropdown)\n   - .bc-link                   (header.default breadcrumb)\n\n   ## Opt-in for custom elements\n   - [data-fx=\"rise\"]\n\n   ## Tint\n   Default uses --cta-accent (which is --color-cyan by default and\n   re-themed via [data-theme=\"...\"] overlays). Override per element\n   via --fx-rise-color: <color>.\n\n   ## Implementation\n   Each target element gets a ::after pseudo with the canonical\n   bottom-centered radial glow used by current CTA blocks, plus an\n   outer hover halo via box-shadow. No external image asset.\n\n   ## Stacking\n   Container must be position:relative (or rely on the host block\n   making itself relative — all brand-primitive blocks already do).\n   The ::after is z-index:1 with pointer-events:none so it never\n   blocks interaction.\n   ============================================================ */\n\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n)::after {\n  content: \"\";\n  position: absolute;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 1;\n  border-radius: inherit;\n  opacity: 0;\n  transition: opacity var(--transition-duration, 0.25s) ease;\n\n  /* Canonical inner glow: same bottom-centered radial used by\n     cta.btn-primary-ring and cta.btn-secondary-filled. */\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--fx-rise-color, var(--cta-accent, #6BEAF9)) 0%,\n    transparent 60%\n  );\n  mix-blend-mode: normal;\n  filter: none;\n}\n\n/* Activate on hover + on keyboard focus-visible (a11y). */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n):is(:hover, :focus-visible)::after {\n  opacity: 0.48;\n}\n\n/* Brand-primitive base — they all need to be relative for the\n   ::after to anchor inside. Each block also sets this in its own\n   block.css, but we re-declare here so the effect works even when\n   only this CSS is imported. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n) {\n  position: relative;\n  overflow: hidden;\n  transition:\n    box-shadow var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease;\n}\n\n/* Outer halo — two intensities so the same effect doesn't look\n   aggressive on a 32 px nav link AND on a 52 px pill button.\n\n   Strong (default): pills, cards, opt-in via [data-fx=\"rise\"].\n   Soft: header chrome — nav links, dropdown triggers, breadcrumb,\n   locale chip. Override per element via --fx-rise-color. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  [data-fx=\"rise\"]\n):is(:hover, :focus-visible) {\n  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n}\n\n:where(\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger\n):is(:hover, :focus-visible) {\n  box-shadow: 0 0 18px -6px var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n}\n\n/* Keyboard-only focus ring (a11y). Distinct from the hover halo so that\n   keyboard navigation is unambiguously visible — sighted hover users do\n   not get the ring, only the soft glow. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n):focus-visible {\n  outline: 2px solid var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n  outline-offset: 2px;\n}\n\n/* The hover-rise must stay BEHIND the element's own contents.\n   We use overflow:hidden + ::after with z-index 1 — content sits\n   at z-index 2. Brand primitives bump their direct children to\n   z-index 2 here so we don't have to touch every block.css. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n) > * {\n  position: relative;\n  z-index: 2;\n}\n\n/* Reduced-motion: keep the effect but kill the transition so it\n   appears instantly on hover with no animation. */\n@media (prefers-reduced-motion: reduce) {\n  :where(\n    .btn-primary-ring,\n    .btn-secondary-filled,\n    .nav-link,\n    .nav-trigger,\n    .locale-trigger,\n    .bc-link,\n    [data-fx=\"rise\"]\n  )::after {\n    transition: none;\n  }\n}\n\n\n/* generated child CSS: 09-vertical-section/section.axes-grid/block.css */\n/* lab-ui block · section.axes-grid\n   Depends: 00-tokens/tokens.css + 12-decorative/effect.hover-rise/block.css\n   (hover glow + halo delegated via data-fx=\"rise\"). Light theme.\n   Adapted from designer styles.css §scale-axes (lines 1301–1372, 1397). */\n\n.axes-grid {\n  margin-top: 1rem;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n  font-family: var(--font-family);\n}\n\n.axis {\n  padding: 28px;\n  border-radius: var(--radius-card);\n  background: var(--color-bg);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  transition: border-color 0.2s ease, background 0.2s ease,\n              box-shadow var(--transition-duration, 0.25s) ease;\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n}\n.axis:hover {\n  border-color: rgba(86, 66, 45, 0.28);\n  background: var(--color-gray-bg);\n}\n/* Opt out of effect.hover-rise's inner bottom radial — we keep the outer\n   halo (box-shadow), but the inset cyan glow inside the card competes\n   visually with the brown tick track + brown-tinted accents in this\n   section. */\n.axis::after {\n  display: none;\n}\n\n.axis-head {\n  display: flex;\n  align-items: baseline;\n  gap: 12px;\n  flex-wrap: wrap;\n}\n.axis-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n}\n.axis-label {\n  font-size: 1.0625rem;\n  font-weight: 600;\n  color: var(--color-heading);\n  letter-spacing: -0.01em;\n}\n\n.axis-track {\n  display: flex;\n  gap: 5px;\n  align-items: center;\n}\n.axis-tick {\n  flex: 1;\n  height: 4px;\n  border-radius: 2px;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n}\n\n.axis-range {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  letter-spacing: 0.02em;\n  flex-wrap: wrap;\n}\n.axis-range .from { color: var(--color-gray-second); }\n.axis-range .arrow { color: var(--color-text-accent, #56422D); font-weight: 600; }\n.axis-range .to { color: var(--color-heading); }\n\n.axis-body {\n  margin: 0;\n  font-size: 0.875rem;\n  line-height: 1.55;\n  color: var(--color-gray-blue);\n}\n\n/* Empty-slot auto-hide via :has — if either label or body is empty,\n   the whole axis card collapses out of the grid. */\n.axis:has(.axis-label:empty) { display: none; }\n\n@media (max-width: 980px) {\n  .axes-grid { grid-template-columns: repeat(2, 1fr); }\n}\n@media (max-width: 640px) {\n  .axes-grid { grid-template-columns: 1fr; }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis Label",
+          "DESCRIPTION": "Text value for the Axis Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 1 Num",
+          "DESCRIPTION": "Text value for the Axis 1 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 1 Label",
+          "DESCRIPTION": "Text value for the Axis 1 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 1 From",
+          "DESCRIPTION": "Text value for the Axis 1 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 1 To",
+          "DESCRIPTION": "Text value for the Axis 1 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 1 Body",
+          "DESCRIPTION": "Text value for the Axis 1 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 2 Num",
+          "DESCRIPTION": "Text value for the Axis 2 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 2 Label",
+          "DESCRIPTION": "Text value for the Axis 2 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 2 From",
+          "DESCRIPTION": "Text value for the Axis 2 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 2 To",
+          "DESCRIPTION": "Text value for the Axis 2 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 2 Body",
+          "DESCRIPTION": "Text value for the Axis 2 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 3 Num",
+          "DESCRIPTION": "Text value for the Axis 3 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 3 Label",
+          "DESCRIPTION": "Text value for the Axis 3 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 3 From",
+          "DESCRIPTION": "Text value for the Axis 3 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 3 To",
+          "DESCRIPTION": "Text value for the Axis 3 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 3 Body",
+          "DESCRIPTION": "Text value for the Axis 3 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 4 Num",
+          "DESCRIPTION": "Text value for the Axis 4 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 4 Label",
+          "DESCRIPTION": "Text value for the Axis 4 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 4 From",
+          "DESCRIPTION": "Text value for the Axis 4 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 4 To",
+          "DESCRIPTION": "Text value for the Axis 4 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 4 Body",
+          "DESCRIPTION": "Text value for the Axis 4 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 5 Num",
+          "DESCRIPTION": "Text value for the Axis 5 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 5 Label",
+          "DESCRIPTION": "Text value for the Axis 5 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 5 From",
+          "DESCRIPTION": "Text value for the Axis 5 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 5 To",
+          "DESCRIPTION": "Text value for the Axis 5 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 5 Body",
+          "DESCRIPTION": "Text value for the Axis 5 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 6 Num",
+          "DESCRIPTION": "Text value for the Axis 6 Num field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 6 Label",
+          "DESCRIPTION": "Text value for the Axis 6 Label field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_FROM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 6 From",
+          "DESCRIPTION": "Text value for the Axis 6 From field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_TO",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 6 To",
+          "DESCRIPTION": "Text value for the Axis 6 To field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Axis 6 Body",
+          "DESCRIPTION": "Text value for the Axis 6 Body field in Section · Axes grid (multi-axis from→to)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
+      }
+    }
+  ]
+}

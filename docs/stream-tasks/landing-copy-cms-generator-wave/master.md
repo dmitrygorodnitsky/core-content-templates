@@ -35,7 +35,44 @@ ROOT_LANDING_JTE
   FOOTER
 ```
 
-Root owns all CSS and JavaScript. Child templates own HTML and parameters only. Nested children are used for repeatable CMS editor structures such as FAQ items, comparison rows, feature rows, and cards.
+Original v1 decision: root owns all CSS and JavaScript. Child templates own HTML and parameters only. Nested children are used for repeatable CMS editor structures such as FAQ items, comparison rows, feature rows, and cards.
+
+## Follow-up CMS Review Amendment
+
+Status: implemented in follow-up execution.
+
+This amendment supersedes the v1 CSS/JS ownership decision for future generator work:
+
+- Root `BlockTemplate` CSS and JavaScript must contain only shared page infrastructure:
+  - tokens, reset, base typography, shared layout rhythm, and generic utilities;
+  - root shell/slot behavior;
+  - genuinely shared runtime helpers used by multiple block families.
+- Block-specific CSS and JavaScript must stay on the owning child `BlockTemplate`:
+  - comparison table CSS/JS belongs to the comparison child;
+  - header menu behavior belongs to the header child;
+  - FAQ/accordion runtime belongs to the FAQ or feature child that owns it;
+  - CTA-specific effects belong to CTA/block-level ownership unless promoted to a documented shared token/helper.
+- The generator must not bundle every selected `block.css` and `block.js` into root by default.
+- If a standalone preview still needs a combined CSS/JS artifact, that artifact is a preview/build convenience only, not the canonical CMS ownership model.
+
+Parameter metadata also needs to become editor-grade:
+
+- Every CMS parameter emitted from `block.json` or generator-expanded slots must have a clear English display name.
+- Every CMS parameter must have a clear English description explaining what the value controls.
+- Enum/select parameters must document allowed values in the description or options metadata.
+- Names and descriptions must be generated deterministically from the block contract, not invented ad hoc per upload.
+- The CMS editor should be understandable without reading `block.html`, generated code, or the original chat context.
+
+Image slots need a real CMS image contract:
+
+- Visual striped image placeholders in `lab-ui` are fallback states, not permanent CMS image markup.
+- When a block has an image slot, the generated CMS template must emit an actual `<img>` contract with parameterized `src` and `alt`.
+- `src` must be backed by an `IMAGE` parameter.
+- `alt` must be backed by an editor-controlled text parameter, preferably localized when the surrounding copy is localized.
+- If the image `src` value is missing, the rendered block must gracefully keep the current striped placeholder presentation with the intended size and short fallback label/alt text.
+- Missing image values must not produce a broken image icon.
+- Block metadata must identify image slots, recommended dimensions or aspect ratio, fallback label, alt parameter, and whether the image is required or optional.
+- Standalone preview and CMS preview may show placeholders by default, but the durable template contract must remain image-first.
 
 ## Scope
 
@@ -62,7 +99,7 @@ Out of scope:
 - `docs/cms-components/lab-ui` remains the durable visual/block source of truth.
 - `manifest.json` and per-block `block.json` drive available blocks; hardcoded block lists are allowed only in example fixtures or explicit recipes generated from copy.
 - The accepted input format is normalized Markdown with frontmatter, sections, FAQ headings, CTA links, and optional comparison tables.
-- Root `BlockTemplate` must contain the bundled CSS/JS. Child and item templates must have empty `css`, `javascript`, and `head` unless an explicit exception is documented.
+- Historical v1: root `BlockTemplate` contained bundled CSS/JS. Next-wave rule: root contains only shared CSS/JS; child templates own block-specific `css` and `javascript`.
 - Every CMS placeholder `${CODE@TYPE}` emitted into `head`, `html`, `css`, or `javascript` must have exactly one matching parameter declaration.
 - Parameter codes must be deterministic and stable across re-runs for the same input.
 - Repeated content uses numbered child templates, for example `FAQ_1`, `FAQ_2`, `COMPARE_ROW_1`.
@@ -86,6 +123,15 @@ Out of scope:
 | S4 artifact emitter | local | executor | done | S3 | generate command emits all expected files | root/child payloads, params, page context sample, summary are written |
 | S5 validation | local | executor | done | S4 | validate command fails bad fixtures and passes example | placeholder, params, root/child boundary, enabledTemplates checks exist |
 | S6 docs and example | local | executor | done | S5 | README commands run from repo root | example copy and closeout-ready usage docs exist |
+
+## Follow-up Amendment Ledger
+
+| slice | zone lead | owner | status | depends_on | validation | done_when |
+| --- | --- | --- | --- | --- | --- | --- |
+| A1 child-owned assets | local | executor | done | amendment | `validate-cms-family.mjs` + rendered preview DOM check | root owns only shared CSS/JS; child templates own block CSS/JS and dependencies |
+| A2 parameter metadata | local | executor | done | A1 | `validate-cms-family.mjs` | every generated parameter has English `NAME` and `DESCRIPTION`; enum-style fields expose options |
+| A3 image slot contract | local | executor | done | A1 | `validate-cms-family.mjs` + rendered preview DOM check | generated image slots use parameterized `<img src>` + `alt`, with striped fallback on empty src |
+| A4 docs/evidence refresh | local | executor | done | A1-A3 | docs grep + command results | generator docs and closeout artifacts describe the superseding contract |
 
 ## Definition of Done
 
@@ -128,6 +174,7 @@ Out of scope:
 
 - Package creation commit: `a33901d` (`Add lab-ui CMS family generator`).
 - Implementation commit: `a33901d` (`Add lab-ui CMS family generator`).
+- Follow-up amendment implementation: pending commit in current working tree.
 - Closeout artifacts:
   - `docs/stream-tasks/landing-copy-cms-generator-wave/audits/A1.md`
   - `docs/stream-tasks/landing-copy-cms-generator-wave/evidence/closeout.md`

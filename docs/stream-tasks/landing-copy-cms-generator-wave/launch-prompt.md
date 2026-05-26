@@ -21,8 +21,12 @@ Update `master.md` as slices close.
 - No live `core-cms` writes or network-dependent validation.
 - No `.env`, API keys, bearer tokens, or credentials.
 - No visual redesign of existing `lab-ui` blocks.
-- All CSS and JavaScript emitted for CMS must live on the root template.
-- Child and nested item templates must own HTML and parameters only.
+- Historical v1 constraint: all CSS and JavaScript emitted for CMS lived on the root template.
+- Next-wave superseding constraint: root CSS/JS must contain only shared page infrastructure; block-specific CSS/JS must live on the owning child template.
+- Child and nested item templates must own their HTML and parameters; section children also own their block-specific CSS/JS when the selected `lab-ui` block has `block.css` or `block.js`.
+- Every emitted CMS parameter must include a clear English display name and a clear English description of what it controls.
+- Image slots must be generated as real `<img>` contracts with parameterized `src` and `alt`; striped placeholders are only the fallback when no `src` value is provided.
+- Missing image parameters must render the existing placeholder state with expected size and fallback label, never a broken image icon.
 - FAQ must support the CMS tree pattern: parent `FAQ` block with nested `FAQ_N` child item templates.
 - The deterministic generator accepts normalized Markdown copy. It must not depend on an LLM to infer page structure at runtime.
 - Preserve existing `lab-ui` gallery/manifest behavior.

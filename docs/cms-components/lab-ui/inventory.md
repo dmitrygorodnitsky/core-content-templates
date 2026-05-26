@@ -5,7 +5,7 @@ machine source is `manifest.json`, generated from each block's `block.json`.
 
 ## Summary
 
-- 22 blocks
+- 23 blocks
 - 13 categories
 - 1 canonical token set under `00-tokens/`
 - Runtime gallery: `gallery.html`
@@ -31,7 +31,7 @@ machine source is `manifest.json`, generated from each block's `block.json`.
 | --- | --- |
 | `01-header` | `header.default` |
 | `02-footer` | `footer.default` |
-| `03-cta` | `cta.btn-primary-ring`, `cta.btn-secondary-filled` |
+| `03-cta` | `cta.btn-base`, `cta.btn-primary-ring`, `cta.btn-secondary-filled` |
 | `04-language` | `language.locale-dropdown` |
 | `05-hero` | `hero.operational-diagram`, `hero.composite-photo` |
 | `06-features` | `features.accordion-2col-numbered`, `features.card-grid-3`, `features.card-grid-4` |

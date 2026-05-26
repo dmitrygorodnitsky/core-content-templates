@@ -1,0 +1,2914 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META_TITLE"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "META_DESCRIPTION"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "brand_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "brand_name"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_1_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_1_col_2_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_1_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_2_col_2_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "item_5_link_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_LOCALE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "locale_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_root_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_root_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_mid_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_CURRENT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "breadcrumb_current_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "photo_url"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow_root"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow_leaf"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_line_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_accent"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title_line_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lead_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lead_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_primary_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_primary_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "cta_secondary_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "cta_secondary_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "placeholder_size"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "placeholder_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "chip_stat_value"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "chip_stat_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "person_1_name"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "person_1_role"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "person_2_name"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "person_2_role"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_05_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_05_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_07_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_07_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_09_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_09_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_11_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_11_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_13_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_13_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_15_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_15_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_06_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_06_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_08_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_08_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_10_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_10_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_12_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_12_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_14_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_14_body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_num"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_users"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_lead"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_chip_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_chip_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_chip_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_chip_4"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_1_chip_5"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_num"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_users"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_lead"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_chip_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_chip_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_chip_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_2_chip_4"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_num"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_users"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_lead"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_chip_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_chip_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_chip_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_3_chip_4"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_num"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_users"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_lead"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_chip_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_chip_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_chip_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "stage_4_chip_4"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_1_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_1_p1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_1_p2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_2_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_2_p1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_2_p2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_3_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_3_p1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_3_p2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_4_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_4_p1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card_4_p2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "lede"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "group_01_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_01_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_01_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_02_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_02_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_03_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_03_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_04_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_04_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_05_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_01_05_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "group_02_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_01_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_01_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_02_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_02_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_03_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_03_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_04_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_04_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_05_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_02_05_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "group_03_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_01_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_01_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_02_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_02_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_03_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_03_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_04_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_04_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_05_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_03_05_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "group_04_title"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_01_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_01_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_02_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_02_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_03_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_03_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_04_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_04_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_05_q"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "slot_04_05_a"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "eyebrow"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "body"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "brand_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "brand_name"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_TAGLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "tagline"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_1"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_2"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_3"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "address_line_4"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_3_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_3_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_4_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_4_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_5_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "nav_5_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "nav_5_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_LINKEDIN",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_linkedin"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_GITHUB",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_github"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_YOUTUBE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_youtube"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_X",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "social_x"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "partnerships_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "partnerships_email"
+      }
+    },
+    "value": "Lorem Ipsum exercitation ullamco laboris nisi."
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "support_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SUPPORT_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "support_email"
+      }
+    },
+    "value": "Lorem Ipsum velit esse cillum fugiat."
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_COPYRIGHT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "copyright"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "legal_1_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "legal_1_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "legal_2_href"
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "legal_2_label"
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  }
+]

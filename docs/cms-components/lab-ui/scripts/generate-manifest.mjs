@@ -50,6 +50,7 @@ const blocks = listBlockJsonFiles(root)
       theme: block.theme || "",
       sourceLabel: summarizeSource(block.source),
       preview: block.preview || {},
+      previewVariants: block.previewVariants || [],
       background: block.background || null,
       hasJs: readdirSync(join(root, path)).includes("block.js"),
     };

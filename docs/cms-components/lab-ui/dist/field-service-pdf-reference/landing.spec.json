@@ -1,0 +1,89 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "FIELD_SERVICE_LANDING",
+  "name": "Field Service Landing",
+  "url": "/verticals/field-service",
+  "locale": "en",
+  "topic": "field-service",
+  "targetWords": 6500,
+  "theme": "cyan",
+  "background": "none",
+  "recipe": "long",
+  "sourceReference": {
+    "kind": "pdf-outline",
+    "path": "/Users/imighty/Downloads/Field Service Ops (2)/uploads/field-service-page.pdf",
+    "note": "PDF is used only as semantic section-order reference. Generated template values remain lorem ipsum placeholders."
+  },
+  "referenceMapping": [
+    {
+      "pdf": "H1 hero + CTAs",
+      "block": "hero.composite-photo"
+    },
+    {
+      "pdf": "Connected operations narrative",
+      "block": "section.h2-narrative-only"
+    },
+    {
+      "pdf": "Modern operations needs",
+      "block": "features.card-grid-4"
+    },
+    {
+      "pdf": "Unified platform + feature H3 accordions",
+      "block": "features.accordion-2col-numbered"
+    },
+    {
+      "pdf": "Mobile workforce operations",
+      "block": "mobile.4-card-glyph"
+    },
+    {
+      "pdf": "AI-native operational automation",
+      "block": "signature.ai-shell"
+    },
+    {
+      "pdf": "Small business / growing teams / scalable operations",
+      "block": "section.stages-list"
+    },
+    {
+      "pdf": "Supported industries",
+      "block": "verticals.glyph-grid-20-slots"
+    },
+    {
+      "pdf": "ServiceWand vs other solutions",
+      "block": "comparison.three-col-with-mobile-cards"
+    },
+    {
+      "pdf": "Visibility, reporting, integrations",
+      "block": "section.axes-grid"
+    },
+    {
+      "pdf": "FAQ accordion",
+      "block": "faq.bubble-light-grouped"
+    },
+    {
+      "pdf": "Closing CTA statement",
+      "block": "decorative.callout-band"
+    }
+  ],
+  "sections": [
+    "header.default",
+    "hero.composite-photo",
+    "section.h2-narrative-only",
+    "features.card-grid-4",
+    "features.accordion-2col-numbered",
+    "mobile.4-card-glyph",
+    "signature.ai-shell",
+    "section.stages-list",
+    "verticals.glyph-grid-20-slots",
+    {
+      "block": "comparison.three-col-with-mobile-cards",
+      "values": {
+        "column_count": "2"
+      }
+    },
+    "section.axes-grid",
+    "faq.bubble-light-grouped",
+    "decorative.callout-band",
+    "footer.default"
+  ],
+  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json"
+}

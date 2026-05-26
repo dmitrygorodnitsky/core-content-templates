@@ -1,0 +1,156 @@
+{
+  "code": "FIELD_SERVICE_LANDING",
+  "nls": {
+    "en": {
+      "NAME": "Field Service Landing"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": null,
+  "children": [
+    {
+      "code": "SECTION_01_HEADER_DEFAULT",
+      "nls": {
+        "en": {
+          "NAME": "Header · canonical (multi-level)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "nls": {
+        "en": {
+          "NAME": "Hero · composite photo (vertical-landing)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+      "nls": {
+        "en": {
+          "NAME": "Section · H2 narrative"
+        }
+      }
+    },
+    {
+      "code": "SECTION_04_FEATURES_CARD_GRID_4",
+      "nls": {
+        "en": {
+          "NAME": "Features · 4-card horizontal grid"
+        }
+      }
+    },
+    {
+      "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+      "nls": {
+        "en": {
+          "NAME": "Features · 2-col numbered accordion"
+        }
+      }
+    },
+    {
+      "code": "SECTION_06_MOBILE_4_CARD_GLYPH",
+      "nls": {
+        "en": {
+          "NAME": "Mobile section · 4 cards with glyphs"
+        }
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL",
+      "nls": {
+        "en": {
+          "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_08_SECTION_STAGES_LIST",
+      "nls": {
+        "en": {
+          "NAME": "Section · Stages list (growth ladder, 01→04)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+      "nls": {
+        "en": {
+          "NAME": "Verticals grid · photo-card catalog"
+        }
+      }
+    },
+    {
+      "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS",
+      "nls": {
+        "en": {
+          "NAME": "Comparison · the platform matrix"
+        }
+      }
+    },
+    {
+      "code": "SECTION_11_SECTION_AXES_GRID",
+      "nls": {
+        "en": {
+          "NAME": "Section · Axes grid (multi-axis from→to)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+      "nls": {
+        "en": {
+          "NAME": "FAQ · bubble light grouped"
+        }
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_CALLOUT_BAND",
+      "nls": {
+        "en": {
+          "NAME": "Decorative · callout band (accent-tinted closing strip)"
+        }
+      }
+    },
+    {
+      "code": "SECTION_14_FOOTER_DEFAULT",
+      "nls": {
+        "en": {
+          "NAME": "Footer · canonical"
+        }
+      }
+    }
+  ],
+  "head": "<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>${ROOT_META_TITLE@LOCALIZED_STRING_SS}</title>\n<meta name=\"description\" content=\"${ROOT_META_DESCRIPTION@LOCALIZED_STRING_SS}\">",
+  "html": "<div id=\"root\" data-cms-family=\"FIELD_SERVICE_LANDING\">\n  <!-- cms-child-slot:ROOT_SECTIONS -->\n</div>",
+  "css": "/* generated root CSS: 00-tokens/tokens.css */\n/* ============================================================\n   lab-ui · canonical tokens · light theme\n   ----------------------------------------------------------------\n   Source-of-truth design tokens for the the platform block catalog.\n   Extracted from source tokens (example.com light theme) +\n   additive --font-mono from v5 (JetBrains Mono).\n   ============================================================ */\n\n:root {\n  /* ─── Palette (raw brand colors) ─────────────────────────── */\n  --color-black:        #1B1D25;\n  --color-white:        #FFFFFF;\n  --color-gray:         #BEC5D3;\n  --color-gray-second:  #5C6474;\n  --color-gray-blue:    #97A2B8;\n  --color-gray-light:   #D9D9D9;\n\n  --color-cyan:         #6BEAF9;\n  --color-blue:         #4F95FF;\n  --color-red:          #FF6C56;\n  --color-green:        #7DDE8E;\n  --color-orange:       #FFA72C;\n  --color-magenta:      #EF5CFF;\n\n  --color-black-bg:           #17171B;\n  --color-gray-bg:            #F9F9F9;\n  --color-light-card-bg:      #F7F7F74D;\n  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);\n\n  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);\n  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);\n  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);\n\n  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */\n  --gradient-cta-ring:\n    linear-gradient(250deg,\n      rgba(107, 237, 249, 0)   4.98%,\n      #6bedf9                 37.35%,\n      #ffa72c                 72.51%,\n      rgba(239, 92, 255, 0)   96.41%);\n\n  /* ─── Typography ─────────────────────────────────────────── */\n  --font-family:        \"Vela Sans\", sans-serif;\n  --font-mono:          \"JetBrains Mono\", ui-monospace, \"SF Mono\", Menlo, monospace;\n\n  /* Type scale */\n  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);\n  --type-h1-weight:     500;\n  --type-h1-tracking:   -0.025em;\n  --type-h1-leading:    1.04;\n\n  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);\n  --type-h2-weight:     600;\n  --type-h2-tracking:   -0.022em;\n  --type-h2-leading:    1.15;\n\n  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);\n  --type-h3-weight:     600;\n  --type-h3-tracking:   -0.015em;\n  --type-h3-leading:    1.25;\n\n  --type-h4-size:       1.125rem;\n  --type-h4-weight:     600;\n  --type-h4-tracking:   -0.01em;\n\n  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);\n  --type-lead-weight:   400;\n  --type-lead-leading:  1.5;\n\n  --type-body-size:     1rem;\n  --type-body-leading:  1.55;\n\n  --type-eyebrow-size:  0.8125rem;\n  --type-eyebrow-tracking: 0.12em;\n\n  /* ─── Layout ─────────────────────────────────────────────── */\n  --container-width:     105rem;\n  --container-padding-x: 1.875rem;\n  --header-height:       4.6875rem;\n\n  /* Backdrop blur — header chrome */\n  --backdrop-blur-header:    1.25rem;\n  --backdrop-blur-table:     2.5rem;\n  --backdrop-blur-ecosystem: 5rem;\n\n  /* ─── Radii ──────────────────────────────────────────────── */\n  --radius-pill:    6.25rem;\n  --radius-card:    1.25rem;\n  --radius-card-sm: 0.9375rem;\n\n  /* ─── Motion ─────────────────────────────────────────────── */\n  --transition-duration: 0.4s;\n  --transition-fast:     0.2s;\n  --transition-base:     var(--transition-duration);\n  --transition-slow:     0.6s;\n\n  /* ─── Elevation scale ────────────────────────────────────── */\n  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);\n  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);\n  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);\n  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);\n  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */\n  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */\n  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */\n\n  /* ─── Status palette (yes / partial / no / live) ─────────── */\n  --color-status-yes:     #76D98F;\n  --color-status-partial: #D7D9DC;\n  --color-status-no:      #FF6B6B;\n  --color-status-live:    #16A34A;\n\n  /* ─── Surfaces · backdrop blur ───────────────────────────── */\n  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */\n\n  /* ─── Text accent (warm brown) ─────────────────────────────\n     Pulled out so the first stop of --cta-secondary-fill is not\n     re-used as a raw text color across blocks. */\n  --color-text-accent:   #56422D;\n\n  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */\n  --color-bg:           var(--color-white);\n  --color-bg-invert:    var(--color-black-bg);\n  --color-text:         var(--color-gray-second);\n  --color-heading:      var(--color-black);\n  --color-link:         var(--color-black);\n  --color-link-hover:   var(--color-gray-second);\n\n  --header-bg:          var(--color-light-card-bg);\n  --card-bg:            var(--color-gray-bg);\n  --card-border:        var(--color-light-gray-stroke);\n  --locale-selector-bg: var(--color-gray-bg);\n\n  --button-primary-bg:        transparent;\n  --button-primary-color:     var(--color-black);\n\n  --button-secondary-bg:      transparent;\n  --button-secondary-color:   var(--color-black);\n  --button-secondary-border:  var(--color-black);\n\n  --button-burger-button-bg:  var(--color-black);\n\n  --input-bg:           var(--color-light-card-bg);\n\n  /* ─── CTA · theme accent system ────────────────────────────\n     --cta-accent is the page-wide interactive accent. It tints:\n       · hover-rise glow (effect.hover-rise)\n       · primary CTA outer hover glow (box-shadow)\n       · secondary CTA always-on halo\n       · italic accent word in hero titles\n     --cta-secondary-fill is the filled background of secondary CTAs.\n     Theme overrides go through [data-theme=\"...\"] below. */\n  --cta-accent:          var(--color-cyan);\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n  --cta-secondary-color: var(--color-white);\n  --cta-secondary-border:rgba(255, 255, 255, 0.18);\n}\n\n/* ─── Theme overlays ───────────────────────────────────────────\n   Set on <body data-theme=\"...\"> or any wrapper. Cascades into\n   every CTA, hover-rise effect, and accent text inside the scope.\n   Names are color families, not industries — pick whichever fits. */\n\n[data-theme=\"cyan\"] {\n  /* Default cyan — kept explicit so authors see the slot exists. */\n  --cta-accent:          #6BEAF9;\n  --cta-accent-soft:     rgba(107, 234, 249, 0.30);\n  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);\n}\n\n[data-theme=\"green\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);\n}\n\n[data-theme=\"orange\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);\n}\n\n[data-theme=\"red\"] {\n  --cta-accent:          #FF6C56;\n  --cta-accent-soft:     rgba(255, 108, 86, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);\n}\n\n[data-theme=\"forest\"] {\n  --cta-accent:          #7DDE8E;\n  --cta-accent-soft:     rgba(125, 222, 142, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);\n}\n\n[data-theme=\"blue\"] {\n  --cta-accent:          #4F95FF;\n  --cta-accent-soft:     rgba(79, 149, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);\n}\n\n[data-theme=\"amber\"] {\n  --cta-accent:          #FFA72C;\n  --cta-accent-soft:     rgba(255, 167, 44, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);\n}\n\n[data-theme=\"magenta\"] {\n  --cta-accent:          #EF5CFF;\n  --cta-accent-soft:     rgba(239, 92, 255, 0.28);\n  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);\n}\n\n/* ─── A11y · reduced motion ────────────────────────────────────\n   Honour user's OS-level motion preference across every block. */\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.001ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.001ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n\n\n/* generated preview/CMS composition glue */\n*, *::before, *::after {\n  box-sizing: border-box;\n}\nhtml {\n  min-width: 320px;\n  scroll-behavior: smooth;\n}\nbody {\n  margin: 0;\n  position: relative;\n  min-width: 320px;\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n#root {\n  --composition-section-y: clamp(4rem, 7vw, 6.5rem);\n  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);\n}\n#root > .composition-section {\n  position: relative;\n}\n#root > .composition-section--section-stages-list {\n  padding-block: var(--composition-section-y);\n}\n#root > .composition-section--section-axes-grid {\n  padding-block: var(--composition-section-y);\n}\n#root > .composition-section--decorative-callout-band {\n  padding-block: var(--composition-section-y-compact) var(--composition-section-y);\n}\n.stage-wrap {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n.callout-wrap {\n  max-width: calc(1100px + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\na {\n  color: inherit;\n}\nbutton,\ninput,\ntextarea,\nselect {\n  font: inherit;\n}\n@media (max-width: 640px) {\n  #root {\n    --composition-section-y: 3.5rem;\n    --composition-section-y-compact: 2.5rem;\n  }\n}\n",
+  "javascript": "(() => {\n  if (window.__LAB_UI_BLOCK_COMPOSER_INIT__) return;\n  window.__LAB_UI_BLOCK_COMPOSER_INIT__ = true;\n})();",
+  "parameters": [
+    {
+      "code": "ROOT_META_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Meta Title",
+          "DESCRIPTION": "SEO title for the generated landing page."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "ROOT_META_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Meta Description",
+          "DESCRIPTION": "SEO meta description for the generated landing page."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+      }
+    }
+  ]
+}

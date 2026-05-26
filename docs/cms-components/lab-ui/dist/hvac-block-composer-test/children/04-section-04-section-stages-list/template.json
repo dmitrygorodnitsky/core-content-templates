@@ -1,0 +1,427 @@
+{
+  "code": "SECTION_04_SECTION_STAGES_LIST",
+  "nls": {
+    "en": {
+      "NAME": "Section · Stages list (growth ladder, 01→04)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "HVAC_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--section-stages-list\" data-composition-block=\"section.stages-list\">\n<div class=\"stage-wrap\">\n<!-- lab-ui block · section.stages-list\n     Vertical growth ladder: 4 stages (01–04). Each stage has a side rail\n     with stage eyebrow + big number + 4-tick scale that fills as stages\n     progress (lv1 → lv4 cyan glow), and a main area with title + users\n     pill + lead + capability chips. Light theme. Designer kit StagesList.\n-->\n<div class=\"stages-list\" data-block=\"section.stages-list\">\n  <article class=\"stage stage--lv1\" data-stage=\"01\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_04_SECTION_STAGES_LIST_STAGE_1_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_04_SECTION_STAGES_LIST_STAGE_1_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_04_SECTION_STAGES_LIST_STAGE_1_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_04_SECTION_STAGES_LIST_STAGE_1_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_5@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv2\" data-stage=\"02\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_04_SECTION_STAGES_LIST_STAGE_2_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_04_SECTION_STAGES_LIST_STAGE_2_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_04_SECTION_STAGES_LIST_STAGE_2_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_04_SECTION_STAGES_LIST_STAGE_2_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv3\" data-stage=\"03\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_04_SECTION_STAGES_LIST_STAGE_3_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_04_SECTION_STAGES_LIST_STAGE_3_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_04_SECTION_STAGES_LIST_STAGE_3_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_04_SECTION_STAGES_LIST_STAGE_3_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv4\" data-stage=\"04\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_04_SECTION_STAGES_LIST_STAGE_4_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_04_SECTION_STAGES_LIST_STAGE_4_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_04_SECTION_STAGES_LIST_STAGE_4_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_04_SECTION_STAGES_LIST_STAGE_4_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n</div>\n\n</div>\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_label"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_num"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_USERS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_users"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_LEAD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_lead"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_chip_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_chip_2"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_chip_3"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_4",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_chip_4"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_5",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_1_chip_5"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_num"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_USERS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_users"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_LEAD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_lead"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_chip_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_chip_2"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_chip_3"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_4",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_2_chip_4"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_num"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_USERS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_users"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_LEAD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_lead"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_chip_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_chip_2"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_chip_3"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_4",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_3_chip_4"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_num"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_USERS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_users"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_LEAD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_lead"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_chip_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_chip_2"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_chip_3"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_4",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "stage_4_chip_4"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    }
+  ]
+}

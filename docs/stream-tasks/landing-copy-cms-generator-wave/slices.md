@@ -6,6 +6,8 @@ This wave creates the first deterministic CMS generator for `lab-ui`.
 
 The generator accepts normalized landing copy and emits dry-run CMS family artifacts. It must not call `core-cms` or upload templates. The output should be suitable for later handoff to an uploader layer.
 
+Note: this wave is closed. The follow-up CMS review amendment in `master.md` supersedes the v1 CSS/JS ownership rule for the next implementation wave: root owns only shared infrastructure; block-specific CSS/JS belongs to the owning child template. The next wave must also add editor-grade English names and descriptions for every emitted CMS parameter.
+
 ## Slice-by-slice Breakdown
 
 ### S1 — Generator Contract
@@ -146,11 +148,21 @@ Exact task:
 - Emit `parameters.json` and `page-context.sample.json`.
 - Emit `cms-family.payload.json` that can later drive a separate uploader.
 
+Follow-up amendment for the next wave:
+
+- Root template JSON must keep only shared CSS/JS infrastructure.
+- Child template JSON must include the CSS/JS owned by that block.
+- Generated parameter declarations must include editor-grade English name and description metadata.
+- Standalone preview may still emit combined assets, but that must remain separate from canonical CMS template ownership.
+- Image-like placeholders must become real CMS image slots: generated HTML emits parameterized `<img src="...">` plus editor-controlled `alt`, while missing `src` values render the existing striped placeholder fallback without a broken image icon.
+- Block contracts must describe image slot dimensions/aspect ratio, fallback label, required/optional status, and alt parameter ownership.
+
 What not to do:
 
 - Do not add a CMS uploader.
-- Do not place CSS/JS into child templates.
+- Historical v1: do not place CSS/JS into child templates. Next-wave rule supersedes this: do place block-specific CSS/JS into the owning child template.
 - Do not make live HTTP requests.
+- Do not replace image contracts with div-only placeholders in generated CMS templates.
 
 Validation:
 
@@ -179,8 +191,10 @@ Exact task:
 - Validate every placeholder has exactly one parameter declaration.
 - Validate no declared parameter is unused unless explicitly marked as reserved.
 - Validate parameter code uniqueness across the full family.
-- Validate child templates do not contain CSS/JS/head.
-- Validate root template owns non-empty CSS and JS when selected blocks require them.
+- Validate child templates do not contain `head`; block-specific CSS/JS belongs on the owning child.
+- Validate root template owns only shared CSS/JS infrastructure, not bundled block assets.
+- Validate every emitted parameter has English `NAME` and `DESCRIPTION` metadata.
+- Validate image slots use parameterized `<img src>` and `alt` contracts.
 - Validate `enabledTemplates` includes all direct and nested child template codes/ids in sample output.
 - Validate FAQ item children exist when FAQ copy exists.
 - Preserve existing `validate-lab-ui.mjs` behavior; do not weaken CSS collision warnings.
@@ -265,10 +279,10 @@ Do not parallelize S2-S5 until the contract is stable; they touch the same gener
 | area | command or proof | expected result |
 | --- | --- | --- |
 | lab-ui manifest | `node docs/cms-components/lab-ui/scripts/generate-manifest.mjs` | manifest and manifest-data regenerate cleanly |
-| lab-ui catalog | `node docs/cms-components/lab-ui/scripts/validate-lab-ui.mjs` | 22 blocks / 13 categories, CSS collision warnings allowed, no failures |
-| generator example | `node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md --out docs/cms-components/lab-ui/dist/field-service` | output directory contains model, resolved composition, templates, payload, summary |
-| CMS family validation | `node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs --out docs/cms-components/lab-ui/dist/field-service` | passes with no missing params or root/child boundary errors |
-| artifact inspection | inspect `cms-family.payload.json` | root owns CSS/JS; FAQ has nested FAQ item children |
+| lab-ui catalog | `node docs/cms-components/lab-ui/scripts/validate-lab-ui.mjs` | 23 blocks / 13 categories, CSS collision warnings allowed, no failures |
+| composer example | `node docs/cms-components/lab-ui/scripts/compose-cms-family.mjs --spec docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json --out docs/cms-components/lab-ui/dist/field-service-pdf-reference` | output directory contains resolved composition, templates, payload, summary |
+| CMS family validation | `node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs --out docs/cms-components/lab-ui/dist/field-service-pdf-reference` | passes with no missing params, metadata, image contract, or root/child ownership errors |
+| artifact inspection | inspect `cms-family.payload.json` | root owns shared CSS/JS only; children own block CSS/JS; image slots are real `<img>` contracts with fallback placeholders |
 
 Repo note: this repository currently has no root `package.json` or `Dockerfile`, so there is no separate production compile command to run for this wave.
 

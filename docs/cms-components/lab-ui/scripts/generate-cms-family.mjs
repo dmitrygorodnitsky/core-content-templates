@@ -23,8 +23,11 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \\
-  --copy docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md \\
-  --out docs/cms-components/lab-ui/dist/sample-landing`;
+  --copy docs/cms-components/lab-ui/compositions/generated/<legacy-copy>.md \\
+  --out docs/cms-components/lab-ui/dist/<slug>
+
+Legacy copy-driven generator. Prefer build-landing.mjs / compose-cms-family.mjs
+for new block-composed landings.`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const writeJson = (file, value) => writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
@@ -841,6 +844,9 @@ select {
     values,
     organization: { code: "SYSTEM" },
     excludeFromSeo: false,
+    // Theme color name from frontmatter (cyan|green|orange|red|forest|blue|amber|magenta).
+    // Drives the [data-theme="…"] overlay defined in 00-tokens/tokens.css.
+    theme: model.frontmatter.theme || "",
   };
 
   const resolved = {
@@ -934,6 +940,7 @@ const main = () => {
 
   const catalog = loadCatalog();
   const model = parseMarkdownCopy(args.copy);
+  model.sourceFile = relative(process.cwd(), resolve(args.copy));
   const family = buildFamily(model, catalog);
 
   rmSync(args.out, { recursive: true, force: true });

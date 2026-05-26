@@ -2,17 +2,19 @@
 
 ## Result
 
-The wave delivered a deterministic dry-run generator that converts normalized landing copy into a ServiceWand CMS root + children family backed by `lab-ui`.
+The follow-up execution updated the generator contract so CMS families are assembled from gallery blocks with child-owned assets, editor-grade parameter metadata, and real image slot contracts.
 
 No CMS uploader, live API call, credential handling, or visual block redesign was added.
 
 ## Key Files
 
 - `docs/cms-components/lab-ui/scripts/generate-cms-family.mjs`
+- `docs/cms-components/lab-ui/scripts/compose-cms-family.mjs`
+- `docs/cms-components/lab-ui/scripts/render-cms-family-preview.mjs`
 - `docs/cms-components/lab-ui/scripts/validate-cms-family.mjs`
 - `docs/cms-components/lab-ui/generator/README.md`
-- `docs/cms-components/lab-ui/compositions/examples/field-service-copy.md`
-- `docs/cms-components/lab-ui/dist/field-service/`
+- `docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json`
+- `docs/cms-components/lab-ui/dist/field-service-pdf-reference/`
 - `docs/cms-components/lab-ui/README.md`
 
 ## Generated Artifact Summary
@@ -20,43 +22,26 @@ No CMS uploader, live API call, credential handling, or visual block redesign wa
 Generated family:
 
 - root: `FIELD_SERVICE_LANDING`
-- direct children: `7`
-- total child templates including nested items: `20`
-- parameters: `180`
+- direct children: `14`
+- parameters: `595`
 
-Generated tree:
+Ownership summary:
 
 ```text
 FIELD_SERVICE_LANDING
-  HEADER
-  HERO
-  FEATURES
-    FEATURE_1
-    FEATURE_2
-    FEATURE_3
-    FEATURE_4
-  COMPARISON
-    COMPARE_ROW_1
-    COMPARE_ROW_2
-    COMPARE_ROW_3
-    COMPARE_ROW_4
-    COMPARE_ROW_5
-  FAQ
-    FAQ_1
-    FAQ_2
-    FAQ_3
-    FAQ_4
-  CTA
-  FOOTER
+  root.css: shared tokens + composition shell only
+  root.js: shared idempotent shell guard only
+  SECTION_* children: block HTML + block CSS/JS + dependency CSS/JS + parameters
 ```
 
 ## Behavioral Summary
 
-- Copywriters or operators can now provide normalized `landing-copy.md`.
-- The generator parses frontmatter, hero copy, features, comparison table, FAQ entries, and final CTA.
-- Root template receives bundled tokens, selected block CSS, and selected block JS.
-- Children receive HTML and parameter declarations only.
-- FAQ, comparison rows, and feature rows are represented as nested CMS child templates instead of fake repeater parameters.
+- Operators can request or provide a block-selection spec with `header.default` first and `footer.default` last.
+- The composer selects only existing gallery blocks; it does not invent HTML/CSS/JS.
+- Root template receives shared tokens, composition shell CSS, and root guard JS.
+- Children receive HTML, parameters, block-owned CSS/JS, and dependency CSS/JS.
+- Generated parameters include English names and descriptions for CMS editors.
+- Image placeholders render as real `<img>` slots with parameterized `src` and `alt`, falling back to striped placeholders when `src` is empty.
 - `page-context.sample.json` includes `enabledTemplates` for the full tree.
 
 ## Validation
@@ -66,17 +51,32 @@ Validated with:
 ```bash
 node docs/cms-components/lab-ui/scripts/generate-manifest.mjs
 node docs/cms-components/lab-ui/scripts/validate-lab-ui.mjs
-node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \
-  --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md \
-  --out docs/cms-components/lab-ui/dist/field-service
+node docs/cms-components/lab-ui/scripts/compose-cms-family.mjs \
+  --spec docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json \
+  --out docs/cms-components/lab-ui/dist/field-service-pdf-reference
+node docs/cms-components/lab-ui/scripts/render-cms-family-preview.mjs \
+  --out docs/cms-components/lab-ui/dist/field-service-pdf-reference \
+  --file preview.html
 node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/field-service
+  --out docs/cms-components/lab-ui/dist/field-service-pdf-reference
+node docs/cms-components/lab-ui/scripts/build-landing.mjs \
+  --topic hvac \
+  --words 2500 \
+  --slug hvac-contract-smoke
 ```
 
 All checks passed. `validate-lab-ui.mjs` still reports expected CSS collision warnings.
 
+Additional browser-engine preview proof:
+
+- comparison block rendered with `data-columns="2"`;
+- visible comparison columns were `1` and `2`;
+- empty image slots were hidden while fallback placeholders remained visible;
+- visible broken images count was `0`;
+- no desktop horizontal overflow was detected at 1440px.
+
 ## Residuals
 
-- The future uploader must map generated codes to live CMS UUIDs and translate child-slot comments to the actual JTE child rendering mechanism.
-- The generated output is dry-run only.
+- The future uploader must map generated codes to live CMS UUIDs and preserve child CSS/JS ownership during save.
+- The generated output is still dry-run unless a separate credentialed uploader is explicitly run.
 - CSS collision candidates remain a known risk before composing generated blocks in a single live CMS document.

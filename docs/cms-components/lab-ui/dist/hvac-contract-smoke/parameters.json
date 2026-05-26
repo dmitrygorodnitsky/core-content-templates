@@ -1,0 +1,3177 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Brand Href",
+        "DESCRIPTION": "URL target for the Brand Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Brand Name",
+        "DESCRIPTION": "Text value for the Brand Name field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Title",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Title field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 1 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Title",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Title field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 1 Col 2 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Title",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Title field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 1 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Title",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Title field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 2 Col 2 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 3 Href",
+        "DESCRIPTION": "URL target for the Item 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 3 Label",
+        "DESCRIPTION": "Text value for the Item 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 4 Href",
+        "DESCRIPTION": "URL target for the Item 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 4 Label",
+        "DESCRIPTION": "Text value for the Item 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Label",
+        "DESCRIPTION": "Text value for the Item 5 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 3 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 3 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 4 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Item 5 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 4 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_LOCALE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale Label",
+        "DESCRIPTION": "Text value for the Locale Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "CTA Href",
+        "DESCRIPTION": "URL target for the CTA Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CTA Label",
+        "DESCRIPTION": "Text value for the CTA Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Root Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Root Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Root Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Root Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Mid 1 Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Mid 1 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Mid 1 Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Mid 1 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Mid 2 Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Mid 2 Href link in Header · canonical (multi-level)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Mid 2 Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Mid 2 Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_CURRENT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Breadcrumb Current Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Current Label field in Header · canonical (multi-level)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Photo URL",
+        "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow Root",
+        "DESCRIPTION": "Text value for the Eyebrow Root field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow Leaf",
+        "DESCRIPTION": "Text value for the Eyebrow Leaf field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Line 1",
+        "DESCRIPTION": "Text value for the Title Line 1 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Accent",
+        "DESCRIPTION": "Text value for the Title Accent field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Line 2",
+        "DESCRIPTION": "Text value for the Title Line 2 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 1",
+        "DESCRIPTION": "Text value for the Lead 1 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 2",
+        "DESCRIPTION": "Text value for the Lead 2 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "CTA Primary Href",
+        "DESCRIPTION": "URL target for the CTA Primary Href link in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CTA Primary Label",
+        "DESCRIPTION": "Text value for the CTA Primary Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "CTA Secondary Href",
+        "DESCRIPTION": "URL target for the CTA Secondary Href link in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CTA Secondary Label",
+        "DESCRIPTION": "Text value for the CTA Secondary Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Photo Alt",
+        "DESCRIPTION": "Alternative text for the Photo image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Placeholder Size",
+        "DESCRIPTION": "Fallback placeholder size label shown when the related image is not set in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Placeholder Label",
+        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Chip Stat Value",
+        "DESCRIPTION": "Text value for the Chip Stat Value field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Chip Stat Label",
+        "DESCRIPTION": "Text value for the Chip Stat Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Name",
+        "DESCRIPTION": "Text value for the Person 1 Name field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Role",
+        "DESCRIPTION": "Text value for the Person 1 Role field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Name",
+        "DESCRIPTION": "Text value for the Person 2 Name field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Role",
+        "DESCRIPTION": "Text value for the Person 2 Role field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Title",
+        "DESCRIPTION": "Text value for the Slot 01 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Body",
+        "DESCRIPTION": "Text value for the Slot 01 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Title",
+        "DESCRIPTION": "Text value for the Slot 03 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Body",
+        "DESCRIPTION": "Text value for the Slot 03 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Title",
+        "DESCRIPTION": "Text value for the Slot 05 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Body",
+        "DESCRIPTION": "Text value for the Slot 05 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Title",
+        "DESCRIPTION": "Text value for the Slot 07 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Body",
+        "DESCRIPTION": "Text value for the Slot 07 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Title",
+        "DESCRIPTION": "Text value for the Slot 09 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Body",
+        "DESCRIPTION": "Text value for the Slot 09 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Title",
+        "DESCRIPTION": "Text value for the Slot 11 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Body",
+        "DESCRIPTION": "Text value for the Slot 11 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Title",
+        "DESCRIPTION": "Text value for the Slot 13 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Body",
+        "DESCRIPTION": "Text value for the Slot 13 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 15 Title",
+        "DESCRIPTION": "Text value for the Slot 15 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 15 Body",
+        "DESCRIPTION": "Text value for the Slot 15 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Title",
+        "DESCRIPTION": "Text value for the Slot 02 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Body",
+        "DESCRIPTION": "Text value for the Slot 02 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Title",
+        "DESCRIPTION": "Text value for the Slot 04 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Body",
+        "DESCRIPTION": "Text value for the Slot 04 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Title",
+        "DESCRIPTION": "Text value for the Slot 06 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Body",
+        "DESCRIPTION": "Text value for the Slot 06 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Title",
+        "DESCRIPTION": "Text value for the Slot 08 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Body",
+        "DESCRIPTION": "Text value for the Slot 08 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Title",
+        "DESCRIPTION": "Text value for the Slot 10 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Body",
+        "DESCRIPTION": "Text value for the Slot 10 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Title",
+        "DESCRIPTION": "Text value for the Slot 12 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Body",
+        "DESCRIPTION": "Text value for the Slot 12 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 14 Title",
+        "DESCRIPTION": "Text value for the Slot 14 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 14 Body",
+        "DESCRIPTION": "Text value for the Slot 14 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage Label",
+        "DESCRIPTION": "Text value for the Stage Label field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Num",
+        "DESCRIPTION": "Text value for the Stage 1 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Title",
+        "DESCRIPTION": "Text value for the Stage 1 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Users",
+        "DESCRIPTION": "Text value for the Stage 1 Users field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Lead",
+        "DESCRIPTION": "Text value for the Stage 1 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 5",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 5 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Num",
+        "DESCRIPTION": "Text value for the Stage 2 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Title",
+        "DESCRIPTION": "Text value for the Stage 2 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Users",
+        "DESCRIPTION": "Text value for the Stage 2 Users field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Lead",
+        "DESCRIPTION": "Text value for the Stage 2 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Num",
+        "DESCRIPTION": "Text value for the Stage 3 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Title",
+        "DESCRIPTION": "Text value for the Stage 3 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Users",
+        "DESCRIPTION": "Text value for the Stage 3 Users field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Lead",
+        "DESCRIPTION": "Text value for the Stage 3 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Num",
+        "DESCRIPTION": "Text value for the Stage 4 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Title",
+        "DESCRIPTION": "Text value for the Stage 4 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_USERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Users",
+        "DESCRIPTION": "Text value for the Stage 4 Users field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Lead",
+        "DESCRIPTION": "Text value for the Stage 4 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 1 Title",
+        "DESCRIPTION": "Text value for the Card 1 Title field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 1 P1",
+        "DESCRIPTION": "Text value for the Card 1 P1 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 1 P2",
+        "DESCRIPTION": "Text value for the Card 1 P2 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 2 Title",
+        "DESCRIPTION": "Text value for the Card 2 Title field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 2 P1",
+        "DESCRIPTION": "Text value for the Card 2 P1 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 2 P2",
+        "DESCRIPTION": "Text value for the Card 2 P2 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 3 Title",
+        "DESCRIPTION": "Text value for the Card 3 Title field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 3 P1",
+        "DESCRIPTION": "Text value for the Card 3 P1 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 3 P2",
+        "DESCRIPTION": "Text value for the Card 3 P2 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 4 Title",
+        "DESCRIPTION": "Text value for the Card 4 Title field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 4 P1",
+        "DESCRIPTION": "Text value for the Card 4 P1 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card 4 P2",
+        "DESCRIPTION": "Text value for the Card 4 P2 field in Mobile section · 4 cards with glyphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede",
+        "DESCRIPTION": "Text value for the Lede field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 01 Title",
+        "DESCRIPTION": "Text value for the Group 01 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 01 Q",
+        "DESCRIPTION": "Text value for the Slot 01 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 01 A",
+        "DESCRIPTION": "Text value for the Slot 01 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 02 Q",
+        "DESCRIPTION": "Text value for the Slot 01 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 02 A",
+        "DESCRIPTION": "Text value for the Slot 01 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 03 Q",
+        "DESCRIPTION": "Text value for the Slot 01 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 03 A",
+        "DESCRIPTION": "Text value for the Slot 01 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 04 Q",
+        "DESCRIPTION": "Text value for the Slot 01 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 04 A",
+        "DESCRIPTION": "Text value for the Slot 01 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 05 Q",
+        "DESCRIPTION": "Text value for the Slot 01 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 05 A",
+        "DESCRIPTION": "Text value for the Slot 01 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 02 Title",
+        "DESCRIPTION": "Text value for the Group 02 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 01 Q",
+        "DESCRIPTION": "Text value for the Slot 02 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 01 A",
+        "DESCRIPTION": "Text value for the Slot 02 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 02 Q",
+        "DESCRIPTION": "Text value for the Slot 02 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 02 A",
+        "DESCRIPTION": "Text value for the Slot 02 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 03 Q",
+        "DESCRIPTION": "Text value for the Slot 02 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 03 A",
+        "DESCRIPTION": "Text value for the Slot 02 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 04 Q",
+        "DESCRIPTION": "Text value for the Slot 02 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 04 A",
+        "DESCRIPTION": "Text value for the Slot 02 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 05 Q",
+        "DESCRIPTION": "Text value for the Slot 02 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 05 A",
+        "DESCRIPTION": "Text value for the Slot 02 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 03 Title",
+        "DESCRIPTION": "Text value for the Group 03 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 01 Q",
+        "DESCRIPTION": "Text value for the Slot 03 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 01 A",
+        "DESCRIPTION": "Text value for the Slot 03 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 02 Q",
+        "DESCRIPTION": "Text value for the Slot 03 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 02 A",
+        "DESCRIPTION": "Text value for the Slot 03 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 03 Q",
+        "DESCRIPTION": "Text value for the Slot 03 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 03 A",
+        "DESCRIPTION": "Text value for the Slot 03 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 04 Q",
+        "DESCRIPTION": "Text value for the Slot 03 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 04 A",
+        "DESCRIPTION": "Text value for the Slot 03 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 05 Q",
+        "DESCRIPTION": "Text value for the Slot 03 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 05 A",
+        "DESCRIPTION": "Text value for the Slot 03 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 04 Title",
+        "DESCRIPTION": "Text value for the Group 04 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 01 Q",
+        "DESCRIPTION": "Text value for the Slot 04 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 01 A",
+        "DESCRIPTION": "Text value for the Slot 04 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 02 Q",
+        "DESCRIPTION": "Text value for the Slot 04 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 02 A",
+        "DESCRIPTION": "Text value for the Slot 04 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 03 Q",
+        "DESCRIPTION": "Text value for the Slot 04 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 03 A",
+        "DESCRIPTION": "Text value for the Slot 04 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 04 Q",
+        "DESCRIPTION": "Text value for the Slot 04 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 04 A",
+        "DESCRIPTION": "Text value for the Slot 04 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 05 Q",
+        "DESCRIPTION": "Text value for the Slot 04 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 05 A",
+        "DESCRIPTION": "Text value for the Slot 04 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Decorative · callout band (accent-tinted closing strip)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Body",
+        "DESCRIPTION": "Text value for the Body field in Decorative · callout band (accent-tinted closing strip)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_BRAND_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Brand Href",
+        "DESCRIPTION": "URL target for the Brand Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Brand Name",
+        "DESCRIPTION": "Text value for the Brand Name field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_TAGLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Tagline",
+        "DESCRIPTION": "Text value for the Tagline field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Address Line 1",
+        "DESCRIPTION": "Text value for the Address Line 1 field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Address Line 2",
+        "DESCRIPTION": "Text value for the Address Line 2 field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Address Line 3",
+        "DESCRIPTION": "Text value for the Address Line 3 field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Address Line 4",
+        "DESCRIPTION": "Text value for the Address Line 4 field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav 1 Href",
+        "DESCRIPTION": "URL target for the Nav 1 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Nav 1 Label",
+        "DESCRIPTION": "Text value for the Nav 1 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav 2 Href",
+        "DESCRIPTION": "URL target for the Nav 2 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Nav 2 Label",
+        "DESCRIPTION": "Text value for the Nav 2 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav 3 Href",
+        "DESCRIPTION": "URL target for the Nav 3 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Nav 3 Label",
+        "DESCRIPTION": "Text value for the Nav 3 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_4_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav 4 Href",
+        "DESCRIPTION": "URL target for the Nav 4 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Nav 4 Label",
+        "DESCRIPTION": "Text value for the Nav 4 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_5_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav 5 Href",
+        "DESCRIPTION": "URL target for the Nav 5 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_NAV_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Nav 5 Label",
+        "DESCRIPTION": "Text value for the Nav 5 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_LINKEDIN",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Social Linkedin",
+        "DESCRIPTION": "Text value for the Social Linkedin field in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_GITHUB",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Social Github",
+        "DESCRIPTION": "Text value for the Social Github field in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_YOUTUBE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Social Youtube",
+        "DESCRIPTION": "Text value for the Social Youtube field in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SOCIAL_X",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Social X",
+        "DESCRIPTION": "Text value for the Social X field in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Partnerships Label",
+        "DESCRIPTION": "Text value for the Partnerships Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Partnerships Email",
+        "DESCRIPTION": "Text value for the Partnerships Email field in Footer · canonical."
+      }
+    },
+    "value": "Lorem Ipsum exercitation ullamco laboris nisi."
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Support Label",
+        "DESCRIPTION": "Text value for the Support Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_SUPPORT_EMAIL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Support Email",
+        "DESCRIPTION": "Text value for the Support Email field in Footer · canonical."
+      }
+    },
+    "value": "Lorem Ipsum velit esse cillum fugiat."
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_COPYRIGHT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Copyright",
+        "DESCRIPTION": "Text value for the Copyright field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Legal 1 Href",
+        "DESCRIPTION": "URL target for the Legal 1 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Legal 1 Label",
+        "DESCRIPTION": "Text value for the Legal 1 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Legal 2 Href",
+        "DESCRIPTION": "URL target for the Legal 2 Href link in Footer · canonical."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_08_FOOTER_DEFAULT_LEGAL_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Legal 2 Label",
+        "DESCRIPTION": "Text value for the Legal 2 Label field in Footer · canonical."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  }
+]

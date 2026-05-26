@@ -1,6 +1,6 @@
 /* Stub uploader for lab-ui CMS family payloads.
  *
- *   node scripts/upload-cms-family.mjs --out dist/sample-landing [--live]
+ *   node scripts/upload-cms-family.mjs --out dist/<slug> [--live]
  *
  * Default mode: --dry-run. Prints the requests it WOULD make (method,
  * URL, headers, body shape) without touching the network. Lets you
@@ -41,7 +41,7 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
   node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \\
-    --out docs/cms-components/lab-ui/dist/sample-landing \\
+    --out docs/cms-components/lab-ui/dist/<slug> \\
     [--dry-run | --live]
 
 Default mode: --dry-run. Prints what would be POSTed without hitting the network.
@@ -60,7 +60,7 @@ const fail = (message, code = 1) => {
 
 const readPayload = (outDir) => {
   const file = join(outDir, "cms-family.payload.json");
-  if (!existsSync(file)) fail(`Payload not found: ${file}. Run generate-cms-family.mjs first.`);
+  if (!existsSync(file)) fail(`Payload not found: ${file}. Run build-landing.mjs first.`);
   return JSON.parse(readFileSync(file, "utf8"));
 };
 

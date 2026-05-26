@@ -1,0 +1,439 @@
+{
+  "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+  "nls": {
+    "en": {
+      "NAME": "Features · 2-col numbered accordion"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "HVAC_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--features-accordion-2col-numbered\" data-composition-block=\"features.accordion-2col-numbered\">\n<!-- lab-ui block · features.accordion-2col-numbered\n     15-row 2-col accordion list with F.NN mono badges. Light theme.\n     Multiple-open behavior (no one-open rule — matches v5 design source).\n     JS: see block.js — toggles .is-open per row.\n     Param contract: see block.json.\n-->\n<section class=\"features features--accordion\" id=\"features\" data-block=\"features.accordion-2col-numbered\">\n  <div class=\"container\">\n    <header class=\"features-top\">\n      <div>\n        <p class=\"eyebrow\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"features-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE@LOCALIZED_STRING_SS}</h2>\n      </div>\n      <div class=\"features-lede\">\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1@LOCALIZED_STRING_SS}</p>\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2@LOCALIZED_STRING_SS}</p>\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3@LOCALIZED_STRING_SS}</p>\n      </div>\n    </header>\n\n    <div class=\"features-list\" data-features-list>\n      <div class=\"features-col\" data-feature-col=\"left\">\n        <article class=\"f-row is-open\" data-feature-slot=\"01\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"true\">\n          <span class=\"f-num\">F.01</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"03\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.03</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"05\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.05</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"07\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.07</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"09\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.09</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"11\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.11</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"13\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.13</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"15\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.15</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n      </div>\n      <div class=\"features-col\" data-feature-col=\"right\">\n        <article class=\"f-row\" data-feature-slot=\"02\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.02</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"04\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.04</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"06\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.06</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"08\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.08</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"10\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.10</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"12\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.12</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"14\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.14</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "eyebrow"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lede_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lede_2"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lede_3"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_05_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_05_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_07_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_07_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_09_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_09_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_11_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_11_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_13_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_13_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_15_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_15_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_06_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_06_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_08_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_08_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_10_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_10_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_12_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_12_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_14_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_14_body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+      }
+    }
+  ]
+}

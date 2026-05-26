@@ -361,6 +361,23 @@
     src: block.sourceLabel || "source recorded in block.json",
   }));
 
+  const GALLERY_ITEMS = BLOCKS.flatMap((block) => {
+    if (!Array.isArray(block.previewVariants) || block.previewVariants.length === 0) {
+      return [{
+        ...block,
+        galleryKey: block.id,
+        galleryTitle: block.id,
+        variant: null,
+      }];
+    }
+    return block.previewVariants.map((variant) => ({
+      ...block,
+      galleryKey: `${block.id}::${variant.id}`,
+      galleryTitle: `${block.id} · ${variant.label}`,
+      variant,
+    }));
+  });
+
   const CATEGORY_NAMES = Object.fromEntries(
     MANIFEST.categories.map((category) => [category.id, category.label])
   );
@@ -369,8 +386,16 @@
   let currentBackground = new URLSearchParams(window.location.search).get("bg") || "none";
   if (!["none", "gradient", "image"].includes(currentBackground)) currentBackground = "none";
 
+  const addQuery = (url, query = {}) => {
+    const entries = Object.entries(query).filter(([, value]) => value !== undefined && value !== null && value !== "");
+    if (!entries.length) return url;
+    const params = new URLSearchParams();
+    for (const [key, value] of entries) params.set(key, value);
+    return `${url}${url.includes("?") ? "&" : "?"}${params.toString()}`;
+  };
+
   const cacheBust = (url, token = CACHE_TOKEN) =>
-    `${url}${url.includes("?") ? "&" : "?"}v=${encodeURIComponent(token)}`;
+    addQuery(url, { v: token });
 
   const withBackgroundPreview = (url, block) => {
     if (!block.background?.optional || currentBackground === "none") return url;
@@ -383,11 +408,14 @@
     return `${url}${separator}${out.toString()}`;
   };
 
-  const frameSrc = (block, token = CACHE_TOKEN) =>
-    withBackgroundPreview(cacheBust(`./${block.path}/harness.html`, token), block);
+  const itemHarnessUrl = (item) =>
+    addQuery(`./${item.path}/harness.html`, item.variant?.query || {});
 
-  const openHref = (block) =>
-    withBackgroundPreview(`./${block.path}/harness.html`, block);
+  const frameSrc = (item, token = CACHE_TOKEN) =>
+    withBackgroundPreview(cacheBust(itemHarnessUrl(item), token), item);
+
+  const openHref = (item) =>
+    withBackgroundPreview(itemHarnessUrl(item), item);
 
   // Native viewport sizes. Width matches the actual device width
   // (1440 desktop / 768 tablet / 390 mobile). Height is "above the
@@ -406,7 +434,7 @@
   };
 
   // ─── Render ───
-  document.getElementById("block-count").textContent = `${BLOCKS.length} blocks ready`;
+  document.getElementById("block-count").textContent = `${BLOCKS.length} blocks · ${GALLERY_ITEMS.length} examples`;
 
   const catSelect = document.getElementById("category");
   for (const category of MANIFEST.categories) {
@@ -418,7 +446,7 @@
 
   const main = document.getElementById("gallery");
   const grouped = {};
-  for (const b of BLOCKS) {
+  for (const b of GALLERY_ITEMS) {
     (grouped[b.cat] ??= []).push(b);
   }
 
@@ -433,7 +461,7 @@
     head.innerHTML = `
       <span class="group-num">${cat}</span>
       <h2 class="group-name">${CATEGORY_NAMES[cat] ?? cat}</h2>
-      <span class="group-count">${grouped[cat].length} block${grouped[cat].length === 1 ? "" : "s"}</span>
+      <span class="group-count">${grouped[cat].length} example${grouped[cat].length === 1 ? "" : "s"}</span>
     `;
     groupEl.append(head);
 
@@ -446,7 +474,7 @@
       card.dataset.view = "desktop";
       card.innerHTML = `
         <header class="card-head">
-          <span class="card-id">${b.id}</span>
+          <span class="card-id">${b.galleryTitle}</span>
           <span class="card-meta">${b.theme} · ${b.src}</span>
           <span class="seg card-views" role="tablist" aria-label="Viewport size">
             <button type="button" data-card-view="desktop" class="is-active" title="Desktop 1440">${ICONS.desktop}<span class="card-view-w">1440</span></button>
@@ -458,7 +486,7 @@
         </header>
         <div class="viewport-wrap">
           <div class="viewport">
-            <iframe src="${frameSrc(b)}" data-src="./${b.path}/harness.html" data-block-id="${b.id}" loading="lazy" title="${b.id}"></iframe>
+            <iframe src="${frameSrc(b)}" data-src="${itemHarnessUrl(b)}" data-gallery-key="${b.galleryKey}" loading="lazy" title="${b.galleryTitle}"></iframe>
           </div>
         </div>
       `;
@@ -512,18 +540,18 @@
   // Mark the default Desktop as active on load
   document.querySelector('[data-set-all="desktop"]').classList.add("is-active");
 
-  const blockById = Object.fromEntries(BLOCKS.map((block) => [block.id, block]));
+  const itemByKey = Object.fromEntries(GALLERY_ITEMS.map((item) => [item.galleryKey, item]));
 
   function reloadFrames(token = String(Date.now())) {
     document.querySelectorAll(".card iframe").forEach((frame) => {
-      const block = blockById[frame.dataset.blockId];
-      frame.src = block ? frameSrc(block, token) : cacheBust(frame.dataset.src, token);
+      const item = itemByKey[frame.dataset.galleryKey];
+      frame.src = item ? frameSrc(item, token) : cacheBust(frame.dataset.src, token);
     });
     document.querySelectorAll(".card-open").forEach((link) => {
       const card = link.closest(".card");
-      const id = card?.querySelector(".card-id")?.textContent.trim();
-      const block = blockById[id];
-      if (block) link.href = openHref(block);
+      const key = card?.querySelector("iframe")?.dataset.galleryKey;
+      const item = key ? itemByKey[key] : null;
+      if (item) link.href = openHref(item);
     });
   }
 

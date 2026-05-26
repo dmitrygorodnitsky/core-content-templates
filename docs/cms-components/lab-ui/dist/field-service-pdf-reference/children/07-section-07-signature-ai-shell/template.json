@@ -1,0 +1,641 @@
+{
+  "code": "SECTION_07_SIGNATURE_AI_SHELL",
+  "nls": {
+    "en": {
+      "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--signature-ai-shell\" data-composition-block=\"signature.ai-shell\">\n<!-- lab-ui block · signature.ai-shell\n     Hub-page signature AI section. Composite layout:\n       · top: eyebrow + H2 + 2 leads\n       · middle: ai-shell grid (terminal-style ops log + media side-panel)\n       · bottom: capability cards row (A.NN numbered)\n     Light theme. Adapted from designer kit signature-blocks.jsx.\n-->\n<section class=\"ai-section\" data-block=\"signature.ai-shell\">\n  <div class=\"container\">\n    <header class=\"ai-top\">\n      <p class=\"eyebrow\">${SECTION_07_SIGNATURE_AI_SHELL_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"ai-title\">${SECTION_07_SIGNATURE_AI_SHELL_TITLE@LOCALIZED_STRING_SS}</h2>\n      <div class=\"ai-leads\">\n        <p>${SECTION_07_SIGNATURE_AI_SHELL_LEAD_1@LOCALIZED_STRING_SS}</p>\n        <p>${SECTION_07_SIGNATURE_AI_SHELL_LEAD_2@LOCALIZED_STRING_SS}</p>\n      </div>\n    </header>\n\n    <div class=\"ai-shell\">\n      <!-- Stream: terminal-style activity log -->\n      <article class=\"ai-stream\" data-ai-stream>\n        <header class=\"ai-stream-head\">\n          <span class=\"ai-stream-title\"><span class=\"dot-live\" aria-hidden=\"true\"></span>${SECTION_07_SIGNATURE_AI_SHELL_STREAM_TITLE@LOCALIZED_STRING_SS}</span>\n          <span class=\"ai-stream-meta\">${SECTION_07_SIGNATURE_AI_SHELL_STREAM_META@LOCALIZED_STRING_SS}</span>\n        </header>\n        <div class=\"ai-stream-body\" role=\"list\">\n          <div class=\"ai-stream-row\" role=\"listitem\">\n            <span class=\"ai-stream-time\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TIME@LOCALIZED_STRING_SS}</span>\n            <span class=\"ai-stream-kind\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_KIND@LOCALIZED_STRING_SS}</span>\n            <div class=\"ai-stream-content\">\n              <p class=\"trig\"><span class=\"lead-mark\">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TRIG@LOCALIZED_STRING_SS}</p>\n              <p class=\"act\"><span class=\"lead-mark\">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_ACT@LOCALIZED_STRING_SS}</p>\n            </div>\n          </div>\n          <div class=\"ai-stream-row\" role=\"listitem\">\n            <span class=\"ai-stream-time\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TIME@LOCALIZED_STRING_SS}</span>\n            <span class=\"ai-stream-kind\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_KIND@LOCALIZED_STRING_SS}</span>\n            <div class=\"ai-stream-content\">\n              <p class=\"trig\"><span class=\"lead-mark\">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TRIG@LOCALIZED_STRING_SS}</p>\n              <p class=\"act\"><span class=\"lead-mark\">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_ACT@LOCALIZED_STRING_SS}</p>\n            </div>\n          </div>\n          <div class=\"ai-stream-row\" role=\"listitem\">\n            <span class=\"ai-stream-time\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TIME@LOCALIZED_STRING_SS}</span>\n            <span class=\"ai-stream-kind\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_KIND@LOCALIZED_STRING_SS}</span>\n            <div class=\"ai-stream-content\">\n              <p class=\"trig\"><span class=\"lead-mark\">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TRIG@LOCALIZED_STRING_SS}</p>\n              <p class=\"act\"><span class=\"lead-mark\">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_ACT@LOCALIZED_STRING_SS}</p>\n            </div>\n          </div>\n          <div class=\"ai-stream-row\" role=\"listitem\">\n            <span class=\"ai-stream-time\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TIME@LOCALIZED_STRING_SS}</span>\n            <span class=\"ai-stream-kind\">${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_KIND@LOCALIZED_STRING_SS}</span>\n            <div class=\"ai-stream-content\">\n              <p class=\"trig\"><span class=\"lead-mark\">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TRIG@LOCALIZED_STRING_SS}</p>\n              <p class=\"act\"><span class=\"lead-mark\">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_ACT@LOCALIZED_STRING_SS}</p>\n            </div>\n          </div>\n        </div>\n        <footer class=\"ai-stream-foot\"><span>${SECTION_07_SIGNATURE_AI_SHELL_STREAM_FOOTER@LOCALIZED_STRING_SS}</span></footer>\n      </article>\n\n      <!-- Side panel: media placeholder + heading + tagged feed list -->\n      <aside class=\"ai-side-panel\" data-ai-side-panel>\n        <div class=\"ai-media-placeholder\" data-ai-media-slot>\n          <img class=\"ai-media-img\" src=\"${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_URL@IMAGE}\" alt=\"${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\">\n          <span class=\"ai-media-fallback\">\n            <span>${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_SIZE@LOCALIZED_STRING_SS}</span>\n            <span>${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_LABEL@LOCALIZED_STRING_SS}</span>\n          </span>\n        </div>\n\n        <h3 class=\"ai-side-heading\">${SECTION_07_SIGNATURE_AI_SHELL_SIDE_HEADING@LOCALIZED_STRING_SS}</h3>\n\n        <ul class=\"ai-feeds\">\n          <li><span class=\"mono tag\">${SECTION_07_SIGNATURE_AI_SHELL_FEED_1_TAG@LOCALIZED_STRING_SS}</span><span>${SECTION_07_SIGNATURE_AI_SHELL_FEED_1_BODY@LOCALIZED_STRING_SS}</span></li>\n          <li><span class=\"mono tag\">${SECTION_07_SIGNATURE_AI_SHELL_FEED_2_TAG@LOCALIZED_STRING_SS}</span><span>${SECTION_07_SIGNATURE_AI_SHELL_FEED_2_BODY@LOCALIZED_STRING_SS}</span></li>\n          <li><span class=\"mono tag\">${SECTION_07_SIGNATURE_AI_SHELL_FEED_3_TAG@LOCALIZED_STRING_SS}</span><span>${SECTION_07_SIGNATURE_AI_SHELL_FEED_3_BODY@LOCALIZED_STRING_SS}</span></li>\n          <li><span class=\"mono tag\">${SECTION_07_SIGNATURE_AI_SHELL_FEED_4_TAG@LOCALIZED_STRING_SS}</span><span>${SECTION_07_SIGNATURE_AI_SHELL_FEED_4_BODY@LOCALIZED_STRING_SS}</span></li>\n          <li><span class=\"mono tag\">${SECTION_07_SIGNATURE_AI_SHELL_FEED_5_TAG@LOCALIZED_STRING_SS}</span><span>${SECTION_07_SIGNATURE_AI_SHELL_FEED_5_BODY@LOCALIZED_STRING_SS}</span></li>\n        </ul>\n      </aside>\n    </div>\n\n    <!-- Capability cards: 3 numbered with A.NN prefix -->\n    <div class=\"ai-caps\">\n      <article class=\"ai-cap\">\n        <span class=\"ai-cap-num\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_NUM@LOCALIZED_STRING_SS}</span>\n        <h3 class=\"ai-cap-title\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_TITLE@LOCALIZED_STRING_SS}</h3>\n        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_BODY@LOCALIZED_STRING_SS}</p>\n      </article>\n      <article class=\"ai-cap\">\n        <span class=\"ai-cap-num\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_NUM@LOCALIZED_STRING_SS}</span>\n        <h3 class=\"ai-cap-title\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_TITLE@LOCALIZED_STRING_SS}</h3>\n        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_BODY@LOCALIZED_STRING_SS}</p>\n      </article>\n      <article class=\"ai-cap\">\n        <span class=\"ai-cap-num\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_NUM@LOCALIZED_STRING_SS}</span>\n        <h3 class=\"ai-cap-title\">${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_TITLE@LOCALIZED_STRING_SS}</h3>\n        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_BODY@LOCALIZED_STRING_SS}</p>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 13-signature/signature.ai-shell/block.css */\n/* lab-ui block · signature.ai-shell\n   Depends: 00-tokens/tokens.css. Light theme.\n   Adapted from designer kit (styles.css §AI-Native — lines 862–1054). */\n\n.ai-section {\n  padding-block: clamp(4rem, 7vw, 6.5rem);\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.ai-section .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.ai-top {\n  max-width: 56rem;\n  margin: 0 0 clamp(2rem, 4vw, 3rem);\n}\n.ai-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.ai-title {\n  margin: 0 0 16px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.ai-leads { display: grid; gap: 12px; max-width: 50rem; }\n.ai-leads p {\n  margin: 0;\n  font-size: 1rem;\n  line-height: 1.55;\n  color: var(--color-text);\n}\n\n/* ─── AI shell grid (stream + side panel) ─── */\n.ai-shell {\n  display: grid;\n  grid-template-columns: 1.55fr 1fr;\n  gap: 12px;\n  align-items: stretch;\n}\n\n/* Stream — terminal-style activity log */\n.ai-stream {\n  border-radius: var(--radius-card);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  background: linear-gradient(180deg, var(--color-white) 0%, #F4F6FA 100%);\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n}\n.ai-stream-head {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 16px;\n  padding: 16px 24px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  background: rgba(15, 17, 22, 0.03);\n}\n.ai-stream-title {\n  display: inline-flex; align-items: center; gap: 8px;\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n}\n.ai-stream-title .dot-live {\n  width: 7px; height: 7px; border-radius: 50%;\n  background: var(--color-status-live, #16A34A);\n  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-status-live, #16A34A) 18%, transparent);\n}\n.ai-stream-meta {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: var(--color-gray-second);\n}\n.ai-stream-body { display: flex; flex-direction: column; flex: 1; }\n.ai-stream-row {\n  display: grid;\n  grid-template-columns: 3.25rem 5.5rem 1fr;\n  gap: 1.25rem;\n  padding: 18px 24px;\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  align-items: start;\n}\n.ai-stream-row:first-child { border-top: none; }\n.ai-stream-time {\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  color: var(--color-gray-second);\n  letter-spacing: 0.04em;\n  padding-top: 1px;\n}\n.ai-stream-kind {\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  text-transform: uppercase;\n  padding-top: 3px;\n}\n.ai-stream-content { display: flex; flex-direction: column; gap: 8px; min-width: 0; }\n.ai-stream-content p { display: flex; gap: 8px; align-items: flex-start; margin: 0; }\n.ai-stream-content .lead-mark {\n  font-family: var(--font-mono);\n  flex-shrink: 0;\n  width: 14px;\n  text-align: center;\n  line-height: 1.45;\n}\n.ai-stream-content .trig {\n  font-size: 0.8125rem;\n  color: var(--color-gray-blue);\n  line-height: 1.45;\n}\n.ai-stream-content .trig .lead-mark { color: var(--color-gray-second); }\n.ai-stream-content .act {\n  font-size: 0.9375rem;\n  color: var(--color-heading);\n  line-height: 1.5;\n  letter-spacing: -0.005em;\n}\n.ai-stream-content .act .lead-mark { color: var(--color-text-accent, #56422D); }\n.ai-stream-foot {\n  padding: 16px 24px;\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  background: rgba(15, 17, 22, 0.025);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  color: var(--color-gray-second);\n  text-transform: uppercase;\n}\n\n/* ─── Side panel ─── */\n.ai-side-panel {\n  border-radius: var(--radius-card);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  background: linear-gradient(180deg, #F4F8FE 0%, #F4F6FA 100%);\n  padding: 30px;\n  display: flex;\n  flex-direction: column;\n  position: relative;\n  overflow: hidden;\n}\n.ai-side-panel::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  background: radial-gradient(\n    circle at 80% 0%,\n    color-mix(in srgb, var(--cta-accent, #6BEAF9) 10%, transparent),\n    transparent 50%\n  );\n  pointer-events: none;\n}\n.ai-media-placeholder {\n  position: relative;\n  width: 100%;\n  aspect-ratio: 16 / 10;\n  border-radius: calc(var(--radius-card) - 4px);\n  border: 1px solid rgba(15, 17, 22, 0.08);\n  overflow: hidden;\n  background-color: #eff1f4;\n  background-image:\n    radial-gradient(circle at 50% 60%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 10%, transparent), transparent 65%),\n    repeating-linear-gradient(135deg,\n      rgba(15, 17, 22, 0.035) 0 7px,\n      rgba(15, 17, 22, 0.06) 7px 14px);\n  margin-bottom: 20px;\n  padding: 0.75rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 0.375rem;\n  text-align: center;\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  line-height: 1.4;\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n  color: var(--color-gray-second);\n}\n.ai-media-img {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.ai-media-img[src=\"\"],\n.ai-media-img[src=\"#\"] {\n  display: none;\n}\n.ai-media-fallback {\n  display: contents;\n}\n.ai-media-img[src]:not([src=\"\"]):not([src=\"#\"]) + .ai-media-fallback {\n  display: none;\n}\n.ai-media-fallback span:first-child {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n}\n.ai-side-heading {\n  position: relative;\n  margin: 0 0 20px;\n  max-width: 22ch;\n  font-size: 1.1875rem;\n  line-height: 1.3;\n  font-weight: 600;\n  letter-spacing: -0.015em;\n  color: var(--color-heading);\n}\n.ai-feeds {\n  position: relative;\n  list-style: none;\n  margin: 0; padding: 0;\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n.ai-feeds li {\n  display: grid;\n  grid-template-columns: 5.5rem 1fr;\n  gap: 12px;\n  align-items: baseline;\n  font-size: 0.8125rem;\n  color: var(--color-gray-blue);\n  line-height: 1.45;\n}\n.ai-feeds .tag {\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n  color: var(--color-heading);\n  padding: 4px 8px;\n  border-radius: 999px;\n  border: 1px solid color-mix(in srgb, var(--cta-accent, #6BEAF9) 24%, transparent);\n  background-color: color-mix(in srgb, var(--cta-accent, #6BEAF9) 7%, transparent);\n  text-align: center;\n  justify-self: start;\n}\n\n/* ─── Capability cards row ─── */\n.ai-caps {\n  margin-top: 12px;\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n.ai-cap {\n  padding: 24px;\n  border-radius: var(--radius-card);\n  background: var(--color-bg);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  transition: border-color 0.2s ease, background 0.2s ease;\n}\n.ai-cap:hover {\n  border-color: rgba(0, 0, 0, 0.14);\n  background: var(--color-gray-bg);\n}\n.ai-cap-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  text-transform: uppercase;\n}\n.ai-cap-title {\n  margin: 14px 0 0;\n  font-size: 1.125rem;\n  font-weight: 600;\n  letter-spacing: -0.012em;\n  color: var(--color-heading);\n}\n.ai-cap p {\n  margin: 8px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n  line-height: 1.55;\n}\n\n/* ─── Responsive ─── */\n@media (max-width: 980px) {\n  .ai-shell { grid-template-columns: 1fr; }\n  .ai-caps { grid-template-columns: repeat(2, 1fr); }\n}\n@media (max-width: 640px) {\n  .ai-stream-row { grid-template-columns: 1fr; gap: 6px; padding: 16px 20px; }\n  .ai-stream-head { padding: 14px 20px; flex-wrap: wrap; }\n  .ai-stream-foot { padding: 14px 20px; }\n  .ai-side-panel { padding: 24px; }\n  .ai-feeds li { grid-template-columns: 1fr; gap: 4px; }\n  .ai-caps { grid-template-columns: 1fr; }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_LEAD_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lead 1",
+          "DESCRIPTION": "Text value for the Lead 1 field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_LEAD_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lead 2",
+          "DESCRIPTION": "Text value for the Lead 2 field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Stream Title",
+          "DESCRIPTION": "Text value for the Stream Title field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_META",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Stream Meta",
+          "DESCRIPTION": "Text value for the Stream Meta field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TIME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Time",
+          "DESCRIPTION": "Text value for the Row 1 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_KIND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Kind",
+          "DESCRIPTION": "Text value for the Row 1 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TRIG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Trig",
+          "DESCRIPTION": "Text value for the Row 1 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_ACT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Act",
+          "DESCRIPTION": "Text value for the Row 1 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TIME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Time",
+          "DESCRIPTION": "Text value for the Row 2 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_KIND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Kind",
+          "DESCRIPTION": "Text value for the Row 2 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TRIG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Trig",
+          "DESCRIPTION": "Text value for the Row 2 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_ACT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Act",
+          "DESCRIPTION": "Text value for the Row 2 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TIME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Time",
+          "DESCRIPTION": "Text value for the Row 3 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_KIND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Kind",
+          "DESCRIPTION": "Text value for the Row 3 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TRIG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Trig",
+          "DESCRIPTION": "Text value for the Row 3 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_ACT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Act",
+          "DESCRIPTION": "Text value for the Row 3 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TIME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Time",
+          "DESCRIPTION": "Text value for the Row 4 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_KIND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Kind",
+          "DESCRIPTION": "Text value for the Row 4 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TRIG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Trig",
+          "DESCRIPTION": "Text value for the Row 4 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_ACT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Act",
+          "DESCRIPTION": "Text value for the Row 4 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_FOOTER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Stream Footer",
+          "DESCRIPTION": "Text value for the Stream Footer field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_URL",
+      "type": "IMAGE",
+      "nls": {
+        "en": {
+          "NAME": "AI Media Image",
+          "DESCRIPTION": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
+        }
+      },
+      "value": ""
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "AI Media Alt Text",
+          "DESCRIPTION": "Alternative text for the AI side-panel media image."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_SIZE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Media Placeholder Size",
+          "DESCRIPTION": "Fallback placeholder size label shown when the related image is not set in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Media Placeholder Label",
+          "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_SIDE_HEADING",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Side Heading",
+          "DESCRIPTION": "Text value for the Side Heading field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_1_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 1 Tag",
+          "DESCRIPTION": "Text value for the Feed 1 Tag field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_1_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 1 Body",
+          "DESCRIPTION": "Text value for the Feed 1 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_2_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 2 Tag",
+          "DESCRIPTION": "Text value for the Feed 2 Tag field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_2_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 2 Body",
+          "DESCRIPTION": "Text value for the Feed 2 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_3_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 3 Tag",
+          "DESCRIPTION": "Text value for the Feed 3 Tag field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_3_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 3 Body",
+          "DESCRIPTION": "Text value for the Feed 3 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_4_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 4 Tag",
+          "DESCRIPTION": "Text value for the Feed 4 Tag field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_4_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 4 Body",
+          "DESCRIPTION": "Text value for the Feed 4 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_5_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 5 Tag",
+          "DESCRIPTION": "Text value for the Feed 5 Tag field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_5_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feed 5 Body",
+          "DESCRIPTION": "Text value for the Feed 5 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_PREFIX",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap Prefix",
+          "DESCRIPTION": "Text value for the Cap Prefix field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 1 Num",
+          "DESCRIPTION": "Text value for the Cap 1 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 1 Title",
+          "DESCRIPTION": "Text value for the Cap 1 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 1 Body",
+          "DESCRIPTION": "Text value for the Cap 1 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 2 Num",
+          "DESCRIPTION": "Text value for the Cap 2 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 2 Title",
+          "DESCRIPTION": "Text value for the Cap 2 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 2 Body",
+          "DESCRIPTION": "Text value for the Cap 2 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_NUM",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 3 Num",
+          "DESCRIPTION": "Text value for the Cap 3 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 3 Title",
+          "DESCRIPTION": "Text value for the Cap 3 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Cap 3 Body",
+          "DESCRIPTION": "Text value for the Cap 3 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+      }
+    }
+  ]
+}

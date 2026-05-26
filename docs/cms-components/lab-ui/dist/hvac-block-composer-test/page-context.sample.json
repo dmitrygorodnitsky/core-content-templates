@@ -1,0 +1,686 @@
+{
+  "url": "/verticals/hvac",
+  "template": {
+    "code": "HVAC_LANDING"
+  },
+  "enabledTemplates": [
+    "HVAC_LANDING",
+    "SECTION_01_HEADER_DEFAULT",
+    "SECTION_02_HERO_COMPOSITE_PHOTO",
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+    "SECTION_04_SECTION_STAGES_LIST",
+    "SECTION_05_MOBILE_4_CARD_GLYPH",
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED",
+    "SECTION_07_DECORATIVE_CALLOUT_BAND",
+    "SECTION_08_FOOTER_DEFAULT"
+  ],
+  "values": {
+    "ROOT_META_TITLE": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+    },
+    "ROOT_META_DESCRIPTION": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    },
+    "SECTION_01_HEADER_DEFAULT_BRAND_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_BRAND_NAME": {
+      "en": "Lorem Ipsum do."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_LABEL": {
+      "en": "Lorem Ipsum dolore."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_TITLE": {
+      "en": "Lorem Ipsum quis."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_LABEL": {
+      "en": "Lorem Ipsum reprehenderit."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_LABEL": {
+      "en": "Lorem Ipsum adipiscing."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_LABEL": {
+      "en": "Lorem Ipsum ad."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_LABEL": {
+      "en": "Lorem Ipsum duis."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_TITLE": {
+      "en": "Lorem Ipsum cillum."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_LABEL": {
+      "en": "Lorem Ipsum eiusmod."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_LABEL": {
+      "en": "Lorem Ipsum nostrud."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_LABEL": {
+      "en": "Lorem Ipsum voluptate."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_LABEL": {
+      "en": "Lorem Ipsum elit."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_LABEL": {
+      "en": "Lorem Ipsum labore."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_TITLE": {
+      "en": "Lorem Ipsum minim."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_LABEL": {
+      "en": "Lorem Ipsum aute."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_LABEL": {
+      "en": "Lorem Ipsum amet."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_LABEL": {
+      "en": "Lorem Ipsum aliqua."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_LABEL": {
+      "en": "Lorem Ipsum commodo."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_TITLE": {
+      "en": "Lorem Ipsum velit."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_LABEL": {
+      "en": "Lorem Ipsum sed."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_LABEL": {
+      "en": "Lorem Ipsum veniam."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_LABEL": {
+      "en": "Lorem Ipsum irure."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_LABEL": {
+      "en": "Lorem Ipsum consectetur."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_3_LABEL": {
+      "en": "Lorem Ipsum enim."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_4_LABEL": {
+      "en": "Lorem Ipsum consequat."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LABEL": {
+      "en": "Lorem Ipsum esse."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_LABEL": {
+      "en": "Lorem Ipsum do."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_LABEL": {
+      "en": "Lorem Ipsum quis."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_LABEL": {
+      "en": "Lorem Ipsum reprehenderit."
+    },
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_LABEL": {
+      "en": "Lorem Ipsum adipiscing."
+    },
+    "SECTION_01_HEADER_DEFAULT_LOCALE_LABEL": {
+      "en": "Lorem Ipsum ut."
+    },
+    "SECTION_01_HEADER_DEFAULT_CTA_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_CTA_LABEL": {
+      "en": "Lorem Ipsum laboris."
+    },
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_LABEL": {
+      "en": "Lorem Ipsum cillum."
+    },
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_LABEL": {
+      "en": "Lorem Ipsum eiusmod."
+    },
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_HREF": "#",
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_LABEL": {
+      "en": "Lorem Ipsum nostrud."
+    },
+    "SECTION_01_HEADER_DEFAULT_BREADCRUMB_CURRENT_LABEL": {
+      "en": "Lorem Ipsum ea."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL": "#",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF": "#",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL": {
+      "en": "Lorem Ipsum laboris."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF": "#",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL": {
+      "en": "Lorem Ipsum cillum."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL": {
+      "en": "Lorem Ipsum eiusmod."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL": {
+      "en": "Lorem Ipsum nostrud."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME": {
+      "en": "Lorem Ipsum ea."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME": {
+      "en": "Lorem Ipsum lorem."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW": {
+      "en": "Lorem Ipsum dolore."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE": {
+      "en": "Lorem Ipsum quis."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE": {
+      "en": "Lorem Ipsum adipiscing."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY": {
+      "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE": {
+      "en": "Lorem Ipsum ad."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE": {
+      "en": "Lorem Ipsum duis."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE": {
+      "en": "Lorem Ipsum sit."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE": {
+      "en": "Lorem Ipsum magna."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE": {
+      "en": "Lorem Ipsum ea."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE": {
+      "en": "Lorem Ipsum lorem."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY": {
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE": {
+      "en": "Lorem Ipsum labore."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE": {
+      "en": "Lorem Ipsum nisi."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE": {
+      "en": "Lorem Ipsum fugiat."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE": {
+      "en": "Lorem Ipsum tempor."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY": {
+      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE": {
+      "en": "Lorem Ipsum exercitation."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY": {
+      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE": {
+      "en": "Lorem Ipsum velit."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE": {
+      "en": "Lorem Ipsum sed."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE": {
+      "en": "Lorem Ipsum veniam."
+    },
+    "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY": {
+      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_LABEL": {
+      "en": "Lorem Ipsum quis."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_NUM": {
+      "en": "Lorem Ipsum ex."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_TITLE": {
+      "en": "Lorem Ipsum reprehenderit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_USERS": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_LEAD": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_1": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_2": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_3": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_4": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_1_CHIP_5": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_NUM": {
+      "en": "Lorem Ipsum sit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_TITLE": {
+      "en": "Lorem Ipsum eiusmod."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_USERS": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_LEAD": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_1": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_2": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_3": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_2_CHIP_4": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_NUM": {
+      "en": "Lorem Ipsum labore."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_TITLE": {
+      "en": "Lorem Ipsum minim."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_USERS": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_LEAD": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_1": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_2": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_3": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_3_CHIP_4": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_NUM": {
+      "en": "Lorem Ipsum exercitation."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_TITLE": {
+      "en": "Lorem Ipsum commodo."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_USERS": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_LEAD": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_1": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_2": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_3": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    },
+    "SECTION_04_SECTION_STAGES_LIST_STAGE_4_CHIP_4": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_EYEBROW": {
+      "en": "Lorem Ipsum ex."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_TITLE": {
+      "en": "Lorem Ipsum reprehenderit."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_1": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_2": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_LEDE_3": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_TITLE": {
+      "en": "Lorem Ipsum ad."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P1": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_1_P2": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_TITLE": {
+      "en": "Lorem Ipsum cillum."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P1": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_2_P2": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_TITLE": {
+      "en": "Lorem Ipsum magna."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P1": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_3_P2": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_TITLE": {
+      "en": "Lorem Ipsum voluptate."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P1": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    },
+    "SECTION_05_MOBILE_4_CARD_GLYPH_CARD_4_P2": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW": {
+      "en": "Lorem Ipsum reprehenderit."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE": {
+      "en": "Lorem Ipsum pariatur."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE": {
+      "en": "Lorem Ipsum ut."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE": {
+      "en": "Lorem Ipsum lorem."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A": {
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE": {
+      "en": "Lorem Ipsum commodo."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE": {
+      "en": "Lorem Ipsum enim."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    },
+    "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    },
+    "SECTION_07_DECORATIVE_CALLOUT_BAND_EYEBROW": {
+      "en": "Lorem Ipsum pariatur."
+    },
+    "SECTION_07_DECORATIVE_CALLOUT_BAND_BODY": {
+      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+    },
+    "SECTION_08_FOOTER_DEFAULT_BRAND_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_BRAND_NAME": {
+      "en": "Lorem Ipsum ut."
+    },
+    "SECTION_08_FOOTER_DEFAULT_TAGLINE": {
+      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+    },
+    "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_1": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    },
+    "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_2": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    },
+    "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_3": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    },
+    "SECTION_08_FOOTER_DEFAULT_ADDRESS_LINE_4": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    },
+    "SECTION_08_FOOTER_DEFAULT_NAV_1_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_NAV_1_LABEL": {
+      "en": "Lorem Ipsum magna."
+    },
+    "SECTION_08_FOOTER_DEFAULT_NAV_2_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_NAV_2_LABEL": {
+      "en": "Lorem Ipsum ea."
+    },
+    "SECTION_08_FOOTER_DEFAULT_NAV_3_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_NAV_3_LABEL": {
+      "en": "Lorem Ipsum lorem."
+    },
+    "SECTION_08_FOOTER_DEFAULT_NAV_4_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_NAV_4_LABEL": {
+      "en": "Lorem Ipsum labore."
+    },
+    "SECTION_08_FOOTER_DEFAULT_NAV_5_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_NAV_5_LABEL": {
+      "en": "Lorem Ipsum nisi."
+    },
+    "SECTION_08_FOOTER_DEFAULT_SOCIAL_LINKEDIN": "#",
+    "SECTION_08_FOOTER_DEFAULT_SOCIAL_GITHUB": "#",
+    "SECTION_08_FOOTER_DEFAULT_SOCIAL_YOUTUBE": "#",
+    "SECTION_08_FOOTER_DEFAULT_SOCIAL_X": "#",
+    "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_LABEL": {
+      "en": "Lorem Ipsum aliqua."
+    },
+    "SECTION_08_FOOTER_DEFAULT_PARTNERSHIPS_EMAIL": "Lorem Ipsum exercitation ullamco laboris nisi.",
+    "SECTION_08_FOOTER_DEFAULT_SUPPORT_LABEL": {
+      "en": "Lorem Ipsum commodo."
+    },
+    "SECTION_08_FOOTER_DEFAULT_SUPPORT_EMAIL": "Lorem Ipsum velit esse cillum fugiat.",
+    "SECTION_08_FOOTER_DEFAULT_COPYRIGHT": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    },
+    "SECTION_08_FOOTER_DEFAULT_LEGAL_1_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_LEGAL_1_LABEL": {
+      "en": "Lorem Ipsum et."
+    },
+    "SECTION_08_FOOTER_DEFAULT_LEGAL_2_HREF": "#",
+    "SECTION_08_FOOTER_DEFAULT_LEGAL_2_LABEL": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  "organization": {
+    "code": "SYSTEM"
+  },
+  "excludeFromSeo": false,
+  "theme": "orange"
+}

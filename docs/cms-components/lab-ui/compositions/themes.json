@@ -47,6 +47,6 @@
   "notes": [
     "Pick the closest semantic match — the list is intentionally short. If the topic is not here, fall back to the `default` theme.",
     "Themes are colour families, NOT industries. Adding a new vertical does NOT require adding a new theme — pick the closest existing one.",
-    "The orchestrator should set `theme: <name>` in the copy.md frontmatter. The generator emits the matching `<body data-theme=\"<name>\">` wrapper."
+    "The orchestrator should set `theme: <name>` in landing.spec.json. The preview renderer emits the matching `<body data-theme=\"<name>\">` wrapper."
   ]
 }

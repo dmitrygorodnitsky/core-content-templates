@@ -1,0 +1,583 @@
+{
+  "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED",
+  "nls": {
+    "en": {
+      "NAME": "FAQ · bubble light grouped"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "HVAC_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--faq-bubble-light-grouped\" data-composition-block=\"faq.bubble-light-grouped\">\n<!-- lab-ui block · faq.bubble-light-grouped\n     FAQ section grouped into 4 categories × 5 questions each (20 slots).\n     Bubble-style rounded cards; first item in each group ships open.\n     Multiple-open behavior. Empty groups + empty questions auto-hide via block.js.\n-->\n<section class=\"faq\" id=\"faq\" data-block=\"faq.bubble-light-grouped\">\n  <div class=\"container\">\n    <header class=\"faq-top\">\n      <p class=\"eyebrow\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"faq-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"faq-lede\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"faq-groups\">\n      <article class=\"faq-group\" data-faq-group=\"01\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.01</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"01-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"02\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.02</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"02-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"03\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.03</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"03-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"04\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.04</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"04-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "eyebrow"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lede"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "group_01_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_01_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_01_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_02_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_02_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_03_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_03_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_04_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_04_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_05_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_01_05_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "group_02_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_01_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_01_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_02_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_02_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_03_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_03_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_04_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_04_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_05_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_02_05_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "group_03_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_01_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_01_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_02_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_02_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_03_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_03_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_04_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_04_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_05_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_03_05_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "group_04_title"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_01_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_01_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_02_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_02_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_03_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_03_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_04_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_04_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_05_q"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "slot_04_05_a"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    }
+  ]
+}

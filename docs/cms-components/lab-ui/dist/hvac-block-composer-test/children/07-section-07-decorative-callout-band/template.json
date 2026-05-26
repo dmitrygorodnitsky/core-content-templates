@@ -1,0 +1,43 @@
+{
+  "code": "SECTION_07_DECORATIVE_CALLOUT_BAND",
+  "nls": {
+    "en": {
+      "NAME": "Decorative · callout band (accent-tinted closing strip)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "HVAC_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--decorative-callout-band\" data-composition-block=\"decorative.callout-band\">\n<div class=\"callout-wrap\">\n<!-- lab-ui block · decorative.callout-band\n     Soft cyan-tinted closing band — eyebrow + one paragraph. Sits at the\n     bottom of SMB / scale / \"where this leads\" sections to summarize the\n     point. Light theme. Adapted from designer kit Callout (smb tone).\n-->\n<div class=\"callout-band\" data-block=\"decorative.callout-band\">\n  <p class=\"callout-band-eyebrow\">${SECTION_07_DECORATIVE_CALLOUT_BAND_EYEBROW@LOCALIZED_STRING_SS}</p>\n  <p class=\"callout-band-body\">${SECTION_07_DECORATIVE_CALLOUT_BAND_BODY@LOCALIZED_STRING_SS}</p>\n</div>\n\n</div>\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "eyebrow"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_07_DECORATIVE_CALLOUT_BAND_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "body"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      }
+    }
+  ]
+}

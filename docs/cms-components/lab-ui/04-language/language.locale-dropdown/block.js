@@ -62,8 +62,8 @@
         li.dataset.shortCode = shortCodeForLocale(code);
         li.setAttribute("role", "option");
         li.innerHTML =
-          `<span class="locale-item-code" aria-hidden="true">${shortCodeForLocale(code)}</span>` +
-          `<span class="locale-item-label">${name}</span>` +
+          '<span class="locale-item-code" aria-hidden="true">' + shortCodeForLocale(code) + '</span>' +
+          '<span class="locale-item-label">' + name + '</span>' +
           `<svg class="locale-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">` +
             `<path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
           `</svg>`;

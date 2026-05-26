@@ -72,6 +72,40 @@
       "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
     ]
   },
+  "image_slots": [
+    {
+      "id": "photo",
+      "selector": "[data-photo-slot] img",
+      "src_param": "photo_url",
+      "alt_param": "photo_alt",
+      "fallback_label_param": "placeholder_label",
+      "fallback_size_param": "placeholder_size",
+      "recommended_size": "1000 × 1200",
+      "aspect_ratio": "5:6",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "person_1_avatar",
+      "selector": "[data-overlay=\"person-1\"] .herop-person-avatar-img",
+      "src_param": "person_1_avatar_url",
+      "alt_param": "person_1_avatar_alt",
+      "recommended_size": "160 × 160",
+      "aspect_ratio": "1:1",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "person_2_avatar",
+      "selector": "[data-overlay=\"person-2\"] .herop-person-avatar-img",
+      "src_param": "person_2_avatar_url",
+      "alt_param": "person_2_avatar_alt",
+      "recommended_size": "160 × 160",
+      "aspect_ratio": "1:1",
+      "fit": "cover",
+      "required": false
+    }
+  ],
   "params": [
     {
       "code": "eyebrow_root",
@@ -139,6 +173,26 @@
       "default": "Lorem ipsum dolor sit amet."
     },
     {
+      "code": "person_1_avatar_url",
+      "type": "IMAGE",
+      "default": "#"
+    },
+    {
+      "code": "person_1_avatar_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum person avatar."
+    },
+    {
+      "code": "person_2_avatar_url",
+      "type": "IMAGE",
+      "default": "#"
+    },
+    {
+      "code": "person_2_avatar_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum person avatar."
+    },
+    {
       "code": "placeholder_size",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor"
@@ -185,6 +239,7 @@
   },
   "notes": [
     "Photo slot [data-photo-slot] defaults to a neutral striped placeholder. In CMS, replace the placeholder with <img src='{{photo_url}}' alt='{{photo_alt}}'>. CSS already covers img the same way it covers the placeholder.",
+    "Person card avatars are IMAGE slots too. If {{person_1_avatar_url}} or {{person_2_avatar_url}} is empty/#, the block keeps the circular fallback icon; when set, the image replaces that icon.",
     "Overlays (chip + person cards) are absolute-positioned over the photo. Coordinates are in the CSS — at ≤980px they slide in slightly so they don't fall off the narrower art container.",
     "At ≤540px the CTA pair stacks and each button stretches to the full content width.",
     "Composes the canonical CTA pair (cta.btn-primary-ring + cta.btn-secondary-filled)."

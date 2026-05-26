@@ -1,0 +1,407 @@
+{
+  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json",
+  "root": {
+    "code": "FIELD_SERVICE_LANDING",
+    "name": "Field Service Landing",
+    "templateLanguage": "JTE"
+  },
+  "selectedBlocks": [
+    {
+      "index": 1,
+      "id": "header.default",
+      "path": "01-header/header.default",
+      "category": "01-header",
+      "hasJs": true
+    },
+    {
+      "index": 2,
+      "id": "hero.composite-photo",
+      "path": "05-hero/hero.composite-photo",
+      "category": "05-hero",
+      "hasJs": false
+    },
+    {
+      "index": 3,
+      "id": "section.h2-narrative-only",
+      "path": "09-vertical-section/section.h2-narrative-only",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 4,
+      "id": "features.card-grid-4",
+      "path": "06-features/features.card-grid-4",
+      "category": "06-features",
+      "hasJs": false
+    },
+    {
+      "index": 5,
+      "id": "features.accordion-2col-numbered",
+      "path": "06-features/features.accordion-2col-numbered",
+      "category": "06-features",
+      "hasJs": true
+    },
+    {
+      "index": 6,
+      "id": "mobile.4-card-glyph",
+      "path": "11-mobile-section/mobile.4-card-glyph",
+      "category": "11-mobile-section",
+      "hasJs": false
+    },
+    {
+      "index": 7,
+      "id": "signature.ai-shell",
+      "path": "13-signature/signature.ai-shell",
+      "category": "13-signature",
+      "hasJs": false
+    },
+    {
+      "index": 8,
+      "id": "section.stages-list",
+      "path": "09-vertical-section/section.stages-list",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 9,
+      "id": "verticals.glyph-grid-20-slots",
+      "path": "10-verticals-grid/verticals.glyph-grid-20-slots",
+      "category": "10-verticals-grid",
+      "hasJs": true
+    },
+    {
+      "index": 10,
+      "id": "comparison.three-col-with-mobile-cards",
+      "path": "07-comparison/comparison.three-col-with-mobile-cards",
+      "category": "07-comparison",
+      "hasJs": true
+    },
+    {
+      "index": 11,
+      "id": "section.axes-grid",
+      "path": "09-vertical-section/section.axes-grid",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 12,
+      "id": "faq.bubble-light-grouped",
+      "path": "08-faq/faq.bubble-light-grouped",
+      "category": "08-faq",
+      "hasJs": true
+    },
+    {
+      "index": 13,
+      "id": "decorative.callout-band",
+      "path": "12-decorative/decorative.callout-band",
+      "category": "12-decorative",
+      "hasJs": false
+    },
+    {
+      "index": 14,
+      "id": "footer.default",
+      "path": "02-footer/footer.default",
+      "category": "02-footer",
+      "hasJs": false
+    }
+  ],
+  "assetOwnership": [
+    {
+      "index": 1,
+      "childCode": "SECTION_01_HEADER_DEFAULT",
+      "block": "header.default",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "language.locale-dropdown",
+          "path": "04-language/language.locale-dropdown",
+          "hasCss": true,
+          "hasJs": true
+        },
+        {
+          "id": "header.default",
+          "path": "01-header/header.default",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "childCode": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "block": "hero.composite-photo",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "hero.composite-photo",
+          "path": "05-hero/hero.composite-photo",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "childCode": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+      "block": "section.h2-narrative-only",
+      "assets": [
+        {
+          "id": "section.h2-narrative-only",
+          "path": "09-vertical-section/section.h2-narrative-only",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "childCode": "SECTION_04_FEATURES_CARD_GRID_4",
+      "block": "features.card-grid-4",
+      "assets": [
+        {
+          "id": "features.card-grid-4",
+          "path": "06-features/features.card-grid-4",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "childCode": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+      "block": "features.accordion-2col-numbered",
+      "assets": [
+        {
+          "id": "features.accordion-2col-numbered",
+          "path": "06-features/features.accordion-2col-numbered",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "childCode": "SECTION_06_MOBILE_4_CARD_GLYPH",
+      "block": "mobile.4-card-glyph",
+      "assets": [
+        {
+          "id": "mobile.4-card-glyph",
+          "path": "11-mobile-section/mobile.4-card-glyph",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "childCode": "SECTION_07_SIGNATURE_AI_SHELL",
+      "block": "signature.ai-shell",
+      "assets": [
+        {
+          "id": "signature.ai-shell",
+          "path": "13-signature/signature.ai-shell",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "childCode": "SECTION_08_SECTION_STAGES_LIST",
+      "block": "section.stages-list",
+      "assets": [
+        {
+          "id": "section.stages-list",
+          "path": "09-vertical-section/section.stages-list",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "childCode": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+      "block": "verticals.glyph-grid-20-slots",
+      "assets": [
+        {
+          "id": "verticals.glyph-grid-20-slots",
+          "path": "10-verticals-grid/verticals.glyph-grid-20-slots",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "childCode": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS",
+      "block": "comparison.three-col-with-mobile-cards",
+      "assets": [
+        {
+          "id": "comparison.three-col-with-mobile-cards",
+          "path": "07-comparison/comparison.three-col-with-mobile-cards",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "childCode": "SECTION_11_SECTION_AXES_GRID",
+      "block": "section.axes-grid",
+      "assets": [
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "section.axes-grid",
+          "path": "09-vertical-section/section.axes-grid",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "childCode": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+      "block": "faq.bubble-light-grouped",
+      "assets": [
+        {
+          "id": "faq.bubble-light-grouped",
+          "path": "08-faq/faq.bubble-light-grouped",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "childCode": "SECTION_13_DECORATIVE_CALLOUT_BAND",
+      "block": "decorative.callout-band",
+      "assets": [
+        {
+          "id": "decorative.callout-band",
+          "path": "12-decorative/decorative.callout-band",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 14,
+      "childCode": "SECTION_14_FOOTER_DEFAULT",
+      "block": "footer.default",
+      "assets": [
+        {
+          "id": "footer.default",
+          "path": "02-footer/footer.default",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    }
+  ],
+  "tree": {
+    "code": "FIELD_SERVICE_LANDING",
+    "children": [
+      {
+        "code": "SECTION_01_HEADER_DEFAULT",
+        "children": []
+      },
+      {
+        "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+        "children": []
+      },
+      {
+        "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+        "children": []
+      },
+      {
+        "code": "SECTION_04_FEATURES_CARD_GRID_4",
+        "children": []
+      },
+      {
+        "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+        "children": []
+      },
+      {
+        "code": "SECTION_06_MOBILE_4_CARD_GLYPH",
+        "children": []
+      },
+      {
+        "code": "SECTION_07_SIGNATURE_AI_SHELL",
+        "children": []
+      },
+      {
+        "code": "SECTION_08_SECTION_STAGES_LIST",
+        "children": []
+      },
+      {
+        "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+        "children": []
+      },
+      {
+        "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS",
+        "children": []
+      },
+      {
+        "code": "SECTION_11_SECTION_AXES_GRID",
+        "children": []
+      },
+      {
+        "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+        "children": []
+      },
+      {
+        "code": "SECTION_13_DECORATIVE_CALLOUT_BAND",
+        "children": []
+      },
+      {
+        "code": "SECTION_14_FOOTER_DEFAULT",
+        "children": []
+      }
+    ]
+  }
+}

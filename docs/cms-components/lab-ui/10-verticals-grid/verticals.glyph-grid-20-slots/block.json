@@ -96,6 +96,20 @@
       "default": "Lorem ipsum dolor sit amet."
     },
     {
+      "code": "slot_01_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 1 Image",
+      "description": "Optional image for industry card slot 1. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_01_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 1.",
+      "name": "Slot 1 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 1."
+    },
+    {
       "code": "slot_01_href",
       "type": "URL",
       "default": "#"
@@ -114,6 +128,20 @@
       "code": "slot_02_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_02_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 2 Image",
+      "description": "Optional image for industry card slot 2. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_02_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 2.",
+      "name": "Slot 2 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 2."
     },
     {
       "code": "slot_02_href",
@@ -136,6 +164,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_03_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 3 Image",
+      "description": "Optional image for industry card slot 3. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_03_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 3.",
+      "name": "Slot 3 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 3."
+    },
+    {
       "code": "slot_03_href",
       "type": "URL",
       "default": "#"
@@ -154,6 +196,20 @@
       "code": "slot_04_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_04_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 4 Image",
+      "description": "Optional image for industry card slot 4. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_04_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 4.",
+      "name": "Slot 4 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 4."
     },
     {
       "code": "slot_04_href",
@@ -176,6 +232,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_05_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 5 Image",
+      "description": "Optional image for industry card slot 5. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_05_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 5.",
+      "name": "Slot 5 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 5."
+    },
+    {
       "code": "slot_05_href",
       "type": "URL",
       "default": "#"
@@ -194,6 +264,20 @@
       "code": "slot_06_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_06_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 6 Image",
+      "description": "Optional image for industry card slot 6. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_06_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 6.",
+      "name": "Slot 6 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 6."
     },
     {
       "code": "slot_06_href",
@@ -216,6 +300,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_07_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 7 Image",
+      "description": "Optional image for industry card slot 7. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_07_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 7.",
+      "name": "Slot 7 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 7."
+    },
+    {
       "code": "slot_07_href",
       "type": "URL",
       "default": "#"
@@ -234,6 +332,20 @@
       "code": "slot_08_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_08_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 8 Image",
+      "description": "Optional image for industry card slot 8. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_08_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 8.",
+      "name": "Slot 8 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 8."
     },
     {
       "code": "slot_08_href",
@@ -256,6 +368,20 @@
       "default": "Lorem ipsum dolor sit."
     },
     {
+      "code": "slot_09_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 9 Image",
+      "description": "Optional image for industry card slot 9. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_09_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 9.",
+      "name": "Slot 9 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 9."
+    },
+    {
       "code": "slot_09_href",
       "type": "URL",
       "default": "#"
@@ -274,6 +400,20 @@
       "code": "slot_10_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_10_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 10 Image",
+      "description": "Optional image for industry card slot 10. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_10_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 10.",
+      "name": "Slot 10 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 10."
     },
     {
       "code": "slot_10_href",
@@ -296,6 +436,20 @@
       "default": "Lorem ipsum dolor sit."
     },
     {
+      "code": "slot_11_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 11 Image",
+      "description": "Optional image for industry card slot 11. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_11_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 11.",
+      "name": "Slot 11 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 11."
+    },
+    {
       "code": "slot_11_href",
       "type": "URL",
       "default": "#"
@@ -314,6 +468,20 @@
       "code": "slot_12_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_12_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 12 Image",
+      "description": "Optional image for industry card slot 12. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_12_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 12.",
+      "name": "Slot 12 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 12."
     },
     {
       "code": "slot_12_href",
@@ -336,6 +504,20 @@
       "default": "Lorem ipsum dolor sit amet."
     },
     {
+      "code": "slot_13_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 13 Image",
+      "description": "Optional image for industry card slot 13. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_13_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 13.",
+      "name": "Slot 13 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 13."
+    },
+    {
       "code": "slot_13_href",
       "type": "URL",
       "default": "#"
@@ -354,6 +536,20 @@
       "code": "slot_14_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_14_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 14 Image",
+      "description": "Optional image for industry card slot 14. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_14_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 14.",
+      "name": "Slot 14 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 14."
     },
     {
       "code": "slot_14_href",
@@ -376,6 +572,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_15_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 15 Image",
+      "description": "Optional image for industry card slot 15. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_15_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 15.",
+      "name": "Slot 15 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 15."
+    },
+    {
       "code": "slot_15_href",
       "type": "URL",
       "default": "#"
@@ -394,6 +604,20 @@
       "code": "slot_16_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_16_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 16 Image",
+      "description": "Optional image for industry card slot 16. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_16_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 16.",
+      "name": "Slot 16 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 16."
     },
     {
       "code": "slot_16_href",
@@ -416,6 +640,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_17_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 17 Image",
+      "description": "Optional image for industry card slot 17. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_17_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 17.",
+      "name": "Slot 17 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 17."
+    },
+    {
       "code": "slot_17_href",
       "type": "URL",
       "default": "#"
@@ -434,6 +672,20 @@
       "code": "slot_18_photo",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_18_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 18 Image",
+      "description": "Optional image for industry card slot 18. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_18_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 18.",
+      "name": "Slot 18 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 18."
     },
     {
       "code": "slot_18_href",
@@ -456,6 +708,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_19_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 19 Image",
+      "description": "Optional image for industry card slot 19. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_19_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 19.",
+      "name": "Slot 19 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 19."
+    },
+    {
       "code": "slot_19_href",
       "type": "URL",
       "default": "#"
@@ -476,6 +742,20 @@
       "default": "Lorem ipsum dolor"
     },
     {
+      "code": "slot_20_image_url",
+      "type": "IMAGE",
+      "default": "",
+      "name": "Slot 20 Image",
+      "description": "Optional image for industry card slot 20. Leave empty to show the striped placeholder."
+    },
+    {
+      "code": "slot_20_image_alt",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum industry image 20.",
+      "name": "Slot 20 Image Alt Text",
+      "description": "Alternative text for the image in industry card slot 20."
+    },
+    {
       "code": "slot_20_href",
       "type": "URL",
       "default": "#"
@@ -487,10 +767,252 @@
   },
   "notes": [
     "Empty-title slots are hidden via [hidden] + block.js (covers the case where the slot ships with the {{handlebar}} unfilled).",
-    "Media slots default to neutral striped placeholders with dimension + photo hint. Replace .vertical-photo content with an image when real assets are available.",
+    "Media slots are real optional image slots. When a slot image URL is empty, the neutral striped placeholder with dimension + photo hint remains visible.",
     "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
     "The 'live' state changes border treatment, photo meta accent, arrow, and Live badge. Apply by adding class 'is-live' to the slot card.",
     "Coming-soon waitlist CTAs are visual/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
     "Hover glow + halo are intentionally NOT delegated to effect.hover-rise: vertical-card's hover composes a depth shadow with the halo, and the .is-live ::after border ring would collide with effect.hover-rise's ::after. The local copy stays byte-identical to the effect's canonical values; if effect.hover-rise's geometry changes, update this block too."
+  ],
+  "image_slots": [
+    {
+      "id": "slot-01-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(1) .vertical-photo img",
+      "src_param": "slot_01_image_url",
+      "alt_param": "slot_01_image_alt",
+      "fallback_label_param": "slot_01_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-02-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(2) .vertical-photo img",
+      "src_param": "slot_02_image_url",
+      "alt_param": "slot_02_image_alt",
+      "fallback_label_param": "slot_02_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-03-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(3) .vertical-photo img",
+      "src_param": "slot_03_image_url",
+      "alt_param": "slot_03_image_alt",
+      "fallback_label_param": "slot_03_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-04-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(4) .vertical-photo img",
+      "src_param": "slot_04_image_url",
+      "alt_param": "slot_04_image_alt",
+      "fallback_label_param": "slot_04_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-05-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(5) .vertical-photo img",
+      "src_param": "slot_05_image_url",
+      "alt_param": "slot_05_image_alt",
+      "fallback_label_param": "slot_05_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-06-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(6) .vertical-photo img",
+      "src_param": "slot_06_image_url",
+      "alt_param": "slot_06_image_alt",
+      "fallback_label_param": "slot_06_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-07-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(7) .vertical-photo img",
+      "src_param": "slot_07_image_url",
+      "alt_param": "slot_07_image_alt",
+      "fallback_label_param": "slot_07_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-08-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(8) .vertical-photo img",
+      "src_param": "slot_08_image_url",
+      "alt_param": "slot_08_image_alt",
+      "fallback_label_param": "slot_08_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-09-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(9) .vertical-photo img",
+      "src_param": "slot_09_image_url",
+      "alt_param": "slot_09_image_alt",
+      "fallback_label_param": "slot_09_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-10-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(10) .vertical-photo img",
+      "src_param": "slot_10_image_url",
+      "alt_param": "slot_10_image_alt",
+      "fallback_label_param": "slot_10_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-11-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(11) .vertical-photo img",
+      "src_param": "slot_11_image_url",
+      "alt_param": "slot_11_image_alt",
+      "fallback_label_param": "slot_11_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-12-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(12) .vertical-photo img",
+      "src_param": "slot_12_image_url",
+      "alt_param": "slot_12_image_alt",
+      "fallback_label_param": "slot_12_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-13-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(13) .vertical-photo img",
+      "src_param": "slot_13_image_url",
+      "alt_param": "slot_13_image_alt",
+      "fallback_label_param": "slot_13_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-14-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(14) .vertical-photo img",
+      "src_param": "slot_14_image_url",
+      "alt_param": "slot_14_image_alt",
+      "fallback_label_param": "slot_14_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-15-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(15) .vertical-photo img",
+      "src_param": "slot_15_image_url",
+      "alt_param": "slot_15_image_alt",
+      "fallback_label_param": "slot_15_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-16-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(16) .vertical-photo img",
+      "src_param": "slot_16_image_url",
+      "alt_param": "slot_16_image_alt",
+      "fallback_label_param": "slot_16_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-17-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(17) .vertical-photo img",
+      "src_param": "slot_17_image_url",
+      "alt_param": "slot_17_image_alt",
+      "fallback_label_param": "slot_17_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-18-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(18) .vertical-photo img",
+      "src_param": "slot_18_image_url",
+      "alt_param": "slot_18_image_alt",
+      "fallback_label_param": "slot_18_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-19-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(19) .vertical-photo img",
+      "src_param": "slot_19_image_url",
+      "alt_param": "slot_19_image_alt",
+      "fallback_label_param": "slot_19_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    },
+    {
+      "id": "slot-20-photo",
+      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(20) .vertical-photo img",
+      "src_param": "slot_20_image_url",
+      "alt_param": "slot_20_image_alt",
+      "fallback_label_param": "slot_20_photo",
+      "fallback_size": "640 × 400",
+      "recommended_size": "1280 × 800",
+      "aspect_ratio": "16:10",
+      "fit": "cover",
+      "required": false
+    }
   ]
 }

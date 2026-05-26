@@ -62,9 +62,12 @@
 
       <!-- Side panel: media placeholder + heading + tagged feed list -->
       <aside class="ai-side-panel" data-ai-side-panel>
-        <div class="ai-media-placeholder" data-ai-media-slot aria-hidden="true">
-          <span>{{media_placeholder_size}}</span>
-          <span>{{media_placeholder_label}}</span>
+        <div class="ai-media-placeholder" data-ai-media-slot>
+          <img class="ai-media-img" src="{{media_url}}" alt="{{media_alt}}" loading="lazy" decoding="async">
+          <span class="ai-media-fallback">
+            <span>{{media_placeholder_size}}</span>
+            <span>{{media_placeholder_label}}</span>
+          </span>
         </div>
 
         <h3 class="ai-side-heading">{{side_heading}}</h3>

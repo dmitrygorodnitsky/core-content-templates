@@ -1,4 +1,4 @@
-/* Shared contract between generate-cms-family / validate-cms-family /
+/* Shared contract between compose-cms-family / generate-cms-family / validate-cms-family /
    render-cms-family-preview. Single source of truth for slot marker
    strings, section codes, default block selection per section, and
    layout policies. */

@@ -1,2 +1,6 @@
 .DS_Store
-.claude/
+
+# user-local Claude Code settings stay out of the repo
+.claude/settings.local.json
+
+# everything else under .claude/ (skills, launch.json) is project-shared

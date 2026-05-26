@@ -1,0 +1,257 @@
+{
+  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/hvac-contract-smoke.spec.json",
+  "root": {
+    "code": "HVAC_LANDING",
+    "name": "HVAC Landing",
+    "templateLanguage": "JTE"
+  },
+  "selectedBlocks": [
+    {
+      "index": 1,
+      "id": "header.default",
+      "path": "01-header/header.default",
+      "category": "01-header",
+      "hasJs": true
+    },
+    {
+      "index": 2,
+      "id": "hero.composite-photo",
+      "path": "05-hero/hero.composite-photo",
+      "category": "05-hero",
+      "hasJs": false
+    },
+    {
+      "index": 3,
+      "id": "features.accordion-2col-numbered",
+      "path": "06-features/features.accordion-2col-numbered",
+      "category": "06-features",
+      "hasJs": true
+    },
+    {
+      "index": 4,
+      "id": "section.stages-list",
+      "path": "09-vertical-section/section.stages-list",
+      "category": "09-vertical-section",
+      "hasJs": false
+    },
+    {
+      "index": 5,
+      "id": "mobile.4-card-glyph",
+      "path": "11-mobile-section/mobile.4-card-glyph",
+      "category": "11-mobile-section",
+      "hasJs": false
+    },
+    {
+      "index": 6,
+      "id": "faq.bubble-light-grouped",
+      "path": "08-faq/faq.bubble-light-grouped",
+      "category": "08-faq",
+      "hasJs": true
+    },
+    {
+      "index": 7,
+      "id": "decorative.callout-band",
+      "path": "12-decorative/decorative.callout-band",
+      "category": "12-decorative",
+      "hasJs": false
+    },
+    {
+      "index": 8,
+      "id": "footer.default",
+      "path": "02-footer/footer.default",
+      "category": "02-footer",
+      "hasJs": false
+    }
+  ],
+  "assetOwnership": [
+    {
+      "index": 1,
+      "childCode": "SECTION_01_HEADER_DEFAULT",
+      "block": "header.default",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "language.locale-dropdown",
+          "path": "04-language/language.locale-dropdown",
+          "hasCss": true,
+          "hasJs": true
+        },
+        {
+          "id": "header.default",
+          "path": "01-header/header.default",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "childCode": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "block": "hero.composite-photo",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "hero.composite-photo",
+          "path": "05-hero/hero.composite-photo",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "childCode": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+      "block": "features.accordion-2col-numbered",
+      "assets": [
+        {
+          "id": "features.accordion-2col-numbered",
+          "path": "06-features/features.accordion-2col-numbered",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "childCode": "SECTION_04_SECTION_STAGES_LIST",
+      "block": "section.stages-list",
+      "assets": [
+        {
+          "id": "section.stages-list",
+          "path": "09-vertical-section/section.stages-list",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "childCode": "SECTION_05_MOBILE_4_CARD_GLYPH",
+      "block": "mobile.4-card-glyph",
+      "assets": [
+        {
+          "id": "mobile.4-card-glyph",
+          "path": "11-mobile-section/mobile.4-card-glyph",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "childCode": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED",
+      "block": "faq.bubble-light-grouped",
+      "assets": [
+        {
+          "id": "faq.bubble-light-grouped",
+          "path": "08-faq/faq.bubble-light-grouped",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "childCode": "SECTION_07_DECORATIVE_CALLOUT_BAND",
+      "block": "decorative.callout-band",
+      "assets": [
+        {
+          "id": "decorative.callout-band",
+          "path": "12-decorative/decorative.callout-band",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "childCode": "SECTION_08_FOOTER_DEFAULT",
+      "block": "footer.default",
+      "assets": [
+        {
+          "id": "footer.default",
+          "path": "02-footer/footer.default",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
+    }
+  ],
+  "tree": {
+    "code": "HVAC_LANDING",
+    "children": [
+      {
+        "code": "SECTION_01_HEADER_DEFAULT",
+        "children": []
+      },
+      {
+        "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+        "children": []
+      },
+      {
+        "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+        "children": []
+      },
+      {
+        "code": "SECTION_04_SECTION_STAGES_LIST",
+        "children": []
+      },
+      {
+        "code": "SECTION_05_MOBILE_4_CARD_GLYPH",
+        "children": []
+      },
+      {
+        "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED",
+        "children": []
+      },
+      {
+        "code": "SECTION_07_DECORATIVE_CALLOUT_BAND",
+        "children": []
+      },
+      {
+        "code": "SECTION_08_FOOTER_DEFAULT",
+        "children": []
+      }
+    ]
+  }
+}

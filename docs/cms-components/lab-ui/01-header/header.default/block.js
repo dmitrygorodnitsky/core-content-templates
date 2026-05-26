@@ -40,11 +40,11 @@
 
   function pruneBreadcrumb(chip) {
     ["1", "2"].forEach((idx) => {
-      const link = chip.querySelector(`[data-mid="${idx}"]`);
+      const link = chip.querySelector('[data-mid="' + idx + '"]');
       const text = link?.textContent?.trim();
       if (link && isPlaceholder(text)) {
         link.hidden = true;
-        const sep = chip.querySelector(`[data-sep-for="mid_${idx}"]`);
+        const sep = chip.querySelector('[data-sep-for="mid_' + idx + '"]');
         if (sep) sep.hidden = true;
       }
     });

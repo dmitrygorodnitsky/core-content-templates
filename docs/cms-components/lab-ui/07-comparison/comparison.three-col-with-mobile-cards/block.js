@@ -12,6 +12,12 @@
     document
       .querySelectorAll('[data-block="comparison.three-col-with-mobile-cards"]')
       .forEach((section) => {
+        const parsedColumns = Number(section.dataset.columns);
+        const columnCount = Number.isFinite(parsedColumns)
+          ? Math.min(6, Math.max(2, parsedColumns))
+          : 6;
+        section.dataset.columns = String(columnCount);
+
         section.querySelectorAll(".compare-body .compare-row").forEach((row) => {
           const cap = row.querySelector(".compare-capability")?.textContent?.trim();
           if (!cap || /^\{\{slot_\d+_capability\}\}$/.test(cap)) {
@@ -19,9 +25,11 @@
             return;
           }
 
-          const secondaryCells = row.querySelectorAll(
-            ".compare-cell:not(.compare-cell--capability):not(.compare-cell--sw)"
-          );
+          const secondaryCells = [...row.querySelectorAll(".compare-cell[data-compare-col]")]
+            .filter((cell) => {
+              const col = Number(cell.dataset.compareCol);
+              return col > 1 && col <= columnCount;
+            });
           const swCell = row.querySelector(".compare-cell--sw");
           if (!swCell || !secondaryCells.length || row.querySelector(".compare-toggle")) return;
 
