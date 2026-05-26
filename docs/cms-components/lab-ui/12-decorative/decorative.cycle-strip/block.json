@@ -24,17 +24,45 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "tone",   "type": "LOCALIZED_STRING_SS", "default": "warn" },
-    { "code": "label",  "type": "LOCALIZED_STRING_SS", "default": "The cycle this replaces" },
-    { "code": "item_1", "type": "LOCALIZED_STRING_SS", "default": "Spreadsheets" },
-    { "code": "item_2", "type": "LOCALIZED_STRING_SS", "default": "Outgrow" },
-    { "code": "item_3", "type": "LOCALIZED_STRING_SS", "default": "Migrate" },
-    { "code": "item_4", "type": "LOCALIZED_STRING_SS", "default": "Outgrow" },
-    { "code": "item_5", "type": "LOCALIZED_STRING_SS", "default": "Migrate again" }
+    {
+      "code": "tone",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "item_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "item_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_4",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "item_5",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Drop inside a Section right above or below a StagesList. The dashed border + struck-through warn tone signals 'something you'd want to avoid' without introducing a separate red accent family.",

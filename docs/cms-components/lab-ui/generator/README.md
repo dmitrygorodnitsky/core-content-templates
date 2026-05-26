@@ -1,6 +1,6 @@
 # lab-ui CMS Family Generator
 
-This generator layer turns normalized landing copy into dry-run ServiceWand CMS artifacts.
+This generator layer turns normalized landing copy into dry-run the platform CMS artifacts.
 
 It does not upload to CMS. It produces files that can later feed a separate, credentialed uploader.
 
@@ -9,7 +9,7 @@ It does not upload to CMS. It produces files that can later feed a separate, cre
 The primary input is structured Markdown copy:
 
 ```text
-docs/cms-components/lab-ui/compositions/examples/field-service-copy.md
+docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md
 ```
 
 Expected shape:
@@ -31,8 +31,8 @@ Example command:
 
 ```bash
 node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \
-  --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md \
-  --out docs/cms-components/lab-ui/dist/field-service
+  --copy docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md \
+  --out docs/cms-components/lab-ui/dist/sample-landing
 ```
 
 Generated files:
@@ -55,7 +55,7 @@ Validate the output:
 
 ```bash
 node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/field-service
+  --out docs/cms-components/lab-ui/dist/sample-landing
 ```
 
 ## CMS Tree Model
@@ -114,10 +114,10 @@ The uploader/rendering adapter can later replace that marker with the CMS-specif
 
 Uploading is deliberately out of scope for this generator. A future uploader should read `cms-family.payload.json` and use environment-driven credentials only:
 
-- `SERVICEWAND_API_KEY`
-- `SERVICEWAND_BEARER`
-- `SERVICEWAND_BASE_URL`
-- `SERVICEWAND_ORG`
+- `LANDING_API_KEY`
+- `LANDING_BEARER`
+- `LANDING_BASE_URL`
+- `LANDING_ORG`
 
 Preview shape after creating a template:
 

@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-3.jsx (FAQGrouped)",
+    "primary": "tmp/Lorem ipsum/src/sections-3.jsx (FAQGrouped)",
     "adapted_from": "v5 dark → light tokens. Switched to native <details> so the section works without JS.",
     "decision": "PM lock 2026-05-21 — FAQ pattern = bubble grouped (light)"
   },
@@ -31,61 +31,245 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Frequently Asked" },
-    { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand FAQ" },
-    { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Common questions from field service businesses evaluating ServiceWand — grouped by what you're trying to learn." },
-
-    { "code": "group_01_title", "type": "LOCALIZED_STRING_SS", "default": "Platform overview" },
-    { "code": "slot_01_01_q",   "type": "LOCALIZED_STRING_SS", "default": "What is ServiceWand?" },
-    { "code": "slot_01_01_a",   "type": "LOCALIZED_STRING_SS", "default": "ServiceWand is an operational platform for field service businesses. It connects scheduling, dispatching, mobile workforce operations, customer management, billing, reporting, and automation in one system rather than stitching together separate apps." },
-    { "code": "slot_01_02_q",   "type": "LOCALIZED_STRING_SS", "default": "Who is it built for?" },
-    { "code": "slot_01_02_a",   "type": "LOCALIZED_STRING_SS", "default": "Service businesses that run crews, routes, recurring service, multi-location operations, and field teams — and need the office, the field, and the customer to stay connected." },
-    { "code": "slot_01_03_q",   "type": "LOCALIZED_STRING_SS", "default": "How is it different from a scheduling app?" },
-    { "code": "slot_01_03_a",   "type": "LOCALIZED_STRING_SS", "default": "Scheduling is one of many connected workflows. ServiceWand treats scheduling, dispatch, mobile, billing, reporting, and automation as one operational system instead of separate tools that need glue." },
-    { "code": "slot_01_04_q",   "type": "LOCALIZED_STRING_SS", "default": "Is it built for service businesses specifically?" },
-    { "code": "slot_01_04_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes — the data model is service-first (properties, contracts, recurring routes, work orders, technicians) rather than generic CRM bolted onto a calendar." },
-    { "code": "slot_01_05_q",   "type": "LOCALIZED_STRING_SS", "default": "Does it work for multi-location operations?" },
-    { "code": "slot_01_05_a",   "type": "LOCALIZED_STRING_SS", "default": "Native multi-location, territories, branches, and crews. Permissions and reporting follow the structure of your business automatically." },
-
-    { "code": "group_02_title", "type": "LOCALIZED_STRING_SS", "default": "Operations" },
-    { "code": "slot_02_01_q",   "type": "LOCALIZED_STRING_SS", "default": "How does scheduling work?" },
-    { "code": "slot_02_01_a",   "type": "LOCALIZED_STRING_SS", "default": "Constraint-aware scheduling that respects skills, vehicles, territories, time windows, and recurring work. Dispatchers can adjust manually; the system optimizes around constraints rather than ignoring them." },
-    { "code": "slot_02_02_q",   "type": "LOCALIZED_STRING_SS", "default": "Does the mobile app work offline?" },
-    { "code": "slot_02_02_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes. Techs can view, complete, and update work without connectivity. Changes sync automatically when the device comes back online." },
-    { "code": "slot_02_03_q",   "type": "LOCALIZED_STRING_SS", "default": "Can it handle recurring routes and seasonal work?" },
-    { "code": "slot_02_03_a",   "type": "LOCALIZED_STRING_SS", "default": "Recurring service, seasonal routes, and annual contracts are modeled natively. Jobs, invoices, and renewals are generated on schedule without manual duplication." },
-    { "code": "slot_02_04_q",   "type": "LOCALIZED_STRING_SS", "default": "How do customers see what's happening?" },
-    { "code": "slot_02_04_a",   "type": "LOCALIZED_STRING_SS", "default": "The customer portal shows upcoming visits, invoices, contracts, and service history — plus self-serve approvals and payments." },
-    { "code": "slot_02_05_q",   "type": "LOCALIZED_STRING_SS", "default": "Does it support emergency dispatch?" },
-    { "code": "slot_02_05_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes. Emergency work integrates with the regular schedule so existing routes adjust around urgent jobs instead of breaking your day." },
-
-    { "code": "group_03_title", "type": "LOCALIZED_STRING_SS", "default": "Billing & plans" },
-    { "code": "slot_03_01_q",   "type": "LOCALIZED_STRING_SS", "default": "How does billing work?" },
-    { "code": "slot_03_01_a",   "type": "LOCALIZED_STRING_SS", "default": "Invoicing is built in. Bills generate from completed work, contracts, or material usage. Tax, multi-currency, and partial-payment workflows are handled in the same place as the operations data." },
-    { "code": "slot_03_02_q",   "type": "LOCALIZED_STRING_SS", "default": "Can I send estimates and quotes?" },
-    { "code": "slot_03_02_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes. Branded estimates can be sent from the field or the office. Approved quotes convert into jobs without re-entry." },
-    { "code": "slot_03_03_q",   "type": "LOCALIZED_STRING_SS", "default": "What does pricing look like?" },
-    { "code": "slot_03_03_a",   "type": "LOCALIZED_STRING_SS", "default": "Pricing is per-seat with bundled platform features. Talk to us for a configuration matched to your team size, locations, and modules." },
-    { "code": "slot_03_04_q",   "type": "LOCALIZED_STRING_SS", "default": "Is there a free trial?" },
-    { "code": "slot_03_04_a",   "type": "LOCALIZED_STRING_SS", "default": "Guided trials are available for qualified service businesses. A trial covers your real workflows so you evaluate the platform on operational fit rather than a demo dataset." },
-    { "code": "slot_03_05_q",   "type": "LOCALIZED_STRING_SS", "default": "Does it integrate with accounting?" },
-    { "code": "slot_03_05_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes — common accounting and payment systems connect directly so invoices, payments, and reconciliations stay in sync without manual export." },
-
-    { "code": "group_04_title", "type": "LOCALIZED_STRING_SS", "default": "Implementation & support" },
-    { "code": "slot_04_01_q",   "type": "LOCALIZED_STRING_SS", "default": "How long does it take to get set up?" },
-    { "code": "slot_04_01_a",   "type": "LOCALIZED_STRING_SS", "default": "Most service businesses get core operations running in 2–6 weeks, depending on existing data and the workflows you bring in. We run guided onboarding rather than tossing you the keys." },
-    { "code": "slot_04_02_q",   "type": "LOCALIZED_STRING_SS", "default": "Can I migrate from my current system?" },
-    { "code": "slot_04_02_a",   "type": "LOCALIZED_STRING_SS", "default": "Yes. Customer, property, contract, recurring service, and historical job data can all be migrated from common FSM tools and spreadsheets." },
-    { "code": "slot_04_03_q",   "type": "LOCALIZED_STRING_SS", "default": "What does support look like?" },
-    { "code": "slot_04_03_a",   "type": "LOCALIZED_STRING_SS", "default": "Real humans, knowledgeable about field service operations, available across channels. Higher tiers include a named operational partner." },
-    { "code": "slot_04_04_q",   "type": "LOCALIZED_STRING_SS", "default": "Is my data secure?" },
-    { "code": "slot_04_04_a",   "type": "LOCALIZED_STRING_SS", "default": "Granular role and territory permissions, SSO, audit log, and standard cloud security practices. Each user only sees what their role and territory permit." },
-    { "code": "slot_04_05_q",   "type": "LOCALIZED_STRING_SS", "default": "Where is ServiceWand based?" },
-    { "code": "slot_04_05_a",   "type": "LOCALIZED_STRING_SS", "default": "ServiceWand Inc. is registered in Wyoming, USA, with offices in Canada and the EU." }
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    {
+      "code": "group_01_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_01_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_01_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure."
+    },
+    {
+      "code": "slot_01_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_01_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "slot_01_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+    },
+    {
+      "code": "slot_01_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_01_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_01_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "group_02_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "slot_02_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_02_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."
+    },
+    {
+      "code": "slot_02_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
+    },
+    {
+      "code": "slot_02_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "slot_02_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
+    },
+    {
+      "code": "slot_02_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "slot_02_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_02_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
+    },
+    {
+      "code": "group_03_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_03_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_03_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+    },
+    {
+      "code": "slot_03_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "slot_03_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
+    },
+    {
+      "code": "slot_03_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_03_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "slot_03_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_03_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "group_04_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_04_01_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_01_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+    },
+    {
+      "code": "slot_04_02_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_02_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_04_03_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "slot_04_03_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_04_04_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_04_04_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_04_05_q",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "slot_04_05_a",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Uses native <details> — section works without JS. block.js adds slot-hiding and an `is-open` mirror class.",

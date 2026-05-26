@@ -3,11 +3,11 @@
   "id": "hero.composite-photo",
   "category": "05-hero",
   "title": "Hero · composite photo (vertical-landing)",
-  "description": "Hero for vertical-landings (Snow Removal, Lawn Care, HVAC, etc). Left column: breadcrumb eyebrow, 3-line H1 with italic-blue accent, 2 lede paragraphs, CTA pair. Right column: 5:6 photo slot with overlays — dark stat chip (bottom-left) and two person cards (top-right). Photo defaults to a neutral striped media placeholder; replace via {{photo_url}} (IMAGE param).",
+  "description": "Hero for vertical-landings (Lorem Ipsum, Lorem Ipsum, Lorem Ipsum, etc). Left column: breadcrumb eyebrow, 3-line H1 with italic-blue accent, 2 lede paragraphs, CTA pair. Right column: 5:6 photo slot with overlays — dark stat chip (bottom-left) and two person cards (top-right). Photo defaults to a neutral striped media placeholder; replace via {{photo_url}} (IMAGE param).",
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/field-service-landing-v3/src/HeroSection.jsx",
+    "primary": "tmp/Lorem ipsum/sample-landing-v3/src/HeroSection.jsx",
     "adapted_from": "v3 dark → light tokens. Photo slot generalized to IMAGE param so each vertical brings its own imagery.",
     "decision": "PM lock 2026-05-21 — vertical-landing hero pattern = composite-photo"
   },
@@ -76,107 +76,107 @@
     {
       "code": "eyebrow_root",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service"
+      "default": "Lorem ipsum"
     },
     {
       "code": "eyebrow_leaf",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Snow Removal"
+      "default": "Lorem ipsum"
     },
     {
       "code": "title_line_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Snow Removal Software"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "title_accent",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Connected"
+      "default": "Lorem"
     },
     {
       "code": "title_line_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crews, Routes & Customers"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "lead_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand for snow removal connects dispatchers, drivers, and customers when weather changes the day. Routes adjust live, customers see ETAs, and the office sees status without phone calls."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
     {
       "code": "lead_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Built for seasonal crews, recurring contracts, emergency callouts, and multi-location operations from one operational platform."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
     },
     {
       "code": "cta_primary_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Book a Demo"
+      "default": "Lorem"
     },
     {
       "code": "cta_primary_href",
       "type": "URL",
-      "default": "#cta"
+      "default": "#"
     },
     {
       "code": "cta_secondary_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "See Live Operations"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "cta_secondary_href",
       "type": "URL",
-      "default": "#features"
+      "default": "#"
     },
     {
       "code": "photo_url",
       "type": "IMAGE",
-      "default": ""
+      "default": "#"
     },
     {
       "code": "photo_alt",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Snow removal operator on site"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "placeholder_size",
       "type": "LOCALIZED_STRING_SS",
-      "default": "5 × 6"
+      "default": "Lor"
     },
     {
       "code": "placeholder_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Vertical photo / service scene"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "chip_stat_value",
       "type": "LOCALIZED_STRING_SS",
-      "default": "248"
+      "default": "Lor"
     },
     {
       "code": "chip_stat_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Properties cleared today"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "person_1_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Linda Davis"
+      "default": "Lorem"
     },
     {
       "code": "person_1_role",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Dispatcher"
+      "default": "Lorem"
     },
     {
       "code": "person_2_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Marcus Reid"
+      "default": "Lorem"
     },
     {
       "code": "person_2_role",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crew Lead"
+      "default": "Lorem"
     }
   ],
   "preview": {

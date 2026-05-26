@@ -1,0 +1,65 @@
+{
+  "code": "CTA",
+  "nls": {
+    "en": {
+      "NAME": "CTA"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SAMPLE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"generated-cta\" id=\"cta\">\n  <div class=\"container\">\n    <div class=\"callout-band generated-cta-callout\" data-block=\"decorative.callout-band\">\n      <p class=\"callout-band-eyebrow\">${CTA_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <p class=\"callout-band-body generated-cta-title\">${CTA_TITLE@LOCALIZED_STRING_SS}</p>\n      <div class=\"generated-cta-actions\">\n        <!-- lab-ui block · cta.btn-primary-ring\n     Primary CTA pill with rainbow gradient ring.\n     Theme: light (works on dark backgrounds too — the ring uses\n     mask-composite over the parent background).\n\n     Param contract (see block.json for full spec):\n       - href          URL          link target\n       - label         SS           button text (e.g. \"Book a Demo\")\n       - icon          enum         star | none (default: star)\n\n     Example usage in a hub page:\n       <a class=\"btn btn-primary btn-primary-ring\" href=\"#demo\">\n         <svg class=\"btn-star\" …></svg>\n         Book a Demo\n       </a>\n-->\n<a class=\"btn btn-primary btn-primary-ring\" href=\"${CTA_HREF@STRING}\" data-block=\"cta.btn-primary-ring\">\n  <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n    <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n  </svg>\n  ${CTA_LABEL@LOCALIZED_STRING_SS}\n</a>\n\n      </div>\n    </div>\n  </div>\n</section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CTA_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW"
+        }
+      },
+      "value": {
+        "en": "Build the next layer"
+      }
+    },
+    {
+      "code": "CTA_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "CTA_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "href"
+        }
+      },
+      "value": "#cta-final"
+    },
+    {
+      "code": "CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "label"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor"
+      }
+    }
+  ]
+}

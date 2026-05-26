@@ -16,8 +16,8 @@ machine source is `manifest.json`, generated from each block's `block.json`.
 | Area | Decision |
 | --- | --- |
 | Theme | Light is canonical. Dark overlay is reference-only for now. |
-| Header | `header.sw-default` is canonical for all landing types. |
-| Breadcrumb | Optional sublayer owned by `header.sw-default` for non-root pages. |
+| Header | `header.default` is canonical for all landing types. |
+| Breadcrumb | Optional sublayer owned by `header.default` for non-root pages. |
 | CTA | `cta.btn-primary-ring` and `cta.btn-secondary-filled` are canonical. |
 | Hub hero | `hero.operational-diagram`. |
 | Vertical hero | `hero.composite-photo`. |
@@ -29,10 +29,10 @@ machine source is `manifest.json`, generated from each block's `block.json`.
 
 | Category | Blocks |
 | --- | --- |
-| `01-header` | `header.sw-default` |
-| `02-footer` | `footer.sw-default` |
+| `01-header` | `header.default` |
+| `02-footer` | `footer.default` |
 | `03-cta` | `cta.btn-primary-ring`, `cta.btn-secondary-filled` |
-| `04-language` | `language.sw-locale-dropdown` |
+| `04-language` | `language.locale-dropdown` |
 | `05-hero` | `hero.operational-diagram`, `hero.composite-photo` |
 | `06-features` | `features.accordion-2col-numbered`, `features.card-grid-3`, `features.card-grid-4` |
 | `07-comparison` | `comparison.three-col-with-mobile-cards` |

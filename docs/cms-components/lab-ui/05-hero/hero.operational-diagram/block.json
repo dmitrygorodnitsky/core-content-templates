@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-1.jsx (HeroArtB + Hero)",
+    "primary": "tmp/Lorem ipsum/src/sections-1.jsx (HeroArtB + Hero)",
     "adapted_from": "v5 dark → light tokens, sw container width",
     "decision": "PM lock 2026-05-21 — hub default hero variant = B"
   },
@@ -63,72 +63,72 @@
     {
       "code": "eyebrow_root",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service"
+      "default": "Lorem ipsum"
     },
     {
       "code": "eyebrow_leaf",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operations Hub"
+      "default": "Lorem ipsum"
     },
     {
       "code": "title_line_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service Software"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "title_accent",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Intelligent"
+      "default": "Lorem"
     },
     {
       "code": "title_line_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service Operations"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "lead_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field service operations involve far more than assigning jobs to technicians. Modern service businesses coordinate crews, vehicles, routes, customers, contracts, recurring work, emergency requests, mobile teams, billing workflows, reporting, and operational decisions in environments that change throughout the day."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu."
     },
     {
       "code": "lead_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand is field service software built for service businesses that need more than a basic scheduling app. It connects scheduling, dispatching, routing, mobile workforce operations, customer management, billing, reporting, automation, and AI-assisted workflows in one operational platform."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit."
     },
     {
       "code": "lead_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Whether your business manages seasonal crews, recurring service routes, emergency dispatch, multi-location teams, or complex customer workflows, ServiceWand helps create a connected operating environment for the office, field, and customer experience."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure."
     },
     {
       "code": "cta_primary_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Book a Demo"
+      "default": "Lorem"
     },
     {
       "code": "cta_primary_href",
       "type": "URL",
-      "default": "#cta"
+      "default": "#"
     },
     {
       "code": "cta_secondary_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Explore Platform"
+      "default": "Lorem ipsum"
     },
     {
       "code": "cta_secondary_href",
       "type": "URL",
-      "default": "#features"
+      "default": "#"
     },
     {
       "code": "placeholder_size",
       "type": "LOCALIZED_STRING_SS",
-      "default": "520 × 650"
+      "default": "Lorem"
     },
     {
       "code": "placeholder_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Product screenshot / operational view"
+      "default": "Lorem ipsum dolor sit amet."
     }
   ],
   "preview": {

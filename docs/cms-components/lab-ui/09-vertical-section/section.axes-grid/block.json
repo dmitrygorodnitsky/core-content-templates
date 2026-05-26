@@ -63,157 +63,157 @@
     {
       "code": "axis_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Axis"
+      "default": "Lor"
     },
     {
       "code": "axis_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "01"
+      "default": "Lor"
     },
     {
       "code": "axis_1_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Locations"
+      "default": "Lorem"
     },
     {
       "code": "axis_1_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Single office"
+      "default": "Lorem ipsum"
     },
     {
       "code": "axis_1_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multi-branch · multi-region"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "axis_1_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Service businesses scale from a single office to multiple branches and eventually multi-region operations. ServiceWand supports each shape — one team, several territories, or many regions with separate data residency."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
     },
     {
       "code": "axis_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "02"
+      "default": "Lor"
     },
     {
       "code": "axis_2_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crews"
+      "default": "Lor"
     },
     {
       "code": "axis_2_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "1 owner + apprentice"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_2_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Hundreds of techs across crews"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "axis_2_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crews grow from a couple of techs into territory-level workforce. Scheduling, dispatch, mobile workflows, and reporting all need to keep working at every count without a tool swap."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
     },
     {
       "code": "axis_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "03"
+      "default": "Lor"
     },
     {
       "code": "axis_3_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer Complexity"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_3_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "One-off residential calls"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_3_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring contracts · multi-property"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "axis_3_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer models evolve from individual one-off jobs to recurring contracts, multi-property accounts, and tiered service agreements. The customer model supports all of those without redesigning the data."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."
     },
     {
       "code": "axis_4_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "04"
+      "default": "Lor"
     },
     {
       "code": "axis_4_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Billing Surface"
+      "default": "Lorem ipsum"
     },
     {
       "code": "axis_4_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Invoice on completion"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_4_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Subscriptions · partial payments · multi-currency"
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "axis_4_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Billing starts simple (invoice when the job is done) and gets richer as operations grow: recurring contracts, partial payments, multi-currency, accounting integrations, and audit trails."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
     },
     {
       "code": "axis_5_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "05"
+      "default": "Lor"
     },
     {
       "code": "axis_5_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operational Visibility"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_5_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "End-of-week summary"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "axis_5_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Live dashboards · drill-through"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "axis_5_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Reporting starts as a Friday spreadsheet and ends as live operational dashboards across routes, crews, billing, customer satisfaction, and asset performance — drillable to the underlying work order."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
     },
     {
       "code": "axis_6_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "06"
+      "default": "Lor"
     },
     {
       "code": "axis_6_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Integrations"
+      "default": "Lorem ipsum"
     },
     {
       "code": "axis_6_from",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Standalone"
+      "default": "Lorem"
     },
     {
       "code": "axis_6_to",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ERP · CRM · payments · maps · comms"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "axis_6_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Most operations start standalone and gradually connect into the rest of the business: accounting, CRM, mapping, payments, communications. ServiceWand connects through APIs, webhooks, and configurable workflows."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex."
     }
   ],
   "preview": {

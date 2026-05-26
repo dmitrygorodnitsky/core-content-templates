@@ -3,13 +3,13 @@
   "id": "verticals.glyph-grid-20-slots",
   "category": "10-verticals-grid",
   "title": "Verticals grid · photo-card catalog",
-  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Snow Removal ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "/Users/imighty/Downloads/Field Service Ops (2)/src/kit/catalog-compare.jsx (CardCatalog)",
+    "primary": "/Users/imighty/Downloads/Lorem ipsum (2)/src/kit/catalog-compare.jsx (CardCatalog)",
     "extensibility_pattern": "20 numbered slots with [hidden] spare cards",
-    "decision": "PM lock 2026-05-25 — verticals grid uses Field Service Ops photo-card catalog pattern, not small SVG glyph cards"
+    "decision": "PM lock 2026-05-25 — verticals grid uses Lorem ipsum photo-card catalog pattern, not small SVG glyph cards"
   },
   "depends_on": {
     "tokens": [
@@ -63,57 +63,57 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Section 11 · Industries"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service Industries ServiceWand Supports"
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "lede",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Different field service industries often share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
     {
       "code": "body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand is designed to support different operational models while allowing industry-specific workflows and processes. For companies researching field service industry software, the key question is whether the platform can adapt to different service models without becoming fragmented."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate."
     },
     {
       "code": "slot_01_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Snow Removal"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_01_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Route-based dispatch, seasonal crews, weather-triggered service, customer updates, billing, and operational visibility."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
     },
     {
       "code": "slot_01_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Plow truck / snowy lot at dawn"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "slot_01_href",
       "type": "URL",
-      "default": "/snow-removal"
+      "default": "#"
     },
     {
       "code": "slot_02_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "HVAC Service Platform"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_02_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Technician scheduling, service appointments, recurring maintenance, customer history, invoices, and field documentation."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
     },
     {
       "code": "slot_02_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Technician at rooftop unit"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_02_href",
@@ -123,17 +123,17 @@
     {
       "code": "slot_03_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lawn Care Operations"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_03_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring routes, crew scheduling, customer communication, service notes, and mobile job tracking."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "slot_03_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crew with ride-on mower"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_03_href",
@@ -143,17 +143,17 @@
     {
       "code": "slot_04_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Plumbing Service"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_04_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Urgent requests, scheduled jobs, dispatching, estimates, work orders, invoices, and customer records."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
     },
     {
       "code": "slot_04_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Tech under sink, tools out"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_04_href",
@@ -163,17 +163,17 @@
     {
       "code": "slot_05_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Electrical Contractor"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_05_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field teams, service requests, job documentation, customer communication, and billing workflows."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "slot_05_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Electrician at panel box"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_05_href",
@@ -183,17 +183,17 @@
     {
       "code": "slot_06_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Property Maintenance"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_06_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring work, inspections, repairs, crews, routes, customer requests, and completion reporting."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "slot_06_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Tech walking property exterior"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "slot_06_href",
@@ -203,17 +203,17 @@
     {
       "code": "slot_07_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Cleaning Services"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_07_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring schedules, mobile teams, checklists, customer communication, job tracking, and billing."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "slot_07_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Cleaning crew in lobby"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_07_href",
@@ -223,17 +223,17 @@
     {
       "code": "slot_08_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Pest Control"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_08_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring service visits, technician routes, customer communication, inspection notes, treatment records, billing, and reporting."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
     },
     {
       "code": "slot_08_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Tech with sprayer, exterior"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_08_href",
@@ -243,17 +243,17 @@
     {
       "code": "slot_09_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Landscaping"
+      "default": "Lorem"
     },
     {
       "code": "slot_09_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crews, recurring routes, seasonal work, job notes, customer communication, field documentation, and route-based service delivery."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
     },
     {
       "code": "slot_09_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Crew planting / hedge work"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_09_href",
@@ -263,17 +263,17 @@
     {
       "code": "slot_10_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Appliance Repair"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_10_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Service calls, technician schedules, customer history, parts visibility, job notes, invoices, and completion reporting."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
     },
     {
       "code": "slot_10_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Tech repairing appliance"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_10_href",
@@ -283,17 +283,17 @@
     {
       "code": "slot_11_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Commercial Services"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_11_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multi-site customers, recurring agreements, service teams, documentation, billing workflows, and operational visibility."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
     },
     {
       "code": "slot_11_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Service truck at storefront"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_11_href",
@@ -303,17 +303,17 @@
     {
       "code": "slot_12_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Telecom Field Ops"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_12_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field-based teams, service areas, job assignments, equipment, routing, and operational reporting."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "slot_12_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lineman at tower / cabinet"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "slot_12_href",
@@ -323,17 +323,17 @@
     {
       "code": "slot_13_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Facility Services"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_13_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multi-site work, recurring service, asset records, mobile documentation, and customer-facing workflows."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
     },
     {
       "code": "slot_13_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Facility manager walkthrough"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "slot_13_href",
@@ -343,17 +343,17 @@
     {
       "code": "slot_14_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_14_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_14_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_14_href",
@@ -363,17 +363,17 @@
     {
       "code": "slot_15_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_15_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_15_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_15_href",
@@ -383,17 +383,17 @@
     {
       "code": "slot_16_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_16_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_16_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_16_href",
@@ -403,17 +403,17 @@
     {
       "code": "slot_17_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_17_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_17_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_17_href",
@@ -423,17 +423,17 @@
     {
       "code": "slot_18_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_18_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_18_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_18_href",
@@ -443,17 +443,17 @@
     {
       "code": "slot_19_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_19_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_19_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_19_href",
@@ -463,17 +463,17 @@
     {
       "code": "slot_20_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_20_desc",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_20_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_20_href",

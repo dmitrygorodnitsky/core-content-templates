@@ -1,19 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { basename, dirname, join, relative } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
+import { DEFAULT_SECTION_BLOCKS, resolveSectionBlocks } from "./cms-family-contract.mjs";
 
 const labRoot = new URL("..", import.meta.url).pathname;
 
-const sectionBlockIds = {
-  header: "header.sw-default",
-  hero: "hero.operational-diagram",
-  features: "features.accordion-2col-numbered",
-  comparison: "comparison.three-col-with-mobile-cards",
-  faq: "faq.bubble-light-grouped",
-  ctaPrimary: "cta.btn-primary-ring",
-  ctaSecondary: "cta.btn-secondary-filled",
-  callout: "decorative.callout-band",
-  footer: "footer.sw-default",
-};
+// Per-run resolved section→block IDs. Populated from frontmatter inside
+// buildFamily(). Default = DEFAULT_SECTION_BLOCKS from the contract.
+let sectionBlockIds = { ...DEFAULT_SECTION_BLOCKS };
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -30,8 +23,8 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \\
-  --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md \\
-  --out docs/cms-components/lab-ui/dist/field-service`;
+  --copy docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md \\
+  --out docs/cms-components/lab-ui/dist/sample-landing`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const writeJson = (file, value) => writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
@@ -310,7 +303,7 @@ const statusClass = (value) => {
 const comparisonRowHtml = (code, columns, row) => {
   const cells = columns
     .map((column, index) => {
-      const key = codeSlug(column).replace(/^SERVICEWAND$/, "SW");
+      const key = codeSlug(column).replace(/^LOREM_IPSUM$/, "BRAND").slice(0, 24);
       const status = placeholder(`${code}_${key}`, "LOCALIZED_STRING_SS");
       const cls = index === 0 ? " compare-cell--sw" : "";
       return `<div class="compare-cell${cls}" role="cell"><span class="compare-mobile-label">${escapeHtml(column)}</span><span class="compare-status compare-status--${statusClass(row[index + 1])}"><span class="compare-icon" aria-hidden="true"></span><span>${status}</span></span></div>`;
@@ -328,8 +321,11 @@ const collectParameters = (templates) =>
   templates.flatMap((template) => [...(template.parameters || []), ...collectParameters(template.children || [])]);
 
 const buildFamily = (model, catalog) => {
+  // Resolve section→block IDs from frontmatter overrides (blocks.<name>).
+  sectionBlockIds = resolveSectionBlocks(model.frontmatter);
+
   const locale = model.frontmatter.locale || "en";
-  const rootCode = codeSlug(model.frontmatter.code || "SERVICEWAND_LANDING");
+  const rootCode = codeSlug(model.frontmatter.code || "SAMPLE_LANDING");
   const rootName = model.frontmatter.name || model.title;
   const heroTitle = splitHeroTitle(model.title);
   const heroLinks = model.hero.links;
@@ -447,11 +443,11 @@ select {
     name: "Header",
     block: header,
     overrides: {
-      brand_name: "ServiceWand",
+      brand_name: "the platform",
       brand_href: "/",
       cta_label: heroLinks[0]?.label || "Book a Demo",
       cta_href: heroLinks[0]?.href || "/request-demo",
-      breadcrumb_root_label: "ServiceWand",
+      breadcrumb_root_label: "the platform",
       breadcrumb_mid_1_label: "",
       breadcrumb_current_label: model.frontmatter.name || model.title,
     },
@@ -464,7 +460,7 @@ select {
     name: "Hero",
     block: hero,
     overrides: {
-      eyebrow_root: "ServiceWand",
+      eyebrow_root: "the platform",
       eyebrow_leaf: model.frontmatter.name || "Landing",
       title_line_1: heroTitle.line1,
       title_accent: heroTitle.accent,
@@ -552,7 +548,7 @@ select {
     const code = `COMPARE_ROW_${index + 1}`;
     const params = [makeTextParam(code, "CAPABILITY", row[0] || "", locale)];
     comparisonColumns.forEach((column, columnIndex) => {
-      params.push(makeTextParam(code, codeSlug(column).replace(/^SERVICEWAND$/, "SW"), row[columnIndex + 1] || "", locale));
+      params.push(makeTextParam(code, codeSlug(column).replace(/^LOREM_IPSUM$/, "BRAND").slice(0, 24), row[columnIndex + 1] || "", locale));
     });
     addValues(params);
     return makeTemplate({
@@ -565,7 +561,7 @@ select {
   });
   const comparisonParams = [
     makeTextParam("COMPARISON", "EYEBROW", comparisonSection.title, locale),
-    makeTextParam("COMPARISON", "TITLE", "ServiceWand unifies it all", locale),
+    makeTextParam("COMPARISON", "TITLE", "the platform unifies it all", locale),
     makeTextParam("COMPARISON", "LEDE", comparisonSection.paragraphs.join(" "), locale),
     ...comparisonColumns.map((column, index) =>
       makeTextParam("COMPARISON", `COLUMN_${index + 1}`, column, locale),
@@ -584,16 +580,20 @@ select {
       <h2 class="compare-title">${placeholder("COMPARISON_TITLE", "LOCALIZED_STRING_SS")}</h2>
       <p class="compare-lede">${placeholder("COMPARISON_LEDE", "LOCALIZED_STRING_SS")}</p>
     </header>
-    <div class="compare-grid" role="table" aria-label="ServiceWand platform comparison">
+    <div class="compare-grid" role="table" aria-label="Comparison">
       <div class="compare-head" role="rowgroup">
         <div class="compare-row compare-row--head" role="row">
           <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
           ${comparisonColumns.map((column, index) => {
-            const isServiceWand = codeSlug(column) === "SERVICEWAND";
-            const content = isServiceWand
-              ? `<span class="compare-brand" aria-label="${placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS")}"><span>Service</span><strong>Wand</strong></span>`
-              : placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS");
-            return `<div class="compare-cell${isServiceWand ? " compare-cell--sw" : ""} compare-cell--head" role="columnheader">${content}</div>`;
+            // First data column is always the highlighted "brand" column,
+            // rendered with .compare-brand styling. Subsequent columns are
+            // plain text placeholders.
+            const isBrand = index === 0;
+            const slot = placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS");
+            const content = isBrand
+              ? `<span class="compare-brand">${slot}</span>`
+              : slot;
+            return `<div class="compare-cell${isBrand ? " compare-cell--sw" : ""} compare-cell--head" role="columnheader">${content}</div>`;
           }).join("\n          ")}
         </div>
       </div>
@@ -689,7 +689,7 @@ select {
   );
   const ctaParams = [
     makeTextParam("CTA", "EYEBROW", "Build the next layer", locale),
-    makeTextParam("CTA", "TITLE", finalCta.paragraphs[0] || "Ready to see ServiceWand?", locale),
+    makeTextParam("CTA", "TITLE", finalCta.paragraphs[0] || "Ready to see the platform?", locale),
     ...ctaRendered.params,
   ];
   addValues(ctaParams);
@@ -718,11 +718,11 @@ select {
     code: "FOOTER",
     name: "Footer",
     block: footer,
-    overrides: { brand_name: "ServiceWand", brand_href: "/" },
+    overrides: { brand_name: "the platform", brand_href: "/" },
   });
 
   const rootParams = [
-    makeTextParam("ROOT", "META_TITLE", `${rootName} | ServiceWand`, locale),
+    makeTextParam("ROOT", "META_TITLE", `${rootName} | the platform`, locale),
     makeTextParam("ROOT", "META_DESCRIPTION", model.hero.paragraphs[0] || rootName, locale),
   ];
   addValues(rootParams);
@@ -831,6 +831,20 @@ const main = () => {
   }
   if (!args.copy || !args.out) throw new Error(usage());
   if (!existsSync(args.copy)) throw new Error(`Copy file not found: ${args.copy}`);
+
+  // Safety: the generator wipes args.out blindly. Refuse to wipe paths
+  // outside dist/ or paths that look dangerous (root, home, etc).
+  const outAbs = resolve(args.out);
+  const distMarker = `${"dist"}${"/"}`;
+  if (
+    outAbs === "/" ||
+    outAbs === resolve(process.env.HOME || "") ||
+    !(outAbs.includes(distMarker) || /\/lab-ui\/dist\//.test(outAbs))
+  ) {
+    throw new Error(
+      `Refusing to wipe --out path that is not inside a dist/ directory: ${args.out}`,
+    );
+  }
 
   const catalog = loadCatalog();
   const model = parseMarkdownCopy(args.copy);

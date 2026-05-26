@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-3.jsx (MobileExperience4Cards)",
+    "primary": "tmp/Lorem ipsum/src/sections-3.jsx (MobileExperience4Cards)",
     "adapted_from": "v5 dark → light tokens. Glyphs simplified to neutral stroke-only icons.",
     "decision": "PM lock 2026-05-21 — mobile section pattern = 4-card glyph (vs photo composite)"
   },
@@ -65,87 +65,87 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Mobile App"
+      "default": "Lorem ipsum"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Built for the Field, Not for the Desk"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "lede_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "The ServiceWand field app is a full operations surface, not a read-only schedule view."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "lede_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Designed for the realities of working outside — gloves, connectivity gaps, noisy environments, time pressure."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
     },
     {
       "code": "lede_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Techs complete real work without bouncing back to the office for status updates or re-entry."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
     },
     {
       "code": "card_1_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Full Work-Order Capture"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "card_1_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Notes, photos, parts, signatures, and time captured against the job."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "card_1_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "No paper, no end-of-day rekeying back at the office."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
     },
     {
       "code": "card_2_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Offline-Capable"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_2_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Techs keep working with no connectivity — basements, rural sites, dead-zone neighborhoods."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
     },
     {
       "code": "card_2_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Changes sync automatically once the device comes back online."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
     },
     {
       "code": "card_3_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Live Route Updates"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "card_3_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Reassignments, new urgent stops, ETAs, and customer notes push to the phone immediately."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "card_3_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Dispatchers don't have to call to confirm the tech saw the change."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "card_4_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "On-Site Invoicing"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_4_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Generate, present, and take payment for invoices from the phone while the work is still in the customer's mind."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
     },
     {
       "code": "card_4_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Same data flows back to billing and accounting without re-entry."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     }
   ],
   "preview": {

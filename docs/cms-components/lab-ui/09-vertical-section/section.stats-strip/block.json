@@ -55,62 +55,62 @@
     {
       "code": "stat_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "12k+"
+      "default": "Lor"
     },
     {
       "code": "stat_1_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "// active crews"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stat_1_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field teams running daily ops on the platform across 7 verticals."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "stat_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "38k"
+      "default": "Lor"
     },
     {
       "code": "stat_2_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "// jobs / day"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stat_2_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operational throughput across the platform on a typical weekday."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "stat_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "94%"
+      "default": "Lor"
     },
     {
       "code": "stat_3_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "// first-time fix"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stat_3_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Average across pilot cohort after 8 weeks on the platform — up from 71% pre-migration."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "stat_4_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "∞"
+      "default": "Lor"
     },
     {
       "code": "stat_4_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "// platform reach"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stat_4_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Configurable workflows scale from a 2-person crew to multi-region operations without a migration."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     }
   ],
   "preview": {

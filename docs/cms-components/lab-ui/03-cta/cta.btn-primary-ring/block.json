@@ -3,11 +3,11 @@
   "id": "cta.btn-primary-ring",
   "category": "03-cta",
   "title": "Primary CTA · rainbow ring pill",
-  "description": "Pill button with a 1.5 px rainbow gradient ring (cyan → orange → magenta, 249.99deg base, flips to 264.85deg on hover) and a sparkle star icon that rotates 180° on hover. The outer hover glow is tinted by the current vertical's --cta-accent token (cyan default; lawn-care → green; hvac → orange; etc). Uses the same tight bottom-centered radial hover glow as cta.btn-secondary-filled.",
+  "description": "Pill button with a 1.5 px rainbow gradient ring (cyan → orange → magenta, 249.99deg base, flips to 264.85deg on hover) and a sparkle star icon that rotates 180° on hover. The outer hover glow is tinted by the current vertical's --cta-accent token (cyan default; lorem-green → green; lorem-orange → orange; etc). Uses the same tight bottom-centered radial hover glow as cta.btn-secondary-filled.",
   "canonical": true,
   "theme": "light+dark-compatible",
   "source": {
-    "primary": "servicewand.com (.button-primary)",
+    "primary": "example.com (.button-primary)",
     "secondary": "lsrc.pixelnation.com/.../winter-services.html (.vl-button--primary)",
     "harmonized": "PM lock 2026-05-22 — gradient direction matches sw + winter-services exactly. Image-based bottom glow is no longer used; reproduced via effect.hover-rise (pure CSS)."
   },
@@ -38,25 +38,28 @@
     {
       "code": "label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Book a Demo",
+      "default": "Lorem",
       "description": "Button text. Fits in 13rem min-width."
     },
     {
       "code": "icon",
       "type": "ENUM",
-      "values": ["star", "none"],
+      "values": [
+        "star",
+        "none"
+      ],
       "default": "star",
       "description": "Sparkle ✦ on the left. Set to none for icon-less CTAs."
     }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Icon rotates 180° on hover via .btn-primary-ring:hover .btn-star.",
     "Rainbow ring gradient flips 249.99deg → 264.85deg on hover (matches sw + winter-services exactly).",
-    "Outer hover glow uses var(--cta-accent) — page can re-theme via <body data-vertical=\"lawn-care\"> etc.",
+    "Outer hover glow uses var(--cta-accent) — page can re-theme via <body data-theme=\"lorem-green\"> etc.",
     "Inner bottom glow intentionally matches cta.btn-secondary-filled: a calm 58% bottom-centered radial glow fading in on hover. This overrides the broader shared hover-rise strip when effect.hover-rise is also loaded.",
     "On dark surfaces, override --button-primary-color to var(--color-white). The ring stays the same."
   ]

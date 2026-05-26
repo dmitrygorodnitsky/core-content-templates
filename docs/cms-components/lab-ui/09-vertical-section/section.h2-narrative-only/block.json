@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-2.jsx (NarrativeSection)",
+    "primary": "tmp/Lorem ipsum/src/sections-2.jsx (NarrativeSection)",
     "adapted_from": "v5 dark → light tokens. Glyph slot generalized to allow any inline SVG.",
     "decision": "PM lock 2026-05-25 — canonical narrative block is text-first; glyph is optional variant, not default"
   },
@@ -63,32 +63,32 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI-Native Operations"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service Software That Thinks With You"
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "lede_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand uses AI where the operational data is rich enough for it to be genuinely useful — schedule suggestions, anomaly alerts, natural-language search across jobs, properties, and history."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
     {
       "code": "lede_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Not a chatbot wrapper, not generic LLM marketing. AI features are surfaced inside the actual workflows your team already runs."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     },
     {
       "code": "lede_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "You stay in control of what the system suggests and what gets accepted. AI augments operational judgment; it does not replace it."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
     },
     {
       "code": "has_glyph",
       "type": "LOCALIZED_STRING_SS",
-      "default": "false"
+      "default": "Lor"
     }
   ],
   "preview": {

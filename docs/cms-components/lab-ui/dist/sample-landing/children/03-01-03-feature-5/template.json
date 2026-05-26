@@ -1,0 +1,43 @@
+{
+  "code": "FEATURE_5",
+  "nls": {
+    "en": {
+      "NAME": "Lorem Ipsum Magna Aliqua"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FEATURES"
+  },
+  "children": [],
+  "head": "",
+  "html": "<article class=\"f-row\" data-feature-slot=\"05\">\n  <button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n    <span class=\"f-num\">F.05</span>\n    <span class=\"f-title\">${FEATURE_5_TITLE@LOCALIZED_STRING_SS}</span>\n    <span class=\"f-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span>\n  </button>\n  <div class=\"f-body\"><div class=\"f-body-inner\">${FEATURE_5_BODY@LOCALIZED_STRING_SS}</div></div>\n</article>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "FEATURE_5_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum Magna Aliqua"
+      }
+    },
+    {
+      "code": "FEATURE_5_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "BODY"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    }
+  ]
+}

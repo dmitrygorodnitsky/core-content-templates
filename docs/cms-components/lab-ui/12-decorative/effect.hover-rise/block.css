@@ -7,16 +7,16 @@
    ## Where it auto-applies (brand primitives)
    - .btn-primary-ring          (cta.btn-primary-ring)
    - .btn-secondary-filled      (cta.btn-secondary-filled)
-   - .nav-link, .nav-trigger    (header.sw-default nav items)
-   - .locale-trigger            (language.sw-locale-dropdown)
-   - .bc-link                   (header.sw-default breadcrumb)
+   - .nav-link, .nav-trigger    (header.default nav items)
+   - .locale-trigger            (language.locale-dropdown)
+   - .bc-link                   (header.default breadcrumb)
 
    ## Opt-in for custom elements
    - [data-fx="rise"]
 
    ## Tint
    Default uses --cta-accent (which is --color-cyan by default and
-   re-themed via [data-vertical="..."] overlays). Override per element
+   re-themed via [data-theme="..."] overlays). Override per element
    via --fx-rise-color: <color>.
 
    ## Implementation

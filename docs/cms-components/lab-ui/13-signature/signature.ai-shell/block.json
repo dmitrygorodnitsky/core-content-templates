@@ -66,232 +66,232 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI-Native"
+      "default": "Lorem"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI-Native Operational Automation"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "lead_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand is designed as an AI-native operational platform, not a traditional field service tool with AI added as an afterthought. AI is most useful when it has access to structured operational data."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."
     },
     {
       "code": "lead_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand supports AI-assisted workflows, operational automation, intelligent routing support, and workflow intelligence — built around real operational data, not surface-level chat."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
     },
     {
       "code": "stream_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operational AI · sample activity"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "stream_meta",
       "type": "LOCALIZED_STRING_SS",
-      "default": "agents · 4 active · 11 actions today"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "stream_footer",
       "type": "LOCALIZED_STRING_SS",
-      "default": "All actions stay reviewable. Nothing leaves the platform until your team confirms."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "row_1_time",
       "type": "LOCALIZED_STRING_SS",
-      "default": "10:42"
+      "default": "Lor"
     },
     {
       "code": "row_1_kind",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Route"
+      "default": "Lor"
     },
     {
       "code": "row_1_trig",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Tech 04 idle 28 min; emergency at 1244 Elm flagged urgent."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
       "code": "row_1_act",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Drafted route swap. Tech 04 → 1244 Elm; Tech 11 picks up 03:15 PM tune-up. Waiting on dispatch approval."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
     },
     {
       "code": "row_2_time",
       "type": "LOCALIZED_STRING_SS",
-      "default": "10:51"
+      "default": "Lor"
     },
     {
       "code": "row_2_kind",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Billing"
+      "default": "Lorem"
     },
     {
       "code": "row_2_trig",
       "type": "LOCALIZED_STRING_SS",
-      "default": "WO-8842 marked complete; no invoice generated after 90 min."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
       "code": "row_2_act",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Drafted invoice from WO line items + service agreement. Saved to drafts for the controller's review."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
     },
     {
       "code": "row_3_time",
       "type": "LOCALIZED_STRING_SS",
-      "default": "11:08"
+      "default": "Lor"
     },
     {
       "code": "row_3_kind",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer"
+      "default": "Lorem"
     },
     {
       "code": "row_3_trig",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ETA delta on appointment 4421 exceeded SLA window by 18 min."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
       "code": "row_3_act",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Sent customer-facing update with revised window + 'on the way' status. No human follow-up required."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "row_4_time",
       "type": "LOCALIZED_STRING_SS",
-      "default": "11:23"
+      "default": "Lor"
     },
     {
       "code": "row_4_kind",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Pattern"
+      "default": "Lorem"
     },
     {
       "code": "row_4_trig",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Asset HV-552 has 3 repeat failures in 60 days."
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "row_4_act",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Drafted replacement quote with parts + labor estimate. Tagged customer record for review by sales."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "side_heading",
       "type": "LOCALIZED_STRING_SS",
-      "default": "One operational model. Every domain feeds it."
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "feed_1_tag",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Jobs"
+      "default": "Lor"
     },
     {
       "code": "feed_1_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Status, type, history, completion notes — written by techs in the field."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
     },
     {
       "code": "feed_2_tag",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Routes"
+      "default": "Lorem"
     },
     {
       "code": "feed_2_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Live position, load, ETA delta, vehicle and crew assignment."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     },
     {
       "code": "feed_3_tag",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customers"
+      "default": "Lorem"
     },
     {
       "code": "feed_3_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Properties, contracts, recurring service, communication history."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "feed_4_tag",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Billing"
+      "default": "Lorem"
     },
     {
       "code": "feed_4_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Invoices, payments, recurring agreements, payment lifecycle state."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "feed_5_tag",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Assets"
+      "default": "Lorem"
     },
     {
       "code": "feed_5_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Equipment records, service history, repeat-failure detection."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
     },
     {
       "code": "media_placeholder_size",
       "type": "LOCALIZED_STRING_SS",
-      "default": "420 × 260"
+      "default": "Lorem"
     },
     {
       "code": "media_placeholder_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI workflow screenshot / assistant panel"
+      "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
       "code": "cap_prefix",
       "type": "LOCALIZED_STRING_SS",
-      "default": "A."
+      "default": "Lor"
     },
     {
       "code": "cap_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "01"
+      "default": "Lor"
     },
     {
       "code": "cap_1_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Draft & Reviewable"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "cap_1_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI proposes; humans approve. Every action lands in a draft surface — dispatch, billing, customer comms — until a team member confirms."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
     },
     {
       "code": "cap_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "02"
+      "default": "Lor"
     },
     {
       "code": "cap_2_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operational Data, Not Chat"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "cap_2_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI reads jobs, routes, customers, assets, and billing as one model. Patterns surface across domains, not inside a single chat window."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
     },
     {
       "code": "cap_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "03"
+      "default": "Lor"
     },
     {
       "code": "cap_3_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Audit Trail by Default"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "cap_3_body",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Every AI decision is logged with the trigger, the data it saw, and what your team did with it. Compliance, training, and trust come from the same record."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
     }
   ],
   "preview": {

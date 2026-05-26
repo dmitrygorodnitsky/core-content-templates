@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid4)",
+    "primary": "tmp/Lorem ipsum/src/sections-1.jsx (CardGrid4)",
     "adapted_from": "v5 dark + v4 light → unified light tokens",
     "decision": "PM lock 2026-05-21 — 4-card framing pattern = v5 horizontal layout"
   },
@@ -67,107 +67,107 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Unified Platform"
+      "default": "Lorem ipsum"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "What ServiceWand Replaces"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "lede_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Most service businesses run their operations across 4–6 separate tools that don't speak to each other. ServiceWand replaces the stack with a single connected system."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
     },
     {
       "code": "lede_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Each replaced surface keeps its strengths and adds the context the others lacked."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "lede_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "The result is fewer tabs, fewer copies of the same data, and less context-switching during the day."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "card_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "01"
+      "default": "Lor"
     },
     {
       "code": "card_1_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Scheduling Tool"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_1_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand handles scheduling, dispatch, routes, and recurring service in one calendar."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "card_1_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Constraint-aware so the calendar respects skills, vehicles, and territories automatically."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
     },
     {
       "code": "card_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "02"
+      "default": "Lor"
     },
     {
       "code": "card_2_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Mobile App"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_2_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "A full field operations app — not a read-only schedule. Techs complete work, capture, invoice, and update from anywhere."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
     },
     {
       "code": "card_2_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Offline-capable so connectivity gaps don't stop the day."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
     },
     {
       "code": "card_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "03"
+      "default": "Lor"
     },
     {
       "code": "card_3_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "CRM & Billing"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_3_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Properties, contacts, contracts, invoices, and payments live with the operational data — no separate CRM or billing console."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     },
     {
       "code": "card_3_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring contracts and multi-currency billing handled natively."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
     },
     {
       "code": "card_4_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "04"
+      "default": "Lor"
     },
     {
       "code": "card_4_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Reporting & Automation"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "card_4_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Live dashboards, drill-through to underlying work, and rule-based automations."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
     },
     {
       "code": "card_4_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI assists where the data is rich enough to be useful — not just for show."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
     }
   ],
   "preview": {

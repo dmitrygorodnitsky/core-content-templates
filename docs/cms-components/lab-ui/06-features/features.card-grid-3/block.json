@@ -3,11 +3,11 @@
   "id": "features.card-grid-3",
   "category": "06-features",
   "title": "Features · 3-card horizontal grid",
-  "description": "H2 + 3 lede paragraphs + 3 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Connected Operations' / 'How ServiceWand Works' framing pattern. 3 fixed slots (use features.accordion-2col-numbered for variable counts).",
+  "description": "H2 + 3 lede paragraphs + 3 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Connected Operations' / 'How the platform Works' framing pattern. 3 fixed slots (use features.accordion-2col-numbered for variable counts).",
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid3)",
+    "primary": "tmp/Lorem ipsum/src/sections-1.jsx (CardGrid3)",
     "adapted_from": "v5 dark + v4 light → unified light tokens",
     "decision": "PM lock 2026-05-21 — 3-card framing pattern = v5 horizontal layout"
   },
@@ -67,87 +67,87 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Connected Operations"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "One Platform, Three Connected Layers"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "lede_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand runs the office, the field, and the customer as one continuous workflow. Each layer shares data with the others so nothing falls through the cracks."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
     },
     {
       "code": "lede_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Dispatchers, technicians, and customers each get an interface designed for what they actually do."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "lede_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "The result: less re-entry, fewer dropped messages, and an operational picture that stays current through the day."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
     },
     {
       "code": "card_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "01"
+      "default": "Lor"
     },
     {
       "code": "card_1_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Office Operations"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_1_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Scheduling, dispatch, customer management, billing, and reporting in one operational console."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
     },
     {
       "code": "card_1_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Built so dispatchers can see real status without chasing techs by phone or piecing together spreadsheets."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
     },
     {
       "code": "card_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "02"
+      "default": "Lor"
     },
     {
       "code": "card_2_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Mobile Workforce"
+      "default": "Lorem ipsum"
     },
     {
       "code": "card_2_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Techs run their day from a phone — jobs, notes, photos, signatures, parts, invoicing."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "card_2_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Works offline. Syncs when connection returns. Designed for the realities of the field."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
     },
     {
       "code": "card_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "03"
+      "default": "Lor"
     },
     {
       "code": "card_3_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer Experience"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "card_3_p1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customers see upcoming visits, invoices, history, and contracts — and self-serve approvals and payments."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
     },
     {
       "code": "card_3_p2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Branded portals and notifications keep customers in the loop without extra phone work for your team."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
     }
   ],
   "preview": {

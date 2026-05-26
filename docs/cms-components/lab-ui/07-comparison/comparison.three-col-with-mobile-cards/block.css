@@ -128,7 +128,7 @@
   text-overflow: ellipsis;
 }
 
-/* ServiceWand column — one floating white card that spans the whole
+/* the platform column — one floating white card that spans the whole
    column. Body cells render the vertical edges of the card via inset
    strokes; head ::before and last-row ::after close the rounded top
    and bottom corners and add the outer drop shadow. Solid white

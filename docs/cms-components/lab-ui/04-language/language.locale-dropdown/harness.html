@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>language.locale-dropdown · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 64px 32px; min-height: 100vh;
+    font-family: var(--font-family, "Manrope", sans-serif);
+    background: var(--color-bg, #FFFFFF);
+    color: var(--color-text, #5C6474);
+    display: grid; place-items: center; gap: 48px;
+  }
+  .harness-label {
+    font-family: var(--font-mono, monospace);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--color-gray-blue, #97A2B8);
+  }
+  .harness-stage { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .preview-tall { min-height: 320px; }
+  .mobile-preview {
+    width: 390px;
+    max-width: calc(100vw - 32px);
+    min-height: 260px;
+    padding: 32px 24px;
+    align-items: flex-end;
+    border: 1px solid var(--card-border, rgba(0, 0, 0, 0.05));
+    border-radius: 24px;
+    background: var(--header-bg, #fff);
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-stage preview-tall">
+  <div class="harness-label">language.locale-dropdown · closed</div>
+  <div class="locale-selector" data-block="language.locale-dropdown">
+    <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="false" data-short-code="EN">
+      <div class="locale-trigger-left">
+        <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+          <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="locale-trigger-label">English (US)</span>
+      </div>
+    </button>
+    <div class="locale-dropdown" role="listbox" aria-label="Select language">
+      <ul class="locale-list"></ul>
+    </div>
+  </div>
+</div>
+
+<div class="harness-stage preview-tall">
+  <div class="harness-label">language.locale-dropdown · open (forced)</div>
+  <div class="locale-selector is-open" data-block="language.locale-dropdown" data-locale-init="1">
+    <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="true" data-short-code="EN">
+      <div class="locale-trigger-left">
+        <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+          <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="locale-trigger-label">English (US)</span>
+      </div>
+    </button>
+    <div class="locale-dropdown" role="listbox" aria-label="Select language">
+      <ul class="locale-list">
+        <li class="locale-item is-active" role="option" data-locale="en-US" data-short-code="EN" aria-selected="true">
+          <span class="locale-item-code" aria-hidden="true">EN</span>
+          <span class="locale-item-label">English (US)</span>
+          <svg class="locale-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </li>
+        <li class="locale-item" role="option" data-locale="fr-CA" data-short-code="FR"><span class="locale-item-code" aria-hidden="true">FR</span><span class="locale-item-label">Français (CA)</span></li>
+        <li class="locale-item" role="option" data-locale="es" data-short-code="ES"><span class="locale-item-code" aria-hidden="true">ES</span><span class="locale-item-label">Español</span></li>
+        <li class="locale-item" role="option" data-locale="de" data-short-code="DE"><span class="locale-item-code" aria-hidden="true">DE</span><span class="locale-item-label">Deutsch</span></li>
+        <li class="locale-item" role="option" data-locale="pt-BR" data-short-code="PT"><span class="locale-item-code" aria-hidden="true">PT</span><span class="locale-item-label">Português (BR)</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="harness-stage mobile-preview">
+  <div class="harness-label">language.locale-dropdown · mobile open</div>
+  <div class="locale-selector locale-selector--mobile is-open" data-block="language.locale-dropdown" data-locale-init="1">
+    <button class="locale-trigger" aria-haspopup="listbox" aria-expanded="true" data-short-code="EN">
+      <div class="locale-trigger-left">
+        <svg class="locale-chevron" width="13" height="8" viewBox="0 0 13 8" fill="none" aria-hidden="true">
+          <path d="M0.672729 0.73999L6.17273 5.73999L11.6727 0.73999" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span class="locale-trigger-label">English (US)</span>
+      </div>
+    </button>
+    <div class="locale-dropdown" role="listbox" aria-label="Select language">
+      <ul class="locale-list">
+        <li class="locale-item is-active" role="option" data-locale="en-US" data-short-code="EN" aria-selected="true"><span class="locale-item-code" aria-hidden="true">EN</span><span class="locale-item-label">English (US)</span></li>
+        <li class="locale-item" role="option" data-locale="fr-CA" data-short-code="FR"><span class="locale-item-code" aria-hidden="true">FR</span><span class="locale-item-label">Français (CA)</span></li>
+        <li class="locale-item" role="option" data-locale="es" data-short-code="ES"><span class="locale-item-code" aria-hidden="true">ES</span><span class="locale-item-label">Español</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script src="./block.js"></script>
+</body>
+</html>

@@ -72,14 +72,14 @@
   ],
   "blocks": [
     {
-      "id": "header.sw-default",
+      "id": "header.default",
       "category": "01-header",
-      "path": "01-header/header.sw-default",
-      "title": "Header · ServiceWand canonical (multi-level)",
-      "description": "Canonical light-theme ServiceWand header. Uses the live servicewand.com header proportions and compact mobile reveal behavior, while extending the nav contract to support link, dropdown, and mega items. Panels open on hover + focus-within on desktop; below 1024px the burger reveals a full-width menu with nested panel links shown inline as indented subitems. Composes cta.btn-primary-ring + language.sw-locale-dropdown. Owns the optional floating breadcrumb chip for non-root pages.",
+      "path": "01-header/header.default",
+      "title": "Header · canonical (multi-level)",
+      "description": "Canonical light-theme the platform header. Uses the live example.com header proportions and compact mobile reveal behavior, while extending the nav contract to support link, dropdown, and mega items. Panels open on hover + focus-within on desktop; below 1024px the burger reveals a full-width menu with nested panel links shown inline as indented subitems. Composes cta.btn-primary-ring + language.locale-dropdown. Owns the optional floating breadcrumb chip for non-root pages.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "servicewand.com (live, fetched 2026-05-18)",
+      "sourceLabel": "example.com (live, fetched 2026-05-18)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -88,11 +88,11 @@
       "hasJs": true
     },
     {
-      "id": "footer.sw-default",
+      "id": "footer.default",
       "category": "02-footer",
-      "path": "02-footer/footer.sw-default",
-      "title": "Footer · ServiceWand canonical",
-      "description": "Dark site footer used across servicewand.com and all ServiceWand landings. 3-column grid: brand+tagline+address / 5-link nav / socials+emails. Bottom row: copyright + legal links. Used regardless of page theme (light/dark) — the footer itself is always dark.",
+      "path": "02-footer/footer.default",
+      "title": "Footer · canonical",
+      "description": "Dark site footer used across example.com and all the platform landings. 3-column grid: brand+tagline+address / 5-link nav / socials+emails. Bottom row: copyright + legal links. Used regardless of page theme (light/dark) — the footer itself is always dark.",
       "canonical": true,
       "theme": "dark-always",
       "sourceLabel": "tmp/sw-footer.html",
@@ -124,10 +124,10 @@
       "category": "03-cta",
       "path": "03-cta/cta.btn-primary-ring",
       "title": "Primary CTA · rainbow ring pill",
-      "description": "Pill button with a 1.5 px rainbow gradient ring (cyan → orange → magenta, 249.99deg base, flips to 264.85deg on hover) and a sparkle star icon that rotates 180° on hover. The outer hover glow is tinted by the current vertical's --cta-accent token (cyan default; lawn-care → green; hvac → orange; etc). Uses the same tight bottom-centered radial hover glow as cta.btn-secondary-filled.",
+      "description": "Pill button with a 1.5 px rainbow gradient ring (cyan → orange → magenta, 249.99deg base, flips to 264.85deg on hover) and a sparkle star icon that rotates 180° on hover. The outer hover glow is tinted by the current vertical's --cta-accent token (cyan default; lorem-green → green; lorem-orange → orange; etc). Uses the same tight bottom-centered radial hover glow as cta.btn-secondary-filled.",
       "canonical": true,
       "theme": "light+dark-compatible",
-      "sourceLabel": "servicewand.com (.button-primary)",
+      "sourceLabel": "example.com (.button-primary)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -140,7 +140,7 @@
       "category": "03-cta",
       "path": "03-cta/cta.btn-secondary-filled",
       "title": "Secondary CTA · filled pill (vertical-themed)",
-      "description": "Secondary CTA paired with primary. Fully filled pill — background is a 90° dark gradient that re-themes per vertical via --cta-secondary-fill (snow-removal: bronze/olive; lawn-care: dark green; hvac: dark amber; etc). Light text, 1 px soft border, always-on soft halo that strengthens on hover, sparkle icon that rotates 180° on hover. Inner bottom hover-rise comes from effect.hover-rise. No rainbow ring — explicitly a different visual primitive than primary so the pair reads as two distinct affordances.",
+      "description": "Secondary CTA paired with primary. Fully filled pill — background is a 90° dark gradient that re-themes per vertical via --cta-secondary-fill (lorem-cyan: bronze/olive; lorem-green: dark green; lorem-orange: dark amber; etc). Light text, 1 px soft border, always-on soft halo that strengthens on hover, sparkle icon that rotates 180° on hover. Inner bottom hover-rise comes from effect.hover-rise. No rainbow ring — explicitly a different visual primitive than primary so the pair reads as two distinct affordances.",
       "canonical": true,
       "theme": "light+dark-compatible",
       "sourceLabel": "lsrc.pixelnation.com/.../winter-services.html (.vl-button--secondary)",
@@ -152,9 +152,9 @@
       "hasJs": false
     },
     {
-      "id": "language.sw-locale-dropdown",
+      "id": "language.locale-dropdown",
       "category": "04-language",
-      "path": "04-language/language.sw-locale-dropdown",
+      "path": "04-language/language.locale-dropdown",
       "title": "Locale selector · dropdown",
       "description": "Pill button with chevron-down + current language label on desktop. On mobile it compacts to a two-letter locale code and code-only dropdown. Hydrates from /core/api/language/active.json on a real server; falls back to en/fr/es when offline (file:// or no API).",
       "canonical": true,
@@ -172,10 +172,10 @@
       "category": "05-hero",
       "path": "05-hero/hero.composite-photo",
       "title": "Hero · composite photo (vertical-landing)",
-      "description": "Hero for vertical-landings (Snow Removal, Lawn Care, HVAC, etc). Left column: breadcrumb eyebrow, 3-line H1 with italic-blue accent, 2 lede paragraphs, CTA pair. Right column: 5:6 photo slot with overlays — dark stat chip (bottom-left) and two person cards (top-right). Photo defaults to a neutral striped media placeholder; replace via {{photo_url}} (IMAGE param).",
+      "description": "Hero for vertical-landings (Lorem Ipsum, Lorem Ipsum, Lorem Ipsum, etc). Left column: breadcrumb eyebrow, 3-line H1 with italic-blue accent, 2 lede paragraphs, CTA pair. Right column: 5:6 photo slot with overlays — dark stat chip (bottom-left) and two person cards (top-right). Photo defaults to a neutral striped media placeholder; replace via {{photo_url}} (IMAGE param).",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/field-service-landing-v3/src/HeroSection.jsx",
+      "sourceLabel": "tmp/Lorem ipsum/sample-landing-v3/src/HeroSection.jsx",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -219,7 +219,7 @@
       "description": "Signature hub hero. Left column: breadcrumb-style eyebrow, three-line H1 with italic-cyan accent on the middle word, three lede paragraphs, primary + secondary CTA pair. Right column: neutral rectangular product screenshot placeholder. Light theme adaptation of v5 hero variant B (designer default).",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (HeroArtB + Hero)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-1.jsx (HeroArtB + Hero)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -263,7 +263,7 @@
       "description": "Two independent accordion columns of feature rows. Each row carries a monospace F.NN badge, a title, and a plus-icon toggle that rotates 45° and inverts on open. Multiple rows can be open at the same time (matches v5 design source — no one-open rule). 20 slot capacity (15 wired here, easy to extend); empty slots auto-hide via block.js.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (FeaturesAccordion)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-1.jsx (FeaturesAccordion)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -276,10 +276,10 @@
       "category": "06-features",
       "path": "06-features/features.card-grid-3",
       "title": "Features · 3-card horizontal grid",
-      "description": "H2 + 3 lede paragraphs + 3 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Connected Operations' / 'How ServiceWand Works' framing pattern. 3 fixed slots (use features.accordion-2col-numbered for variable counts).",
+      "description": "H2 + 3 lede paragraphs + 3 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Connected Operations' / 'How the platform Works' framing pattern. 3 fixed slots (use features.accordion-2col-numbered for variable counts).",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid3)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-1.jsx (CardGrid3)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -323,7 +323,7 @@
       "description": "H2 + 3 lede paragraphs + 4 horizontal cards. Each card carries a mono number badge, a title, and two body paragraphs. Used as the 'Unified Platform' / 'What's Inside' framing pattern. 4 fixed slots; collapses to 2 columns at ≤1180px, single column at ≤720px.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-1.jsx (CardGrid4)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-1.jsx (CardGrid4)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -363,11 +363,11 @@
       "id": "comparison.three-col-with-mobile-cards",
       "category": "07-comparison",
       "path": "07-comparison/comparison.three-col-with-mobile-cards",
-      "title": "Comparison · ServiceWand matrix",
-      "description": "ServiceWand.com-style comparison matrix with six external platform columns, status icons, a highlighted ServiceWand column, and stacked mobile cards below 860px.",
+      "title": "Comparison · the platform matrix",
+      "description": "the platform.com-style comparison matrix with six external platform columns, status icons, a highlighted the platform column, and stacked mobile cards below 860px.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "https://servicewand.com/ comparison section",
+      "sourceLabel": "https://example.com/ comparison section",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -411,7 +411,7 @@
       "description": "FAQ section organized into 4 categories × 5 questions (20 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship 1 group of 3 questions just as easily as 4 groups of 5.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-3.jsx (FAQGrouped)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-3.jsx (FAQGrouped)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -471,7 +471,7 @@
       "description": "Single-purpose narrative section: eyebrow + H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual. The canonical variant is text-first; an optional side SVG glyph remains available through data-has-glyph='true'.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-2.jsx (NarrativeSection)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-2.jsx (NarrativeSection)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -600,10 +600,10 @@
       "category": "10-verticals-grid",
       "path": "10-verticals-grid/verticals.glyph-grid-20-slots",
       "title": "Verticals grid · photo-card catalog",
-      "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Snow Removal ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+      "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "/Users/imighty/Downloads/Field Service Ops (2)/src/kit/catalog-compare.jsx (CardCatalog)",
+      "sourceLabel": "/Users/imighty/Downloads/Lorem ipsum (2)/src/kit/catalog-compare.jsx (CardCatalog)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -647,7 +647,7 @@
       "description": "Mobile-experience section for hub pages. Centered H2 + 3 ledes + 4 cards, each with a glyph chip, title, and 2 body paragraphs. Light tinted background (--color-gray-bg) so the section sits visually between white sections.",
       "canonical": true,
       "theme": "light",
-      "sourceLabel": "tmp/Field Service Ops/src/sections-3.jsx (MobileExperience4Cards)",
+      "sourceLabel": "tmp/Lorem ipsum/src/sections-3.jsx (MobileExperience4Cards)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"
@@ -720,10 +720,10 @@
       "category": "12-decorative",
       "path": "12-decorative/effect.hover-rise",
       "title": "Effect · hover-rise (CTA halo + inner bottom glow)",
-      "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-vertical overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
+      "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-theme overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
       "canonical": true,
       "theme": "theme-agnostic",
-      "sourceLabel": "servicewand.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
+      "sourceLabel": "example.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
       "preview": {
         "390": "preview-390.png",
         "1440": "preview-1440.png"

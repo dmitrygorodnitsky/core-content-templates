@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { NESTED_CODE_PATTERNS, SLOT_MARKERS } from "./cms-family-contract.mjs";
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -15,7 +16,7 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \\
-  --out docs/cms-components/lab-ui/dist/field-service`;
+  --out docs/cms-components/lab-ui/dist/sample-landing`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 
@@ -125,30 +126,30 @@ const main = () => {
 
   const faq = payloadChildren.find((template) => template.code === "FAQ");
   if (!faq) fail("FAQ parent template is missing");
-  if (faq && !flatten(faq.children || []).some((child) => /^FAQ_\d+$/.test(child.code))) fail("FAQ family must contain nested FAQ_N children");
-  if (faq && !faq.html.includes("cms-child-slot:FAQ_GROUPS")) fail("FAQ parent html must include FAQ group slot marker");
+  if (faq && !flatten(faq.children || []).some((child) => NESTED_CODE_PATTERNS.FAQ_ITEM.test(child.code))) fail("FAQ family must contain nested FAQ_N children");
+  if (faq && !faq.html.includes(`cms-child-slot:${SLOT_MARKERS.faqGroups}`)) fail("FAQ parent html must include FAQ group slot marker");
   if (
     faq &&
-    !(faq.children || []).every((child) => !child.code.startsWith("FAQ_GROUP_") || child.html.includes("cms-child-slot:FAQ_ITEMS"))
+    !(faq.children || []).every((child) => !NESTED_CODE_PATTERNS.FAQ_GROUP.test(child.code) || child.html.includes(`cms-child-slot:${SLOT_MARKERS.faqItems}`))
   ) {
     fail("FAQ group templates must include FAQ item slot markers");
   }
 
   const compare = payloadChildren.find((template) => template.code === "COMPARISON");
-  if (compare && !compare.children?.some((child) => /^COMPARE_ROW_\d+$/.test(child.code))) {
+  if (compare && !compare.children?.some((child) => NESTED_CODE_PATTERNS.COMPARE_ROW.test(child.code))) {
     fail("COMPARISON parent must contain nested COMPARE_ROW_N children");
   }
 
   const features = payloadChildren.find((template) => template.code === "FEATURES");
-  if (features && !flatten(features.children || []).some((child) => /^FEATURE_\d+$/.test(child.code))) {
+  if (features && !flatten(features.children || []).some((child) => NESTED_CODE_PATTERNS.FEATURE_ITEM.test(child.code))) {
     fail("FEATURES family must contain nested FEATURE_N children");
   }
-  if (features && !features.html.includes("cms-child-slot:FEATURE_COLUMNS")) {
+  if (features && !features.html.includes(`cms-child-slot:${SLOT_MARKERS.featureColumns}`)) {
     fail("FEATURES parent html must include feature column slot marker");
   }
   if (
     features &&
-    !(features.children || []).every((child) => !child.code.startsWith("FEATURE_COL_") || child.html.includes("cms-child-slot:FEATURE_ITEMS"))
+    !(features.children || []).every((child) => !NESTED_CODE_PATTERNS.FEATURE_COL.test(child.code) || child.html.includes(`cms-child-slot:${SLOT_MARKERS.featureItems}`))
   ) {
     fail("FEATURE column templates must include feature item slot markers");
   }

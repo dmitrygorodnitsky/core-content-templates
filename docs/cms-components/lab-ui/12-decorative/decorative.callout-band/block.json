@@ -23,12 +23,20 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "One platform · Four stages · No migration required" },
-    { "code": "body",    "type": "LOCALIZED_STRING_SS", "default": "ServiceWand grows with the operation. Start with a single crew and a calendar; finish with multi-region dispatch, integrated billing, recurring contracts, and AI-assisted workflows — without changing tools or losing data along the way." }
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Drop at the end of a Section, after content like StagesList or AxesGrid. The accent glow visually 'closes' the section without needing a heavy CTA.",

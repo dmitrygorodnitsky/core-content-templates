@@ -1,0 +1,183 @@
+{
+  "code": "HERO",
+  "nls": {
+    "en": {
+      "NAME": "Hero"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SAMPLE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<!-- lab-ui block · hero.operational-diagram\n     Signature hub hero. Left: eyebrow + H1 + 3 lead paragraphs + CTA pair.\n     Right: neutral screenshot/image placeholder. Replace the placeholder\n     with an actual product image when the CMS/media layer provides one.\n     Theme: light (sw tokens). Adapted from v5 dark variant.\n     Composes: cta.btn-primary-ring + cta.btn-secondary-filled (CTA pair).\n     Param contract: see block.json.\n-->\n<section class=\"hero hero--diagram\" id=\"hero\" data-block=\"hero.operational-diagram\">\n  <div class=\"container hero-grid\">\n\n    <div class=\"hero-content\">\n      <div class=\"hero-eyebrow\">\n        <span>${HERO_EYEBROW_ROOT@LOCALIZED_STRING_SS}</span>\n        <span class=\"crumb-sep\">/</span>\n        <span class=\"crumb-cur\">${HERO_EYEBROW_LEAF@LOCALIZED_STRING_SS}</span>\n      </div>\n      <h1 class=\"hero-title\">\n        ${HERO_TITLE_LINE_1@LOCALIZED_STRING_SS}<br/>\n        for <span class=\"accent\">${HERO_TITLE_ACCENT@LOCALIZED_STRING_SS}</span><br/>\n        ${HERO_TITLE_LINE_2@LOCALIZED_STRING_SS}\n      </h1>\n      <div class=\"hero-leads\">\n        <p>${HERO_LEAD_1@LOCALIZED_STRING_SS}</p>\n        <p>${HERO_LEAD_2@LOCALIZED_STRING_SS}</p>\n        <p>${HERO_LEAD_3@LOCALIZED_STRING_SS}</p>\n      </div>\n      <div class=\"hero-cta\">\n        <a class=\"btn btn-primary btn-primary-ring\" href=\"${HERO_CTA_PRIMARY_HREF@STRING}\">\n          <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n          </svg>\n          ${HERO_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}\n        </a>\n        <a class=\"btn btn-secondary btn-secondary-filled\" href=\"${HERO_CTA_SECONDARY_HREF@STRING}\">\n          <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n            <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n          </svg>\n          ${HERO_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}\n        </a>\n      </div>\n    </div>\n\n    <div class=\"hero-art\" aria-hidden=\"true\">\n      <div class=\"hero-media-placeholder\" data-screenshot-slot>\n        <div class=\"hero-media-surface\">\n          <div class=\"hero-placeholder-copy\">\n            <span>${HERO_PLACEHOLDER_SIZE@LOCALIZED_STRING_SS}</span>\n            <span>${HERO_PLACEHOLDER_LABEL@LOCALIZED_STRING_SS}</span>\n          </div>\n        </div>\n      </div>\n    </div>\n\n  </div>\n</section>\n",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "HERO_EYEBROW_ROOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "eyebrow_root"
+        }
+      },
+      "value": {
+        "en": "the platform"
+      }
+    },
+    {
+      "code": "HERO_EYEBROW_LEAF",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "eyebrow_leaf"
+        }
+      },
+      "value": {
+        "en": "Sample Landing"
+      }
+    },
+    {
+      "code": "HERO_TITLE_LINE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "title_line_1"
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum Dolor Sit Amet Consectetur Adipiscing Elit Sed Do Eiusmod"
+      }
+    },
+    {
+      "code": "HERO_TITLE_ACCENT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "title_accent"
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "HERO_TITLE_LINE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "title_line_2"
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "HERO_LEAD_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lead_1"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "HERO_LEAD_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lead_2"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat, duis aute irure dolor in reprehenderit."
+      }
+    },
+    {
+      "code": "HERO_LEAD_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "lead_3"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "HERO_CTA_PRIMARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "cta_primary_href"
+        }
+      },
+      "value": "#cta"
+    },
+    {
+      "code": "HERO_CTA_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "cta_primary_label"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum"
+      }
+    },
+    {
+      "code": "HERO_CTA_SECONDARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "cta_secondary_href"
+        }
+      },
+      "value": "#features"
+    },
+    {
+      "code": "HERO_CTA_SECONDARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "cta_secondary_label"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor"
+      }
+    },
+    {
+      "code": "HERO_PLACEHOLDER_SIZE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "placeholder_size"
+        }
+      },
+      "value": {
+        "en": "Lorem"
+      }
+    },
+    {
+      "code": "HERO_PLACEHOLDER_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "placeholder_label"
+        }
+      },
+      "value": {
+        "en": "Lorem ipsum dolor sit amet."
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
-# lab-ui — ServiceWand CMS/UI block catalog
+# lab-ui — the platform CMS/UI block catalog
 
-`lab-ui` is the durable source of truth for normalized, reusable ServiceWand
+`lab-ui` is the durable source of truth for normalized, reusable the platform
 CMS/UI landing blocks. It was promoted from `tmp/lab-ui`; the old
 source-extract catalog under this path was removed because it duplicated the
 block source of truth.
@@ -67,11 +67,11 @@ anything to CMS.
 
 ```bash
 node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \
-  --copy docs/cms-components/lab-ui/compositions/examples/field-service-copy.md \
-  --out docs/cms-components/lab-ui/dist/field-service
+  --copy docs/cms-components/lab-ui/compositions/examples/sample-landing-copy.md \
+  --out docs/cms-components/lab-ui/dist/sample-landing
 
 node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/field-service
+  --out docs/cms-components/lab-ui/dist/sample-landing
 ```
 
 The generated root template owns `head`, bundled CSS, and bundled JavaScript.
@@ -86,9 +86,9 @@ tree model, and generated artifact layout.
 
 - Default theme is light. `00-tokens/dark.overlay.css` is parked reference for
   future dark contexts.
-- `header.sw-default` is the canonical header for hub, vertical, and product
+- `header.default` is the canonical header for hub, vertical, and product
   pages.
-- Breadcrumb is an optional sublayer owned by `header.sw-default`; keep it with
+- Breadcrumb is an optional sublayer owned by `header.default`; keep it with
   the canonical header instead of maintaining a separate block source of truth.
 - Canonical CTA blocks are `cta.btn-primary-ring` and
   `cta.btn-secondary-filled`.

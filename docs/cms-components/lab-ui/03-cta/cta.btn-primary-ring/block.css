@@ -31,7 +31,7 @@
 }
 
 /* On hover the rainbow ring rotates direction 249° → 264° (matches
-   live ServiceWand .button-primary:hover::before). */
+   live the platform .button-primary:hover::before). */
 .btn-primary-ring:hover::before {
   background: linear-gradient(
     264.85deg,

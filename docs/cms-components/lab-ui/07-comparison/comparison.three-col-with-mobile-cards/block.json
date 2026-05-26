@@ -2,14 +2,14 @@
   "$schema": "lab-ui/block@1",
   "id": "comparison.three-col-with-mobile-cards",
   "category": "07-comparison",
-  "title": "Comparison · ServiceWand matrix",
-  "description": "ServiceWand.com-style comparison matrix with six external platform columns, status icons, a highlighted ServiceWand column, and stacked mobile cards below 860px.",
+  "title": "Comparison · the platform matrix",
+  "description": "the platform.com-style comparison matrix with six external platform columns, status icons, a highlighted the platform column, and stacked mobile cards below 860px.",
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "https://servicewand.com/ comparison section",
-    "adapted_from": "Live ServiceWand comparison matrix, normalized as a lab-ui block contract",
-    "decision": "PM lock 2026-05-25 — comparison should match ServiceWand matrix, not the old 3-way FSM table"
+    "primary": "https://example.com/ comparison section",
+    "adapted_from": "Live the platform comparison matrix, normalized as a lab-ui block contract",
+    "decision": "PM lock 2026-05-25 — comparison should match the platform matrix, not the old 3-way FSM table"
   },
   "depends_on": {
     "tokens": [
@@ -62,337 +62,337 @@
     {
       "code": "eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Comparison"
+      "default": "Lorem"
     },
     {
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand unifies it all"
+      "default": "Lorem ipsum dolor sit."
     },
     {
       "code": "lede",
       "type": "LOCALIZED_STRING_SS",
-      "default": "From operations to customer experience - seamlessly connected."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
     },
     {
       "code": "col_sw_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand"
+      "default": "Lorem"
     },
     {
       "code": "col_sw_service",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Service"
+      "default": "Lorem"
     },
     {
       "code": "col_sw_wand",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Wand"
+      "default": "Lor"
     },
     {
       "code": "col_crm_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "CRM Systems"
+      "default": "Lorem"
     },
     {
       "code": "col_field_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Field Service Tools"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "col_monitoring_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Monitoring Tools"
+      "default": "Lorem ipsum"
     },
     {
       "code": "col_cms_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "CMS & Portals"
+      "default": "Lorem ipsum"
     },
     {
       "code": "col_enterprise_name",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Enterprise Platforms"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_01_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer & CRM"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_01_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_01_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_01_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_01_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_01_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_01_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_02_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Billing & Revenue"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_02_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_02_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_02_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_02_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_02_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_02_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "enterprise"
+      "default": "Lorem"
     },
     {
       "code": "slot_03_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Operations & Workflows"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_03_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "unified"
+      "default": "Lorem"
     },
     {
       "code": "slot_03_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": "limited"
+      "default": "Lorem"
     },
     {
       "code": "slot_03_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_03_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": "manual config"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_03_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": "manual config"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_03_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "complex"
+      "default": "Lorem"
     },
     {
       "code": "slot_04_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Portals & Content"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_04_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "integrated"
+      "default": "Lorem"
     },
     {
       "code": "slot_04_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_04_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_04_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_04_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_04_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "add-ons"
+      "default": "Lorem"
     },
     {
       "code": "slot_05_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI & Intelligence"
+      "default": "Lorem ipsum"
     },
     {
       "code": "slot_05_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "built-in"
+      "default": "Lorem"
     },
     {
       "code": "slot_05_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_05_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_05_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_05_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_05_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_06_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Products, Assets & Inventory"
+      "default": "Lorem ipsum dolor sit amet."
     },
     {
       "code": "slot_06_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "unified"
+      "default": "Lorem"
     },
     {
       "code": "slot_06_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_06_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_06_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_06_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_06_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "enterprise"
+      "default": "Lorem"
     },
     {
       "code": "slot_07_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Monitoring & Diagnostics"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_07_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_07_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_07_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_07_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": "native"
+      "default": "Lorem"
     },
     {
       "code": "slot_07_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": ""
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_07_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "partial"
+      "default": "Lorem"
     },
     {
       "code": "slot_08_capability",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Ecosystem & Extensibility"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_08_sw",
       "type": "LOCALIZED_STRING_SS",
-      "default": "modular & scalable"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "slot_08_crm",
       "type": "LOCALIZED_STRING_SS",
-      "default": "fragmented"
+      "default": "Lorem"
     },
     {
       "code": "slot_08_field",
       "type": "LOCALIZED_STRING_SS",
-      "default": "niche"
+      "default": "Lor"
     },
     {
       "code": "slot_08_monitoring",
       "type": "LOCALIZED_STRING_SS",
-      "default": "limited"
+      "default": "Lorem"
     },
     {
       "code": "slot_08_cms",
       "type": "LOCALIZED_STRING_SS",
-      "default": "limited"
+      "default": "Lorem"
     },
     {
       "code": "slot_08_enterprise",
       "type": "LOCALIZED_STRING_SS",
-      "default": "heavy / complex"
+      "default": "Lorem ipsum"
     }
   ],
   "preview": {
@@ -400,8 +400,8 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "The matrix mirrors the live ServiceWand comparison: 8 capabilities, ServiceWand highlighted, and six adjacent platform columns.",
+    "The matrix mirrors the live the platform comparison: 8 capabilities, the platform highlighted, and six adjacent platform columns.",
     "Status colors are encoded in the block markup/classes because they are part of the comparison claim, while labels remain localized params.",
-    "Mobile keeps capability and ServiceWand visible, then collapses secondary platform columns behind per-row expanders."
+    "Mobile keeps capability and the platform visible, then collapses secondary platform columns behind per-row expanders."
   ]
 }

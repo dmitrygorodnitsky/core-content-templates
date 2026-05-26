@@ -1,8 +1,8 @@
 /* ============================================================
    lab-ui · canonical tokens · light theme
    ----------------------------------------------------------------
-   Source-of-truth design tokens for the ServiceWand block catalog.
-   Extracted from sw-styles.css (servicewand.com light theme) +
+   Source-of-truth design tokens for the the platform block catalog.
+   Extracted from source tokens (example.com light theme) +
    additive --font-mono from v5 (JetBrains Mono).
    ============================================================ */
 
@@ -141,14 +141,14 @@
 
   --input-bg:           var(--color-light-card-bg);
 
-  /* ─── CTA · vertical accent system ─────────────────────────
+  /* ─── CTA · theme accent system ────────────────────────────
      --cta-accent is the page-wide interactive accent. It tints:
        · hover-rise glow (effect.hover-rise)
        · primary CTA outer hover glow (box-shadow)
        · secondary CTA always-on halo
        · italic accent word in hero titles
      --cta-secondary-fill is the filled background of secondary CTAs.
-     Per-vertical overrides go through [data-vertical="..."] below.   */
+     Theme overrides go through [data-theme="..."] below. */
   --cta-accent:          var(--color-cyan);
   --cta-accent-soft:     rgba(107, 234, 249, 0.30);
   --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
@@ -156,54 +156,55 @@
   --cta-secondary-border:rgba(255, 255, 255, 0.18);
 }
 
-/* ─── Vertical accent overlays ────────────────────────────────
-   Set on <body data-vertical="..."> or any wrapper. Cascades into
-   every CTA, hover-rise effect, and accent text inside the scope. */
+/* ─── Theme overlays ───────────────────────────────────────────
+   Set on <body data-theme="..."> or any wrapper. Cascades into
+   every CTA, hover-rise effect, and accent text inside the scope.
+   Names are color families, not industries — pick whichever fits. */
 
-[data-vertical="snow-removal"] {
+[data-theme="cyan"] {
   /* Default cyan — kept explicit so authors see the slot exists. */
   --cta-accent:          #6BEAF9;
   --cta-accent-soft:     rgba(107, 234, 249, 0.30);
   --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
 }
 
-[data-vertical="lawn-care"] {
+[data-theme="green"] {
   --cta-accent:          #7DDE8E;
   --cta-accent-soft:     rgba(125, 222, 142, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);
 }
 
-[data-vertical="hvac"] {
+[data-theme="orange"] {
   --cta-accent:          #FFA72C;
   --cta-accent-soft:     rgba(255, 167, 44, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);
 }
 
-[data-vertical="pest-control"] {
+[data-theme="red"] {
   --cta-accent:          #FF6C56;
   --cta-accent-soft:     rgba(255, 108, 86, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);
 }
 
-[data-vertical="tree-care"] {
+[data-theme="forest"] {
   --cta-accent:          #7DDE8E;
   --cta-accent-soft:     rgba(125, 222, 142, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);
 }
 
-[data-vertical="plumbing"] {
+[data-theme="blue"] {
   --cta-accent:          #4F95FF;
   --cta-accent-soft:     rgba(79, 149, 255, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);
 }
 
-[data-vertical="electrical"] {
+[data-theme="amber"] {
   --cta-accent:          #FFA72C;
   --cta-accent-soft:     rgba(255, 167, 44, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);
 }
 
-[data-vertical="cleaning"] {
+[data-theme="magenta"] {
   --cta-accent:          #EF5CFF;
   --cta-accent-soft:     rgba(239, 92, 255, 0.28);
   --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);

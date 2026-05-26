@@ -1,0 +1,343 @@
+/* lab-ui block · language.locale-dropdown
+   Depends: 00-tokens/tokens.css (--header-bg, --color-heading, --locale-selector-bg,
+   --transition-duration, --color-cyan). */
+
+.locale-selector {
+  position: relative;
+  isolation: isolate;
+  font-family: var(--font-family);
+}
+
+.locale-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding-inline: 15px;
+  height: 42px;
+  border: 1px solid var(--card-border, transparent);
+  border-radius: 10px;
+  background-color: var(--header-bg, var(--color-light-card-bg));
+  color: var(--color-heading);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  min-width: 180px;
+  transition: border-radius 0.2s ease;
+}
+
+.locale-trigger-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.locale-selector.is-open .locale-trigger {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Opt out of effect.hover-rise's halo + inner radial — the locale chip
+   is a quiet chrome element. Keyboard focus outline from effect.hover-rise
+   is preserved for a11y. */
+.locale-trigger::after { display: none; }
+.locale-trigger:hover,
+.locale-trigger:focus-visible {
+  box-shadow: none;
+}
+
+.locale-chevron {
+  flex-shrink: 0;
+  transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.locale-selector.is-open .locale-chevron {
+  transform: rotate(180deg);
+}
+
+.locale-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 100%;
+  background-color: var(--locale-selector-bg, var(--color-gray-bg));
+  border: 1px solid var(--card-border, rgba(0, 0, 0, 0.05));
+  border-top: 0;
+  border-bottom-right-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
+  overflow: hidden;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.25s;
+}
+
+.locale-selector.is-open .locale-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.locale-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  max-height: 304px;
+  overflow-y: auto;
+}
+
+.locale-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1rem;
+  color: var(--color-heading);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background-color var(--transition-duration) ease;
+}
+
+.locale-selector.is-open .locale-item {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.locale-selector.is-open .locale-item:nth-child(1) { transition-delay: 0.04s; }
+.locale-selector.is-open .locale-item:nth-child(2) { transition-delay: 0.07s; }
+.locale-selector.is-open .locale-item:nth-child(3) { transition-delay: 0.10s; }
+.locale-selector.is-open .locale-item:nth-child(4) { transition-delay: 0.13s; }
+.locale-selector.is-open .locale-item:nth-child(5) { transition-delay: 0.16s; }
+
+.locale-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.locale-item.is-active {
+  background-color: rgba(107, 192, 249, 0.1);
+}
+
+.locale-item-label {
+  flex: 1;
+}
+
+.locale-item-code {
+  display: none;
+}
+
+.locale-check {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: var(--color-cyan, #6BC0F9);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.locale-item.is-active .locale-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 600px) {
+  .locale-selector {
+    display: inline-block;
+  }
+}
+
+.locale-selector--mobile .locale-trigger {
+  width: 2.625rem;
+  min-width: 0;
+  height: 2.625rem;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(27, 29, 37, 0.045);
+}
+
+.locale-selector--mobile.is-open .locale-trigger {
+  border-radius: 999px;
+}
+
+.locale-selector--mobile .locale-trigger::before {
+  content: attr(data-short-code);
+  display: block;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.locale-selector--mobile .locale-trigger:not([data-short-code])::before,
+.locale-selector--mobile .locale-trigger[data-short-code=""]::before {
+  content: "EN";
+}
+
+.locale-selector--mobile .locale-trigger-left {
+  display: none;
+}
+
+.locale-selector--mobile .locale-dropdown {
+  top: calc(100% + 0.375rem);
+  left: auto;
+  right: 0;
+  min-width: 3rem;
+  border: 1px solid var(--card-border, rgba(0, 0, 0, 0.05));
+  border-radius: 1rem;
+  background: var(--locale-selector-bg, var(--color-gray-bg));
+}
+
+.locale-selector--mobile .locale-list {
+  align-items: center;
+  padding: 0.375rem;
+  gap: 0.25rem;
+}
+
+.locale-selector--mobile .locale-item {
+  width: 2.25rem;
+  height: 2.25rem;
+  justify-content: center;
+  padding: 0;
+  border-radius: 0.75rem;
+}
+
+.locale-selector--mobile .locale-item::before {
+  content: attr(data-short-code);
+  color: var(--color-heading);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.locale-selector--mobile .locale-item:has(.locale-item-code)::before {
+  display: none;
+}
+
+.locale-selector--mobile .locale-item-label,
+.locale-selector--mobile .locale-check {
+  display: none;
+}
+
+.locale-selector--mobile .locale-item-code {
+  display: block;
+  color: var(--color-heading);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .locale-trigger {
+    width: 2.625rem;
+    min-width: 0;
+    height: 2.625rem;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(27, 29, 37, 0.045);
+  }
+
+  .locale-selector.is-open .locale-trigger {
+    border-radius: 999px;
+  }
+
+  .locale-trigger::before {
+    content: attr(data-short-code);
+    display: block;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .locale-trigger:not([data-short-code])::before,
+  .locale-trigger[data-short-code=""]::before {
+    content: "EN";
+  }
+
+  .locale-trigger-left {
+    display: none;
+  }
+
+  .locale-dropdown {
+    top: calc(100% + 0.375rem);
+    left: auto;
+    right: 0;
+    min-width: 3rem;
+    border: 1px solid var(--card-border, rgba(0, 0, 0, 0.05));
+    border-radius: 1rem;
+    background: var(--locale-selector-bg, var(--color-gray-bg));
+  }
+
+  .locale-list {
+    align-items: center;
+    padding: 0.375rem;
+    gap: 0.25rem;
+  }
+
+  .locale-item {
+    width: 2.25rem;
+    height: 2.25rem;
+    justify-content: center;
+    padding: 0;
+    border-radius: 0.75rem;
+  }
+
+  .locale-item::before {
+    content: attr(data-short-code);
+    color: var(--color-heading);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .locale-item:has(.locale-item-code)::before {
+    display: none;
+  }
+
+  .locale-item-label,
+  .locale-check {
+    display: none;
+  }
+
+  .locale-item-code {
+    display: block;
+    color: var(--color-heading);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+}

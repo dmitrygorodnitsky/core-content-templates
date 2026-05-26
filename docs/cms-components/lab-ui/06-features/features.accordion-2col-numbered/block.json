@@ -7,7 +7,7 @@
   "canonical": true,
   "theme": "light",
   "source": {
-    "primary": "tmp/Field Service Ops/src/sections-1.jsx (FeaturesAccordion)",
+    "primary": "tmp/Lorem ipsum/src/sections-1.jsx (FeaturesAccordion)",
     "adapted_from": "v5 dark → light tokens, sw container width",
     "decision": "PM lock 2026-05-21 — features pattern = 2-col numbered accordion"
   },
@@ -28,55 +28,235 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "How It Works" },
-    { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Field Service Software That Powers Real Field Operations" },
-    { "code": "lede_1", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand connects every part of a field service workflow. Scheduling, dispatching, mobile workforce coordination, customer management, billing, reporting, and AI-assisted operations all run from one operational core." },
-    { "code": "lede_2", "type": "LOCALIZED_STRING_SS", "default": "Service businesses use ServiceWand to keep their daily work moving even when conditions change." },
-    { "code": "lede_3", "type": "LOCALIZED_STRING_SS", "default": "Built for crews, routes, recurring service, emergency dispatch, multi-location teams, and customer experiences that span office, field, and digital." },
-    { "code": "slot_01_title", "type": "LOCALIZED_STRING_SS", "default": "Intelligent Scheduling" },
-    { "code": "slot_01_body",  "type": "LOCALIZED_STRING_SS", "default": "Plan crew capacity, recurring routes, and emergency dispatch from one calendar. Constraints — skills, vehicles, territories, time windows — are respected automatically." },
-    { "code": "slot_02_title", "type": "LOCALIZED_STRING_SS", "default": "Live Dispatch" },
-    { "code": "slot_02_body",  "type": "LOCALIZED_STRING_SS", "default": "Route changes, reassignments, and ETA updates push to the field instantly. Dispatchers see who is where and what's next." },
-    { "code": "slot_03_title", "type": "LOCALIZED_STRING_SS", "default": "Mobile Workforce" },
-    { "code": "slot_03_body",  "type": "LOCALIZED_STRING_SS", "default": "Techs run the day from a phone — jobs, notes, photos, signatures, parts, invoicing. Works offline and syncs when connection returns." },
-    { "code": "slot_04_title", "type": "LOCALIZED_STRING_SS", "default": "Customer Management" },
-    { "code": "slot_04_body",  "type": "LOCALIZED_STRING_SS", "default": "Every property, contact, contract, recurring service, and history is stored against the customer so the next visit picks up exactly where the last one ended." },
-    { "code": "slot_05_title", "type": "LOCALIZED_STRING_SS", "default": "Billing & Invoicing" },
-    { "code": "slot_05_body",  "type": "LOCALIZED_STRING_SS", "default": "Generate invoices from completed work, recurring contracts, or material usage. Tax, multi-currency, and partial-payment workflows handled in one place." },
-    { "code": "slot_06_title", "type": "LOCALIZED_STRING_SS", "default": "Reporting & Insights" },
-    { "code": "slot_06_body",  "type": "LOCALIZED_STRING_SS", "default": "Dashboards for revenue, crew productivity, route efficiency, customer churn, and operational health. Drill into any number to the underlying work order." },
-    { "code": "slot_07_title", "type": "LOCALIZED_STRING_SS", "default": "Automation & Workflows" },
-    { "code": "slot_07_body",  "type": "LOCALIZED_STRING_SS", "default": "Trigger reminders, follow-ups, renewals, and escalation flows based on status, time, or business rules — without hand-built integrations." },
-    { "code": "slot_08_title", "type": "LOCALIZED_STRING_SS", "default": "AI-Assisted Operations" },
-    { "code": "slot_08_body",  "type": "LOCALIZED_STRING_SS", "default": "Schedule suggestions, anomaly alerts, and natural-language search across jobs, customers, and history." },
-    { "code": "slot_09_title", "type": "LOCALIZED_STRING_SS", "default": "Routing & Territories" },
-    { "code": "slot_09_body",  "type": "LOCALIZED_STRING_SS", "default": "Define service territories, optimize multi-stop routes, and rebalance loads when teams or vehicles change." },
-    { "code": "slot_10_title", "type": "LOCALIZED_STRING_SS", "default": "Recurring & Contract Work" },
-    { "code": "slot_10_body",  "type": "LOCALIZED_STRING_SS", "default": "Model seasonal routes, annual service plans, and tiered contracts. ServiceWand generates the work, the bills, and the renewals on schedule." },
-    { "code": "slot_11_title", "type": "LOCALIZED_STRING_SS", "default": "Inventory & Parts" },
-    { "code": "slot_11_body",  "type": "LOCALIZED_STRING_SS", "default": "Track stock across warehouses, trucks, and job sites. Trigger reorders when usage drops thresholds." },
-    { "code": "slot_12_title", "type": "LOCALIZED_STRING_SS", "default": "Estimates & Quoting" },
-    { "code": "slot_12_body",  "type": "LOCALIZED_STRING_SS", "default": "Send branded estimates from the field or the office. Approved quotes turn into jobs without re-entry." },
-    { "code": "slot_13_title", "type": "LOCALIZED_STRING_SS", "default": "Customer Portal" },
-    { "code": "slot_13_body",  "type": "LOCALIZED_STRING_SS", "default": "Customers see upcoming visits, invoices, service history, and contracts — and self-serve approvals and payments." },
-    { "code": "slot_14_title", "type": "LOCALIZED_STRING_SS", "default": "Integrations" },
-    { "code": "slot_14_body",  "type": "LOCALIZED_STRING_SS", "default": "Accounting, payments, mapping, communications — connect the systems you already use rather than replacing them." },
-    { "code": "slot_15_title", "type": "LOCALIZED_STRING_SS", "default": "Security & Roles" },
-    { "code": "slot_15_body",  "type": "LOCALIZED_STRING_SS", "default": "Granular role and territory permissions, SSO, audit log. Each user sees only the work and data they're authorized for." },
-    { "code": "slot_16_title", "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_16_body",  "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_17_title", "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_17_body",  "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_18_title", "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_18_body",  "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_19_title", "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_19_body",  "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_20_title", "type": "LOCALIZED_STRING_SS", "default": "" },
-    { "code": "slot_20_body",  "type": "LOCALIZED_STRING_SS", "default": "" }
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim."
+    },
+    {
+      "code": "slot_01_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_01_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud."
+    },
+    {
+      "code": "slot_02_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_02_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "slot_03_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_03_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
+    },
+    {
+      "code": "slot_04_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_04_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
+    },
+    {
+      "code": "slot_05_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_05_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_06_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_06_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+    },
+    {
+      "code": "slot_07_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_07_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_08_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_08_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+    },
+    {
+      "code": "slot_09_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_09_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et."
+    },
+    {
+      "code": "slot_10_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_10_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad."
+    },
+    {
+      "code": "slot_11_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_11_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+    },
+    {
+      "code": "slot_12_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_12_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+    },
+    {
+      "code": "slot_13_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_13_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    {
+      "code": "slot_14_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_14_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
+    },
+    {
+      "code": "slot_15_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_15_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "slot_16_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_16_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_17_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_17_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_18_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_18_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_19_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_19_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_20_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "slot_20_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Multiple-open: clicking a row toggles only that row — opens don't auto-close others. Matches v5 designer intent.",

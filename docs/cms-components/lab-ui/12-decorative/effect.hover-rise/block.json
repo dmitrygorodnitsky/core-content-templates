@@ -3,11 +3,11 @@
   "id": "effect.hover-rise",
   "category": "12-decorative",
   "title": "Effect · hover-rise (CTA halo + inner bottom glow)",
-  "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-vertical overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
+  "description": "Brand interaction primitive — standard CTA outer halo plus bottom-centered inner glow that fades in on hover (and on keyboard focus-visible for a11y). No DOM of its own; the effect is applied via CSS pseudo-elements to a set of brand selectors (.btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link for the header breadcrumb) and opt-in via [data-fx=\"rise\"] for custom elements. Tinted by --fx-rise-color, defaulting to --cta-accent (which the page's data-theme overlay can re-theme). Uses the same radial contract as cta.btn-primary-ring and cta.btn-secondary-filled: ellipse 58% 78% at 50% 100%, transparent at 60%.",
   "canonical": true,
   "theme": "theme-agnostic",
   "source": {
-    "primary": "servicewand.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
+    "primary": "example.com .button::after + winter-services .vl-button::after (both inject --button-bg via JS at first hover)",
     "adapted_from": "Reproduced as pure CSS gradient — no external image. Generalized to a set of brand selectors + opt-in attribute so the same effect applies to nav links, locale, breadcrumb, and any custom enrolled element. Updated to match the 2026-05-25 CTA glow contract.",
     "decision": "PM lock 2026-05-22 — hover-rise is a brand-level interaction primitive (not button-specific). One CSS file, broad selector list, tint via --cta-accent."
   },
@@ -19,11 +19,15 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "fx_rise_color_override", "type": "LOCALIZED_STRING_SS", "default": "" }
+    {
+      "code": "fx_rise_color_override",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Auto-applied selectors: .btn-primary-ring, .btn-secondary-filled, .nav-link, .nav-trigger, .locale-trigger, .bc-link. Their host blocks list effect.hover-rise in depends_on.other_blocks so a CMS generator knows to import this CSS whenever any of those appear on the page.",

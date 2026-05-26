@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { SLOT_MARKERS } from "./cms-family-contract.mjs";
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -16,7 +17,7 @@ const parseArgs = () => {
 
 const usage = () => `Usage:
 node docs/cms-components/lab-ui/scripts/render-cms-family-preview.mjs \\
-  --out docs/cms-components/lab-ui/dist/field-service \\
+  --out docs/cms-components/lab-ui/dist/sample-landing \\
   --file preview.html`;
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
@@ -42,12 +43,12 @@ const renderPlaceholders = (html, values, locale) =>
   );
 
 const slotFor = (template) => {
-  if (template.code === "FEATURES") return "FEATURE_COLUMNS";
-  if (template.code.startsWith("FEATURE_COL_")) return "FEATURE_ITEMS";
-  if (template.code === "COMPARISON") return "COMPARE_ROWS";
-  if (template.code === "FAQ") return "FAQ_GROUPS";
-  if (template.code.startsWith("FAQ_GROUP_")) return "FAQ_ITEMS";
-  return "ROOT_SECTIONS";
+  if (template.code === "FEATURES") return SLOT_MARKERS.featureColumns;
+  if (template.code.startsWith("FEATURE_COL_")) return SLOT_MARKERS.featureItems;
+  if (template.code === "COMPARISON") return SLOT_MARKERS.compareRows;
+  if (template.code === "FAQ") return SLOT_MARKERS.faqGroups;
+  if (template.code.startsWith("FAQ_GROUP_")) return SLOT_MARKERS.faqItems;
+  return SLOT_MARKERS.rootSections;
 };
 
 const renderTemplate = (template, values, locale) => {

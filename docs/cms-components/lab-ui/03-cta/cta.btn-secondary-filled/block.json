@@ -3,12 +3,12 @@
   "id": "cta.btn-secondary-filled",
   "category": "03-cta",
   "title": "Secondary CTA · filled pill (vertical-themed)",
-  "description": "Secondary CTA paired with primary. Fully filled pill — background is a 90° dark gradient that re-themes per vertical via --cta-secondary-fill (snow-removal: bronze/olive; lawn-care: dark green; hvac: dark amber; etc). Light text, 1 px soft border, always-on soft halo that strengthens on hover, sparkle icon that rotates 180° on hover. Inner bottom hover-rise comes from effect.hover-rise. No rainbow ring — explicitly a different visual primitive than primary so the pair reads as two distinct affordances.",
+  "description": "Secondary CTA paired with primary. Fully filled pill — background is a 90° dark gradient that re-themes per vertical via --cta-secondary-fill (lorem-cyan: bronze/olive; lorem-green: dark green; lorem-orange: dark amber; etc). Light text, 1 px soft border, always-on soft halo that strengthens on hover, sparkle icon that rotates 180° on hover. Inner bottom hover-rise comes from effect.hover-rise. No rainbow ring — explicitly a different visual primitive than primary so the pair reads as two distinct affordances.",
   "canonical": true,
   "theme": "light+dark-compatible",
   "source": {
     "primary": "lsrc.pixelnation.com/.../winter-services.html (.vl-button--secondary)",
-    "secondary": "servicewand.com pair pattern (primary + secondary on hero)",
+    "secondary": "example.com pair pattern (primary + secondary on hero)",
     "harmonized": "PM lock 2026-05-22 — replaces cta.btn-secondary-ghost. Secondary is filled, not outlined."
   },
   "depends_on": {
@@ -28,17 +28,33 @@
     ]
   },
   "params": [
-    { "code": "href",  "type": "URL", "default": "#" },
-    { "code": "label", "type": "LOCALIZED_STRING_SS", "default": "Explore Platform" },
-    { "code": "icon",  "type": "ENUM", "values": ["star", "none"], "default": "star" }
+    {
+      "code": "href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "icon",
+      "type": "ENUM",
+      "values": [
+        "star",
+        "none"
+      ],
+      "default": "star"
+    }
   ],
   "preview": {
-    "1440": "preview-1440.png",
-    "390": "preview-390.png"
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
   },
   "notes": [
     "Replaces cta.btn-secondary-ghost (removed 2026-05-22 as 'недостаточно ярко').",
-    "Vertical-themed via tokens: set <body data-vertical=\"lawn-care\"> on the page and the secondary background, halo, and accent shift together.",
+    "Vertical-themed via tokens: set <body data-theme=\"lorem-green\"> on the page and the secondary background, halo, and accent shift together.",
     "Always-on halo uses --cta-accent-soft (low alpha). On hover the halo switches to --cta-accent (full color) — the same accent that tints the primary's outer hover glow, so the pair feels cohesive.",
     "Inherits .btn geometry and .btn-star transition from cta.btn-base. Variant only defines the filled background, color tokens, hover halo, and inner bottom radial glow."
   ]

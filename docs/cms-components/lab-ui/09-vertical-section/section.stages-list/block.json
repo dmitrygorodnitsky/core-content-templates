@@ -59,172 +59,172 @@
     {
       "code": "stage_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Stage"
+      "default": "Lor"
     },
     {
       "code": "stage_1_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "01"
+      "default": "Lor"
     },
     {
       "code": "stage_1_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Solo & Owner-Operator"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "stage_1_users",
       "type": "LOCALIZED_STRING_SS",
-      "default": "1–3 users"
+      "default": "Lorem"
     },
     {
       "code": "stage_1_lead",
       "type": "LOCALIZED_STRING_SS",
-      "default": "You and a couple of techs. One calendar, a customer list, invoicing on Fridays. The foundation that has to keep working as everything else grows around it."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis."
     },
     {
       "code": "stage_1_chip_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Scheduling"
+      "default": "Lorem"
     },
     {
       "code": "stage_1_chip_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer history"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_1_chip_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Estimates"
+      "default": "Lorem"
     },
     {
       "code": "stage_1_chip_4",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Mobile capture"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_1_chip_5",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Invoicing"
+      "default": "Lorem"
     },
     {
       "code": "stage_2_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "02"
+      "default": "Lor"
     },
     {
       "code": "stage_2_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Small Service Business"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "stage_2_users",
       "type": "LOCALIZED_STRING_SS",
-      "default": "4–15 users"
+      "default": "Lorem"
     },
     {
       "code": "stage_2_lead",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multiple crews on the road. Recurring work, route context, customer communication, accounting integration. The point where most teams outgrow their first tool and start the migration cycle."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
     },
     {
       "code": "stage_2_chip_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Dispatch board"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_2_chip_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Recurring service"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_2_chip_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Customer portal"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_2_chip_4",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Route optimization"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "stage_3_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "03"
+      "default": "Lor"
     },
     {
       "code": "stage_3_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Growing Operation"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_3_users",
       "type": "LOCALIZED_STRING_SS",
-      "default": "16–60 users"
+      "default": "Lorem"
     },
     {
       "code": "stage_3_lead",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Service territories, multiple offices, dispatchers handling escalations all day. The team needs operational visibility, automation for the repetitive, and reporting beyond completed-jobs counts."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     },
     {
       "code": "stage_3_chip_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Territories"
+      "default": "Lorem"
     },
     {
       "code": "stage_3_chip_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Automation rules"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_3_chip_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Live dashboards"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_3_chip_4",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Asset history"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_4_num",
       "type": "LOCALIZED_STRING_SS",
-      "default": "04"
+      "default": "Lor"
     },
     {
       "code": "stage_4_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multi-Location Enterprise"
+      "default": "Lorem ipsum dolor"
     },
     {
       "code": "stage_4_users",
       "type": "LOCALIZED_STRING_SS",
-      "default": "60+ users"
+      "default": "Lorem"
     },
     {
       "code": "stage_4_lead",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multiple regions, complex contracts, integrations everywhere, governance and audit requirements. The platform has to disappear into the background of how the business operates."
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
     },
     {
       "code": "stage_4_chip_1",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Multi-region"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_4_chip_2",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Role-based access"
+      "default": "Lorem ipsum"
     },
     {
       "code": "stage_4_chip_3",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Audit log"
+      "default": "Lorem"
     },
     {
       "code": "stage_4_chip_4",
       "type": "LOCALIZED_STRING_SS",
-      "default": "AI agents"
+      "default": "Lorem"
     }
   ],
   "preview": {
