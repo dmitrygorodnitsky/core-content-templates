@@ -36,7 +36,7 @@
         }
       },
       "value": {
-        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor: <ul><li>Lorem ipsum dolor sit amet</li><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor incididunt</li><li>Ut labore et dolore magna aliqua</li></ul> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
       }
     }
   ]

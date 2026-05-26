@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-26T06:16:24.640Z",
+  "generatedAt": "2026-05-26T07:36:31.198Z",
   "mode": "dry-run",
   "root": {
     "code": "SAMPLE_LANDING",
@@ -1214,7 +1214,7 @@
                     }
                   },
                   "value": {
-                    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco."
+                    "en": "Lorem ipsum dolor sit amet, includes: <ul><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor</li><li>Incididunt ut labore</li></ul> Ut enim ad minim veniam."
                   }
                 }
               ]
@@ -2121,7 +2121,7 @@
                     }
                   },
                   "value": {
-                    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor: <ul><li>Lorem ipsum dolor sit amet</li><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor incididunt</li><li>Ut labore et dolore magna aliqua</li></ul> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
                   }
                 }
               ]
@@ -2239,7 +2239,7 @@
                     }
                   },
                   "value": {
-                    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+                    "en": "Tempor incididunt ut labore et dolore magna aliqua, ordered: <ol><li>Lorem ipsum primum</li><li>Dolor sit amet secundum</li><li>Consectetur adipiscing tertium</li></ol> Ut enim ad minim veniam."
                   }
                 }
               ]
@@ -2986,7 +2986,7 @@
         "en": "Lorem Ipsum Consectetur Adipiscing"
       },
       "FEATURE_2_BODY": {
-        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco."
+        "en": "Lorem ipsum dolor sit amet, includes: <ul><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor</li><li>Incididunt ut labore</li></ul> Ut enim ad minim veniam."
       },
       "FEATURE_3_TITLE": {
         "en": "Lorem Ipsum Tempor Incididunt"
@@ -3172,7 +3172,7 @@
         "en": "Lorem ipsum dolor sit amet consectetur?"
       },
       "FAQ_1_ANSWER": {
-        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor: <ul><li>Lorem ipsum dolor sit amet</li><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor incididunt</li><li>Ut labore et dolore magna aliqua</li></ul> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
       },
       "FAQ_2_QUESTION": {
         "en": "Lorem ipsum dolor sit amet consectetur adipiscing?"
@@ -3184,7 +3184,7 @@
         "en": "Lorem ipsum sed do eiusmod tempor?"
       },
       "FAQ_3_ANSWER": {
-        "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+        "en": "Tempor incididunt ut labore et dolore magna aliqua, ordered: <ol><li>Lorem ipsum primum</li><li>Dolor sit amet secundum</li><li>Consectetur adipiscing tertium</li></ol> Ut enim ad minim veniam."
       },
       "FAQ_4_QUESTION": {
         "en": "Lorem ipsum quis nostrud exercitation?"

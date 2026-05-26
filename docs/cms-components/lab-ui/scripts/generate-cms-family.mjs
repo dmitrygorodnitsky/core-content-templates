@@ -54,16 +54,20 @@ const escapeHtml = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-const parseFrontmatter = (text) => {
+const parseFrontmatter = (text, file = "<unknown>") => {
   if (!text.startsWith("---\n")) return [{}, text];
   const end = text.indexOf("\n---", 4);
-  if (end === -1) throw new Error("Frontmatter starts with --- but has no closing ---");
+  if (end === -1) throw new Error(`${file}: frontmatter opens with --- but has no closing ---`);
   const raw = text.slice(4, end).trim();
   const data = {};
-  for (const line of raw.split(/\r?\n/)) {
+  const rawLines = raw.split(/\r?\n/);
+  for (let i = 0; i < rawLines.length; i += 1) {
+    const line = rawLines[i];
     if (!line.trim()) continue;
-    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-    if (!match) throw new Error(`Invalid frontmatter line: ${line}`);
+    const match = line.match(/^([A-Za-z0-9_.\-]+):\s*(.*)$/);
+    if (!match) {
+      throw new Error(`${file}:${i + 2}: invalid frontmatter line "${line}" — expected key: value`);
+    }
     data[match[1]] = match[2].replace(/^["']|["']$/g, "");
   }
   return [data, text.slice(end + 4).trim()];
@@ -87,6 +91,41 @@ const pushParagraph = (target, lines) => {
   target.links.push(...parsed.links);
 };
 
+/* List support. Markdown unordered (`- item`, `* item`) and ordered
+   (`1. item`) lists are collected line-by-line and emitted as a single
+   pre-rendered `<ul>`/`<ol>` HTML string pushed onto target.paragraphs.
+   Downstream consumers treat the value as opaque text — the preview
+   renderer un-escapes a small whitelist of inline tags so the list
+   actually renders.
+
+   Inline links inside list items are kept as plain text — we keep the
+   list shape simple. If a list item is `[label](href)`, the link is
+   extracted into target.links and the label stays as the item text. */
+
+const isListItem = (line) => /^\s*(?:[-*]|(?:\d+\.))\s+\S/.test(line);
+
+const listItemPrefix = (line) => /^\s*(?:[-*]|(?:\d+\.))\s+/.exec(line)[0].length;
+
+const escapeHtmlInList = (text) =>
+  String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const pushList = (target, items, ordered) => {
+  if (!items.length) return;
+  const li = items
+    .map((rawText) => {
+      const { clean, links } = parseInlineLinks(rawText.trim());
+      target.links.push(...links);
+      return `<li>${escapeHtmlInList(clean)}</li>`;
+    })
+    .join("");
+  const tag = ordered ? "ol" : "ul";
+  target.paragraphs.push(`<${tag}>${li}</${tag}>`);
+};
+
 const splitTableRow = (line) =>
   line
     .trim()
@@ -98,7 +137,7 @@ const splitTableRow = (line) =>
 const isTableDivider = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
 
 const parseMarkdownCopy = (file) => {
-  const [frontmatter, body] = parseFrontmatter(readFileSync(file, "utf8"));
+  const [frontmatter, body] = parseFrontmatter(readFileSync(file, "utf8"), file);
   const lines = body.split(/\r?\n/);
   const model = {
     sourceFile: file,
@@ -108,10 +147,26 @@ const parseMarkdownCopy = (file) => {
     sections: {},
   };
 
+  // The frontmatter occupies the first ---\n…\n--- block at the top of
+  // the file. body line numbers start AFTER it, so we offset for nice
+  // error messages.
+  const frontmatterLineCount = (() => {
+    const raw = readFileSync(file, "utf8");
+    if (!raw.startsWith("---\n")) return 0;
+    const end = raw.indexOf("\n---", 4);
+    if (end === -1) return 0;
+    return raw.slice(0, end + 4).split(/\r?\n/).length;
+  })();
+  const lineNo = (offset) => frontmatterLineCount + offset + 1;
+  const where = (offset) => `${file}:${lineNo(offset)}`;
+
   let current = null;
   let currentItem = null;
   let paragraphLines = [];
   let tableLines = [];
+  let tableStartIndex = -1;
+  let listItems = [];
+  let listOrdered = false;
 
   const ensureSection = (key, title) => {
     if (!model.sections[key]) model.sections[key] = { title, paragraphs: [], links: [], items: [], table: null };
@@ -122,19 +177,32 @@ const parseMarkdownCopy = (file) => {
     if (!tableLines.length || !current) return;
     const rows = tableLines.filter((line) => line.includes("|"));
     tableLines = [];
-    if (rows.length < 2) throw new Error(`Malformed markdown table in ${current.title}`);
+    if (rows.length < 2) {
+      throw new Error(
+        `${where(tableStartIndex)}: malformed markdown table in "${current.title}" — need ≥1 header row + ≥1 divider + ≥1 body row`,
+      );
+    }
     const headers = splitTableRow(rows[0]);
     const bodyRows = rows.slice(2).map(splitTableRow).filter((row) => row.some(Boolean));
     current.table = { headers, rows: bodyRows };
   };
 
+  const flushList = () => {
+    if (!listItems.length) return;
+    const target = currentItem || current || model.hero;
+    pushList(target, listItems, listOrdered);
+    listItems = [];
+  };
+
   const flushParagraph = () => {
     if (tableLines.length) flushTable();
+    flushList();
     const target = currentItem || current || model.hero;
     pushParagraph(target, paragraphLines);
   };
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     const h1 = line.match(/^#\s+(.+)$/);
     const h2 = line.match(/^##\s+(.+)$/);
     const h3 = line.match(/^###\s+(.+)$/);
@@ -149,7 +217,9 @@ const parseMarkdownCopy = (file) => {
         current = ensureSection(slug(title), title);
         currentItem = null;
       } else if (h3) {
-        if (!current) throw new Error(`Subheading appears before a section: ${line}`);
+        if (!current) {
+          throw new Error(`${where(i)}: subheading "${line.trim()}" appears before any ## section`);
+        }
         currentItem = { title: h3[1].trim(), paragraphs: [], links: [] };
         current.items.push(currentItem);
       }
@@ -157,8 +227,20 @@ const parseMarkdownCopy = (file) => {
     }
     if (line.includes("|") && (current?.title || "").toLowerCase().includes("comparison")) {
       pushParagraph(currentItem || current || model.hero, paragraphLines);
-      if (!isTableDivider(line)) tableLines.push(line);
-      else tableLines.push(line);
+      flushList();
+      if (tableLines.length === 0) tableStartIndex = i;
+      tableLines.push(line);
+      continue;
+    }
+    if (isListItem(line)) {
+      // Starting (or continuing) a list. Close any open paragraph first
+      // so the list becomes its own paragraph slot.
+      if (!listItems.length) {
+        pushParagraph(currentItem || current || model.hero, paragraphLines);
+        listOrdered = /^\s*\d+\./.test(line);
+      }
+      const itemText = line.slice(listItemPrefix(line));
+      listItems.push(itemText);
       continue;
     }
     if (!line.trim()) {
@@ -169,10 +251,14 @@ const parseMarkdownCopy = (file) => {
   }
   flushParagraph();
 
-  if (!model.title) throw new Error("Copy must include a top-level # heading for the hero title");
-  if (!model.sections.features) throw new Error("Copy must include ## Features");
-  if (!model.sections.comparison) throw new Error("Copy must include ## Comparison");
-  if (!model.sections.faq) throw new Error("Copy must include ## FAQ");
+  const missing = [];
+  if (!model.title) missing.push("a top-level `#` heading for the hero title");
+  if (!model.sections.features) missing.push("`## Features` with ≥1 `### Feature` item");
+  if (!model.sections.comparison) missing.push("`## Comparison` with a markdown table");
+  if (!model.sections.faq) missing.push("`## FAQ` with ≥1 `### Question` item");
+  if (missing.length) {
+    throw new Error(`${file}: copy is missing required sections — ${missing.join("; ")}`);
+  }
 
   return model;
 };

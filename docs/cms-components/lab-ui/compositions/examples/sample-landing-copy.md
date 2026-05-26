@@ -30,7 +30,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Lorem Ipsum Consectetur Adipiscing
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco.
+Lorem ipsum dolor sit amet, includes:
+
+- Consectetur adipiscing elit
+- Sed do eiusmod tempor
+- Incididunt ut labore
+
+Ut enim ad minim veniam.
 
 ### Lorem Ipsum Tempor Incididunt
 
@@ -61,7 +67,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Lorem ipsum dolor sit amet consectetur?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor:
+
+- Lorem ipsum dolor sit amet
+- Consectetur adipiscing elit
+- Sed do eiusmod tempor incididunt
+- Ut labore et dolore magna aliqua
+
+Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
 
 ### Lorem ipsum dolor sit amet consectetur adipiscing?
 
@@ -69,7 +82,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Lorem ipsum sed do eiusmod tempor?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+Tempor incididunt ut labore et dolore magna aliqua, ordered:
+
+1. Lorem ipsum primum
+2. Dolor sit amet secundum
+3. Consectetur adipiscing tertium
+
+Ut enim ad minim veniam.
 
 ### Lorem ipsum quis nostrud exercitation?
 

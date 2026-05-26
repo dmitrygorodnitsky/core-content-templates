@@ -46,7 +46,9 @@
         {
           "title": "Lorem Ipsum Consectetur Adipiscing",
           "paragraphs": [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua, ut enim ad minim veniam quis nostrud exercitation ullamco."
+            "Lorem ipsum dolor sit amet, includes:",
+            "<ul><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor</li><li>Incididunt ut labore</li></ul>",
+            "Ut enim ad minim veniam."
           ],
           "links": []
         },
@@ -157,7 +159,9 @@
         {
           "title": "Lorem ipsum dolor sit amet consectetur?",
           "paragraphs": [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor:",
+            "<ul><li>Lorem ipsum dolor sit amet</li><li>Consectetur adipiscing elit</li><li>Sed do eiusmod tempor incididunt</li><li>Ut labore et dolore magna aliqua</li></ul>",
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
           ],
           "links": []
         },
@@ -171,7 +175,9 @@
         {
           "title": "Lorem ipsum sed do eiusmod tempor?",
           "paragraphs": [
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+            "Tempor incididunt ut labore et dolore magna aliqua, ordered:",
+            "<ol><li>Lorem ipsum primum</li><li>Dolor sit amet secundum</li><li>Consectetur adipiscing tertium</li></ol>",
+            "Ut enim ad minim veniam."
           ],
           "links": []
         },

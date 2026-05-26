@@ -29,6 +29,26 @@ const escapeHtml = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
+/* Some parameter values contain pre-rendered inline HTML produced by the
+ * markdown parser — most commonly `<ul>` / `<ol>` / `<li>` from list
+ * blocks, occasionally `<strong>` / `<em>` for emphasis. We escape
+ * everything first (defense in depth against any user-supplied content),
+ * then re-allow a small whitelist of inline tags so lists actually
+ * render in the preview instead of showing as `&lt;ul&gt;` text. */
+const SAFE_INLINE_TAGS = new Set(["ul", "ol", "li", "strong", "em", "br", "p", "a"]);
+const renderSafeInline = (value) => {
+  let escaped = escapeHtml(value);
+  escaped = escaped.replace(
+    /&lt;(\/?)([a-zA-Z][a-zA-Z0-9]*)([^&]*?)&gt;/g,
+    (match, slash, tag, rest) => {
+      if (!SAFE_INLINE_TAGS.has(tag.toLowerCase())) return match;
+      const safeRest = rest.replace(/&quot;/g, '"');
+      return `<${slash}${tag}${safeRest}>`;
+    },
+  );
+  return escaped;
+};
+
 const valueToString = (value, locale = "en") => {
   if (value == null) return "";
   if (typeof value === "object" && !Array.isArray(value)) {
@@ -39,7 +59,7 @@ const valueToString = (value, locale = "en") => {
 
 const renderPlaceholders = (html, values, locale) =>
   String(html || "").replace(/\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g, (_, code) =>
-    escapeHtml(valueToString(values[code], locale)),
+    renderSafeInline(valueToString(values[code], locale)),
   );
 
 const slotFor = (template) => {

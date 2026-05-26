@@ -1,0 +1,52 @@
+{
+  "$schema": "lab-ui/themes@1",
+  "description": "Vertical / topic → theme color mapping. The orchestrator agent reads this when picking the `theme:` frontmatter value for a generated landing. Each key is a normalized topic slug; each value is one of the eight theme names declared in 00-tokens/tokens.css ([data-theme=\"…\"]).",
+  "default": "cyan",
+  "themes": [
+    "cyan",
+    "green",
+    "orange",
+    "red",
+    "forest",
+    "blue",
+    "amber",
+    "magenta"
+  ],
+  "verticals": {
+    "snow-removal":     "cyan",
+    "lawn-care":        "green",
+    "tree-care":        "forest",
+    "landscaping":      "green",
+    "irrigation":       "blue",
+    "hvac":             "orange",
+    "plumbing":         "blue",
+    "electrical":      "amber",
+    "solar":            "amber",
+    "roofing":          "red",
+    "pest-control":     "red",
+    "cleaning":         "magenta",
+    "janitorial":       "magenta",
+    "fire-safety":      "red",
+    "security":         "blue",
+    "appliance-repair": "amber",
+    "garage-door":      "orange",
+    "locksmith":        "amber",
+    "moving":           "orange",
+    "junk-removal":     "forest",
+    "pool-service":     "cyan",
+    "pet-services":     "magenta",
+    "fitness":          "red",
+    "wellness":         "green",
+    "education":        "blue",
+    "saas":             "cyan",
+    "ai":               "cyan",
+    "fintech":          "blue",
+    "marketplace":      "magenta",
+    "logistics":        "amber"
+  },
+  "notes": [
+    "Pick the closest semantic match — the list is intentionally short. If the topic is not here, fall back to the `default` theme.",
+    "Themes are colour families, NOT industries. Adding a new vertical does NOT require adding a new theme — pick the closest existing one.",
+    "The orchestrator should set `theme: <name>` in the copy.md frontmatter. The generator emits the matching `<body data-theme=\"<name>\">` wrapper."
+  ]
+}
