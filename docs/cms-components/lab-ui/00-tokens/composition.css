@@ -34,18 +34,11 @@ body {
   padding-block: var(--composition-section-y);
 }
 
-/* First section sits flush under the sticky header chrome; last
-   section sits flush above the footer. We use :first-of-type and
-   :last-of-type (not :first-child / :last-child) because the composer
-   emits header.default as a <div class="header-host"> and footer.default
-   as a <footer> — so the first/last <section.composition-section> is
-   the hero and the block just above the footer respectively. */
-#root > .composition-section:first-of-type {
-  padding-block-start: 0;
-}
-#root > .composition-section:last-of-type {
-  padding-block-end: 0;
-}
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
 
 /* Callout band is a tighter accent — shorter at the top, full
    rhythm at the bottom so the following section gets visual room. */
