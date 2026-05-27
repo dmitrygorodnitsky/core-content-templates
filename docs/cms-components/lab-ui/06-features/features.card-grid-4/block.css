@@ -2,7 +2,6 @@
    Depends: 00-tokens/tokens.css. Light theme. */
 
 .cards4 {
-  padding-block: clamp(4rem, 7vw, 6.5rem);
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);

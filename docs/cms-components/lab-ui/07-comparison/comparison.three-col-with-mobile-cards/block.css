@@ -3,7 +3,6 @@
 
 .compare {
   --compare-secondary-columns: 5;
-  padding-block: clamp(4rem, 7vw, 6.5rem);
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
@@ -337,9 +336,6 @@
 }
 
 @media (max-width: 860px) {
-  .compare {
-    padding-block: clamp(3.25rem, 12vw, 4.5rem);
-  }
   .compare-top {
     text-align: left;
     margin-bottom: 1.5rem;

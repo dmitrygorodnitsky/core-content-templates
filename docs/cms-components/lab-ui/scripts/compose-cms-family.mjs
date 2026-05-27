@@ -205,9 +205,9 @@ const valueForParam = (param, index) => {
 
 const wrapBlockHtml = (block, html) => {
   if (block.id === "header.default") return `<div class="header-host">\n${html}\n</div>`;
-  if (block.id === "section.axes-grid") return `<div class="stage-wrap">\n${html}\n</div>`;
-  if (block.id === "section.stages-list") return `<div class="stage-wrap">\n${html}\n</div>`;
-  if (block.id === "decorative.callout-band") return `<div class="callout-wrap">\n${html}\n</div>`;
+  if (block.id === "section.axes-grid") return `<div class="container">\n${html}\n</div>`;
+  if (block.id === "section.stages-list") return `<div class="container">\n${html}\n</div>`;
+  if (block.id === "decorative.callout-band") return `<div class="container container--narrow">\n${html}\n</div>`;
   return html;
 };
 
@@ -286,65 +286,8 @@ const buildFamily = (spec, catalog) => {
   const css = [
     "/* generated root CSS: 00-tokens/tokens.css */",
     readFileSync(join(labRoot, "00-tokens", "tokens.css"), "utf8"),
-    `
-/* generated preview/CMS composition glue */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-html {
-  min-width: 320px;
-  scroll-behavior: smooth;
-}
-body {
-  margin: 0;
-  position: relative;
-  min-width: 320px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-family);
-}
-#root {
-  --composition-section-y: clamp(4rem, 7vw, 6.5rem);
-  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
-}
-#root > .composition-section {
-  position: relative;
-}
-#root > .composition-section--section-stages-list {
-  padding-block: var(--composition-section-y);
-}
-#root > .composition-section--section-axes-grid {
-  padding-block: var(--composition-section-y);
-}
-#root > .composition-section--decorative-callout-band {
-  padding-block: var(--composition-section-y-compact) var(--composition-section-y);
-}
-.stage-wrap {
-  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
-  margin-inline: auto;
-  padding-inline: var(--container-padding-x);
-}
-.callout-wrap {
-  max-width: calc(1100px + var(--container-padding-x) * 2);
-  margin-inline: auto;
-  padding-inline: var(--container-padding-x);
-}
-a {
-  color: inherit;
-}
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-@media (max-width: 640px) {
-  #root {
-    --composition-section-y: 3.5rem;
-    --composition-section-y-compact: 2.5rem;
-  }
-}
-`,
+    "/* generated root CSS: 00-tokens/composition.css */",
+    readFileSync(join(labRoot, "00-tokens", "composition.css"), "utf8"),
   ].join("\n");
 
   const javascript = [

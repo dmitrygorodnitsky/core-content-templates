@@ -114,5 +114,25 @@ if (duplicates.length) {
   }
 }
 
+/* ─── Guard · padding-block on root block selector ──────────
+   Inter-section vertical rhythm is owned by 00-tokens/composition.css
+   (via #root > .composition-section). Blocks must NOT declare
+   `padding-block` on their root class — that would stack with the
+   composer-default padding and create double vertical spacing.
+   Per-element paddings on inner elements (.compare-grid, .faq-item,
+   etc.) are fine. */
+const rootSelectorPaddingBlockRe = /(^|\n)\s*(\.[a-zA-Z][\w-]*)\s*\{[^{}]*?\bpadding-block\b/g;
+for (const file of listFiles(root, (candidate) => candidate.endsWith("block.css"))) {
+  const css = readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  let match;
+  while ((match = rootSelectorPaddingBlockRe.exec(css))) {
+    const selector = match[2];
+    // Only top-level standalone class selectors (no descendant, no compound, no media-wrap).
+    // The regex matches a single .class on its own — descendant selectors won't
+    // produce a clean (^|\n)\s*\.class\s*\{ match.
+    warn(`${file}: ${selector} declares padding-block on a root block selector — composer owns inter-section spacing`);
+  }
+}
+
 console.log(`Validated ${blockById.size} blocks across ${manifest?.categories?.length ?? 0} categories.`);
 if (failed) process.exit(1);

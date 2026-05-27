@@ -3,7 +3,6 @@
    20-slot industry card catalog. 13 filled + 7 hidden by default. */
 
 .verticals {
-  padding-block: clamp(4rem, 7vw, 6.5rem);
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);

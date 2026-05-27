@@ -3,7 +3,6 @@
    Adapted from designer kit (styles.css §AI-Native — lines 862–1054). */
 
 .ai-section {
-  padding-block: clamp(4rem, 7vw, 6.5rem);
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);

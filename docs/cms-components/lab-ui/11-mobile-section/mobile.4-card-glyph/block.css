@@ -1,9 +1,17 @@
 /* lab-ui block · mobile.4-card-glyph
-   Depends: 00-tokens/tokens.css. Light theme. */
+   Depends: 00-tokens/tokens.css. Light theme.
+
+   The mobile section sits on a light-gray surface that differentiates
+   it from white sections around it. The surface fill is declared on
+   the composer wrapper AND on .mob4 itself — identical flat color
+   means no seam, and harness preview keeps the gray surface too. */
+
+.composition-section--mobile-4-card-glyph,
+.mob4 {
+  background: var(--color-gray-bg);
+}
 
 .mob4 {
-  padding-block: clamp(4rem, 7vw, 6.5rem);
-  background: var(--color-gray-bg);
   color: var(--color-text);
   font-family: var(--font-family);
 }
