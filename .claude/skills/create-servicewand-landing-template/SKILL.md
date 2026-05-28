@@ -238,7 +238,7 @@ Run validation:
 ```bash
 node docs/cms-components/lab-ui/scripts/generate-manifest.mjs
 node docs/cms-components/lab-ui/scripts/validate-lab-ui.mjs
-node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs docs/cms-components/lab-ui/dist/<slug>
+node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs --out docs/cms-components/lab-ui/dist/<slug>
 ```
 
 CSS collision warnings are acceptable only if validation does not fail and the
