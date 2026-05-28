@@ -394,7 +394,6 @@ const uploadLive = async (env, payload) => {
         headers,
         template: child,
         existing: existingChild,
-        parentId: rootId,
         org: env.org,
       });
     } catch (error) {

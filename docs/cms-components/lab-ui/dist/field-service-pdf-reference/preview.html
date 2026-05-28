@@ -249,7 +249,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-family);
 }
-#root {
+:root {
   --composition-section-y: clamp(4rem, 7vw, 6.5rem);
   --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
 }
@@ -264,27 +264,20 @@ body {
    the composer-managed padding-block. The inner block class then owns
    content layout only. See hero.operational-diagram and
    mobile.4-card-glyph for canonical examples. */
-#root > .composition-section {
+.composition-section {
   position: relative;
   padding-block: var(--composition-section-y);
 }
 
-/* First section sits flush under the sticky header chrome; last
-   section sits flush above the footer. We use :first-of-type and
-   :last-of-type (not :first-child / :last-child) because the composer
-   emits header.default as a <div class="header-host"> and footer.default
-   as a <footer> — so the first/last <section.composition-section> is
-   the hero and the block just above the footer respectively. */
-#root > .composition-section:first-of-type {
-  padding-block-start: 0;
-}
-#root > .composition-section:last-of-type {
-  padding-block-end: 0;
-}
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
 
 /* Callout band is a tighter accent — shorter at the top, full
    rhythm at the bottom so the following section gets visual room. */
-#root > .composition-section--decorative-callout-band {
+.composition-section--decorative-callout-band {
   padding-block: var(--composition-section-y-compact) var(--composition-section-y);
 }
 /* ─── Wrappers ───────────────────────────────────────────────
@@ -312,7 +305,7 @@ select {
   font: inherit;
 }
 @media (max-width: 640px) {
-  #root {
+  :root {
     --composition-section-y: 3.5rem;
     --composition-section-y-compact: 2.5rem;
   }
@@ -3301,11 +3294,14 @@ body.is-open .bc-chip {
 
 .vertical-card {
   position: relative;
+  isolation: isolate;
   min-width: 0;
   min-height: 420px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
   border-radius: var(--radius-card, 1.25rem);
   border: 1px solid rgba(15, 17, 22, 0.08);
   background: var(--color-white);
@@ -3320,7 +3316,7 @@ body.is-open .bc-chip {
 .vertical-card:hover {
   background: #f4f5f8;
   border-color: rgba(15, 17, 22, 0.16);
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   box-shadow:
     0 20px 48px -30px rgba(15, 17, 22, 0.28),
     0 0 32px -4px var(--cta-accent, #6BEAF9);
@@ -3371,6 +3367,9 @@ body.is-open .bc-chip {
   width: 100%;
   aspect-ratio: 16 / 10;
   overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  border-radius: calc(var(--radius-card, 1.25rem) - 1px) calc(var(--radius-card, 1.25rem) - 1px) 0 0;
   border-bottom: 1px solid rgba(15, 17, 22, 0.08);
   background-color: #eff1f4;
   background-image:

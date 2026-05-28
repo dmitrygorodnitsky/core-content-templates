@@ -116,7 +116,7 @@ if (duplicates.length) {
 
 /* ─── Guard · padding-block on root block selector ──────────
    Inter-section vertical rhythm is owned by 00-tokens/composition.css
-   (via #root > .composition-section). Blocks must NOT declare
+   (via .composition-section). Blocks must NOT declare
    `padding-block` on their root class — that would stack with the
    composer-default padding and create double vertical spacing.
    Per-element paddings on inner elements (.compare-grid, .faq-item,
