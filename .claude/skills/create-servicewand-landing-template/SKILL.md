@@ -126,6 +126,12 @@ Parameter ownership:
 Images:
 
 - Gallery striped placeholders represent image slots.
+- Every image slot must declare either required dimensions, such as `520x650`,
+  or an aspect ratio, such as `4:3` or `16:9`.
+- Prefer exact dimensions when the block design depends on a fixed crop or
+  composition; use aspect ratio when the block can accept responsive crops.
+- Include the dimension/aspect requirement in the parameter description so CMS
+  editors know what asset to provide.
 - Generated templates should expose image slots as real image contracts:
 
 ```html

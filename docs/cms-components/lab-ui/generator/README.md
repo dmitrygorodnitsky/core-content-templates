@@ -130,6 +130,12 @@ defines an image slot, the generated CMS template emits a real image contract:
 <img src="${FIELD_IMAGE@IMAGE}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
 ```
 
+Every image slot must declare either required dimensions, such as `520x650`, or
+an aspect ratio, such as `4:3` or `16:9`. Prefer exact dimensions when the block
+depends on a fixed crop; use aspect ratio for responsive media. The generated
+parameter description must include the required dimensions/aspect ratio for CMS
+editors.
+
 If the image value is empty, CSS hides the empty image and keeps the existing
 striped placeholder visible with its dimension/fallback label. Missing image
 values must not show a broken image icon.
