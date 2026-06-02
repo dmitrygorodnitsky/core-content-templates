@@ -136,7 +136,7 @@ Images:
   image id, image name, and alt text:
 
 ```html
-<img width="520" height="650" src="/core/image/${FIELD_IMAGE@IMAGE}/get**/${FIELD_IMAGE_NAME@STRING}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
+<img width="520" height="650" src="/core/image/${FIELD_IMAGE@IMAGE}/get/${FIELD_IMAGE_NAME@STRING}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
 ```
 
 - If no image parameter is set, the existing striped placeholder remains visible.

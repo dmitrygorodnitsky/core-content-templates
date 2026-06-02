@@ -62,7 +62,7 @@ const renderPlaceholders = (html, values, locale) =>
     .replace(/\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g, (_, code) =>
       renderSafeInline(valueToString(values[code], locale)),
     )
-    .replace(/\bsrc="\/core\/image\/\/get\*\*\/[^"]*"/g, 'src=""');
+    .replace(/\bsrc="\/core\/image\/\/get\/[^"]*"/g, 'src=""');
 
 const slotFor = (template) => {
   if (template.code === "FEATURES") return SLOT_MARKERS.featureColumns;

@@ -284,7 +284,7 @@ const renderBlockTemplate = ({ block, code, parentCode, locale, index, values = 
     const size = parseImageSize(slot.recommended_size);
     renderedHtml = renderedHtml.replace(/<img\b[^>]*>/g, (tag) => {
       if (!tag.includes(`src="${imagePlaceholder}"`)) return tag;
-      let out = tag.replace(`src="${imagePlaceholder}"`, `src="/core/image/${imagePlaceholder}/get**/${namePlaceholder}"`);
+      let out = tag.replace(`src="${imagePlaceholder}"`, `src="/core/image/${imagePlaceholder}/get/${namePlaceholder}"`);
       if (size) {
         out = setHtmlAttr(out, "width", size.width);
         out = setHtmlAttr(out, "height", size.height);
