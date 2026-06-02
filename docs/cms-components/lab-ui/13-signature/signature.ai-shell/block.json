@@ -73,7 +73,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "media_name"
     }
   ],
   "params": [
@@ -270,6 +271,13 @@
       "default": "Lorem ipsum AI operations panel.",
       "name": "AI Media Alt Text",
       "description": "Alternative text for the AI side-panel media image."
+    },
+    {
+      "code": "media_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Ai Media Image Name",
+      "description": "CMS image file name/path segment for the Ai Media image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "cap_prefix",

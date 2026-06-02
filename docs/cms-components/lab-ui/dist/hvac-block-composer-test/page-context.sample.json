@@ -156,7 +156,7 @@
     "SECTION_01_HEADER_DEFAULT_BREADCRUMB_CURRENT_LABEL": {
       "en": "Lorem Ipsum ea."
     },
-    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL": "#",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL": "",
     "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT": {
       "en": "Lorem Ipsum dolore magna aliqua enim."
     },
@@ -186,30 +186,44 @@
     "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL": {
       "en": "Lorem Ipsum cillum."
     },
-    "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE": {
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_ALT": {
       "en": "Lorem Ipsum sit amet consectetur adipiscing."
     },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    },
     "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL": {
-      "en": "Lorem Ipsum eiusmod."
+      "en": "Lorem Ipsum magna."
     },
     "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE": {
-      "en": "Lorem Ipsum magna aliqua enim ad."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
     },
     "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL": {
-      "en": "Lorem Ipsum nostrud."
-    },
-    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME": {
       "en": "Lorem Ipsum ea."
     },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL": "",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME": {
+      "en": "Lorem Ipsum elit."
+    },
     "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE": {
-      "en": "Lorem Ipsum voluptate velit esse cillum."
+      "en": "Lorem Ipsum labore et dolore magna."
+    },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL": "",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     },
     "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME": {
-      "en": "Lorem Ipsum lorem."
+      "en": "Lorem Ipsum aute."
     },
     "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE": {
-      "en": "Lorem Ipsum elit sed do eiusmod."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
     },
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME": "",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME": "",
+    "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME": "",
     "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW": {
       "en": "Lorem Ipsum dolore."
     },

@@ -1,5 +1,5 @@
 {
-  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/hvac-block-composer-test.spec.json",
+  "sourceSpec": "docs/cms-components/lab-ui/dist/hvac-block-composer-test/landing.spec.json",
   "root": {
     "code": "HVAC_LANDING",
     "name": "HVAC Landing",
@@ -63,71 +63,158 @@
       "hasJs": false
     }
   ],
-  "assetBlocks": [
+  "assetOwnership": [
     {
-      "id": "cta.btn-base",
-      "path": "03-cta/cta.btn-base",
-      "hasJs": false
+      "index": 1,
+      "childCode": "SECTION_01_HEADER_DEFAULT",
+      "block": "header.default",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "language.locale-dropdown",
+          "path": "04-language/language.locale-dropdown",
+          "hasCss": true,
+          "hasJs": true
+        },
+        {
+          "id": "header.default",
+          "path": "01-header/header.default",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
     },
     {
-      "id": "effect.hover-rise",
-      "path": "12-decorative/effect.hover-rise",
-      "hasJs": false
+      "index": 2,
+      "childCode": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "block": "hero.composite-photo",
+      "assets": [
+        {
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "hero.composite-photo",
+          "path": "05-hero/hero.composite-photo",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
     },
     {
-      "id": "cta.btn-primary-ring",
-      "path": "03-cta/cta.btn-primary-ring",
-      "hasJs": false
+      "index": 3,
+      "childCode": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+      "block": "features.accordion-2col-numbered",
+      "assets": [
+        {
+          "id": "features.accordion-2col-numbered",
+          "path": "06-features/features.accordion-2col-numbered",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
     },
     {
-      "id": "language.locale-dropdown",
-      "path": "04-language/language.locale-dropdown",
-      "hasJs": true
+      "index": 4,
+      "childCode": "SECTION_04_SECTION_STAGES_LIST",
+      "block": "section.stages-list",
+      "assets": [
+        {
+          "id": "section.stages-list",
+          "path": "09-vertical-section/section.stages-list",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
     },
     {
-      "id": "header.default",
-      "path": "01-header/header.default",
-      "hasJs": true
+      "index": 5,
+      "childCode": "SECTION_05_MOBILE_4_CARD_GLYPH",
+      "block": "mobile.4-card-glyph",
+      "assets": [
+        {
+          "id": "mobile.4-card-glyph",
+          "path": "11-mobile-section/mobile.4-card-glyph",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
     },
     {
-      "id": "cta.btn-secondary-filled",
-      "path": "03-cta/cta.btn-secondary-filled",
-      "hasJs": false
+      "index": 6,
+      "childCode": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED",
+      "block": "faq.bubble-light-grouped",
+      "assets": [
+        {
+          "id": "faq.bubble-light-grouped",
+          "path": "08-faq/faq.bubble-light-grouped",
+          "hasCss": true,
+          "hasJs": true
+        }
+      ]
     },
     {
-      "id": "hero.composite-photo",
-      "path": "05-hero/hero.composite-photo",
-      "hasJs": false
+      "index": 7,
+      "childCode": "SECTION_07_DECORATIVE_CALLOUT_BAND",
+      "block": "decorative.callout-band",
+      "assets": [
+        {
+          "id": "decorative.callout-band",
+          "path": "12-decorative/decorative.callout-band",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
     },
     {
-      "id": "features.accordion-2col-numbered",
-      "path": "06-features/features.accordion-2col-numbered",
-      "hasJs": true
-    },
-    {
-      "id": "section.stages-list",
-      "path": "09-vertical-section/section.stages-list",
-      "hasJs": false
-    },
-    {
-      "id": "mobile.4-card-glyph",
-      "path": "11-mobile-section/mobile.4-card-glyph",
-      "hasJs": false
-    },
-    {
-      "id": "faq.bubble-light-grouped",
-      "path": "08-faq/faq.bubble-light-grouped",
-      "hasJs": true
-    },
-    {
-      "id": "decorative.callout-band",
-      "path": "12-decorative/decorative.callout-band",
-      "hasJs": false
-    },
-    {
-      "id": "footer.default",
-      "path": "02-footer/footer.default",
-      "hasJs": false
+      "index": 8,
+      "childCode": "SECTION_08_FOOTER_DEFAULT",
+      "block": "footer.default",
+      "assets": [
+        {
+          "id": "footer.default",
+          "path": "02-footer/footer.default",
+          "hasCss": true,
+          "hasJs": false
+        }
+      ]
     }
   ],
   "tree": {

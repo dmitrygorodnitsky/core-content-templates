@@ -148,6 +148,25 @@ const parameter = (code, type, value, locale, meta = {}) => {
 
 const placeholder = (code, type) => `\${${code}@${cmsType(type)}}`;
 
+const parseImageSize = (value) => {
+  const match = String(value || "").match(/(\d+)\s*(?:×|x|X)\s*(\d+)/);
+  if (!match) return null;
+  return { width: match[1], height: match[2] };
+};
+
+const imageNameParam = (slot) => {
+  if (slot?.name_param) return slot.name_param;
+  const src = String(slot?.src_param || "");
+  const derived = src.replace(/(?:_url|_src|Url|Src)$/i, "_name");
+  return derived && derived !== src ? derived : `${src}_name`;
+};
+
+const setHtmlAttr = (tag, name, value) => {
+  const attrRe = new RegExp(`\\s${name}=(["'])[^"']*\\1`, "i");
+  if (attrRe.test(tag)) return tag.replace(attrRe, ` ${name}="${value}"`);
+  return tag.replace(/\s*\/?>$/, (end) => ` ${name}="${value}"${end}`);
+};
+
 const loadCatalog = () => {
   const manifest = readJson(join(labRoot, "manifest.json"));
   const byId = new Map();
@@ -221,9 +240,11 @@ const renderBlockTemplate = ({ block, code, parentCode, locale, index, values = 
   const params = [];
   const paramByCode = new Map((block.json.params || []).map((param) => [param.code, param]));
   const used = new Set();
-  const renderedHtml = block.html.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => {
+  const localParamCodes = new Map();
+  let renderedHtml = block.html.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => {
     const param = paramByCode.get(localCode) || { code: localCode, type: "LOCALIZED_STRING_SS" };
     const paramCode = `${code}_${codeSlug(localCode)}`;
+    localParamCodes.set(localCode, paramCode);
     if (!used.has(paramCode)) {
       const value = Object.prototype.hasOwnProperty.call(values, localCode)
         ? values[localCode]
@@ -237,6 +258,40 @@ const renderBlockTemplate = ({ block, code, parentCode, locale, index, values = 
     }
     return placeholder(paramCode, param.type);
   });
+  for (const slot of block.json.image_slots || []) {
+    if (!slot.src_param || !slot.alt_param) continue;
+    const imageCode = localParamCodes.get(slot.src_param);
+    const imageParam = paramByCode.get(slot.src_param);
+    if (!imageCode || cmsType(imageParam?.type) !== "IMAGE") continue;
+
+    const nameLocalCode = imageNameParam(slot);
+    const nameCode = `${code}_${codeSlug(nameLocalCode)}`;
+    localParamCodes.set(nameLocalCode, nameCode);
+    if (!used.has(nameCode)) {
+      const sizeText = slot.recommended_size ? ` Required image size: ${slot.recommended_size}.` : "";
+      const ratioText = slot.aspect_ratio ? ` Required aspect ratio: ${slot.aspect_ratio}.` : "";
+      params.push(parameter(nameCode, "STRING", "", locale, {
+        code: nameLocalCode,
+        name: `${parameterName(imageParam, slot.src_param).replace(/\b(Image|Photo|Media)?\s*(URL|Src|Source)$/i, "").trim() || humanize(slot.id)} Image Name`,
+        description: `CMS image file name/path segment for the ${humanize(slot.id)} image in ${blockLabel(block)}.${sizeText}${ratioText}`,
+        block,
+      }));
+      used.add(nameCode);
+    }
+
+    const imagePlaceholder = placeholder(imageCode, "IMAGE");
+    const namePlaceholder = placeholder(nameCode, "STRING");
+    const size = parseImageSize(slot.recommended_size);
+    renderedHtml = renderedHtml.replace(/<img\b[^>]*>/g, (tag) => {
+      if (!tag.includes(`src="${imagePlaceholder}"`)) return tag;
+      let out = tag.replace(`src="${imagePlaceholder}"`, `src="/core/image/${imagePlaceholder}/get**/${namePlaceholder}"`);
+      if (size) {
+        out = setHtmlAttr(out, "width", size.width);
+        out = setHtmlAttr(out, "height", size.height);
+      }
+      return out;
+    });
+  }
   const css = assetBlocks
     .filter((asset) => asset.css.trim())
     .map((asset) => `/* generated child CSS: ${asset.path}/block.css */\n${asset.css}`)

@@ -132,10 +132,11 @@ Images:
   composition; use aspect ratio when the block can accept responsive crops.
 - Include the dimension/aspect requirement in the parameter description so CMS
   editors know what asset to provide.
-- Generated templates should expose image slots as real image contracts:
+- Generated templates should expose image slots as real CMS image contracts with
+  image id, image name, and alt text:
 
 ```html
-<img src="${FIELD_IMAGE@IMAGE}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
+<img width="520" height="650" src="/core/image/${FIELD_IMAGE@IMAGE}/get**/${FIELD_IMAGE_NAME@STRING}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
 ```
 
 - If no image parameter is set, the existing striped placeholder remains visible.

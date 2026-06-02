@@ -70,7 +70,8 @@
       "recommended_size": "1040 × 1300",
       "aspect_ratio": "4:5",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "media_name"
     }
   ],
   "params": [
@@ -147,6 +148,13 @@
       "default": "Lorem ipsum operational view.",
       "name": "Hero Media Alt Text",
       "description": "Alternative text for the hero media image."
+    },
+    {
+      "code": "media_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Media Image Name",
+      "description": "CMS image file name/path segment for the Media image. Required image size: 1040 × 1300. Required aspect ratio: 4:5."
     },
     {
       "code": "placeholder_size",

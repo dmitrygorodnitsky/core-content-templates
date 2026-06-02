@@ -58,6 +58,28 @@ for (const file of blockJsonFiles) {
   for (const required of requiredBlockFiles) {
     if (!existsSync(join(dir, required))) fail(`${block.id}: missing ${required}`);
   }
+
+  const paramsByCode = new Map((block.params || []).map((param) => [param.code, param]));
+  for (const slot of block.image_slots || []) {
+    if (!slot.id) fail(`${block.id}: image slot is missing id`);
+    if (!slot.src_param) fail(`${block.id}: image slot ${slot.id || "(unknown)"} is missing src_param`);
+    if (!slot.alt_param) fail(`${block.id}: image slot ${slot.id || "(unknown)"} is missing alt_param`);
+    if (!slot.name_param) fail(`${block.id}: image slot ${slot.id || "(unknown)"} is missing name_param`);
+    if (!slot.recommended_size && !slot.aspect_ratio) {
+      fail(`${block.id}: image slot ${slot.id || "(unknown)"} must declare recommended_size or aspect_ratio`);
+    }
+    if (slot.recommended_size && !/^\d+\s*(?:×|x|X)\s*\d+$/.test(String(slot.recommended_size).trim())) {
+      fail(`${block.id}: image slot ${slot.id || "(unknown)"} recommended_size must look like 1280 × 800`);
+    }
+    const src = paramsByCode.get(slot.src_param);
+    const alt = paramsByCode.get(slot.alt_param);
+    const name = paramsByCode.get(slot.name_param);
+    if (!src || src.type !== "IMAGE") fail(`${block.id}: image slot ${slot.id || "(unknown)"} src_param must reference an IMAGE param`);
+    if (!alt || !["LOCALIZED_STRING_SS", "STRING"].includes(alt.type)) {
+      fail(`${block.id}: image slot ${slot.id || "(unknown)"} alt_param must reference a text param`);
+    }
+    if (!name || name.type !== "STRING") fail(`${block.id}: image slot ${slot.id || "(unknown)"} name_param must reference a STRING param`);
+  }
 }
 
 if (manifest) {

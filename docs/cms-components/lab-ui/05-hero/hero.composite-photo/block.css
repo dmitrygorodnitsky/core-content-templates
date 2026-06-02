@@ -100,11 +100,12 @@
 }
 
 .herop-photo-img[src=""],
-.herop-photo-img[src="#"] {
+.herop-photo-img[src="#"],
+.herop-photo-img[src^="/core/image//"] {
   display: none;
 }
 
-.herop-photo-img[src]:not([src=""]):not([src="#"]) + .herop-photo-placeholder {
+.herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-photo-placeholder {
   display: none;
 }
 
@@ -160,10 +161,11 @@
 .herop-person-avatar svg,
 .herop-person-avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .herop-person-avatar-img[src=""],
-.herop-person-avatar-img[src="#"] {
+.herop-person-avatar-img[src="#"],
+.herop-person-avatar-img[src^="/core/image//"] {
   display: none;
 }
-.herop-person-avatar-img[src]:not([src=""]):not([src="#"]) + .herop-person-avatar-fallback {
+.herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-person-avatar-fallback {
   display: none;
 }
 .herop-person-name {

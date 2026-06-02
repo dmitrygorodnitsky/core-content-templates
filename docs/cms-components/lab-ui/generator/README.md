@@ -124,10 +124,11 @@ Every generated CMS parameter includes English editor metadata:
 ## Image Slots
 
 Image-like striped placeholders in the gallery are fallback states. When a block
-defines an image slot, the generated CMS template emits a real image contract:
+defines an image slot, the generated CMS template emits a real CMS image
+contract with image id, image name, and alt text:
 
 ```html
-<img src="${FIELD_IMAGE@IMAGE}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
+<img width="520" height="650" src="/core/image/${FIELD_IMAGE@IMAGE}/get**/${FIELD_IMAGE_NAME@STRING}" alt="${FIELD_IMAGE_ALT@LOCALIZED_STRING_SS}">
 ```
 
 Every image slot must declare either required dimensions, such as `520x650`, or

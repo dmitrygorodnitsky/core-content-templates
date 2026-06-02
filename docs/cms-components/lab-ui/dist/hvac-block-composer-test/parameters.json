@@ -4,7 +4,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "META_TITLE"
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
       }
     },
     "value": {
@@ -16,7 +17,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "META_DESCRIPTION"
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
       }
     },
     "value": {
@@ -28,7 +30,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "brand_href"
+        "NAME": "Brand Href",
+        "DESCRIPTION": "URL target for the Brand Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -38,7 +41,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "brand_name"
+        "NAME": "Brand Name",
+        "DESCRIPTION": "Text value for the Brand Name field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -50,7 +54,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_label"
+        "NAME": "Item 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -62,7 +67,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_title"
+        "NAME": "Item 1 Col 1 Title",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Title field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -74,7 +80,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_1_href"
+        "NAME": "Item 1 Col 1 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -84,7 +91,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_1_label"
+        "NAME": "Item 1 Col 1 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -96,7 +104,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_2_href"
+        "NAME": "Item 1 Col 1 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -106,7 +115,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_2_label"
+        "NAME": "Item 1 Col 1 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -118,7 +128,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_3_href"
+        "NAME": "Item 1 Col 1 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -128,7 +139,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_3_label"
+        "NAME": "Item 1 Col 1 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -140,7 +152,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_4_href"
+        "NAME": "Item 1 Col 1 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -150,7 +163,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_1_link_4_label"
+        "NAME": "Item 1 Col 1 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -162,7 +176,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_title"
+        "NAME": "Item 1 Col 2 Title",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Title field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -174,7 +189,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_1_href"
+        "NAME": "Item 1 Col 2 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -184,7 +200,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_1_label"
+        "NAME": "Item 1 Col 2 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -196,7 +213,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_2_href"
+        "NAME": "Item 1 Col 2 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -206,7 +224,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_2_label"
+        "NAME": "Item 1 Col 2 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -218,7 +237,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_3_href"
+        "NAME": "Item 1 Col 2 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -228,7 +248,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_3_label"
+        "NAME": "Item 1 Col 2 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -240,7 +261,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_4_href"
+        "NAME": "Item 1 Col 2 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -250,7 +272,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_1_col_2_link_4_label"
+        "NAME": "Item 1 Col 2 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -262,7 +285,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_label"
+        "NAME": "Item 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -274,7 +298,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_title"
+        "NAME": "Item 2 Col 1 Title",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Title field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -286,7 +311,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_1_href"
+        "NAME": "Item 2 Col 1 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -296,7 +322,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_1_label"
+        "NAME": "Item 2 Col 1 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -308,7 +335,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_2_href"
+        "NAME": "Item 2 Col 1 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -318,7 +346,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_2_label"
+        "NAME": "Item 2 Col 1 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -330,7 +359,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_3_href"
+        "NAME": "Item 2 Col 1 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -340,7 +370,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_3_label"
+        "NAME": "Item 2 Col 1 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -352,7 +383,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_4_href"
+        "NAME": "Item 2 Col 1 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -362,7 +394,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_1_link_4_label"
+        "NAME": "Item 2 Col 1 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -374,7 +407,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_title"
+        "NAME": "Item 2 Col 2 Title",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Title field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -386,7 +420,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_1_href"
+        "NAME": "Item 2 Col 2 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -396,7 +431,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_1_label"
+        "NAME": "Item 2 Col 2 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -408,7 +444,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_2_href"
+        "NAME": "Item 2 Col 2 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -418,7 +455,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_2_label"
+        "NAME": "Item 2 Col 2 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -430,7 +468,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_3_href"
+        "NAME": "Item 2 Col 2 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -440,7 +479,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_3_label"
+        "NAME": "Item 2 Col 2 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -452,7 +492,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_4_href"
+        "NAME": "Item 2 Col 2 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -462,7 +503,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_2_col_2_link_4_label"
+        "NAME": "Item 2 Col 2 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -474,7 +516,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_3_href"
+        "NAME": "Item 3 Href",
+        "DESCRIPTION": "URL target for the Item 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -484,7 +527,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_3_label"
+        "NAME": "Item 3 Label",
+        "DESCRIPTION": "Text value for the Item 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -496,7 +540,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_4_href"
+        "NAME": "Item 4 Href",
+        "DESCRIPTION": "URL target for the Item 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -506,7 +551,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_4_label"
+        "NAME": "Item 4 Label",
+        "DESCRIPTION": "Text value for the Item 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -518,7 +564,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_5_label"
+        "NAME": "Item 5 Label",
+        "DESCRIPTION": "Text value for the Item 5 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -530,7 +577,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_5_link_1_href"
+        "NAME": "Item 5 Link 1 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -540,7 +588,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_5_link_1_label"
+        "NAME": "Item 5 Link 1 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -552,7 +601,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_5_link_2_href"
+        "NAME": "Item 5 Link 2 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -562,7 +612,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_5_link_2_label"
+        "NAME": "Item 5 Link 2 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -574,7 +625,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_5_link_3_href"
+        "NAME": "Item 5 Link 3 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 3 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -584,7 +636,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_5_link_3_label"
+        "NAME": "Item 5 Link 3 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 3 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -596,7 +649,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "item_5_link_4_href"
+        "NAME": "Item 5 Link 4 Href",
+        "DESCRIPTION": "URL target for the Item 5 Link 4 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -606,7 +660,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "item_5_link_4_label"
+        "NAME": "Item 5 Link 4 Label",
+        "DESCRIPTION": "Text value for the Item 5 Link 4 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -618,7 +673,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "locale_label"
+        "NAME": "Locale Label",
+        "DESCRIPTION": "Text value for the Locale Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -630,7 +686,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "cta_href"
+        "NAME": "CTA Href",
+        "DESCRIPTION": "URL target for the CTA Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -640,7 +697,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "cta_label"
+        "NAME": "CTA Label",
+        "DESCRIPTION": "Text value for the CTA Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -652,7 +710,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_root_href"
+        "NAME": "Breadcrumb Root Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Root Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -662,7 +721,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_root_label"
+        "NAME": "Breadcrumb Root Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Root Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -674,7 +734,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_mid_1_href"
+        "NAME": "Breadcrumb Mid 1 Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Mid 1 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -684,7 +745,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_mid_1_label"
+        "NAME": "Breadcrumb Mid 1 Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Mid 1 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -696,7 +758,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_mid_2_href"
+        "NAME": "Breadcrumb Mid 2 Href",
+        "DESCRIPTION": "URL target for the Breadcrumb Mid 2 Href link in Header · canonical (multi-level)."
       }
     },
     "value": "#"
@@ -706,7 +769,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_mid_2_label"
+        "NAME": "Breadcrumb Mid 2 Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Mid 2 Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -718,7 +782,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "breadcrumb_current_label"
+        "NAME": "Breadcrumb Current Label",
+        "DESCRIPTION": "Text value for the Breadcrumb Current Label field in Header · canonical (multi-level)."
       }
     },
     "value": {
@@ -730,17 +795,19 @@
     "type": "IMAGE",
     "nls": {
       "en": {
-        "NAME": "photo_url"
+        "NAME": "Photo URL",
+        "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": "#"
+    "value": ""
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow_root"
+        "NAME": "Eyebrow Root",
+        "DESCRIPTION": "Text value for the Eyebrow Root field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -752,7 +819,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow_leaf"
+        "NAME": "Eyebrow Leaf",
+        "DESCRIPTION": "Text value for the Eyebrow Leaf field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -764,7 +832,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title_line_1"
+        "NAME": "Title Line 1",
+        "DESCRIPTION": "Text value for the Title Line 1 field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -776,7 +845,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title_accent"
+        "NAME": "Title Accent",
+        "DESCRIPTION": "Text value for the Title Accent field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -788,7 +858,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title_line_2"
+        "NAME": "Title Line 2",
+        "DESCRIPTION": "Text value for the Title Line 2 field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -800,7 +871,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lead_1"
+        "NAME": "Lead 1",
+        "DESCRIPTION": "Text value for the Lead 1 field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -812,7 +884,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lead_2"
+        "NAME": "Lead 2",
+        "DESCRIPTION": "Text value for the Lead 2 field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -824,7 +897,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "cta_primary_href"
+        "NAME": "CTA Primary Href",
+        "DESCRIPTION": "URL target for the CTA Primary Href link in Hero · composite photo (vertical-landing)."
       }
     },
     "value": "#"
@@ -834,7 +908,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "cta_primary_label"
+        "NAME": "CTA Primary Label",
+        "DESCRIPTION": "Text value for the CTA Primary Label field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -846,7 +921,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "cta_secondary_href"
+        "NAME": "CTA Secondary Href",
+        "DESCRIPTION": "URL target for the CTA Secondary Href link in Hero · composite photo (vertical-landing)."
       }
     },
     "value": "#"
@@ -856,7 +932,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "cta_secondary_label"
+        "NAME": "CTA Secondary Label",
+        "DESCRIPTION": "Text value for the CTA Secondary Label field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -864,11 +941,12 @@
     }
   },
   {
-    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE",
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_ALT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "placeholder_size"
+        "NAME": "Photo Alt",
+        "DESCRIPTION": "Alternative text for the Photo image in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -876,15 +954,29 @@
     }
   },
   {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Placeholder Size",
+        "DESCRIPTION": "Fallback placeholder size label shown when the related image is not set in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "placeholder_label"
+        "NAME": "Placeholder Label",
+        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod."
+      "en": "Lorem Ipsum magna."
     }
   },
   {
@@ -892,11 +984,12 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "chip_stat_value"
+        "NAME": "Chip Stat Value",
+        "DESCRIPTION": "Text value for the Chip Stat Value field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna aliqua enim ad."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
     }
   },
   {
@@ -904,19 +997,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "chip_stat_label"
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nostrud."
-    }
-  },
-  {
-    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "person_1_name"
+        "NAME": "Chip Stat Label",
+        "DESCRIPTION": "Text value for the Chip Stat Label field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
@@ -924,15 +1006,77 @@
     }
   },
   {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 1 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Name",
+        "DESCRIPTION": "Text value for the Person 1 Name field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "person_1_role"
+        "NAME": "Person 1 Role",
+        "DESCRIPTION": "Text value for the Person 1 Role field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate velit esse cillum."
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 2 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
@@ -940,11 +1084,12 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "person_2_name"
+        "NAME": "Person 2 Name",
+        "DESCRIPTION": "Text value for the Person 2 Name field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem."
+      "en": "Lorem Ipsum aute."
     }
   },
   {
@@ -952,19 +1097,54 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "person_2_role"
+        "NAME": "Person 2 Role",
+        "DESCRIPTION": "Text value for the Person 2 Role field in Hero · composite photo (vertical-landing)."
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit sed do eiusmod."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
     }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Photo Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
   },
   {
     "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow"
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -976,7 +1156,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title"
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -988,7 +1169,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_1"
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1000,7 +1182,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_2"
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1012,7 +1195,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_3"
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1024,7 +1208,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_title"
+        "NAME": "Slot 01 Title",
+        "DESCRIPTION": "Text value for the Slot 01 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1036,7 +1221,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_body"
+        "NAME": "Slot 01 Body",
+        "DESCRIPTION": "Text value for the Slot 01 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1048,7 +1234,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_title"
+        "NAME": "Slot 03 Title",
+        "DESCRIPTION": "Text value for the Slot 03 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1060,7 +1247,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_body"
+        "NAME": "Slot 03 Body",
+        "DESCRIPTION": "Text value for the Slot 03 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1072,7 +1260,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_05_title"
+        "NAME": "Slot 05 Title",
+        "DESCRIPTION": "Text value for the Slot 05 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1084,7 +1273,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_05_body"
+        "NAME": "Slot 05 Body",
+        "DESCRIPTION": "Text value for the Slot 05 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1096,7 +1286,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_07_title"
+        "NAME": "Slot 07 Title",
+        "DESCRIPTION": "Text value for the Slot 07 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1108,7 +1299,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_07_body"
+        "NAME": "Slot 07 Body",
+        "DESCRIPTION": "Text value for the Slot 07 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1120,7 +1312,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_09_title"
+        "NAME": "Slot 09 Title",
+        "DESCRIPTION": "Text value for the Slot 09 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1132,7 +1325,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_09_body"
+        "NAME": "Slot 09 Body",
+        "DESCRIPTION": "Text value for the Slot 09 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1144,7 +1338,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_11_title"
+        "NAME": "Slot 11 Title",
+        "DESCRIPTION": "Text value for the Slot 11 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1156,7 +1351,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_11_body"
+        "NAME": "Slot 11 Body",
+        "DESCRIPTION": "Text value for the Slot 11 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1168,7 +1364,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_13_title"
+        "NAME": "Slot 13 Title",
+        "DESCRIPTION": "Text value for the Slot 13 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1180,7 +1377,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_13_body"
+        "NAME": "Slot 13 Body",
+        "DESCRIPTION": "Text value for the Slot 13 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1192,7 +1390,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_15_title"
+        "NAME": "Slot 15 Title",
+        "DESCRIPTION": "Text value for the Slot 15 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1204,7 +1403,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_15_body"
+        "NAME": "Slot 15 Body",
+        "DESCRIPTION": "Text value for the Slot 15 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1216,7 +1416,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_title"
+        "NAME": "Slot 02 Title",
+        "DESCRIPTION": "Text value for the Slot 02 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1228,7 +1429,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_body"
+        "NAME": "Slot 02 Body",
+        "DESCRIPTION": "Text value for the Slot 02 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1240,7 +1442,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_title"
+        "NAME": "Slot 04 Title",
+        "DESCRIPTION": "Text value for the Slot 04 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1252,7 +1455,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_body"
+        "NAME": "Slot 04 Body",
+        "DESCRIPTION": "Text value for the Slot 04 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1264,7 +1468,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_06_title"
+        "NAME": "Slot 06 Title",
+        "DESCRIPTION": "Text value for the Slot 06 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1276,7 +1481,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_06_body"
+        "NAME": "Slot 06 Body",
+        "DESCRIPTION": "Text value for the Slot 06 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1288,7 +1494,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_08_title"
+        "NAME": "Slot 08 Title",
+        "DESCRIPTION": "Text value for the Slot 08 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1300,7 +1507,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_08_body"
+        "NAME": "Slot 08 Body",
+        "DESCRIPTION": "Text value for the Slot 08 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1312,7 +1520,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_10_title"
+        "NAME": "Slot 10 Title",
+        "DESCRIPTION": "Text value for the Slot 10 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1324,7 +1533,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_10_body"
+        "NAME": "Slot 10 Body",
+        "DESCRIPTION": "Text value for the Slot 10 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1336,7 +1546,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_12_title"
+        "NAME": "Slot 12 Title",
+        "DESCRIPTION": "Text value for the Slot 12 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1348,7 +1559,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_12_body"
+        "NAME": "Slot 12 Body",
+        "DESCRIPTION": "Text value for the Slot 12 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1360,7 +1572,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_14_title"
+        "NAME": "Slot 14 Title",
+        "DESCRIPTION": "Text value for the Slot 14 Title field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1372,7 +1585,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_14_body"
+        "NAME": "Slot 14 Body",
+        "DESCRIPTION": "Text value for the Slot 14 Body field in Features · 2-col numbered accordion."
       }
     },
     "value": {
@@ -1384,7 +1598,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_label"
+        "NAME": "Stage Label",
+        "DESCRIPTION": "Text value for the Stage Label field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1396,7 +1611,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_num"
+        "NAME": "Stage 1 Num",
+        "DESCRIPTION": "Text value for the Stage 1 Num field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1408,7 +1624,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_title"
+        "NAME": "Stage 1 Title",
+        "DESCRIPTION": "Text value for the Stage 1 Title field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1420,7 +1637,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_users"
+        "NAME": "Stage 1 Users",
+        "DESCRIPTION": "Text value for the Stage 1 Users field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1432,7 +1650,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_lead"
+        "NAME": "Stage 1 Lead",
+        "DESCRIPTION": "Text value for the Stage 1 Lead field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1444,7 +1663,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_chip_1"
+        "NAME": "Stage 1 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1456,7 +1676,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_chip_2"
+        "NAME": "Stage 1 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1468,7 +1689,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_chip_3"
+        "NAME": "Stage 1 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1480,7 +1702,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_chip_4"
+        "NAME": "Stage 1 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1492,7 +1715,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_1_chip_5"
+        "NAME": "Stage 1 Chip 5",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 5 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1504,7 +1728,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_num"
+        "NAME": "Stage 2 Num",
+        "DESCRIPTION": "Text value for the Stage 2 Num field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1516,7 +1741,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_title"
+        "NAME": "Stage 2 Title",
+        "DESCRIPTION": "Text value for the Stage 2 Title field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1528,7 +1754,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_users"
+        "NAME": "Stage 2 Users",
+        "DESCRIPTION": "Text value for the Stage 2 Users field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1540,7 +1767,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_lead"
+        "NAME": "Stage 2 Lead",
+        "DESCRIPTION": "Text value for the Stage 2 Lead field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1552,7 +1780,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_chip_1"
+        "NAME": "Stage 2 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1564,7 +1793,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_chip_2"
+        "NAME": "Stage 2 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1576,7 +1806,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_chip_3"
+        "NAME": "Stage 2 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1588,7 +1819,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_2_chip_4"
+        "NAME": "Stage 2 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1600,7 +1832,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_num"
+        "NAME": "Stage 3 Num",
+        "DESCRIPTION": "Text value for the Stage 3 Num field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1612,7 +1845,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_title"
+        "NAME": "Stage 3 Title",
+        "DESCRIPTION": "Text value for the Stage 3 Title field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1624,7 +1858,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_users"
+        "NAME": "Stage 3 Users",
+        "DESCRIPTION": "Text value for the Stage 3 Users field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1636,7 +1871,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_lead"
+        "NAME": "Stage 3 Lead",
+        "DESCRIPTION": "Text value for the Stage 3 Lead field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1648,7 +1884,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_chip_1"
+        "NAME": "Stage 3 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1660,7 +1897,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_chip_2"
+        "NAME": "Stage 3 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1672,7 +1910,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_chip_3"
+        "NAME": "Stage 3 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1684,7 +1923,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_3_chip_4"
+        "NAME": "Stage 3 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1696,7 +1936,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_num"
+        "NAME": "Stage 4 Num",
+        "DESCRIPTION": "Text value for the Stage 4 Num field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1708,7 +1949,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_title"
+        "NAME": "Stage 4 Title",
+        "DESCRIPTION": "Text value for the Stage 4 Title field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1720,7 +1962,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_users"
+        "NAME": "Stage 4 Users",
+        "DESCRIPTION": "Text value for the Stage 4 Users field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1732,7 +1975,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_lead"
+        "NAME": "Stage 4 Lead",
+        "DESCRIPTION": "Text value for the Stage 4 Lead field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1744,7 +1988,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_chip_1"
+        "NAME": "Stage 4 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1756,7 +2001,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_chip_2"
+        "NAME": "Stage 4 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1768,7 +2014,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_chip_3"
+        "NAME": "Stage 4 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1780,7 +2027,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "stage_4_chip_4"
+        "NAME": "Stage 4 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
       }
     },
     "value": {
@@ -1792,7 +2040,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow"
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1804,7 +2053,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title"
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1816,7 +2066,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_1"
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1828,7 +2079,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_2"
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1840,7 +2092,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede_3"
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1852,7 +2105,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_1_title"
+        "NAME": "Card 1 Title",
+        "DESCRIPTION": "Text value for the Card 1 Title field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1864,7 +2118,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_1_p1"
+        "NAME": "Card 1 P1",
+        "DESCRIPTION": "Text value for the Card 1 P1 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1876,7 +2131,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_1_p2"
+        "NAME": "Card 1 P2",
+        "DESCRIPTION": "Text value for the Card 1 P2 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1888,7 +2144,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_2_title"
+        "NAME": "Card 2 Title",
+        "DESCRIPTION": "Text value for the Card 2 Title field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1900,7 +2157,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_2_p1"
+        "NAME": "Card 2 P1",
+        "DESCRIPTION": "Text value for the Card 2 P1 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1912,7 +2170,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_2_p2"
+        "NAME": "Card 2 P2",
+        "DESCRIPTION": "Text value for the Card 2 P2 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1924,7 +2183,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_3_title"
+        "NAME": "Card 3 Title",
+        "DESCRIPTION": "Text value for the Card 3 Title field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1936,7 +2196,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_3_p1"
+        "NAME": "Card 3 P1",
+        "DESCRIPTION": "Text value for the Card 3 P1 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1948,7 +2209,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_3_p2"
+        "NAME": "Card 3 P2",
+        "DESCRIPTION": "Text value for the Card 3 P2 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1960,7 +2222,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_4_title"
+        "NAME": "Card 4 Title",
+        "DESCRIPTION": "Text value for the Card 4 Title field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1972,7 +2235,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_4_p1"
+        "NAME": "Card 4 P1",
+        "DESCRIPTION": "Text value for the Card 4 P1 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1984,7 +2248,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "card_4_p2"
+        "NAME": "Card 4 P2",
+        "DESCRIPTION": "Text value for the Card 4 P2 field in Mobile section · 4 cards with glyphs."
       }
     },
     "value": {
@@ -1996,7 +2261,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow"
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2008,7 +2274,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "title"
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2020,7 +2287,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "lede"
+        "NAME": "Lede",
+        "DESCRIPTION": "Text value for the Lede field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2032,7 +2300,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "group_01_title"
+        "NAME": "Group 01 Title",
+        "DESCRIPTION": "Text value for the Group 01 Title field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2044,7 +2313,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_01_q"
+        "NAME": "Slot 01 01 Q",
+        "DESCRIPTION": "Text value for the Slot 01 01 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2056,7 +2326,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_01_a"
+        "NAME": "Slot 01 01 A",
+        "DESCRIPTION": "Text value for the Slot 01 01 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2068,7 +2339,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_02_q"
+        "NAME": "Slot 01 02 Q",
+        "DESCRIPTION": "Text value for the Slot 01 02 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2080,7 +2352,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_02_a"
+        "NAME": "Slot 01 02 A",
+        "DESCRIPTION": "Text value for the Slot 01 02 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2092,7 +2365,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_03_q"
+        "NAME": "Slot 01 03 Q",
+        "DESCRIPTION": "Text value for the Slot 01 03 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2104,7 +2378,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_03_a"
+        "NAME": "Slot 01 03 A",
+        "DESCRIPTION": "Text value for the Slot 01 03 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2116,7 +2391,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_04_q"
+        "NAME": "Slot 01 04 Q",
+        "DESCRIPTION": "Text value for the Slot 01 04 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2128,7 +2404,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_04_a"
+        "NAME": "Slot 01 04 A",
+        "DESCRIPTION": "Text value for the Slot 01 04 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2140,7 +2417,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_05_q"
+        "NAME": "Slot 01 05 Q",
+        "DESCRIPTION": "Text value for the Slot 01 05 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2152,7 +2430,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_01_05_a"
+        "NAME": "Slot 01 05 A",
+        "DESCRIPTION": "Text value for the Slot 01 05 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2164,7 +2443,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "group_02_title"
+        "NAME": "Group 02 Title",
+        "DESCRIPTION": "Text value for the Group 02 Title field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2176,7 +2456,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_01_q"
+        "NAME": "Slot 02 01 Q",
+        "DESCRIPTION": "Text value for the Slot 02 01 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2188,7 +2469,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_01_a"
+        "NAME": "Slot 02 01 A",
+        "DESCRIPTION": "Text value for the Slot 02 01 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2200,7 +2482,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_02_q"
+        "NAME": "Slot 02 02 Q",
+        "DESCRIPTION": "Text value for the Slot 02 02 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2212,7 +2495,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_02_a"
+        "NAME": "Slot 02 02 A",
+        "DESCRIPTION": "Text value for the Slot 02 02 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2224,7 +2508,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_03_q"
+        "NAME": "Slot 02 03 Q",
+        "DESCRIPTION": "Text value for the Slot 02 03 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2236,7 +2521,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_03_a"
+        "NAME": "Slot 02 03 A",
+        "DESCRIPTION": "Text value for the Slot 02 03 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2248,7 +2534,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_04_q"
+        "NAME": "Slot 02 04 Q",
+        "DESCRIPTION": "Text value for the Slot 02 04 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2260,7 +2547,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_04_a"
+        "NAME": "Slot 02 04 A",
+        "DESCRIPTION": "Text value for the Slot 02 04 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2272,7 +2560,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_05_q"
+        "NAME": "Slot 02 05 Q",
+        "DESCRIPTION": "Text value for the Slot 02 05 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2284,7 +2573,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_02_05_a"
+        "NAME": "Slot 02 05 A",
+        "DESCRIPTION": "Text value for the Slot 02 05 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2296,7 +2586,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "group_03_title"
+        "NAME": "Group 03 Title",
+        "DESCRIPTION": "Text value for the Group 03 Title field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2308,7 +2599,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_01_q"
+        "NAME": "Slot 03 01 Q",
+        "DESCRIPTION": "Text value for the Slot 03 01 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2320,7 +2612,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_01_a"
+        "NAME": "Slot 03 01 A",
+        "DESCRIPTION": "Text value for the Slot 03 01 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2332,7 +2625,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_02_q"
+        "NAME": "Slot 03 02 Q",
+        "DESCRIPTION": "Text value for the Slot 03 02 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2344,7 +2638,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_02_a"
+        "NAME": "Slot 03 02 A",
+        "DESCRIPTION": "Text value for the Slot 03 02 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2356,7 +2651,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_03_q"
+        "NAME": "Slot 03 03 Q",
+        "DESCRIPTION": "Text value for the Slot 03 03 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2368,7 +2664,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_03_a"
+        "NAME": "Slot 03 03 A",
+        "DESCRIPTION": "Text value for the Slot 03 03 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2380,7 +2677,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_04_q"
+        "NAME": "Slot 03 04 Q",
+        "DESCRIPTION": "Text value for the Slot 03 04 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2392,7 +2690,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_04_a"
+        "NAME": "Slot 03 04 A",
+        "DESCRIPTION": "Text value for the Slot 03 04 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2404,7 +2703,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_05_q"
+        "NAME": "Slot 03 05 Q",
+        "DESCRIPTION": "Text value for the Slot 03 05 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2416,7 +2716,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_03_05_a"
+        "NAME": "Slot 03 05 A",
+        "DESCRIPTION": "Text value for the Slot 03 05 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2428,7 +2729,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "group_04_title"
+        "NAME": "Group 04 Title",
+        "DESCRIPTION": "Text value for the Group 04 Title field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2440,7 +2742,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_01_q"
+        "NAME": "Slot 04 01 Q",
+        "DESCRIPTION": "Text value for the Slot 04 01 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2452,7 +2755,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_01_a"
+        "NAME": "Slot 04 01 A",
+        "DESCRIPTION": "Text value for the Slot 04 01 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2464,7 +2768,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_02_q"
+        "NAME": "Slot 04 02 Q",
+        "DESCRIPTION": "Text value for the Slot 04 02 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2476,7 +2781,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_02_a"
+        "NAME": "Slot 04 02 A",
+        "DESCRIPTION": "Text value for the Slot 04 02 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2488,7 +2794,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_03_q"
+        "NAME": "Slot 04 03 Q",
+        "DESCRIPTION": "Text value for the Slot 04 03 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2500,7 +2807,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_03_a"
+        "NAME": "Slot 04 03 A",
+        "DESCRIPTION": "Text value for the Slot 04 03 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2512,7 +2820,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_04_q"
+        "NAME": "Slot 04 04 Q",
+        "DESCRIPTION": "Text value for the Slot 04 04 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2524,7 +2833,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_04_a"
+        "NAME": "Slot 04 04 A",
+        "DESCRIPTION": "Text value for the Slot 04 04 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2536,7 +2846,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_05_q"
+        "NAME": "Slot 04 05 Q",
+        "DESCRIPTION": "Text value for the Slot 04 05 Q field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2548,7 +2859,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "slot_04_05_a"
+        "NAME": "Slot 04 05 A",
+        "DESCRIPTION": "Text value for the Slot 04 05 A field in FAQ · bubble light grouped."
       }
     },
     "value": {
@@ -2560,7 +2872,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "eyebrow"
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Decorative · callout band (accent-tinted closing strip)."
       }
     },
     "value": {
@@ -2572,7 +2885,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "body"
+        "NAME": "Body",
+        "DESCRIPTION": "Text value for the Body field in Decorative · callout band (accent-tinted closing strip)."
       }
     },
     "value": {
@@ -2584,7 +2898,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "brand_href"
+        "NAME": "Brand Href",
+        "DESCRIPTION": "URL target for the Brand Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2594,7 +2909,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "brand_name"
+        "NAME": "Brand Name",
+        "DESCRIPTION": "Text value for the Brand Name field in Footer · canonical."
       }
     },
     "value": {
@@ -2606,7 +2922,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "tagline"
+        "NAME": "Tagline",
+        "DESCRIPTION": "Text value for the Tagline field in Footer · canonical."
       }
     },
     "value": {
@@ -2618,7 +2935,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "address_line_1"
+        "NAME": "Address Line 1",
+        "DESCRIPTION": "Text value for the Address Line 1 field in Footer · canonical."
       }
     },
     "value": {
@@ -2630,7 +2948,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "address_line_2"
+        "NAME": "Address Line 2",
+        "DESCRIPTION": "Text value for the Address Line 2 field in Footer · canonical."
       }
     },
     "value": {
@@ -2642,7 +2961,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "address_line_3"
+        "NAME": "Address Line 3",
+        "DESCRIPTION": "Text value for the Address Line 3 field in Footer · canonical."
       }
     },
     "value": {
@@ -2654,7 +2974,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "address_line_4"
+        "NAME": "Address Line 4",
+        "DESCRIPTION": "Text value for the Address Line 4 field in Footer · canonical."
       }
     },
     "value": {
@@ -2666,7 +2987,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "nav_1_href"
+        "NAME": "Nav 1 Href",
+        "DESCRIPTION": "URL target for the Nav 1 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2676,7 +2998,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "nav_1_label"
+        "NAME": "Nav 1 Label",
+        "DESCRIPTION": "Text value for the Nav 1 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2688,7 +3011,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "nav_2_href"
+        "NAME": "Nav 2 Href",
+        "DESCRIPTION": "URL target for the Nav 2 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2698,7 +3022,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "nav_2_label"
+        "NAME": "Nav 2 Label",
+        "DESCRIPTION": "Text value for the Nav 2 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2710,7 +3035,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "nav_3_href"
+        "NAME": "Nav 3 Href",
+        "DESCRIPTION": "URL target for the Nav 3 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2720,7 +3046,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "nav_3_label"
+        "NAME": "Nav 3 Label",
+        "DESCRIPTION": "Text value for the Nav 3 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2732,7 +3059,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "nav_4_href"
+        "NAME": "Nav 4 Href",
+        "DESCRIPTION": "URL target for the Nav 4 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2742,7 +3070,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "nav_4_label"
+        "NAME": "Nav 4 Label",
+        "DESCRIPTION": "Text value for the Nav 4 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2754,7 +3083,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "nav_5_href"
+        "NAME": "Nav 5 Href",
+        "DESCRIPTION": "URL target for the Nav 5 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2764,7 +3094,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "nav_5_label"
+        "NAME": "Nav 5 Label",
+        "DESCRIPTION": "Text value for the Nav 5 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2776,7 +3107,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "social_linkedin"
+        "NAME": "Social Linkedin",
+        "DESCRIPTION": "Text value for the Social Linkedin field in Footer · canonical."
       }
     },
     "value": "#"
@@ -2786,7 +3118,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "social_github"
+        "NAME": "Social Github",
+        "DESCRIPTION": "Text value for the Social Github field in Footer · canonical."
       }
     },
     "value": "#"
@@ -2796,7 +3129,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "social_youtube"
+        "NAME": "Social Youtube",
+        "DESCRIPTION": "Text value for the Social Youtube field in Footer · canonical."
       }
     },
     "value": "#"
@@ -2806,7 +3140,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "social_x"
+        "NAME": "Social X",
+        "DESCRIPTION": "Text value for the Social X field in Footer · canonical."
       }
     },
     "value": "#"
@@ -2816,7 +3151,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "partnerships_label"
+        "NAME": "Partnerships Label",
+        "DESCRIPTION": "Text value for the Partnerships Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2828,7 +3164,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "partnerships_email"
+        "NAME": "Partnerships Email",
+        "DESCRIPTION": "Text value for the Partnerships Email field in Footer · canonical."
       }
     },
     "value": "Lorem Ipsum exercitation ullamco laboris nisi."
@@ -2838,7 +3175,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "support_label"
+        "NAME": "Support Label",
+        "DESCRIPTION": "Text value for the Support Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2850,7 +3188,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "support_email"
+        "NAME": "Support Email",
+        "DESCRIPTION": "Text value for the Support Email field in Footer · canonical."
       }
     },
     "value": "Lorem Ipsum velit esse cillum fugiat."
@@ -2860,7 +3199,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "copyright"
+        "NAME": "Copyright",
+        "DESCRIPTION": "Text value for the Copyright field in Footer · canonical."
       }
     },
     "value": {
@@ -2872,7 +3212,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "legal_1_href"
+        "NAME": "Legal 1 Href",
+        "DESCRIPTION": "URL target for the Legal 1 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2882,7 +3223,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "legal_1_label"
+        "NAME": "Legal 1 Label",
+        "DESCRIPTION": "Text value for the Legal 1 Label field in Footer · canonical."
       }
     },
     "value": {
@@ -2894,7 +3236,8 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "legal_2_href"
+        "NAME": "Legal 2 Href",
+        "DESCRIPTION": "URL target for the Legal 2 Href link in Footer · canonical."
       }
     },
     "value": "#"
@@ -2904,7 +3247,8 @@
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "legal_2_label"
+        "NAME": "Legal 2 Label",
+        "DESCRIPTION": "Text value for the Legal 2 Label field in Footer · canonical."
       }
     },
     "value": {

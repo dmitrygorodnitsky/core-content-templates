@@ -135,11 +135,12 @@
 }
 
 .hero-media-img[src=""],
-.hero-media-img[src="#"] {
+.hero-media-img[src="#"],
+.hero-media-img[src^="/core/image//"] {
   display: none;
 }
 
-.hero-media-img[src]:not([src=""]):not([src="#"]) + .hero-placeholder-copy {
+.hero-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .hero-placeholder-copy {
   display: none;
 }
 

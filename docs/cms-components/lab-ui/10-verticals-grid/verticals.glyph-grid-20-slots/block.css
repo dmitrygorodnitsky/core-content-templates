@@ -153,10 +153,11 @@
   object-fit: cover;
 }
 .vertical-photo-img[src=""],
-.vertical-photo-img[src="#"] {
+.vertical-photo-img[src="#"],
+.vertical-photo-img[src^="/core/image//"] {
   display: none;
 }
-.vertical-photo-img[src]:not([src=""]):not([src="#"]) + .vertical-photo-meta {
+.vertical-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .vertical-photo-meta {
   display: none;
 }
 .vertical-card.is-live .vertical-photo {

@@ -19,5 +19,5 @@
     "decorative.callout-band",
     "footer.default"
   ],
-  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/hvac-contract-smoke.spec.json"
+  "sourceSpec": "docs/cms-components/lab-ui/dist/hvac-contract-smoke/landing.spec.json"
 }

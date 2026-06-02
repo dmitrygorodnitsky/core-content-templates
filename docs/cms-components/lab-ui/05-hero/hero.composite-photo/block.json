@@ -83,7 +83,8 @@
       "recommended_size": "1000 × 1200",
       "aspect_ratio": "5:6",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "photo_name"
     },
     {
       "id": "person_1_avatar",
@@ -93,7 +94,8 @@
       "recommended_size": "160 × 160",
       "aspect_ratio": "1:1",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "person_1_avatar_name"
     },
     {
       "id": "person_2_avatar",
@@ -103,7 +105,8 @@
       "recommended_size": "160 × 160",
       "aspect_ratio": "1:1",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "person_2_avatar_name"
     }
   ],
   "params": [
@@ -173,6 +176,13 @@
       "default": "Lorem ipsum dolor sit amet."
     },
     {
+      "code": "photo_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Photo Image Name",
+      "description": "CMS image file name/path segment for the Photo image. Required image size: 1000 × 1200. Required aspect ratio: 5:6."
+    },
+    {
       "code": "person_1_avatar_url",
       "type": "IMAGE",
       "default": "#"
@@ -183,6 +193,13 @@
       "default": "Lorem Ipsum person avatar."
     },
     {
+      "code": "person_1_avatar_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Person 1 Avatar Image Name",
+      "description": "CMS image file name/path segment for the Person 1 Avatar image. Required image size: 160 × 160. Required aspect ratio: 1:1."
+    },
+    {
       "code": "person_2_avatar_url",
       "type": "IMAGE",
       "default": "#"
@@ -191,6 +208,13 @@
       "code": "person_2_avatar_alt",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem Ipsum person avatar."
+    },
+    {
+      "code": "person_2_avatar_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Person 2 Avatar Image Name",
+      "description": "CMS image file name/path segment for the Person 2 Avatar image. Required image size: 160 × 160. Required aspect ratio: 1:1."
     },
     {
       "code": "placeholder_size",

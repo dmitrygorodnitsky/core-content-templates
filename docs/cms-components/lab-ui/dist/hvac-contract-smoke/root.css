@@ -224,7 +224,7 @@
   }
 }
 
-
+/* generated root CSS: 00-tokens/composition.css */
 /* generated preview/CMS composition glue */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -241,31 +241,51 @@ body {
   color: var(--color-text);
   font-family: var(--font-family);
 }
-#root {
+:root {
   --composition-section-y: clamp(4rem, 7vw, 6.5rem);
   --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
 }
-#root > .composition-section {
+
+/* Default vertical rhythm for every composed section.
+   Blocks must NOT declare padding-block on their root class;
+   the composer owns inter-section spacing.
+
+   For section-wide decorative backgrounds (ambient tints, full-width
+   surface colors): blocks declare the bg on the wrapper class
+   `.composition-section--<block-id-slug>` so the fill extends through
+   the composer-managed padding-block. The inner block class then owns
+   content layout only. See hero.operational-diagram and
+   mobile.4-card-glyph for canonical examples. */
+.composition-section {
   position: relative;
-}
-#root > .composition-section--section-stages-list {
   padding-block: var(--composition-section-y);
 }
-#root > .composition-section--section-axes-grid {
-  padding-block: var(--composition-section-y);
-}
-#root > .composition-section--decorative-callout-band {
+
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
+
+/* Callout band is a tighter accent — shorter at the top, full
+   rhythm at the bottom so the following section gets visual room. */
+.composition-section--decorative-callout-band {
   padding-block: var(--composition-section-y-compact) var(--composition-section-y);
 }
-.stage-wrap {
+/* ─── Wrappers ───────────────────────────────────────────────
+   Global wrapper primitive used by composer-injected markup AND
+   by block-internal layouts that opt into `.container`. Block
+   stylesheets may still redeclare `.<block> .container { … }`
+   with the same calc — those are no-op duplicates but harmless. */
+.container {
   max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
   margin-inline: auto;
   padding-inline: var(--container-padding-x);
 }
-.callout-wrap {
+
+/* Narrow modifier for accent strips (callout, narrative). */
+.container--narrow {
   max-width: calc(1100px + var(--container-padding-x) * 2);
-  margin-inline: auto;
-  padding-inline: var(--container-padding-x);
 }
 a {
   color: inherit;
@@ -277,7 +297,7 @@ select {
   font: inherit;
 }
 @media (max-width: 640px) {
-  #root {
+  :root {
     --composition-section-y: 3.5rem;
     --composition-section-y-compact: 2.5rem;
   }

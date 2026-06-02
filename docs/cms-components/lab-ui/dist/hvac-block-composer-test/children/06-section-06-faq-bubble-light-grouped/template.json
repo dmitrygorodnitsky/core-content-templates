@@ -12,15 +12,16 @@
   "children": [],
   "head": "",
   "html": "<section class=\"composition-section composition-section--faq-bubble-light-grouped\" data-composition-block=\"faq.bubble-light-grouped\">\n<!-- lab-ui block · faq.bubble-light-grouped\n     FAQ section grouped into 4 categories × 5 questions each (20 slots).\n     Bubble-style rounded cards; first item in each group ships open.\n     Multiple-open behavior. Empty groups + empty questions auto-hide via block.js.\n-->\n<section class=\"faq\" id=\"faq\" data-block=\"faq.bubble-light-grouped\">\n  <div class=\"container\">\n    <header class=\"faq-top\">\n      <p class=\"eyebrow\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"faq-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"faq-lede\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"faq-groups\">\n      <article class=\"faq-group\" data-faq-group=\"01\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.01</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"01-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"02\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.02</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"02-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"03\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.03</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"03-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"04\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.04</span>\n          <h3 class=\"faq-group-title\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE@LOCALIZED_STRING_SS}</h3>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"04-01\" open>\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-02\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-03\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-04\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-05\">\n            <summary class=\"faq-q\"><span class=\"faq-q-text\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></summary>\n            <div class=\"faq-a\">${SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
-  "css": "",
-  "javascript": "",
+  "css": "/* generated child CSS: 08-faq/faq.bubble-light-grouped/block.css */\n/* lab-ui block · faq.bubble-light-grouped\n   Depends: 00-tokens/tokens.css. Light theme.\n   Uses native <details> so works without JS; block.js only handles slot hiding + toggle icon sync. */\n\n.faq {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.faq .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.faq-top {\n  max-width: 56rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.5rem);\n  text-align: center;\n}\n.faq-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.faq-title {\n  margin: 0 0 14px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.faq-lede {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n\n/* ─── Groups ───────────────────────────────────────────────── */\n.faq-groups {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 28px 32px;\n}\n\n.faq-group {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-group-head {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  padding-bottom: 6px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.06);\n}\n.faq-group-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n}\n.faq-group-title {\n  margin: 0;\n  font-size: 1.0625rem;\n  font-weight: 600;\n  letter-spacing: -0.01em;\n  color: var(--color-heading);\n}\n\n.faq-group-body {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n/* ─── Items ────────────────────────────────────────────────── */\n.faq-item {\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  border-radius: 18px;\n  background: var(--color-bg);\n  overflow: hidden;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n.faq-item[open] {\n  border-color: rgba(0, 0, 0, 0.16);\n  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.18);\n}\n\n.faq-q {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 12px;\n  align-items: center;\n  padding: 14px 18px;\n  cursor: pointer;\n  list-style: none;\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  font-weight: 500;\n  letter-spacing: -0.01em;\n  user-select: none;\n}\n.faq-q::-webkit-details-marker { display: none; }\n.faq-q:hover .faq-q-text { color: var(--color-text-accent, #56422D); }\n.faq-q:focus-visible {\n  outline: 2px solid var(--cta-accent);\n  outline-offset: -2px;\n  border-radius: 18px;\n}\n\n.faq-q-text {\n  display: inline-block;\n}\n\n.faq-q-toggle {\n  width: 26px;\n  height: 26px;\n  border-radius: 999px;\n  display: inline-grid;\n  place-items: center;\n  background: rgba(0, 0, 0, 0.04);\n  color: var(--color-heading);\n  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;\n}\n.faq-item[open] .faq-q-toggle {\n  transform: rotate(45deg);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, var(--color-white));\n}\n\n.faq-a {\n  padding: 0 18px 16px;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.55;\n}\n\n@media (max-width: 860px) {\n  .faq-groups { grid-template-columns: 1fr; gap: 24px; }\n}\n",
+  "javascript": "/* generated child JS: 08-faq/faq.bubble-light-grouped/block.js */\n// lab-ui block · faq.bubble-light-grouped\n// Hides empty FAQ items (q empty / unfilled handlebars). Hides whole groups\n// whose title is empty or that have no visible items left.\n//\n// Toggle behavior is native <details>; we add `is-open` mirror class so CSS\n// not relying on `[open]` still works.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isPlaceholder = (s) =>\n    !s || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(s);\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"faq.bubble-light-grouped\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".faq-group\").forEach((group) => {\n          // Hide empty items\n          group.querySelectorAll(\".faq-item\").forEach((item) => {\n            const q = item.querySelector(\".faq-q-text\")?.textContent?.trim();\n            if (isPlaceholder(q)) {\n              item.hidden = true;\n            }\n            item.addEventListener(\"toggle\", () => {\n              item.classList.toggle(\"is-open\", item.open);\n            });\n            // Sync initial state\n            item.classList.toggle(\"is-open\", item.open);\n          });\n\n          // Hide group with no visible items or empty title\n          const groupTitle = group\n            .querySelector(\".faq-group-title\")\n            ?.textContent?.trim();\n          const visibleItems = group.querySelectorAll(\n            \".faq-item:not([hidden])\"\n          ).length;\n          if (isPlaceholder(groupTitle) || visibleItems === 0) {\n            group.hidden = true;\n          }\n        });\n      });\n  });\n})();\n",
   "parameters": [
     {
       "code": "SECTION_06_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "eyebrow"
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -32,7 +33,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "title"
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -44,7 +46,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "lede"
+          "NAME": "Lede",
+          "DESCRIPTION": "Text value for the Lede field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -56,7 +59,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "group_01_title"
+          "NAME": "Group 01 Title",
+          "DESCRIPTION": "Text value for the Group 01 Title field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -68,7 +72,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_01_q"
+          "NAME": "Slot 01 01 Q",
+          "DESCRIPTION": "Text value for the Slot 01 01 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -80,7 +85,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_01_a"
+          "NAME": "Slot 01 01 A",
+          "DESCRIPTION": "Text value for the Slot 01 01 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -92,7 +98,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_02_q"
+          "NAME": "Slot 01 02 Q",
+          "DESCRIPTION": "Text value for the Slot 01 02 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -104,7 +111,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_02_a"
+          "NAME": "Slot 01 02 A",
+          "DESCRIPTION": "Text value for the Slot 01 02 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -116,7 +124,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_03_q"
+          "NAME": "Slot 01 03 Q",
+          "DESCRIPTION": "Text value for the Slot 01 03 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -128,7 +137,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_03_a"
+          "NAME": "Slot 01 03 A",
+          "DESCRIPTION": "Text value for the Slot 01 03 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -140,7 +150,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_04_q"
+          "NAME": "Slot 01 04 Q",
+          "DESCRIPTION": "Text value for the Slot 01 04 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -152,7 +163,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_04_a"
+          "NAME": "Slot 01 04 A",
+          "DESCRIPTION": "Text value for the Slot 01 04 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -164,7 +176,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_05_q"
+          "NAME": "Slot 01 05 Q",
+          "DESCRIPTION": "Text value for the Slot 01 05 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -176,7 +189,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_01_05_a"
+          "NAME": "Slot 01 05 A",
+          "DESCRIPTION": "Text value for the Slot 01 05 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -188,7 +202,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "group_02_title"
+          "NAME": "Group 02 Title",
+          "DESCRIPTION": "Text value for the Group 02 Title field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -200,7 +215,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_01_q"
+          "NAME": "Slot 02 01 Q",
+          "DESCRIPTION": "Text value for the Slot 02 01 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -212,7 +228,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_01_a"
+          "NAME": "Slot 02 01 A",
+          "DESCRIPTION": "Text value for the Slot 02 01 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -224,7 +241,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_02_q"
+          "NAME": "Slot 02 02 Q",
+          "DESCRIPTION": "Text value for the Slot 02 02 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -236,7 +254,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_02_a"
+          "NAME": "Slot 02 02 A",
+          "DESCRIPTION": "Text value for the Slot 02 02 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -248,7 +267,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_03_q"
+          "NAME": "Slot 02 03 Q",
+          "DESCRIPTION": "Text value for the Slot 02 03 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -260,7 +280,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_03_a"
+          "NAME": "Slot 02 03 A",
+          "DESCRIPTION": "Text value for the Slot 02 03 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -272,7 +293,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_04_q"
+          "NAME": "Slot 02 04 Q",
+          "DESCRIPTION": "Text value for the Slot 02 04 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -284,7 +306,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_04_a"
+          "NAME": "Slot 02 04 A",
+          "DESCRIPTION": "Text value for the Slot 02 04 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -296,7 +319,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_05_q"
+          "NAME": "Slot 02 05 Q",
+          "DESCRIPTION": "Text value for the Slot 02 05 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -308,7 +332,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_02_05_a"
+          "NAME": "Slot 02 05 A",
+          "DESCRIPTION": "Text value for the Slot 02 05 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -320,7 +345,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "group_03_title"
+          "NAME": "Group 03 Title",
+          "DESCRIPTION": "Text value for the Group 03 Title field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -332,7 +358,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_01_q"
+          "NAME": "Slot 03 01 Q",
+          "DESCRIPTION": "Text value for the Slot 03 01 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -344,7 +371,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_01_a"
+          "NAME": "Slot 03 01 A",
+          "DESCRIPTION": "Text value for the Slot 03 01 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -356,7 +384,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_02_q"
+          "NAME": "Slot 03 02 Q",
+          "DESCRIPTION": "Text value for the Slot 03 02 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -368,7 +397,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_02_a"
+          "NAME": "Slot 03 02 A",
+          "DESCRIPTION": "Text value for the Slot 03 02 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -380,7 +410,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_03_q"
+          "NAME": "Slot 03 03 Q",
+          "DESCRIPTION": "Text value for the Slot 03 03 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -392,7 +423,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_03_a"
+          "NAME": "Slot 03 03 A",
+          "DESCRIPTION": "Text value for the Slot 03 03 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -404,7 +436,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_04_q"
+          "NAME": "Slot 03 04 Q",
+          "DESCRIPTION": "Text value for the Slot 03 04 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -416,7 +449,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_04_a"
+          "NAME": "Slot 03 04 A",
+          "DESCRIPTION": "Text value for the Slot 03 04 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -428,7 +462,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_05_q"
+          "NAME": "Slot 03 05 Q",
+          "DESCRIPTION": "Text value for the Slot 03 05 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -440,7 +475,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_03_05_a"
+          "NAME": "Slot 03 05 A",
+          "DESCRIPTION": "Text value for the Slot 03 05 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -452,7 +488,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "group_04_title"
+          "NAME": "Group 04 Title",
+          "DESCRIPTION": "Text value for the Group 04 Title field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -464,7 +501,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_01_q"
+          "NAME": "Slot 04 01 Q",
+          "DESCRIPTION": "Text value for the Slot 04 01 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -476,7 +514,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_01_a"
+          "NAME": "Slot 04 01 A",
+          "DESCRIPTION": "Text value for the Slot 04 01 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -488,7 +527,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_02_q"
+          "NAME": "Slot 04 02 Q",
+          "DESCRIPTION": "Text value for the Slot 04 02 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -500,7 +540,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_02_a"
+          "NAME": "Slot 04 02 A",
+          "DESCRIPTION": "Text value for the Slot 04 02 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -512,7 +553,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_03_q"
+          "NAME": "Slot 04 03 Q",
+          "DESCRIPTION": "Text value for the Slot 04 03 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -524,7 +566,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_03_a"
+          "NAME": "Slot 04 03 A",
+          "DESCRIPTION": "Text value for the Slot 04 03 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -536,7 +579,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_04_q"
+          "NAME": "Slot 04 04 Q",
+          "DESCRIPTION": "Text value for the Slot 04 04 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -548,7 +592,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_04_a"
+          "NAME": "Slot 04 04 A",
+          "DESCRIPTION": "Text value for the Slot 04 04 A field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -560,7 +605,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_05_q"
+          "NAME": "Slot 04 05 Q",
+          "DESCRIPTION": "Text value for the Slot 04 05 Q field in FAQ · bubble light grouped."
         }
       },
       "value": {
@@ -572,7 +618,8 @@
       "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "slot_04_05_a"
+          "NAME": "Slot 04 05 A",
+          "DESCRIPTION": "Text value for the Slot 04 05 A field in FAQ · bubble light grouped."
         }
       },
       "value": {

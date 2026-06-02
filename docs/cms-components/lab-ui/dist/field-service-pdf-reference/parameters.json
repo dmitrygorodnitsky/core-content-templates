@@ -1106,6 +1106,39 @@
     }
   },
   {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Photo Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2753,6 +2786,17 @@
     "value": {
       "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
     }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "AI Media Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Ai Media image in Signature · AI-shell (stream + side panel + capability cards). Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
   },
   {
     "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_LABEL",
@@ -4727,6 +4771,226 @@
       }
     },
     "value": "#"
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 1 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 01 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 2 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 02 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 3 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 03 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 4 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 04 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 5 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 05 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 6 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 06 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 7 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 07 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 8 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 08 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 9 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 09 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 10 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 11 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 12 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 13 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 14 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 14 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 15 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 15 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 16 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 16 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 17 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 17 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 18 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 18 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 19 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 19 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 20 Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Slot 20 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
   },
   {
     "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COLUMN_COUNT",

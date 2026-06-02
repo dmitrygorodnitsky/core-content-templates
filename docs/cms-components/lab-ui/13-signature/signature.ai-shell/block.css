@@ -213,13 +213,14 @@
   object-fit: cover;
 }
 .ai-media-img[src=""],
-.ai-media-img[src="#"] {
+.ai-media-img[src="#"],
+.ai-media-img[src^="/core/image//"] {
   display: none;
 }
 .ai-media-fallback {
   display: contents;
 }
-.ai-media-img[src]:not([src=""]):not([src="#"]) + .ai-media-fallback {
+.ai-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .ai-media-fallback {
   display: none;
 }
 .ai-media-fallback span:first-child {

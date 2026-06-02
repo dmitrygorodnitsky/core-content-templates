@@ -110,6 +110,13 @@
       "description": "Alternative text for the image in industry card slot 1."
     },
     {
+      "code": "slot_01_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 01 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 01 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_01_href",
       "type": "URL",
       "default": "#"
@@ -142,6 +149,13 @@
       "default": "Lorem Ipsum industry image 2.",
       "name": "Slot 2 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 2."
+    },
+    {
+      "code": "slot_02_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 02 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 02 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_02_href",
@@ -178,6 +192,13 @@
       "description": "Alternative text for the image in industry card slot 3."
     },
     {
+      "code": "slot_03_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 03 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 03 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_03_href",
       "type": "URL",
       "default": "#"
@@ -210,6 +231,13 @@
       "default": "Lorem Ipsum industry image 4.",
       "name": "Slot 4 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 4."
+    },
+    {
+      "code": "slot_04_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 04 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 04 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_04_href",
@@ -246,6 +274,13 @@
       "description": "Alternative text for the image in industry card slot 5."
     },
     {
+      "code": "slot_05_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 05 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 05 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_05_href",
       "type": "URL",
       "default": "#"
@@ -278,6 +313,13 @@
       "default": "Lorem Ipsum industry image 6.",
       "name": "Slot 6 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 6."
+    },
+    {
+      "code": "slot_06_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 06 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 06 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_06_href",
@@ -314,6 +356,13 @@
       "description": "Alternative text for the image in industry card slot 7."
     },
     {
+      "code": "slot_07_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 07 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 07 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_07_href",
       "type": "URL",
       "default": "#"
@@ -346,6 +395,13 @@
       "default": "Lorem Ipsum industry image 8.",
       "name": "Slot 8 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 8."
+    },
+    {
+      "code": "slot_08_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 08 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 08 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_08_href",
@@ -382,6 +438,13 @@
       "description": "Alternative text for the image in industry card slot 9."
     },
     {
+      "code": "slot_09_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 09 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 09 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_09_href",
       "type": "URL",
       "default": "#"
@@ -414,6 +477,13 @@
       "default": "Lorem Ipsum industry image 10.",
       "name": "Slot 10 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 10."
+    },
+    {
+      "code": "slot_10_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 10 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 10 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_10_href",
@@ -450,6 +520,13 @@
       "description": "Alternative text for the image in industry card slot 11."
     },
     {
+      "code": "slot_11_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 11 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 11 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_11_href",
       "type": "URL",
       "default": "#"
@@ -482,6 +559,13 @@
       "default": "Lorem Ipsum industry image 12.",
       "name": "Slot 12 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 12."
+    },
+    {
+      "code": "slot_12_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 12 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 12 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_12_href",
@@ -518,6 +602,13 @@
       "description": "Alternative text for the image in industry card slot 13."
     },
     {
+      "code": "slot_13_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 13 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 13 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_13_href",
       "type": "URL",
       "default": "#"
@@ -550,6 +641,13 @@
       "default": "Lorem Ipsum industry image 14.",
       "name": "Slot 14 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 14."
+    },
+    {
+      "code": "slot_14_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 14 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 14 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_14_href",
@@ -586,6 +684,13 @@
       "description": "Alternative text for the image in industry card slot 15."
     },
     {
+      "code": "slot_15_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 15 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 15 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_15_href",
       "type": "URL",
       "default": "#"
@@ -618,6 +723,13 @@
       "default": "Lorem Ipsum industry image 16.",
       "name": "Slot 16 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 16."
+    },
+    {
+      "code": "slot_16_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 16 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 16 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_16_href",
@@ -654,6 +766,13 @@
       "description": "Alternative text for the image in industry card slot 17."
     },
     {
+      "code": "slot_17_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 17 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 17 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_17_href",
       "type": "URL",
       "default": "#"
@@ -686,6 +805,13 @@
       "default": "Lorem Ipsum industry image 18.",
       "name": "Slot 18 Image Alt Text",
       "description": "Alternative text for the image in industry card slot 18."
+    },
+    {
+      "code": "slot_18_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 18 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 18 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
       "code": "slot_18_href",
@@ -722,6 +848,13 @@
       "description": "Alternative text for the image in industry card slot 19."
     },
     {
+      "code": "slot_19_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 19 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 19 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_19_href",
       "type": "URL",
       "default": "#"
@@ -756,6 +889,13 @@
       "description": "Alternative text for the image in industry card slot 20."
     },
     {
+      "code": "slot_20_image_name",
+      "type": "STRING",
+      "default": "",
+      "name": "Slot 20 Photo Image Name",
+      "description": "CMS image file name/path segment for the Slot 20 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+    },
+    {
       "code": "slot_20_href",
       "type": "URL",
       "default": "#"
@@ -784,7 +924,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_01_image_name"
     },
     {
       "id": "slot-02-photo",
@@ -796,7 +937,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_02_image_name"
     },
     {
       "id": "slot-03-photo",
@@ -808,7 +950,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_03_image_name"
     },
     {
       "id": "slot-04-photo",
@@ -820,7 +963,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_04_image_name"
     },
     {
       "id": "slot-05-photo",
@@ -832,7 +976,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_05_image_name"
     },
     {
       "id": "slot-06-photo",
@@ -844,7 +989,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_06_image_name"
     },
     {
       "id": "slot-07-photo",
@@ -856,7 +1002,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_07_image_name"
     },
     {
       "id": "slot-08-photo",
@@ -868,7 +1015,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_08_image_name"
     },
     {
       "id": "slot-09-photo",
@@ -880,7 +1028,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_09_image_name"
     },
     {
       "id": "slot-10-photo",
@@ -892,7 +1041,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_10_image_name"
     },
     {
       "id": "slot-11-photo",
@@ -904,7 +1054,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_11_image_name"
     },
     {
       "id": "slot-12-photo",
@@ -916,7 +1067,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_12_image_name"
     },
     {
       "id": "slot-13-photo",
@@ -928,7 +1080,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_13_image_name"
     },
     {
       "id": "slot-14-photo",
@@ -940,7 +1093,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_14_image_name"
     },
     {
       "id": "slot-15-photo",
@@ -952,7 +1106,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_15_image_name"
     },
     {
       "id": "slot-16-photo",
@@ -964,7 +1119,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_16_image_name"
     },
     {
       "id": "slot-17-photo",
@@ -976,7 +1132,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_17_image_name"
     },
     {
       "id": "slot-18-photo",
@@ -988,7 +1145,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_18_image_name"
     },
     {
       "id": "slot-19-photo",
@@ -1000,7 +1158,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_19_image_name"
     },
     {
       "id": "slot-20-photo",
@@ -1012,7 +1171,8 @@
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
       "fit": "cover",
-      "required": false
+      "required": false,
+      "name_param": "slot_20_image_name"
     }
   ]
 }

@@ -19,5 +19,5 @@
     "decorative.callout-band",
     "footer.default"
   ],
-  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/hvac-block-composer-test.spec.json"
+  "sourceSpec": "docs/cms-components/lab-ui/dist/hvac-block-composer-test/landing.spec.json"
 }

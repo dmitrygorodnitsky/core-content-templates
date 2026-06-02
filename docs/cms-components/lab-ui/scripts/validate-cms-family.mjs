@@ -136,14 +136,24 @@ const main = () => {
     if (/\{\{[A-Za-z0-9_-]+\}\}/.test(`${template.head || ""}\n${template.html || ""}\n${template.css || ""}\n${template.javascript || ""}`)) {
       fail(`${template.code}: unresolved lab-ui handlebars placeholder`);
     }
-    for (const match of String(template.html || "").matchAll(/<img\b[^>]*\bsrc="\$\{([A-Z0-9_]+)@IMAGE\}"[^>]*>/g)) {
+    for (const match of String(template.html || "").matchAll(/<img\b[^>]*\bsrc="[^"]*\$\{([A-Z0-9_]+)@IMAGE\}[^"]*"[^>]*>/g)) {
       const tag = match[0];
+      if (!/\bsrc="\/core\/image\/\$\{[A-Z0-9_]+@IMAGE\}\/get\*\*\/\$\{([A-Z0-9_]+)@STRING\}"/.test(tag)) {
+        fail(`${template.code}: image ${match[1]} must use CMS image route with IMAGE NAME`);
+      }
       if (!/\balt="\$\{[A-Z0-9_]+@(?:LOCALIZED_STRING_SS|STRING)\}"/.test(tag)) {
         fail(`${template.code}: image ${match[1]} must have parameterized alt text`);
+      }
+      if (!/\bwidth="\d+"/.test(tag) || !/\bheight="\d+"/.test(tag)) {
+        fail(`${template.code}: image ${match[1]} must declare width and height attributes`);
       }
       const imageCode = match[1];
       if (!parameters.some((param) => param.code === imageCode && param.type === "IMAGE")) {
         fail(`${template.code}: image ${imageCode} missing IMAGE parameter declaration`);
+      }
+      const nameCode = tag.match(/\bsrc="\/core\/image\/\$\{[A-Z0-9_]+@IMAGE\}\/get\*\*\/\$\{([A-Z0-9_]+)@STRING\}"/)?.[1];
+      if (!nameCode || !parameters.some((param) => param.code === nameCode && param.type === "STRING")) {
+        fail(`${template.code}: image ${imageCode} missing IMAGE NAME parameter declaration`);
       }
     }
   }

@@ -1006,6 +1006,30 @@
     }
   },
   {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 1 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1015,7 +1039,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate."
+      "en": "Lorem Ipsum elit."
     }
   },
   {
@@ -1028,7 +1052,31 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem ipsum dolor sit."
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 2 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
@@ -1041,7 +1089,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit."
+      "en": "Lorem Ipsum aute."
     }
   },
   {
@@ -1054,8 +1102,41 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore et dolore magna."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
     }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Photo Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
   },
   {
     "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
