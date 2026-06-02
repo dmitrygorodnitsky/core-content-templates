@@ -99,7 +99,10 @@
       render(FALLBACK);
       return;
     }
-    fetch("/core/api/language/active.json", { credentials: "same-origin" })
+    fetch("/core/api/language/active.json", {
+      method: "POST",
+      credentials: "same-origin",
+    })
       .then((r) => (r.ok ? r.json() : Promise.reject(r)))
       .then((p) => {
         const langs = Array.isArray(p) ? p : p?.items || p?.data || p?.result;

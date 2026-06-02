@@ -5,7 +5,7 @@
      Param contract: see block.json.
 
      Run-time enhancement (when on a real CMS server):
-       fetch('/core/api/language/active.json') populates .locale-list
+       POST /core/api/language/active.json populates .locale-list
        with [{ code, name }, …]. Falls back to defaults if unreachable.
 -->
 <div class="locale-selector" data-block="language.locale-dropdown">
