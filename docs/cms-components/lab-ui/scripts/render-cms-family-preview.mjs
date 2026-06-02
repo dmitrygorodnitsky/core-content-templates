@@ -52,16 +52,18 @@ const renderSafeInline = (value) => {
 const valueToString = (value, locale = "en") => {
   if (value == null) return "";
   if (typeof value === "object" && !Array.isArray(value)) {
-    return value[locale] ?? value.en ?? Object.values(value)[0] ?? "";
+    const localizedValue = value[locale] ?? value.en ?? Object.values(value)[0] ?? "";
+    return typeof localizedValue === "object" ? JSON.stringify(localizedValue, null, 2) : localizedValue;
   }
   return String(value);
 };
 
 const renderPlaceholders = (html, values, locale) =>
   String(html || "")
-    .replace(/\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g, (_, code) =>
-      renderSafeInline(valueToString(values[code], locale)),
-    )
+    .replace(/\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g, (_, code, type) => {
+      const value = valueToString(values[code], locale);
+      return type.includes("JSON") ? value : renderSafeInline(value);
+    })
     .replace(/\bsrc="\/core\/image\/\/get\/[^"]*"/g, 'src=""');
 
 const slotFor = (template) => {

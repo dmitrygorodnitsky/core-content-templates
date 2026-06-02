@@ -27,6 +27,9 @@
     "ROOT_META_DESCRIPTION": {
       "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
     },
+    "SEO_LD_SCHEMA": {
+      "en": {}
+    },
     "SECTION_01_HEADER_DEFAULT_BRAND_HREF": "#",
     "SECTION_01_HEADER_DEFAULT_BRAND_NAME": {
       "en": "Lorem Ipsum do."

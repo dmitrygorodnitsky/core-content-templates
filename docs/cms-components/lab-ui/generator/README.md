@@ -104,6 +104,18 @@ Root owns:
 - shell `html`
 - root parameters
 
+Root `head` includes SEO parameters:
+
+- `${ROOT_META_TITLE@LOCALIZED_STRING_SS}`
+- `${ROOT_META_DESCRIPTION@LOCALIZED_STRING_SS}`
+- `${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}` rendered inside:
+
+```html
+<script type="application/ld+json">
+  ${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}
+</script>
+```
+
 Child templates own:
 
 - one gallery block's `block.html`, with `{{param}}` converted to CMS placeholders

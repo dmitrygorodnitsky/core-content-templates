@@ -208,6 +208,12 @@ summary.md
 preview.html
 ```
 
+Root `head` must include SEO parameters:
+
+- `${ROOT_META_TITLE@LOCALIZED_STRING_SS}`
+- `${ROOT_META_DESCRIPTION@LOCALIZED_STRING_SS}`
+- `${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}` inside an `application/ld+json` script tag.
+
 ## Local Verification
 
 Start or reuse a local server from `docs/cms-components/lab-ui`:

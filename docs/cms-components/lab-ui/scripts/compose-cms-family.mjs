@@ -370,6 +370,11 @@ const buildFamily = (spec, catalog) => {
       name: "Meta Description",
       description: "SEO meta description for the generated landing page.",
     }),
+    parameter("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT", {}, locale, {
+      code: "seo_ld_schema",
+      name: "SEO LD Schema",
+      description: "Localized JSON-LD structured data object rendered in the root head as application/ld+json.",
+    }),
   ];
   const parameters = [...rootParams, ...collectParameters(children)];
   const values = {};
@@ -384,7 +389,10 @@ const buildFamily = (spec, catalog) => {
     head: `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${placeholder("ROOT_META_TITLE", "LOCALIZED_STRING_SS")}</title>
-<meta name="description" content="${placeholder("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS")}">`,
+<meta name="description" content="${placeholder("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS")}">
+<script type="application/ld+json">
+  ${placeholder("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT")}
+</script>`,
     html: `<div id="root" data-cms-family="${escapeHtml(rootCode)}">
   ${slotMarker(SLOT_MARKERS.rootSections)}
 </div>`,
