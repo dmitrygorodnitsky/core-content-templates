@@ -76,6 +76,7 @@
 }
 
 .herop-photo-placeholder {
+  z-index: 0;
   display: grid;
   place-content: center;
   place-items: center;
@@ -102,7 +103,11 @@
 .herop-photo-img[src=""],
 .herop-photo-img[src="#"],
 .herop-photo-img[src^="/core/image//"] {
-  display: none;
+  opacity: 0;
+}
+
+.herop-photo-img {
+  z-index: 1;
 }
 
 .herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-photo-placeholder {
@@ -157,13 +162,17 @@
 .herop-person--1 { top: 32px;  right: 24px; }
 .herop-person--2 { top: 124px; right: 60px; }
 
-.herop-person-avatar { width: 36px; height: 36px; border-radius: 999px; overflow: hidden; flex: 0 0 auto; }
+.herop-person-avatar { position: relative; width: 36px; height: 36px; border-radius: 999px; overflow: hidden; flex: 0 0 auto; }
 .herop-person-avatar svg,
 .herop-person-avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
+.herop-person-avatar-img,
+.herop-person-avatar-fallback { position: absolute; inset: 0; }
+.herop-person-avatar-img { z-index: 1; }
+.herop-person-avatar-fallback { z-index: 0; }
 .herop-person-avatar-img[src=""],
 .herop-person-avatar-img[src="#"],
 .herop-person-avatar-img[src^="/core/image//"] {
-  display: none;
+  opacity: 0;
 }
 .herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-person-avatar-fallback {
   display: none;
