@@ -3,7 +3,7 @@
   "id": "verticals.glyph-grid-20-slots",
   "category": "10-verticals-grid",
   "title": "Verticals grid · photo-card catalog",
-  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, editable status label, editable CTA label, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card uses the same media placeholder/photo slot, title, description, URL href, editable status label, and editable CTA label. Seven spare slots are hidden until an admin fills the title.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -127,6 +127,13 @@
       "default": "Live",
       "name": "Slot 01 Status Label",
       "description": "Editable status label shown in industry card slot 1."
+    },
+    {
+      "code": "slot_01_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 01 CTA Label",
+      "description": "Editable CTA label shown in industry card slot 1."
     },
     {
       "code": "slot_02_title",
@@ -1182,9 +1189,9 @@
     "Empty-title slots are hidden via [hidden] + block.js (covers the case where the slot ships with the {{handlebar}} unfilled).",
     "Media slots are real optional image slots. When a slot image URL is empty, the neutral striped placeholder with dimension + photo hint remains visible.",
     "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
-    "The 'live' state changes border treatment, photo meta accent, arrow, and Live badge. Apply by adding class 'is-live' to the slot card.",
-    "Coming-soon waitlist CTAs are editable label/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
-    "Hover glow + halo are intentionally NOT delegated to effect.hover-rise: vertical-card's hover composes a depth shadow with the halo, and the .is-live ::after border ring would collide with effect.hover-rise's ::after. The local copy stays byte-identical to the effect's canonical values; if effect.hover-rise's geometry changes, update this block too."
+    "All visible cards share one visual and CMS parameter pattern; slot 1 is not visually special.",
+    "Card CTAs are editable label/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
+    "Hover glow + halo are intentionally NOT delegated to effect.hover-rise: vertical-card's hover composes a depth shadow with the halo. The local copy stays byte-identical to the effect's canonical values; if effect.hover-rise's geometry changes, update this block too."
   ],
   "image_slots": [
     {

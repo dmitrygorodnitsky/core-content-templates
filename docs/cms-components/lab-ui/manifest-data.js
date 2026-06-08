@@ -644,7 +644,7 @@ window.LAB_UI_MANIFEST = {
       "category": "10-verticals-grid",
       "path": "10-verticals-grid/verticals.glyph-grid-20-slots",
       "title": "Verticals grid · photo-card catalog",
-      "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, editable status label, editable CTA label, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+      "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card uses the same media placeholder/photo slot, title, description, URL href, editable status label, and editable CTA label. Seven spare slots are hidden until an admin fills the title.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "/Users/imighty/Downloads/Lorem ipsum (2)/src/kit/catalog-compare.jsx (CardCatalog)",
