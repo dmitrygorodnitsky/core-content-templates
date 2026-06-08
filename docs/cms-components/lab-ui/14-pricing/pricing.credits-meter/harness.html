@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pricing.credits-meter · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-pad { padding-block: 44px 72px; }
+</style>
+</head>
+<body data-theme="cyan">
+<div class="harness-label">pricing.credits-meter · live · allowance + packs</div>
+<div class="harness-pad">
+  <section class="cm-credits" data-block="pricing.credits-meter" data-pricing-period="monthly">
+    <div class="container">
+      <header class="cm-top">
+        <p class="cm-eyebrow">Credits and tokens</p>
+        <h2 class="cm-title">Routing tokens and metered usage.</h2>
+        <p class="cm-lede">Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.</p>
+      </header>
+
+      <div class="cm-grid">
+        <article class="cm-card cm-card--allowance">
+          <header class="cm-card-head">
+            <span class="cm-card-kicker">Included</span>
+            <h3 class="cm-card-title">Included with your plan</h3>
+            <p class="cm-card-lede">Monthly token pool for the routing tool, plus the per-token rate after the pool is consumed.</p>
+          </header>
+          <ul class="cm-rows" aria-label="Included with your plan">
+            <li class="cm-row" data-plan-visible="show">
+              <span class="cm-row-plan">Starter</span>
+              <span class="cm-row-amount" data-amount>0</span>
+              <span class="cm-row-unit">tokens /mo</span>
+              <span class="cm-row-overage">$0.012 /token</span>
+            </li>
+            <li class="cm-row" data-plan-visible="show">
+              <span class="cm-row-plan">Growth</span>
+              <span class="cm-row-amount" data-amount>10K</span>
+              <span class="cm-row-unit">tokens /mo</span>
+              <span class="cm-row-overage">$0.010 /token</span>
+            </li>
+            <li class="cm-row" data-plan-visible="show">
+              <span class="cm-row-plan">Scale</span>
+              <span class="cm-row-amount" data-amount>50K</span>
+              <span class="cm-row-unit">tokens /mo</span>
+              <span class="cm-row-overage">$0.008 /token</span>
+            </li>
+            <li class="cm-row" data-plan-visible="show">
+              <span class="cm-row-plan">Enterprise</span>
+              <span class="cm-row-amount" data-amount>Custom</span>
+              <span class="cm-row-unit">tokens /mo</span>
+              <span class="cm-row-overage">Negotiated</span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="cm-card cm-card--packs">
+          <header class="cm-card-head">
+            <span class="cm-card-kicker">Pre-purchase</span>
+            <h3 class="cm-card-title">Token packs</h3>
+            <p class="cm-card-lede">Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.</p>
+          </header>
+          <div class="cm-packs" role="list" aria-label="Token packs">
+            <article class="cm-pack cm-pack--standard" role="listitem" data-pack-visible="show">
+              <span class="cm-pack-badge"></span>
+              <p class="cm-pack-name">Starter pack</p>
+              <p class="cm-pack-amount">10K<span class="cm-pack-unit">tokens</span></p>
+              <p class="cm-pack-price">$120</p>
+              <p class="cm-pack-rate">$0.012 /token</p>
+            </article>
+            <article class="cm-pack cm-pack--featured" role="listitem" data-pack-visible="show">
+              <span class="cm-pack-badge">Most teams</span>
+              <p class="cm-pack-name">Standard pack</p>
+              <p class="cm-pack-amount">50K<span class="cm-pack-unit">tokens</span></p>
+              <p class="cm-pack-price">$500</p>
+              <p class="cm-pack-rate">$0.010 /token</p>
+            </article>
+            <article class="cm-pack cm-pack--standard" role="listitem" data-pack-visible="show">
+              <span class="cm-pack-badge">Best per-token</span>
+              <p class="cm-pack-name">Scale pack</p>
+              <p class="cm-pack-amount">250K<span class="cm-pack-unit">tokens</span></p>
+              <p class="cm-pack-price">$2,000</p>
+              <p class="cm-pack-rate">$0.008 /token</p>
+            </article>
+            <article class="cm-pack cm-pack--muted" role="listitem" data-pack-visible="hide">
+              <span class="cm-pack-badge">Enterprise</span>
+              <p class="cm-pack-name">Custom pack</p>
+              <p class="cm-pack-amount">1M+<span class="cm-pack-unit">tokens</span></p>
+              <p class="cm-pack-price">Quoted</p>
+              <p class="cm-pack-rate">Negotiated rate</p>
+            </article>
+          </div>
+          <a class="cm-packs-cta" href="#">See all token packs</a>
+        </article>
+      </div>
+
+      <aside class="cm-explainer" data-explainer-visible="show">
+        <p class="cm-explainer-kicker">How it adds up</p>
+        <p class="cm-explainer-text">A single optimized route across 12 stops uses about 8 tokens. The Growth plan's 10K monthly allowance covers roughly 1,200 routes per month before overage applies.</p>
+      </aside>
+
+      <p class="cm-disclaimer">Token consumption is approximate and depends on stop count, route constraints, and traffic data freshness.</p>
+    </div>
+  </section>
+</div>
+<script src="./block.js"></script>
+</body>
+</html>

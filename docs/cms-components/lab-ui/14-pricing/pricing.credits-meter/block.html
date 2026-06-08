@@ -1,0 +1,100 @@
+<!-- lab-ui block · pricing.credits-meter
+     Usage/credits surface, distinct from add-on packs.
+     Two surfaces side-by-side on desktop, stacked on mobile:
+       1. Allowance — what each plan includes per month + overage rate.
+       2. Token packs — discrete tiers with per-token economics.
+     An optional explainer row sits below ("1 routing call ≈ N tokens").
+-->
+<section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-pricing-period="{{billing_default}}">
+  <div class="container">
+    <header class="cm-top">
+      <p class="cm-eyebrow">{{eyebrow}}</p>
+      <h2 class="cm-title">{{title}}</h2>
+      <p class="cm-lede">{{lede}}</p>
+    </header>
+
+    <div class="cm-grid">
+      <!-- Surface A — what every plan includes -->
+      <article class="cm-card cm-card--allowance">
+        <header class="cm-card-head">
+          <span class="cm-card-kicker">{{allowance_kicker}}</span>
+          <h3 class="cm-card-title">{{allowance_title}}</h3>
+          <p class="cm-card-lede">{{allowance_lede}}</p>
+        </header>
+        <ul class="cm-rows" aria-label="{{allowance_title}}">
+          <li class="cm-row" data-plan-visible="{{allowance_01_visible}}">
+            <span class="cm-row-plan">{{allowance_01_plan}}</span>
+            <span class="cm-row-amount" data-amount>{{allowance_01_included}}</span>
+            <span class="cm-row-unit">{{allowance_unit}}</span>
+            <span class="cm-row-overage">{{allowance_01_overage}}</span>
+          </li>
+          <li class="cm-row" data-plan-visible="{{allowance_02_visible}}">
+            <span class="cm-row-plan">{{allowance_02_plan}}</span>
+            <span class="cm-row-amount" data-amount>{{allowance_02_included}}</span>
+            <span class="cm-row-unit">{{allowance_unit}}</span>
+            <span class="cm-row-overage">{{allowance_02_overage}}</span>
+          </li>
+          <li class="cm-row" data-plan-visible="{{allowance_03_visible}}">
+            <span class="cm-row-plan">{{allowance_03_plan}}</span>
+            <span class="cm-row-amount" data-amount>{{allowance_03_included}}</span>
+            <span class="cm-row-unit">{{allowance_unit}}</span>
+            <span class="cm-row-overage">{{allowance_03_overage}}</span>
+          </li>
+          <li class="cm-row" data-plan-visible="{{allowance_04_visible}}">
+            <span class="cm-row-plan">{{allowance_04_plan}}</span>
+            <span class="cm-row-amount" data-amount>{{allowance_04_included}}</span>
+            <span class="cm-row-unit">{{allowance_unit}}</span>
+            <span class="cm-row-overage">{{allowance_04_overage}}</span>
+          </li>
+        </ul>
+      </article>
+
+      <!-- Surface B — discrete token packs with per-unit economics -->
+      <article class="cm-card cm-card--packs">
+        <header class="cm-card-head">
+          <span class="cm-card-kicker">{{packs_kicker}}</span>
+          <h3 class="cm-card-title">{{packs_title}}</h3>
+          <p class="cm-card-lede">{{packs_lede}}</p>
+        </header>
+        <div class="cm-packs" role="list" aria-label="{{packs_title}}">
+          <article class="cm-pack cm-pack--{{pack_01_state}}" role="listitem" data-pack-visible="{{pack_01_visible}}">
+            <span class="cm-pack-badge">{{pack_01_badge}}</span>
+            <p class="cm-pack-name">{{pack_01_name}}</p>
+            <p class="cm-pack-amount">{{pack_01_amount}}<span class="cm-pack-unit">{{pack_01_unit}}</span></p>
+            <p class="cm-pack-price">{{pack_01_price}}</p>
+            <p class="cm-pack-rate">{{pack_01_per_unit}}</p>
+          </article>
+          <article class="cm-pack cm-pack--{{pack_02_state}}" role="listitem" data-pack-visible="{{pack_02_visible}}">
+            <span class="cm-pack-badge">{{pack_02_badge}}</span>
+            <p class="cm-pack-name">{{pack_02_name}}</p>
+            <p class="cm-pack-amount">{{pack_02_amount}}<span class="cm-pack-unit">{{pack_02_unit}}</span></p>
+            <p class="cm-pack-price">{{pack_02_price}}</p>
+            <p class="cm-pack-rate">{{pack_02_per_unit}}</p>
+          </article>
+          <article class="cm-pack cm-pack--{{pack_03_state}}" role="listitem" data-pack-visible="{{pack_03_visible}}">
+            <span class="cm-pack-badge">{{pack_03_badge}}</span>
+            <p class="cm-pack-name">{{pack_03_name}}</p>
+            <p class="cm-pack-amount">{{pack_03_amount}}<span class="cm-pack-unit">{{pack_03_unit}}</span></p>
+            <p class="cm-pack-price">{{pack_03_price}}</p>
+            <p class="cm-pack-rate">{{pack_03_per_unit}}</p>
+          </article>
+          <article class="cm-pack cm-pack--{{pack_04_state}}" role="listitem" data-pack-visible="{{pack_04_visible}}">
+            <span class="cm-pack-badge">{{pack_04_badge}}</span>
+            <p class="cm-pack-name">{{pack_04_name}}</p>
+            <p class="cm-pack-amount">{{pack_04_amount}}<span class="cm-pack-unit">{{pack_04_unit}}</span></p>
+            <p class="cm-pack-price">{{pack_04_price}}</p>
+            <p class="cm-pack-rate">{{pack_04_per_unit}}</p>
+          </article>
+        </div>
+        <a class="cm-packs-cta" href="{{packs_cta_url}}">{{packs_cta_label}}</a>
+      </article>
+    </div>
+
+    <aside class="cm-explainer" data-explainer-visible="{{explainer_visible}}">
+      <p class="cm-explainer-kicker">{{explainer_kicker}}</p>
+      <p class="cm-explainer-text">{{explainer_text}}</p>
+    </aside>
+
+    <p class="cm-disclaimer">{{disclaimer}}</p>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pricing.addons · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-pad { padding-block: 44px 72px; }
+</style>
+</head>
+<body data-theme="cyan">
+<div class="harness-label">pricing.addons · live</div>
+<div class="harness-pad">
+  <section class="pricing-addons" data-block="pricing.addons">
+    <div class="container">
+      <header class="pricing-addons-top">
+        <div>
+          <p class="pricing-addons-eyebrow">Add-ons</p>
+          <h2 class="pricing-addons-title">Expand capacity without changing plans.</h2>
+        </div>
+        <p class="pricing-addons-lede">Buy more buildings, routing optimization tokens, and rollout support as operational demand grows.</p>
+      </header>
+      <div class="pricing-addons-grid">
+        <article class="pricing-addon-card pricing-addon-card--featured"><div class="pricing-addon-head"><span class="pricing-addon-type">Capacity</span><span class="pricing-addon-plan">All plans</span></div><h3 class="pricing-addon-name">Building capacity pack</h3><p class="pricing-addon-description">Increase the number of managed buildings without moving the customer into a larger plan.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">+25</span><span class="pricing-addon-unit">buildings</span></div><p class="pricing-addon-price">$49/mo</p></article>
+        <article class="pricing-addon-card pricing-addon-card--standard"><div class="pricing-addon-head"><span class="pricing-addon-type">Capacity</span><span class="pricing-addon-plan">Growth+</span></div><h3 class="pricing-addon-name">Technician seat pack</h3><p class="pricing-addon-description">Add field users for dispatch, route assignments, mobile updates, and job completion workflows.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">+5</span><span class="pricing-addon-unit">technicians</span></div><p class="pricing-addon-price">$95/mo</p></article>
+        <article class="pricing-addon-card pricing-addon-card--featured"><div class="pricing-addon-head"><span class="pricing-addon-type">Usage</span><span class="pricing-addon-plan">All plans</span></div><h3 class="pricing-addon-name">Routing optimization tokens</h3><p class="pricing-addon-description">Token bundle for the routing tool that calculates optimized technician routes.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">+10k</span><span class="pricing-addon-unit">tokens/mo</span></div><p class="pricing-addon-price">$120/mo</p></article>
+        <article class="pricing-addon-card pricing-addon-card--standard"><div class="pricing-addon-head"><span class="pricing-addon-type">Usage</span><span class="pricing-addon-plan">Scale+</span></div><h3 class="pricing-addon-name">Automation token pack</h3><p class="pricing-addon-description">Extra usage pool for workflow runs, AI-assisted summaries, and operational automations.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">+25k</span><span class="pricing-addon-unit">events/mo</span></div><p class="pricing-addon-price">$240/mo</p></article>
+        <article class="pricing-addon-card pricing-addon-card--standard"><div class="pricing-addon-head"><span class="pricing-addon-type">Service</span><span class="pricing-addon-plan">Optional</span></div><h3 class="pricing-addon-name">Implementation sprint</h3><p class="pricing-addon-description">Focused setup support for imports, templates, routes, user roles, and launch readiness.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">2</span><span class="pricing-addon-unit">weeks</span></div><p class="pricing-addon-price">Quoted</p></article>
+        <article class="pricing-addon-card pricing-addon-card--muted"><div class="pricing-addon-head"><span class="pricing-addon-type">Service</span><span class="pricing-addon-plan">Enterprise</span></div><h3 class="pricing-addon-name">Custom integration package</h3><p class="pricing-addon-description">Connect ERP, finance, data warehouse, and proprietary operational systems.</p><div class="pricing-addon-meter"><span class="pricing-addon-quantity">Custom</span><span class="pricing-addon-unit">scope</span></div><p class="pricing-addon-price">Talk to sales</p></article>
+      </div>
+      <p class="pricing-addons-disclaimer">Add-on availability can vary by plan. Final eligibility rules should come from CRM before upload.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pricing.addons-bundles · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+  .harness-pad { padding-block: 44px 72px; }
+</style>
+</head>
+<body data-theme="cyan">
+<div class="harness-label">pricing.addons-bundles · live · 3 groups, 6 rows</div>
+<div class="harness-pad">
+  <section class="ab-addons" data-block="pricing.addons-bundles">
+    <div class="container">
+      <header class="ab-top">
+        <p class="ab-eyebrow">Add-ons</p>
+        <h2 class="ab-title">Bundle more capacity without changing plans.</h2>
+        <p class="ab-lede">Buildings, technicians, routing tokens, and implementation support — each priced as a discrete bundle on top of any active plan.</p>
+      </header>
+
+      <div class="ab-groups">
+        <section class="ab-group" data-group-visible="show">
+          <header class="ab-group-head">
+            <span class="ab-group-tag">Capacity</span>
+            <h3 class="ab-group-title">Buildings and technicians</h3>
+            <p class="ab-group-lede">Increase how many buildings the workspace can hold and how many field users can work in parallel.</p>
+          </header>
+          <ol class="ab-list" aria-label="Buildings and technicians">
+            <li class="ab-row ab-row--featured" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>B</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Building capacity pack</p>
+                <p class="ab-row-desc">Raise the building limit without moving the workspace into a larger plan.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">+25</span><span class="ab-meter-unit">buildings</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">$49</span><span class="ab-row-priceunit">per pack /mo</span></div>
+              <a class="ab-row-cta" href="#">Add buildings</a>
+            </li>
+            <li class="ab-row ab-row--standard" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>T</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Technician seat pack</p>
+                <p class="ab-row-desc">Add field users for dispatch, route assignments, mobile updates, and job completion workflows.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">+5</span><span class="ab-meter-unit">technicians</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">$95</span><span class="ab-row-priceunit">per pack /mo</span></div>
+              <a class="ab-row-cta" href="#">Add seats</a>
+            </li>
+          </ol>
+        </section>
+
+        <section class="ab-group" data-group-visible="show">
+          <header class="ab-group-head">
+            <span class="ab-group-tag">Usage</span>
+            <h3 class="ab-group-title">Routing and automation usage</h3>
+            <p class="ab-group-lede">Top up the consumable pools — routing tokens and automation events — when included monthly amounts run out.</p>
+          </header>
+          <ol class="ab-list" aria-label="Routing and automation usage">
+            <li class="ab-row ab-row--featured" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>R</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Routing token pack</p>
+                <p class="ab-row-desc">Top up the pool the routing tool uses to calculate optimized technician routes.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">+10K</span><span class="ab-meter-unit">tokens</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">$120</span><span class="ab-row-priceunit">per pack, one-time</span></div>
+              <a class="ab-row-cta" href="#">Add tokens</a>
+            </li>
+            <li class="ab-row ab-row--standard" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>A</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Automation event pack</p>
+                <p class="ab-row-desc">Extra envelope for workflow runs, AI-assisted summaries, and operational automations.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">+25K</span><span class="ab-meter-unit">events</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">$240</span><span class="ab-row-priceunit">per pack /mo</span></div>
+              <a class="ab-row-cta" href="#">Add events</a>
+            </li>
+          </ol>
+        </section>
+
+        <section class="ab-group" data-group-visible="show">
+          <header class="ab-group-head">
+            <span class="ab-group-tag">Service</span>
+            <h3 class="ab-group-title">Implementation and integrations</h3>
+            <p class="ab-group-lede">Hands-on packages for getting set up and connecting external operational systems.</p>
+          </header>
+          <ol class="ab-list" aria-label="Implementation and integrations">
+            <li class="ab-row ab-row--standard" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>I</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Implementation sprint</p>
+                <p class="ab-row-desc">Focused setup for imports, templates, routes, user roles, and launch readiness.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">2</span><span class="ab-meter-unit">weeks</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">Quoted</span><span class="ab-row-priceunit">depends on scope</span></div>
+              <a class="ab-row-cta" href="#">Discuss sprint</a>
+            </li>
+            <li class="ab-row ab-row--muted" data-addon-visible="show">
+              <div class="ab-row-marker" aria-hidden="true"><span>X</span></div>
+              <div class="ab-row-body">
+                <p class="ab-row-name">Custom integration package</p>
+                <p class="ab-row-desc">Connect ERP, finance, data warehouse, and proprietary operational systems.</p>
+              </div>
+              <div class="ab-row-meter"><span class="ab-meter-qty">Custom</span><span class="ab-meter-unit">scope</span></div>
+              <div class="ab-row-pricecol"><span class="ab-row-price">Talk to sales</span><span class="ab-row-priceunit"></span></div>
+              <a class="ab-row-cta" href="#">Request scope</a>
+            </li>
+          </ol>
+        </section>
+      </div>
+
+      <p class="ab-disclaimer">Eligibility may depend on the active plan. Final pricing can be wired to CRM rules later.</p>
+    </div>
+  </section>
+</div>
+</body>
+</html>

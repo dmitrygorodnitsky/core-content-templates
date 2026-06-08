@@ -68,6 +68,11 @@
       "id": "13-signature",
       "label": "13 · Signature",
       "count": 1
+    },
+    {
+      "id": "14-pricing",
+      "label": "14 · Pricing",
+      "count": 5
     }
   ],
   "blocks": [
@@ -819,6 +824,91 @@
         ]
       },
       "hasJs": false
+    },
+    {
+      "id": "pricing.addons",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.addons",
+      "title": "Pricing · add-ons",
+      "description": "ServiceWand pricing add-ons block for independently editable capacity and usage units such as building packs, routing tokens, seats, and implementation support.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "https://attio.com/pricing/",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "pricing.addons-bundles",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.addons-bundles",
+      "title": "Pricing · add-ons (bundled rows)",
+      "description": "ServiceWand add-ons rendered as horizontal rows grouped by category (Capacity / Usage / Service). Each row exposes a glyph marker, body, quantity meter, price column and Add CTA. Second-opinion variant alongside pricing.addons (which uses a card grid).",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "https://attio.com/pricing/",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": false
+    },
+    {
+      "id": "pricing.credits-meter",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.credits-meter",
+      "title": "Pricing · credits and tokens",
+      "description": "Usage/credits surface for routing tokens and other metered consumption. Two side-by-side cards: included monthly allowance per plan with overage rate, and discrete token packs with per-token economics. Distinct from pricing.addons-bundles, which is for capacity packs, not consumable usage.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "https://attio.com/pricing/",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "pricing.matrix-collapsible",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.matrix-collapsible",
+      "title": "Pricing · matrix (collapsible)",
+      "description": "ServiceWand plan comparison matrix. 2–4 plan columns driven by column_count, four feature groups, twelve feature rows. Desktop renders a sticky-header table; the mobile breakpoint collapses into a per-plan accordion using the same parameter values.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "https://attio.com/pricing/",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "pricing.plans-flex",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.plans-flex",
+      "title": "Pricing · plans (flexible 2–5)",
+      "description": "ServiceWand pricing plan grid that renders any 2–5 plans via a per-slot visibility ENUM. Monthly/Annual toggle exposes an inline Save chip on the Annual option and broadcasts a document-level CustomEvent so comparison and credit blocks can sync billing period without coupling.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "https://attio.com/pricing/",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
     }
   ]
 }

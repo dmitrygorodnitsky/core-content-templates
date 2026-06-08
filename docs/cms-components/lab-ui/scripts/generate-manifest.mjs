@@ -17,6 +17,7 @@ const categoryLabels = {
   "11-mobile-section": "11 · Mobile section",
   "12-decorative": "12 · Decorative",
   "13-signature": "13 · Signature",
+  "14-pricing": "14 · Pricing",
 };
 
 const listBlockJsonFiles = (dir) => {

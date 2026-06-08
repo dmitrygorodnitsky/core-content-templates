@@ -1,0 +1,170 @@
+/* lab-ui block · pricing.addons
+   Depends: 00-tokens/tokens.css. Light theme. */
+
+.pricing-addons {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  overflow-x: clip;
+}
+.pricing-addons .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+.pricing-addons-top {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: 48px;
+  align-items: end;
+  margin-bottom: 34px;
+}
+.pricing-addons-eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+.pricing-addons-title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+  overflow-wrap: break-word;
+}
+.pricing-addons-lede {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+.pricing-addons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.pricing-addon-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid rgba(146, 170, 205, 0.28);
+  border-radius: var(--radius-card);
+  background: var(--color-gray-bg);
+  overflow: hidden;
+}
+.pricing-addon-card--featured {
+  background:
+    linear-gradient(180deg, rgba(107, 234, 249, 0.16), rgba(255, 255, 255, 0) 52%),
+    var(--color-gray-bg);
+  border-color: rgba(107, 234, 249, 0.48);
+}
+.pricing-addon-card--muted {
+  opacity: 0.82;
+}
+.pricing-addon-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pricing-addon-type,
+.pricing-addon-plan {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pricing-addon-type {
+  color: var(--color-gray-blue);
+}
+.pricing-addon-plan {
+  padding: 3px 9px;
+  background: var(--color-white);
+  color: var(--color-heading);
+  border: 1px solid rgba(146, 170, 205, 0.28);
+}
+.pricing-addon-name {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.pricing-addon-description {
+  min-height: 66px;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.pricing-addon-meter {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--color-heading);
+}
+.pricing-addon-quantity {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.pricing-addon-unit {
+  color: var(--color-gray-blue);
+  font-size: 0.875rem;
+}
+.pricing-addon-price {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+.pricing-addons-disclaimer {
+  margin: 22px 0 0;
+  color: var(--color-gray-blue);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 980px) {
+  .pricing-addons-top {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .pricing-addons-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .pricing-addons .container {
+    max-width: 100%;
+    padding-inline: 20px;
+  }
+  .pricing-addons-title {
+    font-size: 2rem;
+    line-height: 1.12;
+  }
+  .pricing-addons-grid {
+    grid-template-columns: 1fr;
+  }
+  .pricing-addon-description {
+    min-height: 0;
+  }
+}
