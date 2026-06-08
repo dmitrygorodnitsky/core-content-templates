@@ -59,11 +59,11 @@ query params only to blocks whose manifest entry has `background.optional`.
 Image backgrounds are decorative and separate from content media slots such as
 hero photos, card images, or signature side-panel screenshots.
 
-## CMS Family Composer
+## CMS Family Composer And Uploader
 
-The dry-run composer lives under `generator/` and `scripts/`. It accepts an
-operator request or explicit landing spec and emits a root + children CMS family
-without uploading anything to CMS.
+The composer lives under `generator/` and `scripts/`. It accepts an operator
+request or explicit landing spec and emits a root + children CMS family. Upload
+is supported by a separate script, but must be an explicit operator action.
 
 The only structural invariant is:
 
@@ -112,6 +112,74 @@ CSS/JS, dependency CSS/JS, and block parameters.
 See `docs/cms-components/lab-ui/generator/README.md` for the spec format, tree
 model, and generated artifact layout.
 
+## CMS Parameter Contract
+
+Every editable text, URL, image id, image name, alt text, icon state, and option
+is represented as a CMS parameter. Visible placeholder copy should remain
+`Lorem Ipsum` until SEO/content editors author real values in CMS.
+
+Parameter reuse is allowed only for the same semantic value in multiple DOM
+locations, for example:
+
+- visible text plus `aria-label`;
+- visible email plus `mailto:`;
+- comparison column names repeated in desktop and mobile labels.
+
+Repeated visual instances that editors may change independently must use unique
+numbered parameters. Do not share one parameter across multiple cards, stages,
+axes, capability tiles, rows, or tabs.
+
+Known patterns:
+
+- `section.axes-grid` uses `axis_1_label_prefix` ... `axis_6_label_prefix`;
+- `section.stages-list` uses `stage_1_label` ... `stage_4_label`;
+- `signature.ai-shell` uses `cap_1_prefix` ... `cap_3_prefix`.
+
+Before uploading a changed block, scan repeated placeholders and classify every
+repeat as intentional same-value reuse or a source contract bug.
+
+## PageContext Values
+
+Generated template defaults live on `BlockTemplate.parameters`. Generated
+`page-context.sample.json` should not copy all defaults into `values`.
+
+`PageContext.values` is reserved for authored page-specific overrides and should
+use the canonical UUID-nested shape:
+
+```json
+{
+  "<blockTemplateUuid>": {
+    "<PARAM_CODE>": {
+      "en": "Authored value"
+    }
+  }
+}
+```
+
+Flat values that duplicate template defaults are not authored overrides. The
+uploader canonicalizes existing values, drops default duplicates, and preserves
+real nested overrides where the template/parameter still exists.
+
+Local preview renders template defaults plus PageContext overrides so an empty
+sample page context can still show a complete placeholder landing.
+
+## CMS Upload Guardrails
+
+Use upload only when explicitly requested. Credentials must come from
+environment variables, never from committed files.
+
+Production uploads need a current-thread confirmation of:
+
+- base URL;
+- organization;
+- root/template code;
+- whether an existing production template family/root has been deleted or the
+  exact overwrite/reuse path is approved.
+
+Do not upload a fresh production root over an existing production template
+family unless the old root/family has been removed or the user explicitly
+accepts that reuse path.
+
 ## Locked Decisions
 
 - Default theme is light. `00-tokens/dark.overlay.css` is parked reference for
@@ -140,9 +208,7 @@ Before building production CMS templates, the generator layer should either
 document these as shared primitives or scope emitted CSS under a page/template
 namespace.
 
-## Next Layer
-
-Do not add a CMS uploader here yet. The next layer is a generator:
+## Generator Layer
 
 ```text
 manifest.json + block.json contracts
@@ -151,6 +217,6 @@ manifest.json + block.json contracts
   -> parameter map / BlockTemplate artifacts
 ```
 
-The generator should keep text and URLs parameterized with the current CMS
-placeholder model and avoid introducing repeater semantics until CMS supports
-them in the editor/runtime.
+The generator keeps text and URLs parameterized with the current CMS placeholder
+model and avoids introducing repeater semantics until CMS supports them in the
+editor/runtime.

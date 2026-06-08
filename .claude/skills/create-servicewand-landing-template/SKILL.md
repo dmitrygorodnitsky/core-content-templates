@@ -117,6 +117,33 @@ The generated template must be content-empty but editor-ready:
 - Each parameter includes an English editor name and description.
 - Repeated structures use numbered slots unless the CMS repeater contract is confirmed.
 - Breadcrumbs are CMS parameters; they are not hardcoded SEO content.
+- A CMS parameter may be reused in multiple DOM locations only when those
+  locations are the same semantic value. Examples: visible text plus `aria-label`,
+  visible email plus `mailto:`, or a comparison column name repeated in desktop
+  and mobile labels.
+- Repeated visual items that an editor may change independently must use unique
+  numbered parameters. Do not share one parameter across several cards, stages,
+  axes, tabs, rows, or capability tiles.
+
+Bad:
+
+```html
+<span>{{axis_label}}</span>
+<span>{{axis_label}}</span>
+```
+
+Good:
+
+```html
+<span>{{axis_1_label_prefix}}</span>
+<span>{{axis_2_label_prefix}}</span>
+```
+
+Known fixed patterns:
+
+- `section.axes-grid`: `axis_1_label_prefix` ... `axis_6_label_prefix`
+- `section.stages-list`: `stage_1_label` ... `stage_4_label`
+- `signature.ai-shell`: `cap_1_prefix` ... `cap_3_prefix`
 
 Parameter ownership:
 
@@ -251,6 +278,28 @@ node docs/cms-components/lab-ui/scripts/validate-cms-family.mjs --out docs/cms-c
 CSS collision warnings are acceptable only if validation does not fail and the
 risk is reported.
 
+Before upload, scan for repeated local placeholders and classify every repeat:
+
+```bash
+node - <<'NODE'
+const {readFileSync, existsSync}=require('fs');
+const {join}=require('path');
+const manifest=JSON.parse(readFileSync('docs/cms-components/lab-ui/manifest.json','utf8'));
+for (const b of manifest.blocks) {
+  const file=join('docs/cms-components/lab-ui', b.path, 'block.html');
+  if (!existsSync(file)) continue;
+  const html=readFileSync(file,'utf8').replace(/<!--[\s\S]*?-->/g,'');
+  const counts={};
+  for (const m of html.matchAll(/\{\{([A-Za-z0-9_-]+)\}\}/g)) counts[m[1]]=(counts[m[1]]||0)+1;
+  const dup=Object.entries(counts).filter(([,c])=>c>1);
+  if (dup.length) console.log(`${b.id}: ${dup.map(([k,c])=>`${k}:${c}`).join(', ')}`);
+}
+NODE
+```
+
+Intentional repeats must be same-value repeats only. If a repeat maps to
+separate editor-editable instances, fix the source block contract before upload.
+
 ## CMS Upload
 
 Upload is a separate explicit step. Use only when the user asks to upload.
@@ -265,6 +314,17 @@ SERVICEWAND_ORG
 ```
 
 Never paste or commit credentials.
+
+Stage/prod safety:
+
+- Stage uploads may update an existing family when the user explicitly asks.
+- Production uploads require an explicit target, base URL, org, and upload
+  approval in the current thread.
+- Do not upload a new production root/family over an existing production
+  template unless the user confirms the old template family/root has been
+  removed or confirms the exact overwrite/reuse path.
+- If production still has an old root and the requested deployment depends on a
+  fresh root, stop and report the blocker instead of improvising.
 
 Upload source:
 

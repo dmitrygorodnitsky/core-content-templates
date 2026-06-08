@@ -1,9 +1,8 @@
 # lab-ui CMS Family Composer
 
-This layer turns a landing spec into dry-run ServiceWand CMS artifacts.
-
-It does not upload to CMS. It produces files that can later feed a separate,
-credentialed uploader.
+This layer turns a landing spec into ServiceWand CMS artifacts. It can produce
+local preview files and a CMS payload. Upload is handled by a separate
+credentialed script and must be an explicit operator action.
 
 ## Rule
 
@@ -133,6 +132,29 @@ Every generated CMS parameter includes English editor metadata:
 - `nls.en.DESCRIPTION`
 - `options` for enum-style fields such as icon state or comparison column count
 
+## Parameter Reuse
+
+One CMS parameter may appear in multiple DOM locations only when those locations
+represent the same semantic value. Acceptable examples:
+
+- visible text plus `aria-label`;
+- visible email plus `mailto:`;
+- a comparison column name repeated in the desktop header and mobile row label.
+
+Do not reuse one parameter for repeated visual instances that editors may change
+independently. Use numbered parameters for cards, stages, axes, rows, tabs, and
+capability tiles.
+
+Examples:
+
+- `section.axes-grid`: `axis_1_label_prefix` ... `axis_6_label_prefix`
+- `section.stages-list`: `stage_1_label` ... `stage_4_label`
+- `signature.ai-shell`: `cap_1_prefix` ... `cap_3_prefix`
+
+Before upload, scan repeated `{{param}}` placeholders in source block HTML and
+classify each repeat. If a repeated placeholder controls multiple independent
+editor targets, fix the source block contract and rebuild the generated family.
+
 ## Image Slots
 
 Image-like striped placeholders in the gallery are fallback states. When a block
@@ -166,13 +188,64 @@ affect:
 It must not generate real landing copy. SEO/content editors fill CMS parameter
 values later.
 
-## Future Uploader
+## PageContext Values
 
-Uploading is deliberately out of scope for this composer. A future uploader
-should read `cms-family.payload.json` and use environment-driven credentials
-only:
+`BlockTemplate.parameters` hold template defaults. `PageContext.values` should
+hold only authored page-specific overrides.
+
+Generated `page-context.sample.json` intentionally does not copy every template
+default into `values`. Local preview overlays template defaults with any
+PageContext overrides, so a mostly empty PageContext still renders a complete
+placeholder landing.
+
+Canonical PageContext values are UUID-nested by block template id:
+
+```json
+{
+  "<blockTemplateUuid>": {
+    "<PARAM_CODE>": {
+      "en": "Authored value"
+    }
+  }
+}
+```
+
+Do not rely on flat parameter-code entries. Flat entries that equal template
+defaults are not authored content and should be dropped. The uploader
+canonicalizes existing PageContext values, removes default duplicates, and
+preserves real nested overrides when their template bucket and parameter still
+exist.
+
+## Uploader
+
+Uploading is deliberately separate from composition. The uploader reads
+`cms-family.payload.json` and uses environment-driven credentials only:
 
 - `SERVICEWAND_API_KEY`
 - `SERVICEWAND_BEARER`
 - `SERVICEWAND_BASE_URL`
 - `SERVICEWAND_ORG`
+
+Example:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --live
+```
+
+Upload rules:
+
+- Upload only after an explicit user request.
+- Never paste credentials into committed files.
+- Verify CMS preview using the returned root id and enabled template ids.
+- Verify the final public URL when a PageContext route is involved.
+- Production uploads require explicit confirmation of base URL, organization,
+  root/template code, and whether an existing production root/family has been
+  deleted or may be reused.
+- If production still has an old root and the requested deployment depends on a
+  fresh root, stop and report the blocker.
