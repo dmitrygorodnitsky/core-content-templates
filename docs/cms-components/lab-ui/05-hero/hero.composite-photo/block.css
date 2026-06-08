@@ -76,7 +76,8 @@
 }
 
 .herop-photo-placeholder {
-  z-index: 0;
+  z-index: 2;
+  pointer-events: none;
   display: grid;
   place-content: center;
   place-items: center;
@@ -121,6 +122,7 @@
 /* Dark stat chip — bottom-left overlay */
 .herop-chip {
   position: absolute;
+  z-index: 3;
   left: 20px;
   bottom: 80px;
   background: var(--color-black-bg);
@@ -151,6 +153,7 @@
 /* Person cards — right-side overlays */
 .herop-person {
   position: absolute;
+  z-index: 3;
   background: var(--color-bg);
   border: 1px solid rgba(0,0,0,0.06);
   border-radius: 14px;

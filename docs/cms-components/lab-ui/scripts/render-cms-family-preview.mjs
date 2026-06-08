@@ -86,6 +86,25 @@ const renderTemplate = (template, values, locale) => {
 
 const flattenTemplates = (templates) => templates.flatMap((template) => [template, ...flattenTemplates(template.children || [])]);
 
+const buildDefaultValues = (templates) => {
+  const values = {};
+  for (const template of templates) {
+    for (const param of template.parameters || []) values[param.code] = param.value;
+  }
+  return values;
+};
+
+const overlayContextValues = (values, contextValues) => {
+  for (const [key, value] of Object.entries(contextValues || {})) {
+    if (/^[0-9a-f-]{36}$/i.test(key) && value && typeof value === "object" && !Array.isArray(value)) {
+      Object.assign(values, value);
+    } else {
+      values[key] = value;
+    }
+  }
+  return values;
+};
+
 const main = () => {
   const args = parseArgs();
   if (args.help) {
@@ -101,7 +120,8 @@ const main = () => {
   const payload = readJson(payloadFile);
   const pageContext = readJson(pageContextFile);
   const locale = payload.root?.parameters?.find((param) => param.value?.en)?.value ? "en" : "en";
-  const values = pageContext.values || {};
+  const allTemplates = [payload.root, ...flattenTemplates(payload.children || [])];
+  const values = overlayContextValues(buildDefaultValues(allTemplates), pageContext.values || {});
   const body = renderTemplate(
     {
       ...payload.root,
@@ -111,7 +131,6 @@ const main = () => {
     locale,
   );
   const head = renderPlaceholders(payload.root.head, values, locale);
-  const allTemplates = [payload.root, ...flattenTemplates(payload.children || [])];
   const css = allTemplates
     .map((template) => template?.css || "")
     .filter((value) => value.trim())

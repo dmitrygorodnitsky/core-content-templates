@@ -280,9 +280,11 @@
       "description": "CMS image file name/path segment for the Ai Media image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
     },
     {
-      "code": "cap_prefix",
+      "code": "cap_1_prefix",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
+      "default": "Lor",
+      "name": "Capability 1 number prefix",
+      "description": "Small mono prefix shown before the capability 1 number."
     },
     {
       "code": "cap_1_num",
@@ -300,6 +302,13 @@
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
     },
     {
+      "code": "cap_2_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Capability 2 number prefix",
+      "description": "Small mono prefix shown before the capability 2 number."
+    },
+    {
       "code": "cap_2_num",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor"
@@ -313,6 +322,13 @@
       "code": "cap_2_body",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim."
+    },
+    {
+      "code": "cap_3_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Capability 3 number prefix",
+      "description": "Small mono prefix shown before the capability 3 number."
     },
     {
       "code": "cap_3_num",

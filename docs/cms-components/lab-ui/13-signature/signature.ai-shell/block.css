@@ -221,6 +221,11 @@
 .ai-media-fallback {
   display: contents;
 }
+.ai-media-fallback > * {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
 .ai-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .ai-media-fallback {
   display: none;
 }

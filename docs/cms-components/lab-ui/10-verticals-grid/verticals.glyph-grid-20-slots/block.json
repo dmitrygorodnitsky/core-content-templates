@@ -3,7 +3,7 @@
   "id": "verticals.glyph-grid-20-slots",
   "category": "10-verticals-grid",
   "title": "Verticals grid · photo-card catalog",
-  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
+  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Each visible card has a media placeholder/photo slot, title, description, URL href, editable status label, editable CTA label, and status treatment. Lorem Ipsum ships live; the other default verticals ship coming soon with a waitlist CTA. Seven spare slots are hidden until an admin fills the title.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -122,6 +122,13 @@
       "default": "#"
     },
     {
+      "code": "slot_01_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Live",
+      "name": "Slot 01 Status Label",
+      "description": "Editable status label shown in industry card slot 1."
+    },
+    {
       "code": "slot_02_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -161,6 +168,20 @@
       "code": "slot_02_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_02_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 02 Status Label",
+      "description": "Editable status label shown in industry card slot 2."
+    },
+    {
+      "code": "slot_02_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 02 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 2."
     },
     {
       "code": "slot_03_title",
@@ -204,6 +225,20 @@
       "default": "#"
     },
     {
+      "code": "slot_03_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 03 Status Label",
+      "description": "Editable status label shown in industry card slot 3."
+    },
+    {
+      "code": "slot_03_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 03 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 3."
+    },
+    {
       "code": "slot_04_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
@@ -243,6 +278,20 @@
       "code": "slot_04_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_04_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 04 Status Label",
+      "description": "Editable status label shown in industry card slot 4."
+    },
+    {
+      "code": "slot_04_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 04 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 4."
     },
     {
       "code": "slot_05_title",
@@ -286,6 +335,20 @@
       "default": "#"
     },
     {
+      "code": "slot_05_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 05 Status Label",
+      "description": "Editable status label shown in industry card slot 5."
+    },
+    {
+      "code": "slot_05_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 05 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 5."
+    },
+    {
       "code": "slot_06_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -325,6 +388,20 @@
       "code": "slot_06_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_06_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 06 Status Label",
+      "description": "Editable status label shown in industry card slot 6."
+    },
+    {
+      "code": "slot_06_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 06 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 6."
     },
     {
       "code": "slot_07_title",
@@ -368,6 +445,20 @@
       "default": "#"
     },
     {
+      "code": "slot_07_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 07 Status Label",
+      "description": "Editable status label shown in industry card slot 7."
+    },
+    {
+      "code": "slot_07_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 07 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 7."
+    },
+    {
       "code": "slot_08_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
@@ -407,6 +498,20 @@
       "code": "slot_08_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_08_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 08 Status Label",
+      "description": "Editable status label shown in industry card slot 8."
+    },
+    {
+      "code": "slot_08_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 08 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 8."
     },
     {
       "code": "slot_09_title",
@@ -450,6 +555,20 @@
       "default": "#"
     },
     {
+      "code": "slot_09_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 09 Status Label",
+      "description": "Editable status label shown in industry card slot 9."
+    },
+    {
+      "code": "slot_09_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 09 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 9."
+    },
+    {
       "code": "slot_10_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
@@ -489,6 +608,20 @@
       "code": "slot_10_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_10_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 10 Status Label",
+      "description": "Editable status label shown in industry card slot 10."
+    },
+    {
+      "code": "slot_10_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 10 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 10."
     },
     {
       "code": "slot_11_title",
@@ -532,6 +665,20 @@
       "default": "#"
     },
     {
+      "code": "slot_11_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 11 Status Label",
+      "description": "Editable status label shown in industry card slot 11."
+    },
+    {
+      "code": "slot_11_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 11 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 11."
+    },
+    {
       "code": "slot_12_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
@@ -571,6 +718,20 @@
       "code": "slot_12_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_12_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 12 Status Label",
+      "description": "Editable status label shown in industry card slot 12."
+    },
+    {
+      "code": "slot_12_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 12 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 12."
     },
     {
       "code": "slot_13_title",
@@ -614,6 +775,20 @@
       "default": "#"
     },
     {
+      "code": "slot_13_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 13 Status Label",
+      "description": "Editable status label shown in industry card slot 13."
+    },
+    {
+      "code": "slot_13_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 13 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 13."
+    },
+    {
       "code": "slot_14_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -653,6 +828,20 @@
       "code": "slot_14_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_14_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 14 Status Label",
+      "description": "Editable status label shown in industry card slot 14."
+    },
+    {
+      "code": "slot_14_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 14 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 14."
     },
     {
       "code": "slot_15_title",
@@ -696,6 +885,20 @@
       "default": "#"
     },
     {
+      "code": "slot_15_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 15 Status Label",
+      "description": "Editable status label shown in industry card slot 15."
+    },
+    {
+      "code": "slot_15_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 15 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 15."
+    },
+    {
       "code": "slot_16_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -735,6 +938,20 @@
       "code": "slot_16_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_16_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 16 Status Label",
+      "description": "Editable status label shown in industry card slot 16."
+    },
+    {
+      "code": "slot_16_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 16 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 16."
     },
     {
       "code": "slot_17_title",
@@ -778,6 +995,20 @@
       "default": "#"
     },
     {
+      "code": "slot_17_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 17 Status Label",
+      "description": "Editable status label shown in industry card slot 17."
+    },
+    {
+      "code": "slot_17_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 17 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 17."
+    },
+    {
       "code": "slot_18_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -817,6 +1048,20 @@
       "code": "slot_18_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_18_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 18 Status Label",
+      "description": "Editable status label shown in industry card slot 18."
+    },
+    {
+      "code": "slot_18_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 18 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 18."
     },
     {
       "code": "slot_19_title",
@@ -860,6 +1105,20 @@
       "default": "#"
     },
     {
+      "code": "slot_19_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 19 Status Label",
+      "description": "Editable status label shown in industry card slot 19."
+    },
+    {
+      "code": "slot_19_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 19 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 19."
+    },
+    {
       "code": "slot_20_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
@@ -899,6 +1158,20 @@
       "code": "slot_20_href",
       "type": "URL",
       "default": "#"
+    },
+    {
+      "code": "slot_20_status_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Coming soon",
+      "name": "Slot 20 Status Label",
+      "description": "Editable status label shown in industry card slot 20."
+    },
+    {
+      "code": "slot_20_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Join waitlist",
+      "name": "Slot 20 CTA Label",
+      "description": "Editable waitlist CTA label shown in industry card slot 20."
     }
   ],
   "preview": {
@@ -910,7 +1183,7 @@
     "Media slots are real optional image slots. When a slot image URL is empty, the neutral striped placeholder with dimension + photo hint remains visible.",
     "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
     "The 'live' state changes border treatment, photo meta accent, arrow, and Live badge. Apply by adding class 'is-live' to the slot card.",
-    "Coming-soon waitlist CTAs are visual/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
+    "Coming-soon waitlist CTAs are editable label/link placeholders only; this block intentionally does not include a CMS uploader or waitlist modal.",
     "Hover glow + halo are intentionally NOT delegated to effect.hover-rise: vertical-card's hover composes a depth shadow with the halo, and the .is-live ::after border ring would collide with effect.hover-rise's ::after. The local copy stays byte-identical to the effect's canonical values; if effect.hover-rise's geometry changes, update this block too."
   ],
   "image_slots": [

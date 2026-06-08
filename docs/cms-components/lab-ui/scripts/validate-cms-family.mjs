@@ -131,6 +131,11 @@ const main = () => {
   for (const code of pageContext.enabledTemplates || []) {
     if (!templateCodes.has(code)) fail(`page-context.sample.json has unknown enabled template ${code}`);
   }
+  for (const key of Object.keys(pageContext.values || {})) {
+    if (!/^[0-9a-f-]{36}$/i.test(key)) {
+      fail(`page-context.sample.json must not contain flat value key ${key}; use UUID-nested authored overrides only`);
+    }
+  }
 
   for (const template of allTemplates) {
     if (/\{\{[A-Za-z0-9_-]+\}\}/.test(`${template.head || ""}\n${template.html || ""}\n${template.css || ""}\n${template.javascript || ""}`)) {

@@ -179,6 +179,76 @@ const countParams = (root, children) => {
   return (root?.parameters?.length || 0) + (children || []).reduce((sum, child) => sum + recur(child), 0);
 };
 
+const UUID_RE = /^[0-9a-f-]{36}$/i;
+const stableValue = (value) => JSON.stringify(value ?? null);
+const isRecord = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
+
+const buildTemplateValueIndex = (templateRefs) => {
+  const defaultsByBucket = new Map();
+  const ownerByCode = new Map();
+  for (const ref of templateRefs) {
+    if (ref.pageValues === false) continue;
+    const defaults = new Map();
+    for (const param of ref.template?.parameters || []) {
+      defaults.set(param.code, param.value);
+      ownerByCode.set(param.code, ref.id);
+    }
+    defaultsByBucket.set(ref.id, defaults);
+  }
+  return { defaultsByBucket, ownerByCode };
+};
+
+const canonicalizePageValues = ({ existingValues = {}, payloadValues = {}, templateRefs = [] }) => {
+  const { defaultsByBucket, ownerByCode } = buildTemplateValueIndex(templateRefs);
+  const values = {};
+  const stats = {
+    kept: 0,
+    droppedDefaults: 0,
+    convertedFlat: 0,
+    droppedUnknownFlat: 0,
+  };
+
+  const put = (bucketId, code, value) => {
+    const defaults = defaultsByBucket.get(bucketId);
+    const defaultValue = defaults?.get(code);
+    if (defaults?.has(code) && stableValue(value) === stableValue(defaultValue)) {
+      stats.droppedDefaults += 1;
+      return;
+    }
+    if (!values[bucketId]) values[bucketId] = {};
+    values[bucketId][code] = value;
+    stats.kept += 1;
+  };
+
+  const absorb = (sourceValues) => {
+    for (const [key, value] of Object.entries(sourceValues || {})) {
+      if (UUID_RE.test(key)) {
+        if (!isRecord(value)) continue;
+        if (!defaultsByBucket.has(key)) continue;
+        for (const [code, fieldValue] of Object.entries(value)) put(key, code, fieldValue);
+        continue;
+      }
+
+      const bucketId = ownerByCode.get(key);
+      if (!bucketId) {
+        stats.droppedUnknownFlat += 1;
+        continue;
+      }
+      stats.convertedFlat += 1;
+      put(bucketId, key, value);
+    }
+  };
+
+  absorb(existingValues);
+  absorb(payloadValues);
+
+  for (const [bucketId, bucketValues] of Object.entries(values)) {
+    if (!Object.keys(bucketValues).length) delete values[bucketId];
+  }
+
+  return { values, stats };
+};
+
 const cmsHeaders = (token, org) => ({
   Authorization: `Bearer ${token}`,
   "Content-Type": "application/json",
@@ -295,6 +365,11 @@ const savePageContext = async ({ cmsBaseUrl, headers, payload, rootId, templateR
   if (!page?.url) return null;
 
   const enabledTemplates = templateRefs.map((template) => template.id);
+  const canonical = canonicalizePageValues({
+    existingValues: existing?.values || {},
+    payloadValues: page.values || {},
+    templateRefs,
+  });
   const entity = {
     id: existing?.id,
     optimistic: existing?.optimistic,
@@ -302,13 +377,17 @@ const savePageContext = async ({ cmsBaseUrl, headers, payload, rootId, templateR
     nls: page.nls,
     template: { id: rootId, code: payload.root.code },
     enabledTemplates,
-    values: page.values || {},
+    values: canonical.values,
     organization: existing?.organization?.id ? { id: existing.organization.id, code: existing.organization.code } : organizationIdentifier(org),
     excludeFromSeo: page.excludeFromSeo ?? false,
   };
   if (!entity.id) delete entity.id;
   if (entity.optimistic === undefined) delete entity.optimistic;
   if (!entity.nls) delete entity.nls;
+
+  console.log(
+    `  page-values: kept ${canonical.stats.kept}, dropped default duplicates ${canonical.stats.droppedDefaults}, converted flat ${canonical.stats.convertedFlat}, dropped unknown flat ${canonical.stats.droppedUnknownFlat}`,
+  );
 
   const text = await requestText(`${cmsBaseUrl}/api/page-context/save.json`, {
     method: "POST",
@@ -400,7 +479,7 @@ const uploadLive = async (env, payload) => {
       if (!existingChild?.id) throw error;
       console.log(`  child update skipped: ${child.code} (${error.message.split("\n")[0]})`);
     }
-    childRefs.push({ id: childId, code: child.code, nls: child.nls });
+    childRefs.push({ id: childId, code: child.code, nls: child.nls, template: child });
     console.log(`  child: ${child.code} -> ${childId}`);
   }
 
@@ -421,7 +500,7 @@ const uploadLive = async (env, payload) => {
     headers,
     payload,
     rootId,
-    templateRefs: [{ id: rootId, code: payload.root.code }, ...childRefs],
+    templateRefs: [{ id: rootId, code: payload.root.code, template: payload.root, pageValues: false }, ...childRefs],
     org: env.org,
     existing: existingPage,
   });

@@ -370,15 +370,17 @@ const buildFamily = (spec, catalog) => {
       name: "Meta Description",
       description: "SEO meta description for the generated landing page.",
     }),
-    parameter("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT", {}, locale, {
+    parameter("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT", {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: rootName,
+    }, locale, {
       code: "seo_ld_schema",
       name: "SEO LD Schema",
       description: "Localized JSON-LD structured data object rendered in the root head as application/ld+json.",
     }),
   ];
   const parameters = [...rootParams, ...collectParameters(children)];
-  const values = {};
-  for (const param of parameters) values[param.code] = param.value;
 
   const rootTemplate = {
     code: rootCode,
@@ -406,7 +408,7 @@ const buildFamily = (spec, catalog) => {
     url: spec.url || `/${slug(rootName)}`,
     template: { code: rootTemplate.code },
     enabledTemplates,
-    values,
+    values: {},
     organization: { code: "SYSTEM" },
     excludeFromSeo: false,
     theme: spec.theme || "",

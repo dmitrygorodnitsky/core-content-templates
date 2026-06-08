@@ -162,7 +162,11 @@
         }
       },
       "value": {
-        "en": {}
+        "en": {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Field Service Landing"
+        }
       }
     }
   ]

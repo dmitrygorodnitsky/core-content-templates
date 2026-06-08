@@ -170,7 +170,8 @@
 .vertical-photo-meta {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
+  pointer-events: none;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;

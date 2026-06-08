@@ -2,7 +2,7 @@
   "$schema": "lab-ui/landing-spec@1",
   "code": "FIELD_SERVICE_LANDING",
   "name": "Field Service Landing",
-  "url": "/verticals/field-service",
+  "url": "/industries/field-service",
   "locale": "en",
   "topic": "field-service",
   "targetWords": 6500,

@@ -61,9 +61,11 @@
   },
   "params": [
     {
-      "code": "axis_label",
+      "code": "axis_1_label_prefix",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
+      "default": "Lor",
+      "name": "Axis 1 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 1 number."
     },
     {
       "code": "axis_1_num",
@@ -91,6 +93,13 @@
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea."
     },
     {
+      "code": "axis_2_label_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Axis 2 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 2 number."
+    },
+    {
       "code": "axis_2_num",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor"
@@ -114,6 +123,13 @@
       "code": "axis_2_body",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation."
+    },
+    {
+      "code": "axis_3_label_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Axis 3 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 3 number."
     },
     {
       "code": "axis_3_num",
@@ -141,6 +157,13 @@
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut."
     },
     {
+      "code": "axis_4_label_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Axis 4 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 4 number."
+    },
+    {
       "code": "axis_4_num",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor"
@@ -166,6 +189,13 @@
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
     },
     {
+      "code": "axis_5_label_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Axis 5 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 5 number."
+    },
+    {
       "code": "axis_5_num",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor"
@@ -189,6 +219,13 @@
       "code": "axis_5_body",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+    },
+    {
+      "code": "axis_6_label_prefix",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor",
+      "name": "Axis 6 eyebrow label",
+      "description": "Small mono eyebrow text shown before the axis 6 number."
     },
     {
       "code": "axis_6_num",
