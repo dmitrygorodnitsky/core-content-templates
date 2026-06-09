@@ -219,6 +219,7 @@ const valueForParam = (param, index) => {
   if (type === "IMAGE") return "";
   if (type === "ENUM") return param.default || param.options?.[0] || "";
   if (type === "JSON_ARRAY") return JSON.stringify(param.default || []);
+  if (param.default === "") return "";
   return lorem(wordsForParam(param.code), index * 7);
 };
 
@@ -236,14 +237,64 @@ const wrapCompositionSection = (block, html) => {
   return `<section class="${sectionClass}" data-composition-block="${escapeHtml(block.id)}">\n${html}\n</section>`;
 };
 
-const renderBlockTemplate = ({ block, code, parentCode, locale, index, values = {}, assetBlocks = [] }) => {
+const comparisonParamCode = (localCode) => {
+  if (localCode === "eyebrow") return "COMPARE_EYEBROW";
+  if (localCode === "title") return "COMPARE_TITLE";
+  if (localCode === "lede") return "COMPARE_LEDE";
+  if (localCode === "column_count") return "COMPARE_COLUMN_COUNT";
+  if (/^col_\d{2}_name$/.test(localCode)) return `COMPARE_COL_${Number(localCode.match(/\d{2}/)[0])}_NAME`;
+
+  const capability = localCode.match(/^slot_(\d{2})_capability$/);
+  if (capability) return `COMPARE_ROW_${Number(capability[1])}`;
+
+  const cellIcon = localCode.match(/^slot_(\d{2})_col_(\d{2})_icon$/);
+  if (cellIcon) return `COMPARE_${Number(cellIcon[1])}_${Number(cellIcon[2])}_ICON`;
+
+  const cell = localCode.match(/^slot_(\d{2})_col_(\d{2})$/);
+  if (cell) return `COMPARE_${Number(cell[1])}_${Number(cell[2])}`;
+
+  return `COMPARE_${codeSlug(localCode)}`;
+};
+
+const paramCodeForLocal = ({ block, code, legacyCode, localCode }) => {
+  if (block.id === "comparison.three-col-with-mobile-cards") {
+    const paramCode = comparisonParamCode(localCode);
+    return { paramCode };
+  }
+  return { paramCode: `${code}_${codeSlug(localCode)}` };
+};
+
+const imageNameCodeForLocal = ({ block, code, legacyCode, localCode }) => {
+  if (block.id === "comparison.three-col-with-mobile-cards") {
+    const paramCode = comparisonParamCode(localCode);
+    return { paramCode };
+  }
+  return { paramCode: `${code}_${codeSlug(localCode)}` };
+};
+
+const childCodeForSection = (block, index) => {
+  if (block.id === "comparison.three-col-with-mobile-cards") return "COMPARISON";
+  return `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(block.id).slice(0, 42)}`;
+};
+
+const defaultValuesForBlock = (block) => {
+  if (block.id === "header.default") {
+    return {
+      breadcrumb_mid_1_label: "",
+      breadcrumb_mid_2_label: "",
+    };
+  }
+  return {};
+};
+
+const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, locale, index, values = {}, assetBlocks = [] }) => {
   const params = [];
   const paramByCode = new Map((block.json.params || []).map((param) => [param.code, param]));
   const used = new Set();
   const localParamCodes = new Map();
   let renderedHtml = block.html.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => {
     const param = paramByCode.get(localCode) || { code: localCode, type: "LOCALIZED_STRING_SS" };
-    const paramCode = `${code}_${codeSlug(localCode)}`;
+    const { paramCode } = paramCodeForLocal({ block, code, legacyCode, localCode });
     localParamCodes.set(localCode, paramCode);
     if (!used.has(paramCode)) {
       const value = Object.prototype.hasOwnProperty.call(values, localCode)
@@ -265,7 +316,7 @@ const renderBlockTemplate = ({ block, code, parentCode, locale, index, values = 
     if (!imageCode || cmsType(imageParam?.type) !== "IMAGE") continue;
 
     const nameLocalCode = imageNameParam(slot);
-    const nameCode = `${code}_${codeSlug(nameLocalCode)}`;
+    const { paramCode: nameCode } = imageNameCodeForLocal({ block, code, legacyCode, localCode: nameLocalCode });
     localParamCodes.set(nameLocalCode, nameCode);
     if (!used.has(nameCode)) {
       const sizeText = slot.recommended_size ? ` Required image size: ${slot.recommended_size}.` : "";
@@ -355,8 +406,18 @@ const buildFamily = (spec, catalog) => {
   const children = sections.map((section, index) => {
     const block = catalog.byId.get(section.block);
     const assetBlocks = collectAssetBlocks([section.block], catalog);
-    const code = `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(section.block).slice(0, 42)}`;
-    return renderBlockTemplate({ block, code, parentCode: rootCode, locale, index, values: section.values || {}, assetBlocks });
+    const legacyCode = `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(section.block).slice(0, 42)}`;
+    const code = childCodeForSection(block, index);
+    return renderBlockTemplate({
+      block,
+      code,
+      legacyCode,
+      parentCode: rootCode,
+      locale,
+      index,
+      values: { ...defaultValuesForBlock(block), ...(section.values || {}) },
+      assetBlocks,
+    });
   });
 
   const rootParams = [
@@ -444,7 +505,7 @@ const buildFamily = (spec, catalog) => {
           assets: ownedAssets.map((asset) => ({ id: asset.id, path: asset.path, hasCss: Boolean(asset.css.trim()), hasJs: Boolean(asset.js.trim()) })),
         };
       }),
-      tree: { code: rootTemplate.code, children: children.map((child) => ({ code: child.code, children: [] })) },
+      tree: { code: rootTemplate.code, children: children.map((child) => ({ code: child.code, children: (child.children || []).map((nested) => ({ code: nested.code, children: [] })) })) },
     },
   };
 };
@@ -473,7 +534,10 @@ const writeSummary = (outDir, family) => {
     "## Tree",
     "",
     `- \`${family.rootTemplate.code}\``,
-    ...family.children.map((child) => `  - \`${child.code}\``),
+    ...family.children.flatMap((child) => [
+      `  - \`${child.code}\``,
+      ...(child.children || []).map((nested) => `    - \`${nested.code}\``),
+    ]),
     "",
     "## Files",
     "",

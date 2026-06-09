@@ -76,7 +76,7 @@
 }
 
 .herop-photo-placeholder {
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   display: grid;
   place-content: center;
@@ -103,15 +103,19 @@
 
 .herop-photo-img[src=""],
 .herop-photo-img[src="#"],
-.herop-photo-img[src^="/core/image//"] {
+.herop-photo-img[src^="/core/image//"],
+.herop-photo-img[src$="/get"],
+.herop-photo-img[src$="/get/"],
+.herop-photo-img[src*="/get//"] {
   opacity: 0;
 }
 
 .herop-photo-img {
-  z-index: 1;
+  display: block;
+  z-index: 2;
 }
 
-.herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-photo-placeholder {
+.herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .herop-photo-placeholder {
   display: none;
 }
 
@@ -174,10 +178,13 @@
 .herop-person-avatar-fallback { z-index: 0; }
 .herop-person-avatar-img[src=""],
 .herop-person-avatar-img[src="#"],
-.herop-person-avatar-img[src^="/core/image//"] {
+.herop-person-avatar-img[src^="/core/image//"],
+.herop-person-avatar-img[src$="/get"],
+.herop-person-avatar-img[src$="/get/"],
+.herop-person-avatar-img[src*="/get//"] {
   opacity: 0;
 }
-.herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-person-avatar-fallback {
+.herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .herop-person-avatar-fallback {
   display: none;
 }
 .herop-person-name {

@@ -92,8 +92,8 @@
     },
     {
       "index": 13,
-      "id": "decorative.callout-band",
-      "path": "12-decorative/decorative.callout-band",
+      "id": "decorative.final-cta",
+      "path": "12-decorative/decorative.final-cta",
       "category": "12-decorative",
       "hasJs": false
     },
@@ -273,7 +273,7 @@
     },
     {
       "index": 10,
-      "childCode": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS",
+      "childCode": "COMPARISON",
       "block": "comparison.three-col-with-mobile-cards",
       "assets": [
         {
@@ -318,12 +318,36 @@
     },
     {
       "index": 13,
-      "childCode": "SECTION_13_DECORATIVE_CALLOUT_BAND",
-      "block": "decorative.callout-band",
+      "childCode": "SECTION_13_DECORATIVE_FINAL_CTA",
+      "block": "decorative.final-cta",
       "assets": [
         {
-          "id": "decorative.callout-band",
-          "path": "12-decorative/decorative.callout-band",
+          "id": "cta.btn-base",
+          "path": "03-cta/cta.btn-base",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "effect.hover-rise",
+          "path": "12-decorative/effect.hover-rise",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-primary-ring",
+          "path": "03-cta/cta.btn-primary-ring",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "cta.btn-secondary-filled",
+          "path": "03-cta/cta.btn-secondary-filled",
+          "hasCss": true,
+          "hasJs": false
+        },
+        {
+          "id": "decorative.final-cta",
+          "path": "12-decorative/decorative.final-cta",
           "hasCss": true,
           "hasJs": false
         }
@@ -383,7 +407,7 @@
         "children": []
       },
       {
-        "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS",
+        "code": "COMPARISON",
         "children": []
       },
       {
@@ -395,7 +419,7 @@
         "children": []
       },
       {
-        "code": "SECTION_13_DECORATIVE_CALLOUT_BAND",
+        "code": "SECTION_13_DECORATIVE_FINAL_CTA",
         "children": []
       },
       {

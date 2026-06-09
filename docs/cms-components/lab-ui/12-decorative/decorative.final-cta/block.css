@@ -1,0 +1,151 @@
+/* lab-ui block · decorative.final-cta
+   Depends: 00-tokens/tokens.css + CTA button blocks.
+   Adapted from /Users/imighty/Downloads/Section 16 - Standalone.html. */
+
+.final-cta-section {
+  box-sizing: border-box;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  overflow-x: clip;
+}
+
+.final-cta-section *,
+.final-cta-section *::before,
+.final-cta-section *::after {
+  box-sizing: border-box;
+}
+
+.final-cta-container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+  min-width: 0;
+}
+
+.final-cta-card {
+  position: relative;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  padding: clamp(2rem, 5vw, 4rem);
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 12%, transparent), transparent 48%),
+    radial-gradient(circle at 0% 100%, rgba(255, 167, 44, 0.08), transparent 50%),
+    var(--color-dark-card-bg);
+  box-shadow: 0 24px 70px -42px rgba(15, 17, 22, 0.7);
+}
+
+.final-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--cta-accent, #6BEAF9) 52%, transparent),
+      rgba(255, 255, 255, 0.16) 42%,
+      rgba(255, 255, 255, 0.06));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.final-cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 62rem;
+  min-width: 0;
+}
+
+.final-cta-eyebrow {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
+  text-transform: uppercase;
+  color: var(--cta-accent, #6BEAF9);
+}
+
+.final-cta-title {
+  margin: 0;
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-weight: var(--type-h1-weight);
+  line-height: 1.02;
+  letter-spacing: var(--type-h1-tracking);
+  color: var(--color-white);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.final-cta-copy {
+  display: grid;
+  gap: 1rem;
+  max-width: 60rem;
+  min-width: 0;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.final-cta-copy p {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.58;
+  color: rgba(255, 255, 255, 0.72);
+  overflow-wrap: anywhere;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.final-cta-copy strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.final-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(2rem, 4vw, 2.5rem);
+  min-width: 0;
+}
+
+.final-cta-actions .btn-primary-ring {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--color-black);
+}
+
+.final-cta-actions .btn-secondary-filled {
+  --cta-secondary-fill: rgba(255, 255, 255, 0.08);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border: rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 720px) {
+  .final-cta-container {
+    padding-inline: 1.25rem;
+  }
+
+  .final-cta-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .final-cta-title {
+    max-width: 12ch;
+  }
+
+  .final-cta-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .final-cta-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}

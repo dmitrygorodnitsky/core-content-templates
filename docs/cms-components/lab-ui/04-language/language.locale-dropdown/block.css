@@ -32,6 +32,49 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+}
+
+.locale-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 12px;
+  flex: 0 0 20px;
+  border-radius: 0;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: none;
+}
+
+.locale-flag-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.locale-flag-fallback {
+  display: none;
+  font-size: 14px;
+  line-height: 12px;
+}
+
+.locale-flag.is-fallback .locale-flag-img {
+  display: none;
+}
+
+.locale-flag.is-fallback .locale-flag-fallback {
+  display: inline-flex;
+}
+
+.locale-trigger > .locale-flag {
+  margin-left: auto;
 }
 
 .locale-selector.is-open .locale-trigger {
@@ -270,8 +313,8 @@
   }
 
   .locale-trigger::before {
-    content: attr(data-short-code);
-    display: block;
+    content: none;
+    display: none;
     font-family: var(--font-mono, monospace);
     font-size: 0.6875rem;
     font-weight: 500;
@@ -285,6 +328,12 @@
   }
 
   .locale-trigger-left {
+    display: flex;
+    gap: 0;
+  }
+
+  .locale-chevron,
+  .locale-trigger-label {
     display: none;
   }
 
@@ -332,12 +381,52 @@
   }
 
   .locale-item-code {
-    display: block;
+    display: none;
     color: var(--color-heading);
     font-family: var(--font-mono, monospace);
     font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1;
+  }
+}
+
+.locale-selector--mobile .locale-trigger::before {
+  content: none;
+  display: none;
+}
+
+.locale-selector--mobile .locale-trigger-left {
+  display: flex;
+  gap: 0;
+}
+
+.locale-selector--mobile .locale-chevron,
+.locale-selector--mobile .locale-trigger-label,
+.locale-selector--mobile .locale-item-code {
+  display: none;
+}
+
+.locale-selector--mobile .locale-flag {
+  width: 20px;
+  height: 12px;
+  flex-basis: 20px;
+  font-size: 14px;
+}
+
+.locale-selector--mobile .locale-trigger > .locale-flag {
+  margin-left: 0;
+}
+
+@media (max-width: 600px) {
+  .locale-flag {
+    width: 20px;
+    height: 12px;
+    flex-basis: 20px;
+    font-size: 14px;
+  }
+
+  .locale-trigger > .locale-flag {
+    margin-left: 0;
   }
 }

@@ -798,7 +798,7 @@
     {
       "code": "slot_14_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_14_desc",
@@ -853,7 +853,7 @@
     {
       "code": "slot_15_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_15_desc",
@@ -908,7 +908,7 @@
     {
       "code": "slot_16_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_16_desc",
@@ -963,7 +963,7 @@
     {
       "code": "slot_17_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_17_desc",
@@ -1018,7 +1018,7 @@
     {
       "code": "slot_18_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_18_desc",
@@ -1073,7 +1073,7 @@
     {
       "code": "slot_19_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_19_desc",
@@ -1128,7 +1128,7 @@
     {
       "code": "slot_20_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "slot_20_desc",

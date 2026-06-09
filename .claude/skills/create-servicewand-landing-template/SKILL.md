@@ -104,7 +104,9 @@ Useful block families:
 - `verticals.glyph-grid-20-slots` for supported industries or related verticals.
 - `comparison.three-col-with-mobile-cards` for 2-6 column comparison tables.
 - `faq.bubble-light-grouped` for FAQ.
-- `decorative.callout-band` or `cta` blocks for final calls to action.
+- `decorative.final-cta` for the final bottom CTA. Use `decorative.callout-band`
+  only when the operator explicitly wants a short informational callout instead
+  of a closing CTA.
 
 Do not include blocks that are not in the current manifest.
 
@@ -317,7 +319,25 @@ Never paste or commit credentials.
 
 Stage/prod safety:
 
-- Stage uploads may update an existing family when the user explicitly asks.
+- For an existing PageContext route, use revision deployment by default:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url <base-url> \
+  --org <org> \
+  --root-code <base-template-code> \
+  --strategy revision \
+  --revision-suffix <YYYYMMDD_N> \
+  --live
+```
+
+- Revision deployment creates a fresh root and fresh child templates, switches
+  the PageContext only after those templates exist, migrates authored values by
+  `PARAM_CODE` into the new UUID buckets, and verifies that no old buckets remain.
+- Use `--strategy upsert` only for first uploads, disposable tests, or a
+  current-thread explicit instruction to update in place.
 - Production uploads require an explicit target, base URL, org, and upload
   approval in the current thread.
 - Do not upload a new production root/family over an existing production

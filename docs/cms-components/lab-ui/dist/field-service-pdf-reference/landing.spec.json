@@ -61,7 +61,7 @@
     },
     {
       "pdf": "Closing CTA statement",
-      "block": "decorative.callout-band"
+      "block": "decorative.final-cta"
     }
   ],
   "sections": [
@@ -82,7 +82,7 @@
     },
     "section.axes-grid",
     "faq.bubble-light-grouped",
-    "decorative.callout-band",
+    "decorative.final-cta",
     "footer.default"
   ],
   "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json"

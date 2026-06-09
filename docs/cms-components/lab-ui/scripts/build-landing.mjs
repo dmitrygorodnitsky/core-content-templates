@@ -227,7 +227,9 @@ const summarize = (outDir) => {
   const resolved = JSON.parse(readFileSync(join(outDir, "composition.resolved.json"), "utf8"));
   const root = payload.root || {};
   const children = payload.children || [];
-  const all = [root, ...children];
+  const flatten = (templates) => templates.flatMap((template) => [template, ...flatten(template.children || [])]);
+  const flatChildren = flatten(children);
+  const all = [root, ...flatChildren];
   const totalParams = all.reduce((sum, t) => sum + (t.parameters?.length || 0), 0);
   const totalWords = all.reduce(
     (sum, t) => sum + (t.parameters || []).reduce((paramSum, param) => paramSum + countWords(param.value), 0),
@@ -237,7 +239,7 @@ const summarize = (outDir) => {
 
   console.log("\n=== build-landing summary ===\n");
   console.log(`landing code:   ${root.code || "(unknown)"}`);
-  console.log(`templates:      ${all.length} (root + ${children.length} children)`);
+  console.log(`templates:      ${all.length} (root + ${children.length} direct / ${flatChildren.length} total children)`);
   console.log(`parameters:     ${totalParams}`);
   console.log(`total words:    ${totalWords} (placeholder values, stripped of HTML)`);
   console.log("");

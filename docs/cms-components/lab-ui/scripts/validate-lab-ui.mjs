@@ -39,6 +39,43 @@ const readJson = (file) => {
   }
 };
 
+const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const cssZIndexForClass = (css, className) => {
+  const zIndexes = [];
+  const classRe = new RegExp(`(^|[^a-zA-Z0-9_-])\\.${escapeRegExp(className)}([^a-zA-Z0-9_-]|$)`);
+  for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const selector = match[1];
+    const body = match[2];
+    if (!classRe.test(selector)) continue;
+    const zIndex = body.match(/\bz-index\s*:\s*(-?\d+)\s*;?/);
+    if (zIndex) zIndexes.push(Number(zIndex[1]));
+  }
+  return zIndexes.length ? Math.max(...zIndexes) : 0;
+};
+
+const cssClassHasPointerEventsNone = (css, className) => {
+  const classRe = new RegExp(`(^|[^a-zA-Z0-9_-])\\.${escapeRegExp(className)}([^a-zA-Z0-9_-]|$)`);
+  for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const selector = match[1];
+    const body = match[2];
+    if (!classRe.test(selector)) continue;
+    if (/\bpointer-events\s*:\s*none\s*;?/i.test(body)) return true;
+  }
+  return false;
+};
+
+const imageFallbackPairs = (html) => {
+  const pairs = [];
+  const pairRe = /<img\b[^>]*\bclass=(["'])([^"']+)\1[^>]*>\s*<[^>]+\bclass=(["'])([^"']+)\3/gi;
+  for (const match of html.matchAll(pairRe)) {
+    const imgClass = match[2].split(/\s+/).filter(Boolean)[0];
+    const fallbackClass = match[4].split(/\s+/).filter(Boolean)[0];
+    if (imgClass && fallbackClass) pairs.push({ imgClass, fallbackClass });
+  }
+  return pairs;
+};
+
 const manifest = readJson(join(root, "manifest.json"));
 const blockJsonFiles = listFiles(root, (file) => file.endsWith("block.json")).sort();
 const blockById = new Map();
@@ -57,6 +94,21 @@ for (const file of blockJsonFiles) {
 
   for (const required of requiredBlockFiles) {
     if (!existsSync(join(dir, required))) fail(`${block.id}: missing ${required}`);
+  }
+
+  if (Array.isArray(block.image_slots) && block.image_slots.length) {
+    const html = existsSync(join(dir, "block.html")) ? readFileSync(join(dir, "block.html"), "utf8") : "";
+    const css = existsSync(join(dir, "block.css")) ? readFileSync(join(dir, "block.css"), "utf8") : "";
+    for (const pair of imageFallbackPairs(html)) {
+      const imageZIndex = cssZIndexForClass(css, pair.imgClass);
+      const fallbackZIndex = cssZIndexForClass(css, pair.fallbackClass);
+      if (fallbackZIndex > imageZIndex) {
+        fail(`${block.id}: .${pair.fallbackClass} z-index (${fallbackZIndex}) must not be above .${pair.imgClass} (${imageZIndex})`);
+      }
+      if (cssClassHasPointerEventsNone(css, pair.imgClass)) {
+        fail(`${block.id}: .${pair.imgClass} must not set pointer-events:none; put it on the fallback/placeholder instead`);
+      }
+    }
   }
 
   const paramsByCode = new Map((block.params || []).map((param) => [param.code, param]));

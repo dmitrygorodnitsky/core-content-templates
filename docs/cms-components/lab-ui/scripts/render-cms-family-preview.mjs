@@ -64,9 +64,11 @@ const renderPlaceholders = (html, values, locale) =>
       const value = valueToString(values[code], locale);
       return type.includes("JSON") ? value : renderSafeInline(value);
     })
-    .replace(/\bsrc="\/core\/image\/\/get\/[^"]*"/g, 'src=""');
+    .replace(/\bsrc="\/core\/image\/\/get\/[^"]*"/g, 'src=""')
+    .replace(/\bsrc="\/core\/image\/[^"]+\/get\/"/g, 'src=""');
 
 const slotFor = (template) => {
+  if (template.slotMarker) return template.slotMarker;
   if (template.code === "FEATURES") return SLOT_MARKERS.featureColumns;
   if (template.code.startsWith("FEATURE_COL_")) return SLOT_MARKERS.featureItems;
   if (template.code === "COMPARISON") return SLOT_MARKERS.compareRows;

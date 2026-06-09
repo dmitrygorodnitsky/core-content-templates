@@ -26,7 +26,7 @@
     { "pdf": "ServiceWand vs other solutions", "block": "comparison.three-col-with-mobile-cards" },
     { "pdf": "Visibility, reporting, integrations", "block": "section.axes-grid" },
     { "pdf": "FAQ accordion", "block": "faq.bubble-light-grouped" },
-    { "pdf": "Closing CTA statement", "block": "decorative.callout-band" }
+    { "pdf": "Closing CTA statement", "block": "decorative.final-cta" }
   ],
   "sections": [
     "header.default",
@@ -46,7 +46,7 @@
     },
     "section.axes-grid",
     "faq.bubble-light-grouped",
-    "decorative.callout-band",
+    "decorative.final-cta",
     "footer.default"
   ]
 }

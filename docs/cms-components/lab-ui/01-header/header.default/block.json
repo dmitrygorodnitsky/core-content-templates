@@ -327,7 +327,7 @@
     {
       "code": "breadcrumb_mid_1_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "breadcrumb_mid_1_href",
@@ -337,7 +337,7 @@
     {
       "code": "breadcrumb_mid_2_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": ""
     },
     {
       "code": "breadcrumb_mid_2_href",

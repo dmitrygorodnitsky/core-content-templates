@@ -129,7 +129,8 @@
 .hero-media-img {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -137,17 +138,20 @@
 
 .hero-media-img[src=""],
 .hero-media-img[src="#"],
-.hero-media-img[src^="/core/image//"] {
+.hero-media-img[src^="/core/image//"],
+.hero-media-img[src$="/get"],
+.hero-media-img[src$="/get/"],
+.hero-media-img[src*="/get//"] {
   opacity: 0;
 }
 
-.hero-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .hero-placeholder-copy {
+.hero-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .hero-placeholder-copy {
   display: none;
 }
 
 .hero-placeholder-copy {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   display: grid;
   gap: 16px;

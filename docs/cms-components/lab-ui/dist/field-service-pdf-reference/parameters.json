@@ -767,7 +767,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod."
+      "en": ""
     }
   },
   {
@@ -791,7 +791,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud."
+      "en": ""
     }
   },
   {
@@ -4721,7 +4721,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum exercitation."
+      "en": ""
     }
   },
   {
@@ -4821,7 +4821,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum irure."
+      "en": ""
     }
   },
   {
@@ -4921,7 +4921,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolor."
+      "en": ""
     }
   },
   {
@@ -5021,7 +5021,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ut."
+      "en": ""
     }
   },
   {
@@ -5121,7 +5121,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud."
+      "en": ""
     }
   },
   {
@@ -5221,7 +5221,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aute."
+      "en": ""
     }
   },
   {
@@ -5321,7 +5321,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ipsum."
+      "en": ""
     }
   },
   {
@@ -5595,7 +5595,7 @@
     "value": ""
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COLUMN_COUNT",
+    "code": "COMPARE_COLUMN_COUNT",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5613,7 +5613,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_EYEBROW",
+    "code": "COMPARE_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5626,7 +5626,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_TITLE",
+    "code": "COMPARE_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5639,7 +5639,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_LEDE",
+    "code": "COMPARE_LEDE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5652,7 +5652,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_01_NAME",
+    "code": "COMPARE_COL_1_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5665,7 +5665,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_02_NAME",
+    "code": "COMPARE_COL_2_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5678,7 +5678,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_03_NAME",
+    "code": "COMPARE_COL_3_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5691,7 +5691,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_04_NAME",
+    "code": "COMPARE_COL_4_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5704,7 +5704,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_05_NAME",
+    "code": "COMPARE_COL_5_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5717,7 +5717,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_COL_06_NAME",
+    "code": "COMPARE_COL_6_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5730,7 +5730,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_CAPABILITY",
+    "code": "COMPARE_ROW_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5743,7 +5743,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_01_ICON",
+    "code": "COMPARE_1_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5760,7 +5760,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_01",
+    "code": "COMPARE_1_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5773,7 +5773,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_02_ICON",
+    "code": "COMPARE_1_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5790,7 +5790,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_02",
+    "code": "COMPARE_1_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5803,7 +5803,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_03_ICON",
+    "code": "COMPARE_1_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5820,7 +5820,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_03",
+    "code": "COMPARE_1_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5833,7 +5833,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_04_ICON",
+    "code": "COMPARE_1_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5850,7 +5850,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_04",
+    "code": "COMPARE_1_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5863,7 +5863,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_05_ICON",
+    "code": "COMPARE_1_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5880,7 +5880,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_05",
+    "code": "COMPARE_1_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5893,7 +5893,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_06_ICON",
+    "code": "COMPARE_1_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5910,7 +5910,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_01_COL_06",
+    "code": "COMPARE_1_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5923,7 +5923,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_CAPABILITY",
+    "code": "COMPARE_ROW_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5936,7 +5936,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_01_ICON",
+    "code": "COMPARE_2_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5953,7 +5953,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_01",
+    "code": "COMPARE_2_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5966,7 +5966,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_02_ICON",
+    "code": "COMPARE_2_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -5983,7 +5983,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_02",
+    "code": "COMPARE_2_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -5996,7 +5996,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_03_ICON",
+    "code": "COMPARE_2_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6013,7 +6013,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_03",
+    "code": "COMPARE_2_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6026,7 +6026,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_04_ICON",
+    "code": "COMPARE_2_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6043,7 +6043,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_04",
+    "code": "COMPARE_2_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6056,7 +6056,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_05_ICON",
+    "code": "COMPARE_2_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6073,7 +6073,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_05",
+    "code": "COMPARE_2_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6086,7 +6086,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_06_ICON",
+    "code": "COMPARE_2_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6103,7 +6103,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_02_COL_06",
+    "code": "COMPARE_2_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6116,7 +6116,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_CAPABILITY",
+    "code": "COMPARE_ROW_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6129,7 +6129,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_01_ICON",
+    "code": "COMPARE_3_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6146,7 +6146,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_01",
+    "code": "COMPARE_3_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6159,7 +6159,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_02_ICON",
+    "code": "COMPARE_3_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6176,7 +6176,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_02",
+    "code": "COMPARE_3_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6189,7 +6189,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_03_ICON",
+    "code": "COMPARE_3_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6206,7 +6206,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_03",
+    "code": "COMPARE_3_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6219,7 +6219,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_04_ICON",
+    "code": "COMPARE_3_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6236,7 +6236,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_04",
+    "code": "COMPARE_3_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6249,7 +6249,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_05_ICON",
+    "code": "COMPARE_3_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6266,7 +6266,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_05",
+    "code": "COMPARE_3_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6279,7 +6279,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_06_ICON",
+    "code": "COMPARE_3_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6296,7 +6296,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_03_COL_06",
+    "code": "COMPARE_3_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6309,7 +6309,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_CAPABILITY",
+    "code": "COMPARE_ROW_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6322,7 +6322,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_01_ICON",
+    "code": "COMPARE_4_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6339,7 +6339,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_01",
+    "code": "COMPARE_4_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6352,7 +6352,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_02_ICON",
+    "code": "COMPARE_4_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6369,7 +6369,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_02",
+    "code": "COMPARE_4_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6382,7 +6382,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_03_ICON",
+    "code": "COMPARE_4_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6399,7 +6399,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_03",
+    "code": "COMPARE_4_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6412,7 +6412,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_04_ICON",
+    "code": "COMPARE_4_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6429,7 +6429,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_04",
+    "code": "COMPARE_4_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6442,7 +6442,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_05_ICON",
+    "code": "COMPARE_4_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6459,7 +6459,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_05",
+    "code": "COMPARE_4_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6472,7 +6472,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_06_ICON",
+    "code": "COMPARE_4_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6489,7 +6489,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_04_COL_06",
+    "code": "COMPARE_4_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6502,7 +6502,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_CAPABILITY",
+    "code": "COMPARE_ROW_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6515,7 +6515,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_01_ICON",
+    "code": "COMPARE_5_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6532,7 +6532,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_01",
+    "code": "COMPARE_5_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6545,7 +6545,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_02_ICON",
+    "code": "COMPARE_5_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6562,7 +6562,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_02",
+    "code": "COMPARE_5_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6575,7 +6575,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_03_ICON",
+    "code": "COMPARE_5_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6592,7 +6592,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_03",
+    "code": "COMPARE_5_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6605,7 +6605,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_04_ICON",
+    "code": "COMPARE_5_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6622,7 +6622,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_04",
+    "code": "COMPARE_5_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6635,7 +6635,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_05_ICON",
+    "code": "COMPARE_5_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6652,7 +6652,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_05",
+    "code": "COMPARE_5_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6665,7 +6665,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_06_ICON",
+    "code": "COMPARE_5_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6682,7 +6682,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_05_COL_06",
+    "code": "COMPARE_5_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6695,7 +6695,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_CAPABILITY",
+    "code": "COMPARE_ROW_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6708,7 +6708,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_01_ICON",
+    "code": "COMPARE_6_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6725,7 +6725,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_01",
+    "code": "COMPARE_6_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6738,7 +6738,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_02_ICON",
+    "code": "COMPARE_6_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6755,7 +6755,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_02",
+    "code": "COMPARE_6_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6768,7 +6768,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_03_ICON",
+    "code": "COMPARE_6_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6785,7 +6785,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_03",
+    "code": "COMPARE_6_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6798,7 +6798,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_04_ICON",
+    "code": "COMPARE_6_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6815,7 +6815,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_04",
+    "code": "COMPARE_6_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6828,7 +6828,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_05_ICON",
+    "code": "COMPARE_6_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6845,7 +6845,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_05",
+    "code": "COMPARE_6_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6858,7 +6858,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_06_ICON",
+    "code": "COMPARE_6_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6875,7 +6875,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_06_COL_06",
+    "code": "COMPARE_6_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6888,7 +6888,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_CAPABILITY",
+    "code": "COMPARE_ROW_7",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6901,7 +6901,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_01_ICON",
+    "code": "COMPARE_7_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6918,7 +6918,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_01",
+    "code": "COMPARE_7_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6931,7 +6931,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_02_ICON",
+    "code": "COMPARE_7_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6948,7 +6948,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_02",
+    "code": "COMPARE_7_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6961,7 +6961,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_03_ICON",
+    "code": "COMPARE_7_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -6978,7 +6978,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_03",
+    "code": "COMPARE_7_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -6991,7 +6991,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_04_ICON",
+    "code": "COMPARE_7_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7008,7 +7008,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_04",
+    "code": "COMPARE_7_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7021,7 +7021,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_05_ICON",
+    "code": "COMPARE_7_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7038,7 +7038,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_05",
+    "code": "COMPARE_7_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7051,7 +7051,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_06_ICON",
+    "code": "COMPARE_7_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7068,7 +7068,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_07_COL_06",
+    "code": "COMPARE_7_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7081,7 +7081,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_CAPABILITY",
+    "code": "COMPARE_ROW_8",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7094,7 +7094,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_01_ICON",
+    "code": "COMPARE_8_1_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7111,7 +7111,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_01",
+    "code": "COMPARE_8_1",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7124,7 +7124,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_02_ICON",
+    "code": "COMPARE_8_2_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7141,7 +7141,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_02",
+    "code": "COMPARE_8_2",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7154,7 +7154,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_03_ICON",
+    "code": "COMPARE_8_3_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7171,7 +7171,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_03",
+    "code": "COMPARE_8_3",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7184,7 +7184,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_04_ICON",
+    "code": "COMPARE_8_4_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7201,7 +7201,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_04",
+    "code": "COMPARE_8_4",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7214,7 +7214,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_05_ICON",
+    "code": "COMPARE_8_5_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7231,7 +7231,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_05",
+    "code": "COMPARE_8_5",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -7244,7 +7244,7 @@
     }
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_06_ICON",
+    "code": "COMPARE_8_6_ICON",
     "type": "STRING",
     "nls": {
       "en": {
@@ -7261,7 +7261,7 @@
     ]
   },
   {
-    "code": "SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS_SLOT_08_COL_06",
+    "code": "COMPARE_8_6",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -8353,12 +8353,12 @@
     }
   },
   {
-    "code": "SECTION_13_DECORATIVE_CALLOUT_BAND_EYEBROW",
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Eyebrow",
-        "DESCRIPTION": "Text value for the Eyebrow field in Decorative · callout band (accent-tinted closing strip)."
+        "NAME": "Eyebrow Label",
+        "DESCRIPTION": "Small uppercase label shown above the final CTA heading."
       }
     },
     "value": {
@@ -8366,16 +8366,103 @@
     }
   },
   {
-    "code": "SECTION_13_DECORATIVE_CALLOUT_BAND_BODY",
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Body",
-        "DESCRIPTION": "Text value for the Body field in Decorative · callout band (accent-tinted closing strip)."
+        "NAME": "CTA Heading",
+        "DESCRIPTION": "Main heading for the bottom-of-page CTA banner."
       }
     },
     "value": {
-      "en": "Lorem Ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_BODY_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "First Body Paragraph",
+        "DESCRIPTION": "Opening supporting paragraph for the final CTA."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_EMPHASIS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Emphasis Line",
+        "DESCRIPTION": "Short emphasized sentence between the two supporting paragraphs."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_BODY_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Second Body Paragraph",
+        "DESCRIPTION": "Closing supporting paragraph for the final CTA."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Primary CTA URL",
+        "DESCRIPTION": "Destination URL for the primary CTA button."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Primary CTA Label",
+        "DESCRIPTION": "Text shown in the primary CTA button."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Secondary CTA URL",
+        "DESCRIPTION": "Destination URL for the secondary CTA button."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Secondary CTA Label",
+        "DESCRIPTION": "Text shown in the secondary CTA button."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
     }
   },
   {

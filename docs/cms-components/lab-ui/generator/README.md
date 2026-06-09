@@ -214,7 +214,35 @@ Do not rely on flat parameter-code entries. Flat entries that equal template
 defaults are not authored content and should be dropped. The uploader
 canonicalizes existing PageContext values, removes default duplicates, and
 preserves real nested overrides when their template bucket and parameter still
-exist.
+exist. During revision deployment, existing UUID-nested values are migrated to
+the new template-family buckets by `PARAM_CODE`, so authored page content can
+survive new `BlockTemplate` ids without copying default Lorem Ipsum values.
+
+Migration contract:
+
+- `PageContext.values` stores authored overrides only; generated defaults remain
+  on `BlockTemplate.parameters`.
+- UUID buckets are revision-specific. When a new template revision is uploaded,
+  old bucket ids are expected to change.
+- Values migrate by stable `PARAM_CODE`. For each old value, locate the new
+  template that owns the same parameter code and write the value into that new
+  template UUID bucket.
+- Saved CMS `PageContext.values` have precedence over generated payload values.
+  Payload values are only a seed; existing authored values win on conflicts.
+  Example: if the saved page has `CTA_LABEL = "Talk to sales"` and the new
+  payload has `CTA_LABEL = "Book a demo"`, the migrated page keeps
+  `"Talk to sales"` in the new template UUID bucket.
+- `PARAM_CODE` must be unique across the whole generated family. Duplicate
+  codes are invalid because ownership cannot be inferred.
+- `PARAM_CODE` must stay stable between revisions. If a field is renamed, the
+  old value is intentionally dropped as unknown; do not use aliases.
+- Values for removed parameters are dropped.
+- Values equal to the new template default are dropped because they are not real
+  overrides.
+- Top-level flat values (`"PARAM_CODE": value`) are dropped. Strict mode accepts
+  only UUID-nested buckets.
+- After PageContext save, verify the new root template id, the new
+  `enabledTemplates`, and that no old or unknown value buckets remain.
 
 ## Uploader
 
@@ -238,12 +266,59 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
   --live
 ```
 
+For an existing public route, use revision deployment instead of in-place
+upsert:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --strategy revision \
+  --revision-suffix 20260608_001 \
+  --live
+```
+
+To upload the new template family without applying it to a PageContext route,
+add `--templates-only`:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --strategy revision \
+  --revision-suffix 20260608_001 \
+  --templates-only \
+  --live
+```
+
+This still saves the root include list and prints an explicit template preview
+URL, but it skips `page-context/save.json`.
+
+Revision deployment is the safe PageContext update path:
+
+1. create a new root `BlockTemplate` with a suffixed code;
+2. create new child `BlockTemplate` records with suffixed codes;
+3. reparent the children under the new root;
+4. save the root include list with the new child ids;
+5. canonicalize and migrate existing `PageContext.values` into the new UUID
+   buckets by parameter code;
+6. switch the PageContext template and `enabledTemplates` to the new family;
+7. verify that no old value buckets remain.
+
 Upload rules:
 
 - Upload only after an explicit user request.
 - Never paste credentials into committed files.
 - Verify CMS preview using the returned root id and enabled template ids.
 - Verify the final public URL when a PageContext route is involved.
+- Use `--strategy revision` for existing live PageContext routes unless the
+  user explicitly asks for an in-place upsert and accepts the cache/value risks.
 - Production uploads require explicit confirmation of base URL, organization,
   root/template code, and whether an existing production root/family has been
   deleted or may be reused.

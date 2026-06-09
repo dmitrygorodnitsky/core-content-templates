@@ -15,8 +15,8 @@
 
 .features-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
   align-items: start;
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
@@ -39,7 +39,7 @@
   color: var(--color-heading);
   margin: 0;
 }
-.features-lede { display: grid; gap: 14px; max-width: 44rem; }
+.features-lede { display: grid; gap: 14px; max-width: 52rem; }
 .features-lede p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--color-text); }
 
 .features-list {
@@ -133,6 +133,5 @@
 }
 
 @media (max-width: 880px) {
-  .features-top { grid-template-columns: 1fr; }
   .features-list { grid-template-columns: 1fr; }
 }

@@ -158,7 +158,36 @@ use the canonical UUID-nested shape:
 
 Flat values that duplicate template defaults are not authored overrides. The
 uploader canonicalizes existing values, drops default duplicates, and preserves
-real nested overrides where the template/parameter still exists.
+real nested overrides where the template/parameter still exists. When a page is
+switched to a new template-family revision, existing UUID buckets are migrated by
+parameter code into the new block-template UUID buckets.
+
+Migration contract:
+
+- Treat `PageContext.values` as authored overrides only; template defaults stay
+  on `BlockTemplate.parameters`.
+- Treat `blockTemplateUuid` buckets as revision-specific. New revision templates
+  get new UUIDs, so old buckets must not be reused.
+- Migrate by stable `PARAM_CODE`, not by old UUID. For each old value, find the
+  new template that owns the same parameter code and write the value into that
+  new UUID bucket.
+- Give saved CMS `PageContext.values` precedence over generated payload values.
+  Payload values are only a seed; existing authored values win on conflicts.
+  Example: if the saved page has `CTA_LABEL = "Talk to sales"` and the new
+  payload has `CTA_LABEL = "Book a demo"`, the migrated page keeps
+  `"Talk to sales"` in the new template UUID bucket.
+- Keep every `PARAM_CODE` unique across the whole template family. Duplicate
+  codes make value ownership ambiguous and must fail validation.
+- Keep `PARAM_CODE` stable between revisions. If a parameter is renamed, the old
+  value is intentionally dropped as unknown; do not use aliases.
+- Drop values for parameters that no longer exist in the new template family.
+- Drop values that equal the new template default; they are not authored
+  overrides.
+- Drop top-level flat values (`"PARAM_CODE": value`). Strict mode accepts only
+  UUID-nested buckets.
+- After saving a migrated PageContext, verify that the page template points to
+  the new root, `enabledTemplates` contains the new template ids, and `values`
+  has no old or unknown UUID buckets.
 
 Local preview renders template defaults plus PageContext overrides so an empty
 sample page context can still show a complete placeholder landing.
@@ -167,6 +196,53 @@ sample page context can still show a complete placeholder landing.
 
 Use upload only when explicitly requested. Credentials must come from
 environment variables, never from committed files.
+
+For a live PageContext route, prefer revision deployment instead of updating the
+existing template family in place:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --strategy revision \
+  --revision-suffix 20260608_001 \
+  --live
+```
+
+Revision deployment creates a new root and new child `BlockTemplate` records,
+saves the root include list with the new child ids, migrates authored
+`PageContext.values` into the new UUID buckets by parameter code, switches the
+PageContext to the new root, and verifies that `enabledTemplates` and value
+buckets point only at the new family.
+
+Use legacy `--strategy upsert` only for first uploads, disposable tests, or an
+explicitly approved in-place maintenance operation. Do not use upsert as the
+default path for an already published page; it can leave root include cache,
+child bodies, and PageContext values out of sync.
+
+To upload a generated template family for inspection without applying it to a
+PageContext route, use `--templates-only`. Prefer this with `revision` so the
+uploaded `BlockTemplate` codes are fresh and the live page remains untouched:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --strategy revision \
+  --revision-suffix 20260608_001 \
+  --templates-only \
+  --live
+```
+
+This creates the root and child `BlockTemplate` records, saves the root include
+list, and prints a preview URL with explicit `templateId` and `enabledTemplates`.
+It does not call `page-context/save.json`.
 
 Production uploads need a current-thread confirmation of:
 

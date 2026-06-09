@@ -282,9 +282,10 @@ body {
    padding-block-end so it breathes above the footer. The default
    padding-block above gives both naturally. */
 
-/* Callout band is a tighter accent — shorter at the top, full
-   rhythm at the bottom so the following section gets visual room. */
-.composition-section--decorative-callout-band {
+/* Closing accent sections are tighter at the top, with full rhythm
+   at the bottom so the footer gets visual room. */
+.composition-section--decorative-callout-band,
+.composition-section--decorative-final-cta {
   padding-block: var(--composition-section-y-compact) var(--composition-section-y);
 }
 /* ─── Wrappers ───────────────────────────────────────────────
@@ -647,6 +648,49 @@ select {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+}
+
+.locale-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 12px;
+  flex: 0 0 20px;
+  border-radius: 0;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 12px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: none;
+}
+
+.locale-flag-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.locale-flag-fallback {
+  display: none;
+  font-size: 14px;
+  line-height: 12px;
+}
+
+.locale-flag.is-fallback .locale-flag-img {
+  display: none;
+}
+
+.locale-flag.is-fallback .locale-flag-fallback {
+  display: inline-flex;
+}
+
+.locale-trigger > .locale-flag {
+  margin-left: auto;
 }
 
 .locale-selector.is-open .locale-trigger {
@@ -885,8 +929,8 @@ select {
   }
 
   .locale-trigger::before {
-    content: attr(data-short-code);
-    display: block;
+    content: none;
+    display: none;
     font-family: var(--font-mono, monospace);
     font-size: 0.6875rem;
     font-weight: 500;
@@ -900,6 +944,12 @@ select {
   }
 
   .locale-trigger-left {
+    display: flex;
+    gap: 0;
+  }
+
+  .locale-chevron,
+  .locale-trigger-label {
     display: none;
   }
 
@@ -947,13 +997,53 @@ select {
   }
 
   .locale-item-code {
-    display: block;
+    display: none;
     color: var(--color-heading);
     font-family: var(--font-mono, monospace);
     font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1;
+  }
+}
+
+.locale-selector--mobile .locale-trigger::before {
+  content: none;
+  display: none;
+}
+
+.locale-selector--mobile .locale-trigger-left {
+  display: flex;
+  gap: 0;
+}
+
+.locale-selector--mobile .locale-chevron,
+.locale-selector--mobile .locale-trigger-label,
+.locale-selector--mobile .locale-item-code {
+  display: none;
+}
+
+.locale-selector--mobile .locale-flag {
+  width: 20px;
+  height: 12px;
+  flex-basis: 20px;
+  font-size: 14px;
+}
+
+.locale-selector--mobile .locale-trigger > .locale-flag {
+  margin-left: 0;
+}
+
+@media (max-width: 600px) {
+  .locale-flag {
+    width: 20px;
+    height: 12px;
+    flex-basis: 20px;
+    font-size: 14px;
+  }
+
+  .locale-trigger > .locale-flag {
+    margin-left: 0;
   }
 }
 
@@ -2155,7 +2245,7 @@ body.is-open .bc-chip {
 }
 
 .herop-photo-placeholder {
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   display: grid;
   place-content: center;
@@ -2182,15 +2272,19 @@ body.is-open .bc-chip {
 
 .herop-photo-img[src=""],
 .herop-photo-img[src="#"],
-.herop-photo-img[src^="/core/image//"] {
+.herop-photo-img[src^="/core/image//"],
+.herop-photo-img[src$="/get"],
+.herop-photo-img[src$="/get/"],
+.herop-photo-img[src*="/get//"] {
   opacity: 0;
 }
 
 .herop-photo-img {
-  z-index: 1;
+  display: block;
+  z-index: 2;
 }
 
-.herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-photo-placeholder {
+.herop-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .herop-photo-placeholder {
   display: none;
 }
 
@@ -2253,10 +2347,13 @@ body.is-open .bc-chip {
 .herop-person-avatar-fallback { z-index: 0; }
 .herop-person-avatar-img[src=""],
 .herop-person-avatar-img[src="#"],
-.herop-person-avatar-img[src^="/core/image//"] {
+.herop-person-avatar-img[src^="/core/image//"],
+.herop-person-avatar-img[src$="/get"],
+.herop-person-avatar-img[src$="/get/"],
+.herop-person-avatar-img[src*="/get//"] {
   opacity: 0;
 }
-.herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .herop-person-avatar-fallback {
+.herop-person-avatar-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .herop-person-avatar-fallback {
   display: none;
 }
 .herop-person-name {
@@ -2419,8 +2516,8 @@ body.is-open .bc-chip {
 
 .cards4-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
   align-items: start;
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
@@ -2443,7 +2540,7 @@ body.is-open .bc-chip {
   letter-spacing: var(--type-h2-tracking);
   color: var(--color-heading);
 }
-.cards4-lede { display: grid; gap: 14px; max-width: 44rem; }
+.cards4-lede { display: grid; gap: 14px; max-width: 52rem; }
 .cards4-lede p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--color-text); }
 
 .cards4-grid {
@@ -2497,7 +2594,6 @@ body.is-open .bc-chip {
   .cards4-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
-  .cards4-top { grid-template-columns: 1fr; }
   .cards4-grid { grid-template-columns: 1fr; }
 }
 
@@ -2520,8 +2616,8 @@ body.is-open .bc-chip {
 
 .features-top {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: clamp(2rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
   align-items: start;
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
 }
@@ -2544,7 +2640,7 @@ body.is-open .bc-chip {
   color: var(--color-heading);
   margin: 0;
 }
-.features-lede { display: grid; gap: 14px; max-width: 44rem; }
+.features-lede { display: grid; gap: 14px; max-width: 52rem; }
 .features-lede p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--color-text); }
 
 .features-list {
@@ -2638,7 +2734,6 @@ body.is-open .bc-chip {
 }
 
 @media (max-width: 880px) {
-  .features-top { grid-template-columns: 1fr; }
   .features-list { grid-template-columns: 1fr; }
 }
 
@@ -2954,14 +3049,18 @@ body.is-open .bc-chip {
 .ai-media-img {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .ai-media-img[src=""],
 .ai-media-img[src="#"],
-.ai-media-img[src^="/core/image//"] {
+.ai-media-img[src^="/core/image//"],
+.ai-media-img[src$="/get"],
+.ai-media-img[src$="/get/"],
+.ai-media-img[src*="/get//"] {
   opacity: 0;
 }
 .ai-media-fallback {
@@ -2969,10 +3068,10 @@ body.is-open .bc-chip {
 }
 .ai-media-fallback > * {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
 }
-.ai-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .ai-media-fallback {
+.ai-media-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .ai-media-fallback {
   display: none;
 }
 .ai-media-fallback span:first-child {
@@ -3395,23 +3494,27 @@ body.is-open .bc-chip {
 .vertical-photo-img {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .vertical-photo-img[src=""],
 .vertical-photo-img[src="#"],
-.vertical-photo-img[src^="/core/image//"] {
+.vertical-photo-img[src^="/core/image//"],
+.vertical-photo-img[src$="/get"],
+.vertical-photo-img[src$="/get/"],
+.vertical-photo-img[src*="/get//"] {
   opacity: 0;
 }
-.vertical-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]) + .vertical-photo-meta {
+.vertical-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .vertical-photo-meta {
   display: none;
 }
 .vertical-photo-meta {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
   padding: 0.75rem;
   display: flex;
@@ -3435,10 +3538,13 @@ body.is-open .bc-chip {
   line-height: 1.4;
 }
 .vertical-body {
+  position: relative;
+  z-index: 2;
   flex: 1;
   padding: 1.25rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
+  background: var(--color-white);
 }
 .vertical-title {
   margin: 0;
@@ -4431,39 +4537,523 @@ body.is-open .bc-chip {
 }
 
 
-/* generated child CSS: 12-decorative/decorative.callout-band/block.css */
-/* lab-ui block · decorative.callout-band
-   Depends: 00-tokens/tokens.css. Light theme.
-   Adapted from designer styles.css §smb-callout (lines 1219–1240). */
+/* generated child CSS: 03-cta/cta.btn-base/block.css */
+/* lab-ui block · cta.btn-base
+   Depends: 00-tokens/tokens.css (--radius-pill, --font-family,
+   --transition-duration). Shared geometry + .btn-star base for every
+   CTA variant. Variant blocks (cta.btn-primary-ring,
+   cta.btn-secondary-filled) layer their own ::before/::after, halo
+   shadows and color tokens on top. */
 
-.callout-band {
-  margin-top: 24px;
-  padding: 30px 32px;
-  border-radius: var(--radius-card);
-  background: linear-gradient(135deg, #F4F8FE 0%, #EDF3FB 100%);
-  border: 1px solid color-mix(in srgb, var(--cta-accent, #6BEAF9) 20%, transparent);
-  box-shadow: 0 0 60px -20px color-mix(in srgb, var(--cta-accent, #6BEAF9) 32%, transparent);
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 13rem;
+  height: 3.25rem;
+  padding: 0 1.625rem;
+  border-radius: var(--radius-pill);
   font-family: var(--font-family);
+  font-weight: 500;
+  font-size: 1rem;
+  white-space: nowrap;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  transition: box-shadow var(--transition-duration) ease,
+              transform var(--transition-duration) ease;
 }
 
-.callout-band-eyebrow {
+.btn-star {
+  flex-shrink: 0;
+  transition: transform var(--transition-duration) cubic-bezier(.4, 0, .2, 1);
+}
+
+
+/* generated child CSS: 12-decorative/effect.hover-rise/block.css */
+/* ============================================================
+   lab-ui block · effect.hover-rise
+   ----------------------------------------------------------------
+   Brand interaction primitive — standard CTA halo + inner bottom-glow
+   that fades in on :hover. Applied via CSS, no markup.
+
+   ## Where it auto-applies (brand primitives)
+   - .btn-primary-ring          (cta.btn-primary-ring)
+   - .btn-secondary-filled      (cta.btn-secondary-filled)
+   - .nav-link, .nav-trigger    (header.default nav items)
+   - .locale-trigger            (language.locale-dropdown)
+   - .bc-link                   (header.default breadcrumb)
+
+   ## Opt-in for custom elements
+   - [data-fx="rise"]
+
+   ## Tint
+   Default uses --cta-accent (which is --color-cyan by default and
+   re-themed via [data-theme="..."] overlays). Override per element
+   via --fx-rise-color: <color>.
+
+   ## Implementation
+   Each target element gets a ::after pseudo with the canonical
+   bottom-centered radial glow used by current CTA blocks, plus an
+   outer hover halo via box-shadow. No external image asset.
+
+   ## Stacking
+   Container must be position:relative (or rely on the host block
+   making itself relative — all brand-primitive blocks already do).
+   The ::after is z-index:1 with pointer-events:none so it never
+   blocks interaction.
+   ============================================================ */
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-duration, 0.25s) ease;
+
+  /* Canonical inner glow: same bottom-centered radial used by
+     cta.btn-primary-ring and cta.btn-secondary-filled. */
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--fx-rise-color, var(--cta-accent, #6BEAF9)) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: normal;
+  filter: none;
+}
+
+/* Activate on hover + on keyboard focus-visible (a11y). */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):is(:hover, :focus-visible)::after {
+  opacity: 0.48;
+}
+
+/* Brand-primitive base — they all need to be relative for the
+   ::after to anchor inside. Each block also sets this in its own
+   block.css, but we re-declare here so the effect works even when
+   only this CSS is imported. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) {
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow var(--transition-duration, 0.25s) ease,
+    transform var(--transition-duration, 0.25s) ease;
+}
+
+/* Outer halo — two intensities so the same effect doesn't look
+   aggressive on a 32 px nav link AND on a 52 px pill button.
+
+   Strong (default): pills, cards, opt-in via [data-fx="rise"].
+   Soft: header chrome — nav links, dropdown triggers, breadcrumb,
+   locale chip. Override per element via --fx-rise-color. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+:where(
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 18px -6px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+/* Keyboard-only focus ring (a11y). Distinct from the hover halo so that
+   keyboard navigation is unambiguously visible — sighted hover users do
+   not get the ring, only the soft glow. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):focus-visible {
+  outline: 2px solid var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+  outline-offset: 2px;
+}
+
+/* The hover-rise must stay BEHIND the element's own contents.
+   We use overflow:hidden + ::after with z-index 1 — content sits
+   at z-index 2. Brand primitives bump their direct children to
+   z-index 2 here so we don't have to touch every block.css. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Reduced-motion: keep the effect but kill the transition so it
+   appears instantly on hover with no animation. */
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .btn-primary-ring,
+    .btn-secondary-filled,
+    .nav-link,
+    .nav-trigger,
+    .locale-trigger,
+    .bc-link,
+    [data-fx="rise"]
+  )::after {
+    transition: none;
+  }
+}
+
+
+/* generated child CSS: 03-cta/cta.btn-primary-ring/block.css */
+/* lab-ui block · cta.btn-primary-ring
+   Depends: 00-tokens/tokens.css (--color-black, --radius-pill,
+   --font-family, --gradient-cta-ring, --transition-duration,
+   --cta-accent, --cta-accent-soft) + 03-cta/cta.btn-base (.btn, .btn-star). */
+
+.btn-primary {
+  background: var(--button-primary-bg, transparent);
+  color: var(--button-primary-color, var(--color-black));
+}
+
+.btn-primary-ring {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--gradient-cta-ring);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;                          /* above hover-rise ::after */
+  transition: background var(--transition-duration) ease;
+}
+
+/* On hover the rainbow ring rotates direction 249° → 264° (matches
+   live the platform .button-primary:hover::before). */
+.btn-primary-ring:hover::before {
+  background: linear-gradient(
+    264.85deg,
+    rgba(239, 92, 255, 0)   -6.54%,
+    #FFA72C                 24.73%,
+    #6BEDF9                 70.73%,
+    rgba(107, 237, 249, 0) 113.1%
+  );
+}
+
+/* Outer brand glow on hover — tighter than sw's stock 41 px so it
+   reads as a halo hugging the pill, not a rectangular smear behind
+   it (matches the production reference). Tinted by --cta-accent so
+   each vertical paints its own color. */
+.btn-primary-ring:hover {
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+
+/* Match cta.btn-secondary-filled's hover affordance: a tighter
+   bottom-centered radial glow that fades in, instead of the shared
+   effect.hover-rise strip. The ring remains on ::before above it.
+   Keep normal blending so the glow stays visible on white buttons. */
+.btn-primary-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: none;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--cta-accent, #6BEAF9) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  filter: none;
+  background-blend-mode: normal;
+  mix-blend-mode: normal;
+  transition: opacity var(--transition-duration) ease;
+}
+
+.btn-primary-ring:hover::after {
+  opacity: 0.48;
+}
+
+.btn-primary-ring:hover .btn-star {
+  transform: rotate(180deg);
+}
+
+
+/* generated child CSS: 03-cta/cta.btn-secondary-filled/block.css */
+/* lab-ui block · cta.btn-secondary-filled
+   Depends: 00-tokens/tokens.css
+     (--cta-secondary-fill, --cta-secondary-color, --cta-secondary-border,
+      --cta-accent-soft, --radius-pill, --font-family, --transition-duration)
+   + 03-cta/cta.btn-base (.btn, .btn-star)
+   + 12-decorative/effect.hover-rise (inner bottom glow). */
+
+.btn-secondary-filled {
+  /* Filled background — re-themed per vertical via tokens */
+  background: var(--cta-secondary-fill);
+  color: var(--cta-secondary-color);
+  border: 1px solid var(--cta-secondary-border);
+
+  /* Idle: no glow at all. Both halos fade in only on :hover. */
+  box-shadow: none;
+
+  transition: box-shadow var(--transition-duration) ease;
+  position: relative;
+  overflow: hidden;        /* keeps ::before contained */
+}
+
+/* Inner glow — radial-gradient ellipse pinned to the bottom-center.
+   ~58 % wide so the rounded end caps stay dark even when active.
+   Lives in the DOM at all times but starts at opacity 0; fades in
+   on :hover (along with the outer halo) so the pill looks "lit"
+   under the cursor and quiet at rest. */
+.btn-secondary-filled::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--cta-accent, #6BEAF9) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  mix-blend-mode: screen;
+  transition: opacity var(--transition-duration) ease;
+}
+
+.btn-secondary-filled:hover {
+  /* Outer halo fades in on hover. Spread -4 px + blur 32 px gives
+     a round soft glow that hugs the pill instead of smearing
+     rectangularly. Tinted by current vertical's --cta-accent. */
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+
+.btn-secondary-filled:hover::before {
+  /* Inner radial fades in to match the outer halo. */
+  opacity: 0.48;
+}
+
+/* Suppress the auto-applied effect.hover-rise ::after on this block —
+   we draw a tighter, 65 %-wide bottom glow via ::before that already
+   covers the same affordance. Stacking both reads as "double glow". */
+.btn-secondary-filled::after {
+  display: none;
+}
+
+.btn-secondary-filled .btn-star {
+  flex-shrink: 0;
+  color: var(--cta-secondary-color);
+  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);
+}
+.btn-secondary-filled:hover .btn-star {
+  transform: rotate(180deg);
+}
+
+
+/* generated child CSS: 12-decorative/decorative.final-cta/block.css */
+/* lab-ui block · decorative.final-cta
+   Depends: 00-tokens/tokens.css + CTA button blocks.
+   Adapted from /Users/imighty/Downloads/Section 16 - Standalone.html. */
+
+.final-cta-section {
+  box-sizing: border-box;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  overflow-x: clip;
+}
+
+.final-cta-section *,
+.final-cta-section *::before,
+.final-cta-section *::after {
+  box-sizing: border-box;
+}
+
+.final-cta-container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+  min-width: 0;
+}
+
+.final-cta-card {
+  position: relative;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  padding: clamp(2rem, 5vw, 4rem);
+  background:
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 12%, transparent), transparent 48%),
+    radial-gradient(circle at 0% 100%, rgba(255, 167, 44, 0.08), transparent 50%),
+    var(--color-dark-card-bg);
+  box-shadow: 0 24px 70px -42px rgba(15, 17, 22, 0.7);
+}
+
+.final-cta-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--cta-accent, #6BEAF9) 52%, transparent),
+      rgba(255, 255, 255, 0.16) 42%,
+      rgba(255, 255, 255, 0.06));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+.final-cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 62rem;
+  min-width: 0;
+}
+
+.final-cta-eyebrow {
+  margin: 0 0 0.875rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
+  font-size: var(--type-eyebrow-size);
+  letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
-  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  margin: 0 0 12px;
+  color: var(--cta-accent, #6BEAF9);
 }
 
-.callout-band-body {
+.final-cta-title {
   margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.55;
-  color: var(--color-heading);
-  max-width: 76ch;
+  max-width: 14ch;
+  font-size: clamp(2.25rem, 6vw, 5rem);
+  font-weight: var(--type-h1-weight);
+  line-height: 1.02;
+  letter-spacing: var(--type-h1-tracking);
+  color: var(--color-white);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.final-cta-copy {
+  display: grid;
+  gap: 1rem;
+  max-width: 60rem;
+  min-width: 0;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.final-cta-copy p {
+  margin: 0;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.58;
+  color: rgba(255, 255, 255, 0.72);
+  overflow-wrap: anywhere;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.final-cta-copy strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+.final-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: clamp(2rem, 4vw, 2.5rem);
+  min-width: 0;
+}
+
+.final-cta-actions .btn-primary-ring {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--color-black);
+}
+
+.final-cta-actions .btn-secondary-filled {
+  --cta-secondary-fill: rgba(255, 255, 255, 0.08);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border: rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 720px) {
+  .final-cta-container {
+    padding-inline: 1.25rem;
+  }
+
+  .final-cta-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .final-cta-title {
+    max-width: 12ch;
+  }
+
+  .final-cta-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .final-cta-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
 }
 
 
@@ -4760,9 +5350,9 @@ body.is-open .bc-chip {
 <div class="bc-chip" data-block="header.default-breadcrumb" role="navigation" aria-label="Breadcrumb">
   <a class="bc-link bc-root" href="#">Lorem Ipsum cillum.</a>
   <span class="bc-sep" data-sep-for="mid_1" aria-hidden="true">&gt;</span>
-  <a class="bc-link" data-mid="1" href="#">Lorem Ipsum eiusmod.</a>
+  <a class="bc-link" data-mid="1" href="#"></a>
   <span class="bc-sep" data-sep-for="mid_2" aria-hidden="true">&gt;</span>
-  <a class="bc-link" data-mid="2" href="#">Lorem Ipsum nostrud.</a>
+  <a class="bc-link" data-mid="2" href="#"></a>
   <span class="bc-sep" data-sep-for="current" aria-hidden="true">&gt;</span>
   <span class="bc-current" aria-current="page">Lorem Ipsum ea.</span>
 </div>
@@ -5410,13 +6000,13 @@ body.is-open .bc-chip {
       </article>
 
       <!-- Spare slots, hidden until CMS/admin fills the title. -->
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum tempor incididunt ut labore." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum exercitation.</h3><p class="vertical-desc">Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum velit.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum sed. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum veniam quis nostrud exercitation." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum irure.</h3><p class="vertical-desc">Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum consectetur.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum enim. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum consequat duis aute irure." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum dolor.</h3><p class="vertical-desc">Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum dolore.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum ex. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum pariatur lorem ipsum dolor." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum ut.</h3><p class="vertical-desc">Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum laboris.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum cillum. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum eiusmod tempor incididunt ut." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum nostrud.</h3><p class="vertical-desc">Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum voluptate.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum elit. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum minim veniam quis nostrud." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum aute.</h3><p class="vertical-desc">Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum amet.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum aliqua. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
-      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum commodo consequat duis aute." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</span></span></span><div class="vertical-body"><h3 class="vertical-title">Lorem Ipsum ipsum.</h3><p class="vertical-desc">Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum et.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum aliquip. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum tempor incididunt ut labore." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum velit.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum sed. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum veniam quis nostrud exercitation." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum consectetur.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum enim. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum consequat duis aute irure." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum dolore.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum ex. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum pariatur lorem ipsum dolor." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum laboris.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum cillum. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum eiusmod tempor incididunt ut." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum voluptate.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum elit. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum minim veniam quis nostrud." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum amet.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum aliqua. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
+      <article class="vertical-card" role="listitem" hidden><span class="vertical-photo"><img class="vertical-photo-img" src="" alt="Lorem Ipsum commodo consequat duis aute." loading="lazy" decoding="async" width="1280" height="800"><span class="vertical-photo-meta"><span class="dim">640 × 400</span><span class="hint">Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do.</span></span></span><div class="vertical-body"><h3 class="vertical-title"></h3><p class="vertical-desc">Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis.</p><span class="vertical-foot"><span class="vertical-status badge-soon">Lorem Ipsum et.</span><a class="vertical-waitlist-btn" href="#">Lorem Ipsum aliquip. <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M3 9L9 3M9 3H4M9 3v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></a></span></div></article>
     </div>
   </div>
 </section>
@@ -5814,19 +6404,41 @@ body.is-open .bc-chip {
 </section>
 
 </section>
-<section class="composition-section composition-section--decorative-callout-band" data-composition-block="decorative.callout-band">
-<div class="container container--narrow">
-<!-- lab-ui block · decorative.callout-band
-     Soft cyan-tinted closing band — eyebrow + one paragraph. Sits at the
-     bottom of SMB / scale / "where this leads" sections to summarize the
-     point. Light theme. Adapted from designer kit Callout (smb tone).
+<section class="composition-section composition-section--decorative-final-cta" data-composition-block="decorative.final-cta">
+<!-- lab-ui block · decorative.final-cta
+     Bottom-of-page CTA section. Dark card surface with mono eyebrow, large H2,
+     supporting copy and the canonical ServiceWand CTA pair.
 -->
-<div class="callout-band" data-block="decorative.callout-band">
-  <p class="callout-band-eyebrow">Lorem Ipsum cillum.</p>
-  <p class="callout-band-body">Lorem Ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</div>
+<section class="final-cta-section" data-block="decorative.final-cta">
+  <div class="final-cta-container">
+    <div class="final-cta-card">
+      <div class="final-cta-inner">
+        <p class="final-cta-eyebrow">Lorem Ipsum cillum.</p>
+        <h2 class="final-cta-title">Lorem Ipsum sit.</h2>
+        <div class="final-cta-copy">
+          <p>Lorem Ipsum eiusmod tempor incididunt ut.</p>
+          <p><strong>Lorem Ipsum magna aliqua enim ad.</strong></p>
+          <p>Lorem Ipsum nostrud exercitation ullamco laboris.</p>
+        </div>
+        <div class="final-cta-actions">
+          <a class="btn btn-primary btn-primary-ring" href="#">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            Lorem Ipsum voluptate.
+          </a>
+          <a class="btn btn-secondary-filled" href="#">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            Lorem Ipsum elit.
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-</div>
 </section>
 <!-- lab-ui block · footer.default
      Canonical site footer. Dark surface. 3-column grid
@@ -5916,10 +6528,17 @@ body.is-open .bc-chip {
 
 (() => {
   const FALLBACK = [
-    { code: "en-US", name: "English (US)" },
-    { code: "fr-CA", name: "Français (CA)" },
-    { code: "es",    name: "Español" },
+    { code: "en-US", code2: "en", name: "English (US)", nativeName: "English (US)" },
+    { code: "fr-CA", code2: "fr", name: "Français (CA)", nativeName: "Français (CA)" },
+    { code: "es",    code2: "es", name: "Español", nativeName: "Español" },
   ];
+
+  const LOCALE_TO_COUNTRY = {
+    en: "us", zh: "cn", ar: "sa", ko: "kr", ja: "jp", uk: "ua", cs: "cz",
+    el: "gr", da: "dk", sv: "se", fi: "fi", nb: "no", vi: "vn", fa: "ir",
+    he: "il", hi: "in", ms: "my", th: "th", id: "id", et: "ee", lv: "lv",
+    lt: "lt", sl: "si", sk: "sk", kk: "kz", kz: "kz", es: "es", fr: "fr",
+  };
 
   const shortCodeForLocale = (code) => {
     const language = String(code || "en")
@@ -5928,6 +6547,82 @@ body.is-open .bc-chip {
       .slice(0, 2)
       .toUpperCase();
     return /^[A-Z]{2}$/.test(language) ? language : "EN";
+  };
+
+  const normalizeLanguageCode = (code) =>
+    String(code || "en")
+      .replace("_", "-")
+      .split("-")[0]
+      .toLowerCase();
+
+  const codeForLanguage = (language) =>
+    String(language?.code2 || normalizeLanguageCode(language?.code || language?.locale || language?.id || "en")).toLowerCase();
+
+  const nameForLanguage = (language, code) =>
+    language?.nativeName || language?.name || language?.label || language?.title || code;
+
+  const getLocaleFromURL = () =>
+    new URLSearchParams(window.location.search).get("locale");
+
+  const setLocaleInURL = (value) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("locale", value);
+    window.location.assign(url.toString());
+  };
+
+  const detectBrowserLocale = (availableLanguages) => {
+    const browserLangs = navigator.languages?.length
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || "en"];
+
+    for (const browserLang of browserLangs) {
+      const code = normalizeLanguageCode(browserLang);
+      const match = availableLanguages.find((language) => codeForLanguage(language) === code);
+      if (match) return codeForLanguage(match);
+    }
+    return "en";
+  };
+
+  const countryCodeForLocale = (code) => {
+    const parts = String(code || "en")
+      .replace("_", "-")
+      .toLowerCase()
+      .split("-")
+      .filter(Boolean);
+    const language = parts[0] || "en";
+    const region = parts[1];
+    return (region && /^[a-z]{2}$/.test(region) ? region : LOCALE_TO_COUNTRY[language] || language).slice(0, 2);
+  };
+
+  const flagEmojiForCountry = (countryCode) => {
+    const country = String(countryCode || "us").toUpperCase();
+    if (!/^[A-Z]{2}$/.test(country)) return "";
+    return String.fromCodePoint(...[...country].map((letter) => 127397 + letter.charCodeAt(0)));
+  };
+
+  const flagImageUrlForCountry = (countryCode) =>
+    "https://flagcdn.com/w40/" + String(countryCode || "us").toLowerCase() + ".png";
+
+  const createFlagElement = (code) => {
+    const country = countryCodeForLocale(code);
+    const flag = document.createElement("span");
+    flag.className = "locale-flag flag-icon flag-icon-" + country;
+    flag.setAttribute("aria-hidden", "true");
+    const img = document.createElement("img");
+    img.className = "locale-flag-img";
+    img.src = flagImageUrlForCountry(country);
+    img.alt = "";
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("error", () => {
+      flag.classList.add("is-fallback");
+    }, { once: true });
+    const fallback = document.createElement("span");
+    fallback.className = "locale-flag-fallback";
+    fallback.textContent = flagEmojiForCountry(country);
+    flag.appendChild(img);
+    flag.appendChild(fallback);
+    return flag;
   };
 
   const init = (selector) => {
@@ -5955,6 +6650,11 @@ body.is-open .bc-chip {
       label.textContent = name;
       trigger.dataset.shortCode = shortCodeForLocale(code);
       trigger.dataset.locale = code;
+      trigger.querySelectorAll(".locale-trigger-left .locale-flag").forEach((flag) => flag.remove());
+      const existingFlag = Array.from(trigger.children).find((child) => child.classList?.contains("locale-flag"));
+      const nextFlag = createFlagElement(code);
+      if (existingFlag) existingFlag.replaceWith(nextFlag);
+      else trigger.appendChild(nextFlag);
       list.querySelectorAll(".locale-item").forEach((item) => {
         const active = item.dataset.locale === code;
         item.classList.toggle("is-active", active);
@@ -5963,36 +6663,48 @@ body.is-open .bc-chip {
     };
 
     const render = (langs) => {
-      const current = new URL(window.location.href).searchParams.get("locale") || "en-US";
+      const current = normalizeLanguageCode(getLocaleFromURL() || detectBrowserLocale(langs));
       list.replaceChildren();
       langs.forEach((l) => {
-        const code = l.code || l.locale || l.id || "en-US";
-        const name = l.name || l.label || l.title || code;
+        const code = codeForLanguage(l);
+        const name = nameForLanguage(l, code);
         const li = document.createElement("li");
         li.className = "locale-item";
         li.dataset.locale = code;
         li.dataset.shortCode = shortCodeForLocale(code);
         li.setAttribute("role", "option");
-        li.innerHTML =
-          '<span class="locale-item-code" aria-hidden="true">' + shortCodeForLocale(code) + '</span>' +
-          '<span class="locale-item-label">' + name + '</span>' +
-          `<svg class="locale-check" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">` +
-            `<path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
-          `</svg>`;
+        const codeSpan = document.createElement("span");
+        codeSpan.className = "locale-item-code";
+        codeSpan.setAttribute("aria-hidden", "true");
+        codeSpan.textContent = shortCodeForLocale(code);
+        const labelSpan = document.createElement("span");
+        labelSpan.className = "locale-item-label";
+        labelSpan.textContent = name;
+        const check = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        check.setAttribute("class", "locale-check");
+        check.setAttribute("width", "14");
+        check.setAttribute("height", "14");
+        check.setAttribute("viewBox", "0 0 14 14");
+        check.setAttribute("fill", "none");
+        check.setAttribute("aria-hidden", "true");
+        check.innerHTML = `<path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+        li.appendChild(createFlagElement(code));
+        li.appendChild(codeSpan);
+        li.appendChild(labelSpan);
+        li.appendChild(check);
         li.addEventListener("click", () => {
           try {
-            const url = new URL(window.location.href);
-            url.searchParams.set("locale", code);
-            window.history.replaceState({}, "", url.toString());
-          } catch {}
-          apply(code, name);
-          close();
+            setLocaleInURL(code);
+          } catch {
+            apply(code, name);
+            close();
+          }
         });
         list.appendChild(li);
       });
-      const active = langs.find((l) => (l.code || l.locale || l.id) === current) || langs[0];
-      apply(active.code || active.locale || active.id || "en-US",
-            active.name || active.label || active.title || "English (US)");
+      const active = langs.find((l) => codeForLanguage(l) === current) || langs[0];
+      const activeCode = codeForLanguage(active);
+      apply(activeCode, nameForLanguage(active, activeCode));
     };
 
     trigger.addEventListener("click", (e) => {
@@ -6013,7 +6725,11 @@ body.is-open .bc-chip {
     }
     fetch("/core/api/language/active.json", {
       method: "POST",
-      credentials: "same-origin",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([{ name: "code2" }, { name: "nativeName" }]),
     })
       .then((r) => (r.ok ? r.json() : Promise.reject(r)))
       .then((p) => {

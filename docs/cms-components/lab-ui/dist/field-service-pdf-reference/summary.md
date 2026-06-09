@@ -3,7 +3,7 @@
 Root: `FIELD_SERVICE_LANDING`
 Direct children: 14
 Nested/total child templates: 14
-Parameters: 674
+Parameters: 681
 
 ## Selected Blocks
 
@@ -19,7 +19,7 @@ Parameters: 674
 - 10. `comparison.three-col-with-mobile-cards` (07-comparison)
 - 11. `section.axes-grid` (09-vertical-section)
 - 12. `faq.bubble-light-grouped` (08-faq)
-- 13. `decorative.callout-band` (12-decorative)
+- 13. `decorative.final-cta` (12-decorative)
 - 14. `footer.default` (02-footer)
 
 ## Tree
@@ -34,10 +34,10 @@ Parameters: 674
   - `SECTION_07_SIGNATURE_AI_SHELL`
   - `SECTION_08_SECTION_STAGES_LIST`
   - `SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS`
-  - `SECTION_10_COMPARISON_THREE_COL_WITH_MOBILE_CARDS`
+  - `COMPARISON`
   - `SECTION_11_SECTION_AXES_GRID`
   - `SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED`
-  - `SECTION_13_DECORATIVE_CALLOUT_BAND`
+  - `SECTION_13_DECORATIVE_FINAL_CTA`
   - `SECTION_14_FOOTER_DEFAULT`
 
 ## Files
