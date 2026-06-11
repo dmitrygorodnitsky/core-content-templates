@@ -278,6 +278,7 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
   --root-code FIELD_SERVICE_OPERATIONS_JTE \
   --strategy revision \
   --revision-suffix 20260608_001 \
+  --page-id 36 \
   --live
 ```
 
@@ -311,12 +312,22 @@ Revision deployment is the safe PageContext update path:
 6. switch the PageContext template and `enabledTemplates` to the new family;
 7. verify that no old value buckets remain.
 
+When the published page must keep its existing template history, use
+`--strategy update-existing` instead of `revision`. That mode reads the current
+family from `--page-id`, updates matching template codes by their existing ids,
+creates only new child codes, and preserves existing `PageContext.values`.
+Always run it as `--dry-run` first; live mode refuses to proceed when the local
+root code does not match the PageContext root code.
+
 Upload rules:
 
 - Upload only after an explicit user request.
 - Never paste credentials into committed files.
 - Verify CMS preview using the returned root id and enabled template ids.
 - Verify the final public URL when a PageContext route is involved.
+- Use `--page-id <id>` for known existing PageContexts so the deployment
+  targets the CMS record by id and preserves its current URL, even if the
+  generated payload contains a different `pageContext.url`.
 - Use `--strategy revision` for existing live PageContext routes unless the
   user explicitly asks for an in-place upsert and accepts the cache/value risks.
 - Production uploads require explicit confirmation of base URL, organization,

@@ -262,3 +262,16 @@
   .ab-row-pricecol, .ab-row-cta { justify-self: stretch; text-align: left; }
   .ab-row-cta { justify-content: center; }
 }
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.ab-row-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ab-addons *,
+  .ab-addons *::before,
+  .ab-addons *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

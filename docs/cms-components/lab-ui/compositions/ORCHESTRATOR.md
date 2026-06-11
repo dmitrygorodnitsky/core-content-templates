@@ -90,6 +90,9 @@ unless you are writing the lower-level spec manually.
 - Do not bypass `manifest.json`.
 - Do not upload in this flow.
 - If a requested block does not exist in `manifest.json`, fail.
+- Do not generate empty-string PageContext seed values. If the source has no
+  value for a parameter, omit that parameter from generated values and let the
+  `BlockTemplate.parameters` default apply.
 
 ## Output Contract
 

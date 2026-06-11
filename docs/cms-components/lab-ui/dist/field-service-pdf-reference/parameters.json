@@ -43,97 +43,97 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BRAND_HREF",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Brand Href",
-        "DESCRIPTION": "URL target for the Brand Href link in Header · canonical (multi-level)."
+        "NAME": "Header logo href",
+        "DESCRIPTION": "URL target for the header logo link."
       }
     },
-    "value": "#"
+    "value": "index.html"
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BRAND_NAME",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Brand Name",
-        "DESCRIPTION": "Text value for the Brand Name field in Header · canonical (multi-level)."
+        "NAME": "Header logo aria label",
+        "DESCRIPTION": "Accessible label for the header logo link."
       }
     },
     "value": {
-      "en": "Lorem Ipsum do."
+      "en": "Lorem Ipsum"
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Label",
-        "DESCRIPTION": "Text value for the Item 1 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum dolore."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 1 Title",
-        "DESCRIPTION": "Text value for the Item 1 Col 1 Title field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum quis."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_HREF",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PLATFORM_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Item 1 Col 1 Link 1 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 1 Href link in Header · canonical (multi-level)."
+        "NAME": "Header menu Platform href",
+        "DESCRIPTION": "URL target for the desktop Platform navigation link."
       }
     },
-    "value": "#"
+    "value": "index.html#hero"
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_1_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PLATFORM",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Item 1 Col 1 Link 1 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 1 Label field in Header · canonical (multi-level)."
+        "NAME": "Header menu - Platform",
+        "DESCRIPTION": "Desktop navigation label for the platform section."
       }
     },
     "value": {
-      "en": "Lorem Ipsum reprehenderit."
+      "en": "Lorem Ipsum"
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_HREF",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_HOW_IT_WORKS_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Item 1 Col 1 Link 2 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 2 Href link in Header · canonical (multi-level)."
+        "NAME": "Header menu How It Works href",
+        "DESCRIPTION": "URL target for the desktop How It Works navigation link."
       }
     },
-    "value": "#"
+    "value": "index.html#features"
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_2_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_HOW_IT_WORKS",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Item 1 Col 1 Link 2 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 2 Label field in Header · canonical (multi-level)."
+        "NAME": "Header menu - How It Works",
+        "DESCRIPTION": "Desktop navigation label for the features section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Industries",
+        "DESCRIPTION": "Desktop navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service nav label",
+        "DESCRIPTION": "Navigation label for Field Service in the industry menu."
       }
     },
     "value": {
@@ -141,557 +141,12 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 1 Link 3 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_3_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_NAV_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Item 1 Col 1 Link 3 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ad."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 1 Link 4 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 1 Link 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_1_LINK_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 1 Link 4 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 1 Link 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum duis."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Title",
-        "DESCRIPTION": "Text value for the Item 1 Col 2 Title field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum cillum."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 1 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 1 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_1_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 1 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 1 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum eiusmod."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 2 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 2 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_2_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 2 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 2 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nostrud."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 3 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_3_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 3 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum voluptate."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 4 Href",
-        "DESCRIPTION": "URL target for the Item 1 Col 2 Link 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_1_COL_2_LINK_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 1 Col 2 Link 4 Label",
-        "DESCRIPTION": "Text value for the Item 1 Col 2 Link 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum elit."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Label",
-        "DESCRIPTION": "Text value for the Item 2 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum labore."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Title",
-        "DESCRIPTION": "Text value for the Item 2 Col 1 Title field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum minim."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 1 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 1 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_1_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 1 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 1 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aute."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 2 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 2 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_2_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 2 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 2 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum amet."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 3 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_3_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 3 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliqua."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 4 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 1 Link 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_1_LINK_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 1 Link 4 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 1 Link 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum commodo."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Title",
-        "DESCRIPTION": "Text value for the Item 2 Col 2 Title field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum velit."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 1 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 1 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_1_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 1 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 1 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum sed."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 2 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 2 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_2_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 2 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 2 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum veniam."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 3 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_3_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 3 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum irure."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 4 Href",
-        "DESCRIPTION": "URL target for the Item 2 Col 2 Link 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_2_COL_2_LINK_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 2 Col 2 Link 4 Label",
-        "DESCRIPTION": "Text value for the Item 2 Col 2 Link 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consectetur."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 3 Href",
-        "DESCRIPTION": "URL target for the Item 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_3_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 3 Label",
-        "DESCRIPTION": "Text value for the Item 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum enim."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 4 Href",
-        "DESCRIPTION": "URL target for the Item 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 4 Label",
-        "DESCRIPTION": "Text value for the Item 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consequat."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Label",
-        "DESCRIPTION": "Text value for the Item 5 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum esse."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 1 Href",
-        "DESCRIPTION": "URL target for the Item 5 Link 1 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_1_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 1 Label",
-        "DESCRIPTION": "Text value for the Item 5 Link 1 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum do."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 2 Href",
-        "DESCRIPTION": "URL target for the Item 5 Link 2 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_2_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 2 Label",
-        "DESCRIPTION": "Text value for the Item 5 Link 2 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum quis."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 3 Href",
-        "DESCRIPTION": "URL target for the Item 5 Link 3 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_3_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 3 Label",
-        "DESCRIPTION": "Text value for the Item 5 Link 3 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum reprehenderit."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 4 Href",
-        "DESCRIPTION": "URL target for the Item 5 Link 4 Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_ITEM_5_LINK_4_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Item 5 Link 4 Label",
-        "DESCRIPTION": "Text value for the Item 5 Link 4 Label field in Header · canonical (multi-level)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum adipiscing."
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_LOCALE_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Locale Label",
-        "DESCRIPTION": "Text value for the Locale Label field in Header · canonical (multi-level)."
+        "NAME": "Header Telecom nav label",
+        "DESCRIPTION": "Navigation label for Telecom in the industry menu."
       }
     },
     "value": {
@@ -699,23 +154,25 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_CTA_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "CTA Href",
-        "DESCRIPTION": "URL target for the CTA Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_CTA_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_NAV_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "CTA Label",
-        "DESCRIPTION": "Text value for the CTA Label field in Header · canonical (multi-level)."
+        "NAME": "Header Property nav label",
+        "DESCRIPTION": "Navigation label for Property in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction nav label",
+        "DESCRIPTION": "Navigation label for Construction in the industry menu."
       }
     },
     "value": {
@@ -723,23 +180,25 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Breadcrumb Root Href",
-        "DESCRIPTION": "URL target for the Breadcrumb Root Href link in Header · canonical (multi-level)."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_ROOT_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_NAV_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Root Label",
-        "DESCRIPTION": "Text value for the Breadcrumb Root Label field in Header · canonical (multi-level)."
+        "NAME": "Header Logistics nav label",
+        "DESCRIPTION": "Navigation label for Logistics in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail nav label",
+        "DESCRIPTION": "Navigation label for Retail in the industry menu."
       }
     },
     "value": {
@@ -747,65 +206,1973 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_HREF",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native nav label",
+        "DESCRIPTION": "Navigation label for AI Native in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology nav label",
+        "DESCRIPTION": "Navigation label for Technology in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel title",
+        "DESCRIPTION": "Reusable title for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel text",
+        "DESCRIPTION": "Reusable body text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_SUBTEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel subtext",
+        "DESCRIPTION": "Reusable secondary text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_CTA_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Mid 1 Href",
-        "DESCRIPTION": "URL target for the Breadcrumb Mid 1 Href link in Header · canonical (multi-level)."
+        "NAME": "Header menu panel CTA href",
+        "DESCRIPTION": "URL target for the default industry menu CTA."
+      }
+    },
+    "value": "#foundation"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel CTA label",
+        "DESCRIPTION": "Reusable CTA label for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel label",
+        "DESCRIPTION": "Eyebrow label for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel title",
+        "DESCRIPTION": "Title for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel body",
+        "DESCRIPTION": "Body text for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service CTA href",
+        "DESCRIPTION": "URL target for the Field Service industry panel CTA."
       }
     },
     "value": "#"
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_1_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_CTA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Mid 1 Label",
-        "DESCRIPTION": "Text value for the Breadcrumb Mid 1 Label field in Header · canonical (multi-level)."
+        "NAME": "Header Field Service CTA label",
+        "DESCRIPTION": "CTA label for the Field Service industry panel."
       }
     },
     "value": {
-      "en": ""
+      "en": "Lorem Ipsum aute."
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_HREF",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_01_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Mid 2 Href",
-        "DESCRIPTION": "URL target for the Breadcrumb Mid 2 Href link in Header · canonical (multi-level)."
+        "NAME": "Header Field Service item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Field Service industry panel."
       }
     },
     "value": "#"
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_MID_2_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_01_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Mid 2 Label",
-        "DESCRIPTION": "Text value for the Breadcrumb Mid 2 Label field in Header · canonical (multi-level)."
+        "NAME": "Header Field Service item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Field Service industry panel."
       }
     },
     "value": {
-      "en": ""
+      "en": "Lorem Ipsum amet."
     }
   },
   {
-    "code": "SECTION_01_HEADER_DEFAULT_BREADCRUMB_CURRENT_LABEL",
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_02_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Breadcrumb Current Label",
-        "DESCRIPTION": "Text value for the Breadcrumb Current Label field in Header · canonical (multi-level)."
+        "NAME": "Header Field Service item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_07_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 href",
+        "DESCRIPTION": "URL target for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_07_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 label",
+        "DESCRIPTION": "Text label for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_08_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 href",
+        "DESCRIPTION": "URL target for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_08_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 label",
+        "DESCRIPTION": "Text label for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_09_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 href",
+        "DESCRIPTION": "URL target for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_09_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 label",
+        "DESCRIPTION": "Text label for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_10_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 href",
+        "DESCRIPTION": "URL target for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_10_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 label",
+        "DESCRIPTION": "Text label for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel label",
+        "DESCRIPTION": "Eyebrow label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel title",
+        "DESCRIPTION": "Title for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel body",
+        "DESCRIPTION": "Body text for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA href",
+        "DESCRIPTION": "URL target for the Telecom industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA label",
+        "DESCRIPTION": "CTA label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel label",
+        "DESCRIPTION": "Eyebrow label for the Property industry panel."
       }
     },
     "value": {
       "en": "Lorem Ipsum ea."
     }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel title",
+        "DESCRIPTION": "Title for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel body",
+        "DESCRIPTION": "Body text for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA href",
+        "DESCRIPTION": "URL target for the Property industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA label",
+        "DESCRIPTION": "CTA label for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel label",
+        "DESCRIPTION": "Eyebrow label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel title",
+        "DESCRIPTION": "Title for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel body",
+        "DESCRIPTION": "Body text for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA href",
+        "DESCRIPTION": "URL target for the Construction industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA label",
+        "DESCRIPTION": "CTA label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel label",
+        "DESCRIPTION": "Eyebrow label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel title",
+        "DESCRIPTION": "Title for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel body",
+        "DESCRIPTION": "Body text for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA href",
+        "DESCRIPTION": "URL target for the Logistics industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA label",
+        "DESCRIPTION": "CTA label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel label",
+        "DESCRIPTION": "Eyebrow label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel title",
+        "DESCRIPTION": "Title for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel body",
+        "DESCRIPTION": "Body text for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA href",
+        "DESCRIPTION": "URL target for the Retail industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA label",
+        "DESCRIPTION": "CTA label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel label",
+        "DESCRIPTION": "Eyebrow label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel title",
+        "DESCRIPTION": "Title for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel body",
+        "DESCRIPTION": "Body text for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native CTA href",
+        "DESCRIPTION": "URL target for the Ai Native industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native CTA label",
+        "DESCRIPTION": "CTA label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_BADGE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 badge label",
+        "DESCRIPTION": "Badge label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel label",
+        "DESCRIPTION": "Eyebrow label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel title",
+        "DESCRIPTION": "Title for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel body",
+        "DESCRIPTION": "Body text for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA href",
+        "DESCRIPTION": "URL target for the Technology industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA label",
+        "DESCRIPTION": "CTA label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu Partners href",
+        "DESCRIPTION": "URL target for the desktop Partners navigation link."
+      }
+    },
+    "value": "index.html#partners"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Partners",
+        "DESCRIPTION": "Desktop navigation label for the partners section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resources",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header resource item href",
+        "DESCRIPTION": "URL target for the resource submenu item."
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource title",
+        "DESCRIPTION": "Reusable title for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource description",
+        "DESCRIPTION": "Reusable description for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_TRIGGER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale selector trigger label",
+        "DESCRIPTION": "Default label shown in the locale selector trigger before the active language name is loaded."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_DROPDOWN_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale selector dropdown aria label",
+        "DESCRIPTION": "Accessible label for the locale selector dropdown list."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request href",
+        "DESCRIPTION": "URL target for the header demo CTA."
+      }
+    },
+    "value": "request-demo.html"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request label",
+        "DESCRIPTION": "Imported from HEADER in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_OPEN_MENU_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header open menu label",
+        "DESCRIPTION": "Accessible label for the mobile menu toggle button."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile Platform href",
+        "DESCRIPTION": "URL target for the mobile Platform navigation link."
+      }
+    },
+    "value": "#hero"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PLATFORM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - Platform",
+        "DESCRIPTION": "Mobile navigation label for the platform section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile How It Works href",
+        "DESCRIPTION": "URL target for the mobile How It Works navigation link."
+      }
+    },
+    "value": "#features"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - How It Works",
+        "DESCRIPTION": "Mobile navigation label for the features section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - Industries",
+        "DESCRIPTION": "Mobile navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile Partners href",
+        "DESCRIPTION": "URL target for the mobile Partners navigation link."
+      }
+    },
+    "value": "#partners"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - Partners",
+        "DESCRIPTION": "Mobile navigation label for the partners section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile FAQ href",
+        "DESCRIPTION": "URL target for the mobile FAQ navigation link."
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_FAQ",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - FAQ",
+        "DESCRIPTION": "Mobile navigation label for the FAQ section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MOBILE_INDUSTRY_CLOSE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries close aria label",
+        "DESCRIPTION": "Accessible label for closing the mobile industries menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MOBILE_INDUSTRY_BACK_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries back aria label",
+        "DESCRIPTION": "Accessible label for returning to the mobile industries list."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_ITEM_SHADOW",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Header menu item shadow",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": ""
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
@@ -3375,32 +4742,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 01 Title",
-        "DESCRIPTION": "Text value for the Slot 01 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum cillum."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 01 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 1."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum sit."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3421,7 +4762,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna aliqua enim ad."
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
     }
   },
   {
@@ -3434,7 +4775,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Title",
+        "DESCRIPTION": "Text value for the Slot 01 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
     }
   },
   {
@@ -3447,7 +4801,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 1."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
     }
   },
   {
@@ -3475,32 +4842,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 02 Title",
-        "DESCRIPTION": "Text value for the Slot 02 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum elit."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 02 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 2."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum labore."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3521,7 +4862,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea."
+      "en": "Lorem Ipsum labore et dolore magna."
     }
   },
   {
@@ -3534,7 +4875,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Title",
+        "DESCRIPTION": "Text value for the Slot 02 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
     }
   },
   {
@@ -3547,7 +4901,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 2."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
     }
   },
   {
@@ -3575,32 +4942,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 03 Title",
-        "DESCRIPTION": "Text value for the Slot 03 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliqua."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 03 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 3."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum exercitation."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3621,7 +4962,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum velit esse cillum fugiat."
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
     }
   },
   {
@@ -3634,7 +4975,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Title",
+        "DESCRIPTION": "Text value for the Slot 03 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
     }
   },
   {
@@ -3647,7 +5001,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 3."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
     }
   },
   {
@@ -3675,32 +5042,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 04 Title",
-        "DESCRIPTION": "Text value for the Slot 04 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliquip."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 04 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 4."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum irure."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3721,7 +5062,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
     }
   },
   {
@@ -3734,7 +5075,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Title",
+        "DESCRIPTION": "Text value for the Slot 04 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
     }
   },
   {
@@ -3747,7 +5101,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+      "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 4."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
     }
   },
   {
@@ -3775,32 +5142,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 05 Title",
-        "DESCRIPTION": "Text value for the Slot 05 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum esse."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 05 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 5."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum dolor."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3821,7 +5162,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore magna aliqua enim."
+      "en": "Lorem Ipsum dolor sit amet consectetur."
     }
   },
   {
@@ -3834,7 +5175,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+      "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Title",
+        "DESCRIPTION": "Text value for the Slot 05 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
     }
   },
   {
@@ -3847,7 +5201,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 5."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
     }
   },
   {
@@ -3875,32 +5242,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 06 Title",
-        "DESCRIPTION": "Text value for the Slot 06 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum adipiscing."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 06 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 6."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ut."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -3921,7 +5262,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum laboris nisi aliquip ex."
+      "en": "Lorem Ipsum ut labore et dolore."
     }
   },
   {
@@ -3934,7 +5275,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Title",
+        "DESCRIPTION": "Text value for the Slot 06 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
     }
   },
   {
@@ -3947,7 +5301,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 6."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
     }
   },
   {
@@ -3975,32 +5342,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 07 Title",
-        "DESCRIPTION": "Text value for the Slot 07 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum magna."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 07 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 7."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nostrud."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4021,7 +5362,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate velit esse cillum."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
     }
   },
   {
@@ -4034,7 +5375,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Title",
+        "DESCRIPTION": "Text value for the Slot 07 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
     }
   },
   {
@@ -4047,7 +5401,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 7."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
     }
   },
   {
@@ -4075,32 +5442,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 08 Title",
-        "DESCRIPTION": "Text value for the Slot 08 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nisi."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 08 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 8."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aute."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4121,7 +5462,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
     }
   },
   {
@@ -4134,7 +5475,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Title",
+        "DESCRIPTION": "Text value for the Slot 08 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet."
     }
   },
   {
@@ -4147,7 +5501,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 8."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
     }
   },
   {
@@ -4175,32 +5542,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 09 Title",
-        "DESCRIPTION": "Text value for the Slot 09 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum velit."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 09 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 9."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ipsum."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4221,7 +5562,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum et dolore magna aliqua."
+      "en": "Lorem Ipsum ipsum dolor sit amet."
     }
   },
   {
@@ -4234,7 +5575,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+      "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Title",
+        "DESCRIPTION": "Text value for the Slot 09 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
     }
   },
   {
@@ -4247,7 +5601,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 9."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
     }
   },
   {
@@ -4275,32 +5642,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 10 Title",
-        "DESCRIPTION": "Text value for the Slot 10 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consectetur."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 10 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 10."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum incididunt."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4321,7 +5662,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      "en": "Lorem Ipsum incididunt ut labore et."
     }
   },
   {
@@ -4334,7 +5675,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+      "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Title",
+        "DESCRIPTION": "Text value for the Slot 10 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
     }
   },
   {
@@ -4347,7 +5701,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod."
+      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 10."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
     }
   },
   {
@@ -4375,32 +5742,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 11 Title",
-        "DESCRIPTION": "Text value for the Slot 11 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum dolore."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 11 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 11."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum quis."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4421,7 +5762,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
     }
   },
   {
@@ -4434,7 +5775,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+      "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Title",
+        "DESCRIPTION": "Text value for the Slot 11 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
     }
   },
   {
@@ -4447,7 +5801,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 11."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
     }
   },
   {
@@ -4475,32 +5842,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 12 Title",
-        "DESCRIPTION": "Text value for the Slot 12 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum laboris."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 12 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 12."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum duis."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4521,7 +5862,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
     }
   },
   {
@@ -4534,7 +5875,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Title",
+        "DESCRIPTION": "Text value for the Slot 12 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
     }
   },
   {
@@ -4547,7 +5901,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 12."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
     }
   },
   {
@@ -4575,32 +5942,6 @@
     }
   },
   {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 13 Title",
-        "DESCRIPTION": "Text value for the Slot 13 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum voluptate."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 13 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 13."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum lorem."
-    }
-  },
-  {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL",
     "type": "IMAGE",
     "nls": {
@@ -4621,7 +5962,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore et dolore magna."
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
     }
   },
   {
@@ -4634,7 +5975,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Title",
+        "DESCRIPTION": "Text value for the Slot 13 Title field in Verticals grid · photo-card catalog."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
     }
   },
   {
@@ -4647,7 +6001,20 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Status Label",
+        "DESCRIPTION": "Editable status label shown in industry card slot 13."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
     }
   },
   {
@@ -5595,6 +6962,45 @@
     "value": ""
   },
   {
+    "code": "COMPARE_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "COMPARE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "COMPARE_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede",
+        "DESCRIPTION": "Text value for the Lede field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+    }
+  },
+  {
     "code": "COMPARE_COLUMN_COUNT",
     "type": "STRING",
     "nls": {
@@ -5611,45 +7017,6 @@
       "5",
       "6"
     ]
-  },
-  {
-    "code": "COMPARE_EYEBROW",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Eyebrow",
-        "DESCRIPTION": "Text value for the Eyebrow field in Comparison · the platform matrix."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum laboris."
-    }
-  },
-  {
-    "code": "COMPARE_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Title",
-        "DESCRIPTION": "Text value for the Title field in Comparison · the platform matrix."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum duis."
-    }
-  },
-  {
-    "code": "COMPARE_LEDE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Lede",
-        "DESCRIPTION": "Text value for the Lede field in Comparison · the platform matrix."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
-    }
   },
   {
     "code": "COMPARE_COL_1_NAME",
@@ -7274,6 +8641,199 @@
     }
   },
   {
+    "code": "COMPARE_ROW_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Capability",
+        "DESCRIPTION": "Text value for the Slot 09 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "COMPARE_9_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 01",
+        "DESCRIPTION": "Text value for the Slot 09 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "COMPARE_9_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 02",
+        "DESCRIPTION": "Text value for the Slot 09 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "COMPARE_9_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 03",
+        "DESCRIPTION": "Text value for the Slot 09 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "COMPARE_9_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 04",
+        "DESCRIPTION": "Text value for the Slot 09 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "COMPARE_9_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 05",
+        "DESCRIPTION": "Text value for the Slot 09 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "COMPARE_9_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 06",
+        "DESCRIPTION": "Text value for the Slot 09 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
     "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL_PREFIX",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -7924,6 +9484,58 @@
     }
   },
   {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 06 Q",
+        "DESCRIPTION": "Text value for the Slot 01 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 06 A",
+        "DESCRIPTION": "Text value for the Slot 01 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 07 Q",
+        "DESCRIPTION": "Text value for the Slot 01 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 07 A",
+        "DESCRIPTION": "Text value for the Slot 01 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
     "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -7933,7 +9545,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat."
+      "en": "Lorem Ipsum exercitation."
     }
   },
   {
@@ -7946,7 +9558,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      "en": "Lorem Ipsum commodo consequat duis aute."
     }
   },
   {
@@ -7959,7 +9571,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum tempor incididunt ut labore."
+      "en": "Lorem Ipsum velit esse cillum fugiat."
     }
   },
   {
@@ -7972,7 +9584,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliqua enim ad minim."
+      "en": "Lorem Ipsum ipsum dolor sit amet."
     }
   },
   {
@@ -7985,7 +9597,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      "en": "Lorem Ipsum sed do eiusmod tempor."
     }
   },
   {
@@ -7998,7 +9610,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum commodo consequat duis aute."
+      "en": "Lorem Ipsum et dolore magna aliqua."
     }
   },
   {
@@ -8011,7 +9623,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum velit esse cillum fugiat."
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
     }
   },
   {
@@ -8024,7 +9636,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ipsum dolor sit amet."
+      "en": "Lorem Ipsum aliquip ex ea commodo."
     }
   },
   {
@@ -8037,7 +9649,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed do eiusmod tempor."
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
     }
   },
   {
@@ -8050,7 +9662,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum et dolore magna aliqua."
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
     }
   },
   {
@@ -8063,7 +9675,59 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 06 Q",
+        "DESCRIPTION": "Text value for the Slot 02 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 06 A",
+        "DESCRIPTION": "Text value for the Slot 02 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 07 Q",
+        "DESCRIPTION": "Text value for the Slot 02 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 07 A",
+        "DESCRIPTION": "Text value for the Slot 02 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
     }
   },
   {
@@ -8076,7 +9740,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip."
+      "en": "Lorem Ipsum esse."
     }
   },
   {
@@ -8089,7 +9753,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      "en": "Lorem Ipsum dolor sit amet consectetur."
     }
   },
   {
@@ -8102,7 +9766,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
     }
   },
   {
@@ -8115,7 +9779,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      "en": "Lorem Ipsum dolore magna aliqua enim."
     }
   },
   {
@@ -8128,7 +9792,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum incididunt ut labore et."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
     }
   },
   {
@@ -8141,7 +9805,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam."
+      "en": "Lorem Ipsum ex ea commodo consequat."
     }
   },
   {
@@ -8154,7 +9818,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
     }
   },
   {
@@ -8167,7 +9831,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat duis aute irure."
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
     }
   },
   {
@@ -8180,7 +9844,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum esse cillum fugiat nulla."
+      "en": "Lorem Ipsum adipiscing elit sed do."
     }
   },
   {
@@ -8193,7 +9857,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolor sit amet consectetur."
+      "en": "Lorem Ipsum ut labore et dolore."
     }
   },
   {
@@ -8206,7 +9870,59 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 06 Q",
+        "DESCRIPTION": "Text value for the Slot 03 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 06 A",
+        "DESCRIPTION": "Text value for the Slot 03 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 07 Q",
+        "DESCRIPTION": "Text value for the Slot 03 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 07 A",
+        "DESCRIPTION": "Text value for the Slot 03 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
     }
   },
   {
@@ -8219,7 +9935,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore."
+      "en": "Lorem Ipsum eiusmod."
     }
   },
   {
@@ -8232,7 +9948,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum magna aliqua enim ad."
     }
   },
   {
@@ -8245,7 +9961,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex ea commodo consequat."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
     }
   },
   {
@@ -8258,7 +9974,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      "en": "Lorem Ipsum ea commodo consequat duis."
     }
   },
   {
@@ -8271,7 +9987,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      "en": "Lorem Ipsum voluptate velit esse cillum."
     }
   },
   {
@@ -8284,7 +10000,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum adipiscing elit sed do."
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
     }
   },
   {
@@ -8297,7 +10013,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ut labore et dolore."
+      "en": "Lorem Ipsum elit sed do eiusmod."
     }
   },
   {
@@ -8310,7 +10026,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad minim veniam quis."
+      "en": "Lorem Ipsum labore et dolore magna."
     }
   },
   {
@@ -8323,7 +10039,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum laboris nisi aliquip ex."
+      "en": "Lorem Ipsum minim veniam quis nostrud."
     }
   },
   {
@@ -8336,7 +10052,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum duis aute irure reprehenderit."
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
@@ -8349,7 +10065,59 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 06 Q",
+        "DESCRIPTION": "Text value for the Slot 04 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 06 A",
+        "DESCRIPTION": "Text value for the Slot 04 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 07 Q",
+        "DESCRIPTION": "Text value for the Slot 04 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 07 A",
+        "DESCRIPTION": "Text value for the Slot 04 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
     }
   },
   {
@@ -8466,62 +10234,60 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_BRAND_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_BG_IMAGE_URL",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Brand Href",
-        "DESCRIPTION": "URL target for the Brand Href link in Footer · canonical."
+        "NAME": "Footer background image URL",
+        "DESCRIPTION": "URL target for the footer background image."
       }
     },
-    "value": "#"
+    "value": "/core/image/728d0287-96c3-4430-b830-477f87d5ac5e/get"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_BRAND_NAME",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_TAGLINE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Brand Name",
-        "DESCRIPTION": "Text value for the Brand Name field in Footer · canonical."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum eiusmod."
-    }
-  },
-  {
-    "code": "SECTION_14_FOOTER_DEFAULT_TAGLINE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Tagline",
-        "DESCRIPTION": "Text value for the Tagline field in Footer · canonical."
+        "NAME": "Footer tagline",
+        "DESCRIPTION": "Tagline text shown under the footer logo."
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_ADDRESS_LINE_1",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_ADDRESS",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Address Line 1",
-        "DESCRIPTION": "Text value for the Address Line 1 field in Footer · canonical."
+        "NAME": "Footer address",
+        "DESCRIPTION": "Address block shown in the footer."
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      "en": "Lorem Ipsum magna aliqua enim ad."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_ADDRESS_LINE_2",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Platform href",
+        "DESCRIPTION": "URL target for the footer Platform navigation link."
+      }
+    },
+    "value": "index.html#hero"
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Address Line 2",
-        "DESCRIPTION": "Text value for the Address Line 2 field in Footer · canonical."
+        "NAME": "Footer nav - Platform",
+        "DESCRIPTION": "Footer navigation label for the platform section."
       }
     },
     "value": {
@@ -8529,25 +10295,23 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_ADDRESS_LINE_3",
-    "type": "LOCALIZED_STRING_SS",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS_HREF",
+    "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Address Line 3",
-        "DESCRIPTION": "Text value for the Address Line 3 field in Footer · canonical."
+        "NAME": "Footer nav How It Works href",
+        "DESCRIPTION": "URL target for the footer How It Works navigation link."
       }
     },
-    "value": {
-      "en": "Lorem Ipsum voluptate velit esse cillum."
-    }
+    "value": "index.html#features"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_ADDRESS_LINE_4",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Address Line 4",
-        "DESCRIPTION": "Text value for the Address Line 4 field in Footer · canonical."
+        "NAME": "Footer nav - How It Works",
+        "DESCRIPTION": "Footer navigation label for the features section."
       }
     },
     "value": {
@@ -8555,95 +10319,95 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_1_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Nav 1 Href",
-        "DESCRIPTION": "URL target for the Nav 1 Href link in Footer · canonical."
+        "NAME": "Footer nav Industries href",
+        "DESCRIPTION": "URL target for the footer Industries navigation link."
       }
     },
-    "value": "#"
+    "value": "index.html#foundation"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_1_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Nav 1 Label",
-        "DESCRIPTION": "Text value for the Nav 1 Label field in Footer · canonical."
+        "NAME": "Footer nav - Industries",
+        "DESCRIPTION": "Footer navigation label for the foundation section."
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore."
+      "en": "Lorem Ipsum labore et dolore magna."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_2_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Nav 2 Href",
-        "DESCRIPTION": "URL target for the Nav 2 Href link in Footer · canonical."
+        "NAME": "Footer nav Partners href",
+        "DESCRIPTION": "URL target for the footer Partners navigation link."
       }
     },
-    "value": "#"
+    "value": "index.html#partners"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_2_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Nav 2 Label",
-        "DESCRIPTION": "Text value for the Nav 2 Label field in Footer · canonical."
+        "NAME": "Footer nav - Partners",
+        "DESCRIPTION": "Footer navigation label for the partners section."
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi."
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_3_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Nav 3 Href",
-        "DESCRIPTION": "URL target for the Nav 3 Href link in Footer · canonical."
+        "NAME": "Footer nav FAQ href",
+        "DESCRIPTION": "URL target for the footer FAQ navigation link."
       }
     },
-    "value": "#"
+    "value": "index.html#faq"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_3_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_NAV_FAQ",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Nav 3 Label",
-        "DESCRIPTION": "Text value for the Nav 3 Label field in Footer · canonical."
+        "NAME": "Footer nav - FAQ",
+        "DESCRIPTION": "Footer navigation label for the FAQ section."
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_4_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Nav 4 Href",
-        "DESCRIPTION": "URL target for the Nav 4 Href link in Footer · canonical."
+        "NAME": "Footer LinkedIn href",
+        "DESCRIPTION": "URL target for the footer LinkedIn social link."
       }
     },
     "value": "#"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_4_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Nav 4 Label",
-        "DESCRIPTION": "Text value for the Nav 4 Label field in Footer · canonical."
+        "NAME": "Footer social LinkedIn aria label",
+        "DESCRIPTION": "Accessible label for the LinkedIn social link in the footer."
       }
     },
     "value": {
@@ -8651,23 +10415,23 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_5_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Nav 5 Href",
-        "DESCRIPTION": "URL target for the Nav 5 Href link in Footer · canonical."
+        "NAME": "Footer GitHub href",
+        "DESCRIPTION": "URL target for the footer GitHub social link."
       }
     },
     "value": "#"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_NAV_5_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Nav 5 Label",
-        "DESCRIPTION": "Text value for the Nav 5 Label field in Footer · canonical."
+        "NAME": "Footer social GitHub aria label",
+        "DESCRIPTION": "Accessible label for the GitHub social link in the footer."
       }
     },
     "value": {
@@ -8675,80 +10439,84 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_SOCIAL_LINKEDIN",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Social Linkedin",
-        "DESCRIPTION": "Text value for the Social Linkedin field in Footer · canonical."
+        "NAME": "Footer YouTube href",
+        "DESCRIPTION": "URL target for the footer YouTube social link."
       }
     },
     "value": "#"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_SOCIAL_GITHUB",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Social Github",
-        "DESCRIPTION": "Text value for the Social Github field in Footer · canonical."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_14_FOOTER_DEFAULT_SOCIAL_YOUTUBE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Social Youtube",
-        "DESCRIPTION": "Text value for the Social Youtube field in Footer · canonical."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_14_FOOTER_DEFAULT_SOCIAL_X",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Social X",
-        "DESCRIPTION": "Text value for the Social X field in Footer · canonical."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_14_FOOTER_DEFAULT_PARTNERSHIPS_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Partnerships Label",
-        "DESCRIPTION": "Text value for the Partnerships Label field in Footer · canonical."
+        "NAME": "Footer social YouTube aria label",
+        "DESCRIPTION": "Accessible label for the YouTube social link in the footer."
       }
     },
     "value": {
-      "en": "Lorem Ipsum et."
+      "en": "Lorem Ipsum velit."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_PARTNERSHIPS_EMAIL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Partnerships Email",
-        "DESCRIPTION": "Text value for the Partnerships Email field in Footer · canonical."
+        "NAME": "Footer X href",
+        "DESCRIPTION": "URL target for the footer X social link."
       }
     },
-    "value": "Lorem Ipsum veniam quis nostrud exercitation."
+    "value": "#"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_SUPPORT_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Support Label",
-        "DESCRIPTION": "Text value for the Support Label field in Footer · canonical."
+        "NAME": "Footer social X aria label",
+        "DESCRIPTION": "Accessible label for the X social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_GENERAL_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer general email href",
+        "DESCRIPTION": "URL target for the footer general email link."
+      }
+    },
+    "value": "mailto:hello@servicewand.com"
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_GENERAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer general email",
+        "DESCRIPTION": "General contact email shown in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships label",
+        "DESCRIPTION": "Label above the partnerships email address."
       }
     },
     "value": {
@@ -8756,23 +10524,23 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_SUPPORT_EMAIL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Support Email",
-        "DESCRIPTION": "Text value for the Support Email field in Footer · canonical."
+        "NAME": "Footer partnerships email href",
+        "DESCRIPTION": "URL target for the footer partnerships email link."
       }
     },
-    "value": "Lorem Ipsum irure reprehenderit voluptate velit."
+    "value": "mailto:partners@servicewand.com"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_COPYRIGHT",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Copyright",
-        "DESCRIPTION": "Text value for the Copyright field in Footer · canonical."
+        "NAME": "Footer partnerships email",
+        "DESCRIPTION": "Partnerships contact email shown in the footer."
       }
     },
     "value": {
@@ -8780,51 +10548,114 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_LEGAL_1_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Legal 1 Href",
-        "DESCRIPTION": "URL target for the Legal 1 Href link in Footer · canonical."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_14_FOOTER_DEFAULT_LEGAL_1_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Legal 1 Label",
-        "DESCRIPTION": "Text value for the Legal 1 Label field in Footer · canonical."
+        "NAME": "Footer support label",
+        "DESCRIPTION": "Label above the support email address."
       }
     },
     "value": {
-      "en": "Lorem Ipsum incididunt."
+      "en": "Lorem Ipsum consectetur."
     }
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_LEGAL_2_HREF",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Legal 2 Href",
-        "DESCRIPTION": "URL target for the Legal 2 Href link in Footer · canonical."
+        "NAME": "Footer support email href",
+        "DESCRIPTION": "URL target for the footer support email link."
       }
     },
-    "value": "#"
+    "value": "mailto:support@servicewand.com"
   },
   {
-    "code": "SECTION_14_FOOTER_DEFAULT_LEGAL_2_LABEL",
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Legal 2 Label",
-        "DESCRIPTION": "Text value for the Legal 2 Label field in Footer · canonical."
+        "NAME": "Footer support email",
+        "DESCRIPTION": "Support contact email shown in the footer."
       }
     },
     "value": {
-      "en": "Lorem Ipsum ullamco."
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer copyright line",
+        "DESCRIPTION": "Primary copyright text shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_RIGHTS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer rights line",
+        "DESCRIPTION": "Secondary rights notice shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer privacy policy href",
+        "DESCRIPTION": "URL target for the footer Privacy Policy legal link."
+      }
+    },
+    "value": "privacy-policy.html"
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Privacy Policy",
+        "DESCRIPTION": "Footer legal link label for the privacy policy page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_TERMS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer terms href",
+        "DESCRIPTION": "URL target for the footer Terms legal link."
+      }
+    },
+    "value": "terms-and-conditions.html"
+  },
+  {
+    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_TERMS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Terms & Conditions",
+        "DESCRIPTION": "Footer legal link label for the terms and conditions page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
     }
   }
 ]

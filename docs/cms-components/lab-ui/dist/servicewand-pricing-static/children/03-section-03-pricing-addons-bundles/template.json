@@ -1,0 +1,1109 @@
+{
+  "code": "SECTION_03_PRICING_ADDONS_BUNDLES",
+  "nls": {
+    "en": {
+      "NAME": "Pricing · add-ons (bundled rows)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--pricing-addons-bundles\" data-composition-block=\"pricing.addons-bundles\">\n<!-- lab-ui block · pricing.addons-bundles\n     Add-ons rendered as horizontal rows grouped by category.\n     Up to 6 add-ons across up to 3 groups. Each row exposes a\n     quantity meter, a unit price, and an \"Add\" CTA.\n-->\n<section class=\"ab-addons\" id=\"pricing-addons\" data-block=\"pricing.addons-bundles\">\n  <div class=\"container\">\n    <header class=\"ab-top\">\n      <p class=\"ab-eyebrow\">${SECTION_03_PRICING_ADDONS_BUNDLES_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"ab-title\">${SECTION_03_PRICING_ADDONS_BUNDLES_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"ab-lede\">${SECTION_03_PRICING_ADDONS_BUNDLES_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"ab-groups\">\n      <section class=\"ab-group\" data-group-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_VISIBLE@STRING}\">\n        <header class=\"ab-group-head\">\n          <span class=\"ab-group-tag\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_TAG@LOCALIZED_STRING_SS}</span>\n          <h3 class=\"ab-group-title\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_TITLE@LOCALIZED_STRING_SS}</h3>\n          <p class=\"ab-group-lede\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_LEDE@LOCALIZED_STRING_SS}</p>\n        </header>\n        <ol class=\"ab-list\" aria-label=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_TITLE@LOCALIZED_STRING_SS}\">\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n        </ol>\n      </section>\n\n      <section class=\"ab-group\" data-group-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_VISIBLE@STRING}\">\n        <header class=\"ab-group-head\">\n          <span class=\"ab-group-tag\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_TAG@LOCALIZED_STRING_SS}</span>\n          <h3 class=\"ab-group-title\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_TITLE@LOCALIZED_STRING_SS}</h3>\n          <p class=\"ab-group-lede\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_LEDE@LOCALIZED_STRING_SS}</p>\n        </header>\n        <ol class=\"ab-list\" aria-label=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_TITLE@LOCALIZED_STRING_SS}\">\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n        </ol>\n      </section>\n\n      <section class=\"ab-group\" data-group-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_VISIBLE@STRING}\">\n        <header class=\"ab-group-head\">\n          <span class=\"ab-group-tag\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_TAG@LOCALIZED_STRING_SS}</span>\n          <h3 class=\"ab-group-title\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_TITLE@LOCALIZED_STRING_SS}</h3>\n          <p class=\"ab-group-lede\">${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_LEDE@LOCALIZED_STRING_SS}</p>\n        </header>\n        <ol class=\"ab-list\" aria-label=\"${SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_TITLE@LOCALIZED_STRING_SS}\">\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n          <li class=\"ab-row ab-row--${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_STATE@STRING}\" data-addon-visible=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_VISIBLE@STRING}\">\n            <div class=\"ab-row-marker\" aria-hidden=\"true\"><span>${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_GLYPH@LOCALIZED_STRING_SS}</span></div>\n            <div class=\"ab-row-body\">\n              <p class=\"ab-row-name\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_NAME@LOCALIZED_STRING_SS}</p>\n              <p class=\"ab-row-desc\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n            </div>\n            <div class=\"ab-row-meter\">\n              <span class=\"ab-meter-qty\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_QUANTITY@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-meter-unit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <div class=\"ab-row-pricecol\">\n              <span class=\"ab-row-price\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_PRICE@LOCALIZED_STRING_SS}</span>\n              <span class=\"ab-row-priceunit\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_PRICE_UNIT@LOCALIZED_STRING_SS}</span>\n            </div>\n            <a class=\"ab-row-cta\" href=\"${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_CTA_URL@STRING}\">${SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n          </li>\n        </ol>\n      </section>\n    </div>\n\n    <p class=\"ab-disclaimer\">${SECTION_03_PRICING_ADDONS_BUNDLES_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 14-pricing/pricing.addons-bundles/block.css */\n/* lab-ui block · pricing.addons-bundles\n   Depends: 00-tokens/tokens.css. Light theme.\n   Visual identity differs from pricing.addons:\n     · horizontal rows grouped by category, not a card grid,\n     · per row: glyph marker, body, quantity meter, price column, CTA,\n     · groups have a kicker tag + heading + lede above each list. */\n\n.ab-addons {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.ab-addons .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.ab-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2.25rem, 4vw, 3rem);\n  text-align: center;\n}\n.ab-eyebrow {\n  margin: 0 0 12px;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n}\n.ab-title {\n  margin: 0 0 12px;\n  color: var(--color-heading);\n  font-size: var(--type-h2-size);\n  font-weight: var(--type-h2-weight);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n}\n.ab-lede {\n  margin: 0;\n  font-size: 1.0625rem;\n  line-height: 1.55;\n}\n\n.ab-groups {\n  display: grid;\n  gap: 36px;\n}\n\n.ab-group[data-group-visible=\"hide\"] { display: none; }\n\n.ab-group-head {\n  display: grid;\n  gap: 6px;\n  margin-bottom: 14px;\n  max-width: 48rem;\n}\n.ab-group-tag {\n  display: inline-flex;\n  align-items: center;\n  padding: 4px 10px;\n  border-radius: var(--radius-pill);\n  background: var(--cta-accent-soft);\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  width: max-content;\n}\n.ab-group-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.375rem;\n  font-weight: 650;\n  line-height: 1.2;\n  letter-spacing: -0.01em;\n}\n.ab-group-lede {\n  margin: 0;\n  color: var(--color-gray-blue);\n  font-size: 0.9375rem;\n  line-height: 1.5;\n}\n\n.ab-list {\n  display: grid;\n  gap: 10px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  border-radius: var(--radius-card);\n  background: var(--color-gray-bg);\n  padding: 10px;\n}\n\n.ab-row {\n  display: grid;\n  grid-template-columns: 52px minmax(0, 1.5fr) minmax(110px, 0.7fr) minmax(110px, 0.6fr) auto;\n  align-items: center;\n  gap: 18px;\n  padding: 16px 18px;\n  border: 1px solid rgba(146, 170, 205, 0.22);\n  border-radius: var(--radius-card-sm);\n  background: var(--color-white);\n  transition: transform var(--transition-fast), box-shadow var(--transition-fast);\n}\n.ab-row[data-addon-visible=\"hide\"] { display: none; }\n.ab-row--featured {\n  border-color: var(--cta-accent);\n  box-shadow: 0 0 0 1px var(--cta-accent), 0 14px 32px -24px rgba(27, 29, 37, 0.28);\n}\n.ab-row--muted {\n  background: var(--color-gray-bg);\n  border-style: dashed;\n}\n@media (hover: hover) {\n  .ab-row:hover {\n    transform: translateY(-1px);\n    box-shadow: var(--shadow-1);\n  }\n}\n\n.ab-row-marker {\n  display: grid;\n  place-items: center;\n  width: 52px;\n  height: 52px;\n  border-radius: 14px;\n  background: linear-gradient(180deg, var(--cta-accent-soft), rgba(255,255,255,0.6));\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 1.125rem;\n  font-weight: 700;\n  letter-spacing: 0;\n}\n.ab-row--featured .ab-row-marker {\n  background: var(--cta-accent);\n}\n\n.ab-row-body { min-width: 0; }\n.ab-row-name {\n  margin: 0 0 4px;\n  color: var(--color-heading);\n  font-size: 1rem;\n  font-weight: 650;\n  letter-spacing: -0.005em;\n}\n.ab-row-desc {\n  margin: 0;\n  font-size: 0.875rem;\n  line-height: 1.45;\n}\n\n.ab-row-meter {\n  display: grid;\n  gap: 2px;\n  align-content: center;\n  padding: 8px 12px;\n  border-left: 1px dashed rgba(146, 170, 205, 0.4);\n  border-right: 1px dashed rgba(146, 170, 205, 0.4);\n}\n.ab-meter-qty {\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 1.125rem;\n  font-weight: 700;\n  letter-spacing: -0.01em;\n}\n.ab-meter-unit {\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n  letter-spacing: 0.02em;\n}\n\n.ab-row-pricecol {\n  display: grid;\n  gap: 2px;\n  align-content: center;\n}\n.ab-row-price {\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 1.125rem;\n  font-weight: 700;\n  letter-spacing: -0.01em;\n}\n.ab-row-priceunit {\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n}\n\n.ab-row-cta {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 40px;\n  padding: 0 18px;\n  border-radius: var(--radius-pill);\n  background: var(--color-white);\n  border: 1px solid rgba(146, 170, 205, 0.35);\n  color: var(--color-heading);\n  font-size: 0.875rem;\n  font-weight: 650;\n  text-decoration: none;\n  transition: transform var(--transition-fast), box-shadow var(--transition-fast);\n  white-space: nowrap;\n}\n.ab-row--featured .ab-row-cta {\n  background: var(--cta-secondary-fill);\n  border-color: transparent;\n  color: var(--cta-secondary-color, var(--color-white));\n}\n.ab-row-cta:hover {\n  transform: translateY(-1px);\n  box-shadow: var(--shadow-glow-soft);\n}\n\n.ab-disclaimer {\n  margin: 28px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.8125rem;\n  line-height: 1.5;\n  text-align: center;\n}\n\n@media (max-width: 860px) {\n  .ab-row {\n    grid-template-columns: 44px minmax(0, 1fr) auto;\n    grid-template-areas:\n      \"marker body body\"\n      \"meter  price cta\";\n    column-gap: 12px;\n    row-gap: 12px;\n    padding: 14px;\n  }\n  .ab-row-marker { grid-area: marker; width: 44px; height: 44px; font-size: 1rem; }\n  .ab-row-body { grid-area: body; }\n  .ab-row-meter {\n    grid-area: meter;\n    border: 0;\n    padding: 0;\n    flex-direction: row;\n    display: flex;\n    gap: 6px;\n    align-items: baseline;\n  }\n  .ab-row-pricecol { grid-area: price; text-align: right; justify-self: end; }\n  .ab-row-cta { grid-area: cta; justify-self: end; }\n}\n@media (max-width: 480px) {\n  .ab-row {\n    grid-template-columns: 1fr;\n    grid-template-areas:\n      \"marker\"\n      \"body\"\n      \"meter\"\n      \"price\"\n      \"cta\";\n  }\n  .ab-row-pricecol, .ab-row-cta { justify-self: stretch; text-align: left; }\n  .ab-row-cta { justify-content: center; }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Eyebrow",
+          "DESCRIPTION": "Small uppercase label above the add-ons heading."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Heading",
+          "DESCRIPTION": "Main heading for the add-ons section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Lede",
+          "DESCRIPTION": "Introductory paragraph for the add-ons section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Visible",
+          "DESCRIPTION": "Whether the first add-on group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Tag",
+          "DESCRIPTION": "Small kicker for the first add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Title",
+          "DESCRIPTION": "Heading for the first add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_01_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Lede",
+          "DESCRIPTION": "Sub-paragraph for the first add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 State",
+          "DESCRIPTION": "Visual state for the first add-on row."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Visible",
+          "DESCRIPTION": "Whether the first add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile (e.g. B for Buildings)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Name",
+          "DESCRIPTION": "Name of the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Description",
+          "DESCRIPTION": "Description of the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Quantity",
+          "DESCRIPTION": "Quantity display value for the first add-on (e.g. +25)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Unit",
+          "DESCRIPTION": "Unit label for the first add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Price",
+          "DESCRIPTION": "Price display value for the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Price Unit",
+          "DESCRIPTION": "Caption shown below the first add-on price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 CTA URL",
+          "DESCRIPTION": "URL target for the first add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_01_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 CTA Label",
+          "DESCRIPTION": "Label for the first add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 State",
+          "DESCRIPTION": "Visual state for the second add-on row."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Visible",
+          "DESCRIPTION": "Whether the second add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Name",
+          "DESCRIPTION": "Name of the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Description",
+          "DESCRIPTION": "Description of the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Quantity",
+          "DESCRIPTION": "Quantity display value for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Unit",
+          "DESCRIPTION": "Unit label for the second add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Price",
+          "DESCRIPTION": "Price display value for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Price Unit",
+          "DESCRIPTION": "Caption shown below the second add-on price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 CTA URL",
+          "DESCRIPTION": "URL target for the second add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_02_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 CTA Label",
+          "DESCRIPTION": "Label for the second add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Visible",
+          "DESCRIPTION": "Whether the second add-on group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Tag",
+          "DESCRIPTION": "Small kicker for the second add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Title",
+          "DESCRIPTION": "Heading for the second add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_02_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Lede",
+          "DESCRIPTION": "Sub-paragraph for the second add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 State",
+          "DESCRIPTION": "Visual state for the third add-on row."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Visible",
+          "DESCRIPTION": "Whether the third add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Name",
+          "DESCRIPTION": "Name of the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Description",
+          "DESCRIPTION": "Description of the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Quantity",
+          "DESCRIPTION": "Quantity display value for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Unit",
+          "DESCRIPTION": "Unit label for the third add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Price",
+          "DESCRIPTION": "Price display value for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Price Unit",
+          "DESCRIPTION": "Caption shown below the third add-on price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 CTA URL",
+          "DESCRIPTION": "URL target for the third add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_03_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 CTA Label",
+          "DESCRIPTION": "Label for the third add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 State",
+          "DESCRIPTION": "Visual state for the fourth add-on row."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Visible",
+          "DESCRIPTION": "Whether the fourth add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Name",
+          "DESCRIPTION": "Name of the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Description",
+          "DESCRIPTION": "Description of the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Quantity",
+          "DESCRIPTION": "Quantity display value for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Unit",
+          "DESCRIPTION": "Unit label for the fourth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Price",
+          "DESCRIPTION": "Price display value for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Price Unit",
+          "DESCRIPTION": "Caption shown below the fourth add-on price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 CTA URL",
+          "DESCRIPTION": "URL target for the fourth add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_04_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 CTA Label",
+          "DESCRIPTION": "Label for the fourth add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Visible",
+          "DESCRIPTION": "Whether the third add-on group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Tag",
+          "DESCRIPTION": "Small kicker for the third add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Title",
+          "DESCRIPTION": "Heading for the third add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_GROUP_03_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Lede",
+          "DESCRIPTION": "Sub-paragraph for the third add-on group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 State",
+          "DESCRIPTION": "Visual state for the fifth add-on row."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Visible",
+          "DESCRIPTION": "Whether the fifth add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Name",
+          "DESCRIPTION": "Name of the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Description",
+          "DESCRIPTION": "Description of the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Quantity",
+          "DESCRIPTION": "Quantity display value for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Unit",
+          "DESCRIPTION": "Unit label for the fifth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Price",
+          "DESCRIPTION": "Price display value for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Price Unit",
+          "DESCRIPTION": "Caption shown below the fifth add-on price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 CTA URL",
+          "DESCRIPTION": "URL target for the fifth add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_05_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 CTA Label",
+          "DESCRIPTION": "Label for the fifth add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 State",
+          "DESCRIPTION": "Visual state for the sixth add-on row."
+        }
+      },
+      "value": "muted",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Visible",
+          "DESCRIPTION": "Whether the sixth add-on row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_GLYPH",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Glyph",
+          "DESCRIPTION": "Single letter/character shown inside the marker tile."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Name",
+          "DESCRIPTION": "Name of the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Description",
+          "DESCRIPTION": "Description of the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Quantity",
+          "DESCRIPTION": "Quantity display value for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Unit",
+          "DESCRIPTION": "Unit label for the sixth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Price",
+          "DESCRIPTION": "Price display value for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_PRICE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Price Unit",
+          "DESCRIPTION": "Caption shown below the sixth add-on price."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 CTA URL",
+          "DESCRIPTION": "URL target for the sixth add-on CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_ADDON_06_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 CTA Label",
+          "DESCRIPTION": "Label for the sixth add-on CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure."
+      }
+    },
+    {
+      "code": "SECTION_03_PRICING_ADDONS_BUNDLES_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Disclaimer",
+          "DESCRIPTION": "Small disclaimer shown below the rows."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    }
+  ]
+}

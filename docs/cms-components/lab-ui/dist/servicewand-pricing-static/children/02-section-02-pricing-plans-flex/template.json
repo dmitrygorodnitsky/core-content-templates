@@ -1,0 +1,1715 @@
+{
+  "code": "SECTION_02_PRICING_PLANS_FLEX",
+  "nls": {
+    "en": {
+      "NAME": "Pricing · plans (flexible 2–5)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--pricing-plans-flex\" data-composition-block=\"pricing.plans-flex\">\n<!-- lab-ui block · pricing.plans-flex\n     Flexible 2–5 plan grid. Each plan has a visibility ENUM so the\n     same block can render any subset. Toggle slides a white indicator\n     between Monthly / Annual and dispatches a `pricing:billing`\n     CustomEvent on document for cross-block sync (matrix, credits).\n     Prices and billed-caption crossfade between billing modes; each\n     card carries its own Save chip that fade-scales in for Annual.\n-->\n<section class=\"pf-plans\" id=\"pricing\" data-block=\"pricing.plans-flex\" data-billing=\"${SECTION_02_PRICING_PLANS_FLEX_BILLING_DEFAULT@STRING}\" data-pricing-period=\"${SECTION_02_PRICING_PLANS_FLEX_BILLING_DEFAULT@STRING}\">\n  <div class=\"container\">\n    <header class=\"pf-top\">\n      <p class=\"pf-eyebrow\">${SECTION_02_PRICING_PLANS_FLEX_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h1 class=\"pf-title\">${SECTION_02_PRICING_PLANS_FLEX_TITLE@LOCALIZED_STRING_SS}</h1>\n      <p class=\"pf-lede\">${SECTION_02_PRICING_PLANS_FLEX_LEDE@LOCALIZED_STRING_SS}</p>\n\n      <div class=\"pf-toggle\" role=\"group\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_BILLING_LABEL@LOCALIZED_STRING_SS}\">\n        <button class=\"pf-toggle-opt is-active\" type=\"button\" data-billing-option=\"monthly\" aria-pressed=\"true\">${SECTION_02_PRICING_PLANS_FLEX_MONTHLY_LABEL@LOCALIZED_STRING_SS}</button>\n        <button class=\"pf-toggle-opt\" type=\"button\" data-billing-option=\"annual\" aria-pressed=\"false\">${SECTION_02_PRICING_PLANS_FLEX_ANNUAL_LABEL@LOCALIZED_STRING_SS}</button>\n      </div>\n      <p class=\"pf-note\">${SECTION_02_PRICING_PLANS_FLEX_BILLING_NOTE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"pf-grid\" data-plan-count=\"auto\">\n      <article class=\"pf-card pf-card--${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_STATE@STRING}\" data-plan-slot=\"01\" data-plan-visible=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_VISIBLE@STRING}\">\n        <div class=\"pf-card-head\">\n          <span class=\"pf-kicker\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_KICKER@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-badge\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BADGE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h2 class=\"pf-name\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_NAME@LOCALIZED_STRING_SS}</h2>\n        <p class=\"pf-subtitle\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_SUBTITLE@LOCALIZED_STRING_SS}</p>\n        <div class=\"pf-price\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_PRICE_ARIA@LOCALIZED_STRING_SS}\">\n          <span class=\"pf-currency\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CURRENCY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-amount-stack\">\n            <span class=\"pf-amount\" data-price-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_MONTHLY_PRICE@LOCALIZED_STRING_SS}</span>\n            <span class=\"pf-amount\" data-price-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_ANNUAL_PRICE@LOCALIZED_STRING_SS}</span>\n          </span>\n          <span class=\"pf-period\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_PERIOD@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-card-save\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_SAVE_CHIP@LOCALIZED_STRING_SS}</span>\n        </div>\n        <span class=\"pf-billed-stack\">\n          <span class=\"pf-billed\" data-billed-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BILLED_MONTHLY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-billed\" data-billed-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BILLED_ANNUAL@LOCALIZED_STRING_SS}</span>\n        </span>\n        <a class=\"pf-cta pf-cta--${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_STYLE@STRING}\" href=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_URL@STRING}\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n        <ul class=\"pf-features\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_LIST_LABEL@LOCALIZED_STRING_SS}\">\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_01@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_02@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_03@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_04@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_05@LOCALIZED_STRING_SS}</li>\n        </ul>\n        <p class=\"pf-disclaimer\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_01_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pf-card pf-card--${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_STATE@STRING}\" data-plan-slot=\"02\" data-plan-visible=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_VISIBLE@STRING}\">\n        <div class=\"pf-card-head\">\n          <span class=\"pf-kicker\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_KICKER@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-badge\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BADGE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h2 class=\"pf-name\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_NAME@LOCALIZED_STRING_SS}</h2>\n        <p class=\"pf-subtitle\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_SUBTITLE@LOCALIZED_STRING_SS}</p>\n        <div class=\"pf-price\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_PRICE_ARIA@LOCALIZED_STRING_SS}\">\n          <span class=\"pf-currency\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CURRENCY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-amount-stack\">\n            <span class=\"pf-amount\" data-price-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_MONTHLY_PRICE@LOCALIZED_STRING_SS}</span>\n            <span class=\"pf-amount\" data-price-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_ANNUAL_PRICE@LOCALIZED_STRING_SS}</span>\n          </span>\n          <span class=\"pf-period\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_PERIOD@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-card-save\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_SAVE_CHIP@LOCALIZED_STRING_SS}</span>\n        </div>\n        <span class=\"pf-billed-stack\">\n          <span class=\"pf-billed\" data-billed-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BILLED_MONTHLY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-billed\" data-billed-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BILLED_ANNUAL@LOCALIZED_STRING_SS}</span>\n        </span>\n        <a class=\"pf-cta pf-cta--${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_STYLE@STRING}\" href=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_URL@STRING}\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n        <ul class=\"pf-features\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_LIST_LABEL@LOCALIZED_STRING_SS}\">\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_01@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_02@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_03@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_04@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_05@LOCALIZED_STRING_SS}</li>\n        </ul>\n        <p class=\"pf-disclaimer\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_02_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pf-card pf-card--${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_STATE@STRING}\" data-plan-slot=\"03\" data-plan-visible=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_VISIBLE@STRING}\">\n        <div class=\"pf-card-head\">\n          <span class=\"pf-kicker\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_KICKER@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-badge\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BADGE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h2 class=\"pf-name\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_NAME@LOCALIZED_STRING_SS}</h2>\n        <p class=\"pf-subtitle\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_SUBTITLE@LOCALIZED_STRING_SS}</p>\n        <div class=\"pf-price\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_PRICE_ARIA@LOCALIZED_STRING_SS}\">\n          <span class=\"pf-currency\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CURRENCY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-amount-stack\">\n            <span class=\"pf-amount\" data-price-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_MONTHLY_PRICE@LOCALIZED_STRING_SS}</span>\n            <span class=\"pf-amount\" data-price-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_ANNUAL_PRICE@LOCALIZED_STRING_SS}</span>\n          </span>\n          <span class=\"pf-period\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_PERIOD@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-card-save\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_SAVE_CHIP@LOCALIZED_STRING_SS}</span>\n        </div>\n        <span class=\"pf-billed-stack\">\n          <span class=\"pf-billed\" data-billed-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BILLED_MONTHLY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-billed\" data-billed-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BILLED_ANNUAL@LOCALIZED_STRING_SS}</span>\n        </span>\n        <a class=\"pf-cta pf-cta--${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_STYLE@STRING}\" href=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_URL@STRING}\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n        <ul class=\"pf-features\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_LIST_LABEL@LOCALIZED_STRING_SS}\">\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_01@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_02@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_03@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_04@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_05@LOCALIZED_STRING_SS}</li>\n        </ul>\n        <p class=\"pf-disclaimer\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_03_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pf-card pf-card--${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_STATE@STRING}\" data-plan-slot=\"04\" data-plan-visible=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_VISIBLE@STRING}\">\n        <div class=\"pf-card-head\">\n          <span class=\"pf-kicker\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_KICKER@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-badge\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BADGE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h2 class=\"pf-name\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_NAME@LOCALIZED_STRING_SS}</h2>\n        <p class=\"pf-subtitle\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_SUBTITLE@LOCALIZED_STRING_SS}</p>\n        <div class=\"pf-price\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_PRICE_ARIA@LOCALIZED_STRING_SS}\">\n          <span class=\"pf-currency\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CURRENCY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-amount-stack\">\n            <span class=\"pf-amount\" data-price-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_MONTHLY_PRICE@LOCALIZED_STRING_SS}</span>\n            <span class=\"pf-amount\" data-price-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_ANNUAL_PRICE@LOCALIZED_STRING_SS}</span>\n          </span>\n          <span class=\"pf-period\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_PERIOD@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-card-save\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_SAVE_CHIP@LOCALIZED_STRING_SS}</span>\n        </div>\n        <span class=\"pf-billed-stack\">\n          <span class=\"pf-billed\" data-billed-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BILLED_MONTHLY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-billed\" data-billed-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BILLED_ANNUAL@LOCALIZED_STRING_SS}</span>\n        </span>\n        <a class=\"pf-cta pf-cta--${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_STYLE@STRING}\" href=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_URL@STRING}\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n        <ul class=\"pf-features\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_LIST_LABEL@LOCALIZED_STRING_SS}\">\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_01@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_02@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_03@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_04@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_05@LOCALIZED_STRING_SS}</li>\n        </ul>\n        <p class=\"pf-disclaimer\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_04_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pf-card pf-card--${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_STATE@STRING}\" data-plan-slot=\"05\" data-plan-visible=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_VISIBLE@STRING}\">\n        <div class=\"pf-card-head\">\n          <span class=\"pf-kicker\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_KICKER@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-badge\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BADGE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h2 class=\"pf-name\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_NAME@LOCALIZED_STRING_SS}</h2>\n        <p class=\"pf-subtitle\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_SUBTITLE@LOCALIZED_STRING_SS}</p>\n        <div class=\"pf-price\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_PRICE_ARIA@LOCALIZED_STRING_SS}\">\n          <span class=\"pf-currency\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CURRENCY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-amount-stack\">\n            <span class=\"pf-amount\" data-price-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_MONTHLY_PRICE@LOCALIZED_STRING_SS}</span>\n            <span class=\"pf-amount\" data-price-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_ANNUAL_PRICE@LOCALIZED_STRING_SS}</span>\n          </span>\n          <span class=\"pf-period\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_PERIOD@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-card-save\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_SAVE_CHIP@LOCALIZED_STRING_SS}</span>\n        </div>\n        <span class=\"pf-billed-stack\">\n          <span class=\"pf-billed\" data-billed-monthly>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BILLED_MONTHLY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pf-billed\" data-billed-annual>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BILLED_ANNUAL@LOCALIZED_STRING_SS}</span>\n        </span>\n        <a class=\"pf-cta pf-cta--${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_STYLE@STRING}\" href=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_URL@STRING}\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n        <ul class=\"pf-features\" aria-label=\"${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_LIST_LABEL@LOCALIZED_STRING_SS}\">\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_01@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_02@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_03@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_04@LOCALIZED_STRING_SS}</li>\n          <li>${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_05@LOCALIZED_STRING_SS}</li>\n        </ul>\n        <p class=\"pf-disclaimer\">${SECTION_02_PRICING_PLANS_FLEX_PLAN_05_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 14-pricing/pricing.plans-flex/block.css */\n/* lab-ui block · pricing.plans-flex\n   Depends: 00-tokens/tokens.css. Light theme.\n   Visual identity differs from pricing.plan-cards:\n     · flat card surface (no internal white-on-gray gradient),\n     · featured plan uses a 2px cta-accent ring + lifted shadow,\n     · monospace price digits keep the ledger/operations feel,\n     · sliding indicator inside the billing toggle,\n     · per-card Save chip that fade-scales in for Annual,\n     · price + billed-caption crossfade between billing modes,\n     · 2–5 slots controlled per slot via data-plan-visible. */\n\n.pf-plans {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n  overflow-x: clip;\n}\n.pf-plans .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n/* ─── Header ────────────────────────────────────────────────── */\n.pf-top {\n  max-width: 58rem;\n  margin-inline: auto;\n  text-align: center;\n  margin-bottom: 44px;\n}\n.pf-eyebrow {\n  margin: 0 0 14px;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n}\n.pf-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: var(--type-h1-size);\n  font-weight: var(--type-h1-weight);\n  line-height: var(--type-h1-leading);\n  letter-spacing: var(--type-h1-tracking);\n  overflow-wrap: break-word;\n}\n.pf-lede {\n  max-width: 45rem;\n  margin: 18px auto 0;\n  font-size: 1.0625rem;\n  line-height: 1.55;\n}\n\n/* ─── Toggle · sliding pill indicator ───────────────────────── */\n.pf-toggle {\n  position: relative;\n  display: inline-grid;\n  grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr);\n  margin-top: 28px;\n  padding: 4px;\n  border: 1px solid rgba(146, 170, 205, 0.30);\n  border-radius: var(--radius-pill);\n  background: var(--color-gray-bg);\n  isolation: isolate;\n}\n.pf-toggle::before {\n  content: \"\";\n  position: absolute;\n  z-index: 0;\n  top: 4px;\n  bottom: 4px;\n  left: 4px;\n  width: calc(50% - 4px);\n  border-radius: var(--radius-pill);\n  background: var(--color-white);\n  box-shadow: var(--shadow-1);\n  transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);\n}\n.pf-plans[data-billing=\"annual\"] .pf-toggle::before {\n  transform: translateX(100%);\n}\n.pf-toggle-opt {\n  position: relative;\n  z-index: 1;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 40px;\n  padding: 0 18px;\n  border: 0;\n  border-radius: var(--radius-pill);\n  background: transparent;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: color 0.24s ease;\n}\n.pf-toggle-opt.is-active {\n  color: var(--color-heading);\n}\n\n.pf-note {\n  margin: 14px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.8125rem;\n  line-height: 1.45;\n}\n\n/* ─── Grid · flexible 2–5 slots ──────────────────────────────\n   Parent grid defines 8 explicit row tracks that match a card's\n   8 logical sections (head, name, subtitle, price, billed, cta,\n   features, disclaimer). Cards opt-in via grid-template-rows: subgrid\n   so every card's track-N is sized to the tallest card's track-N —\n   head row, subtitle row, price row, CTA row all align horizontally\n   regardless of how long any one card's text is. The final track is\n   1fr so each card stretches to fill the row-band's max height; the\n   disclaimer self-aligns to the bottom of that flexible track. */\n.pf-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n  grid-template-rows: repeat(7, auto) 1fr;\n  column-gap: 20px;\n  row-gap: 0;\n  max-width: 100%;\n}\n.pf-card[data-plan-visible=\"hide\"] { display: none; }\n\n/* ─── Plan card · flat surface ──────────────────────────────── */\n.pf-card {\n  position: relative;\n  display: grid;\n  grid-template-rows: subgrid;\n  grid-template-columns: minmax(0, 1fr);\n  grid-row: span 8;\n  row-gap: 0;\n  min-width: 0;\n  padding: 24px;\n  border: 1px solid rgba(146, 170, 205, 0.28);\n  border-radius: var(--radius-card);\n  background: var(--color-white);\n  transition: transform var(--transition-fast), box-shadow var(--transition-fast);\n}\n.pf-card--muted {\n  background: var(--color-gray-bg);\n}\n.pf-card--featured {\n  border-color: var(--cta-accent);\n  box-shadow: 0 0 0 1px var(--cta-accent), 0 22px 48px -30px rgba(27, 29, 37, 0.32);\n  transform: translateY(-4px);\n}\n@media (hover: hover) {\n  .pf-card:hover {\n    transform: translateY(-2px);\n    box-shadow: var(--shadow-2);\n  }\n  .pf-card--featured:hover {\n    transform: translateY(-6px);\n  }\n}\n\n.pf-card-head {\n  display: flex;\n  min-height: 26px;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n.pf-kicker,\n.pf-badge {\n  display: inline-flex;\n  max-width: 100%;\n  align-items: center;\n  min-height: 22px;\n  border-radius: var(--radius-pill);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  white-space: nowrap;\n}\n.pf-kicker { color: var(--color-gray-blue); }\n.pf-badge {\n  padding: 3px 9px;\n  color: var(--color-heading);\n  background: var(--cta-accent-soft);\n}\n.pf-card--featured .pf-badge { background: var(--cta-accent); }\n\n.pf-name {\n  margin: 18px 0 0;\n  color: var(--color-heading);\n  font-size: 1.5rem;\n  font-weight: 650;\n  line-height: 1.15;\n  letter-spacing: -0.01em;\n}\n.pf-subtitle {\n  min-height: 52px;\n  margin: 8px 0 0;\n  font-size: 0.9375rem;\n  line-height: 1.45;\n}\n\n/* ─── Price block · crossfade between monthly/annual ────────── */\n.pf-price {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-top: 22px;\n  color: var(--color-heading);\n}\n.pf-currency {\n  font-size: 1rem;\n  font-weight: 600;\n}\n.pf-amount-stack {\n  display: inline-grid;\n  align-items: baseline;\n}\n.pf-amount {\n  grid-column: 1;\n  grid-row: 1;\n  font-family: var(--font-mono);\n  font-size: 2.5rem;\n  font-weight: 600;\n  line-height: 1;\n  letter-spacing: -0.02em;\n  transition:\n    opacity 0.24s ease-out,\n    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);\n  will-change: opacity, transform;\n}\n.pf-period {\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n}\n\n/* Per-card Save chip · appears in Annual mode */\n.pf-card-save {\n  display: inline-flex;\n  align-items: center;\n  padding: 3px 9px;\n  border-radius: var(--radius-pill);\n  background: var(--cta-accent-soft);\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.06em;\n  text-transform: uppercase;\n  transform-origin: left center;\n  opacity: 0;\n  transform: scale(0.78) translateY(2px);\n  transition:\n    opacity 0.22s ease-out,\n    transform 0.22s ease-out;\n  transition-delay: 0s;\n}\n.pf-card-save:empty { display: none; }\n.pf-plans[data-billing=\"annual\"] .pf-card-save {\n  opacity: 1;\n  transform: scale(1) translateY(0);\n  transition:\n    opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1),\n    transform 0.34s cubic-bezier(0.16, 1, 0.3, 1);\n  transition-delay: 0.34s;\n}\n\n/* Billed caption crossfade · stacks monthly/annual in same cell */\n.pf-billed-stack {\n  display: grid;\n  margin-top: 6px;\n  min-height: 16px;\n}\n.pf-billed {\n  grid-column: 1;\n  grid-row: 1;\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n  letter-spacing: 0.02em;\n  transition:\n    opacity 0.22s ease-out,\n    transform 0.30s cubic-bezier(0.16, 1, 0.3, 1);\n}\n\n/* Crossfade rules · outgoing leaves immediately, incoming arrives with a delay\n   so the swap reads as motion instead of an instant flip. */\n.pf-plans[data-billing=\"monthly\"] [data-price-annual],\n.pf-plans[data-billing=\"monthly\"] [data-billed-annual] {\n  opacity: 0;\n  transform: translateY(-14px);\n  pointer-events: none;\n}\n.pf-plans[data-billing=\"annual\"] [data-price-monthly],\n.pf-plans[data-billing=\"annual\"] [data-billed-monthly] {\n  opacity: 0;\n  transform: translateY(14px);\n  pointer-events: none;\n}\n.pf-plans[data-billing=\"monthly\"] [data-price-monthly],\n.pf-plans[data-billing=\"monthly\"] [data-billed-monthly],\n.pf-plans[data-billing=\"annual\"]  [data-price-annual],\n.pf-plans[data-billing=\"annual\"]  [data-billed-annual] {\n  transition:\n    opacity 0.30s cubic-bezier(0.16, 1, 0.3, 1),\n    transform 0.40s cubic-bezier(0.16, 1, 0.3, 1);\n  transition-delay: 0.18s;\n}\n\n/* ─── CTA · 3 styles, matches token vocabulary ──────────────── */\n.pf-cta {\n  display: inline-flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 44px;\n  margin-top: 22px;\n  padding: 0 18px;\n  border-radius: var(--radius-pill);\n  font-weight: 650;\n  font-size: 0.9375rem;\n  text-decoration: none;\n  transition: transform var(--transition-fast), box-shadow var(--transition-fast);\n}\n.pf-cta:hover {\n  transform: translateY(-1px);\n  box-shadow: var(--shadow-glow-soft);\n}\n.pf-cta--primary {\n  color: var(--button-primary-color);\n  background:\n    linear-gradient(var(--color-white), var(--color-white)) padding-box,\n    var(--gradient-cta-ring) border-box;\n  border: 1px solid transparent;\n}\n.pf-cta--filled {\n  color: var(--cta-secondary-color, var(--color-white));\n  background: var(--cta-secondary-fill);\n  border: 1px solid var(--cta-secondary-border, rgba(255, 255, 255, 0.18));\n}\n.pf-cta--ghost {\n  color: var(--color-heading);\n  background: var(--color-white);\n  border: 1px solid rgba(146, 170, 205, 0.35);\n}\n\n/* ─── Features list ─────────────────────────────────────────── */\n.pf-features {\n  display: grid;\n  gap: 10px;\n  margin: 22px 0 0;\n  padding: 0;\n  list-style: none;\n}\n.pf-features li {\n  position: relative;\n  padding-left: 22px;\n  font-size: 0.875rem;\n  line-height: 1.45;\n}\n.pf-features li:empty { display: none; }\n.pf-features li::before {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  top: 0.5em;\n  width: 8px;\n  height: 8px;\n  border-radius: 999px;\n  background: var(--cta-accent);\n  box-shadow: 0 0 0 3px var(--cta-accent-soft);\n}\n.pf-disclaimer {\n  align-self: end;\n  margin: 0;\n  padding-top: 22px;\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n  line-height: 1.45;\n}\n.pf-disclaimer:empty { visibility: hidden; }\n\n/* ─── Responsive ────────────────────────────────────────────── */\n@media (max-width: 1100px) {\n  .pf-grid {\n    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n  }\n}\n@media (max-width: 720px) {\n  .pf-plans .container {\n    max-width: 100%;\n    padding-inline: 20px;\n  }\n  .pf-top { text-align: left; }\n  .pf-title { font-size: 2.125rem; line-height: 1.08; }\n  .pf-lede { margin-inline: 0; }\n  .pf-toggle { width: 100%; grid-template-columns: 1fr 1fr; }\n  .pf-grid { grid-template-columns: 1fr; gap: 14px; }\n  .pf-card--featured { transform: none; }\n  .pf-subtitle { min-height: 0; }\n}\n",
+  "javascript": "/* generated child JS: 14-pricing/pricing.plans-flex/block.js */\n// lab-ui block · pricing.plans-flex\n// Local billing toggle + cross-block sync via a document-level\n// CustomEvent. Any block listening for `pricing:billing` updates\n// its own [data-pricing-period] attr without coupling to this block.\n\n(() => {\n  const EVENT = \"pricing:billing\";\n\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const normalize = (mode) => (mode === \"annual\" ? \"annual\" : \"monthly\");\n\n  const apply = (section, mode) => {\n    const next = normalize(mode);\n    section.dataset.billing = next;\n    section.dataset.pricingPeriod = next;\n    section.querySelectorAll(\"[data-billing-option]\").forEach((button) => {\n      const active = button.dataset.billingOption === next;\n      button.classList.toggle(\"is-active\", active);\n      button.setAttribute(\"aria-pressed\", String(active));\n    });\n  };\n\n  const broadcast = (mode, source) => {\n    document.dispatchEvent(new CustomEvent(EVENT, {\n      detail: { period: normalize(mode), source },\n    }));\n  };\n\n  const init = (section) => {\n    if (section.dataset.pfInit === \"1\") return;\n    section.dataset.pfInit = \"1\";\n\n    apply(section, section.dataset.billing);\n\n    section.querySelectorAll(\"[data-billing-option]\").forEach((button) => {\n      button.addEventListener(\"click\", () => {\n        const next = normalize(button.dataset.billingOption);\n        apply(section, next);\n        broadcast(next, section);\n      });\n    });\n\n    document.addEventListener(EVENT, (event) => {\n      if (!event.detail || event.detail.source === section) return;\n      apply(section, event.detail.period);\n    });\n  };\n\n  ready(() => {\n    document.querySelectorAll('[data-block=\"pricing.plans-flex\"]').forEach(init);\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_BILLING_DEFAULT",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Default Billing Cycle",
+          "DESCRIPTION": "Selects which billing cycle is active when the pricing section first renders."
+        }
+      },
+      "value": "monthly",
+      "options": [
+        "monthly",
+        "annual"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pricing Eyebrow",
+          "DESCRIPTION": "Small uppercase label above the pricing headline."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pricing Headline",
+          "DESCRIPTION": "Main headline for the pricing plans section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pricing Lede",
+          "DESCRIPTION": "Introductory paragraph below the pricing headline."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_BILLING_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Billing Toggle Accessible Label",
+          "DESCRIPTION": "Accessible label for the billing cycle toggle group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_MONTHLY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Monthly Billing Label",
+          "DESCRIPTION": "Label for the monthly billing toggle option."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_ANNUAL_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Annual Billing Label",
+          "DESCRIPTION": "Label for the annual billing toggle option."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_BILLING_NOTE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Billing Note",
+          "DESCRIPTION": "Short note shown below the billing toggle."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Card State",
+          "DESCRIPTION": "Visual state for the first plan card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Visible",
+          "DESCRIPTION": "Whether the first plan card is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Kicker",
+          "DESCRIPTION": "Small label above the first plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Badge",
+          "DESCRIPTION": "Badge text for the first plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Name",
+          "DESCRIPTION": "Name of the first pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Subtitle",
+          "DESCRIPTION": "Short description for the first pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_PRICE_ARIA",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Price Accessible Label",
+          "DESCRIPTION": "Accessible label for the first plan price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CURRENCY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Currency",
+          "DESCRIPTION": "Currency symbol or prefix for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_MONTHLY_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Monthly Price",
+          "DESCRIPTION": "Monthly price display value for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_ANNUAL_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Annual Price",
+          "DESCRIPTION": "Annual billing price display value for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_PERIOD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Price Period",
+          "DESCRIPTION": "Price period label for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_SAVE_CHIP",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Save Chip",
+          "DESCRIPTION": "Chip text shown next to the first plan's price in Annual mode. Leave empty to hide."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BILLED_MONTHLY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Billed Monthly Note",
+          "DESCRIPTION": "Caption shown under the monthly price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_BILLED_ANNUAL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Billed Annual Note",
+          "DESCRIPTION": "Caption shown under the annual price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_STYLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 CTA Style",
+          "DESCRIPTION": "Visual style for the first plan CTA."
+        }
+      },
+      "value": "ghost",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 CTA URL",
+          "DESCRIPTION": "URL target for the first plan CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 CTA Label",
+          "DESCRIPTION": "Button label for the first plan CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_LIST_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature List Label",
+          "DESCRIPTION": "Accessible label for the first plan feature list."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_01",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature 1",
+          "DESCRIPTION": "First included feature for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_02",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature 2",
+          "DESCRIPTION": "Second included feature for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_03",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature 3",
+          "DESCRIPTION": "Third included feature for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_04",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature 4",
+          "DESCRIPTION": "Fourth included feature for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_FEATURE_05",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Feature 5",
+          "DESCRIPTION": "Optional fifth included feature for the first plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_01_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Disclaimer",
+          "DESCRIPTION": "Small disclaimer text for the first plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Card State",
+          "DESCRIPTION": "Visual state for the second plan card."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Visible",
+          "DESCRIPTION": "Whether the second plan card is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Kicker",
+          "DESCRIPTION": "Small label above the second plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Badge",
+          "DESCRIPTION": "Badge text for the second plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Name",
+          "DESCRIPTION": "Name of the second pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Subtitle",
+          "DESCRIPTION": "Short description for the second pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_PRICE_ARIA",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Price Accessible Label",
+          "DESCRIPTION": "Accessible label for the second plan price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CURRENCY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Currency",
+          "DESCRIPTION": "Currency symbol or prefix for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_MONTHLY_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Monthly Price",
+          "DESCRIPTION": "Monthly price display value for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_ANNUAL_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Annual Price",
+          "DESCRIPTION": "Annual billing price display value for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_PERIOD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Price Period",
+          "DESCRIPTION": "Price period label for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_SAVE_CHIP",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Save Chip",
+          "DESCRIPTION": "Chip text shown next to the second plan's price in Annual mode. Leave empty to hide."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BILLED_MONTHLY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Billed Monthly Note",
+          "DESCRIPTION": "Caption shown under the monthly price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_BILLED_ANNUAL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Billed Annual Note",
+          "DESCRIPTION": "Caption shown under the annual price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_STYLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 CTA Style",
+          "DESCRIPTION": "Visual style for the second plan CTA."
+        }
+      },
+      "value": "filled",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 CTA URL",
+          "DESCRIPTION": "URL target for the second plan CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 CTA Label",
+          "DESCRIPTION": "Button label for the second plan CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_LIST_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature List Label",
+          "DESCRIPTION": "Accessible label for the second plan feature list."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_01",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature 1",
+          "DESCRIPTION": "First included feature for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_02",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature 2",
+          "DESCRIPTION": "Second included feature for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_03",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature 3",
+          "DESCRIPTION": "Third included feature for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_04",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature 4",
+          "DESCRIPTION": "Fourth included feature for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_FEATURE_05",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Feature 5",
+          "DESCRIPTION": "Fifth included feature for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_02_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Disclaimer",
+          "DESCRIPTION": "Small disclaimer text for the second plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Card State",
+          "DESCRIPTION": "Visual state for the third plan card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Visible",
+          "DESCRIPTION": "Whether the third plan card is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Kicker",
+          "DESCRIPTION": "Small label above the third plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Badge",
+          "DESCRIPTION": "Badge text for the third plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Name",
+          "DESCRIPTION": "Name of the third pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Subtitle",
+          "DESCRIPTION": "Short description for the third pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_PRICE_ARIA",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Price Accessible Label",
+          "DESCRIPTION": "Accessible label for the third plan price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CURRENCY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Currency",
+          "DESCRIPTION": "Currency symbol or prefix for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_MONTHLY_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Monthly Price",
+          "DESCRIPTION": "Monthly price display value for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_ANNUAL_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Annual Price",
+          "DESCRIPTION": "Annual billing price display value for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_PERIOD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Price Period",
+          "DESCRIPTION": "Price period label for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_SAVE_CHIP",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Save Chip",
+          "DESCRIPTION": "Chip text shown next to the third plan's price in Annual mode. Leave empty to hide."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BILLED_MONTHLY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Billed Monthly Note",
+          "DESCRIPTION": "Caption shown under the monthly price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_BILLED_ANNUAL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Billed Annual Note",
+          "DESCRIPTION": "Caption shown under the annual price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_STYLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 CTA Style",
+          "DESCRIPTION": "Visual style for the third plan CTA."
+        }
+      },
+      "value": "primary",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 CTA URL",
+          "DESCRIPTION": "URL target for the third plan CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 CTA Label",
+          "DESCRIPTION": "Button label for the third plan CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_LIST_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature List Label",
+          "DESCRIPTION": "Accessible label for the third plan feature list."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_01",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature 1",
+          "DESCRIPTION": "First included feature for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_02",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature 2",
+          "DESCRIPTION": "Second included feature for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_03",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature 3",
+          "DESCRIPTION": "Third included feature for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_04",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature 4",
+          "DESCRIPTION": "Fourth included feature for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_FEATURE_05",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Feature 5",
+          "DESCRIPTION": "Fifth included feature for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_03_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Disclaimer",
+          "DESCRIPTION": "Small disclaimer text for the third plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Card State",
+          "DESCRIPTION": "Visual state for the fourth plan card."
+        }
+      },
+      "value": "muted",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Visible",
+          "DESCRIPTION": "Whether the fourth plan card is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Kicker",
+          "DESCRIPTION": "Small label above the fourth plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Badge",
+          "DESCRIPTION": "Badge text for the fourth plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Name",
+          "DESCRIPTION": "Name of the fourth pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Subtitle",
+          "DESCRIPTION": "Short description for the fourth pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_PRICE_ARIA",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Price Accessible Label",
+          "DESCRIPTION": "Accessible label for the fourth plan price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CURRENCY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Currency",
+          "DESCRIPTION": "Currency symbol or prefix for the fourth plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_MONTHLY_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Monthly Price",
+          "DESCRIPTION": "Monthly price display value for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_ANNUAL_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Annual Price",
+          "DESCRIPTION": "Annual billing price display value for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_PERIOD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Price Period",
+          "DESCRIPTION": "Price period label for the fourth plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_SAVE_CHIP",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Save Chip",
+          "DESCRIPTION": "Chip text shown next to the fourth plan's price in Annual mode. Empty by default — Enterprise is custom-quoted."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BILLED_MONTHLY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Billed Monthly Note",
+          "DESCRIPTION": "Caption shown under the monthly price for Enterprise."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_BILLED_ANNUAL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Billed Annual Note",
+          "DESCRIPTION": "Caption shown under the annual price for Enterprise."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_STYLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 CTA Style",
+          "DESCRIPTION": "Visual style for the fourth plan CTA."
+        }
+      },
+      "value": "ghost",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 CTA URL",
+          "DESCRIPTION": "URL target for the fourth plan CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 CTA Label",
+          "DESCRIPTION": "Button label for the fourth plan CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_LIST_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature List Label",
+          "DESCRIPTION": "Accessible label for the fourth plan feature list."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_01",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature 1",
+          "DESCRIPTION": "First included feature for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_02",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature 2",
+          "DESCRIPTION": "Second included feature for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_03",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature 3",
+          "DESCRIPTION": "Third included feature for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_04",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature 4",
+          "DESCRIPTION": "Fourth included feature for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_FEATURE_05",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Feature 5",
+          "DESCRIPTION": "Fifth included feature for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_04_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Disclaimer",
+          "DESCRIPTION": "Small disclaimer text for the fourth plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Card State",
+          "DESCRIPTION": "Visual state for the fifth plan card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Visible",
+          "DESCRIPTION": "Whether the fifth plan card is rendered. Hidden by default; flip to show when a fifth tier is needed."
+        }
+      },
+      "value": "hide",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Kicker",
+          "DESCRIPTION": "Small label above the fifth plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Badge",
+          "DESCRIPTION": "Badge text for the fifth plan card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Name",
+          "DESCRIPTION": "Name of the fifth pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Subtitle",
+          "DESCRIPTION": "Short description for the fifth pricing plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_PRICE_ARIA",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Price Accessible Label",
+          "DESCRIPTION": "Accessible label for the fifth plan price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CURRENCY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Currency",
+          "DESCRIPTION": "Currency symbol or prefix for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_MONTHLY_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Monthly Price",
+          "DESCRIPTION": "Monthly price display value for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_ANNUAL_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Annual Price",
+          "DESCRIPTION": "Annual billing price display value for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_PERIOD",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Price Period",
+          "DESCRIPTION": "Price period label for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_SAVE_CHIP",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Save Chip",
+          "DESCRIPTION": "Chip text shown next to the fifth plan's price in Annual mode. Leave empty to hide."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BILLED_MONTHLY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Billed Monthly Note",
+          "DESCRIPTION": "Caption shown under the monthly price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_BILLED_ANNUAL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Billed Annual Note",
+          "DESCRIPTION": "Caption shown under the annual price."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_STYLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 CTA Style",
+          "DESCRIPTION": "Visual style for the fifth plan CTA."
+        }
+      },
+      "value": "ghost",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ]
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 CTA URL",
+          "DESCRIPTION": "URL target for the fifth plan CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 CTA Label",
+          "DESCRIPTION": "Button label for the fifth plan CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_LIST_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature List Label",
+          "DESCRIPTION": "Accessible label for the fifth plan feature list."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_01",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature 1",
+          "DESCRIPTION": "First included feature for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_02",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature 2",
+          "DESCRIPTION": "Second included feature for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_03",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature 3",
+          "DESCRIPTION": "Third included feature for the fifth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_04",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature 4",
+          "DESCRIPTION": "Optional fourth feature for the fifth plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_FEATURE_05",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Feature 5",
+          "DESCRIPTION": "Optional fifth feature for the fifth plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_02_PRICING_PLANS_FLEX_PLAN_05_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 5 Disclaimer",
+          "DESCRIPTION": "Small disclaimer text for the fifth plan card."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    }
+  ]
+}

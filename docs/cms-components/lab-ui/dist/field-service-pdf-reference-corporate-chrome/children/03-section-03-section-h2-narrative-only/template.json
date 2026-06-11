@@ -1,0 +1,97 @@
+{
+  "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+  "nls": {
+    "en": {
+      "NAME": "Section · H2 narrative"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING_CORPORATE_CHROME_COMPARE"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--section-h2-narrative-only\" data-composition-block=\"section.h2-narrative-only\">\n<!-- lab-ui block · section.h2-narrative-only\n     H2 + 3 paragraphs. Canonical narrative/framing section for vertical\n     landings. Optional side glyph is supported via data-has-glyph=\"true\",\n     but the durable default is text-first.\n-->\n<section class=\"snarr\" data-block=\"section.h2-narrative-only\" data-has-glyph=\"false\">\n  <div class=\"container\">\n    <div class=\"snarr-grid\">\n      <div class=\"snarr-text\">\n        <p class=\"eyebrow\">${SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"snarr-title\">${SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE@LOCALIZED_STRING_SS}</h2>\n        <div class=\"snarr-body\">\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3@LOCALIZED_STRING_SS}</p>\n        </div>\n      </div>\n\n      <aside class=\"snarr-glyph\" aria-hidden=\"true\" data-glyph-slot>\n        <!-- Default glyph: orbit-ring AI radar (small). Swap via ${SECTION_03_SECTION_H2_NARRATIVE_ONLY_GLYPH_SVG@LOCALIZED_STRING_SS} or hide via data-has-glyph=\"false\" on section. -->\n        <svg viewBox=\"0 0 240 240\" preserveAspectRatio=\"xMidYMid meet\">\n          <defs>\n            <radialGradient id=\"snarrCenter\" cx=\"50%\" cy=\"50%\" r=\"50%\">\n              <stop offset=\"0%\" stop-color=\"#6BEAF9\" stop-opacity=\"0.55\"/>\n              <stop offset=\"60%\" stop-color=\"#6BEAF9\" stop-opacity=\"0.12\"/>\n              <stop offset=\"100%\" stop-color=\"#FFFFFF\" stop-opacity=\"0\"/>\n            </radialGradient>\n          </defs>\n          <circle cx=\"120\" cy=\"120\" r=\"100\" fill=\"url(#snarrCenter)\"/>\n          <circle cx=\"120\" cy=\"120\" r=\"70\" fill=\"none\" stroke=\"#6BC0F9\" stroke-opacity=\"0.35\" stroke-dasharray=\"2 6\"/>\n          <circle cx=\"120\" cy=\"120\" r=\"44\" fill=\"none\" stroke=\"#6BC0F9\" stroke-opacity=\"0.5\" stroke-dasharray=\"2 6\"/>\n          <circle cx=\"120\" cy=\"120\" r=\"10\" fill=\"#FFFFFF\" stroke=\"#6BC0F9\" stroke-opacity=\"0.6\"/>\n          <circle cx=\"120\" cy=\"120\" r=\"3\" fill=\"#6BC0F9\"/>\n        </svg>\n      </aside>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 09-vertical-section/section.h2-narrative-only/block.css */\n/* lab-ui block · section.h2-narrative-only\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.snarr {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.snarr .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.snarr-grid {\n  position: relative;\n  display: grid;\n  grid-template-columns: minmax(0, 1fr);\n  gap: clamp(2rem, 5vw, 4rem);\n  align-items: start;\n  max-width: 58rem;\n  padding-left: clamp(1rem, 2vw, 1.5rem);\n}\n.snarr-grid::before {\n  content: \"\";\n  position: absolute;\n  left: 0;\n  top: 0.35rem;\n  bottom: 0.35rem;\n  width: 3px;\n  border-radius: 999px;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n}\n.snarr[data-has-glyph=\"true\"] .snarr-grid {\n  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);\n  max-width: none;\n  align-items: center;\n}\n.snarr[data-has-glyph=\"false\"] .snarr-glyph {\n  display: none;\n}\n\n.snarr-text .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.snarr-title {\n  margin: 0 0 20px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.snarr-body { display: grid; gap: 14px; max-width: 42rem; }\n.snarr-body p {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n\n.snarr-glyph {\n  display: grid;\n  place-items: center;\n}\n.snarr-glyph svg {\n  width: 100%;\n  max-width: 360px;\n  height: auto;\n  display: block;\n}\n\n@media (max-width: 900px) {\n  .snarr-grid { grid-template-columns: 1fr; gap: 28px; }\n  .snarr[data-has-glyph=\"true\"] .snarr-grid { grid-template-columns: 1fr; }\n  .snarr-glyph { order: -1; }\n  .snarr-glyph svg { max-width: 220px; }\n}\n\n@media (max-width: 640px) {\n  .snarr-grid {\n    padding-left: 0;\n  }\n  .snarr-grid::before {\n    top: -1.25rem;\n    bottom: auto;\n    width: 4.5rem;\n    height: 3px;\n  }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 1",
+          "DESCRIPTION": "Text value for the Lede 1 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 2",
+          "DESCRIPTION": "Text value for the Lede 2 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 3",
+          "DESCRIPTION": "Text value for the Lede 3 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_GLYPH_SVG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Glyph Svg",
+          "DESCRIPTION": "Text value for the Glyph Svg field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    }
+  ]
+}

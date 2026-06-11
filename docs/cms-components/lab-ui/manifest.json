@@ -7,12 +7,12 @@
     {
       "id": "01-header",
       "label": "01 · Header",
-      "count": 1
+      "count": 2
     },
     {
       "id": "02-footer",
       "label": "02 · Footer",
-      "count": 1
+      "count": 2
     },
     {
       "id": "03-cta",
@@ -77,6 +77,20 @@
   ],
   "blocks": [
     {
+      "id": "header.corporate-reference",
+      "category": "01-header",
+      "path": "01-header/header.corporate-reference",
+      "title": "Header · corporate reference",
+      "description": "Reference header imported from the Corporate Landing CMS template with nested menu and locale fragments expanded for comparison with the lab-ui canonical header.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "CMS template 3eab232f-9567-4535-a1bf-c59ab746da58 · HEADER",
+      "preview": {},
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
       "id": "header.default",
       "category": "01-header",
       "path": "01-header/header.default",
@@ -89,6 +103,20 @@
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "footer.corporate-reference",
+      "category": "02-footer",
+      "path": "02-footer/footer.corporate-reference",
+      "title": "Footer · corporate reference",
+      "description": "Reference footer imported from the Corporate Landing CMS template with its nested footer fragments expanded into one lab-ui block.",
+      "canonical": false,
+      "theme": "dark-image",
+      "sourceLabel": "CMS template 3eab232f-9567-4535-a1bf-c59ab746da58 · FOOTER",
+      "preview": {},
       "previewVariants": [],
       "background": null,
       "hasJs": true
@@ -447,7 +475,7 @@
       "category": "08-faq",
       "path": "08-faq/faq.bubble-light-grouped",
       "title": "FAQ · bubble light grouped",
-      "description": "FAQ section organized into 4 categories × 5 questions (20 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship 1 group of 3 questions just as easily as 4 groups of 5.",
+      "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship a partial FAQ without touching markup.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/Lorem ipsum/src/sections-3.jsx (FAQGrouped)",

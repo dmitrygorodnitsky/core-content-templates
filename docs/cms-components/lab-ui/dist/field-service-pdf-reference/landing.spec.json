@@ -65,7 +65,32 @@
     }
   ],
   "sections": [
-    "header.default",
+    {
+      "block": "header.corporate-reference",
+      "values": {
+        "demo_request_label": "Lorem Ipsum",
+        "locale_selector_dropdown_aria_label": "Lorem Ipsum",
+        "locale_selector_trigger_label": "Lorem Ipsum",
+        "logo_aria_label": "Lorem Ipsum",
+        "menu_how_it_works": "Lorem Ipsum",
+        "menu_industries": "Lorem Ipsum",
+        "menu_panel_cta_label": "Lorem Ipsum",
+        "menu_panel_subtext": "Lorem Ipsum",
+        "menu_panel_text": "Lorem Ipsum",
+        "menu_panel_title": "Lorem Ipsum",
+        "menu_partners": "Lorem Ipsum",
+        "menu_platform": "Lorem Ipsum",
+        "menu_resource_description": "Lorem Ipsum",
+        "menu_resource_title": "Lorem Ipsum",
+        "menu_resources": "Lorem Ipsum",
+        "nav_faq": "Lorem Ipsum",
+        "nav_how_it_works": "Lorem Ipsum",
+        "nav_industries": "Lorem Ipsum",
+        "nav_partners": "Lorem Ipsum",
+        "nav_platform": "Lorem Ipsum",
+        "open_menu_label": "Lorem Ipsum"
+      }
+    },
     "hero.composite-photo",
     "section.h2-narrative-only",
     "features.card-grid-4",
@@ -83,7 +108,12 @@
     "section.axes-grid",
     "faq.bubble-light-grouped",
     "decorative.final-cta",
-    "footer.default"
+    {
+      "block": "footer.corporate-reference",
+      "values": {
+        "bg_pic": "728d0287-96c3-4430-b830-477f87d5ac5e"
+      }
+    }
   ],
   "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference.spec.json"
 }

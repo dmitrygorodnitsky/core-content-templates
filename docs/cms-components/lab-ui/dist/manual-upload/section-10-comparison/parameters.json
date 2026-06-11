@@ -1,0 +1,1874 @@
+[
+  {
+    "code": "COMPARE_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "COMPARE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "COMPARE_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede",
+        "DESCRIPTION": "Text value for the Lede field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "COMPARE_COLUMN_COUNT",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Column Count",
+        "DESCRIPTION": "Controls how many comparison product columns are visible in Comparison · the platform matrix. Allowed values: 2, 3, 4, 5, 6."
+      }
+    },
+    "value": "2",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ]
+  },
+  {
+    "code": "COMPARE_COL_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 01 Name",
+        "DESCRIPTION": "Text value for the Col 01 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "COMPARE_COL_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 02 Name",
+        "DESCRIPTION": "Text value for the Col 02 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "COMPARE_COL_3_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 03 Name",
+        "DESCRIPTION": "Text value for the Col 03 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "COMPARE_COL_4_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 04 Name",
+        "DESCRIPTION": "Text value for the Col 04 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "COMPARE_COL_5_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 05 Name",
+        "DESCRIPTION": "Text value for the Col 05 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "COMPARE_COL_6_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Col 06 Name",
+        "DESCRIPTION": "Text value for the Col 06 Name field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Capability",
+        "DESCRIPTION": "Text value for the Slot 01 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "COMPARE_1_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 01",
+        "DESCRIPTION": "Text value for the Slot 01 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "COMPARE_1_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 02",
+        "DESCRIPTION": "Text value for the Slot 01 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "COMPARE_1_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 03",
+        "DESCRIPTION": "Text value for the Slot 01 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "COMPARE_1_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 04",
+        "DESCRIPTION": "Text value for the Slot 01 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "COMPARE_1_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 05",
+        "DESCRIPTION": "Text value for the Slot 01 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "COMPARE_1_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 01 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_1_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Col 06",
+        "DESCRIPTION": "Text value for the Slot 01 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Capability",
+        "DESCRIPTION": "Text value for the Slot 02 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum."
+    }
+  },
+  {
+    "code": "COMPARE_2_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 01",
+        "DESCRIPTION": "Text value for the Slot 02 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "COMPARE_2_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 02",
+        "DESCRIPTION": "Text value for the Slot 02 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "COMPARE_2_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 03",
+        "DESCRIPTION": "Text value for the Slot 02 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "COMPARE_2_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 04",
+        "DESCRIPTION": "Text value for the Slot 02 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "COMPARE_2_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 05",
+        "DESCRIPTION": "Text value for the Slot 02 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "COMPARE_2_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 02 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_2_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Col 06",
+        "DESCRIPTION": "Text value for the Slot 02 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Capability",
+        "DESCRIPTION": "Text value for the Slot 03 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "COMPARE_3_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 01",
+        "DESCRIPTION": "Text value for the Slot 03 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "COMPARE_3_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 02",
+        "DESCRIPTION": "Text value for the Slot 03 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "COMPARE_3_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 03",
+        "DESCRIPTION": "Text value for the Slot 03 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "COMPARE_3_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 04",
+        "DESCRIPTION": "Text value for the Slot 03 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "COMPARE_3_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 05",
+        "DESCRIPTION": "Text value for the Slot 03 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "COMPARE_3_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 03 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_3_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Col 06",
+        "DESCRIPTION": "Text value for the Slot 03 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Capability",
+        "DESCRIPTION": "Text value for the Slot 04 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "COMPARE_4_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 01",
+        "DESCRIPTION": "Text value for the Slot 04 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "COMPARE_4_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 02",
+        "DESCRIPTION": "Text value for the Slot 04 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "COMPARE_4_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 03",
+        "DESCRIPTION": "Text value for the Slot 04 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "COMPARE_4_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 04",
+        "DESCRIPTION": "Text value for the Slot 04 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "COMPARE_4_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 05",
+        "DESCRIPTION": "Text value for the Slot 04 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "COMPARE_4_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 04 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_4_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Col 06",
+        "DESCRIPTION": "Text value for the Slot 04 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Capability",
+        "DESCRIPTION": "Text value for the Slot 05 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet."
+    }
+  },
+  {
+    "code": "COMPARE_5_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 01",
+        "DESCRIPTION": "Text value for the Slot 05 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "COMPARE_5_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 02",
+        "DESCRIPTION": "Text value for the Slot 05 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "COMPARE_5_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 03",
+        "DESCRIPTION": "Text value for the Slot 05 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "COMPARE_5_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 04",
+        "DESCRIPTION": "Text value for the Slot 05 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "COMPARE_5_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 05",
+        "DESCRIPTION": "Text value for the Slot 05 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "COMPARE_5_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 05 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_5_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Col 06",
+        "DESCRIPTION": "Text value for the Slot 05 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Capability",
+        "DESCRIPTION": "Text value for the Slot 06 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
+    }
+  },
+  {
+    "code": "COMPARE_6_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 01",
+        "DESCRIPTION": "Text value for the Slot 06 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "COMPARE_6_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 02",
+        "DESCRIPTION": "Text value for the Slot 06 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "COMPARE_6_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 03",
+        "DESCRIPTION": "Text value for the Slot 06 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "COMPARE_6_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 04",
+        "DESCRIPTION": "Text value for the Slot 06 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "COMPARE_6_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 05",
+        "DESCRIPTION": "Text value for the Slot 06 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "COMPARE_6_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 06 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_6_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Col 06",
+        "DESCRIPTION": "Text value for the Slot 06 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_7",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Capability",
+        "DESCRIPTION": "Text value for the Slot 07 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "COMPARE_7_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 01",
+        "DESCRIPTION": "Text value for the Slot 07 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "COMPARE_7_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 02",
+        "DESCRIPTION": "Text value for the Slot 07 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "COMPARE_7_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 03",
+        "DESCRIPTION": "Text value for the Slot 07 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "COMPARE_7_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 04",
+        "DESCRIPTION": "Text value for the Slot 07 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "COMPARE_7_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "cross",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 05",
+        "DESCRIPTION": "Text value for the Slot 07 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "COMPARE_7_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 07 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_7_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Col 06",
+        "DESCRIPTION": "Text value for the Slot 07 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_8",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Capability",
+        "DESCRIPTION": "Text value for the Slot 08 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "COMPARE_8_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 01",
+        "DESCRIPTION": "Text value for the Slot 08 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "COMPARE_8_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 02",
+        "DESCRIPTION": "Text value for the Slot 08 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "COMPARE_8_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 03",
+        "DESCRIPTION": "Text value for the Slot 08 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "COMPARE_8_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 04",
+        "DESCRIPTION": "Text value for the Slot 08 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "COMPARE_8_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 05",
+        "DESCRIPTION": "Text value for the Slot 08 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "COMPARE_8_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 08 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_8_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Col 06",
+        "DESCRIPTION": "Text value for the Slot 08 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "COMPARE_ROW_9",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Capability",
+        "DESCRIPTION": "Text value for the Slot 09 Capability field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "COMPARE_9_1_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 01 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 01 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "check",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 01",
+        "DESCRIPTION": "Text value for the Slot 09 Col 01 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "COMPARE_9_2_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 02 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 02 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 02",
+        "DESCRIPTION": "Text value for the Slot 09 Col 02 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "COMPARE_9_3_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 03 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 03 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 03",
+        "DESCRIPTION": "Text value for the Slot 09 Col 03 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "COMPARE_9_4_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 04 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 04 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 04",
+        "DESCRIPTION": "Text value for the Slot 09 Col 04 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "COMPARE_9_5_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 05 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 05 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 05",
+        "DESCRIPTION": "Text value for the Slot 09 Col 05 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  },
+  {
+    "code": "COMPARE_9_6_ICON",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 06 Icon",
+        "DESCRIPTION": "Icon state for the Slot 09 Col 06 field in Comparison · the platform matrix. Allowed values: check, neutral, cross, none."
+      }
+    },
+    "value": "neutral",
+    "options": [
+      "check",
+      "neutral",
+      "cross",
+      "none"
+    ]
+  },
+  {
+    "code": "COMPARE_9_6",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Col 06",
+        "DESCRIPTION": "Text value for the Slot 09 Col 06 field in Comparison · the platform matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  }
+]

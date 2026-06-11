@@ -1,0 +1,470 @@
+[
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 1 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 Num",
+        "DESCRIPTION": "Text value for the Axis 1 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 Label",
+        "DESCRIPTION": "Text value for the Axis 1 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 From",
+        "DESCRIPTION": "Text value for the Axis 1 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 To",
+        "DESCRIPTION": "Text value for the Axis 1 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_1_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 1 Body",
+        "DESCRIPTION": "Text value for the Axis 1 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 2 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 Num",
+        "DESCRIPTION": "Text value for the Axis 2 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 Label",
+        "DESCRIPTION": "Text value for the Axis 2 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 From",
+        "DESCRIPTION": "Text value for the Axis 2 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 To",
+        "DESCRIPTION": "Text value for the Axis 2 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_2_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 2 Body",
+        "DESCRIPTION": "Text value for the Axis 2 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 3 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 Num",
+        "DESCRIPTION": "Text value for the Axis 3 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 Label",
+        "DESCRIPTION": "Text value for the Axis 3 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 From",
+        "DESCRIPTION": "Text value for the Axis 3 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 To",
+        "DESCRIPTION": "Text value for the Axis 3 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_3_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 3 Body",
+        "DESCRIPTION": "Text value for the Axis 3 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 4 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 Num",
+        "DESCRIPTION": "Text value for the Axis 4 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 Label",
+        "DESCRIPTION": "Text value for the Axis 4 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 From",
+        "DESCRIPTION": "Text value for the Axis 4 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 To",
+        "DESCRIPTION": "Text value for the Axis 4 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_4_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 4 Body",
+        "DESCRIPTION": "Text value for the Axis 4 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 5 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 Num",
+        "DESCRIPTION": "Text value for the Axis 5 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 Label",
+        "DESCRIPTION": "Text value for the Axis 5 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 From",
+        "DESCRIPTION": "Text value for the Axis 5 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 To",
+        "DESCRIPTION": "Text value for the Axis 5 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_5_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 5 Body",
+        "DESCRIPTION": "Text value for the Axis 5 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_LABEL_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow text shown before the axis 6 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 Num",
+        "DESCRIPTION": "Text value for the Axis 6 Num field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 Label",
+        "DESCRIPTION": "Text value for the Axis 6 Label field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_FROM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 From",
+        "DESCRIPTION": "Text value for the Axis 6 From field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_TO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 To",
+        "DESCRIPTION": "Text value for the Axis 6 To field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_11_SECTION_AXES_GRID_AXIS_6_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Axis 6 Body",
+        "DESCRIPTION": "Text value for the Axis 6 Body field in Section · Axes grid (multi-axis from→to)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna."
+    }
+  }
+]

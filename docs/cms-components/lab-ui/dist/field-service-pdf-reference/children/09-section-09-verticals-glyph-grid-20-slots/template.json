@@ -11,9 +11,9 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"composition-section composition-section--verticals-glyph-grid-20-slots\" data-composition-block=\"verticals.glyph-grid-20-slots\">\n<!-- lab-ui block · verticals.glyph-grid-20-slots\n     Signature industry catalog. Photo-card pattern adapted from the\n     Lorem ipsum hub: uniform photo-card catalog with editable status\n     labels and CTAs across 20 CMS-addressable slots.\n-->\n<section class=\"verticals\" data-block=\"verticals.glyph-grid-20-slots\" aria-labelledby=\"verticals-heading\">\n  <div class=\"container\">\n    <header class=\"verticals-head\">\n      <p class=\"eyebrow\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 id=\"verticals-heading\" class=\"verticals-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"verticals-lede\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_LEDE@LOCALIZED_STRING_SS}</p>\n      <p class=\"verticals-body\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_BODY@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"verticals-grid\" role=\"list\">\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\" aria-label=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE@LOCALIZED_STRING_SS} — ${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL@LOCALIZED_STRING_SS}\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <!-- Spare slots, hidden until CMS/admin fills the title. -->\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n    </div>\n  </div>\n</section>\n\n</section>",
-  "css": "/* generated child CSS: 10-verticals-grid/verticals.glyph-grid-20-slots/block.css */\n/* lab-ui block · verticals.glyph-grid-20-slots\n   Depends: 00-tokens/tokens.css. Light theme.\n   20-slot industry card catalog. 13 filled + 7 hidden by default. */\n\n.verticals {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.verticals .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.verticals-head {\n  max-width: 58rem;\n  margin-bottom: clamp(2.5rem, 4.5vw, 4rem);\n}\n.verticals-head .eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 1.75rem;\n}\n.verticals-title {\n  max-width: 64rem;\n  font-weight: 600;\n  font-size: clamp(2.45rem, 4.3vw, 4.65rem);\n  line-height: 1.03;\n  letter-spacing: -0.045em;\n  color: var(--color-heading);\n  margin: 0 0 1.65rem;\n}\n.verticals-lede,\n.verticals-body {\n  font-size: clamp(1rem, 1.2vw, 1.25rem);\n  line-height: 1.5;\n  color: var(--color-text);\n  margin: 0;\n  max-width: 62rem;\n}\n.verticals-body {\n  margin-top: 1.35rem;\n  max-width: 54rem;\n  font-size: clamp(0.9375rem, 1vw, 1.0625rem);\n}\n\n.verticals-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 0.75rem;\n}\n\n.vertical-card {\n  position: relative;\n  isolation: isolate;\n  min-width: 0;\n  min-height: 420px;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: var(--radius-card, 1.25rem);\n  border: 1px solid rgba(15, 17, 22, 0.08);\n  background: var(--color-white);\n  color: inherit;\n  text-decoration: none;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    border-color var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover {\n  background: #f4f5f8;\n  border-color: rgba(15, 17, 22, 0.16);\n  transform: translate3d(0, -2px, 0);\n  box-shadow:\n    0 20px 48px -30px rgba(15, 17, 22, 0.28),\n    0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n.vertical-card[hidden] { display: none; }\n\n.vertical-card::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  z-index: 0;\n  border-radius: inherit;\n  pointer-events: none;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  mix-blend-mode: screen;\n  transition: opacity var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover::before {\n  opacity: 0.48;\n}\n.vertical-card > * {\n  position: relative;\n  z-index: 1;\n}\n\n.vertical-photo {\n  position: relative;\n  display: block;\n  width: 100%;\n  aspect-ratio: 16 / 10;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: calc(var(--radius-card, 1.25rem) - 1px) calc(var(--radius-card, 1.25rem) - 1px) 0 0;\n  border-bottom: 1px solid rgba(15, 17, 22, 0.08);\n  background-color: #eff1f4;\n  background-image:\n    radial-gradient(circle at 25% 20%, rgba(107, 234, 249, 0.06), transparent 60%),\n    repeating-linear-gradient(135deg,\n      rgba(15, 17, 22, 0.035) 0 7px,\n      rgba(15, 17, 22, 0.06) 7px 14px);\n}\n.vertical-photo-img {\n  position: absolute;\n  inset: 0;\n  z-index: 2;\n  display: block;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.vertical-photo-img[src=\"\"],\n.vertical-photo-img[src=\"#\"],\n.vertical-photo-img[src^=\"/core/image//\"],\n.vertical-photo-img[src$=\"/get\"],\n.vertical-photo-img[src$=\"/get/\"],\n.vertical-photo-img[src*=\"/get//\"] {\n  opacity: 0;\n}\n.vertical-photo-img[src]:not([src=\"\"]):not([src=\"#\"]):not([src^=\"/core/image//\"]):not([src$=\"/get\"]):not([src$=\"/get/\"]):not([src*=\"/get//\"]) + .vertical-photo-meta {\n  display: none;\n}\n.vertical-photo-meta {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  pointer-events: none;\n  padding: 0.75rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 0.375rem;\n  text-align: center;\n  font-family: var(--font-mono);\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n}\n.vertical-photo-meta .dim {\n  color: var(--color-gray-blue);\n  font-size: 0.6875rem;\n}\n.vertical-photo-meta .hint {\n  max-width: 24ch;\n  color: var(--color-gray-second);\n  font-size: 0.6875rem;\n  line-height: 1.4;\n}\n.vertical-body {\n  position: relative;\n  z-index: 2;\n  flex: 1;\n  padding: 1.25rem 1.5rem 1.5rem;\n  display: flex;\n  flex-direction: column;\n  background: var(--color-white);\n}\n.vertical-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.125rem;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -0.015em;\n}\n.vertical-desc {\n  margin: 0.65rem 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n  line-height: 1.5;\n}\n.vertical-foot {\n  margin-top: auto;\n  padding-top: 1.35rem;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.75rem;\n}\n\n.vertical-status {\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-gray-second);\n}\n.vertical-waitlist-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.4rem;\n  min-height: 2.25rem;\n  padding: 0 0.875rem;\n  border-radius: 999px;\n  border: 0;\n  background: var(--color-heading);\n  color: var(--color-bg);\n  font: inherit;\n  font-size: 0.8125rem;\n  font-weight: 500;\n  letter-spacing: -0.005em;\n  white-space: nowrap;\n  text-decoration: none;\n  cursor: pointer;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    color var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, #ffffff);\n  transform: translateY(-1px);\n  box-shadow: 0 0 32px -8px var(--cta-accent, #6BEAF9);\n}\n.vertical-waitlist-btn svg {\n  flex: 0 0 auto;\n  transition: transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover svg {\n  transform: translate(2px, -2px);\n}\n\n@media (max-width: 1180px) {\n  .verticals-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n}\n@media (max-width: 880px) {\n  .verticals-title { max-width: 13ch; }\n  .verticals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n}\n@media (max-width: 560px) {\n  .verticals-grid { grid-template-columns: 1fr; }\n  .vertical-card { min-height: 0; }\n  .vertical-foot { align-items: flex-end; }\n}\n",
-  "javascript": "/* generated child JS: 10-verticals-grid/verticals.glyph-grid-20-slots/block.js */\n// lab-ui block · verticals.glyph-grid-20-slots\n// Hides cards whose title text is empty (so CMS-side \"clear a slot\" auto-removes\n// the card without touching markup). Idempotent.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card')\n      .forEach((card) => {\n        const title = card.querySelector(\".vertical-title\")?.textContent?.trim();\n        if (!title || /^\\{\\{slot_\\d+_title\\}\\}$/.test(title)) card.hidden = true;\n        else card.hidden = false;\n      });\n  });\n})();\n",
+  "html": "<section class=\"composition-section composition-section--verticals-glyph-grid-20-slots\" data-composition-block=\"verticals.glyph-grid-20-slots\">\n<!-- lab-ui block · verticals.glyph-grid-20-slots\n     Signature industry catalog. Photo-card pattern adapted from the\n     Lorem ipsum hub: uniform photo-card catalog with editable status\n     labels and CTAs across 20 CMS-addressable slots.\n-->\n<section class=\"verticals\" data-block=\"verticals.glyph-grid-20-slots\" aria-labelledby=\"verticals-heading\">\n  <div class=\"container\">\n    <header class=\"verticals-head\">\n      <p class=\"eyebrow\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 id=\"verticals-heading\" class=\"verticals-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"verticals-lede\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_LEDE@LOCALIZED_STRING_SS}</p>\n      <p class=\"verticals-body\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_BODY@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"verticals-grid\" role=\"list\">\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <article class=\"vertical-card\" role=\"listitem\">\n        <span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_PHOTO@LOCALIZED_STRING_SS}</span></span></span>\n        <div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div>\n      </article>\n\n      <!-- Spare slots, hidden until CMS/admin fills the title. -->\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n      <article class=\"vertical-card\" role=\"listitem\" hidden><span class=\"vertical-photo\"><img class=\"vertical-photo-img\" src=\"/core/image/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_URL@IMAGE}/get/${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_NAME@STRING}\" alt=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_ALT@LOCALIZED_STRING_SS}\" loading=\"lazy\" decoding=\"async\" width=\"1280\" height=\"800\"><span class=\"vertical-photo-meta\"><span class=\"dim\">640 × 400</span><span class=\"hint\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_PHOTO@LOCALIZED_STRING_SS}</span></span></span><div class=\"vertical-body\"><h3 class=\"vertical-title\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_TITLE@LOCALIZED_STRING_SS}</h3><p class=\"vertical-desc\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_DESC@LOCALIZED_STRING_SS}</p><span class=\"vertical-foot\"><span class=\"vertical-status badge-soon\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_STATUS_LABEL@LOCALIZED_STRING_SS}</span><a class=\"vertical-waitlist-btn\" href=\"${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_HREF@STRING}\">${SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_CTA_LABEL@LOCALIZED_STRING_SS} <svg width=\"10\" height=\"10\" viewBox=\"0 0 12 12\" fill=\"none\"><path d=\"M3 9L9 3M9 3H4M9 3v5\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"/></svg></a></span></div></article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 10-verticals-grid/verticals.glyph-grid-20-slots/block.css */\n/* lab-ui block · verticals.glyph-grid-20-slots\n   Depends: 00-tokens/tokens.css. Light theme.\n   20-slot industry card catalog. 13 filled + 7 hidden by default. */\n\n.verticals {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.verticals .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.verticals-head {\n  max-width: 58rem;\n  margin-bottom: clamp(2.5rem, 4.5vw, 4rem);\n}\n.verticals-head .eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 1.75rem;\n}\n.verticals-title {\n  max-width: 64rem;\n  font-weight: 600;\n  font-size: clamp(2.45rem, 4.3vw, 4.65rem);\n  line-height: 1.03;\n  letter-spacing: -0.045em;\n  color: var(--color-heading);\n  margin: 0 0 1.65rem;\n}\n.verticals-lede,\n.verticals-body {\n  font-size: clamp(1rem, 1.2vw, 1.25rem);\n  line-height: 1.5;\n  color: var(--color-text);\n  margin: 0;\n  max-width: 62rem;\n}\n.verticals-body {\n  margin-top: 1.35rem;\n  max-width: 54rem;\n  font-size: clamp(0.9375rem, 1vw, 1.0625rem);\n}\n\n.verticals-grid {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 0.75rem;\n}\n\n.vertical-card {\n  position: relative;\n  isolation: isolate;\n  min-width: 0;\n  min-height: 420px;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: var(--radius-card, 1.25rem);\n  border: 1px solid rgba(15, 17, 22, 0.08);\n  background: var(--color-white);\n  color: inherit;\n  text-decoration: none;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    border-color var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover {\n  background: #f4f5f8;\n  border-color: rgba(15, 17, 22, 0.16);\n  transform: translate3d(0, -2px, 0);\n  box-shadow:\n    0 20px 48px -30px rgba(15, 17, 22, 0.28),\n    0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n.vertical-card[hidden] { display: none; }\n\n.vertical-card::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  z-index: 0;\n  border-radius: inherit;\n  pointer-events: none;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  mix-blend-mode: screen;\n  transition: opacity var(--transition-duration, 0.25s) ease;\n}\n.vertical-card:hover::before {\n  opacity: 0.48;\n}\n.vertical-card > * {\n  position: relative;\n  z-index: 1;\n}\n\n.vertical-photo {\n  position: relative;\n  flex: 0 0 auto;\n  display: block;\n  width: 100%;\n  aspect-ratio: 16 / 10;\n  overflow: hidden;\n  transform: translateZ(0);\n  backface-visibility: hidden;\n  border-radius: calc(var(--radius-card, 1.25rem) - 1px) calc(var(--radius-card, 1.25rem) - 1px) 0 0;\n  border-bottom: 1px solid rgba(15, 17, 22, 0.08);\n  background-color: #eff1f4;\n  background-image:\n    radial-gradient(circle at 25% 20%, rgba(107, 234, 249, 0.06), transparent 60%),\n    repeating-linear-gradient(135deg,\n      rgba(15, 17, 22, 0.035) 0 7px,\n      rgba(15, 17, 22, 0.06) 7px 14px);\n}\n.vertical-desc[hidden],\n.vertical-foot[hidden],\n.vertical-status[hidden],\n.vertical-waitlist-btn[hidden],\n.vertical-photo-meta .hint[hidden] {\n  display: none;\n}\n.vertical-photo-img {\n  position: absolute;\n  inset: 0;\n  z-index: 2;\n  display: block;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.vertical-photo-img:not([src]),\n.vertical-photo-img[src=\"\"],\n.vertical-photo-img[src=\"#\"],\n.vertical-photo-img[src^=\"/core/image//\"],\n.vertical-photo-img[src^=\"/core/image/null\"],\n.vertical-photo-img[src^=\"/core/image/undefined\"],\n.vertical-photo-img[src$=\"/get\"],\n.vertical-photo-img[src$=\"/get/\"],\n.vertical-photo-img[src*=\"/get//\"] {\n  opacity: 0;\n}\n.vertical-photo-img[src]:not([src=\"\"]):not([src=\"#\"]):not([src^=\"/core/image//\"]):not([src^=\"/core/image/null\"]):not([src^=\"/core/image/undefined\"]):not([src$=\"/get\"]):not([src$=\"/get/\"]):not([src*=\"/get//\"]) + .vertical-photo-meta {\n  display: none;\n}\n.vertical-photo-meta {\n  position: absolute;\n  inset: 0;\n  z-index: 1;\n  pointer-events: none;\n  padding: 0.75rem;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 0.375rem;\n  text-align: center;\n  font-family: var(--font-mono);\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n}\n.vertical-photo-meta .dim {\n  color: var(--color-gray-blue);\n  font-size: 0.6875rem;\n}\n.vertical-photo-meta .hint {\n  max-width: 24ch;\n  color: var(--color-gray-second);\n  font-size: 0.6875rem;\n  line-height: 1.4;\n}\n.vertical-body {\n  position: relative;\n  z-index: 2;\n  flex: 1;\n  min-height: 0;\n  padding: 1.25rem 1.5rem 1.5rem;\n  display: flex;\n  flex-direction: column;\n  background: var(--color-white);\n}\n.vertical-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.125rem;\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -0.015em;\n}\n.vertical-desc {\n  margin: 0.65rem 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n  line-height: 1.5;\n}\n.vertical-foot {\n  margin-top: auto;\n  padding-top: 1.35rem;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 0.75rem;\n}\n\n.vertical-status {\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  color: var(--color-gray-second);\n}\n.vertical-waitlist-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.4rem;\n  min-height: 2.25rem;\n  padding: 0 0.875rem;\n  border-radius: 999px;\n  border: 0;\n  background: var(--color-heading);\n  color: var(--color-bg);\n  font: inherit;\n  font-size: 0.8125rem;\n  font-weight: 500;\n  letter-spacing: -0.005em;\n  white-space: nowrap;\n  text-decoration: none;\n  cursor: pointer;\n  transition:\n    background var(--transition-duration, 0.25s) ease,\n    color var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease,\n    box-shadow var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, #ffffff);\n  transform: translateY(-1px);\n  box-shadow: 0 0 32px -8px var(--cta-accent, #6BEAF9);\n}\n.vertical-waitlist-btn svg {\n  flex: 0 0 auto;\n  transition: transform var(--transition-duration, 0.25s) ease;\n}\n.vertical-waitlist-btn:hover svg {\n  transform: translate(2px, -2px);\n}\n\n@media (max-width: 1180px) {\n  .verticals-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }\n}\n@media (max-width: 880px) {\n  .verticals-title { max-width: 13ch; }\n  .verticals-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }\n}\n@media (max-width: 560px) {\n  .verticals-grid { grid-template-columns: 1fr; }\n  .vertical-card { min-height: 0; }\n  .vertical-foot { align-items: flex-end; }\n}\n",
+  "javascript": "/* generated child JS: 10-verticals-grid/verticals.glyph-grid-20-slots/block.js */\n// lab-ui block · verticals.glyph-grid-20-slots\n// Hides only empty cards and optional empty card controls. Idempotent.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isBlankOrPlaceholder = (value) => {\n    const text = String(value || \"\").trim();\n    return !text || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(text);\n  };\n\n  const isEmptyHref = (value) => {\n    const href = String(value || \"\").trim();\n    return isBlankOrPlaceholder(href) || href === \"#\";\n  };\n\n  const setHiddenWhenEmpty = (element) => {\n    if (!element) return true;\n    const shouldHide = isBlankOrPlaceholder(element.textContent);\n    element.hidden = shouldHide;\n    return shouldHide;\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card')\n      .forEach((card) => {\n        const title = card.querySelector(\".vertical-title\")?.textContent?.trim();\n        if (isBlankOrPlaceholder(title)) {\n          card.hidden = true;\n          return;\n        }\n\n        card.hidden = false;\n        setHiddenWhenEmpty(card.querySelector(\".vertical-desc\"));\n        const statusHidden = setHiddenWhenEmpty(card.querySelector(\".vertical-status\"));\n        const photoHint = card.querySelector(\".vertical-photo-meta .hint\");\n        if (photoHint) photoHint.hidden = isBlankOrPlaceholder(photoHint.textContent);\n\n        const cta = card.querySelector(\".vertical-waitlist-btn\");\n        const ctaHidden =\n          !cta || isBlankOrPlaceholder(cta.textContent) || isEmptyHref(cta.getAttribute(\"href\"));\n        if (cta) cta.hidden = ctaHidden;\n\n        const foot = card.querySelector(\".vertical-foot\");\n        if (foot) foot.hidden = statusHidden && ctaHidden;\n      });\n  });\n})();\n",
   "parameters": [
     {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_EYEBROW",
@@ -68,32 +68,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 01 Title",
-          "DESCRIPTION": "Text value for the Slot 01 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum cillum."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 01 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 1."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum sit."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -114,7 +88,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna aliqua enim ad."
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
       }
     },
     {
@@ -127,7 +101,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Title",
+          "DESCRIPTION": "Text value for the Slot 01 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
       }
     },
     {
@@ -140,7 +127,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 1."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
       }
     },
     {
@@ -168,32 +168,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 02 Title",
-          "DESCRIPTION": "Text value for the Slot 02 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum elit."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 02 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 2."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum labore."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -214,7 +188,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nisi aliquip ex ea."
+        "en": "Lorem Ipsum labore et dolore magna."
       }
     },
     {
@@ -227,7 +201,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Title",
+          "DESCRIPTION": "Text value for the Slot 02 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
       }
     },
     {
@@ -240,7 +227,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 2."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
       }
     },
     {
@@ -268,32 +268,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 03 Title",
-          "DESCRIPTION": "Text value for the Slot 03 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum aliqua."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 03 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 3."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum exercitation."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -314,7 +288,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum velit esse cillum fugiat."
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
       }
     },
     {
@@ -327,7 +301,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+        "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Title",
+          "DESCRIPTION": "Text value for the Slot 03 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit."
       }
     },
     {
@@ -340,7 +327,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+        "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 3."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
       }
     },
     {
@@ -368,32 +368,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 04 Title",
-          "DESCRIPTION": "Text value for the Slot 04 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum aliquip."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 04 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 4."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum irure."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -414,7 +388,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
       }
     },
     {
@@ -427,7 +401,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Title",
+          "DESCRIPTION": "Text value for the Slot 04 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur."
       }
     },
     {
@@ -440,7 +427,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+        "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 4."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim."
       }
     },
     {
@@ -468,32 +468,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 05 Title",
-          "DESCRIPTION": "Text value for the Slot 05 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum esse."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 05 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 5."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum dolor."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -514,7 +488,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolore magna aliqua enim."
+        "en": "Lorem Ipsum dolor sit amet consectetur."
       }
     },
     {
@@ -527,7 +501,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+        "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Title",
+          "DESCRIPTION": "Text value for the Slot 05 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
       }
     },
     {
@@ -540,7 +527,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 5."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
       }
     },
     {
@@ -568,32 +568,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 06 Title",
-          "DESCRIPTION": "Text value for the Slot 06 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum adipiscing."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 06 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 6."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum ut."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -614,7 +588,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum laboris nisi aliquip ex."
+        "en": "Lorem Ipsum ut labore et dolore."
       }
     },
     {
@@ -627,7 +601,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+        "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Title",
+          "DESCRIPTION": "Text value for the Slot 06 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris."
       }
     },
     {
@@ -640,7 +627,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+        "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 6."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
       }
     },
     {
@@ -668,32 +668,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 07 Title",
-          "DESCRIPTION": "Text value for the Slot 07 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum magna."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 07 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 7."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum nostrud."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -714,7 +688,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum voluptate velit esse cillum."
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
       }
     },
     {
@@ -727,7 +701,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+        "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Title",
+          "DESCRIPTION": "Text value for the Slot 07 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate."
       }
     },
     {
@@ -740,7 +727,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+        "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 7."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
       }
     },
     {
@@ -768,32 +768,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 08 Title",
-          "DESCRIPTION": "Text value for the Slot 08 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum nisi."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 08 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 8."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum aute."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -814,7 +788,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
       }
     },
     {
@@ -827,7 +801,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Title",
+          "DESCRIPTION": "Text value for the Slot 08 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet."
       }
     },
     {
@@ -840,7 +827,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+        "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 8."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua."
       }
     },
     {
@@ -868,32 +868,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 09 Title",
-          "DESCRIPTION": "Text value for the Slot 09 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum velit."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 09 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 9."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum ipsum."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -914,7 +888,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum et dolore magna aliqua."
+        "en": "Lorem Ipsum ipsum dolor sit amet."
       }
     },
     {
@@ -927,7 +901,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+        "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Title",
+          "DESCRIPTION": "Text value for the Slot 09 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et."
       }
     },
     {
@@ -940,7 +927,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+        "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 9."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip."
       }
     },
     {
@@ -968,32 +968,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 10 Title",
-          "DESCRIPTION": "Text value for the Slot 10 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum consectetur."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 10 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 10."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum incididunt."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -1014,7 +988,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+        "en": "Lorem Ipsum incididunt ut labore et."
       }
     },
     {
@@ -1027,7 +1001,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+        "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Title",
+          "DESCRIPTION": "Text value for the Slot 10 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco."
       }
     },
     {
@@ -1040,7 +1027,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod."
+        "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 10."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse."
       }
     },
     {
@@ -1068,32 +1068,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 11 Title",
-          "DESCRIPTION": "Text value for the Slot 11 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum dolore."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 11 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 11."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum quis."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -1114,7 +1088,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
       }
     },
     {
@@ -1127,7 +1101,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+        "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Title",
+          "DESCRIPTION": "Text value for the Slot 11 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
       }
     },
     {
@@ -1140,7 +1127,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 11."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
       }
     },
     {
@@ -1168,32 +1168,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 12 Title",
-          "DESCRIPTION": "Text value for the Slot 12 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum laboris."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 12 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 12."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum duis."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -1214,7 +1188,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
       }
     },
     {
@@ -1227,7 +1201,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Title",
+          "DESCRIPTION": "Text value for the Slot 12 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
       }
     },
     {
@@ -1240,7 +1227,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 12."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
       }
     },
     {
@@ -1268,32 +1268,6 @@
       }
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 13 Title",
-          "DESCRIPTION": "Text value for the Slot 13 Title field in Verticals grid · photo-card catalog."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum voluptate."
-      }
-    },
-    {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Slot 13 Status Label",
-          "DESCRIPTION": "Editable status label shown in industry card slot 13."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum lorem."
-      }
-    },
-    {
       "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_URL",
       "type": "IMAGE",
       "nls": {
@@ -1314,7 +1288,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum labore et dolore magna."
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
       }
     },
     {
@@ -1327,7 +1301,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Title",
+          "DESCRIPTION": "Text value for the Slot 13 Title field in Verticals grid · photo-card catalog."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
       }
     },
     {
@@ -1340,7 +1327,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_STATUS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Status Label",
+          "DESCRIPTION": "Editable status label shown in industry card slot 13."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
       }
     },
     {

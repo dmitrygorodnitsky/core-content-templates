@@ -1,0 +1,713 @@
+{
+  "code": "SECTION_06_PRICING_ADDONS",
+  "nls": {
+    "en": {
+      "NAME": "Pricing · add-ons"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--pricing-addons\" data-composition-block=\"pricing.addons\">\n<!-- lab-ui block · pricing.addons\n     Static add-on marketplace scaffold for capacity and usage units.\n     Six independently editable add-on slots.\n-->\n<section class=\"pricing-addons\" id=\"pricing-addons\" data-block=\"pricing.addons\">\n  <div class=\"container\">\n    <header class=\"pricing-addons-top\">\n      <p class=\"pricing-addons-eyebrow\">${SECTION_06_PRICING_ADDONS_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"pricing-addons-title\">${SECTION_06_PRICING_ADDONS_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"pricing-addons-lede\">${SECTION_06_PRICING_ADDONS_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"pricing-addons-grid\">\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_01_STATE@STRING}\" data-addon-slot=\"01\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_01_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_01_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_01_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_01_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_01_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_01_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_01_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_02_STATE@STRING}\" data-addon-slot=\"02\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_02_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_02_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_02_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_02_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_02_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_02_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_02_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_03_STATE@STRING}\" data-addon-slot=\"03\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_03_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_03_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_03_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_03_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_03_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_03_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_03_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_04_STATE@STRING}\" data-addon-slot=\"04\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_04_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_04_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_04_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_04_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_04_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_04_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_04_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_05_STATE@STRING}\" data-addon-slot=\"05\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_05_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_05_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_05_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_05_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_05_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_05_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_05_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n\n      <article class=\"pricing-addon-card pricing-addon-card--${SECTION_06_PRICING_ADDONS_ADDON_06_STATE@STRING}\" data-addon-slot=\"06\">\n        <div class=\"pricing-addon-head\">\n          <span class=\"pricing-addon-type\">${SECTION_06_PRICING_ADDONS_ADDON_06_TYPE@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-plan\">${SECTION_06_PRICING_ADDONS_ADDON_06_PLAN_SCOPE@LOCALIZED_STRING_SS}</span>\n        </div>\n        <h3 class=\"pricing-addon-name\">${SECTION_06_PRICING_ADDONS_ADDON_06_NAME@LOCALIZED_STRING_SS}</h3>\n        <p class=\"pricing-addon-description\">${SECTION_06_PRICING_ADDONS_ADDON_06_DESCRIPTION@LOCALIZED_STRING_SS}</p>\n        <div class=\"pricing-addon-meter\">\n          <span class=\"pricing-addon-quantity\">${SECTION_06_PRICING_ADDONS_ADDON_06_QUANTITY@LOCALIZED_STRING_SS}</span>\n          <span class=\"pricing-addon-unit\">${SECTION_06_PRICING_ADDONS_ADDON_06_UNIT@LOCALIZED_STRING_SS}</span>\n        </div>\n        <p class=\"pricing-addon-price\">${SECTION_06_PRICING_ADDONS_ADDON_06_PRICE@LOCALIZED_STRING_SS}</p>\n      </article>\n    </div>\n\n    <p class=\"pricing-addons-disclaimer\">${SECTION_06_PRICING_ADDONS_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 14-pricing/pricing.addons/block.css */\n/* lab-ui block · pricing.addons\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.pricing-addons {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n  overflow-x: clip;\n}\n.pricing-addons .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n.pricing-addons-top {\n  max-width: 54rem;\n  margin: 0 auto 34px;\n  text-align: center;\n}\n.pricing-addons-eyebrow {\n  margin: 0 0 14px;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  -webkit-background-clip: text;\n          background-clip: text;\n  color: transparent;\n}\n.pricing-addons-title {\n  margin: 0 0 12px;\n  color: var(--color-heading);\n  font-size: var(--type-h2-size);\n  font-weight: var(--type-h2-weight);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  overflow-wrap: break-word;\n}\n.pricing-addons-lede {\n  max-width: 48rem;\n  margin: 0 auto;\n  color: var(--color-text);\n  font-size: 1.0625rem;\n  line-height: 1.55;\n}\n.pricing-addons-grid {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  gap: 18px;\n}\n.pricing-addon-card {\n  position: relative;\n  display: grid;\n  min-width: 0;\n  gap: 14px;\n  padding: 22px;\n  border: 1px solid rgba(146, 170, 205, 0.28);\n  border-radius: var(--radius-card);\n  background: var(--color-gray-bg);\n  overflow: hidden;\n}\n.pricing-addon-card--featured {\n  background:\n    linear-gradient(180deg, rgba(107, 234, 249, 0.16), rgba(255, 255, 255, 0) 52%),\n    var(--color-gray-bg);\n  border-color: rgba(107, 234, 249, 0.48);\n}\n.pricing-addon-card--muted {\n  opacity: 0.82;\n}\n.pricing-addon-head {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 12px;\n}\n.pricing-addon-type,\n.pricing-addon-plan {\n  display: inline-flex;\n  align-items: center;\n  min-height: 24px;\n  border-radius: var(--radius-pill);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  white-space: nowrap;\n}\n.pricing-addon-type {\n  color: var(--color-gray-blue);\n}\n.pricing-addon-plan {\n  padding: 3px 9px;\n  background: var(--color-white);\n  color: var(--color-heading);\n  border: 1px solid rgba(146, 170, 205, 0.28);\n}\n.pricing-addon-name {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.125rem;\n  font-weight: 650;\n  line-height: 1.25;\n  letter-spacing: 0;\n}\n.pricing-addon-description {\n  min-height: 66px;\n  margin: 0;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.45;\n}\n.pricing-addon-meter {\n  display: flex;\n  align-items: baseline;\n  gap: 8px;\n  margin-top: 4px;\n  color: var(--color-heading);\n}\n.pricing-addon-quantity {\n  font-size: 2rem;\n  line-height: 1;\n  font-weight: 650;\n  letter-spacing: 0;\n}\n.pricing-addon-unit {\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n}\n.pricing-addon-price {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  font-weight: 650;\n}\n.pricing-addons-disclaimer {\n  margin: 22px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.875rem;\n  line-height: 1.5;\n}\n\n@media (max-width: 980px) {\n  .pricing-addons-grid {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n@media (max-width: 640px) {\n  .pricing-addons .container {\n    max-width: 100%;\n    padding-inline: 20px;\n  }\n  .pricing-addons-title {\n    font-size: 2rem;\n    line-height: 1.12;\n  }\n  .pricing-addons-grid {\n    grid-template-columns: 1fr;\n  }\n  .pricing-addon-description {\n    min-height: 0;\n  }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_06_PRICING_ADDONS_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Eyebrow",
+          "DESCRIPTION": "Small uppercase label above the add-ons heading."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Heading",
+          "DESCRIPTION": "Main heading for the add-ons section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Lede",
+          "DESCRIPTION": "Introductory paragraph for the add-ons section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Card State",
+          "DESCRIPTION": "Visual state for the first add-on card."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Type",
+          "DESCRIPTION": "Category label for the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Name",
+          "DESCRIPTION": "Name of the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Description",
+          "DESCRIPTION": "Description of the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Quantity",
+          "DESCRIPTION": "Quantity display value for the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Unit",
+          "DESCRIPTION": "Unit label for the first add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_01_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 1 Price",
+          "DESCRIPTION": "Price display value for the first add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Card State",
+          "DESCRIPTION": "Visual state for the second add-on card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Type",
+          "DESCRIPTION": "Category label for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Name",
+          "DESCRIPTION": "Name of the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Description",
+          "DESCRIPTION": "Description of the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Quantity",
+          "DESCRIPTION": "Quantity display value for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Unit",
+          "DESCRIPTION": "Unit label for the second add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_02_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 2 Price",
+          "DESCRIPTION": "Price display value for the second add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Card State",
+          "DESCRIPTION": "Visual state for the third add-on card."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Type",
+          "DESCRIPTION": "Category label for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Name",
+          "DESCRIPTION": "Name of the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Description",
+          "DESCRIPTION": "Description of the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Quantity",
+          "DESCRIPTION": "Quantity display value for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Unit",
+          "DESCRIPTION": "Unit label for the third add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_03_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 3 Price",
+          "DESCRIPTION": "Price display value for the third add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Card State",
+          "DESCRIPTION": "Visual state for the fourth add-on card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Type",
+          "DESCRIPTION": "Category label for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Name",
+          "DESCRIPTION": "Name of the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Description",
+          "DESCRIPTION": "Description of the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Quantity",
+          "DESCRIPTION": "Quantity display value for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Unit",
+          "DESCRIPTION": "Unit label for the fourth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_04_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 4 Price",
+          "DESCRIPTION": "Price display value for the fourth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Card State",
+          "DESCRIPTION": "Visual state for the fifth add-on card."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Type",
+          "DESCRIPTION": "Category label for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Name",
+          "DESCRIPTION": "Name of the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Description",
+          "DESCRIPTION": "Description of the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Quantity",
+          "DESCRIPTION": "Quantity display value for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Unit",
+          "DESCRIPTION": "Unit label for the fifth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_05_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 5 Price",
+          "DESCRIPTION": "Price display value for the fifth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Card State",
+          "DESCRIPTION": "Visual state for the sixth add-on card."
+        }
+      },
+      "value": "muted",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_TYPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Type",
+          "DESCRIPTION": "Category label for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_PLAN_SCOPE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Plan Scope",
+          "DESCRIPTION": "Plan availability label for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Name",
+          "DESCRIPTION": "Name of the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Description",
+          "DESCRIPTION": "Description of the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_QUANTITY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Quantity",
+          "DESCRIPTION": "Quantity display value for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Unit",
+          "DESCRIPTION": "Unit label for the sixth add-on quantity."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_ADDON_06_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-on 6 Price",
+          "DESCRIPTION": "Price display value for the sixth add-on."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_06_PRICING_ADDONS_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Add-ons Disclaimer",
+          "DESCRIPTION": "Small disclaimer shown below the add-on cards."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    }
+  ]
+}

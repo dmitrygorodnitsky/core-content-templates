@@ -207,6 +207,29 @@ const collectAssetBlocks = (blockIds, catalog) => {
   return assets;
 };
 
+const collectHeadAssets = (sections, catalog) => {
+  const assets = [];
+  const seen = new Set();
+  for (const section of sections) {
+    for (const block of collectAssetBlocks([section.block], catalog)) {
+      for (const href of block.json.source?.headAssets || []) {
+        if (seen.has(href)) continue;
+        seen.add(href);
+        assets.push(href);
+      }
+    }
+  }
+  return assets;
+};
+
+const renderHeadAsset = (href) => {
+  const safeHref = escapeHtml(href);
+  if (/\.css(?:$|\?)/i.test(safeHref)) {
+    return `<link rel="stylesheet" href="${safeHref}" media="print" onload="this.media='all'">`;
+  }
+  return `<script defer src="${safeHref}"></script>`;
+};
+
 const wordsForParam = (localCode) => {
   if (/(title|heading|label|eyebrow|name|brand|current|capability|question|num|kind|time|tone|meta)$/i.test(localCode)) return 3;
   if (/(lede|lead|body|desc|description|tagline|answer|paragraph|footer|summary|act|trig|from|to)$/i.test(localCode)) return 18;
@@ -215,7 +238,7 @@ const wordsForParam = (localCode) => {
 
 const valueForParam = (param, index) => {
   const type = param.type || "LOCALIZED_STRING_SS";
-  if (type === "URL") return "#";
+  if (type === "URL") return param.default || "#";
   if (type === "IMAGE") return "";
   if (type === "ENUM") return param.default || param.options?.[0] || "";
   if (type === "JSON_ARRAY") return JSON.stringify(param.default || []);
@@ -232,7 +255,7 @@ const wrapBlockHtml = (block, html) => {
 };
 
 const wrapCompositionSection = (block, html) => {
-  if (block.id === "header.default" || block.id === "footer.default") return html;
+  if (block.category === "01-header" || block.category === "02-footer") return html;
   const sectionClass = `composition-section composition-section--${slug(block.id)}`;
   return `<section class="${sectionClass}" data-composition-block="${escapeHtml(block.id)}">\n${html}\n</section>`;
 };
@@ -292,7 +315,8 @@ const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, local
   const paramByCode = new Map((block.json.params || []).map((param) => [param.code, param]));
   const used = new Set();
   const localParamCodes = new Map();
-  let renderedHtml = block.html.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => {
+
+  const renderLocalPlaceholder = (localCode) => {
     const param = paramByCode.get(localCode) || { code: localCode, type: "LOCALIZED_STRING_SS" };
     const { paramCode } = paramCodeForLocal({ block, code, legacyCode, localCode });
     localParamCodes.set(localCode, paramCode);
@@ -308,7 +332,12 @@ const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, local
       used.add(paramCode);
     }
     return placeholder(paramCode, param.type);
-  });
+  };
+
+  const renderLocalPlaceholders = (source) =>
+    String(source || "").replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => renderLocalPlaceholder(localCode));
+
+  let renderedHtml = renderLocalPlaceholders(block.html);
   for (const slot of block.json.image_slots || []) {
     if (!slot.src_param || !slot.alt_param) continue;
     const imageCode = localParamCodes.get(slot.src_param);
@@ -360,8 +389,8 @@ const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, local
     children: [],
     head: "",
     html: wrapCompositionSection(block, wrapBlockHtml(block, renderedHtml)),
-    css,
-    javascript,
+    css: renderLocalPlaceholders(css),
+    javascript: renderLocalPlaceholders(javascript),
     parameters: params,
   };
 };
@@ -374,10 +403,16 @@ const validateSpecSections = (sections, catalog) => {
   const normalized = sections.map((section) => typeof section === "string" ? { block: section } : section);
   const first = normalized[0]?.block;
   const last = normalized[normalized.length - 1]?.block;
-  if (first !== "header.default") throw new Error("spec.sections must start with header.default");
-  if (last !== "footer.default") throw new Error("spec.sections must end with footer.default");
   for (const section of normalized) {
     if (!catalog.byId.has(section.block)) throw new Error(`spec references unknown block: ${section.block}`);
+  }
+  const firstBlock = catalog.byId.get(first);
+  const lastBlock = catalog.byId.get(last);
+  if (firstBlock?.category !== "01-header") {
+    throw new Error("spec.sections must start with a block from category 01-header");
+  }
+  if (lastBlock?.category !== "02-footer") {
+    throw new Error("spec.sections must end with a block from category 02-footer");
   }
   return normalized;
 };
@@ -388,6 +423,7 @@ const buildFamily = (spec, catalog) => {
   const rootName = spec.name || rootCode;
   const sections = validateSpecSections(spec.sections, catalog);
   const selectedIds = sections.map((section) => section.block);
+  const headAssets = collectHeadAssets(sections, catalog);
 
   const css = [
     "/* generated root CSS: 00-tokens/tokens.css */",
@@ -455,7 +491,7 @@ const buildFamily = (spec, catalog) => {
 <meta name="description" content="${placeholder("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS")}">
 <script type="application/ld+json">
   ${placeholder("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT")}
-</script>`,
+</script>${headAssets.length ? `\n${headAssets.map(renderHeadAsset).join("\n")}` : ""}`,
     html: `<div id="root" data-cms-family="${escapeHtml(rootCode)}">
   ${slotMarker(SLOT_MARKERS.rootSections)}
 </div>`,

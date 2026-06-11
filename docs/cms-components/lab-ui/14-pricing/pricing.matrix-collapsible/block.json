@@ -19,7 +19,6 @@
       "--color-gray-bg",
       "--color-gray-blue",
       "--color-status-yes",
-      "--color-status-no",
       "--color-status-partial",
       "--color-text-accent",
       "--font-family",
@@ -1493,6 +1492,101 @@
       "default": "text",
       "name": "Row 12 · Plan 4 State",
       "description": "Visual treatment for the cell value."
+    },
+    {
+      "code": "state_label_yes",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "State Label · Yes",
+      "description": "Screen-reader label applied to icon-only 'yes' cells."
+    },
+    {
+      "code": "state_label_no",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Not included",
+      "name": "State Label · No",
+      "description": "Screen-reader label applied to icon-only 'no' cells."
+    },
+    {
+      "code": "state_label_partial",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partially included",
+      "name": "State Label · Partial",
+      "description": "Screen-reader label applied to icon-only 'partial' cells."
+    },
+    {
+      "code": "cta_row_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "CTA Row Visibility",
+      "description": "Shows a closing row of per-plan CTAs under the table and a CTA at the bottom of each mobile accordion."
+    },
+    {
+      "code": "cta_row_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Ready to start?",
+      "name": "CTA Row Label",
+      "description": "Feature-column label for the closing CTA row."
+    },
+    {
+      "code": "plan_01_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Start setup",
+      "name": "Plan 1 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_01_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 1 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_02_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Continue with Growth",
+      "name": "Plan 2 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_02_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 2 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_03_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Talk to sales",
+      "name": "Plan 3 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_03_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 3 CTA URL",
+      "description": "Destination for this plan's CTA."
+    },
+    {
+      "code": "plan_04_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Request quote",
+      "name": "Plan 4 CTA Label",
+      "description": "Label for this plan's CTA in the closing row and mobile accordion."
+    },
+    {
+      "code": "plan_04_cta_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Plan 4 CTA URL",
+      "description": "Destination for this plan's CTA."
     }
   ],
   "preview": {
@@ -1502,7 +1596,10 @@
   "notes": [
     "column_count drives both the desktop grid track count and which plan columns appear in the mobile accordion.",
     "Rows and groups can be hidden via row_NN_visible / group_NN_visible ENUMs without removing their params.",
-    "States ('yes', 'no', 'partial', 'text') drive glyph + color in the cell. Use 'text' for human-readable amounts like '50K'.",
-    "Sticky header is opt-in via overflow: auto on the table shell so the matrix can be scrolled vertically inside long pages without losing column context."
+    "States 'yes' and 'partial' render a colored glyph; 'no' renders a quiet gray dash so the entry plan is not buried in red X marks. Use 'text' for human-readable amounts like '50K'.",
+    "Icon-only state cells get an aria-label from state_label_yes/no/partial via block.js.",
+    "The table shell uses overflow: clip (not hidden) so the sticky header sticks to the page scroll instead of the shell.",
+    "cta_row_visible toggles the closing per-plan CTA row (desktop) and per-plan accordion CTAs (mobile) together.",
+    "The mobile accordion opens plan 02 by default — by catalog convention slot 02 is the featured/popular plan."
   ]
 }

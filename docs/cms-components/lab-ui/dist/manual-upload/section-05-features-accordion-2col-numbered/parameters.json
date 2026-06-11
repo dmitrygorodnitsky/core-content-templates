@@ -1,0 +1,457 @@
+[
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Title",
+        "DESCRIPTION": "Text value for the Slot 01 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 Body",
+        "DESCRIPTION": "Text value for the Slot 01 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Title",
+        "DESCRIPTION": "Text value for the Slot 03 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 Body",
+        "DESCRIPTION": "Text value for the Slot 03 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Title",
+        "DESCRIPTION": "Text value for the Slot 05 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 05 Body",
+        "DESCRIPTION": "Text value for the Slot 05 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Title",
+        "DESCRIPTION": "Text value for the Slot 07 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 07 Body",
+        "DESCRIPTION": "Text value for the Slot 07 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Title",
+        "DESCRIPTION": "Text value for the Slot 09 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 09 Body",
+        "DESCRIPTION": "Text value for the Slot 09 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Title",
+        "DESCRIPTION": "Text value for the Slot 11 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 11 Body",
+        "DESCRIPTION": "Text value for the Slot 11 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Title",
+        "DESCRIPTION": "Text value for the Slot 13 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 13 Body",
+        "DESCRIPTION": "Text value for the Slot 13 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 15 Title",
+        "DESCRIPTION": "Text value for the Slot 15 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 15 Body",
+        "DESCRIPTION": "Text value for the Slot 15 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Title",
+        "DESCRIPTION": "Text value for the Slot 02 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 Body",
+        "DESCRIPTION": "Text value for the Slot 02 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Title",
+        "DESCRIPTION": "Text value for the Slot 04 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 Body",
+        "DESCRIPTION": "Text value for the Slot 04 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Title",
+        "DESCRIPTION": "Text value for the Slot 06 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 06 Body",
+        "DESCRIPTION": "Text value for the Slot 06 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Title",
+        "DESCRIPTION": "Text value for the Slot 08 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 08 Body",
+        "DESCRIPTION": "Text value for the Slot 08 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Title",
+        "DESCRIPTION": "Text value for the Slot 10 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 10 Body",
+        "DESCRIPTION": "Text value for the Slot 10 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Title",
+        "DESCRIPTION": "Text value for the Slot 12 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 12 Body",
+        "DESCRIPTION": "Text value for the Slot 12 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 14 Title",
+        "DESCRIPTION": "Text value for the Slot 14 Title field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 14 Body",
+        "DESCRIPTION": "Text value for the Slot 14 Body field in Features · 2-col numbered accordion."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+    }
+  }
+]

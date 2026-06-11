@@ -1,0 +1,1251 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "header.corporate-reference",
+  "category": "01-header",
+  "title": "Header · corporate reference",
+  "description": "Reference header imported from the Corporate Landing CMS template with nested menu and locale fragments expanded for comparison with the lab-ui canonical header.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "kind": "cms-block-template-import",
+    "primary": "CMS template 3eab232f-9567-4535-a1bf-c59ab746da58 · HEADER",
+    "rootTemplateId": "3eab232f-9567-4535-a1bf-c59ab746da58",
+    "rootCode": "CORPORATE_LANDING",
+    "sourceBlockId": "5ef64a49-2d1c-44df-873f-8e6f471e4b38",
+    "sourceBlockCode": "HEADER",
+    "fragmentBlockIds": [
+      "2dc1b800-000a-4217-9d3d-1a75dd21cd62",
+      "f7488eae-006f-4c4c-bc4b-53ba7e1968d3"
+    ],
+    "headAssets": [
+      "https://cdn.jsdelivr.net/npm/flag-icons-svg@0.0.3/css/flag-icons.min.css"
+    ],
+    "importedAt": "2026-06-09"
+  },
+  "depends_on": {
+    "tokens": [],
+    "other_blocks": [
+      "cta.btn-primary-ring"
+    ]
+  },
+  "params": [
+    {
+      "code": "demo_request_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Request Demo \n",
+      "name": "Header demo request label",
+      "description": "Imported from HEADER in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+    },
+    {
+      "code": "locale_selector_dropdown_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Select language",
+      "name": "Locale selector dropdown aria label",
+      "description": "Accessible label for the locale selector dropdown list."
+    },
+    {
+      "code": "locale_selector_trigger_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Language",
+      "name": "Locale selector trigger label",
+      "description": "Default label shown in the locale selector trigger before the active language name is loaded."
+    },
+    {
+      "code": "logo_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Service Wand",
+      "name": "Header logo aria label",
+      "description": "Accessible label for the header logo link."
+    },
+    {
+      "code": "menu_how_it_works",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "How It Works",
+      "name": "Header menu - How It Works",
+      "description": "Desktop navigation label for the features section."
+    },
+    {
+      "code": "menu_industries",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Industries",
+      "name": "Header menu - Industries",
+      "description": "Desktop navigation label for the foundation section."
+    },
+    {
+      "code": "menu_item_shadow",
+      "type": "IMAGE",
+      "default": "eafe1edc-102e-4133-bd96-146d40346efa",
+      "name": "Header menu item shadow",
+      "description": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+    },
+    {
+      "code": "menu_panel_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu panel CTA label",
+      "description": "Reusable CTA label for the default panel in header submenus."
+    },
+    {
+      "code": "menu_panel_subtext",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu panel subtext",
+      "description": "Reusable secondary text for the default panel in header submenus."
+    },
+    {
+      "code": "menu_panel_text",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu panel text",
+      "description": "Reusable body text for the default panel in header submenus."
+    },
+    {
+      "code": "menu_panel_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu panel title",
+      "description": "Reusable title for the default panel in header submenus."
+    },
+    {
+      "code": "menu_partners",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partners",
+      "name": "Header menu - Partners",
+      "description": "Desktop navigation label for the partners section."
+    },
+    {
+      "code": "menu_platform",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Platform",
+      "name": "Header menu - Platform",
+      "description": "Desktop navigation label for the platform section."
+    },
+    {
+      "code": "menu_resources",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "<p>Resources</p>",
+      "name": "Header menu resources",
+      "description": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+    },
+    {
+      "code": "menu_resource_description",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu resource description",
+      "description": "Reusable description for a resource item in the header submenu."
+    },
+    {
+      "code": "menu_resource_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header menu resource title",
+      "description": "Reusable title for a resource item in the header submenu."
+    },
+    {
+      "code": "nav_faq",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "FAQ",
+      "name": "Header mobile nav - FAQ",
+      "description": "Mobile navigation label for the FAQ section."
+    },
+    {
+      "code": "nav_how_it_works",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "How It Works",
+      "name": "Header mobile nav - How It Works",
+      "description": "Mobile navigation label for the features section."
+    },
+    {
+      "code": "nav_industries",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Industries",
+      "name": "Header mobile nav - Industries",
+      "description": "Mobile navigation label for the foundation section."
+    },
+    {
+      "code": "nav_partners",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partners",
+      "name": "Header mobile nav - Partners",
+      "description": "Mobile navigation label for the partners section."
+    },
+    {
+      "code": "nav_platform",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Platform",
+      "name": "Header mobile nav - Platform",
+      "description": "Mobile navigation label for the platform section."
+    },
+    {
+      "code": "open_menu_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Open menu",
+      "name": "Header open menu label",
+      "description": "Accessible label for the mobile menu toggle button."
+    },
+    {
+      "code": "logo_href",
+      "type": "URL",
+      "default": "index.html",
+      "name": "Header logo href",
+      "description": "URL target for the header logo link."
+    },
+    {
+      "code": "menu_platform_href",
+      "type": "URL",
+      "default": "index.html#hero",
+      "name": "Header menu Platform href",
+      "description": "URL target for the desktop Platform navigation link."
+    },
+    {
+      "code": "menu_how_it_works_href",
+      "type": "URL",
+      "default": "index.html#features",
+      "name": "Header menu How It Works href",
+      "description": "URL target for the desktop How It Works navigation link."
+    },
+    {
+      "code": "menu_partners_href",
+      "type": "URL",
+      "default": "index.html#partners",
+      "name": "Header menu Partners href",
+      "description": "URL target for the desktop Partners navigation link."
+    },
+    {
+      "code": "menu_resource_href",
+      "type": "URL",
+      "default": "#faq",
+      "name": "Header resource item href",
+      "description": "URL target for the resource submenu item."
+    },
+    {
+      "code": "demo_request_href",
+      "type": "URL",
+      "default": "request-demo.html",
+      "name": "Header demo request href",
+      "description": "URL target for the header demo CTA."
+    },
+    {
+      "code": "nav_platform_href",
+      "type": "URL",
+      "default": "#hero",
+      "name": "Header mobile Platform href",
+      "description": "URL target for the mobile Platform navigation link."
+    },
+    {
+      "code": "nav_how_it_works_href",
+      "type": "URL",
+      "default": "#features",
+      "name": "Header mobile How It Works href",
+      "description": "URL target for the mobile How It Works navigation link."
+    },
+    {
+      "code": "nav_partners_href",
+      "type": "URL",
+      "default": "#partners",
+      "name": "Header mobile Partners href",
+      "description": "URL target for the mobile Partners navigation link."
+    },
+    {
+      "code": "nav_faq_href",
+      "type": "URL",
+      "default": "#faq",
+      "name": "Header mobile FAQ href",
+      "description": "URL target for the mobile FAQ navigation link."
+    },
+    {
+      "code": "menu_panel_cta_href",
+      "type": "URL",
+      "default": "#foundation",
+      "name": "Header menu panel CTA href",
+      "description": "URL target for the default industry menu CTA."
+    },
+    {
+      "code": "mobile_industry_close_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Close industries menu",
+      "name": "Header mobile industries close aria label",
+      "description": "Accessible label for closing the mobile industries menu."
+    },
+    {
+      "code": "mobile_industry_back_aria_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Back to industries",
+      "name": "Header mobile industries back aria label",
+      "description": "Accessible label for returning to the mobile industries list."
+    },
+    {
+      "code": "industry_field_service_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service CTA href",
+      "description": "URL target for the Field Service industry panel CTA."
+    },
+    {
+      "code": "industry_field_service_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 1 href",
+      "description": "URL target for item 1 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 2 href",
+      "description": "URL target for item 2 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 3 href",
+      "description": "URL target for item 3 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 4 href",
+      "description": "URL target for item 4 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 5 href",
+      "description": "URL target for item 5 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_06_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 6 href",
+      "description": "URL target for item 6 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_07_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 7 href",
+      "description": "URL target for item 7 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_08_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 8 href",
+      "description": "URL target for item 8 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_09_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 9 href",
+      "description": "URL target for item 9 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_10_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Field Service item 10 href",
+      "description": "URL target for item 10 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_telecom_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom CTA href",
+      "description": "URL target for the Telecom industry panel CTA."
+    },
+    {
+      "code": "industry_telecom_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 1 href",
+      "description": "URL target for item 1 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 2 href",
+      "description": "URL target for item 2 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 3 href",
+      "description": "URL target for item 3 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 4 href",
+      "description": "URL target for item 4 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 5 href",
+      "description": "URL target for item 5 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_06_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Telecom item 6 href",
+      "description": "URL target for item 6 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_property_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Property CTA href",
+      "description": "URL target for the Property industry panel CTA."
+    },
+    {
+      "code": "industry_property_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Property item 1 href",
+      "description": "URL target for item 1 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Property item 2 href",
+      "description": "URL target for item 2 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Property item 3 href",
+      "description": "URL target for item 3 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Property item 4 href",
+      "description": "URL target for item 4 in the Property industry panel."
+    },
+    {
+      "code": "industry_construction_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction CTA href",
+      "description": "URL target for the Construction industry panel CTA."
+    },
+    {
+      "code": "industry_construction_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction item 1 href",
+      "description": "URL target for item 1 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction item 2 href",
+      "description": "URL target for item 2 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction item 3 href",
+      "description": "URL target for item 3 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction item 4 href",
+      "description": "URL target for item 4 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Construction item 5 href",
+      "description": "URL target for item 5 in the Construction industry panel."
+    },
+    {
+      "code": "industry_logistics_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics CTA href",
+      "description": "URL target for the Logistics industry panel CTA."
+    },
+    {
+      "code": "industry_logistics_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics item 1 href",
+      "description": "URL target for item 1 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics item 2 href",
+      "description": "URL target for item 2 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics item 3 href",
+      "description": "URL target for item 3 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics item 4 href",
+      "description": "URL target for item 4 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Logistics item 5 href",
+      "description": "URL target for item 5 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_retail_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail CTA href",
+      "description": "URL target for the Retail industry panel CTA."
+    },
+    {
+      "code": "industry_retail_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail item 1 href",
+      "description": "URL target for item 1 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail item 2 href",
+      "description": "URL target for item 2 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail item 3 href",
+      "description": "URL target for item 3 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail item 4 href",
+      "description": "URL target for item 4 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Retail item 5 href",
+      "description": "URL target for item 5 in the Retail industry panel."
+    },
+    {
+      "code": "industry_ai_native_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native CTA href",
+      "description": "URL target for the Ai Native industry panel CTA."
+    },
+    {
+      "code": "industry_ai_native_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native item 1 href",
+      "description": "URL target for item 1 in the Ai Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native item 2 href",
+      "description": "URL target for item 2 in the Ai Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native item 3 href",
+      "description": "URL target for item 3 in the Ai Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native item 4 href",
+      "description": "URL target for item 4 in the Ai Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Ai Native item 5 href",
+      "description": "URL target for item 5 in the Ai Native industry panel."
+    },
+    {
+      "code": "industry_technology_cta_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology CTA href",
+      "description": "URL target for the Technology industry panel CTA."
+    },
+    {
+      "code": "industry_technology_item_01_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology item 1 href",
+      "description": "URL target for item 1 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_02_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology item 2 href",
+      "description": "URL target for item 2 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_03_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology item 3 href",
+      "description": "URL target for item 3 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_04_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology item 4 href",
+      "description": "URL target for item 4 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_05_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Header Technology item 5 href",
+      "description": "URL target for item 5 in the Technology industry panel."
+    },
+    {
+      "code": "industry_field_service_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service nav label",
+      "description": "Navigation label for Field Service in the industry menu."
+    },
+    {
+      "code": "industry_field_service_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service panel label",
+      "description": "Eyebrow label for the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service panel title",
+      "description": "Title for the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service panel body",
+      "description": "Body text for the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service CTA label",
+      "description": "CTA label for the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 1 label",
+      "description": "Text label for item 1 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 2 label",
+      "description": "Text label for item 2 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 3 label",
+      "description": "Text label for item 3 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 4 label",
+      "description": "Text label for item 4 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 5 label",
+      "description": "Text label for item 5 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_06_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 6 label",
+      "description": "Text label for item 6 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_07_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 7 label",
+      "description": "Text label for item 7 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_08_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 8 label",
+      "description": "Text label for item 8 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_09_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 9 label",
+      "description": "Text label for item 9 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_field_service_item_10_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Field Service item 10 label",
+      "description": "Text label for item 10 in the Field Service industry panel."
+    },
+    {
+      "code": "industry_telecom_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom nav label",
+      "description": "Navigation label for Telecom in the industry menu."
+    },
+    {
+      "code": "industry_telecom_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom panel label",
+      "description": "Eyebrow label for the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom panel title",
+      "description": "Title for the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom panel body",
+      "description": "Body text for the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom CTA label",
+      "description": "CTA label for the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 1 label",
+      "description": "Text label for item 1 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 2 label",
+      "description": "Text label for item 2 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 3 label",
+      "description": "Text label for item 3 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 4 label",
+      "description": "Text label for item 4 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 5 label",
+      "description": "Text label for item 5 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_telecom_item_06_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Telecom item 6 label",
+      "description": "Text label for item 6 in the Telecom industry panel."
+    },
+    {
+      "code": "industry_property_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property nav label",
+      "description": "Navigation label for Property in the industry menu."
+    },
+    {
+      "code": "industry_property_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property panel label",
+      "description": "Eyebrow label for the Property industry panel."
+    },
+    {
+      "code": "industry_property_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property panel title",
+      "description": "Title for the Property industry panel."
+    },
+    {
+      "code": "industry_property_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property panel body",
+      "description": "Body text for the Property industry panel."
+    },
+    {
+      "code": "industry_property_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property CTA label",
+      "description": "CTA label for the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property item 1 label",
+      "description": "Text label for item 1 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property item 2 label",
+      "description": "Text label for item 2 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property item 3 label",
+      "description": "Text label for item 3 in the Property industry panel."
+    },
+    {
+      "code": "industry_property_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Property item 4 label",
+      "description": "Text label for item 4 in the Property industry panel."
+    },
+    {
+      "code": "industry_construction_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction nav label",
+      "description": "Navigation label for Construction in the industry menu."
+    },
+    {
+      "code": "industry_construction_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction panel label",
+      "description": "Eyebrow label for the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction panel title",
+      "description": "Title for the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction panel body",
+      "description": "Body text for the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction CTA label",
+      "description": "CTA label for the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction item 1 label",
+      "description": "Text label for item 1 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction item 2 label",
+      "description": "Text label for item 2 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction item 3 label",
+      "description": "Text label for item 3 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction item 4 label",
+      "description": "Text label for item 4 in the Construction industry panel."
+    },
+    {
+      "code": "industry_construction_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Construction item 5 label",
+      "description": "Text label for item 5 in the Construction industry panel."
+    },
+    {
+      "code": "industry_logistics_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics nav label",
+      "description": "Navigation label for Logistics in the industry menu."
+    },
+    {
+      "code": "industry_logistics_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics panel label",
+      "description": "Eyebrow label for the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics panel title",
+      "description": "Title for the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics panel body",
+      "description": "Body text for the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics CTA label",
+      "description": "CTA label for the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics item 1 label",
+      "description": "Text label for item 1 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics item 2 label",
+      "description": "Text label for item 2 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics item 3 label",
+      "description": "Text label for item 3 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics item 4 label",
+      "description": "Text label for item 4 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_logistics_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Logistics item 5 label",
+      "description": "Text label for item 5 in the Logistics industry panel."
+    },
+    {
+      "code": "industry_retail_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail nav label",
+      "description": "Navigation label for Retail in the industry menu."
+    },
+    {
+      "code": "industry_retail_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail panel label",
+      "description": "Eyebrow label for the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail panel title",
+      "description": "Title for the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail panel body",
+      "description": "Body text for the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail CTA label",
+      "description": "CTA label for the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail item 1 label",
+      "description": "Text label for item 1 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail item 2 label",
+      "description": "Text label for item 2 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail item 3 label",
+      "description": "Text label for item 3 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail item 4 label",
+      "description": "Text label for item 4 in the Retail industry panel."
+    },
+    {
+      "code": "industry_retail_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Retail item 5 label",
+      "description": "Text label for item 5 in the Retail industry panel."
+    },
+    {
+      "code": "industry_ai_native_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native nav label",
+      "description": "Navigation label for AI Native in the industry menu."
+    },
+    {
+      "code": "industry_ai_native_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native panel label",
+      "description": "Eyebrow label for the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native panel title",
+      "description": "Title for the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native panel body",
+      "description": "Body text for the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native CTA label",
+      "description": "CTA label for the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 1 label",
+      "description": "Text label for item 1 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 2 label",
+      "description": "Text label for item 2 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 3 label",
+      "description": "Text label for item 3 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 4 label",
+      "description": "Text label for item 4 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 5 label",
+      "description": "Text label for item 5 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_ai_native_item_01_badge_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header AI Native item 1 badge label",
+      "description": "Badge label for item 1 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_technology_nav_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology nav label",
+      "description": "Navigation label for Technology in the industry menu."
+    },
+    {
+      "code": "industry_technology_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology panel label",
+      "description": "Eyebrow label for the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology panel title",
+      "description": "Title for the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology panel body",
+      "description": "Body text for the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology CTA label",
+      "description": "CTA label for the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_01_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology item 1 label",
+      "description": "Text label for item 1 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_02_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology item 2 label",
+      "description": "Text label for item 2 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_03_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology item 3 label",
+      "description": "Text label for item 3 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_04_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology item 4 label",
+      "description": "Text label for item 4 in the Technology industry panel."
+    },
+    {
+      "code": "industry_technology_item_05_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Header Technology item 5 label",
+      "description": "Text label for item 5 in the Technology industry panel."
+    }
+  ]
+}

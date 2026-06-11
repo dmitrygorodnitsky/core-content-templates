@@ -46,139 +46,976 @@
     "other_blocks": []
   },
   "params": [
-    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Pricing", "name": "Pricing Eyebrow", "description": "Small uppercase label above the pricing headline." },
-    { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Plans that scale with field operations.", "name": "Pricing Headline", "description": "Main headline for the pricing plans section." },
-    { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.", "name": "Pricing Lede", "description": "Introductory paragraph below the pricing headline." },
-    { "code": "billing_default", "type": "ENUM", "options": ["monthly", "annual"], "default": "monthly", "name": "Default Billing Cycle", "description": "Selects which billing cycle is active when the pricing section first renders." },
-    { "code": "billing_label", "type": "LOCALIZED_STRING_SS", "default": "Select billing cycle", "name": "Billing Toggle Accessible Label", "description": "Accessible label for the billing cycle toggle group." },
-    { "code": "monthly_label", "type": "LOCALIZED_STRING_SS", "default": "Monthly", "name": "Monthly Billing Label", "description": "Label for the monthly billing toggle option." },
-    { "code": "annual_label", "type": "LOCALIZED_STRING_SS", "default": "Annual", "name": "Annual Billing Label", "description": "Label for the annual billing toggle option." },
-    { "code": "billing_note", "type": "LOCALIZED_STRING_SS", "default": "Annual pricing shown for planning. Final packaging can be connected to CRM rules later.", "name": "Billing Note", "description": "Short note shown below the billing toggle." },
-
-    { "code": "plan_01_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Plan 1 Visible", "description": "Whether the first plan card is rendered." },
-    { "code": "plan_01_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "standard", "name": "Plan 1 Card State", "description": "Visual state for the first plan card." },
-    { "code": "plan_01_kicker", "type": "LOCALIZED_STRING_SS", "default": "Base", "name": "Plan 1 Kicker", "description": "Small label above the first plan name." },
-    { "code": "plan_01_badge", "type": "LOCALIZED_STRING_SS", "default": "Launch", "name": "Plan 1 Badge", "description": "Badge text for the first plan card." },
-    { "code": "plan_01_name", "type": "LOCALIZED_STRING_SS", "default": "Starter", "name": "Plan 1 Name", "description": "Name of the first pricing plan." },
-    { "code": "plan_01_subtitle", "type": "LOCALIZED_STRING_SS", "default": "For small teams bringing buildings, customers, and work orders into one CRM workspace.", "name": "Plan 1 Subtitle", "description": "Short description for the first pricing plan." },
-    { "code": "plan_01_price_aria", "type": "LOCALIZED_STRING_SS", "default": "Starter plan price", "name": "Plan 1 Price Accessible Label", "description": "Accessible label for the first plan price." },
-    { "code": "plan_01_currency", "type": "LOCALIZED_STRING_SS", "default": "$", "name": "Plan 1 Currency", "description": "Currency symbol or prefix for the first plan." },
-    { "code": "plan_01_monthly_price", "type": "LOCALIZED_STRING_SS", "default": "299", "name": "Plan 1 Monthly Price", "description": "Monthly price display value for the first plan." },
-    { "code": "plan_01_annual_price", "type": "LOCALIZED_STRING_SS", "default": "239", "name": "Plan 1 Annual Price", "description": "Annual billing price display value for the first plan." },
-    { "code": "plan_01_period", "type": "LOCALIZED_STRING_SS", "default": "/mo", "name": "Plan 1 Price Period", "description": "Price period label for the first plan." },
-    { "code": "plan_01_save_chip", "type": "LOCALIZED_STRING_SS", "default": "Save 20%", "name": "Plan 1 Save Chip", "description": "Chip text shown next to the first plan's price in Annual mode. Leave empty to hide." },
-    { "code": "plan_01_billed_monthly", "type": "LOCALIZED_STRING_SS", "default": "Billed monthly", "name": "Plan 1 Billed Monthly Note", "description": "Caption shown under the monthly price." },
-    { "code": "plan_01_billed_annual", "type": "LOCALIZED_STRING_SS", "default": "Billed annually · save $720/yr", "name": "Plan 1 Billed Annual Note", "description": "Caption shown under the annual price." },
-    { "code": "plan_01_cta_style", "type": "ENUM", "options": ["primary", "filled", "ghost"], "default": "ghost", "name": "Plan 1 CTA Style", "description": "Visual style for the first plan CTA." },
-    { "code": "plan_01_cta_url", "type": "URL", "default": "#", "name": "Plan 1 CTA URL", "description": "URL target for the first plan CTA." },
-    { "code": "plan_01_cta_label", "type": "LOCALIZED_STRING_SS", "default": "Start setup", "name": "Plan 1 CTA Label", "description": "Button label for the first plan CTA." },
-    { "code": "plan_01_feature_list_label", "type": "LOCALIZED_STRING_SS", "default": "Starter included features", "name": "Plan 1 Feature List Label", "description": "Accessible label for the first plan feature list." },
-    { "code": "plan_01_feature_01", "type": "LOCALIZED_STRING_SS", "default": "Up to 100 buildings managed", "name": "Plan 1 Feature 1", "description": "First included feature for the first plan." },
-    { "code": "plan_01_feature_02", "type": "LOCALIZED_STRING_SS", "default": "Core CRM and customer records", "name": "Plan 1 Feature 2", "description": "Second included feature for the first plan." },
-    { "code": "plan_01_feature_03", "type": "LOCALIZED_STRING_SS", "default": "Work orders and technician dispatch", "name": "Plan 1 Feature 3", "description": "Third included feature for the first plan." },
-    { "code": "plan_01_feature_04", "type": "LOCALIZED_STRING_SS", "default": "Standard support", "name": "Plan 1 Feature 4", "description": "Fourth included feature for the first plan." },
-    { "code": "plan_01_feature_05", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 1 Feature 5", "description": "Optional fifth included feature for the first plan." },
-    { "code": "plan_01_disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Add-ons available for building capacity and routing tokens.", "name": "Plan 1 Disclaimer", "description": "Small disclaimer text for the first plan card." },
-
-    { "code": "plan_02_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Plan 2 Visible", "description": "Whether the second plan card is rendered." },
-    { "code": "plan_02_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "featured", "name": "Plan 2 Card State", "description": "Visual state for the second plan card." },
-    { "code": "plan_02_kicker", "type": "LOCALIZED_STRING_SS", "default": "Team", "name": "Plan 2 Kicker", "description": "Small label above the second plan name." },
-    { "code": "plan_02_badge", "type": "LOCALIZED_STRING_SS", "default": "Popular", "name": "Plan 2 Badge", "description": "Badge text for the second plan card." },
-    { "code": "plan_02_name", "type": "LOCALIZED_STRING_SS", "default": "Growth", "name": "Plan 2 Name", "description": "Name of the second pricing plan." },
-    { "code": "plan_02_subtitle", "type": "LOCALIZED_STRING_SS", "default": "For operators scaling dispatch, recurring service, and multi-building account management.", "name": "Plan 2 Subtitle", "description": "Short description for the second pricing plan." },
-    { "code": "plan_02_price_aria", "type": "LOCALIZED_STRING_SS", "default": "Growth plan price", "name": "Plan 2 Price Accessible Label", "description": "Accessible label for the second plan price." },
-    { "code": "plan_02_currency", "type": "LOCALIZED_STRING_SS", "default": "$", "name": "Plan 2 Currency", "description": "Currency symbol or prefix for the second plan." },
-    { "code": "plan_02_monthly_price", "type": "LOCALIZED_STRING_SS", "default": "699", "name": "Plan 2 Monthly Price", "description": "Monthly price display value for the second plan." },
-    { "code": "plan_02_annual_price", "type": "LOCALIZED_STRING_SS", "default": "559", "name": "Plan 2 Annual Price", "description": "Annual billing price display value for the second plan." },
-    { "code": "plan_02_period", "type": "LOCALIZED_STRING_SS", "default": "/mo", "name": "Plan 2 Price Period", "description": "Price period label for the second plan." },
-    { "code": "plan_02_save_chip", "type": "LOCALIZED_STRING_SS", "default": "Save 20%", "name": "Plan 2 Save Chip", "description": "Chip text shown next to the second plan's price in Annual mode. Leave empty to hide." },
-    { "code": "plan_02_billed_monthly", "type": "LOCALIZED_STRING_SS", "default": "Billed monthly", "name": "Plan 2 Billed Monthly Note", "description": "Caption shown under the monthly price." },
-    { "code": "plan_02_billed_annual", "type": "LOCALIZED_STRING_SS", "default": "Billed annually · save $1,680/yr", "name": "Plan 2 Billed Annual Note", "description": "Caption shown under the annual price." },
-    { "code": "plan_02_cta_style", "type": "ENUM", "options": ["primary", "filled", "ghost"], "default": "filled", "name": "Plan 2 CTA Style", "description": "Visual style for the second plan CTA." },
-    { "code": "plan_02_cta_url", "type": "URL", "default": "#", "name": "Plan 2 CTA URL", "description": "URL target for the second plan CTA." },
-    { "code": "plan_02_cta_label", "type": "LOCALIZED_STRING_SS", "default": "Continue with Growth", "name": "Plan 2 CTA Label", "description": "Button label for the second plan CTA." },
-    { "code": "plan_02_feature_list_label", "type": "LOCALIZED_STRING_SS", "default": "Growth included features", "name": "Plan 2 Feature List Label", "description": "Accessible label for the second plan feature list." },
-    { "code": "plan_02_feature_01", "type": "LOCALIZED_STRING_SS", "default": "Up to 250 buildings managed", "name": "Plan 2 Feature 1", "description": "First included feature for the second plan." },
-    { "code": "plan_02_feature_02", "type": "LOCALIZED_STRING_SS", "default": "10K routing tokens included monthly", "name": "Plan 2 Feature 2", "description": "Second included feature for the second plan." },
-    { "code": "plan_02_feature_03", "type": "LOCALIZED_STRING_SS", "default": "Automated follow-ups and reminders", "name": "Plan 2 Feature 3", "description": "Third included feature for the second plan." },
-    { "code": "plan_02_feature_04", "type": "LOCALIZED_STRING_SS", "default": "Priority onboarding", "name": "Plan 2 Feature 4", "description": "Fourth included feature for the second plan." },
-    { "code": "plan_02_feature_05", "type": "LOCALIZED_STRING_SS", "default": "Custom report templates", "name": "Plan 2 Feature 5", "description": "Fifth included feature for the second plan." },
-    { "code": "plan_02_disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Best starting point for multi-technician teams.", "name": "Plan 2 Disclaimer", "description": "Small disclaimer text for the second plan card." },
-
-    { "code": "plan_03_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Plan 3 Visible", "description": "Whether the third plan card is rendered." },
-    { "code": "plan_03_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "standard", "name": "Plan 3 Card State", "description": "Visual state for the third plan card." },
-    { "code": "plan_03_kicker", "type": "LOCALIZED_STRING_SS", "default": "Scale", "name": "Plan 3 Kicker", "description": "Small label above the third plan name." },
-    { "code": "plan_03_badge", "type": "LOCALIZED_STRING_SS", "default": "Advanced", "name": "Plan 3 Badge", "description": "Badge text for the third plan card." },
-    { "code": "plan_03_name", "type": "LOCALIZED_STRING_SS", "default": "Scale", "name": "Plan 3 Name", "description": "Name of the third pricing plan." },
-    { "code": "plan_03_subtitle", "type": "LOCALIZED_STRING_SS", "default": "For regional service networks with heavier automation, analytics, and routing volume.", "name": "Plan 3 Subtitle", "description": "Short description for the third pricing plan." },
-    { "code": "plan_03_price_aria", "type": "LOCALIZED_STRING_SS", "default": "Scale plan price", "name": "Plan 3 Price Accessible Label", "description": "Accessible label for the third plan price." },
-    { "code": "plan_03_currency", "type": "LOCALIZED_STRING_SS", "default": "$", "name": "Plan 3 Currency", "description": "Currency symbol or prefix for the third plan." },
-    { "code": "plan_03_monthly_price", "type": "LOCALIZED_STRING_SS", "default": "1,499", "name": "Plan 3 Monthly Price", "description": "Monthly price display value for the third plan." },
-    { "code": "plan_03_annual_price", "type": "LOCALIZED_STRING_SS", "default": "1,199", "name": "Plan 3 Annual Price", "description": "Annual billing price display value for the third plan." },
-    { "code": "plan_03_period", "type": "LOCALIZED_STRING_SS", "default": "/mo", "name": "Plan 3 Price Period", "description": "Price period label for the third plan." },
-    { "code": "plan_03_save_chip", "type": "LOCALIZED_STRING_SS", "default": "Save 20%", "name": "Plan 3 Save Chip", "description": "Chip text shown next to the third plan's price in Annual mode. Leave empty to hide." },
-    { "code": "plan_03_billed_monthly", "type": "LOCALIZED_STRING_SS", "default": "Billed monthly", "name": "Plan 3 Billed Monthly Note", "description": "Caption shown under the monthly price." },
-    { "code": "plan_03_billed_annual", "type": "LOCALIZED_STRING_SS", "default": "Billed annually · save $3,600/yr", "name": "Plan 3 Billed Annual Note", "description": "Caption shown under the annual price." },
-    { "code": "plan_03_cta_style", "type": "ENUM", "options": ["primary", "filled", "ghost"], "default": "primary", "name": "Plan 3 CTA Style", "description": "Visual style for the third plan CTA." },
-    { "code": "plan_03_cta_url", "type": "URL", "default": "#", "name": "Plan 3 CTA URL", "description": "URL target for the third plan CTA." },
-    { "code": "plan_03_cta_label", "type": "LOCALIZED_STRING_SS", "default": "Talk to sales", "name": "Plan 3 CTA Label", "description": "Button label for the third plan CTA." },
-    { "code": "plan_03_feature_list_label", "type": "LOCALIZED_STRING_SS", "default": "Scale included features", "name": "Plan 3 Feature List Label", "description": "Accessible label for the third plan feature list." },
-    { "code": "plan_03_feature_01", "type": "LOCALIZED_STRING_SS", "default": "Up to 750 buildings managed", "name": "Plan 3 Feature 1", "description": "First included feature for the third plan." },
-    { "code": "plan_03_feature_02", "type": "LOCALIZED_STRING_SS", "default": "50K routing tokens included monthly", "name": "Plan 3 Feature 2", "description": "Second included feature for the third plan." },
-    { "code": "plan_03_feature_03", "type": "LOCALIZED_STRING_SS", "default": "Advanced reporting and permissions", "name": "Plan 3 Feature 3", "description": "Third included feature for the third plan." },
-    { "code": "plan_03_feature_04", "type": "LOCALIZED_STRING_SS", "default": "Dedicated success support", "name": "Plan 3 Feature 4", "description": "Fourth included feature for the third plan." },
-    { "code": "plan_03_feature_05", "type": "LOCALIZED_STRING_SS", "default": "API and webhook access", "name": "Plan 3 Feature 5", "description": "Fifth included feature for the third plan." },
-    { "code": "plan_03_disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Designed for teams standardizing operations across regions.", "name": "Plan 3 Disclaimer", "description": "Small disclaimer text for the third plan card." },
-
-    { "code": "plan_04_visible", "type": "ENUM", "options": ["show", "hide"], "default": "show", "name": "Plan 4 Visible", "description": "Whether the fourth plan card is rendered." },
-    { "code": "plan_04_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "muted", "name": "Plan 4 Card State", "description": "Visual state for the fourth plan card." },
-    { "code": "plan_04_kicker", "type": "LOCALIZED_STRING_SS", "default": "Enterprise", "name": "Plan 4 Kicker", "description": "Small label above the fourth plan name." },
-    { "code": "plan_04_badge", "type": "LOCALIZED_STRING_SS", "default": "Custom", "name": "Plan 4 Badge", "description": "Badge text for the fourth plan card." },
-    { "code": "plan_04_name", "type": "LOCALIZED_STRING_SS", "default": "Enterprise", "name": "Plan 4 Name", "description": "Name of the fourth pricing plan." },
-    { "code": "plan_04_subtitle", "type": "LOCALIZED_STRING_SS", "default": "For national operators needing custom capacity, integrations, security, and rollout support.", "name": "Plan 4 Subtitle", "description": "Short description for the fourth pricing plan." },
-    { "code": "plan_04_price_aria", "type": "LOCALIZED_STRING_SS", "default": "Enterprise custom quote", "name": "Plan 4 Price Accessible Label", "description": "Accessible label for the fourth plan price." },
-    { "code": "plan_04_currency", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 4 Currency", "description": "Currency symbol or prefix for the fourth plan." },
-    { "code": "plan_04_monthly_price", "type": "LOCALIZED_STRING_SS", "default": "Custom", "name": "Plan 4 Monthly Price", "description": "Monthly price display value for the fourth plan." },
-    { "code": "plan_04_annual_price", "type": "LOCALIZED_STRING_SS", "default": "Custom", "name": "Plan 4 Annual Price", "description": "Annual billing price display value for the fourth plan." },
-    { "code": "plan_04_period", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 4 Price Period", "description": "Price period label for the fourth plan." },
-    { "code": "plan_04_save_chip", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 4 Save Chip", "description": "Chip text shown next to the fourth plan's price in Annual mode. Empty by default — Enterprise is custom-quoted." },
-    { "code": "plan_04_billed_monthly", "type": "LOCALIZED_STRING_SS", "default": "Commercial terms by region", "name": "Plan 4 Billed Monthly Note", "description": "Caption shown under the monthly price for Enterprise." },
-    { "code": "plan_04_billed_annual", "type": "LOCALIZED_STRING_SS", "default": "Commercial terms by region", "name": "Plan 4 Billed Annual Note", "description": "Caption shown under the annual price for Enterprise." },
-    { "code": "plan_04_cta_style", "type": "ENUM", "options": ["primary", "filled", "ghost"], "default": "ghost", "name": "Plan 4 CTA Style", "description": "Visual style for the fourth plan CTA." },
-    { "code": "plan_04_cta_url", "type": "URL", "default": "#", "name": "Plan 4 CTA URL", "description": "URL target for the fourth plan CTA." },
-    { "code": "plan_04_cta_label", "type": "LOCALIZED_STRING_SS", "default": "Request quote", "name": "Plan 4 CTA Label", "description": "Button label for the fourth plan CTA." },
-    { "code": "plan_04_feature_list_label", "type": "LOCALIZED_STRING_SS", "default": "Enterprise included features", "name": "Plan 4 Feature List Label", "description": "Accessible label for the fourth plan feature list." },
-    { "code": "plan_04_feature_01", "type": "LOCALIZED_STRING_SS", "default": "Custom building portfolio limits", "name": "Plan 4 Feature 1", "description": "First included feature for the fourth plan." },
-    { "code": "plan_04_feature_02", "type": "LOCALIZED_STRING_SS", "default": "Custom routing token packages", "name": "Plan 4 Feature 2", "description": "Second included feature for the fourth plan." },
-    { "code": "plan_04_feature_03", "type": "LOCALIZED_STRING_SS", "default": "SSO, audit log, advanced security", "name": "Plan 4 Feature 3", "description": "Third included feature for the fourth plan." },
-    { "code": "plan_04_feature_04", "type": "LOCALIZED_STRING_SS", "default": "Enterprise implementation plan", "name": "Plan 4 Feature 4", "description": "Fourth included feature for the fourth plan." },
-    { "code": "plan_04_feature_05", "type": "LOCALIZED_STRING_SS", "default": "Named account team", "name": "Plan 4 Feature 5", "description": "Fifth included feature for the fourth plan." },
-    { "code": "plan_04_disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Commercial terms depend on deployment scope.", "name": "Plan 4 Disclaimer", "description": "Small disclaimer text for the fourth plan card." },
-
-    { "code": "plan_05_visible", "type": "ENUM", "options": ["show", "hide"], "default": "hide", "name": "Plan 5 Visible", "description": "Whether the fifth plan card is rendered. Hidden by default; flip to show when a fifth tier is needed." },
-    { "code": "plan_05_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "standard", "name": "Plan 5 Card State", "description": "Visual state for the fifth plan card." },
-    { "code": "plan_05_kicker", "type": "LOCALIZED_STRING_SS", "default": "Optional", "name": "Plan 5 Kicker", "description": "Small label above the fifth plan name." },
-    { "code": "plan_05_badge", "type": "LOCALIZED_STRING_SS", "default": "Extra", "name": "Plan 5 Badge", "description": "Badge text for the fifth plan card." },
-    { "code": "plan_05_name", "type": "LOCALIZED_STRING_SS", "default": "Extension", "name": "Plan 5 Name", "description": "Name of the fifth pricing plan." },
-    { "code": "plan_05_subtitle", "type": "LOCALIZED_STRING_SS", "default": "Reserved slot for an additional tier between Scale and Enterprise.", "name": "Plan 5 Subtitle", "description": "Short description for the fifth pricing plan." },
-    { "code": "plan_05_price_aria", "type": "LOCALIZED_STRING_SS", "default": "Extension plan price", "name": "Plan 5 Price Accessible Label", "description": "Accessible label for the fifth plan price." },
-    { "code": "plan_05_currency", "type": "LOCALIZED_STRING_SS", "default": "$", "name": "Plan 5 Currency", "description": "Currency symbol or prefix for the fifth plan." },
-    { "code": "plan_05_monthly_price", "type": "LOCALIZED_STRING_SS", "default": "2,499", "name": "Plan 5 Monthly Price", "description": "Monthly price display value for the fifth plan." },
-    { "code": "plan_05_annual_price", "type": "LOCALIZED_STRING_SS", "default": "1,999", "name": "Plan 5 Annual Price", "description": "Annual billing price display value for the fifth plan." },
-    { "code": "plan_05_period", "type": "LOCALIZED_STRING_SS", "default": "/mo", "name": "Plan 5 Price Period", "description": "Price period label for the fifth plan." },
-    { "code": "plan_05_save_chip", "type": "LOCALIZED_STRING_SS", "default": "Save 20%", "name": "Plan 5 Save Chip", "description": "Chip text shown next to the fifth plan's price in Annual mode. Leave empty to hide." },
-    { "code": "plan_05_billed_monthly", "type": "LOCALIZED_STRING_SS", "default": "Billed monthly", "name": "Plan 5 Billed Monthly Note", "description": "Caption shown under the monthly price." },
-    { "code": "plan_05_billed_annual", "type": "LOCALIZED_STRING_SS", "default": "Billed annually · save $6,000/yr", "name": "Plan 5 Billed Annual Note", "description": "Caption shown under the annual price." },
-    { "code": "plan_05_cta_style", "type": "ENUM", "options": ["primary", "filled", "ghost"], "default": "ghost", "name": "Plan 5 CTA Style", "description": "Visual style for the fifth plan CTA." },
-    { "code": "plan_05_cta_url", "type": "URL", "default": "#", "name": "Plan 5 CTA URL", "description": "URL target for the fifth plan CTA." },
-    { "code": "plan_05_cta_label", "type": "LOCALIZED_STRING_SS", "default": "Discuss extension", "name": "Plan 5 CTA Label", "description": "Button label for the fifth plan CTA." },
-    { "code": "plan_05_feature_list_label", "type": "LOCALIZED_STRING_SS", "default": "Extension included features", "name": "Plan 5 Feature List Label", "description": "Accessible label for the fifth plan feature list." },
-    { "code": "plan_05_feature_01", "type": "LOCALIZED_STRING_SS", "default": "Reserved slot for capacity", "name": "Plan 5 Feature 1", "description": "First included feature for the fifth plan." },
-    { "code": "plan_05_feature_02", "type": "LOCALIZED_STRING_SS", "default": "Reserved slot for usage envelope", "name": "Plan 5 Feature 2", "description": "Second included feature for the fifth plan." },
-    { "code": "plan_05_feature_03", "type": "LOCALIZED_STRING_SS", "default": "Reserved slot for support tier", "name": "Plan 5 Feature 3", "description": "Third included feature for the fifth plan." },
-    { "code": "plan_05_feature_04", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 5 Feature 4", "description": "Optional fourth feature for the fifth plan." },
-    { "code": "plan_05_feature_05", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 5 Feature 5", "description": "Optional fifth feature for the fifth plan." },
-    { "code": "plan_05_disclaimer", "type": "LOCALIZED_STRING_SS", "default": "", "name": "Plan 5 Disclaimer", "description": "Small disclaimer text for the fifth plan card." }
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Pricing",
+      "name": "Pricing Eyebrow",
+      "description": "Small uppercase label above the pricing headline."
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plans that scale with field operations.",
+      "name": "Pricing Headline",
+      "description": "Main headline for the pricing plans section."
+    },
+    {
+      "code": "lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.",
+      "name": "Pricing Lede",
+      "description": "Introductory paragraph below the pricing headline."
+    },
+    {
+      "code": "billing_default",
+      "type": "ENUM",
+      "options": [
+        "monthly",
+        "annual"
+      ],
+      "default": "monthly",
+      "name": "Default Billing Cycle",
+      "description": "Selects which billing cycle is active when the pricing section first renders."
+    },
+    {
+      "code": "billing_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Select billing cycle",
+      "name": "Billing Toggle Accessible Label",
+      "description": "Accessible label for the billing cycle toggle group."
+    },
+    {
+      "code": "monthly_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Monthly",
+      "name": "Monthly Billing Label",
+      "description": "Label for the monthly billing toggle option."
+    },
+    {
+      "code": "annual_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Annual",
+      "name": "Annual Billing Label",
+      "description": "Label for the annual billing toggle option."
+    },
+    {
+      "code": "billing_note",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Annual pricing shown for planning. Final packaging can be connected to CRM rules later.",
+      "name": "Billing Note",
+      "description": "Short note shown below the billing toggle."
+    },
+    {
+      "code": "plan_01_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Plan 1 Visible",
+      "description": "Whether the first plan card is rendered."
+    },
+    {
+      "code": "plan_01_state",
+      "type": "ENUM",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ],
+      "default": "standard",
+      "name": "Plan 1 Card State",
+      "description": "Visual state for the first plan card."
+    },
+    {
+      "code": "plan_01_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Base",
+      "name": "Plan 1 Kicker",
+      "description": "Small label above the first plan name."
+    },
+    {
+      "code": "plan_01_badge",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Launch",
+      "name": "Plan 1 Badge",
+      "description": "Badge text for the first plan card."
+    },
+    {
+      "code": "plan_01_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Starter",
+      "name": "Plan 1 Name",
+      "description": "Name of the first pricing plan."
+    },
+    {
+      "code": "plan_01_subtitle",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "For small teams bringing buildings, customers, and work orders into one CRM workspace.",
+      "name": "Plan 1 Subtitle",
+      "description": "Short description for the first pricing plan."
+    },
+    {
+      "code": "plan_01_price_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Starter plan price",
+      "name": "Plan 1 Price Accessible Label",
+      "description": "Accessible label for the first plan price."
+    },
+    {
+      "code": "plan_01_currency",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "$",
+      "name": "Plan 1 Currency",
+      "description": "Currency symbol or prefix for the first plan."
+    },
+    {
+      "code": "plan_01_monthly_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "299",
+      "name": "Plan 1 Monthly Price",
+      "description": "Monthly price display value for the first plan."
+    },
+    {
+      "code": "plan_01_annual_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "239",
+      "name": "Plan 1 Annual Price",
+      "description": "Annual billing price display value for the first plan."
+    },
+    {
+      "code": "plan_01_period",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "/mo",
+      "name": "Plan 1 Price Period",
+      "description": "Price period label for the first plan."
+    },
+    {
+      "code": "plan_01_save_chip",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Save 20%",
+      "name": "Plan 1 Save Chip",
+      "description": "Chip text shown next to the first plan's price in Annual mode. Leave empty to hide."
+    },
+    {
+      "code": "plan_01_billed_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed monthly",
+      "name": "Plan 1 Billed Monthly Note",
+      "description": "Caption shown under the monthly price."
+    },
+    {
+      "code": "plan_01_billed_annual",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed annually · save $720/yr",
+      "name": "Plan 1 Billed Annual Note",
+      "description": "Caption shown under the annual price."
+    },
+    {
+      "code": "plan_01_cta_style",
+      "type": "ENUM",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ],
+      "default": "ghost",
+      "name": "Plan 1 CTA Style",
+      "description": "Visual style for the first plan CTA."
+    },
+    {
+      "code": "plan_01_cta_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Plan 1 CTA URL",
+      "description": "URL target for the first plan CTA."
+    },
+    {
+      "code": "plan_01_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Start setup",
+      "name": "Plan 1 CTA Label",
+      "description": "Button label for the first plan CTA."
+    },
+    {
+      "code": "plan_01_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Starter included features",
+      "name": "Plan 1 Feature List Label",
+      "description": "Accessible label for the first plan feature list."
+    },
+    {
+      "code": "plan_01_feature_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Up to 100 buildings managed",
+      "name": "Plan 1 Feature 1",
+      "description": "First included feature for the first plan."
+    },
+    {
+      "code": "plan_01_feature_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Core CRM and customer records",
+      "name": "Plan 1 Feature 2",
+      "description": "Second included feature for the first plan."
+    },
+    {
+      "code": "plan_01_feature_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Work orders and technician dispatch",
+      "name": "Plan 1 Feature 3",
+      "description": "Third included feature for the first plan."
+    },
+    {
+      "code": "plan_01_feature_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Standard support",
+      "name": "Plan 1 Feature 4",
+      "description": "Fourth included feature for the first plan."
+    },
+    {
+      "code": "plan_01_feature_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 1 Feature 5",
+      "description": "Optional fifth included feature for the first plan."
+    },
+    {
+      "code": "plan_01_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Add-ons available for building capacity and routing tokens.",
+      "name": "Plan 1 Disclaimer",
+      "description": "Small disclaimer text for the first plan card."
+    },
+    {
+      "code": "plan_02_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Plan 2 Visible",
+      "description": "Whether the second plan card is rendered."
+    },
+    {
+      "code": "plan_02_state",
+      "type": "ENUM",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ],
+      "default": "featured",
+      "name": "Plan 2 Card State",
+      "description": "Visual state for the second plan card."
+    },
+    {
+      "code": "plan_02_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Team",
+      "name": "Plan 2 Kicker",
+      "description": "Small label above the second plan name."
+    },
+    {
+      "code": "plan_02_badge",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Popular",
+      "name": "Plan 2 Badge",
+      "description": "Badge text for the second plan card."
+    },
+    {
+      "code": "plan_02_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Growth",
+      "name": "Plan 2 Name",
+      "description": "Name of the second pricing plan."
+    },
+    {
+      "code": "plan_02_subtitle",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "For operators scaling dispatch, recurring service, and multi-building account management.",
+      "name": "Plan 2 Subtitle",
+      "description": "Short description for the second pricing plan."
+    },
+    {
+      "code": "plan_02_price_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Growth plan price",
+      "name": "Plan 2 Price Accessible Label",
+      "description": "Accessible label for the second plan price."
+    },
+    {
+      "code": "plan_02_currency",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "$",
+      "name": "Plan 2 Currency",
+      "description": "Currency symbol or prefix for the second plan."
+    },
+    {
+      "code": "plan_02_monthly_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "699",
+      "name": "Plan 2 Monthly Price",
+      "description": "Monthly price display value for the second plan."
+    },
+    {
+      "code": "plan_02_annual_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "559",
+      "name": "Plan 2 Annual Price",
+      "description": "Annual billing price display value for the second plan."
+    },
+    {
+      "code": "plan_02_period",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "/mo",
+      "name": "Plan 2 Price Period",
+      "description": "Price period label for the second plan."
+    },
+    {
+      "code": "plan_02_save_chip",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Save 20%",
+      "name": "Plan 2 Save Chip",
+      "description": "Chip text shown next to the second plan's price in Annual mode. Leave empty to hide."
+    },
+    {
+      "code": "plan_02_billed_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed monthly",
+      "name": "Plan 2 Billed Monthly Note",
+      "description": "Caption shown under the monthly price."
+    },
+    {
+      "code": "plan_02_billed_annual",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed annually · save $1,680/yr",
+      "name": "Plan 2 Billed Annual Note",
+      "description": "Caption shown under the annual price."
+    },
+    {
+      "code": "plan_02_cta_style",
+      "type": "ENUM",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ],
+      "default": "filled",
+      "name": "Plan 2 CTA Style",
+      "description": "Visual style for the second plan CTA."
+    },
+    {
+      "code": "plan_02_cta_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Plan 2 CTA URL",
+      "description": "URL target for the second plan CTA."
+    },
+    {
+      "code": "plan_02_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Continue with Growth",
+      "name": "Plan 2 CTA Label",
+      "description": "Button label for the second plan CTA."
+    },
+    {
+      "code": "plan_02_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Growth included features",
+      "name": "Plan 2 Feature List Label",
+      "description": "Accessible label for the second plan feature list."
+    },
+    {
+      "code": "plan_02_feature_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Up to 250 buildings managed",
+      "name": "Plan 2 Feature 1",
+      "description": "First included feature for the second plan."
+    },
+    {
+      "code": "plan_02_feature_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "10K routing tokens included monthly",
+      "name": "Plan 2 Feature 2",
+      "description": "Second included feature for the second plan."
+    },
+    {
+      "code": "plan_02_feature_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Automated follow-ups and reminders",
+      "name": "Plan 2 Feature 3",
+      "description": "Third included feature for the second plan."
+    },
+    {
+      "code": "plan_02_feature_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Priority onboarding",
+      "name": "Plan 2 Feature 4",
+      "description": "Fourth included feature for the second plan."
+    },
+    {
+      "code": "plan_02_feature_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom report templates",
+      "name": "Plan 2 Feature 5",
+      "description": "Fifth included feature for the second plan."
+    },
+    {
+      "code": "plan_02_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Best starting point for multi-technician teams.",
+      "name": "Plan 2 Disclaimer",
+      "description": "Small disclaimer text for the second plan card."
+    },
+    {
+      "code": "plan_03_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Plan 3 Visible",
+      "description": "Whether the third plan card is rendered."
+    },
+    {
+      "code": "plan_03_state",
+      "type": "ENUM",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ],
+      "default": "standard",
+      "name": "Plan 3 Card State",
+      "description": "Visual state for the third plan card."
+    },
+    {
+      "code": "plan_03_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scale",
+      "name": "Plan 3 Kicker",
+      "description": "Small label above the third plan name."
+    },
+    {
+      "code": "plan_03_badge",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Advanced",
+      "name": "Plan 3 Badge",
+      "description": "Badge text for the third plan card."
+    },
+    {
+      "code": "plan_03_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scale",
+      "name": "Plan 3 Name",
+      "description": "Name of the third pricing plan."
+    },
+    {
+      "code": "plan_03_subtitle",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "For regional service networks with heavier automation, analytics, and routing volume.",
+      "name": "Plan 3 Subtitle",
+      "description": "Short description for the third pricing plan."
+    },
+    {
+      "code": "plan_03_price_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scale plan price",
+      "name": "Plan 3 Price Accessible Label",
+      "description": "Accessible label for the third plan price."
+    },
+    {
+      "code": "plan_03_currency",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "$",
+      "name": "Plan 3 Currency",
+      "description": "Currency symbol or prefix for the third plan."
+    },
+    {
+      "code": "plan_03_monthly_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "1,499",
+      "name": "Plan 3 Monthly Price",
+      "description": "Monthly price display value for the third plan."
+    },
+    {
+      "code": "plan_03_annual_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "1,199",
+      "name": "Plan 3 Annual Price",
+      "description": "Annual billing price display value for the third plan."
+    },
+    {
+      "code": "plan_03_period",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "/mo",
+      "name": "Plan 3 Price Period",
+      "description": "Price period label for the third plan."
+    },
+    {
+      "code": "plan_03_save_chip",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Save 20%",
+      "name": "Plan 3 Save Chip",
+      "description": "Chip text shown next to the third plan's price in Annual mode. Leave empty to hide."
+    },
+    {
+      "code": "plan_03_billed_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed monthly",
+      "name": "Plan 3 Billed Monthly Note",
+      "description": "Caption shown under the monthly price."
+    },
+    {
+      "code": "plan_03_billed_annual",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed annually · save $3,600/yr",
+      "name": "Plan 3 Billed Annual Note",
+      "description": "Caption shown under the annual price."
+    },
+    {
+      "code": "plan_03_cta_style",
+      "type": "ENUM",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ],
+      "default": "primary",
+      "name": "Plan 3 CTA Style",
+      "description": "Visual style for the third plan CTA."
+    },
+    {
+      "code": "plan_03_cta_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Plan 3 CTA URL",
+      "description": "URL target for the third plan CTA."
+    },
+    {
+      "code": "plan_03_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Talk to sales",
+      "name": "Plan 3 CTA Label",
+      "description": "Button label for the third plan CTA."
+    },
+    {
+      "code": "plan_03_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Scale included features",
+      "name": "Plan 3 Feature List Label",
+      "description": "Accessible label for the third plan feature list."
+    },
+    {
+      "code": "plan_03_feature_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Up to 750 buildings managed",
+      "name": "Plan 3 Feature 1",
+      "description": "First included feature for the third plan."
+    },
+    {
+      "code": "plan_03_feature_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "50K routing tokens included monthly",
+      "name": "Plan 3 Feature 2",
+      "description": "Second included feature for the third plan."
+    },
+    {
+      "code": "plan_03_feature_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Advanced reporting and permissions",
+      "name": "Plan 3 Feature 3",
+      "description": "Third included feature for the third plan."
+    },
+    {
+      "code": "plan_03_feature_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Dedicated success support",
+      "name": "Plan 3 Feature 4",
+      "description": "Fourth included feature for the third plan."
+    },
+    {
+      "code": "plan_03_feature_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "API and webhook access",
+      "name": "Plan 3 Feature 5",
+      "description": "Fifth included feature for the third plan."
+    },
+    {
+      "code": "plan_03_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Designed for teams standardizing operations across regions.",
+      "name": "Plan 3 Disclaimer",
+      "description": "Small disclaimer text for the third plan card."
+    },
+    {
+      "code": "plan_04_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "show",
+      "name": "Plan 4 Visible",
+      "description": "Whether the fourth plan card is rendered."
+    },
+    {
+      "code": "plan_04_state",
+      "type": "ENUM",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ],
+      "default": "muted",
+      "name": "Plan 4 Card State",
+      "description": "Visual state for the fourth plan card."
+    },
+    {
+      "code": "plan_04_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise",
+      "name": "Plan 4 Kicker",
+      "description": "Small label above the fourth plan name."
+    },
+    {
+      "code": "plan_04_badge",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Plan 4 Badge",
+      "description": "Badge text for the fourth plan card."
+    },
+    {
+      "code": "plan_04_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise",
+      "name": "Plan 4 Name",
+      "description": "Name of the fourth pricing plan."
+    },
+    {
+      "code": "plan_04_subtitle",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "For national operators needing custom capacity, integrations, security, and rollout support.",
+      "name": "Plan 4 Subtitle",
+      "description": "Short description for the fourth pricing plan."
+    },
+    {
+      "code": "plan_04_price_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise custom quote",
+      "name": "Plan 4 Price Accessible Label",
+      "description": "Accessible label for the fourth plan price."
+    },
+    {
+      "code": "plan_04_currency",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 4 Currency",
+      "description": "Currency symbol or prefix for the fourth plan."
+    },
+    {
+      "code": "plan_04_monthly_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Plan 4 Monthly Price",
+      "description": "Monthly price display value for the fourth plan."
+    },
+    {
+      "code": "plan_04_annual_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom",
+      "name": "Plan 4 Annual Price",
+      "description": "Annual billing price display value for the fourth plan."
+    },
+    {
+      "code": "plan_04_period",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 4 Price Period",
+      "description": "Price period label for the fourth plan."
+    },
+    {
+      "code": "plan_04_save_chip",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 4 Save Chip",
+      "description": "Chip text shown next to the fourth plan's price in Annual mode. Empty by default — Enterprise is custom-quoted."
+    },
+    {
+      "code": "plan_04_billed_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Commercial terms by region",
+      "name": "Plan 4 Billed Monthly Note",
+      "description": "Caption shown under the monthly price for Enterprise."
+    },
+    {
+      "code": "plan_04_billed_annual",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Commercial terms by region",
+      "name": "Plan 4 Billed Annual Note",
+      "description": "Caption shown under the annual price for Enterprise."
+    },
+    {
+      "code": "plan_04_cta_style",
+      "type": "ENUM",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ],
+      "default": "ghost",
+      "name": "Plan 4 CTA Style",
+      "description": "Visual style for the fourth plan CTA."
+    },
+    {
+      "code": "plan_04_cta_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Plan 4 CTA URL",
+      "description": "URL target for the fourth plan CTA."
+    },
+    {
+      "code": "plan_04_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Request quote",
+      "name": "Plan 4 CTA Label",
+      "description": "Button label for the fourth plan CTA."
+    },
+    {
+      "code": "plan_04_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise included features",
+      "name": "Plan 4 Feature List Label",
+      "description": "Accessible label for the fourth plan feature list."
+    },
+    {
+      "code": "plan_04_feature_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom building portfolio limits",
+      "name": "Plan 4 Feature 1",
+      "description": "First included feature for the fourth plan."
+    },
+    {
+      "code": "plan_04_feature_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Custom routing token packages",
+      "name": "Plan 4 Feature 2",
+      "description": "Second included feature for the fourth plan."
+    },
+    {
+      "code": "plan_04_feature_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "SSO, audit log, advanced security",
+      "name": "Plan 4 Feature 3",
+      "description": "Third included feature for the fourth plan."
+    },
+    {
+      "code": "plan_04_feature_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Enterprise implementation plan",
+      "name": "Plan 4 Feature 4",
+      "description": "Fourth included feature for the fourth plan."
+    },
+    {
+      "code": "plan_04_feature_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Named account team",
+      "name": "Plan 4 Feature 5",
+      "description": "Fifth included feature for the fourth plan."
+    },
+    {
+      "code": "plan_04_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Commercial terms depend on deployment scope.",
+      "name": "Plan 4 Disclaimer",
+      "description": "Small disclaimer text for the fourth plan card."
+    },
+    {
+      "code": "plan_05_visible",
+      "type": "ENUM",
+      "options": [
+        "show",
+        "hide"
+      ],
+      "default": "hide",
+      "name": "Plan 5 Visible",
+      "description": "Whether the fifth plan card is rendered. Hidden by default; flip to show when a fifth tier is needed."
+    },
+    {
+      "code": "plan_05_state",
+      "type": "ENUM",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ],
+      "default": "standard",
+      "name": "Plan 5 Card State",
+      "description": "Visual state for the fifth plan card."
+    },
+    {
+      "code": "plan_05_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Optional",
+      "name": "Plan 5 Kicker",
+      "description": "Small label above the fifth plan name."
+    },
+    {
+      "code": "plan_05_badge",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Extra",
+      "name": "Plan 5 Badge",
+      "description": "Badge text for the fifth plan card."
+    },
+    {
+      "code": "plan_05_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Extension",
+      "name": "Plan 5 Name",
+      "description": "Name of the fifth pricing plan."
+    },
+    {
+      "code": "plan_05_subtitle",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reserved slot for an additional tier between Scale and Enterprise.",
+      "name": "Plan 5 Subtitle",
+      "description": "Short description for the fifth pricing plan."
+    },
+    {
+      "code": "plan_05_price_aria",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Extension plan price",
+      "name": "Plan 5 Price Accessible Label",
+      "description": "Accessible label for the fifth plan price."
+    },
+    {
+      "code": "plan_05_currency",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "$",
+      "name": "Plan 5 Currency",
+      "description": "Currency symbol or prefix for the fifth plan."
+    },
+    {
+      "code": "plan_05_monthly_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "2,499",
+      "name": "Plan 5 Monthly Price",
+      "description": "Monthly price display value for the fifth plan."
+    },
+    {
+      "code": "plan_05_annual_price",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "1,999",
+      "name": "Plan 5 Annual Price",
+      "description": "Annual billing price display value for the fifth plan."
+    },
+    {
+      "code": "plan_05_period",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "/mo",
+      "name": "Plan 5 Price Period",
+      "description": "Price period label for the fifth plan."
+    },
+    {
+      "code": "plan_05_save_chip",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Save 20%",
+      "name": "Plan 5 Save Chip",
+      "description": "Chip text shown next to the fifth plan's price in Annual mode. Leave empty to hide."
+    },
+    {
+      "code": "plan_05_billed_monthly",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed monthly",
+      "name": "Plan 5 Billed Monthly Note",
+      "description": "Caption shown under the monthly price."
+    },
+    {
+      "code": "plan_05_billed_annual",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Billed annually · save $6,000/yr",
+      "name": "Plan 5 Billed Annual Note",
+      "description": "Caption shown under the annual price."
+    },
+    {
+      "code": "plan_05_cta_style",
+      "type": "ENUM",
+      "options": [
+        "primary",
+        "filled",
+        "ghost"
+      ],
+      "default": "ghost",
+      "name": "Plan 5 CTA Style",
+      "description": "Visual style for the fifth plan CTA."
+    },
+    {
+      "code": "plan_05_cta_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Plan 5 CTA URL",
+      "description": "URL target for the fifth plan CTA."
+    },
+    {
+      "code": "plan_05_cta_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Discuss extension",
+      "name": "Plan 5 CTA Label",
+      "description": "Button label for the fifth plan CTA."
+    },
+    {
+      "code": "plan_05_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Extension included features",
+      "name": "Plan 5 Feature List Label",
+      "description": "Accessible label for the fifth plan feature list."
+    },
+    {
+      "code": "plan_05_feature_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reserved slot for capacity",
+      "name": "Plan 5 Feature 1",
+      "description": "First included feature for the fifth plan."
+    },
+    {
+      "code": "plan_05_feature_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reserved slot for usage envelope",
+      "name": "Plan 5 Feature 2",
+      "description": "Second included feature for the fifth plan."
+    },
+    {
+      "code": "plan_05_feature_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Reserved slot for support tier",
+      "name": "Plan 5 Feature 3",
+      "description": "Third included feature for the fifth plan."
+    },
+    {
+      "code": "plan_05_feature_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 5 Feature 4",
+      "description": "Optional fourth feature for the fifth plan."
+    },
+    {
+      "code": "plan_05_feature_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 5 Feature 5",
+      "description": "Optional fifth feature for the fifth plan."
+    },
+    {
+      "code": "plan_05_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "",
+      "name": "Plan 5 Disclaimer",
+      "description": "Small disclaimer text for the fifth plan card."
+    }
   ],
   "preview": {
     "390": "preview-390.png",
@@ -189,6 +1026,7 @@
     "Plan 5 is hidden by default; flip plan_05_visible to 'show' for a fifth tier. Plans can also be hidden down to 2 by hiding plan 4 and 5.",
     "Toggle dispatches a `pricing:billing` CustomEvent on document; other pricing.* blocks listen for it and update their own data-pricing-period attribute.",
     "Toggle indicator slides via CSS transform between Monthly and Annual; price + billed caption crossfade in the same direction; per-card Save chip fade-scales in on Annual. Animations honor `prefers-reduced-motion`.",
-    "Save chip is per-card (plan_NN_save_chip). Leave empty for Enterprise / custom plans."
+    "Save chip is per-card (plan_NN_save_chip). Leave empty for Enterprise / custom plans.",
+    "On <=720px the featured card is ordered first in the stack; the billing toggle buttons are 44px tall for touch targets."
   ]
 }

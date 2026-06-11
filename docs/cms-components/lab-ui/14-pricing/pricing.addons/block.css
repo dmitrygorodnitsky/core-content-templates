@@ -13,11 +13,9 @@
   padding-inline: var(--container-padding-x);
 }
 .pricing-addons-top {
-  display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-  gap: 48px;
-  align-items: end;
-  margin-bottom: 34px;
+  max-width: 54rem;
+  margin: 0 auto 34px;
+  text-align: center;
 }
 .pricing-addons-eyebrow {
   margin: 0 0 14px;
@@ -31,7 +29,7 @@
   color: transparent;
 }
 .pricing-addons-title {
-  margin: 0;
+  margin: 0 0 12px;
   color: var(--color-heading);
   font-size: var(--type-h2-size);
   font-weight: var(--type-h2-weight);
@@ -41,7 +39,7 @@
 }
 .pricing-addons-lede {
   max-width: 48rem;
-  margin: 0;
+  margin: 0 auto;
   color: var(--color-text);
   font-size: 1.0625rem;
   line-height: 1.55;
@@ -144,10 +142,6 @@
 }
 
 @media (max-width: 980px) {
-  .pricing-addons-top {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
   .pricing-addons-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -92,6 +92,20 @@ Pull requests should describe:
 - Which Core version or module it was tested with.
 - Any required media, scripts, permissions, or configuration.
 
+## Image Sets
+
+Use `scripts/generate-image-set.mjs` to create responsive WebP variants from a PNG or JPEG source. The script writes a `<name>.imageset` directory with WebP files, `manifest.json`, `snippets.html`, and `snippets.css`.
+
+```bash
+node scripts/generate-image-set.mjs ./path/to/hero.png \
+  --widths 640,960,1280,1920 \
+  --quality 86 \
+  --sizes "(max-width: 768px) 100vw, 1280px" \
+  --preload-width 1280
+```
+
+The generated `snippets.html` includes a preload tag and an eager image tag. Use the preload tag only for the first critical image on a page; non-critical images should normally use the same `srcset` with lazy loading instead.
+
 ## License Recommendation
 
 Recommended license: Apache License 2.0.

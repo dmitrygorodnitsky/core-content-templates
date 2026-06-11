@@ -107,6 +107,16 @@ const overlayContextValues = (values, contextValues) => {
   return values;
 };
 
+const hoistCssImports = (css) => {
+  const imports = [];
+  const body = String(css || "").replace(/^\s*@import\s+[^;]+;\s*/gm, (statement) => {
+    const normalized = statement.trim();
+    if (!imports.includes(normalized)) imports.push(normalized);
+    return "";
+  });
+  return { imports, body };
+};
+
 const main = () => {
   const args = parseArgs();
   if (args.help) {
@@ -133,10 +143,11 @@ const main = () => {
     locale,
   );
   const head = renderPlaceholders(payload.root.head, values, locale);
-  const css = allTemplates
+  const rawCss = allTemplates
     .map((template) => template?.css || "")
     .filter((value) => value.trim())
     .join("\n\n");
+  const { imports: cssImports, body: css } = hoistCssImports(rawCss);
   const js = allTemplates
     .map((template) => template?.javascript || "")
     .filter((value) => value.trim())
@@ -148,10 +159,11 @@ const main = () => {
 
   const file = join(args.out, args.file || "preview.html");
   const html = `<!doctype html>
-<html lang="${locale}">
+<html lang="${locale}" dir="ltr">
 <head>
 ${head}
 <style>
+${cssImports.join("\n")}
 ${css}
 </style>
 </head>

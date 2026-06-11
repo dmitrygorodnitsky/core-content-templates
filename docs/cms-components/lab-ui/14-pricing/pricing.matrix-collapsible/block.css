@@ -62,7 +62,9 @@
   border: 1px solid rgba(146, 170, 205, 0.26);
   border-radius: var(--radius-card);
   background: var(--color-white);
-  overflow: hidden;
+  /* clip, not hidden: hidden makes the shell a scroll container and the
+     sticky header would stick to the shell instead of the page. */
+  overflow: clip;
 }
 .mx-row {
   display: grid;
@@ -132,7 +134,6 @@
 
 /* ─── Cell states ───────────────────────────────────────────── */
 .mx-cell[data-state="yes"]     .mx-value::before,
-.mx-cell[data-state="no"]      .mx-value::before,
 .mx-cell[data-state="partial"] .mx-value::before {
   content: "";
   display: inline-block;
@@ -142,7 +143,6 @@
   flex: 0 0 19px;
 }
 .mx-cell[data-state="yes"]     .mx-value::before { background: var(--color-status-yes, #76D98F); }
-.mx-cell[data-state="no"]      .mx-value::before { background: var(--color-status-no, #FF6B6B); }
 .mx-cell[data-state="partial"] .mx-value::before { background: var(--color-status-partial, #D7D9DC); }
 .mx-cell[data-state="yes"]     .mx-value::after,
 .mx-cell[data-state="partial"] .mx-value::after {
@@ -157,23 +157,14 @@
   border-radius: 1px;
   transform: rotate(-45deg);
 }
-.mx-cell[data-state="no"] .mx-value::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 5px;
-  width: 9px;
-  height: 9px;
-  background:
-    linear-gradient(45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px)),
-    linear-gradient(-45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px));
-}
 .mx-cell[data-state="yes"] .mx-value:empty,
-.mx-cell[data-state="partial"] .mx-value:empty,
-.mx-cell[data-state="no"] .mx-value:empty {
+.mx-cell[data-state="partial"] .mx-value:empty {
   gap: 0;
 }
+/* "no" reads as a quiet gray dash, not a red X: a column of negative
+   marks visually punishes the entry plan. */
 .mx-cell[data-state="no"] .mx-value { color: var(--color-gray-blue); }
+.mx-cell[data-state="no"] .mx-value:empty::before { content: "—"; }
 
 /* ─── Group title row ───────────────────────────────────────── */
 .mx-group { display: contents; }
@@ -192,6 +183,41 @@
   border-top: 1px solid rgba(146, 170, 205, 0.16);
 }
 .mx-group:first-of-type .mx-group-title { border-top: 0; }
+
+/* ─── CTA row · closes the table with an action per plan ────── */
+.mx-row--cta[data-row-visible="hide"] { display: none; }
+.mx-row--cta { background: var(--color-gray-bg); }
+.mx-row--cta .mx-cell--feature {
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+}
+.mx-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  border: 1px solid rgba(146, 170, 205, 0.35);
+  color: var(--color-heading);
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-decoration: none;
+  text-align: center;
+  /* Fills the cell and wraps: a nowrap pill overflows the narrow plan
+     columns on tablet widths. */
+  white-space: normal;
+  overflow-wrap: break-word;
+  min-width: 0;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.mx-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow-soft);
+}
+.mx-cta:empty { display: none; }
 
 /* ─── Accordion shell (mobile) ─────────────────────────────── */
 .mx-shell--accordion { display: none; }
@@ -280,7 +306,6 @@
     text-align: right;
   }
   .mx-acc-item dd[data-state="yes"],
-  .mx-acc-item dd[data-state="no"],
   .mx-acc-item dd[data-state="partial"] {
     display: inline-flex;
     align-items: center;
@@ -290,7 +315,6 @@
     position: relative;
   }
   .mx-acc-item dd[data-state="yes"]::before,
-  .mx-acc-item dd[data-state="no"]::before,
   .mx-acc-item dd[data-state="partial"]::before {
     content: "";
     display: inline-block;
@@ -300,7 +324,6 @@
     flex: 0 0 19px;
   }
   .mx-acc-item dd[data-state="yes"]::before { background: var(--color-status-yes, #76D98F); }
-  .mx-acc-item dd[data-state="no"]::before { background: var(--color-status-no, #FF6B6B); }
   .mx-acc-item dd[data-state="partial"]::before { background: var(--color-status-partial, #D7D9DC); }
   .mx-acc-item dd[data-state="yes"]::after,
   .mx-acc-item dd[data-state="partial"]::after {
@@ -315,22 +338,42 @@
     border-radius: 1px;
     transform: rotate(-45deg);
   }
-  .mx-acc-item dd[data-state="no"]::after {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 5px;
-    width: 9px;
-    height: 9px;
-    background:
-      linear-gradient(45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px)),
-      linear-gradient(-45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px));
-  }
   .mx-acc-item dd[data-state="no"] { color: var(--color-gray-blue); font-weight: 400; }
+  .mx-acc-item dd[data-state="no"]:empty::before { content: "—"; }
   .mx-acc-item dd[data-state="yes"]:empty,
-  .mx-acc-item dd[data-state="partial"]:empty,
-  .mx-acc-item dd[data-state="no"]:empty {
+  .mx-acc-item dd[data-state="partial"]:empty {
     gap: 0;
+  }
+  .mx-acc-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    margin-top: 16px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    background: var(--color-gray-bg);
+    border: 1px solid rgba(146, 170, 205, 0.35);
+    color: var(--color-heading);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    text-decoration: none;
+  }
+  .mx-acc-cta[data-row-visible="hide"], .mx-acc-cta:empty { display: none; }
+}
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.mx-cta:focus-visible,
+.mx-acc-cta:focus-visible,
+.mx-acc-summary:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mx-matrix *,
+  .mx-matrix *::before,
+  .mx-matrix *::after {
+    transition-duration: 0.01ms !important;
   }
 }
 

@@ -3,11 +3,11 @@
 Root: `FIELD_SERVICE_LANDING`
 Direct children: 14
 Nested/total child templates: 14
-Parameters: 681
+Parameters: 826
 
 ## Selected Blocks
 
-- 1. `header.default` (01-header)
+- 1. `header.corporate-reference` (01-header)
 - 2. `hero.composite-photo` (05-hero)
 - 3. `section.h2-narrative-only` (09-vertical-section)
 - 4. `features.card-grid-4` (06-features)
@@ -20,12 +20,12 @@ Parameters: 681
 - 11. `section.axes-grid` (09-vertical-section)
 - 12. `faq.bubble-light-grouped` (08-faq)
 - 13. `decorative.final-cta` (12-decorative)
-- 14. `footer.default` (02-footer)
+- 14. `footer.corporate-reference` (02-footer)
 
 ## Tree
 
 - `FIELD_SERVICE_LANDING`
-  - `SECTION_01_HEADER_DEFAULT`
+  - `SECTION_01_HEADER_CORPORATE_REFERENCE`
   - `SECTION_02_HERO_COMPOSITE_PHOTO`
   - `SECTION_03_SECTION_H2_NARRATIVE_ONLY`
   - `SECTION_04_FEATURES_CARD_GRID_4`
@@ -38,7 +38,7 @@ Parameters: 681
   - `SECTION_11_SECTION_AXES_GRID`
   - `SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED`
   - `SECTION_13_DECORATIVE_FINAL_CTA`
-  - `SECTION_14_FOOTER_DEFAULT`
+  - `SECTION_14_FOOTER_CORPORATE_REFERENCE`
 
 ## Files
 

@@ -1,0 +1,132 @@
+{
+  "code": "SECTION_13_DECORATIVE_FINAL_CTA",
+  "nls": {
+    "en": {
+      "NAME": "Decorative · final CTA banner"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING_CORPORATE_CHROME_COMPARE"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--decorative-final-cta\" data-composition-block=\"decorative.final-cta\">\n<!-- lab-ui block · decorative.final-cta\n     Bottom-of-page CTA section. Dark card surface with mono eyebrow, large H2,\n     supporting copy and the canonical ServiceWand CTA pair.\n-->\n<section class=\"final-cta-section\" data-block=\"decorative.final-cta\">\n  <div class=\"final-cta-container\">\n    <div class=\"final-cta-card\">\n      <div class=\"final-cta-inner\">\n        <p class=\"final-cta-eyebrow\">${SECTION_13_DECORATIVE_FINAL_CTA_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"final-cta-title\">${SECTION_13_DECORATIVE_FINAL_CTA_TITLE@LOCALIZED_STRING_SS}</h2>\n        <div class=\"final-cta-copy\">\n          <p>${SECTION_13_DECORATIVE_FINAL_CTA_BODY_1@LOCALIZED_STRING_SS}</p>\n          <p><strong>${SECTION_13_DECORATIVE_FINAL_CTA_EMPHASIS@LOCALIZED_STRING_SS}</strong></p>\n          <p>${SECTION_13_DECORATIVE_FINAL_CTA_BODY_2@LOCALIZED_STRING_SS}</p>\n        </div>\n        <div class=\"final-cta-actions\">\n          <a class=\"btn btn-primary btn-primary-ring\" href=\"${SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_HREF@STRING}\">\n            <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n            </svg>\n            ${SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}\n          </a>\n          <a class=\"btn btn-secondary-filled\" href=\"${SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_HREF@STRING}\">\n            <svg class=\"btn-star\" width=\"16\" height=\"16\" viewBox=\"0 0 21 21\" fill=\"currentColor\" aria-hidden=\"true\">\n              <path d=\"M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z\"/>\n            </svg>\n            ${SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}\n          </a>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 03-cta/cta.btn-base/block.css */\n/* lab-ui block · cta.btn-base\n   Depends: 00-tokens/tokens.css (--radius-pill, --font-family,\n   --transition-duration). Shared geometry + .btn-star base for every\n   CTA variant. Variant blocks (cta.btn-primary-ring,\n   cta.btn-secondary-filled) layer their own ::before/::after, halo\n   shadows and color tokens on top. */\n\n.btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 0.5rem;\n  min-width: 13rem;\n  height: 3.25rem;\n  padding: 0 1.625rem;\n  border-radius: var(--radius-pill);\n  font-family: var(--font-family);\n  font-weight: 500;\n  font-size: 1rem;\n  white-space: nowrap;\n  position: relative;\n  text-decoration: none;\n  cursor: pointer;\n  border: 0;\n  transition: box-shadow var(--transition-duration) ease,\n              transform var(--transition-duration) ease;\n}\n\n.btn-star {\n  flex-shrink: 0;\n  transition: transform var(--transition-duration) cubic-bezier(.4, 0, .2, 1);\n}\n\n\n/* generated child CSS: 12-decorative/effect.hover-rise/block.css */\n/* ============================================================\n   lab-ui block · effect.hover-rise\n   ----------------------------------------------------------------\n   Brand interaction primitive — standard CTA halo + inner bottom-glow\n   that fades in on :hover. Applied via CSS, no markup.\n\n   ## Where it auto-applies (brand primitives)\n   - .btn-primary-ring          (cta.btn-primary-ring)\n   - .btn-secondary-filled      (cta.btn-secondary-filled)\n   - .nav-link, .nav-trigger    (header.default nav items)\n   - .locale-trigger            (language.locale-dropdown)\n   - .bc-link                   (header.default breadcrumb)\n\n   ## Opt-in for custom elements\n   - [data-fx=\"rise\"]\n\n   ## Tint\n   Default uses --cta-accent (which is --color-cyan by default and\n   re-themed via [data-theme=\"...\"] overlays). Override per element\n   via --fx-rise-color: <color>.\n\n   ## Implementation\n   Each target element gets a ::after pseudo with the canonical\n   bottom-centered radial glow used by current CTA blocks, plus an\n   outer hover halo via box-shadow. No external image asset.\n\n   ## Stacking\n   Container must be position:relative (or rely on the host block\n   making itself relative — all brand-primitive blocks already do).\n   The ::after is z-index:1 with pointer-events:none so it never\n   blocks interaction.\n   ============================================================ */\n\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n)::after {\n  content: \"\";\n  position: absolute;\n  left: 50%;\n  bottom: 0;\n  transform: translateX(-50%);\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  z-index: 1;\n  border-radius: inherit;\n  opacity: 0;\n  transition: opacity var(--transition-duration, 0.25s) ease;\n\n  /* Canonical inner glow: same bottom-centered radial used by\n     cta.btn-primary-ring and cta.btn-secondary-filled. */\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--fx-rise-color, var(--cta-accent, #6BEAF9)) 0%,\n    transparent 60%\n  );\n  mix-blend-mode: normal;\n  filter: none;\n}\n\n/* Activate on hover + on keyboard focus-visible (a11y). */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n):is(:hover, :focus-visible)::after {\n  opacity: 0.48;\n}\n\n/* Brand-primitive base — they all need to be relative for the\n   ::after to anchor inside. Each block also sets this in its own\n   block.css, but we re-declare here so the effect works even when\n   only this CSS is imported. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n) {\n  position: relative;\n  overflow: hidden;\n  transition:\n    box-shadow var(--transition-duration, 0.25s) ease,\n    transform var(--transition-duration, 0.25s) ease;\n}\n\n/* Outer halo — two intensities so the same effect doesn't look\n   aggressive on a 32 px nav link AND on a 52 px pill button.\n\n   Strong (default): pills, cards, opt-in via [data-fx=\"rise\"].\n   Soft: header chrome — nav links, dropdown triggers, breadcrumb,\n   locale chip. Override per element via --fx-rise-color. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  [data-fx=\"rise\"]\n):is(:hover, :focus-visible) {\n  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n}\n\n:where(\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger\n):is(:hover, :focus-visible) {\n  box-shadow: 0 0 18px -6px var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n}\n\n/* Keyboard-only focus ring (a11y). Distinct from the hover halo so that\n   keyboard navigation is unambiguously visible — sighted hover users do\n   not get the ring, only the soft glow. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n):focus-visible {\n  outline: 2px solid var(--fx-rise-color, var(--cta-accent, #6BEAF9));\n  outline-offset: 2px;\n}\n\n/* The hover-rise must stay BEHIND the element's own contents.\n   We use overflow:hidden + ::after with z-index 1 — content sits\n   at z-index 2. Brand primitives bump their direct children to\n   z-index 2 here so we don't have to touch every block.css. */\n:where(\n  .btn-primary-ring,\n  .btn-secondary-filled,\n  .nav-link,\n  .nav-trigger,\n  .locale-trigger,\n  .bc-link,\n  [data-fx=\"rise\"]\n) > * {\n  position: relative;\n  z-index: 2;\n}\n\n/* Reduced-motion: keep the effect but kill the transition so it\n   appears instantly on hover with no animation. */\n@media (prefers-reduced-motion: reduce) {\n  :where(\n    .btn-primary-ring,\n    .btn-secondary-filled,\n    .nav-link,\n    .nav-trigger,\n    .locale-trigger,\n    .bc-link,\n    [data-fx=\"rise\"]\n  )::after {\n    transition: none;\n  }\n}\n\n\n/* generated child CSS: 03-cta/cta.btn-primary-ring/block.css */\n/* lab-ui block · cta.btn-primary-ring\n   Depends: 00-tokens/tokens.css (--color-black, --radius-pill,\n   --font-family, --gradient-cta-ring, --transition-duration,\n   --cta-accent, --cta-accent-soft) + 03-cta/cta.btn-base (.btn, .btn-star). */\n\n.btn-primary {\n  background: var(--button-primary-bg, transparent);\n  color: var(--button-primary-color, var(--color-black));\n}\n\n.btn-primary-ring {\n  position: relative;\n  overflow: hidden;\n}\n\n.btn-primary-ring::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  padding: 1.5px;\n  background: var(--gradient-cta-ring);\n  -webkit-mask:\n    linear-gradient(#000 0 0) content-box,\n    linear-gradient(#000 0 0);\n  -webkit-mask-composite: xor;\n          mask-composite: exclude;\n  pointer-events: none;\n  z-index: 3;                          /* above hover-rise ::after */\n  transition: background var(--transition-duration) ease;\n}\n\n/* On hover the rainbow ring rotates direction 249° → 264° (matches\n   live the platform .button-primary:hover::before). */\n.btn-primary-ring:hover::before {\n  background: linear-gradient(\n    264.85deg,\n    rgba(239, 92, 255, 0)   -6.54%,\n    #FFA72C                 24.73%,\n    #6BEDF9                 70.73%,\n    rgba(107, 237, 249, 0) 113.1%\n  );\n}\n\n/* Outer brand glow on hover — tighter than sw's stock 41 px so it\n   reads as a halo hugging the pill, not a rectangular smear behind\n   it (matches the production reference). Tinted by --cta-accent so\n   each vertical paints its own color. */\n.btn-primary-ring:hover {\n  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n\n/* Match cta.btn-secondary-filled's hover affordance: a tighter\n   bottom-centered radial glow that fades in, instead of the shared\n   effect.hover-rise strip. The ring remains on ::before above it.\n   Keep normal blending so the glow stays visible on white buttons. */\n.btn-primary-ring::after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  transform: none;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 1;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  filter: none;\n  background-blend-mode: normal;\n  mix-blend-mode: normal;\n  transition: opacity var(--transition-duration) ease;\n}\n\n.btn-primary-ring:hover::after {\n  opacity: 0.48;\n}\n\n.btn-primary-ring:hover .btn-star {\n  transform: rotate(180deg);\n}\n\n\n/* generated child CSS: 03-cta/cta.btn-secondary-filled/block.css */\n/* lab-ui block · cta.btn-secondary-filled\n   Depends: 00-tokens/tokens.css\n     (--cta-secondary-fill, --cta-secondary-color, --cta-secondary-border,\n      --cta-accent-soft, --radius-pill, --font-family, --transition-duration)\n   + 03-cta/cta.btn-base (.btn, .btn-star)\n   + 12-decorative/effect.hover-rise (inner bottom glow). */\n\n.btn-secondary-filled {\n  /* Filled background — re-themed per vertical via tokens */\n  background: var(--cta-secondary-fill);\n  color: var(--cta-secondary-color);\n  border: 1px solid var(--cta-secondary-border);\n\n  /* Idle: no glow at all. Both halos fade in only on :hover. */\n  box-shadow: none;\n\n  transition: box-shadow var(--transition-duration) ease;\n  position: relative;\n  overflow: hidden;        /* keeps ::before contained */\n}\n\n/* Inner glow — radial-gradient ellipse pinned to the bottom-center.\n   ~58 % wide so the rounded end caps stay dark even when active.\n   Lives in the DOM at all times but starts at opacity 0; fades in\n   on :hover (along with the outer halo) so the pill looks \"lit\"\n   under the cursor and quiet at rest. */\n.btn-secondary-filled::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 1;\n  background: radial-gradient(\n    ellipse 58% 78% at 50% 100%,\n    var(--cta-accent, #6BEAF9) 0%,\n    transparent 60%\n  );\n  opacity: 0;\n  mix-blend-mode: screen;\n  transition: opacity var(--transition-duration) ease;\n}\n\n.btn-secondary-filled:hover {\n  /* Outer halo fades in on hover. Spread -4 px + blur 32 px gives\n     a round soft glow that hugs the pill instead of smearing\n     rectangularly. Tinted by current vertical's --cta-accent. */\n  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);\n}\n\n.btn-secondary-filled:hover::before {\n  /* Inner radial fades in to match the outer halo. */\n  opacity: 0.48;\n}\n\n/* Suppress the auto-applied effect.hover-rise ::after on this block —\n   we draw a tighter, 65 %-wide bottom glow via ::before that already\n   covers the same affordance. Stacking both reads as \"double glow\". */\n.btn-secondary-filled::after {\n  display: none;\n}\n\n.btn-secondary-filled .btn-star {\n  flex-shrink: 0;\n  color: var(--cta-secondary-color);\n  transition: transform var(--transition-duration) cubic-bezier(.4,0,.2,1);\n}\n.btn-secondary-filled:hover .btn-star {\n  transform: rotate(180deg);\n}\n\n\n/* generated child CSS: 12-decorative/decorative.final-cta/block.css */\n/* lab-ui block · decorative.final-cta\n   Depends: 00-tokens/tokens.css + CTA button blocks.\n   Adapted from /Users/imighty/Downloads/Section 16 - Standalone.html. */\n\n.final-cta-section {\n  box-sizing: border-box;\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n  overflow-x: clip;\n}\n\n.final-cta-section *,\n.final-cta-section *::before,\n.final-cta-section *::after {\n  box-sizing: border-box;\n}\n\n.final-cta-container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n  min-width: 0;\n}\n\n.final-cta-card {\n  position: relative;\n  max-width: 100%;\n  min-width: 0;\n  overflow: hidden;\n  border-radius: var(--radius-card);\n  padding: clamp(2rem, 5vw, 4rem);\n  background:\n    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 12%, transparent), transparent 48%),\n    radial-gradient(circle at 0% 100%, rgba(255, 167, 44, 0.08), transparent 50%),\n    var(--color-dark-card-bg);\n  box-shadow: 0 24px 70px -42px rgba(15, 17, 22, 0.7);\n}\n\n.final-cta-card::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  border-radius: inherit;\n  padding: 1px;\n  background:\n    linear-gradient(135deg,\n      color-mix(in srgb, var(--cta-accent, #6BEAF9) 52%, transparent),\n      rgba(255, 255, 255, 0.16) 42%,\n      rgba(255, 255, 255, 0.06));\n  -webkit-mask:\n    linear-gradient(#000 0 0) content-box,\n    linear-gradient(#000 0 0);\n  -webkit-mask-composite: xor;\n          mask-composite: exclude;\n  pointer-events: none;\n}\n\n.final-cta-inner {\n  position: relative;\n  z-index: 1;\n  max-width: 62rem;\n  min-width: 0;\n}\n\n.final-cta-eyebrow {\n  margin: 0 0 0.875rem;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  color: var(--cta-accent, #6BEAF9);\n}\n\n.final-cta-title {\n  margin: 0;\n  max-width: 14ch;\n  font-size: clamp(2.25rem, 6vw, 5rem);\n  font-weight: var(--type-h1-weight);\n  line-height: 1.02;\n  letter-spacing: var(--type-h1-tracking);\n  color: var(--color-white);\n  text-wrap: balance;\n  overflow-wrap: anywhere;\n}\n\n.final-cta-copy {\n  display: grid;\n  gap: 1rem;\n  max-width: 60rem;\n  min-width: 0;\n  margin-top: clamp(1.5rem, 3vw, 2rem);\n}\n\n.final-cta-copy p {\n  margin: 0;\n  font-size: clamp(1rem, 1.2vw, 1.125rem);\n  line-height: 1.58;\n  color: rgba(255, 255, 255, 0.72);\n  overflow-wrap: anywhere;\n  min-width: 0;\n  max-width: 100%;\n}\n\n.final-cta-copy strong {\n  color: var(--color-white);\n  font-weight: 600;\n}\n\n.final-cta-actions {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0.75rem;\n  margin-top: clamp(2rem, 4vw, 2.5rem);\n  min-width: 0;\n}\n\n.final-cta-actions .btn-primary-ring {\n  background: rgba(255, 255, 255, 0.94);\n  color: var(--color-black);\n}\n\n.final-cta-actions .btn-secondary-filled {\n  --cta-secondary-fill: rgba(255, 255, 255, 0.08);\n  --cta-secondary-color: var(--color-white);\n  --cta-secondary-border: rgba(255, 255, 255, 0.18);\n}\n\n@media (max-width: 720px) {\n  .final-cta-container {\n    padding-inline: 1.25rem;\n  }\n\n  .final-cta-card {\n    padding: 2rem 1.25rem;\n  }\n\n  .final-cta-title {\n    max-width: 12ch;\n  }\n\n  .final-cta-actions {\n    display: grid;\n    grid-template-columns: 1fr;\n  }\n\n  .final-cta-actions .btn {\n    width: 100%;\n    min-width: 0;\n  }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow Label",
+          "DESCRIPTION": "Small uppercase label shown above the final CTA heading."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "CTA Heading",
+          "DESCRIPTION": "Main heading for the bottom-of-page CTA banner."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_BODY_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "First Body Paragraph",
+          "DESCRIPTION": "Opening supporting paragraph for the final CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_EMPHASIS",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Emphasis Line",
+          "DESCRIPTION": "Short emphasized sentence between the two supporting paragraphs."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_BODY_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Second Body Paragraph",
+          "DESCRIPTION": "Closing supporting paragraph for the final CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Primary CTA URL",
+          "DESCRIPTION": "Destination URL for the primary CTA button."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Primary CTA Label",
+          "DESCRIPTION": "Text shown in the primary CTA button."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate."
+      }
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Secondary CTA URL",
+          "DESCRIPTION": "Destination URL for the secondary CTA button."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_13_DECORATIVE_FINAL_CTA_SECONDARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Secondary CTA Label",
+          "DESCRIPTION": "Text shown in the secondary CTA button."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
+      }
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+/* generated child CSS: 12-decorative/effect.hover-rise/block.css */
+/* ============================================================
+   lab-ui block · effect.hover-rise
+   ----------------------------------------------------------------
+   Brand interaction primitive — standard CTA halo + inner bottom-glow
+   that fades in on :hover. Applied via CSS, no markup.
+
+   ## Where it auto-applies (brand primitives)
+   - .btn-primary-ring          (cta.btn-primary-ring)
+   - .btn-secondary-filled      (cta.btn-secondary-filled)
+   - .nav-link, .nav-trigger    (header.default nav items)
+   - .locale-trigger            (language.locale-dropdown)
+   - .bc-link                   (header.default breadcrumb)
+
+   ## Opt-in for custom elements
+   - [data-fx="rise"]
+
+   ## Tint
+   Default uses --cta-accent (which is --color-cyan by default and
+   re-themed via [data-theme="..."] overlays). Override per element
+   via --fx-rise-color: <color>.
+
+   ## Implementation
+   Each target element gets a ::after pseudo with the canonical
+   bottom-centered radial glow used by current CTA blocks, plus an
+   outer hover halo via box-shadow. No external image asset.
+
+   ## Stacking
+   Container must be position:relative (or rely on the host block
+   making itself relative — all brand-primitive blocks already do).
+   The ::after is z-index:1 with pointer-events:none so it never
+   blocks interaction.
+   ============================================================ */
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--transition-duration, 0.25s) ease;
+
+  /* Canonical inner glow: same bottom-centered radial used by
+     cta.btn-primary-ring and cta.btn-secondary-filled. */
+  background: radial-gradient(
+    ellipse 58% 78% at 50% 100%,
+    var(--fx-rise-color, var(--cta-accent, #6BEAF9)) 0%,
+    transparent 60%
+  );
+  mix-blend-mode: normal;
+  filter: none;
+}
+
+/* Activate on hover + on keyboard focus-visible (a11y). */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):is(:hover, :focus-visible)::after {
+  opacity: 0.48;
+}
+
+/* Brand-primitive base — they all need to be relative for the
+   ::after to anchor inside. Each block also sets this in its own
+   block.css, but we re-declare here so the effect works even when
+   only this CSS is imported. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) {
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow var(--transition-duration, 0.25s) ease,
+    transform var(--transition-duration, 0.25s) ease;
+}
+
+/* Outer halo — two intensities so the same effect doesn't look
+   aggressive on a 32 px nav link AND on a 52 px pill button.
+
+   Strong (default): pills, cards, opt-in via [data-fx="rise"].
+   Soft: header chrome — nav links, dropdown triggers, breadcrumb,
+   locale chip. Override per element via --fx-rise-color. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 32px -4px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+:where(
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger
+):is(:hover, :focus-visible) {
+  box-shadow: 0 0 18px -6px var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+}
+
+/* Keyboard-only focus ring (a11y). Distinct from the hover halo so that
+   keyboard navigation is unambiguously visible — sighted hover users do
+   not get the ring, only the soft glow. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+):focus-visible {
+  outline: 2px solid var(--fx-rise-color, var(--cta-accent, #6BEAF9));
+  outline-offset: 2px;
+}
+
+/* The hover-rise must stay BEHIND the element's own contents.
+   We use overflow:hidden + ::after with z-index 1 — content sits
+   at z-index 2. Brand primitives bump their direct children to
+   z-index 2 here so we don't have to touch every block.css. */
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  .nav-link,
+  .nav-trigger,
+  .locale-trigger,
+  .bc-link,
+  [data-fx="rise"]
+) > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Reduced-motion: keep the effect but kill the transition so it
+   appears instantly on hover with no animation. */
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    .btn-primary-ring,
+    .btn-secondary-filled,
+    .nav-link,
+    .nav-trigger,
+    .locale-trigger,
+    .bc-link,
+    [data-fx="rise"]
+  )::after {
+    transition: none;
+  }
+}
+
+
+/* generated child CSS: 09-vertical-section/section.axes-grid/block.css */
+/* lab-ui block · section.axes-grid
+   Depends: 00-tokens/tokens.css + 12-decorative/effect.hover-rise/block.css
+   (hover glow + halo delegated via data-fx="rise"). Light theme.
+   Adapted from designer styles.css §scale-axes (lines 1301–1372, 1397). */
+
+.axes-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  font-family: var(--font-family);
+}
+
+.axis {
+  padding: 28px;
+  border-radius: var(--radius-card);
+  background: var(--color-bg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: border-color 0.2s ease, background 0.2s ease,
+              box-shadow var(--transition-duration, 0.25s) ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.axis:hover {
+  border-color: rgba(86, 66, 45, 0.28);
+  background: var(--color-gray-bg);
+}
+/* Opt out of effect.hover-rise's inner bottom radial — we keep the outer
+   halo (box-shadow), but the inset cyan glow inside the card competes
+   visually with the brown tick track + brown-tinted accents in this
+   section. */
+.axis::after {
+  display: none;
+}
+
+.axis-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0;
+  font: inherit;
+}
+.axis-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.axis-label {
+  margin: 0;
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  letter-spacing: -0.01em;
+}
+
+.axis-track {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.axis-tick {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+}
+
+.axis-range {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  flex-wrap: wrap;
+}
+.axis-range .from { color: var(--color-gray-second); }
+.axis-range .arrow { color: var(--color-text-accent, #56422D); font-weight: 600; }
+.axis-range .to { color: var(--color-heading); }
+
+.axis-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-gray-blue);
+}
+
+/* Empty-slot auto-hide via :has — if either label or body is empty,
+   the whole axis card collapses out of the grid. */
+.axis:has(.axis-label:empty) { display: none; }
+
+@media (max-width: 980px) {
+  .axes-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .axes-grid { grid-template-columns: 1fr; }
+}

@@ -4,7 +4,7 @@
  *   node scripts/build-landing.mjs --topic hvac --words 2500
  *
  * The only structural invariant is:
- *   header.default first, footer.default last.
+ *   a 01-header block first, a 02-footer block last.
  *
  * Everything between them is selected from manifest.json and compiled from
  * block.html / block.css / block.js / block.json. No copy.md, no hand-authored
@@ -83,7 +83,7 @@ const usage = () => `Usage:
     --sections hero.composite-photo,features.card-grid-4,section.axes-grid,faq.bubble-light-grouped
 
 Steps run in order:
-  1. Write landing.spec.json with header.default first and footer.default last
+  1. Write landing.spec.json with a 01-header block first and a 02-footer block last
   2. compose-cms-family.mjs --spec <spec> --out dist/<slug>
   3. validate-cms-family.mjs --out dist/<slug>
   4. render-cms-family-preview.mjs --out dist/<slug> --file preview.html`;
@@ -143,6 +143,7 @@ const inferWords = (request = "", fallback = 2500) => {
 };
 
 const readThemes = () => JSON.parse(readFileSync(join(labRoot, "compositions", "themes.json"), "utf8"));
+const readManifest = () => JSON.parse(readFileSync(join(labRoot, "manifest.json"), "utf8"));
 
 const inferTopic = (request = "") => {
   const text = String(request).toLowerCase();
@@ -177,10 +178,20 @@ const resolveTheme = (topic, override) => {
 };
 
 const normalizeSections = (raw, recipe, topic) => {
-  const inner = raw
+  const selected = raw
     ? raw.split(",").map((item) => item.trim()).filter(Boolean)
     : recipe.candidates[hashString(topic) % recipe.candidates.length];
-  return ["header.default", ...inner.filter((id) => id !== "header.default" && id !== "footer.default"), "footer.default"];
+  const categoryById = new Map(readManifest().blocks.map((block) => [block.id, block.category]));
+  const isHeader = (id) => categoryById.get(id) === "01-header";
+  const isFooter = (id) => categoryById.get(id) === "02-footer";
+  const normalized = selected.filter((id, index) => {
+    if (index === 0 && isHeader(id)) return true;
+    if (index === selected.length - 1 && isFooter(id)) return true;
+    return !isHeader(id) && !isFooter(id);
+  });
+  if (!isHeader(normalized[0])) normalized.unshift("header.default");
+  if (!isFooter(normalized[normalized.length - 1])) normalized.push("footer.default");
+  return normalized;
 };
 
 const prepareSpec = (args) => {

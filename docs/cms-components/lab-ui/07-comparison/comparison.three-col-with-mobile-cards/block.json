@@ -923,6 +923,107 @@
         "none"
       ],
       "default": "neutral"
+    },
+    {
+      "code": "slot_09_capability",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "slot_09_col_01",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "native"
+    },
+    {
+      "code": "slot_09_col_01_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "check"
+    },
+    {
+      "code": "slot_09_col_02",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_02_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_03",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_03_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_04",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_04_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_05",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_05_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
+    },
+    {
+      "code": "slot_09_col_06",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "partial"
+    },
+    {
+      "code": "slot_09_col_06_icon",
+      "type": "ENUM",
+      "options": [
+        "check",
+        "neutral",
+        "cross",
+        "none"
+      ],
+      "default": "neutral"
     }
   ],
   "preview": {

@@ -1,0 +1,430 @@
+/* generated child CSS: 02-footer/footer.corporate-reference/block.css */
+/* lab-ui block · footer.corporate-reference
+   Imported from CMS BlockTemplate 8d9f72c2-51ae-4f40-a726-3562be0e75e5 (FOOTER). */
+
+/* ─── Footer ─────────────────────────────────── */
+.footer {
+	position: relative;
+	width: 100%;
+	padding-top: 3.75rem;
+	padding-bottom: 3.125rem;
+	border-top-left-radius: 2.5rem;
+	border-top-right-radius: 2.5rem;
+	background-color: var(--color-black);
+}
+
+.footer::before {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 23.1875rem;
+	background-image: var(--footer-bg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	pointer-events: none;
+}
+
+.footer-container {
+	height: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	position: relative;
+}
+
+.footer-top {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	gap: 0;
+}
+
+.footer-brand {
+	text-align: left;
+}
+
+[dir="rtl"] .footer-brand {
+	text-align: right;
+}
+
+.footer-brand-head {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+	gap: 1.25rem;
+}
+
+.footer-tagline {
+	font-size: 1.25rem;
+	color: var(--color-white);
+	width: 28.9375rem;
+}
+
+.footer-address {
+	font-size: 1.25rem;
+	color: var(--color-gray);
+	margin-top: 4.875rem;
+}
+
+.footer-bottom {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	padding-top: 8.9375rem;
+	gap: 0;
+}
+
+	@media (width < 120rem) {
+		.footer {
+			padding-bottom: 2.25rem;
+		}
+
+		.footer-tagline {
+			font-size: 1rem;
+			width: 13.9375rem;
+		}
+
+		.footer-address {
+			font-size: 1rem;
+			margin-top: 2.5rem;
+		}
+
+		.footer-bottom {
+			-webkit-box-orient: horizontal;
+			-webkit-box-direction: normal;
+			-ms-flex-direction: row;
+			flex-direction: row;
+			gap: 0;
+		}
+
+		.footer-copy {
+			font-size: 0.75rem;
+		}
+
+		.footer-bottom {
+			padding-top: 6.25rem;
+		}
+	}
+
+/* ─── < 64rem ────────────────────────────────── */
+@media (width < 64rem) {
+    .footer {
+        border-top-left-radius: 1.25rem;
+        border-top-right-radius: 1.25rem;
+    }
+}
+
+/* ─── < 48rem ────────────────────────────────── */
+@media (width < 48rem) {
+	.footer {
+		padding-bottom: 1.3125rem;
+	}
+
+	.footer-top {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		gap: 3.125rem;
+	}
+
+    .footer-brand {
+		text-align: center;
+	}
+
+	[dir="rtl"] .footer-brand {
+		text-align: center;
+	}
+
+	.footer-brand-head {
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+	}
+
+	.footer-bottom {
+		-webkit-box-orient: vertical;
+		-webkit-box-direction: normal;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		gap: 1.5rem;
+		-webkit-box-align: start;
+		-ms-flex-align: start;
+		align-items: flex-start;
+		padding-top: 4.375rem;
+	}
+}
+
+/* imported footer fragment CSS: FOOTER_LOGO (8535e8fc-0ee2-4e67-807d-74d5de9ece12) */
+.footer-logo--sm {
+	display: none;
+}
+
+.footer-logo--2xl {
+	display: block;
+}
+
+	@media (width < 120rem) {
+		.footer-logo--sm {
+			display: block;
+		}
+
+		.footer-logo--2xl {
+			display: none;
+		}
+	}
+
+/* imported footer fragment CSS: FOOTER_MENU (0ef16c2c-f5fb-422f-9b4b-c69af2f48f47) */
+.footer-nav {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	gap: 1.875rem;
+}
+
+.footer-nav-link {
+	font-size: 1.25rem;
+	color: var(--color-gray-blue);
+    transition: color var(--transition-duration) ease,
+              fill var(--transition-duration) ease;
+}
+
+.footer-nav-link:hover {
+	color: var(--color-white);
+}
+
+@media (width < 120rem) {
+	.footer-nav-link {
+		font-size: 1rem;
+	}
+}
+
+@media (width < 64rem) {
+	.footer-nav {
+		display: none;
+	}
+}
+
+/* imported footer fragment CSS: FOOTER_SOCIALS (bf39cab7-3f7b-4f2a-9abe-741f0fc7e22f) */
+.footer-socials {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	gap: 1.25rem;
+}
+
+.footer-social-link {
+	display: -webkit-inline-box;
+	display: -ms-inline-flexbox;
+	display: inline-flex;
+}
+
+.footer-social-link svg circle,
+.footer-social-link svg path {
+  transition: color var(--transition-duration) ease,
+              fill var(--transition-duration) ease;
+}
+
+.footer-social-link:hover:not(:first-child)>svg>path {
+	fill: var(--color-white);
+}
+
+.footer-social-link:hover:first-child>svg>circle {
+	fill: var(--color-white);
+}
+
+@media (width < 120rem) {
+  .footer-socials {
+		-webkit-box-pack: justify;
+		-ms-flex-pack: justify;
+		justify-content: space-between;
+		gap: 1.25rem;
+	}
+}
+
+@media (width < 48rem) {
+	.footer-socials {
+		-webkit-box-pack: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		gap: 2.3125rem;
+	}
+}
+
+/* imported footer fragment CSS: FOOTER_CONTACTS (6b9fc740-47ab-4527-a099-0356a8ce03ee) */
+.footer-emails {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	gap: 1.25rem;
+	margin-top: 1.875rem;
+	text-align: left;
+}
+
+.footer-email-link {
+	font-size: 1.25rem;
+	color: var(--color-gray-light);
+    transition: color var(--transition-duration) ease,
+              fill var(--transition-duration) ease;
+}
+
+[dir="rtl"] .footer-email-link {
+  margin-right: auto;
+}
+
+.footer-email-link:hover {
+	color: var(--color-white);
+}
+
+.footer-email-label {
+	font-size: 1rem;
+	color: var(--color-gray-light);
+}
+
+.footer-email-group {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+@media (width < 120rem) {
+	.footer-email-link {
+		font-size: 1rem;
+	}
+
+	.footer-email-label {
+		font-size: 1rem;
+	}
+}
+
+@media (width < 48rem) {
+	.footer-emails {
+		text-align: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+	}
+
+    [dir="rtl"] .footer-email-link {
+      margin-inline: auto;
+    }
+}
+
+/* imported footer fragment CSS: FOOTER_COPYRIGHT (df5f82bf-6d95-4e94-ba6c-82eeb81078e0) */
+.footer-copy {
+	font-size: 0.875rem;
+	color: #ffffff;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
+}
+
+.footer-copy-br {
+	display: none;
+}
+
+@media (width < 120rem) {
+		.footer-copy {
+			font-size: 0.75rem;
+		}
+}
+
+@media (width < 48rem) {
+	.footer-copy-br {
+		display: block;
+	}
+}
+
+/* imported footer fragment CSS: FOOTER_LEGAL (a2f5d889-fc70-48cf-b2da-62183195b2f5) */
+.footer-legal-link {
+	font-size: 0.875rem;
+	color: #ffffff;
+}
+
+.footer-legal-mobile {
+	display: none;
+}
+
+	@media (width < 120rem) {
+		.footer-legal-link {
+			display: none;
+		}
+
+		.footer-legal-mobile {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			-webkit-box-pack: end;
+			-ms-flex-pack: end;
+			justify-content: flex-end;
+			gap: 3rem;
+			width: 100%;
+		}
+
+		.footer-legal-mobile .footer-legal-link {
+			display: block;
+			font-size: 0.75rem;
+		}
+	}
+
+@media (width < 48rem) {
+	.footer-legal-mobile {
+		-webkit-box-pack: justify;
+		-ms-flex-pack: justify;
+		justify-content: space-between;
+	}
+}

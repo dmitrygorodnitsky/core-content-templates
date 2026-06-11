@@ -48,6 +48,10 @@
   line-height: var(--type-lead-leading);
   color: var(--color-text);
 }
+.compare-config,
+.compare-icon-source {
+  display: none;
+}
 
 .compare-grid {
   position: relative;
@@ -150,6 +154,8 @@
   color: var(--color-heading);
 }
 .compare-capability {
+  margin: 0;
+  font: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
 }

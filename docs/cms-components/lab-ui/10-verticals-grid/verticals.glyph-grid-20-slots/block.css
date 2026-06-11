@@ -115,6 +115,7 @@
 
 .vertical-photo {
   position: relative;
+  flex: 0 0 auto;
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
@@ -130,6 +131,13 @@
       rgba(15, 17, 22, 0.035) 0 7px,
       rgba(15, 17, 22, 0.06) 7px 14px);
 }
+.vertical-desc[hidden],
+.vertical-foot[hidden],
+.vertical-status[hidden],
+.vertical-waitlist-btn[hidden],
+.vertical-photo-meta .hint[hidden] {
+  display: none;
+}
 .vertical-photo-img {
   position: absolute;
   inset: 0;
@@ -139,15 +147,18 @@
   height: 100%;
   object-fit: cover;
 }
+.vertical-photo-img:not([src]),
 .vertical-photo-img[src=""],
 .vertical-photo-img[src="#"],
 .vertical-photo-img[src^="/core/image//"],
+.vertical-photo-img[src^="/core/image/null"],
+.vertical-photo-img[src^="/core/image/undefined"],
 .vertical-photo-img[src$="/get"],
 .vertical-photo-img[src$="/get/"],
 .vertical-photo-img[src*="/get//"] {
   opacity: 0;
 }
-.vertical-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .vertical-photo-meta {
+.vertical-photo-img[src]:not([src=""]):not([src="#"]):not([src^="/core/image//"]):not([src^="/core/image/null"]):not([src^="/core/image/undefined"]):not([src$="/get"]):not([src$="/get/"]):not([src*="/get//"]) + .vertical-photo-meta {
   display: none;
 }
 .vertical-photo-meta {
@@ -180,6 +191,7 @@
   position: relative;
   z-index: 2;
   flex: 1;
+  min-height: 0;
   padding: 1.25rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;

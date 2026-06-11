@@ -176,6 +176,12 @@ Migration contract:
   Example: if the saved page has `CTA_LABEL = "Talk to sales"` and the new
   payload has `CTA_LABEL = "Book a demo"`, the migrated page keeps
   `"Talk to sales"` in the new template UUID bucket.
+- Do not generate empty-string seed overrides. If a source/import has no value
+  for a parameter, omit that parameter from generated `PageContext.values`
+  instead of writing `""`. Empty values are preserved only when they already
+  exist in saved CMS `PageContext.values`, because that means an editor cleared
+  the field intentionally. The uploader applies this only to generated payload
+  seed values, not to existing CMS values.
 - Keep every `PARAM_CODE` unique across the whole template family. Duplicate
   codes make value ownership ambiguous and must fail validation.
 - Keep `PARAM_CODE` stable between revisions. If a parameter is renamed, the old
@@ -209,6 +215,7 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
   --root-code FIELD_SERVICE_OPERATIONS_JTE \
   --strategy revision \
   --revision-suffix 20260608_001 \
+  --page-id 36 \
   --live
 ```
 
@@ -217,6 +224,10 @@ saves the root include list with the new child ids, migrates authored
 `PageContext.values` into the new UUID buckets by parameter code, switches the
 PageContext to the new root, and verifies that `enabledTemplates` and value
 buckets point only at the new family.
+
+Pass `--page-id <id>` when updating an existing known PageContext. This makes the
+deployment target the CMS record by id and preserves that record's current URL,
+even if the generated payload contains a different `pageContext.url`.
 
 Use legacy `--strategy upsert` only for first uploads, disposable tests, or an
 explicitly approved in-place maintenance operation. Do not use upsert as the
@@ -244,6 +255,29 @@ This creates the root and child `BlockTemplate` records, saves the root include
 list, and prints a preview URL with explicit `templateId` and `enabledTemplates`.
 It does not call `page-context/save.json`.
 
+To update a template family that is already attached to a page, prefer
+`--strategy update-existing`. This mode starts from `--page-id`, reads the
+current root and enabled child template ids, and updates matching block codes in
+place by id instead of creating a new family:
+
+```bash
+SERVICEWAND_API_KEY=... \
+node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+  --out docs/cms-components/lab-ui/dist/<slug> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --page-id 36 \
+  --root-code FIELD_SERVICE_OPERATIONS_JTE \
+  --strategy update-existing \
+  --dry-run
+```
+
+`update-existing` preserves the PageContext route, root template id, saved
+values, and existing enabled template ids. New local child codes are created and
+added to `enabledTemplates`; CMS child codes missing from the local payload are
+left in place unless `--prune` is explicitly passed. Live mode fails if the
+local root code does not match the PageContext root code.
+
 Production uploads need a current-thread confirmation of:
 
 - base URL;
@@ -255,6 +289,41 @@ Production uploads need a current-thread confirmation of:
 Do not upload a fresh production root over an existing production template
 family unless the old root/family has been removed or the user explicitly
 accepts that reuse path.
+
+### BlockTemplate Parameter Transfer
+
+To move only `BlockTemplate.parameters` between environments, download the
+source parameters first. The downloaded file is a normalized parameters array
+compatible with `sync-block-template-parameters.mjs --parameters-json`.
+
+Download from stage:
+
+```bash
+SERVICEWAND_API_KEY=<stage-token> \
+node docs/cms-components/lab-ui/scripts/download-block-template-parameters.mjs \
+  --template-id <stage-block-template-id> \
+  --base-url https://lsrc.pixelnation.com/core \
+  --org SYSTEM \
+  --out tmp/stage-block-template-parameters.json
+```
+
+Apply to production with a dry run first:
+
+```bash
+SERVICEWAND_API_KEY=<prod-token> \
+node docs/cms-components/lab-ui/scripts/sync-block-template-parameters.mjs \
+  --template-id <prod-block-template-id> \
+  --parameters-json tmp/stage-block-template-parameters.json \
+  --base-url https://servicewand.com/core \
+  --cms-base-url https://servicewand.com/core-cms \
+  --org SYSTEM \
+  --mode replace \
+  --dry-run
+```
+
+If the diff is correct, repeat the same production command with `--live`.
+Use `--template-code` instead of `--template-id` only when the code is unique in
+the target organization.
 
 ## Locked Decisions
 

@@ -1,0 +1,121 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "FIELD_SERVICE_LANDING_CORPORATE_CHROME_COMPARE",
+  "name": "Field Service Landing · corporate chrome comparison",
+  "url": "/industries/field-service-corporate-chrome",
+  "locale": "en",
+  "topic": "field-service",
+  "targetWords": 6500,
+  "theme": "cyan",
+  "background": "none",
+  "recipe": "long",
+  "sourceReference": {
+    "kind": "pdf-outline",
+    "path": "/Users/imighty/Downloads/Field Service Ops (2)/uploads/field-service-page.pdf",
+    "note": "Comparison spec: same Field Service body blocks, but header/footer are imported from Corporate Landing CMS template 3eab232f-9567-4535-a1bf-c59ab746da58.",
+    "chromeSourceTemplateId": "3eab232f-9567-4535-a1bf-c59ab746da58"
+  },
+  "referenceMapping": [
+    {
+      "pdf": "H1 hero + CTAs",
+      "block": "hero.composite-photo"
+    },
+    {
+      "pdf": "Connected operations narrative",
+      "block": "section.h2-narrative-only"
+    },
+    {
+      "pdf": "Modern operations needs",
+      "block": "features.card-grid-4"
+    },
+    {
+      "pdf": "Unified platform + feature H3 accordions",
+      "block": "features.accordion-2col-numbered"
+    },
+    {
+      "pdf": "Mobile workforce operations",
+      "block": "mobile.4-card-glyph"
+    },
+    {
+      "pdf": "AI-native operational automation",
+      "block": "signature.ai-shell"
+    },
+    {
+      "pdf": "Small business / growing teams / scalable operations",
+      "block": "section.stages-list"
+    },
+    {
+      "pdf": "Supported industries",
+      "block": "verticals.glyph-grid-20-slots"
+    },
+    {
+      "pdf": "ServiceWand vs other solutions",
+      "block": "comparison.three-col-with-mobile-cards"
+    },
+    {
+      "pdf": "Visibility, reporting, integrations",
+      "block": "section.axes-grid"
+    },
+    {
+      "pdf": "FAQ accordion",
+      "block": "faq.bubble-light-grouped"
+    },
+    {
+      "pdf": "Closing CTA statement",
+      "block": "decorative.final-cta"
+    }
+  ],
+  "sections": [
+    {
+      "block": "header.corporate-reference",
+      "values": {
+        "demo_request_label": "Lorem Ipsum",
+        "explore_industries_subtext": "Lorem Ipsum",
+        "explore_industries_text": "Lorem Ipsum",
+        "explore_industries_title": "Lorem Ipsum",
+        "locale_selector_dropdown_aria_label": "Lorem Ipsum",
+        "locale_selector_trigger_label": "Lorem Ipsum",
+        "logo_aria_label": "Lorem Ipsum",
+        "menu_faq": "Lorem Ipsum",
+        "menu_how_it_works": "Lorem Ipsum",
+        "menu_industries": "Lorem Ipsum",
+        "menu_partners": "Lorem Ipsum",
+        "menu_platform": "Lorem Ipsum",
+        "menu_resources": "Lorem Ipsum",
+        "nav_faq": "Lorem Ipsum",
+        "nav_how_it_works": "Lorem Ipsum",
+        "nav_industries": "Lorem Ipsum",
+        "nav_partners": "Lorem Ipsum",
+        "nav_platform": "Lorem Ipsum",
+        "open_menu_label": "Lorem Ipsum",
+        "see_all_industries": "Lorem Ipsum",
+        "use_cases": "Lorem Ipsum",
+        "use_cases_description": "Lorem Ipsum"
+      }
+    },
+    "hero.composite-photo",
+    "section.h2-narrative-only",
+    "features.card-grid-4",
+    "features.accordion-2col-numbered",
+    "mobile.4-card-glyph",
+    "signature.ai-shell",
+    "section.stages-list",
+    "verticals.glyph-grid-20-slots",
+    {
+      "block": "comparison.three-col-with-mobile-cards",
+      "values": {
+        "column_count": "2"
+      }
+    },
+    "section.axes-grid",
+    "faq.bubble-light-grouped",
+    "decorative.final-cta",
+    {
+      "block": "footer.corporate-reference",
+      "values": {
+        "bg_pic": "728d0287-96c3-4430-b830-477f87d5ac5e"
+      }
+    }
+  ],
+  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/field-service-pdf-reference-corporate-chrome.spec.json"
+}

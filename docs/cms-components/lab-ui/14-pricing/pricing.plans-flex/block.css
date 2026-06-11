@@ -86,7 +86,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 18px;
   border: 0;
   border-radius: var(--radius-pill);
@@ -120,9 +120,15 @@
 .pf-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  grid-template-rows: repeat(7, auto) 1fr;
+  /* Two explicit 8-track bands: when the grid wraps to two columns
+     (tablet), the second card band still ends in a flexible track so
+     its disclaimers bottom-align the same way as the first band. */
+  grid-template-rows: repeat(7, auto) 1fr repeat(7, auto) 1fr;
   column-gap: 20px;
-  row-gap: 0;
+  /* Separates card bands when the grid wraps; inside a card the
+     subgrid's own row-gap: 0 absorbs these gutters, so internal
+     spacing is unaffected. */
+  row-gap: 20px;
   max-width: 100%;
 }
 .pf-card[data-plan-visible="hide"] { display: none; }
@@ -386,6 +392,9 @@
   .pf-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
+  /* In the wrapped 2-column zone the -4px lift makes the featured card
+     visibly misalign with its band neighbor; keep the ring, drop the lift. */
+  .pf-card--featured { transform: none; }
 }
 @media (max-width: 720px) {
   .pf-plans .container {
@@ -397,6 +406,26 @@
   .pf-lede { margin-inline: 0; }
   .pf-toggle { width: 100%; grid-template-columns: 1fr 1fr; }
   .pf-grid { grid-template-columns: 1fr; gap: 14px; }
-  .pf-card--featured { transform: none; }
+  .pf-card--featured {
+    transform: none;
+    /* Featured plan first in the single-column stack: the recommended
+       tier should not hide below the fold behind the entry plan. */
+    order: -1;
+  }
   .pf-subtitle { min-height: 0; }
+}
+
+/* ─── Accessibility ─────────────────────────────────────────── */
+.pf-toggle-opt:focus-visible,
+.pf-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-plans *,
+  .pf-plans *::before,
+  .pf-plans *::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
 }

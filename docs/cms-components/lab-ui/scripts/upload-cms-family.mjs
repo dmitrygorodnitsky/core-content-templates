@@ -9,6 +9,8 @@
  * - upsert: legacy idempotent update by template/page code.
  * - revision: create a fresh template family with suffixed codes, then switch
  *   the PageContext to the new root + children after values are migrated.
+ * - update-existing: update the template family already attached to --page-id
+ *   by existing ids, preserving PageContext history and values.
  * - --templates-only: upload BlockTemplate records and print a preview URL
  *   without saving or switching PageContext.
  */
@@ -27,11 +29,14 @@ const parseArgs = () => {
     if (arg === "--out") out.out = args[++i];
     else if (arg === "--base-url") out.baseUrl = args[++i];
     else if (arg === "--org") out.org = args[++i];
+    else if (arg === "--page-org") out.pageOrg = args[++i];
     else if (arg === "--root-code") out.rootCode = args[++i];
     else if (arg === "--root-name") out.rootName = args[++i];
     else if (arg === "--strategy") out.strategy = args[++i];
     else if (arg === "--revision-suffix") out.revisionSuffix = args[++i];
+    else if (arg === "--page-id") out.pageId = args[++i];
     else if (arg === "--templates-only" || arg === "--skip-page-context") out.templatesOnly = true;
+    else if (arg === "--prune") out.prune = true;
     else if (arg === "--live") out.mode = "live";
     else if (arg === "--dry-run") out.mode = "dry-run";
     else if (arg === "--help" || arg === "-h") out.help = true;
@@ -44,8 +49,10 @@ const usage = () => `Usage:
   node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \\
     --out docs/cms-components/lab-ui/dist/<slug> \\
     [--dry-run | --live] [--base-url https://lsrc.pixelnation.com/core] [--org SYSTEM]
+    [--page-org SERVICEWAND]
     [--root-code FIELD_SERVICE_LANDING] [--root-name "Field Service Landing"]
-    [--strategy upsert|revision] [--revision-suffix 20260608_001]
+    [--strategy upsert|revision|update-existing] [--revision-suffix 20260608_001]
+    [--page-id 36] [--prune]
     [--templates-only]
 
 Env credentials:
@@ -204,8 +211,26 @@ const maskSecret = (value) => {
 };
 
 const organizationIdentifier = (org) => {
+  if (org && typeof org === "object") return org;
   if (String(org).toUpperCase() === "SYSTEM") return { id: 1, code: "SYSTEM" };
   return { code: org };
+};
+
+const resolveOrganizationIdentifier = async ({ baseUrl, headers, org }) => {
+  if (String(org).toUpperCase() === "SYSTEM") return organizationIdentifier(org);
+  const response = await requestJson(`${baseUrl}/api/organization/list.json`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      filters: [{ property: "code", operator: "=", value: org }],
+      mappings: [{ name: "id" }, { name: "code" }, { name: "name" }],
+      offset: 0,
+      pageSize: 10,
+    }),
+  });
+  const entity = (response?.result || []).find((item) => item.code === org);
+  if (!entity?.id) throw new Error(`Organization ${org} was not found.`);
+  return { id: entity.id, code: entity.code };
 };
 
 const requestText = async (url, options = {}) => {
@@ -288,6 +313,12 @@ const countParams = (root, children) => {
 const UUID_RE = /^[0-9a-f-]{36}$/i;
 const stableValue = (value) => JSON.stringify(value ?? null);
 const isRecord = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
+const isEmptySeedValue = (value) => {
+  if (value === "" || value == null) return true;
+  if (!isRecord(value)) return false;
+  const entries = Object.values(value);
+  return !entries.length || entries.every((entry) => entry === "" || entry == null);
+};
 
 const buildTemplateValueIndex = (templateRefs) => {
   const defaultsByBucket = new Map();
@@ -312,6 +343,7 @@ const canonicalizePageValues = ({ existingValues = {}, payloadValues = {}, templ
     droppedDefaults: 0,
     droppedFlat: 0,
     droppedUnknownFlat: 0,
+    droppedEmptySeed: 0,
     migratedUuid: 0,
   };
 
@@ -330,18 +362,28 @@ const canonicalizePageValues = ({ existingValues = {}, payloadValues = {}, templ
     stats.kept += 1;
   };
 
-  const absorb = (sourceValues) => {
+  const absorb = (sourceValues, { dropEmptySeed = false } = {}) => {
     for (const [key, value] of Object.entries(sourceValues || {})) {
       if (UUID_RE.test(key)) {
         if (!isRecord(value)) continue;
         if (defaultsByBucket.has(key)) {
-          for (const [code, fieldValue] of Object.entries(value)) put(key, code, fieldValue);
+          for (const [code, fieldValue] of Object.entries(value)) {
+            if (dropEmptySeed && isEmptySeedValue(fieldValue)) {
+              stats.droppedEmptySeed += 1;
+              continue;
+            }
+            put(key, code, fieldValue);
+          }
           continue;
         }
         for (const [code, fieldValue] of Object.entries(value)) {
           const owner = ownerByCode.get(code);
           if (!owner) {
             stats.droppedUnknownFlat += 1;
+            continue;
+          }
+          if (dropEmptySeed && isEmptySeedValue(fieldValue)) {
+            stats.droppedEmptySeed += 1;
             continue;
           }
           stats.migratedUuid += 1;
@@ -354,7 +396,7 @@ const canonicalizePageValues = ({ existingValues = {}, payloadValues = {}, templ
     }
   };
 
-  absorb(payloadValues);
+  absorb(payloadValues, { dropEmptySeed: true });
   absorb(existingValues);
 
   for (const [bucketId, bucketValues] of Object.entries(values)) {
@@ -424,6 +466,33 @@ const listPageByUrl = async ({ cmsBaseUrl, headers, url }) => {
     }),
   });
   return (response?.result || []).find((item) => item.url === url) || null;
+};
+
+const listPageById = async ({ cmsBaseUrl, headers, pageId }) => {
+  const id = Number(pageId);
+  if (!Number.isInteger(id) || id <= 0) throw new Error(`Invalid --page-id: ${pageId}`);
+  const response = await requestJson(`${cmsBaseUrl}/api/page-context/list.json`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      filters: [{ property: "id", operator: "=", value: id }],
+      mappings: pageMappings,
+      offset: 0,
+      pageSize: 1,
+    }),
+  });
+  return response?.result?.[0] || null;
+};
+
+const resolvePageContextTarget = async ({ cmsBaseUrl, headers, payload, pageId }) => {
+  if (pageId) {
+    const existing = await listPageById({ cmsBaseUrl, headers, pageId });
+    if (!existing?.id) throw new Error(`PageContext ${pageId} was not found.`);
+    return existing;
+  }
+  return payload.pageContext?.url
+    ? await listPageByUrl({ cmsBaseUrl, headers, url: payload.pageContext.url })
+    : null;
 };
 
 const normalizeTemplateForSave = (template, existing, refs = {}) => {
@@ -498,7 +567,7 @@ const savePageContext = async ({ cmsBaseUrl, headers, payload, rootId, templateR
   const entity = {
     id: existing?.id,
     optimistic: existing?.optimistic,
-    url: page.url,
+    url: existing?.url || page.url,
     nls: page.nls,
     template: { id: rootId, code: payload.root.code },
     enabledTemplates,
@@ -546,6 +615,164 @@ const htmlWithIncludes = (template, childRefs) => {
 
 const flattenRefs = (refs = []) => refs.flatMap((ref) => [ref, ...flattenRefs(ref.children || [])]);
 
+const unique = (values) => [...new Set(values.filter(Boolean))];
+
+const listById = async ({ cmsBaseUrl, headers, entity, id, mappings }) => {
+  const response = await requestJson(`${cmsBaseUrl}/api/${entity}/list.json`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      filters: [{ property: "id", operator: "=", value: id }],
+      mappings,
+      offset: 0,
+      pageSize: 1,
+    }),
+  });
+  return response?.result?.[0] || null;
+};
+
+const listTemplatesByIds = async ({ cmsBaseUrl, headers, ids }) => {
+  const templates = [];
+  for (const id of unique(ids.map((value) => String(entityId(value) || "")))) {
+    const template = await listById({
+      cmsBaseUrl,
+      headers,
+      entity: "block-template",
+      id,
+      mappings: blockMappings,
+    });
+    if (template) templates.push(template);
+  }
+  return templates;
+};
+
+const valuesFieldCount = (values = {}) =>
+  Object.values(values || {}).reduce((sum, bucket) => sum + Object.keys(bucket || {}).length, 0);
+
+const enabledTemplateIds = (page) => (page?.enabledTemplates || []).map((template) => String(entityId(template))).filter(Boolean);
+
+const templateRef = ({ id, code, nls, template, children = [] }) => ({ id, code, nls, template, children });
+
+const makeExistingFamilyPlan = ({ page, existingTemplates, payload }) => {
+  const rootId = String(entityId(page.template));
+  const existingById = new Map(existingTemplates.map((template) => [String(template.id), template]));
+  const existingRoot = existingById.get(rootId);
+  if (!existingRoot) throw new Error(`PageContext ${page.id} root template ${rootId} was not found.`);
+
+  const existingByCode = new Map(existingTemplates.map((template) => [template.code, template]));
+  const localChildren = flattenTemplates(payload.children || []);
+  const localByCode = new Map([[payload.root.code, payload.root], ...localChildren.map((template) => [template.code, template])]);
+  const localChildCodes = new Set(localChildren.map((template) => template.code));
+  const created = localChildren.filter((template) => !existingByCode.has(template.code));
+  const updated = localChildren.filter((template) => existingByCode.has(template.code));
+  const orphaned = existingTemplates
+    .filter((template) => String(template.id) !== rootId && !localChildCodes.has(template.code))
+    .sort((a, b) => String(a.code).localeCompare(String(b.code)));
+  const rootCodeMatches = payload.root.code === existingRoot.code;
+  const missingEnabled = existingTemplates
+    .filter((template) => String(template.id) !== rootId && !enabledTemplateIds(page).includes(String(template.id)))
+    .map((template) => template.code);
+
+  return {
+    page,
+    rootId,
+    existingRoot,
+    existingTemplates,
+    existingByCode,
+    localByCode,
+    rootCodeMatches,
+    updated,
+    created,
+    orphaned,
+    missingEnabled,
+    summary: {
+      pageId: page.id,
+      pageUrl: page.url,
+      rootId,
+      existingRootCode: existingRoot.code,
+      localRootCode: payload.root.code,
+      existingTemplateCount: existingTemplates.length,
+      localTemplateCount: localChildren.length + 1,
+      updateExistingCount: updated.length + 1,
+      createCount: created.length,
+      orphanedCount: orphaned.length,
+      pageValueBuckets: Object.keys(page.values || {}).length,
+      pageValueFields: valuesFieldCount(page.values),
+    },
+  };
+};
+
+const printUpdateExistingPlan = (plan, { live, prune }) => {
+  console.log(`\n=== upload-cms-family · ${live ? "UPDATE EXISTING" : "UPDATE EXISTING DRY RUN"} ===\n`);
+  console.log("PageContext:");
+  console.log(`  id:             ${plan.summary.pageId}`);
+  console.log(`  url:            ${plan.summary.pageUrl}`);
+  console.log(`  root id:        ${plan.summary.rootId}`);
+  console.log(`  root code:      ${plan.summary.existingRootCode}`);
+  console.log(`  local root:     ${plan.summary.localRootCode}`);
+  console.log(`  root code ok:   ${plan.rootCodeMatches ? "yes" : "NO"}`);
+  console.log(`  value buckets:  ${plan.summary.pageValueBuckets}`);
+  console.log(`  value fields:   ${plan.summary.pageValueFields}`);
+
+  console.log("\nTemplate plan:");
+  console.log(`  update in place: ${plan.summary.updateExistingCount} templates (root included)`);
+  console.log(`  create new:      ${plan.summary.createCount} templates`);
+  console.log(`  orphaned in CMS: ${plan.summary.orphanedCount} templates (${prune ? "will disable" : "kept"})`);
+  if (plan.missingEnabled.length) console.log(`  enabled missing: ${plan.missingEnabled.join(", ")}`);
+
+  if (plan.updated.length) {
+    console.log("\nExisting children to update:");
+    for (const template of plan.updated) {
+      const existing = plan.existingByCode.get(template.code);
+      console.log(`  - ${template.code} -> ${existing.id}`);
+    }
+  }
+  if (plan.created.length) {
+    console.log("\nNew children to create:");
+    for (const template of plan.created) console.log(`  - ${template.code}`);
+  }
+  if (plan.orphaned.length) {
+    console.log("\nCMS children not present locally:");
+    for (const template of plan.orphaned) console.log(`  - ${template.code} -> ${template.id}`);
+  }
+
+  if (!live) console.log("\nNo network writes were made. Pass --live to apply this update.\n");
+};
+
+const buildUpdateExistingContext = async (env, payload, options = {}) => {
+  if (!options.pageId) throw new Error("--strategy update-existing requires --page-id.");
+  const token = await getAccessToken(env);
+  const templateHeaders = cmsHeaders(token, env.org);
+  const pageOrg = env.pageOrg || env.org;
+  const pageHeaders = cmsHeaders(token, pageOrg);
+  const page = await listPageById({ cmsBaseUrl: env.cmsBaseUrl, headers: pageHeaders, pageId: options.pageId });
+  if (!page?.id) throw new Error(`PageContext ${options.pageId} was not found.`);
+  if (!entityId(page.template)) throw new Error(`PageContext ${options.pageId} has no root template.`);
+  const pageSaveHeaders = cmsHeaders(token, page.organization?.code || pageOrg);
+
+  const templateIds = unique([String(entityId(page.template)), ...enabledTemplateIds(page)]);
+  const existingTemplates = await listTemplatesByIds({
+    cmsBaseUrl: env.cmsBaseUrl,
+    headers: templateHeaders,
+    ids: templateIds,
+  });
+  if (existingTemplates.length !== templateIds.length) {
+    const found = new Set(existingTemplates.map((template) => String(template.id)));
+    const missing = templateIds.filter((id) => !found.has(id));
+    throw new Error(`PageContext ${options.pageId} references templates not found in ${env.org}: ${missing.join(", ")}`);
+  }
+
+  return {
+    token,
+    templateHeaders,
+    pageHeaders: pageSaveHeaders,
+    pageOrgRef: page.organization?.id
+      ? { id: page.organization.id, code: page.organization.code }
+      : organizationIdentifier(pageOrg),
+    plan: makeExistingFamilyPlan({ page, existingTemplates, payload }),
+  };
+};
+
 const saveTemplateTree = async ({ cmsBaseUrl, headers, template, parentId, org, mode }) => {
   const existing = mode === "upsert"
     ? await listByCode({
@@ -558,19 +785,14 @@ const saveTemplateTree = async ({ cmsBaseUrl, headers, template, parentId, org, 
     : null;
 
   let templateId = existing?.id;
-  try {
-    templateId = await saveBlockTemplate({
-      cmsBaseUrl,
-      headers,
-      template: { ...template, children: [] },
-      existing,
-      parentId,
-      org,
-    });
-  } catch (error) {
-    if (!existing?.id) throw error;
-    console.log(`  child update skipped: ${template.code} (${error.message.split("\n")[0]})`);
-  }
+  templateId = await saveBlockTemplate({
+    cmsBaseUrl,
+    headers,
+    template: { ...template, children: [] },
+    existing,
+    parentId,
+    org,
+  });
 
   const childRefs = [];
   for (const child of template.children || []) {
@@ -619,6 +841,105 @@ const saveTemplateTree = async ({ cmsBaseUrl, headers, template, parentId, org, 
   }
 
   return { id: templateId, code: template.code, nls: template.nls, template, children: childRefs };
+};
+
+const saveUpdateExistingNode = async ({ cmsBaseUrl, headers, template, plan, org }) => {
+  const existing = plan.existingByCode.get(template.code) || null;
+  const initialParentId = existing?.parent?.id ? String(existing.parent.id) : null;
+  const templateId = await saveBlockTemplate({
+    cmsBaseUrl,
+    headers,
+    template: { ...template, children: [] },
+    existing,
+    parentId: initialParentId,
+    org,
+  });
+
+  const childRefs = [];
+  for (const child of template.children || []) {
+    const childRef = await saveUpdateExistingNode({
+      cmsBaseUrl,
+      headers,
+      template: child,
+      plan,
+      org,
+    });
+    childRefs.push(childRef);
+  }
+
+  if (childRefs.length) {
+    const latest = await listById({
+      cmsBaseUrl,
+      headers,
+      entity: "block-template",
+      id: templateId,
+      mappings: blockMappings,
+    });
+    await saveBlockTemplate({
+      cmsBaseUrl,
+      headers,
+      template: {
+        ...template,
+        html: htmlWithIncludes(template, childRefs),
+        children: [],
+      },
+      existing: latest,
+      parentId: latest?.parent?.id ? String(latest.parent.id) : initialParentId,
+      org,
+    });
+  }
+
+  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
+    await reparent({
+      cmsBaseUrl,
+      headers,
+      id: childRefs[index].id,
+      parentId: templateId,
+    });
+  }
+
+  return templateRef({
+    id: String(templateId),
+    code: template.code,
+    nls: template.nls,
+    template,
+    children: childRefs,
+  });
+};
+
+const saveExistingPageTemplateList = async ({ cmsBaseUrl, headers, page, rootId, templateRefs, pageOrgRef, prune }) => {
+  const currentEnabled = enabledTemplateIds(page);
+  const nextEnabled = prune
+    ? templateRefs.slice(1).map((template) => template.id)
+    : unique([...currentEnabled, ...templateRefs.slice(1).map((template) => template.id)]);
+  const changed = currentEnabled.length !== nextEnabled.length || currentEnabled.some((id, index) => id !== nextEnabled[index]);
+  if (!changed) return { saved: false, id: page.id, enabledCount: currentEnabled.length };
+
+  const entity = {
+    id: page.id,
+    optimistic: page.optimistic,
+    url: page.url,
+    nls: page.nls,
+    template: { id: rootId, code: page.template?.code },
+    enabledTemplates: nextEnabled,
+    values: page.values || {},
+    organization: pageOrgRef,
+    excludeFromSeo: page.excludeFromSeo ?? false,
+  };
+  if (!entity.nls) delete entity.nls;
+
+  const text = await requestText(`${cmsBaseUrl}/api/page-context/save.json`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ entities: [entity], mappings: pageMappings }),
+  });
+  await pause();
+  try {
+    const parsed = JSON.parse(text);
+    return { saved: true, id: Array.isArray(parsed) ? parsed[0] : parsed, enabledCount: nextEnabled.length };
+  } catch {
+    return { saved: true, id: Number(text), enabledCount: nextEnabled.length };
+  }
 };
 
 const ensureCodeAvailable = async ({ cmsBaseUrl, headers, code }) => {
@@ -671,7 +992,7 @@ const verifyPageContext = async ({ cmsBaseUrl, headers, pageId, templateRefs }) 
   };
 };
 
-const printDryRun = ({ baseUrl, cmsBaseUrl, apiKey, bearer, org }, payload, options = {}) => {
+const printDryRun = ({ baseUrl, cmsBaseUrl, apiKey, bearer, org, pageOrg }, payload, options = {}) => {
   const summary = summarizePayload(payload);
   console.log("\n=== upload-cms-family · DRY RUN ===\n");
   console.log("Payload summary:");
@@ -684,6 +1005,7 @@ const printDryRun = ({ baseUrl, cmsBaseUrl, apiKey, bearer, org }, payload, opti
   console.log("\nTarget:");
   console.log(`  CMS base: ${cmsBaseUrl}`);
   console.log(`  Org:      ${org}`);
+  console.log(`  Page org: ${pageOrg || org}`);
 
   console.log("\nAuth:");
   console.log(`  baseUrl: ${baseUrl}`);
@@ -692,27 +1014,28 @@ const printDryRun = ({ baseUrl, cmsBaseUrl, apiKey, bearer, org }, payload, opti
 
   console.log("\nLive sequence:");
   console.log(`  1. Resolve bearer token`);
+  const pageTarget = options.pageId ? `id=${options.pageId}` : summary.pageUrl;
   if (payload.revision) {
     console.log(`  2. Create new root BlockTemplate ${summary.rootCode}`);
     console.log(`  3. Create ${summary.totalTemplates - 1} child BlockTemplate records (${summary.childCount} direct, nested children included)`);
-    console.log(`  4. Reparent direct and nested children in payload order`);
-    console.log(`  5. Save include lists using the new child ids`);
+    console.log(`  4. Save include lists using the new child ids`);
+    console.log(`  5. Reparent direct and nested children in payload order`);
     if (options.templatesOnly) {
       console.log(`  6. Skip PageContext save/switch (--templates-only)`);
       console.log(`  7. Print template preview URL`);
     } else {
-      console.log(`  6. Switch PageContext ${summary.pageUrl} to the new family`);
+      console.log(`  6. Switch PageContext ${pageTarget} to the new family`);
       console.log(`  7. Verify PageContext enabledTemplates and value buckets`);
     }
   } else {
     console.log(`  2. Upsert root BlockTemplate ${summary.rootCode}`);
     console.log(`  3. Upsert ${summary.totalTemplates - 1} child BlockTemplate records (${summary.childCount} direct, nested children included)`);
-    console.log(`  4. Reparent direct and nested children in payload order`);
+    console.log(`  4. Save include lists for a new root, then reparent direct and nested children in payload order`);
     if (options.templatesOnly) {
       console.log(`  5. Skip PageContext save/switch (--templates-only)`);
       console.log(`  6. Print template preview URL`);
     } else {
-      console.log(`  5. Upsert PageContext ${summary.pageUrl}`);
+      console.log(`  5. Upsert PageContext ${pageTarget}`);
     }
   }
   console.log("\nNo network writes were made. Pass --live to upload.\n");
@@ -721,6 +1044,12 @@ const printDryRun = ({ baseUrl, cmsBaseUrl, apiKey, bearer, org }, payload, opti
 const uploadLive = async (env, payload, options = {}) => {
   const token = await getAccessToken(env);
   const headers = cmsHeaders(token, env.org);
+  const orgRef = await resolveOrganizationIdentifier({ baseUrl: env.baseUrl, headers, org: env.org });
+  const pageOrg = env.pageOrg || env.org;
+  const pageHeaders = pageOrg === env.org ? headers : cmsHeaders(token, pageOrg);
+  const pageOrgRef = options.templatesOnly
+    ? null
+    : await resolveOrganizationIdentifier({ baseUrl: env.baseUrl, headers: pageHeaders, org: pageOrg });
   const summary = summarizePayload(payload);
 
   console.log(`Uploading CMS family ${summary.rootCode} to ${env.cmsBaseUrl} (${env.org})`);
@@ -742,7 +1071,7 @@ const uploadLive = async (env, payload, options = {}) => {
       headers,
       template: { ...payload.root, children: [] },
       existing: existingRoot,
-      org: env.org,
+      org: orgRef,
     });
     console.log(`  root: ${payload.root.code} -> ${rootId}`);
   }
@@ -753,21 +1082,12 @@ const uploadLive = async (env, payload, options = {}) => {
       cmsBaseUrl: env.cmsBaseUrl,
       headers,
       template: child,
-      parentId: rootId,
-      org: env.org,
+      parentId: existingRoot?.id ? rootId : null,
+      org: orgRef,
       mode: "upsert",
     });
     childRefs.push(childRef);
     console.log(`  child: ${child.code} -> ${childRef.id} (${flattenRefs(childRef.children).length} nested)`);
-  }
-
-  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
-    await reparent({
-      cmsBaseUrl: env.cmsBaseUrl,
-      headers,
-      id: childRefs[index].id,
-      parentId: rootId,
-    });
   }
 
   if (!existingRoot?.id && childRefs.length) {
@@ -787,28 +1107,40 @@ const uploadLive = async (env, payload, options = {}) => {
         children: [],
       },
       existing: rootAfterCreate,
-      org: env.org,
+      org: orgRef,
     });
     console.log(`  root includes: ${childRefs.length} direct children`);
+  }
+
+  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
+    await reparent({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers,
+      id: childRefs[index].id,
+      parentId: rootId,
+    });
   }
 
   let pageId = null;
   if (options.templatesOnly) {
     console.log(`  page-context: skipped (--templates-only)`);
   } else {
-    const existingPage = payload.pageContext?.url
-      ? await listPageByUrl({ cmsBaseUrl: env.cmsBaseUrl, headers, url: payload.pageContext.url })
-      : null;
+    const existingPage = await resolvePageContextTarget({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers: pageHeaders,
+      payload,
+      pageId: options.pageId,
+    });
     pageId = await savePageContext({
       cmsBaseUrl: env.cmsBaseUrl,
-      headers,
+      headers: pageHeaders,
       payload,
       rootId,
       templateRefs: [{ id: rootId, code: payload.root.code, template: payload.root }, ...flattenRefs(childRefs)],
-      org: env.org,
+      org: pageOrgRef,
       existing: existingPage,
     });
-    console.log(`  page-context: ${payload.pageContext?.url || "(none)"} -> ${pageId ?? "(skipped)"}`);
+    console.log(`  page-context: ${options.pageId ? `id=${options.pageId}` : payload.pageContext?.url || "(none)"} -> ${pageId ?? "(skipped)"}`);
   }
 
   const enabledTemplateIds = [rootId, ...flattenRefs(childRefs).map((child) => child.id)].join(",");
@@ -819,6 +1151,12 @@ const uploadLive = async (env, payload, options = {}) => {
 const uploadRevision = async (env, payload, options = {}) => {
   const token = await getAccessToken(env);
   const headers = cmsHeaders(token, env.org);
+  const orgRef = await resolveOrganizationIdentifier({ baseUrl: env.baseUrl, headers, org: env.org });
+  const pageOrg = env.pageOrg || env.org;
+  const pageHeaders = pageOrg === env.org ? headers : cmsHeaders(token, pageOrg);
+  const pageOrgRef = options.templatesOnly
+    ? null
+    : await resolveOrganizationIdentifier({ baseUrl: env.baseUrl, headers: pageHeaders, org: pageOrg });
   const summary = summarizePayload(payload);
 
   if (!payload.revision) throw new Error("Revision upload requires a payload transformed with a revision suffix.");
@@ -836,7 +1174,7 @@ const uploadRevision = async (env, payload, options = {}) => {
     cmsBaseUrl: env.cmsBaseUrl,
     headers,
     template: { ...payload.root, children: [] },
-    org: env.org,
+    org: orgRef,
   });
   console.log(`  root: ${payload.root.code} -> ${rootId}`);
 
@@ -847,22 +1185,12 @@ const uploadRevision = async (env, payload, options = {}) => {
       headers,
       template: child,
       parentId: null,
-      org: env.org,
+      org: orgRef,
       mode: "revision",
     });
     childRefs.push(childRef);
     console.log(`  child: ${child.code} -> ${childRef.id} (${flattenRefs(childRef.children).length} nested)`);
   }
-
-  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
-    await reparent({
-      cmsBaseUrl: env.cmsBaseUrl,
-      headers,
-      id: childRefs[index].id,
-      parentId: rootId,
-    });
-  }
-  console.log(`  root children: ${childRefs.length} direct children reparented`);
 
   const templateRefs = [{ id: rootId, code: payload.root.code, template: payload.root }, ...flattenRefs(childRefs)];
   const rootAfterCreate = await listByCode({
@@ -881,34 +1209,47 @@ const uploadRevision = async (env, payload, options = {}) => {
       children: [],
     },
     existing: rootAfterCreate,
-    org: env.org,
+    org: orgRef,
   });
   console.log(`  root includes: ${childRefs.length} direct children`);
+
+  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
+    await reparent({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers,
+      id: childRefs[index].id,
+      parentId: rootId,
+    });
+  }
+  console.log(`  root children: ${childRefs.length} direct children reparented`);
 
   let pageId = null;
   if (options.templatesOnly) {
     console.log(`  page-context: skipped (--templates-only)`);
   } else {
-    const existingPage = payload.pageContext?.url
-      ? await listPageByUrl({ cmsBaseUrl: env.cmsBaseUrl, headers, url: payload.pageContext.url })
-      : null;
+    const existingPage = await resolvePageContextTarget({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers: pageHeaders,
+      payload,
+      pageId: options.pageId,
+    });
     if (!existingPage?.id && payload.pageContext?.url) {
       throw new Error(`Revision deploy requires an existing PageContext for ${payload.pageContext.url}.`);
     }
 
     pageId = await savePageContext({
       cmsBaseUrl: env.cmsBaseUrl,
-      headers,
+      headers: pageHeaders,
       payload,
       rootId,
       templateRefs,
-      org: env.org,
+      org: pageOrgRef,
       existing: existingPage,
     });
 
     const verified = await verifyPageContext({
       cmsBaseUrl: env.cmsBaseUrl,
-      headers,
+      headers: pageHeaders,
       pageId,
       templateRefs,
     });
@@ -924,6 +1265,89 @@ const uploadRevision = async (env, payload, options = {}) => {
   return { rootId, childCount: flattenRefs(childRefs).length, pageId };
 };
 
+const uploadUpdateExisting = async (env, payload, options = {}) => {
+  const context = await buildUpdateExistingContext(env, payload, options);
+  const { templateHeaders, pageHeaders, pageOrgRef, plan } = context;
+  const orgRef = await resolveOrganizationIdentifier({ baseUrl: env.baseUrl, headers: templateHeaders, org: env.org });
+
+  printUpdateExistingPlan(plan, { live: true, prune: Boolean(options.prune) });
+  if (!plan.rootCodeMatches) {
+    throw new Error(
+      `Local root code ${payload.root.code} does not match PageContext root ${plan.existingRoot.code}. ` +
+        "Pass the matching --root-code before using --live.",
+    );
+  }
+
+  const childRefs = [];
+  for (const child of payload.children || []) {
+    const childRef = await saveUpdateExistingNode({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers: templateHeaders,
+      template: child,
+      plan,
+      org: orgRef,
+    });
+    childRefs.push(childRef);
+    const action = plan.existingByCode.has(child.code) ? "updated" : "created";
+    console.log(`  child ${action}: ${child.code} -> ${childRef.id} (${flattenRefs(childRef.children).length} nested)`);
+  }
+
+  const latestRoot = await listById({
+    cmsBaseUrl: env.cmsBaseUrl,
+    headers: templateHeaders,
+    entity: "block-template",
+    id: plan.rootId,
+    mappings: blockMappings,
+  });
+  await saveBlockTemplate({
+    cmsBaseUrl: env.cmsBaseUrl,
+    headers: templateHeaders,
+    template: {
+      ...payload.root,
+      code: plan.existingRoot.code,
+      html: htmlWithIncludes({ ...payload.root, code: plan.existingRoot.code }, childRefs),
+      children: [],
+    },
+    existing: latestRoot,
+    org: orgRef,
+  });
+  console.log(`  root updated: ${plan.existingRoot.code} -> ${plan.rootId}`);
+
+  for (let index = childRefs.length - 1; index >= 0; index -= 1) {
+    await reparent({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers: templateHeaders,
+      id: childRefs[index].id,
+      parentId: plan.rootId,
+    });
+  }
+  console.log(`  root children reparented: ${childRefs.length}`);
+
+  const templateRefs = [templateRef({ id: plan.rootId, code: plan.existingRoot.code, template: payload.root }), ...flattenRefs(childRefs)];
+  if (options.templatesOnly) {
+    console.log("  page-context: enabledTemplates update skipped (--templates-only)");
+  } else {
+    const pageResult = await saveExistingPageTemplateList({
+      cmsBaseUrl: env.cmsBaseUrl,
+      headers: pageHeaders,
+      page: plan.page,
+      rootId: plan.rootId,
+      templateRefs,
+      pageOrgRef,
+      prune: Boolean(options.prune),
+    });
+    console.log(
+      `  page-context: ${pageResult.saved ? "saved" : "unchanged"} id=${pageResult.id}, enabled ${pageResult.enabledCount}`,
+    );
+  }
+
+  const previewIds = [plan.rootId, ...templateRefs.slice(1).map((template) => template.id)].join(",");
+  console.log(
+    `Update complete. Preview: ${env.cmsBaseUrl}/page-context/${plan.page.id}/preview.html?templateId=${plan.rootId}&enabledTemplates=${previewIds}`,
+  );
+  return { rootId: plan.rootId, childCount: templateRefs.length - 1, pageId: plan.page.id };
+};
+
 const main = async () => {
   const args = parseArgs();
   if (args.help || !args.out) {
@@ -936,22 +1360,35 @@ const main = async () => {
 
   const baseUrl = (args.baseUrl || envFirst("SERVICEWAND_BASE_URL", "LANDING_BASE_URL") || DEFAULT_CORE_BASE_URL).replace(/\/+$/, "");
   const org = args.org || envFirst("SERVICEWAND_ORG", "LANDING_ORG") || DEFAULT_ORG;
+  const pageOrg = args.pageOrg || envFirst("SERVICEWAND_PAGE_ORG", "LANDING_PAGE_ORG") || org;
   const apiKey = envFirst("SERVICEWAND_API_KEY", "LANDING_API_KEY", "DEPLOY_API_KEY");
   const bearer = envFirst("SERVICEWAND_BEARER", "LANDING_BEARER");
   const cmsBaseUrl = serviceUrl(baseUrl, "core-cms");
-  if (!["upsert", "revision"].includes(args.strategy)) fail(`Unknown --strategy: ${args.strategy}. Use upsert or revision.`);
+  if (!["upsert", "revision", "update-existing"].includes(args.strategy)) {
+    fail(`Unknown --strategy: ${args.strategy}. Use upsert, revision, or update-existing.`);
+  }
 
   const basePayload = withRootName(withRootCode(readPayload(outAbs), args.rootCode), args.rootName);
   const payload = args.strategy === "revision" ? withTemplateCodeSuffix(basePayload, args.revisionSuffix) : basePayload;
-  const env = { baseUrl, cmsBaseUrl, org, apiKey, bearer };
-  const uploadOptions = { templatesOnly: Boolean(args.templatesOnly) };
+  const env = { baseUrl, cmsBaseUrl, org, pageOrg, apiKey, bearer };
+  const uploadOptions = {
+    templatesOnly: Boolean(args.templatesOnly),
+    pageId: args.pageId,
+    prune: Boolean(args.prune),
+  };
 
   if (args.mode === "dry-run") {
+    if (args.strategy === "update-existing") {
+      const context = await buildUpdateExistingContext(env, payload, uploadOptions);
+      printUpdateExistingPlan(context.plan, { live: false, prune: uploadOptions.prune });
+      return;
+    }
     printDryRun(env, payload, uploadOptions);
     return;
   }
 
-  if (args.strategy === "revision") await uploadRevision(env, payload, uploadOptions);
+  if (args.strategy === "update-existing") await uploadUpdateExisting(env, payload, uploadOptions);
+  else if (args.strategy === "revision") await uploadRevision(env, payload, uploadOptions);
   else await uploadLive(env, payload, uploadOptions);
 };
 

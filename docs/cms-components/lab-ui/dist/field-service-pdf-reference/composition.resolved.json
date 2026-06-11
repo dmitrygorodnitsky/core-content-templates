@@ -8,8 +8,8 @@
   "selectedBlocks": [
     {
       "index": 1,
-      "id": "header.default",
-      "path": "01-header/header.default",
+      "id": "header.corporate-reference",
+      "path": "01-header/header.corporate-reference",
       "category": "01-header",
       "hasJs": true
     },
@@ -99,17 +99,17 @@
     },
     {
       "index": 14,
-      "id": "footer.default",
-      "path": "02-footer/footer.default",
+      "id": "footer.corporate-reference",
+      "path": "02-footer/footer.corporate-reference",
       "category": "02-footer",
-      "hasJs": false
+      "hasJs": true
     }
   ],
   "assetOwnership": [
     {
       "index": 1,
-      "childCode": "SECTION_01_HEADER_DEFAULT",
-      "block": "header.default",
+      "childCode": "SECTION_01_HEADER_CORPORATE_REFERENCE",
+      "block": "header.corporate-reference",
       "assets": [
         {
           "id": "cta.btn-base",
@@ -130,14 +130,8 @@
           "hasJs": false
         },
         {
-          "id": "language.locale-dropdown",
-          "path": "04-language/language.locale-dropdown",
-          "hasCss": true,
-          "hasJs": true
-        },
-        {
-          "id": "header.default",
-          "path": "01-header/header.default",
+          "id": "header.corporate-reference",
+          "path": "01-header/header.corporate-reference",
           "hasCss": true,
           "hasJs": true
         }
@@ -355,14 +349,14 @@
     },
     {
       "index": 14,
-      "childCode": "SECTION_14_FOOTER_DEFAULT",
-      "block": "footer.default",
+      "childCode": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
+      "block": "footer.corporate-reference",
       "assets": [
         {
-          "id": "footer.default",
-          "path": "02-footer/footer.default",
+          "id": "footer.corporate-reference",
+          "path": "02-footer/footer.corporate-reference",
           "hasCss": true,
-          "hasJs": false
+          "hasJs": true
         }
       ]
     }
@@ -371,7 +365,7 @@
     "code": "FIELD_SERVICE_LANDING",
     "children": [
       {
-        "code": "SECTION_01_HEADER_DEFAULT",
+        "code": "SECTION_01_HEADER_CORPORATE_REFERENCE",
         "children": []
       },
       {
@@ -423,7 +417,7 @@
         "children": []
       },
       {
-        "code": "SECTION_14_FOOTER_DEFAULT",
+        "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
         "children": []
       }
     ]

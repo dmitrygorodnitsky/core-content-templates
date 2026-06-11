@@ -99,10 +99,7 @@
 }
 
 .faq-q {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  align-items: center;
+  display: block;
   padding: 14px 18px;
   cursor: pointer;
   list-style: none;
@@ -121,7 +118,13 @@
 }
 
 .faq-q-text {
-  display: inline-block;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font: inherit;
+  color: inherit;
 }
 
 .faq-q-toggle {

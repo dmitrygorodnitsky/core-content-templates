@@ -12,11 +12,20 @@
     document
       .querySelectorAll('[data-block="comparison.three-col-with-mobile-cards"]')
       .forEach((section) => {
-        const parsedColumns = Number(section.dataset.columns);
+        const configuredColumns = section.querySelector(".compare-config--columns")?.textContent?.trim();
+        const parsedColumns = Number(configuredColumns || section.dataset.columns);
         const columnCount = Number.isFinite(parsedColumns)
           ? Math.min(6, Math.max(2, parsedColumns))
           : 6;
         section.dataset.columns = String(columnCount);
+
+        section.querySelectorAll(".compare-status").forEach((status) => {
+          const rawIcon = status.querySelector(".compare-icon-source")?.textContent?.trim();
+          const icon = /^(check|yes|neutral|partial|cross|no|none)$/.test(rawIcon || "")
+            ? rawIcon
+            : "neutral";
+          status.classList.add("compare-status--" + icon);
+        });
 
         section.querySelectorAll(".compare-body .compare-row").forEach((row) => {
           const cap = row.querySelector(".compare-capability")?.textContent?.trim();
