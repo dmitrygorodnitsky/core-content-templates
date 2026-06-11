@@ -35,6 +35,7 @@ const parseArgs = () => {
     else if (arg === "--strategy") out.strategy = args[++i];
     else if (arg === "--revision-suffix") out.revisionSuffix = args[++i];
     else if (arg === "--page-id") out.pageId = args[++i];
+    else if (arg === "--locale") out.locale = args[++i];
     else if (arg === "--templates-only" || arg === "--skip-page-context") out.templatesOnly = true;
     else if (arg === "--prune") out.prune = true;
     else if (arg === "--live") out.mode = "live";
@@ -52,7 +53,7 @@ const usage = () => `Usage:
     [--page-org SERVICEWAND]
     [--root-code FIELD_SERVICE_LANDING] [--root-name "Field Service Landing"]
     [--strategy upsert|revision|update-existing] [--revision-suffix 20260608_001]
-    [--page-id 36] [--prune]
+    [--page-id 36] [--locale en] [--prune]
     [--templates-only]
 
 Env credentials:
@@ -617,6 +618,16 @@ const flattenRefs = (refs = []) => refs.flatMap((ref) => [ref, ...flattenRefs(re
 
 const unique = (values) => [...new Set(values.filter(Boolean))];
 
+const buildPreviewUrl = ({ cmsBaseUrl, pageContextId = 0, templateId, enabledTemplateIds = [], locale }) => {
+  const url = new URL(`${cmsBaseUrl}/page-context/${pageContextId}/preview.html`);
+  url.searchParams.set("templateId", String(templateId));
+  for (const id of unique(enabledTemplateIds).map((value) => String(value))) {
+    url.searchParams.append("enabledTemplates", id);
+  }
+  if (locale) url.searchParams.set("locale", String(locale));
+  return url.toString();
+};
+
 const listById = async ({ cmsBaseUrl, headers, entity, id, mappings }) => {
   const response = await requestJson(`${cmsBaseUrl}/api/${entity}/list.json`, {
     method: "POST",
@@ -1143,8 +1154,14 @@ const uploadLive = async (env, payload, options = {}) => {
     console.log(`  page-context: ${options.pageId ? `id=${options.pageId}` : payload.pageContext?.url || "(none)"} -> ${pageId ?? "(skipped)"}`);
   }
 
-  const enabledTemplateIds = [rootId, ...flattenRefs(childRefs).map((child) => child.id)].join(",");
-  console.log(`Upload complete. Preview: ${env.cmsBaseUrl}/page-context/0/preview.html?templateId=${rootId}&enabledTemplates=${enabledTemplateIds}`);
+  const enabledTemplateIds = [rootId, ...flattenRefs(childRefs).map((child) => child.id)];
+  const previewUrl = buildPreviewUrl({
+    cmsBaseUrl: env.cmsBaseUrl,
+    templateId: rootId,
+    enabledTemplateIds,
+    locale: options.locale,
+  });
+  console.log(`Upload complete. Preview: ${previewUrl}`);
   return { rootId, childCount: flattenRefs(childRefs).length, pageId };
 };
 
@@ -1260,8 +1277,14 @@ const uploadRevision = async (env, payload, options = {}) => {
     }
   }
 
-  const enabledTemplateIds = [rootId, ...flattenRefs(childRefs).map((child) => child.id)].join(",");
-  console.log(`Upload complete. Preview: ${env.cmsBaseUrl}/page-context/0/preview.html?templateId=${rootId}&enabledTemplates=${enabledTemplateIds}`);
+  const enabledTemplateIds = [rootId, ...flattenRefs(childRefs).map((child) => child.id)];
+  const previewUrl = buildPreviewUrl({
+    cmsBaseUrl: env.cmsBaseUrl,
+    templateId: rootId,
+    enabledTemplateIds,
+    locale: options.locale,
+  });
+  console.log(`Upload complete. Preview: ${previewUrl}`);
   return { rootId, childCount: flattenRefs(childRefs).length, pageId };
 };
 
@@ -1341,10 +1364,14 @@ const uploadUpdateExisting = async (env, payload, options = {}) => {
     );
   }
 
-  const previewIds = [plan.rootId, ...templateRefs.slice(1).map((template) => template.id)].join(",");
-  console.log(
-    `Update complete. Preview: ${env.cmsBaseUrl}/page-context/${plan.page.id}/preview.html?templateId=${plan.rootId}&enabledTemplates=${previewIds}`,
-  );
+  const previewUrl = buildPreviewUrl({
+    cmsBaseUrl: env.cmsBaseUrl,
+    pageContextId: plan.page.id,
+    templateId: plan.rootId,
+    enabledTemplateIds: [plan.rootId, ...templateRefs.slice(1).map((template) => template.id)],
+    locale: options.locale,
+  });
+  console.log(`Update complete. Preview: ${previewUrl}`);
   return { rootId: plan.rootId, childCount: templateRefs.length - 1, pageId: plan.page.id };
 };
 
@@ -1374,6 +1401,7 @@ const main = async () => {
   const uploadOptions = {
     templatesOnly: Boolean(args.templatesOnly),
     pageId: args.pageId,
+    locale: args.locale,
     prune: Boolean(args.prune),
   };
 

@@ -253,6 +253,9 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
 
 This creates the root and child `BlockTemplate` records, saves the root include
 list, and prints a preview URL with explicit `templateId` and `enabledTemplates`.
+The preview URL emits every enabled template as a separate query parameter
+(`enabledTemplates=id1&enabledTemplates=id2`), matching the CMS
+`renderPage` controller contract.
 It does not call `page-context/save.json`.
 
 To update a template family that is already attached to a page, prefer
