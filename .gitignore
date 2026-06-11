@@ -1,5 +1,8 @@
 .DS_Store
 
+# local generated/downloaded scratch files
+tmp/
+
 # user-local Claude Code settings stay out of the repo
 .claude/settings.local.json
 
