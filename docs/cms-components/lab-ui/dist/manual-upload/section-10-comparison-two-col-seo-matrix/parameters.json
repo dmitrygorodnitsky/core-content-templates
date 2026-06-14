@@ -9,7 +9,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad."
+      "en": "Lorem Ipsum do."
     }
   },
   {
@@ -22,7 +22,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum laboris."
+      "en": "Lorem Ipsum dolore."
     }
   },
   {
@@ -35,7 +35,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum duis."
+      "en": "Lorem Ipsum quis."
     }
   },
   {
@@ -48,7 +48,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
     }
   },
   {
@@ -61,7 +61,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sit."
+      "en": "Lorem Ipsum reprehenderit."
     }
   },
   {
@@ -74,7 +74,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
     }
   },
   {
@@ -87,7 +87,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum magna."
+      "en": "Lorem Ipsum adipiscing."
     }
   },
   {
@@ -100,7 +100,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
     }
   },
   {
@@ -113,20 +113,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea."
-    }
-  },
-  {
-    "code": "COMPARE_COL_01_MOBILE_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Col 01 Mobile Label",
-        "DESCRIPTION": "Text value for the Col 01 Mobile Label field in Comparison · two-col SEO matrix."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum voluptate."
+      "en": "Lorem Ipsum ad."
     }
   },
   {
@@ -159,20 +146,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit sed do eiusmod."
-    }
-  },
-  {
-    "code": "COMPARE_COL_02_MOBILE_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Col 02 Mobile Label",
-        "DESCRIPTION": "Text value for the Col 02 Mobile Label field in Comparison · two-col SEO matrix."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum labore."
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
     }
   },
   {
@@ -205,7 +179,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea."
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
     }
   },
   {
@@ -218,7 +192,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aute."
+      "en": "Lorem Ipsum eiusmod."
     }
   },
   {
@@ -251,7 +225,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
     }
   },
   {
@@ -284,7 +258,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliqua enim ad minim."
+      "en": "Lorem Ipsum voluptate velit esse cillum."
     }
   },
   {
@@ -297,7 +271,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum exercitation."
+      "en": "Lorem Ipsum lorem."
     }
   },
   {
@@ -330,7 +304,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum velit esse cillum fugiat."
+      "en": "Lorem Ipsum labore et dolore magna."
     }
   },
   {
@@ -363,7 +337,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed do eiusmod tempor."
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
@@ -376,7 +350,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum et."
+      "en": "Lorem Ipsum aute."
     }
   },
   {
@@ -409,7 +383,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip ex ea commodo."
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
     }
   },
   {
@@ -442,7 +416,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      "en": "Lorem Ipsum aliqua enim ad minim."
     }
   },
   {
@@ -455,7 +429,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur."
+      "en": "Lorem Ipsum exercitation."
     }
   },
   {
@@ -488,7 +462,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam."
+      "en": "Lorem Ipsum velit esse cillum fugiat."
     }
   },
   {
@@ -521,7 +495,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat duis aute irure."
+      "en": "Lorem Ipsum sed do eiusmod tempor."
     }
   },
   {
@@ -534,7 +508,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum esse."
+      "en": "Lorem Ipsum et."
     }
   },
   {
@@ -567,7 +541,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      "en": "Lorem Ipsum aliquip ex ea commodo."
     }
   },
   {
@@ -600,7 +574,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
     }
   },
   {
@@ -613,7 +587,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex."
+      "en": "Lorem Ipsum consectetur."
     }
   },
   {
@@ -646,7 +620,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      "en": "Lorem Ipsum enim ad minim veniam."
     }
   },
   {
@@ -679,7 +653,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ut labore et dolore."
+      "en": "Lorem Ipsum consequat duis aute irure."
     }
   },
   {
@@ -692,7 +666,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad."
+      "en": "Lorem Ipsum esse."
     }
   },
   {
@@ -725,7 +699,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum duis aute irure reprehenderit."
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
     }
   },
   {
@@ -758,7 +732,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
     }
   },
   {
@@ -771,7 +745,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod."
+      "en": "Lorem Ipsum ex."
     }
   },
   {
@@ -804,7 +778,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
     }
   },
   {
@@ -837,7 +811,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate velit esse cillum."
+      "en": "Lorem Ipsum ut labore et dolore."
     }
   }
 ]

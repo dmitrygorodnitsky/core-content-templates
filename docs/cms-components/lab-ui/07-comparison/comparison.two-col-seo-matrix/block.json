@@ -54,10 +54,8 @@
     { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
     { "code": "col_01_name", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum" },
     { "code": "col_01_desc", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-    { "code": "col_01_mobile_label", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum" },
     { "code": "col_02_name", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum Dolor" },
     { "code": "col_02_desc", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
-    { "code": "col_02_mobile_label", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum" },
 
     { "code": "slot_01_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
     { "code": "slot_01_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },

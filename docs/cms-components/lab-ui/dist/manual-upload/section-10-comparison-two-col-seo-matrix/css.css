@@ -24,9 +24,26 @@
   height: 58%;
   border-radius: var(--seo-compare-shell-radius);
   background:
-    radial-gradient(62% 48% at 52% 66%, rgba(102, 202, 232, 0.34) 0%, rgba(102, 202, 232, 0.18) 34%, rgba(102, 202, 232, 0) 72%),
-    radial-gradient(48% 42% at 36% 72%, rgba(229, 118, 111, 0.28) 0%, rgba(229, 118, 111, 0.12) 42%, rgba(229, 118, 111, 0) 74%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #DDE2EA 18%, #8E97A9 39%, #353C4D 64%, #111827 100%);
+    radial-gradient(
+      62% 48% at 52% 66%,
+      rgba(102, 202, 232, 0.34) 0%,
+      rgba(102, 202, 232, 0.18) 34%,
+      rgba(102, 202, 232, 0) 72%
+    ),
+    radial-gradient(
+      48% 42% at 36% 72%,
+      rgba(229, 118, 111, 0.28) 0%,
+      rgba(229, 118, 111, 0.12) 42%,
+      rgba(229, 118, 111, 0) 74%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      #dde2ea 18%,
+      #8e97a9 39%,
+      #353c4d 64%,
+      #111827 100%
+    );
   clip-path: polygon(
     0 0,
     8% 2%,
@@ -67,7 +84,10 @@
   font-size: var(--type-eyebrow-size);
   letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
-  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background: var(
+    --cta-secondary-fill,
+    linear-gradient(90deg, #56422d 0%, #494938 100%)
+  );
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -80,7 +100,6 @@
   font-weight: var(--type-h2-weight);
   line-height: var(--type-h2-leading);
   letter-spacing: var(--type-h2-tracking);
-  display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
@@ -124,7 +143,9 @@
   border-radius: var(--radius-card);
   padding: 0.125rem;
   background: var(--color-light-gray-stroke);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
@@ -150,7 +171,7 @@
   width: 36%;
   background: var(--color-white);
   border-radius: 0.875rem;
-  box-shadow: 0 0 40.8px 0 #CCDFFF;
+  box-shadow: 0 0 40.8px 0 #ccdfff;
   pointer-events: none;
 }
 
@@ -160,8 +181,10 @@
   inset: 0;
   border-radius: inherit;
   padding: 1.5px;
-  background: linear-gradient(180deg, #6BC0F9 0%, #DBEEFF 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  background: linear-gradient(180deg, #6bc0f9 0%, #dbeeff 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
@@ -257,7 +280,7 @@
 }
 
 .seo-compare-value--sw .seo-compare-value-body p {
-  color: #343A49;
+  color: #343a49;
 }
 
 .seo-compare-value--competitor .seo-compare-value-body p {
@@ -277,17 +300,17 @@
 
 .seo-compare-status--check .seo-compare-icon,
 .seo-compare-status--yes .seo-compare-icon {
-  background: var(--color-status-yes, #76D98F);
+  background: var(--color-status-yes, #76d98f);
 }
 
 .seo-compare-status--neutral .seo-compare-icon,
 .seo-compare-status--partial .seo-compare-icon {
-  background: var(--color-status-partial, #D7D9DC);
+  background: var(--color-status-partial, #d7d9dc);
 }
 
 .seo-compare-status--cross .seo-compare-icon,
 .seo-compare-status--no .seo-compare-icon {
-  background: var(--color-status-no, #FF6B6B);
+  background: var(--color-status-no, #ff6b6b);
 }
 
 .seo-compare-status--check .seo-compare-icon::before,
@@ -300,8 +323,8 @@
   top: 8px;
   width: 8px;
   height: 4px;
-  border-left: 2px solid #F9F9F9;
-  border-bottom: 2px solid #F9F9F9;
+  border-left: 2px solid #f9f9f9;
+  border-bottom: 2px solid #f9f9f9;
   border-radius: 1px;
   transform: rotate(-45deg);
 }
@@ -317,7 +340,7 @@
   width: 9px;
   height: 2px;
   border-radius: 999px;
-  background: #F9F9F9;
+  background: #f9f9f9;
 }
 
 .seo-compare-status--cross .seo-compare-icon::before,
@@ -387,12 +410,12 @@
     border-radius: 0.875rem;
     padding: 1.25rem;
     background: var(--color-white);
-    border: 1px solid #E0E8F4;
+    border: 1px solid #e0e8f4;
   }
 
   .seo-compare-brand--sw {
-    border: 1.5px solid #A9D6F9;
-    box-shadow: 0 0 30px 0 #CCDFFF;
+    border: 1.5px solid #a9d6f9;
+    box-shadow: 0 0 30px 0 #ccdfff;
   }
 
   .seo-compare-brand p {
@@ -404,7 +427,7 @@
     border-radius: 0.875rem;
     padding: 1.25rem;
     background: var(--color-white);
-    border: 1px solid #E0E8F4;
+    border: 1px solid #e0e8f4;
   }
 
   .seo-compare-row h4 {
@@ -429,7 +452,7 @@
   }
 
   .seo-compare-value--sw .seo-compare-value-label {
-    color: #4F95FF;
+    color: #4f95ff;
   }
 
   .seo-compare-value--competitor .seo-compare-value-label {
@@ -443,6 +466,4 @@
   .seo-compare-value-body p {
     font-size: 0.875rem;
   }
-
 }
-
