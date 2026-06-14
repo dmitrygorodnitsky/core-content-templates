@@ -149,34 +149,6 @@
       "description": "Mobile navigation label for the FAQ section."
     },
     {
-      "code": "nav_how_it_works",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "How It Works",
-      "name": "Header mobile nav - How It Works",
-      "description": "Mobile navigation label for the features section."
-    },
-    {
-      "code": "nav_industries",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Industries",
-      "name": "Header mobile nav - Industries",
-      "description": "Mobile navigation label for the foundation section."
-    },
-    {
-      "code": "nav_partners",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Partners",
-      "name": "Header mobile nav - Partners",
-      "description": "Mobile navigation label for the partners section."
-    },
-    {
-      "code": "nav_platform",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Platform",
-      "name": "Header mobile nav - Platform",
-      "description": "Mobile navigation label for the platform section."
-    },
-    {
       "code": "open_menu_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Open menu",
@@ -224,27 +196,6 @@
       "default": "request-demo.html",
       "name": "Header demo request href",
       "description": "URL target for the header demo CTA."
-    },
-    {
-      "code": "nav_platform_href",
-      "type": "URL",
-      "default": "#hero",
-      "name": "Header mobile Platform href",
-      "description": "URL target for the mobile Platform navigation link."
-    },
-    {
-      "code": "nav_how_it_works_href",
-      "type": "URL",
-      "default": "#features",
-      "name": "Header mobile How It Works href",
-      "description": "URL target for the mobile How It Works navigation link."
-    },
-    {
-      "code": "nav_partners_href",
-      "type": "URL",
-      "default": "#partners",
-      "name": "Header mobile Partners href",
-      "description": "URL target for the mobile Partners navigation link."
     },
     {
       "code": "nav_faq_href",

@@ -2029,91 +2029,6 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PLATFORM_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile Platform href",
-        "DESCRIPTION": "URL target for the mobile Platform navigation link."
-      }
-    },
-    "value": "#hero"
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PLATFORM",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile nav - Platform",
-        "DESCRIPTION": "Mobile navigation label for the platform section."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum"
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile How It Works href",
-        "DESCRIPTION": "URL target for the mobile How It Works navigation link."
-      }
-    },
-    "value": "#features"
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile nav - How It Works",
-        "DESCRIPTION": "Mobile navigation label for the features section."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum"
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_INDUSTRIES",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile nav - Industries",
-        "DESCRIPTION": "Mobile navigation label for the foundation section."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum"
-    }
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PARTNERS_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile Partners href",
-        "DESCRIPTION": "URL target for the mobile Partners navigation link."
-      }
-    },
-    "value": "#partners"
-  },
-  {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_PARTNERS",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Header mobile nav - Partners",
-        "DESCRIPTION": "Mobile navigation label for the partners section."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum"
-    }
-  },
-  {
     "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
     "type": "STRING",
     "nls": {
@@ -2147,7 +2062,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip."
+      "en": "Lorem Ipsum exercitation."
     }
   },
   {
@@ -2160,7 +2075,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum irure."
+      "en": "Lorem Ipsum commodo."
     }
   },
   {
