@@ -1,10 +1,9 @@
-# section-11-section-axes-grid
+# Manual upload: section-11-section-axes-grid
 
-Manual upload bundle generated from `dist/field-service-pdf-reference/children/11-section-11-section-axes-grid/template.json`.
+Generated from `section.axes-grid`.
 
-- `html.html` - CMS block HTML
-- `css.css` - CMS block CSS
-- `javascript.js` - CMS block JavaScript
-- `head.html` - CMS block head
-- `parameters.json` - CMS block parameters
-- `template.json` - full generated block template payload
+- Code: `SECTION_11_SECTION_AXES_GRID`
+- Parent: `FIELD_SERVICE_LANDING`
+- Parameters: 22
+
+Use `template.json` when updating the block template through the CMS UI or sync tooling.

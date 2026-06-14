@@ -31,7 +31,7 @@
     {
       "code": "address",
       "type": "LOCALIZED_STRING_SS",
-      "default": "ServiceWand Inc.<br />Global Intelligent Operations<br />Platform Registered in WY, USA<br />Offices in Canada & EU",
+      "default": "<p class=\"footer-address\"><strong>Lorem Ipsum Inc.</strong></p><p>Lorem ipsum dolor sit amet</p><p>Lorem ipsum consectetur adipiscing</p><p>Lorem ipsum dolor sit</p>",
       "name": "Footer address",
       "description": "Address block shown in the footer."
     },
@@ -62,13 +62,6 @@
       "default": "© 2025 ServiceWand Inc.",
       "name": "Footer copyright line",
       "description": "Primary copyright text shown in the footer bottom bar."
-    },
-    {
-      "code": "email_general",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "hello@servicewand.com",
-      "name": "Footer general email",
-      "description": "General contact email shown in the footer."
     },
     {
       "code": "email_partnerships",
@@ -115,7 +108,7 @@
     {
       "code": "nav_industries",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Industries AA \n",
+      "default": "Lorem Ipsum labore et dolore magna.",
       "name": "Footer nav - Industries",
       "description": "Footer navigation label for the foundation section."
     },
@@ -244,13 +237,6 @@
       "default": "#",
       "name": "Footer X href",
       "description": "URL target for the footer X social link."
-    },
-    {
-      "code": "email_general_href",
-      "type": "URL",
-      "default": "mailto:hello@servicewand.com",
-      "name": "Footer general email href",
-      "description": "URL target for the footer general email link."
     },
     {
       "code": "email_partnerships_href",

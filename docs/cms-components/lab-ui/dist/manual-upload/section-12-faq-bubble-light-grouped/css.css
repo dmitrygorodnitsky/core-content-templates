@@ -31,18 +31,12 @@
   margin: 0 0 14px;
 }
 .faq-title {
-  margin: 0 0 14px;
+  margin: 0;
   font-weight: var(--type-h2-weight);
   font-size: var(--type-h2-size);
   line-height: var(--type-h2-leading);
   letter-spacing: var(--type-h2-tracking);
   color: var(--color-heading);
-}
-.faq-lede {
-  margin: 0;
-  font-size: var(--type-lead-size);
-  line-height: var(--type-lead-leading);
-  color: var(--color-text);
 }
 
 /* ─── Groups ───────────────────────────────────────────────── */

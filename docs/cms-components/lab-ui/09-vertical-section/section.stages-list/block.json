@@ -3,7 +3,7 @@
   "id": "section.stages-list",
   "category": "09-vertical-section",
   "title": "Section · Stages list (growth ladder, 01→04)",
-  "description": "Vertical growth ladder with 4 stages (01–04). Each stage has a left rail with stage eyebrow, big number, and a 4-tick progression scale (lv1 lights 1 tick, lv4 lights all 4 + accent glow). Main area: title + users pill + lead + capability chips. Stage 01 uses plain chips; stages 02–04 use additive chips with '+' prefix to signal new-capabilities-on-top-of-previous-stage. Typically paired with decorative.cycle-strip above + decorative.callout-band below.",
+  "description": "Standard section header plus vertical growth ladder with 4 stages (01-04). Each stage has a left rail with stage eyebrow, big number, and a 4-tick progression scale. Main area: title + lead + additive capability chips with plus prefix.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -20,6 +20,12 @@
       "--color-gray-blue",
       "--cta-secondary-fill",
       "--cta-accent",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking",
+      "--type-h2-weight",
+      "--type-h2-size",
+      "--type-h2-leading",
+      "--type-h2-tracking",
       "--font-family",
       "--font-mono",
       "--radius-card"
@@ -57,6 +63,26 @@
   },
   "params": [
     {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum duis."
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum Dolor Sit Amet"
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+    },
+    {
       "code": "stage_1_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lor",
@@ -72,11 +98,6 @@
       "code": "stage_1_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "stage_1_users",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
     },
     {
       "code": "stage_1_lead",
@@ -126,11 +147,6 @@
       "default": "Lorem ipsum dolor"
     },
     {
-      "code": "stage_2_users",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
       "code": "stage_2_lead",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
@@ -173,11 +189,6 @@
       "default": "Lorem ipsum"
     },
     {
-      "code": "stage_3_users",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
       "code": "stage_3_lead",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
@@ -218,11 +229,6 @@
       "code": "stage_4_title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "stage_4_users",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
     },
     {
       "code": "stage_4_lead",

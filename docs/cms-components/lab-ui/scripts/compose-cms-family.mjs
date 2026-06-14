@@ -26,6 +26,7 @@ node docs/cms-components/lab-ui/scripts/compose-cms-family.mjs \\
 
 const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
 const writeJson = (file, value) => writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
+const writeText = (file, value) => writeFileSync(file, String(value ?? "").replace(/\n*$/, "\n"));
 
 const codeSlug = (value) =>
   String(value || "")
@@ -266,6 +267,7 @@ const comparisonParamCode = (localCode) => {
   if (localCode === "lede") return "COMPARE_LEDE";
   if (localCode === "column_count") return "COMPARE_COLUMN_COUNT";
   if (/^col_\d{2}_name$/.test(localCode)) return `COMPARE_COL_${Number(localCode.match(/\d{2}/)[0])}_NAME`;
+  if (/^col_\d{2}_desc$/.test(localCode)) return `COMPARE_COL_${Number(localCode.match(/\d{2}/)[0])}_DESC`;
 
   const capability = localCode.match(/^slot_(\d{2})_capability$/);
   if (capability) return `COMPARE_ROW_${Number(capability[1])}`;
@@ -279,8 +281,12 @@ const comparisonParamCode = (localCode) => {
   return `COMPARE_${codeSlug(localCode)}`;
 };
 
+const isComparisonBlock = (block) =>
+  block.id === "comparison.three-col-with-mobile-cards" ||
+  block.id === "comparison.two-col-seo-matrix";
+
 const paramCodeForLocal = ({ block, code, legacyCode, localCode }) => {
-  if (block.id === "comparison.three-col-with-mobile-cards") {
+  if (isComparisonBlock(block)) {
     const paramCode = comparisonParamCode(localCode);
     return { paramCode };
   }
@@ -288,7 +294,7 @@ const paramCodeForLocal = ({ block, code, legacyCode, localCode }) => {
 };
 
 const imageNameCodeForLocal = ({ block, code, legacyCode, localCode }) => {
-  if (block.id === "comparison.three-col-with-mobile-cards") {
+  if (isComparisonBlock(block)) {
     const paramCode = comparisonParamCode(localCode);
     return { paramCode };
   }
@@ -296,7 +302,7 @@ const imageNameCodeForLocal = ({ block, code, legacyCode, localCode }) => {
 };
 
 const childCodeForSection = (block, index) => {
-  if (block.id === "comparison.three-col-with-mobile-cards") return "COMPARISON";
+  if (isComparisonBlock(block)) return "COMPARISON";
   return `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(block.id).slice(0, 42)}`;
 };
 
@@ -612,9 +618,9 @@ const main = () => {
   mkdirSync(args.out, { recursive: true });
   writeJson(join(args.out, "landing.spec.json"), spec);
   writeJson(join(args.out, "composition.resolved.json"), family.resolved);
-  writeFileSync(join(args.out, "head.html"), `${family.rootTemplate.head}\n`);
-  writeFileSync(join(args.out, "root.css"), `${family.rootTemplate.css}\n`);
-  writeFileSync(join(args.out, "root.js"), `${family.rootTemplate.javascript}\n`);
+  writeText(join(args.out, "head.html"), family.rootTemplate.head);
+  writeText(join(args.out, "root.css"), family.rootTemplate.css);
+  writeText(join(args.out, "root.js"), family.rootTemplate.javascript);
   writeJson(join(args.out, "root.template.json"), family.rootTemplate);
   family.children.forEach((child, index) => writeTemplateTree(args.out, child, `${String(index + 1).padStart(2, "0")}-`));
   writeJson(join(args.out, "parameters.json"), family.parameters);

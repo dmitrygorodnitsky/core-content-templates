@@ -2,17 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Footer · corporate reference</title>
-  <link rel="stylesheet" href="../../00-tokens/tokens.css" />
-  <link rel="stylesheet" href="block.css" />
-</head>
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  <title>Footer · corporate reference</title>
+	  <link rel="stylesheet" href="../../00-tokens/tokens.css" />
+	  <link rel="stylesheet" href="../../00-tokens/composition.css" />
+	  <link rel="stylesheet" href="block.css?v=footer-parity-20260614" />
+	  <style>
+	    @font-face {
+	      font-family: "Vela Sans";
+	      src: url("../../00-tokens/fonts/vela-sans-400.woff2") format("woff2");
+	      font-weight: 400;
+	      font-style: normal;
+	      font-display: swap;
+	    }
+
+	    @font-face {
+	      font-family: "Vela Sans";
+	      src: url("../../00-tokens/fonts/vela-sans-500.woff2") format("woff2");
+	      font-weight: 500;
+	      font-style: normal;
+	      font-display: swap;
+	    }
+
+	    @font-face {
+	      font-family: "Vela Sans";
+	      src: url("../../00-tokens/fonts/vela-sans-600.woff2") format("woff2");
+	      font-weight: 600;
+	      font-style: normal;
+	      font-display: swap;
+	    }
+
+	    @font-face {
+	      font-family: "Vela Sans";
+	      src: url("../../00-tokens/fonts/vela-sans-700.woff2") format("woff2");
+	      font-weight: 700;
+	      font-style: normal;
+	      font-display: swap;
+	    }
+
+	    body {
+	      font-family: "Vela Sans", sans-serif;
+	      font-weight: 400;
+	      line-height: 1.35;
+	      letter-spacing: -0.01em;
+	      min-height: 120vh;
+	    }
+	  </style>
+	</head>
 <body>
 <!-- lab-ui block · footer.corporate-reference
      Imported from CMS BlockTemplate 8d9f72c2-51ae-4f40-a726-3562be0e75e5 (FOOTER).
      Nested CMS footer fragments are expanded below for lab-ui comparison.
 -->
-<footer class="footer" data-bg="{{bg_image_url}}">
+<footer class="footer" data-bg="https://servicewand.com/core/image/728d0287-96c3-4430-b830-477f87d5ac5e/get/image.png">
  <div class="container footer-container">
      <div class="footer-top">
         <!-- Logo + description -->
@@ -108,27 +150,28 @@
    <path d="M48.035 25.9694C46.9579 25.9694 45.961 25.8324 45.0446 25.5584C44.1375 25.2844 43.3297 24.8923 42.621 24.382C41.9219 23.8718 41.336 23.2577 40.8636 22.5396C40.4007 21.8121 40.0841 20.9948 39.9141 20.0877L42.04 19.7334C42.21 20.4043 42.4746 21.0042 42.8336 21.5333C43.1927 22.053 43.632 22.4971 44.1517 22.8656C44.6713 23.2246 45.2619 23.4986 45.9233 23.6876C46.5941 23.8766 47.3263 23.971 48.12 23.971C48.9042 23.971 49.6176 23.8766 50.2601 23.6876C50.9026 23.4986 51.4506 23.2341 51.9041 22.8939C52.3671 22.5443 52.7261 22.1286 52.9812 21.6467C53.2363 21.1649 53.3639 20.631 53.3639 20.0452C53.3639 18.4768 52.3198 17.3808 50.2317 16.7572L45.0587 15.2124C42.1581 14.362 40.7077 12.7274 40.7077 10.3086C40.7077 9.48661 40.8778 8.73546 41.2179 8.05518C41.5581 7.36544 42.0305 6.77492 42.6352 6.2836C43.2494 5.79228 43.9816 5.40962 44.832 5.13562C45.6918 4.86161 46.6319 4.72461 47.6523 4.72461C48.6727 4.72461 49.6176 4.86161 50.4868 5.13562C51.3655 5.40962 52.1356 5.80645 52.797 6.32612C53.4678 6.83633 54.0205 7.45993 54.4552 8.1969C54.8993 8.93388 55.2063 9.76062 55.3764 10.6771L53.1938 11.0739C53.0899 10.4126 52.882 9.81258 52.5702 9.27402C52.2584 8.73546 51.8569 8.27722 51.3655 7.89928C50.8837 7.52134 50.3262 7.22844 49.6932 7.02058C49.0601 6.81271 48.3704 6.70878 47.624 6.70878C46.9153 6.70878 46.2681 6.79854 45.6823 6.97806C45.106 7.15758 44.6099 7.40796 44.1942 7.72921C43.7879 8.041 43.4714 8.41422 43.2446 8.84884C43.0179 9.27402 42.9045 9.73699 42.9045 10.2378C42.9045 10.6346 42.9706 10.9889 43.1029 11.3007C43.2352 11.6125 43.4478 11.896 43.7407 12.1511C44.0336 12.4062 44.4068 12.6424 44.8603 12.8597C45.3233 13.0676 45.8855 13.2707 46.5469 13.4691L50.5294 14.6313C52.1734 15.1131 53.4111 15.7982 54.2426 16.6863C55.074 17.5745 55.4898 18.6705 55.4898 19.9744C55.4898 20.8814 55.3103 21.7034 54.9512 22.4404C54.6016 23.1774 54.1009 23.8104 53.4489 24.3395C52.797 24.8592 52.0128 25.2607 51.0963 25.5442C50.1798 25.8276 49.1593 25.9694 48.035 25.9694Z" fill="white"/>
 </svg>
               <p class="footer-tagline">
-                 {{tagline}}
+                 Where everything you build and operate stays connected
               </p>
            </div>
-           <p class="footer-address">
-              {{address}}
-           </p>
+           <p class="footer-address"><strong>ServiceWand Inc.</strong></p>
+           <p>Operational platform for modern businesses</p>
+           <p>Registered in Wyoming, USA</p>
+           <p>Offices in Canada &amp; EU</p>
         </div>
         <!-- Nav -->
         <!-- imported footer fragment FOOTER_MENU (0ef16c2c-f5fb-422f-9b4b-c69af2f48f47) -->
 <nav class="footer-nav">
-   <a href="{{nav_platform_href}}" class="footer-nav-link">{{nav_platform}}</a>
-   <a href="{{nav_how_it_works_href}}" class="footer-nav-link">{{nav_how_it_works}}</a>
-   <a href="{{nav_industries_href}}" class="footer-nav-link">{{nav_industries}}</a>
-   <a href="{{nav_partners_href}}" class="footer-nav-link">{{nav_partners}}</a>
-   <a href="{{nav_faq_href}}" class="footer-nav-link">{{nav_faq}}</a>
+   <a href="index.html#hero" class="footer-nav-link">Platform</a>
+   <a href="index.html#features" class="footer-nav-link">How It Works</a>
+   <a href="index.html#foundation" class="footer-nav-link">Field Service Operations</a>
+   <a href="index.html#partners" class="footer-nav-link">Partners</a>
+   <a href="index.html#faq" class="footer-nav-link">FAQ</a>
 </nav>
         <!-- Socials + contacts -->
         <div class="footer-contacts">
            <!-- imported footer fragment FOOTER_SOCIALS (bf39cab7-3f7b-4f2a-9abe-741f0fc7e22f) -->
 <div class="footer-socials">
-  <a href="{{social_linkedin_href}}" class="footer-social-link" aria-label="{{social_linkedin_aria_label}}">
+  <a href="/" class="footer-social-link" aria-label="LinkedIn">
     <svg
         width="30"
         height="30"
@@ -143,7 +186,7 @@
            />
      </svg>
   </a>
-  <a href="{{social_github_href}}" class="footer-social-link" aria-label="{{social_github_aria_label}}">
+  <a href="/" class="footer-social-link" aria-label="GitHub">
      <svg
         width="30"
         height="30"
@@ -185,7 +228,7 @@
            />
      </svg>
   </a>
-  <a href="{{social_youtube_href}}" class="footer-social-link" aria-label="{{social_youtube_aria_label}}">
+  <a href="/" class="footer-social-link" aria-label="YouTube">
      <svg
         width="30"
         height="30"
@@ -200,7 +243,7 @@
         <path d="M13.5 18V13L17.5 15.5001L13.5 18Z" fill="#D9D9D9" />
      </svg>
   </a>
-  <a href="{{social_x_href}}" class="footer-social-link" aria-label="{{social_x_aria_label}}">
+  <a href="/" class="footer-social-link" aria-label="X">
      <svg
         width="30"
         height="30"
@@ -241,14 +284,13 @@
 </div>
            <!-- imported footer fragment FOOTER_CONTACTS (6b9fc740-47ab-4527-a099-0356a8ce03ee) -->
 <div class="footer-emails">
-  <a href="{{email_general_href}}" class="footer-email-link">{{email_general}}</a>
   <div class="footer-email-group">
-     <p class="footer-email-label">{{email_partnerships_label}}</p>
-     <a href="{{email_partnerships_href}}" class="footer-email-link">{{email_partnerships}}</a>
+     <p class="footer-email-label">Partnerships</p>
+     <a href="mailto:partners@servicewand.com" class="footer-email-link">partners@servicewand.com</a>
   </div>
   <div class="footer-email-group">
-     <p class="footer-email-label">{{email_support_label}}</p>
-     <a href="{{email_support_href}}" class="footer-email-link">{{email_support}}</a>
+     <p class="footer-email-label">Support</p>
+     <a href="mailto:support@servicewand.com" class="footer-email-link">support@servicewand.com</a>
   </div>
 </div>
         </div>
@@ -257,17 +299,17 @@
      <div class="footer-bottom">
         <!-- imported footer fragment FOOTER_COPYRIGHT (df5f82bf-6d95-4e94-ba6c-82eeb81078e0) -->
 <p class="footer-copy">
-   {{copyright_text}}
+   © 2025 ServiceWand Inc.
    <br class="footer-copy-br" />
-   {{copyright_rights}}
+   All rights reserved.
 </p>
         <!-- imported footer fragment FOOTER_LEGAL (a2f5d889-fc70-48cf-b2da-62183195b2f5) -->
-<a href="{{privacy_policy_href}}" class="footer-legal-link">{{privacy_policy_label}}</a>
-<a href="{{terms_href}}" class="footer-legal-link">{{terms_label}}</a>
+<a href="privacy-policy.html" class="footer-legal-link">Privacy Policy</a>
+<a href="terms-and-conditions.html" class="footer-legal-link">Terms &amp; Conditions</a>
 <!-- Mobile legal links -->
 <div class="footer-legal-mobile">
-   <a href="{{privacy_policy_href}}" class="footer-legal-link">{{privacy_policy_label}}</a>
-   <a href="{{terms_href}}" class="footer-legal-link">{{terms_label}}</a>
+   <a href="privacy-policy.html" class="footer-legal-link">Privacy Policy</a>
+   <a href="terms-and-conditions.html" class="footer-legal-link">Terms &amp; Conditions</a>
 </div>
      </div>
   </div>

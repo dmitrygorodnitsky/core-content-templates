@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>comparison.two-col-seo-matrix · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">comparison.two-col-seo-matrix · live</div>
+<div id="harness-root"></div>
+
+<script>
+  const values = {
+    aria_label: "ServiceWand field service software comparison",
+    eyebrow: "Field Service Software Comparison",
+    title: "vs. Typical Field Service Software",
+    lede: "A side-by-side look at how an all-in-one field service management platform compares to the disconnected tools most service businesses run on today.",
+    col_01_name: "ServiceWand",
+    col_01_desc: "An all-in-one field service management platform that connects scheduling, dispatching, routing, mobile work, customer management, billing, and reporting in one system - built for growing, operationally complex service businesses.",
+    col_01_mobile_label: "ServiceWand",
+    col_02_name: "Typical Field Service Software Competitors",
+    col_02_desc: "Most field service software covers parts of the job - scheduling here, invoicing there - and relies on integrations, add-ons, or manual workarounds to hold the rest of daily operations together.",
+    col_02_mobile_label: "Typical Competitors",
+    slot_01_capability: "Business Fit",
+    slot_01_col_01: "ServiceWand supports growing and operationally complex service businesses - multi-crew, multi-location, recurring and emergency work - without forcing the operation to adapt to the software.",
+    slot_01_col_01_icon: "check",
+    slot_01_col_02: "Most tools target a single business profile or trade, so growing teams outgrow basic plans and end up paying for upgrades, add-ons, or a second system.",
+    slot_01_col_02_icon: "neutral",
+    slot_02_capability: "Operational Architecture",
+    slot_02_col_01: "One platform where scheduling, dispatching, routing, work orders, customers, billing, and reporting share the same data - every team works from a single operational record.",
+    slot_02_col_01_icon: "check",
+    slot_02_col_02: "Separate modules or third-party integrations are stitched together, so job data, customer history, and billing live in disconnected tools that drift out of sync.",
+    slot_02_col_02_icon: "neutral",
+    slot_03_capability: "Scheduling, Dispatching & Routing",
+    slot_03_col_01: "Scheduling connects directly to dispatching and routing: technician availability, recurring visits, emergency requests, and route changes update in real time across office and field.",
+    slot_03_col_01_icon: "check",
+    slot_03_col_02: "Basic schedulers handle calendar bookings but treat dispatching and routing as separate steps, leaving dispatchers to coordinate changes by phone, text, or spreadsheet.",
+    slot_03_col_02_icon: "neutral",
+    slot_04_capability: "Mobile Field Execution",
+    slot_04_col_01: "Technicians get the full work order in the field - job details, routes, photos, forms, checklists, signatures, time tracking, and payment collection - from one mobile app.",
+    slot_04_col_01_icon: "check",
+    slot_04_col_02: "Mobile apps often cover status updates and little else, so technicians fall back to calls, paper forms, and end-of-day data entry.",
+    slot_04_col_02_icon: "neutral",
+    slot_05_capability: "Customer Management & CRM",
+    slot_05_col_01: "Built-in customer management ties every job, quote, invoice, and conversation to the customer record, giving office staff full history without a separate CRM.",
+    slot_05_col_01_icon: "check",
+    slot_05_col_02: "Many field service tools store only basic contact details, pushing businesses to buy and sync an external CRM to see customer history and communication.",
+    slot_05_col_02_icon: "neutral",
+    slot_06_capability: "Billing, Invoicing & Payments",
+    slot_06_col_01: "Completed work flows straight into quotes, invoices, and payments - field data becomes billing data automatically, shortening the gap between job done and cash collected.",
+    slot_06_col_01_icon: "check",
+    slot_06_col_02: "Billing is often an export step: job data is re-entered into accounting or invoicing software, introducing delays, missed charges, and reconciliation work.",
+    slot_06_col_02_icon: "neutral",
+    slot_07_capability: "Reporting & Visibility",
+    slot_07_col_01: "Owners and managers see jobs, crews, revenue, and performance in real time, because reporting reads from the same system the work runs on.",
+    slot_07_col_01_icon: "check",
+    slot_07_col_02: "Reporting across disconnected tools means assembling spreadsheets after the fact - visibility arrives late and rarely reflects what is happening in the field today.",
+    slot_07_col_02_icon: "neutral",
+    slot_08_capability: "Automation & AI",
+    slot_08_col_01: "ServiceWand automates routine coordination - assignment suggestions, reminders, follow-ups, and AI-assisted operations - using live data from across the platform.",
+    slot_08_col_01_icon: "check",
+    slot_08_col_02: "Automation is usually limited to simple notifications; anything smarter requires external automation platforms and custom configuration.",
+    slot_08_col_02_icon: "neutral",
+    slot_09_capability: "Scalability & Ecosystem",
+    slot_09_col_01: "Modular and scalable: start with core field service management and extend to portals, monitoring, inventory, and integrations as the operation grows - without replatforming.",
+    slot_09_col_01_icon: "check",
+    slot_09_col_02: "Scaling usually means adding more tools or migrating to heavier enterprise platforms, with the cost, complexity, and disruption that comes with each switch.",
+    slot_09_col_02_icon: "neutral",
+  };
+
+  const escapeHtml = (value) => String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+  fetch("./block.html")
+    .then((response) => response.text())
+    .then((template) => {
+      const html = template.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, key) => escapeHtml(values[key] || ""));
+      document.getElementById("harness-root").innerHTML = html;
+      const script = document.createElement("script");
+      script.src = "./block.js";
+      document.body.appendChild(script);
+    });
+</script>
+</body>
+</html>

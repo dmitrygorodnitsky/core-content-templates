@@ -10,6 +10,11 @@
 	border-top-left-radius: 2.5rem;
 	border-top-right-radius: 2.5rem;
 	background-color: var(--color-black);
+	letter-spacing: -0.01em;
+}
+
+.footer p {
+	margin: 0;
 }
 
 .footer::before {
@@ -79,12 +84,18 @@
 
 .footer-tagline {
 	font-size: 1.25rem;
+	line-height: 1.35;
 	color: var(--color-white);
 	width: 28.9375rem;
 }
 
-.footer-address {
+.footer-brand > p {
 	font-size: 1.25rem;
+	color: var(--color-gray-light);
+	line-height: 1.35;
+}
+
+.footer-brand > .footer-address {
 	color: var(--color-gray);
 	margin-top: 4.875rem;
 }
@@ -117,8 +128,11 @@
 			width: 13.9375rem;
 		}
 
-		.footer-address {
+		.footer-brand > p {
 			font-size: 1rem;
+		}
+
+		.footer-brand > .footer-address {
 			margin-top: 2.5rem;
 		}
 
@@ -221,6 +235,7 @@
 
 .footer-nav-link {
 	font-size: 1.25rem;
+	line-height: 1.35;
 	color: var(--color-gray-blue);
     transition: color var(--transition-duration) ease,
               fill var(--transition-duration) ease;
@@ -310,6 +325,7 @@
 
 .footer-email-link {
 	font-size: 1.25rem;
+	line-height: 1.35;
 	color: var(--color-gray-light);
     transition: color var(--transition-duration) ease,
               fill var(--transition-duration) ease;
@@ -325,6 +341,7 @@
 
 .footer-email-label {
 	font-size: 1rem;
+	line-height: 1.35;
 	color: var(--color-gray-light);
 }
 
@@ -365,6 +382,7 @@
 .footer-copy {
 	font-size: 0.875rem;
 	color: #ffffff;
+	line-height: 1.35;
 	-ms-flex-negative: 0;
 	flex-shrink: 0;
 }
@@ -388,6 +406,7 @@
 /* imported footer fragment CSS: FOOTER_LEGAL (a2f5d889-fc70-48cf-b2da-62183195b2f5) */
 .footer-legal-link {
 	font-size: 0.875rem;
+	line-height: 1.35;
 	color: #ffffff;
 }
 

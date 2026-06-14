@@ -37,7 +37,7 @@ window.LAB_UI_MANIFEST = {
     {
       "id": "07-comparison",
       "label": "07 · Comparison",
-      "count": 1
+      "count": 2
     },
     {
       "id": "08-faq",
@@ -471,11 +471,28 @@ window.LAB_UI_MANIFEST = {
       "hasJs": true
     },
     {
+      "id": "comparison.two-col-seo-matrix",
+      "category": "07-comparison",
+      "path": "07-comparison/comparison.two-col-seo-matrix",
+      "title": "Comparison · two-col SEO matrix",
+      "description": "Two-column SEO comparison matrix with a criteria column, highlighted ServiceWand column, competitor column, the standard ServiceWand wordmark logo in the H2 title (title param is the text after the logo), H3 column headings, H4 row headings, and mobile card layout.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "/Users/imighty/Downloads/Section - Comparison Two-Col SEO - Standalone.html",
+      "preview": {
+        "390": "preview-390.png",
+        "1440": "preview-1440.png"
+      },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
       "id": "faq.bubble-light-grouped",
       "category": "08-faq",
       "path": "08-faq/faq.bubble-light-grouped",
       "title": "FAQ · bubble light grouped",
-      "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship a partial FAQ without touching markup.",
+      "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is an H3 inside a rounded bubble that expands using native <details>. Group labels are non-heading text. First question in each group ships open.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/Lorem ipsum/src/sections-3.jsx (FAQGrouped)",
@@ -492,7 +509,7 @@ window.LAB_UI_MANIFEST = {
       "category": "09-vertical-section",
       "path": "09-vertical-section/section.axes-grid",
       "title": "Section · Axes grid (multi-axis from→to)",
-      "description": "Multi-axis matrix of scaling dimensions. Up to 6 axes (cards with auto-hide for empty slots). Each axis: numbered eyebrow + label, a full-width tick track (7 ticks with opacity ramp suggesting growth), from→to range labels in mono, and a short body paragraph. 3-col grid → 2-col at ≤980 → 1-col at ≤640. Used for 'how the platform scales along these axes' sections after StagesList.",
+      "description": "Standard section header plus multi-axis matrix of scaling dimensions. Up to 6 axes (cards with auto-hide for empty slots). Each axis: H3 label, a full-width tick track (7 ticks with opacity ramp suggesting growth), and from-to range labels in mono. 3-col grid -> 2-col at <=980 -> 1-col at <=640. Used for sections after StagesList.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/landing-template-design/src/kit/stages-axes.jsx (AxesGrid)",
@@ -537,7 +554,7 @@ window.LAB_UI_MANIFEST = {
       "category": "09-vertical-section",
       "path": "09-vertical-section/section.h2-narrative-only",
       "title": "Section · H2 narrative",
-      "description": "Single-purpose narrative section: eyebrow + H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual. The canonical variant is text-first; an optional side SVG glyph remains available through data-has-glyph='true'.",
+      "description": "Two-column narrative section: left eyebrow + H2 + 3 paragraphs and right H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/Lorem ipsum/src/sections-2.jsx (NarrativeSection)",
@@ -582,7 +599,7 @@ window.LAB_UI_MANIFEST = {
       "category": "09-vertical-section",
       "path": "09-vertical-section/section.stages-list",
       "title": "Section · Stages list (growth ladder, 01→04)",
-      "description": "Vertical growth ladder with 4 stages (01–04). Each stage has a left rail with stage eyebrow, big number, and a 4-tick progression scale (lv1 lights 1 tick, lv4 lights all 4 + accent glow). Main area: title + users pill + lead + capability chips. Stage 01 uses plain chips; stages 02–04 use additive chips with '+' prefix to signal new-capabilities-on-top-of-previous-stage. Typically paired with decorative.cycle-strip above + decorative.callout-band below.",
+      "description": "Standard section header plus vertical growth ladder with 4 stages (01-04). Each stage has a left rail with stage eyebrow, big number, and a 4-tick progression scale. Main area: title + lead + additive capability chips with plus prefix.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/landing-template-design/src/kit/stages-axes.jsx (StagesList)",
@@ -830,7 +847,7 @@ window.LAB_UI_MANIFEST = {
       "category": "13-signature",
       "path": "13-signature/signature.ai-shell",
       "title": "Signature · AI-shell (stream + side panel + capability cards)",
-      "description": "Hub-page signature AI section. Three stacked layers: eyebrow + H2 + 2 leads on top; a 2-column 'AI shell' (terminal-style activity stream on the left + media placeholder side-panel on the right) in the middle; 3 capability cards (A.NN numbered) at the bottom. Light theme. This is the platform's biggest visual differentiator on the hub landing.",
+      "description": "Hub-page signature AI section. Three stacked layers: eyebrow + H2 + 2 leads on top; a 2-column 'AI shell' (terminal-style activity stream on the left + media placeholder, H2, and short body copy on the right) in the middle; 3 capability cards (A.NN numbered) at the bottom. Light theme. This is the platform's biggest visual differentiator on the hub landing.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "tmp/landing-template-design/src/kit/signature-blocks.jsx (AiStream + AiSidePanel + AiShell + CapabilityCards)",

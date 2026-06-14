@@ -1,0 +1,483 @@
+[
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow label shown in the left rail for stage 1."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Num",
+        "DESCRIPTION": "Text value for the Stage 1 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Title",
+        "DESCRIPTION": "Text value for the Stage 1 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Lead",
+        "DESCRIPTION": "Text value for the Stage 1 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 1 Chip 5",
+        "DESCRIPTION": "Text value for the Stage 1 Chip 5 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow label shown in the left rail for stage 2."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Num",
+        "DESCRIPTION": "Text value for the Stage 2 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Title",
+        "DESCRIPTION": "Text value for the Stage 2 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Lead",
+        "DESCRIPTION": "Text value for the Stage 2 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 2 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 2 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow label shown in the left rail for stage 3."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Num",
+        "DESCRIPTION": "Text value for the Stage 3 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Title",
+        "DESCRIPTION": "Text value for the Stage 3 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Lead",
+        "DESCRIPTION": "Text value for the Stage 3 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 3 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 3 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 eyebrow label",
+        "DESCRIPTION": "Small mono eyebrow label shown in the left rail for stage 4."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Num",
+        "DESCRIPTION": "Text value for the Stage 4 Num field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Title",
+        "DESCRIPTION": "Text value for the Stage 4 Title field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_LEAD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Lead",
+        "DESCRIPTION": "Text value for the Stage 4 Lead field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 1",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 1 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 2",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 2 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 3",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 3 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stage 4 Chip 4",
+        "DESCRIPTION": "Text value for the Stage 4 Chip 4 field in Section · Stages list (growth ladder, 01→04)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure."
+    }
+  }
+]

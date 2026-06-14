@@ -2,12 +2,57 @@
    Depends: 00-tokens/tokens.css. Light theme.
    Adapted from designer styles.css §smb-stages (lines 1097–1217, 1242–1256). */
 
+.stages-section {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.stages-section-head {
+  max-width: 56rem;
+  margin: 0 auto clamp(2rem, 4vw, 3.5rem);
+  text-align: center;
+}
+
+.stages-section-head .eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  text-transform: uppercase;
+  letter-spacing: var(--type-eyebrow-tracking);
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422d 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 14px;
+}
+
+.stages-section-title {
+  margin: 0;
+  font-weight: var(--type-h2-weight);
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+  color: var(--color-heading);
+}
+
+.stages-section-lede {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 48rem;
+  margin: 1rem auto 0;
+}
+
+.stages-section-lede p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
 .stages-list {
-  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-family: var(--font-family);
 }
 
 .stage {
@@ -96,7 +141,6 @@
 .stage-title-row {
   display: flex;
   align-items: baseline;
-  gap: 16px;
   flex-wrap: wrap;
 }
 .stage-title {
@@ -106,17 +150,6 @@
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.015em;
-}
-
-.stage-users {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-gray-blue);
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.14);
 }
 
 .stage-lead {

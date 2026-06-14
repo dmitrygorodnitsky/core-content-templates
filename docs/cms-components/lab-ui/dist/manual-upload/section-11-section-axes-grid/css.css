@@ -176,12 +176,57 @@
    (hover glow + halo delegated via data-fx="rise"). Light theme.
    Adapted from designer styles.css §scale-axes (lines 1301–1372, 1397). */
 
+.axes-section {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+.axes-section-head {
+  max-width: 56rem;
+  margin: 0 auto clamp(2rem, 4vw, 3.5rem);
+  text-align: center;
+}
+
+.axes-section-head .eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--type-eyebrow-size);
+  text-transform: uppercase;
+  letter-spacing: var(--type-eyebrow-tracking);
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422d 0%, #494938 100%));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 14px;
+}
+
+.axes-section-title {
+  margin: 0;
+  font-weight: var(--type-h2-weight);
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-leading);
+  letter-spacing: var(--type-h2-tracking);
+  color: var(--color-heading);
+}
+
+.axes-section-lede {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 48rem;
+  margin: 1rem auto 0;
+}
+
+.axes-section-lede p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
 .axes-grid {
-  margin-top: 1rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  font-family: var(--font-family);
 }
 
 .axis {
@@ -189,8 +234,10 @@
   border-radius: var(--radius-card);
   background: var(--color-bg);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: border-color 0.2s ease, background 0.2s ease,
-              box-shadow var(--transition-duration, 0.25s) ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow var(--transition-duration, 0.25s) ease;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -210,20 +257,8 @@
 .axis-head {
   display: flex;
   align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
   margin: 0;
   font: inherit;
-}
-.axis-num {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
 }
 .axis-label {
   margin: 0;
@@ -243,7 +278,10 @@
   flex: 1;
   height: 4px;
   border-radius: 2px;
-  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  background: var(
+    --cta-secondary-fill,
+    linear-gradient(90deg, #56422d 0%, #494938 100%)
+  );
 }
 
 .axis-range {
@@ -255,24 +293,29 @@
   letter-spacing: 0.02em;
   flex-wrap: wrap;
 }
-.axis-range .from { color: var(--color-gray-second); }
-.axis-range .arrow { color: var(--color-text-accent, #56422D); font-weight: 600; }
-.axis-range .to { color: var(--color-heading); }
-
-.axis-body {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--color-gray-blue);
+.axis-range .from {
+  color: var(--color-gray-second);
+}
+.axis-range .arrow {
+  color: var(--color-text-accent, #56422d);
+  font-weight: 600;
+}
+.axis-range .to {
+  color: var(--color-heading);
 }
 
-/* Empty-slot auto-hide via :has — if either label or body is empty,
-   the whole axis card collapses out of the grid. */
-.axis:has(.axis-label:empty) { display: none; }
+/* Empty-slot auto-hide via :has. */
+.axis:has(.axis-label:empty) {
+  display: none;
+}
 
 @media (max-width: 980px) {
-  .axes-grid { grid-template-columns: repeat(2, 1fr); }
+  .axes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 @media (max-width: 640px) {
-  .axes-grid { grid-template-columns: 1fr; }
+  .axes-grid {
+    grid-template-columns: 1fr;
+  }
 }

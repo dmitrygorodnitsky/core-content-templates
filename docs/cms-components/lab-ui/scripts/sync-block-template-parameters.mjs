@@ -185,6 +185,28 @@ const normalizeParameter = (parameter) => {
 
 const parameterSignature = (parameter) => JSON.stringify(normalizeParameter(parameter));
 
+const extractTemplateParameterRefs = (template) => {
+  const refs = new Map();
+  const fields = ["head", "html", "javascript", "css"];
+  const pattern = /\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g;
+  for (const field of fields) {
+    const value = String(template?.[field] || "");
+    for (const match of value.matchAll(pattern)) {
+      refs.set(match[1], match[2]);
+    }
+  }
+  return refs;
+};
+
+const missingTemplateParameterRefs = ({ template, parameters }) => {
+  const refs = extractTemplateParameterRefs(template);
+  const codes = new Set((parameters || []).map((parameter) => parameter.code));
+  return [...refs.entries()]
+    .filter(([code]) => !codes.has(code))
+    .map(([code, type]) => `${code}@${type}`)
+    .sort();
+};
+
 const loadSourceParameters = ({ templateJson, parametersJson }) => {
   const file = resolve(templateJson || parametersJson);
   if (!existsSync(file)) throw new Error(`Input JSON not found: ${file}`);
@@ -302,6 +324,19 @@ const main = async () => {
     incoming: source.parameters,
     mode: args.syncMode,
   });
+  const missingRefs = missingTemplateParameterRefs({
+    template: existing,
+    parameters: nextParams,
+  });
+  if (missingRefs.length) {
+    throw new Error(
+      [
+        "Next parameter set does not define every placeholder used by the current BlockTemplate markup.",
+        "This save would make the template fail at render time.",
+        `Missing: ${missingRefs.join(", ")}`,
+      ].join(" ")
+    );
+  }
   const diff = diffParameters({
     existing: existingParams,
     incoming: source.parameters,

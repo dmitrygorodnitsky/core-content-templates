@@ -11,10 +11,62 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"composition-section composition-section--section-stages-list\" data-composition-block=\"section.stages-list\">\n<div class=\"container\">\n<!-- lab-ui block · section.stages-list\n     Vertical growth ladder: 4 stages (01–04). Each stage has a side rail\n     with stage eyebrow + big number + 4-tick scale that fills as stages\n     progress (lv1 → lv4 cyan glow), and a main area with title + users\n     pill + lead + capability chips. Light theme. Designer kit StagesList.\n-->\n<div class=\"stages-list\" data-block=\"section.stages-list\">\n  <article class=\"stage stage--lv1\" data-stage=\"01\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_5@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv2\" data-stage=\"02\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv3\" data-stage=\"03\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n\n  <article class=\"stage stage--lv4\" data-stage=\"04\">\n    <div class=\"stage-side\">\n      <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_LABEL@LOCALIZED_STRING_SS}</span>\n      <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_NUM@LOCALIZED_STRING_SS}</span>\n      <div class=\"stage-scale\" aria-hidden=\"true\">\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n        <span class=\"stage-tick is-on\"></span>\n      </div>\n    </div>\n    <div class=\"stage-main\">\n      <div class=\"stage-title-row\">\n        <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_TITLE@LOCALIZED_STRING_SS}</h3>\n        <span class=\"stage-users\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_USERS@LOCALIZED_STRING_SS}</span>\n      </div>\n      <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_LEAD@LOCALIZED_STRING_SS}</p>\n      <div class=\"stage-caps\">\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n        <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n      </div>\n    </div>\n  </article>\n</div>\n\n</div>\n</section>",
-  "css": "/* generated child CSS: 09-vertical-section/section.stages-list/block.css */\n/* lab-ui block · section.stages-list\n   Depends: 00-tokens/tokens.css. Light theme.\n   Adapted from designer styles.css §smb-stages (lines 1097–1217, 1242–1256). */\n\n.stages-list {\n  margin-top: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  font-family: var(--font-family);\n}\n\n.stage {\n  display: grid;\n  grid-template-columns: 12rem 1fr;\n  gap: 24px;\n  border-radius: var(--radius-card);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  background: var(--color-bg);\n  padding: 28px 32px;\n  align-items: stretch;\n  position: relative;\n  overflow: hidden;\n  transition: border-color 0.2s ease, background 0.2s ease;\n}\n.stage:hover {\n  border-color: rgba(0, 0, 0, 0.14);\n  background: var(--color-gray-bg);\n}\n\n/* Left rail (3 px) — opacity ramps up by level, lv4 gets a glow */\n.stage::before {\n  content: \"\";\n  position: absolute;\n  left: 0; top: 0; bottom: 0;\n  width: 3px;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  opacity: 0;\n  transition: opacity 0.2s ease;\n}\n.stage--lv1::before { opacity: 0.25; }\n.stage--lv2::before { opacity: 0.45; }\n.stage--lv3::before { opacity: 0.7; }\n.stage--lv4::before { opacity: 1; }\n\n.stage-side {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08);\n  padding-right: 24px;\n}\n\n.stage-eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n}\n\n.stage-num {\n  font-family: var(--font-family);\n  font-weight: 500;\n  font-size: 3.5rem;\n  line-height: 1;\n  color: var(--color-heading);\n  letter-spacing: -0.04em;\n}\n\n.stage-scale {\n  display: flex;\n  gap: 4px;\n  margin-top: auto;\n}\n.stage-tick {\n  width: 28px;\n  height: 4px;\n  border-radius: 2px;\n  background: rgba(15, 17, 22, 0.09);\n}\n.stage-tick.is-on {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n}\n\n.stage-main {\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n  min-width: 0;\n}\n\n.stage-title-row {\n  display: flex;\n  align-items: baseline;\n  gap: 16px;\n  flex-wrap: wrap;\n}\n.stage-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: clamp(1.125rem, 1.6vw, 1.5625rem);\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -0.015em;\n}\n\n.stage-users {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.12em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n  padding: 4px 10px;\n  border-radius: 999px;\n  border: 1px solid rgba(0, 0, 0, 0.14);\n}\n\n.stage-lead {\n  margin: 0;\n  font-size: 0.9375rem;\n  color: var(--color-gray-blue);\n  line-height: 1.5;\n  max-width: 56ch;\n}\n\n.stage-caps {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-top: 4px;\n}\n\n.stage-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 0.8125rem;\n  color: var(--color-text);\n  padding: 7px 12px;\n  border-radius: 999px;\n  background: rgba(15, 17, 22, 0.045);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  letter-spacing: -0.005em;\n}\n.stage-chip-plus {\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  font-weight: 600;\n}\n\n/* Hide empty chip slots — left as a JS-driven concern; block.js could\n   set [hidden] on empty chips. Manual hide for now via CSS works too. */\n.stage-chip[hidden] { display: none !important; }\n.stage-chip:has(> span:empty:last-child) { display: none; }\n\n@media (max-width: 880px) {\n  .stage { grid-template-columns: 1fr; gap: 16px; padding: 24px; }\n  .stage-side {\n    border-right: none;\n    padding-right: 0;\n    padding-bottom: 16px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n    flex-direction: row;\n    align-items: center;\n    gap: 16px;\n  }\n  .stage-num { font-size: 2.5rem; }\n  .stage-scale { margin-top: 0; margin-left: auto; }\n}\n",
+  "html": "<section class=\"composition-section composition-section--section-stages-list\" data-composition-block=\"section.stages-list\">\n<div class=\"container\">\n<!-- lab-ui block · section.stages-list\n     Standard section header + vertical growth ladder: 4 stages (01–04).\n     Each stage has a side rail with stage eyebrow + big number + 4-tick\n     scale that fills as stages progress, and a main area with title + lead +\n     additive capability chips. Light theme. Designer kit StagesList.\n-->\n<div class=\"stages-section\" data-block=\"section.stages-list\" aria-labelledby=\"stages-heading\">\n  <header class=\"stages-section-head\">\n    <p class=\"eyebrow\">${SECTION_08_SECTION_STAGES_LIST_EYEBROW@LOCALIZED_STRING_SS}</p>\n    <h2 id=\"stages-heading\" class=\"stages-section-title\">${SECTION_08_SECTION_STAGES_LIST_TITLE@LOCALIZED_STRING_SS}</h2>\n    <div class=\"stages-section-lede\">\n      <p>${SECTION_08_SECTION_STAGES_LIST_LEDE_1@LOCALIZED_STRING_SS}</p>\n      <p>${SECTION_08_SECTION_STAGES_LIST_LEDE_2@LOCALIZED_STRING_SS}</p>\n    </div>\n  </header>\n\n  <div class=\"stages-list\">\n    <article class=\"stage stage--lv1\" data-stage=\"01\">\n      <div class=\"stage-side\">\n        <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_LABEL@LOCALIZED_STRING_SS}</span>\n        <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_NUM@LOCALIZED_STRING_SS}</span>\n        <div class=\"stage-scale\" aria-hidden=\"true\">\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick\"></span>\n          <span class=\"stage-tick\"></span>\n          <span class=\"stage-tick\"></span>\n        </div>\n      </div>\n      <div class=\"stage-main\">\n        <div class=\"stage-title-row\">\n          <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_TITLE@LOCALIZED_STRING_SS}</h3>\n        </div>\n        <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_1_LEAD@LOCALIZED_STRING_SS}</p>\n        <div class=\"stage-caps\">\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_1_CHIP_5@LOCALIZED_STRING_SS}</span></span>\n        </div>\n      </div>\n    </article>\n\n    <article class=\"stage stage--lv2\" data-stage=\"02\">\n      <div class=\"stage-side\">\n        <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_LABEL@LOCALIZED_STRING_SS}</span>\n        <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_NUM@LOCALIZED_STRING_SS}</span>\n        <div class=\"stage-scale\" aria-hidden=\"true\">\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick\"></span>\n          <span class=\"stage-tick\"></span>\n        </div>\n      </div>\n      <div class=\"stage-main\">\n        <div class=\"stage-title-row\">\n          <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_TITLE@LOCALIZED_STRING_SS}</h3>\n        </div>\n        <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_2_LEAD@LOCALIZED_STRING_SS}</p>\n        <div class=\"stage-caps\">\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_2_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n        </div>\n      </div>\n    </article>\n\n    <article class=\"stage stage--lv3\" data-stage=\"03\">\n      <div class=\"stage-side\">\n        <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_LABEL@LOCALIZED_STRING_SS}</span>\n        <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_NUM@LOCALIZED_STRING_SS}</span>\n        <div class=\"stage-scale\" aria-hidden=\"true\">\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick\"></span>\n        </div>\n      </div>\n      <div class=\"stage-main\">\n        <div class=\"stage-title-row\">\n          <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_TITLE@LOCALIZED_STRING_SS}</h3>\n        </div>\n        <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_3_LEAD@LOCALIZED_STRING_SS}</p>\n        <div class=\"stage-caps\">\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_3_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n        </div>\n      </div>\n    </article>\n\n    <article class=\"stage stage--lv4\" data-stage=\"04\">\n      <div class=\"stage-side\">\n        <span class=\"stage-eyebrow\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_LABEL@LOCALIZED_STRING_SS}</span>\n        <span class=\"stage-num\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_NUM@LOCALIZED_STRING_SS}</span>\n        <div class=\"stage-scale\" aria-hidden=\"true\">\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n          <span class=\"stage-tick is-on\"></span>\n        </div>\n      </div>\n      <div class=\"stage-main\">\n        <div class=\"stage-title-row\">\n          <h3 class=\"stage-title\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_TITLE@LOCALIZED_STRING_SS}</h3>\n        </div>\n        <p class=\"stage-lead\">${SECTION_08_SECTION_STAGES_LIST_STAGE_4_LEAD@LOCALIZED_STRING_SS}</p>\n        <div class=\"stage-caps\">\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_1@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_2@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_3@LOCALIZED_STRING_SS}</span></span>\n          <span class=\"stage-chip\"><span class=\"stage-chip-plus\">+</span><span>${SECTION_08_SECTION_STAGES_LIST_STAGE_4_CHIP_4@LOCALIZED_STRING_SS}</span></span>\n        </div>\n      </div>\n    </article>\n  </div>\n</div>\n\n</div>\n</section>",
+  "css": "/* generated child CSS: 09-vertical-section/section.stages-list/block.css */\n/* lab-ui block · section.stages-list\n   Depends: 00-tokens/tokens.css. Light theme.\n   Adapted from designer styles.css §smb-stages (lines 1097–1217, 1242–1256). */\n\n.stages-section {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.stages-section-head {\n  max-width: 56rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.5rem);\n  text-align: center;\n}\n\n.stages-section-head .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422d 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n\n.stages-section-title {\n  margin: 0;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n\n.stages-section-lede {\n  display: grid;\n  gap: 0.45rem;\n  max-width: 48rem;\n  margin: 1rem auto 0;\n}\n\n.stages-section-lede p {\n  margin: 0;\n  font-size: 1rem;\n  line-height: 1.55;\n  color: var(--color-text);\n}\n\n.stages-list {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.stage {\n  display: grid;\n  grid-template-columns: 12rem 1fr;\n  gap: 24px;\n  border-radius: var(--radius-card);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  background: var(--color-bg);\n  padding: 28px 32px;\n  align-items: stretch;\n  position: relative;\n  overflow: hidden;\n  transition: border-color 0.2s ease, background 0.2s ease;\n}\n.stage:hover {\n  border-color: rgba(0, 0, 0, 0.14);\n  background: var(--color-gray-bg);\n}\n\n/* Left rail (3 px) — opacity ramps up by level, lv4 gets a glow */\n.stage::before {\n  content: \"\";\n  position: absolute;\n  left: 0; top: 0; bottom: 0;\n  width: 3px;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  opacity: 0;\n  transition: opacity 0.2s ease;\n}\n.stage--lv1::before { opacity: 0.25; }\n.stage--lv2::before { opacity: 0.45; }\n.stage--lv3::before { opacity: 0.7; }\n.stage--lv4::before { opacity: 1; }\n\n.stage-side {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08);\n  padding-right: 24px;\n}\n\n.stage-eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.14em;\n  text-transform: uppercase;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n}\n\n.stage-num {\n  font-family: var(--font-family);\n  font-weight: 500;\n  font-size: 3.5rem;\n  line-height: 1;\n  color: var(--color-heading);\n  letter-spacing: -0.04em;\n}\n\n.stage-scale {\n  display: flex;\n  gap: 4px;\n  margin-top: auto;\n}\n.stage-tick {\n  width: 28px;\n  height: 4px;\n  border-radius: 2px;\n  background: rgba(15, 17, 22, 0.09);\n}\n.stage-tick.is-on {\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n}\n\n.stage-main {\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n  min-width: 0;\n}\n\n.stage-title-row {\n  display: flex;\n  align-items: baseline;\n  flex-wrap: wrap;\n}\n.stage-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: clamp(1.125rem, 1.6vw, 1.5625rem);\n  font-weight: 600;\n  line-height: 1.25;\n  letter-spacing: -0.015em;\n}\n\n.stage-lead {\n  margin: 0;\n  font-size: 0.9375rem;\n  color: var(--color-gray-blue);\n  line-height: 1.5;\n  max-width: 56ch;\n}\n\n.stage-caps {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-top: 4px;\n}\n\n.stage-chip {\n  display: inline-flex;\n  align-items: center;\n  gap: 6px;\n  font-size: 0.8125rem;\n  color: var(--color-text);\n  padding: 7px 12px;\n  border-radius: 999px;\n  background: rgba(15, 17, 22, 0.045);\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  letter-spacing: -0.005em;\n}\n.stage-chip-plus {\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  font-weight: 600;\n}\n\n/* Hide empty chip slots — left as a JS-driven concern; block.js could\n   set [hidden] on empty chips. Manual hide for now via CSS works too. */\n.stage-chip[hidden] { display: none !important; }\n.stage-chip:has(> span:empty:last-child) { display: none; }\n\n@media (max-width: 880px) {\n  .stage { grid-template-columns: 1fr; gap: 16px; padding: 24px; }\n  .stage-side {\n    border-right: none;\n    padding-right: 0;\n    padding-bottom: 16px;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n    flex-direction: row;\n    align-items: center;\n    gap: 16px;\n  }\n  .stage-num { font-size: 2.5rem; }\n  .stage-scale { margin-top: 0; margin-left: auto; }\n}\n",
   "javascript": "",
   "parameters": [
+    {
+      "code": "SECTION_08_SECTION_STAGES_LIST_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Section · Stages list (growth ladder, 01→04)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_08_SECTION_STAGES_LIST_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Section · Stages list (growth ladder, 01→04)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut."
+      }
+    },
+    {
+      "code": "SECTION_08_SECTION_STAGES_LIST_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 1",
+          "DESCRIPTION": "Text value for the Lede 1 field in Section · Stages list (growth ladder, 01→04)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_08_SECTION_STAGES_LIST_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 2",
+          "DESCRIPTION": "Text value for the Lede 2 field in Section · Stages list (growth ladder, 01→04)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
     {
       "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_LABEL",
       "type": "LOCALIZED_STRING_SS",
@@ -25,7 +77,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum adipiscing."
+        "en": "Lorem Ipsum duis."
       }
     },
     {
@@ -38,7 +90,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ut."
+        "en": "Lorem Ipsum cillum."
       }
     },
     {
@@ -51,20 +103,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ad."
-      }
-    },
-    {
-      "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_1_USERS",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Stage 1 Users",
-          "DESCRIPTION": "Text value for the Stage 1 Users field in Section · Stages list (growth ladder, 01→04)."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum laboris nisi aliquip ex."
+        "en": "Lorem Ipsum sit."
       }
     },
     {
@@ -77,7 +116,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet."
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
       }
     },
     {
@@ -90,7 +129,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+        "en": "Lorem Ipsum magna aliqua enim ad."
       }
     },
     {
@@ -103,7 +142,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
       }
     },
     {
@@ -116,7 +155,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+        "en": "Lorem Ipsum ea commodo consequat duis."
       }
     },
     {
@@ -129,7 +168,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna aliqua enim ad."
+        "en": "Lorem Ipsum voluptate velit esse cillum."
       }
     },
     {
@@ -142,7 +181,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
       }
     },
     {
@@ -155,7 +194,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ea."
+        "en": "Lorem Ipsum elit."
       }
     },
     {
@@ -168,7 +207,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum voluptate."
+        "en": "Lorem Ipsum labore."
       }
     },
     {
@@ -181,20 +220,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum lorem."
-      }
-    },
-    {
-      "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_2_USERS",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Stage 2 Users",
-          "DESCRIPTION": "Text value for the Stage 2 Users field in Section · Stages list (growth ladder, 01→04)."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum elit sed do eiusmod."
+        "en": "Lorem Ipsum minim."
       }
     },
     {
@@ -207,7 +233,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip."
+        "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
       }
     },
     {
@@ -220,7 +246,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum minim veniam quis nostrud."
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
       }
     },
     {
@@ -233,7 +259,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nisi aliquip ex ea."
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
       }
     },
     {
@@ -246,7 +272,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
       }
     },
     {
@@ -259,7 +285,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+        "en": "Lorem Ipsum tempor incididunt ut labore."
       }
     },
     {
@@ -272,7 +298,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum amet."
+        "en": "Lorem Ipsum aliqua."
       }
     },
     {
@@ -285,7 +311,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum tempor."
+        "en": "Lorem Ipsum exercitation."
       }
     },
     {
@@ -298,20 +324,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliqua."
-      }
-    },
-    {
-      "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_3_USERS",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Stage 3 Users",
-          "DESCRIPTION": "Text value for the Stage 3 Users field in Section · Stages list (growth ladder, 01→04)."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+        "en": "Lorem Ipsum commodo."
       }
     },
     {
@@ -324,7 +337,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+        "en": "Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do."
       }
     },
     {
@@ -337,7 +350,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum velit esse cillum fugiat."
+        "en": "Lorem Ipsum ipsum dolor sit amet."
       }
     },
     {
@@ -350,7 +363,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ipsum dolor sit amet."
+        "en": "Lorem Ipsum sed do eiusmod tempor."
       }
     },
     {
@@ -363,7 +376,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sed do eiusmod tempor."
+        "en": "Lorem Ipsum et dolore magna aliqua."
       }
     },
     {
@@ -376,7 +389,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum et dolore magna aliqua."
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
       }
     },
     {
@@ -389,7 +402,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum veniam."
+        "en": "Lorem Ipsum aliquip."
       }
     },
     {
@@ -402,7 +415,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliquip."
+        "en": "Lorem Ipsum irure."
       }
     },
     {
@@ -415,20 +428,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum irure."
-      }
-    },
-    {
-      "code": "SECTION_08_SECTION_STAGES_LIST_STAGE_4_USERS",
-      "type": "LOCALIZED_STRING_SS",
-      "nls": {
-        "en": {
-          "NAME": "Stage 4 Users",
-          "DESCRIPTION": "Text value for the Stage 4 Users field in Section · Stages list (growth ladder, 01→04)."
-        }
-      },
-      "value": {
-        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+        "en": "Lorem Ipsum nulla."
       }
     },
     {

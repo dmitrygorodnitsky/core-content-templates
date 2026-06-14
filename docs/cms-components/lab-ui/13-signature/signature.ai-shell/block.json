@@ -3,7 +3,7 @@
   "id": "signature.ai-shell",
   "category": "13-signature",
   "title": "Signature · AI-shell (stream + side panel + capability cards)",
-  "description": "Hub-page signature AI section. Three stacked layers: eyebrow + H2 + 2 leads on top; a 2-column 'AI shell' (terminal-style activity stream on the left + media placeholder side-panel on the right) in the middle; 3 capability cards (A.NN numbered) at the bottom. Light theme. This is the platform's biggest visual differentiator on the hub landing.",
+  "description": "Hub-page signature AI section. Three stacked layers: eyebrow + H2 + 2 leads on top; a 2-column 'AI shell' (terminal-style activity stream on the left + media placeholder, H2, and short body copy on the right) in the middle; 3 capability cards (A.NN numbered) at the bottom. Light theme. This is the platform's biggest visual differentiator on the hub landing.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -199,54 +199,14 @@
       "default": "Lorem ipsum dolor sit amet, consectetur."
     },
     {
-      "code": "feed_1_tag",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
-    },
-    {
       "code": "feed_1_body",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod."
     },
     {
-      "code": "feed_2_tag",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
       "code": "feed_2_body",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    },
-    {
-      "code": "feed_3_tag",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "feed_3_body",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
-    },
-    {
-      "code": "feed_4_tag",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "feed_4_body",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
-    },
-    {
-      "code": "feed_5_tag",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "feed_5_body",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed."
     },
     {
       "code": "media_placeholder_size",
@@ -276,8 +236,8 @@
       "code": "media_name",
       "type": "STRING",
       "default": "",
-      "name": "Ai Media Image Name",
-      "description": "CMS image file name/path segment for the Ai Media image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      "name": "AI Media File Name",
+      "description": "File name segment used by CMS image delivery for the AI side-panel media slot."
     },
     {
       "code": "cap_1_prefix",
@@ -351,7 +311,7 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "Composite of 3 sub-patterns: ai-stream (terminal log), ai-side-panel (media placeholder + tagged feeds), ai-caps (numbered capability cards). They could be split into 3 lab-ui blocks but ship together because all 3 are designed for one section and never used independently in the kit.",
+    "Composite of 3 sub-patterns: ai-stream (terminal log), ai-side-panel (media placeholder + H2 + short copy), ai-caps (numbered capability cards). They could be split into 3 lab-ui blocks but ship together because all 3 are designed for one section and never used independently in the kit.",
     "Accent uses the normalized secondary CTA contract: --cta-secondary-fill for mono labels and --cta-accent for tints, marks, and subtle panel glow.",
     "The side-panel visual is a neutral striped media placeholder, not an orbit illustration. Replace [data-ai-media-slot] with a product screenshot or assistant panel image when real assets are available.",
     "At ≤980 px the shell collapses to a single column (stream on top, side-panel below). At ≤640 px the stream rows collapse from 3-col into stacked time/kind/content."

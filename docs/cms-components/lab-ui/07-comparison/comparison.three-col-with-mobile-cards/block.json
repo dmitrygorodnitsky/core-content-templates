@@ -92,9 +92,19 @@
       "default": "ServiceWand"
     },
     {
+      "code": "col_01_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+    },
+    {
       "code": "col_02_name",
       "type": "LOCALIZED_STRING_SS",
       "default": "CRM Systems"
+    },
+    {
+      "code": "col_02_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua quis nostrud exercitation."
     },
     {
       "code": "col_03_name",
@@ -102,9 +112,19 @@
       "default": "Field Service Tools"
     },
     {
+      "code": "col_03_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ullamco laboris nisi."
+    },
+    {
       "code": "col_04_name",
       "type": "LOCALIZED_STRING_SS",
       "default": "Monitoring Tools"
+    },
+    {
+      "code": "col_04_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua aliquip ex ea commodo."
     },
     {
       "code": "col_05_name",
@@ -112,9 +132,19 @@
       "default": "CMS & Portals"
     },
     {
+      "code": "col_05_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua duis aute irure."
+    },
+    {
       "code": "col_06_name",
       "type": "LOCALIZED_STRING_SS",
       "default": "Enterprise Platforms"
+    },
+    {
+      "code": "col_06_desc",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua reprehenderit voluptate velit."
     },
     {
       "code": "slot_01_capability",

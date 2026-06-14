@@ -241,43 +241,28 @@
 }
 .ai-side-heading {
   position: relative;
-  margin: 0 0 20px;
-  max-width: 22ch;
-  font-size: 1.1875rem;
-  line-height: 1.3;
-  font-weight: 600;
-  letter-spacing: -0.015em;
+  margin: 0 0 16px;
+  max-width: 24ch;
+  font-size: clamp(1.75rem, 2.5vw, 2.625rem);
+  line-height: 1.14;
+  font-weight: var(--type-h2-weight);
+  letter-spacing: -0.032em;
   color: var(--color-heading);
 }
-.ai-feeds {
+.ai-side-copy {
   position: relative;
-  list-style: none;
-  margin: 0; padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.ai-feeds li {
   display: grid;
-  grid-template-columns: 5.5rem 1fr;
   gap: 12px;
-  align-items: baseline;
-  font-size: 0.8125rem;
-  color: var(--color-gray-blue);
-  line-height: 1.45;
+  max-width: 56rem;
 }
-.ai-feeds .tag {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-heading);
-  padding: 4px 8px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--cta-accent, #6BEAF9) 24%, transparent);
-  background-color: color-mix(in srgb, var(--cta-accent, #6BEAF9) 7%, transparent);
-  text-align: center;
-  justify-self: start;
+.ai-side-copy p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-gray-blue);
+}
+.ai-side-copy p:empty {
+  display: none;
 }
 
 /* ─── Capability cards row ─── */
@@ -332,6 +317,5 @@
   .ai-stream-head { padding: 14px 20px; flex-wrap: wrap; }
   .ai-stream-foot { padding: 14px 20px; }
   .ai-side-panel { padding: 24px; }
-  .ai-feeds li { grid-template-columns: 1fr; gap: 4px; }
   .ai-caps { grid-template-columns: 1fr; }
 }

@@ -1,0 +1,119 @@
+[
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 1",
+        "DESCRIPTION": "Text value for the Lede 1 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 2",
+        "DESCRIPTION": "Text value for the Lede 2 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lede 3",
+        "DESCRIPTION": "Text value for the Lede 3 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Side Title",
+        "DESCRIPTION": "Text value for the Side Title field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Side Lede 1",
+        "DESCRIPTION": "Text value for the Side Lede 1 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Side Lede 2",
+        "DESCRIPTION": "Text value for the Side Lede 2 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Side Lede 3",
+        "DESCRIPTION": "Text value for the Side Lede 3 field in Section · H2 narrative."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  }
+]

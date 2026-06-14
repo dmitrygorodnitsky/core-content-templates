@@ -3,7 +3,7 @@
   "id": "faq.bubble-light-grouped",
   "category": "08-faq",
   "title": "FAQ · bubble light grouped",
-  "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is a rounded bubble that expands using native <details>. First question in each group ships open. Multiple-open behavior. block.js auto-hides empty items and empty groups so CMS admins can ship a partial FAQ without touching markup.",
+  "description": "FAQ section organized into 4 categories x 7 questions (28 slots). Each question is an H3 inside a rounded bubble that expands using native <details>. Group labels are non-heading text. First question in each group ships open.",
   "canonical": true,
   "theme": "light",
   "source": {
@@ -40,11 +40,6 @@
       "code": "title",
       "type": "LOCALIZED_STRING_SS",
       "default": "Lorem ipsum"
-    },
-    {
-      "code": "lede",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore."
     },
     {
       "code": "group_01_title",

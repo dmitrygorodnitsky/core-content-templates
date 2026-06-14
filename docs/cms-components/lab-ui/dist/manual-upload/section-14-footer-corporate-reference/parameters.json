@@ -253,30 +253,6 @@
     }
   },
   {
-    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_GENERAL_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Footer general email href",
-        "DESCRIPTION": "URL target for the footer general email link."
-      }
-    },
-    "value": "mailto:hello@servicewand.com"
-  },
-  {
-    "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_GENERAL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Footer general email",
-        "DESCRIPTION": "General contact email shown in the footer."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation."
-    }
-  },
-  {
     "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -286,7 +262,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip."
+      "en": "Lorem Ipsum et."
     }
   },
   {
@@ -310,7 +286,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      "en": "Lorem Ipsum aliquip ex ea commodo."
     }
   },
   {
@@ -323,7 +299,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur."
+      "en": "Lorem Ipsum irure."
     }
   },
   {
@@ -347,7 +323,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam."
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
     }
   },
   {
@@ -360,7 +336,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      "en": "Lorem Ipsum incididunt ut labore et."
     }
   },
   {
@@ -373,7 +349,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat duis aute irure."
+      "en": "Lorem Ipsum enim ad minim veniam."
     }
   },
   {
@@ -397,7 +373,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolor."
+      "en": "Lorem Ipsum consequat."
     }
   },
   {
@@ -421,7 +397,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore."
+      "en": "Lorem Ipsum dolor."
     }
   }
 ]

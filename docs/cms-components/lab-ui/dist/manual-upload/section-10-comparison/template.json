@@ -11,8 +11,8 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"composition-section composition-section--comparison-three-col-with-mobile-cards\" data-composition-block=\"comparison.three-col-with-mobile-cards\">\n<!-- lab-ui block · comparison.three-col-with-mobile-cards\n     Flexible comparison matrix.\n     Desktop = wide matrix with 2-6 product columns. <= 860px = stacked cards.\n     column_count controls product columns, not the row-label capability column.\n-->\n<section class=\"compare\" id=\"compare\" data-block=\"comparison.three-col-with-mobile-cards\" data-columns=\"6\">\n  <div class=\"container\">\n    <header class=\"compare-top\">\n      <p class=\"eyebrow\">${COMPARE_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"compare-title\" id=\"compare-heading\">${COMPARE_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"compare-lede\">${COMPARE_LEDE@LOCALIZED_STRING_SS}</p>\n      <span class=\"compare-config compare-config--columns\">${COMPARE_COLUMN_COUNT@STRING}</span>\n    </header>\n\n    <div class=\"compare-grid\" role=\"table\" aria-labelledby=\"compare-heading\">\n      <div class=\"compare-head\" role=\"rowgroup\">\n        <div class=\"compare-row compare-row--head\" role=\"row\">\n          <div class=\"compare-cell compare-cell--capability compare-cell--empty\" role=\"columnheader\"></div>\n          <div class=\"compare-cell compare-cell--sw compare-cell--head\" role=\"columnheader\" data-compare-col=\"1\"><span class=\"compare-brand\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"2\"><span class=\"compare-brand\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"3\"><span class=\"compare-brand\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"4\"><span class=\"compare-brand\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"5\"><span class=\"compare-brand\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"6\"><span class=\"compare-brand\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span></div>\n        </div>\n      </div>\n\n      <div class=\"compare-body\" role=\"rowgroup\" data-compare-body>\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"01\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_1@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"02\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_2@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"03\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_3@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"04\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_4@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"05\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_5@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"06\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_6@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"07\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_7@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"08\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_8@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"09\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_9@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
-  "css": "/* generated child CSS: 07-comparison/comparison.three-col-with-mobile-cards/block.css */\n/* lab-ui block · comparison.three-col-with-mobile-cards\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.compare {\n  --compare-secondary-columns: 5;\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.compare[data-columns=\"2\"] { --compare-secondary-columns: 1; }\n.compare[data-columns=\"3\"] { --compare-secondary-columns: 2; }\n.compare[data-columns=\"4\"] { --compare-secondary-columns: 3; }\n.compare[data-columns=\"5\"] { --compare-secondary-columns: 4; }\n.compare[data-columns=\"6\"] { --compare-secondary-columns: 5; }\n.compare .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.compare-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.25rem);\n  text-align: center;\n}\n.compare-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.compare-title {\n  margin: 0 0 14px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.compare-lede {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n.compare-config,\n.compare-icon-source {\n  display: none;\n}\n\n.compare-grid {\n  position: relative;\n  overflow: hidden;\n  border: 1px solid rgba(146, 170, 205, 0.26);\n  border-radius: 22px;\n  background:\n    radial-gradient(circle at 52% 8%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 34%),\n    linear-gradient(180deg, var(--color-white) 0%, #fbfcfe 62%, #f6f8fb 100%);\n  box-shadow: 0 20px 60px rgba(17, 24, 39, 0.06);\n}\n/* Uniform soft cyan-tint border stroke. Previous 135deg cyan→white→gray\n   read as a directional accent — too loud. The whole table now sits in a\n   single calm cyan halo with a slight top-to-bottom falloff. */\n.compare-grid::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  padding: 1px;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 4;\n  background: linear-gradient(\n    180deg,\n    rgba(107, 234, 249, 0.40) 0%,\n    rgba(107, 234, 249, 0.18) 100%\n  );\n  -webkit-mask:\n    linear-gradient(#000 0 0) content-box,\n    linear-gradient(#000 0 0);\n  -webkit-mask-composite: xor;\n          mask-composite: exclude;\n}\n\n.compare-row {\n  position: relative;\n  display: grid;\n  grid-template-columns: minmax(210px, 1.62fr) minmax(150px, 1.15fr) repeat(var(--compare-secondary-columns), minmax(140px, 1fr));\n  min-height: 72px;\n  z-index: 1;\n}\n\n.compare[data-columns=\"2\"] [data-compare-col=\"3\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"4\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"4\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"4\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"4\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"5\"] [data-compare-col=\"6\"] {\n  display: none;\n}\n\n.compare-cell {\n  min-width: 0;\n  padding: 16px 18px;\n  display: flex;\n  align-items: center;\n  color: var(--color-heading);\n  font-size: clamp(0.875rem, 0.74vw, 1rem);\n  line-height: 1.34;\n}\n.compare-cell--head {\n  align-items: flex-start;\n  padding-top: 28px;\n  color: var(--color-heading);\n  font-weight: 500;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.compare-cell--empty {\n  visibility: hidden;\n}\n\n.compare-brand {\n  display: block;\n  min-width: 0;\n  max-width: 100%;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  align-items: baseline;\n  color: var(--color-heading);\n  font-size: clamp(0.9375rem, 0.86vw, 1.0625rem);\n  letter-spacing: -0.02em;\n}\n.compare-brand strong {\n  font-weight: 800;\n}\n\n.compare-cell--capability {\n  padding-left: clamp(1.5rem, 2.4vw, 2.75rem);\n  font-size: clamp(1rem, 1.03vw, 1.1875rem);\n  font-weight: 500;\n  letter-spacing: -0.02em;\n  color: var(--color-heading);\n}\n.compare-capability {\n  margin: 0;\n  font: inherit;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n/* the platform column — one floating white card that spans the whole\n   column. Body cells render the vertical edges of the card via inset\n   strokes; head ::before and last-row ::after close the rounded top\n   and bottom corners and add the outer drop shadow. Solid white\n   (was rgba 0.72) so it stays opaque over the grid's gray-fade bottom,\n   no need for backdrop-filter blur. Cyan stroke alpha lowered from\n   0.72 → 0.38 so the column reads as outlined, not bracketed. */\n.compare-cell--sw {\n  position: relative;\n  z-index: 2;\n  margin-inline: 0.28rem;\n  background: var(--color-white);\n  border-left: 0;\n  border-right: 0;\n  box-shadow:\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38);\n}\n.compare-cell--sw > * {\n  position: relative;\n  z-index: 1;\n}\n.compare-row--head .compare-cell--sw {\n  margin-top: 0;\n  padding-top: 28px;\n  border-top: 0;\n  border-radius: 0;\n  background: transparent;\n  box-shadow: none;\n}\n.compare-row--head .compare-cell--sw::before {\n  content: \"\";\n  position: absolute;\n  inset: 12px 0 0;\n  border-radius: 14px 14px 0 0;\n  pointer-events: none;\n  background: var(--color-white);\n  box-shadow:\n    0 -10px 24px -12px rgba(17, 24, 39, 0.12),\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38),\n    inset 0 1px rgba(107, 234, 249, 0.45);\n}\n/* Last-row SW cell: symmetric to head — the cell itself is transparent\n   (no stroke leakage past the rounded bottom). All visible card geometry\n   for the bottom edge is painted by ::after: white fill, rounded bottom\n   corners, cyan inset edges (left/right/bottom), and the outer drop\n   shadow. The 12 px below ::after is grid background, giving the card\n   visible breathing room and clean rounded corners. */\n.compare-body .compare-row:last-child .compare-cell--sw {\n  margin-bottom: 0;\n  border-bottom: 0;\n  border-radius: 0;\n  background: transparent;\n  box-shadow: none;\n}\n.compare-body .compare-row:last-child .compare-cell--sw::after {\n  content: \"\";\n  position: absolute;\n  inset: 0 0 12px;\n  border-radius: 0 0 14px 14px;\n  pointer-events: none;\n  background: var(--color-white);\n  box-shadow:\n    0 18px 28px -14px rgba(17, 24, 39, 0.16),\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38),\n    inset 0 -1px rgba(107, 234, 249, 0.45);\n}\n\n.compare-status {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n  white-space: nowrap;\n}\n.compare-status > span:last-child {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.compare-icon {\n  width: 19px;\n  height: 19px;\n  flex: 0 0 19px;\n  position: relative;\n  border-radius: 999px;\n}\n.compare-status--check .compare-icon,\n.compare-status--yes .compare-icon {\n  background: var(--color-status-yes, #76D98F);\n}\n.compare-status--neutral .compare-icon,\n.compare-status--partial .compare-icon {\n  background: var(--color-status-partial, #D7D9DC);\n}\n.compare-status--cross .compare-icon,\n.compare-status--no .compare-icon {\n  background: var(--color-status-no, #FF6B6B);\n}\n.compare-status--check .compare-icon::before,\n.compare-status--yes .compare-icon::before,\n.compare-status--neutral .compare-icon::before,\n.compare-status--partial .compare-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8px;\n  width: 8px;\n  height: 4px;\n  border-left: 2px solid #F9F9F9;\n  border-bottom: 2px solid #F9F9F9;\n  border-radius: 1px;\n  transform: rotate(-45deg);\n}\n.compare-status--none .compare-icon {\n  display: none;\n}\n.compare-status--cross .compare-icon::before,\n.compare-status--cross .compare-icon::after,\n.compare-status--no .compare-icon::before,\n.compare-status--no .compare-icon::after {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8.5px;\n  width: 9px;\n  height: 2px;\n  border-radius: 999px;\n  background: #F9F9F9;\n}\n.compare-status--cross .compare-icon::before,\n.compare-status--no .compare-icon::before {\n  transform: rotate(45deg);\n}\n.compare-status--cross .compare-icon::after,\n.compare-status--no .compare-icon::after {\n  transform: rotate(-45deg);\n}\n.compare-status > span:last-child:empty {\n  display: none;\n}\n.compare-mobile-label {\n  display: none;\n}\n.compare-toggle {\n  display: none;\n}\n\n@media (max-width: 1180px) {\n  .compare-row {\n    grid-template-columns: minmax(172px, 1.5fr) minmax(118px, 1.05fr) repeat(var(--compare-secondary-columns), minmax(104px, 1fr));\n    min-height: 66px;\n  }\n  .compare-cell {\n    padding-inline: 12px;\n    font-size: clamp(0.78rem, 1.08vw, 0.92rem);\n  }\n  .compare-cell--head {\n    font-size: clamp(0.76rem, 1.02vw, 0.88rem);\n    white-space: nowrap;\n  }\n  .compare-cell--capability {\n    padding-left: clamp(1rem, 1.7vw, 1.5rem);\n    font-size: clamp(0.9rem, 1.28vw, 1.04rem);\n  }\n  .compare-status {\n    gap: 8px;\n  }\n  .compare-status > span:last-child {\n    max-width: 100%;\n  }\n  .compare-row--head .compare-cell--sw {\n    margin-top: 0;\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 14px;\n  }\n}\n\n@media (max-width: 860px) {\n  .compare-top {\n    text-align: left;\n    margin-bottom: 1.5rem;\n  }\n  .compare-grid {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n    overflow: visible;\n    border: 0;\n    border-radius: 0;\n    background: transparent;\n    box-shadow: none;\n  }\n  .compare-grid::before,\n  .compare-head {\n    display: none;\n  }\n  .compare-body {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n  }\n  .compare-row {\n    min-width: 0;\n    min-height: 0;\n    grid-template-columns: 1fr;\n    overflow: hidden;\n    border: 1px solid rgba(146, 170, 205, 0.32);\n    border-radius: var(--radius-card-sm);\n    background: var(--color-white);\n    box-shadow: 0 16px 42px rgba(17, 24, 39, 0.06);\n  }\n  .compare-cell {\n    justify-content: space-between;\n    gap: 18px;\n    padding: 12px 16px;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    font-size: 0.9375rem;\n  }\n  .compare-cell:first-child {\n    border-top: 0;\n  }\n  .compare-cell--capability {\n    padding: 16px;\n    background: #f7fafc;\n    font-size: 1.05rem;\n  }\n  .compare-cell--sw {\n    margin: 0;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    border-radius: 0;\n    box-shadow: inset 3px 0 0 rgba(86, 66, 45, 0.62);\n    background: rgba(244, 250, 255, 0.8);\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 0;\n    border-bottom: 0;\n    border-radius: 0;\n  }\n  .compare-row:not(.is-expanded) .compare-cell:not(.compare-cell--capability):not(.compare-cell--sw) {\n    display: none;\n  }\n  .compare-toggle {\n    width: 100%;\n    min-height: 42px;\n    padding: 0 16px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    background: var(--color-white);\n    color: var(--color-gray-blue);\n    font: inherit;\n    font-size: 0.75rem;\n    font-weight: 800;\n    line-height: 1;\n    text-align: left;\n    text-transform: uppercase;\n    cursor: pointer;\n  }\n  .compare-toggle-close {\n    display: none;\n  }\n  .compare-toggle-icon {\n    width: 18px;\n    height: 18px;\n    flex: 0 0 18px;\n    position: relative;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.12);\n  }\n  .compare-toggle-icon::before,\n  .compare-toggle-icon::after {\n    content: \"\";\n    position: absolute;\n    inset: 50% auto auto 50%;\n    width: 9px;\n    height: 2px;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.92);\n    transform: translate(-50%, -50%);\n  }\n  .compare-toggle-icon::after {\n    transform: translate(-50%, -50%) rotate(90deg);\n  }\n  .compare-row.is-expanded .compare-toggle-open,\n  .compare-row.is-expanded .compare-toggle-icon::after {\n    display: none;\n  }\n  .compare-row.is-expanded .compare-toggle-close {\n    display: inline;\n  }\n  .compare-mobile-label {\n    display: inline;\n    flex: 0 1 auto;\n    max-width: 46%;\n    color: var(--color-gray-blue);\n    font-size: 0.75rem;\n    font-weight: 700;\n    line-height: 1.2;\n    text-transform: uppercase;\n  }\n  .compare-status {\n    flex-direction: row-reverse;\n    justify-content: flex-end;\n    text-align: right;\n    white-space: normal;\n  }\n  .compare-status > span:last-child {\n    overflow: visible;\n    text-overflow: clip;\n  }\n}\n",
+  "html": "<section class=\"composition-section composition-section--comparison-three-col-with-mobile-cards\" data-composition-block=\"comparison.three-col-with-mobile-cards\">\n<!-- lab-ui block · comparison.three-col-with-mobile-cards\n     Flexible comparison matrix.\n     Desktop = wide matrix with 2-6 product columns. <= 860px = stacked cards.\n     column_count controls product columns, not the row-label capability column.\n-->\n<section class=\"compare\" id=\"compare\" data-block=\"comparison.three-col-with-mobile-cards\" data-columns=\"6\">\n  <div class=\"container\">\n    <header class=\"compare-top\">\n      <p class=\"eyebrow\">${COMPARE_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"compare-title\" id=\"compare-heading\">${COMPARE_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"compare-lede\">${COMPARE_LEDE@LOCALIZED_STRING_SS}</p>\n      <span class=\"compare-config compare-config--columns\">${COMPARE_COLUMN_COUNT@STRING}</span>\n    </header>\n\n    <div class=\"compare-grid\" role=\"table\" aria-labelledby=\"compare-heading\">\n      <div class=\"compare-head\" role=\"rowgroup\">\n        <div class=\"compare-row compare-row--head\" role=\"row\">\n          <div class=\"compare-cell compare-cell--capability compare-cell--empty\" role=\"columnheader\"></div>\n          <div class=\"compare-cell compare-cell--sw compare-cell--head\" role=\"columnheader\" data-compare-col=\"1\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_1_DESC@LOCALIZED_STRING_SS}</p></div></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"2\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_2_DESC@LOCALIZED_STRING_SS}</p></div></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"3\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_3_DESC@LOCALIZED_STRING_SS}</p></div></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"4\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_4_DESC@LOCALIZED_STRING_SS}</p></div></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"5\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_5_DESC@LOCALIZED_STRING_SS}</p></div></div>\n          <div class=\"compare-cell compare-cell--head\" role=\"columnheader\" data-compare-col=\"6\"><div class=\"compare-brand\"><h3 class=\"compare-brand-title\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</h3><p class=\"compare-brand-desc\">${COMPARE_COL_6_DESC@LOCALIZED_STRING_SS}</p></div></div>\n        </div>\n      </div>\n\n      <div class=\"compare-body\" role=\"rowgroup\" data-compare-body>\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"01\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_1@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_1_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_1_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"02\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_2@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_2_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_2_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"03\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_3@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_3_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_3_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"04\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_4@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_4_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_4_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"05\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_5@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_5_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_5_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"06\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_6@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_6_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_6_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"07\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_7@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_7_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_7_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"08\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_8@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_8_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_8_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n\n        <article class=\"compare-row\" role=\"row\" data-compare-slot=\"09\">\n          <div class=\"compare-cell compare-cell--capability\" role=\"rowheader\"><h4 class=\"compare-capability\">${COMPARE_ROW_9@LOCALIZED_STRING_SS}</h4></div>\n          <div class=\"compare-cell compare-cell--sw\" role=\"cell\" data-compare-col=\"1\"><span class=\"compare-mobile-label\">${COMPARE_COL_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_1_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_1@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"2\"><span class=\"compare-mobile-label\">${COMPARE_COL_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_2_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_2@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"3\"><span class=\"compare-mobile-label\">${COMPARE_COL_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_3_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_3@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"4\"><span class=\"compare-mobile-label\">${COMPARE_COL_4_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_4_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_4@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"5\"><span class=\"compare-mobile-label\">${COMPARE_COL_5_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_5_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_5@LOCALIZED_STRING_SS}</span></span></div>\n          <div class=\"compare-cell\" role=\"cell\" data-compare-col=\"6\"><span class=\"compare-mobile-label\">${COMPARE_COL_6_NAME@LOCALIZED_STRING_SS}</span><span class=\"compare-status\"><span class=\"compare-icon-source\">${COMPARE_9_6_ICON@STRING}</span><span class=\"compare-icon\" aria-hidden=\"true\"></span><span>${COMPARE_9_6@LOCALIZED_STRING_SS}</span></span></div>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 07-comparison/comparison.three-col-with-mobile-cards/block.css */\n/* lab-ui block · comparison.three-col-with-mobile-cards\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.compare {\n  --compare-secondary-columns: 5;\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.compare[data-columns=\"2\"] { --compare-secondary-columns: 1; }\n.compare[data-columns=\"3\"] { --compare-secondary-columns: 2; }\n.compare[data-columns=\"4\"] { --compare-secondary-columns: 3; }\n.compare[data-columns=\"5\"] { --compare-secondary-columns: 4; }\n.compare[data-columns=\"6\"] { --compare-secondary-columns: 5; }\n.compare .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.compare-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.25rem);\n  text-align: center;\n}\n.compare-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.compare-title {\n  margin: 0 0 14px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.compare-lede {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n.compare-config,\n.compare-icon-source {\n  display: none;\n}\n\n.compare-grid {\n  position: relative;\n  overflow: hidden;\n  border: 1px solid rgba(146, 170, 205, 0.26);\n  border-radius: 22px;\n  background:\n    radial-gradient(circle at 52% 8%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 34%),\n    linear-gradient(180deg, var(--color-white) 0%, #fbfcfe 62%, #f6f8fb 100%);\n  box-shadow: 0 20px 60px rgba(17, 24, 39, 0.06);\n}\n/* Uniform soft cyan-tint border stroke. Previous 135deg cyan→white→gray\n   read as a directional accent — too loud. The whole table now sits in a\n   single calm cyan halo with a slight top-to-bottom falloff. */\n.compare-grid::before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  padding: 1px;\n  border-radius: inherit;\n  pointer-events: none;\n  z-index: 4;\n  background: linear-gradient(\n    180deg,\n    rgba(107, 234, 249, 0.40) 0%,\n    rgba(107, 234, 249, 0.18) 100%\n  );\n  -webkit-mask:\n    linear-gradient(#000 0 0) content-box,\n    linear-gradient(#000 0 0);\n  -webkit-mask-composite: xor;\n          mask-composite: exclude;\n}\n\n.compare-row {\n  position: relative;\n  display: grid;\n  grid-template-columns: minmax(210px, 1.62fr) minmax(150px, 1.15fr) repeat(var(--compare-secondary-columns), minmax(140px, 1fr));\n  min-height: 72px;\n  z-index: 1;\n}\n\n.compare[data-columns=\"2\"] [data-compare-col=\"3\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"4\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"2\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"4\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"3\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"4\"] [data-compare-col=\"5\"],\n.compare[data-columns=\"4\"] [data-compare-col=\"6\"],\n.compare[data-columns=\"5\"] [data-compare-col=\"6\"] {\n  display: none;\n}\n\n.compare-cell {\n  min-width: 0;\n  padding: 16px 18px;\n  display: flex;\n  align-items: center;\n  color: var(--color-heading);\n  font-size: clamp(0.875rem, 0.74vw, 1rem);\n  line-height: 1.34;\n}\n.compare-cell--head {\n  align-items: flex-start;\n  padding-top: 28px;\n  color: var(--color-heading);\n  font-weight: 500;\n  min-width: 0;\n}\n.compare-cell--empty {\n  visibility: hidden;\n}\n\n.compare-brand {\n  display: grid;\n  gap: 0.5rem;\n  min-width: 0;\n  max-width: 100%;\n  align-items: start;\n  color: var(--color-heading);\n}\n.compare-brand-title {\n  margin: 0;\n  font-size: clamp(0.9375rem, 0.86vw, 1.0625rem);\n  font-weight: 700;\n  line-height: 1.25;\n  letter-spacing: -0.02em;\n}\n.compare-brand-desc {\n  margin: 0;\n  color: var(--color-gray-blue);\n  font-size: clamp(0.8125rem, 0.7vw, 0.9375rem);\n  font-weight: 400;\n  line-height: 1.45;\n}\n\n.compare-cell--capability {\n  padding-left: clamp(1.5rem, 2.4vw, 2.75rem);\n  font-size: clamp(1rem, 1.03vw, 1.1875rem);\n  font-weight: 500;\n  letter-spacing: -0.02em;\n  color: var(--color-heading);\n}\n.compare-capability {\n  margin: 0;\n  font: inherit;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n\n/* the platform column — one floating white card that spans the whole\n   column. Body cells render the vertical edges of the card via inset\n   strokes; head ::before and last-row ::after close the rounded top\n   and bottom corners and add the outer drop shadow. Solid white\n   (was rgba 0.72) so it stays opaque over the grid's gray-fade bottom,\n   no need for backdrop-filter blur. Cyan stroke alpha lowered from\n   0.72 → 0.38 so the column reads as outlined, not bracketed. */\n.compare-cell--sw {\n  position: relative;\n  z-index: 2;\n  margin-inline: 0.28rem;\n  background: var(--color-white);\n  border-left: 0;\n  border-right: 0;\n  box-shadow:\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38);\n}\n.compare-cell--sw > * {\n  position: relative;\n  z-index: 1;\n}\n.compare-row--head .compare-cell--sw {\n  margin-top: 0;\n  padding-top: 28px;\n  border-top: 0;\n  border-radius: 0;\n  background: transparent;\n  box-shadow: none;\n}\n.compare-row--head .compare-cell--sw::before {\n  content: \"\";\n  position: absolute;\n  inset: 12px 0 0;\n  border-radius: 14px 14px 0 0;\n  pointer-events: none;\n  background: var(--color-white);\n  box-shadow:\n    0 -10px 24px -12px rgba(17, 24, 39, 0.12),\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38),\n    inset 0 1px rgba(107, 234, 249, 0.45);\n}\n/* Last-row SW cell: symmetric to head — the cell itself is transparent\n   (no stroke leakage past the rounded bottom). All visible card geometry\n   for the bottom edge is painted by ::after: white fill, rounded bottom\n   corners, cyan inset edges (left/right/bottom), and the outer drop\n   shadow. The 12 px below ::after is grid background, giving the card\n   visible breathing room and clean rounded corners. */\n.compare-body .compare-row:last-child .compare-cell--sw {\n  margin-bottom: 0;\n  border-bottom: 0;\n  border-radius: 0;\n  background: transparent;\n  box-shadow: none;\n}\n.compare-body .compare-row:last-child .compare-cell--sw::after {\n  content: \"\";\n  position: absolute;\n  inset: 0 0 12px;\n  border-radius: 0 0 14px 14px;\n  pointer-events: none;\n  background: var(--color-white);\n  box-shadow:\n    0 18px 28px -14px rgba(17, 24, 39, 0.16),\n    inset 1px 0 rgba(107, 234, 249, 0.38),\n    inset -1px 0 rgba(107, 234, 249, 0.38),\n    inset 0 -1px rgba(107, 234, 249, 0.45);\n}\n\n.compare-status {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n  white-space: nowrap;\n}\n.compare-status > span:last-child {\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.compare-icon {\n  width: 19px;\n  height: 19px;\n  flex: 0 0 19px;\n  position: relative;\n  border-radius: 999px;\n}\n.compare-status--check .compare-icon,\n.compare-status--yes .compare-icon {\n  background: var(--color-status-yes, #76D98F);\n}\n.compare-status--neutral .compare-icon,\n.compare-status--partial .compare-icon {\n  background: var(--color-status-partial, #D7D9DC);\n}\n.compare-status--cross .compare-icon,\n.compare-status--no .compare-icon {\n  background: var(--color-status-no, #FF6B6B);\n}\n.compare-status--check .compare-icon::before,\n.compare-status--yes .compare-icon::before,\n.compare-status--neutral .compare-icon::before,\n.compare-status--partial .compare-icon::before {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8px;\n  width: 8px;\n  height: 4px;\n  border-left: 2px solid #F9F9F9;\n  border-bottom: 2px solid #F9F9F9;\n  border-radius: 1px;\n  transform: rotate(-45deg);\n}\n.compare-status--none .compare-icon {\n  display: none;\n}\n.compare-status--cross .compare-icon::before,\n.compare-status--cross .compare-icon::after,\n.compare-status--no .compare-icon::before,\n.compare-status--no .compare-icon::after {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8.5px;\n  width: 9px;\n  height: 2px;\n  border-radius: 999px;\n  background: #F9F9F9;\n}\n.compare-status--cross .compare-icon::before,\n.compare-status--no .compare-icon::before {\n  transform: rotate(45deg);\n}\n.compare-status--cross .compare-icon::after,\n.compare-status--no .compare-icon::after {\n  transform: rotate(-45deg);\n}\n.compare-status > span:last-child:empty {\n  display: none;\n}\n.compare-mobile-label {\n  display: none;\n}\n.compare-toggle {\n  display: none;\n}\n\n@media (max-width: 1180px) {\n  .compare-row {\n    grid-template-columns: minmax(172px, 1.5fr) minmax(118px, 1.05fr) repeat(var(--compare-secondary-columns), minmax(104px, 1fr));\n    min-height: 66px;\n  }\n  .compare-cell {\n    padding-inline: 12px;\n    font-size: clamp(0.78rem, 1.08vw, 0.92rem);\n  }\n  .compare-cell--head {\n    font-size: clamp(0.76rem, 1.02vw, 0.88rem);\n  }\n  .compare-cell--capability {\n    padding-left: clamp(1rem, 1.7vw, 1.5rem);\n    font-size: clamp(0.9rem, 1.28vw, 1.04rem);\n  }\n  .compare-status {\n    gap: 8px;\n  }\n  .compare-status > span:last-child {\n    max-width: 100%;\n  }\n  .compare-row--head .compare-cell--sw {\n    margin-top: 0;\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 14px;\n  }\n}\n\n@media (max-width: 860px) {\n  .compare-top {\n    text-align: left;\n    margin-bottom: 1.5rem;\n  }\n  .compare-grid {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n    overflow: visible;\n    border: 0;\n    border-radius: 0;\n    background: transparent;\n    box-shadow: none;\n  }\n  .compare-grid::before,\n  .compare-head {\n    display: none;\n  }\n  .compare-body {\n    display: flex;\n    flex-direction: column;\n    gap: 14px;\n  }\n  .compare-row {\n    min-width: 0;\n    min-height: 0;\n    grid-template-columns: 1fr;\n    overflow: hidden;\n    border: 1px solid rgba(146, 170, 205, 0.32);\n    border-radius: var(--radius-card-sm);\n    background: var(--color-white);\n    box-shadow: 0 16px 42px rgba(17, 24, 39, 0.06);\n  }\n  .compare-cell {\n    justify-content: space-between;\n    gap: 18px;\n    padding: 12px 16px;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    font-size: 0.9375rem;\n  }\n  .compare-cell:first-child {\n    border-top: 0;\n  }\n  .compare-cell--capability {\n    padding: 16px;\n    background: #f7fafc;\n    font-size: 1.05rem;\n  }\n  .compare-cell--sw {\n    margin: 0;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    border-radius: 0;\n    box-shadow: inset 3px 0 0 rgba(86, 66, 45, 0.62);\n    background: rgba(244, 250, 255, 0.8);\n  }\n  .compare-body .compare-row:last-child .compare-cell--sw {\n    margin-bottom: 0;\n    border-bottom: 0;\n    border-radius: 0;\n  }\n  .compare-row:not(.is-expanded) .compare-cell:not(.compare-cell--capability):not(.compare-cell--sw) {\n    display: none;\n  }\n  .compare-toggle {\n    width: 100%;\n    min-height: 42px;\n    padding: 0 16px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    border: 0;\n    border-top: 1px solid rgba(17, 24, 39, 0.06);\n    background: var(--color-white);\n    color: var(--color-gray-blue);\n    font: inherit;\n    font-size: 0.75rem;\n    font-weight: 800;\n    line-height: 1;\n    text-align: left;\n    text-transform: uppercase;\n    cursor: pointer;\n  }\n  .compare-toggle-close {\n    display: none;\n  }\n  .compare-toggle-icon {\n    width: 18px;\n    height: 18px;\n    flex: 0 0 18px;\n    position: relative;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.12);\n  }\n  .compare-toggle-icon::before,\n  .compare-toggle-icon::after {\n    content: \"\";\n    position: absolute;\n    inset: 50% auto auto 50%;\n    width: 9px;\n    height: 2px;\n    border-radius: 999px;\n    background: rgba(86, 66, 45, 0.92);\n    transform: translate(-50%, -50%);\n  }\n  .compare-toggle-icon::after {\n    transform: translate(-50%, -50%) rotate(90deg);\n  }\n  .compare-row.is-expanded .compare-toggle-open,\n  .compare-row.is-expanded .compare-toggle-icon::after {\n    display: none;\n  }\n  .compare-row.is-expanded .compare-toggle-close {\n    display: inline;\n  }\n  .compare-mobile-label {\n    display: inline;\n    flex: 0 1 auto;\n    max-width: 46%;\n    color: var(--color-gray-blue);\n    font-size: 0.75rem;\n    font-weight: 700;\n    line-height: 1.2;\n    text-transform: uppercase;\n  }\n  .compare-status {\n    flex-direction: row-reverse;\n    justify-content: flex-end;\n    text-align: right;\n    white-space: normal;\n  }\n  .compare-status > span:last-child {\n    overflow: visible;\n    text-overflow: clip;\n  }\n}\n",
   "javascript": "/* generated child JS: 07-comparison/comparison.three-col-with-mobile-cards/block.js */\n// lab-ui block · comparison.three-col-with-mobile-cards\n// Auto-hides empty rows and adds mobile expanders for secondary columns.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"comparison.three-col-with-mobile-cards\"]')\n      .forEach((section) => {\n        const configuredColumns = section.querySelector(\".compare-config--columns\")?.textContent?.trim();\n        const parsedColumns = Number(configuredColumns || section.dataset.columns);\n        const columnCount = Number.isFinite(parsedColumns)\n          ? Math.min(6, Math.max(2, parsedColumns))\n          : 6;\n        section.dataset.columns = String(columnCount);\n\n        section.querySelectorAll(\".compare-status\").forEach((status) => {\n          const rawIcon = status.querySelector(\".compare-icon-source\")?.textContent?.trim();\n          const icon = /^(check|yes|neutral|partial|cross|no|none)$/.test(rawIcon || \"\")\n            ? rawIcon\n            : \"neutral\";\n          status.classList.add(\"compare-status--\" + icon);\n        });\n\n        section.querySelectorAll(\".compare-body .compare-row\").forEach((row) => {\n          const cap = row.querySelector(\".compare-capability\")?.textContent?.trim();\n          if (!cap || /^\\{\\{slot_\\d+_capability\\}\\}$/.test(cap)) {\n            row.hidden = true;\n            return;\n          }\n\n          const secondaryCells = [...row.querySelectorAll(\".compare-cell[data-compare-col]\")]\n            .filter((cell) => {\n              const col = Number(cell.dataset.compareCol);\n              return col > 1 && col <= columnCount;\n            });\n          const swCell = row.querySelector(\".compare-cell--sw\");\n          if (!swCell || !secondaryCells.length || row.querySelector(\".compare-toggle\")) return;\n\n          const button = document.createElement(\"button\");\n          button.className = \"compare-toggle\";\n          button.type = \"button\";\n          button.setAttribute(\"aria-expanded\", \"false\");\n          button.innerHTML = [\n            '<span class=\"compare-toggle-open\">Show other platforms</span>',\n            '<span class=\"compare-toggle-close\">Hide other platforms</span>',\n            '<span class=\"compare-toggle-icon\" aria-hidden=\"true\"></span>',\n          ].join(\"\");\n          button.addEventListener(\"click\", () => {\n            const isOpen = row.classList.toggle(\"is-expanded\");\n            button.setAttribute(\"aria-expanded\", String(isOpen));\n          });\n          swCell.insertAdjacentElement(\"afterend\", button);\n        });\n      });\n  });\n})();\n",
   "parameters": [
     {
@@ -86,6 +86,19 @@
       }
     },
     {
+      "code": "COMPARE_COL_1_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 01 Desc",
+          "DESCRIPTION": "Text value for the Col 01 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
       "code": "COMPARE_COL_2_NAME",
       "type": "LOCALIZED_STRING_SS",
       "nls": {
@@ -95,7 +108,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum eiusmod."
+        "en": "Lorem Ipsum magna."
+      }
+    },
+    {
+      "code": "COMPARE_COL_2_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 02 Desc",
+          "DESCRIPTION": "Text value for the Col 02 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
       }
     },
     {
@@ -108,7 +134,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna."
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "COMPARE_COL_3_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 03 Desc",
+          "DESCRIPTION": "Text value for the Col 03 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
       }
     },
     {
@@ -121,7 +160,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nostrud."
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "COMPARE_COL_4_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 04 Desc",
+          "DESCRIPTION": "Text value for the Col 04 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
       }
     },
     {
@@ -134,7 +186,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ea."
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "COMPARE_COL_5_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 05 Desc",
+          "DESCRIPTION": "Text value for the Col 05 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
       }
     },
     {
@@ -147,7 +212,20 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum voluptate."
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "COMPARE_COL_6_DESC",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Col 06 Desc",
+          "DESCRIPTION": "Text value for the Col 06 Desc field in Comparison · the platform matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
       }
     },
     {
@@ -160,7 +238,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum lorem."
+        "en": "Lorem Ipsum fugiat."
       }
     },
     {
@@ -190,7 +268,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum labore et dolore magna."
+        "en": "Lorem Ipsum tempor incididunt ut labore."
       }
     },
     {
@@ -220,7 +298,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nisi aliquip ex ea."
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
       }
     },
     {
@@ -250,7 +328,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+        "en": "Lorem Ipsum velit esse cillum fugiat."
       }
     },
     {
@@ -280,7 +358,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum tempor incididunt ut labore."
+        "en": "Lorem Ipsum sed do eiusmod tempor."
       }
     },
     {
@@ -310,7 +388,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
       }
     },
     {
@@ -340,7 +418,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum velit esse cillum fugiat."
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
       }
     },
     {
@@ -353,7 +431,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ipsum."
+        "en": "Lorem Ipsum nulla."
       }
     },
     {
@@ -383,7 +461,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum et dolore magna aliqua."
+        "en": "Lorem Ipsum incididunt ut labore et."
       }
     },
     {
@@ -413,7 +491,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliquip ex ea commodo."
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
       }
     },
     {
@@ -443,7 +521,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
       }
     },
     {
@@ -473,7 +551,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum incididunt ut labore et."
+        "en": "Lorem Ipsum do eiusmod tempor incididunt."
       }
     },
     {
@@ -503,7 +581,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
       }
     },
     {
@@ -533,7 +611,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum esse cillum fugiat nulla."
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
       }
     },
     {
@@ -546,7 +624,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolor."
+        "en": "Lorem Ipsum pariatur."
       }
     },
     {
@@ -576,7 +654,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolore magna aliqua enim."
+        "en": "Lorem Ipsum ut labore et dolore."
       }
     },
     {
@@ -606,7 +684,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ex ea commodo consequat."
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
       }
     },
     {
@@ -636,7 +714,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
       }
     },
     {
@@ -666,7 +744,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ut labore et dolore."
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
       }
     },
     {
@@ -696,7 +774,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum laboris nisi aliquip ex."
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
       }
     },
     {
@@ -726,7 +804,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+        "en": "Lorem Ipsum voluptate velit esse cillum."
       }
     },
     {
@@ -739,7 +817,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sit."
+        "en": "Lorem Ipsum lorem."
       }
     },
     {
@@ -769,7 +847,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna aliqua enim ad."
+        "en": "Lorem Ipsum labore et dolore magna."
       }
     },
     {
@@ -799,7 +877,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ea commodo consequat duis."
+        "en": "Lorem Ipsum nisi aliquip ex ea."
       }
     },
     {
@@ -829,7 +907,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum lorem ipsum dolor sit."
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
       }
     },
     {
@@ -859,7 +937,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum labore et dolore magna."
+        "en": "Lorem Ipsum tempor incididunt ut labore."
       }
     },
     {
@@ -889,7 +967,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nisi aliquip ex ea."
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
       }
     },
     {
@@ -919,7 +997,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+        "en": "Lorem Ipsum velit esse cillum fugiat."
       }
     },
     {
@@ -932,7 +1010,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum amet."
+        "en": "Lorem Ipsum ipsum."
       }
     },
     {
@@ -962,7 +1040,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliqua enim ad minim."
+        "en": "Lorem Ipsum et dolore magna aliqua."
       }
     },
     {
@@ -992,7 +1070,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum commodo consequat duis aute."
+        "en": "Lorem Ipsum aliquip ex ea commodo."
       }
     },
     {
@@ -1022,7 +1100,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ipsum dolor sit amet."
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
       }
     },
     {
@@ -1052,7 +1130,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum et dolore magna aliqua."
+        "en": "Lorem Ipsum incididunt ut labore et."
       }
     },
     {
@@ -1082,7 +1160,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliquip ex ea commodo."
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
       }
     },
     {
@@ -1112,7 +1190,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
       }
     },
     {
@@ -1125,7 +1203,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consectetur."
+        "en": "Lorem Ipsum dolor."
       }
     },
     {
@@ -1155,7 +1233,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum enim ad minim veniam."
+        "en": "Lorem Ipsum dolore magna aliqua enim."
       }
     },
     {
@@ -1185,7 +1263,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consequat duis aute irure."
+        "en": "Lorem Ipsum ex ea commodo consequat."
       }
     },
     {
@@ -1215,7 +1293,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolor sit amet consectetur."
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
       }
     },
     {
@@ -1245,7 +1323,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolore magna aliqua enim."
+        "en": "Lorem Ipsum ut labore et dolore."
       }
     },
     {
@@ -1275,7 +1353,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ex ea commodo consequat."
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
       }
     },
     {
@@ -1305,7 +1383,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
       }
     },
     {
@@ -1318,7 +1396,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum adipiscing."
+        "en": "Lorem Ipsum sit."
       }
     },
     {
@@ -1348,7 +1426,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ad minim veniam quis."
+        "en": "Lorem Ipsum magna aliqua enim ad."
       }
     },
     {
@@ -1378,7 +1456,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum duis aute irure reprehenderit."
+        "en": "Lorem Ipsum ea commodo consequat duis."
       }
     },
     {
@@ -1408,7 +1486,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
       }
     },
     {
@@ -1438,7 +1516,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum magna aliqua enim ad."
+        "en": "Lorem Ipsum labore et dolore magna."
       }
     },
     {
@@ -1468,7 +1546,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ea commodo consequat duis."
+        "en": "Lorem Ipsum nisi aliquip ex ea."
       }
     },
     {
@@ -1498,7 +1576,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum lorem ipsum dolor sit."
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
       }
     },
     {
@@ -1511,7 +1589,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum elit."
+        "en": "Lorem Ipsum amet."
       }
     },
     {
@@ -1541,7 +1619,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum minim veniam quis nostrud."
+        "en": "Lorem Ipsum aliqua enim ad minim."
       }
     },
     {
@@ -1571,7 +1649,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+        "en": "Lorem Ipsum commodo consequat duis aute."
       }
     },
     {
@@ -1601,7 +1679,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+        "en": "Lorem Ipsum ipsum dolor sit amet."
       }
     },
     {
@@ -1631,7 +1709,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum aliqua enim ad minim."
+        "en": "Lorem Ipsum et dolore magna aliqua."
       }
     },
     {
@@ -1661,7 +1739,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum commodo consequat duis aute."
+        "en": "Lorem Ipsum aliquip ex ea commodo."
       }
     },
     {
@@ -1691,7 +1769,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum ipsum dolor sit amet."
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
       }
     },
     {
@@ -1704,7 +1782,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum sed."
+        "en": "Lorem Ipsum consectetur."
       }
     },
     {
@@ -1734,7 +1812,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+        "en": "Lorem Ipsum enim ad minim veniam."
       }
     },
     {
@@ -1764,7 +1842,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+        "en": "Lorem Ipsum consequat duis aute irure."
       }
     },
     {
@@ -1794,7 +1872,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+        "en": "Lorem Ipsum dolor sit amet consectetur."
       }
     },
     {
@@ -1824,7 +1902,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum enim ad minim veniam."
+        "en": "Lorem Ipsum dolore magna aliqua enim."
       }
     },
     {
@@ -1854,7 +1932,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum consequat duis aute irure."
+        "en": "Lorem Ipsum ex ea commodo consequat."
       }
     },
     {
@@ -1884,7 +1962,7 @@
         }
       },
       "value": {
-        "en": "Lorem Ipsum dolor sit amet consectetur."
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
       }
     }
   ]
