@@ -212,11 +212,8 @@
   font-weight: var(--type-h3-weight);
   line-height: var(--type-h3-leading);
   letter-spacing: var(--type-h3-tracking);
+  text-align: center;
   text-wrap: balance;
-}
-
-.seo-compare-brand--sw h3 {
-  font-weight: 400;
 }
 
 .seo-compare-brand--sw h3 :is(strong, b) {
@@ -229,10 +226,6 @@
   line-height: 1.55;
   color: var(--color-gray-second);
   text-wrap: pretty;
-}
-
-.seo-compare-brand--competitor h3 {
-  color: var(--color-gray-second);
 }
 
 .seo-compare-row h4 {
@@ -290,7 +283,7 @@
 }
 
 .seo-compare-value--competitor .seo-compare-value-body p {
-  color: var(--color-gray-second);
+  color: #343a49;
 }
 
 /* Shared status icons — same drawing as comparison.three-col-with-mobile-cards:
