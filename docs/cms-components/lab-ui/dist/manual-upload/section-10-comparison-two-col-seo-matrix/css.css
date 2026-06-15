@@ -168,11 +168,17 @@
   top: 0;
   bottom: 0;
   left: 28%;
+  right: auto;
   width: 36%;
   background: var(--color-white);
   border-radius: 0.875rem;
   box-shadow: 0 0 40.8px 0 #ccdfff;
   pointer-events: none;
+}
+
+[dir="rtl"] .seo-compare-sw-frame {
+  left: auto;
+  right: 28%;
 }
 
 .seo-compare-sw-frame::before {
