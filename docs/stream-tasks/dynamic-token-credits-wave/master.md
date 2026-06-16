@@ -61,11 +61,12 @@ Out of scope:
   - `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
   - `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`
 - Commit hashes:
-  - package-orchestration: not requested
-  - credits-adapter: not requested
-  - credits-metadata: not requested
-  - credits-harness: not requested
-  - closeout: not requested
+  - implementation: `26ffc1f` (`Make lab pricing blocks dynamic`)
+  - package-orchestration: `26ffc1f`
+  - credits-adapter: `26ffc1f`
+  - credits-metadata: `26ffc1f`
+  - credits-harness: `26ffc1f`
+  - closeout: `26ffc1f`
 
 ## Closeout Evidence
 - Date: 2026-06-15

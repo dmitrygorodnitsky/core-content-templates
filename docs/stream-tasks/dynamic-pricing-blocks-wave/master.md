@@ -90,10 +90,11 @@ Out of scope:
   - Browser harness: local static server at `http://127.0.0.1:4174/` from `docs/cms-components/lab-ui/` verified dynamic plans, dynamic matrix desktop, dynamic matrix mobile accordion, fallback disabled, failed fixture fallback, token CSS loading, and combined-preview billing sync.
   - Prod compile: no `package.json`, Dockerfile, or CI YAML was found in this repository, so no prod compile command was available.
 - Commit hashes:
-  - package-orchestration: not committed
-  - shared-runtime: not committed
-  - plans-adapter: not committed
-  - matrix-adapter: not committed
-  - fixtures-harness: not committed
-  - metadata-docs: not committed
-  - closeout: not committed
+  - implementation: `26ffc1f` (`Make lab pricing blocks dynamic`)
+  - package-orchestration: `26ffc1f`
+  - shared-runtime: `26ffc1f`
+  - plans-adapter: `26ffc1f`
+  - matrix-adapter: `26ffc1f`
+  - fixtures-harness: `26ffc1f`
+  - metadata-docs: `26ffc1f`
+  - closeout: `26ffc1f`
