@@ -68,3 +68,28 @@
 .btn-secondary-filled:hover .btn-star {
   transform: rotate(180deg);
 }
+
+.btn-secondary-filled[aria-disabled="true"] {
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  color: var(--color-gray-blue);
+  box-shadow: none;
+}
+
+.btn-secondary-filled[aria-disabled="true"]::before,
+.btn-secondary-filled[aria-disabled="true"]:hover::before {
+  opacity: 0;
+}
+
+.btn-secondary-filled[aria-disabled="true"] .btn-star {
+  color: var(--color-gray-blue);
+}
+
+.btn-secondary-filled[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-secondary-filled[aria-disabled="true"]:hover .btn-star {
+  transform: none;
+}

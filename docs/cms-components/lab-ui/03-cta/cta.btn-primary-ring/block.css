@@ -81,3 +81,27 @@
 .btn-primary-ring:hover .btn-star {
   transform: rotate(180deg);
 }
+
+.btn-primary-ring[aria-disabled="true"] {
+  color: var(--color-gray-blue);
+  background:
+    linear-gradient(var(--color-gray-bg), var(--color-gray-bg)) padding-box,
+    rgba(146, 170, 205, 0.28) border-box;
+}
+
+.btn-primary-ring[aria-disabled="true"]::before {
+  background: rgba(146, 170, 205, 0.28);
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible)::after {
+  opacity: 0;
+}
+
+.btn-primary-ring[aria-disabled="true"]:hover .btn-star {
+  transform: none;
+}

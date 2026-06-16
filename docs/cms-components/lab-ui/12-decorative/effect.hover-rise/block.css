@@ -77,6 +77,38 @@
   opacity: 0.48;
 }
 
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"] {
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]::after,
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]:is(:hover, :focus-visible)::after {
+  opacity: 0;
+}
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
 /* Brand-primitive base — they all need to be relative for the
    ::after to anchor inside. Each block also sets this in its own
    block.css, but we re-declare here so the effect works even when
