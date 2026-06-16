@@ -2,8 +2,8 @@
   "$schema": "lab-ui/block@1",
   "id": "pricing.plans-flex",
   "category": "14-pricing",
-  "title": "Pricing · plans (flexible 2–5)",
-  "description": "ServiceWand pricing plan grid that renders any 2–5 plans via a per-slot visibility ENUM. Monthly/Annual toggle exposes an inline Save chip on the Annual option and broadcasts a document-level CustomEvent so comparison and credit blocks can sync billing period without coupling.",
+  "title": "Pricing · plans (dynamic)",
+  "description": "ServiceWand pricing plan grid. Static fallback uses numbered editor slots; dynamic mode clones card markup for every plan returned by Core PIM. Monthly/Annual toggle exposes an inline Save chip on the Annual option and broadcasts a document-level CustomEvent so comparison and credit blocks can sync billing period without coupling.",
   "canonical": false,
   "theme": "light",
   "source": {
@@ -105,6 +105,104 @@
       "default": "Annual pricing shown for planning. Final packaging can be connected to CRM rules later.",
       "name": "Billing Note",
       "description": "Short note shown below the billing toggle."
+    },
+    {
+      "code": "dynamic_pricing_enabled",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Dynamic Pricing Enabled",
+      "description": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static plan fields remain the rendered fallback."
+    },
+    {
+      "code": "pricing_api_base",
+      "type": "STRING",
+      "default": "/core-pim/api",
+      "name": "Pricing API Base",
+      "description": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json."
+    },
+    {
+      "code": "pricing_organization",
+      "type": "STRING",
+      "default": "SERVICEWAND",
+      "name": "Pricing Organization",
+      "description": "Core PIM organization code used in the public catalog URL."
+    },
+    {
+      "code": "pricing_product_type_code",
+      "type": "STRING",
+      "default": "SERVICEWAND_SAAS",
+      "name": "Pricing Product Type Code",
+      "description": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS."
+    },
+    {
+      "code": "pricing_sort_attribute_code",
+      "type": "STRING",
+      "default": "SORT_ORDER_PRIORITY",
+      "name": "Pricing Sort Attribute Code",
+      "description": "Product attribute used to sort plans before falling back to amount."
+    },
+    {
+      "code": "pricing_price_type_code",
+      "type": "STRING",
+      "default": "RECURRENT",
+      "name": "Pricing Price Type Code",
+      "description": "Core PIM price type code for the request."
+    },
+    {
+      "code": "pricing_price_attribute_code",
+      "type": "STRING",
+      "default": "INTERVAL",
+      "name": "Pricing Price Attribute Code",
+      "description": "Core PIM price attribute used to filter prices."
+    },
+    {
+      "code": "pricing_price_attribute_values",
+      "type": "STRING",
+      "default": "1 month",
+      "name": "Pricing Price Attribute Values",
+      "description": "Comma-separated price attribute values used by Core PIM filtering."
+    },
+    {
+      "code": "pricing_currency",
+      "type": "STRING",
+      "default": "CAD",
+      "name": "Pricing Currency",
+      "description": "Currency attribute value requested from Core PIM."
+    },
+    {
+      "code": "pricing_purchase_url",
+      "type": "URL",
+      "default": "#",
+      "name": "Dynamic Pricing Purchase URL",
+      "description": "CTA destination used by dynamically rendered plans."
+    },
+    {
+      "code": "pricing_buy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buy now",
+      "name": "Dynamic Pricing Buy Label",
+      "description": "CTA label for plans with numeric pricing."
+    },
+    {
+      "code": "pricing_contact_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Contact us",
+      "name": "Dynamic Pricing Contact Label",
+      "description": "CTA and price label for custom/contact pricing."
+    },
+    {
+      "code": "pricing_error_mode",
+      "type": "ENUM",
+      "options": [
+        "fallback"
+      ],
+      "default": "fallback",
+      "name": "Dynamic Pricing Error Mode",
+      "description": "Currently only fallback is supported: keep the static CMS-authored cards if Core PIM loading fails."
     },
     {
       "code": "plan_01_visible",
@@ -1022,11 +1120,14 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "Plan slots are intentionally numbered. Do not share plan parameters across cards unless the value is truly the same semantic value.",
-    "Plan 5 is hidden by default; flip plan_05_visible to 'show' for a fifth tier. Plans can also be hidden down to 2 by hiding plan 4 and 5.",
+    "Static fallback plan slots are intentionally numbered. Do not share plan parameters across cards unless the value is truly the same semantic value.",
+    "Dynamic mode is not limited by the fallback slot count; it clones the available card markup for every returned plan.",
     "Toggle dispatches a `pricing:billing` CustomEvent on document; other pricing.* blocks listen for it and update their own data-pricing-period attribute.",
     "Toggle indicator slides via CSS transform between Monthly and Annual; price + billed caption crossfade in the same direction; per-card Save chip fade-scales in on Annual. Animations honor `prefers-reduced-motion`.",
     "Save chip is per-card (plan_NN_save_chip). Leave empty for Enterprise / custom plans.",
+    "Dynamic pricing is opt-in via dynamic_pricing_enabled. Static plan_NN fields remain the editor preview and fallback if the Core PIM request is disabled or fails.",
+    "Dynamic mode uses the shared 14-pricing/_shared/pricing-runtime.js loader and consumes normalized plan/group data; do not copy Core PIM response parsing into this block.",
+    "pricing_product_type_code can point at SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS when the matching price type and attribute filters are supplied.",
     "On <=720px the featured card is ordered first in the stack; the billing toggle buttons are 44px tall for touch targets."
   ]
 }

@@ -49,27 +49,59 @@
 .mx-matrix[data-columns="3"] { --mx-plan-cols: 3; }
 .mx-matrix[data-columns="4"] { --mx-plan-cols: 4; }
 
-/* Hide non-selected plan columns in desktop AND accordion modes */
-.mx-matrix[data-columns="2"] [data-plan-col="03"],
-.mx-matrix[data-columns="2"] [data-plan-col="04"],
-.mx-matrix[data-columns="3"] [data-plan-col="04"] {
+/* ─── Table shell (desktop) ─────────────────────────────────── */
+.mx-shell--skeleton {
+  display: none;
+  border: 1px solid rgba(146, 170, 205, 0.26);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  overflow: hidden;
+}
+.mx-matrix[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .mx-shell--skeleton {
+  display: block;
+}
+.mx-matrix[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .mx-shell--table,
+.mx-matrix[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .mx-shell--accordion {
   display: none;
 }
+.mx-skel-row {
+  display: grid;
+  grid-template-columns: var(--mx-feature-col) repeat(3, minmax(160px, 1fr));
+  gap: 0;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(146, 170, 205, 0.16);
+}
+.mx-skel-row:last-child { border-bottom: 0; }
+.mx-skel-row--head { background: var(--color-gray-bg); }
+.mx-skel {
+  display: block;
+  height: 18px;
+  margin-inline-end: 18px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
+  background-size: 200% 100%;
+  animation: mx-skeleton 1.2s ease-in-out infinite;
+}
+.mx-skel--feature { width: 72%; }
+.mx-skel--plan { width: 58%; }
+.mx-skel--cell { width: 36%; }
+@keyframes mx-skeleton {
+  to { background-position-x: -200%; }
+}
 
-/* ─── Table shell (desktop) ─────────────────────────────────── */
 .mx-shell--table {
   position: relative;
   border: 1px solid rgba(146, 170, 205, 0.26);
   border-radius: var(--radius-card);
   background: var(--color-white);
-  /* clip, not hidden: hidden makes the shell a scroll container and the
-     sticky header would stick to the shell instead of the page. */
-  overflow: clip;
+  overflow-x: auto;
+  overflow-y: clip;
 }
 .mx-row {
   display: grid;
-  grid-template-columns: var(--mx-feature-col) repeat(var(--mx-plan-cols), minmax(0, 1fr));
+  grid-template-columns: var(--mx-feature-col) repeat(var(--mx-plan-cols), minmax(160px, 1fr));
   align-items: stretch;
+  min-width: calc(180px + (var(--mx-plan-cols) * 160px));
   border-bottom: 1px solid rgba(146, 170, 205, 0.16);
 }
 .mx-row:last-child { border-bottom: 0; }
@@ -165,6 +197,8 @@
    marks visually punishes the entry plan. */
 .mx-cell[data-state="no"] .mx-value { color: var(--color-gray-blue); }
 .mx-cell[data-state="no"] .mx-value:empty::before { content: "—"; }
+.mx-cell[data-state="empty"] .mx-value { color: var(--color-gray-blue); }
+.mx-cell[data-state="empty"] .mx-value:empty::before { content: "—"; }
 
 /* ─── Group title row ───────────────────────────────────────── */
 .mx-group { display: contents; }
@@ -216,6 +250,18 @@
 .mx-cta:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-soft);
+}
+.mx-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.mx-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
 }
 .mx-cta:empty { display: none; }
 
@@ -340,6 +386,8 @@
   }
   .mx-acc-item dd[data-state="no"] { color: var(--color-gray-blue); font-weight: 400; }
   .mx-acc-item dd[data-state="no"]:empty::before { content: "—"; }
+  .mx-acc-item dd[data-state="empty"] { color: var(--color-gray-blue); font-weight: 400; }
+  .mx-acc-item dd[data-state="empty"]:empty::before { content: "—"; }
   .mx-acc-item dd[data-state="yes"]:empty,
   .mx-acc-item dd[data-state="partial"]:empty {
     gap: 0;
@@ -358,6 +406,14 @@
     font-size: 0.9375rem;
     font-weight: 650;
     text-decoration: none;
+  }
+  .mx-acc-cta[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: var(--color-gray-blue);
+    background: var(--color-gray-bg);
+    border-color: rgba(146, 170, 205, 0.28);
+    box-shadow: none;
+    opacity: 0.72;
   }
   .mx-acc-cta[data-row-visible="hide"], .mx-acc-cta:empty { display: none; }
 }

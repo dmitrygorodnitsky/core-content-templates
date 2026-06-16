@@ -23,15 +23,22 @@
 </style>
 </head>
 <body data-theme="cyan">
-<div class="harness-label">pricing.matrix-collapsible · live · column_count=4</div>
+<div class="harness-label">pricing.matrix-collapsible · fixture-backed dynamic pricing · use ?mode=fallback or ?mode=error for fallback checks</div>
 <div class="harness-pad">
-  <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="4" data-pricing-period="monthly" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included">
+  <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="4" data-pricing-period="monthly" data-feature-column-label="Feature" data-cta-row-label="Ready to start?" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included" data-state-label-empty="No value" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
   <div class="container">
     <header class="mx-top">
       <p class="mx-eyebrow">Compare plans</p>
       <h2 class="mx-title">Every plan, side by side.</h2>
       <p class="mx-lede">Buildings, dispatch, automations, support and security across every tier.</p>
     </header>
+
+    <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
+      <div class="mx-skel-row mx-skel-row--head"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+      <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
+    </div>
 
     <div class="mx-shell mx-shell--table" role="table" aria-label="Plan comparison">
       <div class="mx-row mx-row--head" role="row">
@@ -454,6 +461,17 @@
   </div>
 </section>
 </div>
+<script>
+  (() => {
+    const mode = new URLSearchParams(window.location.search).get("mode");
+    const section = document.querySelector('[data-block="pricing.matrix-collapsible"]');
+    if (!section) return;
+    if (mode === "fallback") section.dataset.pricingDynamic = "false";
+    if (mode === "error") section.dataset.pricingFixtureUrl = "../_fixtures/missing.json";
+    if (mode === "lorem") section.dataset.pricingLorem = "true";
+  })();
+</script>
+<script src="../_shared/pricing-runtime.js"></script>
 <script src="./block.js"></script>
 </body>
 </html>

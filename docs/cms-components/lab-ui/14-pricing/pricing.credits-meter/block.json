@@ -27,6 +27,19 @@
     { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Routing tokens and metered usage.", "name": "Section Heading", "description": "Main heading for the credits/tokens section." },
     { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.", "name": "Section Lede", "description": "Introductory paragraph for the section." },
     { "code": "billing_default", "type": "ENUM", "options": ["monthly", "annual"], "default": "monthly", "name": "Default Billing Period", "description": "Initial billing period. Listens to the cross-block `pricing:billing` event so the section can mirror the toggle elsewhere on the page." },
+    { "code": "dynamic_pricing_enabled", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Dynamic Pricing Enabled", "description": "Opts this block into loading Core PIM routing-token pricing. When false or when loading fails, the static allowance and pack fields remain the rendered fallback/editor preview." },
+    { "code": "pricing_api_base", "type": "STRING", "default": "/core-pim/api", "name": "Pricing API Base", "description": "Core PIM API base path or origin. The shared pricing runtime posts to /public/{organization}/catalog/price-comparison.json unless a fixture URL is supplied." },
+    { "code": "pricing_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Pricing Organization", "description": "Core PIM organization code used in the public catalog URL." },
+    { "code": "pricing_product_type_code", "type": "STRING", "default": "SERVICEWAND_SAAS_ROUTING_TOKENS", "name": "Pricing Product Type Code", "description": "Core PIM product type for routing-token expansion pricing." },
+    { "code": "pricing_sort_attribute_code", "type": "STRING", "default": "SORT_ORDER_PRIORITY", "name": "Pricing Sort Attribute Code", "description": "Product attribute used to sort token tiers before falling back to amount." },
+    { "code": "pricing_price_type_code", "type": "STRING", "default": "PER_UNIT", "name": "Pricing Price Type Code", "description": "Core PIM price type code for token unit pricing." },
+    { "code": "pricing_price_attribute_code", "type": "STRING", "default": "UNIT_PRICE", "name": "Pricing Price Attribute Code", "description": "Core PIM price attribute used to filter token unit prices." },
+    { "code": "pricing_price_attribute_values", "type": "STRING", "default": "3,4,4.5,5", "name": "Pricing Price Attribute Values", "description": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers." },
+    { "code": "pricing_currency", "type": "STRING", "default": "CAD", "name": "Pricing Currency", "description": "Currency attribute value requested from Core PIM." },
+    { "code": "pricing_purchase_url", "type": "URL", "default": "#", "name": "Dynamic Pricing Purchase URL", "description": "CTA destination used when token tiers are dynamically rendered." },
+    { "code": "pricing_buy_label", "type": "LOCALIZED_STRING_SS", "default": "Buy token pack", "name": "Dynamic Pricing Buy Label", "description": "CTA label used for dynamically rendered token tiers with numeric pricing." },
+    { "code": "pricing_contact_label", "type": "LOCALIZED_STRING_SS", "default": "Contact us", "name": "Dynamic Pricing Contact Label", "description": "Fallback label for custom or negotiated token pricing." },
+    { "code": "pricing_error_mode", "type": "ENUM", "options": ["fallback"], "default": "fallback", "name": "Dynamic Pricing Error Mode", "description": "Failure behavior for dynamic loading. Current supported behavior keeps the static CMS fallback and records data-pricing-error on the section." },
 
     { "code": "allowance_kicker", "type": "LOCALIZED_STRING_SS", "default": "Included", "name": "Allowance Kicker", "description": "Small label above the allowance card title." },
     { "code": "allowance_title", "type": "LOCALIZED_STRING_SS", "default": "Included with your plan", "name": "Allowance Title", "description": "Heading for the included-allowance card." },
@@ -107,7 +120,8 @@
   },
   "notes": [
     "Credits live in their own block because routing tokens are consumable usage, not capacity. Add-on packs go in pricing.addons-bundles.",
-    "Allowance rows and pack tiers can each be hidden via *_visible ENUMs. Pack 4 is hidden by default.",
+    "Static allowance rows and pack tiers can each be hidden via *_visible ENUMs. Dynamic mode is not limited by the fallback pack count; it clones pack markup for every returned routing-token product.",
+    "Dynamic pricing is opt-in and targets SERVICEWAND_SAAS_ROUTING_TOKENS with PER_UNIT / UNIT_PRICE defaults. Static allowance and pack fields remain the CMS fallback/editor preview.",
     "The block declares data-pricing-period but does not own a toggle — it only listens for cross-block billing events so future per-period rate variants can be wired in."
   ]
 }

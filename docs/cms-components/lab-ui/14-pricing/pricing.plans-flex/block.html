@@ -1,12 +1,13 @@
 <!-- lab-ui block · pricing.plans-flex
-     Flexible 2–5 plan grid. Each plan has a visibility ENUM so the
-     same block can render any subset. Toggle slides a white indicator
-     between Monthly / Annual and dispatches a `pricing:billing`
-     CustomEvent on document for cross-block sync (matrix, credits).
+     Flexible plan grid. Static fallback has numbered editor slots;
+     dynamic mode clones card markup for every plan returned by Core PIM.
+     Toggle slides a white indicator between Monthly / Annual and
+     dispatches a `pricing:billing` CustomEvent on document for cross-block
+     sync (matrix, credits).
      Prices and billed-caption crossfade between billing modes; each
      card carries its own Save chip that fade-scales in for Annual.
 -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">{{eyebrow}}</p>
@@ -21,6 +22,33 @@
     </header>
 
     <div class="pf-grid" data-plan-count="auto">
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
+      <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pf-skel pf-skel--kicker"></span>
+        <span class="pf-skel pf-skel--title"></span>
+        <span class="pf-skel pf-skel--text"></span>
+        <span class="pf-skel pf-skel--price"></span>
+        <span class="pf-skel pf-skel--button"></span>
+        <span class="pf-skel pf-skel--line"></span>
+        <span class="pf-skel pf-skel--line pf-skel--short"></span>
+      </article>
       <article class="pf-card pf-card--{{plan_01_state}}" data-plan-slot="01" data-plan-visible="{{plan_01_visible}}">
         <div class="pf-card-head">
           <span class="pf-kicker">{{plan_01_kicker}}</span>

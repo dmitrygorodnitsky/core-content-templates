@@ -1,0 +1,335 @@
+{
+  "prices": [
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_FOUNDATION",
+          "nls": {
+            "en": {
+              "NAME": "Foundation",
+              "DESCRIPTION": "For teams replacing spreadsheets, paper processes, and manual coordination."
+            }
+          }
+        },
+        "attributes": {
+          "19": {
+            "ACTIVE_PROPERTIES_INCLUDED": {
+              "value": 25
+            },
+            "CUSTOMER_PORTAL": {
+              "value": false
+            },
+            "ROUTE_EXECUTION": {
+              "value": true
+            },
+            "ROUTE_OPTIMIZATION": {
+              "value": false
+            },
+            "OPERATIONAL_DASHBOARDS": {
+              "value": false
+            },
+            "SSO_AUDIT_LOG": {
+              "value": false
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 10
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 99.99,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_GROWTH",
+          "nls": {
+            "en": {
+              "NAME": "Growth",
+              "DESCRIPTION": "For growing companies managing multiple crews, vehicles, and recurring routes."
+            }
+          }
+        },
+        "attributes": {
+          "19": {
+            "ACTIVE_PROPERTIES_INCLUDED": {
+              "value": 200
+            },
+            "CUSTOMER_PORTAL": {
+              "value": true
+            },
+            "ROUTE_EXECUTION": {
+              "value": true
+            },
+            "ROUTE_OPTIMIZATION": {
+              "value": true
+            },
+            "OPERATIONAL_DASHBOARDS": {
+              "value": "Standard"
+            },
+            "SSO_AUDIT_LOG": {
+              "value": false
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 20
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 449,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_PROFESSIONAL",
+          "nls": {
+            "en": {
+              "NAME": "Professional",
+              "DESCRIPTION": "For established snow businesses managing commercial contracts, fleets, and high-volume field operations."
+            }
+          }
+        },
+        "attributes": {
+          "19": {
+            "ACTIVE_PROPERTIES_INCLUDED": {
+              "value": 500
+            },
+            "CUSTOMER_PORTAL": {
+              "value": true
+            },
+            "ROUTE_EXECUTION": {
+              "value": true
+            },
+            "ROUTE_OPTIMIZATION": {
+              "value": true
+            },
+            "OPERATIONAL_DASHBOARDS": {
+              "value": "Advanced"
+            },
+            "SSO_AUDIT_LOG": {
+              "value": true
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 30
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 1099,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_ENTERPRISE",
+          "nls": {
+            "en": {
+              "NAME": "Enterprise",
+              "DESCRIPTION": "For regional operators that need custom capacity, integrations, onboarding, and commercial terms."
+            }
+          }
+        },
+        "attributes": {
+          "19": {
+            "ACTIVE_PROPERTIES_INCLUDED": {
+              "value": 1000
+            },
+            "CUSTOMER_PORTAL": {
+              "value": true
+            },
+            "ROUTE_EXECUTION": {
+              "value": true
+            },
+            "ROUTE_OPTIMIZATION": {
+              "value": true
+            },
+            "OPERATIONAL_DASHBOARDS": {
+              "value": "Custom"
+            },
+            "SSO_AUDIT_LOG": {
+              "value": true
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 40
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 2147483647,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": true
+        }
+      }
+    }
+  ],
+  "productTypes": {
+    "SERVICEWAND_SAAS": {
+      "type": {
+        "id": 19,
+        "code": "SERVICEWAND_SAAS",
+        "nls": {
+          "en": {
+            "NAME": "ServiceWand SaaS"
+          }
+        }
+      },
+      "attributeGroups": [
+        {
+          "code": "CUSTOMERS_PROPERTIES",
+          "nls": {
+            "en": {
+              "NAME": "Customers & Properties"
+            }
+          }
+        },
+        {
+          "code": "ROUTING_FIELD_OPERATIONS",
+          "nls": {
+            "en": {
+              "NAME": "Routing & Field Operations"
+            }
+          }
+        },
+        {
+          "code": "REPORTING_SECURITY",
+          "nls": {
+            "en": {
+              "NAME": "Reporting & Security"
+            }
+          }
+        }
+      ],
+      "attributeOrder": [
+        {
+          "CUSTOMERS_PROPERTIES": [
+            {
+              "typeId": 19,
+              "attributeCode": "ACTIVE_PROPERTIES_INCLUDED",
+              "visible": true
+            },
+            {
+              "typeId": 19,
+              "attributeCode": "CUSTOMER_PORTAL",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "ROUTING_FIELD_OPERATIONS": [
+            {
+              "typeId": 19,
+              "attributeCode": "ROUTE_EXECUTION",
+              "visible": true
+            },
+            {
+              "typeId": 19,
+              "attributeCode": "ROUTE_OPTIMIZATION",
+              "visible": true
+            }
+          ]
+        },
+        {
+          "REPORTING_SECURITY": [
+            {
+              "typeId": 19,
+              "attributeCode": "OPERATIONAL_DASHBOARDS",
+              "visible": true
+            },
+            {
+              "typeId": 19,
+              "attributeCode": "SSO_AUDIT_LOG",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "attributes": {
+        "ACTIVE_PROPERTIES_INCLUDED": {
+          "code": "ACTIVE_PROPERTIES_INCLUDED",
+          "nls": {
+            "en": {
+              "NAME": "Active Properties Included",
+              "DESCRIPTION": "<p>Included active service locations managed through the platform.</p>"
+            }
+          }
+        },
+        "CUSTOMER_PORTAL": {
+          "code": "CUSTOMER_PORTAL",
+          "nls": {
+            "en": {
+              "NAME": "Customer Portal",
+              "DESCRIPTION": "<p>Customer-facing service history and request access.</p>"
+            }
+          }
+        },
+        "ROUTE_EXECUTION": {
+          "code": "ROUTE_EXECUTION",
+          "nls": {
+            "en": {
+              "NAME": "Route Execution",
+              "DESCRIPTION": "<p>Execute snow removal routes with field crew coordination.</p>"
+            }
+          }
+        },
+        "ROUTE_OPTIMIZATION": {
+          "code": "ROUTE_OPTIMIZATION",
+          "nls": {
+            "en": {
+              "NAME": "Route Optimization",
+              "DESCRIPTION": "<p>Optimize routes to reduce travel distance and improve crew productivity.</p>"
+            }
+          }
+        },
+        "OPERATIONAL_DASHBOARDS": {
+          "code": "OPERATIONAL_DASHBOARDS",
+          "nls": {
+            "en": {
+              "NAME": "Operational Dashboards",
+              "DESCRIPTION": "<p>Dashboards for route, crew, and service performance.</p>"
+            }
+          }
+        },
+        "SSO_AUDIT_LOG": {
+          "code": "SSO_AUDIT_LOG",
+          "nls": {
+            "en": {
+              "NAME": "SSO and Audit Log",
+              "DESCRIPTION": "<p>Single sign-on and activity audit trail.</p>"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@
      · sliding indicator inside the billing toggle,
      · per-card Save chip that fade-scales in for Annual,
      · price + billed-caption crossfade between billing modes,
-     · 2–5 slots controlled per slot via data-plan-visible. */
+     · static fallback slots controlled per slot via data-plan-visible.
+     Dynamic mode can render any returned plan count. */
 
 .pf-plans {
   background: var(--color-bg);
@@ -108,7 +109,7 @@
   line-height: 1.45;
 }
 
-/* ─── Grid · flexible 2–5 slots ──────────────────────────────
+/* ─── Grid · flexible static fallback slots ───────────────────
    Parent grid defines 8 explicit row tracks that match a card's
    8 logical sections (head, name, subtitle, price, billed, cta,
    features, disclaimer). Cards opt-in via grid-template-rows: subgrid
@@ -116,7 +117,9 @@
    head row, subtitle row, price row, CTA row all align horizontally
    regardless of how long any one card's text is. The final track is
    1fr so each card stretches to fill the row-band's max height; the
-   disclaimer self-aligns to the bottom of that flexible track. */
+   disclaimer self-aligns to the bottom of that flexible track.
+   Dynamic mode disables the static subgrid tracks so any plan count can
+   wrap naturally. */
 .pf-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -132,6 +135,61 @@
   max-width: 100%;
 }
 .pf-card[data-plan-visible="hide"] { display: none; }
+.pf-card--skeleton {
+  display: none;
+  pointer-events: none;
+}
+
+.pf-plans[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .pf-card--skeleton {
+  display: grid;
+}
+
+.pf-plans[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) [data-plan-slot] {
+  display: none;
+}
+
+.pf-skel {
+  display: block;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
+  background-size: 200% 100%;
+  animation: pf-skeleton 1.2s ease-in-out infinite;
+}
+.pf-skel--kicker { width: 38%; height: 22px; }
+.pf-skel--title { width: 64%; height: 30px; margin-top: 18px; }
+.pf-skel--text { width: 100%; height: 52px; margin-top: 12px; border-radius: 12px; }
+.pf-skel--price { width: 54%; height: 42px; margin-top: 24px; }
+.pf-skel--button { width: 100%; height: 46px; margin-top: 18px; }
+.pf-skel--line { width: 92%; height: 14px; margin-top: 18px; }
+.pf-skel--short { width: 68%; margin-top: 10px; }
+
+@keyframes pf-skeleton {
+  to { background-position-x: -200%; }
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-grid {
+  grid-template-rows: none;
+  align-items: stretch;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-card {
+  display: flex;
+  flex-direction: column;
+  grid-row: auto;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-features {
+  flex: 0 0 auto;
+  align-content: start;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-disclaimer {
+  margin-top: auto;
+}
+
+.pf-plans[data-pricing-state="dynamic"] .pf-disclaimer:empty {
+  display: none;
+}
 
 /* ─── Plan card · flat surface ──────────────────────────────── */
 .pf-card {
@@ -332,6 +390,18 @@
 .pf-cta:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-soft);
+}
+.pf-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border: 1px solid rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.pf-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
 }
 .pf-cta--primary {
   color: var(--button-primary-color);

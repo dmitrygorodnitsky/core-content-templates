@@ -1,16 +1,44 @@
 <!-- lab-ui block · pricing.matrix-collapsible
      Full feature comparison.
-     Desktop: sticky-header grid driven by column_count (2 / 3 / 4 plan columns).
+     Static fallback uses column_count. Dynamic mode rebuilds desktop
+     columns and mobile accordions for every plan returned by Core PIM.
      <= 720px: per-plan accordion, each plan = a <details> with all groups
-     listed inside. The same parameter values populate both modes.
+     listed inside.
 -->
-<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="{{column_count}}" data-pricing-period="{{billing_default}}" data-state-label-yes="{{state_label_yes}}" data-state-label-no="{{state_label_no}}" data-state-label-partial="{{state_label_partial}}">
+<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="{{column_count}}" data-pricing-period="{{billing_default}}" data-feature-column-label="{{feature_column_label}}" data-cta-row-label="{{cta_row_label}}" data-state-label-yes="{{state_label_yes}}" data-state-label-no="{{state_label_no}}" data-state-label-partial="{{state_label_partial}}" data-state-label-empty="{{state_label_empty}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="mx-top">
       <p class="mx-eyebrow">{{eyebrow}}</p>
       <h2 class="mx-title">{{title}}</h2>
       <p class="mx-lede">{{lede}}</p>
     </header>
+
+    <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
+      <div class="mx-skel-row mx-skel-row--head">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+        <span class="mx-skel mx-skel--plan"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+      <div class="mx-skel-row">
+        <span class="mx-skel mx-skel--feature"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+        <span class="mx-skel mx-skel--cell"></span>
+      </div>
+    </div>
 
     <div class="mx-shell mx-shell--table" role="table" aria-label="{{table_label}}">
       <div class="mx-row mx-row--head" role="row">

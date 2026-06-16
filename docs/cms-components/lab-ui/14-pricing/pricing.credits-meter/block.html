@@ -5,7 +5,7 @@
        2. Token packs — discrete tiers with per-token economics.
      An optional explainer row sits below ("1 routing call ≈ N tokens").
 -->
-<section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-pricing-period="{{billing_default}}">
+<section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="cm-top">
       <p class="cm-eyebrow">{{eyebrow}}</p>
@@ -57,6 +57,27 @@
           <p class="cm-card-lede">{{packs_lede}}</p>
         </header>
         <div class="cm-packs" role="list" aria-label="{{packs_title}}">
+          <article class="cm-pack cm-pack--skeleton" role="listitem" aria-hidden="true" data-nosnippet>
+            <span class="cm-skel cm-skel--badge"></span>
+            <span class="cm-skel cm-skel--name"></span>
+            <span class="cm-skel cm-skel--amount"></span>
+            <span class="cm-skel cm-skel--price"></span>
+            <span class="cm-skel cm-skel--rate"></span>
+          </article>
+          <article class="cm-pack cm-pack--skeleton" role="listitem" aria-hidden="true" data-nosnippet>
+            <span class="cm-skel cm-skel--badge"></span>
+            <span class="cm-skel cm-skel--name"></span>
+            <span class="cm-skel cm-skel--amount"></span>
+            <span class="cm-skel cm-skel--price"></span>
+            <span class="cm-skel cm-skel--rate"></span>
+          </article>
+          <article class="cm-pack cm-pack--skeleton" role="listitem" aria-hidden="true" data-nosnippet>
+            <span class="cm-skel cm-skel--badge"></span>
+            <span class="cm-skel cm-skel--name"></span>
+            <span class="cm-skel cm-skel--amount"></span>
+            <span class="cm-skel cm-skel--price"></span>
+            <span class="cm-skel cm-skel--rate"></span>
+          </article>
           <article class="cm-pack cm-pack--{{pack_01_state}}" role="listitem" data-pack-visible="{{pack_01_visible}}">
             <span class="cm-pack-badge">{{pack_01_badge}}</span>
             <p class="cm-pack-name">{{pack_01_name}}</p>

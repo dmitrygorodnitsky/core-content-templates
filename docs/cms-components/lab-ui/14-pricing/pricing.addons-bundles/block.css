@@ -216,6 +216,18 @@
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-soft);
 }
+.ab-row-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.ab-row-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
+}
 
 .ab-disclaimer {
   margin: 28px 0 0;

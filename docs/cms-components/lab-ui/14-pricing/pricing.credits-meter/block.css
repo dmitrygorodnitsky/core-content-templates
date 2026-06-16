@@ -152,6 +152,31 @@
   background: var(--color-white);
 }
 .cm-pack[data-pack-visible="hide"] { display: none; }
+.cm-pack--skeleton {
+  display: none;
+  pointer-events: none;
+}
+.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack--skeleton {
+  display: grid;
+}
+.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack:not(.cm-pack--skeleton) {
+  display: none;
+}
+.cm-skel {
+  display: block;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
+  background-size: 200% 100%;
+  animation: cm-skeleton 1.2s ease-in-out infinite;
+}
+.cm-skel--badge { width: 42%; height: 12px; }
+.cm-skel--name { width: 72%; height: 14px; }
+.cm-skel--amount { width: 54%; height: 28px; }
+.cm-skel--price { width: 46%; height: 18px; }
+.cm-skel--rate { width: 64%; height: 12px; }
+@keyframes cm-skeleton {
+  to { background-position-x: -200%; }
+}
 .cm-pack--featured {
   border-color: var(--cta-accent);
   box-shadow: 0 0 0 1px var(--cta-accent);
@@ -231,6 +256,18 @@
 .cm-packs-cta:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-glow-soft);
+}
+.cm-packs-cta[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-blue);
+  background: var(--color-gray-bg);
+  border-color: rgba(146, 170, 205, 0.28);
+  box-shadow: none;
+  opacity: 0.72;
+}
+.cm-packs-cta[aria-disabled="true"]:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 /* ─── Explainer + disclaimer ────────────────────────────────── */

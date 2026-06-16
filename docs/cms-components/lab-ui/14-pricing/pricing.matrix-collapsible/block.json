@@ -3,7 +3,7 @@
   "id": "pricing.matrix-collapsible",
   "category": "14-pricing",
   "title": "Pricing · matrix (collapsible)",
-  "description": "ServiceWand plan comparison matrix. 2–4 plan columns driven by column_count, four feature groups, twelve feature rows. Desktop renders a sticky-header table; the mobile breakpoint collapses into a per-plan accordion using the same parameter values.",
+  "description": "ServiceWand plan comparison matrix. Static fallback is driven by column_count and numbered rows; dynamic mode rebuilds columns, groups, rows, and mobile accordions for every plan and visible Core PIM attribute returned by the pricing API.",
   "canonical": false,
   "theme": "light",
   "source": {
@@ -104,6 +104,104 @@
       "default": "Final entitlements may depend on CRM rules. Talk to sales for custom matches.",
       "name": "Matrix Disclaimer",
       "description": "Small disclaimer shown below the matrix."
+    },
+    {
+      "code": "dynamic_pricing_enabled",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Dynamic Pricing Enabled",
+      "description": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static matrix rows remain the rendered fallback."
+    },
+    {
+      "code": "pricing_api_base",
+      "type": "STRING",
+      "default": "/core-pim/api",
+      "name": "Pricing API Base",
+      "description": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json."
+    },
+    {
+      "code": "pricing_organization",
+      "type": "STRING",
+      "default": "SERVICEWAND",
+      "name": "Pricing Organization",
+      "description": "Core PIM organization code used in the public catalog URL."
+    },
+    {
+      "code": "pricing_product_type_code",
+      "type": "STRING",
+      "default": "SERVICEWAND_SAAS",
+      "name": "Pricing Product Type Code",
+      "description": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS."
+    },
+    {
+      "code": "pricing_sort_attribute_code",
+      "type": "STRING",
+      "default": "SORT_ORDER_PRIORITY",
+      "name": "Pricing Sort Attribute Code",
+      "description": "Product attribute used to sort plans before falling back to amount."
+    },
+    {
+      "code": "pricing_price_type_code",
+      "type": "STRING",
+      "default": "RECURRENT",
+      "name": "Pricing Price Type Code",
+      "description": "Core PIM price type code for the request."
+    },
+    {
+      "code": "pricing_price_attribute_code",
+      "type": "STRING",
+      "default": "INTERVAL",
+      "name": "Pricing Price Attribute Code",
+      "description": "Core PIM price attribute used to filter prices."
+    },
+    {
+      "code": "pricing_price_attribute_values",
+      "type": "STRING",
+      "default": "1 month",
+      "name": "Pricing Price Attribute Values",
+      "description": "Comma-separated price attribute values used by Core PIM filtering."
+    },
+    {
+      "code": "pricing_currency",
+      "type": "STRING",
+      "default": "CAD",
+      "name": "Pricing Currency",
+      "description": "Currency attribute value requested from Core PIM."
+    },
+    {
+      "code": "pricing_purchase_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "Dynamic Pricing Purchase URL",
+      "description": "CTA destination used by dynamically rendered plan columns."
+    },
+    {
+      "code": "pricing_buy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buy now",
+      "name": "Dynamic Pricing Buy Label",
+      "description": "CTA label for plans with numeric pricing."
+    },
+    {
+      "code": "pricing_contact_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Contact us",
+      "name": "Dynamic Pricing Contact Label",
+      "description": "CTA/tag label for custom/contact pricing."
+    },
+    {
+      "code": "pricing_error_mode",
+      "type": "ENUM",
+      "options": [
+        "fallback"
+      ],
+      "default": "fallback",
+      "name": "Dynamic Pricing Error Mode",
+      "description": "Currently only fallback is supported: keep the static CMS-authored matrix if Core PIM loading fails."
     },
     {
       "code": "plan_01_name",
@@ -1515,6 +1613,13 @@
       "description": "Screen-reader label applied to icon-only 'partial' cells."
     },
     {
+      "code": "state_label_empty",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "No value",
+      "name": "State Label · Empty",
+      "description": "Screen-reader label applied to empty dynamic cells."
+    },
+    {
       "code": "cta_row_visible",
       "type": "ENUM",
       "options": [
@@ -1594,11 +1699,15 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "column_count drives both the desktop grid track count and which plan columns appear in the mobile accordion.",
+    "column_count drives the static fallback desktop grid track count. Dynamic mode derives the count from returned plans and sets the grid tracks at runtime.",
     "Rows and groups can be hidden via row_NN_visible / group_NN_visible ENUMs without removing their params.",
     "States 'yes' and 'partial' render a colored glyph; 'no' renders a quiet gray dash so the entry plan is not buried in red X marks. Use 'text' for human-readable amounts like '50K'.",
     "Icon-only state cells get an aria-label from state_label_yes/no/partial via block.js.",
-    "The table shell uses overflow: clip (not hidden) so the sticky header sticks to the page scroll instead of the shell.",
+    "Dynamic pricing is opt-in via dynamic_pricing_enabled. Static plan, group, and row fields remain the editor preview and fallback if the Core PIM request is disabled or fails.",
+    "Dynamic mode uses the shared 14-pricing/_shared/pricing-runtime.js loader and consumes normalized plan/group data; do not copy Core PIM response parsing into this block.",
+    "pricing_product_type_code can point at SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS when the matching price type and attribute filters are supplied.",
+    "Dynamic matrix mode rebuilds table and accordion rows from visible Core PIM attribute groups, so it is not limited to the static twelve-row or four-column parameter model.",
+    "The table shell scrolls horizontally when dynamic mode returns more plan columns than fit comfortably.",
     "cta_row_visible toggles the closing per-plan CTA row (desktop) and per-plan accordion CTAs (mobile) together.",
     "The mobile accordion opens plan 02 by default — by catalog convention slot 02 is the featured/popular plan."
   ]
