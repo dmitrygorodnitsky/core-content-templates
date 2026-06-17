@@ -173,13 +173,23 @@
 }
 
 .pf-plans[data-pricing-state="dynamic"] .pf-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows:
+    minmax(26px, auto)
+    auto
+    minmax(4.35rem, auto)
+    minmax(4.75rem, auto)
+    minmax(4.125rem, auto)
+    1fr
+    auto;
   grid-row: auto;
 }
 
+.pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
+  display: none;
+}
+
 .pf-plans[data-pricing-state="dynamic"] .pf-features {
-  flex: 0 0 auto;
   align-content: start;
 }
 
@@ -231,6 +241,9 @@
   justify-content: space-between;
   gap: 10px;
 }
+.pf-card-head:has(.pf-kicker:empty):has(.pf-badge:empty) {
+  display: none;
+}
 .pf-kicker,
 .pf-badge {
   display: inline-flex;
@@ -245,6 +258,10 @@
   white-space: nowrap;
 }
 .pf-kicker { color: var(--color-gray-blue); }
+.pf-kicker:empty,
+.pf-badge:empty {
+  display: none;
+}
 .pf-badge {
   padding: 3px 9px;
   color: var(--color-heading);
@@ -429,6 +446,7 @@
   padding: 0;
   list-style: none;
 }
+.pf-features:empty { display: none; }
 .pf-features li {
   position: relative;
   padding-left: 22px;

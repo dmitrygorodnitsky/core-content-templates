@@ -50,7 +50,7 @@
     if (plan.customPrice && section.dataset.pricingContactLabel) return section.dataset.pricingContactLabel;
     if (!plan.customPrice && section.dataset.pricingBuyLabel) return section.dataset.pricingBuyLabel;
     const slot = String(plan.index + 1).padStart(2, "0");
-    const existing = section.querySelector(`.mx-row--cta [data-plan-col="${slot}"] .mx-cta`);
+    const existing = section.querySelector('.mx-row--cta [data-plan-col="' + slot + '"] .mx-cta');
     return existing ? existing.textContent.trim() : "";
   };
 

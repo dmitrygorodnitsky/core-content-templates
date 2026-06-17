@@ -1,0 +1,36 @@
+/* lab-ui block · pricing.dynamic-servicewand
+   Permanent source monoblock for the three dynamic ServiceWand pricing
+   sections. Child section CSS/JS is pulled through depends_on.other_blocks;
+   this file owns only cross-section spacing and dynamic-only fallbacks. */
+
+.pd-servicewand {
+  display: grid;
+  gap: var(--composition-section-y, clamp(4rem, 7vw, 6.5rem));
+}
+
+.pd-servicewand .cm-grid {
+  grid-template-columns: 1fr;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="fallback"] [data-plan-slot],
+.pd-servicewand .cm-credits[data-pricing-state="fallback"] .cm-pack:not(.cm-pack--skeleton),
+.pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--table,
+.pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--accordion {
+  display: none;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-card {
+  display: grid;
+  grid-template-rows:
+    minmax(26px, auto)
+    auto
+    minmax(4.35rem, auto)
+    minmax(4.75rem, auto)
+    minmax(4.125rem, auto)
+    1fr
+    auto;
+}
+
+.pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
+  display: none;
+}

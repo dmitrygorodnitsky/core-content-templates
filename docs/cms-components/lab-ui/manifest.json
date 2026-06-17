@@ -72,7 +72,7 @@
     {
       "id": "14-pricing",
       "label": "14 · Pricing",
-      "count": 5
+      "count": 6
     }
   ],
   "blocks": [
@@ -939,11 +939,25 @@
       "hasJs": true
     },
     {
+      "id": "pricing.dynamic-servicewand",
+      "category": "14-pricing",
+      "path": "14-pricing/pricing.dynamic-servicewand",
+      "title": "Pricing · dynamic ServiceWand monoblock",
+      "description": "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, token packs, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
+      "canonical": false,
+      "theme": "light",
+      "sourceLabel": "docs/cms-components/lab-ui/14-pricing/_combined-preview.html",
+      "preview": {},
+      "previewVariants": [],
+      "background": null,
+      "hasJs": false
+    },
+    {
       "id": "pricing.matrix-collapsible",
       "category": "14-pricing",
       "path": "14-pricing/pricing.matrix-collapsible",
       "title": "Pricing · matrix (collapsible)",
-      "description": "ServiceWand plan comparison matrix. 2–4 plan columns driven by column_count, four feature groups, twelve feature rows. Desktop renders a sticky-header table; the mobile breakpoint collapses into a per-plan accordion using the same parameter values.",
+      "description": "ServiceWand plan comparison matrix. Static fallback is driven by column_count and numbered rows; dynamic mode rebuilds columns, groups, rows, and mobile accordions for every plan and visible Core PIM attribute returned by the pricing API.",
       "canonical": false,
       "theme": "light",
       "sourceLabel": "https://attio.com/pricing/",
@@ -959,8 +973,8 @@
       "id": "pricing.plans-flex",
       "category": "14-pricing",
       "path": "14-pricing/pricing.plans-flex",
-      "title": "Pricing · plans (flexible 2–5)",
-      "description": "ServiceWand pricing plan grid that renders any 2–5 plans via a per-slot visibility ENUM. Monthly/Annual toggle exposes an inline Save chip on the Annual option and broadcasts a document-level CustomEvent so comparison and credit blocks can sync billing period without coupling.",
+      "title": "Pricing · plans (dynamic)",
+      "description": "ServiceWand pricing plan grid. Static fallback uses numbered editor slots; dynamic mode clones card markup for every plan returned by Core PIM. Monthly/Annual toggle exposes an inline Save chip on the Annual option and broadcasts a document-level CustomEvent so comparison and credit blocks can sync billing period without coupling.",
       "canonical": false,
       "theme": "light",
       "sourceLabel": "https://attio.com/pricing/",

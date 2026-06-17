@@ -6,8 +6,21 @@
   "use strict";
 
   const MAX_INTEGER_PRICE = 2147483647;
+  const DEFAULT_ANNUAL_PERIOD_COUNT = 12;
   const API_PATH = "/public/{organization}/catalog/price-comparison.json";
   const LOREM = "Lorem ipsum";
+  const PLAN_MARKETING_ATTRIBUTES = {
+    kicker: "PLAN_KICKER",
+    badge: "PLAN_BADGE",
+    cardState: "PLAN_CARD_STATE",
+  };
+  const PLAN_CARD_FEATURE_ATTRIBUTES = [
+    "PLAN_CARD_FEATURE_01",
+    "PLAN_CARD_FEATURE_02",
+    "PLAN_CARD_FEATURE_03",
+    "PLAN_CARD_FEATURE_04",
+    "PLAN_CARD_FEATURE_05",
+  ];
   const cache = new Map();
 
   function ready(fn) {
@@ -32,7 +45,9 @@
       productSortAttributeCode: firstValue(dataset.pricingSortAttributeCode, "SORT_ORDER_PRIORITY"),
       priceTypeCode: firstValue(dataset.pricingPriceTypeCode, "RECURRENT"),
       priceAttributeCode: firstValue(dataset.pricingPriceAttributeCode, "INTERVAL"),
-      priceAttributeValues: splitList(firstValue(dataset.pricingPriceAttributeValues, "1 month")),
+      priceAttributeValues: splitList(firstValue(dataset.pricingPriceAttributeValues, "1")),
+      pricePeriodUnitAttributeCode: firstValue(dataset.pricingPeriodUnitAttributeCode, "UNIT"),
+      annualPeriodCount: numberOrNull(firstValue(dataset.pricingAnnualPeriodCount, DEFAULT_ANNUAL_PERIOD_COUNT)) || DEFAULT_ANNUAL_PERIOD_COUNT,
       currency: firstValue(dataset.pricingCurrency, "CAD"),
       purchaseUrl: firstValue(dataset.pricingPurchaseUrl, "#"),
       buyLabel: firstValue(dataset.pricingBuyLabel, ""),
@@ -108,8 +123,10 @@
     const rows = Array.isArray(data && data.prices) ? data.prices.slice() : [];
     rows.sort((left, right) => comparePriceRows(left, right, config));
 
-    const plans = rows.map((row, index) => normalizePlan(row, index, config));
-    const groups = collectGroups(data && data.productTypes, rows, plans, config);
+    const planGroups = groupRowsByProduct(rows);
+    const planRows = planGroups.map((group) => group.primary);
+    const plans = planGroups.map((group, index) => normalizePlan(group, index, config));
+    const groups = collectGroups(data && data.productTypes, planRows, plans, config);
 
     return {
       ok: true,
@@ -120,28 +137,177 @@
     };
   }
 
-  function normalizePlan(row, index, config) {
+  function normalizePlan(group, index, config) {
+    const row = group.primary;
     const productWrapper = (row && row.product) || {};
     const product = productWrapper.product || productWrapper;
-    const price = (row && row.price) || {};
-    const display = price.display || {};
     const nls = localized(product.nls, config.locale);
-    const amount = numberOrNull(display.amount);
-    const customPrice = !!display.customPrice || (amount != null && amount >= MAX_INTEGER_PRICE);
+    const monthlyPrice = normalizePeriodPrice(pickPeriodRow(group.rows, 1, config) || row, config);
+    const annualPrice = normalizePeriodPrice(
+      pickPeriodRow(group.rows, config.annualPeriodCount, config),
+      config,
+      monthlyPrice
+    );
+    const customPrice = monthlyPrice.customPrice;
 
     return {
       index,
       code: safeText(product.code || "plan-" + (index + 1)),
       name: dynamicText(text(nls.NAME, product.code, "Plan"), config),
       description: dynamicText(text(nls.DESCRIPTION, "", ""), config),
-      amount,
-      amountText: customPrice ? "" : formatNumber(amount, config.locale),
-      currency: customPrice ? "" : safeText(display.currency || config.currency || ""),
-      intervalLabel: safeText(display.intervalLabel || ""),
+      kicker: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.kicker, config),
+      badge: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.badge, config),
+      cardState: normalizeCardState(productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.cardState, config)),
+      cardFeatures: productAttributeTexts(row, PLAN_CARD_FEATURE_ATTRIBUTES, config),
+      amount: monthlyPrice.amount,
+      amountText: monthlyPrice.amountText,
+      currency: monthlyPrice.currency,
+      intervalLabel: monthlyPrice.intervalLabel,
       customPrice,
+      prices: {
+        monthly: monthlyPrice,
+        annual: annualPrice,
+      },
       sortPriority: numericProductAttributeValue(row, config.productSortAttributeCode),
       row,
     };
+  }
+
+  function groupRowsByProduct(rows) {
+    const byCode = new Map();
+    rows.forEach((row, index) => {
+      const code = productCode(row) || "plan-" + (index + 1);
+      if (!byCode.has(code)) byCode.set(code, []);
+      byCode.get(code).push(row);
+    });
+
+    return Array.from(byCode.values()).map((groupRows) => ({
+      rows: groupRows,
+      primary: groupRows[0],
+    }));
+  }
+
+  function productCode(row) {
+    const productWrapper = (row && row.product) || {};
+    const product = productWrapper.product || productWrapper;
+    return safeText(product.code || "");
+  }
+
+  function normalizePeriodPrice(row, config, fallbackMonthly) {
+    if (!row && fallbackMonthly) return annualPriceFromMonthly(fallbackMonthly, config);
+
+    const price = (row && row.price) || {};
+    const display = price.display || {};
+    const amount = numberOrNull(display.amount);
+    const customPrice = !!display.customPrice || (amount != null && amount >= MAX_INTEGER_PRICE);
+    const intervalLabel = safeText(
+      pricePeriodLabel(row, config)
+      || display.intervalLabel
+      || configuredPeriodLabel(config, rowPeriodCount(row, config) || 1)
+    );
+
+    return {
+      amount,
+      amountText: customPrice ? "" : formatNumber(amount, config.locale),
+      currency: customPrice ? "" : safeText(display.currency || config.currency || ""),
+      intervalLabel,
+      customPrice,
+      periodCount: periodCountFromText(intervalLabel),
+      row,
+    };
+  }
+
+  function annualPriceFromMonthly(monthlyPrice, config) {
+    if (!monthlyPrice || monthlyPrice.customPrice || monthlyPrice.amount == null) {
+      return monthlyPrice || {
+        amount: null,
+        amountText: "",
+        currency: "",
+        intervalLabel: "",
+        customPrice: true,
+        periodCount: config.annualPeriodCount,
+        row: null,
+      };
+    }
+
+    const amount = monthlyPrice.amount * config.annualPeriodCount;
+    return {
+      amount,
+      amountText: formatNumber(amount, config.locale),
+      currency: monthlyPrice.currency,
+      intervalLabel: configuredPeriodLabel(config, config.annualPeriodCount)
+        || periodLabel(config.annualPeriodCount, monthlyPrice.intervalLabel),
+      customPrice: false,
+      periodCount: config.annualPeriodCount,
+      row: monthlyPrice.row,
+    };
+  }
+
+  function pickPeriodRow(rows, count, config) {
+    if (!Array.isArray(rows) || !rows.length) return null;
+    return rows.find((row) => rowPeriodCount(row, config) === count) || null;
+  }
+
+  function rowPeriodCount(row, config) {
+    return periodCountFromParts(row, config)
+      || periodCountFromText(row && row.price && row.price.display && row.price.display.intervalLabel)
+      || periodCountFromText(pricePeriodLabel(row, config))
+      || periodCountFromText(priceAttributeLabel(row, config));
+  }
+
+  function priceAttributeLabel(row, config) {
+    const price = row && row.price;
+    const direct = valueFor(price, { code: config.priceAttributeCode });
+    if (!direct) return "";
+    return localizedScalar(direct.nls, config.locale) || localizedScalar(direct.value, config.locale);
+  }
+
+  function priceUnitLabel(row, config) {
+    const price = row && row.price;
+    const direct = valueFor(price, { code: config.pricePeriodUnitAttributeCode });
+    if (!direct) return "";
+    return localizedScalar(direct.nls, config.locale) || localizedScalar(direct.value, config.locale);
+  }
+
+  function pricePeriodLabel(row, config) {
+    const interval = priceAttributeLabel(row, config);
+    const unit = priceUnitLabel(row, config);
+    if (!unit) return "";
+    return [interval || "1", unit || ""].filter(Boolean).join(" ");
+  }
+
+  function periodCountFromParts(row, config) {
+    const interval = numberOrNull(priceAttributeLabel(row, config)) || 1;
+    const unit = priceUnitLabel(row, config).toLowerCase();
+    if (!unit) return null;
+    if (/\b(year|annual|annually|yearly)\b/.test(unit)) return interval * DEFAULT_ANNUAL_PERIOD_COUNT;
+    if (/\b(month|monthly)\b/.test(unit)) return interval;
+    return interval;
+  }
+
+  function periodCountFromText(value) {
+    const text = safeText(value).toLowerCase();
+    if (!text) return null;
+    if (/\b(year|annual|annually|yearly)\b/.test(text)) return DEFAULT_ANNUAL_PERIOD_COUNT;
+
+    const match = text.match(/(\d+(?:[.,]\d+)?)/);
+    if (!match) return null;
+    const count = Number(match[1].replace(",", "."));
+    return Number.isFinite(count) ? count : null;
+  }
+
+  function periodLabel(count, sourceLabel) {
+    if (!Number.isFinite(count)) return "";
+    const source = safeText(sourceLabel);
+    if (/\bmonth\b/i.test(source)) return count + " " + (count === 1 ? "Month" : "Months");
+    if (/\byear\b/i.test(source)) return count === 12 ? "1 Year" : count + " Periods";
+    return count + " " + (count === 1 ? "Period" : "Periods");
+  }
+
+  function configuredPeriodLabel(config, count) {
+    const values = Array.isArray(config.priceAttributeValues) ? config.priceAttributeValues : [];
+    const match = values.find((value) => periodCountFromText(value) === count);
+    return match ? periodLabel(count, match) : "";
   }
 
   function collectGroups(productTypes, rows, plans, config) {
@@ -153,6 +319,7 @@
           const orders = groupDef[groupCode] || [];
           const attributes = [];
           for (const order of orders) {
+            if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
             if (!attr || !hasAnyValue(rows, order.typeId, order.attributeCode)) continue;
@@ -181,6 +348,11 @@
     return result;
   }
 
+  function isPlanCardFeatureAttribute(code) {
+    const attributeCode = safeText(code).toUpperCase();
+    return PLAN_CARD_FEATURE_ATTRIBUTES.includes(attributeCode);
+  }
+
   function normalizeValue(raw, config) {
     if (raw == null || raw.value == null || raw.value === "") {
       return { state: "empty", text: "" };
@@ -204,7 +376,7 @@
         const value = attr.values && attr.values[plan.index];
         if (!value || value.state === "no" || value.state === "empty") continue;
         features.push(value.text ? attr.label + ": " + value.text : attr.label);
-        if (features.length >= limit) return features;
+        if (Number.isFinite(limit) && features.length >= limit) return features;
       }
     }
     return features;
@@ -234,6 +406,38 @@
       if (Number.isFinite(number)) return number;
     }
     return null;
+  }
+
+  function productAttributeText(row, code, config) {
+    const raw = productAttribute(row, code);
+    if (!raw || raw.value == null || raw.value === "") return "";
+    const nlsText = localizedScalar(raw.nls, config.locale);
+    return dynamicText(nlsText || localizedScalar(raw.value, config.locale), config);
+  }
+
+  function productAttributeTexts(row, codes, config) {
+    const result = [];
+    for (const code of codes) {
+      const value = productAttributeText(row, code, config);
+      if (value) result.push(value);
+    }
+    return result;
+  }
+
+  function productAttribute(row, code) {
+    const attributes = row && row.product && row.product.attributes;
+    if (!attributes || !code) return null;
+    for (const values of Object.values(attributes)) {
+      if (values && values[code] != null) return values[code];
+    }
+    return null;
+  }
+
+  function normalizeCardState(value) {
+    const state = safeText(value).toLowerCase();
+    if (state === "featured" || state === "muted") return state;
+    if (state === "custom") return "muted";
+    return "standard";
   }
 
   function sortAmount(row) {
@@ -271,6 +475,22 @@
     if (!nls) return {};
     if (nls.NAME || nls.DESCRIPTION) return nls;
     return nls[locale] || nls.en || Object.values(nls)[0] || {};
+  }
+
+  function localizedScalar(value, locale) {
+    if (value == null || value === "") return "";
+    if (typeof value !== "object") return value;
+
+    const direct = value.NAME ?? value.name ?? value.LABEL ?? value.label ?? value.VALUE ?? value.value ?? value.text;
+    if (direct != null && direct !== value) return localizedScalar(direct, locale);
+
+    const localizedValue = value[locale] ?? value.en;
+    if (localizedValue != null && localizedValue !== value) return localizedScalar(localizedValue, locale);
+
+    const first = Object.values(value).find((item) => item != null && item !== "");
+    if (first != null && first !== value) return localizedScalar(first, locale);
+
+    return "";
   }
 
   function safeText(value) {

@@ -161,7 +161,7 @@
     {
       "code": "pricing_price_attribute_values",
       "type": "STRING",
-      "default": "1 month",
+      "default": "1",
       "name": "Pricing Price Attribute Values",
       "description": "Comma-separated price attribute values used by Core PIM filtering."
     },

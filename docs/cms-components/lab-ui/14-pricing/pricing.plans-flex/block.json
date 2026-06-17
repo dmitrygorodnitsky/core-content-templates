@@ -162,7 +162,7 @@
     {
       "code": "pricing_price_attribute_values",
       "type": "STRING",
-      "default": "1 month",
+      "default": "1",
       "name": "Pricing Price Attribute Values",
       "description": "Comma-separated price attribute values used by Core PIM filtering."
     },
@@ -193,6 +193,13 @@
       "default": "Contact us",
       "name": "Dynamic Pricing Contact Label",
       "description": "CTA and price label for custom/contact pricing."
+    },
+    {
+      "code": "pricing_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included features",
+      "name": "Dynamic Pricing Feature List Label",
+      "description": "Accessible label for dynamically rendered plan feature lists. This is a localized CMS fallback, not a JavaScript string."
     },
     {
       "code": "pricing_error_mode",

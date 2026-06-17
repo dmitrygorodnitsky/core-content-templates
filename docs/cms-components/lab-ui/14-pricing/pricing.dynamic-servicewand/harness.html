@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pricing.dynamic-servicewand harness</title>
+  <link rel="stylesheet" href="../../00-tokens/tokens.css">
+  <link rel="stylesheet" href="../../00-tokens/composition.css">
+  <link rel="stylesheet" href="../pricing.plans-flex/block.css">
+  <link rel="stylesheet" href="../pricing.credits-meter/block.css">
+  <link rel="stylesheet" href="../pricing.matrix-collapsible/block.css">
+  <link rel="stylesheet" href="./block.css">
+</head>
+<body data-theme="cyan">
+  <main class="composition-section">
+    <section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
+    <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
+    <section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-feature-list-label="Included features" data-pricing-error-mode="fallback">
+      <div class="container">
+        <header class="pf-top">
+          <p class="pf-eyebrow">Pricing</p>
+          <h1 class="pf-title">Plans that scale with field operations.</h1>
+          <p class="pf-lede">Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.</p>
+          <div class="pf-toggle" role="group" aria-label="Select billing cycle">
+            <button class="pf-toggle-opt is-active" type="button" data-billing-option="monthly" aria-pressed="true">Monthly</button>
+            <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">Annual</button>
+          </div>
+          <p class="pf-note">Annual pricing shown for planning. Final packaging can be connected to CRM rules later.</p>
+        </header>
+    
+        <div class="pf-grid" data-plan-count="auto">
+          <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+            <span class="pf-skel pf-skel--kicker"></span>
+            <span class="pf-skel pf-skel--title"></span>
+            <span class="pf-skel pf-skel--text"></span>
+            <span class="pf-skel pf-skel--price"></span>
+            <span class="pf-skel pf-skel--button"></span>
+            <span class="pf-skel pf-skel--line"></span>
+            <span class="pf-skel pf-skel--line pf-skel--short"></span>
+          </article>
+          <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+            <span class="pf-skel pf-skel--kicker"></span>
+            <span class="pf-skel pf-skel--title"></span>
+            <span class="pf-skel pf-skel--text"></span>
+            <span class="pf-skel pf-skel--price"></span>
+            <span class="pf-skel pf-skel--button"></span>
+            <span class="pf-skel pf-skel--line"></span>
+            <span class="pf-skel pf-skel--line pf-skel--short"></span>
+          </article>
+          <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
+            <span class="pf-skel pf-skel--kicker"></span>
+            <span class="pf-skel pf-skel--title"></span>
+            <span class="pf-skel pf-skel--text"></span>
+            <span class="pf-skel pf-skel--price"></span>
+            <span class="pf-skel pf-skel--button"></span>
+            <span class="pf-skel pf-skel--line"></span>
+            <span class="pf-skel pf-skel--line pf-skel--short"></span>
+          </article>
+          <article class="pf-card" data-plan-slot="01" data-plan-visible="hide" data-nosnippet>
+            <div class="pf-card-head">
+              <span class="pf-kicker"></span>
+              <span class="pf-badge"></span>
+            </div>
+            <h2 class="pf-name"></h2>
+            <p class="pf-subtitle"></p>
+            <div class="pf-price" aria-label="">
+              <span class="pf-currency"></span>
+              <span class="pf-amount-stack">
+                <span class="pf-amount" data-price-monthly></span>
+                <span class="pf-amount" data-price-annual></span>
+              </span>
+              <span class="pf-period"></span>
+              <span class="pf-card-save"></span>
+            </div>
+            <span class="pf-billed-stack">
+              <span class="pf-billed" data-billed-monthly></span>
+              <span class="pf-billed" data-billed-annual></span>
+            </span>
+            <a class="pf-cta" href="#pricing"></a>
+            <ul class="pf-features" aria-label="Included features"></ul>
+            <p class="pf-disclaimer"></p>
+          </article>
+        </div>
+      </div>
+    </section>
+    
+    <!-- lab-ui block · pricing.dynamic-servicewand/credits -->
+    <section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS_ROUTING_TOKENS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="PER_UNIT" data-pricing-price-attribute-code="UNIT_PRICE" data-pricing-price-attribute-values="3,4,4.5,5" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-credits" data-pricing-buy-label="Buy token pack" data-pricing-contact-label="Contact us" data-pricing-token-unit-label="tokens" data-pricing-token-rate-label="per routing token" data-pricing-token-custom-rate-label="Negotiated rate" data-pricing-error-mode="fallback">
+      <div class="container">
+        <header class="cm-top">
+          <p class="cm-eyebrow">Credits and tokens</p>
+          <h2 class="cm-title">Routing tokens and metered usage.</h2>
+          <p class="cm-lede">Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.</p>
+        </header>
+    
+        <div class="cm-grid">
+          <article class="cm-card cm-card--packs">
+            <header class="cm-card-head">
+              <span class="cm-card-kicker">Pre-purchase</span>
+              <h3 class="cm-card-title">Token packs</h3>
+              <p class="cm-card-lede">Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.</p>
+            </header>
+    
+            <div class="cm-packs">
+              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
+                <span class="cm-skel cm-skel--badge"></span>
+                <span class="cm-skel cm-skel--name"></span>
+                <span class="cm-skel cm-skel--amount"></span>
+                <span class="cm-skel cm-skel--price"></span>
+                <span class="cm-skel cm-skel--rate"></span>
+              </article>
+              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
+                <span class="cm-skel cm-skel--badge"></span>
+                <span class="cm-skel cm-skel--name"></span>
+                <span class="cm-skel cm-skel--amount"></span>
+                <span class="cm-skel cm-skel--price"></span>
+                <span class="cm-skel cm-skel--rate"></span>
+              </article>
+              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
+                <span class="cm-skel cm-skel--badge"></span>
+                <span class="cm-skel cm-skel--name"></span>
+                <span class="cm-skel cm-skel--amount"></span>
+                <span class="cm-skel cm-skel--price"></span>
+                <span class="cm-skel cm-skel--rate"></span>
+              </article>
+              <article class="cm-pack" data-pack-visible="hide" data-nosnippet>
+                <span class="cm-pack-badge"></span>
+                <h4 class="cm-pack-name"></h4>
+                <p class="cm-pack-amount"></p>
+                <p class="cm-pack-price"></p>
+                <p class="cm-pack-rate"></p>
+              </article>
+            </div>
+            <a class="cm-packs-cta" href="#pricing-credits">Buy token pack</a>
+          </article>
+        </div>
+      </div>
+    </section>
+    
+    <!-- lab-ui block · pricing.dynamic-servicewand/matrix -->
+    <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="auto" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-feature-column-label="Feature" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included" data-state-label-empty="No value" data-cta-row-label="Ready to start?">
+      <div class="container">
+        <header class="mx-top">
+          <p class="mx-eyebrow">Compare plans</p>
+          <h2 class="mx-title">Every plan, side by side.</h2>
+          <p class="mx-lede">Buildings, dispatch, automations, support and security across every tier.</p>
+        </header>
+    
+        <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="mx-skel mx-skel--head"></span>
+          <span class="mx-skel mx-skel--row"></span>
+          <span class="mx-skel mx-skel--row"></span>
+          <span class="mx-skel mx-skel--row"></span>
+          <span class="mx-skel mx-skel--row"></span>
+        </div>
+        <div class="mx-shell mx-shell--table" role="table" aria-label="Plan comparison"></div>
+        <div class="mx-shell--accordion" aria-label="Plan comparison"></div>
+        <p class="mx-disclaimer">Final entitlements may depend on CRM rules. Talk to sales for custom matches.</p>
+      </div>
+    </section>
+    </section>
+  </main>
+  <script>
+    document.querySelector('[data-block="pricing.plans-flex"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
+    document.querySelector('[data-block="pricing.credits-meter"]').dataset.pricingFixtureUrl = "../_fixtures/routes.json";
+    document.querySelector('[data-block="pricing.matrix-collapsible"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
+  </script>
+  <script src="../_shared/pricing-runtime.js"></script>
+  <script src="../pricing.plans-flex/block.js"></script>
+  <script src="../pricing.credits-meter/block.js"></script>
+  <script src="../pricing.matrix-collapsible/block.js"></script>
+</body>
+</html>

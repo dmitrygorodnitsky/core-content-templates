@@ -1,0 +1,45 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Localized JSON-LD structured data object rendered in the root head as application/ld+json."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "ServiceWand Pricing Dynamic"
+      }
+    }
+  }
+]

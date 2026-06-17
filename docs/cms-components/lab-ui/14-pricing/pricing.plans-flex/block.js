@@ -23,6 +23,9 @@
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
     });
+    section.querySelectorAll("[data-period-monthly], [data-period-annual]").forEach((card) => {
+      setText(card, ".pf-period", next === "annual" ? card.dataset.periodAnnual : card.dataset.periodMonthly);
+    });
   };
 
   const broadcast = (mode, source) => {
@@ -49,15 +52,35 @@
     const key = plan.customPrice ? "pricingContactLabel" : "pricingBuyLabel";
     const value = section.dataset[key];
     if (value) return value;
-    const slot = section.querySelector(`[data-plan-slot="${String(plan.index + 1).padStart(2, "0")}"]`);
+    const slotCode = String(plan.index + 1).padStart(2, "0");
+    const slot = section.querySelector('[data-plan-slot="' + slotCode + '"]');
     const existing = slot && slot.querySelector(".pf-cta");
     if (existing && existing.textContent.trim()) return existing.textContent.trim();
-    return plan.customPrice ? "Contact us" : "Buy now";
+    return "";
   };
 
   const periodText = (plan) => {
     if (plan.customPrice) return "";
     return plan.intervalLabel || "";
+  };
+
+  const planPrice = (plan, mode) => {
+    const prices = plan.prices || {};
+    return prices[mode] || prices.monthly || plan;
+  };
+
+  const amountText = (section, plan, mode) => {
+    const price = planPrice(plan, mode);
+    if (price.customPrice || plan.customPrice) {
+      return fallbackLabel(section, "pricingContactLabel", dynamicCtaLabel(section, plan));
+    }
+    return price.amountText || "";
+  };
+
+  const intervalText = (plan, mode) => {
+    const price = planPrice(plan, mode);
+    if (price.customPrice || plan.customPrice) return "";
+    return price.intervalLabel || "";
   };
 
   const renderDynamicPlans = (section, pricing) => {
@@ -71,7 +94,7 @@
 
     const featuresByPlan = new Map(plans.map((plan) => [
       plan.code,
-      window.LabPricing.featureList(plan, pricing.groups, 5),
+      Array.isArray(plan.cardFeatures) ? plan.cardFeatures : [],
     ]));
 
     grid.innerHTML = "";
@@ -81,30 +104,37 @@
       card.dataset.planSlot = String(index + 1).padStart(2, "0");
       card.dataset.planVisible = "show";
       card.dataset.planCode = plan.code;
+      card.classList.remove("pf-card--featured", "pf-card--muted");
+      if (plan.cardState && plan.cardState !== "standard") {
+        card.classList.add("pf-card--" + plan.cardState);
+      }
+      setText(card, ".pf-kicker", plan.kicker);
+      setText(card, ".pf-badge", plan.badge);
       setText(card, ".pf-name", plan.name);
       setText(card, ".pf-subtitle", plan.description);
       setText(card, ".pf-currency", plan.currency);
-      setText(card, "[data-price-monthly]", plan.customPrice
-        ? fallbackLabel(section, "pricingContactLabel", dynamicCtaLabel(section, plan))
-        : plan.amountText);
-      setText(card, "[data-price-annual]", plan.customPrice
-        ? fallbackLabel(section, "pricingContactLabel", dynamicCtaLabel(section, plan))
-        : plan.amountText);
+      setText(card, "[data-price-monthly]", amountText(section, plan, "monthly"));
+      setText(card, "[data-price-annual]", amountText(section, plan, "annual"));
+      card.dataset.periodMonthly = intervalText(plan, "monthly");
+      card.dataset.periodAnnual = intervalText(plan, "annual");
       setText(card, ".pf-period", periodText(plan));
       setText(card, ".pf-card-save", "");
-      setText(card, "[data-billed-monthly]", plan.intervalLabel);
-      setText(card, "[data-billed-annual]", plan.intervalLabel);
+      setText(card, "[data-billed-monthly]", intervalText(plan, "monthly"));
+      setText(card, "[data-billed-annual]", intervalText(plan, "annual"));
 
       const ctaLabel = dynamicCtaLabel(section, plan);
       setText(card, ".pf-cta", ctaLabel);
       setHref(card, ".pf-cta", pricing.config.purchaseUrl);
 
       const price = card.querySelector(".pf-price");
-      if (price) price.setAttribute("aria-label", `${plan.name} ${plan.customPrice ? ctaLabel : plan.amountText}`.trim());
+      if (price) {
+        price.setAttribute("aria-label", (plan.name + " " + (plan.customPrice ? ctaLabel : plan.amountText)).trim());
+      }
 
       const list = card.querySelector(".pf-features");
       if (list) {
-        list.setAttribute("aria-label", `${plan.name} features`);
+        const listLabel = section.dataset.pricingFeatureListLabel || list.getAttribute("aria-label") || "";
+        if (listLabel) list.setAttribute("aria-label", listLabel);
         list.innerHTML = "";
         for (const feature of featuresByPlan.get(plan.code) || []) {
           const item = document.createElement("li");
@@ -119,6 +149,7 @@
 
     if (grid) grid.dataset.planCount = String(plans.length);
     section.dataset.pricingState = plans.length ? "dynamic" : "fallback";
+    apply(section, section.dataset.billing);
   };
 
   const loadDynamic = (section) => {

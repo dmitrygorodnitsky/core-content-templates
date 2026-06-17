@@ -1,0 +1,437 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "pricing.dynamic-servicewand",
+  "category": "14-pricing",
+  "title": "Pricing · dynamic ServiceWand monoblock",
+  "description": "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, token packs, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "primary": "docs/cms-components/lab-ui/14-pricing/_combined-preview.html",
+    "adapted_from": "Composes pricing.plans-flex, pricing.credits-meter, and pricing.matrix-collapsible as one reusable CMS section.",
+    "decision": "Permanent dynamic-only template section: no static plan, token pack, or matrix row fallback contract is exposed as CMS params.",
+    "localScripts": [
+      "14-pricing/_shared/pricing-runtime.js"
+    ]
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-bg",
+      "--color-gray-blue",
+      "--color-text-accent",
+      "--color-white",
+      "--cta-accent",
+      "--cta-accent-soft",
+      "--cta-secondary-fill",
+      "--cta-secondary-color",
+      "--cta-secondary-border",
+      "--gradient-cta-ring",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-pill",
+      "--radius-card",
+      "--shadow-1",
+      "--shadow-2",
+      "--shadow-glow-soft",
+      "--type-h1-size",
+      "--type-h1-weight",
+      "--type-h1-leading",
+      "--type-h1-tracking",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking",
+      "--transition-fast",
+      "--radius-card-sm",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-h2-leading",
+      "--type-h2-tracking",
+      "--color-status-yes",
+      "--color-status-partial"
+    ],
+    "other_blocks": [
+      "pricing.plans-flex",
+      "pricing.credits-meter",
+      "pricing.matrix-collapsible"
+    ]
+  },
+  "params": [
+    {
+      "code": "billing_default",
+      "type": "ENUM",
+      "options": [
+        "monthly",
+        "annual"
+      ],
+      "default": "monthly",
+      "name": "ServiceWand · Default Billing Cycle",
+      "description": "Selects which billing cycle is active when the pricing section first renders.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_dynamic_enabled",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "true",
+      "name": "ServiceWand · Dynamic Pricing Enabled",
+      "description": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static plan fields remain the rendered fallback.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_api_base",
+      "type": "STRING",
+      "default": "/core-pim/api",
+      "name": "ServiceWand · Pricing API Base",
+      "description": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_organization",
+      "type": "STRING",
+      "default": "SERVICEWAND",
+      "name": "ServiceWand · Pricing Organization",
+      "description": "Core PIM organization code used in the public catalog URL.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_sort_attribute_code",
+      "type": "STRING",
+      "default": "SORT_ORDER_PRIORITY",
+      "name": "ServiceWand · Pricing Sort Attribute Code",
+      "description": "Product attribute used to sort plans before falling back to amount.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_currency",
+      "type": "STRING",
+      "default": "CAD",
+      "name": "ServiceWand · Pricing Currency",
+      "description": "Currency attribute value requested from Core PIM.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_contact_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Contact us",
+      "name": "ServiceWand · Dynamic Pricing Contact Label",
+      "description": "CTA and price label for custom/contact pricing.",
+      "preserve_default": true
+    },
+    {
+      "code": "pricing_error_mode",
+      "type": "ENUM",
+      "options": [
+        "fallback"
+      ],
+      "default": "fallback",
+      "name": "ServiceWand · Dynamic Pricing Error Mode",
+      "description": "Currently only fallback is supported: keep the static CMS-authored cards if Core PIM loading fails.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_product_type_code",
+      "type": "STRING",
+      "default": "SERVICEWAND_SAAS",
+      "name": "ServiceWand · Pricing Product Type Code",
+      "description": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_price_type_code",
+      "type": "STRING",
+      "default": "RECURRENT",
+      "name": "ServiceWand · Pricing Price Type Code",
+      "description": "Core PIM price type code for the request.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_price_attribute_code",
+      "type": "STRING",
+      "default": "INTERVAL",
+      "name": "ServiceWand · Pricing Price Attribute Code",
+      "description": "Core PIM price attribute used to filter prices.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_price_attribute_values",
+      "type": "STRING",
+      "default": "1",
+      "name": "ServiceWand · Pricing Price Attribute Values",
+      "description": "Comma-separated price attribute values used by Core PIM filtering.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_purchase_url",
+      "type": "URL",
+      "default": "#pricing",
+      "name": "ServiceWand · Dynamic Pricing Purchase URL",
+      "description": "CTA destination used by dynamically rendered plans.",
+      "preserve_default": true
+    },
+    {
+      "code": "saas_pricing_buy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buy now",
+      "name": "ServiceWand · Dynamic Pricing Buy Label",
+      "description": "CTA label for plans with numeric pricing.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_product_type_code",
+      "type": "STRING",
+      "default": "SERVICEWAND_SAAS_ROUTING_TOKENS",
+      "name": "ServiceWand · Pricing Product Type Code",
+      "description": "Core PIM product type for routing-token expansion pricing.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_price_type_code",
+      "type": "STRING",
+      "default": "PER_UNIT",
+      "name": "ServiceWand · Pricing Price Type Code",
+      "description": "Core PIM price type code for token unit pricing.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_price_attribute_code",
+      "type": "STRING",
+      "default": "UNIT_PRICE",
+      "name": "ServiceWand · Pricing Price Attribute Code",
+      "description": "Core PIM price attribute used to filter token unit prices.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_price_attribute_values",
+      "type": "STRING",
+      "default": "3,4,4.5,5",
+      "name": "ServiceWand · Pricing Price Attribute Values",
+      "description": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_purchase_url",
+      "type": "URL",
+      "default": "#pricing-credits",
+      "name": "ServiceWand · Dynamic Pricing Purchase URL",
+      "description": "CTA destination used when token tiers are dynamically rendered.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_buy_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buy token pack",
+      "name": "ServiceWand · Dynamic Pricing Buy Label",
+      "description": "CTA label used for dynamically rendered token tiers with numeric pricing.",
+      "preserve_default": true
+    },
+    {
+      "code": "credits_pricing_token_unit_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "tokens",
+      "name": "Credits · Dynamic Pricing Token Unit Label",
+      "description": "Unit label appended to dynamically rendered token amounts. This is a localized CMS fallback, not a JavaScript string."
+    },
+    {
+      "code": "credits_pricing_token_rate_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "per routing token",
+      "name": "Credits · Dynamic Pricing Token Rate Label",
+      "description": "Rate note for dynamically rendered numeric token tiers. This is a localized CMS fallback, not a JavaScript string."
+    },
+    {
+      "code": "credits_pricing_token_custom_rate_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Negotiated rate",
+      "name": "Credits · Dynamic Pricing Custom Token Rate Label",
+      "description": "Rate note for dynamically rendered custom or negotiated token tiers. This is a localized CMS fallback, not a JavaScript string."
+    },
+    {
+      "code": "plans_eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Pricing",
+      "name": "Plans · Pricing Eyebrow",
+      "description": "Small uppercase label above the pricing headline."
+    },
+    {
+      "code": "plans_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plans that scale with field operations.",
+      "name": "Plans · Pricing Headline",
+      "description": "Main headline for the pricing plans section."
+    },
+    {
+      "code": "plans_lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.",
+      "name": "Plans · Pricing Lede",
+      "description": "Introductory paragraph below the pricing headline."
+    },
+    {
+      "code": "plans_billing_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Select billing cycle",
+      "name": "Plans · Billing Toggle Accessible Label",
+      "description": "Accessible label for the billing cycle toggle group."
+    },
+    {
+      "code": "plans_monthly_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Monthly",
+      "name": "Plans · Monthly Billing Label",
+      "description": "Label for the monthly billing toggle option."
+    },
+    {
+      "code": "plans_annual_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Annual",
+      "name": "Plans · Annual Billing Label",
+      "description": "Label for the annual billing toggle option."
+    },
+    {
+      "code": "plans_billing_note",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Annual pricing shown for planning. Final packaging can be connected to CRM rules later.",
+      "name": "Plans · Billing Note",
+      "description": "Short note shown below the billing toggle."
+    },
+    {
+      "code": "plans_pricing_feature_list_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included features",
+      "name": "Plans · Dynamic Pricing Feature List Label",
+      "description": "Accessible label for dynamically rendered plan feature lists. This is a localized CMS fallback, not a JavaScript string."
+    },
+    {
+      "code": "credits_eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Credits and tokens",
+      "name": "Credits · Section Eyebrow",
+      "description": "Small uppercase label above the section heading."
+    },
+    {
+      "code": "credits_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Routing tokens and metered usage.",
+      "name": "Credits · Section Heading",
+      "description": "Main heading for the credits/tokens section."
+    },
+    {
+      "code": "credits_lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.",
+      "name": "Credits · Section Lede",
+      "description": "Introductory paragraph for the section."
+    },
+    {
+      "code": "credits_packs_kicker",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Pre-purchase",
+      "name": "Credits · Packs Kicker",
+      "description": "Small label above the packs card title."
+    },
+    {
+      "code": "credits_packs_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Token packs",
+      "name": "Credits · Packs Title",
+      "description": "Heading for the packs card."
+    },
+    {
+      "code": "credits_packs_lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.",
+      "name": "Credits · Packs Lede",
+      "description": "Sub-paragraph for the packs card."
+    },
+    {
+      "code": "matrix_eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Compare plans",
+      "name": "Matrix · Matrix Eyebrow",
+      "description": "Small uppercase label above the matrix heading."
+    },
+    {
+      "code": "matrix_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Every plan, side by side.",
+      "name": "Matrix · Matrix Heading",
+      "description": "Main heading for the comparison matrix."
+    },
+    {
+      "code": "matrix_lede",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Buildings, dispatch, automations, support and security across every tier.",
+      "name": "Matrix · Matrix Lede",
+      "description": "Introductory paragraph for the matrix."
+    },
+    {
+      "code": "matrix_table_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Plan comparison",
+      "name": "Matrix · Table Accessible Label",
+      "description": "Accessible label for the matrix table."
+    },
+    {
+      "code": "matrix_feature_column_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Feature",
+      "name": "Matrix · Feature Column Label",
+      "description": "Label for the leftmost feature column."
+    },
+    {
+      "code": "matrix_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Final entitlements may depend on CRM rules. Talk to sales for custom matches.",
+      "name": "Matrix · Matrix Disclaimer",
+      "description": "Small disclaimer shown below the matrix."
+    },
+    {
+      "code": "matrix_state_label_yes",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Included",
+      "name": "Matrix · State Label · Yes",
+      "description": "Screen-reader label applied to icon-only 'yes' cells."
+    },
+    {
+      "code": "matrix_state_label_no",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Not included",
+      "name": "Matrix · State Label · No",
+      "description": "Screen-reader label applied to icon-only 'no' cells."
+    },
+    {
+      "code": "matrix_state_label_partial",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Partially included",
+      "name": "Matrix · State Label · Partial",
+      "description": "Screen-reader label applied to icon-only 'partial' cells."
+    },
+    {
+      "code": "matrix_state_label_empty",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "No value",
+      "name": "Matrix · State Label · Empty",
+      "description": "Screen-reader label applied to empty dynamic cells."
+    },
+    {
+      "code": "matrix_cta_row_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Ready to start?",
+      "name": "Matrix · CTA Row Label",
+      "description": "Feature-column label for the closing CTA row."
+    }
+  ],
+  "notes": [
+    "This block is intentionally a source-level composition. Do not paste generated dist/manual-upload CSS or JavaScript back into it.",
+    "Dynamic data comes from Core PIM prices plus visible productTypes.attributeOrder attributes via the shared LabPricing runtime.",
+    "The source HTML contains only skeletons and one hidden DOM template per card-like renderer. It does not expose fixed static plan, pack, or matrix row params.",
+    "The runtime is bundled once through source.localScripts before child adapters, so pricing adapters do not need to duplicate request/normalization code."
+  ]
+}

@@ -55,17 +55,70 @@
         currencyDisplay: "narrowSymbol",
         minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
         maximumFractionDigits: 2,
-      }).format(amount) + (currency ? ` ${currency}` : "");
+      }).format(amount) + (currency ? " " + currency : "");
     } catch (error) {
-      return `${plan.amountText || amount} ${currency}`.trim();
+      return ((plan.amountText || amount) + " " + currency).trim();
     }
   };
 
   const dynamicPriceLabel = (section, plan, locale) => {
     if (plan.customPrice) {
-      return section.dataset.pricingContactLabel || "Contact us";
+      return section.dataset.pricingContactLabel || "";
     }
     return formatCurrency(plan, locale);
+  };
+
+  const fallbackText = (root, selector) => {
+    const node = root.querySelector(selector);
+    return node ? node.textContent.trim() : "";
+  };
+
+  const planDetails = (plan, groups) => {
+    const details = [];
+    for (const group of groups || []) {
+      for (const attr of group.attributes || []) {
+        const value = attr.values && attr.values[plan.index];
+        if (!value || value.state === "no" || value.state === "empty") continue;
+        details.push({
+          code: attr.code,
+          label: attr.label,
+          state: value.state,
+          text: value.text || "",
+        });
+      }
+    }
+    return details;
+  };
+
+  const renderPackDetails = (pack, details) => {
+    const existing = pack.querySelector(".cm-pack-details");
+    if (existing) existing.remove();
+    if (!details.length) return;
+
+    const list = document.createElement("dl");
+    list.className = "cm-pack-details";
+
+    for (const detail of details) {
+      const item = document.createElement("div");
+      item.className = "cm-pack-detail";
+      item.dataset.attributeCode = detail.code;
+      item.dataset.state = detail.state;
+
+      const label = document.createElement("dt");
+      label.textContent = detail.label;
+      item.appendChild(label);
+
+      if (detail.text) {
+        const value = document.createElement("dd");
+        value.dataset.state = detail.state;
+        value.textContent = detail.text;
+        item.appendChild(value);
+      }
+
+      list.appendChild(item);
+    }
+
+    pack.appendChild(list);
   };
 
   const renderDynamicPacks = (section, pricing) => {
@@ -90,14 +143,19 @@
 
       const unit = document.createElement("span");
       unit.className = "cm-pack-unit";
-      unit.textContent = tokens ? "tokens" : "";
+      unit.textContent = tokens
+        ? (section.dataset.pricingTokenUnitLabel || fallbackText(pack, ".cm-pack-unit"))
+        : "";
       const amount = pack.querySelector(".cm-pack-amount");
       if (amount && unit.textContent) amount.appendChild(unit);
 
       setText(pack, ".cm-pack-price", dynamicPriceLabel(section, plan, pricing.config.locale));
       setText(pack, ".cm-pack-rate", pricing.config.lorem
         ? LOREM
-        : (plan.customPrice ? "Negotiated rate" : "per routing token"));
+        : (plan.customPrice
+            ? (section.dataset.pricingTokenCustomRateLabel || fallbackText(pack, ".cm-pack-rate"))
+            : (section.dataset.pricingTokenRateLabel || fallbackText(pack, ".cm-pack-rate"))));
+      renderPackDetails(pack, planDetails(plan, pricing.groups));
       packList.appendChild(pack);
     });
 

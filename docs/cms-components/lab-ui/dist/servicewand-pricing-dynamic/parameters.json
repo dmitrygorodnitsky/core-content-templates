@@ -1,0 +1,3094 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "SEO title for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "SEO meta description for the generated landing page."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Localized JSON-LD structured data object rendered in the root head as application/ld+json."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "ServiceWand Pricing Dynamic"
+      }
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header logo href",
+        "DESCRIPTION": "URL target for the header logo link."
+      }
+    },
+    "value": "index.html"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header logo aria label",
+        "DESCRIPTION": "Accessible label for the header logo link."
+      }
+    },
+    "value": {
+      "en": "ServiceWand"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu Platform href",
+        "DESCRIPTION": "URL target for the desktop Platform navigation link."
+      }
+    },
+    "value": "index.html#hero"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PLATFORM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Platform",
+        "DESCRIPTION": "Desktop navigation label for the platform section."
+      }
+    },
+    "value": {
+      "en": "Platform"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_HOW_IT_WORKS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu How It Works href",
+        "DESCRIPTION": "URL target for the desktop How It Works navigation link."
+      }
+    },
+    "value": "index.html#features"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_HOW_IT_WORKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - How It Works",
+        "DESCRIPTION": "Desktop navigation label for the features section."
+      }
+    },
+    "value": {
+      "en": "How It Works"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Industries",
+        "DESCRIPTION": "Desktop navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "en": "Industries"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service nav label",
+        "DESCRIPTION": "Navigation label for Field Service in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom nav label",
+        "DESCRIPTION": "Navigation label for Telecom in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property nav label",
+        "DESCRIPTION": "Navigation label for Property in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction nav label",
+        "DESCRIPTION": "Navigation label for Construction in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics nav label",
+        "DESCRIPTION": "Navigation label for Logistics in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail nav label",
+        "DESCRIPTION": "Navigation label for Retail in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native nav label",
+        "DESCRIPTION": "Navigation label for AI Native in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_NAV_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology nav label",
+        "DESCRIPTION": "Navigation label for Technology in the industry menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel title",
+        "DESCRIPTION": "Reusable title for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "ServiceWand pricing"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel text",
+        "DESCRIPTION": "Reusable body text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Compare live plans, routing credits, and plan features from Core PIM."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_SUBTEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel subtext",
+        "DESCRIPTION": "Reusable secondary text for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Dynamic pricing"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel CTA href",
+        "DESCRIPTION": "URL target for the default industry menu CTA."
+      }
+    },
+    "value": "#foundation"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PANEL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu panel CTA label",
+        "DESCRIPTION": "Reusable CTA label for the default panel in header submenus."
+      }
+    },
+    "value": {
+      "en": "Talk to sales"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel label",
+        "DESCRIPTION": "Eyebrow label for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel title",
+        "DESCRIPTION": "Title for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service panel body",
+        "DESCRIPTION": "Body text for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service CTA href",
+        "DESCRIPTION": "URL target for the Field Service industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service CTA label",
+        "DESCRIPTION": "CTA label for the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_07_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 href",
+        "DESCRIPTION": "URL target for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_07_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 7 label",
+        "DESCRIPTION": "Text label for item 7 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_08_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 href",
+        "DESCRIPTION": "URL target for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_08_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 8 label",
+        "DESCRIPTION": "Text label for item 8 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_09_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 href",
+        "DESCRIPTION": "URL target for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_09_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 9 label",
+        "DESCRIPTION": "Text label for item 9 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_10_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 href",
+        "DESCRIPTION": "URL target for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_FIELD_SERVICE_ITEM_10_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Field Service item 10 label",
+        "DESCRIPTION": "Text label for item 10 in the Field Service industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel label",
+        "DESCRIPTION": "Eyebrow label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel title",
+        "DESCRIPTION": "Title for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom panel body",
+        "DESCRIPTION": "Body text for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA href",
+        "DESCRIPTION": "URL target for the Telecom industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom CTA label",
+        "DESCRIPTION": "CTA label for the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_06_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 href",
+        "DESCRIPTION": "URL target for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TELECOM_ITEM_06_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Telecom item 6 label",
+        "DESCRIPTION": "Text label for item 6 in the Telecom industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel label",
+        "DESCRIPTION": "Eyebrow label for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel title",
+        "DESCRIPTION": "Title for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property panel body",
+        "DESCRIPTION": "Body text for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA href",
+        "DESCRIPTION": "URL target for the Property industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property CTA label",
+        "DESCRIPTION": "CTA label for the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Property industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_PROPERTY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Property item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Property industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel label",
+        "DESCRIPTION": "Eyebrow label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel title",
+        "DESCRIPTION": "Title for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction panel body",
+        "DESCRIPTION": "Body text for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA href",
+        "DESCRIPTION": "URL target for the Construction industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction CTA label",
+        "DESCRIPTION": "CTA label for the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Construction industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_CONSTRUCTION_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Construction item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Construction industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel label",
+        "DESCRIPTION": "Eyebrow label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel title",
+        "DESCRIPTION": "Title for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics panel body",
+        "DESCRIPTION": "Body text for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA href",
+        "DESCRIPTION": "URL target for the Logistics industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics CTA label",
+        "DESCRIPTION": "CTA label for the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_LOGISTICS_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Logistics item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Logistics industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel label",
+        "DESCRIPTION": "Eyebrow label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel title",
+        "DESCRIPTION": "Title for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail panel body",
+        "DESCRIPTION": "Body text for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA href",
+        "DESCRIPTION": "URL target for the Retail industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail CTA label",
+        "DESCRIPTION": "CTA label for the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Retail industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_RETAIL_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Retail item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Retail industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel label",
+        "DESCRIPTION": "Eyebrow label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel title",
+        "DESCRIPTION": "Title for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native panel body",
+        "DESCRIPTION": "Body text for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native CTA href",
+        "DESCRIPTION": "URL target for the Ai Native industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native CTA label",
+        "DESCRIPTION": "CTA label for the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_01_BADGE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 1 badge label",
+        "DESCRIPTION": "Badge label for item 1 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Ai Native item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Ai Native industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_AI_NATIVE_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header AI Native item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the AI Native industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel label",
+        "DESCRIPTION": "Eyebrow label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel title",
+        "DESCRIPTION": "Title for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology panel body",
+        "DESCRIPTION": "Body text for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA href",
+        "DESCRIPTION": "URL target for the Technology industry panel CTA."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology CTA label",
+        "DESCRIPTION": "CTA label for the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_01_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 href",
+        "DESCRIPTION": "URL target for item 1 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_01_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 1 label",
+        "DESCRIPTION": "Text label for item 1 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_02_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 href",
+        "DESCRIPTION": "URL target for item 2 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_02_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 2 label",
+        "DESCRIPTION": "Text label for item 2 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_03_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 href",
+        "DESCRIPTION": "URL target for item 3 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_03_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 3 label",
+        "DESCRIPTION": "Text label for item 3 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_04_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 href",
+        "DESCRIPTION": "URL target for item 4 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_04_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 4 label",
+        "DESCRIPTION": "Text label for item 4 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_05_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 href",
+        "DESCRIPTION": "URL target for item 5 in the Technology industry panel."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_INDUSTRY_TECHNOLOGY_ITEM_05_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header Technology item 5 label",
+        "DESCRIPTION": "Text label for item 5 in the Technology industry panel."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header menu Partners href",
+        "DESCRIPTION": "URL target for the desktop Partners navigation link."
+      }
+    },
+    "value": "index.html#partners"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu - Partners",
+        "DESCRIPTION": "Desktop navigation label for the partners section."
+      }
+    },
+    "value": {
+      "en": "Partners"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resources",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "en": "Resources"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header resource item href",
+        "DESCRIPTION": "URL target for the resource submenu item."
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource title",
+        "DESCRIPTION": "Reusable title for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "en": "Pricing resources"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_RESOURCE_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header menu resource description",
+        "DESCRIPTION": "Reusable description for a resource item in the header submenu."
+      }
+    },
+    "value": {
+      "en": "Live pricing data with CMS fallback content."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_TRIGGER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale selector trigger label",
+        "DESCRIPTION": "Default label shown in the locale selector trigger before the active language name is loaded."
+      }
+    },
+    "value": {
+      "en": "Language"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_DROPDOWN_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Locale selector dropdown aria label",
+        "DESCRIPTION": "Accessible label for the locale selector dropdown list."
+      }
+    },
+    "value": {
+      "en": "Select language"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request href",
+        "DESCRIPTION": "URL target for the header demo CTA."
+      }
+    },
+    "value": "request-demo.html"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_DEMO_REQUEST_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header demo request label",
+        "DESCRIPTION": "Imported from HEADER in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": {
+      "en": "Request demo"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_OPEN_MENU_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header open menu label",
+        "DESCRIPTION": "Accessible label for the mobile menu toggle button."
+      }
+    },
+    "value": {
+      "en": "Open menu"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile FAQ href",
+        "DESCRIPTION": "URL target for the mobile FAQ navigation link."
+      }
+    },
+    "value": "#faq"
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_NAV_FAQ",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile nav - FAQ",
+        "DESCRIPTION": "Mobile navigation label for the FAQ section."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MOBILE_INDUSTRY_CLOSE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries close aria label",
+        "DESCRIPTION": "Accessible label for closing the mobile industries menu."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MOBILE_INDUSTRY_BACK_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Header mobile industries back aria label",
+        "DESCRIPTION": "Accessible label for returning to the mobile industries list."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo."
+    }
+  },
+  {
+    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_MENU_ITEM_SHADOW",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Header menu item shadow",
+        "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_BILLING_DEFAULT",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Default Billing Cycle",
+        "DESCRIPTION": "Selects which billing cycle is active when the pricing section first renders."
+      }
+    },
+    "value": "monthly",
+    "options": [
+      "monthly",
+      "annual"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_DYNAMIC_ENABLED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Enabled",
+        "DESCRIPTION": "Opts this block into loading Core PIM pricing. When false or when loading fails, the static plan fields remain the rendered fallback."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing API Base",
+        "DESCRIPTION": "Core PIM API base path or origin. The runtime removes a trailing /api and posts to /public/{organization}/catalog/price-comparison.json."
+      }
+    },
+    "value": "/core-pim/api"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Organization",
+        "DESCRIPTION": "Core PIM organization code used in the public catalog URL."
+      }
+    },
+    "value": "SERVICEWAND"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRODUCT_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Product Type Code",
+        "DESCRIPTION": "Core PIM product type to request, for example SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS."
+      }
+    },
+    "value": "SERVICEWAND_SAAS"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_SORT_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Sort Attribute Code",
+        "DESCRIPTION": "Product attribute used to sort plans before falling back to amount."
+      }
+    },
+    "value": "SORT_ORDER_PRIORITY"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Type Code",
+        "DESCRIPTION": "Core PIM price type code for the request."
+      }
+    },
+    "value": "RECURRENT"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Code",
+        "DESCRIPTION": "Core PIM price attribute used to filter prices."
+      }
+    },
+    "value": "INTERVAL"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PRICE_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Values",
+        "DESCRIPTION": "Comma-separated price attribute values used by Core PIM filtering."
+      }
+    },
+    "value": "1"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_CURRENCY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Currency",
+        "DESCRIPTION": "Currency attribute value requested from Core PIM."
+      }
+    },
+    "value": "CAD"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_PURCHASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Purchase URL",
+        "DESCRIPTION": "CTA destination used by dynamically rendered plans."
+      }
+    },
+    "value": "#pricing"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_SAAS_PRICING_BUY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Buy Label",
+        "DESCRIPTION": "CTA label for plans with numeric pricing."
+      }
+    },
+    "value": {
+      "en": "Buy now"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_CONTACT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Contact Label",
+        "DESCRIPTION": "CTA and price label for custom/contact pricing."
+      }
+    },
+    "value": {
+      "en": "Contact us"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_PRICING_FEATURE_LIST_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Dynamic Pricing Feature List Label",
+        "DESCRIPTION": "Accessible label for dynamically rendered plan feature lists. This is a localized CMS fallback, not a JavaScript string."
+      }
+    },
+    "value": {
+      "en": "Included features"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_ERROR_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Error Mode",
+        "DESCRIPTION": "Currently only fallback is supported: keep the static CMS-authored cards if Core PIM loading fails."
+      }
+    },
+    "value": "fallback",
+    "options": [
+      "fallback"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the pricing headline."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Headline",
+        "DESCRIPTION": "Main headline for the pricing plans section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Pricing Lede",
+        "DESCRIPTION": "Introductory paragraph below the pricing headline."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_BILLING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Billing Toggle Accessible Label",
+        "DESCRIPTION": "Accessible label for the billing cycle toggle group."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_MONTHLY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Monthly Billing Label",
+        "DESCRIPTION": "Label for the monthly billing toggle option."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_ANNUAL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Annual Billing Label",
+        "DESCRIPTION": "Label for the annual billing toggle option."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_BILLING_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Billing Note",
+        "DESCRIPTION": "Short note shown below the billing toggle."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRODUCT_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Product Type Code",
+        "DESCRIPTION": "Core PIM product type for routing-token expansion pricing."
+      }
+    },
+    "value": "SERVICEWAND_SAAS_ROUTING_TOKENS"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Type Code",
+        "DESCRIPTION": "Core PIM price type code for token unit pricing."
+      }
+    },
+    "value": "PER_UNIT"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Code",
+        "DESCRIPTION": "Core PIM price attribute used to filter token unit prices."
+      }
+    },
+    "value": "UNIT_PRICE"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Pricing Price Attribute Values",
+        "DESCRIPTION": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers."
+      }
+    },
+    "value": "3,4,4.5,5"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PURCHASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Purchase URL",
+        "DESCRIPTION": "CTA destination used when token tiers are dynamically rendered."
+      }
+    },
+    "value": "#pricing-credits"
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_BUY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Dynamic Pricing Buy Label",
+        "DESCRIPTION": "CTA label used for dynamically rendered token tiers with numeric pricing."
+      }
+    },
+    "value": {
+      "en": "Buy token pack"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_UNIT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Dynamic Pricing Token Unit Label",
+        "DESCRIPTION": "Unit label appended to dynamically rendered token amounts. This is a localized CMS fallback, not a JavaScript string."
+      }
+    },
+    "value": {
+      "en": "tokens"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_RATE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Dynamic Pricing Token Rate Label",
+        "DESCRIPTION": "Rate note for dynamically rendered numeric token tiers. This is a localized CMS fallback, not a JavaScript string."
+      }
+    },
+    "value": {
+      "en": "per routing token"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_CUSTOM_RATE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Dynamic Pricing Custom Token Rate Label",
+        "DESCRIPTION": "Rate note for dynamically rendered custom or negotiated token tiers. This is a localized CMS fallback, not a JavaScript string."
+      }
+    },
+    "value": {
+      "en": "Negotiated rate"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Section Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the section heading."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Section Heading",
+        "DESCRIPTION": "Main heading for the credits/tokens section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Section Lede",
+        "DESCRIPTION": "Introductory paragraph for the section."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_KICKER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Packs Kicker",
+        "DESCRIPTION": "Small label above the packs card title."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Packs Title",
+        "DESCRIPTION": "Heading for the packs card."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Packs Lede",
+        "DESCRIPTION": "Sub-paragraph for the packs card."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_FEATURE_COLUMN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Feature Column Label",
+        "DESCRIPTION": "Label for the leftmost feature column."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_YES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Yes",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'yes' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_NO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · No",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'no' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_PARTIAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Partial",
+        "DESCRIPTION": "Screen-reader label applied to icon-only 'partial' cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_STATE_LABEL_EMPTY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · State Label · Empty",
+        "DESCRIPTION": "Screen-reader label applied to empty dynamic cells."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_CTA_ROW_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · CTA Row Label",
+        "DESCRIPTION": "Feature-column label for the closing CTA row."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the matrix heading."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Heading",
+        "DESCRIPTION": "Main heading for the comparison matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_LEDE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Lede",
+        "DESCRIPTION": "Introductory paragraph for the matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_TABLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Table Accessible Label",
+        "DESCRIPTION": "Accessible label for the matrix table."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore."
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_DISCLAIMER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Matrix Disclaimer",
+        "DESCRIPTION": "Small disclaimer shown below the matrix."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_BG_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer background image URL",
+        "DESCRIPTION": "URL target for the footer background image."
+      }
+    },
+    "value": "/core/image/728d0287-96c3-4430-b830-477f87d5ac5e/get"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TAGLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer tagline",
+        "DESCRIPTION": "Tagline text shown under the footer logo."
+      }
+    },
+    "value": {
+      "en": "Field service CRM for routing, dispatch, service proof, and customer operations."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_ADDRESS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer address",
+        "DESCRIPTION": "Address block shown in the footer."
+      }
+    },
+    "value": {
+      "en": "ServiceWand Inc.<br />Dynamic pricing preview<br />CMS-managed lab-ui composition<br />Service operations platform"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Platform href",
+        "DESCRIPTION": "URL target for the footer Platform navigation link."
+      }
+    },
+    "value": "index.html#hero"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Platform",
+        "DESCRIPTION": "Footer navigation label for the platform section."
+      }
+    },
+    "value": {
+      "en": "Platform"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav How It Works href",
+        "DESCRIPTION": "URL target for the footer How It Works navigation link."
+      }
+    },
+    "value": "index.html#features"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - How It Works",
+        "DESCRIPTION": "Footer navigation label for the features section."
+      }
+    },
+    "value": {
+      "en": "How It Works"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Industries href",
+        "DESCRIPTION": "URL target for the footer Industries navigation link."
+      }
+    },
+    "value": "index.html#foundation"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Industries",
+        "DESCRIPTION": "Footer navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "en": "Industries"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Partners href",
+        "DESCRIPTION": "URL target for the footer Partners navigation link."
+      }
+    },
+    "value": "index.html#partners"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Partners",
+        "DESCRIPTION": "Footer navigation label for the partners section."
+      }
+    },
+    "value": {
+      "en": "Partners"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav FAQ href",
+        "DESCRIPTION": "URL target for the footer FAQ navigation link."
+      }
+    },
+    "value": "index.html#faq"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_FAQ",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - FAQ",
+        "DESCRIPTION": "Footer navigation label for the FAQ section."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer LinkedIn href",
+        "DESCRIPTION": "URL target for the footer LinkedIn social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social LinkedIn aria label",
+        "DESCRIPTION": "Accessible label for the LinkedIn social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer GitHub href",
+        "DESCRIPTION": "URL target for the footer GitHub social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social GitHub aria label",
+        "DESCRIPTION": "Accessible label for the GitHub social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer YouTube href",
+        "DESCRIPTION": "URL target for the footer YouTube social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social YouTube aria label",
+        "DESCRIPTION": "Accessible label for the YouTube social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer X href",
+        "DESCRIPTION": "URL target for the footer X social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social X aria label",
+        "DESCRIPTION": "Accessible label for the X social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships label",
+        "DESCRIPTION": "Label above the partnerships email address."
+      }
+    },
+    "value": {
+      "en": "Partnerships"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships email href",
+        "DESCRIPTION": "URL target for the footer partnerships email link."
+      }
+    },
+    "value": "mailto:partners@servicewand.com"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships email",
+        "DESCRIPTION": "Partnerships contact email shown in the footer."
+      }
+    },
+    "value": {
+      "en": "partners@servicewand.com"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer support label",
+        "DESCRIPTION": "Label above the support email address."
+      }
+    },
+    "value": {
+      "en": "Support"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer support email href",
+        "DESCRIPTION": "URL target for the footer support email link."
+      }
+    },
+    "value": "mailto:support@servicewand.com"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer support email",
+        "DESCRIPTION": "Support contact email shown in the footer."
+      }
+    },
+    "value": {
+      "en": "support@servicewand.com"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer copyright line",
+        "DESCRIPTION": "Primary copyright text shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "Copyright 2026 ServiceWand Inc."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_RIGHTS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer rights line",
+        "DESCRIPTION": "Secondary rights notice shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "All rights reserved."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer privacy policy href",
+        "DESCRIPTION": "URL target for the footer Privacy Policy legal link."
+      }
+    },
+    "value": "privacy-policy.html"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Privacy Policy",
+        "DESCRIPTION": "Footer legal link label for the privacy policy page."
+      }
+    },
+    "value": {
+      "en": "Privacy Policy"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TERMS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer terms href",
+        "DESCRIPTION": "URL target for the footer Terms legal link."
+      }
+    },
+    "value": "terms-and-conditions.html"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TERMS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Terms & Conditions",
+        "DESCRIPTION": "Footer legal link label for the terms and conditions page."
+      }
+    },
+    "value": {
+      "en": "Terms & Conditions"
+    }
+  }
+]

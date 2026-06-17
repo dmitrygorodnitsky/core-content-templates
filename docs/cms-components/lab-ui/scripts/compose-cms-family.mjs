@@ -223,6 +223,20 @@ const collectHeadAssets = (sections, catalog) => {
   return assets;
 };
 
+const collectLocalAssets = (assetBlocks, kind) => {
+  const seen = new Set();
+  const files = [];
+  for (const asset of assetBlocks) {
+    for (const rel of asset.json.source?.[kind] || []) {
+      const normalized = String(rel || "").trim();
+      if (!normalized || seen.has(normalized)) continue;
+      seen.add(normalized);
+      files.push({ rel: normalized, abs: join(labRoot, normalized) });
+    }
+  }
+  return files;
+};
+
 const renderHeadAsset = (href) => {
   const safeHref = escapeHtml(href);
   if (/\.css(?:$|\?)/i.test(safeHref)) {
@@ -239,6 +253,9 @@ const wordsForParam = (localCode) => {
 
 const valueForParam = (param, index) => {
   const type = param.type || "LOCALIZED_STRING_SS";
+  if (param.preserve_default && Object.prototype.hasOwnProperty.call(param, "default")) {
+    return param.default;
+  }
   if (type === "URL") return param.default || "#";
   if (type === "IMAGE") return "";
   if (type === "ENUM") return param.default || param.options?.[0] || "";
@@ -378,13 +395,17 @@ const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, local
       return out;
     });
   }
-  const css = assetBlocks
+  const css = collectLocalAssets(assetBlocks, "localStyles")
+    .map((file) => `/* generated local CSS: ${file.rel} */\n${readFileSync(file.abs, "utf8")}`)
+    .concat(assetBlocks
     .filter((asset) => asset.css.trim())
-    .map((asset) => `/* generated child CSS: ${asset.path}/block.css */\n${asset.css}`)
+    .map((asset) => `/* generated child CSS: ${asset.path}/block.css */\n${asset.css}`))
     .join("\n\n");
-  const javascript = assetBlocks
+  const javascript = collectLocalAssets(assetBlocks, "localScripts")
+    .map((file) => `/* generated local JS: ${file.rel} */\n${readFileSync(file.abs, "utf8")}`)
+    .concat(assetBlocks
     .filter((asset) => asset.js.trim())
-    .map((asset) => `/* generated child JS: ${asset.path}/block.js */\n${asset.js}`)
+    .map((asset) => `/* generated child JS: ${asset.path}/block.js */\n${asset.js}`))
     .join("\n\n");
 
   return {
