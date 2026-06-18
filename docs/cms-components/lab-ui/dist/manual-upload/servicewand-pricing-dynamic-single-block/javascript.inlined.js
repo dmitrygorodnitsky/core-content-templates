@@ -651,6 +651,10 @@
     return price.intervalLabel || "";
   };
 
+  const ctaStyle = (plan) => (
+    plan.cardState === "featured" ? "filled" : "primary"
+  );
+
   const renderDynamicPlans = (section, pricing) => {
     const plans = pricing.plans;
     const grid = section.querySelector(".pf-grid");
@@ -691,6 +695,11 @@
       setText(card, "[data-billed-annual]", intervalText(plan, "annual"));
 
       const ctaLabel = dynamicCtaLabel(section, plan);
+      const cta = card.querySelector(".pf-cta");
+      if (cta) {
+        cta.classList.remove("pf-cta--primary", "pf-cta--filled", "pf-cta--ghost");
+        cta.classList.add("pf-cta--" + ctaStyle(plan));
+      }
       setText(card, ".pf-cta", ctaLabel);
       setHref(card, ".pf-cta", pricing.config.purchaseUrl);
 

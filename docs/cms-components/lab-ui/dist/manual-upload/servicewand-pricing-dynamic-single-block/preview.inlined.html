@@ -1440,8 +1440,10 @@ select {
   min-height: 40px;
   padding: 6px 12px;
   border-radius: var(--radius-pill);
-  background: var(--color-white);
-  border: 1px solid rgba(146, 170, 205, 0.35);
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring) border-box;
+  border: 1px solid transparent;
   color: var(--color-heading);
   font-size: 0.875rem;
   font-weight: 650;
@@ -1457,7 +1459,7 @@ select {
 }
 .mx-cta:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow-soft);
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
 }
 .mx-cta[aria-disabled="true"] {
   cursor: not-allowed;
@@ -1608,12 +1610,19 @@ select {
     margin-top: 16px;
     padding: 0 16px;
     border-radius: var(--radius-pill);
-    background: var(--color-gray-bg);
-    border: 1px solid rgba(146, 170, 205, 0.35);
+    background:
+      linear-gradient(var(--color-white), var(--color-white)) padding-box,
+      var(--gradient-cta-ring) border-box;
+    border: 1px solid transparent;
     color: var(--color-heading);
     font-size: 0.9375rem;
     font-weight: 650;
     text-decoration: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .mx-acc-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
   }
   .mx-acc-cta[aria-disabled="true"] {
     cursor: not-allowed;
@@ -1686,6 +1695,28 @@ select {
 
 .pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
   display: none;
+}
+
+.pd-servicewand .pf-cta--primary,
+.pd-servicewand .mx-cta,
+.pd-servicewand .mx-acc-cta {
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring) border-box;
+  border: 1px solid transparent;
+  color: var(--color-heading);
+}
+
+.pd-servicewand .pf-cta--filled {
+  background: var(--cta-secondary-fill);
+  border: 1px solid var(--cta-secondary-border, rgba(255, 255, 255, 0.18));
+  color: var(--cta-secondary-color, var(--color-white));
+}
+
+.pd-servicewand .pf-cta:hover,
+.pd-servicewand .mx-cta:hover,
+.pd-servicewand .mx-acc-cta:hover {
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
 }
 
 </style>
@@ -2495,6 +2526,10 @@ select {
     return price.intervalLabel || "";
   };
 
+  const ctaStyle = (plan) => (
+    plan.cardState === "featured" ? "filled" : "primary"
+  );
+
   const renderDynamicPlans = (section, pricing) => {
     const plans = pricing.plans;
     const grid = section.querySelector(".pf-grid");
@@ -2535,6 +2570,11 @@ select {
       setText(card, "[data-billed-annual]", intervalText(plan, "annual"));
 
       const ctaLabel = dynamicCtaLabel(section, plan);
+      const cta = card.querySelector(".pf-cta");
+      if (cta) {
+        cta.classList.remove("pf-cta--primary", "pf-cta--filled", "pf-cta--ghost");
+        cta.classList.add("pf-cta--" + ctaStyle(plan));
+      }
       setText(card, ".pf-cta", ctaLabel);
       setHref(card, ".pf-cta", pricing.config.purchaseUrl);
 

@@ -34,3 +34,25 @@
 .pd-servicewand .pf-plans[data-pricing-state="dynamic"] .pf-billed-stack {
   display: none;
 }
+
+.pd-servicewand .pf-cta--primary,
+.pd-servicewand .mx-cta,
+.pd-servicewand .mx-acc-cta {
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring) border-box;
+  border: 1px solid transparent;
+  color: var(--color-heading);
+}
+
+.pd-servicewand .pf-cta--filled {
+  background: var(--cta-secondary-fill);
+  border: 1px solid var(--cta-secondary-border, rgba(255, 255, 255, 0.18));
+  color: var(--cta-secondary-color, var(--color-white));
+}
+
+.pd-servicewand .pf-cta:hover,
+.pd-servicewand .mx-cta:hover,
+.pd-servicewand .mx-acc-cta:hover {
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
