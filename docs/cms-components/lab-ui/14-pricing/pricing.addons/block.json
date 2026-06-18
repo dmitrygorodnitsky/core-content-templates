@@ -3,13 +3,13 @@
   "id": "pricing.addons",
   "category": "14-pricing",
   "title": "Pricing · add-ons",
-  "description": "ServiceWand pricing add-ons block for independently editable capacity and usage units such as building packs, routing tokens, seats, and implementation support.",
+  "description": "ServiceWand pricing add-ons block for dynamic capacity and usage products such as building packs and routing token expansions. Static slots remain as the CMS/editor fallback.",
   "canonical": true,
   "theme": "light",
   "source": {
     "primary": "https://attio.com/pricing/",
     "adapted_from": "Information architecture reference only: separate credit/add-on rows. Visual language normalized to ServiceWand lab-ui tokens.",
-    "decision": "Stage 1 pricing scaffold — keep add-ons separate from plans so capacity and usage units can become CRM-managed later."
+    "decision": "Add-ons stay separate from plans and render from Core PIM catalogs when dynamic pricing is enabled; static slots are only the fallback/editor preview."
   },
   "depends_on": {
     "tokens": [
@@ -39,6 +39,22 @@
     { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Expand capacity without changing plans.", "name": "Add-ons Heading", "description": "Main heading for the add-ons section." },
     { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Buy more buildings, routing optimization tokens, and rollout support as operational demand grows.", "name": "Add-ons Lede", "description": "Introductory paragraph for the add-ons section." },
     { "code": "disclaimer", "type": "LOCALIZED_STRING_SS", "default": "Add-on availability can vary by plan. Final eligibility rules should come from CRM before upload.", "name": "Add-ons Disclaimer", "description": "Small disclaimer shown below the add-on cards." },
+    { "code": "dynamic_pricing_enabled", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Dynamic Pricing Enabled", "description": "Opts this block into loading Core PIM add-on catalogs. When false or when loading fails, the static add-on slots remain the rendered fallback/editor preview." },
+    { "code": "pricing_api_base", "type": "STRING", "default": "/core-pim/api", "name": "Pricing API Base", "description": "Core PIM API base path or origin. The shared pricing runtime posts to /public/{organization}/catalog/price-comparison.json." },
+    { "code": "pricing_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Pricing Organization", "description": "Core PIM organization code used in the public catalog URL." },
+    { "code": "pricing_catalog_specs", "type": "STRING", "default": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|;SERVICEWAND_SAAS_ROUTING_TOKENS|PER_UNIT|UNIT_PRICE|3,4,4.5,5|", "name": "Pricing Catalog Specs", "description": "Semicolon-separated dynamic catalogs. Format per item: productTypeCode|priceTypeCode|priceAttributeCode|priceAttributeValues|fixtureUrl. The fixtureUrl part stays empty in CMS production." },
+    { "code": "pricing_sort_attribute_code", "type": "STRING", "default": "SORT_ORDER_PRIORITY", "name": "Pricing Sort Attribute Code", "description": "Product attribute used to sort add-on products inside each requested catalog before falling back to amount." },
+    { "code": "pricing_currency", "type": "STRING", "default": "CAD", "name": "Pricing Currency", "description": "Currency attribute value requested from Core PIM." },
+    { "code": "pricing_purchase_url", "type": "URL", "default": "#", "name": "Dynamic Pricing Purchase URL", "description": "Shared purchase/contact URL available to dynamic adapters. The current add-ons card design has no visible CTA, but the value is still passed to the runtime for consistency." },
+    { "code": "pricing_buy_label", "type": "LOCALIZED_STRING_SS", "default": "Buy add-on", "name": "Dynamic Pricing Buy Label", "description": "Localized buy label available to dynamic adapters for numeric add-on pricing." },
+    { "code": "pricing_contact_label", "type": "LOCALIZED_STRING_SS", "default": "Contact us", "name": "Dynamic Pricing Contact Label", "description": "Label shown in place of price when Core PIM marks an add-on as custom or negotiated." },
+    { "code": "pricing_error_mode", "type": "ENUM", "options": ["fallback"], "default": "fallback", "name": "Dynamic Pricing Error Mode", "description": "Failure behavior for dynamic loading. Current supported behavior keeps the static CMS fallback and records data-pricing-error on the section." },
+    { "code": "addons_collapsed", "type": "ENUM", "options": ["off", "on"], "default": "off", "name": "Collapse Section", "description": "When 'on', the header becomes a teaser band and the whole card grid collapses behind a toggle (requires JS; without it every card stays visible). Works at any card count." },
+    { "code": "addons_summary_addons_label", "type": "LOCALIZED_STRING_SS", "default": "add-ons", "name": "Summary Add-ons Label", "description": "Localized label used by JS in the generated collapsed summary after the add-on count." },
+    { "code": "addons_summary_categories_label", "type": "LOCALIZED_STRING_SS", "default": "categories", "name": "Summary Categories Label", "description": "Localized label used by JS in the generated collapsed summary after the category count." },
+    { "code": "addons_summary_from_label", "type": "LOCALIZED_STRING_SS", "default": "from", "name": "Summary From Label", "description": "Localized prefix used by JS before the lowest numeric add-on price in the generated collapsed summary." },
+    { "code": "addons_more_label", "type": "LOCALIZED_STRING_SS", "default": "View add-ons", "name": "Expand Label", "description": "Band toggle label shown while the section is collapsed." },
+    { "code": "addons_less_label", "type": "LOCALIZED_STRING_SS", "default": "Hide add-ons", "name": "Collapse Label", "description": "Band toggle label shown while the section is expanded." },
     { "code": "addon_01_type", "type": "LOCALIZED_STRING_SS", "default": "Capacity", "name": "Add-on 1 Type", "description": "Category label for the first add-on." },
     { "code": "addon_01_plan_scope", "type": "LOCALIZED_STRING_SS", "default": "All plans", "name": "Add-on 1 Plan Scope", "description": "Plan availability label for the first add-on." },
     { "code": "addon_01_state", "type": "ENUM", "options": ["standard", "featured", "muted"], "default": "featured", "name": "Add-on 1 Card State", "description": "Visual state for the first add-on card." },
@@ -93,8 +109,8 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "Add-on slots are numbered and intentionally independent from plan slots.",
-    "Plan eligibility is displayed as text in stage 1; CRM rules can own actual eligibility later.",
-    "Routing optimization tokens are modeled as a usage add-on, not as a core plan feature."
+    "Dynamic mode is not limited by the fallback slot count; it renders every product returned by the configured Core PIM catalog specs.",
+    "pricing_catalog_specs can request multiple product types with different price filters. The production format leaves fixtureUrl empty.",
+    "Static add-on slots remain in the template only for editor preview and failure fallback."
   ]
 }

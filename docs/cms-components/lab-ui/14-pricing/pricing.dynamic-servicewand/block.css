@@ -8,6 +8,10 @@
   gap: var(--composition-section-y, clamp(4rem, 7vw, 6.5rem));
 }
 
+.pd-servicewand > [data-section-enabled="false"] {
+  display: none;
+}
+
 .pd-servicewand .cm-grid {
   grid-template-columns: 1fr;
 }

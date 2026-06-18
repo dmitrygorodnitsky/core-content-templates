@@ -55,6 +55,68 @@
   };
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
+  const enabled = (value) => value === "true" || value === "on" || value === "1";
+
+  const setupSectionCollapse = (section) => {
+    if (!enabled(section.dataset.collapsable)) return;
+    const toggle = section.querySelector(".mx-section-toggle");
+    const body = section.querySelector(".mx-body");
+    if (!toggle || !body) return;
+
+    if (!body.id) body.id = "pricing-matrix-body-" + Math.random().toString(36).slice(2);
+    toggle.setAttribute("aria-controls", body.id);
+    section.dataset.collapseReady = "1";
+
+    const sync = () => {
+      const collapsed = enabled(section.dataset.collapsed);
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      body.hidden = collapsed;
+    };
+
+    toggle.addEventListener("click", () => {
+      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
+      sync();
+    });
+
+    sync();
+  };
+
+  // Desktop row groups can collapse their rows behind a clickable group
+  // title (the mobile accordion already covers <=720px). Opt-in via
+  // data-groups-collapsible="on"; per-group default via data-group-collapsed.
+  const groupsCollapsible = (section) => section.dataset.groupsCollapsible === "on";
+
+  let groupSeq = 0;
+  const setupGroupToggle = (section, group) => {
+    if (!groupsCollapsible(section)) return;
+    const title = group.querySelector(".mx-group-title");
+    if (!title || title.dataset.collapsibleInit === "1") return;
+    title.dataset.collapsibleInit = "1";
+
+    if (!group.id) group.id = "mx-group-" + ++groupSeq;
+    if (group.dataset.groupCollapsed !== "true") group.dataset.groupCollapsed = "false";
+
+    const chev = append(title, el("span", "mx-group-chev"));
+    chev.setAttribute("aria-hidden", "true");
+
+    title.setAttribute("role", "button");
+    title.setAttribute("tabindex", "0");
+    title.setAttribute("aria-controls", group.id);
+    title.setAttribute("aria-expanded", String(group.dataset.groupCollapsed !== "true"));
+
+    const toggle = () => {
+      const collapsed = group.dataset.groupCollapsed === "true";
+      group.dataset.groupCollapsed = collapsed ? "false" : "true";
+      title.setAttribute("aria-expanded", String(collapsed));
+    };
+    title.addEventListener("click", toggle);
+    title.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    });
+  };
 
   const renderHead = (section, table, plans) => {
     const row = append(table, el("div", "mx-row mx-row--head"));
@@ -102,6 +164,8 @@
         setStateA11y(section, cell, value.state, valueNode);
       });
     });
+
+    setupGroupToggle(section, groupNode);
   };
 
   const renderCtaRow = (section, table, plans, config) => {
@@ -170,6 +234,7 @@
       renderHead(section, table, plans);
       pricing.groups.forEach((group) => renderTableGroup(section, table, group, plans));
       renderCtaRow(section, table, plans, pricing.config);
+      table.querySelectorAll(".mx-group").forEach((group) => setupGroupToggle(section, group));
     }
 
     const accordion = section.querySelector(".mx-shell--accordion");
@@ -231,6 +296,8 @@
     section.dataset.mxInit = "1";
     apply(section, section.dataset.pricingPeriod);
     labelStates(section);
+    setupSectionCollapse(section);
+    section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => setupGroupToggle(section, group));
 
     document.addEventListener(EVENT, (event) => {
       if (!event.detail) return;

@@ -1,5 +1,50 @@
 [
   {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_PLANS_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Plans Section",
+        "DESCRIPTION": "Controls whether the plans section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_COLLAPSABLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Collapsable",
+        "DESCRIPTION": "When true, shows an icon control that can collapse the whole plans section body."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_COLLAPSED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Plans · Collapsed by Default",
+        "DESCRIPTION": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_BILLING_DEFAULT",
     "type": "STRING",
     "nls": {
@@ -191,7 +236,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud."
+      "en": "Lorem Ipsum lorem."
     }
   },
   {
@@ -204,7 +249,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea."
+      "en": "Lorem Ipsum elit."
     }
   },
   {
@@ -217,7 +262,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+      "en": "Lorem Ipsum labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip."
     }
   },
   {
@@ -230,7 +275,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem."
+      "en": "Lorem Ipsum minim."
     }
   },
   {
@@ -243,7 +288,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit."
+      "en": "Lorem Ipsum nisi."
     }
   },
   {
@@ -256,7 +301,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore."
+      "en": "Lorem Ipsum aute."
     }
   },
   {
@@ -269,8 +314,53 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum minim veniam quis nostrud."
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
     }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_CREDITS_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Credits Section",
+        "DESCRIPTION": "Controls whether the routing tokens / credits section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_COLLAPSABLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Collapsable",
+        "DESCRIPTION": "Shared pricing-section contract. This credits block records the value but does not visually collapse yet; collapse behavior will be added in a later pass."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_COLLAPSED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Credits · Collapsed by Default",
+        "DESCRIPTION": "Shared pricing-section contract. Currently ignored by this credits block until section collapse behavior is implemented."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
   },
   {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRODUCT_TYPE_CODE",
@@ -389,7 +479,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ipsum."
+      "en": "Lorem Ipsum nulla."
     }
   },
   {
@@ -402,7 +492,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed."
+      "en": "Lorem Ipsum consectetur."
     }
   },
   {
@@ -415,7 +505,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+      "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
     }
   },
   {
@@ -428,7 +518,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      "en": "Lorem Ipsum enim ad minim veniam."
     }
   },
   {
@@ -441,7 +531,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aliquip."
+      "en": "Lorem Ipsum ullamco."
     }
   },
   {
@@ -454,8 +544,53 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing."
+      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
     }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_MATRIX_SECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Render Matrix Section",
+        "DESCRIPTION": "Controls whether the plan comparison matrix section is visible in this monoblock."
+      }
+    },
+    "value": "true",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_COLLAPSABLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Collapsable",
+        "DESCRIPTION": "When true, shows an icon control that can collapse the whole matrix section body. This is independent from Collapsible Row Groups."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_COLLAPSED",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Matrix · Collapsed by Default",
+        "DESCRIPTION": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+      }
+    },
+    "value": "false",
+    "options": [
+      "false",
+      "true"
+    ]
   },
   {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_MATRIX_FEATURE_COLUMN_LABEL",
@@ -467,7 +602,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla."
+      "en": "Lorem Ipsum dolore."
     }
   },
   {
@@ -480,7 +615,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
     }
   },
   {
@@ -493,7 +628,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum incididunt ut labore et."
+      "en": "Lorem Ipsum ex ea commodo consequat."
     }
   },
   {
@@ -506,7 +641,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam."
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
     }
   },
   {
@@ -519,7 +654,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
     }
   },
   {
@@ -532,7 +667,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum consequat."
+      "en": "Lorem Ipsum adipiscing."
     }
   },
   {
@@ -545,7 +680,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum esse."
+      "en": "Lorem Ipsum ut."
     }
   },
   {
@@ -558,7 +693,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolor."
+      "en": "Lorem Ipsum ad."
     }
   },
   {
@@ -571,7 +706,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
+      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
     }
   },
   {
@@ -584,7 +719,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore."
+      "en": "Lorem Ipsum duis."
     }
   },
   {
@@ -597,7 +732,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
     }
   }
 ]

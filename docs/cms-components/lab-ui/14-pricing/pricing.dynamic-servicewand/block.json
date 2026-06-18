@@ -61,6 +61,42 @@
   },
   "params": [
     {
+      "code": "render_plans_section",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "true",
+      "name": "ServiceWand · Render Plans Section",
+      "description": "Controls whether the plans section is visible in this monoblock.",
+      "preserve_default": true
+    },
+    {
+      "code": "render_credits_section",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "true",
+      "name": "ServiceWand · Render Credits Section",
+      "description": "Controls whether the routing tokens / credits section is visible in this monoblock.",
+      "preserve_default": true
+    },
+    {
+      "code": "render_matrix_section",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "true",
+      "name": "ServiceWand · Render Matrix Section",
+      "description": "Controls whether the plan comparison matrix section is visible in this monoblock.",
+      "preserve_default": true
+    },
+    {
       "code": "billing_default",
       "type": "ENUM",
       "options": [
@@ -274,6 +310,28 @@
       "description": "Introductory paragraph below the pricing headline."
     },
     {
+      "code": "plans_collapsable",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Plans · Collapsable",
+      "description": "When true, shows an icon control that can collapse the whole plans section body."
+    },
+    {
+      "code": "plans_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Plans · Collapsed by Default",
+      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+    },
+    {
       "code": "plans_billing_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Select billing cycle",
@@ -330,6 +388,28 @@
       "description": "Introductory paragraph for the section."
     },
     {
+      "code": "credits_collapsable",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Credits · Collapsable",
+      "description": "Shared pricing-section contract. This credits block records the value but does not visually collapse yet; collapse behavior will be added in a later pass."
+    },
+    {
+      "code": "credits_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Credits · Collapsed by Default",
+      "description": "Shared pricing-section contract. Currently ignored by this credits block until section collapse behavior is implemented."
+    },
+    {
       "code": "credits_packs_kicker",
       "type": "LOCALIZED_STRING_SS",
       "default": "Pre-purchase",
@@ -370,6 +450,28 @@
       "default": "Buildings, dispatch, automations, support and security across every tier.",
       "name": "Matrix · Matrix Lede",
       "description": "Introductory paragraph for the matrix."
+    },
+    {
+      "code": "matrix_collapsable",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Matrix · Collapsable",
+      "description": "When true, shows an icon control that can collapse the whole matrix section body. This is independent from Collapsible Row Groups."
+    },
+    {
+      "code": "matrix_collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Matrix · Collapsed by Default",
+      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
     },
     {
       "code": "matrix_table_label",

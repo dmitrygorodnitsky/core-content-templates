@@ -25,7 +25,7 @@
 <body data-theme="cyan">
 <div class="harness-label">pricing.plans-flex · fixture-backed dynamic pricing · use ?mode=fallback or ?mode=error for fallback checks</div>
 <div class="harness-pad">
-  <section class="pf-plans" data-block="pricing.plans-flex" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
+  <section class="pf-plans" data-block="pricing.plans-flex" data-collapsable="true" data-collapsed="false" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
     <div class="container">
       <header class="pf-top">
         <p class="pf-eyebrow">Pricing</p>
@@ -36,8 +36,12 @@
           <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">Annual</button>
         </div>
         <p class="pf-note">Annual pricing shown for planning. Final packaging can be connected to CRM rules later.</p>
+        <button class="pf-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-plans-body" aria-label="Plans that scale with field operations.">
+          <span class="pf-section-toggle-icon" aria-hidden="true"></span>
+        </button>
       </header>
 
+      <div class="pf-body" id="pricing-plans-body">
       <div class="pf-grid">
         <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
           <span class="pf-skel pf-skel--kicker"></span><span class="pf-skel pf-skel--title"></span><span class="pf-skel pf-skel--text"></span><span class="pf-skel pf-skel--price"></span><span class="pf-skel pf-skel--button"></span><span class="pf-skel pf-skel--line"></span><span class="pf-skel pf-skel--line pf-skel--short"></span>
@@ -185,6 +189,7 @@
           </ul>
           <p class="pf-disclaimer"></p>
         </article>
+      </div>
       </div>
     </div>
   </section>

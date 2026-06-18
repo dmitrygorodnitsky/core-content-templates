@@ -14,6 +14,32 @@
 
   const normalize = (mode) => (mode === "annual" ? "annual" : "monthly");
 
+  const enabled = (value) => value === "true" || value === "on" || value === "1";
+
+  const setupSectionCollapse = (section) => {
+    if (!enabled(section.dataset.collapsable)) return;
+    const toggle = section.querySelector(".pf-section-toggle");
+    const body = section.querySelector(".pf-body");
+    if (!toggle || !body) return;
+
+    if (!body.id) body.id = "pricing-plans-body-" + Math.random().toString(36).slice(2);
+    toggle.setAttribute("aria-controls", body.id);
+    section.dataset.collapseReady = "1";
+
+    const sync = () => {
+      const collapsed = enabled(section.dataset.collapsed);
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      body.hidden = collapsed;
+    };
+
+    toggle.addEventListener("click", () => {
+      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
+      sync();
+    });
+
+    sync();
+  };
+
   const apply = (section, mode) => {
     const next = normalize(mode);
     section.dataset.billing = next;
@@ -87,6 +113,14 @@
     plan.cardState === "featured" ? "filled" : "primary"
   );
 
+  const dynamicFeatures = (pricing, plan) => {
+    if (Array.isArray(plan.cardFeatures) && plan.cardFeatures.length) return plan.cardFeatures.slice(0, 5);
+    if (window.LabPricing && typeof window.LabPricing.featureList === "function") {
+      return window.LabPricing.featureList(plan, pricing.groups, 5);
+    }
+    return [];
+  };
+
   const renderDynamicPlans = (section, pricing) => {
     const plans = pricing.plans;
     const grid = section.querySelector(".pf-grid");
@@ -98,7 +132,7 @@
 
     const featuresByPlan = new Map(plans.map((plan) => [
       plan.code,
-      Array.isArray(plan.cardFeatures) ? plan.cardFeatures : [],
+      dynamicFeatures(pricing, plan),
     ]));
 
     grid.innerHTML = "";
@@ -192,6 +226,7 @@
     section.dataset.pfInit = "1";
 
     apply(section, section.dataset.billing);
+    setupSectionCollapse(section);
 
     section.querySelectorAll("[data-billing-option]").forEach((button) => {
       button.addEventListener("click", () => {

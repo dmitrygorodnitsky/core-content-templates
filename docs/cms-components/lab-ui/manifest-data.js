@@ -892,7 +892,7 @@ window.LAB_UI_MANIFEST = {
       "category": "14-pricing",
       "path": "14-pricing/pricing.addons",
       "title": "Pricing · add-ons",
-      "description": "ServiceWand pricing add-ons block for independently editable capacity and usage units such as building packs, routing tokens, seats, and implementation support.",
+      "description": "ServiceWand pricing add-ons block for dynamic capacity and usage products such as building packs and routing token expansions. Static slots remain as the CMS/editor fallback.",
       "canonical": true,
       "theme": "light",
       "sourceLabel": "https://attio.com/pricing/",
@@ -902,7 +902,7 @@ window.LAB_UI_MANIFEST = {
       },
       "previewVariants": [],
       "background": null,
-      "hasJs": false
+      "hasJs": true
     },
     {
       "id": "pricing.addons-bundles",

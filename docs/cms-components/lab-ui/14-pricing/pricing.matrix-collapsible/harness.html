@@ -25,14 +25,18 @@
 <body data-theme="cyan">
 <div class="harness-label">pricing.matrix-collapsible · fixture-backed dynamic pricing · use ?mode=fallback or ?mode=error for fallback checks</div>
 <div class="harness-pad">
-  <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="4" data-pricing-period="monthly" data-feature-column-label="Feature" data-cta-row-label="Ready to start?" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included" data-state-label-empty="No value" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
+  <section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-collapsable="true" data-collapsed="false" data-columns="4" data-groups-collapsible="on" data-pricing-period="monthly" data-feature-column-label="Feature" data-cta-row-label="Ready to start?" data-state-label-yes="Included" data-state-label-no="Not included" data-state-label-partial="Partially included" data-state-label-empty="No value" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback" data-pricing-fixture-url="../_fixtures/saas.json">
   <div class="container">
     <header class="mx-top">
       <p class="mx-eyebrow">Compare plans</p>
       <h2 class="mx-title">Every plan, side by side.</h2>
       <p class="mx-lede">Buildings, dispatch, automations, support and security across every tier.</p>
+      <button class="mx-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-matrix-body" aria-label="Every plan, side by side.">
+        <span class="mx-section-toggle-icon" aria-hidden="true"></span>
+      </button>
     </header>
 
+    <div class="mx-body" id="pricing-matrix-body">
     <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
       <div class="mx-skel-row mx-skel-row--head"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span><span class="mx-skel mx-skel--plan"></span></div>
       <div class="mx-skel-row"><span class="mx-skel mx-skel--feature"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span><span class="mx-skel mx-skel--cell"></span></div>
@@ -124,7 +128,7 @@
         </div>
       </div>
 
-      <div class="mx-group" role="rowgroup" data-group-visible="show">
+      <div class="mx-group" role="rowgroup" data-group-visible="show" data-group-collapsed="true">
         <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">Support and security</div></div>
         <div class="mx-row" role="row" data-row-visible="show">
           <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">Support tier</span><span class="mx-feature-hint"></span></div>
@@ -458,6 +462,7 @@
     </div>
 
     <p class="mx-disclaimer">Final entitlements may depend on CRM rules. Talk to sales for custom matches.</p>
+    </div>
   </div>
 </section>
 </div>

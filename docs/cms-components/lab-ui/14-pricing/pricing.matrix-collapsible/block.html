@@ -5,14 +5,18 @@
      <= 720px: per-plan accordion, each plan = a <details> with all groups
      listed inside.
 -->
-<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-columns="{{column_count}}" data-pricing-period="{{billing_default}}" data-feature-column-label="{{feature_column_label}}" data-cta-row-label="{{cta_row_label}}" data-state-label-yes="{{state_label_yes}}" data-state-label-no="{{state_label_no}}" data-state-label-partial="{{state_label_partial}}" data-state-label-empty="{{state_label_empty}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-collapsable="{{collapsable}}" data-collapsed="{{collapsed}}" data-columns="{{column_count}}" data-groups-collapsible="{{groups_collapsible}}" data-pricing-period="{{billing_default}}" data-feature-column-label="{{feature_column_label}}" data-cta-row-label="{{cta_row_label}}" data-state-label-yes="{{state_label_yes}}" data-state-label-no="{{state_label_no}}" data-state-label-partial="{{state_label_partial}}" data-state-label-empty="{{state_label_empty}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="mx-top">
       <p class="mx-eyebrow">{{eyebrow}}</p>
       <h2 class="mx-title">{{title}}</h2>
       <p class="mx-lede">{{lede}}</p>
+      <button class="mx-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-matrix-body" aria-label="{{title}}">
+        <span class="mx-section-toggle-icon" aria-hidden="true"></span>
+      </button>
     </header>
 
+    <div class="mx-body" id="pricing-matrix-body">
     <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
       <div class="mx-skel-row mx-skel-row--head">
         <span class="mx-skel mx-skel--feature"></span>
@@ -49,7 +53,7 @@
         <div class="mx-cell mx-cell--plan" role="columnheader" data-plan-col="04"><span class="mx-plan-name">{{plan_04_name}}</span><span class="mx-plan-tag">{{plan_04_tag}}</span></div>
       </div>
 
-      <div class="mx-group" role="rowgroup" data-group-visible="{{group_01_visible}}">
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_01_visible}}" data-group-collapsed="{{group_01_collapsed}}">
         <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_01_title}}</div></div>
         <div class="mx-row" role="row" data-row-visible="{{row_01_visible}}">
           <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_01_label}}</span><span class="mx-feature-hint">{{row_01_hint}}</span></div>
@@ -74,7 +78,7 @@
         </div>
       </div>
 
-      <div class="mx-group" role="rowgroup" data-group-visible="{{group_02_visible}}">
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_02_visible}}" data-group-collapsed="{{group_02_collapsed}}">
         <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_02_title}}</div></div>
         <div class="mx-row" role="row" data-row-visible="{{row_04_visible}}">
           <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_04_label}}</span><span class="mx-feature-hint">{{row_04_hint}}</span></div>
@@ -99,7 +103,7 @@
         </div>
       </div>
 
-      <div class="mx-group" role="rowgroup" data-group-visible="{{group_03_visible}}">
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_03_visible}}" data-group-collapsed="{{group_03_collapsed}}">
         <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_03_title}}</div></div>
         <div class="mx-row" role="row" data-row-visible="{{row_07_visible}}">
           <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_07_label}}</span><span class="mx-feature-hint">{{row_07_hint}}</span></div>
@@ -124,7 +128,7 @@
         </div>
       </div>
 
-      <div class="mx-group" role="rowgroup" data-group-visible="{{group_04_visible}}">
+      <div class="mx-group" role="rowgroup" data-group-visible="{{group_04_visible}}" data-group-collapsed="{{group_04_collapsed}}">
         <div class="mx-row--group" role="row"><div class="mx-group-title" role="rowheader">{{group_04_title}}</div></div>
         <div class="mx-row" role="row" data-row-visible="{{row_10_visible}}">
           <div class="mx-cell mx-cell--feature" role="rowheader"><span class="mx-feature-label">{{row_10_label}}</span><span class="mx-feature-hint">{{row_10_hint}}</span></div>
@@ -458,5 +462,6 @@
     </div>
 
     <p class="mx-disclaimer">{{disclaimer}}</p>
+    </div>
   </div>
 </section>

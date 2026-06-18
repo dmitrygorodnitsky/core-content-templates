@@ -1,16 +1,48 @@
 <!-- lab-ui block · pricing.addons
-     Static add-on marketplace scaffold for capacity and usage units.
-     Six independently editable add-on slots.
+     Dynamic add-on marketplace scaffold for capacity and usage units.
+     Static slots remain as CMS/editor fallback when dynamic loading is off or fails.
 -->
-<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons">
+<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-collapsed="{{addons_collapsed}}" data-summary-addons-label="{{addons_summary_addons_label}}" data-summary-categories-label="{{addons_summary_categories_label}}" data-summary-from-label="{{addons_summary_from_label}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-catalog-specs="{{pricing_catalog_specs}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
-    <header class="pricing-addons-top">
-      <p class="pricing-addons-eyebrow">{{eyebrow}}</p>
-      <h2 class="pricing-addons-title">{{title}}</h2>
-      <p class="pricing-addons-lede">{{lede}}</p>
-    </header>
+    <div class="pricing-addons-top">
+      <div class="pricing-addons-top-text">
+        <p class="pricing-addons-eyebrow">{{eyebrow}}</p>
+        <h2 class="pricing-addons-title">{{title}}</h2>
+        <p class="pricing-addons-lede">{{lede}}</p>
+        <p class="pricing-addons-summary" aria-live="polite"></p>
+      </div>
+      <div class="pricing-addons-top-aside">
+        <div class="pricing-addons-glyphs" aria-hidden="true"></div>
+        <button class="pricing-addons-toggle" type="button" aria-expanded="false">
+          <span class="pricing-addons-toggle-label" data-label-more="{{addons_more_label}}" data-label-less="{{addons_less_label}}">{{addons_more_label}}</span>
+          <span class="pricing-addons-toggle-chev" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
 
-    <div class="pricing-addons-grid">
+    <div class="pricing-addons-body">
+      <div class="pricing-addons-grid">
+      <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+      </article>
+      <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+      </article>
+      <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+        <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+        <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+      </article>
       <article class="pricing-addon-card pricing-addon-card--{{addon_01_state}}" data-addon-slot="01">
         <div class="pricing-addon-head">
           <span class="pricing-addon-type">{{addon_01_type}}</span>
@@ -94,8 +126,8 @@
         </div>
         <p class="pricing-addon-price">{{addon_06_price}}</p>
       </article>
+      </div>
+      <p class="pricing-addons-disclaimer">{{disclaimer}}</p>
     </div>
-
-    <p class="pricing-addons-disclaimer">{{disclaimer}}</p>
   </div>
 </section>

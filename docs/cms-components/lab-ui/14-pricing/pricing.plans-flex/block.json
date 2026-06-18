@@ -68,6 +68,28 @@
       "description": "Introductory paragraph below the pricing headline."
     },
     {
+      "code": "collapsable",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Collapsable",
+      "description": "When true, shows an icon control that can collapse the whole plans section body."
+    },
+    {
+      "code": "collapsed",
+      "type": "ENUM",
+      "options": [
+        "false",
+        "true"
+      ],
+      "default": "false",
+      "name": "Collapsed by Default",
+      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+    },
+    {
       "code": "billing_default",
       "type": "ENUM",
       "options": [

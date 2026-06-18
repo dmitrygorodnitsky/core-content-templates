@@ -108,6 +108,46 @@
   font-size: 0.8125rem;
   line-height: 1.45;
 }
+.pf-section-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: 22px auto 0;
+  border: 1px solid rgba(146, 170, 205, 0.35);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-heading);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+.pf-plans[data-collapsable="true"] .pf-section-toggle {
+  display: inline-flex;
+}
+.pf-section-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(146, 170, 205, 0.6);
+  box-shadow: var(--shadow-1);
+}
+.pf-section-toggle:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+.pf-section-toggle-icon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform var(--transition-fast);
+}
+.pf-plans[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .pf-section-toggle-icon {
+  transform: translateY(2px) rotate(-135deg);
+}
+.pf-plans[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .pf-body {
+  display: none;
+}
 
 /* ─── Grid · flexible static fallback slots ───────────────────
    Parent grid defines 8 explicit row tracks that match a card's
