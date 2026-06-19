@@ -430,7 +430,7 @@
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin-bottom: 0.125rem;
+  margin: 0 0 0.125rem;
 }
 
 .mob-ind-explore-desc {
@@ -478,7 +478,7 @@
   font-weight: 700;
   color: var(--color-heading);
   line-height: 1.2;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 .mob-ind-detail-body {
@@ -496,6 +496,11 @@
   font-weight: 500;
   color: var(--ind-accent);
   text-decoration: none;
+}
+
+.mob-ind-detail-cta.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .mob-ind-sublist {
@@ -1031,7 +1036,7 @@
   font-size: 1.375rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem;
 }
 
 .ind-default-desc {
@@ -1082,6 +1087,7 @@
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-heading);
+  margin: 0;
 }
 
 .ind-industry-body {
@@ -1110,6 +1116,11 @@
 .ind-cta-link:hover {
   gap: 0.5rem;
   opacity: 0.8;
+}
+
+.ind-cta-link.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .ind-cta-link--outline {
@@ -1156,6 +1167,11 @@
 
 .ind-sub-item:hover {
   background-color: var(--res-item-hover);
+}
+
+.ind-sub-item:has(.ind-badge) {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .ind-sub-icon {

@@ -27,9 +27,20 @@
               transform var(--transition-duration) ease;
 }
 
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.72;
+  box-shadow: none;
+  transform: none;
+}
+
 .btn-star {
   flex-shrink: 0;
   transition: transform var(--transition-duration) cubic-bezier(.4, 0, .2, 1);
+}
+
+.btn[aria-disabled="true"] .btn-star {
+  transform: none;
 }
 
 
@@ -111,6 +122,38 @@
   [data-fx="rise"]
 ):is(:hover, :focus-visible)::after {
   opacity: 0.48;
+}
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"] {
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]::after,
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]:is(:hover, :focus-visible)::after {
+  opacity: 0;
+}
+
+:where(
+  .btn-primary-ring,
+  .btn-secondary-filled,
+  [data-fx="rise"]
+)[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
 }
 
 /* Brand-primitive base — they all need to be relative for the
@@ -288,6 +331,30 @@
 
 .btn-primary-ring:hover .btn-star {
   transform: rotate(180deg);
+}
+
+.btn-primary-ring[aria-disabled="true"] {
+  color: var(--color-gray-blue);
+  background:
+    linear-gradient(var(--color-gray-bg), var(--color-gray-bg)) padding-box,
+    rgba(146, 170, 205, 0.28) border-box;
+}
+
+.btn-primary-ring[aria-disabled="true"]::before {
+  background: rgba(146, 170, 205, 0.28);
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible) {
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-primary-ring[aria-disabled="true"]:is(:hover, :focus-visible)::after {
+  opacity: 0;
+}
+
+.btn-primary-ring[aria-disabled="true"]:hover .btn-star {
+  transform: none;
 }
 
 
@@ -724,7 +791,7 @@
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin-bottom: 0.125rem;
+  margin: 0 0 0.125rem;
 }
 
 .mob-ind-explore-desc {
@@ -772,7 +839,7 @@
   font-weight: 700;
   color: var(--color-heading);
   line-height: 1.2;
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem;
 }
 
 .mob-ind-detail-body {
@@ -790,6 +857,11 @@
   font-weight: 500;
   color: var(--ind-accent);
   text-decoration: none;
+}
+
+.mob-ind-detail-cta.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .mob-ind-sublist {
@@ -1325,7 +1397,7 @@
   font-size: 1.375rem;
   font-weight: 700;
   color: var(--color-heading);
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem;
 }
 
 .ind-default-desc {
@@ -1376,6 +1448,7 @@
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-heading);
+  margin: 0;
 }
 
 .ind-industry-body {
@@ -1404,6 +1477,11 @@
 .ind-cta-link:hover {
   gap: 0.5rem;
   opacity: 0.8;
+}
+
+.ind-cta-link.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
 }
 
 .ind-cta-link--outline {
@@ -1450,6 +1528,11 @@
 
 .ind-sub-item:hover {
   background-color: var(--res-item-hover);
+}
+
+.ind-sub-item:has(.ind-badge) {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .ind-sub-icon {

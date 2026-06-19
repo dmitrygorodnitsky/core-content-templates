@@ -1124,9 +1124,16 @@
     {
       "code": "industry_ai_native_item_01_badge_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum",
+      "default": "Featured",
       "name": "Header AI Native item 1 badge label",
       "description": "Badge label for item 1 in the AI Native industry panel."
+    },
+    {
+      "code": "industry_badge_featured_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Featured",
+      "name": "Header featured badge label",
+      "description": "Shared badge label for featured industry links."
     },
     {
       "code": "industry_technology_nav_label",

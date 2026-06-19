@@ -187,13 +187,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     html += '<div class="mob-ind-detail-head">';
     if (labelEl) html += '<p class="mob-ind-detail-label">' + labelEl.innerHTML + "</p>";
-    if (titleEl) html += '<h3 class="mob-ind-detail-title">' + titleEl.innerHTML + "</h3>";
+    if (titleEl) html += '<p class="mob-ind-detail-title">' + titleEl.innerHTML + "</p>";
     if (bodyEl) html += '<p class="mob-ind-detail-body">' + bodyEl.innerHTML + "</p>";
     if (ctaEl) {
+      var ctaDisabledClass = ctaEl.classList.contains("is-disabled") ? " is-disabled" : "";
       html +=
         '<a href="' +
         (ctaEl.getAttribute("href") || "#") +
-        '" class="mob-ind-detail-cta">' +
+        '" class="mob-ind-detail-cta' +
+        ctaDisabledClass +
+        '">' +
         ctaEl.innerHTML +
         "</a>";
     }
