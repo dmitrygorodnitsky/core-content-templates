@@ -2,7 +2,7 @@
      Dynamic add-on marketplace scaffold for capacity and usage units.
      Static slots remain as CMS/editor fallback when dynamic loading is off or fails.
 -->
-<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-collapsed="{{addons_collapsed}}" data-summary-addons-label="{{addons_summary_addons_label}}" data-summary-categories-label="{{addons_summary_categories_label}}" data-summary-from-label="{{addons_summary_from_label}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-catalog-specs="{{pricing_catalog_specs}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-collapsable="{{collapsable}}" data-collapsed="{{collapsed}}" data-summary-addons-label="{{addons_summary_addons_label}}" data-summary-categories-label="{{addons_summary_categories_label}}" data-summary-from-label="{{addons_summary_from_label}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-catalog-specs="{{pricing_catalog_specs}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <div class="pricing-addons-top">
       <div class="pricing-addons-top-text">
@@ -55,6 +55,7 @@
           <span class="pricing-addon-unit">{{addon_01_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_01_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
 
       <article class="pricing-addon-card pricing-addon-card--{{addon_02_state}}" data-addon-slot="02">
@@ -69,6 +70,7 @@
           <span class="pricing-addon-unit">{{addon_02_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_02_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
 
       <article class="pricing-addon-card pricing-addon-card--{{addon_03_state}}" data-addon-slot="03">
@@ -83,6 +85,7 @@
           <span class="pricing-addon-unit">{{addon_03_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_03_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
 
       <article class="pricing-addon-card pricing-addon-card--{{addon_04_state}}" data-addon-slot="04">
@@ -97,6 +100,7 @@
           <span class="pricing-addon-unit">{{addon_04_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_04_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
 
       <article class="pricing-addon-card pricing-addon-card--{{addon_05_state}}" data-addon-slot="05">
@@ -111,6 +115,7 @@
           <span class="pricing-addon-unit">{{addon_05_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_05_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
 
       <article class="pricing-addon-card pricing-addon-card--{{addon_06_state}}" data-addon-slot="06">
@@ -125,6 +130,7 @@
           <span class="pricing-addon-unit">{{addon_06_unit}}</span>
         </div>
         <p class="pricing-addon-price">{{addon_06_price}}</p>
+        <a class="pricing-addon-cta" href="{{pricing_purchase_url}}">{{pricing_buy_label}}</a>
       </article>
       </div>
       <p class="pricing-addons-disclaimer">{{disclaimer}}</p>

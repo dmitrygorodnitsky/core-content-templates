@@ -72,8 +72,8 @@
           "hasJs": true
         },
         {
-          "id": "pricing.credits-meter",
-          "path": "14-pricing/pricing.credits-meter",
+          "id": "pricing.addons",
+          "path": "14-pricing/pricing.addons",
           "hasCss": true,
           "hasJs": true
         },

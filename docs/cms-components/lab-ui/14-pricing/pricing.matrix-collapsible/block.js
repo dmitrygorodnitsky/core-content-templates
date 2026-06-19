@@ -56,38 +56,31 @@
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
   const enabled = (value) => value === "true" || value === "on" || value === "1";
-
-  const setupSectionCollapse = (section) => {
-    if (!enabled(section.dataset.collapsable)) return;
-    const toggle = section.querySelector(".mx-section-toggle");
-    const body = section.querySelector(".mx-body");
-    if (!toggle || !body) return;
-
-    if (!body.id) body.id = "pricing-matrix-body-" + Math.random().toString(36).slice(2);
-    toggle.setAttribute("aria-controls", body.id);
-    section.dataset.collapseReady = "1";
-
-    const sync = () => {
-      const collapsed = enabled(section.dataset.collapsed);
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      body.hidden = collapsed;
-    };
-
-    toggle.addEventListener("click", () => {
-      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
-      sync();
-    });
-
-    sync();
-  };
+  const hasUnifiedGroupCollapse = (section) => Object.prototype.hasOwnProperty.call(section.dataset, "collapsable");
 
   // Desktop row groups can collapse their rows behind a clickable group
   // title (the mobile accordion already covers <=720px). Opt-in via
   // data-groups-collapsible="on"; per-group default via data-group-collapsed.
-  const groupsCollapsible = (section) => section.dataset.groupsCollapsible === "on";
+  const groupsCollapsible = (section) => {
+    if (hasUnifiedGroupCollapse(section)) return enabled(section.dataset.collapsable);
+    return section.dataset.groupsCollapsible === "on";
+  };
+
+  const applyUnifiedGroupCollapse = (section) => {
+    if (!hasUnifiedGroupCollapse(section)) return;
+    const collapsible = enabled(section.dataset.collapsable);
+    section.dataset.groupsCollapsible = collapsible ? "on" : "off";
+    section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => {
+      group.dataset.groupCollapsed = collapsible && enabled(section.dataset.collapsed) ? "true" : "false";
+    });
+  };
 
   let groupSeq = 0;
   const setupGroupToggle = (section, group) => {
+    if (hasUnifiedGroupCollapse(section)) {
+      const collapsible = enabled(section.dataset.collapsable);
+      group.dataset.groupCollapsed = collapsible && enabled(section.dataset.collapsed) ? "true" : "false";
+    }
     if (!groupsCollapsible(section)) return;
     const title = group.querySelector(".mx-group-title");
     if (!title || title.dataset.collapsibleInit === "1") return;
@@ -296,7 +289,7 @@
     section.dataset.mxInit = "1";
     apply(section, section.dataset.pricingPeriod);
     labelStates(section);
-    setupSectionCollapse(section);
+    applyUnifiedGroupCollapse(section);
     section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => setupGroupToggle(section, group));
 
     document.addEventListener(EVENT, (event) => {

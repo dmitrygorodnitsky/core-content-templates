@@ -1,9 +1,9 @@
 // lab-ui block · pricing.addons
-// Optional whole-section collapse. When data-collapsed="on", the header
+// Optional add-ons collapse. When data-collapsable="true", the header
 // becomes a teaser band (glyph stack derived from the cards + summary +
-// toggle) and the card grid collapses behind it. Works at any card count
-// and any viewport. Dynamic mode replaces fallback slots with every product
-// returned by the configured Core PIM catalog specs.
+// toggle) and data-collapsed controls the initial body state. Works at
+// any card count and any viewport. Dynamic mode replaces fallback slots
+// with every product returned by the configured Core PIM catalog specs.
 
 (() => {
   let addonsSeq = 0;
@@ -17,6 +17,15 @@
       document.addEventListener("DOMContentLoaded", fn, { once: true });
     } else fn();
   };
+
+  const enabled = (value) => value === "true" || value === "on" || value === "1";
+  const hasUnifiedCollapse = (section) => Object.prototype.hasOwnProperty.call(section.dataset, "collapsable");
+  const isCollapsable = (section) => (
+    hasUnifiedCollapse(section) ? enabled(section.dataset.collapsable) : section.dataset.collapsed === "on"
+  );
+  const isInitiallyCollapsed = (section) => (
+    hasUnifiedCollapse(section) ? enabled(section.dataset.collapsed) : section.dataset.collapsed === "on"
+  );
 
   const firstGlyph = (text) => {
     const trimmed = (text || "").trim();
@@ -205,6 +214,21 @@
     return parts.filter(Boolean).join(" / ");
   };
 
+  const ctaLabel = (section, plan) => {
+    if (plan && plan.customPrice) {
+      return section.dataset.pricingContactLabel || section.dataset.pricingBuyLabel || "";
+    }
+    return section.dataset.pricingBuyLabel || section.dataset.pricingContactLabel || "";
+  };
+
+  const renderCta = (section, card, plan) => {
+    const label = ctaLabel(section, plan);
+    if (!label) return;
+    const cta = append(card, el("a", "pricing-addon-cta", label));
+    cta.href = section.dataset.pricingPurchaseUrl || "#";
+    if (plan && plan.name) cta.setAttribute("aria-label", label + " - " + plan.name);
+  };
+
   const renderDetails = (card, details, primary) => {
     const extra = details.filter((detail) => detail !== primary);
     if (!extra.length) return;
@@ -241,6 +265,7 @@
 
     append(card, el("p", "pricing-addon-price", priceLabel(section, plan, item.pricing.config.locale)));
     renderDetails(card, details, primary);
+    renderCta(section, card, plan);
     return card;
   };
 
@@ -317,7 +342,11 @@
     const body = section.querySelector(".pricing-addons-body");
     if (!body) return;
 
-    if (section.dataset.collapsed !== "on" || !toggle) {
+    const collapsable = isCollapsable(section);
+    section.dataset.collapsable = String(collapsable);
+    section.dataset.collapsed = String(isInitiallyCollapsed(section));
+
+    if (!collapsable || !toggle) {
       loadDynamic(section).then(() => updateTeaser(section));
       return;
     }
@@ -328,7 +357,7 @@
     updateTeaser(section);
     section.dataset.collapseReady = "1";
 
-    let expanded = section.dataset.expanded === "true";
+    let expanded = section.dataset.expanded === "true" || !enabled(section.dataset.collapsed);
 
     const setLabel = () => {
       if (!label) return;
@@ -338,6 +367,7 @@
 
     const apply = (animate) => {
       section.dataset.expanded = String(expanded);
+      section.dataset.collapsed = String(!expanded);
       toggle.setAttribute("aria-expanded", String(expanded));
       setLabel();
       if (!animate) {

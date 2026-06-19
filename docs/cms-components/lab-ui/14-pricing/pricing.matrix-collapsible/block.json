@@ -70,7 +70,7 @@
       ],
       "default": "false",
       "name": "Collapsable",
-      "description": "When true, shows an icon control that can collapse the whole matrix section body. This is independent from Collapsible Row Groups."
+      "description": "When true, desktop matrix feature groups can collapse behind their group headers. When false, groups stay open and no group collapse UI is initialized."
     },
     {
       "code": "collapsed",
@@ -81,7 +81,7 @@
       ],
       "default": "false",
       "name": "Collapsed by Default",
-      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+      "description": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
     },
     {
       "code": "table_label",

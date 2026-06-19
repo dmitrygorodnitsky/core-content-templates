@@ -50,7 +50,7 @@
 
 .pricing-addons-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 .pricing-addon-card--skeleton { display: none; }
@@ -65,12 +65,12 @@
   display: none;
 }
 
-/* ─── Whole-section collapse (opt-in teaser band) ───────────────
-   When data-collapsed="on", the header becomes a left/right band with
-   a glyph stack + summary + toggle, and the card grid lives in a
-   collapsible body. Default (off) keeps the centered header and shows
-   everything, so no-JS visitors are unaffected. */
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-top {
+/* ─── Collapsible add-ons body (opt-in teaser band) ─────────────
+   When data-collapsable="true", the header becomes a left/right band
+   with a glyph stack + summary + toggle, and data-collapsed controls
+   only the initial body state. Default keeps the centered header and
+   shows everything, so no-JS visitors are unaffected. */
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
@@ -79,15 +79,15 @@
   margin-bottom: 28px;
   text-align: left;
 }
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-lede { display: none; }
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-summary {
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-lede { display: none; }
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-summary {
   display: block;
   margin: 10px 0 0;
   color: var(--color-gray-blue);
   font-size: 0.9375rem;
   line-height: 1.5;
 }
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-top-aside {
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
   display: flex;
   align-items: center;
   gap: 18px;
@@ -112,7 +112,7 @@
   background: var(--color-gray-bg);
   color: var(--color-gray-blue);
 }
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-toggle {
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-toggle {
   display: inline-flex;
   align-items: center;
   gap: 9px;
@@ -150,7 +150,7 @@
 .pricing-addons-toggle[aria-expanded="true"] .pricing-addons-toggle-chev {
   transform: translateY(1px) rotate(-135deg);
 }
-.pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-body {
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-body {
   overflow: hidden;
   transition: height var(--transition-base, 0.32s ease);
 }
@@ -279,6 +279,35 @@
   font-size: 0.9375rem;
   font-weight: 650;
 }
+.pricing-addon-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring, linear-gradient(90deg, rgba(255, 188, 120, 0.6), rgba(107, 234, 249, 0.7))) border-box;
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.pricing-addon-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+.pricing-addon-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
 .pricing-addon-details {
   display: grid;
   gap: 7px;
@@ -319,7 +348,12 @@
   }
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1180px) {
+  .pricing-addons-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
   .pricing-addons-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -339,11 +373,11 @@
   .pricing-addon-description {
     min-height: 0;
   }
-  .pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-top {
+  .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
     grid-template-columns: 1fr;
     gap: 18px;
   }
-  .pricing-addons[data-collapse-ready="1"][data-collapsed="on"] .pricing-addons-top-aside {
+  .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
     justify-content: space-between;
   }
 }

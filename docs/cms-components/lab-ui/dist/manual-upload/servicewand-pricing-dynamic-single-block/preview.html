@@ -423,46 +423,6 @@ select {
   font-size: 0.8125rem;
   line-height: 1.45;
 }
-.pf-section-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin: 22px auto 0;
-  border: 1px solid rgba(146, 170, 205, 0.35);
-  border-radius: var(--radius-pill);
-  background: var(--color-white);
-  color: var(--color-heading);
-  cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-}
-.pf-plans[data-collapsable="true"] .pf-section-toggle {
-  display: inline-flex;
-}
-.pf-section-toggle:hover {
-  transform: translateY(-1px);
-  border-color: rgba(146, 170, 205, 0.6);
-  box-shadow: var(--shadow-1);
-}
-.pf-section-toggle:focus-visible {
-  outline: 2px solid var(--cta-accent);
-  outline-offset: 2px;
-}
-.pf-section-toggle-icon {
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform var(--transition-fast);
-}
-.pf-plans[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .pf-section-toggle-icon {
-  transform: translateY(2px) rotate(-135deg);
-}
-.pf-plans[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .pf-body {
-  display: none;
-}
 
 /* ─── Grid · flexible static fallback slots ───────────────────
    Parent grid defines 8 explicit row tracks that match a card's
@@ -874,374 +834,388 @@ select {
 }
 
 
-/* generated child CSS: 14-pricing/pricing.credits-meter/block.css */
-/* lab-ui block · pricing.credits-meter
+/* generated child CSS: 14-pricing/pricing.addons/block.css */
+/* lab-ui block · pricing.addons
    Depends: 00-tokens/tokens.css. Light theme. */
 
-.cm-credits {
+.pricing-addons {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-family);
+  overflow-x: clip;
 }
-.cm-credits .container {
+.pricing-addons .container {
   max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
   margin-inline: auto;
   padding-inline: var(--container-padding-x);
 }
-
-.cm-top {
+.pricing-addons-top {
   max-width: 54rem;
-  margin: 0 auto clamp(2rem, 4vw, 2.75rem);
+  margin: 0 auto 34px;
   text-align: center;
 }
-.cm-eyebrow {
-  margin: 0 0 12px;
+.pricing-addons-eyebrow {
+  margin: 0 0 14px;
   font-family: var(--font-mono);
   font-size: var(--type-eyebrow-size);
   letter-spacing: var(--type-eyebrow-tracking);
   text-transform: uppercase;
-  color: var(--color-text-accent);
+  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
 }
-.cm-title {
+.pricing-addons-title {
   margin: 0 0 12px;
   color: var(--color-heading);
   font-size: var(--type-h2-size);
   font-weight: var(--type-h2-weight);
   line-height: var(--type-h2-leading);
   letter-spacing: var(--type-h2-tracking);
+  overflow-wrap: break-word;
 }
-.cm-lede {
-  margin: 0;
+.pricing-addons-lede {
+  max-width: 48rem;
+  margin: 0 auto;
+  color: var(--color-text);
   font-size: 1.0625rem;
   line-height: 1.55;
 }
+.pricing-addons-summary { display: none; }
+.pricing-addons-top-aside { display: none; }
+.pricing-addons-toggle { display: none; }
 
-/* ─── Two-card grid ─────────────────────────────────────────── */
-.cm-grid {
+.pricing-addons-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
-  align-items: stretch;
 }
-.cm-card {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 26px;
-  border: 1px solid rgba(146, 170, 205, 0.26);
-  border-radius: var(--radius-card);
-  background: var(--color-white);
+.pricing-addon-card--skeleton { display: none; }
+.pricing-addons[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .pricing-addon-card:not(.pricing-addon-card--skeleton) {
+  display: none;
 }
-.cm-card--allowance {
-  background:
-    radial-gradient(circle at 0% 0%, var(--cta-accent-soft), transparent 56%),
-    var(--color-white);
+.pricing-addons[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .pricing-addon-card--skeleton {
+  display: grid;
 }
-.cm-card--packs {
-  background: var(--color-gray-bg);
+.pricing-addons[data-pricing-state="dynamic"] .pricing-addon-card--skeleton,
+.pricing-addons[data-pricing-state="fallback"] .pricing-addon-card--skeleton {
+  display: none;
 }
-.cm-card-head { display: grid; gap: 6px; }
-.cm-card-kicker {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--color-text-accent);
+
+/* ─── Collapsible add-ons body (opt-in teaser band) ─────────────
+   When data-collapsable="true", the header becomes a left/right band
+   with a glyph stack + summary + toggle, and data-collapsed controls
+   only the initial body state. Default keeps the centered header and
+   shows everything, so no-JS visitors are unaffected. */
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 28px;
+  max-width: none;
+  margin-bottom: 28px;
+  text-align: left;
 }
-.cm-card-title {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: 1.375rem;
-  font-weight: 650;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-.cm-card-lede {
-  margin: 0;
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-lede { display: none; }
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-summary {
+  display: block;
+  margin: 10px 0 0;
   color: var(--color-gray-blue);
   font-size: 0.9375rem;
   line-height: 1.5;
 }
-
-/* ─── Allowance rows · plan → included → overage ────────────── */
-.cm-rows {
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.pricing-addons-glyphs { display: flex; }
+.pricing-addons-glyph {
+  width: 34px;
+  height: 34px;
+  margin-left: -10px;
+  border-radius: 9px;
   display: grid;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.cm-row {
-  display: grid;
-  grid-template-columns: minmax(120px, 1fr) auto auto minmax(120px, 1.1fr);
-  align-items: baseline;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px dashed rgba(146, 170, 205, 0.30);
-}
-.cm-row[data-plan-visible="hide"] { display: none; }
-.cm-row:last-child { border-bottom: 0; }
-.cm-row-plan {
-  color: var(--color-heading);
-  font-weight: 600;
-  font-size: 0.9375rem;
-}
-.cm-row-amount {
+  place-items: center;
   font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--color-heading);
-  letter-spacing: -0.02em;
-}
-.cm-row-unit {
-  color: var(--color-gray-blue);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-}
-.cm-row-overage {
-  text-align: right;
-  color: var(--color-text);
-  font-size: 0.8125rem;
-}
-.cm-row-overage::before {
-  content: "Overage ";
-  color: var(--color-gray-blue);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-right: 4px;
-}
-
-/* ─── Pack tiers ────────────────────────────────────────────── */
-.cm-packs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-}
-.cm-pack {
-  position: relative;
-  display: grid;
-  gap: 6px;
-  padding: 16px 14px;
-  border: 1px solid rgba(146, 170, 205, 0.22);
-  border-radius: var(--radius-card-sm);
-  background: var(--color-white);
-}
-.cm-pack[data-pack-visible="hide"] { display: none; }
-.cm-pack--skeleton {
-  display: none;
-  pointer-events: none;
-}
-.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack--skeleton {
-  display: grid;
-}
-.cm-credits[data-pricing-dynamic="true"]:not([data-pricing-state="dynamic"]):not([data-pricing-state="fallback"]) .cm-pack:not(.cm-pack--skeleton) {
-  display: none;
-}
-.cm-skel {
-  display: block;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(90deg, rgba(146, 170, 205, 0.14), rgba(146, 170, 205, 0.28), rgba(146, 170, 205, 0.14));
-  background-size: 200% 100%;
-  animation: cm-skeleton 1.2s ease-in-out infinite;
-}
-.cm-skel--badge { width: 42%; height: 12px; }
-.cm-skel--name { width: 72%; height: 14px; }
-.cm-skel--amount { width: 54%; height: 28px; }
-.cm-skel--price { width: 46%; height: 18px; }
-.cm-skel--rate { width: 64%; height: 12px; }
-@keyframes cm-skeleton {
-  to { background-position-x: -200%; }
-}
-.cm-pack--featured {
-  border-color: var(--cta-accent);
-  box-shadow: 0 0 0 1px var(--cta-accent);
-}
-.cm-pack--muted {
-  border-style: dashed;
-  background: transparent;
-}
-.cm-pack-badge {
-  position: absolute;
-  top: -10px;
-  left: 14px;
-  padding: 3px 8px;
-  border-radius: var(--radius-pill);
-  background: var(--cta-accent);
-  color: var(--color-heading);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.cm-pack-badge:empty { display: none; }
-.cm-pack-name {
-  margin: 0;
-  color: var(--color-gray-blue);
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.cm-pack-amount {
-  margin: 0;
-  color: var(--color-heading);
-  font-family: var(--font-mono);
-  font-size: 1.75rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.cm-pack-unit {
-  margin-left: 4px;
-  color: var(--color-gray-blue);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.cm-pack-price {
-  margin: 4px 0 0;
-  color: var(--color-heading);
-  font-size: 1rem;
-  font-weight: 650;
-}
-.cm-pack-rate {
-  margin: 0;
-  color: var(--color-gray-blue);
-  font-size: 0.75rem;
-}
-.cm-pack-details {
-  display: grid;
-  gap: 7px;
-  margin: 8px 0 0;
-  padding: 10px 0 0;
-  border-top: 1px solid rgba(146, 170, 205, 0.22);
-}
-.cm-pack-detail {
-  display: grid;
-  gap: 2px;
-  min-width: 0;
-}
-.cm-pack-detail dt {
-  color: var(--color-gray-blue);
-  font-size: 0.6875rem;
-  line-height: 1.25;
-}
-.cm-pack-detail dd {
-  margin: 0;
-  color: var(--color-heading);
   font-size: 0.8125rem;
   font-weight: 650;
-  line-height: 1.25;
-  overflow-wrap: anywhere;
+  color: var(--color-heading);
+  background: var(--cta-accent-soft, #d6f1f3);
+  border: 2px solid var(--color-bg);
 }
-
-.cm-packs-cta {
-  align-self: start;
+.pricing-addons-glyph:first-child { margin-left: 0; }
+.pricing-addons-glyph--more {
+  background: var(--color-gray-bg);
+  color: var(--color-gray-blue);
+}
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-toggle {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 9px;
   min-height: 42px;
-  padding: 0 18px;
+  padding: 0 20px;
+  border: none;
   border-radius: var(--radius-pill);
-  background: var(--color-white);
-  border: 1px solid rgba(146, 170, 205, 0.35);
-  color: var(--color-heading);
+  background: var(--color-heading);
+  color: var(--color-white);
+  font-family: var(--font-family);
   font-size: 0.9375rem;
   font-weight: 650;
-  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
-.cm-packs-cta:hover {
+.pricing-addons-toggle:hover {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-glow-soft);
+  box-shadow: var(--shadow-1);
 }
-.cm-packs-cta[aria-disabled="true"] {
-  cursor: not-allowed;
-  color: var(--color-gray-blue);
-  background: var(--color-gray-bg);
-  border-color: rgba(146, 170, 205, 0.28);
-  box-shadow: none;
-  opacity: 0.72;
-}
-.cm-packs-cta[aria-disabled="true"]:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-/* ─── Explainer + disclaimer ────────────────────────────────── */
-.cm-explainer {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px 16px;
-  align-items: baseline;
-  margin-top: 18px;
-  padding: 14px 18px;
-  border-left: 3px solid var(--cta-accent);
-  background: var(--cta-accent-soft);
-  border-radius: 8px;
-}
-.cm-explainer[data-explainer-visible="hide"] { display: none; }
-.cm-explainer-kicker {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--color-text-accent);
-  white-space: nowrap;
-}
-.cm-explainer-text {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-.cm-disclaimer {
-  margin: 20px 0 0;
-  color: var(--color-gray-blue);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  text-align: center;
-}
-
-@media (max-width: 900px) {
-  .cm-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 540px) {
-  .cm-card { padding: 22px; }
-  /* Keep the amount and its unit together on the right so the figure
-     does not read detached from what it measures. */
-  .cm-row {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "plan amount"
-      "plan unit"
-      "overage overage";
-    gap: 2px 10px;
-  }
-  .cm-row-plan { grid-area: plan; align-self: center; }
-  .cm-row-amount { grid-area: amount; justify-self: end; }
-  .cm-row-unit { grid-area: unit; justify-self: end; }
-  .cm-row-overage { grid-area: overage; text-align: left; margin-top: 4px; }
-  .cm-explainer {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ─── Accessibility ─────────────────────────────────────────── */
-.cm-packs-cta:focus-visible {
+.pricing-addons-toggle:focus-visible {
   outline: 2px solid var(--cta-accent);
   outline-offset: 2px;
 }
+.pricing-addons-toggle-chev {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform var(--transition-fast);
+  opacity: 0.85;
+}
+.pricing-addons-toggle[aria-expanded="true"] .pricing-addons-toggle-chev {
+  transform: translateY(1px) rotate(-135deg);
+}
+.pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-body {
+  overflow: hidden;
+  transition: height var(--transition-base, 0.32s ease);
+}
+.pricing-addon-card {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid rgba(146, 170, 205, 0.28);
+  border-radius: var(--radius-card);
+  background: var(--color-gray-bg);
+  overflow: hidden;
+}
+.pricing-addon-card--featured {
+  background:
+    linear-gradient(180deg, rgba(107, 234, 249, 0.16), rgba(255, 255, 255, 0) 52%),
+    var(--color-gray-bg);
+  border-color: rgba(107, 234, 249, 0.48);
+}
+.pricing-addon-card--muted {
+  opacity: 0.82;
+}
+.pricing-addon-card--skeleton {
+  min-height: 238px;
+  pointer-events: none;
+}
+.pricing-addon-skel {
+  display: block;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(226, 233, 242, 0.9), rgba(246, 249, 253, 0.9), rgba(226, 233, 242, 0.9));
+  background-size: 220% 100%;
+  animation: pricing-addon-skeleton 1.4s ease-in-out infinite;
+}
+.pricing-addon-skel--pill {
+  width: 92px;
+  height: 24px;
+}
+.pricing-addon-skel--title {
+  width: 72%;
+  height: 24px;
+}
+.pricing-addon-skel--text {
+  width: 100%;
+  height: 62px;
+  border-radius: var(--radius-card-sm, 14px);
+}
+.pricing-addon-skel--meter {
+  width: 54%;
+  height: 38px;
+}
+.pricing-addon-skel--price {
+  width: 42%;
+  height: 18px;
+}
+@keyframes pricing-addon-skeleton {
+  0% { background-position: 180% 0; }
+  100% { background-position: -40% 0; }
+}
+.pricing-addon-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.pricing-addon-type,
+.pricing-addon-plan {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pricing-addon-type {
+  color: var(--color-gray-blue);
+}
+.pricing-addon-plan {
+  padding: 3px 9px;
+  background: var(--color-white);
+  color: var(--color-heading);
+  border: 1px solid rgba(146, 170, 205, 0.28);
+}
+.pricing-addon-type:empty,
+.pricing-addon-plan:empty {
+  display: none;
+}
+.pricing-addon-name {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+.pricing-addon-description {
+  min-height: 66px;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+.pricing-addon-meter {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--color-heading);
+}
+.pricing-addon-quantity {
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+.pricing-addon-unit {
+  color: var(--color-gray-blue);
+  font-size: 0.875rem;
+}
+.pricing-addon-price {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+.pricing-addon-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background:
+    linear-gradient(var(--color-white), var(--color-white)) padding-box,
+    var(--gradient-cta-ring, linear-gradient(90deg, rgba(255, 188, 120, 0.6), rgba(107, 234, 249, 0.7))) border-box;
+  color: var(--color-heading);
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.pricing-addon-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 32px -4px var(--cta-accent, #6BEAF9);
+}
+.pricing-addon-cta:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 2px;
+}
+.pricing-addon-details {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-top: 2px;
+}
+.pricing-addon-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  color: var(--color-gray-blue);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+.pricing-addon-detail dt,
+.pricing-addon-detail dd {
+  min-width: 0;
+  margin: 0;
+}
+.pricing-addon-detail dd {
+  color: var(--color-heading);
+  font-weight: 650;
+  text-align: right;
+}
+.pricing-addons-disclaimer {
+  margin: 22px 0 0;
+  color: var(--color-gray-blue);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cm-credits *,
-  .cm-credits *::before,
-  .cm-credits *::after {
+  .pricing-addons *,
+  .pricing-addons *::before,
+  .pricing-addons *::after {
+    animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 1180px) {
+  .pricing-addons-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  .pricing-addons-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .pricing-addons .container {
+    max-width: 100%;
+    padding-inline: 20px;
+  }
+  .pricing-addons-title {
+    font-size: 2rem;
+    line-height: 1.12;
+  }
+  .pricing-addons-grid {
+    grid-template-columns: 1fr;
+  }
+  .pricing-addon-description {
+    min-height: 0;
+  }
+  .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
+    justify-content: space-between;
   }
 }
 
@@ -1287,46 +1261,6 @@ select {
   margin: 0;
   font-size: 1.0625rem;
   line-height: 1.55;
-}
-.mx-section-toggle {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin: 22px auto 0;
-  border: 1px solid rgba(146, 170, 205, 0.35);
-  border-radius: var(--radius-pill);
-  background: var(--color-white);
-  color: var(--color-heading);
-  cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-}
-.mx-matrix[data-collapsable="true"] .mx-section-toggle {
-  display: inline-flex;
-}
-.mx-section-toggle:hover {
-  transform: translateY(-1px);
-  border-color: rgba(146, 170, 205, 0.6);
-  box-shadow: var(--shadow-1);
-}
-.mx-section-toggle:focus-visible {
-  outline: 2px solid var(--cta-accent, var(--color-text-accent));
-  outline-offset: 2px;
-}
-.mx-section-toggle-icon {
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform var(--transition-fast);
-}
-.mx-matrix[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .mx-section-toggle-icon {
-  transform: translateY(2px) rotate(-135deg);
-}
-.mx-matrix[data-collapsable="true"][data-collapse-ready="1"][data-collapsed="true"] .mx-body {
-  display: none;
 }
 
 /* ─── Column count → grid tracks ───────────────────────────── */
@@ -1771,7 +1705,7 @@ select {
 
 /* generated child CSS: 14-pricing/pricing.dynamic-servicewand/block.css */
 /* lab-ui block · pricing.dynamic-servicewand
-   Permanent source monoblock for the three dynamic ServiceWand pricing
+   Permanent source monoblock for the dynamic ServiceWand pricing
    sections. Child section CSS/JS is pulled through depends_on.other_blocks;
    this file owns only cross-section spacing and dynamic-only fallbacks. */
 
@@ -1784,12 +1718,7 @@ select {
   display: none;
 }
 
-.pd-servicewand .cm-grid {
-  grid-template-columns: 1fr;
-}
-
 .pd-servicewand .pf-plans[data-pricing-state="fallback"] [data-plan-slot],
-.pd-servicewand .cm-credits[data-pricing-state="fallback"] .cm-pack:not(.cm-pack--skeleton),
 .pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--table,
 .pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--accordion {
   display: none;
@@ -1840,7 +1769,7 @@ select {
 <section class="composition-section composition-section--pricing-dynamic-servicewand" data-composition-block="pricing.dynamic-servicewand">
 <section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
 <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-feature-list-label="[object Object]" data-pricing-error-mode="fallback">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-feature-list-label="[object Object]" data-pricing-error-mode="fallback">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">[object Object]</p>
@@ -1851,12 +1780,8 @@ select {
         <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">[object Object]</button>
       </div>
       <p class="pf-note">[object Object]</p>
-      <button class="pf-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-plans-body" aria-label="[object Object]">
-        <span class="pf-section-toggle-icon" aria-hidden="true"></span>
-      </button>
     </header>
 
-    <div class="pf-body" id="pricing-plans-body">
     <div class="pf-grid" data-plan-count="auto">
       <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
         <span class="pf-skel pf-skel--kicker"></span>
@@ -1910,76 +1835,66 @@ select {
         <p class="pf-disclaimer"></p>
       </article>
     </div>
-    </div>
   </div>
 </section>
 
-<!-- lab-ui block · pricing.dynamic-servicewand/credits -->
-<section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS_ROUTING_TOKENS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="PER_UNIT" data-pricing-price-attribute-code="UNIT_PRICE" data-pricing-price-attribute-values="3,4,4.5,5" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-credits" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-token-unit-label="[object Object]" data-pricing-token-rate-label="[object Object]" data-pricing-token-custom-rate-label="[object Object]" data-pricing-error-mode="fallback">
+<!-- lab-ui block · pricing.dynamic-servicewand/addons -->
+<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-section-enabled="true" data-collapsable="true" data-collapsed="true" data-summary-addons-label="[object Object]" data-summary-categories-label="[object Object]" data-summary-from-label="[object Object]" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-catalog-specs="SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-addons" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-error-mode="fallback">
   <div class="container">
-    <header class="cm-top">
-      <p class="cm-eyebrow">[object Object]</p>
-      <h2 class="cm-title">[object Object]</h2>
-      <p class="cm-lede">[object Object]</p>
-    </header>
+    <div class="pricing-addons-top">
+      <div class="pricing-addons-top-text">
+        <p class="pricing-addons-eyebrow">[object Object]</p>
+        <h2 class="pricing-addons-title">[object Object]</h2>
+        <p class="pricing-addons-lede">[object Object]</p>
+        <p class="pricing-addons-summary" aria-live="polite"></p>
+      </div>
+      <div class="pricing-addons-top-aside">
+        <div class="pricing-addons-glyphs" aria-hidden="true"></div>
+        <button class="pricing-addons-toggle" type="button" aria-expanded="false">
+          <span class="pricing-addons-toggle-label" data-label-more="[object Object]" data-label-less="[object Object]">[object Object]</span>
+          <span class="pricing-addons-toggle-chev" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
 
-    <div class="cm-grid">
-      <article class="cm-card cm-card--packs">
-        <header class="cm-card-head">
-          <span class="cm-card-kicker">[object Object]</span>
-          <h3 class="cm-card-title">[object Object]</h3>
-          <p class="cm-card-lede">[object Object]</p>
-        </header>
-
-        <div class="cm-packs">
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack" data-pack-visible="hide" data-nosnippet>
-            <span class="cm-pack-badge"></span>
-            <h4 class="cm-pack-name"></h4>
-            <p class="cm-pack-amount"></p>
-            <p class="cm-pack-price"></p>
-            <p class="cm-pack-rate"></p>
-          </article>
-        </div>
-        <a class="cm-packs-cta" href="#pricing-credits">[object Object]</a>
-      </article>
+    <div class="pricing-addons-body">
+      <div class="pricing-addons-grid">
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+      </div>
+      <p class="pricing-addons-disclaimer">[object Object]</p>
     </div>
   </div>
 </section>
 
 <!-- lab-ui block · pricing.dynamic-servicewand/matrix -->
-<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-columns="auto" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-error-mode="fallback" data-feature-column-label="[object Object]" data-state-label-yes="[object Object]" data-state-label-no="[object Object]" data-state-label-partial="[object Object]" data-state-label-empty="[object Object]" data-cta-row-label="[object Object]">
+<section class="mx-matrix" id="pricing-compare" data-block="pricing.matrix-collapsible" data-section-enabled="true" data-collapsable="true" data-collapsed="false" data-columns="auto" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1 month" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="[object Object]" data-pricing-contact-label="[object Object]" data-pricing-error-mode="fallback" data-feature-column-label="[object Object]" data-state-label-yes="[object Object]" data-state-label-no="[object Object]" data-state-label-partial="[object Object]" data-state-label-empty="[object Object]" data-cta-row-label="[object Object]">
   <div class="container">
     <header class="mx-top">
       <p class="mx-eyebrow">[object Object]</p>
       <h2 class="mx-title">[object Object]</h2>
       <p class="mx-lede">[object Object]</p>
-      <button class="mx-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-matrix-body" aria-label="[object Object]">
-        <span class="mx-section-toggle-icon" aria-hidden="true"></span>
-      </button>
     </header>
 
-    <div class="mx-body" id="pricing-matrix-body">
     <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
       <span class="mx-skel mx-skel--head"></span>
       <span class="mx-skel mx-skel--row"></span>
@@ -1990,7 +1905,6 @@ select {
     <div class="mx-shell mx-shell--table" role="table" aria-label="[object Object]"></div>
     <div class="mx-shell--accordion" aria-label="[object Object]"></div>
     <p class="mx-disclaimer">[object Object]</p>
-    </div>
   </div>
 </section>
 </section>
@@ -2319,6 +2233,7 @@ select {
           const orders = groupDef[groupCode] || [];
           const attributes = [];
           for (const order of orders) {
+            if (isSortAttribute(order.attributeCode, config)) continue;
             if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
@@ -2346,6 +2261,12 @@ select {
       }
     }
     return result;
+  }
+
+  function isSortAttribute(code, config) {
+    const attributeCode = safeText(code).toUpperCase();
+    const sortCode = safeText(config && config.productSortAttributeCode).toUpperCase();
+    return !!attributeCode && !!sortCode && attributeCode === sortCode;
   }
 
   function isPlanCardFeatureAttribute(code) {
@@ -2581,32 +2502,6 @@ select {
 
   const normalize = (mode) => (mode === "annual" ? "annual" : "monthly");
 
-  const enabled = (value) => value === "true" || value === "on" || value === "1";
-
-  const setupSectionCollapse = (section) => {
-    if (!enabled(section.dataset.collapsable)) return;
-    const toggle = section.querySelector(".pf-section-toggle");
-    const body = section.querySelector(".pf-body");
-    if (!toggle || !body) return;
-
-    if (!body.id) body.id = "pricing-plans-body-" + Math.random().toString(36).slice(2);
-    toggle.setAttribute("aria-controls", body.id);
-    section.dataset.collapseReady = "1";
-
-    const sync = () => {
-      const collapsed = enabled(section.dataset.collapsed);
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      body.hidden = collapsed;
-    };
-
-    toggle.addEventListener("click", () => {
-      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
-      sync();
-    });
-
-    sync();
-  };
-
   const apply = (section, mode) => {
     const next = normalize(mode);
     section.dataset.billing = next;
@@ -2793,7 +2688,6 @@ select {
     section.dataset.pfInit = "1";
 
     apply(section, section.dataset.billing);
-    setupSectionCollapse(section);
 
     section.querySelectorAll("[data-billing-option]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -2817,15 +2711,20 @@ select {
 })();
 
 
-/* generated child JS: 14-pricing/pricing.credits-meter/block.js */
-// lab-ui block · pricing.credits-meter
-// Mirrors cross-block billing changes and can opt into the shared
-// LabPricing runtime for routing-token price tiers.
+/* generated child JS: 14-pricing/pricing.addons/block.js */
+// lab-ui block · pricing.addons
+// Optional add-ons collapse. When data-collapsable="true", the header
+// becomes a teaser band (glyph stack derived from the cards + summary +
+// toggle) and data-collapsed controls the initial body state. Works at
+// any card count and any viewport. Dynamic mode replaces fallback slots
+// with every product returned by the configured Core PIM catalog specs.
 
 (() => {
-  const EVENT = "pricing:billing";
-  const TOKEN_ATTRIBUTE = "ROUTING_TOKENS";
-  const LOREM = "Lorem ipsum";
+  let addonsSeq = 0;
+  const DEFAULT_SPECS = [
+    "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|",
+    "SERVICEWAND_SAAS_ROUTING_TOKENS|PER_UNIT|UNIT_PRICE|3,4,4.5,5|",
+  ];
 
   const ready = (fn) => {
     if (document.readyState === "loading") {
@@ -2833,64 +2732,174 @@ select {
     } else fn();
   };
 
-  const apply = (section, mode) => {
-    section.dataset.pricingPeriod = mode === "annual" ? "annual" : "monthly";
-  };
-
-  const setText = (root, selector, value) => {
-    const node = root.querySelector(selector);
-    if (node) node.textContent = value || "";
-  };
-
-  const setHref = (root, selector, value) => {
-    const node = root.querySelector(selector);
-    if (node) node.setAttribute("href", value || "#");
-  };
-
-  const text = (value) => (
-    window.LabPricing ? window.LabPricing.safeText(value) : String(value == null ? "" : value).trim()
+  const enabled = (value) => value === "true" || value === "on" || value === "1";
+  const hasUnifiedCollapse = (section) => Object.prototype.hasOwnProperty.call(section.dataset, "collapsable");
+  const isCollapsable = (section) => (
+    hasUnifiedCollapse(section) ? enabled(section.dataset.collapsable) : section.dataset.collapsed === "on"
+  );
+  const isInitiallyCollapsed = (section) => (
+    hasUnifiedCollapse(section) ? enabled(section.dataset.collapsed) : section.dataset.collapsed === "on"
   );
 
-  const tokenAmount = (plan) => {
-    const attributes = plan && plan.row && plan.row.product && plan.row.product.attributes;
-    if (!attributes) return "";
+  const firstGlyph = (text) => {
+    const trimmed = (text || "").trim();
+    return trimmed ? trimmed[0].toUpperCase() : "+";
+  };
 
-    for (const values of Object.values(attributes)) {
-      const raw = values && values[TOKEN_ATTRIBUTE];
-      if (raw && raw.value != null && raw.value !== "") return text(raw.value);
+  const textOf = (node, selector) => {
+    const target = node && node.querySelector(selector);
+    return target ? target.textContent.trim() : "";
+  };
+
+  const cards = (section) => Array.from(section.querySelectorAll(".pricing-addon-card"));
+  const realCards = (section) => {
+    const items = cards(section).filter((card) => !card.classList.contains("pricing-addon-card--skeleton"));
+    if (section.dataset.pricingDynamic !== "true") return items;
+    if (section.dataset.pricingState !== "dynamic" && section.dataset.pricingState !== "fallback") return [];
+    return items;
+  };
+
+  const numericPrice = (text) => {
+    const match = String(text || "").match(/[-+]?\d[\d,]*(?:\.\d+)?/);
+    if (!match) return null;
+    return {
+      rank: Number(match[0].replace(/,/g, "")),
+      text: String(text || "").trim(),
+    };
+  };
+
+  const lowestPriceText = (items) => {
+    return items
+      .map((card) => numericPrice(textOf(card, ".pricing-addon-price")))
+      .filter(Boolean)
+      .sort((a, b) => a.rank - b.rank)[0]?.text || "";
+  };
+
+  const updateSummary = (section) => {
+    const summary = section.querySelector(".pricing-addons-summary");
+    if (!summary) return;
+
+    const items = realCards(section);
+    if (!items.length) {
+      summary.textContent = "";
+      return;
     }
-    return "";
+
+    const categories = new Set(items.map((card) => textOf(card, ".pricing-addon-type")).filter(Boolean));
+    const parts = [
+      items.length + " " + (section.dataset.summaryAddonsLabel || "add-ons"),
+    ];
+    if (categories.size) {
+      parts.push(categories.size + " " + (section.dataset.summaryCategoriesLabel || "categories"));
+    }
+
+    const price = lowestPriceText(items);
+    if (price) {
+      parts.push((section.dataset.summaryFromLabel || "from") + " " + price);
+    }
+
+    summary.textContent = parts.join(" · ");
+  };
+
+  const buildGlyphStack = (section, glyphs) => {
+    if (!glyphs) return;
+    glyphs.textContent = "";
+    const items = realCards(section);
+    const shown = items.slice(0, 5);
+    shown.forEach((card) => {
+      const name = card.querySelector(".pricing-addon-name");
+      const tile = document.createElement("span");
+      tile.className = "pricing-addons-glyph";
+      tile.textContent = firstGlyph(name && name.textContent);
+      glyphs.appendChild(tile);
+    });
+    if (items.length > shown.length) {
+      const more = document.createElement("span");
+      more.className = "pricing-addons-glyph pricing-addons-glyph--more";
+      more.textContent = "+" + (items.length - shown.length);
+      glyphs.appendChild(more);
+    }
+  };
+
+  const updateTeaser = (section) => {
+    buildGlyphStack(section, section.querySelector(".pricing-addons-glyphs"));
+    updateSummary(section);
+  };
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+
+  const append = (parent, child) => {
+    parent.appendChild(child);
+    return child;
+  };
+
+  const safe = (value) => (
+    window.LabPricing ? window.LabPricing.safeText(value) : String(value == null ? "" : value).replace(/\s+/g, " ").trim()
+  );
+
+  const parseCatalogSpecs = (section) => {
+    const source = safe(section.dataset.pricingCatalogSpecs);
+    const specs = (source ? source.split(";") : DEFAULT_SPECS)
+      .map((item) => item.trim())
+      .filter(Boolean)
+      .map((item) => {
+        const parts = item.split("|").map((part) => part.trim());
+        return {
+          productTypeCode: parts[0] || "",
+          priceTypeCode: parts[1] || "RECURRENT",
+          priceAttributeCode: parts[2] || "INTERVAL",
+          priceAttributeValues: parts[3] || "1",
+          fixtureUrl: parts[4] || "",
+        };
+      })
+      .filter((spec) => spec.productTypeCode);
+
+    if (specs.length) return specs;
+    const fallbackCode = safe(section.dataset.pricingProductTypeCode);
+    return fallbackCode ? [{
+      productTypeCode: fallbackCode,
+      priceTypeCode: safe(section.dataset.pricingPriceTypeCode) || "RECURRENT",
+      priceAttributeCode: safe(section.dataset.pricingPriceAttributeCode) || "INTERVAL",
+      priceAttributeValues: safe(section.dataset.pricingPriceAttributeValues) || "1",
+      fixtureUrl: safe(section.dataset.pricingFixtureUrl),
+    }] : [];
+  };
+
+  const configSectionFor = (section, spec) => {
+    const proxy = document.createElement("section");
+    Object.keys(section.dataset).forEach((key) => {
+      proxy.dataset[key] = section.dataset[key];
+    });
+    proxy.dataset.pricingDynamic = "true";
+    proxy.dataset.pricingProductTypeCode = spec.productTypeCode;
+    proxy.dataset.pricingPriceTypeCode = spec.priceTypeCode;
+    proxy.dataset.pricingPriceAttributeCode = spec.priceAttributeCode;
+    proxy.dataset.pricingPriceAttributeValues = spec.priceAttributeValues;
+    if (spec.fixtureUrl) proxy.dataset.pricingFixtureUrl = spec.fixtureUrl;
+    else delete proxy.dataset.pricingFixtureUrl;
+    return proxy;
   };
 
   const formatCurrency = (plan, locale) => {
     if (!plan || plan.customPrice) return "";
     const amount = Number(plan.amount);
-    if (!Number.isFinite(amount)) return plan.amountText || "";
-
-    const currency = plan.currency || "CAD";
+    if (!Number.isFinite(amount)) return [plan.amountText, plan.currency].filter(Boolean).join(" ");
     try {
       return new Intl.NumberFormat(locale || undefined, {
         style: "currency",
-        currency,
+        currency: plan.currency || "CAD",
         currencyDisplay: "narrowSymbol",
         minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
         maximumFractionDigits: 2,
-      }).format(amount) + (currency ? " " + currency : "");
+      }).format(amount) + (plan.currency ? " " + plan.currency : "");
     } catch (error) {
-      return ((plan.amountText || amount) + " " + currency).trim();
+      return [plan.amountText || String(amount), plan.currency].filter(Boolean).join(" ");
     }
-  };
-
-  const dynamicPriceLabel = (section, plan, locale) => {
-    if (plan.customPrice) {
-      return section.dataset.pricingContactLabel || "";
-    }
-    return formatCurrency(plan, locale);
-  };
-
-  const fallbackText = (root, selector) => {
-    const node = root.querySelector(selector);
-    return node ? node.textContent.trim() : "";
   };
 
   const planDetails = (plan, groups) => {
@@ -2903,130 +2912,218 @@ select {
           code: attr.code,
           label: attr.label,
           state: value.state,
-          text: value.text || "",
+          text: value.text || (value.state === "yes" ? "" : ""),
         });
       }
     }
     return details;
   };
 
-  const renderPackDetails = (pack, details) => {
-    const existing = pack.querySelector(".cm-pack-details");
-    if (existing) existing.remove();
-    if (!details.length) return;
+  const primaryDetail = (details) => details.find((detail) => detail.text) || details[0] || null;
 
-    const list = document.createElement("dl");
-    list.className = "cm-pack-details";
-
-    for (const detail of details) {
-      const item = document.createElement("div");
-      item.className = "cm-pack-detail";
-      item.dataset.attributeCode = detail.code;
-      item.dataset.state = detail.state;
-
-      const label = document.createElement("dt");
-      label.textContent = detail.label;
-      item.appendChild(label);
-
-      if (detail.text) {
-        const value = document.createElement("dd");
-        value.dataset.state = detail.state;
-        value.textContent = detail.text;
-        item.appendChild(value);
-      }
-
-      list.appendChild(item);
-    }
-
-    pack.appendChild(list);
+  const priceLabel = (section, plan, locale) => {
+    if (!plan || plan.customPrice) return section.dataset.pricingContactLabel || "";
+    const parts = [formatCurrency(plan, locale)];
+    if (plan.intervalLabel) parts.push(plan.intervalLabel);
+    return parts.filter(Boolean).join(" / ");
   };
 
-  const renderDynamicPacks = (section, pricing) => {
-    const plans = pricing.plans;
-    const packList = section.querySelector(".cm-packs");
-    if (!packList) return;
+  const ctaLabel = (section, plan) => {
+    if (plan && plan.customPrice) {
+      return section.dataset.pricingContactLabel || section.dataset.pricingBuyLabel || "";
+    }
+    return section.dataset.pricingBuyLabel || section.dataset.pricingContactLabel || "";
+  };
 
-    const templates = Array.from(packList.querySelectorAll(".cm-pack:not(.cm-pack--skeleton)"))
-      .map((pack) => pack.cloneNode(true));
-    if (!templates.length) return;
+  const renderCta = (section, card, plan) => {
+    const label = ctaLabel(section, plan);
+    if (!label) return;
+    const cta = append(card, el("a", "pricing-addon-cta", label));
+    cta.href = section.dataset.pricingPurchaseUrl || "#";
+    if (plan && plan.name) cta.setAttribute("aria-label", label + " - " + plan.name);
+  };
 
-    packList.innerHTML = "";
+  const renderDetails = (card, details, primary) => {
+    const extra = details.filter((detail) => detail !== primary);
+    if (!extra.length) return;
 
-    plans.forEach((plan, index) => {
-      const pack = (templates[index] || templates[0]).cloneNode(true);
-      const tokens = tokenAmount(plan);
-      pack.dataset.packVisible = "show";
-      pack.dataset.planCode = plan.code;
-      setText(pack, ".cm-pack-badge", "");
-      setText(pack, ".cm-pack-name", plan.name);
-      setText(pack, ".cm-pack-amount", tokens || plan.amountText || "");
-
-      const unit = document.createElement("span");
-      unit.className = "cm-pack-unit";
-      unit.textContent = tokens
-        ? (section.dataset.pricingTokenUnitLabel || fallbackText(pack, ".cm-pack-unit"))
-        : "";
-      const amount = pack.querySelector(".cm-pack-amount");
-      if (amount && unit.textContent) amount.appendChild(unit);
-
-      setText(pack, ".cm-pack-price", dynamicPriceLabel(section, plan, pricing.config.locale));
-      setText(pack, ".cm-pack-rate", pricing.config.lorem
-        ? LOREM
-        : (plan.customPrice
-            ? (section.dataset.pricingTokenCustomRateLabel || fallbackText(pack, ".cm-pack-rate"))
-            : (section.dataset.pricingTokenRateLabel || fallbackText(pack, ".cm-pack-rate"))));
-      renderPackDetails(pack, planDetails(plan, pricing.groups));
-      packList.appendChild(pack);
+    const list = append(card, el("dl", "pricing-addon-details"));
+    extra.forEach((detail) => {
+      const item = append(list, el("div", "pricing-addon-detail"));
+      item.dataset.attributeCode = detail.code || "";
+      item.dataset.state = detail.state || "";
+      append(item, el("dt", "", detail.label || ""));
+      append(item, el("dd", "", detail.text || ""));
     });
+  };
 
-    setHref(section, ".cm-packs-cta", pricing.config.purchaseUrl);
-    const cta = section.querySelector(".cm-packs-cta");
-    if (cta && section.dataset.pricingBuyLabel) cta.textContent = section.dataset.pricingBuyLabel;
+  const renderCard = (section, item) => {
+    const plan = item.plan;
+    const details = planDetails(plan, item.pricing.groups);
+    const primary = primaryDetail(details);
+    const state = plan.cardState || "standard";
 
-    section.dataset.pricingState = plans.length ? "dynamic" : "fallback";
+    const card = el("article", "pricing-addon-card pricing-addon-card--" + state);
+    card.dataset.planCode = plan.code || "";
+    card.dataset.productTypeCode = item.spec.productTypeCode || "";
+
+    const head = append(card, el("div", "pricing-addon-head"));
+    append(head, el("span", "pricing-addon-type", item.category || ""));
+    append(head, el("span", "pricing-addon-plan", plan.kicker || plan.badge || ""));
+    append(card, el("h3", "pricing-addon-name", plan.name));
+    append(card, el("p", "pricing-addon-description", plan.description));
+
+    const meter = append(card, el("div", "pricing-addon-meter"));
+    append(meter, el("span", "pricing-addon-quantity", primary ? primary.text : plan.amountText));
+    append(meter, el("span", "pricing-addon-unit", primary ? primary.label : ""));
+
+    append(card, el("p", "pricing-addon-price", priceLabel(section, plan, item.pricing.config.locale)));
+    renderDetails(card, details, primary);
+    renderCta(section, card, plan);
+    return card;
+  };
+
+  const categoryFor = (pricing, spec) => {
+    const firstGroup = pricing.groups && pricing.groups[0];
+    return safe(firstGroup && firstGroup.label) || safe(spec.productTypeCode);
+  };
+
+  const renderDynamic = (section, results) => {
+    const grid = section.querySelector(".pricing-addons-grid");
+    if (!grid) return false;
+
+    const dynamicItems = [];
+    results.forEach((pricing) => {
+      if (!pricing || !pricing.ok || !pricing.plans.length) return;
+      const category = categoryFor(pricing, pricing.spec || {});
+      pricing.plans.forEach((plan) => {
+        dynamicItems.push({ plan, pricing, spec: pricing.spec || {}, category });
+      });
+    });
+    if (!dynamicItems.length) return false;
+
+    grid.querySelectorAll(".pricing-addon-card:not(.pricing-addon-card--skeleton)").forEach((card) => card.remove());
+    dynamicItems.forEach((item) => grid.appendChild(renderCard(section, item)));
+    section.dataset.pricingState = "dynamic";
+    updateTeaser(section);
+    return true;
   };
 
   const loadDynamic = (section) => {
+    if (section.dataset.pricingDynamic !== "true") return Promise.resolve(false);
     if (!window.LabPricing) {
       section.dataset.pricingState = "fallback";
-      return;
+      return Promise.resolve(false);
     }
-    const config = window.LabPricing.parseConfig(section);
-    if (!config.enabled) {
+
+    const specs = parseCatalogSpecs(section);
+    if (!specs.length) {
       section.dataset.pricingState = "fallback";
-      return;
+      return Promise.resolve(false);
     }
 
     section.dataset.pricingState = "loading";
-    window.LabPricing.load(section)
-      .then((pricing) => {
-        if (!pricing.ok || !pricing.plans.length) {
-          section.dataset.pricingState = "fallback";
-          return;
-        }
-        renderDynamicPacks(section, pricing);
+    return Promise.allSettled(specs.map((spec) => (
+      window.LabPricing.load(configSectionFor(section, spec))
+        .then((pricing) => Object.assign(pricing, { spec }))
+    )))
+      .then((settled) => {
+        const results = settled
+          .filter((result) => result.status === "fulfilled")
+          .map((result) => result.value);
+        const errors = settled
+          .filter((result) => result.status === "rejected")
+          .map((result) => result.reason && result.reason.message)
+          .filter(Boolean);
+
+        if (errors.length) section.dataset.pricingPartialError = errors.join("; ");
+        if (!renderDynamic(section, results)) section.dataset.pricingState = "fallback";
+        return section.dataset.pricingState === "dynamic";
       })
       .catch((error) => {
         section.dataset.pricingState = "fallback";
         section.dataset.pricingError = error.message;
+        return false;
       });
   };
 
   const init = (section) => {
-    if (section.dataset.cmInit === "1") return;
-    section.dataset.cmInit = "1";
-    apply(section, section.dataset.pricingPeriod);
+    if (section.dataset.addonsInit === "1") return;
+    section.dataset.addonsInit = "1";
 
-    document.addEventListener(EVENT, (event) => {
-      if (!event.detail) return;
-      apply(section, event.detail.period);
+    const toggle = section.querySelector(".pricing-addons-toggle");
+    const label = section.querySelector(".pricing-addons-toggle-label");
+    const body = section.querySelector(".pricing-addons-body");
+    if (!body) return;
+
+    const collapsable = isCollapsable(section);
+    section.dataset.collapsable = String(collapsable);
+    section.dataset.collapsed = String(isInitiallyCollapsed(section));
+
+    if (!collapsable || !toggle) {
+      loadDynamic(section).then(() => updateTeaser(section));
+      return;
+    }
+
+    body.id = body.id || "pricing-addons-body-" + ++addonsSeq;
+    toggle.setAttribute("aria-controls", body.id);
+
+    updateTeaser(section);
+    section.dataset.collapseReady = "1";
+
+    let expanded = section.dataset.expanded === "true" || !enabled(section.dataset.collapsed);
+
+    const setLabel = () => {
+      if (!label) return;
+      const next = expanded ? label.dataset.labelLess : label.dataset.labelMore;
+      if (next) label.textContent = next;
+    };
+
+    const apply = (animate) => {
+      section.dataset.expanded = String(expanded);
+      section.dataset.collapsed = String(!expanded);
+      toggle.setAttribute("aria-expanded", String(expanded));
+      setLabel();
+      if (!animate) {
+        body.style.height = expanded ? "auto" : "0px";
+        return;
+      }
+      if (expanded) {
+        body.style.height = body.scrollHeight + "px";
+        window.setTimeout(() => {
+          if (expanded) body.style.height = "auto";
+        }, 360);
+      } else {
+        body.style.height = body.scrollHeight + "px";
+        void body.offsetHeight;
+        body.style.height = "0px";
+      }
+    };
+
+    apply(false);
+    toggle.addEventListener("click", () => {
+      expanded = !expanded;
+      apply(true);
     });
 
-    loadDynamic(section);
+    loadDynamic(section).then(() => {
+      if (expanded) body.style.height = "auto";
+      else body.style.height = "0px";
+      updateTeaser(section);
+    });
+
+    const grid = section.querySelector(".pricing-addons-grid");
+    if (grid && "MutationObserver" in window) {
+      const observer = new MutationObserver(() => {
+        updateTeaser(section);
+        if (expanded) body.style.height = "auto";
+      });
+      observer.observe(grid, { childList: true, subtree: true, characterData: true });
+    }
   };
 
   ready(() => {
-    document.querySelectorAll('[data-block="pricing.credits-meter"]').forEach(init);
+    document.querySelectorAll('[data-block="pricing.addons"]').forEach(init);
   });
 })();
 
@@ -3090,38 +3187,31 @@ select {
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
   const enabled = (value) => value === "true" || value === "on" || value === "1";
-
-  const setupSectionCollapse = (section) => {
-    if (!enabled(section.dataset.collapsable)) return;
-    const toggle = section.querySelector(".mx-section-toggle");
-    const body = section.querySelector(".mx-body");
-    if (!toggle || !body) return;
-
-    if (!body.id) body.id = "pricing-matrix-body-" + Math.random().toString(36).slice(2);
-    toggle.setAttribute("aria-controls", body.id);
-    section.dataset.collapseReady = "1";
-
-    const sync = () => {
-      const collapsed = enabled(section.dataset.collapsed);
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      body.hidden = collapsed;
-    };
-
-    toggle.addEventListener("click", () => {
-      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
-      sync();
-    });
-
-    sync();
-  };
+  const hasUnifiedGroupCollapse = (section) => Object.prototype.hasOwnProperty.call(section.dataset, "collapsable");
 
   // Desktop row groups can collapse their rows behind a clickable group
   // title (the mobile accordion already covers <=720px). Opt-in via
   // data-groups-collapsible="on"; per-group default via data-group-collapsed.
-  const groupsCollapsible = (section) => section.dataset.groupsCollapsible === "on";
+  const groupsCollapsible = (section) => {
+    if (hasUnifiedGroupCollapse(section)) return enabled(section.dataset.collapsable);
+    return section.dataset.groupsCollapsible === "on";
+  };
+
+  const applyUnifiedGroupCollapse = (section) => {
+    if (!hasUnifiedGroupCollapse(section)) return;
+    const collapsible = enabled(section.dataset.collapsable);
+    section.dataset.groupsCollapsible = collapsible ? "on" : "off";
+    section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => {
+      group.dataset.groupCollapsed = collapsible && enabled(section.dataset.collapsed) ? "true" : "false";
+    });
+  };
 
   let groupSeq = 0;
   const setupGroupToggle = (section, group) => {
+    if (hasUnifiedGroupCollapse(section)) {
+      const collapsible = enabled(section.dataset.collapsable);
+      group.dataset.groupCollapsed = collapsible && enabled(section.dataset.collapsed) ? "true" : "false";
+    }
     if (!groupsCollapsible(section)) return;
     const title = group.querySelector(".mx-group-title");
     if (!title || title.dataset.collapsibleInit === "1") return;
@@ -3330,7 +3420,7 @@ select {
     section.dataset.mxInit = "1";
     apply(section, section.dataset.pricingPeriod);
     labelStates(section);
-    setupSectionCollapse(section);
+    applyUnifiedGroupCollapse(section);
     section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => setupGroupToggle(section, group));
 
     document.addEventListener(EVENT, (event) => {

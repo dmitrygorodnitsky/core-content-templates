@@ -319,6 +319,7 @@
           const orders = groupDef[groupCode] || [];
           const attributes = [];
           for (const order of orders) {
+            if (isSortAttribute(order.attributeCode, config)) continue;
             if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
@@ -346,6 +347,12 @@
       }
     }
     return result;
+  }
+
+  function isSortAttribute(code, config) {
+    const attributeCode = safeText(code).toUpperCase();
+    const sortCode = safeText(config && config.productSortAttributeCode).toUpperCase();
+    return !!attributeCode && !!sortCode && attributeCode === sortCode;
   }
 
   function isPlanCardFeatureAttribute(code) {

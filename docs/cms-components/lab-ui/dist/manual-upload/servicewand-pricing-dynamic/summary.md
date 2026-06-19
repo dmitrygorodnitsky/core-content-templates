@@ -3,7 +3,7 @@
 Root: `SERVICEWAND_PRICING_DYNAMIC`
 Direct children: 3
 Nested/total child templates: 3
-Parameters: 260
+Parameters: 255
 
 ## Selected Blocks
 

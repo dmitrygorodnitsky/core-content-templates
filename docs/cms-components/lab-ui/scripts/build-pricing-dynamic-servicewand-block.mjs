@@ -31,20 +31,17 @@ const children = [
     },
   },
   {
-    prefix: "credits",
-    id: "pricing.credits-meter",
-    path: "14-pricing/pricing.credits-meter",
+    prefix: "addons",
+    id: "pricing.addons",
+    path: "14-pricing/pricing.addons",
     values: {
       dynamic_pricing_enabled: "true",
       pricing_api_base: "/core-pim/api",
       pricing_organization: "SERVICEWAND",
-      pricing_product_type_code: "SERVICEWAND_SAAS_ROUTING_TOKENS",
+      pricing_catalog_specs: "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|",
       pricing_sort_attribute_code: "SORT_ORDER_PRIORITY",
-      pricing_price_type_code: "PER_UNIT",
-      pricing_price_attribute_code: "UNIT_PRICE",
-      pricing_price_attribute_values: "3,4,4.5,5",
       pricing_currency: "CAD",
-      pricing_purchase_url: "#pricing-credits",
+      pricing_purchase_url: "#pricing-addons",
       pricing_error_mode: "fallback",
     },
   },
@@ -136,12 +133,12 @@ const params = [
     preserve_default: true,
   },
   {
-    code: "render_credits_section",
+    code: "render_addons_section",
     type: "ENUM",
     options: ["false", "true"],
     default: "true",
-    name: "ServiceWand · Render Credits Section",
-    description: "Controls whether the routing tokens / credits section is visible in this monoblock.",
+    name: "ServiceWand · Render Add-ons Section",
+    description: "Controls whether the dynamic add-ons section is visible in this monoblock.",
     preserve_default: true,
   },
   {
@@ -169,35 +166,30 @@ const params = [
   sourceParam("plans", "pricing_purchase_url", "saas_pricing_purchase_url"),
   sourceParam("plans", "pricing_buy_label", "saas_pricing_buy_label"),
 
-  sourceParam("credits", "pricing_product_type_code", "credits_pricing_product_type_code"),
-  sourceParam("credits", "pricing_price_type_code", "credits_pricing_price_type_code"),
-  sourceParam("credits", "pricing_price_attribute_code", "credits_pricing_price_attribute_code"),
-  sourceParam("credits", "pricing_price_attribute_values", "credits_pricing_price_attribute_values"),
-  sourceParam("credits", "pricing_purchase_url", "credits_pricing_purchase_url"),
-  sourceParam("credits", "pricing_buy_label", "credits_pricing_buy_label"),
-  prefixedParam("credits", "pricing_token_unit_label"),
-  prefixedParam("credits", "pricing_token_rate_label"),
-  prefixedParam("credits", "pricing_token_custom_rate_label"),
+  sourceParam("addons", "pricing_catalog_specs", "addons_pricing_catalog_specs"),
+  sourceParam("addons", "pricing_purchase_url", "addons_pricing_purchase_url"),
+  sourceParam("addons", "pricing_buy_label", "addons_pricing_buy_label"),
 
   prefixedParam("plans", "eyebrow"),
   prefixedParam("plans", "title"),
   prefixedParam("plans", "lede"),
-  prefixedParam("plans", "collapsable"),
-  prefixedParam("plans", "collapsed"),
   prefixedParam("plans", "billing_label"),
   prefixedParam("plans", "monthly_label"),
   prefixedParam("plans", "annual_label"),
   prefixedParam("plans", "billing_note"),
   prefixedParam("plans", "pricing_feature_list_label"),
 
-  prefixedParam("credits", "eyebrow"),
-  prefixedParam("credits", "title"),
-  prefixedParam("credits", "lede"),
-  prefixedParam("credits", "collapsable"),
-  prefixedParam("credits", "collapsed"),
-  prefixedParam("credits", "packs_kicker"),
-  prefixedParam("credits", "packs_title"),
-  prefixedParam("credits", "packs_lede"),
+  prefixedParam("addons", "eyebrow"),
+  prefixedParam("addons", "title"),
+  prefixedParam("addons", "lede"),
+  prefixedParam("addons", "disclaimer"),
+  sourceParam("addons", "collapsable", "addons_collapsable"),
+  sourceParam("addons", "collapsed", "addons_collapsed"),
+  sourceParam("addons", "addons_summary_addons_label", "addons_summary_addons_label"),
+  sourceParam("addons", "addons_summary_categories_label", "addons_summary_categories_label"),
+  sourceParam("addons", "addons_summary_from_label", "addons_summary_from_label"),
+  sourceParam("addons", "addons_more_label", "addons_more_label"),
+  sourceParam("addons", "addons_less_label", "addons_less_label"),
 
   prefixedParam("matrix", "eyebrow"),
   prefixedParam("matrix", "title"),
@@ -216,7 +208,7 @@ const params = [
 
 const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
 <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="{{render_plans_section}}" data-collapsable="{{plans_collapsable}}" data-collapsed="{{plans_collapsed}}" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{saas_pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{saas_pricing_price_type_code}}" data-pricing-price-attribute-code="{{saas_pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{saas_pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{saas_pricing_purchase_url}}" data-pricing-buy-label="{{saas_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{plans_pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="{{render_plans_section}}" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{saas_pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{saas_pricing_price_type_code}}" data-pricing-price-attribute-code="{{saas_pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{saas_pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{saas_pricing_purchase_url}}" data-pricing-buy-label="{{saas_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{plans_pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">{{plans_eyebrow}}</p>
@@ -227,12 +219,8 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
         <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">{{plans_annual_label}}</button>
       </div>
       <p class="pf-note">{{plans_billing_note}}</p>
-      <button class="pf-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-plans-body" aria-label="{{plans_title}}">
-        <span class="pf-section-toggle-icon" aria-hidden="true"></span>
-      </button>
     </header>
 
-    <div class="pf-body" id="pricing-plans-body">
     <div class="pf-grid" data-plan-count="auto">
       <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
         <span class="pf-skel pf-skel--kicker"></span>
@@ -286,59 +274,53 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
         <p class="pf-disclaimer"></p>
       </article>
     </div>
-    </div>
   </div>
 </section>
 
-<!-- lab-ui block · pricing.dynamic-servicewand/credits -->
-<section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-section-enabled="{{render_credits_section}}" data-collapsable="{{credits_collapsable}}" data-collapsed="{{credits_collapsed}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{credits_pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{credits_pricing_price_type_code}}" data-pricing-price-attribute-code="{{credits_pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{credits_pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{credits_pricing_purchase_url}}" data-pricing-buy-label="{{credits_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-token-unit-label="{{credits_pricing_token_unit_label}}" data-pricing-token-rate-label="{{credits_pricing_token_rate_label}}" data-pricing-token-custom-rate-label="{{credits_pricing_token_custom_rate_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<!-- lab-ui block · pricing.dynamic-servicewand/addons -->
+<section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-section-enabled="{{render_addons_section}}" data-collapsable="{{addons_collapsable}}" data-collapsed="{{addons_collapsed}}" data-summary-addons-label="{{addons_summary_addons_label}}" data-summary-categories-label="{{addons_summary_categories_label}}" data-summary-from-label="{{addons_summary_from_label}}" data-pricing-dynamic="{{pricing_dynamic_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-catalog-specs="{{addons_pricing_catalog_specs}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{addons_pricing_purchase_url}}" data-pricing-buy-label="{{addons_pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
-    <header class="cm-top">
-      <p class="cm-eyebrow">{{credits_eyebrow}}</p>
-      <h2 class="cm-title">{{credits_title}}</h2>
-      <p class="cm-lede">{{credits_lede}}</p>
-    </header>
+    <div class="pricing-addons-top">
+      <div class="pricing-addons-top-text">
+        <p class="pricing-addons-eyebrow">{{addons_eyebrow}}</p>
+        <h2 class="pricing-addons-title">{{addons_title}}</h2>
+        <p class="pricing-addons-lede">{{addons_lede}}</p>
+        <p class="pricing-addons-summary" aria-live="polite"></p>
+      </div>
+      <div class="pricing-addons-top-aside">
+        <div class="pricing-addons-glyphs" aria-hidden="true"></div>
+        <button class="pricing-addons-toggle" type="button" aria-expanded="false">
+          <span class="pricing-addons-toggle-label" data-label-more="{{addons_more_label}}" data-label-less="{{addons_less_label}}">{{addons_more_label}}</span>
+          <span class="pricing-addons-toggle-chev" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
 
-    <div class="cm-grid">
-      <article class="cm-card cm-card--packs">
-        <header class="cm-card-head">
-          <span class="cm-card-kicker">{{credits_packs_kicker}}</span>
-          <h3 class="cm-card-title">{{credits_packs_title}}</h3>
-          <p class="cm-card-lede">{{credits_packs_lede}}</p>
-        </header>
-
-        <div class="cm-packs">
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-            <span class="cm-skel cm-skel--badge"></span>
-            <span class="cm-skel cm-skel--name"></span>
-            <span class="cm-skel cm-skel--amount"></span>
-            <span class="cm-skel cm-skel--price"></span>
-            <span class="cm-skel cm-skel--rate"></span>
-          </article>
-          <article class="cm-pack" data-pack-visible="hide" data-nosnippet>
-            <span class="cm-pack-badge"></span>
-            <h4 class="cm-pack-name"></h4>
-            <p class="cm-pack-amount"></p>
-            <p class="cm-pack-price"></p>
-            <p class="cm-pack-rate"></p>
-          </article>
-        </div>
-        <a class="cm-packs-cta" href="{{credits_pricing_purchase_url}}">{{credits_pricing_buy_label}}</a>
-      </article>
+    <div class="pricing-addons-body">
+      <div class="pricing-addons-grid">
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+        <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+          <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+          <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+        </article>
+      </div>
+      <p class="pricing-addons-disclaimer">{{addons_disclaimer}}</p>
     </div>
   </div>
 </section>
@@ -350,12 +332,8 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
       <p class="mx-eyebrow">{{matrix_eyebrow}}</p>
       <h2 class="mx-title">{{matrix_title}}</h2>
       <p class="mx-lede">{{matrix_lede}}</p>
-      <button class="mx-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-matrix-body" aria-label="{{matrix_title}}">
-        <span class="mx-section-toggle-icon" aria-hidden="true"></span>
-      </button>
     </header>
 
-    <div class="mx-body" id="pricing-matrix-body">
     <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
       <span class="mx-skel mx-skel--head"></span>
       <span class="mx-skel mx-skel--row"></span>
@@ -366,13 +344,12 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
     <div class="mx-shell mx-shell--table" role="table" aria-label="{{matrix_table_label}}"></div>
     <div class="mx-shell--accordion" aria-label="{{matrix_table_label}}"></div>
     <p class="mx-disclaimer">{{matrix_disclaimer}}</p>
-    </div>
   </div>
 </section>
 </section>`;
 
 const css = `/* lab-ui block · pricing.dynamic-servicewand
-   Permanent source monoblock for the three dynamic ServiceWand pricing
+   Permanent source monoblock for the dynamic ServiceWand pricing
    sections. Child section CSS/JS is pulled through depends_on.other_blocks;
    this file owns only cross-section spacing and dynamic-only fallbacks. */
 
@@ -385,12 +362,7 @@ const css = `/* lab-ui block · pricing.dynamic-servicewand
   display: none;
 }
 
-.pd-servicewand .cm-grid {
-  grid-template-columns: 1fr;
-}
-
 .pd-servicewand .pf-plans[data-pricing-state="fallback"] [data-plan-slot],
-.pd-servicewand .cm-credits[data-pricing-state="fallback"] .cm-pack:not(.cm-pack--skeleton),
 .pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--table,
 .pd-servicewand .mx-matrix[data-pricing-state="fallback"] .mx-shell--accordion {
   display: none;
@@ -440,13 +412,13 @@ const blockJson = {
   id: "pricing.dynamic-servicewand",
   category: "14-pricing",
   title: "Pricing · dynamic ServiceWand monoblock",
-  description: "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, token packs, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
+  description: "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, add-ons, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
   canonical: false,
   theme: "light",
   source: {
     primary: "docs/cms-components/lab-ui/14-pricing/_combined-preview.html",
-    adapted_from: "Composes pricing.plans-flex, pricing.credits-meter, and pricing.matrix-collapsible as one reusable CMS section.",
-    decision: "Permanent dynamic-only template section: no static plan, token pack, or matrix row fallback contract is exposed as CMS params.",
+    adapted_from: "Composes pricing.plans-flex, pricing.addons, and pricing.matrix-collapsible as one reusable CMS section.",
+    decision: "Permanent template section with dynamic pricing adapters and section-level show/hide controls.",
     localScripts: ["14-pricing/_shared/pricing-runtime.js"],
   },
   depends_on: {
@@ -457,7 +429,7 @@ const blockJson = {
   notes: [
     "This block is intentionally a source-level composition. Do not paste generated dist/manual-upload CSS or JavaScript back into it.",
     "Dynamic data comes from Core PIM prices plus visible productTypes.attributeOrder attributes via the shared LabPricing runtime.",
-    "The source HTML contains only skeletons and one hidden DOM template per card-like renderer. It does not expose fixed static plan, pack, or matrix row params.",
+    "Plans, add-ons, and matrix can be shown independently. Add-ons and matrix keep their own collapse behavior; plans do not collapse.",
     "The runtime is bundled once through source.localScripts before child adapters, so pricing adapters do not need to duplicate request/normalization code.",
   ],
 };
@@ -471,7 +443,7 @@ const harness = `<!doctype html>
   <link rel="stylesheet" href="../../00-tokens/tokens.css">
   <link rel="stylesheet" href="../../00-tokens/composition.css">
   <link rel="stylesheet" href="../pricing.plans-flex/block.css">
-  <link rel="stylesheet" href="../pricing.credits-meter/block.css">
+  <link rel="stylesheet" href="../pricing.addons/block.css">
   <link rel="stylesheet" href="../pricing.matrix-collapsible/block.css">
   <link rel="stylesheet" href="./block.css">
 </head>
@@ -481,12 +453,12 @@ ${renderDefaults(html, params).replace(/^/gm, "    ")}
   </main>
   <script>
     document.querySelector('[data-block="pricing.plans-flex"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
-    document.querySelector('[data-block="pricing.credits-meter"]').dataset.pricingFixtureUrl = "../_fixtures/routes.json";
+    document.querySelector('[data-block="pricing.addons"]').dataset.pricingCatalogSpecs = "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|../_fixtures/sites.json";
     document.querySelector('[data-block="pricing.matrix-collapsible"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
   </script>
   <script src="../_shared/pricing-runtime.js"></script>
   <script src="../pricing.plans-flex/block.js"></script>
-  <script src="../pricing.credits-meter/block.js"></script>
+  <script src="../pricing.addons/block.js"></script>
   <script src="../pricing.matrix-collapsible/block.js"></script>
 </body>
 </html>`;

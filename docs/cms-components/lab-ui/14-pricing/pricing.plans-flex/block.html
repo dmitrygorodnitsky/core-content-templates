@@ -7,7 +7,7 @@
      Prices and billed-caption crossfade between billing modes; each
      card carries its own Save chip that fade-scales in for Annual.
 -->
-<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-collapsable="{{collapsable}}" data-collapsed="{{collapsed}}" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
+<section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-billing="{{billing_default}}" data-pricing-period="{{billing_default}}" data-pricing-dynamic="{{dynamic_pricing_enabled}}" data-pricing-api-base="{{pricing_api_base}}" data-pricing-organization="{{pricing_organization}}" data-pricing-product-type-code="{{pricing_product_type_code}}" data-pricing-sort-attribute-code="{{pricing_sort_attribute_code}}" data-pricing-price-type-code="{{pricing_price_type_code}}" data-pricing-price-attribute-code="{{pricing_price_attribute_code}}" data-pricing-price-attribute-values="{{pricing_price_attribute_values}}" data-pricing-currency="{{pricing_currency}}" data-pricing-purchase-url="{{pricing_purchase_url}}" data-pricing-buy-label="{{pricing_buy_label}}" data-pricing-contact-label="{{pricing_contact_label}}" data-pricing-feature-list-label="{{pricing_feature_list_label}}" data-pricing-error-mode="{{pricing_error_mode}}">
   <div class="container">
     <header class="pf-top">
       <p class="pf-eyebrow">{{eyebrow}}</p>
@@ -19,12 +19,8 @@
         <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">{{annual_label}}</button>
       </div>
       <p class="pf-note">{{billing_note}}</p>
-      <button class="pf-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-plans-body" aria-label="{{title}}">
-        <span class="pf-section-toggle-icon" aria-hidden="true"></span>
-      </button>
     </header>
 
-    <div class="pf-body" id="pricing-plans-body">
     <div class="pf-grid" data-plan-count="auto">
       <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
         <span class="pf-skel pf-skel--kicker"></span>
@@ -207,7 +203,6 @@
         </ul>
         <p class="pf-disclaimer">{{plan_05_disclaimer}}</p>
       </article>
-    </div>
     </div>
   </div>
 </section>

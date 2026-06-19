@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../00-tokens/tokens.css">
   <link rel="stylesheet" href="../../00-tokens/composition.css">
   <link rel="stylesheet" href="../pricing.plans-flex/block.css">
-  <link rel="stylesheet" href="../pricing.credits-meter/block.css">
+  <link rel="stylesheet" href="../pricing.addons/block.css">
   <link rel="stylesheet" href="../pricing.matrix-collapsible/block.css">
   <link rel="stylesheet" href="./block.css">
 </head>
@@ -15,7 +15,7 @@
   <main class="composition-section">
     <section class="pd-servicewand" data-block="pricing.dynamic-servicewand">
     <!-- lab-ui block · pricing.dynamic-servicewand/plans -->
-    <section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-feature-list-label="Included features" data-pricing-error-mode="fallback">
+    <section class="pf-plans" id="pricing" data-block="pricing.plans-flex" data-section-enabled="true" data-billing="monthly" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="RECURRENT" data-pricing-price-attribute-code="INTERVAL" data-pricing-price-attribute-values="1" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing" data-pricing-buy-label="Buy now" data-pricing-contact-label="Contact us" data-pricing-feature-list-label="Included features" data-pricing-error-mode="fallback">
       <div class="container">
         <header class="pf-top">
           <p class="pf-eyebrow">Pricing</p>
@@ -26,12 +26,8 @@
             <button class="pf-toggle-opt" type="button" data-billing-option="annual" aria-pressed="false">Annual</button>
           </div>
           <p class="pf-note">Annual pricing shown for planning. Final packaging can be connected to CRM rules later.</p>
-          <button class="pf-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-plans-body" aria-label="Plans that scale with field operations.">
-            <span class="pf-section-toggle-icon" aria-hidden="true"></span>
-          </button>
         </header>
     
-        <div class="pf-body" id="pricing-plans-body">
         <div class="pf-grid" data-plan-count="auto">
           <article class="pf-card pf-card--skeleton" aria-hidden="true" data-nosnippet>
             <span class="pf-skel pf-skel--kicker"></span>
@@ -85,59 +81,53 @@
             <p class="pf-disclaimer"></p>
           </article>
         </div>
-        </div>
       </div>
     </section>
     
-    <!-- lab-ui block · pricing.dynamic-servicewand/credits -->
-    <section class="cm-credits" id="pricing-credits" data-block="pricing.credits-meter" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-pricing-period="monthly" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-product-type-code="SERVICEWAND_SAAS_ROUTING_TOKENS" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-price-type-code="PER_UNIT" data-pricing-price-attribute-code="UNIT_PRICE" data-pricing-price-attribute-values="3,4,4.5,5" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-credits" data-pricing-buy-label="Buy token pack" data-pricing-contact-label="Contact us" data-pricing-token-unit-label="tokens" data-pricing-token-rate-label="per routing token" data-pricing-token-custom-rate-label="Negotiated rate" data-pricing-error-mode="fallback">
+    <!-- lab-ui block · pricing.dynamic-servicewand/addons -->
+    <section class="pricing-addons" id="pricing-addons" data-block="pricing.addons" data-section-enabled="true" data-collapsable="false" data-collapsed="false" data-summary-addons-label="add-ons" data-summary-categories-label="categories" data-summary-from-label="from" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-catalog-specs="SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-addons" data-pricing-buy-label="Buy add-on" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback">
       <div class="container">
-        <header class="cm-top">
-          <p class="cm-eyebrow">Credits and tokens</p>
-          <h2 class="cm-title">Routing tokens and metered usage.</h2>
-          <p class="cm-lede">Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.</p>
-        </header>
+        <div class="pricing-addons-top">
+          <div class="pricing-addons-top-text">
+            <p class="pricing-addons-eyebrow">Add-ons</p>
+            <h2 class="pricing-addons-title">Expand capacity without changing plans.</h2>
+            <p class="pricing-addons-lede">Buy more buildings, routing optimization tokens, and rollout support as operational demand grows.</p>
+            <p class="pricing-addons-summary" aria-live="polite"></p>
+          </div>
+          <div class="pricing-addons-top-aside">
+            <div class="pricing-addons-glyphs" aria-hidden="true"></div>
+            <button class="pricing-addons-toggle" type="button" aria-expanded="false">
+              <span class="pricing-addons-toggle-label" data-label-more="View add-ons" data-label-less="Hide add-ons">View add-ons</span>
+              <span class="pricing-addons-toggle-chev" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
     
-        <div class="cm-grid">
-          <article class="cm-card cm-card--packs">
-            <header class="cm-card-head">
-              <span class="cm-card-kicker">Pre-purchase</span>
-              <h3 class="cm-card-title">Token packs</h3>
-              <p class="cm-card-lede">Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.</p>
-            </header>
-    
-            <div class="cm-packs">
-              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-                <span class="cm-skel cm-skel--badge"></span>
-                <span class="cm-skel cm-skel--name"></span>
-                <span class="cm-skel cm-skel--amount"></span>
-                <span class="cm-skel cm-skel--price"></span>
-                <span class="cm-skel cm-skel--rate"></span>
-              </article>
-              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-                <span class="cm-skel cm-skel--badge"></span>
-                <span class="cm-skel cm-skel--name"></span>
-                <span class="cm-skel cm-skel--amount"></span>
-                <span class="cm-skel cm-skel--price"></span>
-                <span class="cm-skel cm-skel--rate"></span>
-              </article>
-              <article class="cm-pack cm-pack--skeleton" aria-hidden="true" data-nosnippet>
-                <span class="cm-skel cm-skel--badge"></span>
-                <span class="cm-skel cm-skel--name"></span>
-                <span class="cm-skel cm-skel--amount"></span>
-                <span class="cm-skel cm-skel--price"></span>
-                <span class="cm-skel cm-skel--rate"></span>
-              </article>
-              <article class="cm-pack" data-pack-visible="hide" data-nosnippet>
-                <span class="cm-pack-badge"></span>
-                <h4 class="cm-pack-name"></h4>
-                <p class="cm-pack-amount"></p>
-                <p class="cm-pack-price"></p>
-                <p class="cm-pack-rate"></p>
-              </article>
-            </div>
-            <a class="cm-packs-cta" href="#pricing-credits">Buy token pack</a>
-          </article>
+        <div class="pricing-addons-body">
+          <div class="pricing-addons-grid">
+            <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+              <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+            </article>
+            <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+              <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+            </article>
+            <article class="pricing-addon-card pricing-addon-card--skeleton" aria-hidden="true" data-nosnippet>
+              <span class="pricing-addon-skel pricing-addon-skel--pill"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--title"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--text"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--meter"></span>
+              <span class="pricing-addon-skel pricing-addon-skel--price"></span>
+            </article>
+          </div>
+          <p class="pricing-addons-disclaimer">Add-on availability can vary by plan. Final eligibility rules should come from CRM before upload.</p>
         </div>
       </div>
     </section>
@@ -149,12 +139,8 @@
           <p class="mx-eyebrow">Compare plans</p>
           <h2 class="mx-title">Every plan, side by side.</h2>
           <p class="mx-lede">Buildings, dispatch, automations, support and security across every tier.</p>
-          <button class="mx-section-toggle" type="button" aria-expanded="true" aria-controls="pricing-matrix-body" aria-label="Every plan, side by side.">
-            <span class="mx-section-toggle-icon" aria-hidden="true"></span>
-          </button>
         </header>
     
-        <div class="mx-body" id="pricing-matrix-body">
         <div class="mx-shell mx-shell--skeleton" aria-hidden="true" data-nosnippet>
           <span class="mx-skel mx-skel--head"></span>
           <span class="mx-skel mx-skel--row"></span>
@@ -165,19 +151,18 @@
         <div class="mx-shell mx-shell--table" role="table" aria-label="Plan comparison"></div>
         <div class="mx-shell--accordion" aria-label="Plan comparison"></div>
         <p class="mx-disclaimer">Final entitlements may depend on CRM rules. Talk to sales for custom matches.</p>
-        </div>
       </div>
     </section>
     </section>
   </main>
   <script>
     document.querySelector('[data-block="pricing.plans-flex"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
-    document.querySelector('[data-block="pricing.credits-meter"]').dataset.pricingFixtureUrl = "../_fixtures/routes.json";
+    document.querySelector('[data-block="pricing.addons"]').dataset.pricingCatalogSpecs = "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|../_fixtures/sites.json";
     document.querySelector('[data-block="pricing.matrix-collapsible"]').dataset.pricingFixtureUrl = "../_fixtures/saas.json";
   </script>
   <script src="../_shared/pricing-runtime.js"></script>
   <script src="../pricing.plans-flex/block.js"></script>
-  <script src="../pricing.credits-meter/block.js"></script>
+  <script src="../pricing.addons/block.js"></script>
   <script src="../pricing.matrix-collapsible/block.js"></script>
 </body>
 </html>

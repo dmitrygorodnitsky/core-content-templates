@@ -3,13 +3,13 @@
   "id": "pricing.dynamic-servicewand",
   "category": "14-pricing",
   "title": "Pricing · dynamic ServiceWand monoblock",
-  "description": "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, token packs, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
+  "description": "Permanent one-section wrapper for ServiceWand dynamic pricing. It renders plans, add-ons, and the comparison matrix from the shared Core PIM pricing runtime while reusing the existing pricing section adapters and styles through dependencies.",
   "canonical": false,
   "theme": "light",
   "source": {
     "primary": "docs/cms-components/lab-ui/14-pricing/_combined-preview.html",
-    "adapted_from": "Composes pricing.plans-flex, pricing.credits-meter, and pricing.matrix-collapsible as one reusable CMS section.",
-    "decision": "Permanent dynamic-only template section: no static plan, token pack, or matrix row fallback contract is exposed as CMS params.",
+    "adapted_from": "Composes pricing.plans-flex, pricing.addons, and pricing.matrix-collapsible as one reusable CMS section.",
+    "decision": "Permanent template section with dynamic pricing adapters and section-level show/hide controls.",
     "localScripts": [
       "14-pricing/_shared/pricing-runtime.js"
     ]
@@ -45,7 +45,6 @@
       "--type-eyebrow-size",
       "--type-eyebrow-tracking",
       "--transition-fast",
-      "--radius-card-sm",
       "--type-h2-size",
       "--type-h2-weight",
       "--type-h2-leading",
@@ -55,7 +54,7 @@
     ],
     "other_blocks": [
       "pricing.plans-flex",
-      "pricing.credits-meter",
+      "pricing.addons",
       "pricing.matrix-collapsible"
     ]
   },
@@ -73,15 +72,15 @@
       "preserve_default": true
     },
     {
-      "code": "render_credits_section",
+      "code": "render_addons_section",
       "type": "ENUM",
       "options": [
         "false",
         "true"
       ],
       "default": "true",
-      "name": "ServiceWand · Render Credits Section",
-      "description": "Controls whether the routing tokens / credits section is visible in this monoblock.",
+      "name": "ServiceWand · Render Add-ons Section",
+      "description": "Controls whether the dynamic add-ons section is visible in this monoblock.",
       "preserve_default": true
     },
     {
@@ -220,73 +219,28 @@
       "preserve_default": true
     },
     {
-      "code": "credits_pricing_product_type_code",
+      "code": "addons_pricing_catalog_specs",
       "type": "STRING",
-      "default": "SERVICEWAND_SAAS_ROUTING_TOKENS",
-      "name": "ServiceWand · Pricing Product Type Code",
-      "description": "Core PIM product type for routing-token expansion pricing.",
+      "default": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|",
+      "name": "ServiceWand · Pricing Catalog Specs",
+      "description": "Semicolon-separated dynamic catalogs. Format per item: productTypeCode|priceTypeCode|priceAttributeCode|priceAttributeValues|fixtureUrl. The fixtureUrl part stays empty in CMS production.",
       "preserve_default": true
     },
     {
-      "code": "credits_pricing_price_type_code",
-      "type": "STRING",
-      "default": "PER_UNIT",
-      "name": "ServiceWand · Pricing Price Type Code",
-      "description": "Core PIM price type code for token unit pricing.",
-      "preserve_default": true
-    },
-    {
-      "code": "credits_pricing_price_attribute_code",
-      "type": "STRING",
-      "default": "UNIT_PRICE",
-      "name": "ServiceWand · Pricing Price Attribute Code",
-      "description": "Core PIM price attribute used to filter token unit prices.",
-      "preserve_default": true
-    },
-    {
-      "code": "credits_pricing_price_attribute_values",
-      "type": "STRING",
-      "default": "3,4,4.5,5",
-      "name": "ServiceWand · Pricing Price Attribute Values",
-      "description": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers.",
-      "preserve_default": true
-    },
-    {
-      "code": "credits_pricing_purchase_url",
+      "code": "addons_pricing_purchase_url",
       "type": "URL",
-      "default": "#pricing-credits",
+      "default": "#pricing-addons",
       "name": "ServiceWand · Dynamic Pricing Purchase URL",
-      "description": "CTA destination used when token tiers are dynamically rendered.",
+      "description": "Shared purchase/contact URL used by every add-on card CTA.",
       "preserve_default": true
     },
     {
-      "code": "credits_pricing_buy_label",
+      "code": "addons_pricing_buy_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Buy token pack",
+      "default": "Buy add-on",
       "name": "ServiceWand · Dynamic Pricing Buy Label",
-      "description": "CTA label used for dynamically rendered token tiers with numeric pricing.",
+      "description": "Localized buy label shown on dynamic add-on card CTAs for numeric add-on pricing.",
       "preserve_default": true
-    },
-    {
-      "code": "credits_pricing_token_unit_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "tokens",
-      "name": "Credits · Dynamic Pricing Token Unit Label",
-      "description": "Unit label appended to dynamically rendered token amounts. This is a localized CMS fallback, not a JavaScript string."
-    },
-    {
-      "code": "credits_pricing_token_rate_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "per routing token",
-      "name": "Credits · Dynamic Pricing Token Rate Label",
-      "description": "Rate note for dynamically rendered numeric token tiers. This is a localized CMS fallback, not a JavaScript string."
-    },
-    {
-      "code": "credits_pricing_token_custom_rate_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Negotiated rate",
-      "name": "Credits · Dynamic Pricing Custom Token Rate Label",
-      "description": "Rate note for dynamically rendered custom or negotiated token tiers. This is a localized CMS fallback, not a JavaScript string."
     },
     {
       "code": "plans_eyebrow",
@@ -308,28 +262,6 @@
       "default": "Start with the operational footprint you need today, then expand buildings, routing capacity, and automation as your team grows.",
       "name": "Plans · Pricing Lede",
       "description": "Introductory paragraph below the pricing headline."
-    },
-    {
-      "code": "plans_collapsable",
-      "type": "ENUM",
-      "options": [
-        "false",
-        "true"
-      ],
-      "default": "false",
-      "name": "Plans · Collapsable",
-      "description": "When true, shows an icon control that can collapse the whole plans section body."
-    },
-    {
-      "code": "plans_collapsed",
-      "type": "ENUM",
-      "options": [
-        "false",
-        "true"
-      ],
-      "default": "false",
-      "name": "Plans · Collapsed by Default",
-      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
     },
     {
       "code": "plans_billing_label",
@@ -367,68 +299,96 @@
       "description": "Accessible label for dynamically rendered plan feature lists. This is a localized CMS fallback, not a JavaScript string."
     },
     {
-      "code": "credits_eyebrow",
+      "code": "addons_eyebrow",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Credits and tokens",
-      "name": "Credits · Section Eyebrow",
-      "description": "Small uppercase label above the section heading."
+      "default": "Add-ons",
+      "name": "Addons · Add-ons Eyebrow",
+      "description": "Small uppercase label above the add-ons heading."
     },
     {
-      "code": "credits_title",
+      "code": "addons_title",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Routing tokens and metered usage.",
-      "name": "Credits · Section Heading",
-      "description": "Main heading for the credits/tokens section."
+      "default": "Expand capacity without changing plans.",
+      "name": "Addons · Add-ons Heading",
+      "description": "Main heading for the add-ons section."
     },
     {
-      "code": "credits_lede",
+      "code": "addons_lede",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Every plan ships with a monthly token allowance for the routing tool. Buy more on demand or pre-purchase larger packs at a better per-token rate.",
-      "name": "Credits · Section Lede",
-      "description": "Introductory paragraph for the section."
+      "default": "Buy more buildings, routing optimization tokens, and rollout support as operational demand grows.",
+      "name": "Addons · Add-ons Lede",
+      "description": "Introductory paragraph for the add-ons section."
     },
     {
-      "code": "credits_collapsable",
+      "code": "addons_disclaimer",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Add-on availability can vary by plan. Final eligibility rules should come from CRM before upload.",
+      "name": "Addons · Add-ons Disclaimer",
+      "description": "Small disclaimer shown below the add-on cards."
+    },
+    {
+      "code": "addons_collapsable",
       "type": "ENUM",
       "options": [
         "false",
         "true"
       ],
       "default": "false",
-      "name": "Credits · Collapsable",
-      "description": "Shared pricing-section contract. This credits block records the value but does not visually collapse yet; collapse behavior will be added in a later pass."
+      "name": "ServiceWand · Collapsable",
+      "description": "When true, shows the add-ons teaser band and toggle so the add-on cards can collapse behind the section header.",
+      "preserve_default": true
     },
     {
-      "code": "credits_collapsed",
+      "code": "addons_collapsed",
       "type": "ENUM",
       "options": [
         "false",
         "true"
       ],
       "default": "false",
-      "name": "Credits · Collapsed by Default",
-      "description": "Shared pricing-section contract. Currently ignored by this credits block until section collapse behavior is implemented."
+      "name": "ServiceWand · Collapsed by Default",
+      "description": "Initial add-ons body state when Collapsable is true. Ignored when Collapsable is false.",
+      "preserve_default": true
     },
     {
-      "code": "credits_packs_kicker",
+      "code": "addons_summary_addons_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Pre-purchase",
-      "name": "Credits · Packs Kicker",
-      "description": "Small label above the packs card title."
+      "default": "add-ons",
+      "name": "ServiceWand · Summary Add-ons Label",
+      "description": "Localized label used by JS in the generated collapsed summary after the add-on count.",
+      "preserve_default": true
     },
     {
-      "code": "credits_packs_title",
+      "code": "addons_summary_categories_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Token packs",
-      "name": "Credits · Packs Title",
-      "description": "Heading for the packs card."
+      "default": "categories",
+      "name": "ServiceWand · Summary Categories Label",
+      "description": "Localized label used by JS in the generated collapsed summary after the category count.",
+      "preserve_default": true
     },
     {
-      "code": "credits_packs_lede",
+      "code": "addons_summary_from_label",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Larger packs lower the per-token rate. Packs roll over month to month and apply on top of the plan allowance.",
-      "name": "Credits · Packs Lede",
-      "description": "Sub-paragraph for the packs card."
+      "default": "from",
+      "name": "ServiceWand · Summary From Label",
+      "description": "Localized prefix used by JS before the lowest numeric add-on price in the generated collapsed summary.",
+      "preserve_default": true
+    },
+    {
+      "code": "addons_more_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "View add-ons",
+      "name": "ServiceWand · Expand Label",
+      "description": "Band toggle label shown while the section is collapsed.",
+      "preserve_default": true
+    },
+    {
+      "code": "addons_less_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Hide add-ons",
+      "name": "ServiceWand · Collapse Label",
+      "description": "Band toggle label shown while the section is expanded.",
+      "preserve_default": true
     },
     {
       "code": "matrix_eyebrow",
@@ -460,7 +420,7 @@
       ],
       "default": "false",
       "name": "Matrix · Collapsable",
-      "description": "When true, shows an icon control that can collapse the whole matrix section body. This is independent from Collapsible Row Groups."
+      "description": "When true, desktop matrix feature groups can collapse behind their group headers. When false, groups stay open and no group collapse UI is initialized."
     },
     {
       "code": "matrix_collapsed",
@@ -471,7 +431,7 @@
       ],
       "default": "false",
       "name": "Matrix · Collapsed by Default",
-      "description": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+      "description": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
     },
     {
       "code": "matrix_table_label",
@@ -533,7 +493,7 @@
   "notes": [
     "This block is intentionally a source-level composition. Do not paste generated dist/manual-upload CSS or JavaScript back into it.",
     "Dynamic data comes from Core PIM prices plus visible productTypes.attributeOrder attributes via the shared LabPricing runtime.",
-    "The source HTML contains only skeletons and one hidden DOM template per card-like renderer. It does not expose fixed static plan, pack, or matrix row params.",
+    "Plans, add-ons, and matrix can be shown independently. Add-ons and matrix keep their own collapse behavior; plans do not collapse.",
     "The runtime is bundled once through source.localScripts before child adapters, so pricing adapters do not need to duplicate request/normalization code."
   ]
 }

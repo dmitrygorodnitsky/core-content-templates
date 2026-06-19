@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../00-tokens/tokens.css">
-<link rel="stylesheet" href="./block.css">
+<link rel="stylesheet" href="./block.css?v=collapsable">
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
@@ -25,7 +25,7 @@
 <body data-theme="cyan">
 <div class="harness-label">pricing.addons · fixture-backed dynamic add-ons</div>
 <div class="harness-pad">
-  <section class="pricing-addons" data-block="pricing.addons" data-collapsed="on" data-summary-addons-label="add-ons" data-summary-categories-label="categories" data-summary-from-label="from" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-catalog-specs="SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|../_fixtures/sites.json;SERVICEWAND_SAAS_ROUTING_TOKENS|PER_UNIT|UNIT_PRICE|3,4,4.5,5|../_fixtures/routes.json" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-addons" data-pricing-buy-label="Buy add-on" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback">
+  <section class="pricing-addons" data-block="pricing.addons" data-collapsable="true" data-collapsed="true" data-summary-addons-label="add-ons" data-summary-categories-label="categories" data-summary-from-label="from" data-pricing-dynamic="true" data-pricing-api-base="/core-pim/api" data-pricing-organization="SERVICEWAND" data-pricing-catalog-specs="SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|../_fixtures/sites.json;SERVICEWAND_SAAS_ROUTING_TOKENS|PER_UNIT|UNIT_PRICE|3,4,4.5,5|../_fixtures/routes.json" data-pricing-sort-attribute-code="SORT_ORDER_PRIORITY" data-pricing-currency="CAD" data-pricing-purchase-url="#pricing-addons" data-pricing-buy-label="Buy add-on" data-pricing-contact-label="Contact us" data-pricing-error-mode="fallback">
     <div class="container">
       <div class="pricing-addons-top">
         <div class="pricing-addons-top-text">
@@ -60,6 +60,6 @@
   </section>
 </div>
 <script src="../_shared/pricing-runtime.js"></script>
-<script src="./block.js"></script>
+<script src="./block.js?v=collapsable"></script>
 </body>
 </html>

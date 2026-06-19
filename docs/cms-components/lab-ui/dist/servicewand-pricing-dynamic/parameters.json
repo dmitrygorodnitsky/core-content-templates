@@ -254,7 +254,7 @@
       }
     },
     "value": {
-      "en": "Compare live plans, routing credits, and plan features from Core PIM."
+      "en": "Compare live plans, add-ons, and plan features from Core PIM."
     }
   },
   {
@@ -2105,36 +2105,6 @@
     ]
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_COLLAPSABLE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Plans · Collapsable",
-        "DESCRIPTION": "When true, shows an icon control that can collapse the whole plans section body."
-      }
-    },
-    "value": "false",
-    "options": [
-      "false",
-      "true"
-    ]
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PLANS_COLLAPSED",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Plans · Collapsed by Default",
-        "DESCRIPTION": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
-      }
-    },
-    "value": "false",
-    "options": [
-      "false",
-      "true"
-    ]
-  },
-  {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_BILLING_DEFAULT",
     "type": "STRING",
     "nls": {
@@ -2239,7 +2209,7 @@
         "DESCRIPTION": "Comma-separated price attribute values used by Core PIM filtering."
       }
     },
-    "value": "1"
+    "value": "1 month"
   },
   {
     "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_PRICING_CURRENCY",
@@ -2299,7 +2269,7 @@
       }
     },
     "value": {
-      "en": "Included features"
+      "en": "Lorem Ipsum magna."
     }
   },
   {
@@ -2326,7 +2296,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem."
+      "en": "Lorem Ipsum ea."
     }
   },
   {
@@ -2339,7 +2309,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit."
+      "en": "Lorem Ipsum voluptate."
     }
   },
   {
@@ -2352,7 +2322,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip."
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
     }
   },
   {
@@ -2365,7 +2335,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum minim."
+      "en": "Lorem Ipsum elit."
     }
   },
   {
@@ -2378,7 +2348,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi."
+      "en": "Lorem Ipsum labore."
     }
   },
   {
@@ -2391,7 +2361,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aute."
+      "en": "Lorem Ipsum minim."
     }
   },
   {
@@ -2404,16 +2374,16 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      "en": "Lorem Ipsum nisi aliquip ex ea."
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_CREDITS_SECTION",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_RENDER_ADDONS_SECTION",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "ServiceWand · Render Credits Section",
-        "DESCRIPTION": "Controls whether the routing tokens / credits section is visible in this monoblock."
+        "NAME": "ServiceWand · Render Add-ons Section",
+        "DESCRIPTION": "Controls whether the dynamic add-ons section is visible in this monoblock."
       }
     },
     "value": "true",
@@ -2423,218 +2393,185 @@
     ]
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_COLLAPSABLE",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_COLLAPSABLE",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Credits · Collapsable",
-        "DESCRIPTION": "Shared pricing-section contract. This credits block records the value but does not visually collapse yet; collapse behavior will be added in a later pass."
+        "NAME": "ServiceWand · Collapsable",
+        "DESCRIPTION": "When true, shows the add-ons teaser band and toggle so the add-on cards can collapse behind the section header."
       }
     },
-    "value": "false",
+    "value": "true",
     "options": [
       "false",
       "true"
     ]
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_COLLAPSED",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_COLLAPSED",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Credits · Collapsed by Default",
-        "DESCRIPTION": "Shared pricing-section contract. Currently ignored by this credits block until section collapse behavior is implemented."
+        "NAME": "ServiceWand · Collapsed by Default",
+        "DESCRIPTION": "Initial add-ons body state when Collapsable is true. Ignored when Collapsable is false."
       }
     },
-    "value": "false",
+    "value": "true",
     "options": [
       "false",
       "true"
     ]
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRODUCT_TYPE_CODE",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_ADDONS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary Add-ons Label",
+        "DESCRIPTION": "Localized label used by JS in the generated collapsed summary after the add-on count."
+      }
+    },
+    "value": {
+      "en": "add-ons"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_CATEGORIES_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary Categories Label",
+        "DESCRIPTION": "Localized label used by JS in the generated collapsed summary after the category count."
+      }
+    },
+    "value": {
+      "en": "categories"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_SUMMARY_FROM_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ServiceWand · Summary From Label",
+        "DESCRIPTION": "Localized prefix used by JS before the lowest numeric add-on price in the generated collapsed summary."
+      }
+    },
+    "value": {
+      "en": "from"
+    }
+  },
+  {
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_CATALOG_SPECS",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "ServiceWand · Pricing Product Type Code",
-        "DESCRIPTION": "Core PIM product type for routing-token expansion pricing."
+        "NAME": "ServiceWand · Pricing Catalog Specs",
+        "DESCRIPTION": "Semicolon-separated dynamic catalogs. Format per item: productTypeCode|priceTypeCode|priceAttributeCode|priceAttributeValues|fixtureUrl. The fixtureUrl part stays empty in CMS production."
       }
     },
-    "value": "SERVICEWAND_SAAS_ROUTING_TOKENS"
+    "value": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|"
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_TYPE_CODE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "ServiceWand · Pricing Price Type Code",
-        "DESCRIPTION": "Core PIM price type code for token unit pricing."
-      }
-    },
-    "value": "PER_UNIT"
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_ATTRIBUTE_CODE",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "ServiceWand · Pricing Price Attribute Code",
-        "DESCRIPTION": "Core PIM price attribute used to filter token unit prices."
-      }
-    },
-    "value": "UNIT_PRICE"
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PRICE_ATTRIBUTE_VALUES",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "ServiceWand · Pricing Price Attribute Values",
-        "DESCRIPTION": "Comma-separated UNIT_PRICE values used by Core PIM filtering for routing-token tiers."
-      }
-    },
-    "value": "3,4,4.5,5"
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_PURCHASE_URL",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_PURCHASE_URL",
     "type": "STRING",
     "nls": {
       "en": {
         "NAME": "ServiceWand · Dynamic Pricing Purchase URL",
-        "DESCRIPTION": "CTA destination used when token tiers are dynamically rendered."
+        "DESCRIPTION": "Shared purchase/contact URL used by every add-on card CTA."
       }
     },
-    "value": "#pricing-credits"
+    "value": "#pricing-addons"
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_BUY_LABEL",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_PRICING_BUY_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "ServiceWand · Dynamic Pricing Buy Label",
-        "DESCRIPTION": "CTA label used for dynamically rendered token tiers with numeric pricing."
+        "DESCRIPTION": "Localized buy label shown on dynamic add-on card CTAs for numeric add-on pricing."
       }
     },
     "value": {
-      "en": "Buy token pack"
+      "en": "Buy add-on"
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_UNIT_LABEL",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Dynamic Pricing Token Unit Label",
-        "DESCRIPTION": "Unit label appended to dynamically rendered token amounts. This is a localized CMS fallback, not a JavaScript string."
+        "NAME": "Addons · Add-ons Eyebrow",
+        "DESCRIPTION": "Small uppercase label above the add-ons heading."
       }
     },
     "value": {
-      "en": "tokens"
+      "en": "Lorem Ipsum sed."
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_RATE_LABEL",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Dynamic Pricing Token Rate Label",
-        "DESCRIPTION": "Rate note for dynamically rendered numeric token tiers. This is a localized CMS fallback, not a JavaScript string."
+        "NAME": "Addons · Add-ons Heading",
+        "DESCRIPTION": "Main heading for the add-ons section."
       }
     },
     "value": {
-      "en": "per routing token"
+      "en": "Lorem Ipsum et."
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PRICING_TOKEN_CUSTOM_RATE_LABEL",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_LEDE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Dynamic Pricing Custom Token Rate Label",
-        "DESCRIPTION": "Rate note for dynamically rendered custom or negotiated token tiers. This is a localized CMS fallback, not a JavaScript string."
+        "NAME": "Addons · Add-ons Lede",
+        "DESCRIPTION": "Introductory paragraph for the add-ons section."
       }
     },
     "value": {
-      "en": "Negotiated rate"
+      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_EYEBROW",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_MORE_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Section Eyebrow",
-        "DESCRIPTION": "Small uppercase label above the section heading."
+        "NAME": "ServiceWand · Expand Label",
+        "DESCRIPTION": "Band toggle label shown while the section is collapsed."
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla."
+      "en": "View add-ons"
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_TITLE",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_LESS_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Section Heading",
-        "DESCRIPTION": "Main heading for the credits/tokens section."
+        "NAME": "ServiceWand · Collapse Label",
+        "DESCRIPTION": "Band toggle label shown while the section is expanded."
       }
     },
     "value": {
-      "en": "Lorem Ipsum consectetur."
+      "en": "Hide add-ons"
     }
   },
   {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_LEDE",
+    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_ADDONS_DISCLAIMER",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "Credits · Section Lede",
-        "DESCRIPTION": "Introductory paragraph for the section."
+        "NAME": "Addons · Add-ons Disclaimer",
+        "DESCRIPTION": "Small disclaimer shown below the add-on cards."
       }
     },
     "value": {
-      "en": "Lorem Ipsum incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris."
-    }
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_KICKER",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Credits · Packs Kicker",
-        "DESCRIPTION": "Small label above the packs card title."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum enim ad minim veniam."
-    }
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Credits · Packs Title",
-        "DESCRIPTION": "Heading for the packs card."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ullamco."
-    }
-  },
-  {
-    "code": "SECTION_02_PRICING_DYNAMIC_SERVICEWAND_CREDITS_PACKS_LEDE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Credits · Packs Lede",
-        "DESCRIPTION": "Sub-paragraph for the packs card."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
     }
   },
   {
@@ -2658,10 +2595,10 @@
     "nls": {
       "en": {
         "NAME": "Matrix · Collapsable",
-        "DESCRIPTION": "When true, shows an icon control that can collapse the whole matrix section body. This is independent from Collapsible Row Groups."
+        "DESCRIPTION": "When true, desktop matrix feature groups can collapse behind their group headers. When false, groups stay open and no group collapse UI is initialized."
       }
     },
-    "value": "false",
+    "value": "true",
     "options": [
       "false",
       "true"
@@ -2673,7 +2610,7 @@
     "nls": {
       "en": {
         "NAME": "Matrix · Collapsed by Default",
-        "DESCRIPTION": "Initial collapsed state when Collapsable is true. Ignored when Collapsable is false."
+        "DESCRIPTION": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
       }
     },
     "value": "false",
@@ -2692,7 +2629,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum dolore."
+      "en": "Lorem Ipsum ullamco."
     }
   },
   {
@@ -2705,7 +2642,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      "en": "Lorem Ipsum consequat duis aute irure."
     }
   },
   {
@@ -2718,7 +2655,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex ea commodo consequat."
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
     }
   },
   {
@@ -2731,7 +2668,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      "en": "Lorem Ipsum dolor sit amet consectetur."
     }
   },
   {
@@ -2744,7 +2681,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
     }
   },
   {
@@ -2757,7 +2694,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum adipiscing."
+      "en": "Lorem Ipsum dolore."
     }
   },
   {
@@ -2770,7 +2707,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ut."
+      "en": "Lorem Ipsum quis."
     }
   },
   {
@@ -2783,7 +2720,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad."
+      "en": "Lorem Ipsum ex."
     }
   },
   {
@@ -2796,7 +2733,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit."
     }
   },
   {
@@ -2809,7 +2746,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum duis."
+      "en": "Lorem Ipsum pariatur."
     }
   },
   {
@@ -2822,7 +2759,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      "en": "Lorem Ipsum adipiscing elit sed do."
     }
   },
   {

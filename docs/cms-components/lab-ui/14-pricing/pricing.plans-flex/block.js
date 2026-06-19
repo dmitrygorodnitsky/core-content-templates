@@ -14,32 +14,6 @@
 
   const normalize = (mode) => (mode === "annual" ? "annual" : "monthly");
 
-  const enabled = (value) => value === "true" || value === "on" || value === "1";
-
-  const setupSectionCollapse = (section) => {
-    if (!enabled(section.dataset.collapsable)) return;
-    const toggle = section.querySelector(".pf-section-toggle");
-    const body = section.querySelector(".pf-body");
-    if (!toggle || !body) return;
-
-    if (!body.id) body.id = "pricing-plans-body-" + Math.random().toString(36).slice(2);
-    toggle.setAttribute("aria-controls", body.id);
-    section.dataset.collapseReady = "1";
-
-    const sync = () => {
-      const collapsed = enabled(section.dataset.collapsed);
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      body.hidden = collapsed;
-    };
-
-    toggle.addEventListener("click", () => {
-      section.dataset.collapsed = enabled(section.dataset.collapsed) ? "false" : "true";
-      sync();
-    });
-
-    sync();
-  };
-
   const apply = (section, mode) => {
     const next = normalize(mode);
     section.dataset.billing = next;
@@ -226,7 +200,6 @@
     section.dataset.pfInit = "1";
 
     apply(section, section.dataset.billing);
-    setupSectionCollapse(section);
 
     section.querySelectorAll("[data-billing-option]").forEach((button) => {
       button.addEventListener("click", () => {
