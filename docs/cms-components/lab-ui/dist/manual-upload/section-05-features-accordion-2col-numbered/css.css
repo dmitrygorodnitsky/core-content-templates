@@ -74,7 +74,7 @@
 
 .f-row-head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
   width: 100%;
@@ -87,13 +87,6 @@
   color: var(--color-heading);
 }
 .f-row-head:hover .f-title { color: var(--color-heading); }
-
-.f-num {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--color-gray-blue);
-  letter-spacing: 0.08em;
-}
 
 .f-title {
   margin: 0;

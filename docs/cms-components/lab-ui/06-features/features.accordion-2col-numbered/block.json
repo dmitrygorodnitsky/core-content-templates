@@ -2,14 +2,14 @@
   "$schema": "lab-ui/block@1",
   "id": "features.accordion-2col-numbered",
   "category": "06-features",
-  "title": "Features · 2-col numbered accordion",
-  "description": "Two independent accordion columns of feature rows. Each row carries a monospace F.NN badge, a title, and a plus-icon toggle that rotates 45° and inverts on open. Multiple rows can be open at the same time (matches v5 design source — no one-open rule). 20 slot capacity (15 wired here, easy to extend); empty slots auto-hide via block.js.",
+  "title": "Features · 2-col accordion",
+  "description": "Two independent accordion columns of feature rows. Each row carries a title and a plus-icon toggle that rotates 45° and inverts on open. Multiple rows can be open at the same time (matches v5 design source — no one-open rule). 20 slot capacity (15 wired here, easy to extend); empty slots auto-hide via block.js.",
   "canonical": true,
   "theme": "light",
   "source": {
     "primary": "tmp/Lorem ipsum/src/sections-1.jsx (FeaturesAccordion)",
     "adapted_from": "v5 dark → light tokens, sw container width",
-    "decision": "PM lock 2026-05-21 — features pattern = 2-col numbered accordion"
+    "decision": "PM lock 2026-05-21 — features pattern = 2-col accordion"
   },
   "depends_on": {
     "tokens": [
@@ -21,7 +21,6 @@
       "--color-link",
       "--color-white",
       "--font-family",
-      "--font-mono",
       "--container-width",
       "--container-padding-x"
     ],
