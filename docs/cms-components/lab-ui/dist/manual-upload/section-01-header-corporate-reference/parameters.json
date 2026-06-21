@@ -1936,19 +1936,6 @@
     }
   },
   {
-    "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_TRIGGER_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Locale selector trigger label",
-        "DESCRIPTION": "Default label shown in the locale selector trigger before the active language name is loaded."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum"
-    }
-  },
-  {
     "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOCALE_SELECTOR_DROPDOWN_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -2032,7 +2019,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum commodo."
+      "en": "Lorem Ipsum exercitation."
     }
   },
   {
@@ -2045,7 +2032,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum velit."
+      "en": "Lorem Ipsum commodo."
     }
   },
   {
