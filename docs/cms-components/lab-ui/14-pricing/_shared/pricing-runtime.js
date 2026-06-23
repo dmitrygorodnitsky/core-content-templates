@@ -36,7 +36,9 @@
     const documentLocale = root.document && root.document.documentElement
       ? root.document.documentElement.lang
       : "";
-    const locale = firstValue(dataset.pricingLocale, root.__swLocale, documentLocale, "en");
+    const locale = normalizeLocale(
+      firstValue(dataset.pricingLocale, localeCandidate(root.__swLocale), documentLocale, "en")
+    );
     return {
       enabled: parseBoolean(dataset.pricingDynamic),
       apiBase: firstValue(dataset.pricingApiBase, "/core-pim/api"),
@@ -520,7 +522,29 @@
 
   function formatNumber(value, locale) {
     if (value == null) return "";
-    return Number(value).toLocaleString(locale || undefined, { maximumFractionDigits: 2 });
+    return Number(value).toLocaleString(normalizeLocale(locale) || undefined, { maximumFractionDigits: 2 });
+  }
+
+  function localeCandidate(value) {
+    if (!value) return "";
+    if (typeof value === "string") return value;
+    if (typeof value === "object") {
+      if (typeof value.getEffectiveLocale === "function") return value.getEffectiveLocale();
+      if (typeof value.locale === "string") return value.locale;
+      if (typeof value.code === "string") return value.code;
+      if (typeof value.code2 === "string") return value.code2;
+    }
+    return "";
+  }
+
+  function normalizeLocale(value) {
+    const locale = typeof value === "string" ? value.trim() : "";
+    if (!locale || locale === "[object Object]") return "en";
+    try {
+      return Intl.getCanonicalLocales(locale)[0] || "en";
+    } catch (error) {
+      return "en";
+    }
   }
 
   function numberOrNull(value) {
