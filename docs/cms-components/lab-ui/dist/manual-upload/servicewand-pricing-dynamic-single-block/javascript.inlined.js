@@ -15,6 +15,10 @@
     badge: "PLAN_BADGE",
     cardState: "PLAN_CARD_STATE",
   };
+  const PRODUCT_CTA_ATTRIBUTES = {
+    label: ["CTA_LABEL"],
+    url: ["CTA_LINK", "CTA_URL"],
+  };
   const PLAN_CARD_FEATURE_ATTRIBUTES = [
     "PLAN_CARD_FEATURE_01",
     "PLAN_CARD_FEATURE_02",
@@ -162,6 +166,8 @@
       badge: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.badge, config),
       cardState: normalizeCardState(productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.cardState, config)),
       cardFeatures: productAttributeTexts(row, PLAN_CARD_FEATURE_ATTRIBUTES, config),
+      ctaLabel: productAttributeFirstText(row, PRODUCT_CTA_ATTRIBUTES.label, config),
+      ctaUrl: productAttributeFirstRawText(row, PRODUCT_CTA_ATTRIBUTES.url, config),
       amount: monthlyPrice.amount,
       amountText: monthlyPrice.amountText,
       currency: monthlyPrice.currency,
@@ -324,6 +330,7 @@
           for (const order of orders) {
             if (isSortAttribute(order.attributeCode, config)) continue;
             if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
+            if (isProductCtaAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
             if (!attr || !hasAnyValue(rows, order.typeId, order.attributeCode)) continue;
@@ -361,6 +368,11 @@
   function isPlanCardFeatureAttribute(code) {
     const attributeCode = safeText(code).toUpperCase();
     return PLAN_CARD_FEATURE_ATTRIBUTES.includes(attributeCode);
+  }
+
+  function isProductCtaAttribute(code) {
+    const attributeCode = safeText(code).toUpperCase();
+    return Object.values(PRODUCT_CTA_ATTRIBUTES).some((codes) => codes.includes(attributeCode));
   }
 
   function normalizeValue(raw, config) {
@@ -419,10 +431,28 @@
   }
 
   function productAttributeText(row, code, config) {
+    const value = productAttributeRawText(row, code, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeRawText(row, code, config) {
     const raw = productAttribute(row, code);
     if (!raw || raw.value == null || raw.value === "") return "";
     const nlsText = localizedScalar(raw.nls, config.locale);
-    return dynamicText(nlsText || localizedScalar(raw.value, config.locale), config);
+    return safeText(nlsText || localizedScalar(raw.value, config.locale));
+  }
+
+  function productAttributeFirstText(row, codes, config) {
+    const value = productAttributeFirstRawText(row, codes, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeFirstRawText(row, codes, config) {
+    for (const code of codes || []) {
+      const value = productAttributeRawText(row, code, config);
+      if (value) return value;
+    }
+    return "";
   }
 
   function productAttributeTexts(row, codes, config) {
@@ -648,6 +678,7 @@
   );
 
   const dynamicCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     const key = plan.customPrice ? "pricingContactLabel" : "pricingBuyLabel";
     const value = section.dataset[key];
     if (value) return value;
@@ -657,6 +688,10 @@
     if (existing && existing.textContent.trim()) return existing.textContent.trim();
     return "";
   };
+
+  const dynamicCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const periodText = (plan) => {
     if (plan.customPrice) return "";
@@ -740,7 +775,7 @@
         cta.classList.add("pf-cta--" + ctaStyle(plan));
       }
       setText(card, ".pf-cta", ctaLabel);
-      setHref(card, ".pf-cta", pricing.config.purchaseUrl);
+      setHref(card, ".pf-cta", dynamicCtaHref(section, plan, pricing.config));
 
       const price = card.querySelector(".pf-price");
       if (price) {
@@ -825,8 +860,8 @@
 /* generated child JS: 14-pricing/pricing.addons/block.js */
 // lab-ui block · pricing.addons
 // Optional add-ons collapse. When data-collapsable="true", the header
-// becomes a teaser band (glyph stack derived from the cards + summary +
-// toggle) and data-collapsed controls the initial body state. Works at
+// becomes a teaser band (summary + toggle) and data-collapsed controls
+// the initial body state. Works at
 // any card count and any viewport. Dynamic mode replaces fallback slots
 // with every product returned by the configured Core PIM catalog specs.
 
@@ -851,11 +886,6 @@
   const isInitiallyCollapsed = (section) => (
     hasUnifiedCollapse(section) ? enabled(section.dataset.collapsed) : section.dataset.collapsed === "on"
   );
-
-  const firstGlyph = (text) => {
-    const trimmed = (text || "").trim();
-    return trimmed ? trimmed[0].toUpperCase() : "+";
-  };
 
   const textOf = (node, selector) => {
     const target = node && node.querySelector(selector);
@@ -912,28 +942,7 @@
     summary.textContent = parts.join(" · ");
   };
 
-  const buildGlyphStack = (section, glyphs) => {
-    if (!glyphs) return;
-    glyphs.textContent = "";
-    const items = realCards(section);
-    const shown = items.slice(0, 5);
-    shown.forEach((card) => {
-      const name = card.querySelector(".pricing-addon-name");
-      const tile = document.createElement("span");
-      tile.className = "pricing-addons-glyph";
-      tile.textContent = firstGlyph(name && name.textContent);
-      glyphs.appendChild(tile);
-    });
-    if (items.length > shown.length) {
-      const more = document.createElement("span");
-      more.className = "pricing-addons-glyph pricing-addons-glyph--more";
-      more.textContent = "+" + (items.length - shown.length);
-      glyphs.appendChild(more);
-    }
-  };
-
   const updateTeaser = (section) => {
-    buildGlyphStack(section, section.querySelector(".pricing-addons-glyphs"));
     updateSummary(section);
   };
 
@@ -1040,17 +1049,22 @@
   };
 
   const ctaLabel = (section, plan) => {
+    if (plan && plan.ctaLabel) return plan.ctaLabel;
     if (plan && plan.customPrice) {
       return section.dataset.pricingContactLabel || section.dataset.pricingBuyLabel || "";
     }
     return section.dataset.pricingBuyLabel || section.dataset.pricingContactLabel || "";
   };
 
+  const ctaHref = (section, plan) => (
+    (plan && plan.ctaUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
+
   const renderCta = (section, card, plan) => {
     const label = ctaLabel(section, plan);
     if (!label) return;
     const cta = append(card, el("a", "pricing-addon-cta", label));
-    cta.href = section.dataset.pricingPurchaseUrl || "#";
+    cta.href = ctaHref(section, plan);
     if (plan && plan.name) cta.setAttribute("aria-label", label + " - " + plan.name);
   };
 
@@ -1289,12 +1303,17 @@
   };
 
   const planCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     if (plan.customPrice && section.dataset.pricingContactLabel) return section.dataset.pricingContactLabel;
     if (!plan.customPrice && section.dataset.pricingBuyLabel) return section.dataset.pricingBuyLabel;
     const slot = String(plan.index + 1).padStart(2, "0");
     const existing = section.querySelector('.mx-row--cta [data-plan-col="' + slot + '"] .mx-cta');
     return existing ? existing.textContent.trim() : "";
   };
+
+  const planCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
   const enabled = (value) => value === "true" || value === "on" || value === "1";
@@ -1416,7 +1435,7 @@
       cell.setAttribute("role", "cell");
       cell.dataset.planCol = planCol(plan.index);
       const link = append(cell, el("a", "mx-cta", planCtaLabel(section, plan)));
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 
@@ -1452,7 +1471,7 @@
 
       const link = append(body, el("a", "mx-acc-cta", planCtaLabel(section, plan)));
       link.dataset.rowVisible = "show";
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 

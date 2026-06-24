@@ -897,9 +897,9 @@ select {
 
 /* ─── Collapsible add-ons body (opt-in teaser band) ─────────────
    When data-collapsable="true", the header becomes a left/right band
-   with a glyph stack + summary + toggle, and data-collapsed controls
-   only the initial body state. Default keeps the centered header and
-   shows everything, so no-JS visitors are unaffected. */
+   with a summary + toggle, and data-collapsed controls only the initial
+   body state. Default keeps the centered header and shows everything,
+   so no-JS visitors are unaffected. */
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -920,27 +920,7 @@ select {
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
   display: flex;
   align-items: center;
-  gap: 18px;
-}
-.pricing-addons-glyphs { display: flex; }
-.pricing-addons-glyph {
-  width: 34px;
-  height: 34px;
-  margin-left: -10px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 650;
-  color: var(--color-heading);
-  background: var(--cta-accent-soft, #d6f1f3);
-  border: 2px solid var(--color-bg);
-}
-.pricing-addons-glyph:first-child { margin-left: 0; }
-.pricing-addons-glyph--more {
-  background: var(--color-gray-bg);
-  color: var(--color-gray-blue);
+  justify-content: flex-end;
 }
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-toggle {
   display: inline-flex;

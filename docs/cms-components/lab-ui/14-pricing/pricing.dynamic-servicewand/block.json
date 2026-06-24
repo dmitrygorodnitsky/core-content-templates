@@ -207,7 +207,7 @@
       "type": "URL",
       "default": "#pricing",
       "name": "ServiceWand · Dynamic Pricing Purchase URL",
-      "description": "CTA destination used by dynamically rendered plans.",
+      "description": "Fallback CTA destination used when the product CTA_LINK attribute is empty.",
       "preserve_default": true
     },
     {
@@ -215,7 +215,7 @@
       "type": "LOCALIZED_STRING_SS",
       "default": "Buy now",
       "name": "ServiceWand · Dynamic Pricing Buy Label",
-      "description": "CTA label for plans with numeric pricing.",
+      "description": "Fallback CTA label used when the product CTA_LABEL attribute is empty for numeric pricing.",
       "preserve_default": true
     },
     {
@@ -231,7 +231,7 @@
       "type": "URL",
       "default": "#pricing-addons",
       "name": "ServiceWand · Dynamic Pricing Purchase URL",
-      "description": "Shared purchase/contact URL used by every add-on card CTA.",
+      "description": "Fallback purchase/contact URL used when the add-on product CTA_LINK attribute is empty.",
       "preserve_default": true
     },
     {
@@ -239,7 +239,7 @@
       "type": "LOCALIZED_STRING_SS",
       "default": "Buy add-on",
       "name": "ServiceWand · Dynamic Pricing Buy Label",
-      "description": "Localized buy label shown on dynamic add-on card CTAs for numeric add-on pricing.",
+      "description": "Fallback buy label used when the add-on product CTA_LABEL attribute is empty for numeric pricing.",
       "preserve_default": true
     },
     {

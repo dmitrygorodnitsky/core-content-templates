@@ -1,7 +1,7 @@
 // lab-ui block · pricing.addons
 // Optional add-ons collapse. When data-collapsable="true", the header
-// becomes a teaser band (glyph stack derived from the cards + summary +
-// toggle) and data-collapsed controls the initial body state. Works at
+// becomes a teaser band (summary + toggle) and data-collapsed controls
+// the initial body state. Works at
 // any card count and any viewport. Dynamic mode replaces fallback slots
 // with every product returned by the configured Core PIM catalog specs.
 
@@ -26,11 +26,6 @@
   const isInitiallyCollapsed = (section) => (
     hasUnifiedCollapse(section) ? enabled(section.dataset.collapsed) : section.dataset.collapsed === "on"
   );
-
-  const firstGlyph = (text) => {
-    const trimmed = (text || "").trim();
-    return trimmed ? trimmed[0].toUpperCase() : "+";
-  };
 
   const textOf = (node, selector) => {
     const target = node && node.querySelector(selector);
@@ -87,28 +82,7 @@
     summary.textContent = parts.join(" · ");
   };
 
-  const buildGlyphStack = (section, glyphs) => {
-    if (!glyphs) return;
-    glyphs.textContent = "";
-    const items = realCards(section);
-    const shown = items.slice(0, 5);
-    shown.forEach((card) => {
-      const name = card.querySelector(".pricing-addon-name");
-      const tile = document.createElement("span");
-      tile.className = "pricing-addons-glyph";
-      tile.textContent = firstGlyph(name && name.textContent);
-      glyphs.appendChild(tile);
-    });
-    if (items.length > shown.length) {
-      const more = document.createElement("span");
-      more.className = "pricing-addons-glyph pricing-addons-glyph--more";
-      more.textContent = "+" + (items.length - shown.length);
-      glyphs.appendChild(more);
-    }
-  };
-
   const updateTeaser = (section) => {
-    buildGlyphStack(section, section.querySelector(".pricing-addons-glyphs"));
     updateSummary(section);
   };
 
@@ -215,17 +189,22 @@
   };
 
   const ctaLabel = (section, plan) => {
+    if (plan && plan.ctaLabel) return plan.ctaLabel;
     if (plan && plan.customPrice) {
       return section.dataset.pricingContactLabel || section.dataset.pricingBuyLabel || "";
     }
     return section.dataset.pricingBuyLabel || section.dataset.pricingContactLabel || "";
   };
 
+  const ctaHref = (section, plan) => (
+    (plan && plan.ctaUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
+
   const renderCta = (section, card, plan) => {
     const label = ctaLabel(section, plan);
     if (!label) return;
     const cta = append(card, el("a", "pricing-addon-cta", label));
-    cta.href = section.dataset.pricingPurchaseUrl || "#";
+    cta.href = ctaHref(section, plan);
     if (plan && plan.name) cta.setAttribute("aria-label", label + " - " + plan.name);
   };
 

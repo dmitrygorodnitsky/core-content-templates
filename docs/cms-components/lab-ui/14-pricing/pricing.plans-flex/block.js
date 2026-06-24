@@ -49,6 +49,7 @@
   );
 
   const dynamicCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     const key = plan.customPrice ? "pricingContactLabel" : "pricingBuyLabel";
     const value = section.dataset[key];
     if (value) return value;
@@ -58,6 +59,10 @@
     if (existing && existing.textContent.trim()) return existing.textContent.trim();
     return "";
   };
+
+  const dynamicCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const periodText = (plan) => {
     if (plan.customPrice) return "";
@@ -141,7 +146,7 @@
         cta.classList.add("pf-cta--" + ctaStyle(plan));
       }
       setText(card, ".pf-cta", ctaLabel);
-      setHref(card, ".pf-cta", pricing.config.purchaseUrl);
+      setHref(card, ".pf-cta", dynamicCtaHref(section, plan, pricing.config));
 
       const price = card.querySelector(".pf-price");
       if (price) {

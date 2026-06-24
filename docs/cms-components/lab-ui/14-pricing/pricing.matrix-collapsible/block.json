@@ -210,14 +210,14 @@
       "type": "URL",
       "default": "#pricing",
       "name": "Dynamic Pricing Purchase URL",
-      "description": "CTA destination used by dynamically rendered plan columns."
+      "description": "Fallback CTA destination used when the product CTA_LINK attribute is empty for dynamic plan columns."
     },
     {
       "code": "pricing_buy_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Buy now",
       "name": "Dynamic Pricing Buy Label",
-      "description": "CTA label for plans with numeric pricing."
+      "description": "Fallback CTA label used when the product CTA_LABEL attribute is empty for numeric pricing."
     },
     {
       "code": "pricing_contact_label",
@@ -1782,6 +1782,7 @@
     "Icon-only state cells get an aria-label from state_label_yes/no/partial via block.js.",
     "Dynamic pricing is opt-in via dynamic_pricing_enabled. Static plan, group, and row fields remain the editor preview and fallback if the Core PIM request is disabled or fails.",
     "Dynamic mode uses the shared 14-pricing/_shared/pricing-runtime.js loader and consumes normalized plan/group data; do not copy Core PIM response parsing into this block.",
+    "Dynamic matrix CTAs read product attributes CTA_LABEL and CTA_LINK first; section-level pricing_buy_label / pricing_purchase_url are fallbacks.",
     "pricing_product_type_code can point at SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS when the matching price type and attribute filters are supplied.",
     "Dynamic matrix mode rebuilds table and accordion rows from visible Core PIM attribute groups, so it is not limited to the static twelve-row or four-column parameter model.",
     "The table shell scrolls horizontally when dynamic mode returns more plan columns than fit comfortably.",

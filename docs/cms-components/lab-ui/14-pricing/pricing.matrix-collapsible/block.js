@@ -47,12 +47,17 @@
   };
 
   const planCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     if (plan.customPrice && section.dataset.pricingContactLabel) return section.dataset.pricingContactLabel;
     if (!plan.customPrice && section.dataset.pricingBuyLabel) return section.dataset.pricingBuyLabel;
     const slot = String(plan.index + 1).padStart(2, "0");
     const existing = section.querySelector('.mx-row--cta [data-plan-col="' + slot + '"] .mx-cta');
     return existing ? existing.textContent.trim() : "";
   };
+
+  const planCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
   const enabled = (value) => value === "true" || value === "on" || value === "1";
@@ -174,7 +179,7 @@
       cell.setAttribute("role", "cell");
       cell.dataset.planCol = planCol(plan.index);
       const link = append(cell, el("a", "mx-cta", planCtaLabel(section, plan)));
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 
@@ -210,7 +215,7 @@
 
       const link = append(body, el("a", "mx-acc-cta", planCtaLabel(section, plan)));
       link.dataset.rowVisible = "show";
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 

@@ -49,8 +49,8 @@
     { "code": "pricing_catalog_specs", "type": "STRING", "default": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|;SERVICEWAND_SAAS_ROUTING_TOKENS|PER_UNIT|UNIT_PRICE|3,4,4.5,5|", "name": "Pricing Catalog Specs", "description": "Semicolon-separated dynamic catalogs. Format per item: productTypeCode|priceTypeCode|priceAttributeCode|priceAttributeValues|fixtureUrl. The fixtureUrl part stays empty in CMS production." },
     { "code": "pricing_sort_attribute_code", "type": "STRING", "default": "SORT_ORDER_PRIORITY", "name": "Pricing Sort Attribute Code", "description": "Product attribute used to sort add-on products inside each requested catalog before falling back to amount." },
     { "code": "pricing_currency", "type": "STRING", "default": "CAD", "name": "Pricing Currency", "description": "Currency attribute value requested from Core PIM." },
-    { "code": "pricing_purchase_url", "type": "URL", "default": "#", "name": "Dynamic Pricing Purchase URL", "description": "Shared purchase/contact URL used by every add-on card CTA." },
-    { "code": "pricing_buy_label", "type": "LOCALIZED_STRING_SS", "default": "Buy add-on", "name": "Dynamic Pricing Buy Label", "description": "Localized buy label shown on dynamic add-on card CTAs for numeric add-on pricing." },
+    { "code": "pricing_purchase_url", "type": "URL", "default": "#", "name": "Dynamic Pricing Purchase URL", "description": "Fallback purchase/contact URL used when the add-on product CTA_LINK attribute is empty." },
+    { "code": "pricing_buy_label", "type": "LOCALIZED_STRING_SS", "default": "Buy add-on", "name": "Dynamic Pricing Buy Label", "description": "Fallback buy label used when the add-on product CTA_LABEL attribute is empty for numeric pricing." },
     { "code": "pricing_contact_label", "type": "LOCALIZED_STRING_SS", "default": "Contact us", "name": "Dynamic Pricing Contact Label", "description": "Label shown in place of price when Core PIM marks an add-on as custom or negotiated." },
     { "code": "pricing_error_mode", "type": "ENUM", "options": ["fallback"], "default": "fallback", "name": "Dynamic Pricing Error Mode", "description": "Failure behavior for dynamic loading. Current supported behavior keeps the static CMS fallback and records data-pricing-error on the section." },
     { "code": "collapsable", "type": "ENUM", "options": ["false", "true"], "default": "false", "name": "Collapsable", "description": "When true, shows the add-ons teaser band and toggle so the add-on cards can collapse behind the section header." },
@@ -116,6 +116,7 @@
   "notes": [
     "Dynamic mode is not limited by the fallback slot count; it renders every product returned by the configured Core PIM catalog specs.",
     "pricing_catalog_specs can request multiple product types with different price filters. The production format leaves fixtureUrl empty.",
+    "Dynamic add-on CTAs read product attributes CTA_LABEL and CTA_LINK first; section-level pricing_buy_label / pricing_purchase_url are fallbacks.",
     "Static add-on slots remain in the template only for editor preview and failure fallback."
   ]
 }

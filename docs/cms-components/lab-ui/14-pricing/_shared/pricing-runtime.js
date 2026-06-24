@@ -14,6 +14,10 @@
     badge: "PLAN_BADGE",
     cardState: "PLAN_CARD_STATE",
   };
+  const PRODUCT_CTA_ATTRIBUTES = {
+    label: ["CTA_LABEL"],
+    url: ["CTA_LINK", "CTA_URL"],
+  };
   const PLAN_CARD_FEATURE_ATTRIBUTES = [
     "PLAN_CARD_FEATURE_01",
     "PLAN_CARD_FEATURE_02",
@@ -161,6 +165,8 @@
       badge: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.badge, config),
       cardState: normalizeCardState(productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.cardState, config)),
       cardFeatures: productAttributeTexts(row, PLAN_CARD_FEATURE_ATTRIBUTES, config),
+      ctaLabel: productAttributeFirstText(row, PRODUCT_CTA_ATTRIBUTES.label, config),
+      ctaUrl: productAttributeFirstRawText(row, PRODUCT_CTA_ATTRIBUTES.url, config),
       amount: monthlyPrice.amount,
       amountText: monthlyPrice.amountText,
       currency: monthlyPrice.currency,
@@ -323,6 +329,7 @@
           for (const order of orders) {
             if (isSortAttribute(order.attributeCode, config)) continue;
             if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
+            if (isProductCtaAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
             if (!attr || !hasAnyValue(rows, order.typeId, order.attributeCode)) continue;
@@ -360,6 +367,11 @@
   function isPlanCardFeatureAttribute(code) {
     const attributeCode = safeText(code).toUpperCase();
     return PLAN_CARD_FEATURE_ATTRIBUTES.includes(attributeCode);
+  }
+
+  function isProductCtaAttribute(code) {
+    const attributeCode = safeText(code).toUpperCase();
+    return Object.values(PRODUCT_CTA_ATTRIBUTES).some((codes) => codes.includes(attributeCode));
   }
 
   function normalizeValue(raw, config) {
@@ -418,10 +430,28 @@
   }
 
   function productAttributeText(row, code, config) {
+    const value = productAttributeRawText(row, code, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeRawText(row, code, config) {
     const raw = productAttribute(row, code);
     if (!raw || raw.value == null || raw.value === "") return "";
     const nlsText = localizedScalar(raw.nls, config.locale);
-    return dynamicText(nlsText || localizedScalar(raw.value, config.locale), config);
+    return safeText(nlsText || localizedScalar(raw.value, config.locale));
+  }
+
+  function productAttributeFirstText(row, codes, config) {
+    const value = productAttributeFirstRawText(row, codes, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeFirstRawText(row, codes, config) {
+    for (const code of codes || []) {
+      const value = productAttributeRawText(row, code, config);
+      if (value) return value;
+    }
+    return "";
   }
 
   function productAttributeTexts(row, codes, config) {

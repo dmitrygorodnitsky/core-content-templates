@@ -903,9 +903,9 @@ select {
 
 /* ─── Collapsible add-ons body (opt-in teaser band) ─────────────
    When data-collapsable="true", the header becomes a left/right band
-   with a glyph stack + summary + toggle, and data-collapsed controls
-   only the initial body state. Default keeps the centered header and
-   shows everything, so no-JS visitors are unaffected. */
+   with a summary + toggle, and data-collapsed controls only the initial
+   body state. Default keeps the centered header and shows everything,
+   so no-JS visitors are unaffected. */
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -926,27 +926,7 @@ select {
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-top-aside {
   display: flex;
   align-items: center;
-  gap: 18px;
-}
-.pricing-addons-glyphs { display: flex; }
-.pricing-addons-glyph {
-  width: 34px;
-  height: 34px;
-  margin-left: -10px;
-  border-radius: 9px;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 650;
-  color: var(--color-heading);
-  background: var(--cta-accent-soft, #d6f1f3);
-  border: 2px solid var(--color-bg);
-}
-.pricing-addons-glyph:first-child { margin-left: 0; }
-.pricing-addons-glyph--more {
-  background: var(--color-gray-bg);
-  color: var(--color-gray-blue);
+  justify-content: flex-end;
 }
 .pricing-addons[data-collapse-ready="1"][data-collapsable="true"] .pricing-addons-toggle {
   display: inline-flex;
@@ -1848,7 +1828,6 @@ select {
         <p class="pricing-addons-summary" aria-live="polite"></p>
       </div>
       <div class="pricing-addons-top-aside">
-        <div class="pricing-addons-glyphs" aria-hidden="true"></div>
         <button class="pricing-addons-toggle" type="button" aria-expanded="false">
           <span class="pricing-addons-toggle-label" data-label-more="[object Object]" data-label-less="[object Object]">[object Object]</span>
           <span class="pricing-addons-toggle-chev" aria-hidden="true"></span>
@@ -1926,6 +1905,10 @@ select {
     kicker: "PLAN_KICKER",
     badge: "PLAN_BADGE",
     cardState: "PLAN_CARD_STATE",
+  };
+  const PRODUCT_CTA_ATTRIBUTES = {
+    label: ["CTA_LABEL"],
+    url: ["CTA_LINK", "CTA_URL"],
   };
   const PLAN_CARD_FEATURE_ATTRIBUTES = [
     "PLAN_CARD_FEATURE_01",
@@ -2074,6 +2057,8 @@ select {
       badge: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.badge, config),
       cardState: normalizeCardState(productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.cardState, config)),
       cardFeatures: productAttributeTexts(row, PLAN_CARD_FEATURE_ATTRIBUTES, config),
+      ctaLabel: productAttributeFirstText(row, PRODUCT_CTA_ATTRIBUTES.label, config),
+      ctaUrl: productAttributeFirstRawText(row, PRODUCT_CTA_ATTRIBUTES.url, config),
       amount: monthlyPrice.amount,
       amountText: monthlyPrice.amountText,
       currency: monthlyPrice.currency,
@@ -2236,6 +2221,7 @@ select {
           for (const order of orders) {
             if (isSortAttribute(order.attributeCode, config)) continue;
             if (isPlanCardFeatureAttribute(order.attributeCode)) continue;
+            if (isProductCtaAttribute(order.attributeCode)) continue;
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
             if (!attr || !hasAnyValue(rows, order.typeId, order.attributeCode)) continue;
@@ -2273,6 +2259,11 @@ select {
   function isPlanCardFeatureAttribute(code) {
     const attributeCode = safeText(code).toUpperCase();
     return PLAN_CARD_FEATURE_ATTRIBUTES.includes(attributeCode);
+  }
+
+  function isProductCtaAttribute(code) {
+    const attributeCode = safeText(code).toUpperCase();
+    return Object.values(PRODUCT_CTA_ATTRIBUTES).some((codes) => codes.includes(attributeCode));
   }
 
   function normalizeValue(raw, config) {
@@ -2331,10 +2322,28 @@ select {
   }
 
   function productAttributeText(row, code, config) {
+    const value = productAttributeRawText(row, code, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeRawText(row, code, config) {
     const raw = productAttribute(row, code);
     if (!raw || raw.value == null || raw.value === "") return "";
     const nlsText = localizedScalar(raw.nls, config.locale);
-    return dynamicText(nlsText || localizedScalar(raw.value, config.locale), config);
+    return safeText(nlsText || localizedScalar(raw.value, config.locale));
+  }
+
+  function productAttributeFirstText(row, codes, config) {
+    const value = productAttributeFirstRawText(row, codes, config);
+    return dynamicText(value, config);
+  }
+
+  function productAttributeFirstRawText(row, codes, config) {
+    for (const code of codes || []) {
+      const value = productAttributeRawText(row, code, config);
+      if (value) return value;
+    }
+    return "";
   }
 
   function productAttributeTexts(row, codes, config) {
@@ -2560,6 +2569,7 @@ select {
   );
 
   const dynamicCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     const key = plan.customPrice ? "pricingContactLabel" : "pricingBuyLabel";
     const value = section.dataset[key];
     if (value) return value;
@@ -2569,6 +2579,10 @@ select {
     if (existing && existing.textContent.trim()) return existing.textContent.trim();
     return "";
   };
+
+  const dynamicCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const periodText = (plan) => {
     if (plan.customPrice) return "";
@@ -2652,7 +2666,7 @@ select {
         cta.classList.add("pf-cta--" + ctaStyle(plan));
       }
       setText(card, ".pf-cta", ctaLabel);
-      setHref(card, ".pf-cta", pricing.config.purchaseUrl);
+      setHref(card, ".pf-cta", dynamicCtaHref(section, plan, pricing.config));
 
       const price = card.querySelector(".pf-price");
       if (price) {
@@ -2737,8 +2751,8 @@ select {
 /* generated child JS: 14-pricing/pricing.addons/block.js */
 // lab-ui block · pricing.addons
 // Optional add-ons collapse. When data-collapsable="true", the header
-// becomes a teaser band (glyph stack derived from the cards + summary +
-// toggle) and data-collapsed controls the initial body state. Works at
+// becomes a teaser band (summary + toggle) and data-collapsed controls
+// the initial body state. Works at
 // any card count and any viewport. Dynamic mode replaces fallback slots
 // with every product returned by the configured Core PIM catalog specs.
 
@@ -2763,11 +2777,6 @@ select {
   const isInitiallyCollapsed = (section) => (
     hasUnifiedCollapse(section) ? enabled(section.dataset.collapsed) : section.dataset.collapsed === "on"
   );
-
-  const firstGlyph = (text) => {
-    const trimmed = (text || "").trim();
-    return trimmed ? trimmed[0].toUpperCase() : "+";
-  };
 
   const textOf = (node, selector) => {
     const target = node && node.querySelector(selector);
@@ -2824,28 +2833,7 @@ select {
     summary.textContent = parts.join(" · ");
   };
 
-  const buildGlyphStack = (section, glyphs) => {
-    if (!glyphs) return;
-    glyphs.textContent = "";
-    const items = realCards(section);
-    const shown = items.slice(0, 5);
-    shown.forEach((card) => {
-      const name = card.querySelector(".pricing-addon-name");
-      const tile = document.createElement("span");
-      tile.className = "pricing-addons-glyph";
-      tile.textContent = firstGlyph(name && name.textContent);
-      glyphs.appendChild(tile);
-    });
-    if (items.length > shown.length) {
-      const more = document.createElement("span");
-      more.className = "pricing-addons-glyph pricing-addons-glyph--more";
-      more.textContent = "+" + (items.length - shown.length);
-      glyphs.appendChild(more);
-    }
-  };
-
   const updateTeaser = (section) => {
-    buildGlyphStack(section, section.querySelector(".pricing-addons-glyphs"));
     updateSummary(section);
   };
 
@@ -2952,17 +2940,22 @@ select {
   };
 
   const ctaLabel = (section, plan) => {
+    if (plan && plan.ctaLabel) return plan.ctaLabel;
     if (plan && plan.customPrice) {
       return section.dataset.pricingContactLabel || section.dataset.pricingBuyLabel || "";
     }
     return section.dataset.pricingBuyLabel || section.dataset.pricingContactLabel || "";
   };
 
+  const ctaHref = (section, plan) => (
+    (plan && plan.ctaUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
+
   const renderCta = (section, card, plan) => {
     const label = ctaLabel(section, plan);
     if (!label) return;
     const cta = append(card, el("a", "pricing-addon-cta", label));
-    cta.href = section.dataset.pricingPurchaseUrl || "#";
+    cta.href = ctaHref(section, plan);
     if (plan && plan.name) cta.setAttribute("aria-label", label + " - " + plan.name);
   };
 
@@ -3201,12 +3194,17 @@ select {
   };
 
   const planCtaLabel = (section, plan) => {
+    if (plan.ctaLabel) return plan.ctaLabel;
     if (plan.customPrice && section.dataset.pricingContactLabel) return section.dataset.pricingContactLabel;
     if (!plan.customPrice && section.dataset.pricingBuyLabel) return section.dataset.pricingBuyLabel;
     const slot = String(plan.index + 1).padStart(2, "0");
     const existing = section.querySelector('.mx-row--cta [data-plan-col="' + slot + '"] .mx-cta');
     return existing ? existing.textContent.trim() : "";
   };
+
+  const planCtaHref = (section, plan, config) => (
+    plan.ctaUrl || (config && config.purchaseUrl) || section.dataset.pricingPurchaseUrl || "#"
+  );
 
   const planCol = (index) => String(index + 1).padStart(2, "0");
   const enabled = (value) => value === "true" || value === "on" || value === "1";
@@ -3328,7 +3326,7 @@ select {
       cell.setAttribute("role", "cell");
       cell.dataset.planCol = planCol(plan.index);
       const link = append(cell, el("a", "mx-cta", planCtaLabel(section, plan)));
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 
@@ -3364,7 +3362,7 @@ select {
 
       const link = append(body, el("a", "mx-acc-cta", planCtaLabel(section, plan)));
       link.dataset.rowVisible = "show";
-      link.href = config.purchaseUrl || "#";
+      link.href = planCtaHref(section, plan, config);
     });
   };
 

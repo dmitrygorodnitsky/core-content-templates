@@ -178,14 +178,14 @@
       "type": "URL",
       "default": "#",
       "name": "Dynamic Pricing Purchase URL",
-      "description": "CTA destination used by dynamically rendered plans."
+      "description": "Fallback CTA destination used when the product CTA_LINK attribute is empty."
     },
     {
       "code": "pricing_buy_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Buy now",
       "name": "Dynamic Pricing Buy Label",
-      "description": "CTA label for plans with numeric pricing."
+      "description": "Fallback CTA label used when the product CTA_LABEL attribute is empty for numeric pricing."
     },
     {
       "code": "pricing_contact_label",
@@ -1134,6 +1134,7 @@
     "Save chip is per-card (plan_NN_save_chip). Leave empty for Enterprise / custom plans.",
     "Dynamic pricing is opt-in via dynamic_pricing_enabled. Static plan_NN fields remain the editor preview and fallback if the Core PIM request is disabled or fails.",
     "Dynamic mode uses the shared 14-pricing/_shared/pricing-runtime.js loader and consumes normalized plan/group data; do not copy Core PIM response parsing into this block.",
+    "Dynamic plan CTAs read product attributes CTA_LABEL and CTA_LINK first; section-level pricing_buy_label / pricing_purchase_url are fallbacks.",
     "pricing_product_type_code can point at SERVICEWAND_SAAS, SERVICEWAND_SAAS_EXT, or SERVICEWAND_SAAS_ROUTING_TOKENS when the matching price type and attribute filters are supplied.",
     "On <=720px the featured card is ordered first in the stack; the billing toggle buttons are 44px tall for touch targets."
   ]
