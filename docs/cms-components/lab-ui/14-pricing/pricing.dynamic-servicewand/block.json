@@ -434,6 +434,24 @@
       "description": "Initial group state when Collapsable is true: true starts all desktop groups collapsed, false starts them open. Ignored when Collapsable is false."
     },
     {
+      "code": "matrix_hint_style",
+      "type": "ENUM",
+      "options": [
+        "inline",
+        "tooltip"
+      ],
+      "default": "tooltip",
+      "name": "Matrix · Row Hint Style",
+      "description": "Controls whether attribute Placeholder text is exposed as a tooltip trigger. Descriptions remain rendered as normal row descriptions."
+    },
+    {
+      "code": "matrix_tip_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Explanation",
+      "name": "Matrix · Tooltip Button Label",
+      "description": "Accessible label prefix for matrix row tooltip triggers."
+    },
+    {
       "code": "matrix_table_label",
       "type": "LOCALIZED_STRING_SS",
       "default": "Plan comparison",

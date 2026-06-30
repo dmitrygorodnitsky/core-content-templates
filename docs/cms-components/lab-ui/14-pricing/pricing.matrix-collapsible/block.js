@@ -39,6 +39,9 @@
     return labels[state] || "";
   };
 
+  const rowHint = (attr) => attr.description || "";
+  const rowTooltip = (attr) => attr.placeholder || "";
+
   const setStateA11y = (section, cell, state, valueNode) => {
     const label = stateLabel(section, state);
     if (label && valueNode && !valueNode.textContent.trim()) {
@@ -116,6 +119,116 @@
     });
   };
 
+  // ─── Per-row explanation tooltip (optional, opt-in) ─────────
+  // When data-hint-style="tooltip", the per-row hint/Placeholder text
+  // moves into a small popover on the feature label instead of
+  // sitting inline. A single position:fixed layer per section keeps it
+  // out of the table's clipped overflow. Only rows that actually have
+  // explanation text are upgraded.
+  let tipLayerSeq = 0;
+
+  const tipText = (btn) => {
+    const cell = btn.closest(".mx-cell--feature, dt");
+    const source = cell && cell.querySelector(".mx-feature-tip-source");
+    const fallbackHint = cell && cell.querySelector(".mx-feature-hint");
+    if (source) return source.textContent.trim();
+    return fallbackHint ? fallbackHint.textContent.trim() : "";
+  };
+
+  const positionTip = (layer, btn) => {
+    const rect = btn.getBoundingClientRect();
+    layer.style.visibility = "hidden";
+    layer.hidden = false;
+    const tip = layer.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - tip.width / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - tip.width - 8));
+    let top = rect.top - tip.height - 10;
+    let placement = "top";
+    if (top < 8) {
+      top = rect.bottom + 10;
+      placement = "bottom";
+    }
+    layer.style.left = Math.round(left) + "px";
+    layer.style.top = Math.round(top) + "px";
+    layer.dataset.placement = placement;
+    layer.style.setProperty("--mx-tip-arrow", Math.round(rect.left + rect.width / 2 - left) + "px");
+    layer.style.visibility = "";
+  };
+
+  const tipController = (section) => {
+    if (section._mxTip) return section._mxTip;
+    const layer = append(section, el("div", "mx-tip"));
+    layer.setAttribute("role", "tooltip");
+    layer.id = "mx-tip-" + ++tipLayerSeq;
+    layer.hidden = true;
+
+    const ctrl = { layer, active: null, pinned: null };
+    ctrl.show = (btn) => {
+      const text = tipText(btn);
+      if (!text) return;
+      layer.textContent = text;
+      positionTip(layer, btn);
+      btn.setAttribute("aria-expanded", "true");
+      ctrl.active = btn;
+    };
+    ctrl.hide = () => {
+      if (!ctrl.active) return;
+      layer.hidden = true;
+      ctrl.active.setAttribute("aria-expanded", "false");
+      ctrl.active = null;
+    };
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { ctrl.pinned = null; ctrl.hide(); }
+    });
+    document.addEventListener("click", (event) => {
+      const trigger = event.target.closest(".mx-feature-label--tip");
+      if (ctrl.pinned && trigger !== ctrl.pinned) { ctrl.pinned = null; ctrl.hide(); }
+    });
+    window.addEventListener("scroll", () => { if (ctrl.active) positionTip(layer, ctrl.active); }, true);
+    window.addEventListener("resize", () => ctrl.hide());
+
+    section._mxTip = ctrl;
+    return ctrl;
+  };
+
+  const setupTips = (section) => {
+    if (section.dataset.hintStyle !== "tooltip") return;
+    const cells = section.querySelectorAll(".mx-shell--table .mx-cell--feature, .mx-shell--accordion .mx-acc-item dt");
+    if (!cells.length) return;
+    const ctrl = tipController(section);
+    cells.forEach((cell) => {
+      const label = cell.querySelector(".mx-feature-label");
+      const source = cell.querySelector(".mx-feature-tip-source");
+      const hint = cell.querySelector(".mx-feature-hint");
+      const text = source ? source.textContent.trim() : (hint ? hint.textContent.trim() : "");
+      // The label itself is the trigger; the dotted underline signals it.
+      // Only rows that actually carry explanation text get upgraded.
+      if (!label || !text) return;
+      if (label.dataset.tipInit === "1") return;
+      label.dataset.tipInit = "1";
+      label.classList.add("mx-feature-label--tip");
+      label.tabIndex = 0;
+      label.setAttribute("role", "button");
+      label.setAttribute("aria-label", (section.dataset.tipLabel || "Explanation") + ": " + label.textContent.trim());
+      label.setAttribute("aria-describedby", ctrl.layer.id);
+      label.setAttribute("aria-expanded", "false");
+
+      const toggle = () => {
+        if (ctrl.pinned === label) { ctrl.pinned = null; ctrl.hide(); }
+        else { ctrl.pinned = label; ctrl.show(label); }
+      };
+      label.addEventListener("mouseenter", () => { if (!ctrl.pinned) ctrl.show(label); });
+      label.addEventListener("mouseleave", () => { if (ctrl.pinned !== label) ctrl.hide(); });
+      label.addEventListener("focus", () => ctrl.show(label));
+      label.addEventListener("blur", () => { if (ctrl.pinned !== label) ctrl.hide(); });
+      label.addEventListener("click", (event) => { event.preventDefault(); toggle(); });
+      label.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); }
+      });
+    });
+  };
+
   const renderHead = (section, table, plans) => {
     const row = append(table, el("div", "mx-row mx-row--head"));
     row.setAttribute("role", "row");
@@ -149,7 +262,8 @@
       const feature = append(row, el("div", "mx-cell mx-cell--feature"));
       feature.setAttribute("role", "rowheader");
       append(feature, el("span", "mx-feature-label", attr.label));
-      append(feature, el("span", "mx-feature-hint", attr.description));
+      append(feature, el("span", "mx-feature-hint", rowHint(attr)));
+      append(feature, el("span", "mx-feature-tip-source", rowTooltip(attr)));
 
       plans.forEach((plan) => {
         const value = attr.values[plan.index] || { state: "empty", text: "" };
@@ -206,7 +320,10 @@
           const value = attr.values[plan.index] || { state: "empty", text: "" };
           const item = append(list, el("div", "mx-acc-item"));
           item.dataset.rowVisible = "show";
-          append(item, el("dt", "", attr.label));
+          const term = append(item, el("dt"));
+          append(term, el("span", "mx-feature-label", attr.label));
+          append(term, el("span", "mx-feature-hint", rowHint(attr)));
+          append(term, el("span", "mx-feature-tip-source", rowTooltip(attr)));
           const dd = append(item, el("dd", "", value.text));
           dd.dataset.state = value.state;
           setStateA11y(section, dd, value.state, dd);
@@ -242,6 +359,7 @@
     }
 
     labelStates(section);
+    setupTips(section);
     section.dataset.pricingState = "dynamic";
   };
 
@@ -296,6 +414,7 @@
     labelStates(section);
     applyUnifiedGroupCollapse(section);
     section.querySelectorAll(".mx-shell--table .mx-group").forEach((group) => setupGroupToggle(section, group));
+    setupTips(section);
 
     document.addEventListener(EVENT, (event) => {
       if (!event.detail) return;

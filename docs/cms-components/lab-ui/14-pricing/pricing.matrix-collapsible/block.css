@@ -154,6 +154,61 @@
 }
 .mx-feature-hint:empty { display: none; }
 
+/* ─── Per-row explanation tooltip (data-hint-style="tooltip") ──
+   No extra icon: rows that carry explanation text get a custom dotted
+   underline (added by block.js) and the label itself is the trigger. */
+.mx-feature-tip-source { display: none; }
+.mx-matrix[data-hint-style="tooltip"] .mx-feature-label--tip {
+  cursor: help;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: color-mix(in srgb, var(--color-gray-blue) 55%, transparent);
+  text-underline-offset: 4px;
+  outline: none;
+  transition: text-decoration-color var(--transition-fast), color var(--transition-fast);
+}
+.mx-matrix[data-hint-style="tooltip"] .mx-feature-label--tip:hover,
+.mx-matrix[data-hint-style="tooltip"] .mx-feature-label--tip:focus-visible {
+  color: var(--color-heading);
+  text-decoration-color: var(--cta-accent);
+}
+.mx-matrix[data-hint-style="tooltip"] .mx-feature-label--tip:focus-visible {
+  outline: 2px solid var(--cta-accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.mx-tip {
+  position: fixed;
+  z-index: 60;
+  max-width: min(280px, 90vw);
+  padding: 9px 12px;
+  border-radius: var(--radius-card-sm);
+  background: var(--color-heading);
+  color: var(--color-white);
+  font-family: var(--font-family);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: var(--shadow-2);
+  pointer-events: none;
+}
+.mx-tip[hidden] { display: none; }
+.mx-tip::after {
+  content: "";
+  position: absolute;
+  left: var(--mx-tip-arrow, 50%);
+  width: 9px;
+  height: 9px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+.mx-tip[data-placement="top"]::after { bottom: -4px; }
+.mx-tip[data-placement="bottom"]::after { top: -4px; }
+
 .mx-mobile-plan { display: none; }
 .mx-value {
   display: inline-flex;
@@ -373,6 +428,11 @@
   .mx-acc-item dt {
     color: var(--color-text);
     font-size: 0.875rem;
+  }
+  .mx-acc-item .mx-feature-hint {
+    display: block;
+    margin-top: 3px;
+    line-height: 1.35;
   }
   .mx-acc-item dd {
     margin: 0;

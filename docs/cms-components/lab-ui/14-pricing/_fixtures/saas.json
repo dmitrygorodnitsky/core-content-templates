@@ -280,7 +280,8 @@
           "nls": {
             "en": {
               "NAME": "Active Properties Included",
-              "DESCRIPTION": "<p>Included active service locations managed through the platform.</p>"
+              "DESCRIPTION": "<p>Included active service locations managed through the platform.</p>",
+              "PLACEHOLDER": "Expandable with additional capacity."
             }
           }
         },
@@ -289,7 +290,8 @@
           "nls": {
             "en": {
               "NAME": "Customer Portal",
-              "DESCRIPTION": "<p>Customer-facing service history and request access.</p>"
+              "DESCRIPTION": "<p>Customer-facing service history and request access.</p>",
+              "PLACEHOLDER": "Lets customers review service history and submit requests."
             }
           }
         },

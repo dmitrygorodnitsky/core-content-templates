@@ -89,7 +89,7 @@
       priceAttributeValues: config.priceAttributeValues,
       currencyAttributeCode: "CURRENCY",
       currencyAttributeValues: splitList(config.currency),
-      nlsKeys: ["NAME", "DESCRIPTION"],
+      nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"],
     };
 
     return {
@@ -339,6 +339,7 @@
               code: order.attributeCode,
               label: dynamicText(text(nls.NAME, order.attributeCode, order.attributeCode), config),
               description: dynamicText(nls.DESCRIPTION || "", config),
+              placeholder: dynamicText(nls.PLACEHOLDER || "", config),
               values: plans.map((plan) => normalizeValue(valueFor(plan.row && plan.row.product, {
                 typeId: order.typeId,
                 code: order.attributeCode,

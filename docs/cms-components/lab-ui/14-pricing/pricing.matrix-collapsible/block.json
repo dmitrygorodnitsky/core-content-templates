@@ -121,6 +121,24 @@
       "description": "When 'on', each desktop feature group gets a clickable title that collapses its rows (the mobile accordion is unaffected). Per-group default state is set by Group N Collapsed."
     },
     {
+      "code": "hint_style",
+      "type": "ENUM",
+      "options": [
+        "inline",
+        "tooltip"
+      ],
+      "default": "inline",
+      "name": "Row Hint Style",
+      "description": "How each row's explanation (Row N Hint / Core PIM attribute Placeholder) is shown: 'inline' as gray subtext under the label, or 'tooltip' behind the feature label. The tooltip only appears on rows that actually have Placeholder text."
+    },
+    {
+      "code": "tip_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Explanation",
+      "name": "Tooltip Button Label",
+      "description": "Accessible name for explanation triggers. Only relevant when Row Hint Style is 'tooltip'."
+    },
+    {
       "code": "billing_default",
       "type": "ENUM",
       "options": [
