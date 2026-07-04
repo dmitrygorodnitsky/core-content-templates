@@ -197,9 +197,13 @@
   }
 
   function productCode(row) {
-    const productWrapper = (row && row.product) || {};
-    const product = productWrapper.product || productWrapper;
+    const product = productFromRow(row);
     return safeText(product.code || "");
+  }
+
+  function productFromRow(row) {
+    const productWrapper = (row && row.product) || {};
+    return productWrapper.product || productWrapper;
   }
 
   function normalizePeriodPrice(row, config, fallbackMonthly) {
@@ -420,7 +424,9 @@
   }
 
   function numericProductAttributeValue(row, code) {
-    const attributes = row && row.product && row.product.attributes;
+    const productWrapper = (row && row.product) || {};
+    const product = productWrapper.product || productWrapper;
+    const attributes = productWrapper.attributes || product.attributes;
     if (!attributes || !code) return null;
     for (const values of Object.values(attributes)) {
       const raw = values && values[code];
@@ -466,7 +472,9 @@
   }
 
   function productAttribute(row, code) {
-    const attributes = row && row.product && row.product.attributes;
+    const productWrapper = (row && row.product) || {};
+    const product = productWrapper.product || productWrapper;
+    const attributes = productWrapper.attributes || product.attributes;
     if (!attributes || !code) return null;
     for (const values of Object.values(attributes)) {
       if (values && values[code] != null) return values[code];
@@ -1042,6 +1050,36 @@
 
   const primaryDetail = (details) => details.find((detail) => detail.text) || details[0] || null;
 
+  const numericText = (value) => {
+    const match = String(value || "").match(/[-+]?\d[\d,]*(?:\.\d+)?/);
+    return match ? Number(match[0].replace(/,/g, "")) : null;
+  };
+
+  const addonRank = (item) => {
+    const plan = item.plan || {};
+    const details = planDetails(plan, item.pricing && item.pricing.groups);
+    const primary = primaryDetail(details);
+    return {
+      specIndex: item.specIndex || 0,
+      priority: Number.isFinite(plan.sortPriority) ? plan.sortPriority : Number.MAX_SAFE_INTEGER,
+      primary: numericText(primary && primary.text) ?? Number.MAX_SAFE_INTEGER,
+      amount: Number.isFinite(Number(plan.amount)) ? Number(plan.amount) : Number.MAX_SAFE_INTEGER,
+      index: Number.isFinite(plan.index) ? plan.index : 0,
+    };
+  };
+
+  const compareAddons = (left, right) => {
+    const a = addonRank(left);
+    const b = addonRank(right);
+    if (a.specIndex !== b.specIndex) return a.specIndex - b.specIndex;
+    const hasPriority = a.priority !== Number.MAX_SAFE_INTEGER && b.priority !== Number.MAX_SAFE_INTEGER;
+    if (hasPriority && a.priority !== b.priority) return a.priority - b.priority;
+    return a.primary - b.primary
+      || a.priority - b.priority
+      || a.amount - b.amount
+      || a.index - b.index;
+  };
+
   const priceLabel = (section, plan, locale) => {
     if (!plan || plan.customPrice) return section.dataset.pricingContactLabel || "";
     const parts = [formatCurrency(plan, locale)];
@@ -1119,17 +1157,17 @@
     if (!grid) return false;
 
     const dynamicItems = [];
-    results.forEach((pricing) => {
+    results.forEach((pricing, specIndex) => {
       if (!pricing || !pricing.ok || !pricing.plans.length) return;
       const category = categoryFor(pricing, pricing.spec || {});
       pricing.plans.forEach((plan) => {
-        dynamicItems.push({ plan, pricing, spec: pricing.spec || {}, category });
+        dynamicItems.push({ plan, pricing, spec: pricing.spec || {}, specIndex, category });
       });
     });
     if (!dynamicItems.length) return false;
 
     grid.querySelectorAll(".pricing-addon-card:not(.pricing-addon-card--skeleton)").forEach((card) => card.remove());
-    dynamicItems.forEach((item) => grid.appendChild(renderCard(section, item)));
+    dynamicItems.sort(compareAddons).forEach((item) => grid.appendChild(renderCard(section, item)));
     section.dataset.pricingState = "dynamic";
     updateTeaser(section);
     return true;

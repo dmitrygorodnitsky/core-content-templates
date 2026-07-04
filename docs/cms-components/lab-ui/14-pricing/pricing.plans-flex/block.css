@@ -496,9 +496,6 @@
   .pf-grid { grid-template-columns: 1fr; gap: 14px; }
   .pf-card--featured {
     transform: none;
-    /* Featured plan first in the single-column stack: the recommended
-       tier should not hide below the fold behind the entry plan. */
-    order: -1;
   }
   .pf-subtitle { min-height: 0; }
 }

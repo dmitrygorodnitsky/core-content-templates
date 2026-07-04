@@ -196,9 +196,13 @@
   }
 
   function productCode(row) {
-    const productWrapper = (row && row.product) || {};
-    const product = productWrapper.product || productWrapper;
+    const product = productFromRow(row);
     return safeText(product.code || "");
+  }
+
+  function productFromRow(row) {
+    const productWrapper = (row && row.product) || {};
+    return productWrapper.product || productWrapper;
   }
 
   function normalizePeriodPrice(row, config, fallbackMonthly) {
@@ -419,7 +423,9 @@
   }
 
   function numericProductAttributeValue(row, code) {
-    const attributes = row && row.product && row.product.attributes;
+    const productWrapper = (row && row.product) || {};
+    const product = productWrapper.product || productWrapper;
+    const attributes = productWrapper.attributes || product.attributes;
     if (!attributes || !code) return null;
     for (const values of Object.values(attributes)) {
       const raw = values && values[code];
@@ -465,7 +471,9 @@
   }
 
   function productAttribute(row, code) {
-    const attributes = row && row.product && row.product.attributes;
+    const productWrapper = (row && row.product) || {};
+    const product = productWrapper.product || productWrapper;
+    const attributes = productWrapper.attributes || product.attributes;
     if (!attributes || !code) return null;
     for (const values of Object.values(attributes)) {
       if (values && values[code] != null) return values[code];
