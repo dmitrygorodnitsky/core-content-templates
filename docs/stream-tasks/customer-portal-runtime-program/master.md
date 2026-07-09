@@ -35,6 +35,9 @@ Path note:
 - `manifest.json` labels the package as wave-6. `scenarios.json` still has a
   stale top-level `"wave": 5`; individual route rows span design waves 1-6. The
   accepted baseline for this program is the current committed package.
+- The weather/stormOps example in the design package is a required reference
+  vertical, not optional decoration: Snow Removal baseline must prove
+  `StormHome`, `StormCalendar`, `WeatherCard`, and weather/access commands.
 
 ## Scope
 
@@ -46,6 +49,9 @@ In scope:
 - Preserve accepted design markup, CSS, route ids, action ids, module ids,
   `data-visual-id`, `data-requires-confirmation`, and scenario coverage.
 - Add vertical theme/profile configuration.
+- Preserve the weather/stormOps reference UX for weather-triggered verticals:
+  storm home, storm calendar, weather order confirmation, and access/request
+  actions.
 - Replace the design route switch with a route registry and route guards.
 - Add `PortalRuntime` with fixture-first module loading and command dispatch.
 - Add module adapters and normalizers for auth, orders, proposals, services,
@@ -59,6 +65,9 @@ Out of scope:
 - React, client-side framework migration, bundler setup, or package manager
   introduction.
 - Redesigning the accepted Claude Design visuals.
+- Backward compatibility for old dev-only design contracts, preview toolbar
+  behavior, or legacy demo APIs after the production runtime contract is
+  established.
 - Uploading to production CMS without explicit current-thread approval.
 - Changing Core API behavior.
 - Replacing the lab-ui CMS generator architecture.
@@ -70,8 +79,13 @@ Out of scope:
   `customer-portal-design/` package.
 - `runtime/` is the only production transfer target.
 - No business logic, API calls, secrets, or permissions go into design input.
+- No legacy compatibility shims for dev-only contracts in production runtime.
 - Vertical profile controls theme, modules, routes, primary actions, calendar
   type, commerce availability, and dynamic behavior.
+- `stormOps` is a separate UX profile for weather-triggered verticals, not just
+  a theme. Snow Removal is the baseline validation vertical, and the same runtime
+  must support Lawn & Garden, Pool & Spa, Roofing, and Pest Control without
+  hardcoded snow copy in shared logic.
 - Components consume normalized UI shapes, never raw Core payloads.
 - Adapters perform IO; normalizers shape data; modules orchestrate adapters,
   commands, and route state.
@@ -81,6 +95,9 @@ Out of scope:
   `<html data-theme data-mode>` unless a scoped CMS embedding fallback is
   explicitly documented.
 - Dynamic failure is not a silent success: mark `error` or `fallback` state.
+- Fallback is read-only recovery, not a fake mutation path. Commands must not
+  mock success when a real handler, valid fixture handler, or allowed offline
+  fixture state transition is missing.
 - PageContext values remain authored overrides only and migrate by stable
   parameter code.
 
@@ -103,8 +120,8 @@ Out of scope:
 | --- | --- | --- | --- | --- | --- |
 | S0 Architecture Contract | Lock runtime decisions and transfer contract | in_progress | none | `ARCHITECTURE.md` committed | Custom JS decision, themes/profiles/modules/CMS contract documented and pushed. |
 | S1 Runtime Scaffold And Baseline Transfer | Create production runtime from accepted design source | todo | S0 | `runtime/` boots 1:1 from transferred source | Runtime preview matches design source, dev toolbar stripped/isolated, hooks preserved. |
-| S2 Config, Router, Themes | Add vertical profile config, route registry, guards, theme propagation | todo | S1 | Config/router/theme layer | Enabled modules drive nav/routes; disabled and auth routes guard cleanly. |
-| S3 Fixture PortalRuntime And Modules | Add fixture-first `PortalRuntime`, adapters, normalizers, commands | todo | S2 | Module runtime using fixtures | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support render from normalized fixtures or are explicitly not_opened. Shell remains structural and is proven by S2 nav/route-outlet checks. |
+| S2 Config, Router, Themes | Add vertical profile config, route registry, guards, theme propagation | todo | S1 | Config/router/theme layer | Enabled modules drive nav/routes; disabled and auth routes guard cleanly; `onDemand` and `stormOps` route/home/calendar variants are selected by profile. |
+| S3 Fixture PortalRuntime And Modules | Add fixture-first `PortalRuntime`, adapters, normalizers, commands | todo | S2 | Module runtime using fixtures | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support render from normalized fixtures or are explicitly not_opened. Weather/stormOps fixtures prove `StormHome`, `StormCalendar`, `WeatherCard`, and weather/access commands. Shell remains structural and is proven by S2 nav/route-outlet checks. |
 | S4 Live Core Adapter Integration | Connect real Core APIs incrementally | todo | S3 | Core adapters and resilient dynamic states | Pricing/products use proven PIM paths first; other modules open only when endpoints are known. |
 | S5 CMS Packaging And Export | Create CMS block metadata and export path | todo | S4 | CMS-ready template artifacts | Config params, fallback copy, generated preview, and export scripts validate locally. |
 | S6 Validation And Closeout | Complete full scenario/browser validation and program evidence | todo | S5 | Audits and closeout evidence | Ledger updated, validations recorded, residuals explicit. |
@@ -130,8 +147,8 @@ Out of scope:
 | S0-docs | architecture-contract | Codex | in_progress | none | Markdown review, git diff, commit/push | Architecture decision is committed and referenced by package. |
 | S1-baseline-validation | design-baseline | Codex | todo | S0-docs | HTTP boot, `node --check`, manifest/scenario checks | `design-inbox` accepted as wave-6 baseline without source mutation. |
 | S1-runtime-scaffold | runtime-transfer | Codex | todo | S1-baseline-validation | runtime HTTP boot, route smoke, hook scan | `runtime/` exists and visually matches baseline. |
-| S2-config-theme-router | config-router-theme | Codex | todo | S1-runtime-scaffold | route guard tests, theme propagation checks | Profiles control routes/nav/theme without hardcoded vertical checks. Shell/nav/route-outlet structure is proven here. |
-| S3-fixture-modules | module-runtime | Codex | todo | S2-config-theme-router | fixture route smoke for every opened module, action/pending/error checks | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support load normalized fixtures or are explicitly not_opened. |
+| S2-config-theme-router | config-router-theme | Codex | todo | S1-runtime-scaffold | route guard tests, theme propagation checks, onDemand/stormOps variant checks | Profiles control routes/nav/theme without hardcoded vertical checks. Shell/nav/route-outlet structure is proven here. |
+| S3-fixture-modules | module-runtime | Codex | todo | S2-config-theme-router | fixture route smoke for every opened module, action/pending/error checks, stormOps weather command checks | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support load normalized fixtures or are explicitly not_opened. Weather/stormOps behaviors are command-backed, not demo-only. |
 | S4-live-adapters | live-core-adapters | Codex | todo | S3-fixture-modules | API/fallback harness checks per opened module | Pricing/products use PIM live/fixture adapters; other live modules are done only when endpoint contracts are known. |
 | S5-cms-export | cms-packaging | Codex | todo | S4-live-adapters | `jq empty`, generated preview, CMS artifact validation | CMS block/export artifacts are upload-ready. |
 | S6-closeout | validation-closeout | Codex | todo | all opened stages | A1 audit and evidence docs | Program state and residual risks are recorded. |
@@ -146,8 +163,12 @@ Out of scope:
   and `data-requires-confirmation` are preserved unless explicitly migrated.
 - `data-dev-toolbar` is absent from production runtime or isolated as
   preview-only.
+- No dev-only compatibility contract remains required by production runtime.
 - Vertical themes and profiles drive navigation, modules, route access, and
   theme tokens.
+- Weather/stormOps is validated as a distinct vertical UX: Snow Removal renders
+  storm home/calendar/order weather confirmation, while shared stormOps logic
+  remains reusable across the other weather-triggered verticals.
 - Disabled modules are hidden from navigation and guarded on direct access.
 - Fixture adapters and normalizers exist for every opened module.
 - Live adapters retain fixture and fallback paths.

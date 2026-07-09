@@ -198,6 +198,9 @@ Theme rules:
 - Components must consume CSS custom properties, not hardcoded vertical colors.
 - A vertical can change copy, navigation, primary CTA, calendar type, commerce
   availability, and dynamic module behavior.
+- Production runtime must not carry backward-compatibility shims for dev-only
+  design contracts. When a demo-only hook is stripped or replaced, the
+  production contract must be the new source of truth.
 
 Example profile map:
 
@@ -219,6 +222,30 @@ export const verticalProfiles = {
 ```
 
 Profiles should be data, not scattered `if (theme === "...")` checks.
+
+### Weather / stormOps Reference Vertical
+
+`stormOps` is an accepted reference UX, not only a color theme. It covers
+weather-triggered verticals: `snow`, `lawn`, `pool`, `roofing`, and `pest`.
+
+Implementation must preserve these design-specific behaviors:
+
+- `orders.list` renders the storm/weather home variant (`StormHome`) for
+  `stormOps` profiles instead of the on-demand booking dashboard.
+- `calendar` renders the weather-operational agenda (`StormCalendar`) for
+  `stormOps`, while `onDemand` keeps the month calendar.
+- order detail keeps the weather confirmation surface (`WeatherCard` /
+  weather banner) when an order has a weather trigger.
+- weather-triggered actions remain first-class commands:
+  `weather.confirm`, `weather.decline`, `access.confirm`, and
+  `service.requestExtra`.
+- storm calendar/weather rows derive service names, trigger copy, and access
+  notes from the active vertical; do not hardcode Snow Removal strings into the
+  shared `stormOps` runtime.
+
+Validation must include at least one `stormOps` vertical, with Snow Removal as
+the baseline fixture because the design handoff explicitly includes the mobile
+Snow Removal storm calendar scenario.
 
 ## Module Model
 
@@ -390,6 +417,9 @@ Action handling rules:
 - pending actions are scoped by action/entity, not global page blocking;
 - every mutating command has success, error, and retry behavior;
 - commands must not invent successful outcomes when the backend rejects them.
+- fallback states may show cached/static read-only content, but mutating
+  commands must never return mock success when no real handler or valid fixture
+  handler exists.
 
 Examples:
 

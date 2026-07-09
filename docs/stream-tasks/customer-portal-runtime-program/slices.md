@@ -13,6 +13,10 @@ The work is intentionally split into program stages because the risk profile cha
 - external Core API risk in S4;
 - CMS packaging and PageContext migration risk in S5.
 
+Weather/stormOps is a required reference UX throughout the program. Treat the
+Snow Removal storm example as an acceptance case for weather-triggered verticals,
+not as optional sample content.
+
 Do not collapse these stages into one implementation pass unless the user
 explicitly accepts the higher rework risk.
 
@@ -69,6 +73,13 @@ Exact task:
   whose manifest says wave-6.
 - Run JS syntax checks on design source.
 - Validate manifest route/action/module consistency against source files.
+- Record the weather/stormOps source components and actions as required
+  transfer surfaces:
+  - `src/components/storm/StormHome.js`
+  - `src/components/storm/StormCalendar.js`
+  - `src/components/orders/WeatherCard.js`
+  - `weather.confirm`, `weather.decline`, `access.confirm`,
+    `service.requestExtra`
 - Create `runtime/` from the accepted design source.
 - Preserve visual markup, classes, CSS tokens, route ids, action ids, module ids,
   `data-bind`, `data-visual-id`, and `data-requires-confirmation`.
@@ -84,6 +95,8 @@ What not to do:
 - Do not add Core API calls.
 - Do not redesign or refactor visual components for taste.
 - Do not rename routes/actions/modules.
+- Do not preserve old dev-only APIs or preview-toolbar contracts as production
+  compatibility shims.
 - Do not introduce React, bundlers, package managers, or build tooling.
 
 Validation:
@@ -94,6 +107,8 @@ Validation:
 - Static server boot for `runtime/source.html`.
 - Route smoke for all design routes, preferably scripted. If manual, record the
   exact method and route list.
+- Snow Removal mobile storm calendar smoke renders the accepted
+  weather-operational scenario from the design baseline.
 - Hook preservation scan for `data-visual-id`, `data-action`, `data-module`,
   `data-route`, `data-requires-confirmation`.
 
@@ -134,6 +149,11 @@ Exact task:
 - Add route registry preserving accepted route ids.
 - Add router mode config: `hash`, `history`, `memory`.
 - Default deployed CMS mode to `hash` unless backend support is confirmed.
+- Ensure profile selection changes route/page variants:
+  - `hvac` / `onDemand`: on-demand orders dashboard and month calendar.
+  - `snow` / `stormOps`: storm/weather home and weather-operational calendar.
+  - `lawn`, `pool`, `roofing`, `pest` / `stormOps`: same stormOps runtime with
+    vertical-specific copy, services, triggers, and theme.
 - Add guards for disabled modules, unknown routes, and auth-required routes.
 - Guard contract:
   - `landing`, `auth.phone`, and `auth.code` are public.
@@ -164,6 +184,10 @@ Validation:
 - Theme changes update CSS tokens.
 - User mode toggle is not clobbered by re-render.
 - Navigation differs correctly for `onDemand` and `stormOps`.
+- `stormOps` profile selects storm home/calendar variants without hardcoded
+  component-level theme checks.
+- Snow Removal remains the baseline stormOps fixture; other stormOps verticals
+  reuse the same routes/components with vertical-specific data.
 - Shell/nav/route-outlet structure is proven here: nav is built from enabled
   modules/routes and does not require a shell data normalizer.
 
@@ -194,6 +218,9 @@ Exact task:
 - Add module descriptors for auth, orders, proposals, services, pricing,
   products, checkout, calendar, activity, profile, and support.
 - Add fixture adapters and normalizers for opened modules.
+- Model weather-triggered order/calendar data explicitly in fixtures and
+  normalizers, including trigger text, weather status, access needs,
+  allowedActions, and per-vertical service copy.
 - Convert design demo actions into command wrappers while preserving action ids.
 - Preserve `data-requires-confirmation` before mutating commands.
 - Scope pending state by action/entity.
@@ -205,6 +232,8 @@ What not to do:
 - Do not call live Core APIs.
 - Do not let components consume raw fixture payloads directly.
 - Do not claim success for rejected/failed commands.
+- Do not use fallback/mock success for mutations. Fixture mode may implement a
+  real offline state transition; otherwise the command must fail honestly.
 
 Validation:
 
@@ -214,6 +243,16 @@ Validation:
   auth, orders, proposals, services, pricing, products, checkout, calendar,
   activity, profile, and support. If a module is intentionally deferred, mark it
   `not_opened` in `master.md` before closing S3.
+- Weather/stormOps proof:
+  - `orders.list` renders `StormHome` behavior for Snow Removal/stormOps.
+  - `calendar` renders `StormCalendar` behavior for Snow Removal/stormOps.
+  - order detail renders `WeatherCard` or equivalent weather confirmation
+    surface when a weather trigger is present.
+  - `weather.confirm`, `weather.decline`, `access.confirm`, and
+    `service.requestExtra` have fixture success/error paths and scoped pending
+    state.
+  - Lawn & Garden, Pool & Spa, Roofing, and Pest Control reuse stormOps data
+    shapes without Snow Removal copy leaking into shared logic.
 - Implementation-added states `fallback`, `disabled`, and `unauthorized` have
   explicit visual treatment and scenario coverage before production use.
 - Pending mutation state is entity/action scoped.

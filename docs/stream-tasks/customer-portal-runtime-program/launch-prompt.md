@@ -35,8 +35,16 @@ requests that.
   explicitly approved.
 - Preserve `data-visual-id`, `data-module`, `data-route`, `data-bind`,
   `data-action`, and `data-requires-confirmation`.
+- Do not retain backward compatibility for old dev-only contracts or preview
+  toolbar behavior in production runtime.
+- Treat weather/stormOps as a required reference UX. Snow Removal must prove
+  storm home, weather-operational calendar, weather order confirmation, and
+  weather/access commands; the same stormOps runtime must remain reusable for
+  Lawn & Garden, Pool & Spa, Roofing, and Pest Control.
 - Strip or isolate `data-dev-toolbar` from production runtime.
 - Keep modules fixture-first before live Core API integration.
+- Do not use fallback/mock success for mutating commands. Fixture success must
+  be a real offline state transition; otherwise fail honestly.
 - Do not upload anything to CMS without explicit current-thread approval.
 - Do not commit credentials, API keys, or environment-specific secrets.
 - Do not revert unrelated user changes.
@@ -51,12 +59,17 @@ requests that.
    - Confirm custom JS/no React decision is in `ARCHITECTURE.md`.
 2. S1 Runtime Scaffold And Baseline Transfer
    - Validate `design-inbox`.
+   - Identify and preserve the storm/weather source surfaces:
+     `StormHome`, `StormCalendar`, `WeatherCard`, and weather/access action ids.
    - Create and boot `runtime/`.
    - Preserve hooks and route/action/module contract.
 3. S2 Config, Router, Themes
    - Add vertical profiles, route registry, guards, theme propagation.
+   - Prove `onDemand` and `stormOps` select different home/calendar variants by
+     profile, not by visual-component hardcoding.
 4. S3 Fixture PortalRuntime And Modules
    - Add fixture-first runtime, modules, adapters, normalizers, commands.
+   - Add weather-triggered fixture shapes and command flows for stormOps.
 5. S4 Live Core Adapter Integration
    - Connect live adapters module-by-module, starting with pricing/products.
 6. S5 CMS Packaging And Export
@@ -116,6 +129,16 @@ Browser/static-server checks:
   `landing`, `auth.phone`, `auth.code`, `orders.list`, `order.detail`,
   `calendar`, `activity`, `services`, `pricing`, `products`, `checkout`,
   `proposals.list`, `proposal.detail`, `profile`, `support`.
+- StormOps/weather smoke:
+  - Snow Removal `orders.list` renders storm/weather home behavior.
+  - Snow Removal `calendar` renders weather-operational agenda behavior.
+  - Snow Removal `order.detail` renders weather confirmation when the order has
+    a weather trigger.
+  - `weather.confirm`, `weather.decline`, `access.confirm`, and
+    `service.requestExtra` execute through command dispatch with pending,
+    success, and error states once S3 opens.
+  - Lawn & Garden, Pool & Spa, Roofing, and Pest Control reuse the stormOps
+    profile with vertical-specific data/copy.
 - Route-smoke method: use the design/runtime route selector when the preview
   toolbar is enabled in source validation; in production runtime validation use
   the route registry API or hash route URLs. Record which method was used.
@@ -131,6 +154,8 @@ Contract checks:
   `data-route`, `data-bind`, `data-requires-confirmation`.
 - Confirm no production runtime element carries `data-dev-toolbar`.
 - Confirm vertical profile changes theme/nav/routes/modules.
+- Confirm weather/stormOps behavior is profile-driven and not reduced to a
+  theme-only variation.
 - Confirm disabled route and unknown route behavior.
 - Confirm fixture/dynamic/fallback/error states where applicable.
 
