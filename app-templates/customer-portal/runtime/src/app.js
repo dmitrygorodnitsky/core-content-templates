@@ -5,6 +5,7 @@ import { readPortalConfig } from "./config.js";
 import { activeProfile, applyPortalConfig, state } from "./state.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
+import { PortalRuntime } from "./portal-runtime.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { ServiceCard } from "./components/commerce/ServiceCard.js";
 import { AppShell } from "./components/shell/AppShell.js";
@@ -28,7 +29,7 @@ export function BookingDrawer() {
 /* =========================================================
    Root render
    ========================================================= */
-var mount, shell, resizeObs;
+var mount, shell, resizeObs, runtime;
 
 export function render() {
   /* theming: declarative attributes only */
@@ -37,6 +38,7 @@ export function render() {
   root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
 
   clear(mount);
+  if (runtime) runtime.loadAll();
 
   var content = renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
@@ -98,10 +100,12 @@ function applyResponsive() {
 document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
   applyPortalConfig(readPortalConfig(mount));
+  runtime = new PortalRuntime({ state: state });
+  runtime.loadAll();
   initRouter(render);
   bindActions(mount);
   render();
 });
 
 /* expose for Codex / tests */
-window.AircovePortal = { state: state, go: go, setState: setState, ACTIONS: ACTIONS };
+window.AircovePortal = { state: state, go: go, setState: setState, ACTIONS: ACTIONS, runtime: function () { return runtime; } };

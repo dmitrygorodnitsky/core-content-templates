@@ -160,6 +160,69 @@ try {
     window.AircovePortal.go("order.detail");
   });
   await page.waitForSelector('[data-visual-id="weather-card"]', { timeout: 2000 });
+
+  await page.evaluate(() => {
+    const expectedModules = [
+      "auth",
+      "orders",
+      "proposals",
+      "services",
+      "pricing",
+      "products",
+      "checkout",
+      "calendar",
+      "activity",
+      "profile",
+      "support",
+    ];
+    for (const moduleId of expectedModules) {
+      if (window.AircovePortal.state.moduleStatus[moduleId] !== "ready") {
+        throw new Error(`${moduleId} status is ${window.AircovePortal.state.moduleStatus[moduleId]}`);
+      }
+      if (!window.AircovePortal.state.moduleData[moduleId]) {
+        throw new Error(`${moduleId} normalized data missing`);
+      }
+    }
+  });
+
+  await page.evaluate(() => {
+    const weatherOrder = window.AircovePortal.state.orders.find((order) => order.wt);
+    window.AircovePortal.ACTIONS["weather.confirm"](weatherOrder.id);
+    const updated = window.AircovePortal.state.orders.find((order) => order.id === weatherOrder.id);
+    if (updated.wt.status !== "confirmed") throw new Error("weather.confirm did not update fixture state");
+
+    window.AircovePortal.ACTIONS["access.confirm"]("gate");
+    if (!window.AircovePortal.state.accessConfirmations.gate) throw new Error("access.confirm did not update fixture state");
+
+    window.AircovePortal.ACTIONS["service.requestExtra"]("extra-service");
+    if (!window.AircovePortal.state.serviceRequests.length) throw new Error("service.requestExtra did not update fixture state");
+    window.AircovePortal.state.drawer = null;
+
+    window.AircovePortal.state.chatInput = "";
+    window.AircovePortal.ACTIONS["support.sendMessage"]();
+    if (!window.AircovePortal.state.commandErrors["support.sendMessage:_"]) throw new Error("support empty-message error missing");
+    window.AircovePortal.state.chatInput = "Need help with my visit";
+    window.AircovePortal.ACTIONS["support.sendMessage"]();
+    if (!window.AircovePortal.state.messages.some((message) => message.text === "Need help with my visit")) {
+      throw new Error("support.sendMessage did not queue fixture message");
+    }
+
+    window.AircovePortal.state.cartItems = [];
+    window.AircovePortal.ACTIONS["checkout.placeOrder"]();
+    if (!window.AircovePortal.state.commandErrors["checkout.placeOrder:_"]) throw new Error("empty checkout error missing");
+    window.AircovePortal.ACTIONS["theme.pick"]("HVAC");
+    const product = window.AircovePortal.state.moduleData.products.items[0];
+    window.AircovePortal.ACTIONS["cart.addItem"](product.name);
+    window.AircovePortal.ACTIONS["checkout.placeOrder"]();
+    if (!window.AircovePortal.state.orders.some((order) => order.id === "FX-001")) {
+      throw new Error("checkout.placeOrder did not create fixture order");
+    }
+
+    window.AircovePortal.state.currentSiteId = "s2";
+    window.AircovePortal.ACTIONS["proposal.requestRevision"]();
+    const site = window.AircovePortal.state.psites.find((item) => item.id === "s2");
+    if (site.status !== "revision") throw new Error("proposal.requestRevision did not update fixture state");
+  });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

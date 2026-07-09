@@ -1,6 +1,6 @@
 /* ============================================================
    Aircove Customer Portal — data/fixtures.js
-   Mock / fixture data ONLY. No API calls, no business math that
+   Fixture data ONLY. No API calls, no business math that
    Codex must own. Everything here is display data the design
    renders from. Codex swaps this module for real adapters.
 

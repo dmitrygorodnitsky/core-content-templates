@@ -21,11 +21,19 @@ export var state = {
   messages: F.initialMessages.slice(),
   typing: false,
   chatInput: "",
+  activityReadAll: false,
+  accessConfirmations: {},
+  serviceRequests: [],
+  nextFixtureOrder: 1,
   calYear: 2026, calMonth: 0,
   phone: "",
   code: "",
   authError: null,
   session: { authenticated: true, intendedRoute: null },
+  moduleStatus: {},
+  moduleData: {},
+  pending: {},
+  commandErrors: {},
   config: {
     vertical: "hvac",
     profile: "onDemand",
@@ -44,8 +52,9 @@ export var state = {
    S1 keeps only honest local fixture transitions.             */
 
 export function currentOrder() {
-  return state.orders.find(function (o) { return o.id === state.currentOrderId; }) ||
-         state.orders.find(function (o) { return o.status === "inprogress"; }) || state.orders[0];
+  var orders = orderItems();
+  return orders.find(function (o) { return o.id === state.currentOrderId; }) ||
+         orders.find(function (o) { return o.status === "inprogress"; }) || orders[0];
 }
 
 export function money(n) { return "$" + n.toLocaleString(); }
@@ -53,9 +62,17 @@ export function money(n) { return "$" + n.toLocaleString(); }
 export function cartCount() { return state.cartItems.reduce(function (a, x) { return a + x.qty; }, 0); }
 
 export function findProduct(name) {
-  var v = F.themes[state.theme];
-  return v.products.find(function (p) { return p.name === name; });
+  return productItems().find(function (p) { return p.name === name; });
 }
+
+export function orderItems() { return (state.moduleData.orders && state.moduleData.orders.items) || state.orders; }
+
+export function productItems() {
+  var v = F.themes[state.theme];
+  return (state.moduleData.products && state.moduleData.products.items) || v.products;
+}
+
+export function proposalSites() { return (state.moduleData.proposals && state.moduleData.proposals.sites) || state.psites; }
 
 export function activeVerticalConfig() { return verticalProfiles[state.config.vertical] || verticalProfiles.hvac; }
 
@@ -97,12 +114,12 @@ export function buildCalendarGrid(year, month) {
   var cells = [];
   for (var i = 0; i < startWeekday; i++) cells.push({ empty: true });
   for (var d = 1; d <= daysInMonth; d++) {
-    cells.push({ empty: false, day: d, events: state.orders.filter(function (o) { return o.y === year && o.m === month && o.d === d; }) });
+    cells.push({ empty: false, day: d, events: orderItems().filter(function (o) { return o.y === year && o.m === month && o.d === d; }) });
   }
   return cells;
 }
 
-export function currentSite() { return state.psites.find(function (p) { return p.id === state.currentSiteId; }) || state.psites[0]; }
+export function currentSite() { return proposalSites().find(function (p) { return p.id === state.currentSiteId; }) || proposalSites()[0]; }
 
 export function computeSite(site) {
   var cs = 0, ds = 0, total = 0;
@@ -125,13 +142,13 @@ export function computeSite(site) {
 }
 
 export function filteredOrders() {
-  var list = state.orders;
+  var list = orderItems();
   if (state.filter !== "all") list = list.filter(function (o) { return o.status === state.filter; });
   return list;
 }
 
 export function tabItems() {
-  var o = state.orders;
+  var o = orderItems();
   var count = function (k) { return k === "all" ? o.length : o.filter(function (x) { return x.status === k; }).length; };
   return [
     { key: "all", label: "All", count: count("all") },

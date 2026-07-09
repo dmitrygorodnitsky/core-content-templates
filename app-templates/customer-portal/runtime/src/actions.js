@@ -16,7 +16,7 @@ export var ACTIONS = {
   "auth.apple":        function ()   { failCommand("auth.apple"); },
   "order.open":        function (id) { openOrder(id); },
   "order.back":        function ()   { go("orders.list"); },
-  "order.cancel":      function (id) { cancelOrder(id); },
+  "order.cancel":      function (id) { runCommand("order.cancel", id, function () { cancelOrder(id); }); },
   "order.reschedule":  function ()   { openDrawer("booking"); },
   "order.downloadInvoice": function () { failCommand("order.downloadInvoice"); },
   "order.bookAgain":   function ()   { openDrawer("booking"); },
@@ -27,44 +27,44 @@ export var ACTIONS = {
   "proposal.review":   function ()   { go("proposals.list"); },
   "proposal.open":     function (id) { openProposal(id); },
   "proposal.selectPlan": function (id) { selectPlan(id); },
-  "proposal.approve":  function ()   { decideSite("approved"); },
-  "proposal.requestRevision": function () { decideSite("revision"); },
-  "proposal.decline":  function ()   { decideSite("declined"); },
-  "weather.confirm":   function (id) { confirmWeather(id, "confirmed"); },
-  "weather.decline":   function (id) { confirmWeather(id, "declined"); },
+  "proposal.approve":  function ()   { runCommand("proposal.approve", state.currentSiteId, function () { decideSite("approved"); }); },
+  "proposal.requestRevision": function () { runCommand("proposal.requestRevision", state.currentSiteId, function () { decideSite("revision"); }); },
+  "proposal.decline":  function ()   { runCommand("proposal.decline", state.currentSiteId, function () { decideSite("declined"); }); },
+  "weather.confirm":   function (id) { runCommand("weather.confirm", id, function () { confirmWeather(id, "confirmed"); }); },
+  "weather.decline":   function (id) { runCommand("weather.decline", id, function () { confirmWeather(id, "declined"); }); },
   "membership.activate": function () { failCommand("membership.activate"); },
   "support.open":      function ()   { go("support"); },
-  "support.sendMessage": function () { failCommand("support.sendMessage"); },
-  "support.quickReply": function () { failCommand("support.quickReply"); },
-  "support.helpTopic": function () { go("support"); failCommand("support.helpTopic"); },
+  "support.sendMessage": function () { runCommand("support.sendMessage", null, sendChat); },
+  "support.quickReply": function (id) { runCommand("support.quickReply", id, function () { pushChat(id); }); },
+  "support.helpTopic": function (id) { go("support"); runCommand("support.helpTopic", id, function () { pushChat(id); }); },
   "support.call":      function ()   { failCommand("support.call"); },
   "support.email":     function ()   { failCommand("support.email"); },
   "cart.open":         function ()   { go("checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
-  "service.requestExtra": function () { openDrawer("booking"); },
+  "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
   "service.reportIssue": function () { failCommand("service.reportIssue"); },
-  "access.confirm":    function () { failCommand("access.confirm"); },
+  "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
   "access.update":     function ()   { failCommand("access.update"); },
-  "cart.addItem":      function (id) { addToCart(id); },
-  "cart.removeItem":   function (id) { setCart(state.cartItems.filter(function (x) { return x.name !== id; })); },
-  "cart.inc":          function (id) { changeQty(id, 1); },
-  "cart.dec":          function (id) { changeQty(id, -1); },
-  "checkout.placeOrder": function () { failCommand("checkout.placeOrder"); },
-  "checkout.pickAddress": function (id) { setState({ addrId: id }); },
-  "checkout.pickPayment": function (id) { setState({ payId: id }); },
+  "cart.addItem":      function (id) { runCommand("cart.addItem", id, function () { addToCart(id); }); },
+  "cart.removeItem":   function (id) { runCommand("cart.removeItem", id, function () { setCart(state.cartItems.filter(function (x) { return x.name !== id; })); }); },
+  "cart.inc":          function (id) { runCommand("cart.inc", id, function () { changeQty(id, 1); }); },
+  "cart.dec":          function (id) { runCommand("cart.dec", id, function () { changeQty(id, -1); }); },
+  "checkout.placeOrder": function () { runCommand("checkout.placeOrder", null, placeFixtureOrder); },
+  "checkout.pickAddress": function (id) { runCommand("checkout.pickAddress", id, function () { setState({ addrId: id }); }); },
+  "checkout.pickPayment": function (id) { runCommand("checkout.pickPayment", id, function () { setState({ payId: id }); }); },
   "products.filter":   function (id) { setState({ prodCat: id }); },
   "activity.open":     function ()   { go("activity"); },
-  "activity.markRead": function ()   { failCommand("activity.markRead"); },
+  "activity.markRead": function ()   { runCommand("activity.markRead", null, function () { state.activityReadAll = true; toast("Activity marked read in fixture state"); }); },
   "activity.filter":   function (id) { setState({ feedFilter: id }); },
   "activity.act":      function (id) { feedAction(id); },
   "profile.open":      function ()   { go("profile"); },
   "profile.filter":    function (id) { setState({ profileFilter: id }); },
-  "profile.setDefaultAddress": function (id) { setState({ addrId: id }); },
-  "profile.setDefaultPayment": function (id) { setState({ payId: id }); },
+  "profile.setDefaultAddress": function (id) { runCommand("profile.setDefaultAddress", id, function () { setState({ addrId: id }); }); },
+  "profile.setDefaultPayment": function (id) { runCommand("profile.setDefaultPayment", id, function () { setState({ payId: id }); }); },
   "profile.addAddress": function ()  { failCommand("profile.addAddress"); },
   "profile.addCard":   function ()   { failCommand("profile.addCard"); },
   "profile.updateAddress": function () { failCommand("profile.updateAddress"); },
-  "profile.togglePref": function (id) { togglePref(id); },
+  "profile.togglePref": function (id) { runCommand("profile.togglePref", id, function () { togglePref(id); }); },
   "profile.managePlan": function ()  { go("pricing"); },
   "auth.signOut":      function ()   { state.session.authenticated = false; state.phone = ""; state.code = ""; go("auth.phone"); toast("Signed out"); },
   "calendar.open":     function ()   { go("calendar"); },
@@ -96,7 +96,25 @@ export function bindActions(root) {
 
 export function failCommand(name) {
   console.warn("[aircove] command unavailable:", name);
+  state.commandErrors[name] = "Command is not connected";
   toast(name + " is not connected yet");
+}
+
+export function commandKey(name, id) { return name + ":" + (id || "_"); }
+
+export function runCommand(name, id, handler) {
+  var key = commandKey(name, id);
+  state.pending[key] = true;
+  delete state.commandErrors[key];
+  try {
+    handler();
+  } catch (error) {
+    state.commandErrors[key] = error && error.message ? error.message : "Command failed";
+    toast(name + " failed");
+  } finally {
+    state.pending[key] = false;
+    render();
+  }
 }
 
 export function setState(patch) { Object.assign(state, patch); render(); }
@@ -176,11 +194,46 @@ export function feedAction(act) {
   else if (act === "weather") { var w = state.orders.find(function (x) { return x.wt && x.wt.status === "pending"; }); if (w) openOrder(w.id); }
 }
 export function pushChat(text) {
-  if (!text || !text.trim()) return;
-  failCommand("support.sendMessage");
+  if (!text || !text.trim()) throw new Error("Message is empty");
+  state.messages = state.messages.concat([{ from: "user", text: text.trim() }]);
+  state.chatInput = "";
+  if (state.route !== "support") state.route = "support";
+  toast("Message queued in fixture state");
 }
 
 export function sendChat() { pushChat(state.chatInput); }
+
+export function confirmAccess(id) {
+  var key = id || "next";
+  state.accessConfirmations[key] = true;
+  toast("Access confirmed in fixture state");
+}
+
+export function requestExtraService(id) {
+  state.serviceRequests = state.serviceRequests.concat([{ id: id || "extra", status: "draft" }]);
+  openDrawer("booking");
+}
+
+export function placeFixtureOrder() {
+  if (!state.cartItems.length) throw new Error("Cart is empty");
+  var first = state.cartItems[0];
+  var order = {
+    id: "FX-" + String(state.nextFixtureOrder++).padStart(3, "0"),
+    status: "scheduled",
+    serviceName: first.name,
+    y: 2026,
+    m: 0,
+    d: 22,
+    slot: "10:00 AM",
+    locationId: state.addrId,
+    total: state.cartItems.reduce(function (sum, item) { return sum + item.priceNum * item.qty; }, 0),
+    timeline: ["Order placed in fixture state", "Awaiting dispatch"],
+  };
+  state.orders = [order].concat(state.orders);
+  setCart([]);
+  go("orders.list");
+  toast("Order placed in fixture state");
+}
 
 export function openProposal(id) {
   state.currentSiteId = id;
