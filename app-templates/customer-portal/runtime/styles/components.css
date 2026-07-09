@@ -1,0 +1,178 @@
+/* components.css — buttons, badges, tabs, cards, panels, states, toast, drawer, dev harness */
+
+/* ============================================================
+   ActionButton  — data-module="action-button"
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 0; border-radius: var(--radius-pill); cursor: pointer;
+  font-weight: 600; font-size: 13px; padding: 9px 16px;
+  white-space: nowrap; transition: transform .08s, filter .15s;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn[disabled] { opacity: .45; cursor: not-allowed; pointer-events: none; }
+
+.btn--primary {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent)); color: #fff;
+  box-shadow: 0 4px 12px rgba(var(--accent-rgb), .35), inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+.btn--primary:hover { filter: brightness(1.05); }
+
+.btn--ghost {
+  background: rgba(var(--glass), .7); border: 1px solid var(--glass-border); color: var(--ink);
+}
+
+.btn--danger {
+  background: rgba(255,59,48,.08); border: 1px solid rgba(255,59,48,.22); color: var(--danger);
+}
+
+.btn--info { background: linear-gradient(180deg, var(--accent-3), var(--accent)); color: #fff; }
+
+.btn--onaccent { background: var(--surface); color: var(--accent); }
+
+.btn--onaccent:hover { filter: brightness(.98); }
+
+.btn--glass-hero { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); color: #fff; }
+
+.btn--glass-hero:hover { background: rgba(255,255,255,.26); }
+
+.btn--block { display: flex; width: 100%; }
+
+.btn--lg { padding: 11px 20px; font-weight: 700; }
+
+/* ============================================================
+   PageHeader  — data-module="page-header"
+   ============================================================ */
+.page-header { display: flex; align-items: flex-end; gap: 14px; margin: 8px 4px 18px; }
+
+.page-header__title { font-weight: 800; font-size: 28px; line-height: 1.18; letter-spacing: -.025em; margin: 0; padding-top: 2px; }
+
+.page-header__sub  { font-size: 14.5px; color: var(--ink-2); margin-top: 3px; }
+
+/* ============================================================
+   StatusBadge  — data-module="status-badge"
+   ============================================================ */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: var(--radius-pill); padding: 5px 12px;
+  font-weight: 600; font-size: 12px; white-space: nowrap;
+}
+
+.status-badge--ok       { background: var(--ok-bg);     color: var(--ok); }
+
+.status-badge--progress { background: rgba(255,159,10,.20); color: var(--warn); }
+
+.status-badge--scheduled{ background: rgba(120,120,128,.18); color: var(--ink-3); }
+
+.status-badge--warn     { background: var(--warn-bg);   color: var(--warn); }
+
+.status-badge--danger   { background: var(--danger-bg); color: var(--danger); }
+
+.status-badge--info     { background: var(--info-bg);   color: var(--info); }
+
+/* ============================================================
+   Tabs / SegmentedControl  — data-module="tabs"
+   ============================================================ */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+.tab {
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 6px 13px;
+  font-weight: 530; font-size: 12.5px; color: var(--ink-2);
+  cursor: pointer; white-space: nowrap; user-select: none;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab--active { background: #1d1d1f; color: #fff; font-weight: 590; border-color: transparent; }
+
+:root[data-mode="dark"] .tab--active { background: #fff; color: #10151f; }
+
+.select-pill {
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 6px 10px;
+  font-weight: 530; font-size: 12.5px; color: var(--ink-2); cursor: pointer;
+}
+
+/* Card shell — data-module="glass-card" */
+.card {
+  background: rgba(var(--glass), .5);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.card__head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 10px; flex-wrap: wrap; }
+
+.card__title { font-weight: 700; font-size: 16px; }
+
+.card--pad { padding: 18px; }
+
+/* ============================================================
+   States : loading / empty / error  — data-module respectively
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, rgba(var(--hair),.06) 25%, rgba(var(--hair),.12) 37%, rgba(var(--hair),.06) 63%);
+  background-size: 720px 100%; animation: shimmer 1.4s ease-in-out infinite; border-radius: 8px;
+}
+
+.state-block {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 10px; padding: 54px 24px; animation: fadein .3s ease;
+}
+
+.state-block__glyph {
+  width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center;
+  font-size: 26px; background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+}
+
+.state-block__glyph--error { background: var(--danger-bg); }
+
+.state-block__title { font-weight: 700; font-size: 17px; }
+
+.state-block__desc { font-size: 13.5px; color: var(--ink-2); max-width: 340px; }
+
+/* ============================================================
+   Toast  — data-module="toast"
+   ============================================================ */
+.toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 300; display: flex; align-items: center; gap: 10px;
+  background: #10151f; color: #fff; border-radius: var(--radius-pill);
+  padding: 12px 20px; font-weight: 600; font-size: 13.5px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.28); animation: pop .28s ease;
+}
+
+.toast__dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: #34c759; }
+
+/* ============================================================
+   Drawer / Modal  — data-module="drawer" / "modal"
+   ============================================================ */
+.scrim { position: fixed; inset: 0; z-index: 250; background: rgba(10,16,28,.42); backdrop-filter: blur(3px); animation: fadein .2s ease; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 260; width: min(440px, 92vw);
+  background: var(--surface); box-shadow: -20px 0 60px rgba(0,0,0,.28);
+  padding: 22px; overflow-y: auto; animation: drawer-in .28s cubic-bezier(.2,.8,.2,1);
+}
+
+.drawer__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+
+.drawer__title { font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
+
+.drawer__close { width: 34px; height: 34px; border-radius: var(--radius-pill); background: var(--surface-2); border: 0; cursor: pointer; font-size: 16px; }
+
+/* Panel — frosted section card used across detail */
+.panel {
+  background: rgba(var(--glass), .55);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border); border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(13,38,76,.10); padding: 20px;
+}
+
+.panel__title { font-weight: 700; font-size: 15px; }
+
+.chip { background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 6px 12px; font-weight: 590; font-size: 12px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }

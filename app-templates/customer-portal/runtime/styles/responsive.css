@@ -1,0 +1,81 @@
+/* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
+
+/* ============================================================
+   Responsive  — container-width driven (set by app.js ResizeObserver
+   as .vw-mobile / .vw-tablet on .app-shell). Codex may swap to @media.
+   ============================================================ */
+.vw-tablet .cabinet-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .cabinet-grid { grid-template-columns: 1fr; }
+
+/* nav-links collapse into the hamburger menu once space runs low */
+.vw-compact .nav-links { display: none; }
+
+.vw-compact .hamburger { display: grid; }
+
+.vw-mobile .top-nav__actions .icon-btn--optional { display: none; }
+
+.vw-mobile .page-header__title { font-size: 23px; }
+
+.vw-mobile .detail-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .detail-grid { grid-template-columns: 1fr; }
+
+/* commerce responsive */
+.vw-tablet .pricing-grid, .vw-mobile .pricing-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .plan-card--featured, .vw-mobile .plan-card--featured { transform: none; }
+
+.vw-tablet .services-grid, .vw-mobile .services-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .howto-grid, .vw-mobile .howto-grid { grid-template-columns: 1fr; gap: 14px; }
+
+.vw-tablet .product-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-mobile .product-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-tablet .checkout-grid, .vw-mobile .checkout-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .checkout-summary, .vw-mobile .checkout-summary { position: static; }
+
+.vw-mobile .featured-banner { flex-direction: column; align-items: flex-start; padding: 24px; }
+
+.vw-mobile .featured-banner__art { display: none; }
+
+.vw-tablet .rollup-grid, .vw-mobile .rollup-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-tablet .beam-report__grid, .vw-mobile .beam-report__grid { grid-template-columns: 1fr; }
+
+.vw-mobile .beam-side { border-left: 0; border-top: 1px solid var(--glass-border); }
+
+.vw-mobile .plan-notes { grid-template-columns: 1fr; }
+
+.vw-mobile .proposal-actions { flex-wrap: wrap; }
+
+.vw-tablet .stats-grid, .vw-mobile .stats-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .cal-lists, .vw-mobile .cal-lists { grid-template-columns: 1fr; }
+
+.vw-tablet .support-grid, .vw-mobile .support-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .profile-hero { flex-direction: column; align-items: flex-start; text-align: left; }
+
+.vw-mobile .storm-day { flex-direction: column; }
+
+.vw-mobile .storm-day__date { width: auto; display: flex; gap: 8px; align-items: baseline; text-align: left; }
+
+.vw-mobile .storm-event { flex-wrap: wrap; }
+
+.vw-mobile .home-window { flex-wrap: wrap; }
+
+.vw-tablet .landing-hero__inner, .vw-mobile .landing-hero__inner { grid-template-columns: 1fr; }
+
+.vw-tablet .landing-services, .vw-mobile .landing-services { grid-template-columns: 1fr; }
+
+.vw-mobile .landing-hero__title { font-size: 34px; }
+
+.vw-mobile .landing-hero__inner { padding: 28px 22px; }
+
+.vw-tablet .auth-grid, .vw-mobile .auth-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .auth-pitch__title { font-size: 30px; }

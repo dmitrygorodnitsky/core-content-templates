@@ -1,0 +1,987 @@
+{
+  "product": "Aircove Customer Portal",
+  "version": "runtime-s1-transfer",
+  "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
+  "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
+  "entry": "runtime/source.html",
+  "dataAttributes": {
+    "data-route": "page / view id (matches scenarios.routes[].id)",
+    "data-module": "reusable component id (matches components[].id)",
+    "data-bind": "fixture field(s) the rendered value came from",
+    "data-action": "user command name (matches actions[])",
+    "data-state": "ui state on the element (ready|loading|empty|error|pending-action|drawer-open|mobile-navigation-open|active)",
+    "data-visual-id": "stable id for screenshot parity / visual transfer"
+  },
+  "themingContract": {
+    "mechanism": "declarative attributes on <html>",
+    "attributes": {
+      "data-theme": [
+        "hvac",
+        "snow",
+        "lawn",
+        "pool",
+        "roofing",
+        "pest"
+      ],
+      "data-mode": [
+        "light",
+        "dark"
+      ]
+    },
+    "note": "data-theme (vertical) is CONFIG-DRIVEN — set once from deployment config, NOT a user control (the in-app theme picker was removed). data-mode (light/dark) stays a user toggle. All colors derive from CSS custom properties in styles.css; app.js only flips these two attributes."
+  },
+  "portalProfiles": {
+    "mechanism": "config-driven by vertical (fixtures.profileFor maps theme -> profile). Sets nav set, primary action, whether the weather-operational Calendar is used, and cart visibility.",
+    "profiles": {
+      "onDemand": {
+        "verticals": [
+          "HVAC"
+        ],
+        "nav": [
+          "orders.list",
+          "proposals.list",
+          "services",
+          "pricing",
+          "products",
+          "support"
+        ],
+        "primary": "booking.open (+ Book)",
+        "weatherCalendar": false,
+        "cart": true
+      },
+      "stormOps": {
+        "verticals": [
+          "Snow Removal",
+          "Lawn & Garden",
+          "Pool & Spa",
+          "Roofing",
+          "Pest Control"
+        ],
+        "nav": [
+          "orders.list (Home)",
+          "calendar",
+          "proposals.list (Contracts)",
+          "services",
+          "activity",
+          "support"
+        ],
+        "primary": "service.request (Request service)",
+        "weatherCalendar": true,
+        "cart": false
+      }
+    },
+    "note": "Calendar renders StormCalendar (weather-operational) for stormOps and MonthCalendar for onDemand. StormCalendar derives service names + trigger copy from the active vertical, so one component serves all 5 weather-triggered verticals."
+  },
+  "components": [
+    {
+      "id": "app-shell",
+      "factory": "render()",
+      "props": [
+        "route",
+        "theme",
+        "mode"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "top-nav",
+      "factory": "TopNav()",
+      "props": [
+        "route",
+        "theme",
+        "mode"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "page-header",
+      "factory": "PageHeader",
+      "props": [
+        "title",
+        "sub"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "status-badge",
+      "factory": "StatusBadge",
+      "props": [
+        "variant",
+        "label",
+        "bind",
+        "state"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "action-button",
+      "factory": "ActionButton",
+      "props": [
+        "variant",
+        "label",
+        "action",
+        "id",
+        "disabled",
+        "confirm",
+        "block",
+        "lg",
+        "href"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "tabs",
+      "factory": "Tabs",
+      "props": [
+        "items",
+        "active",
+        "action"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-card",
+      "factory": "OrderCard",
+      "props": [
+        "order"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-list",
+      "factory": "Cabinet()",
+      "props": [
+        "orders",
+        "filter",
+        "view"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "service-card",
+      "factory": "ServiceCard",
+      "props": [
+        "svc",
+        "index"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "membership-card",
+      "factory": "MembershipCard",
+      "props": [
+        "plan"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "alert-banner",
+      "factory": "ProposalBanner / WeatherBanner",
+      "props": [
+        "pendingCount",
+        "order"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "tracking-card",
+      "factory": "TrackingCard",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "empty-state",
+      "factory": "EmptyState",
+      "props": [
+        "glyph",
+        "title",
+        "desc",
+        "action"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "error-state",
+      "factory": "ErrorState",
+      "props": [
+        "title",
+        "desc"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "loading-state",
+      "factory": "skeletonRow",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "toast",
+      "factory": "toast()",
+      "props": [
+        "message"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "drawer",
+      "factory": "BookingDrawer",
+      "props": [],
+      "status": "partial"
+    },
+    {
+      "id": "filter-bar",
+      "factory": "inline in Cabinet",
+      "props": [
+        "addresses"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-detail",
+      "factory": "OrderDetail()",
+      "props": [
+        "order",
+        "view"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "timeline",
+      "factory": "Timeline",
+      "props": [
+        "steps"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "status-banner",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "variant",
+        "title",
+        "sub"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "technician-card",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "technician"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "location-card",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "location",
+        "otherAppointments"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "weather-card",
+      "factory": "WeatherDetail",
+      "props": [
+        "order.wt"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "locked-report",
+      "factory": "inline in WeatherDetail",
+      "props": [],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "photo-report",
+      "factory": "PhotoReport",
+      "props": [],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "invoice",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "hasPrice",
+        "labor",
+        "parts",
+        "total"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "service-catalog-card",
+      "factory": "ServiceCatalogCard",
+      "props": [
+        "svc",
+        "index"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "how-it-works",
+      "factory": "inline in Services",
+      "props": [],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "pricing-card",
+      "factory": "PricingCard",
+      "props": [
+        "name",
+        "price",
+        "tag",
+        "features",
+        "featured",
+        "current"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "rate-row",
+      "factory": "inline in Pricing",
+      "props": [
+        "svc"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "featured-banner",
+      "factory": "inline in Products",
+      "props": [
+        "feat"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "product-card",
+      "factory": "ProductCard",
+      "props": [
+        "product",
+        "catIndex"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "cart-row",
+      "factory": "CartRow",
+      "props": [
+        "item"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "address-card",
+      "factory": "AddressCard",
+      "props": [
+        "address",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "payment-method-card",
+      "factory": "PaymentCard",
+      "props": [
+        "card",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "checkout-summary",
+      "factory": "inline in Checkout",
+      "props": [
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "proposal-list",
+      "factory": "ProposalsList()",
+      "props": [
+        "psites"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "portfolio-map",
+      "factory": "inline in ProposalsList",
+      "props": [
+        "psites"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-rollup",
+      "factory": "inline in ProposalsList",
+      "props": [
+        "rollup"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-card",
+      "factory": "ProposalCard",
+      "props": [
+        "site"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-detail",
+      "factory": "ProposalDetail()",
+      "props": [
+        "site"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "beam-report",
+      "factory": "inline in ProposalDetail",
+      "props": [
+        "surfaces",
+        "total"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-comparison",
+      "factory": "ProposalComparison",
+      "props": [
+        "site",
+        "computed"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "plan-option",
+      "factory": "inline in ProposalDetail",
+      "props": [
+        "plan",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "profile-hero",
+      "factory": "inline in Profile",
+      "props": [
+        "customer",
+        "plan"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "stat-card",
+      "factory": "statCard",
+      "props": [
+        "label",
+        "num",
+        "color"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "toggle",
+      "factory": "Toggle",
+      "props": [
+        "on",
+        "id"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "activity-feed",
+      "factory": "Activity()",
+      "props": [
+        "feedFilter"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "activity-item",
+      "factory": "inline in Activity",
+      "props": [
+        "event"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "calendar-grid",
+      "factory": "Calendar()",
+      "props": [
+        "calYear",
+        "calMonth",
+        "orders"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "calendar-cell",
+      "factory": "inline in Calendar",
+      "props": [
+        "day",
+        "events",
+        "today"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "help-rail",
+      "factory": "inline in Support",
+      "props": [
+        "helpTopics"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "call-card",
+      "factory": "inline in Support",
+      "props": [],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "chat-thread",
+      "factory": "inline in Support",
+      "props": [
+        "messages",
+        "typing"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "chat-composer",
+      "factory": "inline in Support",
+      "props": [
+        "chatInput"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "storm-calendar",
+      "factory": "StormCalendar()",
+      "props": [
+        "theme"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-home",
+      "factory": "StormHome()",
+      "props": [
+        "theme"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-status",
+      "factory": "inline in StormHome",
+      "props": [
+        "today"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "next-windows",
+      "factory": "inline in StormHome",
+      "props": [
+        "days"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "season-status",
+      "factory": "inline in StormHome",
+      "props": [
+        "plan"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "contract-banner",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "rule",
+        "note"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-day",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "day"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "weather-row",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "weather"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "service-window",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "event"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "access-notes",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "accessNotes"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "public-nav",
+      "factory": "PublicNav()",
+      "props": [
+        "route"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "landing-hero",
+      "factory": "inline in Landing",
+      "props": [
+        "hero",
+        "profile"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "quote-card",
+      "factory": "inline in Landing",
+      "props": [
+        "profile"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "auth-card",
+      "factory": "Auth()",
+      "props": [
+        "route"
+      ],
+      "status": "done",
+      "wave": 6,
+      "note": "route drives step: auth.phone -> AuthPhone, auth.code -> AuthCode"
+    },
+    {
+      "id": "auth-phone",
+      "factory": "AuthPhone",
+      "props": [
+        "phone",
+        "error"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "otp",
+      "factory": "AuthCode",
+      "props": [
+        "code",
+        "error"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "activity-filter",
+      "factory": "inline in Activity",
+      "props": [
+        "feedFilter"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "cart-list",
+      "factory": "inline in Checkout",
+      "props": [
+        "cartItems"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "chat-panel",
+      "factory": "inline in Support",
+      "props": [
+        "messages",
+        "typing"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "glass-card",
+      "factory": "card shell primitive (.card)",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "help-topic",
+      "factory": "inline in Support",
+      "props": [
+        "topic"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "preferences",
+      "factory": "inline in Profile",
+      "props": [
+        "prefs"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "product-list",
+      "factory": "inline in Products",
+      "props": [
+        "products",
+        "prodCat"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "profile-stats",
+      "factory": "inline in Profile",
+      "props": [
+        "customer"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "rates-list",
+      "factory": "inline in Pricing",
+      "props": [
+        "rates"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "service-list",
+      "factory": "inline in Services",
+      "props": [
+        "services"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "storm-agenda",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "days"
+      ],
+      "profile": "stormOps",
+      "status": "done"
+    },
+    {
+      "id": "timeline-step",
+      "factory": "inline in Timeline",
+      "props": [
+        "step"
+      ],
+      "wave": 2,
+      "status": "done"
+    }
+  ],
+  "dataBindings": [
+    "brand.name",
+    "page.title",
+    "page.subtitle",
+    "order.name",
+    "order.id",
+    "order.date",
+    "order.price",
+    "order.statusLabel",
+    "service.name",
+    "service.price",
+    "plan.name",
+    "plan.desc",
+    "proposal.id",
+    "proposal.pendingCount",
+    "status.label",
+    "visit.techName",
+    "visit.eta"
+  ],
+  "actions": [
+    "access.confirm",
+    "access.update",
+    "activity.act",
+    "activity.filter",
+    "activity.markRead",
+    "activity.open",
+    "auth.apple",
+    "auth.back",
+    "auth.gotoSignin",
+    "auth.resend",
+    "auth.sendCode",
+    "auth.signOut",
+    "auth.verifyCode",
+    "booking.confirm",
+    "booking.open",
+    "calendar.next",
+    "calendar.open",
+    "calendar.prev",
+    "cart.addItem",
+    "cart.dec",
+    "cart.inc",
+    "cart.open",
+    "cart.removeItem",
+    "checkout.pickAddress",
+    "checkout.pickPayment",
+    "checkout.placeOrder",
+    "compliance.unlock",
+    "membership.activate",
+    "nav.go",
+    "nav.landing",
+    "order.back",
+    "order.bookAgain",
+    "order.cancel",
+    "order.downloadInvoice",
+    "order.filter",
+    "order.open",
+    "order.reschedule",
+    "products.filter",
+    "profile.addAddress",
+    "profile.addCard",
+    "profile.filter",
+    "profile.managePlan",
+    "profile.open",
+    "profile.setDefaultAddress",
+    "profile.setDefaultPayment",
+    "profile.togglePref",
+    "profile.updateAddress",
+    "proposal.approve",
+    "proposal.decline",
+    "proposal.open",
+    "proposal.requestRevision",
+    "proposal.review",
+    "proposal.selectPlan",
+    "service.reportIssue",
+    "service.request",
+    "service.requestExtra",
+    "support.call",
+    "support.email",
+    "support.helpTopic",
+    "support.open",
+    "support.quickReply",
+    "support.sendMessage",
+    "theme.pick",
+    "ui.retry",
+    "ui.toggleMobileNav",
+    "ui.toggleMode",
+    "weather.confirm",
+    "weather.decline"
+  ],
+  "featureFlags": [
+    "showProducts",
+    "showProposals",
+    "showMemberships",
+    "weatherTriggers",
+    "darkMode"
+  ],
+  "fixtures": {
+    "module": "data/fixtures.js",
+    "global": "window.AircoveFixtures",
+    "exports": [
+      "themes",
+      "themeSlugs",
+      "statusMeta",
+      "pstatus",
+      "customer",
+      "addresses",
+      "cards",
+      "proposal",
+      "proposalSites",
+      "ordersFor",
+      "PAL",
+      "TINTS"
+    ],
+    "mode": "fixture"
+  },
+  "serving": "MUST be served over HTTP (ES modules are blocked on file://). No bundler / no build step — many small files loaded natively.",
+  "moduleTree": {
+    "src/dom.js": "h, clear, svgPath",
+    "src/state.js": "state object + pure selectors + isPublic()",
+    "src/actions.js": "ACTIONS map + honest local fixture transitions + bindActions",
+    "src/router.js": "renderRoute() switch + ComingSoon",
+    "src/app.js": "entry: render, positionNavPill, applyResponsive, BookingDrawer, boot, window.AircovePortal",
+    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile}/*.js": "leaf components",
+    "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
+    "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`"
+  }
+}

@@ -1,0 +1,104 @@
+/* tokens.css — design tokens: fonts, neutral/vertical/dark theme variables */
+
+/* ============================================================
+   Aircove Customer Portal — styles.css
+   Design tokens + component styles. Visual source of truth.
+   Componentized: each block below maps 1:1 to a component the
+   Codex team will implement (see manifest.json / README.md).
+
+   THEMING is fully declarative:
+     <html data-theme="hvac|snow|lawn|pool|roofing|pest"
+           data-mode="light|dark">
+   app.js only flips these two attributes — every color derives
+   from the custom properties defined here.
+   ============================================================ */
+/* ---------- Fonts ---------- */
+@font-face { font-family: "ManropeFallback"; src: local("Manrope"); }
+
+/* ---------- Design tokens : NEUTRALS (light default) ---------- */
+:root {
+  --font: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ink:      #1d1d1f;
+  --ink-2:    #56607a;
+  --ink-3:    #9aa0ad;
+  --surface:  #ffffff;
+  --surface-2:#f5f5f7;
+  --base:     #eef1f6;
+
+  /* rgb triplets used inside rgba() */
+  --glass:    255,255,255;   /* frosted-panel fill  */
+  --hair:     0,0,0;         /* hairline / shadow    */
+
+  --glass-border: rgba(255,255,255,.70);
+  --glass-blur:   blur(24px) saturate(180%);
+  --shadow-card:  0 8px 28px rgba(13,38,76,.10), inset 0 1px 0 rgba(255,255,255,.70);
+  --shadow-float: 0 12px 40px rgba(13,38,76,.16), inset 0 1px 0 rgba(255,255,255,.80);
+
+  --radius-pill: 999px;
+  --radius-card: 22px;
+  --radius-lg:   24px;
+  --radius-md:   14px;
+  --radius-sm:   11px;
+
+  /* semantic status colors */
+  --ok:     #1f8a44;  --ok-bg:     rgba(52,199,89,.16);
+  --warn:   #b5670a;  --warn-bg:   rgba(255,159,10,.16);
+  --danger: #c0392b;  --danger-bg: rgba(255,59,48,.12);
+  --info:   #0e8fc4;  --info-bg:   rgba(14,143,196,.16);
+
+  /* ACCENT : HVAC (default vertical) */
+  --accent:    #0a5ae6;
+  --accent-2:  #2a7bff;
+  --accent-3:  #3a90ff;
+  --accent-rgb:10,90,230;
+  --bg-1: #cfe0ff;  --bg-2: #d2f4ec;  --bg-3: #e7dcff;
+
+  --app-bg:
+    radial-gradient(120% 90%  at 0%   0%,   var(--bg-1) 0%, transparent 50%),
+    radial-gradient(110% 90%  at 100% 0%,   var(--bg-2) 0%, transparent 44%),
+    radial-gradient(120% 120% at 90%  100%, var(--bg-3) 0%, transparent 50%),
+    var(--base);
+}
+
+/* ---------- Design tokens : VERTICAL THEMES ---------- */
+:root[data-theme="snow"] {
+  --accent:#0e8fc4; --accent-2:#27a6dd; --accent-3:#46b6e6; --accent-rgb:14,143,196;
+  --bg-1:#cfe9f6; --bg-2:#d4eef4; --bg-3:#dee9f7;
+}
+
+:root[data-theme="lawn"] {
+  --accent:#2f9e44; --accent-2:#3fb657; --accent-3:#5fce74; --accent-rgb:47,158,68;
+  --bg-1:#d8f0d6; --bg-2:#e4f4d8; --bg-3:#ebf3df;
+}
+
+:root[data-theme="pool"] {
+  --accent:#0d9488; --accent-2:#15b3a4; --accent-3:#34ccbd; --accent-rgb:13,148,136;
+  --bg-1:#cfeeea; --bg-2:#d6f1ec; --bg-3:#ddeff2;
+}
+
+:root[data-theme="roofing"] {
+  --accent:#4f46e5; --accent-2:#6d63f5; --accent-3:#8b82ff; --accent-rgb:79,70,229;
+  --bg-1:#dcdaf8; --bg-2:#e6e2fb; --bg-3:#efe6fb;
+}
+
+:root[data-theme="pest"] {
+  --accent:#7c3aed; --accent-2:#9554f5; --accent-3:#ad74ff; --accent-rgb:124,58,237;
+  --bg-1:#e7dcfb; --bg-2:#efe2fb; --bg-3:#f2e1f6;
+}
+
+/* ---------- Design tokens : DARK MODE ---------- */
+:root[data-mode="dark"] {
+  --ink:#eef2f8; --ink-2:#aab6c8; --ink-3:#7f8aa0;
+  --surface:#1b2230; --surface-2:#151b29; --base:#0d1320;
+  --glass:38,46,64; --hair:255,255,255;
+  --glass-border: rgba(255,255,255,.14);
+  --shadow-card:  0 8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  --shadow-float: 0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  --app-bg:
+    radial-gradient(120% 90%  at 0%   0%,   rgba(var(--accent-rgb),.24) 0%, transparent 48%),
+    radial-gradient(110% 90%  at 100% 0%,   rgba(var(--accent-rgb),.14) 0%, transparent 46%),
+    radial-gradient(120% 120% at 90%  100%, rgba(var(--accent-rgb),.18) 0%, transparent 52%),
+    var(--base);
+}
