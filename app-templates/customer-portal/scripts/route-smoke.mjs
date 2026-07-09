@@ -266,6 +266,10 @@ try {
     if (!window.AircovePortal.state.orders.some((order) => order.id === "FX-001")) {
       throw new Error("checkout.placeOrder did not create fixture order");
     }
+    const renderedOrder = document.querySelector('[data-visual-id="order-list"] .order-card');
+    if (!renderedOrder || !renderedOrder.textContent.includes("FX-001") || renderedOrder.textContent.includes("undefined")) {
+      throw new Error(`checkout.placeOrder rendered invalid order card: ${renderedOrder ? renderedOrder.textContent : "missing"}`);
+    }
 
     window.AircovePortal.state.currentSiteId = "s2";
     window.AircovePortal.ACTIONS["proposal.selectPlan"]("__missing__");

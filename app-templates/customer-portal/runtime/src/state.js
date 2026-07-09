@@ -81,8 +81,8 @@ export function proposalSites() { return (state.moduleData.proposals && state.mo
 export function activeVerticalConfig() { return verticalProfiles[state.config.vertical] || verticalProfiles.hvac; }
 
 export function activeProfile() {
-  var config = activeVerticalConfig();
-  return F.profiles[config.profile] || F.profiles.onDemand;
+  var vertical = activeVerticalConfig();
+  return F.profiles[state.config.profile] || F.profiles[vertical.profile];
 }
 
 export function isPublic(routeId) {
@@ -100,7 +100,7 @@ export function applyPortalConfig(config) {
   var verticalConfig = verticalProfiles[vertical];
   state.config = Object.assign({}, state.config, config, {
     vertical: vertical,
-    profile: verticalConfig.profile,
+    profile: F.profiles[config.profile] ? config.profile : verticalConfig.profile,
     defaultRoute: config.defaultRoute || verticalConfig.defaultRoute,
     enabledModules: config.enabledModules && config.enabledModules.length ? config.enabledModules : verticalConfig.modules.slice(),
   });

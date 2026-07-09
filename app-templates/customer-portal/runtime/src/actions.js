@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
 import { findProduct, proposalSites, state } from "./state.js";
-import { render } from "./app.js";
+import { render, retryRuntimeLoad } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 
@@ -70,7 +70,7 @@ export var ACTIONS = {
   "calendar.open":     function ()   { go("calendar"); },
   "calendar.prev":     function ()   { calShift(-1); },
   "calendar.next":     function ()   { calShift(1); },
-  "ui.retry":          function ()   { setState({ view: "ready" }); },
+  "ui.retry":          function ()   { return retryRuntimeLoad(); },
   "ui.toggleMode":     function ()   { state.userModeOverridden = true; setState({ mode: state.mode === "Dark" ? "Light" : "Dark" }); },
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav }); },
   "theme.pick":        function (id) { pickTheme(id); }
@@ -242,16 +242,23 @@ export function requestExtraService(id) {
 export function placeFixtureOrder() {
   if (!state.cartItems.length) throw new Error("Cart is empty");
   var first = state.cartItems[0];
+  var total = state.cartItems.reduce(function (sum, item) { return sum + item.priceNum * item.qty; }, 0);
+  var palette = F.PAL[0];
   var order = {
     id: "FX-" + String(state.nextFixtureOrder++).padStart(3, "0"),
     status: "scheduled",
+    name: first.name,
+    date: "Jan 22",
+    price: "$" + total.toLocaleString(),
+    dot: palette[0],
+    iconBg: palette[1],
     serviceName: first.name,
     y: 2026,
     m: 0,
     d: 22,
     slot: "10:00 AM",
     locationId: state.addrId,
-    total: state.cartItems.reduce(function (sum, item) { return sum + item.priceNum * item.qty; }, 0),
+    total: total,
     timeline: ["Order placed in fixture state", "Awaiting dispatch"],
   };
   state.orders = [order].concat(state.orders);

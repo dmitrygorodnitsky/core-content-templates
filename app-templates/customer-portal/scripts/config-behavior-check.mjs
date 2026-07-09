@@ -99,6 +99,10 @@ try {
     window.AircovePortal.go("products");
   });
   await guarded.waitForSelector('[data-route="support"]', { timeout: 2000 });
+  const navLabels = await guarded.locator(".nav-links .nav-link").allTextContents();
+  if (navLabels.join(",") !== "Orders,Support") {
+    throw new Error(`disabled modules leaked into navigation: ${navLabels.join(",")}`);
+  }
   await guarded.evaluate(() => {
     window.AircovePortal.go("__missing__");
   });
@@ -124,6 +128,18 @@ try {
   }
   await disabledDefault.close();
 
+  const profileOverride = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await withConfig(profileOverride, {
+    portalVertical: "hvac",
+    portalProfile: "stormOps",
+  });
+  await profileOverride.goto(url, { waitUntil: "networkidle" });
+  await profileOverride.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
+  const effectiveProfile = await profileOverride.evaluate(() => window.AircovePortal.state.config.profile);
+  if (effectiveProfile !== "stormOps") throw new Error(`portal_profile override resolved to ${effectiveProfile}`);
+  await profileOverride.waitForSelector('[data-route="orders.list"][data-visual-id="storm-home"]', { timeout: 2000 });
+  await profileOverride.close();
+
   const fallback = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await withConfig(fallback, {
     portalDataMode: "live",
@@ -135,6 +151,34 @@ try {
   await fallback.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
   await fallback.waitForSelector('[data-visual-id="route-fallback"][data-state="fallback"]', { timeout: 3000 });
   await fallback.close();
+
+  const retry = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  let retryRequests = 0;
+  retry.on("request", (request) => {
+    if (request.url().includes("missing-core-pim-fixture.json")) retryRequests += 1;
+  });
+  await withConfig(retry, {
+    portalDataMode: "live",
+    portalErrorMode: "error",
+    portalPimFixtureUrl: "/missing-core-pim-fixture.json",
+    portalVertical: "hvac",
+  });
+  await retry.goto(url, { waitUntil: "networkidle" });
+  await retry.waitForSelector('[data-visual-id="error-state"][data-state="error"]', { timeout: 3000 });
+  const requestsBeforeRetry = retryRequests;
+  const retryResult = await retry.evaluate(async () => {
+    const first = window.AircovePortal.ACTIONS["ui.retry"]();
+    const second = window.AircovePortal.ACTIONS["ui.retry"]();
+    if (first !== second) throw new Error("ui.retry started duplicate live loads");
+    const loading = window.AircovePortal.state.view === "loading";
+    await first;
+    return { loading, view: window.AircovePortal.state.view };
+  });
+  if (!retryResult.loading) throw new Error("ui.retry did not expose loading state");
+  if (retryResult.view !== "error") throw new Error(`ui.retry ended in ${retryResult.view}`);
+  if (retryRequests <= requestsBeforeRetry) throw new Error("ui.retry did not issue a new PIM request");
+  await retry.waitForSelector('[data-visual-id="error-state"][data-state="error"]', { timeout: 3000 });
+  await retry.close();
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

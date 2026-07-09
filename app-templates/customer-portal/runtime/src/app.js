@@ -29,7 +29,7 @@ export function BookingDrawer() {
 /* =========================================================
    Root render
    ========================================================= */
-var mount, shell, resizeObs, runtime;
+var mount, shell, resizeObs, runtime, liveRetryPromise;
 
 export function render() {
   /* theming: declarative attributes only */
@@ -94,6 +94,31 @@ function applyResponsive() {
   apply(shell.getBoundingClientRect().width);
   resizeObs = new ResizeObserver(function (ents) { apply(ents[0].contentRect.width); });
   resizeObs.observe(shell);
+}
+
+export function retryRuntimeLoad() {
+  if (state.config.dataMode !== "live" || !runtime) {
+    setState({ view: "ready" });
+    return Promise.resolve();
+  }
+  if (liveRetryPromise) return liveRetryPromise;
+
+  state.view = "loading";
+  render();
+  liveRetryPromise = runtime.loadAllAsync()
+    .then(function () {
+      state.view = "ready";
+      render();
+    })
+    .catch(function (error) {
+      state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
+      console.error("[aircove] runtime retry failed", error);
+      render();
+    })
+    .finally(function () {
+      liveRetryPromise = null;
+    });
+  return liveRetryPromise;
 }
 
 /* boot */
