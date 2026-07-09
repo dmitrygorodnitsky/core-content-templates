@@ -43,6 +43,13 @@ export function normalizeServices(raw) {
 }
 
 export function normalizePricing(raw) {
+  if (raw.pimPlans) {
+    return {
+      plans: clone(raw.pimPlans),
+      rates: clone(raw.pimPlans),
+      source: "core-pim",
+    };
+  }
   return {
     plans: [
       { id: "payg", name: "Pay as you go", price: "$0", interval: "visit", cta: "Book any service" },
@@ -54,6 +61,14 @@ export function normalizePricing(raw) {
 }
 
 export function normalizeProducts(raw) {
+  if (raw.pimProducts) {
+    return {
+      feature: null,
+      categories: [],
+      items: clone(raw.pimProducts),
+      source: "core-pim",
+    };
+  }
   return {
     feature: clone(raw.feature),
     categories: clone(raw.categories),

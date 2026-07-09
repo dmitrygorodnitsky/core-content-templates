@@ -89,6 +89,12 @@ export function readPortalConfig(root) {
     profile: dataset.portalProfile || profile.profile,
     routerMode: dataset.portalRouterMode || "hash",
     authMode: dataset.portalAuthMode || "fixture",
+    dataMode: dataset.portalDataMode || "fixture",
+    pimFixtureUrl: dataset.portalPimFixtureUrl || "",
+    pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
+    pimOrganization: dataset.portalPimOrganization || "SERVICEWAND",
+    pimProductTypeCode: dataset.portalPimProductTypeCode || "SERVICEWAND_SAAS",
+    pimCurrency: dataset.portalPimCurrency || "CAD",
     defaultMode: dataset.portalDefaultMode || "light",
   };
 }

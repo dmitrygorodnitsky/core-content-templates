@@ -38,7 +38,7 @@ export function render() {
   root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
 
   clear(mount);
-  if (runtime) runtime.loadAll();
+  if (runtime && state.config.dataMode !== "live") runtime.loadAll();
 
   var content = renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
@@ -101,10 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
   applyPortalConfig(readPortalConfig(mount));
   runtime = new PortalRuntime({ state: state });
-  runtime.loadAll();
+  var loaded = state.config.dataMode === "live" ? runtime.loadAllAsync() : Promise.resolve(runtime.loadAll());
   initRouter(render);
   bindActions(mount);
-  render();
+  loaded.then(render).catch(function (error) {
+    state.view = "error";
+    console.error("[aircove] runtime load failed", error);
+    render();
+  });
 });
 
 /* expose for Codex / tests */

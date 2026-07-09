@@ -110,7 +110,7 @@ Out of scope:
 | runtime-transfer | `app-templates/customer-portal/runtime/**` | Codex | done | Production transfer target created from design source; dev-only toolbar/viewport contract stripped. |
 | config-router-theme | `runtime/src/config.js`, `runtime/src/router.js`, shell/theme code | Codex | done | Vertical profiles, router modes, route guards, and theme propagation implemented. |
 | module-runtime | `runtime/src/portal-runtime.js`, `runtime/src/modules/**`, `runtime/src/adapters/**`, `runtime/src/normalizers/**` | Codex | done | Fixture-first data, normalizers, module descriptors, and scoped command architecture. |
-| live-core-adapters | `runtime/src/adapters/core*.js`, module adapters | Codex | todo | Connect real Core APIs after fixtures prove contract. |
+| live-core-adapters | `runtime/src/adapters/core*.js`, module adapters | Codex | done | Pricing/products Core PIM adapter added; other live modules not opened pending endpoint contracts. |
 | cms-packaging | `app-templates/customer-portal/cms/**`, generated artifacts | Codex | todo | Block metadata/export after runtime stabilizes. |
 | validation-closeout | package audits/evidence, harness scripts | Codex | todo | Per-stage validation and closeout artifacts. |
 
@@ -122,7 +122,7 @@ Out of scope:
 | S1 Runtime Scaffold And Baseline Transfer | Create production runtime from accepted design source | done | S0 | `runtime/` boots from transferred source | Runtime preview matches design source, dev toolbar stripped, hooks preserved, toast-only mock success removed. |
 | S2 Config, Router, Themes | Add vertical profile config, route registry, guards, theme propagation | done | S1 | Config/router/theme layer | Enabled modules drive nav/routes; disabled and auth routes guard cleanly; `onDemand` and `stormOps` route/home/calendar variants are selected by profile. |
 | S3 Fixture PortalRuntime And Modules | Add fixture-first `PortalRuntime`, adapters, normalizers, commands | done | S2 | Module runtime using fixtures | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support render from normalized fixtures. Weather/stormOps fixtures prove `StormHome`, `StormCalendar`, `WeatherCard`, and weather/access commands. Shell remains structural and is proven by S2 nav/route-outlet checks. |
-| S4 Live Core Adapter Integration | Connect real Core APIs incrementally | todo | S3 | Core adapters and resilient dynamic states | Pricing/products use proven PIM paths first; other modules open only when endpoints are known. |
+| S4 Live Core Adapter Integration | Connect real Core APIs incrementally | done | S3 | Core adapters and resilient dynamic states | Pricing/products use proven PIM paths first; other live modules are not opened until endpoints are known. |
 | S5 CMS Packaging And Export | Create CMS block metadata and export path | todo | S4 | CMS-ready template artifacts | Config params, fallback copy, generated preview, and export scripts validate locally. |
 | S6 Validation And Closeout | Complete full scenario/browser validation and program evidence | todo | S5 | Audits and closeout evidence | Ledger updated, validations recorded, residuals explicit. |
 
@@ -149,7 +149,7 @@ Out of scope:
 | S1-runtime-scaffold | runtime-transfer | Codex | done | S1-baseline-validation | runtime HTTP boot, route smoke, hook scan | `runtime/` exists, boots, preserves accepted hooks, and strips dev-only preview contracts. |
 | S2-config-theme-router | config-router-theme | Codex | done | S1-runtime-scaffold | route guard tests, theme propagation checks, onDemand/stormOps variant checks | Profiles control routes/nav/theme without hardcoded vertical checks. Shell/nav/route-outlet structure is proven here. |
 | S3-fixture-modules | module-runtime | Codex | done | S2-config-theme-router | fixture route smoke for every opened module, action/pending/error checks, stormOps weather command checks | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support load normalized fixtures. Weather/stormOps behaviors are command-backed, not demo-only. |
-| S4-live-adapters | live-core-adapters | Codex | todo | S3-fixture-modules | API/fallback harness checks per opened module | Pricing/products use PIM live/fixture adapters; other live modules are done only when endpoint contracts are known. |
+| S4-live-adapters | live-core-adapters | Codex | done | S3-fixture-modules | API/fallback harness checks per opened module | Pricing/products use PIM live/fixture adapters; other live modules are not_opened pending endpoint contracts. |
 | S5-cms-export | cms-packaging | Codex | todo | S4-live-adapters | `jq empty`, generated preview, CMS artifact validation | CMS block/export artifacts are upload-ready. |
 | S6-closeout | validation-closeout | Codex | todo | all opened stages | A1 audit and evidence docs | Program state and residual risks are recorded. |
 
@@ -203,7 +203,8 @@ Out of scope:
   initial-mode/user-mode behavior. Validation: runtime `node --check`,
   `jq empty`, scripted route smoke with S2 guard assertions, scenario route
   registry coverage, and `git diff --check`.
-- 2026-07-09: S3 completed locally. Added `PortalRuntime`, fixture adapter,
+- 2026-07-09: S3 committed in `446f5e2` (`Add customer portal fixture runtime
+  modules`). Added `PortalRuntime`, fixture adapter,
   module descriptors, normalizers, normalized `state.moduleData`, and scoped
   command pending/error tracking. Fixture commands now have real offline state
   transitions for proposal, weather, access, service request, support, checkout,
@@ -211,5 +212,12 @@ Out of scope:
   runtime `node --check`, scripted route smoke with normalized-module and
   command-flow assertions, no mock/dev-only success wording scan, and
   `git diff --check`.
+- 2026-07-09: S4 completed locally. Added Core PIM adapter for pricing/products,
+  live data-mode config, async runtime loading path, and
+  `scripts/pim-adapter-check.mjs` using the existing lab-ui SaaS fixture. Orders,
+  proposals, profile, support, activity, checkout, calendar, and services live
+  adapters remain `not_opened` because endpoint contracts are not present in the
+  repo. Validation: runtime/scripts `node --check`, `pim-adapter-check.mjs`,
+  fixture-mode route smoke, and `git diff --check`.
 - This program package is a roadmap container. Execute one stage at a time unless
   the user explicitly requests continuous multi-stage execution.

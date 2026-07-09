@@ -1,4 +1,5 @@
 import { fixtureAdapter } from "../adapters/fixture-adapter.js";
+import { corePimAdapter } from "../adapters/core-pim-adapter.js";
 import {
   normalizeActivity,
   normalizeAuth,
@@ -16,7 +17,10 @@ import {
 function module(id, normalize) {
   return {
     id: id,
-    adapter: fixtureAdapter,
+    adapter(context) {
+      if (context.config.dataMode === "live" && corePimAdapter.supports(id)) return corePimAdapter;
+      return fixtureAdapter;
+    },
     normalize(raw) {
       return normalize(raw);
     },

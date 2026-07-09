@@ -39,6 +39,7 @@ export var state = {
     profile: "onDemand",
     routerMode: "hash",
     authMode: "fixture",
+    dataMode: "fixture",
     defaultMode: "light",
   },
   userModeOverridden: false,
