@@ -1,0 +1,46 @@
+{
+  "$schema": "app-template/customer-portal@1",
+  "id": "customer-portal.runtime",
+  "title": "Customer Portal Runtime",
+  "description": "CMS-compatible customer portal app template using native ES modules, vertical profiles, route guards, fixture/live adapters, and explicit command states.",
+  "runtime": {
+    "entry": "../runtime/src/app.js",
+    "styles": [
+      "../runtime/styles/tokens.css",
+      "../runtime/styles/base.css",
+      "../runtime/styles/shell.css",
+      "../runtime/styles/components.css",
+      "../runtime/styles/routes.css",
+      "../runtime/styles/responsive.css"
+    ],
+    "serving": "Must be served over HTTP. Native ES modules do not run from file://."
+  },
+  "params": [
+    { "code": "portal_api_base", "type": "STRING", "default": "/core-pim/api", "name": "Portal API Base" },
+    { "code": "portal_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Portal Organization" },
+    { "code": "portal_vertical", "type": "ENUM", "options": ["hvac", "snow", "lawn", "pool", "roofing", "pest"], "default": "hvac", "name": "Portal Vertical" },
+    { "code": "portal_profile", "type": "ENUM", "options": ["onDemand", "stormOps"], "default": "onDemand", "name": "Portal Profile" },
+    { "code": "portal_theme", "type": "ENUM", "options": ["hvac", "snow", "lawn", "pool", "roofing", "pest"], "default": "hvac", "name": "Portal Theme" },
+    { "code": "portal_default_mode", "type": "ENUM", "options": ["light", "dark"], "default": "light", "name": "Portal Default Mode" },
+    { "code": "portal_router_mode", "type": "ENUM", "options": ["hash", "history", "memory"], "default": "hash", "name": "Portal Router Mode" },
+    { "code": "portal_default_route", "type": "STRING", "default": "orders.list", "name": "Portal Default Route" },
+    { "code": "portal_enabled_modules", "type": "STRING", "default": "orders,calendar,activity,proposals,services,pricing,products,checkout,profile,support", "name": "Portal Enabled Modules" },
+    { "code": "portal_auth_mode", "type": "ENUM", "options": ["fixture", "required"], "default": "fixture", "name": "Portal Auth Mode" },
+    { "code": "portal_error_mode", "type": "ENUM", "options": ["error", "fallback"], "default": "error", "name": "Portal Error Mode" },
+    { "code": "portal_data_mode", "type": "ENUM", "options": ["fixture", "live"], "default": "fixture", "name": "Portal Data Mode" },
+    { "code": "portal_pim_fixture_url", "type": "URL", "default": "", "name": "Portal PIM Fixture URL" },
+    { "code": "portal_pim_product_type_code", "type": "STRING", "default": "SERVICEWAND_SAAS", "name": "Portal PIM Product Type Code" },
+    { "code": "portal_pim_currency", "type": "STRING", "default": "CAD", "name": "Portal PIM Currency" }
+  ],
+  "fallbackCopy": {
+    "loading": "Loading portal",
+    "error": "Portal is temporarily unavailable",
+    "disabledModule": "This portal module is not enabled for the current profile"
+  },
+  "uploadGuardrails": [
+    "Do not upload without explicit current-thread approval.",
+    "Do not encode live customer data as CMS defaults.",
+    "Keep PageContext values as authored overrides only.",
+    "Do not duplicate parameter codes."
+  ]
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="hvac" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Portal Preview</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../runtime/styles/tokens.css">
+  <link rel="stylesheet" href="../runtime/styles/base.css">
+  <link rel="stylesheet" href="../runtime/styles/shell.css">
+  <link rel="stylesheet" href="../runtime/styles/components.css">
+  <link rel="stylesheet" href="../runtime/styles/routes.css">
+  <link rel="stylesheet" href="../runtime/styles/responsive.css">
+</head>
+<body>
+  <section
+    id="app"
+    data-portal-api-base="/core-pim/api"
+    data-portal-organization="SERVICEWAND"
+    data-portal-vertical="hvac"
+    data-portal-profile="onDemand"
+    data-portal-theme="hvac"
+    data-portal-default-mode="light"
+    data-portal-router-mode="hash"
+    data-portal-default-route="orders.list"
+    data-portal-enabled-modules="orders,calendar,activity,proposals,services,pricing,products,checkout,profile,support"
+    data-portal-auth-mode="fixture"
+    data-portal-error-mode="error"
+    data-portal-data-mode="fixture"
+    data-portal-pim-api-base="/core-pim/api"
+    data-portal-pim-organization="SERVICEWAND"
+    data-portal-pim-fixture-url=""
+    data-portal-pim-product-type-code="SERVICEWAND_SAAS"
+    data-portal-pim-currency="CAD"
+  ></section>
+  <script type="module" src="../runtime/src/app.js"></script>
+</body>
+</html>

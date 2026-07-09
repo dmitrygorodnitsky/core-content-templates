@@ -36,6 +36,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 }
 
 const root = path.resolve(args.get("root") || "app-templates/customer-portal/runtime");
+const entry = "/" + (args.get("entry") || "source.html").replace(/^\/+/, "");
 const allowDevToolbar = args.get("allow-dev-toolbar") === "true";
 const playwrightNodeModules = process.env.PLAYWRIGHT_NODE_MODULES;
 const requireFrom = playwrightNodeModules
@@ -55,7 +56,7 @@ function contentType(filePath) {
 async function startServer() {
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url || "/", "http://127.0.0.1");
-    const relative = url.pathname === "/" ? "/source.html" : url.pathname;
+    const relative = url.pathname === "/" ? entry : url.pathname;
     const filePath = path.resolve(root, `.${decodeURIComponent(relative)}`);
     if (!filePath.startsWith(root)) {
       res.writeHead(403);
@@ -73,7 +74,7 @@ async function startServer() {
   });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const address = server.address();
-  return { server, url: `http://127.0.0.1:${address.port}/source.html` };
+  return { server, url: `http://127.0.0.1:${address.port}${entry}` };
 }
 
 const { server, url } = await startServer();
