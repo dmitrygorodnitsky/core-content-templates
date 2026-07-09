@@ -1,0 +1,106 @@
+// customer-portal-design/src/state.js — presentation runtime (auto-split from app.js). No business logic.
+import { F } from "../data/fixtures.js";
+import { clear } from "./dom.js";
+import { ACTIONS } from "./actions.js";
+
+export var state = {
+  route: "orders.list",
+  theme: "HVAC",     // vertical display name
+  mode: "Light",     // Light | Dark
+  view: "ready",     // ready | loading | empty | error
+  filter: "all",     // order tab
+  currentOrderId: null, // open order for order.detail
+  cartItems: [],     // checkout cart
+  addrId: "home",    // selected delivery address
+  payId: "visa",     // selected payment method
+  prodCat: "all",    // product category filter
+  psites: F.proposalSites.map(function (p) { return Object.assign({}, p); }), // proposal sites (mutable)
+  currentSiteId: "s2", // open proposal site
+  profileFilter: "all",  // profile order-history tab
+  feedFilter: "all",     // activity feed tab
+  prefs: { receipts: true, sms: true, marketing: false },
+  messages: F.initialMessages.slice(),
+  typing: false,
+  chatInput: "",
+  calYear: 2026, calMonth: 0,
+  phone: "",
+  code: "",
+  authError: null,
+  mobileNav: false,
+  drawer: null,      // null | "booking"
+  orders: F.ordersFor("HVAC"),
+  vw: "full"         // preview viewport: full|390|768|1180|1440
+};
+
+/* ---------------- ACTIONS registry ----------------
+   Every data-action maps here. Bodies are DEMO ONLY.
+   Codex swaps bodies for Core API / command dispatch.        */
+
+export function currentOrder() {
+  return state.orders.find(function (o) { return o.id === state.currentOrderId; }) ||
+         state.orders.find(function (o) { return o.status === "inprogress"; }) || state.orders[0];
+}
+
+export function money(n) { return "$" + n.toLocaleString(); }
+
+export function cartCount() { return state.cartItems.reduce(function (a, x) { return a + x.qty; }, 0); }
+
+export function findProduct(name) {
+  var v = F.themes[state.theme];
+  return v.products.find(function (p) { return p.name === name; });
+}
+
+export function activeProfile() { return F.profiles[F.profileFor[state.theme] || "onDemand"]; }
+
+export function isPublic() { return state.route === "landing" || state.route === "auth.phone" || state.route === "auth.code"; }
+
+export function buildCalendarGrid(year, month) {
+  var first = new Date(year, month, 1);
+  var startWeekday = first.getDay();
+  var daysInMonth = new Date(year, month + 1, 0).getDate();
+  var cells = [];
+  for (var i = 0; i < startWeekday; i++) cells.push({ empty: true });
+  for (var d = 1; d <= daysInMonth; d++) {
+    cells.push({ empty: false, day: d, events: state.orders.filter(function (o) { return o.y === year && o.m === month && o.d === d; }) });
+  }
+  return cells;
+}
+
+export function currentSite() { return state.psites.find(function (p) { return p.id === state.currentSiteId; }) || state.psites[0]; }
+
+export function computeSite(site) {
+  var cs = 0, ds = 0, total = 0;
+  var names = F.themes[state.theme].prop.surfaces;
+  var rows = F.surfaceDefs.map(function (d, i) {
+    var a = site.areas[i];
+    var c = Math.round(a * d.clear), de = Math.round(a * d.deice);
+    cs += c; ds += de; total += a;
+    return { name: names[i] || ("Surface " + (i + 1)), color: d.color, area: a.toLocaleString(),
+      clear: "$" + c, deice: "$" + de,
+      clearRate: "$" + ("" + d.clear).replace(/^0/, ""), deiceRate: "$" + ("" + d.deice).replace(/^0/, "") };
+  });
+  var clearing = cs + F.MOB_CLEAR, deice = ds + F.MOB_DEICE;
+  var seasonRef = clearing * 18 + deice * 22;
+  var unlim = seasonRef * 0.853;
+  var monthly = Math.round((unlim / 5) / 5) * 5;
+  var seasonLock = Math.round((unlim * 0.9) / 25) * 25;
+  return { rows: rows, total: total, clearing: clearing, deice: deice, monthly: monthly, seasonLock: seasonLock, unlim: unlim,
+    clearStr: "$" + clearing, deiceStr: "$" + deice };
+}
+
+export function filteredOrders() {
+  var list = state.orders;
+  if (state.filter !== "all") list = list.filter(function (o) { return o.status === state.filter; });
+  return list;
+}
+
+export function tabItems() {
+  var o = state.orders;
+  var count = function (k) { return k === "all" ? o.length : o.filter(function (x) { return x.status === k; }).length; };
+  return [
+    { key: "all", label: "All", count: count("all") },
+    { key: "inprogress", label: "Active", count: count("inprogress") },
+    { key: "scheduled", label: "Scheduled", count: count("scheduled") },
+    { key: "completed", label: "Done", count: count("completed") }
+  ];
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "./scenarios.schema (informal)",
+  "product": "Aircove Customer Portal",
+  "wave": 5,
+  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. 'implemented' marks what ships so far; the rest are wired into the shell/contract and land in later waves.",
+  "featureFlags": {
+    "showProducts": true,
+    "showProposals": true,
+    "showMemberships": true,
+    "weatherTriggers": true,
+    "darkMode": true
+  },
+  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"],
+  "modes": ["light", "dark"],
+  "profiles": {
+    "note": "Portal profile is config-driven per vertical (fixtures.profileFor). Drives nav, primary action, cart, and which Calendar renders.",
+    "onDemand": { "verticals": ["HVAC"], "calendar": "MonthCalendar", "primary": "+ Book" },
+    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service" }
+  },
+  "viewports": [390, 768, 1180, 1440],
+  "routes": [
+    { "id": "landing",          "path": "/",                 "wave": 6, "implemented": true,  "auth": "public", "states": ["ready"], "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)." },
+    { "id": "auth.phone",       "path": "/login",            "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='phone'" },
+    { "id": "auth.code",        "path": "/login/verify",     "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='code'; 4-digit OTP" },
+    { "id": "orders.list",      "path": "/orders",           "wave": 1, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
+    { "id": "order.detail",     "path": "/orders/:id",       "wave": 2, "implemented": true,  "auth": "private", "states": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error"] },
+    { "id": "calendar",         "path": "/calendar",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"], "variants": { "onDemand": "month grid", "stormOps": "weather-ops agenda: served, clear, storm-watch, snow-expected + event statuses scheduled/on-route/completed/skipped/delayed" } },
+    { "id": "services",         "path": "/services",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "loading"] },
+    { "id": "pricing",          "path": "/pricing",          "wave": 3, "implemented": true,  "auth": "private", "states": ["ready"] },
+    { "id": "products",         "path": "/products",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "loading"] },
+    { "id": "checkout",         "path": "/checkout",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "pending-action", "success-toast"] },
+    { "id": "proposals.list",   "path": "/proposals",        "wave": 4, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
+    { "id": "proposal.detail",  "path": "/proposals/:id",    "wave": 4, "implemented": true,  "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
+    { "id": "profile",          "path": "/profile",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "success-toast"] },
+    { "id": "activity",         "path": "/activity",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
+    { "id": "support",          "path": "/support",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "pending-action"] }
+  ],
+  "actions": [
+    "auth.sendCode", "auth.verifyCode",
+    "order.open", "order.cancel", "order.reschedule", "order.downloadInvoice", "order.filter",
+    "booking.open", "booking.confirm",
+    "weather.confirm", "weather.decline",
+    "proposal.review", "proposal.approve", "proposal.requestRevision", "proposal.decline",
+    "cart.addItem", "cart.removeItem", "cart.open", "checkout.placeOrder",
+    "service.request", "service.requestExtra", "service.reportIssue", "access.confirm", "access.update",
+    "membership.activate",
+    "profile.updateAddress", "profile.setDefaultPayment",
+    "support.open", "support.sendMessage",
+    "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
+  ],
+  "implementedStates": {
+    "orders.list": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"],
+    "order.detail": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error", "pending-action"],
+    "services": ["ready", "loading"],
+    "pricing": ["ready"],
+    "products": ["ready", "empty"],
+    "checkout": ["ready", "empty", "success-toast"],
+    "proposals.list": ["ready", "empty"],
+    "proposal.detail": ["unseen", "viewed", "approved", "revision", "declined"],
+    "profile": ["ready", "success-toast"],
+    "activity": ["ready", "empty"],
+    "calendar": ["ready"],
+    "support": ["ready", "pending-action"],
+    "landing": ["ready"],
+    "auth.phone": ["ready", "validation-error"],
+    "auth.code": ["ready", "validation-error"]
+  },
+  "notImplementedYet": {
+    "routes": [],
+    "note": "All required routes are implemented. Remaining gaps are component-level states (e.g. per-field disabled) that Codex wires with real validation."
+  }
+}
