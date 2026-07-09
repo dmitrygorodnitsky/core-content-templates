@@ -21,10 +21,11 @@ implementation while preserving:
 - dynamic data from Core APIs with honest loading, empty, error, and fallback
   states.
 
-React is not a default requirement. A router is required. The first baseline
-should follow the proven lab-ui pricing pattern: plain DOM/ES modules, root
-configuration through `data-*`, module adapters, offline fixtures, and CMS
-fallback.
+The production baseline is custom JavaScript with native ES modules. React is
+not part of this template architecture. A router is required, implemented inside
+the custom runtime. The baseline follows the proven lab-ui pricing pattern:
+plain DOM/ES modules, root configuration through `data-*`, module adapters,
+offline fixtures, and CMS fallback.
 
 ## Source Ownership
 
@@ -65,6 +66,14 @@ Use the existing dynamic pricing architecture as the baseline:
 - dynamic state is explicit on DOM roots;
 - CMS parameters feed `data-*` attributes and fallback copy;
 - PageContext values remain authored overrides only.
+
+Locked runtime decision:
+
+- no React baseline;
+- no bundler requirement;
+- custom JavaScript and native ES modules are the implementation target;
+- future framework adoption requires a concrete failing in the custom runtime,
+  not preference or router convenience.
 
 PageContext is the lab-ui CMS page override mechanism. Template defaults live
 on `BlockTemplate.parameters`; PageContext values are page-specific authored
@@ -138,6 +147,7 @@ Example root contract:
   data-portal-router-mode="{{portal_router_mode}}"
   data-portal-default-route="{{portal_default_route}}"
   data-portal-enabled-modules="{{portal_enabled_modules}}"
+  data-portal-auth-mode="{{portal_auth_mode}}"
   data-portal-error-mode="{{portal_error_mode}}"
 >
   <div data-portal-root></div>
@@ -293,6 +303,18 @@ Router mode is configurable:
 Direct navigation to disabled or unauthorized routes should resolve to a clear
 fallback route, not a blank screen.
 
+Baseline guard contract:
+
+- `auth.phone`, `auth.code`, and `landing` are public routes.
+- All other accepted portal routes are private unless a module descriptor marks
+  them public.
+- Fixture mode starts with an authenticated demo session for private-route
+  smoke tests and can force an unauthenticated session for guard tests.
+- Unauthenticated access to a private route redirects to `auth.phone` while
+  preserving the intended route for post-auth navigation.
+- Disabled-module route access resolves to the configured `portal_default_route`
+  or a module-disabled state, never a blank route.
+
 ## Dynamic Data Contracts
 
 UI components must not consume raw Core payloads. Every dynamic module gets a
@@ -383,9 +405,11 @@ support.sendMessage
 
 ## State Grammar
 
-Use explicit DOM state attributes for testability.
+Use explicit DOM state attributes for testability. Keep global UI states,
+domain/entity states, and implementation-added runtime states distinct so
+validators do not reject accepted design statuses.
 
-Design parity states already emitted by the delivered design source:
+Global UI states already emitted by the delivered design source:
 
 ```text
 ready
@@ -396,6 +420,22 @@ pending-action
 drawer-open
 mobile-navigation-open
 active
+validation-error
+success-toast
+```
+
+Accepted domain/entity states from scenarios:
+
+```text
+scheduled
+inProgress
+completed
+cancelled
+unseen
+viewed
+approved
+revision
+declined
 ```
 
 Implementation-added states outside the visual parity contract:
@@ -522,8 +562,6 @@ Contract changes must be documented here and in the design handoff.
 
 - Final router mode for deployed CMS pages: `hash` by default unless backend
   confirms history fallback.
-- Whether React is useful after the no-build runtime proves the module contract.
-  Do not introduce it only for routing.
 - Exact Core API endpoints for orders, proposals, profile, support, and
   checkout.
 - Server-side auth/session/token mode. The delivered design already establishes
