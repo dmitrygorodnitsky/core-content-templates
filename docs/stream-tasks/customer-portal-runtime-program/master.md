@@ -112,7 +112,7 @@ Out of scope:
 | module-runtime | `runtime/src/portal-runtime.js`, `runtime/src/modules/**`, `runtime/src/adapters/**`, `runtime/src/normalizers/**` | Codex | done | Fixture-first data, normalizers, module descriptors, and scoped command architecture. |
 | live-core-adapters | `runtime/src/adapters/core*.js`, module adapters | Codex | done | Pricing/products Core PIM adapter added; other live modules not opened pending endpoint contracts. |
 | cms-packaging | `app-templates/customer-portal/cms/**`, generated artifacts | Codex | done | CMS metadata, root template, export script, and generated preview added. |
-| validation-closeout | package audits/evidence, harness scripts | Codex | todo | Per-stage validation and closeout artifacts. |
+| validation-closeout | package audits/evidence, harness scripts | Codex | done | A1 audit and closeout evidence recorded. |
 
 ## Program Stages
 
@@ -124,7 +124,7 @@ Out of scope:
 | S3 Fixture PortalRuntime And Modules | Add fixture-first `PortalRuntime`, adapters, normalizers, commands | done | S2 | Module runtime using fixtures | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support render from normalized fixtures. Weather/stormOps fixtures prove `StormHome`, `StormCalendar`, `WeatherCard`, and weather/access commands. Shell remains structural and is proven by S2 nav/route-outlet checks. |
 | S4 Live Core Adapter Integration | Connect real Core APIs incrementally | done | S3 | Core adapters and resilient dynamic states | Pricing/products use proven PIM paths first; other live modules are not opened until endpoints are known. |
 | S5 CMS Packaging And Export | Create CMS block metadata and export path | done | S4 | CMS-ready template artifacts | Config params, fallback copy, generated preview, and export scripts validate locally. |
-| S6 Validation And Closeout | Complete full scenario/browser validation and program evidence | todo | S5 | Audits and closeout evidence | Ledger updated, validations recorded, residuals explicit. |
+| S6 Validation And Closeout | Complete full scenario/browser validation and program evidence | done | S5 | Audits and closeout evidence | Ledger updated, validations recorded, residuals explicit. |
 
 ## Cross-Stage Dependency Rules
 
@@ -151,7 +151,7 @@ Out of scope:
 | S3-fixture-modules | module-runtime | Codex | done | S2-config-theme-router | fixture route smoke for every opened module, action/pending/error checks, stormOps weather command checks | Auth, orders, proposals, services, pricing, products, checkout, calendar, activity, profile, and support load normalized fixtures. Weather/stormOps behaviors are command-backed, not demo-only. |
 | S4-live-adapters | live-core-adapters | Codex | done | S3-fixture-modules | API/fallback harness checks per opened module | Pricing/products use PIM live/fixture adapters; other live modules are not_opened pending endpoint contracts. |
 | S5-cms-export | cms-packaging | Codex | done | S4-live-adapters | `jq empty`, generated preview, CMS artifact validation | CMS block/export artifacts are ready for inspected/manual upload or later uploader integration. |
-| S6-closeout | validation-closeout | Codex | todo | all opened stages | A1 audit and evidence docs | Program state and residual risks are recorded. |
+| S6-closeout | validation-closeout | Codex | done | all opened stages | A1 audit and evidence docs | Program state and residual risks are recorded. |
 
 ## Definition Of Done
 
@@ -220,12 +220,18 @@ Out of scope:
   adapters remain `not_opened` because endpoint contracts are not present in the
   repo. Validation: runtime/scripts `node --check`, `pim-adapter-check.mjs`,
   fixture-mode route smoke, and `git diff --check`.
-- 2026-07-09: S5 completed locally. Added `cms/block.json`,
+- 2026-07-09: S5 committed in `c97b046` (`Add customer portal CMS export
+  package`). Added `cms/block.json`,
   `cms/root-template.html`, `scripts/export-cms.mjs`, and generated
   `dist/customer-portal-preview.html`. Root template emits required
   `data-portal-*` params including `data-portal-auth-mode`; upload guardrails
   are documented in block metadata. Validation: `jq empty` on CMS JSON,
   `export-cms.mjs`, duplicate parameter guard, generated preview route smoke,
   runtime route smoke, and `git diff --check`.
+- 2026-07-09: S6 completed locally. Added `audits/A1.md` and
+  `evidence/closeout.md`. Full closeout validation passed; residuals recorded:
+  non-PIM live adapters remain `not_opened` pending endpoint contracts, no CMS
+  upload performed, no repo-level prod compile command found, browser smoke uses
+  system Chrome because bundled Chromium is unavailable.
 - This program package is a roadmap container. Execute one stage at a time unless
   the user explicitly requests continuous multi-stage execution.
