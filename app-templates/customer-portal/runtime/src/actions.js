@@ -127,7 +127,7 @@ export function go(route) {
   render();
 }
 
-export function openOrder(id) { state.currentOrderId = id; state.route = "order.detail"; state.view = "ready"; state.mobileNav = false; render(); }
+export function openOrder(id) { state.currentOrderId = id; state.view = "ready"; go("order.detail"); }
 
 export function cancelOrder(id) {
   var order = state.orders.find(function (o) { return o.id === id; });
@@ -271,7 +271,7 @@ export function openProposal(id) {
   if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
   state.currentSiteId = id;
   state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
-  state.route = "proposal.detail"; state.mobileNav = false; render();
+  go("proposal.detail");
 }
 
 export function selectPlan(planId) {
@@ -296,6 +296,7 @@ export function pickTheme(name) {
   var slug = normalizeVertical(name);
   var profile = verticalProfiles[slug];
   state.config.vertical = slug;
+  state.config.theme = slug;
   state.config.profile = profile.profile;
   state.config.defaultRoute = profile.defaultRoute;
   state.config.enabledModules = profile.modules.slice();

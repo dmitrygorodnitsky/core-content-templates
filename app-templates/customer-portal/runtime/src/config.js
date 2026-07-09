@@ -82,11 +82,12 @@ export function normalizeVertical(value) {
 export function readPortalConfig(root) {
   var dataset = root ? root.dataset : {};
   var vertical = normalizeVertical(dataset.portalVertical || dataset.portalTheme);
+  var theme = normalizeVertical(dataset.portalTheme || vertical);
   var profile = verticalProfiles[vertical];
   var enabledModules = splitList(dataset.portalEnabledModules);
   return {
     vertical: vertical,
-    theme: dataset.portalTheme || vertical,
+    theme: theme,
     profile: dataset.portalProfile || profile.profile,
     routerMode: dataset.portalRouterMode || "hash",
     authMode: dataset.portalAuthMode || "fixture",

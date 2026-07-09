@@ -147,6 +147,25 @@ try {
   }
 
   await page.evaluate(() => {
+    const order = window.AircovePortal.state.orders[0];
+    window.AircovePortal.ACTIONS["order.open"](order.id);
+  });
+  await page.waitForSelector('[data-route="order.detail"]', { timeout: 2000 });
+  const orderDetailHash = await page.evaluate(() => window.location.hash);
+  if (orderDetailHash !== "#/orders/detail") {
+    throw new Error(`order.open did not write detail route: ${orderDetailHash}`);
+  }
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["order.back"]();
+    window.AircovePortal.ACTIONS["proposal.open"]("s2");
+  });
+  await page.waitForSelector('[data-route="proposal.detail"]', { timeout: 2000 });
+  const proposalDetailHash = await page.evaluate(() => window.location.hash);
+  if (proposalDetailHash !== "#/proposals/detail") {
+    throw new Error(`proposal.open did not write detail route: ${proposalDetailHash}`);
+  }
+
+  await page.evaluate(() => {
     window.AircovePortal.ACTIONS["theme.pick"]("Snow Removal");
     window.AircovePortal.go("orders.list");
   });

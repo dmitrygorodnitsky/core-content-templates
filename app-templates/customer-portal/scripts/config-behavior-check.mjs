@@ -128,6 +128,23 @@ try {
   }
   await disabledDefault.close();
 
+  const themeOverride = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await withConfig(themeOverride, {
+    portalVertical: "hvac",
+    portalTheme: "snow",
+  });
+  await themeOverride.goto(url, { waitUntil: "networkidle" });
+  await themeOverride.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
+  const appliedTheme = await themeOverride.evaluate(() => ({
+    configTheme: window.AircovePortal.state.config.theme,
+    stateTheme: window.AircovePortal.state.theme,
+    documentTheme: document.documentElement.dataset.theme,
+  }));
+  if (appliedTheme.configTheme !== "snow" || appliedTheme.stateTheme !== "Snow Removal" || appliedTheme.documentTheme !== "snow") {
+    throw new Error(`portal_theme override was not applied: ${JSON.stringify(appliedTheme)}`);
+  }
+  await themeOverride.close();
+
   const profileOverride = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await withConfig(profileOverride, {
     portalVertical: "hvac",

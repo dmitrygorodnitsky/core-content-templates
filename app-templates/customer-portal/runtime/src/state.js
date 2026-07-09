@@ -98,16 +98,19 @@ export function isModuleEnabled(moduleId) {
 export function applyPortalConfig(config) {
   var vertical = verticalProfiles[config.vertical] ? config.vertical : "hvac";
   var verticalConfig = verticalProfiles[vertical];
+  var theme = verticalProfiles[config.theme] ? config.theme : vertical;
+  var themeConfig = verticalProfiles[theme];
   state.config = Object.assign({}, state.config, config, {
     vertical: vertical,
+    theme: theme,
     profile: F.profiles[config.profile] ? config.profile : verticalConfig.profile,
     defaultRoute: config.defaultRoute || verticalConfig.defaultRoute,
     enabledModules: config.enabledModules && config.enabledModules.length ? config.enabledModules : verticalConfig.modules.slice(),
   });
   state.session.authenticated = state.config.authMode !== "required";
   state.session.intendedRoute = null;
-  state.theme = verticalConfig.displayName;
-  state.orders = F.ordersFor(verticalConfig.displayName);
+  state.theme = themeConfig.displayName;
+  state.orders = F.ordersFor(themeConfig.displayName);
   state.filter = "all";
   state.cartItems = [];
   if (!state.userModeOverridden) {
