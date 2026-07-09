@@ -1,9 +1,10 @@
 // customer-portal/runtime/src/app.js — production transfer module.
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
-import { activeProfile, state } from "./state.js";
+import { readPortalConfig } from "./config.js";
+import { activeProfile, applyPortalConfig, state } from "./state.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
-import { renderRoute } from "./router.js";
+import { initRouter, renderRoute } from "./router.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { ServiceCard } from "./components/commerce/ServiceCard.js";
 import { AppShell } from "./components/shell/AppShell.js";
@@ -96,6 +97,8 @@ function applyResponsive() {
 /* boot */
 document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
+  applyPortalConfig(readPortalConfig(mount));
+  initRouter(render);
   bindActions(mount);
   render();
 });

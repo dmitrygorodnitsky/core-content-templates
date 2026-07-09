@@ -2,6 +2,8 @@
 import { F } from "../data/fixtures.js";
 import { findProduct, state } from "./state.js";
 import { render } from "./app.js";
+import { normalizeVertical, verticalProfiles } from "./config.js";
+import { resolveRoute, writeRouteToLocation } from "./router.js";
 
 export var ACTIONS = {
   "nav.go":            function (id) { go(id); },
@@ -64,12 +66,12 @@ export var ACTIONS = {
   "profile.updateAddress": function () { failCommand("profile.updateAddress"); },
   "profile.togglePref": function (id) { togglePref(id); },
   "profile.managePlan": function ()  { go("pricing"); },
-  "auth.signOut":      function ()   { state.phone = ""; state.code = ""; go("auth.phone"); toast("Signed out"); },
+  "auth.signOut":      function ()   { state.session.authenticated = false; state.phone = ""; state.code = ""; go("auth.phone"); toast("Signed out"); },
   "calendar.open":     function ()   { go("calendar"); },
   "calendar.prev":     function ()   { calShift(-1); },
   "calendar.next":     function ()   { calShift(1); },
   "ui.retry":          function ()   { setState({ view: "ready" }); },
-  "ui.toggleMode":     function ()   { setState({ mode: state.mode === "Dark" ? "Light" : "Dark" }); },
+  "ui.toggleMode":     function ()   { state.userModeOverridden = true; setState({ mode: state.mode === "Dark" ? "Light" : "Dark" }); },
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav }); },
   "theme.pick":        function (id) { pickTheme(id); }
 };
@@ -99,7 +101,13 @@ export function failCommand(name) {
 
 export function setState(patch) { Object.assign(state, patch); render(); }
 
-export function go(route) { state.route = route; state.mobileNav = false; render(); }
+export function go(route) {
+  var resolved = resolveRoute(route);
+  state.route = resolved.id;
+  state.mobileNav = false;
+  writeRouteToLocation(resolved.id);
+  render();
+}
 
 export function openOrder(id) { state.currentOrderId = id; state.route = "order.detail"; state.view = "ready"; state.mobileNav = false; render(); }
 
@@ -131,7 +139,15 @@ export function pickThemeResetCart() { state.cartItems = []; state.prodCat = "al
 
 /* active portal profile (config-driven by vertical) */
 
-export function signIn() { state.authError = null; state.code = ""; go("orders.list"); toast("Signed in \u2014 welcome to Aircove"); }
+export function signIn() {
+  var nextRoute = state.session.intendedRoute || "orders.list";
+  state.session.authenticated = true;
+  state.session.intendedRoute = null;
+  state.authError = null;
+  state.code = "";
+  go(nextRoute);
+  toast("Signed in");
+}
 
 export function validatePhone() {
   var digits = (state.phone || "").replace(/\D/g, "");
@@ -186,10 +202,17 @@ export function decideSite(status) {
 /* derive per-visit + season pricing from Beam AI measured area */
 
 export function pickTheme(name) {
-  state.theme = name;
-  state.orders = F.ordersFor(name);
+  var slug = normalizeVertical(name);
+  var profile = verticalProfiles[slug];
+  state.config.vertical = slug;
+  state.config.profile = profile.profile;
+  state.theme = profile.displayName;
+  state.orders = F.ordersFor(profile.displayName);
   state.filter = "all";
   pickThemeResetCart();
+  var resolved = resolveRoute(state.route);
+  state.route = resolved.id;
+  writeRouteToLocation(resolved.id);
   render();
 }
 

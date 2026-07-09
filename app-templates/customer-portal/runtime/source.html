@@ -23,7 +23,15 @@
 </head>
 <body>
   <!-- Single mount point. src/app.js builds the AppShell into #app. -->
-  <div id="app"></div>
+  <section
+    id="app"
+    data-portal-vertical="hvac"
+    data-portal-profile="onDemand"
+    data-portal-theme="hvac"
+    data-portal-default-mode="light"
+    data-portal-router-mode="hash"
+    data-portal-auth-mode="fixture"
+  ></section>
 
   <!-- Modular ES-module runtime. Serve over HTTP (no file:// double-click). -->
   <script type="module" src="src/app.js"></script>

@@ -106,8 +106,45 @@ try {
   }
 
   await page.evaluate(() => {
+    window.AircovePortal.go("__missing__");
+  });
+  await page.waitForSelector('[data-route="orders.list"]', { timeout: 2000 });
+
+  await page.evaluate(() => {
+    window.AircovePortal.state.session.authenticated = false;
+    window.AircovePortal.go("products");
+  });
+  await page.waitForSelector('[data-route="auth.phone"]', { timeout: 2000 });
+  const intendedRoute = await page.evaluate(() => window.AircovePortal.state.session.intendedRoute);
+  if (intendedRoute !== "products") {
+    throw new Error(`Expected intendedRoute products, got ${intendedRoute}`);
+  }
+  await page.evaluate(() => {
+    window.AircovePortal.state.session.authenticated = true;
+    window.AircovePortal.state.session.intendedRoute = null;
+  });
+
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["ui.toggleMode"]();
+    window.AircovePortal.go("orders.list");
+  });
+  const modeAfterToggle = await page.locator("html").evaluate((html) => html.getAttribute("data-mode"));
+  if (modeAfterToggle !== "dark") {
+    throw new Error(`Expected data-mode dark after user toggle, got ${modeAfterToggle}`);
+  }
+
+  await page.evaluate(() => {
     window.AircovePortal.ACTIONS["theme.pick"]("Snow Removal");
     window.AircovePortal.go("orders.list");
+  });
+  const themeAfterPick = await page.locator("html").evaluate((html) => html.getAttribute("data-theme"));
+  if (themeAfterPick !== "snow") {
+    throw new Error(`Expected data-theme snow after Snow Removal pick, got ${themeAfterPick}`);
+  }
+  await page.waitForSelector('[data-route="orders.list"][data-visual-id="storm-home"]', { timeout: 2000 });
+
+  await page.evaluate(() => {
+    window.AircovePortal.go("products");
   });
   await page.waitForSelector('[data-route="orders.list"][data-visual-id="storm-home"]', { timeout: 2000 });
 

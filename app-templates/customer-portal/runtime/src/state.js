@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/state.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { clear } from "./dom.js";
-import { ACTIONS } from "./actions.js";
+import { routeRegistry, verticalProfiles } from "./config.js";
 
 export var state = {
   route: "orders.list",
@@ -26,6 +25,15 @@ export var state = {
   phone: "",
   code: "",
   authError: null,
+  session: { authenticated: true, intendedRoute: null },
+  config: {
+    vertical: "hvac",
+    profile: "onDemand",
+    routerMode: "hash",
+    authMode: "fixture",
+    defaultMode: "light",
+  },
+  userModeOverridden: false,
   mobileNav: false,
   drawer: null,      // null | "booking"
   orders: F.ordersFor("HVAC")
@@ -49,9 +57,38 @@ export function findProduct(name) {
   return v.products.find(function (p) { return p.name === name; });
 }
 
-export function activeProfile() { return F.profiles[F.profileFor[state.theme] || "onDemand"]; }
+export function activeVerticalConfig() { return verticalProfiles[state.config.vertical] || verticalProfiles.hvac; }
 
-export function isPublic() { return state.route === "landing" || state.route === "auth.phone" || state.route === "auth.code"; }
+export function activeProfile() {
+  var config = activeVerticalConfig();
+  return F.profiles[config.profile] || F.profiles.onDemand;
+}
+
+export function isPublic(routeId) {
+  var route = routeRegistry[routeId || state.route];
+  return !!(route && route.public);
+}
+
+export function isModuleEnabled(moduleId) {
+  if (!moduleId || moduleId === "auth" || moduleId === "landing") return true;
+  return activeVerticalConfig().modules.includes(moduleId);
+}
+
+export function applyPortalConfig(config) {
+  var vertical = verticalProfiles[config.vertical] ? config.vertical : "hvac";
+  var verticalConfig = verticalProfiles[vertical];
+  state.config = Object.assign({}, state.config, config, {
+    vertical: vertical,
+    profile: verticalConfig.profile,
+  });
+  state.theme = verticalConfig.displayName;
+  state.orders = F.ordersFor(verticalConfig.displayName);
+  state.filter = "all";
+  state.cartItems = [];
+  if (!state.userModeOverridden) {
+    state.mode = state.config.defaultMode === "dark" ? "Dark" : "Light";
+  }
+}
 
 export function buildCalendarGrid(year, month) {
   var first = new Date(year, month, 1);

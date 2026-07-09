@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
-import { state } from "./state.js";
-import { go } from "./actions.js";
+import { activeVerticalConfig, isModuleEnabled, isPublic, state } from "./state.js";
+import { routeByPath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
 import { OrderDetail } from "./routes/OrderDetailPage.js";
@@ -28,8 +28,66 @@ export function ComingSoon(routeId, wave) {
   ]);
 }
 
+export function resolveRoute(routeId) {
+  var requested = routeRegistry[routeId] ? routeId : null;
+  var activeRoute = requested ? routeRegistry[requested] : null;
+  var defaultRoute = activeVerticalConfig().defaultRoute;
+
+  if (!activeRoute) return { id: defaultRoute, reason: "unknown" };
+
+  if (!isPublic(requested) && !state.session.authenticated) {
+    state.session.intendedRoute = requested;
+    return { id: "auth.phone", reason: "unauthorized" };
+  }
+
+  if (!isModuleEnabled(activeRoute.module)) {
+    return { id: defaultRoute, reason: "disabled" };
+  }
+
+  return { id: requested, reason: null };
+}
+
+export function routeFromLocation() {
+  if (state.config.routerMode === "memory") return state.route;
+  if (state.config.routerMode === "history") return routeByPath(window.location.pathname) || state.route;
+  var hash = window.location.hash.replace(/^#/, "");
+  if (!hash) return state.route;
+  if (hash.charAt(0) === "/") return routeByPath(hash) || state.route;
+  return hash;
+}
+
+export function writeRouteToLocation(routeId) {
+  if (state.config.routerMode === "memory") return;
+  var path = routePath(routeId);
+  if (state.config.routerMode === "history") {
+    if (window.location.pathname !== path) window.history.pushState({}, "", path);
+    return;
+  }
+  var nextHash = "#" + path;
+  if (window.location.hash !== nextHash) window.history.pushState({}, "", nextHash);
+}
+
+export function initRouter(onRouteChange) {
+  var applyLocation = function () {
+    var resolved = resolveRoute(routeFromLocation());
+    state.route = resolved.id;
+    onRouteChange();
+  };
+  if (state.config.routerMode === "history") {
+    window.addEventListener("popstate", applyLocation);
+  } else if (state.config.routerMode === "hash") {
+    window.addEventListener("hashchange", applyLocation);
+  }
+  var initial = resolveRoute(routeFromLocation());
+  state.route = initial.id;
+  writeRouteToLocation(initial.id);
+}
+
 export function renderRoute() {
-  switch (state.route) {
+  var resolved = resolveRoute(state.route);
+  if (resolved.id !== state.route) state.route = resolved.id;
+
+  switch (resolved.id) {
     case "orders.list": return Cabinet();
     case "order.detail": return OrderDetail();
     case "services":    return Services();
@@ -45,8 +103,19 @@ export function renderRoute() {
     case "landing":     return Landing();
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
-    default:            return Cabinet();
+    default:            return RouteFallback(resolved.reason);
   }
+}
+
+function RouteFallback(reason) {
+  return h("section", { "class": "page", "data-route": state.route, "data-visual-id": "route-fallback", "data-state": reason || "error" }, [
+    EmptyState({
+      glyph: "!",
+      title: "Route unavailable",
+      desc: "This route is not enabled for the current portal profile.",
+      action: { variant: "btn--ghost", label: "Back to home", action: "nav.go", id: "orders.list" }
+    })
+  ]);
 }
 
 /* =========================================================
