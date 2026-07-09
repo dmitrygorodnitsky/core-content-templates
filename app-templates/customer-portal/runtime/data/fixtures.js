@@ -382,7 +382,7 @@
     var v = themes[themeName] || themes["Snow Removal"];
     var s0 = v.svc[0].name, s1 = v.svc[1].name;
     return {
-      contract: { rule: "Auto-dispatch after 2\u2033 snowfall", note: v.wt.sla },
+      contract: { rule: "Auto-dispatch by weather trigger", note: v.wt.sla },
       accessNotes: [
         { label: "Gate code", value: "4417" },
         { label: "Driveway", value: "Do not block \u2014 car parked on the left" },
@@ -393,7 +393,7 @@
           { type: s0, status: "completed", time: "7:38 AM", photos: true },
           { type: s1, status: "completed", time: "8:51 AM" }
         ] },
-        { date: "Wed", dateSub: "Jan 14", weather: { state: "clear", label: "Clear \u00b7 no accumulation", temp: "\u22121\u00b0C" }, events: [
+        { date: "Wed", dateSub: "Jan 14", weather: { state: "clear", label: "Clear \u00b7 below service trigger", temp: "\u22121\u00b0C" }, events: [
           { type: s0, status: "skipped", note: "Below trigger \u2014 visit not required" }
         ] },
         { date: "Today", dateSub: "Jan 15", today: true, weather: { state: "watch", label: "Storm watch \u2014 service likely tonight", temp: "\u22126\u00b0C" }, events: [
@@ -403,7 +403,7 @@
           { type: s0, status: "scheduled", trigger: true },
           { type: s1, status: "scheduled", trigger: true }
         ] },
-        { date: "Sat", dateSub: "Jan 18", weather: { state: "expected", label: "Light snow possible", temp: "\u22123\u00b0C" }, events: [
+        { date: "Sat", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "\u22123\u00b0C" }, events: [
           { type: s1, status: "delayed", note: "Rescheduled from Fri \u2014 crew capacity" }
         ] }
       ]

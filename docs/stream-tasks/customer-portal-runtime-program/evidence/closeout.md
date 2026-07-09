@@ -25,6 +25,7 @@ and generated CMS preview.
 - `app-templates/customer-portal/cms/root-template.html`
 - `app-templates/customer-portal/dist/customer-portal-preview.html`
 - `app-templates/customer-portal/scripts/route-smoke.mjs`
+- `app-templates/customer-portal/scripts/config-behavior-check.mjs`
 - `app-templates/customer-portal/scripts/pim-adapter-check.mjs`
 - `app-templates/customer-portal/scripts/export-cms.mjs`
 
@@ -36,6 +37,7 @@ and generated CMS preview.
 - `446f5e2` — Add customer portal fixture runtime modules
 - `a2e5f6b` — Add customer portal PIM live adapter
 - `c97b046` — Add customer portal CMS export package
+- `85e9be4` — Close customer portal runtime program
 
 ## Behavioral Proof
 
@@ -45,6 +47,8 @@ and generated CMS preview.
   order detail.
 - HVAC/onDemand proves month calendar and commerce routes.
 - Unknown, disabled, and unauthenticated route paths resolve deliberately.
+- CMS-authored `portal_auth_mode`, `portal_default_route`,
+  `portal_enabled_modules`, and `portal_error_mode` change runtime behavior.
 - User light/dark toggle is preserved across re-render.
 - All opened modules load normalized fixture data into `state.moduleData`.
 - Command assertions cover proposal, weather, access, service request, support,

@@ -228,8 +228,9 @@ Out of scope:
   are documented in block metadata. Validation: `jq empty` on CMS JSON,
   `export-cms.mjs`, duplicate parameter guard, generated preview route smoke,
   runtime route smoke, and `git diff --check`.
-- 2026-07-09: S6 completed locally. Added `audits/A1.md` and
-  `evidence/closeout.md`. Full closeout validation passed; residuals recorded:
+- 2026-07-09: S6 committed in `85e9be4` (`Close customer portal runtime
+  program`). Added `audits/A1.md` and `evidence/closeout.md`. Full closeout
+  validation passed; residuals recorded:
   non-PIM live adapters remain `not_opened` pending endpoint contracts, no CMS
   upload performed, no repo-level prod compile command found, browser smoke uses
   system Chrome because bundled Chromium is unavailable.

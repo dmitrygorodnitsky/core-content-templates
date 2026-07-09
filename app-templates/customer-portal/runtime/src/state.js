@@ -39,6 +39,9 @@ export var state = {
     profile: "onDemand",
     routerMode: "hash",
     authMode: "fixture",
+    defaultRoute: "orders.list",
+    enabledModules: verticalProfiles.hvac.modules.slice(),
+    errorMode: "error",
     dataMode: "fixture",
     defaultMode: "light",
   },
@@ -89,7 +92,7 @@ export function isPublic(routeId) {
 
 export function isModuleEnabled(moduleId) {
   if (!moduleId || moduleId === "auth" || moduleId === "landing") return true;
-  return activeVerticalConfig().modules.includes(moduleId);
+  return state.config.enabledModules.includes(moduleId);
 }
 
 export function applyPortalConfig(config) {
@@ -98,7 +101,11 @@ export function applyPortalConfig(config) {
   state.config = Object.assign({}, state.config, config, {
     vertical: vertical,
     profile: verticalConfig.profile,
+    defaultRoute: config.defaultRoute || verticalConfig.defaultRoute,
+    enabledModules: config.enabledModules && config.enabledModules.length ? config.enabledModules : verticalConfig.modules.slice(),
   });
+  state.session.authenticated = state.config.authMode !== "required";
+  state.session.intendedRoute = null;
   state.theme = verticalConfig.displayName;
   state.orders = F.ordersFor(verticalConfig.displayName);
   state.filter = "all";

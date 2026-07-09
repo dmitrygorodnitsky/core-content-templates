@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initRouter(render);
   bindActions(mount);
   loaded.then(render).catch(function (error) {
-    state.view = "error";
+    state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
     console.error("[aircove] runtime load failed", error);
     render();
   });

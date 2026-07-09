@@ -20,7 +20,7 @@ export function StormHome() {
 
   page.appendChild(PageHeader({
     title: F.customer.greeting,
-    sub: today.weather.state === "watch" ? "Storm watch tonight \u00b7 " + (accessDay ? "1 visit needs your OK" : "crew on the way") : "Your winter service is on track"
+    sub: today.weather.state === "watch" ? "Weather watch tonight \u00b7 " + (accessDay ? "1 visit needs your OK" : "crew on the way") : "Your service plan is on track"
   }));
 
   if (state.view === "error") { page.appendChild(ErrorState({})); return page; }
@@ -90,7 +90,7 @@ export function StormHome() {
       h("span", { "class": "status-badge status-badge--ok" }, "Active")
     ]),
     seasonRow("Visits this season", "8"),
-    seasonRow("Auto-dispatch", "after 2\u2033 snow"),
+    seasonRow("Auto-dispatch", "weather trigger"),
     seasonRow("Saved this season", F.customer.stats.savings, "var(--ok)"),
     h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Manage plan", action: "profile.managePlan", block: true, visualId: "home-manage-plan" }))
   ]));

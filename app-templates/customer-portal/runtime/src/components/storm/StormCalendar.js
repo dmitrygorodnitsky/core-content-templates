@@ -15,14 +15,14 @@ export function stormChip(status) {
   var m = map[status] || map.scheduled;
   return h("span", { "class": "status-badge " + m[0], "data-module": "status-badge", "data-bind": "event.status", "data-state": status }, m[1]);
 }
-var stormWeatherLabel = { served: "Storm served", clear: "Clear", watch: "Storm watch", expected: "Snow expected" };
+var stormWeatherLabel = { served: "Storm served", clear: "Clear", watch: "Storm watch", expected: "Weather expected" };
 
 export function StormCalendar() {
   var cal = F.stormCalendar(state.theme);
   var page = h("section", { "class": "page page--narrow", "data-route": "calendar", "data-visual-id": "storm-calendar" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "Calendar"),
-    h("div", { "class": "section-head__sub" }, "Your winter service, by date and weather \u2014 what\u2019s scheduled, what the storm triggers, and what needs you.")
+    h("div", { "class": "section-head__sub" }, "Your service plan, by date and weather \u2014 what\u2019s scheduled, what triggers service, and what needs you.")
   ]));
 
   /* contract trigger banner */
@@ -62,7 +62,7 @@ export function StormCalendar() {
         h("div", { "class": "storm-event__body" }, [
           h("div", { style: "display:flex;align-items:center;gap:8px;flex-wrap:wrap" }, [
             h("span", { style: "font-weight:600;font-size:14px", "data-bind": "event.type" }, ev.type),
-            ev.trigger ? h("span", { "class": "trigger-tag" }, "\u26a1 auto after 2\u2033") : null
+            ev.trigger ? h("span", { "class": "trigger-tag" }, "\u26a1 auto by trigger") : null
           ]),
           meta ? h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px" }, meta) : null
         ]),

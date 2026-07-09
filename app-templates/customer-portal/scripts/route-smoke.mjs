@@ -163,6 +163,20 @@ try {
   await page.waitForSelector('[data-visual-id="weather-card"]', { timeout: 2000 });
 
   await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["theme.pick"]("Lawn & Garden");
+    window.AircovePortal.go("orders.list");
+  });
+  await page.waitForSelector('[data-route="orders.list"][data-visual-id="storm-home"]', { timeout: 2000 });
+  const lawnHomeText = await page.locator('[data-visual-id="storm-home"]').innerText();
+  assertNoSharedSnowCopy(lawnHomeText, "lawn storm home");
+  await page.evaluate(() => {
+    window.AircovePortal.go("calendar");
+  });
+  await page.waitForSelector('[data-route="calendar"][data-visual-id="storm-calendar"]', { timeout: 2000 });
+  const lawnCalendarText = await page.locator('[data-visual-id="storm-calendar"]').innerText();
+  assertNoSharedSnowCopy(lawnCalendarText, "lawn storm calendar");
+
+  await page.evaluate(() => {
     const expectedModules = [
       "auth",
       "orders",
@@ -191,6 +205,11 @@ try {
     window.AircovePortal.ACTIONS["weather.confirm"](weatherOrder.id);
     const updated = window.AircovePortal.state.orders.find((order) => order.id === weatherOrder.id);
     if (updated.wt.status !== "confirmed") throw new Error("weather.confirm did not update fixture state");
+    window.AircovePortal.ACTIONS["weather.confirm"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["weather.confirm:__missing__"]) throw new Error("weather.confirm invalid-id error missing");
+
+    window.AircovePortal.ACTIONS["order.cancel"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["order.cancel:__missing__"]) throw new Error("order.cancel invalid-id error missing");
 
     window.AircovePortal.ACTIONS["access.confirm"]("gate");
     if (!window.AircovePortal.state.accessConfirmations.gate) throw new Error("access.confirm did not update fixture state");
@@ -224,6 +243,45 @@ try {
     const site = window.AircovePortal.state.psites.find((item) => item.id === "s2");
     if (site.status !== "revision") throw new Error("proposal.requestRevision did not update fixture state");
   });
+
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["theme.pick"]("HVAC");
+    window.AircovePortal.state.config.dataMode = "live";
+    window.AircovePortal.state.moduleData.pricing = {
+      source: "core-pim",
+      plans: [{
+        id: "audit-live-plan",
+        code: "AUDIT_LIVE_PLAN",
+        name: "Audit Live Plan",
+        description: "Live plan rendered from normalized Core PIM state.",
+        price: "$123",
+        interval: "1 Month",
+        cta: "Choose live plan",
+        allowedActions: ["cart.addItem"],
+      }],
+    };
+    window.AircovePortal.state.moduleData.products = {
+      source: "core-pim",
+      categories: [],
+      items: [{
+        id: "audit-live-product",
+        code: "AUDIT_LIVE_PRODUCT",
+        name: "Audit Live Product",
+        description: "Live product rendered from normalized Core PIM state.",
+        price: "$45",
+        priceNum: 45,
+        interval: "1 Month",
+        cta: "Choose live product",
+        allowedActions: ["cart.addItem"],
+      }],
+    };
+    window.AircovePortal.go("pricing");
+  });
+  await page.waitForFunction(() => document.body.innerText.includes("Audit Live Plan"), { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.go("products");
+  });
+  await page.waitForFunction(() => document.body.innerText.includes("Audit Live Product"), { timeout: 2000 });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
@@ -235,3 +293,13 @@ if (failures.length) {
 }
 
 console.log(`route-smoke ok: ${root}`);
+
+function assertNoSharedSnowCopy(text, label) {
+  const normalized = text.toLowerCase();
+  const blocked = ["snow", "winter", "snowfall", "accumulation", "after 2"];
+  for (const term of blocked) {
+    if (normalized.includes(term)) {
+      throw new Error(`${label} leaked shared snow copy: ${term}`);
+    }
+  }
+}

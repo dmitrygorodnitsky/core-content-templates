@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { findProduct, state } from "./state.js";
+import { findProduct, proposalSites, state } from "./state.js";
 import { render } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
@@ -130,6 +130,9 @@ export function go(route) {
 export function openOrder(id) { state.currentOrderId = id; state.route = "order.detail"; state.view = "ready"; state.mobileNav = false; render(); }
 
 export function cancelOrder(id) {
+  var order = state.orders.find(function (o) { return o.id === id; });
+  if (!order) throw new Error("Order not found");
+  if (order.status === "completed" || order.status === "cancelled") throw new Error("Order cannot be cancelled");
   state.orders = state.orders.map(function (o) { return o.id === id ? Object.assign({}, o, { status: "cancelled" }) : o; });
   render();
   toast("Visit " + id + " cancelled");
@@ -138,7 +141,8 @@ export function cancelOrder(id) {
 export function setCart(items) { state.cartItems = items; render(); }
 
 export function addToCart(name) {
-  var p = findProduct(name); if (!p) return;
+  var p = findProduct(name);
+  if (!p) throw new Error("Product not found");
   var existing = state.cartItems.find(function (x) { return x.name === name; });
   if (existing) state.cartItems = state.cartItems.map(function (x) { return x.name === name ? Object.assign({}, x, { qty: x.qty + 1 }) : x; });
   else state.cartItems = state.cartItems.concat([Object.assign({}, p, { qty: 1 })]);
@@ -146,6 +150,7 @@ export function addToCart(name) {
 }
 
 export function changeQty(name, delta) {
+  if (!state.cartItems.some(function (x) { return x.name === name; })) throw new Error("Cart item not found");
   state.cartItems = state.cartItems
     .map(function (x) { return x.name === name ? Object.assign({}, x, { qty: x.qty + delta }) : x; })
     .filter(function (x) { return x.qty > 0; });
@@ -236,18 +241,23 @@ export function placeFixtureOrder() {
 }
 
 export function openProposal(id) {
+  if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
   state.currentSiteId = id;
   state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
   state.route = "proposal.detail"; state.mobileNav = false; render();
 }
 
 export function selectPlan(planId) {
+  if (!planId) throw new Error("Plan is required");
+  if (!proposalSites().some(function (p) { return p.id === state.currentSiteId; })) throw new Error("Proposal not found");
   state.psites = state.psites.map(function (p) { return p.id === state.currentSiteId ? Object.assign({}, p, { selected: planId }) : p; });
   render();
 }
 
 export function decideSite(status) {
+  if (["approved", "revision", "declined"].indexOf(status) === -1) throw new Error("Unsupported proposal status");
   var id = state.currentSiteId;
+  if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
   state.psites = state.psites.map(function (p) { return p.id === id ? Object.assign({}, p, { status: status }) : p; });
   go("proposals.list");
   toast(status === "approved" ? "Plan approved in fixture state" : status === "revision" ? "Revision requested in fixture state" : "Proposal declined in fixture state");
@@ -259,6 +269,8 @@ export function pickTheme(name) {
   var profile = verticalProfiles[slug];
   state.config.vertical = slug;
   state.config.profile = profile.profile;
+  state.config.defaultRoute = profile.defaultRoute;
+  state.config.enabledModules = profile.modules.slice();
   state.theme = profile.displayName;
   state.orders = F.ordersFor(profile.displayName);
   state.filter = "all";
@@ -270,6 +282,9 @@ export function pickTheme(name) {
 }
 
 export function confirmWeather(id, decision) {
+  if (["confirmed", "declined"].indexOf(decision) === -1) throw new Error("Unsupported weather decision");
+  var order = state.orders.find(function (o) { return o.id === id && o.wt; });
+  if (!order) throw new Error("Weather-triggered order not found");
   state.orders = state.orders.map(function (o) {
     if (o.id === id && o.wt) return Object.assign({}, o, { wt: Object.assign({}, o.wt, { status: decision }) });
     return o;

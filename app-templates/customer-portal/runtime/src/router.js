@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
-import { activeVerticalConfig, isModuleEnabled, isPublic, state } from "./state.js";
+import { isModuleEnabled, isPublic, state } from "./state.js";
 import { routeByPath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
@@ -31,7 +31,7 @@ export function ComingSoon(routeId, wave) {
 export function resolveRoute(routeId) {
   var requested = routeRegistry[routeId] ? routeId : null;
   var activeRoute = requested ? routeRegistry[requested] : null;
-  var defaultRoute = activeVerticalConfig().defaultRoute;
+  var defaultRoute = routeRegistry[state.config.defaultRoute] ? state.config.defaultRoute : "orders.list";
 
   if (!activeRoute) return { id: defaultRoute, reason: "unknown" };
 
@@ -86,6 +86,7 @@ export function initRouter(onRouteChange) {
 export function renderRoute() {
   var resolved = resolveRoute(state.route);
   if (resolved.id !== state.route) state.route = resolved.id;
+  if (state.view === "fallback") return RouteFallback("fallback");
 
   switch (resolved.id) {
     case "orders.list": return Cabinet();

@@ -83,12 +83,16 @@ export function readPortalConfig(root) {
   var dataset = root ? root.dataset : {};
   var vertical = normalizeVertical(dataset.portalVertical || dataset.portalTheme);
   var profile = verticalProfiles[vertical];
+  var enabledModules = splitList(dataset.portalEnabledModules);
   return {
     vertical: vertical,
     theme: dataset.portalTheme || vertical,
     profile: dataset.portalProfile || profile.profile,
     routerMode: dataset.portalRouterMode || "hash",
     authMode: dataset.portalAuthMode || "fixture",
+    defaultRoute: dataset.portalDefaultRoute || profile.defaultRoute,
+    enabledModules: enabledModules.length ? enabledModules : profile.modules.slice(),
+    errorMode: dataset.portalErrorMode || "error",
     dataMode: dataset.portalDataMode || "fixture",
     pimFixtureUrl: dataset.portalPimFixtureUrl || "",
     pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
@@ -101,4 +105,11 @@ export function readPortalConfig(root) {
 
 export function routePath(routeId) {
   return routeRegistry[routeId] ? routeRegistry[routeId].path : "/";
+}
+
+function splitList(value) {
+  return String(value || "")
+    .split(",")
+    .map(function (item) { return item.trim(); })
+    .filter(Boolean);
 }
