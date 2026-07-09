@@ -37,6 +37,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 
 const root = path.resolve(args.get("root") || "app-templates/customer-portal/runtime");
 const entry = "/" + (args.get("entry") || "source.html").replace(/^\/+/, "");
+const pimFixturePath = path.resolve("docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json");
 const allowDevToolbar = args.get("allow-dev-toolbar") === "true";
 const playwrightNodeModules = process.env.PLAYWRIGHT_NODE_MODULES;
 const requireFrom = playwrightNodeModules
@@ -56,6 +57,17 @@ function contentType(filePath) {
 async function startServer() {
   const server = http.createServer(async (req, res) => {
     const url = new URL(req.url || "/", "http://127.0.0.1");
+    if (url.pathname === "/__fixtures__/core-pim-saas.json") {
+      try {
+        const body = await fs.readFile(pimFixturePath);
+        res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
+        res.end(body);
+      } catch {
+        res.writeHead(404);
+        res.end("Not found");
+      }
+      return;
+    }
     const relative = url.pathname === "/" ? entry : url.pathname;
     const filePath = path.resolve(root, `.${decodeURIComponent(relative)}`);
     if (!filePath.startsWith(root)) {
@@ -211,8 +223,12 @@ try {
     window.AircovePortal.ACTIONS["order.cancel"]("__missing__");
     if (!window.AircovePortal.state.commandErrors["order.cancel:__missing__"]) throw new Error("order.cancel invalid-id error missing");
 
-    window.AircovePortal.ACTIONS["access.confirm"]("gate");
-    if (!window.AircovePortal.state.accessConfirmations.gate) throw new Error("access.confirm did not update fixture state");
+    const accessDay = window.AircoveFixtures.stormCalendar(window.AircovePortal.state.theme).days.find((day) => day.needsAccess);
+    if (!accessDay) throw new Error("No access-confirmation fixture day");
+    window.AircovePortal.ACTIONS["access.confirm"](accessDay.dateSub);
+    if (!window.AircovePortal.state.accessConfirmations[accessDay.dateSub]) throw new Error("access.confirm did not update fixture state");
+    window.AircovePortal.ACTIONS["access.confirm"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["access.confirm:__missing__"]) throw new Error("access.confirm invalid-id error missing");
 
     window.AircovePortal.ACTIONS["service.requestExtra"]("extra-service");
     if (!window.AircovePortal.state.serviceRequests.length) throw new Error("service.requestExtra did not update fixture state");
@@ -231,57 +247,56 @@ try {
     window.AircovePortal.ACTIONS["checkout.placeOrder"]();
     if (!window.AircovePortal.state.commandErrors["checkout.placeOrder:_"]) throw new Error("empty checkout error missing");
     window.AircovePortal.ACTIONS["theme.pick"]("HVAC");
+    window.AircovePortal.ACTIONS["checkout.pickAddress"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["checkout.pickAddress:__missing__"]) throw new Error("checkout.pickAddress invalid-id error missing");
+    window.AircovePortal.ACTIONS["checkout.pickPayment"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["checkout.pickPayment:__missing__"]) throw new Error("checkout.pickPayment invalid-id error missing");
+    window.AircovePortal.ACTIONS["profile.setDefaultAddress"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["profile.setDefaultAddress:__missing__"]) throw new Error("profile.setDefaultAddress invalid-id error missing");
+    window.AircovePortal.ACTIONS["profile.setDefaultPayment"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["profile.setDefaultPayment:__missing__"]) throw new Error("profile.setDefaultPayment invalid-id error missing");
+    window.AircovePortal.ACTIONS["profile.togglePref"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["profile.togglePref:__missing__"]) throw new Error("profile.togglePref invalid-id error missing");
+
     const product = window.AircovePortal.state.moduleData.products.items[0];
     window.AircovePortal.ACTIONS["cart.addItem"](product.name);
+    window.AircovePortal.ACTIONS["cart.removeItem"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["cart.removeItem:__missing__"]) throw new Error("cart.removeItem invalid-id error missing");
     window.AircovePortal.ACTIONS["checkout.placeOrder"]();
     if (!window.AircovePortal.state.orders.some((order) => order.id === "FX-001")) {
       throw new Error("checkout.placeOrder did not create fixture order");
     }
 
     window.AircovePortal.state.currentSiteId = "s2";
+    window.AircovePortal.ACTIONS["proposal.selectPlan"]("__missing__");
+    if (!window.AircovePortal.state.commandErrors["proposal.selectPlan:__missing__"]) throw new Error("proposal.selectPlan invalid-id error missing");
+    window.AircovePortal.ACTIONS["proposal.selectPlan"]("899");
+    const selectedSite = window.AircovePortal.state.psites.find((item) => item.id === "s2");
+    if (selectedSite.selected !== "899") throw new Error("proposal.selectPlan did not update fixture state");
     window.AircovePortal.ACTIONS["proposal.requestRevision"]();
     const site = window.AircovePortal.state.psites.find((item) => item.id === "s2");
     if (site.status !== "revision") throw new Error("proposal.requestRevision did not update fixture state");
   });
 
-  await page.evaluate(() => {
+  const liveCatalogNames = await page.evaluate(async () => {
     window.AircovePortal.ACTIONS["theme.pick"]("HVAC");
     window.AircovePortal.state.config.dataMode = "live";
-    window.AircovePortal.state.moduleData.pricing = {
-      source: "core-pim",
-      plans: [{
-        id: "audit-live-plan",
-        code: "AUDIT_LIVE_PLAN",
-        name: "Audit Live Plan",
-        description: "Live plan rendered from normalized Core PIM state.",
-        price: "$123",
-        interval: "1 Month",
-        cta: "Choose live plan",
-        allowedActions: ["cart.addItem"],
-      }],
-    };
-    window.AircovePortal.state.moduleData.products = {
-      source: "core-pim",
-      categories: [],
-      items: [{
-        id: "audit-live-product",
-        code: "AUDIT_LIVE_PRODUCT",
-        name: "Audit Live Product",
-        description: "Live product rendered from normalized Core PIM state.",
-        price: "$45",
-        priceNum: 45,
-        interval: "1 Month",
-        cta: "Choose live product",
-        allowedActions: ["cart.addItem"],
-      }],
-    };
+    window.AircovePortal.state.config.pimFixtureUrl = "/__fixtures__/core-pim-saas.json";
+    const runtime = window.AircovePortal.runtime();
+    await runtime.loadAsync("pricing");
+    await runtime.loadAsync("products");
+    if (window.AircovePortal.state.moduleData.pricing.source !== "core-pim") throw new Error("pricing did not load from Core PIM adapter");
+    if (window.AircovePortal.state.moduleData.products.source !== "core-pim") throw new Error("products did not load from Core PIM adapter");
+    const planName = window.AircovePortal.state.moduleData.pricing.plans[0].name;
+    const productName = window.AircovePortal.state.moduleData.products.items[0].name;
     window.AircovePortal.go("pricing");
+    return { planName, productName };
   });
-  await page.waitForFunction(() => document.body.innerText.includes("Audit Live Plan"), { timeout: 2000 });
+  await page.waitForFunction((name) => document.body.innerText.includes(name), liveCatalogNames.planName, { timeout: 2000 });
   await page.evaluate(() => {
     window.AircovePortal.go("products");
   });
-  await page.waitForFunction(() => document.body.innerText.includes("Audit Live Product"), { timeout: 2000 });
+  await page.waitForFunction((name) => document.body.innerText.includes(name), liveCatalogNames.productName, { timeout: 2000 });
 } finally {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));

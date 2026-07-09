@@ -26,7 +26,7 @@ export var ACTIONS = {
   "booking.confirm":   function ()   { closeDrawer(); failCommand("booking.confirm"); },
   "proposal.review":   function ()   { go("proposals.list"); },
   "proposal.open":     function (id) { openProposal(id); },
-  "proposal.selectPlan": function (id) { selectPlan(id); },
+  "proposal.selectPlan": function (id) { runCommand("proposal.selectPlan", id, function () { selectPlan(id); }); },
   "proposal.approve":  function ()   { runCommand("proposal.approve", state.currentSiteId, function () { decideSite("approved"); }); },
   "proposal.requestRevision": function () { runCommand("proposal.requestRevision", state.currentSiteId, function () { decideSite("revision"); }); },
   "proposal.decline":  function ()   { runCommand("proposal.decline", state.currentSiteId, function () { decideSite("declined"); }); },
@@ -46,12 +46,12 @@ export var ACTIONS = {
   "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
   "access.update":     function ()   { failCommand("access.update"); },
   "cart.addItem":      function (id) { runCommand("cart.addItem", id, function () { addToCart(id); }); },
-  "cart.removeItem":   function (id) { runCommand("cart.removeItem", id, function () { setCart(state.cartItems.filter(function (x) { return x.name !== id; })); }); },
+  "cart.removeItem":   function (id) { runCommand("cart.removeItem", id, function () { removeCartItem(id); }); },
   "cart.inc":          function (id) { runCommand("cart.inc", id, function () { changeQty(id, 1); }); },
   "cart.dec":          function (id) { runCommand("cart.dec", id, function () { changeQty(id, -1); }); },
   "checkout.placeOrder": function () { runCommand("checkout.placeOrder", null, placeFixtureOrder); },
-  "checkout.pickAddress": function (id) { runCommand("checkout.pickAddress", id, function () { setState({ addrId: id }); }); },
-  "checkout.pickPayment": function (id) { runCommand("checkout.pickPayment", id, function () { setState({ payId: id }); }); },
+  "checkout.pickAddress": function (id) { runCommand("checkout.pickAddress", id, function () { selectAddress(id); }); },
+  "checkout.pickPayment": function (id) { runCommand("checkout.pickPayment", id, function () { selectPayment(id); }); },
   "products.filter":   function (id) { setState({ prodCat: id }); },
   "activity.open":     function ()   { go("activity"); },
   "activity.markRead": function ()   { runCommand("activity.markRead", null, function () { state.activityReadAll = true; toast("Activity marked read in fixture state"); }); },
@@ -59,8 +59,8 @@ export var ACTIONS = {
   "activity.act":      function (id) { feedAction(id); },
   "profile.open":      function ()   { go("profile"); },
   "profile.filter":    function (id) { setState({ profileFilter: id }); },
-  "profile.setDefaultAddress": function (id) { runCommand("profile.setDefaultAddress", id, function () { setState({ addrId: id }); }); },
-  "profile.setDefaultPayment": function (id) { runCommand("profile.setDefaultPayment", id, function () { setState({ payId: id }); }); },
+  "profile.setDefaultAddress": function (id) { runCommand("profile.setDefaultAddress", id, function () { selectAddress(id); }); },
+  "profile.setDefaultPayment": function (id) { runCommand("profile.setDefaultPayment", id, function () { selectPayment(id); }); },
   "profile.addAddress": function ()  { failCommand("profile.addAddress"); },
   "profile.addCard":   function ()   { failCommand("profile.addCard"); },
   "profile.updateAddress": function () { failCommand("profile.updateAddress"); },
@@ -156,6 +156,21 @@ export function changeQty(name, delta) {
     .filter(function (x) { return x.qty > 0; });
   render();
 }
+
+export function removeCartItem(name) {
+  if (!state.cartItems.some(function (x) { return x.name === name; })) throw new Error("Cart item not found");
+  setCart(state.cartItems.filter(function (x) { return x.name !== name; }));
+}
+
+export function selectAddress(id) {
+  if (!F.addresses.some(function (address) { return address.id === id; })) throw new Error("Address not found");
+  setState({ addrId: id });
+}
+
+export function selectPayment(id) {
+  if (!F.cards.some(function (card) { return card.id === id; })) throw new Error("Payment method not found");
+  setState({ payId: id });
+}
 /* switching theme clears the (theme-specific) cart */
 
 export function pickThemeResetCart() { state.cartItems = []; state.prodCat = "all"; }
@@ -183,7 +198,10 @@ export function validateCode() {
   signIn();
 }
 
-export function togglePref(key) { state.prefs = Object.assign({}, state.prefs, { }); state.prefs[key] = !state.prefs[key]; render(); }
+export function togglePref(key) {
+  if (["receipts", "sms", "marketing"].indexOf(key) === -1) throw new Error("Preference not found");
+  state.prefs = Object.assign({}, state.prefs, { }); state.prefs[key] = !state.prefs[key]; render();
+}
 
 export function calShift(delta) {
   var m = state.calMonth + delta, y = state.calYear;
@@ -209,7 +227,9 @@ export function pushChat(text) {
 export function sendChat() { pushChat(state.chatInput); }
 
 export function confirmAccess(id) {
-  var key = id || "next";
+  var key = id || "";
+  var cal = F.stormCalendar(state.theme);
+  if (!cal.days.some(function (day) { return day.needsAccess && day.dateSub === key; })) throw new Error("Access confirmation target not found");
   state.accessConfirmations[key] = true;
   toast("Access confirmed in fixture state");
 }
@@ -250,6 +270,7 @@ export function openProposal(id) {
 export function selectPlan(planId) {
   if (!planId) throw new Error("Plan is required");
   if (!proposalSites().some(function (p) { return p.id === state.currentSiteId; })) throw new Error("Proposal not found");
+  if (["897", "898", "899"].indexOf(planId) === -1) throw new Error("Proposal plan not found");
   state.psites = state.psites.map(function (p) { return p.id === state.currentSiteId ? Object.assign({}, p, { selected: planId }) : p; });
   render();
 }

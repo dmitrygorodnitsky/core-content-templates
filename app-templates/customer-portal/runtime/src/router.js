@@ -31,7 +31,7 @@ export function ComingSoon(routeId, wave) {
 export function resolveRoute(routeId) {
   var requested = routeRegistry[routeId] ? routeId : null;
   var activeRoute = requested ? routeRegistry[requested] : null;
-  var defaultRoute = routeRegistry[state.config.defaultRoute] ? state.config.defaultRoute : "orders.list";
+  var defaultRoute = reachableDefaultRoute();
 
   if (!activeRoute) return { id: defaultRoute, reason: "unknown" };
 
@@ -45,6 +45,21 @@ export function resolveRoute(routeId) {
   }
 
   return { id: requested, reason: null };
+}
+
+function reachableDefaultRoute() {
+  if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
+  if (isRouteReachable("orders.list")) return "orders.list";
+
+  var enabledRoute = Object.values(routeRegistry).find(function (route) {
+    return !route.public && isModuleEnabled(route.module);
+  });
+  return enabledRoute ? enabledRoute.id : "landing";
+}
+
+function isRouteReachable(routeId) {
+  var route = routeRegistry[routeId];
+  return !!(route && (route.public || isModuleEnabled(route.module)));
 }
 
 export function routeFromLocation() {

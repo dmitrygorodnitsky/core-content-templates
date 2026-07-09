@@ -105,6 +105,25 @@ try {
   await guarded.waitForSelector('[data-route="support"]', { timeout: 2000 });
   await guarded.close();
 
+  const disabledDefault = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await withConfig(disabledDefault, {
+    portalDefaultRoute: "pricing",
+    portalEnabledModules: "support",
+    portalVertical: "hvac",
+  });
+  await disabledDefault.goto(url, { waitUntil: "networkidle" });
+  await disabledDefault.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
+  await disabledDefault.evaluate(() => {
+    window.AircovePortal.state.session.authenticated = true;
+    window.AircovePortal.go("products");
+  });
+  await disabledDefault.waitForSelector('[data-route="support"]', { timeout: 2000 });
+  const disabledDefaultRoute = await disabledDefault.locator("[data-route]").first().getAttribute("data-route");
+  if (disabledDefaultRoute === "pricing" || disabledDefaultRoute === "products") {
+    throw new Error(`disabled default route rendered ${disabledDefaultRoute}`);
+  }
+  await disabledDefault.close();
+
   const fallback = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await withConfig(fallback, {
     portalDataMode: "live",
