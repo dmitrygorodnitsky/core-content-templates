@@ -1,11 +1,11 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "runtime-wave9-s1-control-plane",
-  "format": "no-build ES modules: source.html + 6 stylesheets + 53 src JavaScript modules + data/fixtures.js",
+  "version": "runtime-wave9-s2-care",
+  "format": "no-build ES modules: source.html + 6 stylesheets + 65 src JavaScript modules + 2 data fixture modules",
   "fileInventory": {
     "stylesheets": 6,
-    "srcJavaScript": 53,
-    "runtimeJavaScript": 54
+    "srcJavaScript": 65,
+    "runtimeJavaScript": 67
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
@@ -125,7 +125,7 @@
     { "id": "proposal.detail", "path": "/proposals/:id", "module": "proposals", "auth": "private", "status": "done" },
     { "id": "profile", "path": "/profile", "module": "profile", "auth": "private", "status": "done" },
     { "id": "support", "path": "/support", "module": "support", "auth": "private", "status": "done" },
-    { "id": "care", "path": "/care", "module": "care", "auth": "private", "status": "s1-placeholder", "guard": "module + session + control-plane entitlement" }
+    { "id": "care", "path": "/care", "module": "care", "auth": "private", "status": "done", "guard": "two-phase module + session + scope + entitlement preflight before protected fixture adapter" }
   ],
   "components": [
     {
@@ -912,16 +912,458 @@
       "wave": 2,
       "status": "done"
     },
-    {
-      "id": "care-placeholder",
-      "factory": "CarePlaceholder",
-      "props": [
-        "access"
-      ],
-      "wave": 9,
-      "status": "partial",
-      "note": "S1 control-plane placeholder only; protected Care payload/components begin in S2."
-    },
+  {
+    "id": "care-hub",
+    "factory": "Care()",
+    "props": [
+      "normalized Care envelope",
+      "Care UI state"
+    ],
+    "wave": 7,
+    "note": "one route, eight vertical-specific normalized payloads; business vertical selects the Care kind and nav label",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "entitlement-gate",
+    "factory": "inline in Care()",
+    "props": [
+      "module.navLabel",
+      "module.title"
+    ],
+    "wave": 7,
+    "note": "unauthorized / entitlement-denied state; upgrade -> profile.managePlan, questions -> support.open",
+    "states": [
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "unit-picker",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "units",
+      "careUnit"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "contract": "care.selectUnit data-id = unit.id (stable, e.g. unit-ac-01), never the display name",
+    "status": "done"
+  },
+  {
+    "id": "equipment-passport",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "unit"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "status": "done"
+  },
+  {
+    "id": "diagnostic-report",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "unit.checks"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "status": "done"
+  },
+  {
+    "id": "document-vault",
+    "factory": "inline in EquipmentHub / RoofReport",
+    "props": [
+      "docs"
+    ],
+    "wave": 7,
+    "status": "done"
+  },
+  {
+    "id": "document-row",
+    "factory": "DocRow",
+    "props": [
+      "doc"
+    ],
+    "wave": 7,
+    "contract": "care.download data-id = document.id (e.g. doc-hvac-diag-2026-01); row carries data-document-id",
+    "status": "done"
+  },
+  {
+    "id": "season-stats",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "stats"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "storm-log",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "events"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "sla-meter",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "sla"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "compliance-reports",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "docs"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "program-steps",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "steps"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "reentry-card",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "reentry"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "soil-snapshot",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "soil"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "progress-photos",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "photos"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "water-readings",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "readings"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "dose-log",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "doses"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "test-cadence",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "tested",
+      "nextTest"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "roof-zones",
+    "factory": "inline in RoofReport",
+    "props": [
+      "zones"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "roof-score",
+    "factory": "inline in RoofReport",
+    "props": [
+      "score",
+      "grade"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "project-tracker",
+    "factory": "inline in RoofReport (reuses timeline classes)",
+    "props": [
+      "project"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "monitoring-summary",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "summary"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "station-map",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "stations"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "station-list",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "stations"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "alert-log",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "alerts"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "retreat-card",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "guarantee"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "states": [
+      "available",
+      "requesting",
+      "used"
+    ],
+    "contract": "care.requestRetreat data-id = plan.planId; button also carries data-property-id + data-service-id. Fixture command uses entity-keyed shared single-flight and records submitting -> submitted readback.",
+    "status": "done"
+  },
+  {
+    "id": "health-care-hub",
+    "factory": "HealthCareHub()",
+    "props": [
+      "careModules['Health']"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "note": "LOGISTICS ONLY BY DESIGN — renders scheduling, milestones, tasks and document METADATA; never clinical metrics, readings, results or medical advice.",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "care-appointment",
+    "factory": "inline in HealthCareHub / BeautyCareHub",
+    "props": [
+      "appointment"
+    ],
+    "wave": 9,
+    "contract": "card carries data-appointment-id (stable, e.g. appt-health-2026-0130 / appt-beauty-2026-0116) + data-provider-id / data-specialist-id; reschedule & details use the linked order id",
+    "status": "done"
+  },
+  {
+    "id": "care-plan",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "plan.milestones"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "card carries data-plan-id (e.g. plan-health-2026); milestones are logistics steps (intake/review/cadence), never clinical outcomes",
+    "status": "done"
+  },
+  {
+    "id": "follow-up-tasks",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "tasks"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "states": [
+      "open",
+      "done"
+    ],
+    "contract": "care.completeTask data-id = task.id (e.g. task-health-01); row carries data-task-id + data-state open|done",
+    "status": "done"
+  },
+  {
+    "id": "provider-card",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "provider"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "care.contactProvider data-id = provider.id (e.g. prov-health-pt-01); card carries data-provider-id",
+    "status": "done"
+  },
+  {
+    "id": "secure-documents",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "docs",
+      "docsNote"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "care.openSecureDoc data-id = document.id (e.g. doc-health-results-2026-01); row carries data-document-id. Contents are NEVER previewed in the portal — secure viewer only, access logged (Codex owns the viewer + audit).",
+    "status": "done"
+  },
+  {
+    "id": "care-disclaimer",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "disclaimer"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "status": "done"
+  },
+  {
+    "id": "beauty-care-hub",
+    "factory": "BeautyCareHub()",
+    "props": [
+      "careModules['Beauty']"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "package-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "pkg"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "card carries data-package-id (e.g. pkg-beauty-glow-2026)",
+    "status": "done"
+  },
+  {
+    "id": "specialist-picker",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "specialists",
+      "preferredId",
+      "Care UI selectedSpecialistId"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01), never the display name",
+    "status": "done"
+  },
+  {
+    "id": "treatment-history",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "history"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "status": "done"
+  },
+  {
+    "id": "routine-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "routine"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "status": "done"
+  },
+  {
+    "id": "loyalty-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "loyalty"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "card carries data-plan-id (e.g. plan-beauty-member-2026); manage → profile.managePlan",
+    "status": "done"
+  },
+  {
+    "id": "care-products",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "productRecs",
+      "normalized productRecs.items"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "note": "reuses the existing cart contract: cart.addItem data-id = product name",
+    "status": "done"
+  },
     {
       "id": "seo-parity-placeholder",
       "factory": "SeoParityPlaceholder",
@@ -948,7 +1390,32 @@
     "proposal.pendingCount",
     "status.label",
     "visit.techName",
-    "visit.eta"
+    "visit.eta",
+    "unit.name",
+    "unit.health",
+    "doc.name",
+    "doc.meta",
+    "event.storm",
+    "step.name",
+    "reentry.safeAfter",
+    "reading.name",
+    "reading.value",
+    "zone.name",
+    "roof.score",
+    "station.label",
+    "appointment.when",
+    "appointment.name",
+    "plan.name",
+    "milestone.name",
+    "task.label",
+    "provider.name",
+    "pkg.name",
+    "pkg.used",
+    "visit.what",
+    "specialist.name",
+    "routine.note",
+    "loyalty.points",
+    "product.name"
   ],
   "actions": [
     "access.confirm",
@@ -974,6 +1441,13 @@
     "cart.inc",
     "cart.open",
     "cart.removeItem",
+    "care.completeTask",
+    "care.contactProvider",
+    "care.download",
+    "care.openSecureDoc",
+    "care.requestRetreat",
+    "care.selectSpecialist",
+    "care.selectUnit",
     "checkout.pickAddress",
     "checkout.pickPayment",
     "checkout.placeOrder",
@@ -1044,7 +1518,9 @@
       "PAL",
       "TINTS"
     ],
-    "mode": "fixture"
+    "mode": "fixture",
+    "careModule": "data/care-fixtures.js",
+    "careBoundary": "Protected Care fixture adapter is constructed and called only after granted preflight. No Care live adapter is opened."
   },
   "serving": "MUST be served over HTTP (ES modules are blocked on file://). No bundler / no build step — many small files loaded natively.",
   "moduleTree": {
@@ -1053,8 +1529,9 @@
     "src/actions.js": "ACTIONS map + honest local fixture transitions + bindActions",
     "src/router.js": "renderRoute() switch + ComingSoon",
     "src/app.js": "entry: render, positionNavPill, applyResponsive, BookingDrawer, boot, window.AircovePortal",
-    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile}/*.js": "leaf components",
+    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care}/*.js": "leaf components",
     "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
-    "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`"
+    "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`",
+    "data/care-fixtures.js": "Care-owned raw fixture payloads for eight verticals"
   }
 }

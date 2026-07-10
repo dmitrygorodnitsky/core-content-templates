@@ -17,6 +17,7 @@ import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
 import { Landing } from "./routes/LandingPage.js";
 import { Auth } from "./routes/AuthPage.js";
+import { Care } from "./routes/CarePage.js";
 
 export function ComingSoon(routeId, wave) {
   return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
@@ -144,32 +145,10 @@ export function renderRoute() {
     case "landing":     return Landing();
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
-    case "care":        return CarePlaceholder(resolved.reason);
+    case "care":        return Care();
     case "seo.landing": return SeoParityPlaceholder();
     default:            return RouteFallback(resolved.reason);
   }
-}
-
-function CarePlaceholder(reason) {
-  var copy = {
-    disabled: ["Care is not enabled", "This module is disabled for the current portal configuration."],
-    unauthorized: ["Care access required", "Your current account does not have access to this Care hub."],
-    loading: ["Checking Care access", "Access is still being resolved. Protected Care data has not been requested."],
-    error: ["Care access unavailable", "Access could not be verified. Protected Care data has not been requested."],
-    "granted-placeholder": ["Care is configured", "Access is granted. The accepted Care interface and protected payload transfer in S2."],
-  };
-  var item = copy[reason] || copy.unauthorized;
-  var stateName = reason === "granted-placeholder" ? "fallback" : reason;
-  var access = careAccessAttributes(reason);
-  return h("section", {
-    "class": "page",
-    "data-route": "care",
-    "data-module": "care-placeholder",
-    "data-visual-id": "care-s1-placeholder",
-    "data-state": stateName,
-    "data-access": access.status,
-    "data-reason-code": access.reasonCode || undefined,
-  }, [EmptyState({ glyph: "i", title: item[0], desc: item[1] })]);
 }
 
 function SeoParityPlaceholder() {
@@ -200,21 +179,10 @@ function RouteFallback(reason) {
 function careAccessReason() {
   var access = state.access && state.access.care;
   var status = access && access.status;
-  if (status === "granted") return "granted-placeholder";
+  if (status === "granted") return "granted";
   if (status === "checking") return "loading";
   if (status === "error") return "error";
   return "unauthorized";
-}
-
-function careAccessAttributes(reason) {
-  if (reason === "disabled") return { status: "disabled", reasonCode: "module-disabled" };
-  var access = state.access && state.access.care;
-  var status = access && access.status;
-  if (reason === "granted-placeholder") status = "granted";
-  else if (reason === "loading") status = "checking";
-  else if (reason === "error") status = "error";
-  else if (status !== "not-entitled" && status !== "forbidden") status = "not-entitled";
-  return { status: status, reasonCode: access && access.reasonCode };
 }
 
 function applyRouteParams(match) {

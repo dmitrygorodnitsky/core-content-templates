@@ -2,6 +2,8 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+export { normalizeCare, normalizeCareFailure, normalizeCareLoading, normalizeCarePreflight } from "./care.js";
+
 export function normalizeAuth(raw) {
   return {
     authenticated: !!raw.session.authenticated,

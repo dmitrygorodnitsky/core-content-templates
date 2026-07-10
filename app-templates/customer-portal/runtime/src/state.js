@@ -31,8 +31,15 @@ export var state = {
   phone: "",
   code: "",
   authError: null,
-  session: { authenticated: true, intendedRoute: null },
+  session: { authenticated: true, intendedRoute: null, hasCustomerScope: true, hasTenantScope: true },
   access: { care: { status: "granted", reasonCode: null } },
+  carePayloadState: "ready",
+  careStateVertical: null,
+  careSelectedUnitId: null,
+  careSelectedSpecialistId: null,
+  careTasksDone: {},
+  careAuthorizationEpoch: 0,
+  careRetreatRequests: {},
   moduleStatus: {},
   moduleData: {},
   pending: {},
@@ -117,6 +124,15 @@ export function applyPortalConfig(config) {
   state.orders = F.ordersFor(verticalConfig.displayName);
   state.filter = "all";
   state.cartItems = [];
+  state.carePayloadState = "ready";
+  state.careStateVertical = null;
+  state.careSelectedUnitId = null;
+  state.careSelectedSpecialistId = null;
+  state.careTasksDone = {};
+  state.careAuthorizationEpoch += 1;
+  state.careRetreatRequests = {};
+  delete state.moduleData.care;
+  delete state.moduleStatus.care;
   if (!state.userModeOverridden) {
     state.mode = state.config.defaultMode === "dark" ? "Dark" : "Light";
   }

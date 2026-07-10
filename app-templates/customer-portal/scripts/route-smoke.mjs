@@ -271,7 +271,7 @@ try {
     window.AircovePortal.state.access.care = { status: "granted", reasonCode: null };
     window.AircovePortal.go("care");
   });
-  await page.waitForSelector('[data-route="care"][data-access="granted"][data-state="fallback"]', { timeout: 2000 });
+  await page.waitForSelector('[data-route="care"][data-access="granted"][data-state="ready"][data-visual-id="care-equipment"]', { timeout: 2000 });
   await page.evaluate(() => {
     window.AircovePortal.state.access.care = { status: "not-entitled", reasonCode: "plan" };
     window.AircovePortal.go("care");
@@ -314,8 +314,9 @@ try {
   await page.waitForSelector('[data-route="seo.landing"][data-module="seo-parity-placeholder"]', { timeout: 2000 });
   if (!await page.locator('[data-module="public-nav"]').count()) throw new Error("SEO parity route depends on authenticated shell");
   await page.evaluate(() => {
-    if (window.AircovePortal.state.moduleStatus.care !== undefined || window.AircovePortal.state.moduleData.care !== undefined) {
-      throw new Error("S1 constructed or loaded a protected Care adapter payload");
+    const care = window.AircovePortal.state.moduleData.care;
+    if (!care || care.phase !== "preflight" || care.content !== null || care.kind !== null || care.allowedActions.length !== 0) {
+      throw new Error("unauthenticated Care state is not a safe preflight envelope");
     }
     window.AircovePortal.state.session.authenticated = true;
     window.AircovePortal.state.session.intendedRoute = null;

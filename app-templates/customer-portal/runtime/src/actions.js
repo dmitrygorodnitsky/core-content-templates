@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
 import { findProduct, proposalSites, state } from "./state.js";
-import { render, retryRuntimeLoad } from "./app.js";
+import { invalidateCareRuntime, reloadCareRuntime, render, retryRuntimeLoad } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 
@@ -39,6 +39,13 @@ export var ACTIONS = {
   "support.helpTopic": function (id) { go("support"); runCommand("support.helpTopic", id, function () { pushChat(id); }); },
   "support.call":      function ()   { failCommand("support.call"); },
   "support.email":     function ()   { failCommand("support.email"); },
+  "care.selectUnit":   function (id, el) { return selectCareUnit(id, el); },
+  "care.download":     function (id, el) { return downloadCareDocument(id, el); },
+  "care.requestRetreat": function (id, el) { return requestCareRetreat(id, el); },
+  "care.selectSpecialist": function (id, el) { return selectCareSpecialist(id, el); },
+  "care.completeTask": function (id, el) { return toggleCareTask(id, el); },
+  "care.contactProvider": function (id, el) { return runUnavailableCareCommand("care.contactProvider", id, el); },
+  "care.openSecureDoc": function (id, el) { return runUnavailableCareCommand("care.openSecureDoc", id, el); },
   "cart.open":         function ()   { go("checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
   "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
@@ -66,14 +73,14 @@ export var ACTIONS = {
   "profile.updateAddress": function () { failCommand("profile.updateAddress"); },
   "profile.togglePref": function (id) { runCommand("profile.togglePref", id, function () { togglePref(id); }); },
   "profile.managePlan": function ()  { go("pricing"); },
-  "auth.signOut":      function ()   { state.session.authenticated = false; state.phone = ""; state.code = ""; go("auth.phone"); toast("Signed out"); },
+  "auth.signOut":      function ()   { state.session.authenticated = false; state.phone = ""; state.code = ""; invalidateCareRuntime(); go("auth.phone"); toast("Signed out"); },
   "calendar.open":     function ()   { go("calendar"); },
   "calendar.prev":     function ()   { calShift(-1); },
   "calendar.next":     function ()   { calShift(1); },
   "ui.retry":          function ()   { return retryRuntimeLoad(); },
   "ui.toggleMode":     function ()   { state.userModeOverridden = true; setState({ mode: state.mode === "Dark" ? "Light" : "Dark" }); },
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav }); },
-  "theme.pick":        function (id) { pickTheme(id); }
+  "theme.pick":        function (id) { return pickTheme(id); }
 };
 
 /* delegated action handling: reads data-action + data-id */
@@ -89,7 +96,12 @@ export function bindActions(root) {
       if (!window.confirm("Are you sure?\n\n" + name + (id ? " \u00b7 " + id : ""))) return;
     }
     var fn = ACTIONS[name];
-    if (fn) fn(id, el);
+    if (fn) {
+      var result = fn(id, el);
+      if (result && typeof result.then === "function") {
+        Promise.resolve(result).catch(function () { render(); });
+      }
+    }
     else failCommand(name);
   });
 }
@@ -115,6 +127,166 @@ export function runCommand(name, id, handler) {
     state.pending[key] = false;
     render();
   }
+}
+
+function careEntityScope(name, id, element, content) {
+  if (name === "care.selectUnit") return content.units && content.units.find(function (item) { return item.id === id; });
+  if (name === "care.download" || name === "care.openSecureDoc") {
+    return content.docs && content.docs.find(function (item) { return item.id === id; });
+  }
+  if (name === "care.selectSpecialist") {
+    return content.specialists && content.specialists.find(function (item) { return item.id === id; });
+  }
+  if (name === "care.completeTask") return content.tasks && content.tasks.find(function (item) { return item.id === id; });
+  if (name === "care.contactProvider") return content.provider && content.provider.id === id ? content.provider : null;
+  if (name === "care.requestRetreat") {
+    var scope = content.guarantee && content.guarantee.scope;
+    var propertyId = element && element.getAttribute("data-property-id");
+    var serviceId = element && element.getAttribute("data-service-id");
+    return scope && scope.planId === id && scope.propertyId === propertyId && scope.serviceId === serviceId ? scope : null;
+  }
+  return null;
+}
+
+export function authorizeCareCommand(name, id, element, expected) {
+  var envelope = state.moduleData.care;
+  var enabled = (state.config.enabledModules || []).includes("care");
+  var authenticated = state.session && state.session.authenticated === true;
+  var scoped = state.session && state.session.hasCustomerScope === true && state.session.hasTenantScope === true;
+  var entitled = state.access && state.access.care && state.access.care.status === "granted";
+  var fixtureReady = state.config.dataMode === "fixture"
+    && envelope && envelope.id === "care" && envelope.phase === "payload"
+    && envelope.state === "ready" && envelope.access && envelope.access.status === "granted"
+    && envelope.content && Array.isArray(envelope.allowedActions);
+  var currentVertical = fixtureReady && envelope.vertical === state.config.vertical && state.careStateVertical === state.config.vertical;
+  var actionAllowed = fixtureReady && envelope.allowedActions.includes(name);
+  var entity = fixtureReady ? careEntityScope(name, id, element, envelope.content) : null;
+  var epoch = state.careAuthorizationEpoch || 0;
+  var expectedCurrent = !expected || (expected.epoch === epoch && expected.vertical === state.config.vertical && expected.entityId === id);
+
+  if (!enabled || !authenticated || !scoped || !entitled || !fixtureReady || !currentVertical || !expectedCurrent) {
+    var authorizationError = new Error("Care command is not authorized for the current portal state");
+    authorizationError.careAuthorizationFailure = true;
+    throw authorizationError;
+  }
+  if (!entity) throw new Error("Care command target is invalid or no longer current");
+  if (!actionAllowed) throw new Error("Care command is unavailable");
+  return { envelope: envelope, content: envelope.content, entity: entity, epoch: epoch, vertical: state.config.vertical, entityId: id };
+}
+
+function clearGeneralCareCommandErrors() {
+  for (const key of Object.keys(state.commandErrors || {})) {
+    if (key.startsWith("care.") && key.endsWith(":_")) delete state.commandErrors[key];
+  }
+}
+
+function runCareCommand(name, id, element, mutation) {
+  try {
+    var authorization = authorizeCareCommand(name, id, element);
+    clearGeneralCareCommandErrors();
+    delete state.commandErrors[commandKey(name, id)];
+    mutation(authorization);
+    render();
+    return true;
+  } catch (error) {
+    return failCareMutation(name, id, error);
+  }
+}
+
+function runUnavailableCareCommand(name, id, element) {
+  return runCareCommand(name, id, element, function () {
+    throw new Error("Care command is unavailable");
+  });
+}
+
+export function selectCareUnit(id, element) {
+  return runCareCommand("care.selectUnit", id, element, function () { state.careSelectedUnitId = id; });
+}
+
+export function selectCareSpecialist(id, element) {
+  return runCareCommand("care.selectSpecialist", id, element, function () { state.careSelectedSpecialistId = id; });
+}
+
+export function toggleCareTask(id, element) {
+  return runCareCommand("care.completeTask", id, element, function (authorization) {
+    var task = authorization.entity;
+    var current = Object.prototype.hasOwnProperty.call(state.careTasksDone, id) ? state.careTasksDone[id] : !!task.done;
+    state.careTasksDone = Object.assign({}, state.careTasksDone, { [id]: !current });
+  });
+}
+
+export function downloadCareDocument(id, element) {
+  return runCareCommand("care.download", id, element, function (authorization) {
+    var documentItem = authorization.entity;
+    if (!documentItem.url) throw new Error("Care document download is unavailable");
+    var link = document.createElement("a");
+    link.href = documentItem.url;
+    link.download = documentItem.filename || documentItem.name || "care-document";
+    link.rel = "noopener";
+    link.click();
+  });
+}
+
+var careRetreatFlights = new Map();
+
+export function resetCareActionFlights() {
+  careRetreatFlights.clear();
+}
+
+function failCareMutation(name, id, error) {
+  var key = commandKey(name, error && error.careAuthorizationFailure ? null : id);
+  state.commandErrors[key] = error && error.message ? error.message : "Command failed";
+  delete state.pending[key];
+  render();
+  toast(name + " failed");
+  return false;
+}
+
+export function requestCareRetreat(id, element) {
+  var name = "care.requestRetreat";
+  var key = commandKey(name, id);
+  var authorization;
+  try {
+    authorization = authorizeCareCommand(name, id, element);
+    clearGeneralCareCommandErrors();
+    if (state.careRetreatRequests[id] && state.careRetreatRequests[id].status === "submitted") {
+      throw new Error("Care re-treatment request is already submitted");
+    }
+  } catch (error) {
+    return Promise.resolve(failCareMutation(name, id, error));
+  }
+  if (careRetreatFlights.has(key)) return careRetreatFlights.get(key);
+
+  delete state.commandErrors[key];
+  state.pending[key] = true;
+  state.careRetreatRequests = Object.assign({}, state.careRetreatRequests, {
+    [id]: { planId: authorization.entity.planId, propertyId: authorization.entity.propertyId, serviceId: authorization.entity.serviceId, status: "submitting" }
+  });
+  render();
+
+  var flight = Promise.resolve().then(function () {
+    authorizeCareCommand(name, id, element, authorization);
+    state.careRetreatRequests = Object.assign({}, state.careRetreatRequests, {
+      [id]: { planId: authorization.entity.planId, propertyId: authorization.entity.propertyId, serviceId: authorization.entity.serviceId, status: "submitted" }
+    });
+    return state.careRetreatRequests[id];
+  }).catch(function (error) {
+    if (error && error.careAuthorizationFailure && state.careAuthorizationEpoch === authorization.epoch) {
+      var requests = Object.assign({}, state.careRetreatRequests);
+      delete requests[id];
+      state.careRetreatRequests = requests;
+      delete state.pending[key];
+      delete state.commandErrors[key];
+      return false;
+    }
+    return false;
+  }).finally(function () {
+    if (state.careAuthorizationEpoch === authorization.epoch) delete state.pending[key];
+    careRetreatFlights.delete(key);
+    render();
+  });
+  careRetreatFlights.set(key, flight);
+  return flight;
 }
 
 export function setState(patch) { Object.assign(state, patch); render(); }
@@ -307,7 +479,7 @@ export function pickTheme(name) {
   var resolved = resolveRoute(state.route);
   state.route = resolved.id;
   writeRouteToLocation(resolved.id);
-  render();
+  return reloadCareRuntime();
 }
 
 export function confirmWeather(id, decision) {

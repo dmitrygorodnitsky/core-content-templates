@@ -2,7 +2,7 @@
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
   "wave": 9,
-  "description": "S1 control-plane coverage. Health, Beauty, appointments, Care guards, SEO parity, and parameterized detail URLs are wired; Care visuals/data and the public SEO document remain owned by later stages.",
+  "description": "S2 executable Care coverage. Eight normalized Care hubs, two-phase access, fixture state transitions, and unavailable secure commands are wired; the public SEO document remains owned by S3/S6.",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -36,7 +36,7 @@
     { "id": "proposal.detail", "path": "/proposals/:id", "implemented": true, "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
     { "id": "profile", "path": "/profile", "implemented": true, "auth": "private", "states": ["ready", "success-toast"] },
     { "id": "support", "path": "/support", "implemented": true, "auth": "private", "states": ["ready", "pending-action"] },
-    { "id": "care", "path": "/care", "implemented": false, "auth": "private", "states": ["fallback", "loading", "error", "disabled", "unauthorized"], "disposition": "S1 control-plane placeholder only; no protected adapter or payload" }
+    { "id": "care", "path": "/care", "implemented": true, "auth": "private", "states": ["ready", "loading", "empty", "error", "disabled", "unauthorized"], "disposition": "S2 fixture Care with protected adapter gated by module/session/scope/entitlement preflight; live adapter not opened" }
   ],
   "actions": [
     "auth.sendCode", "auth.verifyCode",
@@ -48,7 +48,8 @@
     "service.request", "service.requestExtra", "service.reportIssue", "access.confirm", "access.update",
     "membership.activate", "profile.updateAddress", "profile.setDefaultPayment",
     "support.open", "support.sendMessage",
-    "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
+    "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry",
+    "care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"
   ],
   "implementedStates": {
     "orders.list": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"],
@@ -66,11 +67,29 @@
     "landing": ["ready"],
     "auth.phone": ["ready", "validation-error"],
     "auth.code": ["ready", "validation-error"],
-    "care": ["fallback", "loading", "error", "disabled", "unauthorized"],
+    "care": ["ready", "loading", "empty", "error", "disabled", "unauthorized"],
     "seo.landing": ["fallback"]
   },
+  "careContract": {
+    "verticalKinds": {
+      "HVAC": "equipment",
+      "Snow Removal": "seasonLog",
+      "Lawn & Garden": "program",
+      "Pool & Spa": "water",
+      "Roofing": "roof",
+      "Pest Control": "monitoring",
+      "Health": "healthCare",
+      "Beauty": "beautyCare"
+    },
+    "preflightNoCall": ["disabled", "unauthenticated", "not-entitled", "forbidden", "checking", "error"],
+    "payloadStates": ["ready", "loading", "empty", "error"],
+    "fixtureTransitions": ["care.selectUnit", "care.requestRetreat", "care.selectSpecialist", "care.completeTask"],
+    "unavailableWithoutApprovedDestination": ["care.download", "care.contactProvider", "care.openSecureDoc"],
+    "retreatConcurrency": "entity-keyed shared single-flight"
+  },
   "notImplementedYet": {
-    "routes": ["care", "seo.landing"],
-    "note": "Both routes are intentionally honest S1 placeholders. Care payload/UI transfers in S2; reusable SEO and the standalone public document transfer in S3/S6."
+    "routes": ["seo.landing"],
+    "careLiveActions": ["care.selectUnit persistence", "care.download", "care.requestRetreat", "care.selectSpecialist persistence", "care.completeTask sync", "care.contactProvider", "care.openSecureDoc"],
+    "note": "Care fixture behavior is implemented in S2. Care live IO/actions remain not_opened; reusable SEO and the standalone public document transfer in S3/S6."
   }
 }

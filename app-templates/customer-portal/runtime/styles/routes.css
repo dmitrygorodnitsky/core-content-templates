@@ -994,3 +994,68 @@
 .otp__box--error { border-color: rgba(255,59,48,.5); }
 
 .otp__input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: 0; cursor: text; font-size: 26px; }
+
+/* ============================================================
+   WAVE 7 — Vertical care hub (data-route="care")
+   One config-driven route; fixtures.careModules picks which
+   vertical-specific module set renders (same mechanism as
+   portal profiles).
+   ============================================================ */
+.care-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; align-items: start; }
+.care-col { display: flex; flex-direction: column; gap: 16px; }
+/* Unit picker (HVAC equipment) — data-module="unit-picker" */
+.unit-row { display: flex; gap: 10px; }
+.unit-pick {
+  flex: 1; min-width: 0; text-align: left; cursor: pointer; font: inherit; color: inherit;
+  border-radius: 16px; padding: 12px 14px;
+  background: rgba(var(--glass), .5); border: 1px solid var(--glass-border);
+}
+.unit-pick--active { border-color: rgba(var(--accent-rgb), .5); box-shadow: 0 0 0 1.5px rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .06); }
+.health-bar { height: 7px; border-radius: var(--radius-pill); background: rgba(120,120,128,.16); overflow: hidden; }
+.health-bar__fill { height: 100%; border-radius: var(--radius-pill); }
+/* Diagnostic checks — data-module="diagnostic-report" */
+.check-group { font-weight: 700; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 3px; }
+.check-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--glass-border); font-size: 13.5px; }
+.check-dot { width: 9px; height: 9px; border-radius: var(--radius-pill); flex-shrink: 0; }
+/* Stat strip + shared log rows (season log, doses, alerts, documents) */
+.care-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.care-stat { background: rgba(var(--glass), .55); border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 14px; }
+.log-row { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-top: 1px solid var(--glass-border); }
+.log-date { min-width: 52px; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+.meter { height: 8px; border-radius: var(--radius-pill); background: rgba(120,120,128,.16); overflow: hidden; margin-top: 12px; }
+.meter__fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+.score-big { font-weight: 800; font-size: 40px; letter-spacing: -.03em; line-height: 1; }
+/* Program steps (lawn) — data-module="program-steps" */
+.step-row { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-top: 1px solid var(--glass-border); }
+.step-num { width: 30px; height: 30px; border-radius: var(--radius-pill); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+.reentry-card { background: rgba(255,159,10,.08); border: 1px solid rgba(255,159,10,.22); border-radius: 18px; padding: 16px 18px; }
+/* Water readings (pool) — data-module="water-readings" */
+.reading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.reading-card { background: rgba(var(--glass), .55); border: 1px solid var(--glass-border); border-radius: 16px; padding: 14px 15px; }
+.spark { display: flex; align-items: flex-end; gap: 3px; height: 32px; margin-top: 12px; }
+.spark span { flex: 1; border-radius: 3px 3px 1px 1px; background: rgba(var(--accent-rgb), .22); min-height: 3px; }
+.spark span:last-child { background: var(--accent); }
+/* Station map (pest) — data-module="station-map" */
+.station-map { position: relative; height: 170px; border-radius: 16px; overflow: hidden; background: repeating-linear-gradient(45deg, #dfe6f2, #dfe6f2 13px, #d6deec 13px, #d6deec 26px); }
+:root[data-mode="dark"] .station-map { background: repeating-linear-gradient(45deg, #1c2431, #1c2431 13px, #222c3d 13px, #222c3d 26px); }
+.station-pin {
+  position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px;
+  border-radius: var(--radius-pill); display: grid; place-items: center;
+  font-weight: 800; font-size: 10.5px; color: #fff; border: 2px solid #fff;
+  box-shadow: 0 3px 10px rgba(8,24,60,.25);
+}
+/* Wave 7.1 — retreat request "requesting" spinner (visual state only) */
+.btn-spinner {
+  width: 13px; height: 13px; border-radius: var(--radius-pill);
+  border: 2px solid rgba(255,255,255,.35); border-top-color: #fff;
+  display: inline-block; margin-right: 8px; vertical-align: -2px;
+  animation: care-spin .7s linear infinite;
+}
+@keyframes care-spin { to { transform: rotate(360deg); } }
+.btn[disabled] { opacity: .62; cursor: default; }
+
+[data-route="care"] .link-action[data-state="unavailable"] {
+  color: var(--ink-3);
+  cursor: default;
+  opacity: .72;
+}

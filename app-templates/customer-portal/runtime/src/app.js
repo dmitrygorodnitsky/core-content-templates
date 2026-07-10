@@ -29,7 +29,29 @@ export function BookingDrawer() {
 /* =========================================================
    Root render
    ========================================================= */
-var mount, shell, resizeObs, runtime, liveRetryPromise;
+var mount, shell, resizeObs, runtime, liveRetryPromise, careTransitionPromise;
+
+function loadGrantedCareTransition() {
+  var envelope = state.moduleData.care;
+  var granted = state.config.dataMode === "fixture"
+    && state.config.enabledModules.includes("care")
+    && state.session.authenticated === true
+    && state.session.hasCustomerScope === true
+    && state.session.hasTenantScope === true
+    && state.access && state.access.care && state.access.care.status === "granted";
+  if (!granted || !envelope || envelope.phase !== "preflight") return;
+
+  var pending = runtime.loadAsync("care");
+  if (pending === careTransitionPromise) return;
+  careTransitionPromise = pending;
+  pending.then(function () {
+    if (careTransitionPromise === pending) careTransitionPromise = null;
+    render();
+  }, function () {
+    if (careTransitionPromise === pending) careTransitionPromise = null;
+    render();
+  });
+}
 
 export function render() {
   /* theming: declarative attributes only */
@@ -39,6 +61,8 @@ export function render() {
 
   clear(mount);
   if (runtime && state.config.dataMode !== "live") runtime.loadAll();
+  if (runtime) runtime.syncPreflight("care");
+  if (runtime) loadGrantedCareTransition();
 
   var content = renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
@@ -97,6 +121,10 @@ function applyResponsive() {
 }
 
 export function retryRuntimeLoad() {
+  if (state.route === "care" && runtime) {
+    state.carePayloadState = "ready";
+    return reloadCareRuntime().catch(function () { return null; });
+  }
   if (state.config.dataMode !== "live" || !runtime) {
     setState({ view: "ready" });
     return Promise.resolve();
@@ -121,12 +149,30 @@ export function retryRuntimeLoad() {
   return liveRetryPromise;
 }
 
+export function invalidateCareRuntime() {
+  if (!runtime) return null;
+  return runtime.invalidate("care");
+}
+
+export function reloadCareRuntime() {
+  if (!runtime) return Promise.resolve(null);
+  var pending = runtime.reloadAsync("care");
+  render();
+  return pending.then(function (result) {
+    render();
+    return result;
+  }).catch(function (error) {
+    render();
+    throw error;
+  });
+}
+
 /* boot */
 document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
   applyPortalConfig(readPortalConfig(mount));
   runtime = new PortalRuntime({ state: state });
-  var loaded = state.config.dataMode === "live" ? runtime.loadAllAsync() : Promise.resolve(runtime.loadAll());
+  var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);
   loaded.then(render).catch(function (error) {

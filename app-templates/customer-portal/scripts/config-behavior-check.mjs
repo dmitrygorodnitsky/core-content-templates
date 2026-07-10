@@ -380,7 +380,7 @@ try {
   await careGuards.goto(url, { waitUntil: "networkidle" });
   await careGuards.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
   await careGuards.evaluate(() => window.AircovePortal.go("care"));
-  await careGuards.waitForSelector('[data-route="care"][data-access="granted"][data-state="fallback"]', { timeout: 2000 });
+  await careGuards.waitForSelector('[data-route="care"][data-access="granted"][data-state="ready"]', { timeout: 2000 });
   await careGuards.evaluate(() => {
     window.AircovePortal.state.access.care = { status: "not-entitled", reasonCode: "plan" };
     window.AircovePortal.go("care");
@@ -409,7 +409,14 @@ try {
     status: window.AircovePortal.state.moduleStatus.care,
     data: window.AircovePortal.state.moduleData.care,
   }));
-  if (careIsolation.intended !== "care" || careIsolation.status !== undefined || careIsolation.data !== undefined) {
+  if (careIsolation.intended !== "care"
+    || careIsolation.status !== "unauthorized"
+    || !careIsolation.data
+    || careIsolation.data.phase !== "preflight"
+    || careIsolation.data.access.status !== "unauthenticated"
+    || careIsolation.data.content !== null
+    || careIsolation.data.kind !== null
+    || careIsolation.data.allowedActions.length !== 0) {
     throw new Error(`Care control-plane isolation failed: ${JSON.stringify(careIsolation)}`);
   }
   await careGuards.close();
@@ -576,7 +583,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 6, srcJavaScript: 53, runtimeJavaScript: 54 }, "accepted S1 file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 6, srcJavaScript: 65, runtimeJavaScript: 67 }, "accepted S2 file inventory");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {
