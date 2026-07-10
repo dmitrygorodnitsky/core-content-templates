@@ -3,7 +3,7 @@
 Created: 2026-07-10
 Package path: `docs/stream-tasks/customer-portal-wave9-runtime-program/`
 Status: program container
-Current target: S2 Care Executable Transfer (`done`)
+Current target: S3 Public SEO Executable Transfer (`in_progress`)
 Execution mode: sequential stage-to-done loop
 
 ## Goal
@@ -118,7 +118,7 @@ Out of scope:
 | design-input | `app-templates/customer-portal/design-inbox/**` | Claude Design input / Codex validation | done | Immutable accepted source at `c9879ae`. |
 | shared-config-router | `runtime/src/config.js`, `router.js`, shell/nav/theme/profile code | Codex | done | Eight verticals, three profiles, 17 routes, guards, and vertical/theme axis separation independently validated. |
 | care-runtime | Care components, styles, fixtures, module, adapter, normalizer | Codex | done | Eight hubs, two-phase async load, commands, states, and security races independently validated. |
-| seo-public-entry | SEO components, styles, public CMS template and metadata | Codex | todo | Public/indexable surface; no authenticated-shell dependency. |
+| seo-public-entry | SEO components, styles, public CMS template and metadata | Codex | in_progress | Public/indexable surface; no authenticated-shell dependency. |
 | visual-acceptance | screenshot/DOM evidence and parity fixes | Codex | todo | Compare only against executable accepted source. |
 | activation | Care/SEO adapters and command handlers | Codex | todo | Open only known contracts; no mock success. |
 | cms-export | block metadata, templates, export scripts, generated previews | Codex | todo | No CMS upload. |
@@ -142,7 +142,7 @@ Shared files that must not be edited concurrently by independent agents:
 | S0 Contract And Baseline | Freeze wave-9 runtime and delivery contracts | done | none | Updated architecture and reconciled inventories | The 17-route, 8-theme, 3-profile, Care, public SEO, and Health security contracts are explicit and design/runtime gaps are machine-readable. |
 | S1 Shared Config, Themes, Profiles, Router | Extend shared runtime control plane | done | S0 | Config/profile/router/theme/nav support | Health/Beauty and `appointments` are config-driven; Care is guarded by module/entitlement; public SEO route is accounted without coupling production SEO to portal auth/hash routing. |
 | S2 Care Executable Transfer | Transfer and componentize accepted Care UI | done | S1 | Care route/components/styles/fixtures/module | All eight Care hubs and required states render from normalized fixture data with accepted hooks and no visual redesign. |
-| S3 Public SEO Executable Transfer | Transfer SEO sections and create public entry | todo | S2 | Shared SEO components plus public CMS page | SEO content renders without portal auth/hash boot, has CMS-authored slots and real document metadata/structured data, and remains parity-testable. |
+| S3 Public SEO Executable Transfer | Transfer SEO sections and create public entry | in_progress | S2 | Shared SEO components plus public CMS page | SEO content renders without portal auth/hash boot, has CMS-authored slots and real document metadata/structured data, and remains parity-testable. |
 | S4 Visual Acceptance | Close visual drift before live activation | todo | S3 | Screenshot/DOM comparison evidence | Care and SEO match executable design at required viewports, verticals, and states; unresolved drift is blocking, not waived as approximate. |
 | S5 Data And Command Activation | Add truthful adapters and interactions | todo | S4 | Known live/fixture data and command paths | Local interactions work; opened mutations have pending/success/error and readback/idempotence proof; unknown or unsafe live paths are `not_opened`. |
 | S6 CMS Packaging And Export | Package both delivery surfaces | todo | S5 | Portal and public SEO export artifacts | CMS enums/styles/templates/exports cover all profiles/verticals and validate locally without upload. |
@@ -226,8 +226,8 @@ required implementation or validation finding.
 | S2.1-care-transfer | care-runtime | Codex | done | S1.2 | hook scan, visual source comparison | Accepted Care markup/styles/components exist in runtime without designer-source edits. |
 | S2.2-care-data-states | care-runtime | Codex | done | S2.1 | fixture/normalizer/state tests | All eight hubs render normalized `ready`, `loading`, `empty`, `error`, and `unauthorized`/entitlement treatment where applicable. |
 | S2.3-care-commands-fixture | care-runtime | Codex | done | S2.2 | command state/readback checks | Care fixture commands perform inspectable state changes or are explicitly unavailable; no toast-only success. |
-| S3.1-seo-transfer | seo-public-entry | Codex | todo | S2.3 | component/hook/source comparison | Accepted SEO sections and vertical fixtures are reusable in runtime and public entry. |
-| S3.2-seo-public-document | seo-public-entry | Codex | todo | S3.1 | raw HTML/DOM metadata checks | Public page works without portal auth/hash boot and emits title, description, canonical, and valid FAQ structured data from CMS-authored content. |
+| S3.1-seo-transfer | seo-public-entry | Codex | in_progress | S2.3 | component/hook/source comparison | Accepted SEO sections and vertical fixtures are reusable in runtime and public entry. |
+| S3.2-seo-public-document | seo-public-entry | Codex | in_progress | S3.1 | raw HTML/DOM metadata checks | Public page works without portal auth/hash boot and emits title, description, canonical, and valid FAQ structured data from CMS-authored content. |
 | S4.1-care-parity | visual-acceptance | Codex | todo | S3.2 | screenshots and DOM metrics | Eight Care hubs plus representative states match accepted source at 390, 768, 1180, and 1440 widths. |
 | S4.2-seo-parity | visual-acceptance | Codex | todo | S3.2 | screenshots and DOM metrics | Public SEO page/sections match accepted source across themes and required widths. |
 | S5.1-contract-inventory | activation | Codex | todo | S4.1, S4.2 | endpoint/permission matrix | Every Care/SEO action and data source is classified local, fixture, opened live, unavailable, or `not_opened`. |
@@ -323,7 +323,8 @@ live slice `not_opened` and continue with the remaining Definition of Done.
   wave 9 S1`) after three independent validation cycles. Eight verticals,
   three profiles, 17 routes, Care/SEO placeholders, detail routing, and the
   business-vertical/visual-theme split are validated. S2 opened next.
-- 2026-07-10: S2 closed after three independent validation cycles. Eight Care
+- 2026-07-10: S2 closed in `28c1634` (`feat(runtime): close customer portal
+  wave 9 S2`) after three independent validation cycles. Eight Care
   hubs, protected async fixture loading, fail-closed command authorization,
   entity-scoped state, lifecycle race protection, and existing PIM/export
-  regressions are validated. See `evidence/S2.md`.
+  regressions are validated. See `evidence/S2.md`. S3 opened next.
