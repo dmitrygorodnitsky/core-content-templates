@@ -280,7 +280,7 @@ Validation:
 
 ### S4.1 Care Parity
 
-Status: `todo`
+Status: `in_progress`
 
 Compare runtime to executable design source at widths 390, 768, 1180, and 1440.
 Generate fresh design screenshots from source when committed preview PNGs do not
@@ -296,7 +296,7 @@ Coverage:
 
 ### S4.2 SEO Parity
 
-Status: `todo`
+Status: `in_progress`
 
 Coverage:
 
