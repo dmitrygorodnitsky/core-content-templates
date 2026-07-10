@@ -6,6 +6,7 @@ import process from "node:process";
 
 const routes = [
   "landing",
+  "seo.landing",
   "auth.phone",
   "auth.code",
   "orders.list",
@@ -20,6 +21,7 @@ const routes = [
   "proposal.detail",
   "profile",
   "support",
+  "care",
 ];
 
 const args = new Map();
@@ -152,7 +154,7 @@ try {
   });
   await page.waitForSelector('[data-route="order.detail"]', { timeout: 2000 });
   const orderDetailHash = await page.evaluate(() => window.location.hash);
-  if (orderDetailHash !== "#/orders/detail") {
+  if (orderDetailHash !== "#/orders/%23SV-2402") {
     throw new Error(`order.open did not write detail route: ${orderDetailHash}`);
   }
   await page.evaluate(() => {
@@ -161,7 +163,7 @@ try {
   });
   await page.waitForSelector('[data-route="proposal.detail"]', { timeout: 2000 });
   const proposalDetailHash = await page.evaluate(() => window.location.hash);
-  if (proposalDetailHash !== "#/proposals/detail") {
+  if (proposalDetailHash !== "#/proposals/s2") {
     throw new Error(`proposal.open did not write detail route: ${proposalDetailHash}`);
   }
 
@@ -206,6 +208,154 @@ try {
   await page.waitForSelector('[data-route="calendar"][data-visual-id="storm-calendar"]', { timeout: 2000 });
   const lawnCalendarText = await page.locator('[data-visual-id="storm-calendar"]').innerText();
   assertNoSharedSnowCopy(lawnCalendarText, "lawn storm calendar");
+
+  const verticalMatrix = [
+    ["HVAC", "hvac", "onDemand", "Equipment"],
+    ["Snow Removal", "snow", "stormOps", "Season log"],
+    ["Lawn & Garden", "lawn", "stormOps", "Program"],
+    ["Pool & Spa", "pool", "stormOps", "Water"],
+    ["Roofing", "roofing", "stormOps", "Roof report"],
+    ["Pest Control", "pest", "stormOps", "Monitoring"],
+    ["Health", "health", "appointments", "Care plan"],
+    ["Beauty", "beauty", "appointments", "My routine"],
+  ];
+  for (const [displayName, slug, profile, careLabel] of verticalMatrix) {
+    const result = await page.evaluate(([name, expectedCareLabel]) => {
+      window.AircovePortal.ACTIONS["theme.pick"](name);
+      window.AircovePortal.go("orders.list");
+      return {
+        profile: window.AircovePortal.state.config.profile,
+        theme: document.documentElement.dataset.theme,
+        nav: Array.from(document.querySelectorAll(".nav-links .nav-link"), (item) => item.textContent),
+        careLabelPresent: Array.from(document.querySelectorAll(".nav-links .nav-link"), (item) => item.textContent).includes(expectedCareLabel),
+        body: document.body.innerText,
+        weatherOrderCount: window.AircovePortal.state.orders.filter((order) => order.wt).length,
+      };
+    }, [displayName, careLabel]);
+    if (result.profile !== profile || result.theme !== slug || !result.careLabelPresent) {
+      throw new Error(`vertical registry mismatch for ${displayName}: ${JSON.stringify(result)}`);
+    }
+    if ((slug === "health" || slug === "beauty") && (result.weatherOrderCount !== 0 || /weather trigger|undefined/i.test(result.body))) {
+      throw new Error(`${displayName} leaked weather/undefined content: ${JSON.stringify(result)}`);
+    }
+  }
+
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["theme.pick"]("Health");
+    window.AircovePortal.go("calendar");
+  });
+  await page.waitForSelector('[data-route="calendar"][data-visual-id="calendar"]', { timeout: 2000 });
+  if (await page.locator('[data-visual-id="storm-calendar"], [data-visual-id="weather-card"], [data-visual-id="weather-banner"]').count()) {
+    throw new Error("Health rendered weather-only UI");
+  }
+  await page.evaluate(() => window.AircovePortal.go("activity"));
+  await page.waitForSelector('[data-route="orders.list"]', { timeout: 2000 });
+  const healthActivityGuard = await page.evaluate(() => ({
+    route: window.AircovePortal.state.route,
+    enabled: window.AircovePortal.state.config.enabledModules.includes("activity"),
+  }));
+  if (healthActivityGuard.route !== "orders.list" || healthActivityGuard.enabled) {
+    throw new Error(`Health activity guard failed: ${JSON.stringify(healthActivityGuard)}`);
+  }
+
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["ui.toggleMode"]();
+    window.AircovePortal.ACTIONS["theme.pick"]("Beauty");
+  });
+  if (await page.locator("html").getAttribute("data-mode") !== "light") {
+    throw new Error("user-selected mode did not survive theme/config refresh");
+  }
+
+  await page.evaluate(() => {
+    window.AircovePortal.ACTIONS["theme.pick"]("HVAC");
+    window.AircovePortal.state.access.care = { status: "granted", reasonCode: null };
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-access="granted"][data-state="fallback"]', { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.state.access.care = { status: "not-entitled", reasonCode: "plan" };
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-state="unauthorized"][data-access="not-entitled"][data-reason-code="plan"]', { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.state.access.care = { status: "forbidden", reasonCode: "permission" };
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-state="unauthorized"][data-access="forbidden"][data-reason-code="permission"]', { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.state.access.care = { status: "checking", reasonCode: null };
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-state="loading"][data-access="checking"]', { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.state.access.care = { status: "error", reasonCode: "unavailable" };
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-state="error"][data-access="error"][data-reason-code="unavailable"]', { timeout: 2000 });
+  await page.evaluate(() => {
+    window.AircovePortal.state.access.care = { status: "granted", reasonCode: null };
+    window.AircovePortal.state.config.enabledModules = window.AircovePortal.state.config.enabledModules.filter((item) => item !== "care");
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="care"][data-state="disabled"][data-access="disabled"][data-reason-code="module-disabled"]', { timeout: 2000 });
+  if ((await page.locator(".nav-links .nav-link").allTextContents()).includes("Equipment")) {
+    throw new Error("disabled Care module leaked into navigation");
+  }
+  await page.evaluate(() => {
+    window.AircovePortal.state.config.enabledModules.push("care");
+    window.AircovePortal.state.session.authenticated = false;
+    window.AircovePortal.go("care");
+  });
+  await page.waitForSelector('[data-route="auth.phone"]', { timeout: 2000 });
+  if (await page.evaluate(() => window.AircovePortal.state.session.intendedRoute) !== "care") {
+    throw new Error("Care auth guard did not retain intended route");
+  }
+  await page.evaluate(() => window.AircovePortal.go("seo.landing"));
+  await page.waitForSelector('[data-route="seo.landing"][data-module="seo-parity-placeholder"]', { timeout: 2000 });
+  if (!await page.locator('[data-module="public-nav"]').count()) throw new Error("SEO parity route depends on authenticated shell");
+  await page.evaluate(() => {
+    if (window.AircovePortal.state.moduleStatus.care !== undefined || window.AircovePortal.state.moduleData.care !== undefined) {
+      throw new Error("S1 constructed or loaded a protected Care adapter payload");
+    }
+    window.AircovePortal.state.session.authenticated = true;
+    window.AircovePortal.state.session.intendedRoute = null;
+  });
+
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "#/orders/%23SV-2381?tab=invoice");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  });
+  await page.waitForFunction(() => window.AircovePortal.state.route === "order.detail" && window.AircovePortal.state.currentOrderId === "#SV-2381");
+  await page.evaluate(() => window.AircovePortal.ACTIONS["order.back"]());
+  if (await page.evaluate(() => window.location.hash) !== "#/orders?tab=invoice") {
+    throw new Error("hash route query was not preserved");
+  }
+  await page.evaluate(() => window.AircovePortal.go("support"));
+  if (await page.evaluate(() => window.location.hash) !== "#/support") {
+    throw new Error("order query leaked into unrelated hash route");
+  }
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "#/proposals/s4?view=map");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  });
+  await page.waitForFunction(() => window.AircovePortal.state.route === "proposal.detail" && window.AircovePortal.state.currentSiteId === "s4");
+  await page.evaluate(() => window.AircovePortal.ACTIONS["proposal.review"]());
+  if (await page.evaluate(() => window.location.hash) !== "#/proposals?view=map") {
+    throw new Error("proposal family query was not preserved");
+  }
+  await page.evaluate(() => window.AircovePortal.go("orders.list"));
+  if (await page.evaluate(() => window.location.hash) !== "#/orders") {
+    throw new Error("proposal query leaked into order route family");
+  }
+  await page.evaluate(() => {
+    window.history.pushState({}, "", "#/orders/%E0%A4%A?bad=1");
+    window.dispatchEvent(new HashChangeEvent("hashchange"));
+  });
+  await page.waitForFunction(() => window.AircovePortal.state.route === "orders.list");
+  await page.evaluate(() => window.AircovePortal.go("support"));
+  if (await page.evaluate(() => window.location.hash) !== "#/support") {
+    throw new Error("malformed detail query leaked after unknown-route handling");
+  }
 
   await page.evaluate(() => {
     const expectedModules = [

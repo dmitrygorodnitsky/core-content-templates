@@ -1,13 +1,8 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, cartCount, isModuleEnabled, state } from "../../state.js";
-import { go } from "../../actions.js";
+import { activeProfile, activeVerticalConfig, cartCount, isModuleEnabled, state } from "../../state.js";
 import { routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
-import { Toggle } from "../primitives/Toggle.js";
-import { Profile } from "../../routes/ProfilePage.js";
-import { Activity } from "../../routes/ActivityPage.js";
-import { Calendar } from "../../routes/CalendarPage.js";
 
 export function TopNav() {
   var profile = activeProfile();
@@ -17,7 +12,7 @@ export function TopNav() {
     return h("span", {
       "class": "nav-link" + (active ? " nav-link--active" : ""),
       "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
-    }, n.label);
+    }, navLabel(n));
   });
 
   var actions = [
@@ -42,8 +37,8 @@ export function TopNav() {
   if (state.mobileNav) {
     nav.appendChild(h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
       navItems.map(function (n) {
-        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail");
-        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, n.label);
+        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
+        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
       })
     ));
   }
@@ -53,6 +48,10 @@ export function TopNav() {
 function isNavItemEnabled(item) {
   var route = routeRegistry[item.key];
   return !!(route && (route.public || isModuleEnabled(route.module)));
+}
+
+function navLabel(item) {
+  return item.key === "care" ? activeVerticalConfig().careNavLabel : item.label;
 }
 
 /* =========================================================

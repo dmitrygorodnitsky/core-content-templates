@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
 import { isModuleEnabled, isPublic, state } from "./state.js";
-import { routeByPath, routePath, routeRegistry } from "./config.js";
+import { matchRoutePath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
 import { OrderDetail } from "./routes/OrderDetailPage.js";
@@ -40,8 +40,16 @@ export function resolveRoute(routeId) {
     return { id: "auth.phone", reason: "unauthorized" };
   }
 
-  if (!isModuleEnabled(activeRoute.module)) {
+  if (requested === "care" && !isModuleEnabled("care")) {
+    return { id: "care", reason: "disabled" };
+  }
+
+  if (!activeRoute.public && !isModuleEnabled(activeRoute.module)) {
     return { id: defaultRoute, reason: "disabled" };
+  }
+
+  if (requested === "care") {
+    return { id: "care", reason: careAccessReason() };
   }
 
   return { id: requested, reason: null };
@@ -64,21 +72,38 @@ function isRouteReachable(routeId) {
 
 export function routeFromLocation() {
   if (state.config.routerMode === "memory") return state.route;
-  if (state.config.routerMode === "history") return routeByPath(window.location.pathname) || state.route;
-  var hash = window.location.hash.replace(/^#/, "");
-  if (!hash) return state.route;
-  if (hash.charAt(0) === "/") return routeByPath(hash) || state.route;
-  return hash;
+  var raw;
+  if (state.config.routerMode === "history") {
+    raw = window.location.pathname + window.location.search;
+  } else {
+    raw = window.location.hash.replace(/^#/, "");
+    if (!raw) return state.route;
+    if (raw.charAt(0) !== "/") {
+      var routeId = raw.split("?", 1)[0];
+      setRouteQuery(routeId, raw);
+      return routeId;
+    }
+  }
+  var match = matchRoutePath(raw);
+  if (!match) {
+    clearRouteQuery();
+    return "__unknown__";
+  }
+  setRouteQuery(match.id, raw);
+  applyRouteParams(match);
+  return match.id;
 }
 
 export function writeRouteToLocation(routeId) {
+  scopeRouteQuery(routeId);
   if (state.config.routerMode === "memory") return;
-  var path = routePath(routeId);
+  var path = routePath(routeId, paramsForRoute(routeId));
+  var query = state.routeQuery || "";
   if (state.config.routerMode === "history") {
-    if (window.location.pathname !== path) window.history.pushState({}, "", path);
+    if (window.location.pathname + window.location.search !== path + query) window.history.pushState({}, "", path + query);
     return;
   }
-  var nextHash = "#" + path;
+  var nextHash = "#" + path + query;
   if (window.location.hash !== nextHash) window.history.pushState({}, "", nextHash);
 }
 
@@ -119,8 +144,46 @@ export function renderRoute() {
     case "landing":     return Landing();
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
+    case "care":        return CarePlaceholder(resolved.reason);
+    case "seo.landing": return SeoParityPlaceholder();
     default:            return RouteFallback(resolved.reason);
   }
+}
+
+function CarePlaceholder(reason) {
+  var copy = {
+    disabled: ["Care is not enabled", "This module is disabled for the current portal configuration."],
+    unauthorized: ["Care access required", "Your current account does not have access to this Care hub."],
+    loading: ["Checking Care access", "Access is still being resolved. Protected Care data has not been requested."],
+    error: ["Care access unavailable", "Access could not be verified. Protected Care data has not been requested."],
+    "granted-placeholder": ["Care is configured", "Access is granted. The accepted Care interface and protected payload transfer in S2."],
+  };
+  var item = copy[reason] || copy.unauthorized;
+  var stateName = reason === "granted-placeholder" ? "fallback" : reason;
+  var access = careAccessAttributes(reason);
+  return h("section", {
+    "class": "page",
+    "data-route": "care",
+    "data-module": "care-placeholder",
+    "data-visual-id": "care-s1-placeholder",
+    "data-state": stateName,
+    "data-access": access.status,
+    "data-reason-code": access.reasonCode || undefined,
+  }, [EmptyState({ glyph: "i", title: item[0], desc: item[1] })]);
+}
+
+function SeoParityPlaceholder() {
+  return h("section", {
+    "class": "page",
+    "data-route": "seo.landing",
+    "data-module": "seo-parity-placeholder",
+    "data-visual-id": "seo-s1-placeholder",
+    "data-state": "fallback",
+  }, [EmptyState({
+    glyph: "i",
+    title: "SEO parity route",
+    desc: "This portal route exists only for executable parity. S3/S6 own the separate public CMS document without portal authentication, shell, or hash routing.",
+  })]);
 }
 
 function RouteFallback(reason) {
@@ -132,6 +195,67 @@ function RouteFallback(reason) {
       action: { variant: "btn--ghost", label: "Back to home", action: "nav.go", id: "orders.list" }
     })
   ]);
+}
+
+function careAccessReason() {
+  var access = state.access && state.access.care;
+  var status = access && access.status;
+  if (status === "granted") return "granted-placeholder";
+  if (status === "checking") return "loading";
+  if (status === "error") return "error";
+  return "unauthorized";
+}
+
+function careAccessAttributes(reason) {
+  if (reason === "disabled") return { status: "disabled", reasonCode: "module-disabled" };
+  var access = state.access && state.access.care;
+  var status = access && access.status;
+  if (reason === "granted-placeholder") status = "granted";
+  else if (reason === "loading") status = "checking";
+  else if (reason === "error") status = "error";
+  else if (status !== "not-entitled" && status !== "forbidden") status = "not-entitled";
+  return { status: status, reasonCode: access && access.reasonCode };
+}
+
+function applyRouteParams(match) {
+  if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
+  if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+}
+
+function paramsForRoute(routeId) {
+  if (routeId === "order.detail") {
+    if (!state.currentOrderId) state.currentOrderId = state.orders[0] && state.orders[0].id;
+    return { id: state.currentOrderId };
+  }
+  if (routeId === "proposal.detail") return { id: state.currentSiteId };
+  return {};
+}
+
+function queryFrom(value) {
+  var index = String(value || "").indexOf("?");
+  return index === -1 ? "" : String(value).slice(index);
+}
+
+function routeFamily(routeId) {
+  if (routeId === "orders.list" || routeId === "order.detail") return "orders";
+  if (routeId === "proposals.list" || routeId === "proposal.detail") return "proposals";
+  return null;
+}
+
+function setRouteQuery(routeId, value) {
+  var query = queryFrom(value);
+  state.routeQuery = query;
+  state.routeQueryOwner = query ? routeFamily(routeId) : null;
+}
+
+function scopeRouteQuery(routeId) {
+  var family = routeFamily(routeId);
+  if (!family || state.routeQueryOwner !== family) clearRouteQuery();
+}
+
+function clearRouteQuery() {
+  state.routeQuery = "";
+  state.routeQueryOwner = null;
 }
 
 /* =========================================================

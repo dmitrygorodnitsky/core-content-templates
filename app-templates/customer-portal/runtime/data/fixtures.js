@@ -30,7 +30,9 @@
     "Lawn & Garden": "lawn",
     "Pool & Spa": "pool",
     "Roofing": "roofing",
-    "Pest Control": "pest"
+    "Pest Control": "pest",
+    "Health": "health",
+    "Beauty": "beauty"
   };
 
   /* ---------- Verticals (theme content) ---------- */
@@ -198,6 +200,60 @@
       ],
       reminder: { title: "Quarterly treatment due", desc: "Last perimeter treatment was 80 days ago" },
       prop: { svc: "Perimeter Protection Program", surfaces: ["Perimeter", "Foundation", "Lawn Zone", "Interior", "Crawl Space"], months: "Apr\u2013Aug", unlimDesc: "Unlimited re-treatments between scheduled visits.", colA: "Perimeter spray", colB: "Interior treatment", unitA: "/ spray", unitB: "/ treatment" }
+    },
+    "Health": {
+      slug: "health", accent: "#0b7285",
+      hero: { badge: "\u2695\ufe0f Licensed & background-checked", title: "Care at home, coordinated.", sub: "Home care visits, physio and nursing support by licensed providers. One schedule the whole family can follow \u2014 documents kept secure." },
+      svc: [
+        { name: "Home Care Visit", price: "$75", tagline: "Support at home, on schedule", duration: "~60 min", includes: ["The same care team every visit", "Visit summary in your portal", "Family can follow the schedule"] },
+        { name: "Physio Session", price: "$95", tagline: "Mobility work at home", duration: "~60 min", includes: ["Licensed physiotherapist", "Plan milestones updated after each session", "Home exercise notes included"] },
+        { name: "Nursing Visit", price: "$110", tagline: "In-home nursing support", duration: "~45 min", includes: ["Registered nurse", "Coordinated with your care plan", "Secure visit notes"] },
+        { name: "Care Assessment", price: "Quote", tagline: "Care plan intake & setup", duration: "~90 min", includes: ["In-home intake assessment", "Personal care plan drafted", "Family walkthrough included"] }
+      ],
+      orderNames: ["Home care visit", "Physio session", "Nursing visit", "Care assessment", "Follow-up visit"],
+      wt: null,
+      plan: { name: "Care Plan", plusName: "Care Plus", tag: "Best for one household", desc: "A consistent care team, priority scheduling.", headline: "Pricing that fits your care",
+        features: ["The same care team, visit to visit", "Priority scheduling", "Quarterly plan reviews", "Family access included"],
+        plusFeatures: ["Weekly scheduled visits", "Same-week rescheduling", "Dedicated care coordinator", "24/7 phone line"] },
+      feat: { badge: "New \u00b7 Fitted & installed", title: "Home Safety Rail Kit \u2014 steadier every day", desc: "Grab rails and threshold ramps, fitted by insured installers in one visit.", cta: "Buy & install \u00b7 $240", fin: "or $20/mo \u00b7 0% APR" },
+      cats: [{ key: "safety", label: "Home safety" }, { key: "mobility", label: "Mobility" }, { key: "comfort", label: "Daily comfort" }],
+      products: [
+        { cat: "safety", tag: "Safety", name: "Grab Rail Set", blurb: "Bathroom & hallway \u00b7 installed", price: "$68", priceNum: 68 },
+        { cat: "safety", tag: "Safety", name: "Non-Slip Mat Pack", blurb: "Bath, shower & entry", price: "$32", priceNum: 32 },
+        { cat: "mobility", tag: "Mobility", name: "Folding Walker", blurb: "Light frame \u00b7 folds flat", price: "$129", priceNum: 129 },
+        { cat: "mobility", tag: "Mobility", name: "Threshold Ramp", blurb: "Doorways up to 6 cm", price: "$84", priceNum: 84 },
+        { cat: "comfort", tag: "Comfort", name: "Adjustable Bed Wedge", blurb: "Rest & reading support", price: "$59", priceNum: 59 },
+        { cat: "comfort", tag: "Comfort", name: "Big-Button Phone", blurb: "Loud, simple, reliable", price: "$49", priceNum: 49 }
+      ],
+      reminder: { title: "Plan review due", desc: "Your quarterly care plan review is due this month" },
+      prop: { svc: "Home Safety Program", surfaces: ["Bathroom", "Bedroom", "Hallway", "Kitchen", "Entry"], months: "Year-round", unlimDesc: "Scheduled visits plus unlimited plan adjustments.", colA: "Care visit", colB: "Physio session", unitA: "/ visit", unitB: "/ session" }
+    },
+    "Beauty": {
+      slug: "beauty", accent: "#d6336c",
+      hero: { badge: "\u2728 Vetted, licensed specialists", title: "Salon-level care, at your door.", sub: "Hair, nails and skin by vetted specialists \u2014 at home or in-studio. Formulas, shades and routine notes remembered visit to visit." },
+      svc: [
+        { name: "Hair Styling", price: "$65", tagline: "Cut, color & blowout", duration: "~75 min", includes: ["Licensed, vetted stylists", "Your color formulas saved", "Rebook the same specialist in a tap"] },
+        { name: "Manicure & Nails", price: "$45", tagline: "Classic to gel, at home", duration: "~60 min", includes: ["Sanitised, sealed pro kit", "Gel, classic or press-on", "Shade saved to your profile"] },
+        { name: "Facial Treatment", price: "$85", tagline: "A routine that carries over", duration: "~60 min", includes: ["Routine notes after every visit", "Products logged to your profile", "Sensitive-skin options"] },
+        { name: "Event & Bridal Package", price: "Quote", tagline: "Trials, timeline, day-of team", duration: "custom", includes: ["Trial session included", "Day-of team scheduling", "One coordinator end-to-end"] }
+      ],
+      orderNames: ["Blowout & style", "Gel manicure", "Facial treatment", "Bridal trial", "Root touch-up"],
+      wt: null,
+      plan: { name: "Glow Plan", plusName: "Glow Plus", tag: "Best for a monthly routine", desc: "Member pricing, priority slots with your specialist.", headline: "Pricing that fits your routine",
+        features: ["Member pricing on every visit", "Priority slots with your specialist", "1 style refresh a quarter", "Formulas & routine history saved"],
+        plusFeatures: ["2 visits a month included", "Same-week rebooking guarantee", "\u201320% on all products", "Event styling priority"] },
+      feat: { badge: "New \u00b7 Pro-grade", title: "Silk Repair Set \u2014 salon results between visits", desc: "The treatment line your stylist uses, sized for home.", cta: "Buy \u00b7 $64", fin: "or 4 \u00d7 $16 \u00b7 no fees" },
+      cats: [{ key: "hair", label: "Hair care" }, { key: "nails", label: "Nails" }, { key: "skin", label: "Skin" }],
+      products: [
+        { cat: "hair", tag: "Hair", name: "Silk Repair Set", blurb: "Post-color bond care", price: "$64", priceNum: 64 },
+        { cat: "hair", tag: "Hair", name: "Heat Shield Spray", blurb: "Before every hot tool", price: "$28", priceNum: 28 },
+        { cat: "nails", tag: "Nails", name: "Cuticle Care Kit", blurb: "Between-visit upkeep", price: "$22", priceNum: 22 },
+        { cat: "nails", tag: "Nails", name: "Gel Removal Kit", blurb: "Damage-free at home", price: "$18", priceNum: 18 },
+        { cat: "skin", tag: "Skin", name: "Hydration Serum", blurb: "Your specialist\u2019s pick", price: "$46", priceNum: 46 },
+        { cat: "skin", tag: "Skin", name: "Overnight Mask", blurb: "Twice-a-week routine", price: "$34", priceNum: 34 }
+      ],
+      reminder: { title: "Roots check-in", desc: "It has been 6 weeks since your last color visit" },
+      prop: { svc: "Routine Membership", surfaces: ["Hair", "Nails", "Skin", "Massage", "Makeup"], months: "Year-round", unlimDesc: "Monthly routine visits plus member pricing on extras.", colA: "Styling", colB: "Treatment", unitA: "/ visit", unitB: "/ treatment" }
     }
   };
 
@@ -232,12 +288,15 @@
 
   /* Activity feed (fixture; grouped, newest first) */
   function buildFeed(v) {
-    return [
-      { day: "Today", items: [
-        { type: "orders", title: "Weather Trigger \u2014 confirm your visit", desc: v.wt.trigger + " at Office \u00b7 respond by 8:00 PM today", time: "5:12 AM", dot: "#0e8fc4", iconBg: "rgba(14,143,196,.16)", action: "Review", act: "weather", unread: true },
+    var todayItems = v.wt ? [
+      { type: "orders", title: "Weather Trigger \u2014 confirm your visit", desc: v.wt.trigger + " at Office \u00b7 respond by 8:00 PM today", time: "5:12 AM", dot: "#0e8fc4", iconBg: "rgba(14,143,196,.16)", action: "Review", act: "weather", unread: true }
+    ] : [];
+    todayItems = todayItems.concat([
         { type: "orders", title: "Daniel is on the way", desc: v.orderNames[0] + " \u00b7 arriving in ~14 min", time: "2:41 PM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", action: "Track", act: "orders", unread: true },
         { type: "orders", title: "Technician assigned", desc: "Daniel R. (\u2605 4.9) will handle your visit", time: "9:02 AM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", unread: true }
-      ] },
+    ]);
+    return [
+      { day: "Today", items: todayItems },
       { day: "Yesterday", items: [
         { type: "billing", title: "Payment received", desc: "$480 \u00b7 " + v.orderNames[3] + " #SV-2381", time: "4:18 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", action: "View invoice", act: "invoice" },
         { type: "orders", title: "Service completed", desc: v.orderNames[3] + " finished \u2014 you rated it \u2605\u2605\u2605\u2605\u2605", time: "3:50 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)" }
@@ -318,68 +377,21 @@
     return [
       { id: "#SV-2402", name: n[0], date: "Today",    status: "inprogress", price: "$60",  dot: O[0], iconBg: O[1], locationId: "home",   y: 2026, m: 0, d: 15 },
       { id: "#SV-3312", name: n[1], date: "Tomorrow", status: "scheduled",  price: "$94",  dot: B[0], iconBg: B[1], locationId: "office", y: 2026, m: 0, d: 16,
-        wt: { status: "pending", trigger: v.wt.trigger, detected: "Today \u00b7 5:10 AM", deadline: "Today \u00b7 8:00 PM", auto: auto } },
+        wt: v.wt ? { status: "pending", trigger: v.wt.trigger, detected: "Today \u00b7 5:10 AM", deadline: "Today \u00b7 8:00 PM", auto: auto } : undefined },
       { id: "#SV-2410", name: n[2], date: "Jan 30",   status: "scheduled",  price: "$120", dot: A[0], iconBg: A[1], locationId: "home",   y: 2026, m: 0, d: 30 },
       { id: "#SV-2381", name: n[3], date: "Jan 12",   status: "completed",  price: "$480", dot: G[0], iconBg: G[1], locationId: "home",   y: 2026, m: 0, d: 12, photos: true },
       { id: "#SV-3290", name: n[1], date: "Jan 5",    status: "completed",  price: "$94",  dot: B[0], iconBg: B[1], locationId: "office", y: 2026, m: 0, d: 5,  photos: true,
-        wt: { status: "auto", trigger: v.wt.past, detected: "Jan 5 \u00b7 4:46 AM", deadline: "Jan 5 \u00b7 7:00 AM", sla: v.wt.sla } },
+        wt: v.wt ? { status: "auto", trigger: v.wt.past, detected: "Jan 5 \u00b7 4:46 AM", deadline: "Jan 5 \u00b7 7:00 AM", sla: v.wt.sla } : undefined },
       { id: "#SV-2356", name: n[4], date: "Oct 24",   status: "completed",  price: "$45",  dot: G[0], iconBg: G[1], locationId: "office", y: 2025, m: 9, d: 24 }
     ];
   }
 
-  /* ============================================================
-     PORTAL PROFILES — configure the whole portal per vertical.
-     'onDemand' (HVAC-style): booking-first, full commerce.
-     'stormOps' (weather-triggered verticals: snow, roofing, pool,
-     lawn, pest): a Home + weather-operational Calendar + contracts;
-     primary action is "Request service", not "+ Book".
-     This is DEPLOYMENT CONFIG (like data-theme), not a user choice.
-     ============================================================ */
-  var profiles = {
-    onDemand: {
-      id: "onDemand",
-      nav: [
-        { key: "orders.list", label: "Orders" },
-        { key: "proposals.list", label: "Proposals" },
-        { key: "services", label: "Services" },
-        { key: "pricing", label: "Pricing" },
-        { key: "products", label: "Products" },
-        { key: "support", label: "Support" }
-      ],
-      primary: { label: "+ Book", action: "booking.open" },
-      weatherCalendar: false,
-      showCart: true,
-      drawerTitle: "Book a service"
-    },
-    stormOps: {
-      id: "stormOps",
-      nav: [
-        { key: "orders.list", label: "Home" },
-        { key: "calendar", label: "Calendar" },
-        { key: "proposals.list", label: "Contracts" },
-        { key: "services", label: "Services" },
-        { key: "activity", label: "Activity" },
-        { key: "support", label: "Support" }
-      ],
-      primary: { label: "Request service", action: "service.request" },
-      weatherCalendar: true,
-      showCart: false,
-      drawerTitle: "Request service"
-    }
-  };
-  var profileFor = {
-    "HVAC": "onDemand",
-    "Snow Removal": "stormOps",
-    "Lawn & Garden": "stormOps",
-    "Pool & Spa": "stormOps",
-    "Roofing": "stormOps",
-    "Pest Control": "stormOps"
-  };
-
   /* Weather-operational calendar (stormOps). Derives service names +
      trigger copy from the active vertical so it fits all 5 verticals. */
   function stormCalendar(themeName) {
-    var v = themes[themeName] || themes["Snow Removal"];
+    var v = themes[themeName];
+    if (!v) throw new Error("Unknown calendar theme: " + themeName);
+    if (!v.wt) return null;
     var s0 = v.svc[0].name, s1 = v.svc[1].name;
     return {
       contract: { rule: "Auto-dispatch by weather trigger", note: v.wt.sla },
@@ -425,8 +437,6 @@
     quickReplies: quickReplies,
     helpTopics: helpTopics,
     chatReply: chatReply,
-    profiles: profiles,
-    profileFor: profileFor,
     stormCalendar: stormCalendar,
     addresses: addresses,
     cards: cards,

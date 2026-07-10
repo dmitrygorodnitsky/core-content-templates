@@ -1,8 +1,8 @@
 {
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
-  "wave": 5,
-  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. 'implemented' marks what ships so far; the rest are wired into the shell/contract and land in later waves.",
+  "wave": 9,
+  "description": "S1 control-plane coverage. Health, Beauty, appointments, Care guards, SEO parity, and parameterized detail URLs are wired; Care visuals/data and the public SEO document remain owned by later stages.",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -10,30 +10,33 @@
     "weatherTriggers": true,
     "darkMode": true
   },
-  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"],
+  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"],
   "modes": ["light", "dark"],
   "profiles": {
-    "note": "Portal profile is config-driven per vertical (fixtures.profileFor). Drives nav, primary action, cart, and which Calendar renders.",
-    "onDemand": { "verticals": ["HVAC"], "calendar": "MonthCalendar", "primary": "+ Book" },
-    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service" }
+    "note": "Profile selection is config-driven. Care navigation is present only when the module is enabled; its label comes from the vertical registry.",
+    "onDemand": { "verticals": ["HVAC"], "calendar": "MonthCalendar", "primary": "+ Book", "care": true, "cart": true },
+    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service", "care": true, "cart": false },
+    "appointments": { "verticals": ["Health", "Beauty"], "calendar": "MonthCalendar", "primary": "+ Book", "care": true, "cart": true, "weather": false }
   },
   "viewports": [390, 768, 1180, 1440],
   "routes": [
-    { "id": "landing",          "path": "/",                 "wave": 6, "implemented": true,  "auth": "public", "states": ["ready"], "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)." },
-    { "id": "auth.phone",       "path": "/login",            "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='phone'" },
-    { "id": "auth.code",        "path": "/login/verify",     "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='code'; 4-digit OTP" },
-    { "id": "orders.list",      "path": "/orders",           "wave": 1, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
-    { "id": "order.detail",     "path": "/orders/:id",       "wave": 2, "implemented": true,  "auth": "private", "states": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error"] },
-    { "id": "calendar",         "path": "/calendar",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"], "variants": { "onDemand": "month grid", "stormOps": "weather-ops agenda: served, clear, storm-watch, snow-expected + event statuses scheduled/on-route/completed/skipped/delayed" } },
-    { "id": "services",         "path": "/services",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "loading"] },
-    { "id": "pricing",          "path": "/pricing",          "wave": 3, "implemented": true,  "auth": "private", "states": ["ready"] },
-    { "id": "products",         "path": "/products",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "loading"] },
-    { "id": "checkout",         "path": "/checkout",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "pending-action", "success-toast"] },
-    { "id": "proposals.list",   "path": "/proposals",        "wave": 4, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
-    { "id": "proposal.detail",  "path": "/proposals/:id",    "wave": 4, "implemented": true,  "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
-    { "id": "profile",          "path": "/profile",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "success-toast"] },
-    { "id": "activity",         "path": "/activity",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
-    { "id": "support",          "path": "/support",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "pending-action"] }
+    { "id": "landing", "path": "/", "implemented": true, "auth": "public", "states": ["ready"] },
+    { "id": "seo.landing", "path": "/seo-preview", "implemented": false, "auth": "public", "states": ["fallback"], "disposition": "S1 parity placeholder; S3/S6 own a separate public no-auth/no-hash CMS document" },
+    { "id": "auth.phone", "path": "/login", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
+    { "id": "auth.code", "path": "/login/verify", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
+    { "id": "orders.list", "path": "/orders", "implemented": true, "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
+    { "id": "order.detail", "path": "/orders/:id", "implemented": true, "auth": "private", "states": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error"] },
+    { "id": "calendar", "path": "/calendar", "implemented": true, "auth": "private", "states": ["ready", "empty"], "variants": { "onDemand": "month grid", "stormOps": "weather-operations agenda", "appointments": "month grid without weather" } },
+    { "id": "activity", "path": "/activity", "implemented": true, "auth": "private", "states": ["ready", "empty"] },
+    { "id": "services", "path": "/services", "implemented": true, "auth": "private", "states": ["ready", "loading"] },
+    { "id": "pricing", "path": "/pricing", "implemented": true, "auth": "private", "states": ["ready"] },
+    { "id": "products", "path": "/products", "implemented": true, "auth": "private", "states": ["ready", "empty", "loading"] },
+    { "id": "checkout", "path": "/checkout", "implemented": true, "auth": "private", "states": ["ready", "empty", "pending-action", "success-toast"] },
+    { "id": "proposals.list", "path": "/proposals", "implemented": true, "auth": "private", "states": ["ready", "empty"] },
+    { "id": "proposal.detail", "path": "/proposals/:id", "implemented": true, "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
+    { "id": "profile", "path": "/profile", "implemented": true, "auth": "private", "states": ["ready", "success-toast"] },
+    { "id": "support", "path": "/support", "implemented": true, "auth": "private", "states": ["ready", "pending-action"] },
+    { "id": "care", "path": "/care", "implemented": false, "auth": "private", "states": ["fallback", "loading", "error", "disabled", "unauthorized"], "disposition": "S1 control-plane placeholder only; no protected adapter or payload" }
   ],
   "actions": [
     "auth.sendCode", "auth.verifyCode",
@@ -43,8 +46,7 @@
     "proposal.review", "proposal.approve", "proposal.requestRevision", "proposal.decline",
     "cart.addItem", "cart.removeItem", "cart.open", "checkout.placeOrder",
     "service.request", "service.requestExtra", "service.reportIssue", "access.confirm", "access.update",
-    "membership.activate",
-    "profile.updateAddress", "profile.setDefaultPayment",
+    "membership.activate", "profile.updateAddress", "profile.setDefaultPayment",
     "support.open", "support.sendMessage",
     "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
   ],
@@ -63,10 +65,12 @@
     "support": ["ready", "pending-action"],
     "landing": ["ready"],
     "auth.phone": ["ready", "validation-error"],
-    "auth.code": ["ready", "validation-error"]
+    "auth.code": ["ready", "validation-error"],
+    "care": ["fallback", "loading", "error", "disabled", "unauthorized"],
+    "seo.landing": ["fallback"]
   },
   "notImplementedYet": {
-    "routes": [],
-    "note": "All required routes are implemented. Remaining gaps are component-level states (e.g. per-field disabled) that Codex wires with real validation."
+    "routes": ["care", "seo.landing"],
+    "note": "Both routes are intentionally honest S1 placeholders. Care payload/UI transfers in S2; reusable SEO and the standalone public document transfer in S3/S6."
   }
 }

@@ -1,7 +1,12 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "runtime-s1-transfer",
-  "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
+  "version": "runtime-wave9-s1-control-plane",
+  "format": "no-build ES modules: source.html + 6 stylesheets + 53 src JavaScript modules + data/fixtures.js",
+  "fileInventory": {
+    "stylesheets": 6,
+    "srcJavaScript": 53,
+    "runtimeJavaScript": 54
+  },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
   "dataAttributes": {
@@ -9,7 +14,7 @@
     "data-module": "reusable component id (matches components[].id)",
     "data-bind": "fixture field(s) the rendered value came from",
     "data-action": "user command name (matches actions[])",
-    "data-state": "ui state on the element (ready|loading|empty|error|pending-action|drawer-open|mobile-navigation-open|active)",
+    "data-state": "UI state. Shared production grammar: ready|loading|empty|error|fallback|disabled|unauthorized|validation-error|pending-action|success-toast|drawer-open|mobile-navigation-open|active. Existing component/entity states such as auth-phone/auth-code, selected/current/on/off, and order/proposal/weather/service statuses remain defined by their component contracts and scenarios.json.",
     "data-visual-id": "stable id for screenshot parity / visual transfer"
   },
   "themingContract": {
@@ -21,33 +26,39 @@
         "lawn",
         "pool",
         "roofing",
-        "pest"
+        "pest",
+        "health",
+        "beauty"
       ],
       "data-mode": [
         "light",
         "dark"
       ]
     },
-    "note": "data-theme (vertical) is CONFIG-DRIVEN — set once from deployment config, NOT a user control (the in-app theme picker was removed). data-mode (light/dark) stays a user toggle. All colors derive from CSS custom properties in styles.css; app.js only flips these two attributes."
+    "note": "data-theme is the validated visual skin from config.theme and controls CSS tokens only. config.vertical separately owns fixture/content/business behavior, weather capability, Care label, default profile, and orders. Neither axis is an end-user picker. data-mode (light/dark) remains a user toggle."
   },
   "portalProfiles": {
-    "mechanism": "config-driven by vertical (fixtures.profileFor maps theme -> profile). Sets nav set, primary action, whether the weather-operational Calendar is used, and cart visibility.",
+    "mechanism": "config.vertical selects verticalProfiles business/content facts and a portalProfiles default. config.theme selects visual CSS tokens only. Profiles set nav, primary action, calendar mode, cart visibility, and enabled modules; verticalProfiles supplies the Care label and weather capability.",
     "profiles": {
       "onDemand": {
         "verticals": [
           "HVAC"
         ],
         "nav": [
-          "orders.list",
-          "proposals.list",
-          "services",
-          "pricing",
-          "products",
-          "support"
+          { "key": "orders.list", "label": "Orders" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "proposals.list", "label": "Proposals" },
+          { "key": "services", "label": "Services" },
+          { "key": "pricing", "label": "Pricing" },
+          { "key": "products", "label": "Products" },
+          { "key": "support", "label": "Support" }
         ],
-        "primary": "booking.open (+ Book)",
+        "enabledModules": ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
         "weatherCalendar": false,
-        "cart": true
+        "calendarVariant": "month",
+        "showCart": true,
+        "drawerTitle": "Book a service"
       },
       "stormOps": {
         "verticals": [
@@ -58,20 +69,64 @@
           "Pest Control"
         ],
         "nav": [
-          "orders.list (Home)",
-          "calendar",
-          "proposals.list (Contracts)",
-          "services",
-          "activity",
-          "support"
+          { "key": "orders.list", "label": "Home" },
+          { "key": "calendar", "label": "Calendar" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "proposals.list", "label": "Contracts" },
+          { "key": "services", "label": "Services" },
+          { "key": "activity", "label": "Activity" },
+          { "key": "support", "label": "Support" }
         ],
-        "primary": "service.request (Request service)",
+        "enabledModules": ["orders", "calendar", "activity", "proposals", "care", "services", "profile", "support"],
+        "primary": { "label": "Request service", "action": "service.request" },
         "weatherCalendar": true,
-        "cart": false
+        "calendarVariant": "storm",
+        "showCart": false,
+        "drawerTitle": "Request service"
+      },
+      "appointments": {
+        "verticals": [
+          "Health",
+          "Beauty"
+        ],
+        "nav": [
+          { "key": "orders.list", "label": "Appointments" },
+          { "key": "calendar", "label": "Calendar" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "services", "label": "Services" },
+          { "key": "pricing", "label": "Pricing" },
+          { "key": "products", "label": "Products" },
+          { "key": "support", "label": "Support" }
+        ],
+        "enabledModules": ["orders", "calendar", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": true,
+        "drawerTitle": "Book an appointment"
       }
     },
-    "note": "Calendar renders StormCalendar (weather-operational) for stormOps and MonthCalendar for onDemand. StormCalendar derives service names + trigger copy from the active vertical, so one component serves all 5 weather-triggered verticals."
+    "note": "Calendar renders StormCalendar only when the business vertical supports weather and the effective profile is stormOps; visual config.theme never changes this decision. Health and Beauty have no weather fixture and never fall back to Snow content. Care labels come from the business vertical registry."
   },
+  "routeRegistry": [
+    { "id": "landing", "path": "/", "module": "landing", "auth": "public", "status": "done" },
+    { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "s1-placeholder", "productionOwner": "separate public CMS document in S3/S6" },
+    { "id": "auth.phone", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "auth.code", "path": "/login/verify", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "orders.list", "path": "/orders", "module": "orders", "auth": "private", "status": "done" },
+    { "id": "order.detail", "path": "/orders/:id", "module": "orders", "auth": "private", "status": "done" },
+    { "id": "calendar", "path": "/calendar", "module": "calendar", "auth": "private", "status": "done" },
+    { "id": "activity", "path": "/activity", "module": "activity", "auth": "private", "status": "done" },
+    { "id": "services", "path": "/services", "module": "services", "auth": "private", "status": "done" },
+    { "id": "pricing", "path": "/pricing", "module": "pricing", "auth": "private", "status": "done" },
+    { "id": "products", "path": "/products", "module": "products", "auth": "private", "status": "done" },
+    { "id": "checkout", "path": "/checkout", "module": "checkout", "auth": "private", "status": "done" },
+    { "id": "proposals.list", "path": "/proposals", "module": "proposals", "auth": "private", "status": "done" },
+    { "id": "proposal.detail", "path": "/proposals/:id", "module": "proposals", "auth": "private", "status": "done" },
+    { "id": "profile", "path": "/profile", "module": "profile", "auth": "private", "status": "done" },
+    { "id": "support", "path": "/support", "module": "support", "auth": "private", "status": "done" },
+    { "id": "care", "path": "/care", "module": "care", "auth": "private", "status": "s1-placeholder", "guard": "module + session + control-plane entitlement" }
+  ],
   "components": [
     {
       "id": "app-shell",
@@ -856,6 +911,24 @@
       ],
       "wave": 2,
       "status": "done"
+    },
+    {
+      "id": "care-placeholder",
+      "factory": "CarePlaceholder",
+      "props": [
+        "access"
+      ],
+      "wave": 9,
+      "status": "partial",
+      "note": "S1 control-plane placeholder only; protected Care payload/components begin in S2."
+    },
+    {
+      "id": "seo-parity-placeholder",
+      "factory": "SeoParityPlaceholder",
+      "props": [],
+      "wave": 9,
+      "status": "partial",
+      "note": "Executable parity route only; not the production SEO document."
     }
   ],
   "dataBindings": [

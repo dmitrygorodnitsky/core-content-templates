@@ -34,7 +34,7 @@ var mount, shell, resizeObs, runtime, liveRetryPromise;
 export function render() {
   /* theming: declarative attributes only */
   var root = document.documentElement;
-  root.setAttribute("data-theme", F.themes[state.theme].slug);
+  root.setAttribute("data-theme", state.config.theme);
   root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
 
   clear(mount);
