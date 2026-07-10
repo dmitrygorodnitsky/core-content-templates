@@ -3,7 +3,7 @@
 Created: 2026-07-10
 Package path: `docs/stream-tasks/customer-portal-wave9-runtime-program/`
 Status: program container
-Current target: S0 Contract And Baseline (`in_progress`)
+Current target: S0 Contract And Baseline (`done`; S1 not yet opened)
 Execution mode: sequential stage-to-done loop
 
 ## Goal
@@ -114,7 +114,7 @@ Out of scope:
 
 | zone | primary paths | owner | status | boundary |
 | --- | --- | --- | --- | --- |
-| contract-baseline | `app-templates/customer-portal/ARCHITECTURE.md`, package docs | Codex | todo | Contract only; no runtime edits. |
+| contract-baseline | `app-templates/customer-portal/ARCHITECTURE.md`, package docs | Codex | done | Wave-9 contract and S0 evidence independently validated. |
 | design-input | `app-templates/customer-portal/design-inbox/**` | Claude Design input / Codex validation | done | Immutable accepted source at `c9879ae`. |
 | shared-config-router | `runtime/src/config.js`, `router.js`, shell/nav/theme/profile code | Codex | todo | Shared route/profile contract; serialize edits here. |
 | care-runtime | Care components, styles, fixtures, module, adapter, normalizer | Codex | todo | No SEO or shared-router ownership. |
@@ -139,7 +139,7 @@ Shared files that must not be edited concurrently by independent agents:
 
 | stage | goal | status | depends_on | primary output | done_when |
 | --- | --- | --- | --- | --- | --- |
-| S0 Contract And Baseline | Freeze wave-9 runtime and delivery contracts | in_progress | none | Updated architecture and reconciled inventories | The 17-route, 8-theme, 3-profile, Care, public SEO, and Health security contracts are explicit and design/runtime gaps are machine-readable. |
+| S0 Contract And Baseline | Freeze wave-9 runtime and delivery contracts | done | none | Updated architecture and reconciled inventories | The 17-route, 8-theme, 3-profile, Care, public SEO, and Health security contracts are explicit and design/runtime gaps are machine-readable. |
 | S1 Shared Config, Themes, Profiles, Router | Extend shared runtime control plane | todo | S0 | Config/profile/router/theme/nav support | Health/Beauty and `appointments` are config-driven; Care is guarded by module/entitlement; public SEO route is accounted without coupling production SEO to portal auth/hash routing. |
 | S2 Care Executable Transfer | Transfer and componentize accepted Care UI | todo | S1 | Care route/components/styles/fixtures/module | All eight Care hubs and required states render from normalized fixture data with accepted hooks and no visual redesign. |
 | S3 Public SEO Executable Transfer | Transfer SEO sections and create public entry | todo | S2 | Shared SEO components plus public CMS page | SEO content renders without portal auth/hash boot, has CMS-authored slots and real document metadata/structured data, and remains parity-testable. |
@@ -219,8 +219,8 @@ required implementation or validation finding.
 
 | slice | zone | owner | status | depends_on | validation | done_when |
 | --- | --- | --- | --- | --- | --- | --- |
-| S0.1-baseline-inventory | contract-baseline | Codex | in_progress | none | manifest/scenario/config/CMS diff inventory | Every wave-9 design addition and current runtime gap is listed without mutating design source. |
-| S0.2-architecture-contract | contract-baseline | Codex | in_progress | S0.1 | doc review, `git diff --check` | Architecture freezes separate public SEO delivery, Care module shapes, profile/theme matrix, and Health security boundaries. |
+| S0.1-baseline-inventory | contract-baseline | Codex | done | none | manifest/scenario/config/CMS diff inventory | Every wave-9 design addition and current runtime gap is listed without mutating design source. |
+| S0.2-architecture-contract | contract-baseline | Codex | done | S0.1 | doc review, `git diff --check` | Architecture freezes separate public SEO delivery, Care module shapes, profile/theme matrix, and Health security boundaries. |
 | S1.1-config-profile-theme | shared-config-router | Codex | todo | S0.2 | config behavior checks | Eight themes and three profiles parse from CMS/root config and do not regress user-controlled mode. |
 | S1.2-route-nav-guards | shared-config-router | Codex | todo | S1.1 | registry/scenario/guard smoke | All 17 design routes are accounted; Care module/entitlement guards and SEO delivery split are deterministic. |
 | S2.1-care-transfer | care-runtime | Codex | todo | S1.2 | hook scan, visual source comparison | Accepted Care markup/styles/components exist in runtime without designer-source edits. |
