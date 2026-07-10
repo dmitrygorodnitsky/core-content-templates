@@ -2,7 +2,7 @@
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
   "wave": 9,
-  "description": "S2 executable Care coverage. Eight normalized Care hubs, two-phase access, fixture state transitions, and unavailable secure commands are wired; the public SEO document remains owned by S3/S6.",
+  "description": "S3 SEO transfer with an explicit truth boundary: eight accepted reference fixture sets drive portal parity and a noindex checked reference preview, while the separate CMS public root requires complete authored content and deployment URL policy. S2 Care behavior remains preserved.",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -21,7 +21,7 @@
   "viewports": [390, 768, 1180, 1440],
   "routes": [
     { "id": "landing", "path": "/", "implemented": true, "auth": "public", "states": ["ready"] },
-    { "id": "seo.landing", "path": "/seo-preview", "implemented": false, "auth": "public", "states": ["fallback"], "disposition": "S1 parity placeholder; S3/S6 own a separate public no-auth/no-hash CMS document" },
+    { "id": "seo.landing", "path": "/seo-preview", "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "verticals": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"], "disposition": "Executable portal-shell reference parity route only; never a production public document" },
     { "id": "auth.phone", "path": "/login", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
     { "id": "auth.code", "path": "/login/verify", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
     { "id": "orders.list", "path": "/orders", "implemented": true, "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
@@ -68,7 +68,7 @@
     "auth.phone": ["ready", "validation-error"],
     "auth.code": ["ready", "validation-error"],
     "care": ["ready", "loading", "empty", "error", "disabled", "unauthorized"],
-    "seo.landing": ["fallback"]
+    "seo.landing": ["ready", "loading", "empty", "cta-idle", "cta-pending", "cta-success", "cta-error", "service-selected", "faq-open"]
   },
   "careContract": {
     "verticalKinds": {
@@ -87,9 +87,22 @@
     "unavailableWithoutApprovedDestination": ["care.download", "care.contactProvider", "care.openSecureDoc"],
     "retreatConcurrency": "entity-keyed shared single-flight"
   },
+  "seoContract": {
+    "componentIds": ["seo-hero", "seo-trust-strip", "seo-service-card", "seo-services-grid", "seo-how-it-works", "seo-proof", "seo-pricing", "seo-service-area", "seo-reviews", "seo-faq", "seo-final-cta", "seo-footer", "seo-cta", "seo-meta-preview"],
+    "sectionOrder": ["seo-hero", "seo-trust-strip", "seo-services-grid", "seo-how-it-works", "seo-proof", "seo-pricing", "seo-service-area", "seo-reviews", "seo-faq", "seo-final-cta", "seo-footer"],
+    "actions": ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"],
+    "dynamicStates": ["ready", "loading", "empty"],
+    "ctaStates": ["idle", "pending", "success", "error", "unavailable"],
+    "parityRoute": "runtime seo.landing; accepted reference fixtures and lifecycle/local-selection previews only",
+    "referencePreview": "public/seo-reference-preview.html; checked deterministic noindex fixture artifact visibly classified reference-only",
+    "strictCmsTemplate": "cms/seo-public-root-template.html; token-only and generated only from a complete public-authored payload plus deployment allowlists",
+    "strictGenerator": "scripts/generate-seo-public.mjs; requires explicit --input and --output and has no mock defaults",
+    "publicBoundary": "Strict public mode has no fixture fallback, portal auth/session object, AppShell, hash router, portal root boot, preview metadata, synthetic CTA lifecycle API, or invented facts."
+  },
   "notImplementedYet": {
-    "routes": ["seo.landing"],
+    "routes": [],
     "careLiveActions": ["care.selectUnit persistence", "care.download", "care.requestRetreat", "care.selectSpecialist persistence", "care.completeTask sync", "care.contactProvider", "care.openSecureDoc"],
-    "note": "Care fixture behavior is implemented in S2. Care live IO/actions remain not_opened; reusable SEO and the standalone public document transfer in S3/S6."
+    "seoCmsExport": ["S6 final block metadata, authored payload transport, and dual export wiring"],
+    "note": "Care fixture behavior remains implemented. Care live IO/actions remain not_opened. S3 provides strict public normalization, the token-only CMS root contract, shared sections, and reference parity artifacts; S6 owns final CMS schema and packaging."
   }
 }

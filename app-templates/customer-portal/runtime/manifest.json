@@ -1,14 +1,21 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "runtime-wave9-s2-care",
-  "format": "no-build ES modules: source.html + 6 stylesheets + 65 src JavaScript modules + 2 data fixture modules",
+  "version": "runtime-wave9-s3-seo-remediation1",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 70 src JavaScript modules + 3 data fixture modules",
   "fileInventory": {
-    "stylesheets": 6,
-    "srcJavaScript": 65,
-    "runtimeJavaScript": 67
+    "stylesheets": 7,
+    "srcJavaScript": 70,
+    "runtimeJavaScript": 73
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
+  "seoSurfaces": {
+    "portalParity": "seo.landing; portal shell allowed; accepted design fixtures are reference-only",
+    "checkedReferencePreview": "public/seo-reference-preview.html; deterministic noindex fixture preview with visible reference-only labeling",
+    "strictPublicTemplate": "cms/seo-public-root-template.html; token-only, no mock defaults, complete authored input required",
+    "strictPublicGenerator": "scripts/generate-seo-public.mjs --input <complete-authored-payload.json> --output <document.html>",
+    "finalCmsPackaging": "S6 not opened"
+  },
   "dataAttributes": {
     "data-route": "page / view id (matches scenarios.routes[].id)",
     "data-module": "reusable component id (matches components[].id)",
@@ -110,7 +117,7 @@
   },
   "routeRegistry": [
     { "id": "landing", "path": "/", "module": "landing", "auth": "public", "status": "done" },
-    { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "s1-placeholder", "productionOwner": "separate public CMS document in S3/S6" },
+    { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "done", "disposition": "Executable portal-shell reference parity route only", "productionOwner": "cms/seo-public-root-template.html strict authored public document contract" },
     { "id": "auth.phone", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
     { "id": "auth.code", "path": "/login/verify", "module": "auth", "auth": "public", "status": "done" },
     { "id": "orders.list", "path": "/orders", "module": "orders", "auth": "private", "status": "done" },
@@ -1364,14 +1371,20 @@
     "note": "reuses the existing cart contract: cart.addItem data-id = product name",
     "status": "done"
   },
-    {
-      "id": "seo-parity-placeholder",
-      "factory": "SeoParityPlaceholder",
-      "props": [],
-      "wave": 9,
-      "status": "partial",
-      "note": "Executable parity route only; not the production SEO document."
-    }
+    { "id": "seo-hero", "factory": "SeoHero", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-trust-strip", "factory": "SeoTrustStrip", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-service-card", "factory": "inline in SeoServicesGrid", "props": ["normalized service with stable id and nullable validated destination", "reference-only selectedServiceId"], "wave": 9, "status": "done" },
+    { "id": "seo-services-grid", "factory": "SeoServicesGrid", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-how-it-works", "factory": "SeoHowItWorks", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-proof", "factory": "SeoProofBlock", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-pricing", "factory": "SeoPricing", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-service-area", "factory": "SeoServiceArea", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-reviews", "factory": "SeoReviews", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-faq", "factory": "SeoFaq", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-final-cta", "factory": "SeoFinalCta", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-footer", "factory": "SeoFooter", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-cta", "factory": "SeoCta", "props": ["normalized validated CTA", "reference-only lifecycle view"], "wave": 9, "status": "done" },
+    { "id": "seo-meta-preview", "factory": "SeoMetaPreview", "props": ["normalized SEO model"], "wave": 9, "status": "parity-only", "note": "Portal parity route only; omitted from public production entry." }
   ],
   "dataBindings": [
     "brand.name",
@@ -1448,6 +1461,12 @@
     "care.requestRetreat",
     "care.selectSpecialist",
     "care.selectUnit",
+    "seo.cta.book",
+    "seo.cta.quote",
+    "seo.cta.call",
+    "seo.cta.services",
+    "seo.service.select",
+    "seo.faq.toggle",
     "checkout.pickAddress",
     "checkout.pickPayment",
     "checkout.placeOrder",
@@ -1520,7 +1539,8 @@
     ],
     "mode": "fixture",
     "careModule": "data/care-fixtures.js",
-    "careBoundary": "Protected Care fixture adapter is constructed and called only after granted preflight. No Care live adapter is opened."
+    "careBoundary": "Protected Care fixture adapter is constructed and called only after granted preflight. No Care live adapter is opened.",
+    "seoReferenceModule": "data/seo-fixtures.js; eight accepted design fixture sets are reference-only and imported solely by the parity/reference loader"
   },
   "serving": "MUST be served over HTTP (ES modules are blocked on file://). No bundler / no build step — many small files loaded natively.",
   "moduleTree": {
@@ -1529,9 +1549,15 @@
     "src/actions.js": "ACTIONS map + honest local fixture transitions + bindActions",
     "src/router.js": "renderRoute() switch + ComingSoon",
     "src/app.js": "entry: render, positionNavPill, applyResponsive, BookingDrawer, boot, window.AircovePortal",
-    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care}/*.js": "leaf components",
+    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care,seo}/*.js": "leaf components; SEO leaves receive normalized model/view only",
     "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
     "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`",
-    "data/care-fixtures.js": "Care-owned raw fixture payloads for eight verticals"
+    "data/care-fixtures.js": "Care-owned raw fixture payloads for eight verticals",
+    "data/seo-fixtures.js": "accepted reference-only SEO fixture payloads for eight parity verticals",
+    "src/normalizers/seo.js": "separate strict public-authored and reference-only normalization APIs; merge, completeness, canonical, URL allowlist, and FAQ JSON-LD validation",
+    "src/modules/seo.js": "reference-only SEO parity loader",
+    "cms/seo-public-root-template.html": "strict token-only public root contract with no mock defaults",
+    "public/seo-reference-preview.html": "deterministic noindex checked fixture preview; never production truth",
+    "scripts/fixtures/seo-public-authored.test.json": "explicit complete authored test fixture used only for temp strict-document validation"
   }
 }

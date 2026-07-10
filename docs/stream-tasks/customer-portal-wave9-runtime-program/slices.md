@@ -14,7 +14,7 @@ subagents.
 
 ### S0.1 Baseline Inventory
 
-Status: `todo`
+Status: `done`
 
 Inputs:
 
@@ -56,7 +56,7 @@ hidden chat context.
 
 ### S0.2 Architecture Contract
 
-Status: `todo`
+Status: `done`
 
 Tasks:
 
@@ -94,7 +94,7 @@ S0 evidence:
 
 ### S1.1 Config, Profiles, Themes
 
-Status: `todo`
+Status: `done`
 
 Primary paths:
 
@@ -121,7 +121,7 @@ Validation cases:
 
 ### S1.2 Routes, Navigation, Guards
 
-Status: `todo`
+Status: `done`
 
 Tasks:
 
@@ -156,7 +156,7 @@ Do not:
 
 ### S2.1 Component And Style Transfer
 
-Status: `todo`
+Status: `done`
 
 Primary design inputs:
 
@@ -176,7 +176,7 @@ Tasks:
 
 ### S2.2 Module, Fixtures, Normalizer, States
 
-Status: `todo`
+Status: `done`
 
 Tasks:
 
@@ -193,7 +193,7 @@ Tasks:
 
 ### S2.3 Fixture Commands
 
-Status: `todo`
+Status: `done`
 
 Required action dispositions:
 
@@ -228,7 +228,7 @@ Validation:
 
 ### S3.1 Reusable SEO Sections
 
-Status: `todo`
+Status: `done`
 
 Tasks:
 
@@ -243,7 +243,7 @@ Tasks:
 
 ### S3.2 Public CMS Document
 
-Status: `todo`
+Status: `done`
 
 Tasks:
 

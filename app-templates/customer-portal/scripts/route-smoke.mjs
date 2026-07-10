@@ -311,7 +311,8 @@ try {
     throw new Error("Care auth guard did not retain intended route");
   }
   await page.evaluate(() => window.AircovePortal.go("seo.landing"));
-  await page.waitForSelector('[data-route="seo.landing"][data-module="seo-parity-placeholder"]', { timeout: 2000 });
+  await page.waitForSelector('[data-route="seo.landing"][data-state="ready"] [data-module="seo-hero"]', { timeout: 2000 });
+  if (!await page.locator('[data-route="seo.landing"] [data-module="seo-meta-preview"]').count()) throw new Error("SEO parity metadata preview missing");
   if (!await page.locator('[data-module="public-nav"]').count()) throw new Error("SEO parity route depends on authenticated shell");
   await page.evaluate(() => {
     const care = window.AircovePortal.state.moduleData.care;

@@ -40,6 +40,9 @@ export var state = {
   careTasksDone: {},
   careAuthorizationEpoch: 0,
   careRetreatRequests: {},
+  seoSelectedServiceId: null,
+  seoFaqOpenId: null,
+  seoCtaStates: {},
   moduleStatus: {},
   moduleData: {},
   pending: {},
@@ -102,7 +105,7 @@ export function isPublic(routeId) {
 }
 
 export function isModuleEnabled(moduleId) {
-  if (!moduleId || moduleId === "auth" || moduleId === "landing") return true;
+  if (!moduleId || moduleId === "auth" || moduleId === "landing" || moduleId === "seo-parity") return true;
   return state.config.enabledModules.includes(moduleId);
 }
 

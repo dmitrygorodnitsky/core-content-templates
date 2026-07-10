@@ -18,6 +18,7 @@ import { Support } from "./routes/SupportPage.js";
 import { Landing } from "./routes/LandingPage.js";
 import { Auth } from "./routes/AuthPage.js";
 import { Care } from "./routes/CarePage.js";
+import { SeoLanding } from "./routes/SeoLandingPage.js";
 
 export function ComingSoon(routeId, wave) {
   return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
@@ -146,23 +147,9 @@ export function renderRoute() {
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
     case "care":        return Care();
-    case "seo.landing": return SeoParityPlaceholder();
+    case "seo.landing": return SeoLanding();
     default:            return RouteFallback(resolved.reason);
   }
-}
-
-function SeoParityPlaceholder() {
-  return h("section", {
-    "class": "page",
-    "data-route": "seo.landing",
-    "data-module": "seo-parity-placeholder",
-    "data-visual-id": "seo-s1-placeholder",
-    "data-state": "fallback",
-  }, [EmptyState({
-    glyph: "i",
-    title: "SEO parity route",
-    desc: "This portal route exists only for executable parity. S3/S6 own the separate public CMS document without portal authentication, shell, or hash routing.",
-  })]);
 }
 
 function RouteFallback(reason) {

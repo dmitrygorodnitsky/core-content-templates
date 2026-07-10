@@ -403,7 +403,7 @@ try {
   });
   await careGuards.waitForSelector('[data-route="auth.phone"]', { timeout: 2000 });
   await careGuards.evaluate(() => window.AircovePortal.go("seo.landing"));
-  await careGuards.waitForSelector('[data-route="seo.landing"][data-state="fallback"]', { timeout: 2000 });
+  await careGuards.waitForSelector('[data-route="seo.landing"][data-state="ready"] [data-module="seo-hero"]', { timeout: 2000 });
   const careIsolation = await careGuards.evaluate(() => ({
     intended: window.AircovePortal.state.session.intendedRoute,
     status: window.AircovePortal.state.moduleStatus.care,
@@ -583,7 +583,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 6, srcJavaScript: 65, runtimeJavaScript: 67 }, "accepted S2 file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 70, runtimeJavaScript: 73 }, "accepted S3 file inventory");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {

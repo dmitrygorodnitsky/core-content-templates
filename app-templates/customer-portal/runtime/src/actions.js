@@ -4,6 +4,7 @@ import { findProduct, proposalSites, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, render, retryRuntimeLoad } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
+import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 
 export var ACTIONS = {
   "nav.go":            function (id) { go(id); },
@@ -46,6 +47,12 @@ export var ACTIONS = {
   "care.completeTask": function (id, el) { return toggleCareTask(id, el); },
   "care.contactProvider": function (id, el) { return runUnavailableCareCommand("care.contactProvider", id, el); },
   "care.openSecureDoc": function (id, el) { return runUnavailableCareCommand("care.openSecureDoc", id, el); },
+  "seo.cta.book":    function (id, el) { validateSeoLink(el); },
+  "seo.cta.quote":   function (id, el) { validateSeoLink(el); },
+  "seo.cta.call":    function (id, el) { validateSeoLink(el); },
+  "seo.cta.services": function (id, el, event) { navigateSeoServices(el, event); },
+  "seo.service.select": function (id) { selectSeoService(id, render); },
+  "seo.faq.toggle": function (id, el, event) { if (event) event.preventDefault(); toggleSeoFaq(id, render); },
   "cart.open":         function ()   { go("checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
   "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
@@ -83,6 +90,21 @@ export var ACTIONS = {
   "theme.pick":        function (id) { return pickTheme(id); }
 };
 
+function validateSeoLink(el) {
+  var href = el && el.getAttribute("href");
+  if (!href || !(href.charAt(0) === "#" || /^https?:\/\//i.test(href) || /^tel:/i.test(href))) {
+    throw new Error("SEO destination is unavailable");
+  }
+}
+
+function navigateSeoServices(el, event) {
+  validateSeoLink(el);
+  if (state.route !== "seo.landing" || state.config.routerMode !== "hash") return;
+  if (event) event.preventDefault();
+  var target = document.getElementById("seo-services");
+  if (target) target.scrollIntoView({ block: "start" });
+}
+
 /* delegated action handling: reads data-action + data-id */
 
 export function bindActions(root) {
@@ -97,7 +119,7 @@ export function bindActions(root) {
     }
     var fn = ACTIONS[name];
     if (fn) {
-      var result = fn(id, el);
+      var result = fn(id, el, e);
       if (result && typeof result.then === "function") {
         Promise.resolve(result).catch(function () { render(); });
       }
