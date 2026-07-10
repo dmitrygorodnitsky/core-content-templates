@@ -1,5 +1,6 @@
 // customer-portal-design/src/components/shell/TopNav.js — presentation runtime (auto-split from app.js). No business logic.
 import { h } from "../../dom.js";
+import { F } from "../../../data/fixtures.js";
 import { activeProfile, cartCount, state } from "../../state.js";
 import { go } from "../../actions.js";
 import { ActionButton } from "../primitives/ActionButton.js";
@@ -8,6 +9,9 @@ import { Profile } from "../../routes/ProfilePage.js";
 import { Activity } from "../../routes/ActivityPage.js";
 import { Calendar } from "../../routes/CalendarPage.js";
 
+/* the care hub's nav label is vertical-specific (fixtures.careModules) */
+function navLabel(n) { return n.key === "care" ? F.careModules[state.theme].navLabel : n.label; }
+
 export function TopNav() {
   var profile = activeProfile();
   var links = profile.nav.map(function (n) {
@@ -15,7 +19,7 @@ export function TopNav() {
     return h("span", {
       "class": "nav-link" + (active ? " nav-link--active" : ""),
       "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
-    }, n.label);
+    }, navLabel(n));
   });
 
   var actions = [
@@ -41,7 +45,7 @@ export function TopNav() {
     nav.appendChild(h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
       profile.nav.map(function (n) {
         var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail");
-        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, n.label);
+        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
       })
     ));
   }

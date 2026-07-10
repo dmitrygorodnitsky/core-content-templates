@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "wave-6 (modular / customer-portal-design)",
+  "version": "wave-9 (modular / customer-portal-design)",
   "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
   "runtime": "presentation-only. Business logic, API, auth, permissions, persistence are owned by Codex.",
   "entry": "customer-portal-design/source.html",
@@ -22,7 +22,9 @@
         "lawn",
         "pool",
         "roofing",
-        "pest"
+        "pest",
+        "health",
+        "beauty"
       ],
       "data-mode": [
         "light",
@@ -40,6 +42,7 @@
         ],
         "nav": [
           "orders.list",
+          "care (vertical hub — 'Equipment')",
           "proposals.list",
           "services",
           "pricing",
@@ -61,6 +64,7 @@
         "nav": [
           "orders.list (Home)",
           "calendar",
+          "care (vertical hub — label per vertical)",
           "proposals.list (Contracts)",
           "services",
           "activity",
@@ -69,6 +73,25 @@
         "primary": "service.request (Request service)",
         "weatherCalendar": true,
         "cart": false
+      },
+      "appointments": {
+        "verticals": [
+          "Health",
+          "Beauty"
+        ],
+        "nav": [
+          "orders.list (Appointments)",
+          "calendar (month grid)",
+          "care (vertical hub — 'Care plan' / 'My routine')",
+          "services",
+          "pricing",
+          "products",
+          "support"
+        ],
+        "primary": "booking.open (+ Book)",
+        "weatherCalendar": false,
+        "cart": true,
+        "note": "Wave 9. No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere."
       }
     },
     "note": "Calendar renders StormCalendar (weather-operational) for stormOps and MonthCalendar for onDemand. StormCalendar derives service names + trigger copy from the active vertical, so one component serves all 5 weather-triggered verticals."
@@ -713,6 +736,115 @@
       "wave": 6
     },
     {
+      "id": "seo-hero",
+      "factory": "SeoHero (components/seo/SeoSections.js)",
+      "props": ["cms.meta (h1, locality, serviceArea, primaryCta, secondaryCta)", "cms.hero (service, offer)"],
+      "status": "done",
+      "wave": 8,
+      "note": "Geography slot: {locality} merge tag in cms.meta.h1 rendered as highlighted .seo-hero__geo. Seasonal offer = dynamic CMS slot (skeleton on loading, hidden when absent). Hero media = image slot, no drawn imagery."
+    },
+    {
+      "id": "seo-trust-strip",
+      "factory": "SeoTrustStrip",
+      "props": ["cms.trust (rating, licence, insurance, guarantee, response)"],
+      "status": "done",
+      "wave": 8,
+      "note": "CMS DATA SLOTS ONLY — null values render an explicit 'from CMS' slot chip (.seo-slot), never an invented fact. States: ready|loading|empty."
+    },
+    {
+      "id": "seo-service-card",
+      "factory": "inline in SeoServicesGrid",
+      "props": ["cms.services[] (name, benefit, priceFrom)"],
+      "status": "done",
+      "wave": 8,
+      "note": "3–6 cards; whole card fires seo.service.select → booking/quote flow."
+    },
+    {
+      "id": "seo-services-grid",
+      "factory": "SeoServicesGrid",
+      "props": ["cms.services[]"],
+      "status": "done",
+      "wave": 8
+    },
+    {
+      "id": "seo-how-it-works",
+      "factory": "SeoHowItWorks",
+      "props": ["cms.how[] (request → scheduling/dispatch → service → report/payment)"],
+      "status": "done",
+      "wave": 8
+    },
+    {
+      "id": "seo-proof",
+      "factory": "SeoProofBlock",
+      "props": ["cms.proof (title, items[3])"],
+      "status": "done",
+      "wave": 8,
+      "note": "Vertical-specific: HVAC equipment/maintenance/emergency; Snow trigger/SLA/compliance; Lawn programme/re-entry; Pool readings/swim-ready; Roofing inspection/report/project; Pest monitoring/guarantee; Health coordination/milestones/secure-docs (logistics only, no clinical claims); Beauty specialist/formulas/loyalty."
+    },
+    {
+      "id": "seo-pricing",
+      "factory": "SeoPricing",
+      "props": ["cms.pricing (note, rows[] {name, from|null, unit|reason})"],
+      "status": "done",
+      "wave": 8,
+      "note": "'from' prices come ONLY from CMS; from:null renders the needs-assessment variant. States: ready|loading|empty (empty = no published prices, quote-only copy)."
+    },
+    {
+      "id": "seo-service-area",
+      "factory": "SeoServiceArea",
+      "props": ["cms.meta.serviceArea", "cms.area (cities[], note)"],
+      "status": "done",
+      "wave": 8,
+      "note": "City/region chips + abstract coverage rings (deliberately schematic — no fake addresses/pins). Real map/polygon is a CMS media slot."
+    },
+    {
+      "id": "seo-reviews",
+      "factory": "SeoReviews",
+      "props": ["cms.reviews[] (name, rating, text, media)"],
+      "status": "done",
+      "wave": 8,
+      "note": "media:true renders a striped media slot for the real customer photo; media:false = text-only card. Fallback when the collection is empty — nothing invented."
+    },
+    {
+      "id": "seo-faq",
+      "factory": "SeoFaq",
+      "props": ["cms.faq[] (q, a)"],
+      "status": "done",
+      "wave": 8,
+      "note": "Accordion with schema.org FAQPage/Question/Answer microdata — Codex emits FAQ schema from the same collection. seo.faq.toggle; states ready|loading|empty."
+    },
+    {
+      "id": "seo-final-cta",
+      "factory": "SeoFinalCta",
+      "props": ["cms.meta (locality, primaryCta)"],
+      "status": "done",
+      "wave": 8
+    },
+    {
+      "id": "seo-footer",
+      "factory": "SeoFooter",
+      "props": ["cms.footer (contacts, hours, legal)", "cms.meta (serviceArea, canonicalPath)", "cms.area.cities"],
+      "status": "done",
+      "wave": 8,
+      "note": "Contacts are nullable slots (phone/email chips until supplied)."
+    },
+    {
+      "id": "seo-cta",
+      "factory": "SeoCta",
+      "props": ["action (fixed id)", "label", "successLabel", "variant"],
+      "status": "done",
+      "wave": 8,
+      "note": "data-state = idle|pending|success|error from state.seoCta[actionId]; state.seoCtaForce (dev toolbar 'cta' select) previews any state on all CTAs."
+    },
+    {
+      "id": "seo-meta-preview",
+      "factory": "SeoMetaPreview",
+      "props": ["cms.meta (seoTitle, metaDescription, canonicalPath, locality, primaryCta.destination)"],
+      "status": "done",
+      "wave": 8,
+      "note": "DEV-ONLY (data-dev-toolbar) — surfaces head-level CMS fields that have no visible place on the page. Stripped on integration."
+    },
+    {
       "id": "quote-card",
       "factory": "inline in Landing",
       "props": [
@@ -857,6 +989,342 @@
       ],
       "wave": 2,
       "status": "done"
+    },
+    {
+      "id": "care-hub",
+      "factory": "Care()",
+      "props": ["theme"],
+      "wave": 7,
+      "note": "one route, six vertical-specific module sets (fixtures.careModules[theme]); nav label = careModules[theme].navLabel",
+      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "status": "done"
+    },
+    {
+      "id": "entitlement-gate",
+      "factory": "inline in Care()",
+      "props": ["module.navLabel", "module.title"],
+      "wave": 7,
+      "note": "unauthorized / entitlement-denied state; upgrade -> profile.managePlan, questions -> support.open",
+      "states": ["unauthorized"],
+      "status": "done"
+    },
+    {
+      "id": "unit-picker",
+      "factory": "inline in EquipmentHub",
+      "props": ["units", "careUnit"],
+      "wave": 7,
+      "vertical": "HVAC",
+      "contract": "care.selectUnit data-id = unit.id (stable, e.g. unit-ac-01), never the display name",
+      "status": "done"
+    },
+    {
+      "id": "equipment-passport",
+      "factory": "inline in EquipmentHub",
+      "props": ["unit"],
+      "wave": 7,
+      "vertical": "HVAC",
+      "status": "done"
+    },
+    {
+      "id": "diagnostic-report",
+      "factory": "inline in EquipmentHub",
+      "props": ["unit.checks"],
+      "wave": 7,
+      "vertical": "HVAC",
+      "status": "done"
+    },
+    {
+      "id": "document-vault",
+      "factory": "inline in EquipmentHub / RoofReport",
+      "props": ["docs"],
+      "wave": 7,
+      "status": "done"
+    },
+    {
+      "id": "document-row",
+      "factory": "DocRow",
+      "props": ["doc"],
+      "wave": 7,
+      "contract": "care.download data-id = document.id (e.g. doc-hvac-diag-2026-01); row carries data-document-id",
+      "status": "done"
+    },
+    {
+      "id": "season-stats",
+      "factory": "inline in SeasonLog",
+      "props": ["stats"],
+      "wave": 7,
+      "vertical": "Snow Removal",
+      "status": "done"
+    },
+    {
+      "id": "storm-log",
+      "factory": "inline in SeasonLog",
+      "props": ["events"],
+      "wave": 7,
+      "vertical": "Snow Removal",
+      "status": "done"
+    },
+    {
+      "id": "sla-meter",
+      "factory": "inline in SeasonLog",
+      "props": ["sla"],
+      "wave": 7,
+      "vertical": "Snow Removal",
+      "status": "done"
+    },
+    {
+      "id": "compliance-reports",
+      "factory": "inline in SeasonLog",
+      "props": ["docs"],
+      "wave": 7,
+      "vertical": "Snow Removal",
+      "status": "done"
+    },
+    {
+      "id": "program-steps",
+      "factory": "inline in LawnProgram",
+      "props": ["steps"],
+      "wave": 7,
+      "vertical": "Lawn & Garden",
+      "status": "done"
+    },
+    {
+      "id": "reentry-card",
+      "factory": "inline in LawnProgram",
+      "props": ["reentry"],
+      "wave": 7,
+      "vertical": "Lawn & Garden",
+      "status": "done"
+    },
+    {
+      "id": "soil-snapshot",
+      "factory": "inline in LawnProgram",
+      "props": ["soil"],
+      "wave": 7,
+      "vertical": "Lawn & Garden",
+      "status": "done"
+    },
+    {
+      "id": "progress-photos",
+      "factory": "inline in LawnProgram",
+      "props": ["photos"],
+      "wave": 7,
+      "vertical": "Lawn & Garden",
+      "status": "done"
+    },
+    {
+      "id": "water-readings",
+      "factory": "inline in WaterQuality",
+      "props": ["readings"],
+      "wave": 7,
+      "vertical": "Pool & Spa",
+      "status": "done"
+    },
+    {
+      "id": "dose-log",
+      "factory": "inline in WaterQuality",
+      "props": ["doses"],
+      "wave": 7,
+      "vertical": "Pool & Spa",
+      "status": "done"
+    },
+    {
+      "id": "test-cadence",
+      "factory": "inline in WaterQuality",
+      "props": ["tested", "nextTest"],
+      "wave": 7,
+      "vertical": "Pool & Spa",
+      "status": "done"
+    },
+    {
+      "id": "roof-zones",
+      "factory": "inline in RoofReport",
+      "props": ["zones"],
+      "wave": 7,
+      "vertical": "Roofing",
+      "status": "done"
+    },
+    {
+      "id": "roof-score",
+      "factory": "inline in RoofReport",
+      "props": ["score", "grade"],
+      "wave": 7,
+      "vertical": "Roofing",
+      "status": "done"
+    },
+    {
+      "id": "project-tracker",
+      "factory": "inline in RoofReport (reuses timeline classes)",
+      "props": ["project"],
+      "wave": 7,
+      "vertical": "Roofing",
+      "status": "done"
+    },
+    {
+      "id": "monitoring-summary",
+      "factory": "inline in PestMonitoring",
+      "props": ["summary"],
+      "wave": 7,
+      "vertical": "Pest Control",
+      "status": "done"
+    },
+    {
+      "id": "station-map",
+      "factory": "inline in PestMonitoring",
+      "props": ["stations"],
+      "wave": 7,
+      "vertical": "Pest Control",
+      "status": "done"
+    },
+    {
+      "id": "station-list",
+      "factory": "inline in PestMonitoring",
+      "props": ["stations"],
+      "wave": 7,
+      "vertical": "Pest Control",
+      "status": "done"
+    },
+    {
+      "id": "alert-log",
+      "factory": "inline in PestMonitoring",
+      "props": ["alerts"],
+      "wave": 7,
+      "vertical": "Pest Control",
+      "status": "done"
+    },
+    {
+      "id": "retreat-card",
+      "factory": "inline in PestMonitoring",
+      "props": ["guarantee"],
+      "wave": 7,
+      "vertical": "Pest Control",
+      "states": ["available", "requesting", "used"],
+      "contract": "care.requestRetreat data-id = plan.planId; button also carries data-property-id + data-service-id (stable scope, never display names). Demo body only sets the 'requesting' visual state — Codex owns the real request + resolution.",
+      "status": "done"
+    },
+    {
+      "id": "health-care-hub",
+      "factory": "HealthCareHub()",
+      "props": ["careModules['Health']"],
+      "wave": 9,
+      "vertical": "Health",
+      "note": "LOGISTICS ONLY BY DESIGN — renders scheduling, milestones, tasks and document METADATA; never clinical metrics, readings, results or medical advice.",
+      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "status": "done"
+    },
+    {
+      "id": "care-appointment",
+      "factory": "inline in HealthCareHub / BeautyCareHub",
+      "props": ["appointment"],
+      "wave": 9,
+      "contract": "card carries data-appointment-id (stable, e.g. appt-health-2026-0130 / appt-beauty-2026-0116) + data-provider-id / data-specialist-id; reschedule & details use the linked order id",
+      "status": "done"
+    },
+    {
+      "id": "care-plan",
+      "factory": "inline in HealthCareHub",
+      "props": ["plan.milestones"],
+      "wave": 9,
+      "vertical": "Health",
+      "contract": "card carries data-plan-id (e.g. plan-health-2026); milestones are logistics steps (intake/review/cadence), never clinical outcomes",
+      "status": "done"
+    },
+    {
+      "id": "follow-up-tasks",
+      "factory": "inline in HealthCareHub",
+      "props": ["tasks"],
+      "wave": 9,
+      "vertical": "Health",
+      "states": ["open", "done"],
+      "contract": "care.completeTask data-id = task.id (e.g. task-health-01); row carries data-task-id + data-state open|done",
+      "status": "done"
+    },
+    {
+      "id": "provider-card",
+      "factory": "inline in HealthCareHub",
+      "props": ["provider"],
+      "wave": 9,
+      "vertical": "Health",
+      "contract": "care.contactProvider data-id = provider.id (e.g. prov-health-pt-01); card carries data-provider-id",
+      "status": "done"
+    },
+    {
+      "id": "secure-documents",
+      "factory": "inline in HealthCareHub",
+      "props": ["docs", "docsNote"],
+      "wave": 9,
+      "vertical": "Health",
+      "contract": "care.openSecureDoc data-id = document.id (e.g. doc-health-results-2026-01); row carries data-document-id. Contents are NEVER previewed in the portal — secure viewer only, access logged (Codex owns the viewer + audit).",
+      "status": "done"
+    },
+    {
+      "id": "care-disclaimer",
+      "factory": "inline in HealthCareHub",
+      "props": ["disclaimer"],
+      "wave": 9,
+      "vertical": "Health",
+      "status": "done"
+    },
+    {
+      "id": "beauty-care-hub",
+      "factory": "BeautyCareHub()",
+      "props": ["careModules['Beauty']"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "status": "done"
+    },
+    {
+      "id": "package-card",
+      "factory": "inline in BeautyCareHub",
+      "props": ["pkg"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "contract": "card carries data-package-id (e.g. pkg-beauty-glow-2026)",
+      "status": "done"
+    },
+    {
+      "id": "specialist-picker",
+      "factory": "inline in BeautyCareHub",
+      "props": ["specialists", "preferredId", "state.careSpecialist"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "contract": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01), never the display name",
+      "status": "done"
+    },
+    {
+      "id": "treatment-history",
+      "factory": "inline in BeautyCareHub",
+      "props": ["history"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "status": "done"
+    },
+    {
+      "id": "routine-card",
+      "factory": "inline in BeautyCareHub",
+      "props": ["routine"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "status": "done"
+    },
+    {
+      "id": "loyalty-card",
+      "factory": "inline in BeautyCareHub",
+      "props": ["loyalty"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "contract": "card carries data-plan-id (e.g. plan-beauty-member-2026); manage → profile.managePlan",
+      "status": "done"
+    },
+    {
+      "id": "care-products",
+      "factory": "inline in BeautyCareHub",
+      "props": ["productRecs", "themes[theme].products"],
+      "wave": 9,
+      "vertical": "Beauty",
+      "note": "reuses the existing cart contract: cart.addItem data-id = product name",
+      "status": "done"
     }
   ],
   "dataBindings": [
@@ -897,6 +1365,13 @@
     "calendar.next",
     "calendar.open",
     "calendar.prev",
+    "care.completeTask",
+    "care.contactProvider",
+    "care.download",
+    "care.openSecureDoc",
+    "care.requestRetreat",
+    "care.selectSpecialist",
+    "care.selectUnit",
     "cart.addItem",
     "cart.dec",
     "cart.inc",
@@ -932,6 +1407,12 @@
     "proposal.requestRevision",
     "proposal.review",
     "proposal.selectPlan",
+    "seo.cta.book",
+    "seo.cta.call",
+    "seo.cta.quote",
+    "seo.cta.services",
+    "seo.faq.toggle",
+    "seo.service.select",
     "service.reportIssue",
     "service.request",
     "service.requestExtra",
@@ -957,6 +1438,7 @@
   ],
   "fixtures": {
     "module": "data/fixtures.js",
+    "seoModule": "data/seo-fixtures.js — CMS slots for seo.landing: per vertical {meta{seoTitle,metaDescription,h1,canonicalPath,locality,serviceArea,primaryCta{kind,label,destination},secondaryCta}, hero{service,offer}, trust, how[4], proof, pricing.rows[] (from|null), area{cities[]}, reviews[] (media flag), faq[]} + SEO_FOOTER (nullable contact slots). {locality} in strings is a geography merge tag.",
     "global": "window.AircoveFixtures",
     "exports": [
       "themes",
@@ -969,6 +1451,7 @@
       "proposal",
       "proposalSites",
       "ordersFor",
+      "careModules (units[].id, docs[].id, guarantee.scope{planId,propertyId,serviceId}, appointment.id, provider.id, plan.id, tasks[].id, specialists[].id, pkg.id, loyalty.id are stable data-contract ids)",
       "PAL",
       "TINTS"
     ],
@@ -981,7 +1464,7 @@
     "src/actions.js": "ACTIONS map + mutations/transitions + bindActions",
     "src/router.js": "renderRoute() switch + ComingSoon",
     "src/app.js": "entry: render, positionNavPill, applyResponsive, DevToolbar, BookingDrawer, boot, window.AircovePortal",
-    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile}/*.js": "leaf components",
+    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care,seo}/*.js": "leaf components (seo/SeoSections.js = reusable public SEO-landing sections)",
     "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
     "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`"
   }

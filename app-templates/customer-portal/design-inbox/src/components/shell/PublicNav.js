@@ -13,7 +13,7 @@ export function PublicNav() {
       ]),
       h("div", { "class": "top-nav__actions" }, [
         h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e"),
-        state.route === "landing"
+        state.route === "landing" || state.route === "seo.landing"
           ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" })
           : ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" })
       ])

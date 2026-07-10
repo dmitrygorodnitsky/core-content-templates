@@ -1,8 +1,8 @@
 {
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
-  "wave": 5,
-  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. 'implemented' marks what ships so far; the rest are wired into the shell/contract and land in later waves.",
+  "wave": 9,
+  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content.",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -10,16 +10,18 @@
     "weatherTriggers": true,
     "darkMode": true
   },
-  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"],
+  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"],
   "modes": ["light", "dark"],
   "profiles": {
     "note": "Portal profile is config-driven per vertical (fixtures.profileFor). Drives nav, primary action, cart, and which Calendar renders.",
     "onDemand": { "verticals": ["HVAC"], "calendar": "MonthCalendar", "primary": "+ Book" },
-    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service" }
+    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service" },
+    "appointments": { "verticals": ["Health", "Beauty"], "calendar": "MonthCalendar", "primary": "+ Book", "note": "No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere." }
   },
   "viewports": [390, 768, 1180, 1440],
   "routes": [
     { "id": "landing",          "path": "/",                 "wave": 6, "implemented": true,  "auth": "public", "states": ["ready"], "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)." },
+    { "id": "seo.landing",      "path": "cms.meta.canonicalPath (e.g. /hvac/{locality-slug})", "wave": 8, "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "note": "Public SEO landing — ONE reusable section set (src/components/seo/SeoSections.js) serves all eight verticals; content = CMS slots in data/seo-fixtures.js keyed by vertical. Sections: seo-hero, seo-trust-strip, seo-services-grid, seo-how-it-works, seo-proof, seo-pricing, seo-service-area, seo-reviews, seo-faq (schema.org FAQPage microdata), seo-final-cta, seo-footer. loading/empty apply ONLY to dynamic-data sections (trust, pricing, service-area, reviews, faq, hero offer); hero/how/proof/footer are static. CTA lifecycle idle|pending|success|error on data-state of every seo-cta — preview via dev-toolbar 'cta' select. Head-level CMS fields (seoTitle, metaDescription, canonical, locality, primaryCta.destination) surfaced by the dev-only seo-meta-preview block (data-dev-toolbar — stripped on integration)." },
     { "id": "auth.phone",       "path": "/login",            "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='phone'" },
     { "id": "auth.code",        "path": "/login/verify",     "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='code'; 4-digit OTP" },
     { "id": "orders.list",      "path": "/orders",           "wave": 1, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
@@ -33,7 +35,8 @@
     { "id": "proposal.detail",  "path": "/proposals/:id",    "wave": 4, "implemented": true,  "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
     { "id": "profile",          "path": "/profile",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "success-toast"] },
     { "id": "activity",         "path": "/activity",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
-    { "id": "support",          "path": "/support",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "pending-action"] }
+    { "id": "support",          "path": "/support",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "pending-action"] },
+    { "id": "care",             "path": "/care",             "wave": 7, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "unauthorized"], "note": "Vertical care hub — content is vertical-specific (fixtures.careModules): HVAC equipment passport + diagnostics; Snow season/compliance log; Lawn season program + re-entry; Pool water quality; Roofing inspection report + project tracker; Pest station monitoring. Nav label comes from careModules[theme].navLabel. 'unauthorized' renders the entitlement-gate (plan doesn't include the hub). Wave 9: Health hub (kind healthCare) = upcoming appointment + care-plan milestones + follow-up tasks + secure documents (metadata only — NO clinical metrics/results rendered, by design) + provider card; Beauty hub (kind beautyCare) = appointment + session package + specialist preference + treatment/routine history + loyalty + routine products. Data contracts: care.selectUnit -> unit.id; care.download -> document.id; care.requestRetreat -> plan.planId + data-property-id + data-service-id; care.selectSpecialist -> specialist.id; care.completeTask -> task.id; care.contactProvider -> provider.id; care.openSecureDoc -> document.id. Stable entity ids: appt-*, prov-*, plan-*, pkg-*, spec-*, task-*, doc-*." }
   ],
   "actions": [
     "auth.sendCode", "auth.verifyCode",
@@ -46,8 +49,29 @@
     "membership.activate",
     "profile.updateAddress", "profile.setDefaultPayment",
     "support.open", "support.sendMessage",
+    "care.selectUnit", "care.download", "care.requestRetreat",
+    "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc",
+    "seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle",
     "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
   ],
+  "moduleStates": {
+    "seo-cta (seo.landing)": {
+      "states": ["idle", "pending", "success", "error"],
+      "note": "Fixed action ids: seo.cta.book / seo.cta.quote (primary, destination from cms.meta.primaryCta.destination), seo.cta.call, seo.cta.services (jump to grid), seo.service.select (grid card → booking/quote flow). Demo lifecycle: pending 900ms → success 800ms → booking drawer. 'error' is set by Codex on real command failure; preview any state via dev-toolbar 'cta' select (state.seoCtaForce)."
+    },
+    "retreat-card (care, Pest Control)": {
+      "states": ["available", "requesting", "used"],
+      "note": "Visual states only — demo body of care.requestRetreat sets 'requesting' and stops; 'used' shows the guarantee-spent copy with a disabled button. Codex owns the real request, resolution and entitlement check. Preview via dev-toolbar 'retreat' select (visible on the pest care hub) or state.careRetreat."
+    },
+    "follow-up-tasks (care, Health)": {
+      "states": ["open", "done"],
+      "note": "care.completeTask toggles the per-task visual state (state.careTasksDone overrides the fixture done flag). Codex owns real task completion and sync."
+    },
+    "specialist-picker (care, Beauty)": {
+      "states": ["active"],
+      "note": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01); state.careSpecialist overrides the fixture preferredId. Codex owns persisting the preference."
+    }
+  },
   "implementedStates": {
     "orders.list": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"],
     "order.detail": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error", "pending-action"],
@@ -61,6 +85,7 @@
     "activity": ["ready", "empty"],
     "calendar": ["ready"],
     "support": ["ready", "pending-action"],
+    "care": ["ready", "loading", "empty", "error", "unauthorized"],
     "landing": ["ready"],
     "auth.phone": ["ready", "validation-error"],
     "auth.code": ["ready", "validation-error"]

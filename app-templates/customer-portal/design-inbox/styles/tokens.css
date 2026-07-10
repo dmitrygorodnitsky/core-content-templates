@@ -7,7 +7,7 @@
    Codex team will implement (see manifest.json / README.md).
 
    THEMING is fully declarative:
-     <html data-theme="hvac|snow|lawn|pool|roofing|pest"
+     <html data-theme="hvac|snow|lawn|pool|roofing|pest|health|beauty"
            data-mode="light|dark">
    app.js only flips these two attributes — every color derives
    from the custom properties defined here.
@@ -86,6 +86,16 @@
 :root[data-theme="pest"] {
   --accent:#7c3aed; --accent-2:#9554f5; --accent-3:#ad74ff; --accent-rgb:124,58,237;
   --bg-1:#e7dcfb; --bg-2:#efe2fb; --bg-3:#f2e1f6;
+}
+
+:root[data-theme="health"] {
+  --accent:#0b7285; --accent-2:#0f8ba0; --accent-3:#22a5bb; --accent-rgb:11,114,133;
+  --bg-1:#cfe8ee; --bg-2:#d9eef0; --bg-3:#e2ecf6;
+}
+
+:root[data-theme="beauty"] {
+  --accent:#d6336c; --accent-2:#e64980; --accent-3:#f06595; --accent-rgb:214,51,108;
+  --bg-1:#fbd9e5; --bg-2:#fde2ec; --bg-3:#f7e3f5;
 }
 
 /* ---------- Design tokens : DARK MODE ---------- */

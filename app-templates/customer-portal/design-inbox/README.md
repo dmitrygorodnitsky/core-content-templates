@@ -66,6 +66,7 @@ customer-portal-design/
       commerce/               ServiceCard, PricingCard, ProductCard, CartRow, AddressCard, PaymentMethodCard
       proposals/              ProposalBanner, ProposalCard, ProposalComparison
       storm/                  StormHome, StormCalendar
+      care/                   shared (careChip, DocRow), EquipmentHub, SeasonLog, LawnProgram, WaterQuality, RoofReport, PestMonitoring
       profile/                StatCard
     routes/                   *Page.js page-level renderers (export names kept ORIGINAL — see deviations)
   data/
@@ -74,6 +75,15 @@ customer-portal-design/
   manifest.json               machine-readable index of components / actions / bindings / attributes
   README.md                   this file
   previews/                   desktop-1440 / tablet-768 / mobile-390 PNGs (dev toolbar hidden)
+                              + wave-7 care-hub captures: care-{hvac-equipment,snow-season-log,pest-monitoring}-{768,390}.png
+                              and reference screens care-{lawn-program,pool-water,roofing-report}-ref-390.png;
+                              wave-9 captures: care-{health-plan,beauty-routine}-{768,390}.png and
+                              seo-{health,beauty}-{768,390}.png (public landing).
+                              NOTE: the automated capture pane in this workspace is 908px wide — faithful
+                              1440 desktop captures could not be produced here (wide shots render with
+                              clipping artifacts in the capture pipeline; the live page is correct — open
+                              source.html and set vw=1440 in the dev toolbar in a ≥1440 browser window
+                              to regenerate desktop previews).
   HANDOFF.md                  the wave plan this split was executed against
 ```
 
@@ -109,7 +119,7 @@ Colors are never hardcoded in components. The whole palette derives from CSS cus
 `styles/tokens.css`, selected by two attributes on `<html>`:
 
 ```html
-<html data-theme="hvac|snow|lawn|pool|roofing|pest" data-mode="light|dark">
+<html data-theme="hvac|snow|lawn|pool|roofing|pest|health|beauty" data-mode="light|dark">
 ```
 
 `app.js` only flips these two attributes; `ui.toggleMode` drives dark mode. **`data-theme` (the vertical)
@@ -120,12 +130,81 @@ it for preview.
 
 The portal reshapes by **profile**, chosen from the vertical (`fixtures.profileFor`):
 
-- **`onDemand`** (HVAC): booking-first. Nav = Orders / Proposals / Services / Pricing / Products / Support;
+- **`onDemand`** (HVAC): booking-first. Nav = Orders / **Equipment** / Proposals / Services / Pricing / Products / Support;
   primary action **+ Book**; cart on; Calendar = month grid.
 - **`stormOps`** (Snow Removal, Roofing, Pool & Spa, Lawn & Garden, Pest Control): weather-triggered seasonal
-  service. Nav = **Home / Calendar / Contracts / Services / Activity / Support**; primary action **Request
+  service. Nav = **Home / Calendar / ‹care hub› / Contracts / Services / Activity / Support**; primary action **Request
   service**; cart off; Calendar = **weather-operational agenda**. The **StormCalendar** derives service names
   and trigger copy from the active vertical, so one component serves all five weather-triggered verticals.
+- **`appointments`** (Health, Beauty — wave 9): booking-first, no weather triggers (`themes[x].wt = null`
+  removes the Weather Trigger banner/panel and feed item everywhere). Nav = **Appointments / Calendar /
+  ‹care hub› / Services / Pricing / Products / Support**; primary action **+ Book**; cart on; Calendar = month grid.
+
+### Vertical care hub (wave 7 — config-driven per vertical)
+
+One route — **`care`** — whose content is vertical-specific, chosen from `fixtures.careModules[theme]`
+(the same mechanism as portal profiles). The nav label comes from the module (`navLabel`):
+
+- **HVAC → Equipment**: unit picker + unit passport (model / serial / warranty / health), latest
+  point-by-point diagnostic with per-check status and technician's note, reports & warranties vault.
+- **Snow Removal → Season log**: storm-response compliance log (trigger, response time, SLA met/missed,
+  materials used), season stats, SLA meter, downloadable slip-and-fall compliance reports.
+- **Lawn & Garden → Program**: 5-step season program (done / next / planned), kids-&-pets re-entry card
+  after treatments, soil snapshot, lawn progress photos.
+- **Pool & Spa → Water**: readings vs. safe ranges with trend sparklines, dosing log (what was added and
+  why), swim-ready status, testing cadence.
+- **Roofing → Roof report**: drone-inspection findings by zone with severity, condition score, active
+  repair project tracker, documents (report / warranty / insurance pack).
+- **Pest Control → Monitoring**: bait-station & smart-sensor map + list with per-station status, sensor
+  alert log, free re-treat request (plan guarantee).
+- **Health → Care plan** (wave 9): upcoming appointment, care-plan milestones (logistics steps — intake /
+  reviews / cadence, never outcomes), follow-up tasks, secure documents (metadata only — contents open in a
+  secure viewer, access logged), provider/care-team card. **No clinical metrics, readings or results are
+  ever rendered** — the hub is scheduling + documents by design, with an explicit not-a-medical-record note.
+- **Beauty → My routine** (wave 9): next appointment + session package (with usage meter), preferred-specialist
+  picker, treatment/routine history with saved formulas & notes, loyalty/membership card, routine products
+  (reuses the cart contract).
+
+New actions: `care.selectUnit`, `care.download`, `care.requestRetreat`; wave 9 adds `care.selectSpecialist`,
+`care.completeTask`, `care.contactProvider`, `care.openSecureDoc`. New fixture: `careModules`.
+All readings / scores / logs are display fixtures — Codex owns real telemetry, diagnostics and compliance data.
+Stable entity ids across the wave-9 hubs: `appt-*` (appointments), `prov-*` / `spec-*` (providers/specialists),
+`plan-*` / `pkg-*` (plans/packages), `task-*` (tasks), `doc-*` (documents).
+
+### Public SEO landing (wave 8 — one section set, all verticals)
+
+Route **`seo.landing`** (direct-preview entry: `seo-landing.html`) is a public, CMS-driven landing built
+from **reusable sections** in `src/components/seo/SeoSections.js` — NOT separate pages per vertical. Content comes
+from `data/seo-fixtures.js` keyed by vertical (wave 9 adds **Health** — logistics-only copy, no clinical claims —
+and **Beauty**); theming from `data-theme` as everywhere else. Styles live in
+`styles/seo.css` (7th stylesheet).
+
+Sections (stable `data-module` ids): `seo-hero` (service + `{locality}` geography merge slot + seasonal-offer
+CMS slot + primary/secondary CTA), `seo-trust-strip` (rating / licence / insurance / guarantee / response —
+**CMS data slots only**: null values render an explicit `from CMS` chip, never an invented fact),
+`seo-services-grid` (3–6 benefit-first cards → booking/quote flow), `seo-how-it-works` (request →
+scheduling/dispatch → service → report/payment), `seo-proof` (vertical-specific: HVAC equipment/maintenance/
+emergency · Snow trigger/SLA/compliance · Lawn programme/re-entry · Pool readings/swim-ready · Roofing
+inspection/report/project · Pest monitoring/guarantee), `seo-pricing` (“from” prices via CMS only; `from:null`
+= needs-assessment variant), `seo-service-area` (city/region chips + abstract coverage rings — no fake
+addresses; real map is a CMS media slot), `seo-reviews` (media slots for real photos; honest fallback when the
+collection is empty), `seo-faq` (accordion with schema.org FAQPage microdata — FAQ-schema ready),
+`seo-final-cta`, `seo-footer` (contacts/hours/areas/legal — contact values are nullable slots).
+
+**CTA contract** — fixed action ids `seo.cta.book` / `seo.cta.quote` (primary; destination =
+`cms.meta.primaryCta.destination`), `seo.cta.call`, `seo.cta.services`, `seo.service.select`, `seo.faq.toggle`.
+Every CTA renders `data-state = idle | pending | success | error` (demo lifecycle; preview any state via the
+dev-toolbar **cta** select). Codex replaces demo bodies with real booking/quote/call commands — markup contract
+unchanged.
+
+**Dynamic-data states** (`loading` / `empty`, driven by the dev-toolbar *state* select) exist **only** where
+data is CMS-dynamic: trust strip, pricing, service area, reviews, FAQ and the hero seasonal offer. Hero copy,
+how-it-works, proof and footer are static content.
+
+**Head-level CMS fields** (SEO title, meta description, H1, canonical path, locality/service area, FAQ
+collection, review/media collection, primary CTA destination) are defined per vertical in
+`data/seo-fixtures.js`; the ones with no visible place on the page are surfaced by the dev-only
+`seo-meta-preview` block (`data-dev-toolbar` — stripped on integration).
 
 ---
 
@@ -134,6 +213,7 @@ The portal reshapes by **profile**, chosen from the vertical (`fixtures.profileF
 | route id | path | status |
 |---|---|---|
 | `landing` | `/` | **done** |
+| `seo.landing` (public SEO landing, all 8 verticals) | `cms.meta.canonicalPath` | **done** |
 | `auth.phone` | `/login` | **done** |
 | `auth.code` | `/login/verify` | **done** |
 | `orders.list` (dashboard/cabinet) | `/orders` | **done** |
@@ -148,6 +228,7 @@ The portal reshapes by **profile**, chosen from the vertical (`fixtures.profileF
 | `proposal.detail` | `/proposals/:id` | **done** |
 | `profile` | `/profile` | **done** |
 | `support` | `/support` | **done** |
+| `care` (vertical hub) | `/care` | **done** |
 
 Every `data-module` and `data-action` present in the source is indexed in `manifest.json`; every route in
 `scenarios.json` is rendered by `router.js`.

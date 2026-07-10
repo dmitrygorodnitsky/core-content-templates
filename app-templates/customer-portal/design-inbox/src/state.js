@@ -18,6 +18,10 @@ export var state = {
   currentSiteId: "s2", // open proposal site
   profileFilter: "all",  // profile order-history tab
   feedFilter: "all",     // activity feed tab
+  careUnit: null,        // selected unit.id on the care hub (HVAC equipment); null = first unit
+  careRetreat: null,     // retreat request visual state override: null(=fixture) | "available" | "requesting" | "used"
+  careSpecialist: null,  // preferred specialist.id on the beauty care hub; null = fixture preferredId
+  careTasksDone: {},     // follow-up task overrides on the health care hub: { taskId: true|false }
   prefs: { receipts: true, sms: true, marketing: false },
   messages: F.initialMessages.slice(),
   typing: false,
@@ -27,6 +31,9 @@ export var state = {
   code: "",
   authError: null,
   mobileNav: false,
+  seoCta: {},        // CTA lifecycle per action id: idle|pending|success|error (seo.landing)
+  seoCtaForce: null, // dev-toolbar override: null | "pending" | "success" | "error"
+  seoFaqOpen: null,  // open FAQ item index on seo.landing
   drawer: null,      // null | "booking"
   orders: F.ordersFor("HVAC"),
   vw: "full"         // preview viewport: full|390|768|1180|1440
@@ -52,7 +59,7 @@ export function findProduct(name) {
 
 export function activeProfile() { return F.profiles[F.profileFor[state.theme] || "onDemand"]; }
 
-export function isPublic() { return state.route === "landing" || state.route === "auth.phone" || state.route === "auth.code"; }
+export function isPublic() { return state.route === "landing" || state.route === "seo.landing" || state.route === "auth.phone" || state.route === "auth.code"; }
 
 export function buildCalendarGrid(year, month) {
   var first = new Date(year, month, 1);

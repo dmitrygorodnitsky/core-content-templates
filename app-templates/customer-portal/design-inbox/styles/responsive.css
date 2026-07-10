@@ -79,3 +79,12 @@
 .vw-tablet .auth-grid, .vw-mobile .auth-grid { grid-template-columns: 1fr; }
 
 .vw-mobile .auth-pitch__title { font-size: 30px; }
+
+/* Wave 7 — care hub */
+.vw-tablet .care-grid, .vw-mobile .care-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .care-stats { grid-template-columns: 1fr 1fr; }
+
+.vw-mobile .reading-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .unit-row { flex-direction: column; }

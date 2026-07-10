@@ -3,14 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Customer Portal — modular source</title>
-  <!-- Silence /favicon.ico 404 in preview/CI (no favicon needed for a design source). -->
+  <title>Public SEO landing — preview entry</title>
   <link rel="icon" href="data:,">
-  <!-- Known external dependency: Google Fonts "Manrope", used ONLY for design preview.
-       For offline / CI transfer, drop local Manrope woff2 files in styles/ and swap the
-       <link> below for an @font-face. tokens.css already declares a local-first fallback
-       (`@font-face ManropeFallback { src: local("Manrope") }`) and the font stack ends in
-       system-ui, so layout stays intact if the CDN is blocked. -->
+  <!-- Direct-preview entry for the seo.landing route. Same runtime as source.html;
+       only difference: window.__initialRoute opens the SEO landing immediately.
+       Switch vertical / viewport / data-state / CTA state with the dev toolbar. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">
@@ -23,10 +20,8 @@
   <link rel="stylesheet" href="styles/seo.css">
 </head>
 <body>
-  <!-- Single mount point. src/app.js builds the AppShell into #app. -->
   <div id="app"></div>
-
-  <!-- Modular ES-module runtime. Serve over HTTP (no file:// double-click). -->
+  <script>window.__initialRoute = "seo.landing";</script>
   <script type="module" src="src/app.js"></script>
 </body>
 </html>

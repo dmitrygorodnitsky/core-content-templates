@@ -16,7 +16,9 @@ import { Activity } from "./routes/ActivityPage.js";
 import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
 import { Landing } from "./routes/LandingPage.js";
+import { SeoLanding } from "./routes/SeoLandingPage.js";
 import { Auth } from "./routes/AuthPage.js";
+import { Care } from "./routes/CarePage.js";
 
 export function ComingSoon(routeId, wave) {
   return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
@@ -32,6 +34,7 @@ export function renderRoute() {
   switch (state.route) {
     case "orders.list": return Cabinet();
     case "order.detail": return OrderDetail();
+    case "care":        return Care();
     case "services":    return Services();
     case "pricing":     return Pricing();
     case "products":    return Products();
@@ -43,6 +46,7 @@ export function renderRoute() {
     case "calendar":    return Calendar();
     case "support":     return Support();
     case "landing":     return Landing();
+    case "seo.landing": return SeoLanding();
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
     default:            return Cabinet();

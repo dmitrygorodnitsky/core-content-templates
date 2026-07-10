@@ -21,6 +21,30 @@ export var ACTIONS = {
   "order.bookAgain":   function ()   { openDrawer("booking"); },
   "order.filter":      function (id) { setState({ filter: id }); },
   "compliance.unlock": function ()   { toast("Compliance Reports is a Pro add-on \u2014 ask your account manager"); },
+  /* care hub — payload contracts: selectUnit receives unit.id, download receives
+     document.id, requestRetreat receives plan.planId (+ data-property-id /
+     data-service-id on the element). DEMO bodies — Codex owns the real calls. */
+  "care.selectUnit":   function (id) { setState({ careUnit: id }); },
+  "care.download":     function (id) { toast("Download queued \u00b7 " + (id || "document")); },
+  "care.requestRetreat": function (id, el) { setState({ careRetreat: "requesting" }); },
+  /* wave 9 care hubs (Health, Beauty) — payload contracts: selectSpecialist
+     receives specialist.id, completeTask receives task.id, contactProvider
+     receives provider.id, openSecureDoc receives document.id. DEMO bodies —
+     Codex owns the real commands (and, for secure docs, the audited viewer). */
+  "care.selectSpecialist": function (id) { setState({ careSpecialist: id }); toast("Preferred specialist updated"); },
+  "care.completeTask": function (id) { toggleCareTask(id); },
+  "care.contactProvider": function (id) { go("support"); toast("Secure message \u2014 your care team replies within one business day"); },
+  "care.openSecureDoc": function (id) { toast("Opening in the secure viewer \u2014 access is logged"); },
+  /* public SEO landing (route seo.landing) — FIXED action ids.
+     CTA lifecycle idle→pending→success|error is DEMO here (ctaDemo);
+     Codex replaces the body with the real command, keeping the id and
+     the data-state contract. Primary destination = cms.meta.primaryCta.destination. */
+  "seo.cta.book":      function (id, el) { ctaDemo("seo.cta.book", function () { openDrawer("booking"); }); },
+  "seo.cta.quote":     function (id, el) { ctaDemo("seo.cta.quote", function () { openDrawer("booking"); }); },
+  "seo.cta.call":      function ()   { toast("Calling — phone number comes from the CMS"); },
+  "seo.cta.services":  function ()   { seoScrollToServices(); },
+  "seo.service.select": function (id) { openDrawer("booking"); toast((id || "Service") + " — booking flow"); },
+  "seo.faq.toggle":    function (id) { setState({ seoFaqOpen: state.seoFaqOpen === Number(id) ? null : Number(id) }); },
   "booking.open":      function ()   { openDrawer("booking"); },
   "booking.confirm":   function ()   { closeDrawer(); toast("Service booked"); },
   "proposal.review":   function ()   { go("proposals.list"); },
@@ -142,6 +166,17 @@ export function validateCode() {
 
 export function togglePref(key) { state.prefs = Object.assign({}, state.prefs, { }); state.prefs[key] = !state.prefs[key]; render(); }
 
+/* health care hub: toggle a follow-up task's visual done state.
+   Override map wins over the fixture default (m.tasks[].done). */
+export function toggleCareTask(id) {
+  var m = F.careModules[state.theme] || {};
+  var t = (m.tasks || []).find(function (x) { return x.id === id; });
+  var cur = (id in state.careTasksDone) ? state.careTasksDone[id] : !!(t && t.done);
+  state.careTasksDone = Object.assign({}, state.careTasksDone);
+  state.careTasksDone[id] = !cur;
+  render();
+}
+
 export function calShift(delta) {
   var m = state.calMonth + delta, y = state.calYear;
   if (m < 0) { m = 11; y--; } else if (m > 11) { m = 0; y++; }
@@ -195,6 +230,10 @@ export function pickTheme(name) {
   state.theme = name;
   state.orders = F.ordersFor(name);
   state.filter = "all";
+  state.careUnit = null;
+  state.careRetreat = null;
+  state.careSpecialist = null;
+  state.careTasksDone = {};
   pickThemeResetCart();
   render();
 }
@@ -206,6 +245,31 @@ export function confirmWeather(id, decision) {
   });
   render();
   toast(decision === "confirmed" ? "Visit confirmed" : "Visit declined");
+}
+
+/* demo CTA lifecycle for seo.landing: idle → pending → success → idle.
+   Error state is reachable via the dev-toolbar "cta" override (state.seoCtaForce)
+   and, in production, set by Codex when the real command fails. */
+var seoCtaTimers = {};
+export function ctaDemo(actionId, onSuccess) {
+  if ((state.seoCta[actionId] || "idle") === "pending") return;
+  clearTimeout(seoCtaTimers[actionId]);
+  state.seoCta = Object.assign({}, state.seoCta); state.seoCta[actionId] = "pending"; render();
+  seoCtaTimers[actionId] = setTimeout(function () {
+    state.seoCta = Object.assign({}, state.seoCta); state.seoCta[actionId] = "success"; render();
+    seoCtaTimers[actionId] = setTimeout(function () {
+      state.seoCta = Object.assign({}, state.seoCta); state.seoCta[actionId] = "idle";
+      if (onSuccess) onSuccess(); else render();
+    }, 800);
+  }, 900);
+}
+
+/* jump to the services grid (scrollIntoView is not allowed in this workspace) */
+export function seoScrollToServices() {
+  var el = document.getElementById("seo-services");
+  if (!el) return;
+  var top = el.getBoundingClientRect().top + window.scrollY - 24;
+  window.scrollTo({ top: top, behavior: "smooth" });
 }
 
 export function openDrawer(name) { state.drawer = name; render(); }

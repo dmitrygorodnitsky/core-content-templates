@@ -30,7 +30,9 @@
     "Lawn & Garden": "lawn",
     "Pool & Spa": "pool",
     "Roofing": "roofing",
-    "Pest Control": "pest"
+    "Pest Control": "pest",
+    "Health": "health",
+    "Beauty": "beauty"
   };
 
   /* ---------- Verticals (theme content) ---------- */
@@ -198,6 +200,64 @@
       ],
       reminder: { title: "Quarterly treatment due", desc: "Last perimeter treatment was 80 days ago" },
       prop: { svc: "Perimeter Protection Program", surfaces: ["Perimeter", "Foundation", "Lawn Zone", "Interior", "Crawl Space"], months: "Apr\u2013Aug", unlimDesc: "Unlimited re-treatments between scheduled visits.", colA: "Perimeter spray", colB: "Interior treatment", unitA: "/ spray", unitB: "/ treatment" }
+    },
+    /* WAVE 9 — Health: in-home care support. LOGISTICS ONLY by design:
+       the portal handles scheduling, plans, tasks and document metadata.
+       No clinical metrics, readings, results or medical claims anywhere. */
+    "Health": {
+      slug: "health", accent: "#0b7285",
+      hero: { badge: "\u2695\ufe0f Licensed & background-checked", title: "Care at home, coordinated.", sub: "Home care visits, physio and nursing support by licensed providers. One schedule the whole family can follow \u2014 documents kept secure." },
+      svc: [
+        { name: "Home Care Visit", price: "$75", tagline: "Support at home, on schedule", duration: "~60 min", includes: ["The same care team every visit", "Visit summary in your portal", "Family can follow the schedule"] },
+        { name: "Physio Session", price: "$95", tagline: "Mobility work at home", duration: "~60 min", includes: ["Licensed physiotherapist", "Plan milestones updated after each session", "Home exercise notes included"] },
+        { name: "Nursing Visit", price: "$110", tagline: "In-home nursing support", duration: "~45 min", includes: ["Registered nurse", "Coordinated with your care plan", "Secure visit notes"] },
+        { name: "Care Assessment", price: "Quote", tagline: "Care plan intake & setup", duration: "~90 min", includes: ["In-home intake assessment", "Personal care plan drafted", "Family walkthrough included"] }
+      ],
+      orderNames: ["Home care visit", "Physio session", "Nursing visit", "Care assessment", "Follow-up visit"],
+      wt: null, /* not weather-triggered \u2014 removes all Weather Trigger UI for this vertical */
+      plan: { name: "Care Plan", plusName: "Care Plus", tag: "Best for one household", desc: "A consistent care team, priority scheduling.", headline: "Pricing that fits your care",
+        features: ["The same care team, visit to visit", "Priority scheduling", "Quarterly plan reviews", "Family access included"],
+        plusFeatures: ["Weekly scheduled visits", "Same-week rescheduling", "Dedicated care coordinator", "24/7 phone line"] },
+      feat: { badge: "New \u00b7 Fitted & installed", title: "Home Safety Rail Kit \u2014 steadier every day", desc: "Grab rails and threshold ramps, fitted by insured installers in one visit.", cta: "Buy & install \u00b7 $240", fin: "or $20/mo \u00b7 0% APR" },
+      cats: [{ key: "safety", label: "Home safety" }, { key: "mobility", label: "Mobility" }, { key: "comfort", label: "Daily comfort" }],
+      products: [
+        { cat: "safety", tag: "Safety", name: "Grab Rail Set", blurb: "Bathroom & hallway \u00b7 installed", price: "$68", priceNum: 68 },
+        { cat: "safety", tag: "Safety", name: "Non-Slip Mat Pack", blurb: "Bath, shower & entry", price: "$32", priceNum: 32 },
+        { cat: "mobility", tag: "Mobility", name: "Folding Walker", blurb: "Light frame \u00b7 folds flat", price: "$129", priceNum: 129 },
+        { cat: "mobility", tag: "Mobility", name: "Threshold Ramp", blurb: "Doorways up to 6 cm", price: "$84", priceNum: 84 },
+        { cat: "comfort", tag: "Comfort", name: "Adjustable Bed Wedge", blurb: "Rest & reading support", price: "$59", priceNum: 59 },
+        { cat: "comfort", tag: "Comfort", name: "Big-Button Phone", blurb: "Loud, simple, reliable", price: "$49", priceNum: 49 }
+      ],
+      reminder: { title: "Plan review due", desc: "Your quarterly care plan review is due this month" },
+      prop: { svc: "Home Safety Program", surfaces: ["Bathroom", "Bedroom", "Hallway", "Kitchen", "Entry"], months: "Year-round", unlimDesc: "Scheduled visits plus unlimited plan adjustments.", colA: "Care visit", colB: "Physio session", unitA: "/ visit", unitB: "/ session" }
+    },
+    /* WAVE 9 — Beauty: at-home & in-studio beauty services. */
+    "Beauty": {
+      slug: "beauty", accent: "#d6336c",
+      hero: { badge: "\u2728 Vetted, licensed specialists", title: "Salon-level care, at your door.", sub: "Hair, nails and skin by vetted specialists \u2014 at home or in-studio. Formulas, shades and routine notes remembered visit to visit." },
+      svc: [
+        { name: "Hair Styling", price: "$65", tagline: "Cut, color & blowout", duration: "~75 min", includes: ["Licensed, vetted stylists", "Your color formulas saved", "Rebook the same specialist in a tap"] },
+        { name: "Manicure & Nails", price: "$45", tagline: "Classic to gel, at home", duration: "~60 min", includes: ["Sanitised, sealed pro kit", "Gel, classic or press-on", "Shade saved to your profile"] },
+        { name: "Facial Treatment", price: "$85", tagline: "A routine that carries over", duration: "~60 min", includes: ["Routine notes after every visit", "Products logged to your profile", "Sensitive-skin options"] },
+        { name: "Event & Bridal Package", price: "Quote", tagline: "Trials, timeline, day-of team", duration: "custom", includes: ["Trial session included", "Day-of team scheduling", "One coordinator end-to-end"] }
+      ],
+      orderNames: ["Blowout & style", "Gel manicure", "Facial treatment", "Bridal trial", "Root touch-up"],
+      wt: null, /* not weather-triggered */
+      plan: { name: "Glow Plan", plusName: "Glow Plus", tag: "Best for a monthly routine", desc: "Member pricing, priority slots with your specialist.", headline: "Pricing that fits your routine",
+        features: ["Member pricing on every visit", "Priority slots with your specialist", "1 style refresh a quarter", "Formulas & routine history saved"],
+        plusFeatures: ["2 visits a month included", "Same-week rebooking guarantee", "\u201320% on all products", "Event styling priority"] },
+      feat: { badge: "New \u00b7 Pro-grade", title: "Silk Repair Set \u2014 salon results between visits", desc: "The treatment line your stylist uses, sized for home.", cta: "Buy \u00b7 $64", fin: "or 4 \u00d7 $16 \u00b7 no fees" },
+      cats: [{ key: "hair", label: "Hair care" }, { key: "nails", label: "Nails" }, { key: "skin", label: "Skin" }],
+      products: [
+        { cat: "hair", tag: "Hair", name: "Silk Repair Set", blurb: "Post-color bond care", price: "$64", priceNum: 64 },
+        { cat: "hair", tag: "Hair", name: "Heat Shield Spray", blurb: "Before every hot tool", price: "$28", priceNum: 28 },
+        { cat: "nails", tag: "Nails", name: "Cuticle Care Kit", blurb: "Between-visit upkeep", price: "$22", priceNum: 22 },
+        { cat: "nails", tag: "Nails", name: "Gel Removal Kit", blurb: "Damage-free at home", price: "$18", priceNum: 18 },
+        { cat: "skin", tag: "Skin", name: "Hydration Serum", blurb: "Your specialist\u2019s pick", price: "$46", priceNum: 46 },
+        { cat: "skin", tag: "Skin", name: "Overnight Mask", blurb: "Twice-a-week routine", price: "$34", priceNum: 34 }
+      ],
+      reminder: { title: "Roots check-in", desc: "It has been 6 weeks since your last color visit" },
+      prop: { svc: "Routine Membership", surfaces: ["Hair", "Nails", "Skin", "Massage", "Makeup"], months: "Year-round", unlimDesc: "Monthly routine visits plus member pricing on extras.", colA: "Styling", colB: "Treatment", unitA: "/ visit", unitB: "/ treatment" }
     }
   };
 
@@ -232,12 +292,16 @@
 
   /* Activity feed (fixture; grouped, newest first) */
   function buildFeed(v) {
+    /* the weather-trigger feed item exists only for weather-triggered verticals (v.wt) */
+    var todayItems = v.wt ? [
+      { type: "orders", title: "Weather Trigger \u2014 confirm your visit", desc: v.wt.trigger + " at Office \u00b7 respond by 8:00 PM today", time: "5:12 AM", dot: "#0e8fc4", iconBg: "rgba(14,143,196,.16)", action: "Review", act: "weather", unread: true }
+    ] : [];
+    todayItems = todayItems.concat([
+      { type: "orders", title: "Daniel is on the way", desc: v.orderNames[0] + " \u00b7 arriving in ~14 min", time: "2:41 PM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", action: "Track", act: "orders", unread: true },
+      { type: "orders", title: "Technician assigned", desc: "Daniel R. (\u2605 4.9) will handle your visit", time: "9:02 AM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", unread: true }
+    ]);
     return [
-      { day: "Today", items: [
-        { type: "orders", title: "Weather Trigger \u2014 confirm your visit", desc: v.wt.trigger + " at Office \u00b7 respond by 8:00 PM today", time: "5:12 AM", dot: "#0e8fc4", iconBg: "rgba(14,143,196,.16)", action: "Review", act: "weather", unread: true },
-        { type: "orders", title: "Daniel is on the way", desc: v.orderNames[0] + " \u00b7 arriving in ~14 min", time: "2:41 PM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", action: "Track", act: "orders", unread: true },
-        { type: "orders", title: "Technician assigned", desc: "Daniel R. (\u2605 4.9) will handle your visit", time: "9:02 AM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", unread: true }
-      ] },
+      { day: "Today", items: todayItems },
       { day: "Yesterday", items: [
         { type: "billing", title: "Payment received", desc: "$480 \u00b7 " + v.orderNames[3] + " #SV-2381", time: "4:18 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", action: "View invoice", act: "invoice" },
         { type: "orders", title: "Service completed", desc: v.orderNames[3] + " finished \u2014 you rated it \u2605\u2605\u2605\u2605\u2605", time: "3:50 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)" }
@@ -318,11 +382,11 @@
     return [
       { id: "#SV-2402", name: n[0], date: "Today",    status: "inprogress", price: "$60",  dot: O[0], iconBg: O[1], locationId: "home",   y: 2026, m: 0, d: 15 },
       { id: "#SV-3312", name: n[1], date: "Tomorrow", status: "scheduled",  price: "$94",  dot: B[0], iconBg: B[1], locationId: "office", y: 2026, m: 0, d: 16,
-        wt: { status: "pending", trigger: v.wt.trigger, detected: "Today \u00b7 5:10 AM", deadline: "Today \u00b7 8:00 PM", auto: auto } },
+        wt: v.wt ? { status: "pending", trigger: v.wt.trigger, detected: "Today \u00b7 5:10 AM", deadline: "Today \u00b7 8:00 PM", auto: auto } : undefined },
       { id: "#SV-2410", name: n[2], date: "Jan 30",   status: "scheduled",  price: "$120", dot: A[0], iconBg: A[1], locationId: "home",   y: 2026, m: 0, d: 30 },
       { id: "#SV-2381", name: n[3], date: "Jan 12",   status: "completed",  price: "$480", dot: G[0], iconBg: G[1], locationId: "home",   y: 2026, m: 0, d: 12, photos: true },
       { id: "#SV-3290", name: n[1], date: "Jan 5",    status: "completed",  price: "$94",  dot: B[0], iconBg: B[1], locationId: "office", y: 2026, m: 0, d: 5,  photos: true,
-        wt: { status: "auto", trigger: v.wt.past, detected: "Jan 5 \u00b7 4:46 AM", deadline: "Jan 5 \u00b7 7:00 AM", sla: v.wt.sla } },
+        wt: v.wt ? { status: "auto", trigger: v.wt.past, detected: "Jan 5 \u00b7 4:46 AM", deadline: "Jan 5 \u00b7 7:00 AM", sla: v.wt.sla } : undefined },
       { id: "#SV-2356", name: n[4], date: "Oct 24",   status: "completed",  price: "$45",  dot: G[0], iconBg: G[1], locationId: "office", y: 2025, m: 9, d: 24 }
     ];
   }
@@ -340,6 +404,7 @@
       id: "onDemand",
       nav: [
         { key: "orders.list", label: "Orders" },
+        { key: "care" }, /* label comes from careModules[theme].navLabel */
         { key: "proposals.list", label: "Proposals" },
         { key: "services", label: "Services" },
         { key: "pricing", label: "Pricing" },
@@ -356,6 +421,7 @@
       nav: [
         { key: "orders.list", label: "Home" },
         { key: "calendar", label: "Calendar" },
+        { key: "care" }, /* label comes from careModules[theme].navLabel */
         { key: "proposals.list", label: "Contracts" },
         { key: "services", label: "Services" },
         { key: "activity", label: "Activity" },
@@ -365,6 +431,25 @@
       weatherCalendar: true,
       showCart: false,
       drawerTitle: "Request service"
+    },
+    /* WAVE 9 — 'appointments' (Health, Beauty): booking-first like onDemand,
+       but with a month Calendar in the nav instead of Proposals and NO
+       weather triggers (these verticals set v.wt = null). */
+    appointments: {
+      id: "appointments",
+      nav: [
+        { key: "orders.list", label: "Appointments" },
+        { key: "calendar", label: "Calendar" },
+        { key: "care" }, /* label comes from careModules[theme].navLabel */
+        { key: "services", label: "Services" },
+        { key: "pricing", label: "Pricing" },
+        { key: "products", label: "Products" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "+ Book", action: "booking.open" },
+      weatherCalendar: false,
+      showCart: true,
+      drawerTitle: "Book an appointment"
     }
   };
   var profileFor = {
@@ -373,7 +458,9 @@
     "Lawn & Garden": "stormOps",
     "Pool & Spa": "stormOps",
     "Roofing": "stormOps",
-    "Pest Control": "stormOps"
+    "Pest Control": "stormOps",
+    "Health": "appointments",
+    "Beauty": "appointments"
   };
 
   /* Weather-operational calendar (stormOps). Derives service names +
@@ -410,6 +497,221 @@
     };
   }
 
+  /* ============================================================
+     VERTICAL CARE MODULES (wave 7) — one config-driven route
+     ("care") whose content is vertical-specific. Same mechanism
+     as portal profiles: the vertical picks WHICH hub renders and
+     what its nav item is called (navLabel).
+     All readings / scores / logs are DISPLAY FIXTURES — Codex
+     owns real telemetry, diagnostics and compliance data.
+     ============================================================ */
+  var careModules = {
+    "HVAC": {
+      kind: "equipment", navLabel: "Equipment",
+      empty: { glyph: "\u2699", title: "No equipment on file yet", desc: "After your first visit, every unit we service appears here with its passport and diagnostics." },
+      title: "Your equipment", sub: "Every unit we service \u2014 condition, warranty and the latest diagnostic in one place.",
+      units: [
+        { id: "unit-ac-01", name: "Central AC", model: "Carrier 24ACC636", place: "Backyard pad", serial: "SN 4A88-22014", installed: "2019", warranty: "Parts until Aug 2029", lastVisit: "Jan 12, 2026", health: 86,
+          note: "Supply-air \u0394T is trending slightly low \u2014 worth a coil clean before summer.",
+          checks: [
+            { group: "Cooling performance", items: [
+              { name: "Refrigerant pressure", state: "ok", val: "118 psi" },
+              { name: "Supply air \u0394T", state: "warn", val: "19\u00b0F", note: "target 20\u201322\u00b0F" },
+              { name: "Compressor draw", state: "ok", val: "6.4 A" } ] },
+            { group: "Airflow & filtration", items: [
+              { name: "Air filter", state: "warn", val: "88 days", note: "replace soon" },
+              { name: "Blower motor", state: "ok", val: "normal" },
+              { name: "Duct static pressure", state: "ok", val: "0.48 in" } ] },
+            { group: "Safety & electrical", items: [
+              { name: "Capacitor", state: "ok", val: "within spec" },
+              { name: "Contactor & wiring", state: "ok", val: "no wear" },
+              { name: "Condensate drain", state: "ok", val: "clear" } ] }
+          ] },
+        { id: "unit-furnace-01", name: "Furnace", model: "Lennox EL296V", place: "Basement", serial: "SN 7C21-90387", installed: "2016", warranty: "Heat exchanger until 2036", lastVisit: "Oct 3, 2025", health: 71,
+          note: "Igniter is near end of life \u2014 replacement recommended at the next visit.",
+          checks: [
+            { group: "Heating performance", items: [
+              { name: "Ignition system", state: "issue", val: "aging igniter", note: "replace recommended" },
+              { name: "Flame sensor", state: "ok", val: "cleaned Oct 3" },
+              { name: "Temperature rise", state: "ok", val: "52\u00b0F" } ] },
+            { group: "Safety", items: [
+              { name: "Heat exchanger", state: "ok", val: "no cracks" },
+              { name: "CO at registers", state: "ok", val: "0 ppm" },
+              { name: "Gas connections", state: "ok", val: "no leaks" } ] },
+            { group: "Airflow", items: [
+              { name: "Blower wheel", state: "warn", val: "light dust", note: "clean at tune-up" },
+              { name: "Return airflow", state: "ok", val: "normal" } ] }
+          ] }
+      ],
+      docs: [
+        { id: "doc-hvac-diag-2026-01", name: "Diagnostic report \u2014 Jan 12, 2026", meta: "PDF \u00b7 21-point check" },
+        { id: "doc-hvac-warranty-carrier", name: "Carrier parts warranty", meta: "PDF \u00b7 valid to 2029" }
+      ]
+    },
+    "Snow Removal": {
+      kind: "seasonLog", navLabel: "Season log",
+      empty: { glyph: "\u2744", title: "No storm responses yet", desc: "When the first storm triggers a visit, the GPS-logged response appears here." },
+      title: "Season log", sub: "Every storm response this winter \u2014 GPS-logged, timed against your SLA, with materials used.",
+      stats: [
+        { label: "Storms served", value: "9" }, { label: "Visits", value: "14" },
+        { label: "Avg response", value: "52 min" }, { label: "De-icer used", value: "310 kg" }
+      ],
+      sla: { pct: 93, label: "13 of 14 visits inside the 90-minute window \u2014 the missed one was credited per contract." },
+      events: [
+        { date: "Jan 12", storm: "Snowfall 3.2 cm", trigger: "Auto \u00b7 2 cm rule", response: "38 min", sla: true, material: "22 kg salt", orderId: "#SV-3290", photos: true },
+        { date: "Jan 5", storm: "Snowfall 4.1 cm", trigger: "Auto \u00b7 2 cm rule", response: "47 min", sla: true, material: "26 kg salt", orderId: "#SV-3290", photos: true },
+        { date: "Dec 28", storm: "Freezing rain", trigger: "Ice watch", response: "41 min", sla: true, material: "31 kg brine", photos: true },
+        { date: "Dec 19", storm: "Snowfall 8.6 cm", trigger: "Auto \u00b7 2 cm rule", response: "104 min", sla: false, material: "24 kg salt", note: "crew rerouted \u2014 visit credited", photos: true },
+        { date: "Dec 12", storm: "Snowfall 2.3 cm", trigger: "Auto \u00b7 2 cm rule", response: "55 min", sla: true, material: "18 kg salt", photos: true }
+      ],
+      docs: [
+        { id: "doc-snow-compliance-2025-12", name: "December compliance report", meta: "PDF \u00b7 8 visits \u00b7 slip-and-fall record" },
+        { id: "doc-snow-compliance-2025-11", name: "November compliance report", meta: "PDF \u00b7 4 visits" }
+      ]
+    },
+    "Lawn & Garden": {
+      kind: "program", navLabel: "Program",
+      empty: { glyph: "\u2618", title: "Program starts in spring", desc: "Your 5-step season program appears here once the first application is scheduled." },
+      title: "Season program", sub: "Your 5-step feeding and care program \u2014 what\u2019s done, what\u2019s next, and when the lawn is safe to use.",
+      reentry: { active: true, treatment: "Fertilizing \u2014 applied today, 2:10 PM", safeAfter: "Safe after 6:00 PM today", note: "Water-in complete. Keep kids and pets off treated areas until dry." },
+      steps: [
+        { n: 1, name: "Early spring feed", detail: "Slow-release + pre-emergent", window: "April", status: "done", when: "Done \u00b7 Apr 14" },
+        { n: 2, name: "Late spring feed", detail: "Balanced feed + broadleaf control", window: "May", status: "done", when: "Done \u00b7 May 22" },
+        { n: 3, name: "Summer feed + grub control", detail: "Heat-safe formula", window: "July", status: "next", when: "Scheduled \u00b7 Jul 18" },
+        { n: 4, name: "Fall feed", detail: "Root-builder + overseed", window: "September", status: "upcoming", when: "Auto-scheduled" },
+        { n: 5, name: "Winterizer", detail: "Potassium winterizer", window: "November", status: "upcoming", when: "Auto-scheduled" }
+      ],
+      soil: [
+        { label: "Soil pH", value: "6.6 \u00b7 ideal" }, { label: "Nitrogen", value: "adequate" }, { label: "Thatch", value: "6 mm \u00b7 fine" }
+      ],
+      photos: [{ label: "April" }, { label: "May" }, { label: "June", tone: "after" }]
+    },
+    "Pool & Spa": {
+      kind: "water", navLabel: "Water",
+      empty: { glyph: "\u25cb", title: "No readings yet", desc: "Water chemistry from every visit lands here after your first test." },
+      title: "Water quality", sub: "Readings from every visit, tracked against safe ranges \u2014 plus what your tech dosed and why.",
+      tested: "Last tested Jan 12 \u00b7 9:40 AM \u00b7 Daniel R.",
+      nextTest: "Next test \u2014 Jan 19 (weekly plan)",
+      readings: [
+        { name: "pH", value: "7.4", target: "target 7.2\u20137.6", state: "ok", series: [55, 70, 80, 45, 60] },
+        { name: "Free chlorine", value: "1.8 ppm", target: "target 1\u20133 ppm", state: "ok", series: [40, 35, 60, 70, 55] },
+        { name: "Alkalinity", value: "78 ppm", target: "target 80\u2013120 ppm", state: "warn", note: "Slightly low \u2014 dose added Jan 12", series: [80, 70, 60, 50, 45] },
+        { name: "Water temp", value: "27\u00b0C", target: "heater set 28\u00b0C", state: "ok", series: [50, 55, 60, 62, 65] }
+      ],
+      doses: [
+        { date: "Jan 12", what: "Alkalinity increaser 1.2 kg \u00b7 chlorine tabs \u00d72", why: "Alkalinity trending low" },
+        { date: "Jan 5", what: "Chlorine tabs \u00d72", why: "Routine top-up" },
+        { date: "Dec 29", what: "Algaecide 250 ml", why: "Preventive \u2014 warm spell" }
+      ]
+    },
+    "Roofing": {
+      kind: "roof", navLabel: "Roof report",
+      empty: { glyph: "\u2302", title: "No inspection yet", desc: "Book your first drone inspection to get a zone-by-zone condition report." },
+      title: "Roof condition", sub: "Findings from your drone inspection on Jan 8 \u2014 and the repair project it kicked off.",
+      score: "82", grade: "Good", inspected: "Inspected Jan 8, 2026", nextDue: "Next inspection \u2014 Jan 2027",
+      zones: [
+        { zone: "Main roof \u2014 south face", sev: "ok", note: "Shingles sound \u00b7 no lifting or granule loss" },
+        { zone: "Valley at dormer", sev: "warn", note: "Early granule loss \u2014 monitor, reseal in 2026" },
+        { zone: "Chimney flashing", sev: "issue", note: "Cracked sealant \u2014 repair scheduled Jan 22" },
+        { zone: "Gutters \u2014 north run", sev: "warn", note: "60% debris \u2014 cleaning added to the visit" },
+        { zone: "Ridge & vents", sev: "ok", note: "Ventilation normal" }
+      ],
+      project: { name: "Chimney flashing repair", eta: "Crew arrives Jan 22 \u00b7 9:00 AM", steps: [
+        { label: "Quote approved", sub: "Jan 9 \u00b7 $180 \u00b7 2-year warranty", dot: "var(--ok)" },
+        { label: "Materials ordered", sub: "Jan 10 \u00b7 matching flashing kit", dot: "var(--ok)" },
+        { label: "Repair day", sub: "Jan 22 \u00b7 one crew, ~2 h", dot: "var(--accent)" },
+        { label: "Final drone check", sub: "Within 7 days of repair", dot: "rgba(120,120,128,.35)", muted: true }
+      ] },
+      docs: [
+        { id: "doc-roof-inspection-2026-01", name: "Inspection report \u2014 Jan 2026", meta: "PDF \u00b7 18 drone photos" },
+        { id: "doc-roof-warranty-shingle", name: "25-year shingle warranty", meta: "PDF \u00b7 transferable" },
+        { id: "doc-roof-insurance-pack", name: "Insurance documentation pack", meta: "ZIP \u00b7 photos + condition report" }
+      ]
+    },
+    "Pest Control": {
+      kind: "monitoring", navLabel: "Monitoring",
+      empty: { glyph: "\u25c9", title: "No stations installed yet", desc: "After installation, every bait station and sensor reports its status here." },
+      title: "Station monitoring", sub: "Bait stations and smart sensors watch your home between visits \u2014 alerts go straight to your technician.",
+      summary: [
+        { label: "Stations active", value: "8" }, { label: "Open alerts", value: "1" }, { label: "Last full sweep", value: "Jan 9" }
+      ],
+      stations: [
+        { id: "S1", label: "Garage \u2014 north wall", type: "Bait station", status: "clear", last: "Checked Jan 9", x: 20, y: 64 },
+        { id: "S2", label: "Kitchen \u2014 under sink", type: "Smart sensor", status: "alert", last: "Today \u00b7 4:12 AM", note: "activity detected", x: 46, y: 30 },
+        { id: "S3", label: "Attic hatch", type: "Smart sensor", status: "clear", last: "Checked Jan 9", x: 62, y: 18 },
+        { id: "S4", label: "Foundation \u2014 SE corner", type: "Bait station", status: "refreshed", last: "Bait refreshed Jan 9", x: 78, y: 70 },
+        { id: "S5", label: "Crawl space entry", type: "Bait station", status: "clear", last: "Checked Jan 9", x: 34, y: 82 }
+      ],
+      alerts: [
+        { when: "Today \u00b7 4:12 AM", text: "Sensor S2 (kitchen) \u2014 activity detected, Daniel notified automatically", state: "alert" },
+        { when: "Jan 9", text: "Quarterly sweep \u2014 all 8 stations checked, 2 baits refreshed", state: "ok" },
+        { when: "Dec 30", text: "Sensor S3 (attic) \u2014 false trigger cleared after review", state: "ok" }
+      ],
+      guarantee: {
+        title: "Free re-treatment",
+        note: "Seeing activity between visits? Re-treats are free under your Shield Plan \u2014 no questions asked.",
+        usedNote: "Guarantee used Dec 12 \u2014 the next free re-treat unlocks with your next quarterly visit.",
+        /* stable scope ids \u2014 the request payload contract (never display names) */
+        scope: { planId: "plan-shield-2026", propertyId: "prop-maple-1284", serviceId: "svc-pest-retreat" },
+        status: "available"
+      }
+    },
+    /* WAVE 9 — Health care hub. LOGISTICS ONLY BY DESIGN: appointments,
+       plan milestones, follow-up tasks, secure-document METADATA and the
+       care team. No clinical metrics, readings, results or medical advice
+       are ever rendered here \u2014 clinical data stays in the provider's own
+       systems. All ids are stable data-contract ids. */
+    "Health": {
+      kind: "healthCare", navLabel: "Care plan",
+      empty: { glyph: "\u2661", title: "No care plan yet", desc: "After your intake assessment, appointments, milestones and documents appear here." },
+      title: "Your care plan", sub: "Appointments, milestones, documents and your care team \u2014 the logistics in one place. Clinical details stay with your provider.",
+      disclaimer: "This portal shows scheduling and documents only \u2014 it is not a medical record. For clinical questions, contact your provider.",
+      appointment: { id: "appt-health-2026-0130", name: "Physio session \u00b7 mid-plan review", providerId: "prov-health-pt-01", provider: "Priya N., physiotherapist", when: "Fri, Jan 30 \u00b7 10:00\u201311:00 AM", where: "Home \u2014 1240 Pine Street", orderId: "#SV-2410", prep: "Clear a 2\u00d72 m space and wear comfortable shoes. A family member is welcome to join the review." },
+      plan: { id: "plan-health-2026", name: "Mobility & independence plan", cadence: "Reviewed quarterly \u00b7 started Nov 2025", milestones: [
+        { n: 1, name: "Intake & home assessment", detail: "Care team assigned \u00b7 home setup reviewed", status: "done", when: "Done \u00b7 Nov 12" },
+        { n: 2, name: "Weekly session rhythm", detail: "Twice-weekly sessions established", status: "done", when: "Done \u00b7 Dec 8" },
+        { n: 3, name: "Mid-plan review", detail: "Review with you and your family", status: "next", when: "Scheduled \u00b7 Jan 30" },
+        { n: 4, name: "Cadence check-in", detail: "Adjust visit frequency together", status: "upcoming", when: "Planned \u00b7 Mar" }
+      ] },
+      tasks: [
+        { id: "task-health-01", label: "Confirm the Jan 30 session", due: "by Jan 28", done: false },
+        { id: "task-health-02", label: "Sign the updated care plan", due: "before the review", done: false },
+        { id: "task-health-03", label: "Send preferred times for February", due: "this month", done: true }
+      ],
+      provider: { id: "prov-health-pt-01", name: "Priya N.", role: "Physiotherapist \u00b7 your care lead", org: "Aircove partner provider network", since: "Your care lead since Nov 2025", note: "Messages are answered within one business day. This channel is for scheduling \u2014 for anything urgent, call your provider directly." },
+      docs: [
+        { id: "doc-health-plan-2025-11", name: "Care plan \u2014 signed Nov 2025", meta: "Secure PDF \u00b7 opens in the secure viewer", secure: true },
+        { id: "doc-health-visit-2026-01-12", name: "Visit summary \u2014 Jan 12", meta: "Secure PDF \u00b7 session notes", secure: true },
+        { id: "doc-health-results-2026-01", name: "Results package \u2014 Jan 2026", meta: "Secure \u00b7 contents never previewed here", secure: true }
+      ],
+      docsNote: "Documents open in the secure viewer only \u2014 nothing is previewed on this page and every access is logged."
+    },
+    /* WAVE 9 — Beauty care hub: appointments & packages, specialist
+       preference, treatment/routine history, loyalty, routine products. */
+    "Beauty": {
+      kind: "beautyCare", navLabel: "My routine",
+      empty: { glyph: "\u2740", title: "No routine yet", desc: "After your first visit, appointments, history and your specialist\u2019s notes appear here." },
+      title: "Your routine", sub: "Appointments, packages, your specialist and the formulas they use \u2014 remembered visit to visit.",
+      appointment: { id: "appt-beauty-2026-0116", name: "Gel manicure", specialistId: "spec-beauty-02", specialist: "Dana P., nail specialist", when: "Tomorrow \u00b7 Jan 16 \u00b7 2:00 PM", where: "Home \u2014 1240 Pine Street", orderId: "#SV-3312", prep: "Kit is sanitised and sealed \u2014 just have a clear table spot ready." },
+      pkg: { id: "pkg-beauty-glow-2026", name: "Glow package", detail: "6 facial treatments \u00b7 valid to Jun 2026", used: 2, total: 6, next: "Session 3 \u2014 book anytime, it never expires early" },
+      specialists: [
+        { id: "spec-beauty-01", name: "Alina V.", role: "Hair & skin", rating: "4.9", visits: "18 visits with you" },
+        { id: "spec-beauty-02", name: "Dana P.", role: "Nails", rating: "4.8", visits: "6 visits with you" },
+        { id: "spec-beauty-03", name: "Marco T.", role: "Massage & spa", rating: "5.0", visits: "New to you" }
+      ],
+      preferredId: "spec-beauty-01",
+      history: [
+        { date: "Jan 8", what: "Facial treatment", who: "Alina V.", note: "Hydration serum \u00b7 T-zone is sensitive \u2014 gentle exfoliant only" },
+        { date: "Dec 20", what: "Gel manicure", who: "Dana P.", note: "Shade \u201cRosewood 214\u201d saved to your profile" },
+        { date: "Dec 6", what: "Root touch-up & blowout", who: "Alina V.", note: "Formula 6N + 20 vol \u00b7 35 min \u2014 saved" },
+        { date: "Nov 22", what: "Facial treatment", who: "Alina V.", note: "Winter routine started \u2014 overnight mask twice a week" }
+      ],
+      routine: { title: "Between visits", note: "Hydration serum every morning \u00b7 overnight mask Tue & Sat. Next color window: early February \u2014 Alina will hold a slot.", by: "Set by Alina V. \u00b7 Jan 8" },
+      loyalty: { id: "plan-beauty-member-2026", tier: "Gold member", points: 420, nextAt: 500, reward: "Free blowout at 500 pts", renews: "Renews Mar 1, 2026" },
+      productRecs: { note: "Picked by Alina for your routine", names: ["Silk Repair Set", "Hydration Serum", "Overnight Mask"] }
+    }
+  };
+
   window.AircoveFixtures = {
     PAL: PAL, TINTS: TINTS,
     themeSlugs: themeSlugs,
@@ -428,6 +730,7 @@
     profiles: profiles,
     profileFor: profileFor,
     stormCalendar: stormCalendar,
+    careModules: careModules,
     addresses: addresses,
     cards: cards,
     proposal: proposal,

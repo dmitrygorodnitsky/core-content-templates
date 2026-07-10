@@ -38,11 +38,11 @@ export function DevToolbar() {
     ]);
   }
   var routeSel = h("select", {}, [
-    { v: "orders.list", l: "orders.list" }, { v: "order.detail", l: "order.detail" }, { v: "services", l: "services" },
+    { v: "orders.list", l: "orders.list" }, { v: "order.detail", l: "order.detail" }, { v: "care", l: "care" }, { v: "services", l: "services" },
     { v: "pricing", l: "pricing" }, { v: "products", l: "products" }, { v: "checkout", l: "checkout" },
     { v: "proposals.list", l: "proposals.list" }, { v: "proposal.detail", l: "proposal.detail" },
     { v: "profile", l: "profile" }, { v: "calendar", l: "calendar" }, { v: "activity", l: "activity" }, { v: "support", l: "support" },
-    { v: "landing", l: "landing" }, { v: "auth.phone", l: "auth.phone" }, { v: "auth.code", l: "auth.code" }
+    { v: "landing", l: "landing" }, { v: "seo.landing", l: "seo.landing" }, { v: "auth.phone", l: "auth.phone" }, { v: "auth.code", l: "auth.code" }
   ].map(function (o) { var e = h("option", { value: o.v }, o.l); if (o.v === state.route) e.selected = true; return e; }));
   routeSel.addEventListener("change", function () {
     if (routeSel.value === "order.detail" && !state.currentOrderId) { openOrder((currentOrder() || {}).id); }
@@ -52,7 +52,7 @@ export function DevToolbar() {
   var themeSel = h("select", {}, Object.keys(F.themes).map(function (n) { var e = h("option", { value: n }, n); if (n === state.theme) e.selected = true; return e; }));
   themeSel.addEventListener("change", function () { pickTheme(themeSel.value); });
 
-  var stateSel = h("select", {}, ["ready", "loading", "empty", "error"].map(function (n) { var e = h("option", { value: n }, n); if (n === state.view) e.selected = true; return e; }));
+  var stateSel = h("select", {}, ["ready", "loading", "empty", "error", "unauthorized"].map(function (n) { var e = h("option", { value: n }, n); if (n === state.view) e.selected = true; return e; }));
   stateSel.addEventListener("change", function () { setState({ view: stateSel.value }); });
 
   var modeBtn = h("button", { "class": state.mode === "Dark" ? "is-on" : "" }, state.mode === "Dark" ? "\u263e dark" : "\u2600 light");
@@ -67,10 +67,36 @@ export function DevToolbar() {
     })
   ));
 
+  /* retreat-request visual state (only on the pest care hub) */
+  var retreatGroup = null;
+  if (state.route === "care" && (F.careModules[state.theme] || {}).kind === "monitoring") {
+    var rSel = h("select", {}, ["available", "requesting", "used"].map(function (n) {
+      var e = h("option", { value: n }, n);
+      if (n === (state.careRetreat || F.careModules[state.theme].guarantee.status)) e.selected = true;
+      return e;
+    }));
+    rSel.addEventListener("change", function () { setState({ careRetreat: rSel.value }); });
+    retreatGroup = h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "retreat"), rSel]);
+  }
+
+  /* CTA lifecycle preview (only on the public SEO landing) */
+  var ctaGroup = null;
+  if (state.route === "seo.landing") {
+    var cSel = h("select", {}, ["idle", "pending", "success", "error"].map(function (n) {
+      var e = h("option", { value: n }, n);
+      if (n === (state.seoCtaForce || "idle")) e.selected = true;
+      return e;
+    }));
+    cSel.addEventListener("change", function () { setState({ seoCtaForce: cSel.value === "idle" ? null : cSel.value }); });
+    ctaGroup = h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "cta"), cSel]);
+  }
+
   return h("div", { "class": "dev-toolbar", "data-dev-toolbar": "true" }, [
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "route"), routeSel]),
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "theme"), themeSel]),
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "state"), stateSel]),
+    retreatGroup,
+    ctaGroup,
     modeBtn,
     vwGroup
   ]);
@@ -151,6 +177,9 @@ function applyResponsive() {
 
 /* boot */
 document.addEventListener("DOMContentLoaded", function () {
+  /* optional initial route for direct-preview entry files (e.g. seo-landing.html
+     sets window.__initialRoute). Preview convenience only — Codex owns real routing. */
+  if (window.__initialRoute) state.route = window.__initialRoute;
   mount = document.getElementById("app");
   bindActions(mount);
   render();
