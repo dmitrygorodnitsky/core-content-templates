@@ -49,7 +49,8 @@
     "membership.activate", "profile.updateAddress", "profile.setDefaultPayment",
     "support.open", "support.sendMessage",
     "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry",
-    "care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"
+    "care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc",
+    "seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"
   ],
   "implementedStates": {
     "orders.list": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"],
@@ -98,6 +99,16 @@
     "strictCmsTemplate": "cms/seo-public-root-template.html; token-only and generated only from a complete public-authored payload plus deployment allowlists",
     "strictGenerator": "scripts/generate-seo-public.mjs; requires explicit --input and --output and has no mock defaults",
     "publicBoundary": "Strict public mode has no fixture fallback, portal auth/session object, AppShell, hash router, portal root boot, preview metadata, synthetic CTA lifecycle API, or invented facts."
+  },
+  "activationContract": {
+    "inventory": "runtime/data/activation-contracts.json",
+    "acceptedDataSources": ["care.fixture", "care.live", "seo.reference", "seo.publicAuthored"],
+    "acceptedCareActions": ["care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"],
+    "acceptedSeoActions": ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"],
+    "careSurfaceControls": {"inventoryRows": 21, "renderedInstances": 38, "allDataActionPrefixes": true},
+    "openedLive": [],
+    "notOpenedLive": ["care.live"],
+    "healthSensitiveUnavailable": ["care.contactProvider", "care.openSecureDoc"]
   },
   "notImplementedYet": {
     "routes": [],

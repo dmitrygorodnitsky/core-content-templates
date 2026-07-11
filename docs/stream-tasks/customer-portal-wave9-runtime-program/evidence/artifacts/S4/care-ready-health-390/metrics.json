@@ -144,7 +144,7 @@
   },
   "implementation": {
     "url": "/runtime/source.html#/care",
-    "sha256": "350534c93076f636579ce6b2e8caecbc4754632048f7da742d7a370750f6c643",
+    "sha256": "5ae05711eae76298d982e89f2cc579a22b3944a360a392e0c53c4722b6d1b7db",
     "failures": [],
     "metrics": {
       "shell": {
@@ -238,9 +238,9 @@
         "fontSize": "13px",
         "fontWeight": "600",
         "lineHeight": "normal",
-        "color": "rgb(255, 255, 255)",
-        "background": "rgba(0, 0, 0, 0)",
-        "border": "0px none rgb(255, 255, 255)",
+        "color": "rgb(154, 160, 173)",
+        "background": "rgb(245, 245, 247)",
+        "border": "0px none rgb(154, 160, 173)",
         "borderRadius": "999px",
         "display": "flex",
         "gridTemplateColumns": "none"
@@ -267,18 +267,18 @@
     "captureStability": {
       "method": "dual-browser-phase-normalized-ready-contexts",
       "warmupSha256": [
-        "350534c93076f636579ce6b2e8caecbc4754632048f7da742d7a370750f6c643",
-        "350534c93076f636579ce6b2e8caecbc4754632048f7da742d7a370750f6c643"
+        "5ae05711eae76298d982e89f2cc579a22b3944a360a392e0c53c4722b6d1b7db",
+        "5ae05711eae76298d982e89f2cc579a22b3944a360a392e0c53c4722b6d1b7db"
       ],
-      "firstSha256": "350534c93076f636579ce6b2e8caecbc4754632048f7da742d7a370750f6c643",
-      "secondSha256": "350534c93076f636579ce6b2e8caecbc4754632048f7da742d7a370750f6c643",
+      "firstSha256": "5ae05711eae76298d982e89f2cc579a22b3944a360a392e0c53c4722b6d1b7db",
+      "secondSha256": "5ae05711eae76298d982e89f2cc579a22b3944a360a392e0c53c4722b6d1b7db",
       "twoCapturePixelsStable": true
     }
   },
   "raw": {
-    "changed": 19293,
-    "changedPct": 2.5486466135616057,
-    "rms": 7.310349823851647
+    "changed": 29041,
+    "changedPct": 3.836378287692044,
+    "rms": 21.31148862717318
   },
   "accepted": {
     "changed": 0,
@@ -289,7 +289,96 @@
     {
       "controlIndex": 0,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "order.reschedule",
+      "entityId": "#SV-2410",
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 41,
+          "y": 432,
+          "width": 106,
+          "height": 36
+        },
+        "computedBoxShadow": "rgba(11, 114, 133, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [
+          {
+            "source": "rgba(11, 114, 133, 0.35) 0px 4px 12px 0px",
+            "inset": false,
+            "offsetX": 0,
+            "offsetY": 4,
+            "blur": 12,
+            "spread": 0,
+            "blurKernelExtent": 18
+          },
+          {
+            "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "inset": true,
+            "offsetX": 0,
+            "offsetY": 1,
+            "blur": 0,
+            "spread": 0,
+            "blurKernelExtent": 0
+          }
+        ],
+        "extensions": {
+          "left": 18,
+          "right": 18,
+          "top": 14,
+          "bottom": 22
+        },
+        "clip": {
+          "width": 390,
+          "height": 1941
+        }
+      },
+      "x": 23,
+      "y": 418,
+      "width": 142,
+      "height": 72
+    },
+    {
+      "controlIndex": 1,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "order.open",
+      "entityId": "#SV-2410",
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 156,
+          "y": 432,
+          "width": 109,
+          "height": 36
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 390,
+          "height": 1941
+        }
+      },
+      "x": 156,
+      "y": 432,
+      "width": 109,
+      "height": 36
+    },
+    {
+      "controlIndex": 2,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.contactProvider",
       "entityId": "prov-health-pt-01",
       "disabled": true,
@@ -341,9 +430,44 @@
       "height": 70
     },
     {
-      "controlIndex": 1,
+      "controlIndex": 3,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "support.call",
+      "entityId": null,
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 41,
+          "y": 1358,
+          "width": 308,
+          "height": 36
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 390,
+          "height": 1941
+        }
+      },
+      "x": 41,
+      "y": 1358,
+      "width": 308,
+      "height": 36
+    },
+    {
+      "controlIndex": 4,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.openSecureDoc",
       "entityId": "doc-health-plan-2025-11",
       "disabled": false,
@@ -376,9 +500,9 @@
       "height": 16
     },
     {
-      "controlIndex": 2,
+      "controlIndex": 5,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.openSecureDoc",
       "entityId": "doc-health-visit-2026-01-12",
       "disabled": false,
@@ -411,9 +535,9 @@
       "height": 16
     },
     {
-      "controlIndex": 3,
+      "controlIndex": 6,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.openSecureDoc",
       "entityId": "doc-health-results-2026-01",
       "disabled": false,
@@ -464,6 +588,18 @@
       {
         "action": "care.openSecureDoc",
         "entityId": "doc-health-visit-2026-01-12"
+      },
+      {
+        "action": "order.open",
+        "entityId": "#SV-2410"
+      },
+      {
+        "action": "order.reschedule",
+        "entityId": "#SV-2410"
+      },
+      {
+        "action": "support.call",
+        "entityId": null
       }
     ],
     "actual": [
@@ -482,11 +618,23 @@
       {
         "action": "care.openSecureDoc",
         "entityId": "doc-health-visit-2026-01-12"
+      },
+      {
+        "action": "order.open",
+        "entityId": "#SV-2410"
+      },
+      {
+        "action": "order.reschedule",
+        "entityId": "#SV-2410"
+      },
+      {
+        "action": "support.call",
+        "entityId": null
       }
     ],
-    "expectedCount": 4,
-    "actualCount": 4,
-    "truthfulCount": 4,
+    "expectedCount": 7,
+    "actualCount": 7,
+    "truthfulCount": 7,
     "exactMatch": true,
     "countMatch": true,
     "allTruthful": true,
@@ -496,11 +644,11 @@
   "changedComponents": [
     {
       "componentIndex": 0,
-      "x": 29,
-      "y": 1307,
-      "width": 332,
-      "height": 58,
-      "changedPixels": 18615,
+      "x": 41,
+      "y": 432,
+      "width": 106,
+      "height": 36,
+      "changedPixels": 3590,
       "controlIndexes": [
         0
       ],
@@ -530,13 +678,238 @@
           "fullyContainedInEffectEnvelope": false,
           "intersectsOwningControlBorderBox": false,
           "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
         }
       ],
       "controls": [
         {
           "controlIndex": 0,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "order.reschedule",
+          "entityId": "#SV-2410",
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 41,
+              "y": 432,
+              "width": 106,
+              "height": 36
+            },
+            "computedBoxShadow": "rgba(11, 114, 133, 0.35) 0px 4px 12px 0px, rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [
+              {
+                "source": "rgba(11, 114, 133, 0.35) 0px 4px 12px 0px",
+                "inset": false,
+                "offsetX": 0,
+                "offsetY": 4,
+                "blur": 12,
+                "spread": 0,
+                "blurKernelExtent": 18
+              },
+              {
+                "source": "rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset",
+                "inset": true,
+                "offsetX": 0,
+                "offsetY": 1,
+                "blur": 0,
+                "spread": 0,
+                "blurKernelExtent": 0
+              }
+            ],
+            "extensions": {
+              "left": 18,
+              "right": 18,
+              "top": 14,
+              "bottom": 22
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 23,
+          "y": 418,
+          "width": 142,
+          "height": 72
+        }
+      ]
+    },
+    {
+      "componentIndex": 1,
+      "x": 157,
+      "y": 432,
+      "width": 108,
+      "height": 36,
+      "changedPixels": 3652,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "order.open",
+          "entityId": "#SV-2410",
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 156,
+              "y": 432,
+              "width": 109,
+              "height": 36
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 156,
+          "y": 432,
+          "width": 109,
+          "height": 36
+        }
+      ]
+    },
+    {
+      "componentIndex": 2,
+      "x": 41,
+      "y": 1316,
+      "width": 308,
+      "height": 34,
+      "changedPixels": 10268,
+      "controlIndexes": [
+        2
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 2,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.contactProvider",
           "entityId": "prov-health-pt-01",
           "disabled": true,
@@ -590,166 +963,14 @@
       ]
     },
     {
-      "componentIndex": 1,
-      "x": 304,
-      "y": 1570,
-      "width": 10,
-      "height": 11,
-      "changedPixels": 67,
-      "controlIndexes": [
-        1
-      ],
-      "fullyContainedInEffectEnvelope": true,
-      "intersectsOwningControlBorderBox": true,
-      "effectAssociations": [
-        {
-          "controlIndex": 0,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 1,
-          "fullyContainedInEffectEnvelope": true,
-          "intersectsOwningControlBorderBox": true,
-          "associated": true
-        },
-        {
-          "controlIndex": 2,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 3,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        }
-      ],
-      "controls": [
-        {
-          "controlIndex": 1,
-          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
-          "action": "care.openSecureDoc",
-          "entityId": "doc-health-plan-2025-11",
-          "disabled": false,
-          "ariaDisabled": "true",
-          "truthfulUnavailable": true,
-          "derivation": {
-            "borderBox": {
-              "x": 304,
-              "y": 1567,
-              "width": 43,
-              "height": 16
-            },
-            "computedBoxShadow": "none",
-            "blurKernelFormula": "ceil(1.5 * blur) + spread",
-            "shadows": [],
-            "extensions": {
-              "left": 0,
-              "right": 0,
-              "top": 0,
-              "bottom": 0
-            },
-            "clip": {
-              "width": 390,
-              "height": 1941
-            }
-          },
-          "x": 304,
-          "y": 1567,
-          "width": 43,
-          "height": 16
-        }
-      ]
-    },
-    {
-      "componentIndex": 2,
-      "x": 315,
-      "y": 1573,
-      "width": 23,
-      "height": 10,
-      "changedPixels": 140,
-      "controlIndexes": [
-        1
-      ],
-      "fullyContainedInEffectEnvelope": true,
-      "intersectsOwningControlBorderBox": true,
-      "effectAssociations": [
-        {
-          "controlIndex": 0,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 1,
-          "fullyContainedInEffectEnvelope": true,
-          "intersectsOwningControlBorderBox": true,
-          "associated": true
-        },
-        {
-          "controlIndex": 2,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 3,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        }
-      ],
-      "controls": [
-        {
-          "controlIndex": 1,
-          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
-          "action": "care.openSecureDoc",
-          "entityId": "doc-health-plan-2025-11",
-          "disabled": false,
-          "ariaDisabled": "true",
-          "truthfulUnavailable": true,
-          "derivation": {
-            "borderBox": {
-              "x": 304,
-              "y": 1567,
-              "width": 43,
-              "height": 16
-            },
-            "computedBoxShadow": "none",
-            "blurKernelFormula": "ceil(1.5 * blur) + spread",
-            "shadows": [],
-            "extensions": {
-              "left": 0,
-              "right": 0,
-              "top": 0,
-              "bottom": 0
-            },
-            "clip": {
-              "width": 390,
-              "height": 1941
-            }
-          },
-          "x": 304,
-          "y": 1567,
-          "width": 43,
-          "height": 16
-        }
-      ]
-    },
-    {
       "componentIndex": 3,
-      "x": 342,
-      "y": 1573,
-      "width": 5,
-      "height": 7,
-      "changedPixels": 19,
+      "x": 41,
+      "y": 1358,
+      "width": 308,
+      "height": 36,
+      "changedPixels": 10853,
       "controlIndexes": [
-        1
+        3
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -762,9 +983,9 @@
         },
         {
           "controlIndex": 1,
-          "fullyContainedInEffectEnvelope": true,
-          "intersectsOwningControlBorderBox": true,
-          "associated": true
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
         },
         {
           "controlIndex": 2,
@@ -774,6 +995,24 @@
         },
         {
           "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
           "fullyContainedInEffectEnvelope": false,
           "intersectsOwningControlBorderBox": false,
           "associated": false
@@ -781,20 +1020,20 @@
       ],
       "controls": [
         {
-          "controlIndex": 1,
+          "controlIndex": 3,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
-          "action": "care.openSecureDoc",
-          "entityId": "doc-health-plan-2025-11",
-          "disabled": false,
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "support.call",
+          "entityId": null,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
             "borderBox": {
-              "x": 304,
-              "y": 1567,
-              "width": 43,
-              "height": 16
+              "x": 41,
+              "y": 1358,
+              "width": 308,
+              "height": 36
             },
             "computedBoxShadow": "none",
             "blurKernelFormula": "ceil(1.5 * blur) + spread",
@@ -810,22 +1049,22 @@
               "height": 1941
             }
           },
-          "x": 304,
-          "y": 1567,
-          "width": 43,
-          "height": 16
+          "x": 41,
+          "y": 1358,
+          "width": 308,
+          "height": 36
         }
       ]
     },
     {
       "componentIndex": 4,
       "x": 304,
-      "y": 1627,
+      "y": 1570,
       "width": 10,
       "height": 11,
       "changedPixels": 67,
       "controlIndexes": [
-        2
+        4
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -844,12 +1083,30 @@
         },
         {
           "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
           "fullyContainedInEffectEnvelope": true,
           "intersectsOwningControlBorderBox": true,
           "associated": true
         },
         {
-          "controlIndex": 3,
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
           "fullyContainedInEffectEnvelope": false,
           "intersectsOwningControlBorderBox": false,
           "associated": false
@@ -857,18 +1114,18 @@
       ],
       "controls": [
         {
-          "controlIndex": 2,
+          "controlIndex": 4,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.openSecureDoc",
-          "entityId": "doc-health-visit-2026-01-12",
+          "entityId": "doc-health-plan-2025-11",
           "disabled": false,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
             "borderBox": {
               "x": 304,
-              "y": 1624,
+              "y": 1567,
               "width": 43,
               "height": 16
             },
@@ -887,7 +1144,7 @@
             }
           },
           "x": 304,
-          "y": 1624,
+          "y": 1567,
           "width": 43,
           "height": 16
         }
@@ -896,12 +1153,12 @@
     {
       "componentIndex": 5,
       "x": 315,
-      "y": 1630,
+      "y": 1573,
       "width": 23,
       "height": 10,
       "changedPixels": 140,
       "controlIndexes": [
-        2
+        4
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -920,12 +1177,30 @@
         },
         {
           "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
           "fullyContainedInEffectEnvelope": true,
           "intersectsOwningControlBorderBox": true,
           "associated": true
         },
         {
-          "controlIndex": 3,
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
           "fullyContainedInEffectEnvelope": false,
           "intersectsOwningControlBorderBox": false,
           "associated": false
@@ -933,18 +1208,18 @@
       ],
       "controls": [
         {
-          "controlIndex": 2,
+          "controlIndex": 4,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.openSecureDoc",
-          "entityId": "doc-health-visit-2026-01-12",
+          "entityId": "doc-health-plan-2025-11",
           "disabled": false,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
             "borderBox": {
               "x": 304,
-              "y": 1624,
+              "y": 1567,
               "width": 43,
               "height": 16
             },
@@ -963,7 +1238,7 @@
             }
           },
           "x": 304,
-          "y": 1624,
+          "y": 1567,
           "width": 43,
           "height": 16
         }
@@ -972,12 +1247,12 @@
     {
       "componentIndex": 6,
       "x": 342,
-      "y": 1630,
+      "y": 1573,
       "width": 5,
       "height": 7,
       "changedPixels": 19,
       "controlIndexes": [
-        2
+        4
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -996,12 +1271,30 @@
         },
         {
           "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
           "fullyContainedInEffectEnvelope": true,
           "intersectsOwningControlBorderBox": true,
           "associated": true
         },
         {
-          "controlIndex": 3,
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
           "fullyContainedInEffectEnvelope": false,
           "intersectsOwningControlBorderBox": false,
           "associated": false
@@ -1009,9 +1302,103 @@
       ],
       "controls": [
         {
-          "controlIndex": 2,
+          "controlIndex": 4,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "care.openSecureDoc",
+          "entityId": "doc-health-plan-2025-11",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 304,
+              "y": 1567,
+              "width": 43,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 304,
+          "y": 1567,
+          "width": 43,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 7,
+      "x": 304,
+      "y": 1627,
+      "width": 10,
+      "height": 11,
+      "changedPixels": 67,
+      "controlIndexes": [
+        5
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 5,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.openSecureDoc",
           "entityId": "doc-health-visit-2026-01-12",
           "disabled": false,
@@ -1046,90 +1433,14 @@
       ]
     },
     {
-      "componentIndex": 7,
-      "x": 304,
-      "y": 1684,
-      "width": 10,
-      "height": 11,
-      "changedPixels": 67,
-      "controlIndexes": [
-        3
-      ],
-      "fullyContainedInEffectEnvelope": true,
-      "intersectsOwningControlBorderBox": true,
-      "effectAssociations": [
-        {
-          "controlIndex": 0,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 1,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 2,
-          "fullyContainedInEffectEnvelope": false,
-          "intersectsOwningControlBorderBox": false,
-          "associated": false
-        },
-        {
-          "controlIndex": 3,
-          "fullyContainedInEffectEnvelope": true,
-          "intersectsOwningControlBorderBox": true,
-          "associated": true
-        }
-      ],
-      "controls": [
-        {
-          "controlIndex": 3,
-          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
-          "action": "care.openSecureDoc",
-          "entityId": "doc-health-results-2026-01",
-          "disabled": false,
-          "ariaDisabled": "true",
-          "truthfulUnavailable": true,
-          "derivation": {
-            "borderBox": {
-              "x": 304,
-              "y": 1681,
-              "width": 43,
-              "height": 16
-            },
-            "computedBoxShadow": "none",
-            "blurKernelFormula": "ceil(1.5 * blur) + spread",
-            "shadows": [],
-            "extensions": {
-              "left": 0,
-              "right": 0,
-              "top": 0,
-              "bottom": 0
-            },
-            "clip": {
-              "width": 390,
-              "height": 1941
-            }
-          },
-          "x": 304,
-          "y": 1681,
-          "width": 43,
-          "height": 16
-        }
-      ]
-    },
-    {
       "componentIndex": 8,
       "x": 315,
-      "y": 1687,
+      "y": 1630,
       "width": 23,
       "height": 10,
       "changedPixels": 140,
       "controlIndexes": [
-        3
+        5
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -1154,25 +1465,43 @@
         },
         {
           "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
           "fullyContainedInEffectEnvelope": true,
           "intersectsOwningControlBorderBox": true,
           "associated": true
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
         }
       ],
       "controls": [
         {
-          "controlIndex": 3,
+          "controlIndex": 5,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.openSecureDoc",
-          "entityId": "doc-health-results-2026-01",
+          "entityId": "doc-health-visit-2026-01-12",
           "disabled": false,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
             "borderBox": {
               "x": 304,
-              "y": 1681,
+              "y": 1624,
               "width": 43,
               "height": 16
             },
@@ -1191,7 +1520,7 @@
             }
           },
           "x": 304,
-          "y": 1681,
+          "y": 1624,
           "width": 43,
           "height": 16
         }
@@ -1200,12 +1529,12 @@
     {
       "componentIndex": 9,
       "x": 342,
-      "y": 1687,
+      "y": 1630,
       "width": 5,
       "height": 7,
       "changedPixels": 19,
       "controlIndexes": [
-        3
+        5
       ],
       "fullyContainedInEffectEnvelope": true,
       "intersectsOwningControlBorderBox": true,
@@ -1230,6 +1559,118 @@
         },
         {
           "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 5,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "care.openSecureDoc",
+          "entityId": "doc-health-visit-2026-01-12",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 304,
+              "y": 1624,
+              "width": 43,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 304,
+          "y": 1624,
+          "width": 43,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 10,
+      "x": 304,
+      "y": 1684,
+      "width": 10,
+      "height": 11,
+      "changedPixels": 67,
+      "controlIndexes": [
+        6
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
           "fullyContainedInEffectEnvelope": true,
           "intersectsOwningControlBorderBox": true,
           "associated": true
@@ -1237,9 +1678,197 @@
       ],
       "controls": [
         {
-          "controlIndex": 3,
+          "controlIndex": 6,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "care.openSecureDoc",
+          "entityId": "doc-health-results-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 304,
+              "y": 1681,
+              "width": 43,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 304,
+          "y": 1681,
+          "width": 43,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 11,
+      "x": 315,
+      "y": 1687,
+      "width": 23,
+      "height": 10,
+      "changedPixels": 140,
+      "controlIndexes": [
+        6
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 6,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "care.openSecureDoc",
+          "entityId": "doc-health-results-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 304,
+              "y": 1681,
+              "width": 43,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 390,
+              "height": 1941
+            }
+          },
+          "x": 304,
+          "y": 1681,
+          "width": 43,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 12,
+      "x": 342,
+      "y": 1687,
+      "width": 5,
+      "height": 7,
+      "changedPixels": 19,
+      "controlIndexes": [
+        6
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 2,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 3,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 4,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 5,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 6,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 6,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.openSecureDoc",
           "entityId": "doc-health-results-2026-01",
           "disabled": false,
@@ -1278,7 +1907,7 @@
   "assertions": {
     "activityControlNonDispatching": true,
     "unavailableControlsTruthful": true,
-    "unavailableControlCount": 4
+    "unavailableControlCount": 7
   },
   "dimensions": {
     "width": 390,
@@ -1286,8 +1915,50 @@
     "referenceHeight": 1941,
     "implementationHeight": 1941
   },
-  "metricsEqual": true,
-  "metricDelta": {},
+  "metricsEqual": false,
+  "metricDelta": {
+    "primaryAction": {
+      "reference": {
+        "x": 41,
+        "y": 432.13,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "implementation": {
+        "x": 41,
+        "y": 432.13,
+        "width": 105.58,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(154, 160, 173)",
+        "background": "rgb(245, 245, 247)",
+        "border": "0px none rgb(154, 160, 173)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      }
+    }
+  },
+  "metricDeltaDisposition": {
+    "applies": true,
+    "fields": [
+      "primaryAction"
+    ],
+    "exactUnavailableControlBounds": true
+  },
   "persistedImages": {
     "reference": {
       "file": "reference.webp",
@@ -1298,15 +1969,15 @@
     },
     "implementation": {
       "file": "implementation.webp",
-      "sha256": "4852935f6498b5b718abd79c3571f09787dcd68bfb99553758ff0fb326a8c63f",
-      "decodedPixelSha256": "bf779e406e602f21bfa4ecebade9632d4492ecae2e79e2a80ec488fb8fa29486",
+      "sha256": "2ab6f598a0852d3a326dfacb92c60bf56e28bd671f6f6259fa6f3a9f19f2cc6b",
+      "decodedPixelSha256": "47a0b87b8731c66dbaf4104d9bcf2d498318f9a11e30949ca6c13e2fcfbf86e6",
       "width": 390,
       "height": 1941
     },
     "diff": {
       "file": "diff.webp",
-      "sha256": "982d5468bdccafb6240c47cd30a215733a385fb47f489b859c3253d45083054b",
-      "decodedPixelSha256": "e88591c9cab30a335ccbf0974537836bab9378bad8e657513416cfe2efe9a767",
+      "sha256": "3e53cad1b2ec30ee0cf90767802f79f6fed1176ba5f73bdd98556140e94e3bfa",
+      "decodedPixelSha256": "cebe195a4726998eb028452f4fa64f5121013fca1b5696e5d97f327a810be267",
       "width": 390,
       "height": 1941
     },

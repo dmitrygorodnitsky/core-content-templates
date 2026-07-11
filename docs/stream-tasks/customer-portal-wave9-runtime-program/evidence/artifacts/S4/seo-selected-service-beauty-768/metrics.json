@@ -583,6 +583,17 @@
       }
     }
   },
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [
+      "shell",
+      "page",
+      "service",
+      "faq",
+      "faqItem"
+    ],
+    "exactUnavailableControlBounds": false
+  },
   "persistedImages": {
     "reference": {
       "file": "reference.webp",

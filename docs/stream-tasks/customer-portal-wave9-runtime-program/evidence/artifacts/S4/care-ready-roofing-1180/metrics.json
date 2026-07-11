@@ -255,10 +255,10 @@
     {
       "controlIndex": 0,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.download",
       "entityId": "doc-roof-inspection-2026-01",
-      "disabled": false,
+      "disabled": true,
       "ariaDisabled": "true",
       "truthfulUnavailable": true,
       "derivation": {
@@ -290,10 +290,10 @@
     {
       "controlIndex": 1,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.download",
       "entityId": "doc-roof-warranty-shingle",
-      "disabled": false,
+      "disabled": true,
       "ariaDisabled": "true",
       "truthfulUnavailable": true,
       "derivation": {
@@ -325,10 +325,10 @@
     {
       "controlIndex": 2,
       "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       "action": "care.download",
       "entityId": "doc-roof-insurance-pack",
-      "disabled": false,
+      "disabled": true,
       "ariaDisabled": "true",
       "truthfulUnavailable": true,
       "derivation": {
@@ -434,10 +434,10 @@
         {
           "controlIndex": 0,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-inspection-2026-01",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -504,10 +504,10 @@
         {
           "controlIndex": 0,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-inspection-2026-01",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -574,10 +574,10 @@
         {
           "controlIndex": 0,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-inspection-2026-01",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -644,10 +644,10 @@
         {
           "controlIndex": 0,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-inspection-2026-01",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -714,10 +714,10 @@
         {
           "controlIndex": 1,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-warranty-shingle",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -784,10 +784,10 @@
         {
           "controlIndex": 1,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-warranty-shingle",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -854,10 +854,10 @@
         {
           "controlIndex": 1,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-warranty-shingle",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -924,10 +924,10 @@
         {
           "controlIndex": 1,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-warranty-shingle",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -994,10 +994,10 @@
         {
           "controlIndex": 2,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-insurance-pack",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -1064,10 +1064,10 @@
         {
           "controlIndex": 2,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-insurance-pack",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -1134,10 +1134,10 @@
         {
           "controlIndex": 2,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-insurance-pack",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -1204,10 +1204,10 @@
         {
           "controlIndex": 2,
           "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
-          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
           "action": "care.download",
           "entityId": "doc-roof-insurance-pack",
-          "disabled": false,
+          "disabled": true,
           "ariaDisabled": "true",
           "truthfulUnavailable": true,
           "derivation": {
@@ -1252,6 +1252,11 @@
   },
   "metricsEqual": true,
   "metricDelta": {},
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [],
+    "exactUnavailableControlBounds": true
+  },
   "persistedImages": {
     "reference": {
       "file": "reference.webp",

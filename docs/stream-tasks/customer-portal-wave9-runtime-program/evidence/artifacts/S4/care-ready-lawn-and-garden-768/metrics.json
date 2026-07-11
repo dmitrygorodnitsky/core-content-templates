@@ -8,7 +8,7 @@
   "state": "ready",
   "referenceState": "ready",
   "variant": "default",
-  "comparisonMode": "strict-full",
+  "comparisonMode": "source-effect-components",
   "reference": {
     "url": "/design-inbox/source.html",
     "sha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
@@ -128,7 +128,7 @@
   },
   "implementation": {
     "url": "/runtime/source.html#/care",
-    "sha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+    "sha256": "a846f6c535e1074b0fd8e19bbb6848be9a6339b9f6467201d582b5ab8030dabe",
     "failures": [],
     "metrics": {
       "shell": {
@@ -235,43 +235,438 @@
     "captureStability": {
       "method": "dual-browser-phase-normalized-ready-contexts",
       "warmupSha256": [
-        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
-        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed"
+        "a846f6c535e1074b0fd8e19bbb6848be9a6339b9f6467201d582b5ab8030dabe",
+        "a846f6c535e1074b0fd8e19bbb6848be9a6339b9f6467201d582b5ab8030dabe"
       ],
-      "firstSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
-      "secondSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+      "firstSha256": "a846f6c535e1074b0fd8e19bbb6848be9a6339b9f6467201d582b5ab8030dabe",
+      "secondSha256": "a846f6c535e1074b0fd8e19bbb6848be9a6339b9f6467201d582b5ab8030dabe",
       "twoCapturePixelsStable": true
     }
   },
   "raw": {
-    "changed": 0,
-    "changedPct": 0,
-    "rms": 0
+    "changed": 381,
+    "changedPct": 0.04099948347107438,
+    "rms": 1.4141104540938132
   },
   "accepted": {
     "changed": 0,
     "changedPct": 0,
     "rms": 0
   },
-  "effectBounds": [],
+  "effectBounds": [
+    {
+      "controlIndex": 0,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "service.requestExtra",
+      "entityId": null,
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 768,
+          "height": 1210
+        }
+      },
+      "x": 661,
+      "y": 201,
+      "width": 66,
+      "height": 16
+    }
+  ],
   "unavailableInventory": {
     "applies": true,
-    "expected": [],
-    "actual": [],
-    "expectedCount": 0,
-    "actualCount": 0,
-    "truthfulCount": 0,
+    "expected": [
+      {
+        "action": "service.requestExtra",
+        "entityId": null
+      }
+    ],
+    "actual": [
+      {
+        "action": "service.requestExtra",
+        "entityId": null
+      }
+    ],
+    "expectedCount": 1,
+    "actualCount": 1,
+    "truthfulCount": 1,
     "exactMatch": true,
     "countMatch": true,
     "allTruthful": true,
-    "expectedMode": "strict-full",
+    "expectedMode": "source-effect-components",
     "modeMatch": true
   },
-  "changedComponents": [],
+  "changedComponents": [
+    {
+      "componentIndex": 0,
+      "x": 661,
+      "y": 204,
+      "width": 25,
+      "height": 11,
+      "changedPixels": 171,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 1,
+      "x": 708,
+      "y": 204,
+      "width": 3,
+      "height": 2,
+      "changedPixels": 6,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 2,
+      "x": 719,
+      "y": 204,
+      "width": 3,
+      "height": 2,
+      "changedPixels": 6,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 3,
+      "x": 719,
+      "y": 205,
+      "width": 8,
+      "height": 10,
+      "changedPixels": 55,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 4,
+      "x": 690,
+      "y": 207,
+      "width": 7,
+      "height": 8,
+      "changedPixels": 46,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 5,
+      "x": 700,
+      "y": 207,
+      "width": 18,
+      "height": 8,
+      "changedPixels": 97,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 661,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 768,
+              "height": 1210
+            }
+          },
+          "x": 661,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    }
+  ],
   "unassociatedComponents": [],
   "assertions": {
     "unavailableControlsTruthful": true,
-    "unavailableControlCount": 0
+    "unavailableControlCount": 1
   },
   "dimensions": {
     "width": 768,
@@ -281,6 +676,11 @@
   },
   "metricsEqual": true,
   "metricDelta": {},
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [],
+    "exactUnavailableControlBounds": true
+  },
   "persistedImages": {
     "reference": {
       "file": "reference.webp",
@@ -291,13 +691,20 @@
     },
     "implementation": {
       "file": "implementation.webp",
-      "sha256": "ff89679a0ad6bfcf719dda0c67939d0294de3d10bc45b7064cbf549fe01432da",
-      "decodedPixelSha256": "bd8e518ba6f65c84697bd47bad6a92dd9026772a945cb50232cdec42ae264586",
+      "sha256": "ef59be017e3b9718ced8b356e3b1430e66702ca29f045fd9a01d6dbbbdfae705",
+      "decodedPixelSha256": "84ec857c00f7664a1441078f7ac5ec6b0bb2bfea0e19d24d7931fd9bd7e74686",
       "width": 768,
       "height": 1210
     },
     "diff": {
       "file": "diff.webp",
+      "sha256": "b8a6e53de8f2a0a471e9911f057838a29498c5ef86f3d20d95e6e9118dbdebc4",
+      "decodedPixelSha256": "ace8e86a5b190d38f3c310b2fe6f80a5a2e81f5af7d5acbbeccf1e35c9e38df9",
+      "width": 768,
+      "height": 1210
+    },
+    "componentDiff": {
+      "file": "component-diff.webp",
       "sha256": "8bc5c244fb5812d3d56abac35e253138275d974b1793a9fedbad6b6300a9c61c",
       "decodedPixelSha256": "c069cd5e65363060f61130f24e54e6168351ee9acac1e546fc9d8d7941af6e73",
       "width": 768,

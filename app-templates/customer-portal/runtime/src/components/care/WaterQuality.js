@@ -2,6 +2,7 @@
 import { h } from "../../dom.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { careChip } from "./shared.js";
+import { markCareControlUnavailable } from "../../activation-policy.js";
 
 export function WaterQuality(m) {
   /* readings vs. safe ranges — data-module="water-readings" */
@@ -49,7 +50,7 @@ export function WaterQuality(m) {
     h("div", { "class": "card__title", style: "margin-bottom:10px" }, "Testing cadence"),
     h("div", { style: "font-size:13.5px;font-weight:600" }, m.tested),
     h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:6px" }, m.nextTest),
-    h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Request an extra test", action: "service.requestExtra", block: true, visualId: "care-extra-test" }))
+    h("div", { style: "margin-top:14px" }, markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Request an extra test", action: "service.requestExtra", block: true, visualId: "care-extra-test" }), "Extra tests are unavailable: no approved request contract"))
   ]);
 
   return h("div", { "class": "care-grid" }, [

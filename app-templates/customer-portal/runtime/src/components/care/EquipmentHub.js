@@ -2,6 +2,7 @@
 import { h } from "../../dom.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { DocRow, kvRow } from "./shared.js";
+import { markCareControlUnavailable } from "../../activation-policy.js";
 
 var CHECK_DOT = { ok: "var(--ok)", warn: "#ff9f0a", issue: "#ff3b30" };
 function healthColor(n) { return n >= 80 ? "var(--ok)" : n >= 60 ? "#ff9f0a" : "#ff3b30"; }
@@ -55,7 +56,7 @@ export function EquipmentHub(m, ui) {
     h("div", { style: "margin-top:14px;background:rgba(var(--accent-rgb),.06);border:1px solid rgba(var(--accent-rgb),.14);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--ink-2)" }, [
       h("b", { style: "color:var(--ink)" }, "Technician\u2019s note \u00b7 "), u.note
     ]),
-    h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--primary", label: "Book service for this unit", action: "booking.open", block: true, visualId: "care-book-unit" }))
+    h("div", { style: "margin-top:14px" }, markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Book service for this unit", action: "booking.open", block: true, visualId: "care-book-unit" }), "Booking is unavailable: no approved booking destination"))
   ]);
 
   /* documents — data-module="document-vault" */

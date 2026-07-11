@@ -5,19 +5,12 @@
 import { h } from "../../dom.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { careChip } from "./shared.js";
+import { markCareControlUnavailable } from "../../activation-policy.js";
 
 var STEP_CHIP = { done: ["ok", "Done"], next: ["info", "Next up"], upcoming: ["muted", "Planned"] };
 
 /* effective task state: state.careTasksDone override wins over the fixture */
 function taskDone(t, ui) { return (t.id in ui.tasksDone) ? ui.tasksDone[t.id] : !!t.done; }
-
-function makeUnavailable(control, label) {
-  control.setAttribute("disabled", "");
-  control.setAttribute("aria-disabled", "true");
-  control.setAttribute("data-state", "unavailable");
-  control.setAttribute("title", label + " is unavailable in fixture mode");
-  return control;
-}
 
 export function HealthCareHub(m, ui) {
   /* upcoming appointment — data-module="care-appointment"; stable data-appointment-id */
@@ -34,8 +27,8 @@ export function HealthCareHub(m, ui) {
       h("b", { style: "color:var(--ink)" }, "Before the visit \u00b7 "), a.prep
     ]),
     h("div", { style: "display:flex;gap:10px;margin-top:14px" }, [
-      ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }),
-      ActionButton({ variant: "btn--ghost", label: "Visit details", action: "order.open", id: a.orderId, visualId: "care-appt-open" })
+      markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }), "Rescheduling is unavailable: no approved scheduling contract"),
+      markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Visit details", action: "order.open", id: a.orderId, visualId: "care-appt-open" }), "Visit details are unavailable: Health access controls are not complete")
     ])
   ]);
 
@@ -101,8 +94,8 @@ export function HealthCareHub(m, ui) {
     ]),
     h("div", { style: "font-size:12.5px;color:var(--ink-3);margin-top:8px" }, p.org + " \u00b7 " + p.since),
     h("div", { style: "display:flex;flex-direction:column;gap:8px;margin-top:14px" }, [
-      makeUnavailable(ActionButton({ variant: "btn--primary", label: "Message the care team", action: "care.contactProvider", id: p.id, block: true, visualId: "care-contact-provider" }), "Provider contact"),
-      ActionButton({ variant: "btn--ghost", label: "Call", action: "support.call", block: true, visualId: "care-call-provider" })
+      markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Message the care team", action: "care.contactProvider", id: p.id, block: true, visualId: "care-contact-provider" }), "Provider contact is unavailable: secure authorization and audit controls are not complete"),
+      markCareControlUnavailable(ActionButton({ variant: "btn--ghost", label: "Call", action: "support.call", block: true, visualId: "care-call-provider" }), "Provider calling is unavailable: no approved destination or audit contract")
     ]),
     h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:10px" }, p.note)
   ]);

@@ -2,6 +2,7 @@
 import { h } from "../../dom.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { careChip } from "./shared.js";
+import { markCareControlUnavailable } from "../../activation-policy.js";
 
 export function BeautyCareHub(m, ui) {
   /* upcoming appointment — data-module="care-appointment"; stable data-appointment-id */
@@ -18,7 +19,7 @@ export function BeautyCareHub(m, ui) {
       h("b", { style: "color:var(--ink)" }, "Good to know \u00b7 "), a.prep
     ]),
     h("div", { style: "display:flex;gap:10px;margin-top:14px" }, [
-      ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }),
+      markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: a.orderId, visualId: "care-appt-reschedule" }), "Rescheduling is unavailable: no approved scheduling contract"),
       ActionButton({ variant: "btn--ghost", label: "Visit details", action: "order.open", id: a.orderId, visualId: "care-appt-open" })
     ])
   ]);
@@ -35,7 +36,7 @@ export function BeautyCareHub(m, ui) {
     h("div", { "class": "meter" }, [h("div", { "class": "meter__fill", style: "width:" + pct + "%" })]),
     h("div", { style: "display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap" }, [
       h("div", { style: "flex:1;min-width:180px;font-size:12.5px;color:var(--ink-2)" }, pk.next),
-      ActionButton({ variant: "btn--primary", label: "Book next session", action: "booking.open", visualId: "care-book-session" })
+      markCareControlUnavailable(ActionButton({ variant: "btn--primary", label: "Book next session", action: "booking.open", visualId: "care-book-session" }), "Booking is unavailable: no approved booking destination")
     ])
   ]);
 

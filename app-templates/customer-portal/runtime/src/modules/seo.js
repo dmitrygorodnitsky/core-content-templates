@@ -12,6 +12,7 @@ export function loadSeoModel(verticalName, authored) {
 
 export const seoModule = {
   id: "seo-reference-parity",
+  dataSources: ["seo.reference", "seo.publicAuthored"],
   routes: ["seo.landing"],
   states: ["ready", "loading", "empty"],
   actions: ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"],

@@ -1054,6 +1054,14 @@
 @keyframes care-spin { to { transform: rotate(360deg); } }
 .btn[disabled] { opacity: .62; cursor: default; }
 
+[data-route="care"] .btn[data-state="unavailable"][disabled] {
+  opacity: 1;
+  color: var(--ink-3);
+  background: var(--surface-2);
+  border-color: var(--line);
+  cursor: default;
+}
+
 [data-route="care"] .link-action[data-state="unavailable"] {
   color: var(--ink-3);
   cursor: default;

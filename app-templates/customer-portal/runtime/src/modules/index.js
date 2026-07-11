@@ -72,6 +72,7 @@ function carePreflight(context) {
 const careModule = {
   id: "care",
   asyncOnly: true,
+  dataSources: ["care.fixture", "care.live"],
   requires: ["session", "customer-scope", "tenant-scope", "care-entitlement"],
   routes: ["care"],
   commands: ["care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"],

@@ -1,11 +1,11 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "runtime-wave9-s3-seo-remediation1",
-  "format": "no-build ES modules: source.html + 7 stylesheets + 70 src JavaScript modules + 3 data fixture modules",
+  "version": "runtime-wave9-s5-activation",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 71 src JavaScript modules + 3 data fixture modules",
   "fileInventory": {
     "stylesheets": 7,
-    "srcJavaScript": 70,
-    "runtimeJavaScript": 73
+    "srcJavaScript": 71,
+    "runtimeJavaScript": 74
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
@@ -1542,11 +1542,24 @@
     "careBoundary": "Protected Care fixture adapter is constructed and called only after granted preflight. No Care live adapter is opened.",
     "seoReferenceModule": "data/seo-fixtures.js; eight accepted design fixture sets are reference-only and imported solely by the parity/reference loader"
   },
+  "activationContract": {
+    "inventory": "data/activation-contracts.json",
+    "schema": "data/activation-contracts.schema.json",
+    "check": "scripts/activation-contract-check.mjs",
+    "dataSources": ["care.fixture", "care.live", "seo.reference", "seo.publicAuthored"],
+    "surfaceControls": "data/activation-contracts.json#surfaceControls; 21 exact rows / 38 rendered Care control instances across eight verticals",
+    "careActions": ["care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"],
+    "seoActions": ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"],
+    "openedLive": [],
+    "liveResidual": ["care.live"],
+    "rule": "Unknown non-PIM endpoint/auth/readback contracts remain not_opened; every visible Care control is inventoried; unavailable controls never dispatch network or success."
+  },
   "serving": "MUST be served over HTTP (ES modules are blocked on file://). No bundler / no build step — many small files loaded natively.",
   "moduleTree": {
     "src/dom.js": "h, clear, svgPath",
     "src/state.js": "state object + pure selectors + isPublic()",
     "src/actions.js": "ACTIONS map + honest local fixture transitions + bindActions",
+    "src/activation-policy.js": "literal code-owned Health control set, sensitive ids, and Care surface closure policy",
     "src/router.js": "renderRoute() switch + ComingSoon",
     "src/app.js": "entry: render, positionNavPill, applyResponsive, BookingDrawer, boot, window.AircovePortal",
     "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care,seo}/*.js": "leaf components; SEO leaves receive normalized model/view only",
@@ -1558,6 +1571,8 @@
     "src/modules/seo.js": "reference-only SEO parity loader",
     "cms/seo-public-root-template.html": "strict token-only public root contract with no mock defaults",
     "public/seo-reference-preview.html": "deterministic noindex checked fixture preview; never production truth",
-    "scripts/fixtures/seo-public-authored.test.json": "explicit complete authored test fixture used only for temp strict-document validation"
+    "scripts/fixtures/seo-public-authored.test.json": "explicit complete authored test fixture used only for temp strict-document validation",
+    "data/activation-contracts.json": "S5 machine-readable Care/SEO data and command disposition inventory",
+    "scripts/activation-contract-check.mjs": "S5 bijection, truth, concurrency, race, click-effect, and no-network validation"
   }
 }

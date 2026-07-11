@@ -46,6 +46,7 @@ const verticals = [
 const widths = [390, 768, 1180, 1440];
 const CARE_UNAVAILABLE_INVENTORY = Object.freeze({
   HVAC: [
+    ["booking.open", null],
     ["care.download", "doc-hvac-diag-2026-01"],
     ["care.download", "doc-hvac-warranty-carrier"],
   ],
@@ -53,8 +54,12 @@ const CARE_UNAVAILABLE_INVENTORY = Object.freeze({
     ["care.download", "doc-snow-compliance-2025-12"],
     ["care.download", "doc-snow-compliance-2025-11"],
   ],
-  "Lawn & Garden": [],
-  "Pool & Spa": [],
+  "Lawn & Garden": [
+    ["service.requestExtra", null],
+  ],
+  "Pool & Spa": [
+    ["service.requestExtra", null],
+  ],
   Roofing: [
     ["care.download", "doc-roof-inspection-2026-01"],
     ["care.download", "doc-roof-warranty-shingle"],
@@ -62,12 +67,18 @@ const CARE_UNAVAILABLE_INVENTORY = Object.freeze({
   ],
   "Pest Control": [],
   Health: [
+    ["order.reschedule", "#SV-2410"],
+    ["order.open", "#SV-2410"],
     ["care.contactProvider", "prov-health-pt-01"],
+    ["support.call", null],
     ["care.openSecureDoc", "doc-health-plan-2025-11"],
     ["care.openSecureDoc", "doc-health-visit-2026-01-12"],
     ["care.openSecureDoc", "doc-health-results-2026-01"],
   ],
-  Beauty: [],
+  Beauty: [
+    ["order.reschedule", "#SV-3312"],
+    ["booking.open", null],
+  ],
 });
 
 function row(id, surface, vertical, width, options = {}) {
@@ -178,6 +189,9 @@ async function main() {
       }
       const assertions = Object.assign({}, reference.assertions, implementation.assertions);
       const unavailableInventory = careInventoryResult(item, effectBounds);
+      const metricsEqual = JSON.stringify(reference.metrics) === JSON.stringify(implementation.metrics);
+      const metricDifferences = metricDelta(reference.metrics, implementation.metrics);
+      const metricDeltaDisposition = classifyUnavailableMetricDelta(item, metricDifferences, implementation.metrics, effectBounds);
       const result = {
         ...item,
         comparisonMode,
@@ -191,8 +205,9 @@ async function main() {
         unassociatedComponents: comparison.unassociatedComponents,
         assertions,
         dimensions: comparison.dimensions,
-        metricsEqual: JSON.stringify(reference.metrics) === JSON.stringify(implementation.metrics),
-        metricDelta: metricDelta(reference.metrics, implementation.metrics),
+        metricsEqual,
+        metricDelta: metricDifferences,
+        metricDeltaDisposition,
       };
       const freshImages = {
         reference: reference.image,
@@ -218,8 +233,13 @@ async function main() {
   }
 
   const summary = {
-    schemaVersion: 6,
+    schemaVersion: 7,
     designBaseline: "c9879ae",
+    activationAddendum: {
+      stage: "S5 remediation cycle 1",
+      priorPacket: "schema v6 remains the accepted pre-activation history in evidence/S4.md and git history",
+      rule: "Only exact implementation-owned unavailable control effects are excluded; raw metrics and source captures remain retained",
+    },
     browserLifecycle: { rowBatchSize: browserRowBatchSize, ownedBrowsersPerBatch: 2, gracefulCloseRequired: true },
     comparison: { pixelmatchThreshold: 0, alpha: 1, includeAA: true, strictTarget: "zero", modes: ["strict-full", "source-effect-components", "contract-state"] },
     matrixRows: results.length,
@@ -615,7 +635,7 @@ async function collectUnavailableEffects(page) {
     return {
       controlIndex: index,
       selector: '[data-route="care"] [data-state="unavailable"]',
-      reason: "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      reason: "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
       action: node.getAttribute("data-action"),
       entityId: node.getAttribute("data-id"),
       disabled: node.hasAttribute("disabled"),
@@ -811,6 +831,21 @@ function metricDelta(left, right) {
   return delta;
 }
 
+function classifyUnavailableMetricDelta(item, differences, implementationMetrics, effectBounds) {
+  const fields = Object.keys(differences);
+  if (!fields.length) return { applies: false, fields: [], exactUnavailableControlBounds: true };
+  if (item.comparisonMode !== "source-effect-components") return { applies: false, fields, exactUnavailableControlBounds: false };
+  const exactUnavailableControlBounds = fields.every(function (field) {
+    const metric = implementationMetrics[field];
+    if (!metric) return false;
+    return effectBounds.some(function (bound) {
+      const box = bound.derivation.borderBox;
+      return Math.abs(metric.x - box.x) <= 1 && Math.abs(metric.y - box.y) <= 1 && Math.abs(metric.width - box.width) <= 1 && Math.abs(metric.height - box.height) <= 1;
+    });
+  });
+  return { applies: true, fields, exactUnavailableControlBounds };
+}
+
 function careInventoryResult(item, effectBounds) {
   const applies = item.surface === "care" && item.state === "ready";
   const expectedPairs = applies ? CARE_UNAVAILABLE_INVENTORY[item.vertical] || [] : [];
@@ -848,7 +883,7 @@ async function runSelfTests() {
   assert.equal(isolated.associated, false, "envelope-only containment cannot associate a component");
   const missing = careInventoryResult({ surface: "care", state: "ready", vertical: "HVAC", comparisonMode: "source-effect-components" }, []);
   assert.equal(missing.exactMatch || missing.countMatch, false, "missing required Care unavailable controls fail inventory self-test");
-  assert.equal(missing.expectedCount, 2, "negative inventory self-test retains expected count");
+  assert.equal(missing.expectedCount, 3, "negative inventory self-test retains expected count");
   await assert.rejects(() => decodedPixels(Buffer.from("corrupt-webp")), "corrupt persisted image is rejected before verification");
   await cleanupProcessSelfTest();
 }
@@ -888,7 +923,8 @@ function rowPassed(result) {
   if (Object.prototype.hasOwnProperty.call(result, "persistedImagesVerified") && result.persistedImagesVerified !== true) return false;
   if (result.comparisonMode === "contract-state") return booleanAssertions.length > 0;
   if (result.comparisonMode === "source-effect-components" && result.unassociatedComponents.length) return false;
-  return result.accepted.changed === 0 && result.accepted.rms === 0 && result.metricsEqual;
+  const metricsAccepted = result.metricsEqual || (result.metricDeltaDisposition.applies && result.metricDeltaDisposition.exactUnavailableControlBounds);
+  return result.accepted.changed === 0 && result.accepted.rms === 0 && metricsAccepted;
 }
 
 async function writePersistedImages(item, freshImages) {

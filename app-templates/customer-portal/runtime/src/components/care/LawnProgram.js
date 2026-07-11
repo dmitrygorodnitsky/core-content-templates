@@ -1,6 +1,7 @@
 // customer-portal/runtime/src/components/care/LawnProgram.js — Wave 7 (Lawn & Garden): season program + re-entry. No business logic.
 import { h } from "../../dom.js";
 import { careChip, kvRow } from "./shared.js";
+import { markCareControlUnavailable } from "../../activation-policy.js";
 
 var STEP_CHIP = { done: ["ok", "Done"], next: ["info", "Next up"], upcoming: ["muted", "Planned"] };
 
@@ -9,7 +10,7 @@ export function LawnProgram(m) {
   var program = h("div", { "class": "card card--pad", "data-module": "program-steps", "data-visual-id": "program-steps" }, [
     h("div", { style: "display:flex;align-items:center" }, [
       h("div", { "class": "card__title", style: "flex:1" }, "5-step season program"),
-      h("div", { "class": "link-action", "data-action": "service.requestExtra" }, "Add a visit")
+      markCareControlUnavailable(h("div", { "class": "link-action", "data-action": "service.requestExtra", role: "button", tabindex: "-1" }, "Add a visit"), "Extra visits are unavailable: no approved request contract")
     ])
   ]);
   m.steps.forEach(function (s) {

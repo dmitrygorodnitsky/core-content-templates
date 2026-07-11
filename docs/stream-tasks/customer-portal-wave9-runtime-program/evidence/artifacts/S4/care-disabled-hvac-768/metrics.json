@@ -288,6 +288,14 @@
       "implementation": null
     }
   },
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [
+      "page",
+      "primaryAction"
+    ],
+    "exactUnavailableControlBounds": false
+  },
   "persistedImages": {
     "reference": {
       "file": "reference.webp",

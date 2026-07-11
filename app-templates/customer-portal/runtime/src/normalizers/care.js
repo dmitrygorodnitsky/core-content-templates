@@ -31,6 +31,18 @@ function emptyState(raw) {
   return { glyph: raw.glyph, title: raw.title, description: raw.desc };
 }
 
+function stripClosedDocumentDestinations(content) {
+  if (!Array.isArray(content.docs)) return;
+  content.docs = content.docs.map(function (documentItem) {
+    var safe = Object.assign({}, documentItem);
+    delete safe.url;
+    delete safe.href;
+    delete safe.downloadUrl;
+    delete safe.filename;
+    return safe;
+  });
+}
+
 export function careDisplayMeta(vertical) {
   return CARE_META[vertical] || CARE_META.hvac;
 }
@@ -79,6 +91,7 @@ export function normalizeCare(raw) {
   delete content.title;
   delete content.sub;
   delete content.empty;
+  stripClosedDocumentDestinations(content);
 
   if (fixture.kind === "beautyCare") {
     var productsByName = new Map((raw.products || []).map(function (product) { return [product.name, product]; }));

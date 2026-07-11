@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { findProduct, proposalSites, state } from "./state.js";
+import { findProduct, orderItems, proposalSites, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, render, retryRuntimeLoad } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
@@ -238,15 +238,7 @@ export function toggleCareTask(id, element) {
 }
 
 export function downloadCareDocument(id, element) {
-  return runCareCommand("care.download", id, element, function (authorization) {
-    var documentItem = authorization.entity;
-    if (!documentItem.url) throw new Error("Care document download is unavailable");
-    var link = document.createElement("a");
-    link.href = documentItem.url;
-    link.download = documentItem.filename || documentItem.name || "care-document";
-    link.rel = "noopener";
-    link.click();
-  });
+  return runUnavailableCareCommand("care.download", id, element);
 }
 
 var careRetreatFlights = new Map();
@@ -293,13 +285,13 @@ export function requestCareRetreat(id, element) {
     });
     return state.careRetreatRequests[id];
   }).catch(function (error) {
-    if (error && error.careAuthorizationFailure && state.careAuthorizationEpoch === authorization.epoch) {
+    if (state.careAuthorizationEpoch === authorization.epoch) {
       var requests = Object.assign({}, state.careRetreatRequests);
       delete requests[id];
       state.careRetreatRequests = requests;
       delete state.pending[key];
-      delete state.commandErrors[key];
-      return false;
+      if (error && error.careAuthorizationFailure) delete state.commandErrors[key];
+      else state.commandErrors[key] = error && error.message ? error.message : "Care re-treatment request failed";
     }
     return false;
   }).finally(function () {
@@ -321,7 +313,12 @@ export function go(route) {
   render();
 }
 
-export function openOrder(id) { state.currentOrderId = id; state.view = "ready"; go("order.detail"); }
+export function openOrder(id) {
+  if (!orderItems().some(function (order) { return order.id === id; })) throw new Error("Order not found");
+  state.currentOrderId = id;
+  state.view = "ready";
+  go("order.detail");
+}
 
 export function cancelOrder(id) {
   var order = state.orders.find(function (o) { return o.id === id; });
