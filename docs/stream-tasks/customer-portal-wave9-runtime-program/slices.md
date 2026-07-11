@@ -416,7 +416,7 @@ Validation:
 
 ### S7.1 Regression Matrix
 
-Status: `todo`
+Status: `in_progress`
 
 Run the complete validation matrix below and record exact commands, exit status,
 browser, viewport, artifact paths, skipped checks, and reasons.
