@@ -41,15 +41,15 @@ The old runtime package is closed evidence. Do not edit its ledger or closeout.
 
 ## Current Target
 
-Open S0 only:
+Program complete. No stage is open.
 
-- S0.1 Baseline Inventory
-- S0.2 Architecture Contract
+- Final independent audit: `audits/A1.md`.
+- Final operator evidence: `evidence/closeout.md`.
+- Any new scope must open a new durable package rather than reopening this
+  closed ledger.
 
-Default execution is current-stage-to-done. Complete, validate, remediate, and
-update the ledger for S0 before opening S1. When full-program execution is
-requested, continue through the same gate one stage at a time without pausing
-between successfully closed stages.
+The program is closed with required rows `done` and the unknown Care live slice
+explicitly `not_opened`.
 
 ## Constraints (Frozen)
 

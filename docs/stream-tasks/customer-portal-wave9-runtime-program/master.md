@@ -2,8 +2,8 @@
 
 Created: 2026-07-10
 Package path: `docs/stream-tasks/customer-portal-wave9-runtime-program/`
-Status: program container
-Current target: S7 Validation, Audit, Closeout (`in_progress`)
+Status: complete
+Current target: Program complete (`done`)
 Execution mode: sequential stage-to-done loop
 
 ## Goal
@@ -122,7 +122,7 @@ Out of scope:
 | visual-acceptance | screenshot/DOM evidence and parity fixes | Codex | done | Schema-v7 post-activation packet independently validated; schema-v6 closeout remains historical evidence. |
 | activation | Care/SEO adapters and command handlers | Codex | done | Local/fixture paths validated; unknown Care live source is explicitly not_opened. |
 | cms-export | block metadata, templates, export scripts, generated previews | Codex | done | Portal/public packages export independently and transactionally; no CMS upload. |
-| validation-closeout | smoke harnesses, audit, evidence, ledger | Codex | in_progress | Independent final review and residuals. |
+| validation-closeout | smoke harnesses, audit, evidence, ledger | Codex | done | Full regression, approved independent audit, and durable closeout complete. |
 
 Shared files that must not be edited concurrently by independent agents:
 
@@ -146,7 +146,7 @@ Shared files that must not be edited concurrently by independent agents:
 | S4 Visual Acceptance | Close visual drift before live activation | done | S3 | Screenshot/DOM comparison evidence | Care and SEO match executable design at required viewports, verticals, and states; unresolved drift is blocking, not waived as approximate. |
 | S5 Data And Command Activation | Add truthful adapters and interactions | done | S4 | Known live/fixture data and command paths | Local interactions work; opened mutations have pending/success/error and readback/idempotence proof; unknown or unsafe live paths are `not_opened`. |
 | S6 CMS Packaging And Export | Package both delivery surfaces | done | S5 | Portal and public SEO export artifacts | CMS enums/styles/templates/exports cover all profiles/verticals and validate locally without upload. |
-| S7 Validation, Audit, Closeout | Regress, audit, and close the program | in_progress | S6 | `audits/A1.md`, `evidence/closeout.md` | Full DoD is proven, findings are fixed or explicit residuals, ledger is final, and no required work remains. |
+| S7 Validation, Audit, Closeout | Regress, audit, and close the program | done | S6 | `audits/A1.md`, `evidence/closeout.md` | Full DoD is proven, findings are fixed or explicit residuals, ledger is final, and no required work remains. |
 
 ## Dependency And Sequencing Rules
 
@@ -235,9 +235,9 @@ required implementation or validation finding.
 | S5.3-live-activation | activation | Codex | not_opened | S5.2 | adapter contract, mutation/readback, auth tests | No repository-proven non-PIM Care endpoint/auth/readback contract exists; Care live and sensitive Health paths remain fail-closed. |
 | S6.1-cms-contract | cms-export | Codex | done | S5.3 | schema/enum/style validation | CMS metadata covers Health, Beauty, `appointments`, Care, public SEO, and required styles/slots. |
 | S6.2-dual-export | cms-export | Codex | done | S6.1 | export scripts and generated preview smoke | Authenticated portal and public SEO artifacts export independently and run locally. |
-| S7.1-regression | validation-closeout | Codex | in_progress | S6.2 | complete validation matrix | Old and new routes/profiles/states/actions pass static and browser checks with no console errors. |
-| S7.2-independent-audit | validation-closeout | independent reviewer | todo | S7.1 | `audits/A1.md` | Reviewer audits implementation without subagents; all actionable findings are fixed or accepted as explicit residuals. |
-| S7.3-closeout | validation-closeout | Codex | todo | S7.2 | `evidence/closeout.md`, clean diff check | Ledger, commits, commands, visual evidence, unopened work, and residual risks are durable and accurate. |
+| S7.1-regression | validation-closeout | Codex | done | S6.2 | complete validation matrix | Old and new routes/profiles/states/actions pass static and browser checks with no console errors. |
+| S7.2-independent-audit | validation-closeout | independent reviewer | done | S7.1 | `audits/A1.md` | Reviewer audits implementation without subagents; all actionable findings are fixed or accepted as explicit residuals. |
+| S7.3-closeout | validation-closeout | Codex | done | S7.2 | `evidence/closeout.md`, clean diff check | Ledger, commits, commands, visual evidence, unopened work, and residual risks are durable and accurate. |
 
 Allowed statuses: `todo`, `in_progress`, `blocked`, `done`, `not_opened`,
 `stale`.
@@ -358,3 +358,13 @@ live slice `not_opened` and continue with the remaining Definition of Done.
 - 2026-07-11: S7 opened after S6 closeout commit `6c89f04`. The complete
   regression matrix runs before the independent program audit; closeout remains
   gated on remediation and a final audit disposition.
+- 2026-07-11: S7.1 completed with 16/16 commands, 51 route/profile attempts,
+  59/59 final executable state probes, 33 auth guards, zero console/network errors,
+  and full schema-v7 visual verification across 62 rows with accepted changed
+  pixels and RMS both zero. S7.2 independent program audit opened next.
+- 2026-07-11: S7 closed in this commit after two independent audit cycles.
+  Cycle 1's transient-pending and Support keyboard findings were remediated;
+  final evidence covers 59/59 truthful executable state probes. Bounded exact
+  visual capture retries retain zero thresholds and persisted-image proof.
+  Independent cycle 2 approved the complete program. See `evidence/S7.md`,
+  `audits/A1.md`, and `evidence/closeout.md`.

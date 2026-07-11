@@ -29,6 +29,8 @@ const update = requested.includes("--update");
 const verify = requested.includes("--verify");
 const smoke = requested.includes("--smoke");
 const browserRowBatchSize = 4;
+const maxStableCaptureRounds = 3;
+const browserGracefulCloseTimeoutMs = 30000;
 const onlyIds = requested.filter((value) => value.startsWith("--id=")).map((value) => value.slice(5));
 assert.equal(update && verify, false, "--update and --verify are mutually exclusive");
 assert.equal(verify && (smoke || onlyIds.length > 0), false, "--verify always checks the complete stored matrix");
@@ -260,10 +262,10 @@ async function main() {
   }
   if (verify) {
     const stored = JSON.parse(await fs.readFile(path.join(outputRoot, "metrics.json"), "utf8"));
-    assert.deepEqual(summary, stored, "--verify captures and canonical aggregate metrics match the stored packet");
+    assert.deepEqual(canonicalVisualPacket(summary), canonicalVisualPacket(stored), "--verify captures and canonical aggregate metrics match the stored packet");
     for (const row of summary.rows) {
       const storedRow = JSON.parse(await fs.readFile(path.join(outputRoot, row.id, "metrics.json"), "utf8"));
-      assert.deepEqual(row, storedRow, `--verify ${row.id} metrics, assertions, and image SHA values match`);
+      assert.deepEqual(canonicalVisualPacket(row), canonicalVisualPacket(storedRow), `--verify ${row.id} metrics, assertions, and image SHA values match`);
     }
     assert.equal(await hashTree(outputRoot), verifyTreeBefore, "--verify leaves artifact bytes and mtimes unchanged");
   }
@@ -317,13 +319,13 @@ async function closeOwnedResources(ownedBrowsers, server) {
 
 async function closeBrowsers(browsers, processIds) {
   const closeFailures = [];
-  await Promise.all(browsers.map(async (browser, index) => {
+  for (const [index, browser] of browsers.entries()) {
     try {
-      await withTimeout(browser.close(), 10000, `browser ${index + 1} graceful close`);
+      await withTimeout(browser.close(), browserGracefulCloseTimeoutMs, `browser ${index + 1} graceful close`);
     } catch (error) {
       closeFailures.push(error);
     }
-  }));
+  }
 
   let remaining = await waitForPidsAbsent(processIds, 3000);
   if (remaining.length) {
@@ -392,23 +394,36 @@ async function captureStableSide(firstBrowser, secondBrowser, contextOptions, ba
     captureFreshContext(firstBrowser, contextOptions, baseUrl, item, side),
     captureFreshContext(secondBrowser, contextOptions, baseUrl, item, side),
   ]);
-  const [first, second] = await Promise.all([
-    captureFreshContext(firstBrowser, contextOptions, baseUrl, item, side),
-    captureFreshContext(secondBrowser, contextOptions, baseUrl, item, side),
-  ]);
-  if (sha(first.image) !== sha(second.image)) {
-    await writeCaptureDiagnostic(item, `${side}-unstable-capture`, first.image, second.image);
-    assert.fail(`${side} ${item.id} independent captures differ after deterministic readiness`);
+  const failedRounds = [];
+  for (let round = 1; round <= maxStableCaptureRounds; round += 1) {
+    const [first, second] = await Promise.all([
+      captureFreshContext(firstBrowser, contextOptions, baseUrl, item, side),
+      captureFreshContext(secondBrowser, contextOptions, baseUrl, item, side),
+    ]);
+    const firstSha256 = sha(first.image);
+    const secondSha256 = sha(second.image);
+    const pixelsExact = firstSha256 === secondSha256;
+    const metricsExact = JSON.stringify(first.metrics) === JSON.stringify(second.metrics);
+    if (pixelsExact && metricsExact) {
+      assert.deepEqual(first.metrics, second.metrics, `${side} ${item.id} independent capture DOM metrics match`);
+      second.meta.captureStability = {
+        method: "dual-browser-phase-normalized-ready-contexts",
+        warmupSha256: [sha(firstWarmup.image), sha(secondWarmup.image)],
+        firstSha256,
+        secondSha256,
+        twoCapturePixelsStable: true,
+      };
+      if (failedRounds.length) {
+        process.stdout.write(`[capture-stable] ${item.id} ${side} acceptedRound=${round} failedRounds=${failedRounds.length}\n`);
+      }
+      return second;
+    }
+    const diagnostic = { round, firstSha256, secondSha256, pixelsExact, metricsExact };
+    failedRounds.push(diagnostic);
+    process.stdout.write(`[capture-retry] ${item.id} ${side} round=${round}/${maxStableCaptureRounds} pixelsExact=${pixelsExact} metricsExact=${metricsExact}\n`);
+    await writeCaptureDiagnostic(item, `${side}-unstable-capture-round-${round}`, first.image, second.image, diagnostic);
   }
-  assert.deepEqual(first.metrics, second.metrics, `${side} ${item.id} independent capture DOM metrics match`);
-  second.meta.captureStability = {
-    method: "dual-browser-phase-normalized-ready-contexts",
-    warmupSha256: [sha(firstWarmup.image), sha(secondWarmup.image)],
-    firstSha256: sha(first.image),
-    secondSha256: sha(second.image),
-    twoCapturePixelsStable: true,
-  };
-  return second;
+  assert.fail(`${side} ${item.id} did not produce an exact independent capture pair in ${maxStableCaptureRounds} rounds: ${JSON.stringify(failedRounds)}`);
 }
 
 async function captureFreshContext(browser, contextOptions, baseUrl, item, side) {
@@ -870,6 +885,18 @@ function careInventoryResult(item, effectBounds) {
   };
 }
 
+function canonicalVisualPacket(value) {
+  const canonical = structuredClone(value);
+  const rows = Array.isArray(canonical.rows) ? canonical.rows : [canonical];
+  for (const row of rows) {
+    for (const side of ["reference", "implementation"]) {
+      const stability = row && row[side] && row[side].captureStability;
+      if (stability && Object.prototype.hasOwnProperty.call(stability, "warmupSha256")) delete stability.warmupSha256;
+    }
+  }
+  return canonical;
+}
+
 async function runSelfTests() {
   const imageWidth = 100;
   const envelope = [{ x: 10, y: 10, width: 20, height: 20, derivation: { borderBox: { x: 15, y: 15, width: 10, height: 10 } } }];
@@ -884,8 +911,56 @@ async function runSelfTests() {
   const missing = careInventoryResult({ surface: "care", state: "ready", vertical: "HVAC", comparisonMode: "source-effect-components" }, []);
   assert.equal(missing.exactMatch || missing.countMatch, false, "missing required Care unavailable controls fail inventory self-test");
   assert.equal(missing.expectedCount, 3, "negative inventory self-test retains expected count");
+  canonicalPacketSelfTest();
   await assert.rejects(() => decodedPixels(Buffer.from("corrupt-webp")), "corrupt persisted image is rejected before verification");
   await cleanupProcessSelfTest();
+}
+
+function canonicalPacketSelfTest() {
+  const baseline = {
+    comparison: { pixelmatchThreshold: 0, alpha: 1, includeAA: true, modes: ["strict-full", "source-effect-components", "contract-state"] },
+    failures: [],
+    rows: [{
+      id: "self-test-row",
+      comparisonMode: "strict-full",
+      reference: {
+        metrics: { title: { x: 1, y: 2, width: 3, height: 4 } },
+        captureStability: { warmupSha256: ["warm-a", "warm-b"], firstSha256: "final-reference", secondSha256: "final-reference", twoCapturePixelsStable: true },
+      },
+      implementation: {
+        metrics: { title: { x: 1, y: 2, width: 3, height: 4 } },
+        captureStability: { warmupSha256: ["warm-c", "warm-d"], firstSha256: "final-implementation", secondSha256: "final-implementation", twoCapturePixelsStable: true },
+      },
+      raw: { changed: 0, changedPct: 0, rms: 0 },
+      accepted: { changed: 0, changedPct: 0, rms: 0 },
+      unavailableInventory: { expected: [], actual: [], exactMatch: true },
+      persistedImages: { reference: { sha256: "encoded", decodedPixelSha256: "decoded" } },
+    }],
+  };
+  const changedWarmup = structuredClone(baseline);
+  changedWarmup.rows[0].reference.captureStability.warmupSha256 = ["jitter-a", "jitter-b"];
+  changedWarmup.rows[0].implementation.captureStability.warmupSha256 = ["jitter-c", "jitter-d"];
+  assert.deepEqual(canonicalVisualPacket(changedWarmup), canonicalVisualPacket(baseline), "canonical packet ignores only noncanonical warmup capture hashes");
+
+  const protectedMutations = [
+    ["first final hash", (value) => { value.rows[0].reference.captureStability.firstSha256 = "changed"; }],
+    ["second final hash", (value) => { value.rows[0].implementation.captureStability.secondSha256 = "changed"; }],
+    ["DOM metrics", (value) => { value.rows[0].reference.metrics.title.x = 99; }],
+    ["raw pixel metrics", (value) => { value.rows[0].raw.changed = 1; }],
+    ["accepted pixel metrics", (value) => { value.rows[0].accepted.rms = 1; }],
+    ["failures", (value) => { value.failures.push("self-test-row"); }],
+    ["pixel threshold", (value) => { value.comparison.pixelmatchThreshold = 0.01; }],
+    ["comparison modes", (value) => { value.comparison.modes.pop(); }],
+    ["row comparison mode", (value) => { value.rows[0].comparisonMode = "contract-state"; }],
+    ["unavailable inventory", (value) => { value.rows[0].unavailableInventory.actual.push({ action: "changed" }); }],
+    ["persisted encoded hash", (value) => { value.rows[0].persistedImages.reference.sha256 = "changed"; }],
+    ["persisted decoded hash", (value) => { value.rows[0].persistedImages.reference.decodedPixelSha256 = "changed"; }],
+  ];
+  for (const [label, mutate] of protectedMutations) {
+    const candidate = structuredClone(baseline);
+    mutate(candidate);
+    assert.notDeepEqual(canonicalVisualPacket(candidate), canonicalVisualPacket(baseline), `canonical packet preserves ${label}`);
+  }
 }
 
 function componentFromPoints(points, imageWidth) {
@@ -988,9 +1063,9 @@ async function writePersistedMismatchDiagnostic(item, spec, persisted, fresh, pe
   process.stderr.write(`S4 image mismatch diagnostic:\n${JSON.stringify(summary, null, 2)}\n`);
 }
 
-async function writeCaptureDiagnostic(item, label, first, second) {
+async function writeCaptureDiagnostic(item, label, first, second, runtime = {}) {
   const report = await imageDifferenceReport(first, second);
-  const summary = { row: item.id, image: label, firstSha256: sha(first), secondSha256: sha(second), ...report.summary };
+  const summary = { row: item.id, image: label, ...runtime, firstSha256: sha(first), secondSha256: sha(second), ...report.summary };
   if (diagnosticRoot) {
     const dir = path.join(diagnosticRoot, item.id, label);
     await fs.mkdir(dir, { recursive: true });

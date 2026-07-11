@@ -416,14 +416,14 @@ Validation:
 
 ### S7.1 Regression Matrix
 
-Status: `in_progress`
+Status: `done`
 
 Run the complete validation matrix below and record exact commands, exit status,
 browser, viewport, artifact paths, skipped checks, and reasons.
 
 ### S7.2 Independent Audit
 
-Status: `todo`
+Status: `done`
 
 The audit must:
 
@@ -442,7 +442,7 @@ disposition before closeout.
 
 ### S7.3 Closeout
 
-Status: `todo`
+Status: `done`
 
 Create `evidence/closeout.md` containing:
 

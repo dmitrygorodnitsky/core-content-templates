@@ -1,0 +1,1226 @@
+{
+  "schemaVersion": 1,
+  "routes": 17,
+  "profiles": [
+    "onDemand",
+    "stormOps",
+    "appointments"
+  ],
+  "publicRoutes": [
+    "landing",
+    "seo.landing",
+    "auth.phone",
+    "auth.code"
+  ],
+  "privateRoutes": [
+    "orders.list",
+    "order.detail",
+    "calendar",
+    "activity",
+    "services",
+    "pricing",
+    "products",
+    "checkout",
+    "proposals.list",
+    "proposal.detail",
+    "profile",
+    "support",
+    "care"
+  ],
+  "coverage": {
+    "routeAttempts": 51,
+    "enabledRouteProfileCombinations": 45,
+    "disabledRouteProfileCombinations": 6,
+    "unauthenticatedPrivateRouteCombinations": 33,
+    "unknownRoutes": 3,
+    "parameterizedDetailRoutes": 5,
+    "shellProfiles": 3
+  },
+  "routeResults": [
+    {
+      "profile": "onDemand",
+      "route": "landing",
+      "module": "landing",
+      "enabled": true,
+      "rendered": "landing"
+    },
+    {
+      "profile": "onDemand",
+      "route": "seo.landing",
+      "module": "seo-parity",
+      "enabled": true,
+      "rendered": "seo.landing"
+    },
+    {
+      "profile": "onDemand",
+      "route": "auth.phone",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.phone"
+    },
+    {
+      "profile": "onDemand",
+      "route": "auth.code",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.code"
+    },
+    {
+      "profile": "onDemand",
+      "route": "orders.list",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "onDemand",
+      "route": "order.detail",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "order.detail"
+    },
+    {
+      "profile": "onDemand",
+      "route": "calendar",
+      "module": "calendar",
+      "enabled": true,
+      "rendered": "calendar"
+    },
+    {
+      "profile": "onDemand",
+      "route": "activity",
+      "module": "activity",
+      "enabled": true,
+      "rendered": "activity"
+    },
+    {
+      "profile": "onDemand",
+      "route": "services",
+      "module": "services",
+      "enabled": true,
+      "rendered": "services"
+    },
+    {
+      "profile": "onDemand",
+      "route": "pricing",
+      "module": "pricing",
+      "enabled": true,
+      "rendered": "pricing"
+    },
+    {
+      "profile": "onDemand",
+      "route": "products",
+      "module": "products",
+      "enabled": true,
+      "rendered": "products"
+    },
+    {
+      "profile": "onDemand",
+      "route": "checkout",
+      "module": "checkout",
+      "enabled": true,
+      "rendered": "checkout"
+    },
+    {
+      "profile": "onDemand",
+      "route": "proposals.list",
+      "module": "proposals",
+      "enabled": true,
+      "rendered": "proposals.list"
+    },
+    {
+      "profile": "onDemand",
+      "route": "proposal.detail",
+      "module": "proposals",
+      "enabled": true,
+      "rendered": "proposal.detail"
+    },
+    {
+      "profile": "onDemand",
+      "route": "profile",
+      "module": "profile",
+      "enabled": true,
+      "rendered": "profile"
+    },
+    {
+      "profile": "onDemand",
+      "route": "support",
+      "module": "support",
+      "enabled": true,
+      "rendered": "support"
+    },
+    {
+      "profile": "onDemand",
+      "route": "care",
+      "module": "care",
+      "enabled": true,
+      "rendered": "care"
+    },
+    {
+      "profile": "stormOps",
+      "route": "landing",
+      "module": "landing",
+      "enabled": true,
+      "rendered": "landing"
+    },
+    {
+      "profile": "stormOps",
+      "route": "seo.landing",
+      "module": "seo-parity",
+      "enabled": true,
+      "rendered": "seo.landing"
+    },
+    {
+      "profile": "stormOps",
+      "route": "auth.phone",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.phone"
+    },
+    {
+      "profile": "stormOps",
+      "route": "auth.code",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.code"
+    },
+    {
+      "profile": "stormOps",
+      "route": "orders.list",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "stormOps",
+      "route": "order.detail",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "order.detail"
+    },
+    {
+      "profile": "stormOps",
+      "route": "calendar",
+      "module": "calendar",
+      "enabled": true,
+      "rendered": "calendar"
+    },
+    {
+      "profile": "stormOps",
+      "route": "activity",
+      "module": "activity",
+      "enabled": true,
+      "rendered": "activity"
+    },
+    {
+      "profile": "stormOps",
+      "route": "services",
+      "module": "services",
+      "enabled": true,
+      "rendered": "services"
+    },
+    {
+      "profile": "stormOps",
+      "route": "pricing",
+      "module": "pricing",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "stormOps",
+      "route": "products",
+      "module": "products",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "stormOps",
+      "route": "checkout",
+      "module": "checkout",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "stormOps",
+      "route": "proposals.list",
+      "module": "proposals",
+      "enabled": true,
+      "rendered": "proposals.list"
+    },
+    {
+      "profile": "stormOps",
+      "route": "proposal.detail",
+      "module": "proposals",
+      "enabled": true,
+      "rendered": "proposal.detail"
+    },
+    {
+      "profile": "stormOps",
+      "route": "profile",
+      "module": "profile",
+      "enabled": true,
+      "rendered": "profile"
+    },
+    {
+      "profile": "stormOps",
+      "route": "support",
+      "module": "support",
+      "enabled": true,
+      "rendered": "support"
+    },
+    {
+      "profile": "stormOps",
+      "route": "care",
+      "module": "care",
+      "enabled": true,
+      "rendered": "care"
+    },
+    {
+      "profile": "appointments",
+      "route": "landing",
+      "module": "landing",
+      "enabled": true,
+      "rendered": "landing"
+    },
+    {
+      "profile": "appointments",
+      "route": "seo.landing",
+      "module": "seo-parity",
+      "enabled": true,
+      "rendered": "seo.landing"
+    },
+    {
+      "profile": "appointments",
+      "route": "auth.phone",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.phone"
+    },
+    {
+      "profile": "appointments",
+      "route": "auth.code",
+      "module": "auth",
+      "enabled": true,
+      "rendered": "auth.code"
+    },
+    {
+      "profile": "appointments",
+      "route": "orders.list",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "appointments",
+      "route": "order.detail",
+      "module": "orders",
+      "enabled": true,
+      "rendered": "order.detail"
+    },
+    {
+      "profile": "appointments",
+      "route": "calendar",
+      "module": "calendar",
+      "enabled": true,
+      "rendered": "calendar"
+    },
+    {
+      "profile": "appointments",
+      "route": "activity",
+      "module": "activity",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "appointments",
+      "route": "services",
+      "module": "services",
+      "enabled": true,
+      "rendered": "services"
+    },
+    {
+      "profile": "appointments",
+      "route": "pricing",
+      "module": "pricing",
+      "enabled": true,
+      "rendered": "pricing"
+    },
+    {
+      "profile": "appointments",
+      "route": "products",
+      "module": "products",
+      "enabled": true,
+      "rendered": "products"
+    },
+    {
+      "profile": "appointments",
+      "route": "checkout",
+      "module": "checkout",
+      "enabled": true,
+      "rendered": "checkout"
+    },
+    {
+      "profile": "appointments",
+      "route": "proposals.list",
+      "module": "proposals",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "appointments",
+      "route": "proposal.detail",
+      "module": "proposals",
+      "enabled": false,
+      "rendered": "orders.list"
+    },
+    {
+      "profile": "appointments",
+      "route": "profile",
+      "module": "profile",
+      "enabled": true,
+      "rendered": "profile"
+    },
+    {
+      "profile": "appointments",
+      "route": "support",
+      "module": "support",
+      "enabled": true,
+      "rendered": "support"
+    },
+    {
+      "profile": "appointments",
+      "route": "care",
+      "module": "care",
+      "enabled": true,
+      "rendered": "care"
+    }
+  ],
+  "stateCoverage": {
+    "expectedTotal": 59,
+    "passedTotal": 59,
+    "routes": 17,
+    "routeDeclaredTotal": 52,
+    "implementedStateIds": [
+      "activity:empty",
+      "activity:ready",
+      "auth.code:ready",
+      "auth.code:validation-error",
+      "auth.phone:ready",
+      "auth.phone:validation-error",
+      "calendar:empty",
+      "calendar:ready",
+      "care:disabled",
+      "care:empty",
+      "care:error",
+      "care:loading",
+      "care:ready",
+      "care:unauthorized",
+      "checkout:empty",
+      "checkout:ready",
+      "checkout:success-toast",
+      "landing:ready",
+      "order.detail:cancelled",
+      "order.detail:completed",
+      "order.detail:error",
+      "order.detail:inProgress",
+      "order.detail:loading",
+      "order.detail:pending-action",
+      "order.detail:scheduled",
+      "orders.list:drawer-open",
+      "orders.list:empty",
+      "orders.list:error",
+      "orders.list:loading",
+      "orders.list:mobile-navigation-open",
+      "orders.list:pending-action",
+      "orders.list:ready",
+      "orders.list:success-toast",
+      "pricing:ready",
+      "products:empty",
+      "products:loading",
+      "products:ready",
+      "profile:ready",
+      "profile:success-toast",
+      "proposal.detail:approved",
+      "proposal.detail:declined",
+      "proposal.detail:revision",
+      "proposal.detail:unseen",
+      "proposal.detail:viewed",
+      "proposals.list:empty",
+      "proposals.list:ready",
+      "seo.landing:cta-error",
+      "seo.landing:cta-idle",
+      "seo.landing:cta-pending",
+      "seo.landing:cta-success",
+      "seo.landing:empty",
+      "seo.landing:faq-open",
+      "seo.landing:loading",
+      "seo.landing:ready",
+      "seo.landing:service-selected",
+      "services:loading",
+      "services:ready",
+      "support:ready",
+      "support:validation-error"
+    ],
+    "routeDeclaredStateIds": [
+      "activity:empty",
+      "activity:ready",
+      "auth.code:ready",
+      "auth.code:validation-error",
+      "auth.phone:ready",
+      "auth.phone:validation-error",
+      "calendar:empty",
+      "calendar:ready",
+      "care:disabled",
+      "care:empty",
+      "care:error",
+      "care:loading",
+      "care:ready",
+      "care:unauthorized",
+      "checkout:empty",
+      "checkout:ready",
+      "checkout:success-toast",
+      "landing:ready",
+      "order.detail:cancelled",
+      "order.detail:completed",
+      "order.detail:error",
+      "order.detail:inProgress",
+      "order.detail:loading",
+      "order.detail:scheduled",
+      "orders.list:drawer-open",
+      "orders.list:empty",
+      "orders.list:error",
+      "orders.list:loading",
+      "orders.list:mobile-navigation-open",
+      "orders.list:pending-action",
+      "orders.list:ready",
+      "orders.list:success-toast",
+      "pricing:ready",
+      "products:empty",
+      "products:loading",
+      "products:ready",
+      "profile:ready",
+      "profile:success-toast",
+      "proposal.detail:approved",
+      "proposal.detail:declined",
+      "proposal.detail:revision",
+      "proposal.detail:unseen",
+      "proposal.detail:viewed",
+      "proposals.list:empty",
+      "proposals.list:ready",
+      "seo.landing:empty",
+      "seo.landing:loading",
+      "seo.landing:ready",
+      "services:loading",
+      "services:ready",
+      "support:ready",
+      "support:validation-error"
+    ],
+    "rows": [
+      {
+        "id": "landing:ready",
+        "route": "landing",
+        "state": "ready",
+        "checkId": "landing.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"landing\"]",
+          "route": "landing"
+        }
+      },
+      {
+        "id": "auth.phone:ready",
+        "route": "auth.phone",
+        "state": "ready",
+        "checkId": "auth.phone.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"auth.phone\"] [data-state=\"auth-phone\"]",
+          "route": "auth.phone"
+        }
+      },
+      {
+        "id": "auth.phone:validation-error",
+        "route": "auth.phone",
+        "state": "validation-error",
+        "checkId": "auth.phone.invalid-submit",
+        "method": "production-action-and-dom",
+        "passed": true,
+        "detail": {
+          "error": "Enter a valid phone number",
+          "route": "auth.phone"
+        }
+      },
+      {
+        "id": "auth.code:ready",
+        "route": "auth.code",
+        "state": "ready",
+        "checkId": "auth.code.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"auth.code\"] [data-state=\"auth-code\"]",
+          "route": "auth.code"
+        }
+      },
+      {
+        "id": "auth.code:validation-error",
+        "route": "auth.code",
+        "state": "validation-error",
+        "checkId": "auth.code.invalid-submit",
+        "method": "production-action-and-dom",
+        "passed": true,
+        "detail": {
+          "error": "Enter all 4 digits",
+          "route": "auth.code"
+        }
+      },
+      {
+        "id": "orders.list:ready",
+        "route": "orders.list",
+        "state": "ready",
+        "checkId": "orders.list.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"orders.list\"] [data-module=\"order-list\"]",
+          "route": "orders.list"
+        }
+      },
+      {
+        "id": "orders.list:loading",
+        "route": "orders.list",
+        "state": "loading",
+        "checkId": "orders.list.loading.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"orders.list\"] .skeleton",
+          "view": "loading"
+        }
+      },
+      {
+        "id": "orders.list:empty",
+        "route": "orders.list",
+        "state": "empty",
+        "checkId": "orders.list.empty.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"orders.list\"] [data-state=\"empty\"]",
+          "view": "empty"
+        }
+      },
+      {
+        "id": "orders.list:error",
+        "route": "orders.list",
+        "state": "error",
+        "checkId": "orders.list.error.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"orders.list\"] [data-state=\"error\"]",
+          "view": "error"
+        }
+      },
+      {
+        "id": "orders.list:mobile-navigation-open",
+        "route": "orders.list",
+        "state": "mobile-navigation-open",
+        "checkId": "orders.mobile-nav.action",
+        "method": "production-action-and-dom",
+        "passed": true,
+        "detail": {
+          "mobileNav": true
+        }
+      },
+      {
+        "id": "orders.list:drawer-open",
+        "route": "orders.list",
+        "state": "drawer-open",
+        "checkId": "orders.booking-open.action",
+        "method": "production-action-and-dom",
+        "passed": true,
+        "detail": {
+          "drawer": "booking"
+        }
+      },
+      {
+        "id": "orders.list:pending-action",
+        "route": "orders.list",
+        "state": "pending-action",
+        "checkId": "orders.weather-pending.business-state",
+        "method": "production-fixture-and-dom",
+        "passed": true,
+        "detail": {
+          "weatherPending": true
+        }
+      },
+      {
+        "id": "orders.list:success-toast",
+        "route": "orders.list",
+        "state": "success-toast",
+        "checkId": "orders.cancel.success-readback",
+        "method": "production-action-dom-and-readback",
+        "passed": true,
+        "detail": {
+          "id": "#SV-2402",
+          "status": "cancelled",
+          "toast": "Visit #SV-2402 cancelled"
+        }
+      },
+      {
+        "id": "order.detail:scheduled",
+        "route": "order.detail",
+        "state": "scheduled",
+        "checkId": "order.detail.scheduled.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "S7-scheduled",
+          "status": "scheduled"
+        }
+      },
+      {
+        "id": "order.detail:inProgress",
+        "route": "order.detail",
+        "state": "inProgress",
+        "checkId": "order.detail.inProgress.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "S7-inprogress",
+          "status": "inprogress"
+        }
+      },
+      {
+        "id": "order.detail:completed",
+        "route": "order.detail",
+        "state": "completed",
+        "checkId": "order.detail.completed.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "S7-completed",
+          "status": "completed"
+        }
+      },
+      {
+        "id": "order.detail:cancelled",
+        "route": "order.detail",
+        "state": "cancelled",
+        "checkId": "order.detail.cancelled.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "S7-cancelled",
+          "status": "cancelled"
+        }
+      },
+      {
+        "id": "order.detail:loading",
+        "route": "order.detail",
+        "state": "loading",
+        "checkId": "order.detail.loading.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"order.detail\"] .skeleton",
+          "view": "loading"
+        }
+      },
+      {
+        "id": "order.detail:error",
+        "route": "order.detail",
+        "state": "error",
+        "checkId": "order.detail.error.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"order.detail\"] [data-state=\"error\"]",
+          "view": "error"
+        }
+      },
+      {
+        "id": "order.detail:pending-action",
+        "route": "order.detail",
+        "state": "pending-action",
+        "checkId": "order.detail.weather-pending.business-state",
+        "method": "production-fixture-and-dom",
+        "passed": true,
+        "detail": {
+          "id": "#SV-3312",
+          "weatherStatus": "pending"
+        }
+      },
+      {
+        "id": "services:ready",
+        "route": "services",
+        "state": "ready",
+        "checkId": "services.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"services\"]",
+          "route": "services"
+        }
+      },
+      {
+        "id": "services:loading",
+        "route": "services",
+        "state": "loading",
+        "checkId": "services.loading.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "loading"
+        }
+      },
+      {
+        "id": "pricing:ready",
+        "route": "pricing",
+        "state": "ready",
+        "checkId": "pricing.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"pricing\"] [data-module=\"pricing-card\"]",
+          "route": "pricing"
+        }
+      },
+      {
+        "id": "products:ready",
+        "route": "products",
+        "state": "ready",
+        "checkId": "products.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"products\"] [data-module=\"product-list\"]",
+          "route": "products"
+        }
+      },
+      {
+        "id": "products:empty",
+        "route": "products",
+        "state": "empty",
+        "checkId": "products.empty.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "empty"
+        }
+      },
+      {
+        "id": "products:loading",
+        "route": "products",
+        "state": "loading",
+        "checkId": "products.loading.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "loading"
+        }
+      },
+      {
+        "id": "checkout:ready",
+        "route": "checkout",
+        "state": "ready",
+        "checkId": "checkout.ready.with-cart",
+        "method": "production-action-and-render",
+        "passed": true,
+        "detail": {
+          "cartCount": 1
+        }
+      },
+      {
+        "id": "checkout:empty",
+        "route": "checkout",
+        "state": "empty",
+        "checkId": "checkout.empty.renderer",
+        "method": "production-state-render",
+        "passed": true,
+        "detail": {
+          "cartCount": 0
+        }
+      },
+      {
+        "id": "checkout:success-toast",
+        "route": "checkout",
+        "state": "success-toast",
+        "checkId": "checkout.place-order.success-readback",
+        "method": "production-command-dom-and-readback",
+        "passed": true,
+        "detail": {
+          "route": "orders.list",
+          "toast": "Order placed in fixture state",
+          "fixtureOrders": 1,
+          "pendingAcrossAnimationFrame": false
+        }
+      },
+      {
+        "id": "proposals.list:ready",
+        "route": "proposals.list",
+        "state": "ready",
+        "checkId": "proposals.list.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"proposals.list\"] [data-module=\"proposal-list\"]",
+          "route": "proposals.list"
+        }
+      },
+      {
+        "id": "proposals.list:empty",
+        "route": "proposals.list",
+        "state": "empty",
+        "checkId": "proposals.list.empty.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "empty"
+        }
+      },
+      {
+        "id": "proposal.detail:unseen",
+        "route": "proposal.detail",
+        "state": "unseen",
+        "checkId": "proposal.detail.unseen.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "s7-unseen",
+          "status": "unseen"
+        }
+      },
+      {
+        "id": "proposal.detail:viewed",
+        "route": "proposal.detail",
+        "state": "viewed",
+        "checkId": "proposal.detail.viewed.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "s7-viewed",
+          "status": "viewed"
+        }
+      },
+      {
+        "id": "proposal.detail:approved",
+        "route": "proposal.detail",
+        "state": "approved",
+        "checkId": "proposal.detail.approved.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "s7-approved",
+          "status": "approved"
+        }
+      },
+      {
+        "id": "proposal.detail:revision",
+        "route": "proposal.detail",
+        "state": "revision",
+        "checkId": "proposal.detail.revision.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "s7-revision",
+          "status": "revision"
+        }
+      },
+      {
+        "id": "proposal.detail:declined",
+        "route": "proposal.detail",
+        "state": "declined",
+        "checkId": "proposal.detail.declined.business-render",
+        "method": "production-detail-render",
+        "passed": true,
+        "detail": {
+          "id": "s7-declined",
+          "status": "declined"
+        }
+      },
+      {
+        "id": "profile:ready",
+        "route": "profile",
+        "state": "ready",
+        "checkId": "profile.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"profile\"]",
+          "route": "profile"
+        }
+      },
+      {
+        "id": "profile:success-toast",
+        "route": "profile",
+        "state": "success-toast",
+        "checkId": "profile.preference.success-readback",
+        "method": "production-action-dom-and-readback",
+        "passed": true,
+        "detail": {
+          "before": false,
+          "after": true,
+          "toast": "Preference updated in fixture state"
+        }
+      },
+      {
+        "id": "activity:ready",
+        "route": "activity",
+        "state": "ready",
+        "checkId": "activity.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"activity\"] [data-module=\"activity-feed\"]",
+          "route": "activity"
+        }
+      },
+      {
+        "id": "activity:empty",
+        "route": "activity",
+        "state": "empty",
+        "checkId": "activity.empty.filter",
+        "method": "production-filter-and-dom",
+        "passed": true,
+        "detail": {
+          "filter": "__none__"
+        }
+      },
+      {
+        "id": "calendar:ready",
+        "route": "calendar",
+        "state": "ready",
+        "checkId": "calendar.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"calendar\"] [data-module=\"calendar-grid\"]",
+          "route": "calendar"
+        }
+      },
+      {
+        "id": "calendar:empty",
+        "route": "calendar",
+        "state": "empty",
+        "checkId": "calendar.empty.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "empty"
+        }
+      },
+      {
+        "id": "support:ready",
+        "route": "support",
+        "state": "ready",
+        "checkId": "support.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"support\"] [data-module=\"chat-composer\"]",
+          "route": "support"
+        }
+      },
+      {
+        "id": "support:validation-error",
+        "route": "support",
+        "state": "validation-error",
+        "checkId": "support.composer.production-interactions",
+        "method": "production-dom-events-and-readback",
+        "passed": true,
+        "detail": {
+          "buttonReadback": 1,
+          "enterReadback": 1,
+          "commandError": "Message is empty",
+          "pendingAcrossAnimationFrame": false
+        }
+      },
+      {
+        "id": "care:ready",
+        "route": "care",
+        "state": "ready",
+        "checkId": "care.ready.fixture-load",
+        "method": "production-adapter-and-dom",
+        "passed": true,
+        "detail": {
+          "state": "ready",
+          "phase": "payload"
+        }
+      },
+      {
+        "id": "care:loading",
+        "route": "care",
+        "state": "loading",
+        "checkId": "care.loading.adapter-render",
+        "method": "production-adapter-and-dom",
+        "passed": true,
+        "detail": {
+          "state": "loading",
+          "content": null
+        }
+      },
+      {
+        "id": "care:empty",
+        "route": "care",
+        "state": "empty",
+        "checkId": "care.empty.adapter-render",
+        "method": "production-adapter-and-dom",
+        "passed": true,
+        "detail": {
+          "state": "empty",
+          "content": null
+        }
+      },
+      {
+        "id": "care:error",
+        "route": "care",
+        "state": "error",
+        "checkId": "care.error.adapter-render",
+        "method": "production-adapter-and-dom",
+        "passed": true,
+        "detail": {
+          "state": "error",
+          "content": null
+        }
+      },
+      {
+        "id": "care:disabled",
+        "route": "care",
+        "state": "disabled",
+        "checkId": "care.disabled.module-guard",
+        "method": "production-guard-and-dom",
+        "passed": true,
+        "detail": {
+          "route": "care",
+          "state": "disabled",
+          "access": "disabled"
+        }
+      },
+      {
+        "id": "care:unauthorized",
+        "route": "care",
+        "state": "unauthorized",
+        "checkId": "care.unauthorized.entitlement-guard",
+        "method": "production-guard-and-dom",
+        "passed": true,
+        "detail": {
+          "state": "unauthorized",
+          "access": "not-entitled"
+        }
+      },
+      {
+        "id": "seo.landing:ready",
+        "route": "seo.landing",
+        "state": "ready",
+        "checkId": "seo.landing.ready.dom",
+        "method": "production-route-render",
+        "passed": true,
+        "detail": {
+          "selector": "[data-route=\"seo.landing\"][data-state=\"ready\"]",
+          "route": "seo.landing"
+        }
+      },
+      {
+        "id": "seo.landing:loading",
+        "route": "seo.landing",
+        "state": "loading",
+        "checkId": "seo.loading.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "loading",
+          "child": ".seo-skel"
+        }
+      },
+      {
+        "id": "seo.landing:empty",
+        "route": "seo.landing",
+        "state": "empty",
+        "checkId": "seo.empty.renderer",
+        "method": "production-view-render",
+        "passed": true,
+        "detail": {
+          "view": "empty",
+          "child": "[data-state=\"empty\"], [data-state=\"no-data\"]"
+        }
+      },
+      {
+        "id": "seo.landing:cta-idle",
+        "route": "seo.landing",
+        "state": "cta-idle",
+        "checkId": "seo.cta.idle.renderer",
+        "method": "production-lifecycle-render",
+        "passed": true,
+        "detail": {
+          "ctaState": "idle"
+        }
+      },
+      {
+        "id": "seo.landing:cta-pending",
+        "route": "seo.landing",
+        "state": "cta-pending",
+        "checkId": "seo.cta.pending.renderer",
+        "method": "production-lifecycle-render",
+        "passed": true,
+        "detail": {
+          "ctaState": "pending"
+        }
+      },
+      {
+        "id": "seo.landing:cta-success",
+        "route": "seo.landing",
+        "state": "cta-success",
+        "checkId": "seo.cta.success.renderer",
+        "method": "production-lifecycle-render",
+        "passed": true,
+        "detail": {
+          "ctaState": "success"
+        }
+      },
+      {
+        "id": "seo.landing:cta-error",
+        "route": "seo.landing",
+        "state": "cta-error",
+        "checkId": "seo.cta.error.renderer",
+        "method": "production-lifecycle-render",
+        "passed": true,
+        "detail": {
+          "ctaState": "error"
+        }
+      },
+      {
+        "id": "seo.landing:service-selected",
+        "route": "seo.landing",
+        "state": "service-selected",
+        "checkId": "seo.service-select.action-readback",
+        "method": "production-action-dom-and-readback",
+        "passed": true,
+        "detail": {
+          "id": "ac-repair",
+          "selected": "ac-repair"
+        }
+      },
+      {
+        "id": "seo.landing:faq-open",
+        "route": "seo.landing",
+        "state": "faq-open",
+        "checkId": "seo.faq-toggle.action-readback",
+        "method": "production-action-dom-and-readback",
+        "passed": true,
+        "detail": {
+          "id": "faq-1",
+          "open": "faq-1"
+        }
+      }
+    ],
+    "missing": [],
+    "unexpected": [],
+    "duplicates": []
+  },
+  "consoleErrors": [],
+  "networkFailures": []
+}

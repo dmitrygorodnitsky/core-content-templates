@@ -2,8 +2,6 @@
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
 import { state } from "../state.js";
-import { sendChat } from "../actions.js";
-import { render } from "../app.js";
 
 export function Support() {
   var v = F.themes[state.theme];
@@ -58,12 +56,32 @@ export function Support() {
 
   var input = h("input", { "class": "composer__input", placeholder: "Type a message\u2026", value: state.chatInput, "aria-label": "Message" });
   input.addEventListener("input", function () { state.chatInput = input.value; }); /* no re-render: preserve focus */
-  input.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); sendChat(); } });
-  var composer = h("div", { "class": "composer", "data-module": "chat-composer", "data-visual-id": "chat-composer" }, [
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      composer.querySelector('[data-action="support.sendMessage"]').click();
+    }
+  });
+  var commandError = state.commandErrors["support.sendMessage:_"];
+  var composer = h("div", {
+    "class": "composer",
+    "data-module": "chat-composer",
+    "data-visual-id": "chat-composer",
+    style: commandError ? "position:relative;padding-bottom:38px" : undefined
+  }, [
     h("div", { "class": "composer__add" }, "+"),
     input,
     h("button", { "class": "composer__send", "data-action": "support.sendMessage", "aria-label": "Send" }, "\u2191")
   ]);
+  if (commandError) {
+    composer.appendChild(h("div", {
+      "class": "composer__error",
+      "data-state": "validation-error",
+      "data-command-error": "support.sendMessage:_",
+      "role": "alert",
+      style: "position:absolute;left:64px;right:64px;bottom:8px;color:var(--danger);font-size:12px"
+    }, commandError));
+  }
 
   var panel = h("div", { "class": "chat-panel", "data-module": "chat-panel", "data-visual-id": "chat-panel" }, [
     h("div", { "class": "chat-header" }, [

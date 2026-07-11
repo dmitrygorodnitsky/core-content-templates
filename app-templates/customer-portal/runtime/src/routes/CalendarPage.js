@@ -4,8 +4,14 @@ import { h } from "../dom.js";
 import { activeProfile, buildCalendarGrid, state } from "../state.js";
 import { OrderCard } from "../components/orders/OrderCard.js";
 import { StormCalendar } from "../components/storm/StormCalendar.js";
+import { EmptyState } from "../components/primitives/EmptyState.js";
 
 export function Calendar() {
+  if (state.view === "empty") {
+    return h("section", { "class": "page", "data-route": "calendar", "data-visual-id": "calendar", "data-state": "empty" }, [
+      EmptyState({ glyph: "i", title: "No visits scheduled", desc: "Upcoming and completed visits appear here once they are available." })
+    ]);
+  }
   if (activeProfile().weatherCalendar) return StormCalendar();
   return MonthCalendar();
 }

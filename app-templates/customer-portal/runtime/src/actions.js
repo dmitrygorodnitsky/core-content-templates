@@ -391,7 +391,10 @@ export function validateCode() {
 
 export function togglePref(key) {
   if (["receipts", "sms", "marketing"].indexOf(key) === -1) throw new Error("Preference not found");
-  state.prefs = Object.assign({}, state.prefs, { }); state.prefs[key] = !state.prefs[key]; render();
+  state.prefs = Object.assign({}, state.prefs, { });
+  state.prefs[key] = !state.prefs[key];
+  render();
+  toast("Preference updated in fixture state");
 }
 
 export function calShift(delta) {

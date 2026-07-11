@@ -4,6 +4,7 @@ import { h } from "../dom.js";
 import { productItems, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { skeletonRow } from "../components/primitives/LoadingState.js";
 import { ProductCard } from "../components/commerce/ProductCard.js";
 
 export function Products() {
@@ -31,6 +32,13 @@ export function Products() {
       return h("span", { "class": "tab" + (c.key === state.prodCat ? " tab--active" : ""), "data-action": "products.filter", "data-id": c.key }, c.label);
     }))
   ]));
+
+  if (state.view === "loading") {
+    var loading = h("div", { "class": "product-grid", "data-module": "product-list", "data-state": "loading" });
+    for (var index = 0; index < 4; index++) loading.appendChild(skeletonRow());
+    page.appendChild(loading);
+    return page;
+  }
 
   var list = productItems();
   if (!liveProducts && state.prodCat !== "all") list = list.filter(function (p) { return p.cat === state.prodCat; });
