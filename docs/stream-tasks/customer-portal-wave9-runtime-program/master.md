@@ -3,7 +3,7 @@
 Created: 2026-07-10
 Package path: `docs/stream-tasks/customer-portal-wave9-runtime-program/`
 Status: program container
-Current target: S4 Visual Acceptance (`done`)
+Current target: S5 Data And Command Activation (`in_progress`)
 Execution mode: sequential stage-to-done loop
 
 ## Goal
@@ -120,7 +120,7 @@ Out of scope:
 | care-runtime | Care components, styles, fixtures, module, adapter, normalizer | Codex | done | Eight hubs, two-phase async load, commands, states, and security races independently validated. |
 | seo-public-entry | SEO components, styles, public CMS template and metadata | Codex | done | Strict authored public document and isolated reference preview independently validated. |
 | visual-acceptance | screenshot/DOM evidence and parity fixes | Codex | done | Schema-v6 executable-source packet independently validated. |
-| activation | Care/SEO adapters and command handlers | Codex | todo | Open only known contracts; no mock success. |
+| activation | Care/SEO adapters and command handlers | Codex | in_progress | Open only known contracts; no mock success. |
 | cms-export | block metadata, templates, export scripts, generated previews | Codex | todo | No CMS upload. |
 | validation-closeout | smoke harnesses, audit, evidence, ledger | Codex | todo | Independent final review and residuals. |
 
@@ -144,7 +144,7 @@ Shared files that must not be edited concurrently by independent agents:
 | S2 Care Executable Transfer | Transfer and componentize accepted Care UI | done | S1 | Care route/components/styles/fixtures/module | All eight Care hubs and required states render from normalized fixture data with accepted hooks and no visual redesign. |
 | S3 Public SEO Executable Transfer | Transfer SEO sections and create public entry | done | S2 | Shared SEO components plus public CMS page | SEO content renders without portal auth/hash boot, has CMS-authored slots and real document metadata/structured data, and remains parity-testable. |
 | S4 Visual Acceptance | Close visual drift before live activation | done | S3 | Screenshot/DOM comparison evidence | Care and SEO match executable design at required viewports, verticals, and states; unresolved drift is blocking, not waived as approximate. |
-| S5 Data And Command Activation | Add truthful adapters and interactions | todo | S4 | Known live/fixture data and command paths | Local interactions work; opened mutations have pending/success/error and readback/idempotence proof; unknown or unsafe live paths are `not_opened`. |
+| S5 Data And Command Activation | Add truthful adapters and interactions | in_progress | S4 | Known live/fixture data and command paths | Local interactions work; opened mutations have pending/success/error and readback/idempotence proof; unknown or unsafe live paths are `not_opened`. |
 | S6 CMS Packaging And Export | Package both delivery surfaces | todo | S5 | Portal and public SEO export artifacts | CMS enums/styles/templates/exports cover all profiles/verticals and validate locally without upload. |
 | S7 Validation, Audit, Closeout | Regress, audit, and close the program | todo | S6 | `audits/A1.md`, `evidence/closeout.md` | Full DoD is proven, findings are fixed or explicit residuals, ledger is final, and no required work remains. |
 
@@ -230,9 +230,9 @@ required implementation or validation finding.
 | S3.2-seo-public-document | seo-public-entry | Codex | done | S3.1 | raw HTML/DOM metadata checks | Public page works without portal auth/hash boot and emits title, description, canonical, and valid FAQ structured data from CMS-authored content. |
 | S4.1-care-parity | visual-acceptance | Codex | done | S3.2 | screenshots and DOM metrics | Eight Care hubs plus representative states match accepted source at 390, 768, 1180, and 1440 widths. |
 | S4.2-seo-parity | visual-acceptance | Codex | done | S3.2 | screenshots and DOM metrics | Public SEO page/sections match accepted source across themes and required widths. |
-| S5.1-contract-inventory | activation | Codex | todo | S4.1, S4.2 | endpoint/permission matrix | Every Care/SEO action and data source is classified local, fixture, opened live, unavailable, or `not_opened`. |
-| S5.2-safe-local-actions | activation | Codex | todo | S5.1 | interaction and async-state tests | Unit/specialist selection, FAQ toggle, service navigation, and other local actions update real state with scoped pending/error behavior where async. |
-| S5.3-live-activation | activation | Codex | todo | S5.2 | adapter contract, mutation/readback, auth tests | Only known endpoints are connected; sensitive Health paths meet RBAC/consent/audit/secure-view requirements; remaining unknowns are `not_opened`. |
+| S5.1-contract-inventory | activation | Codex | in_progress | S4.1, S4.2 | endpoint/permission matrix | Every Care/SEO action and data source is classified local, fixture, opened live, unavailable, or `not_opened`. |
+| S5.2-safe-local-actions | activation | Codex | in_progress | S5.1 | interaction and async-state tests | Unit/specialist selection, FAQ toggle, service navigation, and other local actions update real state with scoped pending/error behavior where async. |
+| S5.3-live-activation | activation | Codex | in_progress | S5.2 | adapter contract, mutation/readback, auth tests | Only known endpoints are connected; sensitive Health paths meet RBAC/consent/audit/secure-view requirements; remaining unknowns are `not_opened`. |
 | S6.1-cms-contract | cms-export | Codex | todo | S5.3 | schema/enum/style validation | CMS metadata covers Health, Beauty, `appointments`, Care, public SEO, and required styles/slots. |
 | S6.2-dual-export | cms-export | Codex | todo | S6.1 | export scripts and generated preview smoke | Authenticated portal and public SEO artifacts export independently and run locally. |
 | S7.1-regression | validation-closeout | Codex | todo | S6.2 | complete validation matrix | Old and new routes/profiles/states/actions pass static and browser checks with no console errors. |
@@ -340,3 +340,6 @@ live slice `not_opened` and continue with the remaining Definition of Done.
   exact source-effect component rows with retained raw drift, and two explicit
   contract-state rows. Deterministic WebP/pixel verification, natural process
   cleanup, and prior runtime regressions are validated. See `evidence/S4.md`.
+- 2026-07-11: S5 opened after S4 closeout commit `54b1cd9`. Activation begins
+  with a repository-proven contract inventory; unknown live paths remain
+  `not_opened` and cannot be represented as fallback or fixture success.

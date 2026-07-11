@@ -320,7 +320,7 @@ Acceptance rules:
 
 ### S5.1 Contract Inventory
 
-Status: `todo`
+Status: `in_progress`
 
 Create a table for every Care/SEO data source and action with:
 
@@ -338,7 +338,7 @@ Unknown endpoint or security contracts must remain `not_opened`.
 
 ### S5.2 Safe Local And Fixture Activation
 
-Status: `todo`
+Status: `in_progress`
 
 Open interactions that can be truthful without speculative backend IO, such as:
 
@@ -357,7 +357,7 @@ For every async path:
 
 ### S5.3 Live Activation
 
-Status: `todo`
+Status: `in_progress`
 
 Tasks:
 
