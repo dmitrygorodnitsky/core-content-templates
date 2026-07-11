@@ -379,7 +379,7 @@ Regression requirement:
 
 ### S6.1 CMS Contract
 
-Status: `in_progress`
+Status: `done`
 
 Tasks:
 
@@ -394,7 +394,7 @@ Tasks:
 
 ### S6.2 Dual Export
 
-Status: `in_progress`
+Status: `done`
 
 Tasks:
 

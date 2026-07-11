@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "runtime-wave9-s5-activation",
+  "version": "runtime-wave9-s6-cms-packaging",
   "format": "no-build ES modules: source.html + 7 stylesheets + 71 src JavaScript modules + 3 data fixture modules",
   "fileInventory": {
     "stylesheets": 7,
@@ -14,7 +14,7 @@
     "checkedReferencePreview": "public/seo-reference-preview.html; deterministic noindex fixture preview with visible reference-only labeling",
     "strictPublicTemplate": "cms/seo-public-root-template.html; token-only, no mock defaults, complete authored input required",
     "strictPublicGenerator": "scripts/generate-seo-public.mjs --input <complete-authored-payload.json> --output <document.html>",
-    "finalCmsPackaging": "S6 not opened"
+    "finalCmsPackaging": "cms/block.json and cms/seo-public-block.json export independently through scripts/export-cms.mjs; no upload"
   },
   "dataAttributes": {
     "data-route": "page / view id (matches scenarios.routes[].id)",
@@ -1573,6 +1573,12 @@
     "public/seo-reference-preview.html": "deterministic noindex checked fixture preview; never production truth",
     "scripts/fixtures/seo-public-authored.test.json": "explicit complete authored test fixture used only for temp strict-document validation",
     "data/activation-contracts.json": "S5 machine-readable Care/SEO data and command disposition inventory",
-    "scripts/activation-contract-check.mjs": "S5 bijection, truth, concurrency, race, click-effect, and no-network validation"
+    "scripts/activation-contract-check.mjs": "S5 bijection, truth, concurrency, race, click-effect, and no-network validation",
+    "cms/block.json": "authenticated portal CMS contract with eight verticals, three profiles, Care module declaration, and runtime-owned entitlement preflight",
+    "cms/seo-public-block.json": "separate public document block with strict schema, document routing, and public-only asset ownership",
+    "cms/seo-public.schema.json": "draft 2020-12 authored metadata, content, CTA, FAQ, and footer input contract",
+    "scripts/cms-schema-validation.mjs": "single fail-closed draft-2020-12 subset validator shared by production/test SEO generation and S6 contract checks",
+    "scripts/export-cms.mjs": "deterministic transactional portal/public SEO export through validated sibling staging and rollback-safe directory replacement; upload is never performed",
+    "scripts/s6-cms-export-check.mjs": "S6 schema, enum, round-trip, ownership, dual-export hash, raw HTML, and independent browser-boot proof"
   }
 }

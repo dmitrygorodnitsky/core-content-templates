@@ -4,9 +4,11 @@ import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { normalizeSeoPublic, normalizeSeoPublicTest, faqJsonLd } from "../runtime/src/normalizers/seo.js";
 import { SeoPublicHeader, renderSeoSections } from "../runtime/src/components/seo/SeoSections.js";
+import { assertValidCmsPayload, testClassificationSchema } from "./cms-schema-validation.mjs";
 
 const portalRoot = path.resolve("app-templates/customer-portal");
 const templatePath = path.join(portalRoot, "cms/seo-public-root-template.html");
+const schemaPath = path.join(portalRoot, "cms/seo-public.schema.json");
 
 export async function generateSeoPublic(options) {
   return generate(options, false);
@@ -21,8 +23,11 @@ async function generate(options, testMode) {
   if (!options.inputPath) throw new Error("Strict public generation requires inputPath");
   if (!options.outputPath) throw new Error("Strict public generation requires outputPath");
   var payload = JSON.parse(await fs.readFile(path.resolve(options.inputPath), "utf8"));
+  var productionSchema = JSON.parse(await fs.readFile(schemaPath, "utf8"));
+  var schema = testMode ? testClassificationSchema(productionSchema) : productionSchema;
+  assertValidCmsPayload(schema, payload, testMode ? "Public SEO test payload" : "Public SEO production payload");
   var model = testMode ? normalizeSeoPublicTest(payload) : normalizeSeoPublic(payload);
-  var html = await renderDocument(model, { notice: testMode ? "Strict authored test fixture - not production content" : null });
+  var html = await renderDocument(model, { notice: testMode ? "Strict authored test fixture - not production content" : null, noindex: testMode });
   await fs.mkdir(path.dirname(path.resolve(options.outputPath)), { recursive: true });
   await fs.writeFile(path.resolve(options.outputPath), html, "utf8");
   return { outputPath: path.resolve(options.outputPath), model: model, html: html };
@@ -37,6 +42,7 @@ export async function renderDocument(model, options) {
     seo_title: model.meta.title,
     seo_description: model.meta.description,
     seo_canonical: model.meta.canonicalUrl,
+    seo_robots_meta: options.noindex ? '<meta name="robots" content="noindex,nofollow">' : "",
     seo_asset_base: model.deployment.assetBase,
     seo_public_script_url: model.deployment.publicScriptUrl,
     seo_faq_json_ld: JSON.stringify(faqJsonLd(model)).replace(/</g, "\\u003c"),
@@ -46,7 +52,7 @@ export async function renderDocument(model, options) {
   };
   var html = template.replace(/\{\{([a-z0-9_]+)\}\}/g, function (_, key) {
     if (!Object.prototype.hasOwnProperty.call(values, key)) throw new Error("Unrecognized SEO template token: " + key);
-    return key === "seo_notice" || key === "seo_public_header" || key === "seo_body" || key === "seo_faq_json_ld" ? values[key] : escapeHtml(values[key]);
+    return key === "seo_notice" || key === "seo_public_header" || key === "seo_body" || key === "seo_faq_json_ld" || key === "seo_robots_meta" ? values[key] : escapeHtml(values[key]);
   });
   if (/\{\{[^}]+\}\}/.test(html)) throw new Error("Unresolved SEO template token remains");
   return html;

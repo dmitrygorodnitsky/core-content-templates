@@ -107,6 +107,7 @@ const strictHtml = await fs.readFile(strictOutput, "utf8");
 assert.equal(strictHtml, firstHtml, "strict authored generation is deterministic");
 assert.equal(first.model.meta.canonicalUrl, "https://seo-public.test/hvac/austin-test-district", "canonical merge tag resolves exactly");
 assert.match(strictHtml, /data-content-classification="public-authored-test"/, "strict test document is explicitly classified");
+assert.match(strictHtml, /<meta name="robots" content="noindex,nofollow">/, "strict authored test document is noindex");
 assert.doesNotMatch(strictHtml, /reference-seo|flow\.(?:booking|quote)|\.example\b|data-dev-toolbar|seo-meta-preview|from CMS|AppShell|location\.hash|setCtaState|setDataState/, "strict document excludes reference fixtures, misleading origins, portal dependencies, and synthetic state tooling");
 assert.match(strictHtml, /<title>[^<]{10,}<\/title>/, "strict raw HTML has title");
 assert.match(strictHtml, /<meta name="description" content="[^"]{40,}">/, "strict raw HTML has description");
@@ -124,6 +125,14 @@ for (const faq of strictModel.faq) {
   assert.equal(strictHtml.includes(escapeHtml(faq.q)), true, `raw HTML exposes FAQ question ${faq.id}`);
   assert.equal(strictHtml.includes(escapeHtml(faq.a)), true, `raw HTML exposes FAQ answer ${faq.id}`);
 }
+
+const productionInput = path.join(tempRoot, "seo-public-production.json");
+const productionOutput = path.join(tempRoot, "seo-public-production.html");
+await fs.writeFile(productionInput, JSON.stringify(productionHostPayload), "utf8");
+await generateSeoPublic({ inputPath: productionInput, outputPath: productionOutput });
+const productionHtml = await fs.readFile(productionOutput, "utf8");
+assert.doesNotMatch(productionHtml, /<meta name="robots" content="noindex,nofollow">/, "strict production document remains indexable");
+assert.match(productionHtml, /data-content-classification="public-authored"/, "strict production document retains production classification");
 
 const referenceBefore = await fs.readFile(referencePath, "utf8");
 await import(pathToFileURL(path.join(portalRoot, "scripts/generate-seo-reference-preview.mjs")) + `?check=${Date.now()}`);

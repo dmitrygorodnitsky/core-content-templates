@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "app-template/customer-portal-public-seo-input@1",
+  "title": "Customer Portal Public SEO Authored Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["classification", "deployment", "content"],
+  "properties": {
+    "classification": { "const": "public-authored" },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalOrigin", "allowedOrigins", "allowCanonicalQuery", "assetBase", "publicScriptUrl"],
+      "properties": {
+        "canonicalOrigin": { "type": "string", "minLength": 1 },
+        "allowedOrigins": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "allowCanonicalQuery": { "type": "boolean" },
+        "assetBase": { "type": "string", "pattern": "^/" },
+        "publicScriptUrl": { "type": "string", "pattern": "^/.+\\.js$" }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand", "vertical", "meta", "hero", "services", "trust", "how", "proof", "pricing", "area", "reviews", "faq", "ctas", "final", "footer"],
+      "properties": {
+        "brand": { "$ref": "#/$defs/brand" },
+        "vertical": { "$ref": "#/$defs/vertical" },
+        "meta": { "$ref": "#/$defs/meta" },
+        "hero": { "$ref": "#/$defs/hero" },
+        "services": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/service" } },
+        "trust": { "type": "array", "items": { "$ref": "#/$defs/trust" } },
+        "how": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/contentItem" } },
+        "proof": {
+          "type": "object", "additionalProperties": false, "required": ["title", "items"],
+          "properties": { "title": { "$ref": "#/$defs/text" }, "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/contentItem" } } }
+        },
+        "pricing": {
+          "type": "object", "additionalProperties": false, "required": ["note", "rows"],
+          "properties": { "note": { "$ref": "#/$defs/nullableText" }, "rows": { "type": "array", "items": { "$ref": "#/$defs/priceRow" } } }
+        },
+        "area": {
+          "type": "object", "additionalProperties": false, "required": ["cities", "note"],
+          "properties": { "cities": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } }, "note": { "$ref": "#/$defs/nullableText" } }
+        },
+        "reviews": { "type": "array", "items": { "$ref": "#/$defs/review" } },
+        "faq": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/faq" } },
+        "ctas": { "$ref": "#/$defs/ctas" },
+        "final": {
+          "type": "object", "additionalProperties": false, "required": ["heading", "body"],
+          "properties": { "heading": { "$ref": "#/$defs/text" }, "body": { "$ref": "#/$defs/nullableText" } }
+        },
+        "footer": { "$ref": "#/$defs/footer" }
+      }
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1 },
+    "nullableText": { "type": ["string", "null"], "minLength": 1 },
+    "nullableUrl": { "type": ["string", "null"], "minLength": 1 },
+    "brand": {
+      "type": "object", "additionalProperties": false, "required": ["name", "url"],
+      "properties": { "name": { "$ref": "#/$defs/text" }, "url": { "$ref": "#/$defs/nullableUrl" } }
+    },
+    "vertical": {
+      "type": "object", "additionalProperties": false, "required": ["name", "slug"],
+      "properties": {
+        "name": { "$ref": "#/$defs/text" },
+        "slug": { "enum": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"] }
+      }
+    },
+    "meta": {
+      "type": "object", "additionalProperties": false,
+      "required": ["title", "description", "h1", "locality", "localitySlug", "serviceArea", "canonical"],
+      "properties": {
+        "title": { "$ref": "#/$defs/text" }, "description": { "$ref": "#/$defs/text" },
+        "h1": { "$ref": "#/$defs/text" }, "locality": { "$ref": "#/$defs/text" },
+        "localitySlug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "serviceArea": { "$ref": "#/$defs/text" }, "canonical": { "$ref": "#/$defs/text" }
+      }
+    },
+    "hero": {
+      "type": "object", "additionalProperties": false, "required": ["service", "note", "offer", "media"],
+      "properties": {
+        "service": { "$ref": "#/$defs/text" }, "note": { "$ref": "#/$defs/nullableText" },
+        "offer": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/offer" }] },
+        "media": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/media" }] }
+      }
+    },
+    "offer": {
+      "type": "object", "additionalProperties": false, "required": ["tag", "text", "until"],
+      "properties": { "tag": { "$ref": "#/$defs/text" }, "text": { "$ref": "#/$defs/text" }, "until": { "$ref": "#/$defs/nullableText" } }
+    },
+    "media": {
+      "type": "object", "additionalProperties": false, "required": ["url", "alt"],
+      "properties": { "url": { "$ref": "#/$defs/text" }, "alt": { "$ref": "#/$defs/text" } }
+    },
+    "service": {
+      "type": "object", "additionalProperties": false, "required": ["id", "name", "benefit", "priceFrom", "destination"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "name": { "$ref": "#/$defs/text" }, "benefit": { "$ref": "#/$defs/text" },
+        "priceFrom": { "$ref": "#/$defs/nullableText" }, "destination": { "$ref": "#/$defs/nullableUrl" }
+      }
+    },
+    "trust": {
+      "type": "object", "additionalProperties": false, "required": ["label", "value", "count"],
+      "properties": { "label": { "$ref": "#/$defs/text" }, "value": { "$ref": "#/$defs/text" }, "count": { "$ref": "#/$defs/nullableText" } }
+    },
+    "contentItem": {
+      "type": "object", "additionalProperties": false, "required": ["title", "description"],
+      "properties": { "title": { "$ref": "#/$defs/text" }, "description": { "$ref": "#/$defs/text" } }
+    },
+    "priceRow": {
+      "type": "object", "additionalProperties": false, "required": ["name", "from", "unit", "reason"],
+      "properties": { "name": { "$ref": "#/$defs/text" }, "from": { "$ref": "#/$defs/nullableText" }, "unit": { "$ref": "#/$defs/nullableText" }, "reason": { "$ref": "#/$defs/nullableText" } }
+    },
+    "review": {
+      "type": "object", "additionalProperties": false, "required": ["name", "rating", "text"],
+      "properties": { "name": { "$ref": "#/$defs/text" }, "rating": { "type": "integer", "minimum": 1, "maximum": 5 }, "text": { "$ref": "#/$defs/text" } }
+    },
+    "faq": {
+      "type": "object", "additionalProperties": false, "required": ["id", "question", "answer"],
+      "properties": { "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }, "question": { "$ref": "#/$defs/text" }, "answer": { "$ref": "#/$defs/text" } }
+    },
+    "cta": {
+      "type": ["object", "null"], "additionalProperties": false, "required": ["label", "destination"],
+      "properties": { "label": { "$ref": "#/$defs/text" }, "destination": { "$ref": "#/$defs/nullableUrl" } }
+    },
+    "ctas": {
+      "type": "object", "additionalProperties": false,
+      "required": ["primaryAction", "primary", "secondaryAction", "secondary", "call"],
+      "properties": {
+        "primaryAction": { "enum": ["seo.cta.book", "seo.cta.quote"] },
+        "primary": { "$ref": "#/$defs/cta" },
+        "secondaryAction": { "enum": ["seo.cta.services", "seo.cta.call"] },
+        "secondary": { "$ref": "#/$defs/cta" },
+        "call": { "$ref": "#/$defs/cta" }
+      }
+    },
+    "footer": {
+      "type": "object", "additionalProperties": false, "required": ["phone", "email", "hours", "legal"],
+      "properties": {
+        "phone": { "$ref": "#/$defs/nullableText" }, "email": { "$ref": "#/$defs/nullableText" },
+        "hours": { "type": "array", "items": { "$ref": "#/$defs/hours" } },
+        "legal": { "type": "array", "items": { "$ref": "#/$defs/link" } }
+      }
+    },
+    "hours": {
+      "type": "object", "additionalProperties": false, "required": ["days", "hours"],
+      "properties": { "days": { "$ref": "#/$defs/text" }, "hours": { "$ref": "#/$defs/text" } }
+    },
+    "link": {
+      "type": "object", "additionalProperties": false, "required": ["label", "url"],
+      "properties": { "label": { "$ref": "#/$defs/text" }, "url": { "$ref": "#/$defs/text" } }
+    }
+  }
+}

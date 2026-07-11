@@ -3,7 +3,7 @@
 Created: 2026-07-10
 Package path: `docs/stream-tasks/customer-portal-wave9-runtime-program/`
 Status: program container
-Current target: S6 CMS Packaging And Export (`in_progress`)
+Current target: S6 CMS Packaging And Export (`done`)
 Execution mode: sequential stage-to-done loop
 
 ## Goal
@@ -121,7 +121,7 @@ Out of scope:
 | seo-public-entry | SEO components, styles, public CMS template and metadata | Codex | done | Strict authored public document and isolated reference preview independently validated. |
 | visual-acceptance | screenshot/DOM evidence and parity fixes | Codex | done | Schema-v7 post-activation packet independently validated; schema-v6 closeout remains historical evidence. |
 | activation | Care/SEO adapters and command handlers | Codex | done | Local/fixture paths validated; unknown Care live source is explicitly not_opened. |
-| cms-export | block metadata, templates, export scripts, generated previews | Codex | in_progress | No CMS upload. |
+| cms-export | block metadata, templates, export scripts, generated previews | Codex | done | Portal/public packages export independently and transactionally; no CMS upload. |
 | validation-closeout | smoke harnesses, audit, evidence, ledger | Codex | todo | Independent final review and residuals. |
 
 Shared files that must not be edited concurrently by independent agents:
@@ -145,7 +145,7 @@ Shared files that must not be edited concurrently by independent agents:
 | S3 Public SEO Executable Transfer | Transfer SEO sections and create public entry | done | S2 | Shared SEO components plus public CMS page | SEO content renders without portal auth/hash boot, has CMS-authored slots and real document metadata/structured data, and remains parity-testable. |
 | S4 Visual Acceptance | Close visual drift before live activation | done | S3 | Screenshot/DOM comparison evidence | Care and SEO match executable design at required viewports, verticals, and states; unresolved drift is blocking, not waived as approximate. |
 | S5 Data And Command Activation | Add truthful adapters and interactions | done | S4 | Known live/fixture data and command paths | Local interactions work; opened mutations have pending/success/error and readback/idempotence proof; unknown or unsafe live paths are `not_opened`. |
-| S6 CMS Packaging And Export | Package both delivery surfaces | in_progress | S5 | Portal and public SEO export artifacts | CMS enums/styles/templates/exports cover all profiles/verticals and validate locally without upload. |
+| S6 CMS Packaging And Export | Package both delivery surfaces | done | S5 | Portal and public SEO export artifacts | CMS enums/styles/templates/exports cover all profiles/verticals and validate locally without upload. |
 | S7 Validation, Audit, Closeout | Regress, audit, and close the program | todo | S6 | `audits/A1.md`, `evidence/closeout.md` | Full DoD is proven, findings are fixed or explicit residuals, ledger is final, and no required work remains. |
 
 ## Dependency And Sequencing Rules
@@ -233,8 +233,8 @@ required implementation or validation finding.
 | S5.1-contract-inventory | activation | Codex | done | S4.1, S4.2 | endpoint/permission matrix | Every Care/SEO action and data source is classified local, fixture, opened live, unavailable, or `not_opened`. |
 | S5.2-safe-local-actions | activation | Codex | done | S5.1 | interaction and async-state tests | Unit/specialist selection, FAQ toggle, service navigation, and other local actions update real state with scoped pending/error behavior where async. |
 | S5.3-live-activation | activation | Codex | not_opened | S5.2 | adapter contract, mutation/readback, auth tests | No repository-proven non-PIM Care endpoint/auth/readback contract exists; Care live and sensitive Health paths remain fail-closed. |
-| S6.1-cms-contract | cms-export | Codex | in_progress | S5.3 | schema/enum/style validation | CMS metadata covers Health, Beauty, `appointments`, Care, public SEO, and required styles/slots. |
-| S6.2-dual-export | cms-export | Codex | in_progress | S6.1 | export scripts and generated preview smoke | Authenticated portal and public SEO artifacts export independently and run locally. |
+| S6.1-cms-contract | cms-export | Codex | done | S5.3 | schema/enum/style validation | CMS metadata covers Health, Beauty, `appointments`, Care, public SEO, and required styles/slots. |
+| S6.2-dual-export | cms-export | Codex | done | S6.1 | export scripts and generated preview smoke | Authenticated portal and public SEO artifacts export independently and run locally. |
 | S7.1-regression | validation-closeout | Codex | todo | S6.2 | complete validation matrix | Old and new routes/profiles/states/actions pass static and browser checks with no console errors. |
 | S7.2-independent-audit | validation-closeout | independent reviewer | todo | S7.1 | `audits/A1.md` | Reviewer audits implementation without subagents; all actionable findings are fixed or accepted as explicit residuals. |
 | S7.3-closeout | validation-closeout | Codex | todo | S7.2 | `evidence/closeout.md`, clean diff check | Ledger, commits, commands, visual evidence, unopened work, and residual risks are durable and accurate. |
@@ -351,3 +351,7 @@ live slice `not_opened` and continue with the remaining Definition of Done.
 - 2026-07-11: S6 opened after S5 closeout commit `4710778`. CMS packaging owns
   one explicit portal contract and one independent public SEO contract, with
   deterministic local exports and no upload.
+- 2026-07-11: S6 closed in this commit after six independent audit cycles.
+  Portal and public SEO contracts export as five deterministic artifacts with
+  schema/override validation, truthful test indexing policy, transactional
+  rollback, independent browser boot, and no upload. See `evidence/S6.md`.
