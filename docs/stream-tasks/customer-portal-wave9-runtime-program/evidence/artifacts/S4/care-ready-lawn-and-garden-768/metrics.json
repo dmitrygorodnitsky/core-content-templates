@@ -1,0 +1,309 @@
+{
+  "id": "care-ready-lawn-and-garden-768",
+  "surface": "care",
+  "vertical": "Lawn & Garden",
+  "width": 768,
+  "height": 900,
+  "mode": "light",
+  "state": "ready",
+  "referenceState": "ready",
+  "variant": "default",
+  "comparisonMode": "strict-full",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 1209.52,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 22,
+        "y": 16,
+        "width": 724,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 1131.52,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 22,
+        "y": 181.03,
+        "width": 724,
+        "height": 968.48,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "724px"
+      },
+      "firstCard": {
+        "x": 22,
+        "y": 181.03,
+        "width": 724,
+        "height": 391,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": null,
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 2,
+      "prepaintPositions": [
+        0,
+        310
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 768,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed"
+      ],
+      "firstSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+      "secondSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 1209.52,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 22,
+        "y": 16,
+        "width": 724,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 1131.52,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 22,
+        "y": 181.03,
+        "width": 724,
+        "height": 968.48,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "724px"
+      },
+      "firstCard": {
+        "x": 22,
+        "y": 181.03,
+        "width": 724,
+        "height": 391,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": null,
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 2,
+      "prepaintPositions": [
+        0,
+        310
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 768,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+        "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed"
+      ],
+      "firstSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+      "secondSha256": "6f2fa4627bf5a7e12e8dbb5c21c0f103272bcc8871442523ceee0d5a9e4226ed",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "accepted": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "effectBounds": [],
+  "unavailableInventory": {
+    "applies": true,
+    "expected": [],
+    "actual": [],
+    "expectedCount": 0,
+    "actualCount": 0,
+    "truthfulCount": 0,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "strict-full",
+    "modeMatch": true
+  },
+  "changedComponents": [],
+  "unassociatedComponents": [],
+  "assertions": {
+    "unavailableControlsTruthful": true,
+    "unavailableControlCount": 0
+  },
+  "dimensions": {
+    "width": 768,
+    "height": 1210,
+    "referenceHeight": 1210,
+    "implementationHeight": 1210
+  },
+  "metricsEqual": true,
+  "metricDelta": {},
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "ff89679a0ad6bfcf719dda0c67939d0294de3d10bc45b7064cbf549fe01432da",
+      "decodedPixelSha256": "bd8e518ba6f65c84697bd47bad6a92dd9026772a945cb50232cdec42ae264586",
+      "width": 768,
+      "height": 1210
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "ff89679a0ad6bfcf719dda0c67939d0294de3d10bc45b7064cbf549fe01432da",
+      "decodedPixelSha256": "bd8e518ba6f65c84697bd47bad6a92dd9026772a945cb50232cdec42ae264586",
+      "width": 768,
+      "height": 1210
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "8bc5c244fb5812d3d56abac35e253138275d974b1793a9fedbad6b6300a9c61c",
+      "decodedPixelSha256": "c069cd5e65363060f61130f24e54e6168351ee9acac1e546fc9d8d7941af6e73",
+      "width": 768,
+      "height": 1210
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

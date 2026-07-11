@@ -17,7 +17,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 
 const root = path.resolve(args.get("root") || "app-templates/customer-portal/runtime");
 const entry = "/" + (args.get("entry") || "source.html").replace(/^\/+/, "");
-const artifactRoot = path.resolve(args.get("artifacts") || "docs/stream-tasks/customer-portal-wave9-runtime-program/evidence/artifacts/S2");
+const artifactRoot = path.resolve(args.get("output-dir") || args.get("artifacts") || "docs/stream-tasks/customer-portal-wave9-runtime-program/evidence/artifacts/S2");
 const requireFrom = process.env.PLAYWRIGHT_NODE_MODULES
   ? createRequire(path.join(process.env.PLAYWRIGHT_NODE_MODULES, "package.json"))
   : createRequire(import.meta.url);

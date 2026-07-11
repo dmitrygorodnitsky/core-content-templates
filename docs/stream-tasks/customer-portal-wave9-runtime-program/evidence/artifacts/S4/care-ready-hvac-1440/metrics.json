@@ -1,0 +1,946 @@
+{
+  "id": "care-ready-hvac-1440",
+  "surface": "care",
+  "vertical": "HVAC",
+  "width": 1440,
+  "height": 900,
+  "mode": "light",
+  "state": "ready",
+  "referenceState": "ready",
+  "variant": "default",
+  "comparisonMode": "source-effect-components",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "cdf96a5124abb77be4661c152c21486d06acc904362167e2fc993fc4c0d4ba7c",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 160,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 160,
+        "y": 78,
+        "width": 1120,
+        "height": 727.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 182,
+        "y": 181.03,
+        "width": 1076,
+        "height": 564,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 182,
+        "y": 272.03,
+        "width": 644.31,
+        "height": 461,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": {
+        "x": 861.31,
+        "y": 470.03,
+        "width": 377.69,
+        "height": 34,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "cdf96a5124abb77be4661c152c21486d06acc904362167e2fc993fc4c0d4ba7c",
+        "cdf96a5124abb77be4661c152c21486d06acc904362167e2fc993fc4c0d4ba7c"
+      ],
+      "firstSha256": "cdf96a5124abb77be4661c152c21486d06acc904362167e2fc993fc4c0d4ba7c",
+      "secondSha256": "cdf96a5124abb77be4661c152c21486d06acc904362167e2fc993fc4c0d4ba7c",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "2aea5a4e7833910fc093d6d32560956bc559da2c2412295ec35949ad3ec05bbd",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 160,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 160,
+        "y": 78,
+        "width": 1120,
+        "height": 727.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 182,
+        "y": 181.03,
+        "width": 1076,
+        "height": 564,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 182,
+        "y": 272.03,
+        "width": 644.31,
+        "height": 461,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": {
+        "x": 861.31,
+        "y": 470.03,
+        "width": 377.69,
+        "height": 34,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "2aea5a4e7833910fc093d6d32560956bc559da2c2412295ec35949ad3ec05bbd",
+        "2aea5a4e7833910fc093d6d32560956bc559da2c2412295ec35949ad3ec05bbd"
+      ],
+      "firstSha256": "2aea5a4e7833910fc093d6d32560956bc559da2c2412295ec35949ad3ec05bbd",
+      "secondSha256": "2aea5a4e7833910fc093d6d32560956bc559da2c2412295ec35949ad3ec05bbd",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 742,
+    "changedPct": 0.05725308641975308,
+    "rms": 1.8768582698276863
+  },
+  "accepted": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "effectBounds": [
+    {
+      "controlIndex": 0,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "action": "care.download",
+      "entityId": "doc-hvac-diag-2026-01",
+      "disabled": false,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 1174,
+          "y": 613,
+          "width": 63,
+          "height": 16
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "x": 1174,
+      "y": 613,
+      "width": 63,
+      "height": 16
+    },
+    {
+      "controlIndex": 1,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+      "action": "care.download",
+      "entityId": "doc-hvac-warranty-carrier",
+      "disabled": false,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 1174,
+          "y": 670,
+          "width": 63,
+          "height": 16
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 1440,
+          "height": 900
+        }
+      },
+      "x": 1174,
+      "y": 670,
+      "width": 63,
+      "height": 16
+    }
+  ],
+  "unavailableInventory": {
+    "applies": true,
+    "expected": [
+      {
+        "action": "care.download",
+        "entityId": "doc-hvac-diag-2026-01"
+      },
+      {
+        "action": "care.download",
+        "entityId": "doc-hvac-warranty-carrier"
+      }
+    ],
+    "actual": [
+      {
+        "action": "care.download",
+        "entityId": "doc-hvac-diag-2026-01"
+      },
+      {
+        "action": "care.download",
+        "entityId": "doc-hvac-warranty-carrier"
+      }
+    ],
+    "expectedCount": 2,
+    "actualCount": 2,
+    "truthfulCount": 2,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "source-effect-components",
+    "modeMatch": true
+  },
+  "changedComponents": [
+    {
+      "componentIndex": 0,
+      "x": 1175,
+      "y": 616,
+      "width": 35,
+      "height": 11,
+      "changedPixels": 208,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-diag-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 613,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 613,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 1,
+      "x": 1211,
+      "y": 616,
+      "width": 2,
+      "height": 10,
+      "changedPixels": 20,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-diag-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 613,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 613,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 2,
+      "x": 1229,
+      "y": 616,
+      "width": 8,
+      "height": 11,
+      "changedPixels": 59,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-diag-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 613,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 613,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 3,
+      "x": 1214,
+      "y": 619,
+      "width": 14,
+      "height": 8,
+      "changedPixels": 84,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-diag-2026-01",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 613,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 613,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 4,
+      "x": 1175,
+      "y": 673,
+      "width": 35,
+      "height": 11,
+      "changedPixels": 208,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-warranty-carrier",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 670,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 670,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 5,
+      "x": 1211,
+      "y": 673,
+      "width": 2,
+      "height": 10,
+      "changedPixels": 20,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-warranty-carrier",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 670,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 670,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 6,
+      "x": 1229,
+      "y": 673,
+      "width": 8,
+      "height": 11,
+      "changedPixels": 59,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-warranty-carrier",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 670,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 670,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 7,
+      "x": 1214,
+      "y": 676,
+      "width": 14,
+      "height": 8,
+      "changedPixels": 84,
+      "controlIndexes": [
+        1
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": false,
+          "intersectsOwningControlBorderBox": false,
+          "associated": false
+        },
+        {
+          "controlIndex": 1,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 1,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S2 truthful unavailable treatment is implementation-added and absent from the accepted design",
+          "action": "care.download",
+          "entityId": "doc-hvac-warranty-carrier",
+          "disabled": false,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 1174,
+              "y": 670,
+              "width": 63,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1440,
+              "height": 900
+            }
+          },
+          "x": 1174,
+          "y": 670,
+          "width": 63,
+          "height": 16
+        }
+      ]
+    }
+  ],
+  "unassociatedComponents": [],
+  "assertions": {
+    "unavailableControlsTruthful": true,
+    "unavailableControlCount": 2
+  },
+  "dimensions": {
+    "width": 1440,
+    "height": 900,
+    "referenceHeight": 900,
+    "implementationHeight": 900
+  },
+  "metricsEqual": true,
+  "metricDelta": {},
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "74383f9381141e57529137b1885903c7a5eeddb9da7539d019f676645643875e",
+      "decodedPixelSha256": "eb13e421b9385c71e9c63f0c6c1ef31bbe9497400aa233561554fa9a19b654b7",
+      "width": 1440,
+      "height": 900
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "78cc164231511bfabf6561cf05cb242dbb6a6f35baabb4455d54e496263cd725",
+      "decodedPixelSha256": "9e4f8f6c0da7990542a33f047fb17b919c00f8d9ada420bbe8f965f1dae40ca4",
+      "width": 1440,
+      "height": 900
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "c062f9c2773456d5ef89e5ce0c52d56493d5099ba6d63696a96be873de6582a9",
+      "decodedPixelSha256": "fe808ec3b090e7762e20a2ae2dbb286dfaba39b95dcaa92339892378c75274d8",
+      "width": 1440,
+      "height": 900
+    },
+    "componentDiff": {
+      "file": "component-diff.webp",
+      "sha256": "784c57e0444318abbeb943df4efec90e5d0de7c59d648f2530691e652a9d90cc",
+      "decodedPixelSha256": "e4963338981dce941ec85fb123b80153780dc02b7cdf94ad31866ee4d61b06e9",
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

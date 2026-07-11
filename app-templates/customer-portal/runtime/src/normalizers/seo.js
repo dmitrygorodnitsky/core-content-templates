@@ -194,6 +194,7 @@ function normalizeAuthored(payload, options) {
       benefit: merge(own(service, "benefit", path), tags, path + ".benefit"),
       priceFrom: optionalMerge(own(service, "priceFrom", path), tags, path + ".priceFrom"),
       destination: own(service, "destination", path) === null ? null : destination(merge(own(service, "destination", path), tags, path + ".destination"), policy, path + ".destination"),
+      palette: null,
     };
   });
   if (new Set(services.map(function (service) { return service.id; })).size !== services.length) throw new Error("content.services ids must be unique");
@@ -208,14 +209,14 @@ function normalizeAuthored(payload, options) {
   var trust = array(own(content, "trust", "content"), "content.trust", 0).map(function (fact, index) {
     var path = "content.trust[" + index + "]";
     fact = object(fact, path);
-    return { label: merge(own(fact, "label", path), tags, path + ".label"), value: merge(own(fact, "value", path), tags, path + ".value"), count: optionalMerge(own(fact, "count", path), tags, path + ".count") };
+    return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2b1a", "\u23f1"][index % 5], label: merge(own(fact, "label", path), tags, path + ".label"), value: merge(own(fact, "value", path), tags, path + ".value"), count: optionalMerge(own(fact, "count", path), tags, path + ".count"), slot: null };
   });
   var reviews = array(own(content, "reviews", "content"), "content.reviews", 0).map(function (review, index) {
     var path = "content.reviews[" + index + "]";
     review = object(review, path);
     var rating = Number(own(review, "rating", path));
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) throw new Error(path + ".rating must be an integer from 1 to 5");
-    return { name: merge(own(review, "name", path), tags, path + ".name"), rating: rating, text: merge(own(review, "text", path), tags, path + ".text") };
+    return { name: merge(own(review, "name", path), tags, path + ".name"), rating: rating, text: merge(own(review, "text", path), tags, path + ".text"), media: false };
   });
 
   var normalized = {
@@ -234,6 +235,7 @@ function normalizeAuthored(payload, options) {
       locality: locality,
       serviceArea: merge(own(meta, "serviceArea", "content.meta"), tags, "content.meta.serviceArea"),
       canonicalUrl: canonical,
+      canonicalPath: new URL(canonical).pathname + new URL(canonical).search,
       primaryCta: primaryCta,
       secondaryCta: secondaryCta,
       callCta: callCta,
@@ -301,7 +303,7 @@ export function normalizeSeoPublicTest(payload) {
   return normalizeAuthored(payload, { classification: "public-authored-test", mode: "public-test", allowTestHosts: true });
 }
 
-export function normalizeSeoReference(rawSeo, rawVertical, rawFooter, verticalName) {
+export function normalizeSeoReference(rawSeo, rawVertical, rawFooter, verticalName, rawPalette) {
   if (!rawSeo || !rawVertical || !rawFooter) throw new Error("reference SEO fixtures are required");
   var name = verticalName || "Reference service";
   var primaryKind = rawSeo.meta.primaryCta.kind === "quote" ? "seo.cta.quote" : "seo.cta.book";
@@ -323,11 +325,45 @@ export function normalizeSeoReference(rawSeo, rawVertical, rawFooter, verticalNa
       reviews: rawSeo.reviews.map(function (review) { return { name: review.name, rating: review.rating, text: review.text }; }),
       faq: rawSeo.faq.map(function (item, index) { return { id: "faq-" + String(index + 1), question: item.q, answer: item.a }; }),
       ctas: { primaryAction: primaryKind, primary: { label: rawSeo.meta.primaryCta.label, destination: null }, secondaryAction: secondaryAction, secondary: { label: rawSeo.meta.secondaryCta.label, destination: secondaryAction === "seo.cta.services" ? "#seo-services" : null }, call: { label: "Call us", destination: null } },
-      final: { heading: "Ready when you are in {locality}", body: "Price up front, photo report after every visit." },
+      final: { heading: "Ready when you are in {locality}", body: "Price up front, photo report after \u2014 every visit in your portal." },
       footer: { phone: null, email: null, hours: rawFooter.hours.map(function (row) { return { days: row.d, hours: row.h }; }), legal: [] },
     },
   };
-  return normalizeAuthored(payload, { classification: "reference-only", mode: "reference", allowTestHosts: true });
+  var normalized = normalizeAuthored(payload, { classification: "reference-only", mode: "reference", allowTestHosts: true });
+  var palette = array(rawPalette, "reference.palette", 4).map(function (pair, index) {
+    pair = array(pair, "reference.palette[" + index + "]", 2);
+    return [string(pair[0], "reference.palette[" + index + "][0]"), string(pair[1], "reference.palette[" + index + "][1]")];
+  });
+  var trustSource = rawSeo.trust;
+  return Object.freeze(Object.assign({}, normalized, {
+    brand: Object.freeze({ name: "Aircove", url: null }),
+    meta: Object.freeze(Object.assign({}, normalized.meta, { canonicalPath: string(rawSeo.meta.canonicalPath, "reference.meta.canonicalPath") })),
+    hero: Object.freeze(Object.assign({}, normalized.hero, { note: "No account needed \u00b7 price shown before you confirm" })),
+    trust: Object.freeze([
+      referenceTrustFact("\u2605", "Rating", trustSource.rating, "rating", "rating"),
+      referenceTrustFact("\u2696", trustSource.licence.label, trustSource.licence, "licence \u2116", "licence"),
+      referenceTrustFact("\u2714", trustSource.insurance.label, trustSource.insurance, "policy", "insurance"),
+      referenceTrustFact("\u2b1a", trustSource.guarantee.label, trustSource.guarantee, null, "guarantee"),
+      referenceTrustFact("\u23f1", trustSource.response.label, trustSource.response, null, "response"),
+    ]),
+    services: Object.freeze(normalized.services.map(function (service, index) { return Object.freeze(Object.assign({}, service, { palette: palette[index % 4] })); })),
+    reviews: Object.freeze(normalized.reviews.map(function (review, index) { return Object.freeze(Object.assign({}, review, { media: rawSeo.reviews[index].media === true })); })),
+    footer: Object.freeze(Object.assign({}, normalized.footer, {
+      legal: rawFooter.legal.map(function (link, index) { return { label: string(link.label, "reference.footer.legal[" + index + "].label"), href: string(link.href, "reference.footer.legal[" + index + "].href") }; }),
+    })),
+  }));
+}
+
+function referenceTrustFact(icon, label, source, slot, key) {
+  source = object(source, "reference.trust." + key);
+  return {
+    icon: icon,
+    label: string(label, "reference.trust." + key + ".label"),
+    value: source.value === null ? null : string(source.value, "reference.trust." + key + ".value"),
+    count: source.count == null ? null : string(source.count, "reference.trust." + key + ".count"),
+    slot: slot,
+    key: key,
+  };
 }
 
 export function faqJsonLd(model) {

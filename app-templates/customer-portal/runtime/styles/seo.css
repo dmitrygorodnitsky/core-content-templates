@@ -122,7 +122,7 @@
   backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: var(--shadow-card);
 }
-.seo-svc { display: block; width: 100%; color: var(--ink); font: inherit; text-align: left; text-decoration: none; }
+a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font: inherit; text-align: left; text-decoration: none; }
 .seo-svc:focus-visible, .seo-faq__q:focus-visible { outline: 3px solid rgba(var(--accent-rgb),.35); outline-offset: 2px; }
 .seo-svc.is-selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(var(--accent-rgb),.14); }
 .seo-svc > span { display: block; }
@@ -211,10 +211,10 @@
   background: none; border: 0; font: inherit; text-align: left; cursor: pointer;
   padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--ink);
 }
-.seo-faq__q::-webkit-details-marker { display: none; }
-.seo-faq__q::marker { content: ""; }
-.seo-faq__chev::before { content: "+"; }
-.seo-faq__item[open] .seo-faq__chev::before { content: "−"; }
+.seo-public .seo-faq__q::-webkit-details-marker { display: none; }
+.seo-public .seo-faq__q::marker { content: ""; }
+.seo-public .seo-faq__chev::before { content: "+"; }
+.seo-public .seo-faq__item[open] .seo-faq__chev::before { content: "−"; }
 .seo-faq__chev { color: var(--accent); font-weight: 800; font-size: 16px; flex: none; }
 .seo-faq__a { padding: 0 18px 15px; }
 .seo-faq__a p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }

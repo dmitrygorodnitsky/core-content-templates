@@ -12,7 +12,7 @@ const [{ F }, { SEO, SEO_FOOTER }] = await Promise.all([
   import(pathToFileURL(path.join(runtimeRoot, "data/fixtures.js"))),
   import(pathToFileURL(path.join(runtimeRoot, "data/seo-fixtures.js"))),
 ]);
-const model = normalizeSeoReference(SEO.HVAC, F.themes.HVAC, SEO_FOOTER, "HVAC");
+const model = normalizeSeoReference(SEO.HVAC, F.themes.HVAC, SEO_FOOTER, "HVAC", F.PAL);
 const body = renderSeoSections(model, { dataState: "ready", parity: false });
 const jsonLd = JSON.stringify(faqJsonLd(model)).replace(/</g, "\\u003c");
 const html = `<!DOCTYPE html>

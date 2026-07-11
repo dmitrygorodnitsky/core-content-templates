@@ -21,7 +21,14 @@ export function TopNav() {
   if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
   if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\ud83d\udcc5"));
   if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart" }, ["\ud83d\uded2", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
-  if (isModuleEnabled("activity")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "activity.open", title: "Activity" }, ["\ud83d\udd14", h("span", { "class": "dot-badge" })]));
+  var activityEnabled = isModuleEnabled("activity");
+  actions.push(h("div", {
+    "class": "icon-btn icon-btn--optional",
+    "data-module": "activity-control",
+    "data-action": activityEnabled ? "activity.open" : undefined,
+    title: activityEnabled ? "Activity" : undefined,
+    "aria-disabled": activityEnabled ? undefined : "true",
+  }, ["\ud83d\udd14", h("span", { "class": "dot-badge" })]));
   if (isModuleEnabled("profile")) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
   actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
 

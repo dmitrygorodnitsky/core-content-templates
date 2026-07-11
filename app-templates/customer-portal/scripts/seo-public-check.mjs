@@ -29,13 +29,26 @@ const [{ F }, { SEO, SEO_FOOTER }, normalizer, components, runtimeManifest, scen
 
 const verticals = ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"];
 const actions = ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"];
+const sectionFactories = ["SeoHero", "SeoTrustStrip", "SeoServicesGrid", "SeoHowItWorks", "SeoProofBlock", "SeoPricing", "SeoServiceArea", "SeoReviews", "SeoFaq", "SeoFinalCta", "SeoFooter"];
+const sectionSource = await fs.readFile(path.join(runtimeRoot, "src/components/seo/SeoSections.js"), "utf8");
+const normalizerSource = await fs.readFile(path.join(runtimeRoot, "src/normalizers/seo.js"), "utf8");
+const routeSource = await fs.readFile(path.join(runtimeRoot, "src/routes/SeoLandingPage.js"), "utf8");
+const visualHarnessSource = await fs.readFile(path.join(portalRoot, "scripts/visual-acceptance.mjs"), "utf8");
+for (const factory of sectionFactories) {
+  assert.equal((sectionSource.match(new RegExp(`export function ${factory}\\b`, "g")) || []).length, 1, `${factory} has exactly one shared section implementation`);
+}
+assert.doesNotMatch(sectionSource, /function\s+(?:parity|reference)(?:Hero|Trust|Services|How|Proof|Pricing|Area|Reviews|Faq|Final|Footer)\b/i, "no second parity/reference section-function family");
+assert.doesNotMatch(sectionSource, /renderParitySections|referenceVisual/, "shared renderer has no parallel parity composer or duplicate visual shape");
+assert.doesNotMatch(normalizerSource, /referenceVisual/, "normalizer exposes one common SEO model instead of a duplicate visual model");
+assert.doesNotMatch(routeSource, /data\/(?:fixtures|seo-fixtures)|SEO_FOOTER|\bF\b/, "SEO route consumes module/normalizer output only");
+assert.doesNotMatch(visualHarnessSource, /page\.route\([^\n]*seo-fixtures|SEO\[.*\]\.meta\.h1\s*\+=/, "visual harness never intercepts or mutates immutable design SEO fixtures");
 assert.deepEqual(Object.keys(SEO), verticals, "eight accepted reference fixture sets remain available only to parity/reference loading");
 assert.deepEqual(components.SEO_COMPONENT_IDS, scenarios.seoContract.componentIds, "14 accepted component ids are inventoried");
 assert.deepEqual(components.SEO_SECTION_ORDER, scenarios.seoContract.sectionOrder, "accepted section order is inventoried");
 assert.deepEqual(runtimeManifest.actions.filter((action) => action.startsWith("seo.")), actions, "all SEO actions are registered");
 
 for (const vertical of verticals) {
-  const model = normalizer.normalizeSeoReference(SEO[vertical], F.themes[vertical], SEO_FOOTER, vertical);
+  const model = normalizer.normalizeSeoReference(SEO[vertical], F.themes[vertical], SEO_FOOTER, vertical, F.PAL);
   assert.equal(model.classification, "reference-only", `${vertical} fixture model is reference-only`);
   assert.equal(model.meta.canonicalUrl.startsWith("https://reference-seo.test/"), true, `${vertical} reference canonical is explicit .test`);
   const markup = components.renderSeoSections(model, { parity: true });
@@ -47,7 +60,7 @@ for (const vertical of verticals) {
 assert.match(JSON.stringify(SEO.Health), /in-home care|care team|secure documents/i, "Health reference content transferred");
 assert.match(JSON.stringify(SEO.Beauty), /beauty|specialist|routine/i, "Beauty reference content transferred");
 
-const dynamicModel = normalizer.normalizeSeoReference(SEO.HVAC, F.themes.HVAC, SEO_FOOTER, "HVAC");
+const dynamicModel = normalizer.normalizeSeoReference(SEO.HVAC, F.themes.HVAC, SEO_FOOTER, "HVAC", F.PAL);
 assertDynamicSection("hero offer", (state) => components.SeoHero(dynamicModel, { parity: true, dataState: state }), [dynamicModel.hero.offer.text], /data-offer-state="loading"/, /data-offer-state="empty"/);
 assertDynamicSection("trust", (state) => components.SeoTrustStrip(dynamicModel, { parity: true, dataState: state }), [dynamicModel.trust[0].value], /data-state="loading"/, /seo-trust__fallback/);
 assertDynamicSection("pricing", (state) => components.SeoPricing(dynamicModel, { parity: true, dataState: state }), [dynamicModel.pricing.rows[0].name], /data-state="loading"/, /seo-price__fallback/);

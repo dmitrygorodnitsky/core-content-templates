@@ -17,7 +17,6 @@ export function SeoLanding() {
     selectedServiceId: state.seoSelectedServiceId,
     ctaStates: state.seoCtaStates,
     parity: true,
-    hydrated: true,
   });
   return page;
 }

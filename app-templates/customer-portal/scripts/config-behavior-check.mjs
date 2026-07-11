@@ -342,6 +342,12 @@ try {
       if (await matrixPage.locator('[data-visual-id="storm-calendar"], [data-visual-id="weather-card"], [data-visual-id="weather-banner"]').count()) {
         throw new Error(`${vertical.slug} rendered weather-only UI`);
       }
+      const activityControl = await matrixPage.locator('[data-module="activity-control"]').evaluate((node) => ({
+        action: node.getAttribute("data-action"),
+        title: node.getAttribute("title"),
+        ariaDisabled: node.getAttribute("aria-disabled"),
+      }));
+      assert.deepEqual(activityControl, { action: null, title: null, ariaDisabled: "true" }, `${vertical.slug} disabled Activity control is non-dispatching`);
       await matrixPage.evaluate(() => window.AircovePortal.go("activity"));
       await matrixPage.waitForSelector('[data-route="orders.list"]', { timeout: 2000 });
       const disabledActivity = await matrixPage.evaluate(() => ({
