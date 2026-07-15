@@ -1,3 +1,5 @@
+import { caseFixtureFor } from "../data/case-fixtures.js";
+
 export const portalProfiles = {
   onDemand: {
     id: "onDemand",
@@ -141,6 +143,9 @@ export function readPortalConfig(root) {
   var verticalConfig = verticalProfiles[vertical];
   var enabledModules = splitList(dataset.portalEnabledModules);
   var profile = resolveProfile(vertical, dataset.portalProfile);
+  var dataMode = allowed(dataset.portalDataMode, ["fixture", "live"], "fixture");
+  var caseId = dataMode === "fixture" && caseFixtureFor(dataset.portalCase) ? dataset.portalCase : "";
+  if (caseId && vertical !== "beauty") caseId = "";
   return {
     vertical: vertical,
     theme: theme,
@@ -150,12 +155,23 @@ export function readPortalConfig(root) {
     defaultRoute: routeRegistry[dataset.portalDefaultRoute] ? dataset.portalDefaultRoute : verticalConfig.defaultRoute,
     enabledModules: enabledModules.length ? enabledModules : portalProfiles[profile].modules.slice(),
     errorMode: allowed(dataset.portalErrorMode, ["error", "fallback"], "error"),
-    dataMode: allowed(dataset.portalDataMode, ["fixture", "live"], "fixture"),
+    dataMode: dataMode,
+    caseId: caseId,
     pimFixtureUrl: dataset.portalPimFixtureUrl || "",
     pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
     pimOrganization: dataset.portalPimOrganization || "SERVICEWAND",
     pimProductTypeCode: dataset.portalPimProductTypeCode || "SERVICEWAND_SAAS",
+    pimPricingProductTypeCodes: splitList(dataset.portalPimPricingProductTypeCodes),
+    pimProductsProductTypeCodes: splitList(dataset.portalPimProductsProductTypeCodes),
     pimCurrency: dataset.portalPimCurrency || "CAD",
+    pimPriceTypeCode: dataset.portalPimPriceTypeCode || "RECURRENT",
+    pimPriceAttributeCode: dataset.portalPimPriceAttributeCode || "INTERVAL",
+    pimPriceAttributeValues: splitList(dataset.portalPimPriceAttributeValues || "1"),
+    pimCurrencyAttributeCode: dataset.portalPimCurrencyAttributeCode || "CURRENCY",
+    pimCurrencyAttributeValues: splitList(dataset.portalPimCurrencyAttributeValues || dataset.portalPimCurrency || "CAD"),
+    pimAmountAttributeCode: dataset.portalPimAmountAttributeCode || "AMOUNT_MINOR",
+    pimAmountMinorDivisor: positiveNumber(dataset.portalPimAmountMinorDivisor, 100),
+    pimCta: dataset.portalPimCta || "",
     defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light"),
   };
 }
@@ -193,6 +209,11 @@ function splitList(value) {
     .split(",")
     .map(function (item) { return item.trim(); })
     .filter(Boolean);
+}
+
+function positiveNumber(value, fallback) {
+  var parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 function escapeRegExp(value) {

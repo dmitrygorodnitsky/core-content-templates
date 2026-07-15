@@ -1,14 +1,13 @@
 // customer-portal/runtime/src/routes/SupportPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentFixture, state } from "../state.js";
 
 export function Support() {
-  var v = F.themes[state.theme];
+  var fixture = currentFixture();
   var page = h("section", { "class": "page", "data-route": "support", "data-visual-id": "support" });
   page.appendChild(h("div", { "class": "section-head" }, [
-    h("div", { "class": "section-head__title" }, "How can we help, " + F.customer.firstName + "?"),
-    h("div", { "class": "section-head__sub" }, "Chat with us \u2014 agents reply in under 2 minutes, 24/7.")
+    h("div", { "class": "section-head__title" }, "How can we help, " + fixture.customer.firstName + "?"),
+    h("div", { "class": "section-head__sub" }, "Chat with the Calm Harbor team about your appointment, products or account.")
   ]));
 
   var grid = h("div", { "class": "support-grid" });
@@ -20,7 +19,7 @@ export function Support() {
     h("div", { style: "font-weight:700;font-size:14px;margin-bottom:12px" }, "Common topics")
   ]);
   var topics = h("div", { style: "display:flex;flex-direction:column;gap:9px" });
-  F.helpTopics.forEach(function (t) {
+  fixture.helpTopics.forEach(function (t) {
     topics.appendChild(h("div", { "class": "help-topic", "data-module": "help-topic", "data-action": "support.helpTopic", "data-id": t.q }, [
       h("div", { "class": "help-topic__icon", style: "background:" + t.iconBg }, h("i", { style: "background:" + t.dot })),
       h("div", { style: "flex:1;font-weight:600;font-size:13px" }, t.label),
@@ -31,7 +30,7 @@ export function Support() {
   rail.appendChild(helpPanel);
   rail.appendChild(h("div", { "class": "call-card", "data-module": "call-card" }, [
     h("div", { style: "font-weight:700;font-size:15px" }, "Prefer to talk?"),
-    h("div", { style: "font-size:13px;line-height:1.5;opacity:.7;margin-top:5px" }, "Call our 24/7 line \u2014 average wait under 2 min."),
+    h("div", { style: "font-size:13px;line-height:1.5;opacity:.7;margin-top:5px" }, "Call the studio team during opening hours, or send us a message here."),
     h("div", { "class": "call-card__btns" }, [
       h("div", { "class": "call-card__btn call-card__btn--solid", "data-action": "support.call" }, "Call now"),
       h("div", { "class": "call-card__btn call-card__btn--ghost", "data-action": "support.email" }, "Email")
@@ -50,7 +49,7 @@ export function Support() {
     h("span", { "class": "typing-dot" }), h("span", { "class": "typing-dot", style: "animation-delay:.2s" }), h("span", { "class": "typing-dot", style: "animation-delay:.4s" })
   ])));
 
-  var quick = h("div", { "class": "quick-replies" }, F.quickReplies.map(function (q) {
+  var quick = h("div", { "class": "quick-replies" }, fixture.quickReplies.map(function (q) {
     return h("span", { "class": "quick-reply", "data-action": "support.quickReply", "data-id": q }, q);
   }));
 
@@ -87,7 +86,7 @@ export function Support() {
     h("div", { "class": "chat-header" }, [
       h("div", { "class": "chat-avatar" }, [h("div", { "class": "chat-avatar__img" }), h("span", { "class": "online-dot" })]),
       h("div", { style: "flex:1" }, [
-        h("div", { style: "font-weight:700;font-size:15px" }, "Avery \u00b7 Aircove Support"),
+        h("div", { style: "font-weight:700;font-size:15px" }, "Nina \u00b7 Calm Harbor"),
         h("div", { style: "font-size:12.5px;color:var(--ok)" }, "Online now")
       ]),
       h("div", { "class": "chat-ticket" }, "Ticket #SP-104")

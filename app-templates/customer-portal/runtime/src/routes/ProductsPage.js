@@ -1,14 +1,14 @@
 // customer-portal/runtime/src/routes/ProductsPage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { productItems, state } from "../state.js";
+import { currentTheme, productItems, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { skeletonRow } from "../components/primitives/LoadingState.js";
 import { ProductCard } from "../components/commerce/ProductCard.js";
 
 export function Products() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var products = state.moduleData.products || {};
   var liveProducts = products.source === "core-pim";
   var page = h("section", { "class": "page", "data-route": "products", "data-visual-id": "products" });

@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-const routes = [
+const defaultRoutes = [
   "landing",
   "seo.landing",
   "auth.phone",
@@ -39,6 +39,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 
 const root = path.resolve(args.get("root") || "app-templates/customer-portal/runtime");
 const entry = "/" + (args.get("entry") || "source.html").replace(/^\/+/, "");
+const routes = args.get("routes") ? args.get("routes").split(",").map((route) => route.trim()).filter(Boolean) : defaultRoutes;
 const pimFixturePath = path.resolve("docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json");
 const allowDevToolbar = args.get("allow-dev-toolbar") === "true";
 const playwrightNodeModules = process.env.PLAYWRIGHT_NODE_MODULES;
@@ -148,23 +149,28 @@ try {
     throw new Error(`Expected data-mode dark after user toggle, got ${modeAfterToggle}`);
   }
 
-  await page.evaluate(() => {
+  const openedOrderId = await page.evaluate(() => {
     const order = window.AircovePortal.state.orders[0];
     window.AircovePortal.ACTIONS["order.open"](order.id);
+    return order.id;
   });
   await page.waitForSelector('[data-route="order.detail"]', { timeout: 2000 });
   const orderDetailHash = await page.evaluate(() => window.location.hash);
-  if (orderDetailHash !== "#/orders/%23SV-2402") {
+  if (orderDetailHash !== "#/orders/" + encodeURIComponent(openedOrderId)) {
     throw new Error(`order.open did not write detail route: ${orderDetailHash}`);
   }
-  await page.evaluate(() => {
-    window.AircovePortal.ACTIONS["order.back"]();
-    window.AircovePortal.ACTIONS["proposal.open"]("s2");
-  });
-  await page.waitForSelector('[data-route="proposal.detail"]', { timeout: 2000 });
-  const proposalDetailHash = await page.evaluate(() => window.location.hash);
-  if (proposalDetailHash !== "#/proposals/s2") {
-    throw new Error(`proposal.open did not write detail route: ${proposalDetailHash}`);
+  if (routes.includes("proposal.detail")) {
+    await page.evaluate(() => {
+      window.AircovePortal.ACTIONS["order.back"]();
+      window.AircovePortal.ACTIONS["proposal.open"]("s2");
+    });
+    await page.waitForSelector('[data-route="proposal.detail"]', { timeout: 2000 });
+    const proposalDetailHash = await page.evaluate(() => window.location.hash);
+    if (proposalDetailHash !== "#/proposals/s2") {
+      throw new Error(`proposal.open did not write detail route: ${proposalDetailHash}`);
+    }
+  } else {
+    await page.evaluate(() => { window.AircovePortal.ACTIONS["order.back"](); });
   }
 
   await page.evaluate(() => {

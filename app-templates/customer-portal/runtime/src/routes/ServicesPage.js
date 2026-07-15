@@ -1,16 +1,16 @@
 // customer-portal/runtime/src/routes/ServicesPage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentTheme, state } from "../state.js";
 import { ServiceCatalogCard } from "../components/commerce/ServiceCard.js";
 import { PricingCard } from "../components/commerce/PricingCard.js";
 
 export function Services() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var page = h("section", { "class": "page", "data-route": "services", "data-visual-id": "services" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "Our services"),
-    h("div", { "class": "section-head__sub" }, "Certified technicians, upfront pricing, every visit tracked live.")
+    h("div", { "class": "section-head__sub" }, "Choose a ritual, review the details, and manage every visit in one place.")
   ]));
   if (state.view === "loading") {
     var g = h("div", { "class": "services-grid" });
@@ -19,9 +19,9 @@ export function Services() {
   }
   page.appendChild(h("div", { "class": "services-grid", "data-module": "service-list" }, v.svc.map(function (s, i) { return ServiceCatalogCard(s, i); })));
   var steps = [
-    { n: "1", t: "Book in seconds", d: "Pick a service & time slot" },
-    { n: "2", t: "Track your tech", d: "Live location & ETA" },
-    { n: "3", t: "Pay & relax", d: "In-app payment & warranty" }
+    { n: "1", t: "Choose your ritual", d: "Review the service that fits your day" },
+    { n: "2", t: "Confirm your visit", d: "Your appointment appears in the portal" },
+    { n: "3", t: "Keep your routine", d: "Return to notes and aftercare after the visit" }
   ];
   page.appendChild(h("div", { "class": "howto", "data-module": "how-it-works" }, [
     h("div", { "class": "panel__title", style: "margin-bottom:16px" }, "How it works"),

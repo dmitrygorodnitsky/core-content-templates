@@ -2,7 +2,7 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, state } from "./state.js";
+import { activeProfile, applyPortalConfig, currentTheme, state } from "./state.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
@@ -11,7 +11,7 @@ import { ServiceCard } from "./components/commerce/ServiceCard.js";
 import { AppShell } from "./components/shell/AppShell.js";
 
 export function BookingDrawer() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   return h("div", null, [
     h("div", { "class": "scrim", "data-action": "booking.confirm", "data-visual-id": "scrim" }),
     h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": "Book a service" }, [

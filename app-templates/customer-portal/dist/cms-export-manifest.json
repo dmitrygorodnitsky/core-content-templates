@@ -19,8 +19,8 @@
         "../runtime/styles/responsive.css",
         "../runtime/styles/seo.css"
       ],
-      "sha256": "f2621a197b9e0c7b30621f2ef266d203e3e4b78aabb702bf91d3913265469daa",
-      "packageSha256": "679f9986084acdd7105637c55f3c28ee88a90de78130bbc00b299bdcfef05f74"
+      "sha256": "f5cccca84bb4b46018e2e0860696c0669d2f2522ca3932fa697c097cb8b60bd3",
+      "packageSha256": "6843e59a109db5f1f1c900088fa1d6ea7dacf800964c8df98032f10439c8e39e"
     },
     "publicSeo": {
       "block": "cms/seo-public-block.json",
@@ -38,7 +38,7 @@
         "../runtime/styles/components.css",
         "../runtime/styles/seo.css"
       ],
-      "sha256": "7986fc6a6e3c4c8ead0aab754c2aadbf8fb401467126e2469f35933407057b6b",
+      "sha256": "a04bd9c23175ce5f0096095e104975012280df27a295401e7e118272bbd9d8f2",
       "packageSha256": "65e1039d04be48f5511f46c31d6c1402bba0858f6f271f0a28d77d7a1ca2c13f"
     }
   }

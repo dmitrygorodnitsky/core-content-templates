@@ -4,6 +4,10 @@ import { ActionButton } from "../primitives/ActionButton.js";
 import { careChip } from "./shared.js";
 import { markCareControlUnavailable } from "../../activation-policy.js";
 
+function taskDone(task, ui) {
+  return Object.prototype.hasOwnProperty.call(ui.tasksDone || {}, task.id) ? ui.tasksDone[task.id] : !!task.done;
+}
+
 export function BeautyCareHub(m, ui) {
   /* upcoming appointment — data-module="care-appointment"; stable data-appointment-id */
   var a = m.appointment;
@@ -53,6 +57,30 @@ export function BeautyCareHub(m, ui) {
       h("div", { style: "flex:1;min-width:0" }, [
         h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "visit.what" }, ev.what + " \u00b7 " + ev.who),
         h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:2px" }, ev.note)
+      ])
+    ]));
+  });
+
+  /* at-home tasks are a real fixture-state transition, scoped by task id. */
+  var routineTasks = m.tasks || [];
+  var doneCount = routineTasks.filter(function (task) { return taskDone(task, ui); }).length;
+  var tasks = routineTasks.length ? h("div", { "class": "list-panel", "data-module": "routine-tasks", "data-visual-id": "routine-tasks" }, [
+    h("div", { "class": "list-panel__head" }, [
+      h("div", { "class": "list-panel__title", style: "flex:1" }, "This week's routine"),
+      h("span", { style: "font-size:12px;color:var(--ink-3)" }, doneCount + " of " + routineTasks.length + " done")
+    ])
+  ]) : null;
+  routineTasks.forEach(function (t) {
+    var done = taskDone(t, ui);
+    if (tasks) tasks.appendChild(h("div", { "class": "log-row", "data-module": "routine-task-row", "data-task-id": t.id, "data-state": done ? "done" : "open" }, [
+      h("button", {
+        "data-action": "care.completeTask", "data-id": t.id, "aria-pressed": done ? "true" : "false",
+        title: done ? "Mark as not done" : "Mark as done",
+        style: "width:24px;height:24px;border-radius:999px;flex-shrink:0;cursor:pointer;display:grid;place-items:center;font-family:inherit;font-size:12px;padding:0;border:1.5px solid " + (done ? "var(--accent)" : "rgba(120,120,128,.4)") + ";background:" + (done ? "var(--accent)" : "transparent") + ";color:#fff"
+      }, done ? "\u2713" : ""),
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("div", { style: "font-weight:600;font-size:13.5px;" + (done ? "text-decoration:line-through;color:var(--ink-3)" : ""), "data-bind": "task.label" }, t.label),
+        h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:1px" }, t.due)
       ])
     ]));
   });
@@ -122,7 +150,7 @@ export function BeautyCareHub(m, ui) {
   });
 
   return h("div", { "class": "care-grid" }, [
-    h("div", { "class": "care-col" }, [appt, pkg, history]),
+    h("div", { "class": "care-col" }, [appt, pkg, history, tasks]),
     h("div", { "class": "care-col" }, [picker, routine, loyalty, products])
   ]);
 }

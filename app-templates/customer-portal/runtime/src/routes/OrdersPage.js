@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/routes/OrdersPage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { activeProfile, filteredOrders, state, tabItems } from "../state.js";
+import { activeProfile, currentFixture, currentTheme, filteredOrders, state, tabItems } from "../state.js";
 import { Tabs } from "../components/primitives/Tabs.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -17,18 +17,19 @@ import { StormHome } from "../components/storm/StormHome.js";
 
 export function Cabinet() {
   if (activeProfile().weatherCalendar) return StormHome();
-  var v = F.themes[state.theme];
+  var fixture = currentFixture();
+  var v = currentTheme();
   var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "cabinet" });
 
-  page.appendChild(PageHeader({ title: F.customer.greeting, sub: F.customer.subline }));
+  page.appendChild(PageHeader({ title: fixture.customer.greeting, sub: fixture.customer.subline }));
 
   /* ERROR state short-circuits body */
   if (state.view === "error") { page.appendChild(ErrorState({})); return page; }
 
   /* banners */
-  var pending = F.proposalSites.filter(function (p) { return p.status === "unseen" || p.status === "viewed"; }).length;
+  var pending = state.config.caseId ? 0 : F.proposalSites.filter(function (p) { return p.status === "unseen" || p.status === "viewed"; }).length;
   if (state.view === "ready") {
-    page.appendChild(ProposalBanner(pending));
+    if (!state.config.caseId) page.appendChild(ProposalBanner(pending));
     var wt = state.orders.find(function (o) { return o.wt && o.wt.status === "pending"; });
     if (wt) page.appendChild(WeatherBanner(wt));
   }
@@ -39,7 +40,7 @@ export function Cabinet() {
 
   /* live tracking (only when a visit is in progress + ready) */
   if (state.view === "ready" && state.orders.some(function (o) { return o.status === "inprogress"; })) {
-    left.appendChild(TrackingCard());
+    left.appendChild(TrackingCard(fixture.technician, state.orders.find(function (o) { return o.status === "inprogress"; })));
   }
 
   /* orders card */
@@ -52,7 +53,7 @@ export function Cabinet() {
         h("option", null, "All time"), h("option", null, "Last 30 days"), h("option", null, "Last 90 days")
       ]),
       h("select", { "class": "select-pill", "data-module": "filter-bar", "data-visual-id": "location-filter", "aria-label": "Location" },
-        [h("option", null, "All locations")].concat(F.addresses.map(function (a) { return h("option", null, a.label); })))
+        [h("option", null, "All locations")].concat(fixture.addresses.map(function (a) { return h("option", null, a.label); })))
     ])
   ]));
 

@@ -7,7 +7,7 @@ export function MembershipCard(plan) {
     h("div", { style: "position:relative" }, [
       h("div", { style: "font-weight:700;font-size:15px", "data-bind": "plan.name" }, plan.name),
       h("div", { style: "font-size:12.5px;line-height:1.5;opacity:.85;margin-top:5px", "data-bind": "plan.desc" }, plan.desc),
-      h("div", { "class": "membership-card__cta", "data-action": "membership.activate", "data-visual-id": "membership-cta" }, "Activate \u00b7 $9/mo")
+      h("div", { "class": "membership-card__cta", "data-action": "membership.activate", "data-visual-id": "membership-cta" }, "Activate \u00b7 " + (plan.monthlyPrice || "$9") + "/mo")
     ])
   ]);
 }

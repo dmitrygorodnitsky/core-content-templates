@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { findProduct, orderItems, proposalSites, state } from "./state.js";
+import { currentFixture, findProduct, orderItems, proposalSites, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, render, retryRuntimeLoad } from "./app.js";
 import { normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
@@ -354,12 +354,12 @@ export function removeCartItem(name) {
 }
 
 export function selectAddress(id) {
-  if (!F.addresses.some(function (address) { return address.id === id; })) throw new Error("Address not found");
+  if (!currentFixture().addresses.some(function (address) { return address.id === id; })) throw new Error("Address not found");
   setState({ addrId: id });
 }
 
 export function selectPayment(id) {
-  if (!F.cards.some(function (card) { return card.id === id; })) throw new Error("Payment method not found");
+  if (!currentFixture().cards.some(function (card) { return card.id === id; })) throw new Error("Payment method not found");
   setState({ payId: id });
 }
 /* switching theme clears the (theme-specific) cart */
@@ -406,6 +406,8 @@ export function calShift(delta) {
 export function feedAction(act) {
   if (act === "orders") { var o = state.orders.find(function (x) { return x.status === "inprogress"; }) || state.orders[0]; openOrder(o.id); }
   else if (act === "products") go("products");
+  else if (act === "pricing") go("pricing");
+  else if (act === "care") go("care");
   else if (act === "book") openDrawer("booking");
   else if (act === "invoice") toast("Invoice #SV-2381 emailed to you");
   else if (act === "weather") { var w = state.orders.find(function (x) { return x.wt && x.wt.status === "pending"; }); if (w) openOrder(w.id); }
@@ -438,8 +440,9 @@ export function placeFixtureOrder() {
   var first = state.cartItems[0];
   var total = state.cartItems.reduce(function (sum, item) { return sum + item.priceNum * item.qty; }, 0);
   var palette = F.PAL[0];
+  var fixture = currentFixture();
   var order = {
-    id: "FX-" + String(state.nextFixtureOrder++).padStart(3, "0"),
+    id: fixture.id === "calm-harbor-spa" ? "#CHS-R-" + String(200 + state.nextFixtureOrder++) : "FX-" + String(state.nextFixtureOrder++).padStart(3, "0"),
     status: "scheduled",
     name: first.name,
     date: "Jan 22",
@@ -494,6 +497,7 @@ export function pickTheme(name) {
   state.config.profile = profile.profile;
   state.config.defaultRoute = profile.defaultRoute;
   state.config.enabledModules = profile.modules.slice();
+  state.config.caseId = "";
   state.theme = profile.displayName;
   state.orders = F.ordersFor(profile.displayName);
   state.filter = "all";

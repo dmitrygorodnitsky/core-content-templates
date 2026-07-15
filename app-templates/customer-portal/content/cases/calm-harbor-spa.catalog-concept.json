@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "classification": "concept-catalog",
+  "launchState": "concept",
+  "brandKey": "calm-harbor-spa",
+  "vertical": "beauty",
+  "services": [
+    {
+      "id": "chs-grounding-massage",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "massage",
+      "name": "Grounding massage",
+      "shortDescription": "A restorative full-body session shaped around comfort and pace.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.grounding-massage", "contractState": "not-opened" },
+      "allowedAddOnIds": ["chs-aroma-journey"],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-custom-facial",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "facial",
+      "name": "Custom facial",
+      "shortDescription": "Skin-focused care with a consultation-led treatment plan.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.custom-facial", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-harbor-reset",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "package",
+      "category": "ritual",
+      "name": "Harbor reset",
+      "shortDescription": "A longer massage-and-facial visit for an unhurried change of pace.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.harbor-reset", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-seasonal-body-ritual",
+      "release": "mvp",
+      "publicSurface": ["seo", "portal-services"],
+      "kind": "single",
+      "category": "body",
+      "name": "Seasonal body ritual",
+      "shortDescription": "A seasonal sensory treatment designed as a slower reset.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.seasonal-body-ritual", "contractState": "not-opened" },
+      "allowedAddOnIds": ["chs-aroma-journey"],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-deep-release-massage",
+      "release": "deferred",
+      "publicSurface": ["portal-services"],
+      "kind": "single",
+      "category": "massage",
+      "name": "Deep release massage",
+      "shortDescription": "A more focused massage for guests who want concentrated bodywork.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.deep-release-massage", "contractState": "not-opened" },
+      "allowedAddOnIds": ["chs-aroma-journey"],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-duo-reset",
+      "release": "deferred",
+      "publicSurface": ["portal-services"],
+      "kind": "package",
+      "category": "ritual",
+      "name": "Duo reset",
+      "shortDescription": "Two coordinated individual rituals in the same visit window.",
+      "pricePolicy": "quote",
+      "scheduling": { "proposedOfferingKey": "chs.duo-reset", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    },
+    {
+      "id": "chs-aroma-journey",
+      "release": "deferred",
+      "publicSurface": [],
+      "kind": "add-on",
+      "category": "enhancement",
+      "name": "Aroma journey",
+      "shortDescription": "An optional sensory layer selected only where the primary ritual permits it.",
+      "pricePolicy": "booking-total",
+      "scheduling": { "proposedOfferingKey": "chs.aroma-journey", "contractState": "not-opened" },
+      "allowedAddOnIds": [],
+      "allowedActions": []
+    }
+  ],
+  "products": [
+    { "id": "chs-body-oil", "release": "deferred", "proposedSku": "CHS-BODY-001", "category": "body-care", "name": "Harbor body oil", "shortDescription": "Home ritual after massage or bath.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "chs-bath-soak", "release": "deferred", "proposedSku": "CHS-BATH-001", "category": "bath", "name": "Mineral bath soak", "shortDescription": "A simple at-home pause between spa visits.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "chs-body-cream", "release": "deferred", "proposedSku": "CHS-BODY-002", "category": "body-care", "name": "Restorative body cream", "shortDescription": "Daily body-care follow-on.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "chs-cleansing-balm", "release": "deferred", "proposedSku": "CHS-SKIN-001", "category": "skin", "name": "Gentle cleansing balm", "shortDescription": "First step in an at-home facial routine.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "chs-hydration-mist", "release": "deferred", "proposedSku": "CHS-SKIN-002", "category": "skin", "name": "Hydration mist", "shortDescription": "Lightweight follow-on for a simple routine.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] },
+    { "id": "chs-gift-credit", "release": "deferred", "proposedSku": "CHS-GIFT-001", "category": "gift", "name": "Spa gift credit", "shortDescription": "Deferred-value gift instrument, not a physical retail item.", "pim": { "catalogState": "not-opened" }, "allowedActions": [] }
+  ]
+}

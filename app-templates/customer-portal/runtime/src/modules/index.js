@@ -23,7 +23,10 @@ function module(id, normalize) {
   return {
     id: id,
     adapter(context) {
-      if (context.config.dataMode === "live" && corePimAdapter.supports(id)) return corePimAdapter;
+      if (context.config.dataMode === "live") {
+        if (corePimAdapter.supports(id)) return corePimAdapter;
+        throw new Error("Live adapter is not opened for module " + id);
+      }
       return fixtureAdapter;
     },
     normalize(raw) {

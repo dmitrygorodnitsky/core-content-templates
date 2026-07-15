@@ -43,6 +43,9 @@ its static authored content can ship before any customer backend is opened.
 5. `fixture`, `local`, `unavailable`, and `not_opened` are product states, not
    substitutes for a live integration. Live mode must never silently load a
    fixture and appear current.
+6. `portal_case` may select a repository-owned demonstration organization only
+   in `fixture` mode. It is ignored in `live` mode and cannot select a customer,
+   tenant, or source-system record.
 
 ## Ownership Matrix
 
@@ -58,8 +61,8 @@ data. `Not opened` means no live contract may be inferred from the UI.
 | Appointments and service calendar: visits, windows, slot availability | Scheduling backend | `calendar`, booking drawer | fixture; live not opened | May author labels only | Customer-scoped read contract; booking/reschedule requires availability hold, idempotency, and returned appointment state. |
 | Activity and notifications | Event/notification backend | `activity` | fixture; live not opened | May author empty-state copy only | Customer-scoped event feed, pagination/cursor, read acknowledgement semantics. |
 | Proposals: sites, line items, choices, approval/revision/decline | Proposal/CRM backend | `proposals.list`, `proposal.detail` | fixture; live not opened | None | Versioned proposal read model; write commands with optimistic-concurrency/version check and returned proposal state. |
-| Pricing: plan, price, currency, price interval | Core PIM | `pricing` | opened live adapter | May select organization, product type, and currency; never author a price | Configure the proven Core PIM contract and validate normalized price rows. |
-| Products: SKU/catalog item, category, attributes, media, availability | Core PIM product catalog | `products`, cart entry points, future public product grid | opened live baseline, catalog expansion not opened | May control visual module availability only | Current adapter uses the PIM price-comparison response. It may drive plan-like cards, not a featured product grid with SKU/media/inventory claims. Open a dedicated catalog contract first. |
+| Pricing: plan, price, currency, price interval | Core PIM | `pricing` | opened live on dev-1 same-origin | May select PIM query configuration; never author a live price | `POST /core-pim/public/{organization}/catalog/price-comparison.json` is proven for Calm Harbor Spa. Validate normalized rows and retain loading, empty, and error states. |
+| Products: SKU/catalog item, category, attributes, media, availability | Core PIM product catalog | `products`, cart entry points, future public product grid | opened live price-comparison baseline on dev-1; catalog expansion not opened | May control visual module availability only | The adapter reads identity and price rows for configured product types. It does not prove media, inventory, availability, or a complete public catalog contract. |
 | Cart, checkout, payment, final total, order creation | Commerce backend and PSP | `checkout` | local/fixture; live not opened | Cannot author cart, payment method, payment token, or price result | Server-calculated total, payment-token handoff, idempotent order creation, and returned order id/status. |
 | Customer profile: name, contacts, addresses, payment-method references, preferences | Customer/profile service and PSP | `profile` | fixture; live not opened | May author labels and field visibility policy, never customer values | Scoped read/write contracts; payment data must use PSP tokens/references only. |
 | Services: service definitions and marketing descriptions | CMS or service catalog | `services`, public SEO | mixed; fixture runtime | Owns editorial service copy and static media | If availability, eligibility, price, or bookability is shown, source it dynamically from service/catalog backend. |
@@ -160,7 +163,7 @@ its own is never sufficient readback.
 | Priority | Scope | Reason and gate |
 | --- | --- | --- |
 | P0 | Public SEO landing manual CMS package | Ship the complete authored landing with server-visible SEO, native CTAs, and no private/session dependency. |
-| P1 | Dynamic public pricing block | Reuse the proven Core PIM pricing contract only after it is proven safe for an unauthenticated public document. It must have `loading`, `empty`, and `error` states; CMS price rows are not a silent fallback. |
+| P1 | Dynamic public pricing block | The anonymous PIM price endpoint is proven on `dev-1` same-origin for Calm Harbor Spa. Add the block with `loading`, `empty`, and `error` states; CMS price rows are not a silent fallback. External origins remain blocked by CORS. |
 | P2 | Public product/catalog block | Do not ship product cards from the price-comparison baseline. Open a catalog contract for product identity, category, media, availability, and destination first. Until then use CMS-authored service cards without price/inventory claims. |
 | P3 | Authenticated portal foundation: host auth/session bridge, Orders read, Calendar read | Establishes an actual customer portal and validates the hosting boundary. |
 | P4 | Proposals read and decisions; then Profile, cart, checkout, and support conversations | Direct commercial value first; payment, PII, and mutable workflow open source by source. |
@@ -177,11 +180,16 @@ each route. It exposes a small configuration surface and its router renders
 the allowed private modules. Public SEO is a separate public root template;
 it must never inherit portal session, shell, customer data, or hash routing.
 
-For each manual-upload package, the export must provide `template.json`,
+For each manual-upload package, the export must provide its CMS template record,
 `head.html`, `html.html`, `css.css`, `javascript.js`, `parameters.json`, a
 preview, and upload instructions. The package must state which parameters are
 CMS-authored configuration and which data is fetched at runtime. No deployment
 may be represented as live merely because the CMS template was uploaded.
+
+`customer-portal-calm-harbor-pim-staging` is the first live-data portal manual
+package. It is intentionally narrower than an authenticated portal: only the
+PIM-backed `pricing` and `products` modules are enabled, and its runtime asset
+tree is uploaded under one same-origin static path on `dev-1`.
 
 ## Landing-First Composition
 
@@ -193,17 +201,24 @@ authority, not merely visual section boundaries:
 | Landing block | Authority | First release behavior |
 | --- | --- | --- |
 | Metadata, header, hero, trust, how-it-works, proof, area, reviews, FAQ, final CTA, footer | CMS-authored | Server-visible, validated authored content. FAQ structured data is generated only from that authored FAQ collection. |
-| Service cards | CMS-authored editorial content | May show service name, benefit, and an authored destination. They must not claim live availability, inventory, or a current price. |
-| Pricing | Core PIM when public contract is opened | One dynamic `landing.pricing-pim` block. It normalizes PIM rows and renders `loading`, `ready`, `empty`, or `error`; in failure it displays no CMS-authored numeric price fallback. |
+| Service cards | CMS-authored editorial content | May show service name, benefit, and an authored destination. They must not claim live availability or inventory. A staging-only, named PIM snapshot is allowed only when shipped with its source artifact. |
+| Pricing | Core PIM on `dev-1` same-origin | One dynamic `landing.pricing-pim` block. It normalizes PIM rows and renders `loading`, `ready`, `empty`, or `error`; in failure it displays no CMS-authored numeric price fallback. The P0 staging landing retains its named snapshot until this block is activated. |
 | Product grid | Core PIM catalog when catalog contract is opened | Omitted initially. A CMS-authored service-card grid is not a product catalog and must not be labelled or styled as one. |
 
-The public PIM pricing block is a separate optional child in the manual CMS
-family, not a mutation of server-authored SEO content. Before it is enabled,
-prove anonymous request authorization, CORS, cache/freshness behavior, allowed
-organization/product-type/currency inputs, normalized output, and an honest
-error state. Do not emit `Offer`/price structured data from a browser-only
-response. Server-visible price structured data needs its own trusted server
-source and freshness contract.
+P0 is exported by `scripts/export-seo-public-manual.mjs` into
+`dist/manual-upload/customer-portal-seo-public-*`. It produces a self-contained
+JTE root record and split `root/` files from one validated authored document.
+The committed `*-reference` package is explicitly `public-authored-test` and
+must never be uploaded. A production manual package requires a complete
+`public-authored` input and is regenerated rather than hand-editing HTML.
+
+The public PIM pricing block is a separate optional manual block composed with
+the SEO root, not a mutation of server-authored SEO content. Before it is
+enabled, prove anonymous request authorization, CORS, cache/freshness behavior,
+allowed organization/product-type/currency inputs, normalized output, and an
+honest error state. Do not emit `Offer`/price structured data from a browser-
+only response. Server-visible price structured data needs its own trusted
+server source and freshness contract.
 
 Each published landing uses one price authority at a time:
 
@@ -222,8 +237,11 @@ price on the same page.
   have no repository-proven live endpoint contracts.
 - The current Core PIM Products path is a price-comparison baseline, not a
   complete product-catalog contract.
-- The public/anonymous PIM price contract, including CORS and cache/freshness
-  behavior, is not yet proven for the public SEO document.
+- The anonymous PIM price contract is proven only for `dev-1` same-origin:
+  `POST /core-pim/public/{organization}/catalog/price-comparison.json` returns
+  Calm Harbor Spa rows without a bearer token. It sends `no-store`; cross-origin
+  preflight from `calmharborspa.com` is denied with `403`, so it is not yet an
+  external-domain public SEO contract.
 - Public SEO has no opened dynamic availability source and must remain
   CMS-authored rather than making availability claims from fixtures.
 

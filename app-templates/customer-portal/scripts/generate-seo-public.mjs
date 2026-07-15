@@ -18,7 +18,15 @@ export async function generateSeoPublicTest(options) {
   return generate(options, true);
 }
 
-async function generate(options, testMode) {
+// Staging uses the reviewed public-authored payload but must never be indexed.
+export async function generateSeoPublicStaging(options) {
+  return generate(options, false, {
+    noindex: true,
+    notice: "Staging preview - not for indexing or production publication",
+  });
+}
+
+async function generate(options, testMode, documentOptions) {
   options = options || {};
   if (!options.inputPath) throw new Error("Strict public generation requires inputPath");
   if (!options.outputPath) throw new Error("Strict public generation requires outputPath");
@@ -27,7 +35,11 @@ async function generate(options, testMode) {
   var schema = testMode ? testClassificationSchema(productionSchema) : productionSchema;
   assertValidCmsPayload(schema, payload, testMode ? "Public SEO test payload" : "Public SEO production payload");
   var model = testMode ? normalizeSeoPublicTest(payload) : normalizeSeoPublic(payload);
-  var html = await renderDocument(model, { notice: testMode ? "Strict authored test fixture - not production content" : null, noindex: testMode });
+  documentOptions = documentOptions || {};
+  var html = await renderDocument(model, {
+    notice: testMode ? "Strict authored test fixture - not production content" : documentOptions.notice || null,
+    noindex: testMode || documentOptions.noindex === true,
+  });
   await fs.mkdir(path.dirname(path.resolve(options.outputPath)), { recursive: true });
   await fs.writeFile(path.resolve(options.outputPath), html, "utf8");
   return { outputPath: path.resolve(options.outputPath), model: model, html: html };

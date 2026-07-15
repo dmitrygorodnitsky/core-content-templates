@@ -185,6 +185,14 @@
         "name": "Portal Data Mode"
       },
       {
+        "code": "portal_case",
+        "type": "STRING",
+        "default": "",
+        "required": false,
+        "fixtureOnly": true,
+        "name": "Fixture Case Id"
+      },
+      {
         "code": "portal_pim_fixture_url",
         "type": "URL",
         "default": "",
@@ -219,5 +227,5 @@
       "Do not author customer entitlements, permission decisions, customer scope, tenant scope, or sensitive Care data in CMS parameters."
     ]
   },
-  "template": "<!DOCTYPE html>\n<html lang=\"en\" data-theme=\"{{portal_theme}}\" data-mode=\"{{portal_default_mode}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{{portal_title}}</title>\n  <link rel=\"icon\" href=\"data:,\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/tokens.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/base.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/shell.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/components.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/routes.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/responsive.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/seo.css\">\n</head>\n<body>\n  <section\n    id=\"app\"\n    data-portal-api-base=\"{{portal_api_base}}\"\n    data-portal-organization=\"{{portal_organization}}\"\n    data-portal-vertical=\"{{portal_vertical}}\"\n    data-portal-profile=\"{{portal_profile}}\"\n    data-portal-theme=\"{{portal_theme}}\"\n    data-portal-default-mode=\"{{portal_default_mode}}\"\n    data-portal-router-mode=\"{{portal_router_mode}}\"\n    data-portal-default-route=\"{{portal_default_route}}\"\n    data-portal-enabled-modules=\"{{portal_enabled_modules}}\"\n    data-portal-auth-mode=\"{{portal_auth_mode}}\"\n    data-portal-error-mode=\"{{portal_error_mode}}\"\n    data-portal-data-mode=\"{{portal_data_mode}}\"\n    data-portal-pim-api-base=\"{{portal_api_base}}\"\n    data-portal-pim-organization=\"{{portal_organization}}\"\n    data-portal-pim-fixture-url=\"{{portal_pim_fixture_url}}\"\n    data-portal-pim-product-type-code=\"{{portal_pim_product_type_code}}\"\n    data-portal-pim-currency=\"{{portal_pim_currency}}\"\n  ></section>\n  <script type=\"module\" src=\"../runtime/src/app.js\"></script>\n</body>\n</html>\n"
+  "template": "<!DOCTYPE html>\n<html lang=\"en\" data-theme=\"{{portal_theme}}\" data-mode=\"{{portal_default_mode}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>{{portal_title}}</title>\n  <link rel=\"icon\" href=\"data:,\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/tokens.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/base.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/shell.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/components.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/routes.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/responsive.css\">\n  <link rel=\"stylesheet\" href=\"../runtime/styles/seo.css\">\n</head>\n<body>\n  <section\n    id=\"app\"\n    data-portal-api-base=\"{{portal_api_base}}\"\n    data-portal-organization=\"{{portal_organization}}\"\n    data-portal-vertical=\"{{portal_vertical}}\"\n    data-portal-profile=\"{{portal_profile}}\"\n    data-portal-theme=\"{{portal_theme}}\"\n    data-portal-default-mode=\"{{portal_default_mode}}\"\n    data-portal-router-mode=\"{{portal_router_mode}}\"\n    data-portal-default-route=\"{{portal_default_route}}\"\n    data-portal-enabled-modules=\"{{portal_enabled_modules}}\"\n    data-portal-auth-mode=\"{{portal_auth_mode}}\"\n    data-portal-error-mode=\"{{portal_error_mode}}\"\n    data-portal-data-mode=\"{{portal_data_mode}}\"\n    data-portal-case=\"{{portal_case}}\"\n    data-portal-pim-api-base=\"{{portal_api_base}}\"\n    data-portal-pim-organization=\"{{portal_organization}}\"\n    data-portal-pim-fixture-url=\"{{portal_pim_fixture_url}}\"\n    data-portal-pim-product-type-code=\"{{portal_pim_product_type_code}}\"\n    data-portal-pim-currency=\"{{portal_pim_currency}}\"\n  ></section>\n  <script type=\"module\" src=\"../runtime/src/app.js\"></script>\n</body>\n</html>\n"
 }

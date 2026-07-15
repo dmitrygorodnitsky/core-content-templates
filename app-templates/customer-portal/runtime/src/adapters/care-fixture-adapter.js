@@ -1,4 +1,5 @@
 import { F } from "../../data/fixtures.js";
+import { caseFixtureFor } from "../../data/case-fixtures.js";
 import { verticalProfiles } from "../config.js";
 
 function clone(value) {
@@ -9,10 +10,19 @@ export function createCareFixtureAdapter() {
   return {
     async load(moduleId, context) {
       if (moduleId !== "care") throw new Error("Care fixture adapter only supports care");
-      const { careFixtures } = await import("../../data/care-fixtures.js");
-      var vertical = verticalProfiles[context.config.vertical];
-      var displayName = vertical && vertical.displayName;
-      var fixture = careFixtures[displayName];
+      var caseFixture = caseFixtureFor(context.config.caseId);
+      var fixture;
+      var products;
+      if (caseFixture) {
+        fixture = caseFixture.care;
+        products = caseFixture.theme.products;
+      } else {
+        const { careFixtures } = await import("../../data/care-fixtures.js");
+        var vertical = verticalProfiles[context.config.vertical];
+        var displayName = vertical && vertical.displayName;
+        fixture = careFixtures[displayName];
+        products = (F.themes[displayName] && F.themes[displayName].products) || [];
+      }
       if (!fixture) throw new Error("Care fixture is unavailable for configured vertical");
       var requestedState = context.state.carePayloadState;
       var stateName = requestedState === undefined ? "ready" : requestedState;
@@ -24,7 +34,7 @@ export function createCareFixtureAdapter() {
         state: stateName,
         emptyState: clone(fixture.empty),
         fixture: stateName === "ready" ? clone(fixture) : null,
-        products: stateName === "ready" ? clone((F.themes[displayName] && F.themes[displayName].products) || []) : [],
+        products: stateName === "ready" ? clone(products) : [],
       };
     },
   };

@@ -8,24 +8,26 @@ export const corePimAdapter = {
   async load(moduleId, context) {
     if (!this.supports(moduleId)) throw new Error("Core PIM adapter does not support " + moduleId);
     var config = context.config || {};
-    var request = buildRequest(config);
-    var data = await fetchPim(request);
-    var plans = normalizePimRows(data, config);
+    var requests = productTypeCodes(config, moduleId).map(function (productTypeCode) {
+      return buildRequest(config, productTypeCode);
+    });
+    var responses = await Promise.all(requests.map(fetchPim));
+    var plans = normalizePimRows({ prices: responses.flatMap(function (data) { return Array.isArray(data && data.prices) ? data.prices : []; }) }, config);
     if (moduleId === "pricing") return { pimPlans: plans };
     return { pimProducts: plans };
   },
 };
 
-function buildRequest(config) {
+function buildRequest(config, productTypeCode) {
   var payload = {
-    productTypeCode: config.pimProductTypeCode || "SERVICEWAND_SAAS",
+    productTypeCode: productTypeCode,
     includeChildProductTypes: true,
-    priceTypeCode: "RECURRENT",
+    priceTypeCode: config.pimPriceTypeCode || "RECURRENT",
     includeChildPriceTypes: true,
-    priceAttributeCode: "INTERVAL",
-    priceAttributeValues: ["1"],
-    currencyAttributeCode: "CURRENCY",
-    currencyAttributeValues: [config.pimCurrency || "CAD"],
+    priceAttributeCode: config.pimPriceAttributeCode || "INTERVAL",
+    priceAttributeValues: configuredValues(config.pimPriceAttributeValues, ["1"]),
+    currencyAttributeCode: config.pimCurrencyAttributeCode || "CURRENCY",
+    currencyAttributeValues: configuredValues(config.pimCurrencyAttributeValues, [config.pimCurrency || "CAD"]),
     nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"],
   };
 
@@ -34,6 +36,12 @@ function buildRequest(config) {
     fixture: !!config.pimFixtureUrl,
     payload: payload,
   };
+}
+
+function productTypeCodes(config, moduleId) {
+  var configured = moduleId === "pricing" ? config.pimPricingProductTypeCodes : config.pimProductsProductTypeCodes;
+  var values = configuredValues(configured, [config.pimProductTypeCode || "SERVICEWAND_SAAS"]);
+  return Array.from(new Set(values));
 }
 
 async function fetchPim(request) {
@@ -69,23 +77,58 @@ function normalizePimRows(data, config) {
     var product = productFromRow(row);
     var nls = localized(product.nls, "en");
     var display = (row.price && row.price.display) || {};
-    var amount = Number(display.amount);
+    var currency = display.currency || attributeValue(row.price, config.pimCurrencyAttributeCode || "CURRENCY") || config.pimCurrency || "CAD";
+    var interval = display.intervalLabel || attributeValue(row.price, config.pimPriceAttributeCode || "INTERVAL") || "1 Month";
+    var amount = displayAmount(row.price, config);
     var customPrice = !!display.customPrice || !Number.isFinite(amount) || amount >= 2147483647;
     return {
       id: product.code || "pim-" + index,
       code: product.code || "pim-" + index,
       name: nls.NAME || product.code || "Plan",
       description: stripHtml(nls.DESCRIPTION || ""),
-      price: customPrice ? "Custom" : formatCurrency(amount, display.currency || config.pimCurrency || "CAD"),
+      price: customPrice ? "Custom" : formatCurrency(amount, currency),
       priceNum: customPrice ? 0 : amount,
-      currency: customPrice ? "" : display.currency || config.pimCurrency || "CAD",
-      interval: display.intervalLabel || "1 Month",
-      cta: customPrice ? "Contact us" : "Choose plan",
+      currency: customPrice ? "" : currency,
+      interval: formatInterval(interval),
+      cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
       attributes: product.attributes || {},
       allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
       row: row,
     };
   });
+}
+
+function configuredValues(value, fallback) {
+  if (Array.isArray(value) && value.length) return value.map(String);
+  if (typeof value === "string" && value.trim()) return value.split(",").map(function (item) { return item.trim(); }).filter(Boolean);
+  return fallback;
+}
+
+function displayAmount(price, config) {
+  var display = price && price.display || {};
+  var displayed = Number(display.amount);
+  if (Number.isFinite(displayed)) return displayed;
+  var minor = Number(attributeValue(price, config.pimAmountAttributeCode || "AMOUNT_MINOR"));
+  if (!Number.isFinite(minor)) return NaN;
+  var divisor = Number(config.pimAmountMinorDivisor);
+  return minor / (Number.isFinite(divisor) && divisor > 0 ? divisor : 100);
+}
+
+function attributeValue(price, code) {
+  var groups = price && price.attributes;
+  if (!groups || typeof groups !== "object") return null;
+  for (var group of Object.values(groups)) {
+    var attribute = group && group[code];
+    if (attribute && attribute.value !== undefined && attribute.value !== null) return attribute.value;
+  }
+  return null;
+}
+
+function formatInterval(value) {
+  var normalized = String(value || "").toUpperCase();
+  if (normalized === "ONE_TIME") return "One time";
+  if (normalized === "MONTH") return "Monthly";
+  return String(value || "1 Month");
 }
 
 function productFromRow(row) {

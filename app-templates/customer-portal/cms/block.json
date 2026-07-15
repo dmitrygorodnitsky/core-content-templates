@@ -39,6 +39,7 @@
     { "code": "portal_auth_mode", "type": "ENUM", "options": ["fixture", "required"], "default": "fixture", "required": true, "name": "Portal Auth Mode" },
     { "code": "portal_error_mode", "type": "ENUM", "options": ["error", "fallback"], "default": "error", "required": true, "name": "Portal Error Mode" },
     { "code": "portal_data_mode", "type": "ENUM", "options": ["fixture", "live"], "default": "fixture", "required": true, "name": "Portal Data Mode" },
+    { "code": "portal_case", "type": "STRING", "default": "", "required": false, "fixtureOnly": true, "name": "Fixture Case Id" },
     { "code": "portal_pim_fixture_url", "type": "URL", "default": "", "required": false, "name": "Portal PIM Fixture URL" },
     { "code": "portal_pim_product_type_code", "type": "STRING", "default": "SERVICEWAND_SAAS", "required": true, "name": "Portal PIM Product Type Code" },
     { "code": "portal_pim_currency", "type": "STRING", "default": "CAD", "required": true, "name": "Portal PIM Currency" }

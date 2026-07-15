@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.portal-pim-staging.json",
+  "template": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING",
+    "templateLanguage": "JTE",
+    "parameters": [],
+    "sha256": {
+      "head": "39e256c3ef7d9f434e4e6122976fb1e86198feb51edd96904cdf3efd0572dc3e",
+      "html": "3f371651c6c6d741fb92cb3e76cb0d9269dca3f5ea7e743cd9df4f0dff14c0a4",
+      "css": "492246ac5d0ca24268a78ccac0c4542634cf48de1836c64dbd482db706a6681a",
+      "javascript": "8b8f3e04bfd4b027b0cff60d53c0ac4e43a44e73d6d1b8c5e7f4ac9c7703b0fd"
+    }
+  },
+  "runtime": {
+    "delivery": "inline-template-javascript",
+    "sameOriginRequired": true,
+    "openedModules": [
+      "pricing",
+      "products"
+    ],
+    "pim": {
+      "apiBase": "/core-pim/api",
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "pricingProductTypeCodes": [
+        "SPA_SERVICE",
+        "SPA_MEMBERSHIP"
+      ],
+      "productsProductTypeCodes": [
+        "SPA_RETAIL"
+      ],
+      "priceTypeCode": "SPA_STANDARD_PRICE",
+      "priceAttributeCode": "INTERVAL",
+      "priceAttributeValues": [
+        "ONE_TIME",
+        "MONTH"
+      ],
+      "currency": "USD",
+      "currencyAttributeCode": "CURRENCY",
+      "currencyAttributeValues": [
+        "USD"
+      ],
+      "amountAttributeCode": "AMOUNT_MINOR",
+      "amountMinorDivisor": 100,
+      "cta": "Book service"
+    }
+  }
+}

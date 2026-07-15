@@ -36,7 +36,7 @@ assert.equal(params.size, portalBlock.params.length, "portal parameter codes are
 assert.deepEqual([...params.keys()], [
   "portal_title", "portal_api_base", "portal_organization", "portal_vertical", "portal_profile", "portal_theme",
   "portal_default_mode", "portal_router_mode", "portal_default_route", "portal_enabled_modules", "portal_auth_mode",
-  "portal_error_mode", "portal_data_mode", "portal_pim_fixture_url", "portal_pim_product_type_code", "portal_pim_currency",
+  "portal_error_mode", "portal_data_mode", "portal_case", "portal_pim_fixture_url", "portal_pim_product_type_code", "portal_pim_currency",
 ], "portal CMS exposes only the current production parameter codes");
 assert.deepEqual(params.get("portal_vertical").options, verticals);
 assert.deepEqual(params.get("portal_theme").options, verticals);
@@ -44,6 +44,7 @@ assert.deepEqual(params.get("portal_profile").options, profiles);
 assert.equal(params.get("portal_enabled_modules").default, "", "module override defaults empty so profile modules remain authoritative");
 assert.equal(params.get("portal_enabled_modules").defaultSource, "portalProfile.modules");
 assert.equal(params.get("portal_default_mode").initialDefaultOnly, true);
+assert.equal(params.get("portal_case").fixtureOnly, true, "fixture case selection is not a live CMS data selector");
 for (const param of portalBlock.params) {
   assert.equal(Object.prototype.hasOwnProperty.call(param, "default"), true, param.code + " has an explicit default");
   if (param.required) assert.notEqual(String(param.default), "", param.code + " required default is nonempty");

@@ -85,20 +85,20 @@ function serviceControl(service, view) {
 export function SeoServicesGrid(model, view) {
   var selected = model.services.find(function (service) { return service.id === view.selectedServiceId; });
   var readback = view.parity && selected ? '<p class="seo-selection-readback" data-seo-selection data-state="selected" aria-live="polite">Selected service: ' + esc(selected.name) + '</p>' : "";
-  return '<section class="seo-sec" id="seo-services" data-module="seo-services-grid" data-visual-id="seo-services-grid">' + head("Services", "What we do", "Every service ends with a photo report in your portal.") + '<div class="seo-svc-grid">' + model.services.map(function (service) { return serviceControl(service, view); }).join("") + '</div>' + readback + '</section>';
+  return '<section class="seo-sec" id="seo-services" data-module="seo-services-grid" data-visual-id="seo-services-grid">' + head("Services", "What we do", "Choose a service, then review availability before booking.") + '<div class="seo-svc-grid">' + model.services.map(function (service) { return serviceControl(service, view); }).join("") + '</div>' + readback + '</section>';
 }
 
 export function SeoHowItWorks(model) {
-  return '<section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">' + head("How it works", "From request to report") + '<div class="seo-how">' + model.how.map(function (step, index) { return '<div class="seo-how__step" data-bind="cms.how[' + index + ']"><div class="seo-how__num">' + (index + 1) + '</div><div class="seo-how__title">' + esc(step.title) + '</div><div class="seo-how__desc">' + esc(step.desc) + '</div></div>'; }).join("") + '</div></section>';
+  return '<section class="seo-sec" data-module="seo-how-it-works" data-visual-id="seo-how-it-works">' + head("How it works", "Your service, step by step") + '<div class="seo-how">' + model.how.map(function (step, index) { return '<div class="seo-how__step" data-bind="cms.how[' + index + ']"><div class="seo-how__num">' + (index + 1) + '</div><div class="seo-how__title">' + esc(step.title) + '</div><div class="seo-how__desc">' + esc(step.desc) + '</div></div>'; }).join("") + '</div></section>';
 }
 
 export function SeoProofBlock(model) {
-  return '<section class="seo-sec seo-sec--tint" data-module="seo-proof" data-visual-id="seo-proof">' + head("Why Aircove", model.proof.title) + '<div class="seo-proof">' + model.proof.items.map(function (item, index) { return '<div class="seo-proof__card" data-bind="cms.proof.items[' + index + ']"><div class="seo-proof__glyph"><i></i></div><div class="seo-proof__title">' + esc(item.title) + '</div><div class="seo-proof__desc">' + esc(item.desc) + '</div></div>'; }).join("") + '</div></section>';
+  return '<section class="seo-sec seo-sec--tint" data-module="seo-proof" data-visual-id="seo-proof">' + head("Why " + model.brand.name, model.proof.title) + '<div class="seo-proof">' + model.proof.items.map(function (item, index) { return '<div class="seo-proof__card" data-bind="cms.proof.items[' + index + ']"><div class="seo-proof__glyph"><i></i></div><div class="seo-proof__title">' + esc(item.title) + '</div><div class="seo-proof__desc">' + esc(item.desc) + '</div></div>'; }).join("") + '</div></section>';
 }
 
 export function SeoPricing(model, view) {
   var body = view.dataState === "loading" ? '<div class="seo-price">' + Array(3).fill('<div class="seo-price__row">' + skel("30%") + skel("18%") + '</div>').join("") + '</div>'
-    : view.dataState === "empty" || !model.pricing.rows.length ? '<div class="seo-price__fallback" data-state="no-data">No published prices for this market yet &mdash; every request is quoted individually.</div>'
+    : view.dataState === "empty" || !model.pricing.rows.length ? '<div class="seo-price__fallback" data-state="no-data">' + esc(model.pricing.note || "Pricing is confirmed before you book.") + '</div>'
       : '<div class="seo-price">' + model.pricing.rows.map(function (row, index) { return '<div class="seo-price__row" data-bind="cms.pricing.rows[' + index + ']"><span class="seo-price__name">' + esc(row.name) + '</span>' + (row.from ? '<span class="seo-price__val"><b>from ' + esc(row.from) + '</b><span class="seo-price__unit"> / ' + esc(row.unit || "") + '</span></span>' : '<span class="seo-price__val seo-price__val--quote">' + esc(row.reason || "") + '</span>') + '</div>'; }).join("") + '</div>';
   var ctaLabel = model.meta.primaryCta.action === "seo.cta.quote" ? "Get an exact quote" : "See exact price & book";
   return '<section class="seo-sec" data-module="seo-pricing" data-visual-id="seo-pricing" data-state="' + attr(view.dataState) + '">' + head("Pricing", "What to expect", view.dataState === "ready" ? model.pricing.note : "") + body + '<div class="seo-price__cta">' + SeoCta(model.meta.primaryCta, { label: ctaLabel, visualId: "seo-pricing-cta", successLabel: "Request sent" }, view) + '</div></section>';
@@ -117,7 +117,7 @@ export function SeoServiceArea(model, view) {
 export function SeoReviews(model, view) {
   var body;
   if (view.dataState === "loading") body = '<div class="seo-reviews">' + Array(2).fill('<div class="seo-review">' + skel("35%") + skel("100%") + skel("85%") + '</div>').join("") + '</div>';
-  else if (view.dataState === "empty" || !model.reviews.length) body = '<div class="seo-reviews__fallback" data-state="no-data"><div class="seo-reviews__fallback-title">Reviews appear here</div><div>Verified customer reviews are pulled from the CMS collection &mdash; none are shown until real ones exist.</div></div>';
+  else if (view.dataState === "empty" || !model.reviews.length) body = '<div class="seo-reviews__fallback" data-state="no-data"><div class="seo-reviews__fallback-title">Reviews appear here</div><div>Verified customer feedback is shown only when it is available.</div></div>';
   else body = '<div class="seo-reviews">' + model.reviews.map(function (review, index) { return '<div class="seo-review" data-bind="cms.reviews[' + index + ']">' + (review.media ? '<div class="seo-review__media"><span class="seo-media-slot__label">customer photo &middot; media slot</span></div>' : "") + '<div class="seo-review__stars">' + esc("\u2605\u2605\u2605\u2605\u2605".slice(0, review.rating) + "\u2606\u2606\u2606\u2606\u2606".slice(review.rating)) + '</div><p class="seo-review__text">&ldquo;' + esc(review.text) + '&rdquo;</p><div class="seo-review__name">' + esc(review.name) + '</div></div>'; }).join("") + '</div>';
   return '<section class="seo-sec seo-sec--tint" data-module="seo-reviews" data-visual-id="seo-reviews" data-state="' + attr(view.dataState === "ready" && !model.reviews.length ? "empty" : view.dataState) + '">' + head("Reviews", "What customers say") + body + '</section>';
 }
@@ -132,7 +132,8 @@ export function SeoFaq(model, view) {
 }
 
 export function SeoFinalCta(model, view) {
-  return '<section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta"><h2 class="seo-final__title" data-bind="cms.meta.h1">' + esc(model.final.heading) + '</h2><p class="seo-final__sub">' + esc(model.final.body || "") + '</p><div class="seo-final__ctas">' + SeoCta(model.meta.primaryCta, { variant: "btn--onaccent", large: true, visualId: "seo-final-primary-cta", successLabel: "Request sent" }, view) + SeoCta(model.meta.callCta, { label: "\u260e Call us", variant: "btn--glass-hero", large: true, visualId: "seo-final-call-cta", successLabel: "Calling\u2026" }, view) + '</div></section>';
+  var callLabel = model.meta.callCta ? "\u260e " + model.meta.callCta.label : "\u260e Call us";
+  return '<section class="seo-final" data-module="seo-final-cta" data-visual-id="seo-final-cta"><h2 class="seo-final__title" data-bind="cms.meta.h1">' + esc(model.final.heading) + '</h2><p class="seo-final__sub">' + esc(model.final.body || "") + '</p><div class="seo-final__ctas">' + SeoCta(model.meta.primaryCta, { variant: "btn--onaccent", large: true, visualId: "seo-final-primary-cta", successLabel: "Request sent" }, view) + SeoCta(model.meta.callCta, { label: callLabel, variant: "btn--glass-hero", large: true, visualId: "seo-final-call-cta", successLabel: "Calling\u2026" }, view) + '</div></section>';
 }
 
 export function SeoFooter(model, view) {

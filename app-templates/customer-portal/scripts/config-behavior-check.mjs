@@ -589,7 +589,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 71, runtimeJavaScript: 74 }, "accepted S5 activation file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 71, runtimeJavaScript: 76 }, "accepted fixture integration file inventory");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {

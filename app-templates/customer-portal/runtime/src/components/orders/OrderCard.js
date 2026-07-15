@@ -1,11 +1,12 @@
 // customer-portal/runtime/src/components/orders/OrderCard.js — production transfer module.
-import { F } from "../../../data/fixtures.js";
 import { h } from "../../dom.js";
+import { currentFixture } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { ServiceCard } from "../commerce/ServiceCard.js";
 
 export function OrderCard(order) {
-  var meta = F.statusMeta[order.status] || F.statusMeta.scheduled;
+  var statusMeta = currentFixture().statusMeta;
+  var meta = statusMeta[order.status] || statusMeta.scheduled;
   return h("article", {
     "class": "order-card", "data-module": "order-card", "data-visual-id": "order-card",
     "data-action": "order.open", "data-id": order.id

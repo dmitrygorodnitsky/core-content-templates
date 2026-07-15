@@ -2,9 +2,11 @@
 import { h, svgPath } from "../../dom.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 
-export function TrackingCard() {
+export function TrackingCard(technician, order) {
+  var techData = technician || { name: "Your specialist", eta: "Arrival details are being prepared", role: "Service team" };
+  var serviceName = order && order.name ? order.name : "your appointment";
   var map = h("div", { "class": "tracking-map" }, [
-    h("span", { "class": "tracking-map__label" }, "live technician location"),
+    h("span", { "class": "tracking-map__label" }, "live appointment status"),
     svgPath(),
     h("div", { "class": "tracking-pin-start" }),
     h("div", { "class": "tracking-pin-end" }, [
@@ -15,8 +17,8 @@ export function TrackingCard() {
   var tech = h("div", { "class": "tracking-card__tech" }, [
     h("div", { "class": "tech-avatar" }),
     h("div", { style: "flex:1" }, [
-      h("div", { style: "font-weight:600;font-size:14.5px", "data-bind": "visit.techName" }, "Daniel is on the way"),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2)", "data-bind": "visit.eta" }, "Arriving in ~14 min \u00b7 3 stops away \u00b7 Filter replacement")
+      h("div", { style: "font-weight:600;font-size:14.5px", "data-bind": "visit.techName" }, techData.name + " is with you"),
+      h("div", { style: "font-size:12.5px;color:var(--ink-2)", "data-bind": "visit.eta" }, techData.eta + " \u00b7 " + serviceName)
     ]),
     ActionButton({ variant: "btn--ghost", label: "Message", action: "support.open", visualId: "tech-message" }),
     ActionButton({ variant: "btn--primary", label: "Call", action: "support.open", visualId: "tech-call" })

@@ -1,5 +1,6 @@
 // customer-portal/runtime/src/state.js — production transfer module.
 import { F } from "../data/fixtures.js";
+import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
 import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 
 export var state = {
@@ -57,6 +58,7 @@ export var state = {
     enabledModules: verticalProfiles.hvac.modules.slice(),
     errorMode: "error",
     dataMode: "fixture",
+    caseId: "",
     defaultMode: "light",
   },
   userModeOverridden: false,
@@ -86,9 +88,29 @@ export function findProduct(name) {
 export function orderItems() { return (state.moduleData.orders && state.moduleData.orders.items) || state.orders; }
 
 export function productItems() {
-  var v = F.themes[state.theme];
+  var v = currentFixture().theme;
   return (state.moduleData.products && state.moduleData.products.items) || v.products;
 }
+
+export function currentFixture() {
+  var fixture = caseFixtureFor(state.config.caseId);
+  if (fixture) return fixture;
+  return {
+    theme: F.themes[state.theme],
+    customer: F.customer,
+    addresses: F.addresses,
+    cards: F.cards,
+    technician: F.technician,
+    statusMeta: F.statusMeta,
+    feedTabs: F.feedTabs,
+    support: { agentName: "Avery", label: "Aircove Support", ticket: "SP-104", availability: "Online now" },
+    helpTopics: F.helpTopics,
+    quickReplies: F.quickReplies,
+    activity: F.buildFeed(F.themes[state.theme]),
+  };
+}
+
+export function currentTheme() { return currentFixture().theme; }
 
 export function proposalSites() { return (state.moduleData.proposals && state.moduleData.proposals.sites) || state.psites; }
 
@@ -123,8 +145,13 @@ export function applyPortalConfig(config) {
   });
   state.session.authenticated = state.config.authMode !== "required";
   state.session.intendedRoute = null;
+  var fixture = caseFixtureFor(state.config.caseId);
   state.theme = verticalConfig.displayName;
-  state.orders = F.ordersFor(verticalConfig.displayName);
+  state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
+  state.addrId = fixture ? fixture.addresses[0].id : "home";
+  state.payId = fixture ? fixture.cards[0].id : "visa";
+  state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
+  state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";
   state.cartItems = [];
   state.carePayloadState = "ready";

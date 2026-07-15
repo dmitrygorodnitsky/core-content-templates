@@ -105,7 +105,7 @@ export class PortalRuntime {
   }
 
   loadAll(moduleIds) {
-    var ids = moduleIds || openedModuleIds.filter((moduleId) => !this.modules[moduleId].asyncOnly);
+    var ids = moduleIds || this.enabledModuleIds().filter((moduleId) => !this.modules[moduleId].asyncOnly);
     return ids.map((moduleId) => this.load(moduleId));
   }
 
@@ -177,8 +177,13 @@ export class PortalRuntime {
   }
 
   loadAllAsync(moduleIds) {
-    var ids = moduleIds || openedModuleIds;
+    var ids = moduleIds || this.enabledModuleIds();
     return Promise.all(ids.map((moduleId) => this.loadAsync(moduleId)));
+  }
+
+  enabledModuleIds() {
+    var enabled = this.state.config && this.state.config.enabledModules || [];
+    return openedModuleIds.filter((moduleId) => enabled.includes(moduleId));
   }
 
   invalidate(moduleId) {

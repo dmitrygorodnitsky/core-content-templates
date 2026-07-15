@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual CMS portal package for the opened Calm Harbor Spa PIM surfaces",
+  "template": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING",
+    "title": "Calm Harbor Spa | Live Catalog"
+  },
+  "runtime": {
+    "vertical": "beauty",
+    "profile": "appointments",
+    "theme": "beauty",
+    "routerMode": "hash",
+    "defaultRoute": "pricing",
+    "enabledModules": ["pricing", "products"],
+    "authMode": "fixture",
+    "dataMode": "live",
+    "errorMode": "error"
+  },
+  "pim": {
+    "apiBase": "/core-pim/api",
+    "organization": "CALM_HARBOR_SPA_STAGING",
+    "pricingProductTypeCodes": ["SPA_SERVICE", "SPA_MEMBERSHIP"],
+    "productsProductTypeCodes": ["SPA_RETAIL"],
+    "priceTypeCode": "SPA_STANDARD_PRICE",
+    "priceAttributeCode": "INTERVAL",
+    "priceAttributeValues": ["ONE_TIME", "MONTH"],
+    "currency": "USD",
+    "currencyAttributeCode": "CURRENCY",
+    "currencyAttributeValues": ["USD"],
+    "amountAttributeCode": "AMOUNT_MINOR",
+    "amountMinorDivisor": 100,
+    "cta": "Book service"
+  },
+  "constraints": [
+    "The package must be served from dev-1.servicewand.com so the public PIM request remains same-origin.",
+    "Only pricing and products are opened live. Other portal entities must not be represented as live.",
+    "Auth mode fixture only bypasses the unfinished host-auth bridge for this staging catalog preview; it is not a customer session implementation."
+  ]
+}

@@ -1,11 +1,11 @@
 // customer-portal/runtime/src/routes/PricingPage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentTheme, state } from "../state.js";
 import { PricingCard } from "../components/commerce/PricingCard.js";
 
 export function Pricing() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var pricing = state.moduleData.pricing || {};
   var livePlans = pricing.source === "core-pim" ? pricing.plans : null;
   var page = h("section", { "class": "page", "data-route": "pricing", "data-visual-id": "pricing" });
@@ -29,10 +29,10 @@ export function Pricing() {
       });
     })
     : [
-      PricingCard({ name: "Pay as you go", price: "$0", tag: "Standard rates per visit", current: true,
-        features: ["Book any service on demand", "Live technician tracking", "In-app payment & invoices"] }),
-      PricingCard({ name: v.plan.name, price: "$9", tag: v.plan.tag, featured: true, features: v.plan.features }),
-      PricingCard({ name: v.plan.plusName, price: "$19", tag: "For multiple properties", features: v.plan.plusFeatures })
+      PricingCard({ name: "Pay as you go", price: "Per ritual", tag: "Current total is shown before confirmation", current: true,
+        features: ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"] }),
+      PricingCard({ name: v.plan.name, price: v.plan.monthlyPrice || "$9", tag: v.plan.tag, featured: true, features: v.plan.features }),
+      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: "For a deeper ritual rhythm", features: v.plan.plusFeatures })
     ];
   page.appendChild(h("div", { "class": "pricing-grid", "data-bind": livePlans ? "pim.plans" : "plan.cards" }, cards));
   var rates = h("div", { "class": "rates-card", "data-module": "rates-list", "data-visual-id": "per-visit-rates" }, [

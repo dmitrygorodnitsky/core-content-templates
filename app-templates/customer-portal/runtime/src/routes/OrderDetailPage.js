@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/routes/OrderDetailPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { currentOrder, state } from "../state.js";
+import { currentFixture, currentOrder, state } from "../state.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -10,6 +9,7 @@ import { WeatherDetail } from "../components/orders/WeatherCard.js";
 import { Timeline } from "../components/orders/Timeline.js";
 
 export function buildOrderView(o) {
+  var fixture = currentFixture();
   var num = parseInt(String(o.price).replace(/[^0-9]/g, ""), 10);
   var hasPrice = num > 0 && o.status !== "cancelled";
   var labor = hasPrice ? Math.round(num * 0.65) : 0;
@@ -17,8 +17,8 @@ export function buildOrderView(o) {
   var activeIdx = o.status === "scheduled" ? 0 : o.status === "inprogress" ? 2 : 3;
   var stepDefs = [
     { label: "Order booked", sub: "Confirmation sent" },
-    { label: "Technician assigned", sub: "Daniel R. \u00b7 \u2605 4.9" },
-    { label: "On the way", sub: "Live ETA shared" },
+    { label: "Specialist assigned", sub: fixture.technician.name + " \u00b7 \u2605 " + fixture.technician.rating },
+    { label: "Appointment in progress", sub: "Status shared in your portal" },
     { label: "Service complete", sub: o.status === "completed" ? "Rated \u2605\u2605\u2605\u2605\u2605" : "Pending" }
   ];
   var steps = stepDefs.map(function (st, i) {
@@ -30,7 +30,7 @@ export function buildOrderView(o) {
     else { dot = "#cfd4dd"; done = false; }
     return { label: st.label, sub: st.sub, dot: dot, muted: !done };
   });
-  var loc = F.addresses.find(function (a) { return a.id === o.locationId; });
+  var loc = fixture.addresses.find(function (a) { return a.id === o.locationId; });
   return {
     order: o, hasPrice: hasPrice,
     laborStr: "$" + labor, partsStr: "$" + parts,
@@ -42,7 +42,8 @@ export function buildOrderView(o) {
 
 /* Timeline component */
 
-export function DetailLiveMap() {
+export function DetailLiveMap(technician) {
+  var tech = technician || { name: "Your specialist", eta: "Status updating" };
   var canvas = h("div", { "class": "detail-map__canvas" }, [
     detailSvg(),
     h("div", { style: "position:absolute;left:40px;top:142px;width:14px;height:14px;border-radius:999px;background:var(--surface);border:3px solid var(--accent)" }),
@@ -52,7 +53,7 @@ export function DetailLiveMap() {
     ])
   ]);
   var bar = h("div", { "class": "detail-map__bar" }, [
-    h("div", { style: "font-weight:600;font-size:14px;flex:1", "data-bind": "visit.techName,visit.eta" }, F.technician.name + " is on the way \u00b7 " + F.technician.eta),
+    h("div", { style: "font-weight:600;font-size:14px;flex:1", "data-bind": "visit.techName,visit.eta" }, tech.name + " is with you \u00b7 " + tech.eta),
     ActionButton({ variant: "btn--primary", label: "Call", action: "support.open", visualId: "detail-call" })
   ]);
   return h("div", { "class": "detail-map", "data-module": "tracking-card", "data-visual-id": "detail-live-map" }, [canvas, bar]);
@@ -93,6 +94,7 @@ export function PhotoReport() {
 
 export function OrderDetail() {
   var o = currentOrder();
+  var fixture = currentFixture();
   var page = h("section", { "class": "page page--narrow", "data-route": "order.detail", "data-visual-id": "order-detail", "data-state": o.status });
   page.appendChild(h("div", { "class": "detail-back", "data-action": "order.back", "data-visual-id": "detail-back" }, "\u2039 Back to orders"));
 
@@ -100,7 +102,7 @@ export function OrderDetail() {
   if (state.view === "error") { page.appendChild(ErrorState({ title: "Couldn\u2019t load this visit", desc: "Something went wrong fetching the order. Try again." })); return page; }
 
   var vm = buildOrderView(o);
-  var meta = F.statusMeta[o.status];
+  var meta = fixture.statusMeta[o.status];
 
   /* header */
   page.appendChild(h("div", { "class": "detail-head" }, [
@@ -120,12 +122,12 @@ export function OrderDetail() {
   var right = h("div", { "class": "detail-col" });
 
   /* status banner / live map */
-  if (vm.isInProgress) left.appendChild(DetailLiveMap());
+  if (vm.isInProgress) left.appendChild(DetailLiveMap(fixture.technician));
   if (vm.isScheduled) left.appendChild(h("div", { "class": "status-banner status-banner--accent", "data-module": "status-banner", "data-visual-id": "scheduled-banner" }, [
     h("div", { "class": "status-banner__icon" }, h("i")),
     h("div", { style: "flex:1" }, [
       h("div", { "class": "status-banner__title" }, "Scheduled for " + o.date),
-      h("div", { "class": "status-banner__sub" }, "A technician will be assigned 24h before your visit.")
+      h("div", { "class": "status-banner__sub" }, "Your specialist and preparation details are in the appointment record.")
     ])
   ]));
   if (vm.isCompleted) left.appendChild(h("div", { "class": "status-banner status-banner--ok", "data-module": "status-banner", "data-visual-id": "completed-banner" }, [
@@ -154,7 +156,7 @@ export function OrderDetail() {
     ]);
     if (others.length) locCard.appendChild(h("div", { style: "display:flex;gap:8px;flex-wrap:wrap;padding:10px 16px 0" },
       others.map(function (x) {
-        var l2 = F.addresses.find(function (a) { return a.id === x.locationId; });
+        var l2 = fixture.addresses.find(function (a) { return a.id === x.locationId; });
         return h("span", { "class": "chip", "data-action": "order.open", "data-id": x.id }, "\u2194 " + (l2 ? l2.label : "") + " \u00b7 " + x.date);
       })));
     locCard.appendChild(h("div", { "class": "property-map" }, [
@@ -168,8 +170,8 @@ export function OrderDetail() {
   if (!vm.isCancelled) left.appendChild(h("div", { "class": "tech-card", "data-module": "technician-card", "data-visual-id": "technician-card" }, [
     h("div", { "class": "tech-card__avatar" }),
     h("div", { style: "flex:1" }, [
-      h("div", { style: "font-weight:700;font-size:15px", "data-bind": "technician.name" }, F.technician.name),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, F.technician.role + " \u00b7 \u2605 " + F.technician.rating + " (" + F.technician.visits + " visits)")
+      h("div", { style: "font-weight:700;font-size:15px", "data-bind": "technician.name" }, fixture.technician.name),
+      h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, fixture.technician.role + " \u00b7 \u2605 " + fixture.technician.rating + " (" + fixture.technician.visits + " visits)")
     ]),
     ActionButton({ variant: "btn--ghost", label: "Message", action: "support.open", visualId: "tech-message" })
   ]));
@@ -186,12 +188,12 @@ export function OrderDetail() {
   /* right rail: invoice + actions */
   var inv = h("div", { "class": "panel", "data-module": "invoice", "data-visual-id": "invoice" }, [h("div", { "class": "panel__title", style: "margin-bottom:14px" }, "Invoice")]);
   if (vm.hasPrice) {
-    inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Labor"), h("b", null, vm.laborStr)]));
-    inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Parts & materials"), h("b", null, vm.partsStr)]));
+    inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Treatment"), h("b", null, vm.laborStr)]));
+    inv.appendChild(h("div", { "class": "invoice__row" }, [h("span", null, "Products & care"), h("b", null, vm.partsStr)]));
     inv.appendChild(h("div", { "class": "invoice__total" }, [h("span", null, "Total"), h("span", { "data-bind": "order.price" }, o.price)]));
   } else if (vm.isScheduled) {
     inv.appendChild(h("div", { style: "font-size:13px;line-height:1.5;color:var(--ink-2)" }, [
-      "Final price is confirmed after the on-site assessment. Estimate: ",
+      "Your appointment total is confirmed before your visit. Estimate: ",
       h("b", { style: "color:var(--ink)" }, o.price), "."
     ]));
   } else {

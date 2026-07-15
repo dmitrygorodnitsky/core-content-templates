@@ -1,25 +1,24 @@
 // customer-portal/runtime/src/routes/ActivityPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentFixture, state } from "../state.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 
 export function Activity() {
-  var v = F.themes[state.theme];
+  var fixture = currentFixture();
   var page = h("section", { "class": "page", style: "max-width:760px", "data-route": "activity", "data-visual-id": "activity" });
   page.appendChild(h("div", { "class": "activity-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em" }, "Activity"),
-      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, "Everything happening with your home, newest first.")
+      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, "Your appointments, orders and account updates, newest first.")
     ]),
     h("div", { "class": "tab", "data-action": "activity.markRead", "data-visual-id": "mark-read" }, "Mark all read")
   ]));
   page.appendChild(h("div", { "class": "tabs", style: "margin:0 4px 18px", "data-module": "activity-filter" },
-    F.feedTabs.map(function (t) {
+    fixture.feedTabs.map(function (t) {
       return h("span", { "class": "tab" + (t.key === state.feedFilter ? " tab--active" : ""), "data-action": "activity.filter", "data-id": t.key }, t.label);
     })));
 
-  var groups = F.buildFeed(v).map(function (g) {
+  var groups = fixture.activity.map(function (g) {
     return { day: g.day, items: g.items.filter(function (ev) { return state.feedFilter === "all" || ev.type === state.feedFilter; }) };
   }).filter(function (g) { return g.items.length; });
 

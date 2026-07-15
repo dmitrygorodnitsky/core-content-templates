@@ -1,11 +1,11 @@
 // customer-portal/runtime/src/routes/LandingPage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { activeProfile, state } from "../state.js";
+import { activeProfile, currentTheme, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 
 export function Landing() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var profile = activeProfile();
   var storm = profile.weatherCalendar;
   var page = h("section", { "class": "page", "data-route": "landing", "data-visual-id": "landing" });

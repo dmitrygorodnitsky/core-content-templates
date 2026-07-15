@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/routes/ProfilePage.js — production transfer module.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentFixture, currentTheme, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { Tabs } from "../components/primitives/Tabs.js";
 import { Toggle } from "../components/primitives/Toggle.js";
@@ -10,8 +10,9 @@ import { OrderCard } from "../components/orders/OrderCard.js";
 import { statCard } from "../components/profile/StatCard.js";
 
 export function Profile() {
-  var v = F.themes[state.theme];
-  var c = F.customer;
+  var fixture = currentFixture();
+  var v = currentTheme();
+  var c = fixture.customer;
   var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile" });
 
   /* hero */
@@ -57,7 +58,7 @@ export function Profile() {
     ])
   ]);
   var addrList = h("div", { style: "display:flex;flex-direction:column;gap:10px" });
-  F.addresses.forEach(function (a) {
+  fixture.addresses.forEach(function (a) {
     var isDefault = a.id === state.addrId;
     addrList.appendChild(h("div", { "class": "saved-row", "data-module": "address-card", "data-visual-id": "profile-address" }, [
       h("div", { "class": "saved-row__icon", style: "background:" + a.iconBg }, h("i", { style: "background:" + a.dot })),
@@ -84,7 +85,7 @@ export function Profile() {
     ])
   ]);
   var payList = h("div", { style: "display:flex;flex-direction:column;gap:10px" });
-  F.cards.forEach(function (cd) {
+  fixture.cards.forEach(function (cd) {
     var isDefault = cd.id === state.payId;
     payList.appendChild(h("div", { "class": "saved-row", "data-module": "payment-method-card", "data-visual-id": "profile-card" }, [
       h("div", { "class": "card-chip card-chip--lg" }),
@@ -104,8 +105,8 @@ export function Profile() {
   /* preferences */
   var prefs = [
     { key: "receipts", title: "Email receipts", desc: "Invoice & payment confirmations" },
-    { key: "sms", title: "SMS technician updates", desc: "Live ETA & arrival alerts" },
-    { key: "marketing", title: "Offers & tips", desc: "Seasonal deals and home care tips" }
+    { key: "sms", title: "SMS appointment updates", desc: "Appointment reminders and arrival alerts" },
+    { key: "marketing", title: "Offers & tips", desc: "Wellness rituals, products and seasonal offers" }
   ];
   var prefPanel = h("div", { "class": "list-panel", "data-module": "preferences" }, [h("div", { "class": "list-panel__title", style: "margin-bottom:16px" }, "Notifications")]);
   prefs.forEach(function (p) {

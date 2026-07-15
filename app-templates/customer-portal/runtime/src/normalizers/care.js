@@ -19,7 +19,7 @@ const ACTIONS_BY_KIND = {
   roof: [],
   monitoring: ["care.requestRetreat"],
   healthCare: ["care.completeTask"],
-  beautyCare: ["care.selectSpecialist"],
+  beautyCare: ["care.selectSpecialist", "care.completeTask"],
 };
 
 function clone(value) {

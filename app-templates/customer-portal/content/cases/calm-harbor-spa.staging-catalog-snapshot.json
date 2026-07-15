@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual SEO landing catalog snapshot for staging only",
+  "organization": "CALM_HARBOR_SPA_STAGING",
+  "organizationId": 25,
+  "currency": "USD",
+  "source": {
+    "system": "Core staging",
+    "seed": "core-ui/scripts/dev/beautySpaEntities.ts",
+    "transport": "seed apply output",
+    "liveBrowserBinding": "not implemented"
+  },
+  "products": [
+    { "code": "CHS_GROUNDING_MASSAGE", "name": "Grounding massage", "price": 14500, "displayPrice": "$145", "unit": "75-minute visit" },
+    { "code": "CHS_CUSTOM_FACIAL", "name": "Custom facial", "price": 13000, "displayPrice": "$130", "unit": "60-minute visit" },
+    { "code": "CHS_HARBOR_RESET", "name": "Harbor reset", "price": 24500, "displayPrice": "$245", "unit": "135-minute visit" },
+    { "code": "CHS_SEASONAL_BODY_RITUAL", "name": "Seasonal body ritual", "price": 16500, "displayPrice": "$165", "unit": "90-minute visit" },
+    { "code": "CHS_HARBOR_MEMBERSHIP", "name": "Harbor membership", "price": 1800, "displayPrice": "$18", "unit": "month" }
+  ],
+  "constraints": [
+    "This is a staging snapshot, not a public Core API contract.",
+    "Regenerate the CMS package after catalog or price changes.",
+    "Do not promote this payload to production without verified customer-owned public URLs and catalog ownership."
+  ]
+}
