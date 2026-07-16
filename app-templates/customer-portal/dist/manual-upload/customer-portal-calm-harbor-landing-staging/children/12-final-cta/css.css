@@ -1,1 +1,11 @@
-
+/* ---------- 10 · final CTA ---------- */
+.seo-final {
+  border-radius: 30px; text-align: center; padding: 52px 30px;
+  background:
+    radial-gradient(120% 130% at 50% 0%, var(--accent-2) 0%, transparent 70%),
+    var(--accent);
+  box-shadow: var(--shadow-float);
+}
+.seo-final__title { margin: 0; color: #fff; font-size: 32px; font-weight: 800; letter-spacing: -.03em; text-wrap: balance; }
+.seo-final__sub { margin: 12px 0 0; color: rgba(255,255,255,.85); font-size: 15px; }
+.seo-final__ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }

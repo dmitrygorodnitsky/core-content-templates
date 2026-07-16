@@ -1,5 +1,31 @@
 [
   {
+    "code": "CHS_LANDING_03_TRUST_RATING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RATING LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Rating"
+    }
+  },
+  {
+    "code": "CHS_LANDING_03_TRUST_RATING_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RATING SLOT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "rating · from CMS"
+    }
+  },
+  {
     "code": "CHS_LANDING_03_TRUST_LICENCE_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -9,7 +35,7 @@
       }
     },
     "value": {
-      "en": "Cosmetology and massage licences"
+      "en": "Cosmetology & massage licences"
     }
   },
   {
@@ -22,7 +48,7 @@
       }
     },
     "value": {
-      "en": "Licence number - from CMS"
+      "en": "licence № · from CMS"
     }
   },
   {
@@ -48,7 +74,7 @@
       }
     },
     "value": {
-      "en": "Policy - from CMS"
+      "en": "policy · from CMS"
     }
   },
   {
@@ -74,7 +100,7 @@
       }
     },
     "value": {
-      "en": "Redo within 48 hours if you are not happy"
+      "en": "Redo within 48 hours if you're not happy"
     }
   },
   {
@@ -100,7 +126,7 @@
       }
     },
     "value": {
-      "en": "Evenings and weekends available"
+      "en": "Evenings & weekends available"
     }
   }
 ]

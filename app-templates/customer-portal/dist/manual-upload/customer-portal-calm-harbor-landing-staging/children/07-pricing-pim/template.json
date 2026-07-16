@@ -11,8 +11,8 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"seo-sec\" id=\"seo-pricing\" data-module=\"seo-pricing\" data-visual-id=\"seo-pricing\" data-state=\"loading\" data-pim-kind=\"pricing\" data-pim-api-base=\"${CHS_LANDING_07_PRICING_PIM_PRICING_API_BASE@STRING}\" data-pim-organization=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ORGANIZATION@STRING}\" data-pim-product-type-codes=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRODUCT_TYPE_CODES@STRING}\" data-pim-price-type-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_TYPE_CODE@STRING}\" data-pim-price-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_CODE@STRING}\" data-pim-price-attribute-values=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_VALUES@STRING}\" data-pim-currency=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY@STRING}\" data-pim-currency-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_CODE@STRING}\" data-pim-currency-attribute-values=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_VALUES@STRING}\" data-pim-amount-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_AMOUNT_ATTRIBUTE_CODE@STRING}\" data-pim-amount-minor-divisor=\"${CHS_LANDING_07_PRICING_PIM_PRICING_AMOUNT_MINOR_DIVISOR@STRING}\" data-pim-empty-copy=\"${CHS_LANDING_07_PRICING_PIM_PRICING_EMPTY_COPY@LOCALIZED_STRING_SS}\" data-pim-error-title=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ERROR_TITLE@LOCALIZED_STRING_SS}\" data-pim-error-copy=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ERROR_COPY@LOCALIZED_STRING_SS}\" data-pim-retry-label=\"${CHS_LANDING_07_PRICING_PIM_PRICING_RETRY_LABEL@LOCALIZED_STRING_SS}\" data-pim-cta-href=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_HREF@STRING}\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_07_PRICING_PIM_PRICING_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_07_PRICING_PIM_PRICING_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-sec__sub\">${CHS_LANDING_07_PRICING_PIM_PRICING_SUB@LOCALIZED_STRING_SS}</p></div><div class=\"seo-price\" data-pim-body><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div></div><div class=\"seo-price__cta\"><a class=\"btn btn--primary\" href=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_HREF@STRING}\" data-action=\"auth.gotoSignin\">${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_LABEL@LOCALIZED_STRING_SS}</a></div></section>",
-  "css": "",
+  "html": "<section class=\"seo-sec\" id=\"seo-pricing\" data-module=\"seo-pricing\" data-visual-id=\"seo-pricing\" data-state=\"loading\" data-pim-kind=\"pricing\" data-pim-api-base=\"${CHS_LANDING_07_PRICING_PIM_PRICING_API_BASE@STRING}\" data-pim-organization=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ORGANIZATION@STRING}\" data-pim-product-type-codes=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRODUCT_TYPE_CODES@STRING}\" data-pim-price-type-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_TYPE_CODE@STRING}\" data-pim-price-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_CODE@STRING}\" data-pim-price-attribute-values=\"${CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_VALUES@STRING}\" data-pim-currency=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY@STRING}\" data-pim-currency-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_CODE@STRING}\" data-pim-currency-attribute-values=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_VALUES@STRING}\" data-pim-amount-attribute-code=\"${CHS_LANDING_07_PRICING_PIM_PRICING_AMOUNT_ATTRIBUTE_CODE@STRING}\" data-pim-amount-minor-divisor=\"${CHS_LANDING_07_PRICING_PIM_PRICING_AMOUNT_MINOR_DIVISOR@STRING}\" data-pim-sub=\"${CHS_LANDING_07_PRICING_PIM_PRICING_SUB@LOCALIZED_STRING_SS}\" data-pim-empty-copy=\"${CHS_LANDING_07_PRICING_PIM_PRICING_EMPTY_COPY@LOCALIZED_STRING_SS}\" data-pim-error-title=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ERROR_TITLE@LOCALIZED_STRING_SS}\" data-pim-error-copy=\"${CHS_LANDING_07_PRICING_PIM_PRICING_ERROR_COPY@LOCALIZED_STRING_SS}\" data-pim-retry-label=\"${CHS_LANDING_07_PRICING_PIM_PRICING_RETRY_LABEL@LOCALIZED_STRING_SS}\" data-pim-cta-label=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_LABEL@LOCALIZED_STRING_SS}\" data-pim-cta-note=\"${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_NOTE@LOCALIZED_STRING_SS}\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_07_PRICING_PIM_PRICING_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_07_PRICING_PIM_PRICING_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-price\" data-pim-body><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div><div class=\"seo-price__row\"><span class=\"seo-skel\" style=\"width:30%\"></span><span class=\"seo-skel\" style=\"width:18%\"></span></div></div><div class=\"seo-price__cta\"><button class=\"btn btn--primary seo-cta\" data-module=\"seo-cta\" data-visual-id=\"seo-pricing-cta\" data-action=\"auth.gotoSignin\" data-state=\"idle\" data-bind=\"cms.pricing.cta\" aria-live=\"polite\">${CHS_LANDING_07_PRICING_PIM_PRICING_CTA_LABEL@LOCALIZED_STRING_SS}</button></div></section>",
+  "css": "/* ---------- 6 · pricing ---------- */\n.seo-price { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }\n.seo-price__row {\n  display: flex; justify-content: space-between; align-items: baseline; gap: 20px;\n  background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07);\n  border-radius: var(--radius-md); padding: 13px 18px;\n}\n.seo-price__name { font-weight: 700; font-size: 14px; }\n.seo-price__val b { font-size: 15px; }\n.seo-price__unit { color: var(--ink-3); font-size: 12px; }\n.seo-price__val--quote { font-size: 12.5px; color: var(--ink-2); font-style: italic; text-align: right; }\n.seo-price__cta { margin-top: 16px; }\n\n/* wave 12 · pim.pricing[] rows — optional shortDescription line */\n.seo-price__desc { display: block; font-size: 12px; font-weight: 400; color: var(--ink-3); margin-top: 2px; }\n.seo-price__val { white-space: nowrap; } /* wave 12 — keep \"displayPrice / interval\" on one line */",
   "javascript": "",
   "parameters": [
     {
@@ -51,7 +51,7 @@
         }
       },
       "value": {
-        "en": "Displayed prices come from the public catalog - shown as published, never computed on the page."
+        "en": "Displayed prices come from the public catalog — shown as published, never computed on the page."
       }
     },
     {
@@ -185,7 +185,7 @@
         }
       },
       "value": {
-        "en": "No treatments or memberships are currently published in the public catalog - prices appear here the moment they are."
+        "en": "No treatments or memberships are currently published in the public catalog — prices appear here the moment they are."
       }
     },
     {
@@ -237,19 +237,21 @@
         }
       },
       "value": {
-        "en": "Members - sign in to your plan"
+        "en": "Members — sign in to your plan"
       }
     },
     {
-      "code": "CHS_LANDING_07_PRICING_PIM_PRICING_CTA_HREF",
-      "type": "STRING",
+      "code": "CHS_LANDING_07_PRICING_PIM_PRICING_CTA_NOTE",
+      "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "PRICING CTA HREF",
+          "NAME": "PRICING CTA NOTE",
           "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
         }
       },
-      "value": "#"
+      "value": {
+        "en": ""
+      }
     }
   ]
 }

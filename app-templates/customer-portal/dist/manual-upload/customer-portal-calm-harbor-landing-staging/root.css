@@ -528,7 +528,7 @@ button { font-family: inherit; }
 
 .avatar-stack__a + .avatar-stack__a { margin-left: -9px; }
 
-/* design source: design-inbox/styles/seo.css */
+/* design source: design-inbox/styles/seo.css shared scaffolding */
 /* seo.css — public SEO landing sections (route: seo.landing)
    One reusable section set for all six verticals; colors derive
    from tokens.css (data-theme). Responsive follows the container
@@ -585,189 +585,19 @@ button { font-family: inherit; }
 }
 @keyframes seoSpin { to { transform: rotate(360deg); } }
 
-/* ---------- 1 · hero ---------- */
-.seo-hero {
-  position: relative; overflow: hidden; border-radius: 30px;
-  background:
-    radial-gradient(130% 110% at 0% 0%, var(--accent-2) 0%, transparent 62%),
-    radial-gradient(120% 100% at 100% 100%, var(--accent-3) 0%, transparent 55%),
-    var(--accent);
-  box-shadow: var(--shadow-float);
-}
-.seo-hero__inner { padding: 48px 44px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 36px; align-items: center; }
-.seo-hero__area { background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.3); color: #fff; margin-bottom: 16px; }
-.seo-hero__title { margin: 0; font-weight: 800; font-size: 44px; line-height: 1.06; letter-spacing: -.035em; color: #fff; max-width: 620px; text-wrap: balance; }
-.seo-hero__geo {
-  background: rgba(255,255,255,.18); border-bottom: 2px dashed rgba(255,255,255,.55);
-  border-radius: 8px; padding: 0 8px;
-}
-.seo-hero__sub { margin: 16px 0 0; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,.88); max-width: 460px; }
-.seo-offer {
-  display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 16px;
-  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
-  border-radius: var(--radius-pill); padding: 7px 14px; font-size: 13px; color: #fff;
-}
-.seo-offer__tag { font-weight: 800; text-transform: uppercase; font-size: 10.5px; letter-spacing: .08em; background: rgba(255,255,255,.22); border-radius: 999px; padding: 2px 9px; }
-.seo-offer__until { font-family: var(--font-mono); font-size: 10.5px; color: rgba(255,255,255,.65); }
-.seo-hero__ctas { display: flex; gap: 11px; align-items: center; flex-wrap: wrap; margin-top: 22px; }
-.seo-hero__note { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,.7); }
-.seo-hero__media { min-height: 300px; border-color: rgba(255,255,255,.35); background: repeating-linear-gradient(-45deg, rgba(255,255,255,.07) 0 10px, transparent 10px 20px), rgba(255,255,255,.08); }
-.seo-hero__media .seo-media-slot__label { color: rgba(255,255,255,.75); }
+/* design source: design-inbox/styles/routes.css shared commerce primitives */
+/* ============================================================
+   WAVE 3 — Commerce (services / pricing / products / checkout)
+   ============================================================ */
+.eyebrow { display: inline-block; background: rgba(var(--accent-rgb),.10); color: var(--accent); border-radius: var(--radius-pill); padding: 6px 14px; font-weight: 600; font-size: 12.5px; }
 
-/* ---------- 2 · trust strip ---------- */
-.seo-trust {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
-  background: rgba(var(--glass),.55); border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg); padding: 18px 22px;
-  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--shadow-card);
-}
-.seo-trust__item { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
-.seo-trust__item .seo-skel { display: block; margin: 3px 0; }
-.seo-trust__icon {
-  width: 30px; height: 30px; flex: none; border-radius: 10px; display: grid; place-items: center;
-  background: rgba(var(--accent-rgb),.12); color: var(--accent); font-size: 13px;
-}
-.seo-trust__label { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-3); }
-.seo-trust__value { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.4; }
-.seo-trust__value b { color: var(--ink); font-size: 14px; }
-.seo-trust__fallback, .seo-price__fallback, .seo-area__fallback, .seo-faq__fallback {
-  grid-column: 1 / -1; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3);
-  padding: 10px 4px; line-height: 1.6;
-}
+.section-head { margin: 8px 4px 20px; }
 
-/* ---------- 3 · services grid ---------- */
-.seo-svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.seo-svc {
-  background: rgba(var(--glass),.55); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
-  padding: 20px; cursor: pointer; transition: transform .18s, box-shadow .18s;
-  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow: var(--shadow-card);
-}
-.seo-svc:hover { transform: translateY(-3px); box-shadow: var(--shadow-float); }
-.seo-svc__icon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 12px; }
-.seo-svc__icon > i { width: 15px; height: 15px; border-radius: 5px; display: block; }
-.seo-svc__name { font-weight: 800; font-size: 16px; }
-.seo-svc__benefit { font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.5; }
-.seo-svc__meta { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 13px; }
-.seo-svc__meta > span:first-child { font-weight: 700; color: var(--ink); }
-.seo-svc__go { color: var(--accent); font-weight: 700; }
+.section-head__title { font-weight: 800; font-size: 28px; line-height: 1.15; letter-spacing: -.025em; }
 
-/* ---------- 4 · how it works ---------- */
-.seo-how { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.seo-how__step { position: relative; padding: 18px 16px 16px; border: 1px solid rgba(var(--hair),.08); border-radius: var(--radius-card); background: rgba(var(--glass),.4); }
-.seo-how__num {
-  width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
-  background: rgba(var(--accent-rgb),.14); color: var(--accent); font-weight: 800; font-size: 13px; margin-bottom: 10px;
-}
-.seo-how__title { font-weight: 800; font-size: 14.5px; }
-.seo-how__desc { font-size: 12.5px; color: var(--ink-2); margin-top: 5px; line-height: 1.5; }
+.section-head__sub { font-size: 14.5px; color: var(--ink-2); margin-top: 3px; }
 
-/* ---------- 5 · proof ---------- */
-.seo-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.seo-proof__card { padding: 4px; }
-.seo-proof__glyph { width: 36px; height: 36px; border-radius: 12px; background: rgba(var(--accent-rgb),.14); display: grid; place-items: center; margin-bottom: 12px; }
-.seo-proof__glyph > i { width: 13px; height: 13px; border-radius: 4px; background: var(--accent); display: block; }
-.seo-proof__title { font-weight: 800; font-size: 15.5px; }
-.seo-proof__desc { font-size: 13px; color: var(--ink-2); margin-top: 6px; line-height: 1.55; }
-
-/* ---------- 6 · pricing ---------- */
-.seo-price { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }
-.seo-price__row {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 20px;
-  background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07);
-  border-radius: var(--radius-md); padding: 13px 18px;
-}
-.seo-price__name { font-weight: 700; font-size: 14px; }
-.seo-price__val b { font-size: 15px; }
-.seo-price__unit { color: var(--ink-3); font-size: 12px; }
-.seo-price__val--quote { font-size: 12.5px; color: var(--ink-2); font-style: italic; text-align: right; }
-.seo-price__cta { margin-top: 16px; }
-
-/* ---------- 7 · service area ---------- */
-.seo-area { display: grid; grid-template-columns: 1.1fr .9fr; gap: 30px; align-items: center; }
-.seo-area__region { font-weight: 800; font-size: 16px; margin-bottom: 12px; }
-.seo-area__cities { display: flex; flex-wrap: wrap; gap: 8px; }
-.seo-area__chip {
-  background: rgba(var(--accent-rgb),.1); color: var(--accent); font-weight: 700;
-  border-radius: var(--radius-pill); padding: 6px 14px; font-size: 13px;
-}
-.seo-area__note { font-size: 12.5px; color: var(--ink-3); margin: 14px 0 0; max-width: 440px; line-height: 1.55; }
-.seo-area__map {
-  border-radius: var(--radius-card); border: 1px dashed rgba(var(--hair),.2);
-  background: repeating-linear-gradient(-45deg, rgba(var(--hair),.04) 0 10px, transparent 10px 20px), rgba(var(--glass),.4);
-  display: grid; place-items: center; padding: 18px; gap: 4px;
-}
-.seo-area__visual { width: 100%; max-width: 260px; height: auto; }
-
-/* ---------- 8 · reviews ---------- */
-.seo-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
-.seo-review {
-  background: rgba(var(--glass),.6); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
-  padding: 18px; box-shadow: var(--shadow-card);
-}
-.seo-review .seo-skel { display: block; margin: 6px 0; }
-.seo-review__media { border-radius: var(--radius-md); border: 1px dashed rgba(var(--hair),.2); background: repeating-linear-gradient(-45deg, rgba(var(--hair),.045) 0 10px, transparent 10px 20px); min-height: 110px; display: grid; place-items: center; margin-bottom: 12px; }
-.seo-review__stars { color: var(--warn); font-size: 13px; letter-spacing: 2px; }
-.seo-review__text { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
-.seo-review__name { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-3); }
-.seo-reviews__fallback {
-  border: 1px dashed rgba(var(--hair),.2); border-radius: var(--radius-card); padding: 26px;
-  font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 520px;
-}
-.seo-reviews__fallback-title { font-weight: 800; color: var(--ink-2); margin-bottom: 4px; }
-
-/* ---------- 9 · FAQ ---------- */
-.seo-faq { max-width: 720px; display: flex; flex-direction: column; gap: 8px; }
-.seo-faq__item { background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07); border-radius: var(--radius-md); overflow: hidden; }
-.seo-faq__item.is-open { border-color: rgba(var(--accent-rgb),.3); }
-.seo-faq__q {
-  display: flex; justify-content: space-between; align-items: center; gap: 14px; width: 100%;
-  background: none; border: 0; font: inherit; text-align: left; cursor: pointer;
-  padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--ink);
-}
-.seo-faq__chev { color: var(--accent); font-weight: 800; font-size: 16px; flex: none; }
-.seo-faq__a { padding: 0 18px 15px; }
-.seo-faq__a p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
-
-/* ---------- 10 · final CTA ---------- */
-.seo-final {
-  border-radius: 30px; text-align: center; padding: 52px 30px;
-  background:
-    radial-gradient(120% 130% at 50% 0%, var(--accent-2) 0%, transparent 70%),
-    var(--accent);
-  box-shadow: var(--shadow-float);
-}
-.seo-final__title { margin: 0; color: #fff; font-size: 32px; font-weight: 800; letter-spacing: -.03em; text-wrap: balance; }
-.seo-final__sub { margin: 12px 0 0; color: rgba(255,255,255,.85); font-size: 15px; }
-.seo-final__ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
-
-/* ---------- 11 · footer ---------- */
-.seo-footer { border-top: 1px solid rgba(var(--hair),.09); padding: 30px 4px 10px; }
-.seo-footer__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.seo-footer__col { display: flex; flex-direction: column; gap: 7px; font-size: 13px; color: var(--ink-2); }
-.seo-footer__head { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); margin-bottom: 3px; }
-.seo-footer__row { display: flex; justify-content: space-between; gap: 14px; max-width: 220px; }
-.seo-footer__link { color: var(--ink-2); text-decoration: none; }
-.seo-footer__link:hover { color: var(--accent); }
-.seo-footer__muted { color: var(--ink-3); font-size: 12px; line-height: 1.5; }
-.seo-footer__base {
-  display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
-  margin-top: 26px; padding-top: 16px; border-top: 1px solid rgba(var(--hair),.07);
-  font-weight: 800; font-size: 14px;
-}
-
-/* ---------- dev-only CMS meta preview ---------- */
-.seo-meta {
-  border: 1px dashed rgba(var(--hair),.25); border-radius: var(--radius-md);
-  padding: 12px 16px; font-family: var(--font-mono); font-size: 11px; line-height: 1.7; color: var(--ink-3);
-  background: rgba(var(--hair),.03);
-}
-.seo-meta__head { font-weight: 700; color: var(--ink-2); margin-bottom: 6px; }
-.seo-meta__row { display: flex; gap: 12px; }
-.seo-meta__k { flex: none; width: 130px; color: var(--ink-3); }
-.seo-meta__v { color: var(--ink-2); word-break: break-word; }
-
+/* design source: design-inbox/styles/seo.css responsive */
 /* ============================================================
    Responsive — container-width convention (.vw-tablet/.vw-mobile)
    ============================================================ */
@@ -799,41 +629,6 @@ button { font-family: inherit; }
 .vw-mobile .seo-final__ctas .btn { width: 100%; }
 .vw-mobile .seo-footer__grid { grid-template-columns: 1fr; }
 .vw-mobile .seo-meta__row { flex-direction: column; gap: 0; }
-
-/* ============================================================
-   wave 11 · Calm Harbor — CMS media slot with a real image
-   (seo-media) + retail product teaser (seo-products-teaser)
-   ============================================================ */
-.seo-media[data-state="ready"] { border-style: solid; border-color: rgba(var(--hair),.14); background: none; min-height: 0; padding: 0; }
-.seo-media__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-.seo-hero__media.seo-media[data-state="ready"] { aspect-ratio: 4 / 3; border-color: rgba(255,255,255,.28); }
-.seo-proof__media { margin-bottom: 24px; }
-.seo-proof__media[data-state="ready"] { aspect-ratio: 21 / 9; }
-
-.seo-teaser__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-.seo-teaser-card { cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
-.seo-teaser-card:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(13,38,76,.12); }
-.seo-teaser-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.seo-teaser-card .product-card__art { position: relative; overflow: hidden; }
-.seo-teaser-card__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.seo-teaser-card__go { font-size: 13px; font-weight: 700; color: var(--accent); white-space: nowrap; }
-.seo-teaser-card[data-state="loading"] { min-height: 230px; gap: 10px; justify-content: center; }
-.seo-teaser__cta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 24px; }
-.seo-teaser__note { font-size: 12px; color: var(--ink-3); }
-.seo-teaser__empty { border: 1px dashed rgba(var(--hair),.25); border-radius: var(--radius-card); padding: 26px 24px; font-size: 13px; line-height: 1.5; color: var(--ink-2); max-width: 560px; }
-.seo-teaser__empty-title { font-weight: 700; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
-
-/* wave 11 responsive (same container-width mechanism as the rest) */
-.vw-tablet .seo-teaser__grid { grid-template-columns: repeat(2, 1fr); }
-.vw-mobile .seo-teaser__grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-.vw-tablet .seo-hero__media.seo-media[data-state="ready"] { aspect-ratio: 16 / 9; }
-.vw-mobile .seo-hero__media.seo-media[data-state="ready"] { aspect-ratio: 3 / 2; }
-.vw-tablet .seo-proof__media[data-state="ready"] { aspect-ratio: 16 / 9; }
-.vw-mobile .seo-proof__media[data-state="ready"] { aspect-ratio: 4 / 3; }
-
-/* wave 12 · pim.pricing[] rows — optional shortDescription line */
-.seo-price__desc { display: block; font-size: 12px; font-weight: 400; color: var(--ink-3); margin-top: 2px; }
-.seo-price__val { white-space: nowrap; } /* wave 12 — keep "displayPrice / interval" on one line */
 
 /* design source: design-inbox/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */

@@ -1,1 +1,16 @@
-
+/* ---------- 8 · reviews ---------- */
+.seo-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+.seo-review {
+  background: rgba(var(--glass),.6); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  padding: 18px; box-shadow: var(--shadow-card);
+}
+.seo-review .seo-skel { display: block; margin: 6px 0; }
+.seo-review__media { border-radius: var(--radius-md); border: 1px dashed rgba(var(--hair),.2); background: repeating-linear-gradient(-45deg, rgba(var(--hair),.045) 0 10px, transparent 10px 20px); min-height: 110px; display: grid; place-items: center; margin-bottom: 12px; }
+.seo-review__stars { color: var(--warn); font-size: 13px; letter-spacing: 2px; }
+.seo-review__text { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+.seo-review__name { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-3); }
+.seo-reviews__fallback {
+  border: 1px dashed rgba(var(--hair),.2); border-radius: var(--radius-card); padding: 26px;
+  font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 520px;
+}
+.seo-reviews__fallback-title { font-weight: 800; color: var(--ink-2); margin-bottom: 4px; }

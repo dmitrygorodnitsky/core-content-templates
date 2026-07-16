@@ -9,7 +9,7 @@
       }
     },
     "value": {
-      "en": "Day spa treatments | Calm Harbor Spa"
+      "en": "Calm Harbor Spa — Hair, Skin & Body Treatments in Miami, FL"
     }
   },
   {
@@ -22,7 +22,7 @@
       }
     },
     "value": {
-      "en": "Calm Harbor Spa treatments, membership pricing, and spa retail products."
+      "en": "Hair, nails, skin and massage at Calm Harbor Spa in Miami, FL. Live treatment and membership prices from the public catalog, plus the spa retail shop online."
     }
   },
   {
@@ -44,7 +44,7 @@
             "name": "Studio or at home?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you."
+              "text": "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card."
             }
           },
           {
@@ -52,7 +52,7 @@
             "name": "How do memberships work?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to manage their plan."
+              "text": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan."
             }
           },
           {
@@ -60,15 +60,15 @@
             "name": "Are the shop products the ones you use?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. The retail shelf is the same public catalog our specialists use during treatments."
+              "text": "Yes — the retail shelf is the same public catalog our specialists pull from during treatments."
             }
           },
           {
             "@type": "Question",
-            "name": "What if I am not happy with the result?",
+            "name": "What if I'm not happy with the result?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Tell us within 48 hours. A redo is covered by the guarantee."
+              "text": "Tell us within 48 hours — a redo is covered by the guarantee."
             }
           }
         ]

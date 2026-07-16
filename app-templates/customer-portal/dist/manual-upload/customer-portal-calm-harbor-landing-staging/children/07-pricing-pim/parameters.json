@@ -35,7 +35,7 @@
       }
     },
     "value": {
-      "en": "Displayed prices come from the public catalog - shown as published, never computed on the page."
+      "en": "Displayed prices come from the public catalog — shown as published, never computed on the page."
     }
   },
   {
@@ -169,7 +169,7 @@
       }
     },
     "value": {
-      "en": "No treatments or memberships are currently published in the public catalog - prices appear here the moment they are."
+      "en": "No treatments or memberships are currently published in the public catalog — prices appear here the moment they are."
     }
   },
   {
@@ -221,18 +221,20 @@
       }
     },
     "value": {
-      "en": "Members - sign in to your plan"
+      "en": "Members — sign in to your plan"
     }
   },
   {
-    "code": "CHS_LANDING_07_PRICING_PIM_PRICING_CTA_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_07_PRICING_PIM_PRICING_CTA_NOTE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "PRICING CTA HREF",
+        "NAME": "PRICING CTA NOTE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#"
+    "value": {
+      "en": ""
+    }
   }
 ]

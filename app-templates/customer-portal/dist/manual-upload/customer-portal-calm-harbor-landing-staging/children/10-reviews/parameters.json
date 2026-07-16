@@ -26,29 +26,81 @@
     }
   },
   {
-    "code": "CHS_LANDING_10_REVIEWS_EMPTY_TITLE",
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_1_TEXT",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "EMPTY TITLE",
+        "NAME": "ITEM 1 TEXT",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": {
-      "en": "Reviews appear here"
+      "en": "The room was warm before I walked in, and nobody rushed me out at the hour."
     }
   },
   {
-    "code": "CHS_LANDING_10_REVIEWS_EMPTY_COPY",
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_1_NAME",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "EMPTY COPY",
+        "NAME": "ITEM 1 NAME",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": {
-      "en": "Verified customer reviews are shown only when they are available."
+      "en": "Guest · Miami Beach"
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_2_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 TEXT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Same specialist every month — she remembers exactly where my shoulder acts up."
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 NAME",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Member · Coral Gables"
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_3_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 TEXT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Booked a facial for my mom; the shop shelf had the same serum they used on her."
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_ITEM_3_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 NAME",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Guest · Doral"
     }
   }
 ]

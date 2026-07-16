@@ -1,5 +1,57 @@
 [
   {
+    "code": "CHS_LANDING_13_FOOTER_PHONE_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PHONE SLOT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "phone · from CMS"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_EMAIL_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMAIL SLOT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "email · from CMS"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_SERVICE_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE AREA",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami-Dade"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_CITIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITIES",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami · Coral Gables · Miami Beach · Doral · Aventura"
+    }
+  },
+  {
     "code": "CHS_LANDING_13_FOOTER_BRAND",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -13,125 +65,166 @@
     }
   },
   {
-    "code": "CHS_LANDING_13_FOOTER_ADDRESS",
+    "code": "CHS_LANDING_13_FOOTER_CANONICAL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "ADDRESS",
+        "NAME": "CANONICAL",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": {
-      "en": "Miami-Dade"
+      "en": "canonical: /spa/{locality-slug}"
     }
   },
   {
-    "code": "CHS_LANDING_13_FOOTER_PHONE",
+    "code": "CHS_LANDING_13_FOOTER_HOURS_1_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 1 DAYS",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Mon–Fri"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_HOURS_1_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 1 VALUE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "7:00 – 20:00"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_HOURS_2_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 2 DAYS",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Sat"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_HOURS_2_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 2 VALUE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "8:00 – 18:00"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_HOURS_3_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 3 DAYS",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Sun"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_HOURS_3_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 3 VALUE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Emergency only"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 1 LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Privacy policy"
+    }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_1_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "PHONE",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "CHS_LANDING_13_FOOTER_EMAIL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "EMAIL",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "CHS_LANDING_13_FOOTER_HOURS_1",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "HOURS 1",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": {
-      "en": "Weekdays: 9 AM - 7 PM"
-    }
-  },
-  {
-    "code": "CHS_LANDING_13_FOOTER_HOURS_2",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "HOURS 2",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": {
-      "en": "Weekends: 10 AM - 5 PM"
-    }
-  },
-  {
-    "code": "CHS_LANDING_13_FOOTER_PRIVACY_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "PRIVACY LABEL",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": {
-      "en": "Privacy"
-    }
-  },
-  {
-    "code": "CHS_LANDING_13_FOOTER_PRIVACY_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "PRIVACY HREF",
+        "NAME": "LEGAL 1 HREF",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": "#"
   },
   {
-    "code": "CHS_LANDING_13_FOOTER_TERMS_LABEL",
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_2_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "TERMS LABEL",
+        "NAME": "LEGAL 2 LABEL",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": {
-      "en": "Terms"
+      "en": "Terms of service"
     }
   },
   {
-    "code": "CHS_LANDING_13_FOOTER_TERMS_HREF",
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_2_HREF",
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "TERMS HREF",
+        "NAME": "LEGAL 2 HREF",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": "#"
   },
   {
-    "code": "CHS_LANDING_13_FOOTER_COPYRIGHT",
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_3_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "COPYRIGHT",
+        "NAME": "LEGAL 3 LABEL",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
     "value": {
-      "en": "Calm Harbor Spa"
+      "en": "Licence & insurance"
     }
+  },
+  {
+    "code": "CHS_LANDING_13_FOOTER_LEGAL_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 3 HREF",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "#"
   }
 ]

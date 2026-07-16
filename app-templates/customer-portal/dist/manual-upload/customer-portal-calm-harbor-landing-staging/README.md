@@ -7,7 +7,7 @@ This package is a CMS family: one root and 13 independently editable child templ
 1. Upload each file under `assets/` to the exact same-origin public URL in `assets-manifest.json`. Preserve filenames.
 2. Create the root template from `root.template.json` with code `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`.
 3. Create child templates in numeric order under `children/`. Each child records its parent as `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`.
-4. Compose children in the exact order in `composition.resolved.json`.
+4. Compose `CHS_LANDING_01_PUBLIC_NAV` at `ROOT_NAV`. Compose children 02–13, in numeric order, at `ROOT_SECTIONS` inside `.page.seo-page`. The flat uploader intentionally does not create these include relationships.
 5. Before publishing, replace every `SIGN_IN_URL`, shop URL, phone, email, and legal URL placeholder with verified staging values. A `#` sign-in URL is intentionally non-functional and must not be treated as a login flow.
 
 ## Live data boundary

@@ -35,7 +35,7 @@
       }
     },
     "value": {
-      "en": "A short shelf from the public catalog - the products our specialists actually use."
+      "en": "A short shelf from the public catalog — the products our specialists actually use."
     }
   },
   {
@@ -169,7 +169,7 @@
       }
     },
     "value": {
-      "en": "Retail products appear here as soon as they are published in the public catalog - nothing is shown until real products exist."
+      "en": "Retail products appear here as soon as they are published in the public catalog — nothing is shown until real products exist."
     }
   },
   {
@@ -225,14 +225,16 @@
     }
   },
   {
-    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_NOTE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "PRODUCTS CTA HREF",
+        "NAME": "PRODUCTS CTA NOTE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#"
+    "value": {
+      "en": "Prices shown as published in the public catalog."
+    }
   }
 ]

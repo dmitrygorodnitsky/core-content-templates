@@ -11,8 +11,8 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"seo-sec\" id=\"seo-services\" data-module=\"seo-services-grid\" data-visual-id=\"seo-services-grid\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_04_SERVICES_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_04_SERVICES_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-sec__sub\">${CHS_LANDING_04_SERVICES_SUB@LOCALIZED_STRING_SS}</p></div><div class=\"seo-svc-grid\"><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_1_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_1_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_1_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_2_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_2_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_2_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_3_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_3_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_3_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_4_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_4_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_4_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a></div></section>",
-  "css": "",
+  "html": "<section class=\"seo-sec\" id=\"seo-services\" data-module=\"seo-services-grid\" data-visual-id=\"seo-services-grid\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_04_SERVICES_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_04_SERVICES_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-sec__sub\">${CHS_LANDING_04_SERVICES_SUB@LOCALIZED_STRING_SS}</p></div><div class=\"seo-svc-grid\"><div class=\"seo-svc\" data-module=\"seo-service-card\" data-visual-id=\"seo-service-card\" data-action=\"nav.pricing\" data-id=\"${CHS_LANDING_04_SERVICES_ITEM_1_NAME@LOCALIZED_STRING_SS}\" data-bind=\"cms.services[]\" role=\"button\" tabindex=\"0\"><div class=\"seo-svc__icon\" style=\"background:rgba(var(--accent-rgb),.12)\"><i style=\"background:var(--accent)\"></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_1_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\" data-bind=\"cms.services[].benefit\">${CHS_LANDING_04_SERVICES_ITEM_1_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span data-bind=\"cms.services[].priceFrom\">from ${CHS_LANDING_04_SERVICES_ITEM_1_PRICE@LOCALIZED_STRING_SS}</span><span class=\"seo-svc__go\">Pricing →</span></div></div><div class=\"seo-svc\" data-module=\"seo-service-card\" data-visual-id=\"seo-service-card\" data-action=\"nav.pricing\" data-id=\"${CHS_LANDING_04_SERVICES_ITEM_2_NAME@LOCALIZED_STRING_SS}\" data-bind=\"cms.services[]\" role=\"button\" tabindex=\"0\"><div class=\"seo-svc__icon\" style=\"background:rgba(52,199,89,.16)\"><i style=\"background:#1f8a44\"></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_2_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\" data-bind=\"cms.services[].benefit\">${CHS_LANDING_04_SERVICES_ITEM_2_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span data-bind=\"cms.services[].priceFrom\">from ${CHS_LANDING_04_SERVICES_ITEM_2_PRICE@LOCALIZED_STRING_SS}</span><span class=\"seo-svc__go\">Pricing →</span></div></div><div class=\"seo-svc\" data-module=\"seo-service-card\" data-visual-id=\"seo-service-card\" data-action=\"nav.pricing\" data-id=\"${CHS_LANDING_04_SERVICES_ITEM_3_NAME@LOCALIZED_STRING_SS}\" data-bind=\"cms.services[]\" role=\"button\" tabindex=\"0\"><div class=\"seo-svc__icon\" style=\"background:rgba(255,159,10,.16)\"><i style=\"background:#ff8a3d\"></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_3_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\" data-bind=\"cms.services[].benefit\">${CHS_LANDING_04_SERVICES_ITEM_3_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span data-bind=\"cms.services[].priceFrom\">from ${CHS_LANDING_04_SERVICES_ITEM_3_PRICE@LOCALIZED_STRING_SS}</span><span class=\"seo-svc__go\">Pricing →</span></div></div><div class=\"seo-svc\" data-module=\"seo-service-card\" data-visual-id=\"seo-service-card\" data-action=\"nav.pricing\" data-id=\"${CHS_LANDING_04_SERVICES_ITEM_4_NAME@LOCALIZED_STRING_SS}\" data-bind=\"cms.services[]\" role=\"button\" tabindex=\"0\"><div class=\"seo-svc__icon\" style=\"background:rgba(122,82,224,.16)\"><i style=\"background:#7a52e0\"></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_4_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\" data-bind=\"cms.services[].benefit\">${CHS_LANDING_04_SERVICES_ITEM_4_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span data-bind=\"cms.services[].priceFrom\">from ${CHS_LANDING_04_SERVICES_ITEM_4_PRICE@LOCALIZED_STRING_SS}</span><span class=\"seo-svc__go\">Pricing →</span></div></div></div></section>",
+  "css": "/* ---------- 3 · services grid ---------- */\n.seo-svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }\n.seo-svc {\n  background: rgba(var(--glass),.55); border: 1px solid var(--glass-border); border-radius: var(--radius-card);\n  padding: 20px; cursor: pointer; transition: transform .18s, box-shadow .18s;\n  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);\n  box-shadow: var(--shadow-card);\n}\n.seo-svc:hover { transform: translateY(-3px); box-shadow: var(--shadow-float); }\n.seo-svc__icon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 12px; }\n.seo-svc__icon > i { width: 15px; height: 15px; border-radius: 5px; display: block; }\n.seo-svc__name { font-weight: 800; font-size: 16px; }\n.seo-svc__benefit { font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.5; }\n.seo-svc__meta { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 13px; }\n.seo-svc__meta > span:first-child { font-weight: 700; color: var(--ink); }\n.seo-svc__go { color: var(--accent); font-weight: 700; }",
   "javascript": "",
   "parameters": [
     {
@@ -51,7 +51,7 @@
         }
       },
       "value": {
-        "en": "Every treatment card lists what's included - prices are live on this page."
+        "en": "Every treatment card lists what's included — prices are live on this page."
       }
     },
     {
@@ -64,7 +64,7 @@
         }
       },
       "value": {
-        "en": "Grounding massage"
+        "en": "Hair Styling"
       }
     },
     {
@@ -77,19 +77,21 @@
         }
       },
       "value": {
-        "en": "Release held tension with a slow full-body ritual."
+        "en": "Cut, color & blowout"
       }
     },
     {
-      "code": "CHS_LANDING_04_SERVICES_ITEM_1_HREF",
-      "type": "STRING",
+      "code": "CHS_LANDING_04_SERVICES_ITEM_1_PRICE",
+      "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "ITEM 1 HREF",
+          "NAME": "ITEM 1 PRICE",
           "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
         }
       },
-      "value": "#seo-pricing"
+      "value": {
+        "en": "$65"
+      }
     },
     {
       "code": "CHS_LANDING_04_SERVICES_ITEM_2_NAME",
@@ -101,7 +103,7 @@
         }
       },
       "value": {
-        "en": "Custom facial"
+        "en": "Manicure & Nails"
       }
     },
     {
@@ -114,19 +116,21 @@
         }
       },
       "value": {
-        "en": "A skin-focused session shaped around your complexion today."
+        "en": "Classic to gel, at home"
       }
     },
     {
-      "code": "CHS_LANDING_04_SERVICES_ITEM_2_HREF",
-      "type": "STRING",
+      "code": "CHS_LANDING_04_SERVICES_ITEM_2_PRICE",
+      "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "ITEM 2 HREF",
+          "NAME": "ITEM 2 PRICE",
           "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
         }
       },
-      "value": "#seo-pricing"
+      "value": {
+        "en": "$45"
+      }
     },
     {
       "code": "CHS_LANDING_04_SERVICES_ITEM_3_NAME",
@@ -138,7 +142,7 @@
         }
       },
       "value": {
-        "en": "Harbor reset"
+        "en": "Facial Treatment"
       }
     },
     {
@@ -151,19 +155,21 @@
         }
       },
       "value": {
-        "en": "Massage and facial care in one longer visit."
+        "en": "A routine that carries over"
       }
     },
     {
-      "code": "CHS_LANDING_04_SERVICES_ITEM_3_HREF",
-      "type": "STRING",
+      "code": "CHS_LANDING_04_SERVICES_ITEM_3_PRICE",
+      "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "ITEM 3 HREF",
+          "NAME": "ITEM 3 PRICE",
           "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
         }
       },
-      "value": "#seo-pricing"
+      "value": {
+        "en": "$85"
+      }
     },
     {
       "code": "CHS_LANDING_04_SERVICES_ITEM_4_NAME",
@@ -175,7 +181,7 @@
         }
       },
       "value": {
-        "en": "Seasonal body ritual"
+        "en": "Event & Bridal Package"
       }
     },
     {
@@ -188,19 +194,21 @@
         }
       },
       "value": {
-        "en": "A longer seasonal treatment to slow down and reset."
+        "en": "Trials, timeline, day-of team"
       }
     },
     {
-      "code": "CHS_LANDING_04_SERVICES_ITEM_4_HREF",
-      "type": "STRING",
+      "code": "CHS_LANDING_04_SERVICES_ITEM_4_PRICE",
+      "type": "LOCALIZED_STRING_SS",
       "nls": {
         "en": {
-          "NAME": "ITEM 4 HREF",
+          "NAME": "ITEM 4 PRICE",
           "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
         }
       },
-      "value": "#seo-pricing"
+      "value": {
+        "en": "Quote"
+      }
     }
   ]
 }

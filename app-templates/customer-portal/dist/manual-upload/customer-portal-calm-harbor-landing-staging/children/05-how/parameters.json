@@ -22,7 +22,7 @@
       }
     },
     "value": {
-      "en": "Your service, step by step"
+      "en": "From request to report"
     }
   },
   {
@@ -35,7 +35,7 @@
       }
     },
     "value": {
-      "en": "Choose a treatment"
+      "en": "Request"
     }
   },
   {
@@ -48,7 +48,7 @@
       }
     },
     "value": {
-      "en": "Pick the kind of reset you need, from massage to a longer ritual."
+      "en": "Choose a treatment and where — the harbor studio or your place."
     }
   },
   {
@@ -61,7 +61,7 @@
       }
     },
     "value": {
-      "en": "Pick a time"
+      "en": "Scheduling"
     }
   },
   {
@@ -74,7 +74,7 @@
       }
     },
     "value": {
-      "en": "Choose a calm window at the harbor studio or your place."
+      "en": "Pick a time; keep the same specialist for every visit."
     }
   },
   {
@@ -87,7 +87,7 @@
       }
     },
     "value": {
-      "en": "Arrive as you are"
+      "en": "Service"
     }
   },
   {
@@ -100,7 +100,7 @@
       }
     },
     "value": {
-      "en": "Your visit starts with a short conversation about comfort and focus."
+      "en": "Arrive to a warm, prepared room — or your specialist arrives with a sanitised kit."
     }
   },
   {
@@ -113,7 +113,7 @@
       }
     },
     "value": {
-      "en": "Carry the calm forward"
+      "en": "Report & payment"
     }
   },
   {
@@ -126,7 +126,7 @@
       }
     },
     "value": {
-      "en": "Pressure notes and product picks support your next visit."
+      "en": "Pressure notes, sensitivities and product picks saved to your routine for next time."
     }
   }
 ]

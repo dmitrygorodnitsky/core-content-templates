@@ -11,38 +11,5 @@
     "value": {
       "en": "Calm Harbor Spa"
     }
-  },
-  {
-    "code": "CHS_LANDING_01_PUBLIC_NAV_HOME_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "HOME URL",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#calm-harbor-landing"
-  },
-  {
-    "code": "CHS_LANDING_01_PUBLIC_NAV_SIGN_IN_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "SIGN IN URL",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "CHS_LANDING_01_PUBLIC_NAV_SHOP_URL",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "SHOP URL",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#seo-products"
   }
 ]

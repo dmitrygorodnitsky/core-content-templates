@@ -39,6 +39,19 @@
     }
   },
   {
+    "code": "CHS_LANDING_02_HERO_TITLE_SUFFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE SUFFIX",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
     "code": "CHS_LANDING_02_HERO_SERVICE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -48,7 +61,7 @@
       }
     },
     "value": {
-      "en": "Hair, nails, skin and massage by licensed specialists - quiet single-guest rooms in the harbor studio, or at your place."
+      "en": "Hair, nails, skin and massage by licensed specialists — quiet single-guest rooms in the harbor studio, or at your place."
     }
   },
   {
@@ -65,17 +78,6 @@
     }
   },
   {
-    "code": "CHS_LANDING_02_HERO_PRIMARY_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "PRIMARY HREF",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#seo-services"
-  },
-  {
     "code": "CHS_LANDING_02_HERO_SECONDARY_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -89,17 +91,6 @@
     }
   },
   {
-    "code": "CHS_LANDING_02_HERO_SECONDARY_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "SECONDARY HREF",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#seo-pricing"
-  },
-  {
     "code": "CHS_LANDING_02_HERO_NOTE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -109,7 +100,7 @@
       }
     },
     "value": {
-      "en": "Prices on this page are live from the public catalog - no account needed to browse"
+      "en": "Prices on this page are live from the public catalog — no account needed to browse"
     }
   },
   {

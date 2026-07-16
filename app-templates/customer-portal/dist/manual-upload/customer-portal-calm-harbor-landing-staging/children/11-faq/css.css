@@ -1,1 +1,12 @@
-
+/* ---------- 9 · FAQ ---------- */
+.seo-faq { max-width: 720px; display: flex; flex-direction: column; gap: 8px; }
+.seo-faq__item { background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07); border-radius: var(--radius-md); overflow: hidden; }
+.seo-faq__item.is-open { border-color: rgba(var(--accent-rgb),.3); }
+.seo-faq__q {
+  display: flex; justify-content: space-between; align-items: center; gap: 14px; width: 100%;
+  background: none; border: 0; font: inherit; text-align: left; cursor: pointer;
+  padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--ink);
+}
+.seo-faq__chev { color: var(--accent); font-weight: 800; font-size: 16px; flex: none; }
+.seo-faq__a { padding: 0 18px 15px; }
+.seo-faq__a p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }

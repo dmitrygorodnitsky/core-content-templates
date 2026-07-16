@@ -11,8 +11,8 @@
   },
   "children": [],
   "head": "",
-  "html": "<section class=\"seo-sec\" data-module=\"seo-faq\" data-visual-id=\"seo-faq\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_11_FAQ_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_11_FAQ_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-faq\" itemscope itemtype=\"https://schema.org/FAQPage\"><details class=\"seo-faq__item\" data-bind=\"cms.faq[0]\" open><summary class=\"seo-faq__q\" data-action=\"seo.faq.toggle\"><span>${CHS_LANDING_11_FAQ_ITEM_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\" aria-hidden=\"true\">+</span></summary><div class=\"seo-faq__a\"><p>${CHS_LANDING_11_FAQ_ITEM_1_ANSWER@LOCALIZED_STRING_SS}</p></div></details><details class=\"seo-faq__item\" data-bind=\"cms.faq[1]\"><summary class=\"seo-faq__q\" data-action=\"seo.faq.toggle\"><span>${CHS_LANDING_11_FAQ_ITEM_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\" aria-hidden=\"true\">+</span></summary><div class=\"seo-faq__a\"><p>${CHS_LANDING_11_FAQ_ITEM_2_ANSWER@LOCALIZED_STRING_SS}</p></div></details><details class=\"seo-faq__item\" data-bind=\"cms.faq[2]\"><summary class=\"seo-faq__q\" data-action=\"seo.faq.toggle\"><span>${CHS_LANDING_11_FAQ_ITEM_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\" aria-hidden=\"true\">+</span></summary><div class=\"seo-faq__a\"><p>${CHS_LANDING_11_FAQ_ITEM_3_ANSWER@LOCALIZED_STRING_SS}</p></div></details><details class=\"seo-faq__item\" data-bind=\"cms.faq[3]\"><summary class=\"seo-faq__q\" data-action=\"seo.faq.toggle\"><span>${CHS_LANDING_11_FAQ_ITEM_4_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\" aria-hidden=\"true\">+</span></summary><div class=\"seo-faq__a\"><p>${CHS_LANDING_11_FAQ_ITEM_4_ANSWER@LOCALIZED_STRING_SS}</p></div></details></div></section>",
-  "css": "",
+  "html": "<section class=\"seo-sec\" data-module=\"seo-faq\" data-visual-id=\"seo-faq\" data-state=\"ready\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_11_FAQ_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_11_FAQ_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-faq\" itemscope itemtype=\"https://schema.org/FAQPage\"><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[0]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"0\" data-faq-answer=\"${CHS_LANDING_11_FAQ_ITEM_1_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CHS_LANDING_11_FAQ_ITEM_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[1]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"1\" data-faq-answer=\"${CHS_LANDING_11_FAQ_ITEM_2_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CHS_LANDING_11_FAQ_ITEM_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[2]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"2\" data-faq-answer=\"${CHS_LANDING_11_FAQ_ITEM_3_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CHS_LANDING_11_FAQ_ITEM_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[3]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"3\" data-faq-answer=\"${CHS_LANDING_11_FAQ_ITEM_4_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CHS_LANDING_11_FAQ_ITEM_4_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div></div></section>",
+  "css": "/* ---------- 9 · FAQ ---------- */\n.seo-faq { max-width: 720px; display: flex; flex-direction: column; gap: 8px; }\n.seo-faq__item { background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07); border-radius: var(--radius-md); overflow: hidden; }\n.seo-faq__item.is-open { border-color: rgba(var(--accent-rgb),.3); }\n.seo-faq__q {\n  display: flex; justify-content: space-between; align-items: center; gap: 14px; width: 100%;\n  background: none; border: 0; font: inherit; text-align: left; cursor: pointer;\n  padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--ink);\n}\n.seo-faq__chev { color: var(--accent); font-weight: 800; font-size: 16px; flex: none; }\n.seo-faq__a { padding: 0 18px 15px; }\n.seo-faq__a p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }",
   "javascript": "",
   "parameters": [
     {
@@ -64,7 +64,7 @@
         }
       },
       "value": {
-        "en": "Most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you."
+        "en": "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card."
       }
     },
     {
@@ -90,7 +90,7 @@
         }
       },
       "value": {
-        "en": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to manage their plan."
+        "en": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan."
       }
     },
     {
@@ -116,7 +116,7 @@
         }
       },
       "value": {
-        "en": "Yes. The retail shelf is the same public catalog our specialists use during treatments."
+        "en": "Yes — the retail shelf is the same public catalog our specialists pull from during treatments."
       }
     },
     {
@@ -129,7 +129,7 @@
         }
       },
       "value": {
-        "en": "What if I am not happy with the result?"
+        "en": "What if I'm not happy with the result?"
       }
     },
     {
@@ -142,7 +142,7 @@
         }
       },
       "value": {
-        "en": "Tell us within 48 hours. A redo is covered by the guarantee."
+        "en": "Tell us within 48 hours — a redo is covered by the guarantee."
       }
     }
   ]

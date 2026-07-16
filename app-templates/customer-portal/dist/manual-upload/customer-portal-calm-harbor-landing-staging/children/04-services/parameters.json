@@ -35,7 +35,7 @@
       }
     },
     "value": {
-      "en": "Every treatment card lists what's included - prices are live on this page."
+      "en": "Every treatment card lists what's included — prices are live on this page."
     }
   },
   {
@@ -48,7 +48,7 @@
       }
     },
     "value": {
-      "en": "Grounding massage"
+      "en": "Hair Styling"
     }
   },
   {
@@ -61,19 +61,21 @@
       }
     },
     "value": {
-      "en": "Release held tension with a slow full-body ritual."
+      "en": "Cut, color & blowout"
     }
   },
   {
-    "code": "CHS_LANDING_04_SERVICES_ITEM_1_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_04_SERVICES_ITEM_1_PRICE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "ITEM 1 HREF",
+        "NAME": "ITEM 1 PRICE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#seo-pricing"
+    "value": {
+      "en": "$65"
+    }
   },
   {
     "code": "CHS_LANDING_04_SERVICES_ITEM_2_NAME",
@@ -85,7 +87,7 @@
       }
     },
     "value": {
-      "en": "Custom facial"
+      "en": "Manicure & Nails"
     }
   },
   {
@@ -98,19 +100,21 @@
       }
     },
     "value": {
-      "en": "A skin-focused session shaped around your complexion today."
+      "en": "Classic to gel, at home"
     }
   },
   {
-    "code": "CHS_LANDING_04_SERVICES_ITEM_2_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_04_SERVICES_ITEM_2_PRICE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "ITEM 2 HREF",
+        "NAME": "ITEM 2 PRICE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#seo-pricing"
+    "value": {
+      "en": "$45"
+    }
   },
   {
     "code": "CHS_LANDING_04_SERVICES_ITEM_3_NAME",
@@ -122,7 +126,7 @@
       }
     },
     "value": {
-      "en": "Harbor reset"
+      "en": "Facial Treatment"
     }
   },
   {
@@ -135,19 +139,21 @@
       }
     },
     "value": {
-      "en": "Massage and facial care in one longer visit."
+      "en": "A routine that carries over"
     }
   },
   {
-    "code": "CHS_LANDING_04_SERVICES_ITEM_3_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_04_SERVICES_ITEM_3_PRICE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "ITEM 3 HREF",
+        "NAME": "ITEM 3 PRICE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#seo-pricing"
+    "value": {
+      "en": "$85"
+    }
   },
   {
     "code": "CHS_LANDING_04_SERVICES_ITEM_4_NAME",
@@ -159,7 +165,7 @@
       }
     },
     "value": {
-      "en": "Seasonal body ritual"
+      "en": "Event & Bridal Package"
     }
   },
   {
@@ -172,18 +178,20 @@
       }
     },
     "value": {
-      "en": "A longer seasonal treatment to slow down and reset."
+      "en": "Trials, timeline, day-of team"
     }
   },
   {
-    "code": "CHS_LANDING_04_SERVICES_ITEM_4_HREF",
-    "type": "STRING",
+    "code": "CHS_LANDING_04_SERVICES_ITEM_4_PRICE",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "ITEM 4 HREF",
+        "NAME": "ITEM 4 PRICE",
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "#seo-pricing"
+    "value": {
+      "en": "Quote"
+    }
   }
 ]

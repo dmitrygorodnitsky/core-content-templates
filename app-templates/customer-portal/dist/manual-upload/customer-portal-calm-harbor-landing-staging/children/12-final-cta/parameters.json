@@ -9,7 +9,7 @@
       }
     },
     "value": {
-      "en": "Make room for your reset"
+      "en": "Ready when you are in Miami, FL"
     }
   },
   {
@@ -22,7 +22,7 @@
       }
     },
     "value": {
-      "en": "Every price on this page is live from the public catalog - browse the shop, or sign in to your routine."
+      "en": "Every price on this page is live from the public catalog — browse the shop, or sign in to your routine."
     }
   },
   {
@@ -39,17 +39,6 @@
     }
   },
   {
-    "code": "CHS_LANDING_12_FINAL_CTA_PRIMARY_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "PRIMARY HREF",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#seo-products"
-  },
-  {
     "code": "CHS_LANDING_12_FINAL_CTA_SECONDARY_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -61,16 +50,5 @@
     "value": {
       "en": "Sign in"
     }
-  },
-  {
-    "code": "CHS_LANDING_12_FINAL_CTA_SECONDARY_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "SECONDARY HREF",
-        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
-      }
-    },
-    "value": "#"
   }
 ]
