@@ -42,7 +42,7 @@ export function DevToolbar() {
     { v: "pricing", l: "pricing" }, { v: "products", l: "products" }, { v: "checkout", l: "checkout" },
     { v: "proposals.list", l: "proposals.list" }, { v: "proposal.detail", l: "proposal.detail" },
     { v: "profile", l: "profile" }, { v: "calendar", l: "calendar" }, { v: "activity", l: "activity" }, { v: "support", l: "support" },
-    { v: "landing", l: "landing" }, { v: "seo.landing", l: "seo.landing" }, { v: "auth.phone", l: "auth.phone" }, { v: "auth.code", l: "auth.code" }
+    { v: "landing", l: "landing" }, { v: "seo.landing", l: "seo.landing" }, { v: "auth.oidc", l: "auth.oidc" }, { v: "auth.phone", l: "auth.phone (ref)" }, { v: "auth.code", l: "auth.code (ref)" }
   ].map(function (o) { var e = h("option", { value: o.v }, o.l); if (o.v === state.route) e.selected = true; return e; }));
   routeSel.addEventListener("change", function () {
     if (routeSel.value === "order.detail" && !state.currentOrderId) { openOrder((currentOrder() || {}).id); }
@@ -79,6 +79,21 @@ export function DevToolbar() {
     retreatGroup = h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "retreat"), rSel]);
   }
 
+  /* Core OIDC session-state preview (only on auth.oidc) */
+  var oidcGroup = null;
+  if (state.route === "auth.oidc") {
+    var oSel = h("select", {}, ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"].map(function (n) {
+      var e = h("option", { value: n }, n);
+      if (n === state.oidc) e.selected = true;
+      return e;
+    }));
+    oSel.addEventListener("change", function () {
+      var v = oSel.value;
+      setState({ oidc: v, sessionName: (v === "ready-signed-in" || v === "signing-out") ? (state.sessionName || F.customer.firstName) : null });
+    });
+    oidcGroup = h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "oidc"), oSel]);
+  }
+
   /* CTA lifecycle preview (only on the public SEO landing) */
   var ctaGroup = null;
   if (state.route === "seo.landing") {
@@ -95,6 +110,7 @@ export function DevToolbar() {
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "route"), routeSel]),
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "theme"), themeSel]),
     h("div", { "class": "dev-toolbar__group" }, [h("span", { "class": "dev-toolbar__label" }, "state"), stateSel]),
+    oidcGroup,
     retreatGroup,
     ctaGroup,
     modeBtn,
@@ -180,6 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /* optional initial route for direct-preview entry files (e.g. seo-landing.html
      sets window.__initialRoute). Preview convenience only — Codex owns real routing. */
   if (window.__initialRoute) state.route = window.__initialRoute;
+  if (window.__initialTheme && F.themes[window.__initialTheme]) { state.theme = window.__initialTheme; state.orders = F.ordersFor(window.__initialTheme); }
   mount = document.getElementById("app");
   bindActions(mount);
   render();

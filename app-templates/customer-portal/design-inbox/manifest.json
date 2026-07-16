@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "wave-9 (modular / customer-portal-design)",
+  "version": "wave-11 (modular / customer-portal-design)",
   "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
   "runtime": "presentation-only. Business logic, API, auth, permissions, persistence are owned by Codex.",
   "entry": "customer-portal-design/source.html",
@@ -787,7 +787,15 @@
       "props": ["cms.pricing (note, rows[] {name, from|null, unit|reason})"],
       "status": "done",
       "wave": 8,
-      "note": "'from' prices come ONLY from CMS; from:null renders the needs-assessment variant. States: ready|loading|empty (empty = no published prices, quote-only copy)."
+      "note": "'from' prices come ONLY from CMS; from:null renders the needs-assessment variant. States: ready|loading|empty (empty = no published prices, quote-only copy). Wave 12 (Calm Harbor/Beauty): when the vertical supplies pimPricing, ready renders the repeated LIVE public PIM collection pim.pricing[] instead of cms.pricing.rows[] — public SPA_SERVICE + SPA_MEMBERSHIP items only (never SPA_RETAIL); each seo-pricing-row binds code/name/displayPrice/optional interval|shortDescription, carries data-product-code, and renders displayPrice VERBATIM (presentation never calculates, estimates, compares or transforms a price). empty truthfully states nothing is published — no quote, booking or fallback price. Section CTA stays honest navigation (auth.gotoSignin)."
+    },
+    {
+      "id": "seo-pricing-row",
+      "factory": "inline in SeoPricing",
+      "props": ["pim.pricing[] (code, name, displayPrice, interval?, shortDescription?) OR cms.pricing.rows[i]"],
+      "status": "done",
+      "wave": 12,
+      "note": "Stable row hook (data-module + data-visual-id seo-pricing-row). PIM rows carry data-product-code and data-bind=pim.pricing[]; legacy CMS rows keep data-bind=cms.pricing.rows[i]. Same accepted visual composition either way."
     },
     {
       "id": "seo-service-area",
@@ -834,7 +842,40 @@
       "props": ["action (fixed id)", "label", "successLabel", "variant"],
       "status": "done",
       "wave": 8,
-      "note": "data-state = idle|pending|success|error from state.seoCta[actionId]; state.seoCtaForce (dev toolbar 'cta' select) previews any state on all CTAs."
+      "note": "data-state = idle|pending|success|error from state.seoCta[actionId]; state.seoCtaForce (dev toolbar 'cta' select) previews any state on all CTAs. Wave 11: CTA kinds services|pricing|products|signin map to HONEST NAVIGATION (nav.services / nav.pricing / nav.products / auth.gotoSignin) — those CTAs render NO lifecycle (data-state stays idle, unaffected by seoCtaForce)."
+    },
+    {
+      "id": "seo-products-teaser",
+      "factory": "SeoProductsTeaser (components/seo/SeoSections.js)",
+      "props": ["cms.productsTeaser (eyebrow, title, sub, cta, note, codes[])", "pim.products[] (public fields only)"],
+      "status": "done",
+      "wave": 11,
+      "states": ["ready", "loading", "empty"],
+      "note": "Retail teaser between seo-pricing and seo-service-area (Calm Harbor release). Renders 3–4 cards from the repeated public PIM collection; per-vertical opt-in — the section is omitted when cms.productsTeaser is absent, other verticals unchanged. codes[] = CMS slot choosing featured catalog product codes. ONE action for the section CTA and every card: nav.products → existing public Shop route. Empty retail collection renders seo-products-teaser-empty (honest copy, CTA hidden, no invented products or sales claims). No cart, checkout, order, payment, booking command or success state on the public landing."
+    },
+    {
+      "id": "seo-product-teaser-card",
+      "factory": "inline in SeoProductsTeaser",
+      "props": ["pim.products[] — code, name, shortDescription, displayPrice, optional image"],
+      "status": "done",
+      "wave": 11,
+      "note": "Reuses the accepted product-card visual language (product-card classes) — NOT a second catalog-card system; no Add/cart button. data-product-code carries the source PIM product code. A missing public image keeps the accepted tinted-thumb art. Whole card fires nav.products."
+    },
+    {
+      "id": "seo-products-teaser-empty",
+      "factory": "inline in SeoProductsTeaser",
+      "props": [],
+      "status": "done",
+      "wave": 11,
+      "note": "Intentional empty state for an empty retail PIM collection (data-visual-id seo-products-teaser-empty, data-state no-data)."
+    },
+    {
+      "id": "seo-media",
+      "factory": "seoMedia (components/seo/SeoSections.js)",
+      "props": ["cms.media.hero / cms.media.proof (src, alt, focal, label)"],
+      "status": "done",
+      "wave": 11,
+      "note": "CMS media slot that renders the supplied public image (object-fit cover + CMS focal point) inside the existing seo-hero / seo-proof composition. While the file is missing it falls back to the striped spec slot (data-state no-data) — never drawn imagery; no logos, text, prices, ratings or promo claims inside bitmaps. Files: customer-portal-design/design-inbox/media/calm-harbor-{hero,proof}.jpg; crops/focal/alt spec in MEDIA-SPEC.md."
     },
     {
       "id": "seo-meta-preview",
@@ -854,12 +895,24 @@
       "wave": 6
     },
     {
+      "id": "core-oidc-auth",
+      "factory": "AuthOidc()",
+      "props": [
+        "oidc (session/ui state)",
+        "sessionName (session.displayName)"
+      ],
+      "wave": 10,
+      "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"],
+      "note": "Core OIDC login card — route auth.oidc at /login. Replaces the fixture phone/OTP/Apple controls. 'checking-session' = initial bootstrap on EVERY page load (incl. the return from /core/oauth2-callback.html): discovery + session restore from browser storage — non-interactive, claims no redirect, shows no sign-in controls and no session name; Codex resolves it to ready-signed-out / ready-signed-in / unavailable. auth.oidcSignIn starts the authorization-code+PKCE redirect (demo body only sets 'redirecting'; in production the browser leaves for Core and returns to the same /login URL). 'unavailable' = Core discovery / authorization-library init failure — retry only, NO fallback login method. ready-signed-in renders ONE customer-safe display name (data-bind session.displayName), a catalog route and sign-out — it does NOT imply orders/appointments/profile/booking data. No password input, token, API key or Account id is ever rendered.",
+      "status": "done"
+    },
+    {
       "id": "auth-card",
       "factory": "Auth()",
       "props": [
         "route"
       ],
-      "status": "done",
+      "status": "reference-only (superseded by core-oidc-auth, wave 10; no product navigation reaches it)",
       "wave": 6,
       "note": "route drives step: auth.phone -> AuthPhone, auth.code -> AuthCode"
     },
@@ -1329,6 +1382,8 @@
   ],
   "dataBindings": [
     "brand.name",
+    "cms.media.hero",
+    "cms.media.proof",
     "page.title",
     "page.subtitle",
     "order.name",
@@ -1336,12 +1391,15 @@
     "order.date",
     "order.price",
     "order.statusLabel",
+    "pim.pricing[] (public fields: code, name, displayPrice, interval, shortDescription — seo-pricing-row; data-product-code carries the code; SPA_SERVICE + SPA_MEMBERSHIP only, never SPA_RETAIL)",
+    "pim.products[] (public fields: code, name, shortDescription, displayPrice, image — seo-product-teaser-card; data-product-code carries the code)",
     "service.name",
     "service.price",
     "plan.name",
     "plan.desc",
     "proposal.id",
     "proposal.pendingCount",
+    "session.displayName",
     "status.label",
     "visit.techName",
     "visit.eta"
@@ -1356,7 +1414,9 @@
     "auth.apple",
     "auth.back",
     "auth.gotoSignin",
+    "auth.oidcSignIn",
     "auth.resend",
+    "auth.retrySession",
     "auth.sendCode",
     "auth.signOut",
     "auth.verifyCode",
@@ -1384,6 +1444,9 @@
     "membership.activate",
     "nav.go",
     "nav.landing",
+    "nav.pricing",
+    "nav.products",
+    "nav.services",
     "order.back",
     "order.bookAgain",
     "order.cancel",
@@ -1438,7 +1501,7 @@
   ],
   "fixtures": {
     "module": "data/fixtures.js",
-    "seoModule": "data/seo-fixtures.js — CMS slots for seo.landing: per vertical {meta{seoTitle,metaDescription,h1,canonicalPath,locality,serviceArea,primaryCta{kind,label,destination},secondaryCta}, hero{service,offer}, trust, how[4], proof, pricing.rows[] (from|null), area{cities[]}, reviews[] (media flag), faq[]} + SEO_FOOTER (nullable contact slots). {locality} in strings is a geography merge tag.",
+    "seoModule": "data/seo-fixtures.js — CMS slots for seo.landing: per vertical {meta{seoTitle,metaDescription,h1,canonicalPath,locality,serviceArea,primaryCta{kind,label,destination},secondaryCta}, hero{service,offer}, trust, how[4], proof, pricing.rows[] (from|null), area{cities[]}, reviews[] (media flag), faq[]} + SEO_FOOTER (nullable contact slots). {locality} in strings is a geography merge tag. Wave 11 optional per-vertical slots: meta.brand, hero.note, services{eyebrow,title,sub}, media{hero,proof} (CMS media: src/alt/focal/label), pricing.cta{kind,label}, finalCta{sub,primary,secondary}, productsTeaser{eyebrow,title,sub,cta,note,codes[]}. CTA kinds services|pricing|products|signin = honest navigation (nav.*, auth.gotoSignin) with no lifecycle.",
     "global": "window.AircoveFixtures",
     "exports": [
       "themes",

@@ -88,3 +88,6 @@
 .vw-mobile .reading-grid { grid-template-columns: 1fr; }
 
 .vw-mobile .unit-row { flex-direction: column; }
+
+/* Wave 10 — Core OIDC login */
+.vw-mobile .oidc-title { font-size: 20px; }

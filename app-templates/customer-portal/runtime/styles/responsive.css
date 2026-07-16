@@ -79,6 +79,9 @@
 .vw-tablet .auth-grid, .vw-mobile .auth-grid { grid-template-columns: 1fr; }
 
 .vw-mobile .auth-pitch__title { font-size: 30px; }
+
+/* Wave 10 - Core OIDC login */
+.vw-mobile .oidc-title { font-size: 20px; }
 /* Wave 7 — care hub */
 .vw-tablet .care-grid, .vw-mobile .care-grid { grid-template-columns: 1fr; }
 .vw-mobile .care-stats { grid-template-columns: 1fr 1fr; }

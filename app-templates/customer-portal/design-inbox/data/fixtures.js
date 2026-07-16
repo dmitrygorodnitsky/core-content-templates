@@ -248,13 +248,15 @@
         plusFeatures: ["2 visits a month included", "Same-week rebooking guarantee", "\u201320% on all products", "Event styling priority"] },
       feat: { badge: "New \u00b7 Pro-grade", title: "Silk Repair Set \u2014 salon results between visits", desc: "The treatment line your stylist uses, sized for home.", cta: "Buy \u00b7 $64", fin: "or 4 \u00d7 $16 \u00b7 no fees" },
       cats: [{ key: "hair", label: "Hair care" }, { key: "nails", label: "Nails" }, { key: "skin", label: "Skin" }],
+      /* wave 11 — `code` = stable public PIM product code (SPA_RETAIL class).
+         Carried on seo-product-teaser-card as data-product-code. */
       products: [
-        { cat: "hair", tag: "Hair", name: "Silk Repair Set", blurb: "Post-color bond care", price: "$64", priceNum: 64 },
-        { cat: "hair", tag: "Hair", name: "Heat Shield Spray", blurb: "Before every hot tool", price: "$28", priceNum: 28 },
-        { cat: "nails", tag: "Nails", name: "Cuticle Care Kit", blurb: "Between-visit upkeep", price: "$22", priceNum: 22 },
-        { cat: "nails", tag: "Nails", name: "Gel Removal Kit", blurb: "Damage-free at home", price: "$18", priceNum: 18 },
-        { cat: "skin", tag: "Skin", name: "Hydration Serum", blurb: "Your specialist\u2019s pick", price: "$46", priceNum: 46 },
-        { cat: "skin", tag: "Skin", name: "Overnight Mask", blurb: "Twice-a-week routine", price: "$34", priceNum: 34 }
+        { code: "rtl-beauty-01", cat: "hair", tag: "Hair", name: "Silk Repair Set", blurb: "Post-color bond care", price: "$64", priceNum: 64 },
+        { code: "rtl-beauty-02", cat: "hair", tag: "Hair", name: "Heat Shield Spray", blurb: "Before every hot tool", price: "$28", priceNum: 28 },
+        { code: "rtl-beauty-03", cat: "nails", tag: "Nails", name: "Cuticle Care Kit", blurb: "Between-visit upkeep", price: "$22", priceNum: 22 },
+        { code: "rtl-beauty-04", cat: "nails", tag: "Nails", name: "Gel Removal Kit", blurb: "Damage-free at home", price: "$18", priceNum: 18 },
+        { code: "rtl-beauty-05", cat: "skin", tag: "Skin", name: "Hydration Serum", blurb: "Your specialist\u2019s pick", price: "$46", priceNum: 46 },
+        { code: "rtl-beauty-06", cat: "skin", tag: "Skin", name: "Overnight Mask", blurb: "Twice-a-week routine", price: "$34", priceNum: 34 }
       ],
       reminder: { title: "Roots check-in", desc: "It has been 6 weeks since your last color visit" },
       prop: { svc: "Routine Membership", surfaces: ["Hair", "Nails", "Skin", "Massage", "Makeup"], months: "Year-round", unlimDesc: "Monthly routine visits plus member pricing on extras.", colA: "Styling", colB: "Treatment", unitA: "/ visit", unitB: "/ treatment" }

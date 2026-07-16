@@ -18,6 +18,7 @@ import { Support } from "./routes/SupportPage.js";
 import { Landing } from "./routes/LandingPage.js";
 import { SeoLanding } from "./routes/SeoLandingPage.js";
 import { Auth } from "./routes/AuthPage.js";
+import { AuthOidc } from "./routes/AuthOidcPage.js";
 import { Care } from "./routes/CarePage.js";
 
 export function ComingSoon(routeId, wave) {
@@ -47,8 +48,9 @@ export function renderRoute() {
     case "support":     return Support();
     case "landing":     return Landing();
     case "seo.landing": return SeoLanding();
-    case "auth.phone":  return Auth();
-    case "auth.code":   return Auth();
+    case "auth.oidc":   return AuthOidc(); /* wave 10 — Core OIDC login at /login */
+    case "auth.phone":  return Auth(); /* reference only — superseded by auth.oidc */
+    case "auth.code":   return Auth(); /* reference only — superseded by auth.oidc */
     default:            return Cabinet();
   }
 }

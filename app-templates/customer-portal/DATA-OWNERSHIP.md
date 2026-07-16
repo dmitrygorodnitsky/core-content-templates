@@ -49,6 +49,10 @@ its static authored content can ship before any customer backend is opened.
 
 ## Ownership Matrix
 
+The required backend and authorization boundary for the next private portal
+increment is specified in `content/cases/CORE-CUSTOMER-PORTAL-CONTRACT.md`.
+Its generic Core list/save endpoints are explicitly not browser contracts.
+
 `Opened` means that a repository-proven adapter currently exists. It does not
 mean that every deployment has configured its credentials, gateway, or source
 data. `Not opened` means no live contract may be inferred from the UI.
@@ -195,22 +199,28 @@ tree is uploaded under one same-origin static path on `dev-1`.
 
 The first manual package is the public SEO landing. Its accepted design has a
 public header, hero, trust strip, services, how-it-works, proof, pricing,
-service area, reviews, FAQ, final CTA, and footer. These are split by data
-authority, not merely visual section boundaries:
+retail teaser, service area, reviews, FAQ, final CTA, and footer. The Calm
+Harbor staging delivery is a root CMS family with one independent child
+template for each section, following the field-service template composition
+pattern. The root owns only metadata, shared design CSS/JS, and the child slot.
+These are split by data authority, not merely visual section boundaries:
 
 | Landing block | Authority | First release behavior |
 | --- | --- | --- |
 | Metadata, header, hero, trust, how-it-works, proof, area, reviews, FAQ, final CTA, footer | CMS-authored | Server-visible, validated authored content. FAQ structured data is generated only from that authored FAQ collection. |
 | Service cards | CMS-authored editorial content | May show service name, benefit, and an authored destination. They must not claim live availability or inventory. A staging-only, named PIM snapshot is allowed only when shipped with its source artifact. |
 | Pricing | Core PIM on `dev-1` same-origin | One dynamic `landing.pricing-pim` block. It normalizes PIM rows and renders `loading`, `ready`, `empty`, or `error`; in failure it displays no CMS-authored numeric price fallback. The P0 staging landing retains its named snapshot until this block is activated. |
-| Product grid | Core PIM catalog when catalog contract is opened | Omitted initially. A CMS-authored service-card grid is not a product catalog and must not be labelled or styled as one. |
+| Retail teaser | Core PIM public catalog | One dynamic `landing.products-pim` block. It uses the accepted teaser composition, public PIM fields only, and loading, empty, or error states. It shows neither inventory nor availability and never fabricates a product. |
 
-P0 is exported by `scripts/export-seo-public-manual.mjs` into
-`dist/manual-upload/customer-portal-seo-public-*`. It produces a self-contained
-JTE root record and split `root/` files from one validated authored document.
-The committed `*-reference` package is explicitly `public-authored-test` and
-must never be uploaded. A production manual package requires a complete
-`public-authored` input and is regenerated rather than hand-editing HTML.
+The previous single-document SEO package remains exported by
+`scripts/export-seo-public-manual.mjs` into
+`dist/manual-upload/customer-portal-seo-public-*`. Calm Harbor's accepted
+design is instead exported by
+`scripts/export-calm-harbor-landing-blocks-manual.mjs` into
+`dist/manual-upload/customer-portal-calm-harbor-landing-staging`. It produces
+a root record, 13 independently editable JTE child templates, the resolved
+composition order, and two same-origin WebP assets. Generated output is never
+hand-edited.
 
 The public PIM pricing block is a separate optional manual block composed with
 the SEO root, not a mutation of server-authored SEO content. Before it is

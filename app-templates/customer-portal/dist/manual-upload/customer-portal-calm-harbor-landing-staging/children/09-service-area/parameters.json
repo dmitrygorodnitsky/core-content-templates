@@ -1,0 +1,119 @@
+[
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Coverage"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Where we work"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_REGION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "REGION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami-Dade"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Treatments in the harbor studio; selected rituals travel to your neighborhood."
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_CITY_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 1",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_CITY_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 2",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Coral Gables"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_CITY_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 3",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami Beach"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_CITY_4",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 4",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Doral"
+    }
+  },
+  {
+    "code": "CHS_LANDING_09_SERVICE_AREA_CITY_5",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITY 5",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Aventura"
+    }
+  }
+]

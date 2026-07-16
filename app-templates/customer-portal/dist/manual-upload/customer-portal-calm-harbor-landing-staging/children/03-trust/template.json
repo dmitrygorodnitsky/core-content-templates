@@ -1,0 +1,123 @@
+{
+  "code": "CHS_LANDING_03_TRUST",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Trust strip"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-trust\" data-module=\"seo-trust-strip\" data-visual-id=\"seo-trust-strip\" data-state=\"ready\"><div class=\"seo-trust__item\" data-bind=\"cms.trust.licence\"><span class=\"seo-trust__icon\">&#9878;</span><div><div class=\"seo-trust__label\">${CHS_LANDING_03_TRUST_LICENCE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\"><span class=\"seo-slot\" data-state=\"no-data\">${CHS_LANDING_03_TRUST_LICENCE_SLOT@LOCALIZED_STRING_SS}</span></div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.insurance\"><span class=\"seo-trust__icon\">&#10003;</span><div><div class=\"seo-trust__label\">${CHS_LANDING_03_TRUST_INSURANCE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\"><span class=\"seo-slot\" data-state=\"no-data\">${CHS_LANDING_03_TRUST_INSURANCE_SLOT@LOCALIZED_STRING_SS}</span></div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.guarantee\"><span class=\"seo-trust__icon\">&#11033;</span><div><div class=\"seo-trust__label\">${CHS_LANDING_03_TRUST_GUARANTEE_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\">${CHS_LANDING_03_TRUST_GUARANTEE_VALUE@LOCALIZED_STRING_SS}</div></div></div><div class=\"seo-trust__item\" data-bind=\"cms.trust.appointments\"><span class=\"seo-trust__icon\">&#9201;</span><div><div class=\"seo-trust__label\">${CHS_LANDING_03_TRUST_APPOINTMENTS_LABEL@LOCALIZED_STRING_SS}</div><div class=\"seo-trust__value\">${CHS_LANDING_03_TRUST_APPOINTMENTS_VALUE@LOCALIZED_STRING_SS}</div></div></div></section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_03_TRUST_LICENCE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "LICENCE LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Cosmetology and massage licences"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_LICENCE_SLOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "LICENCE SLOT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Licence number - from CMS"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_INSURANCE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "INSURANCE LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Insured specialists"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_INSURANCE_SLOT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "INSURANCE SLOT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Policy - from CMS"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_GUARANTEE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "GUARANTEE LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Guarantee"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_GUARANTEE_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "GUARANTEE VALUE",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Redo within 48 hours if you are not happy"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_APPOINTMENTS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "APPOINTMENTS LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Appointments"
+      }
+    },
+    {
+      "code": "CHS_LANDING_03_TRUST_APPOINTMENTS_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "APPOINTMENTS VALUE",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Evenings and weekends available"
+      }
+    }
+  ]
+}

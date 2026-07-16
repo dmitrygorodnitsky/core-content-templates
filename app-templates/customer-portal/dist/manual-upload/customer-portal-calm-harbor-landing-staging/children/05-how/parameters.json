@@ -1,0 +1,132 @@
+[
+  {
+    "code": "CHS_LANDING_05_HOW_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "How it works"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Your service, step by step"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Choose a treatment"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_1_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 1 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pick the kind of reset you need, from massage to a longer ritual."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pick a time"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_2_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 2 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Choose a calm window at the harbor studio or your place."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Arrive as you are"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_3_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 3 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Your visit starts with a short conversation about comfort and focus."
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_4_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Carry the calm forward"
+    }
+  },
+  {
+    "code": "CHS_LANDING_05_HOW_STEP_4_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP 4 DESC",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Pressure notes and product picks support your next visit."
+    }
+  }
+]

@@ -12,7 +12,7 @@
     "routerMode": "hash",
     "defaultRoute": "pricing",
     "enabledModules": ["pricing", "products"],
-    "authMode": "fixture",
+    "authMode": "required",
     "dataMode": "live",
     "errorMode": "error"
   },
@@ -31,9 +31,16 @@
     "amountMinorDivisor": 100,
     "cta": "Book service"
   },
+  "auth": {
+    "coreBase": "/core",
+    "callbackPath": "/core/oauth2-callback.html",
+    "returnStorageKey": "oidc-return-url",
+    "logoutReturnStorageKey": "oidc-logout-return-url"
+  },
   "constraints": [
     "The package must be served from dev-1.servicewand.com so the public PIM request remains same-origin.",
     "Only pricing and products are opened live. Other portal entities must not be represented as live.",
-    "Auth mode fixture only bypasses the unfinished host-auth bridge for this staging catalog preview; it is not a customer session implementation."
+    "Customer sign-in uses the Core OIDC redirect flow and its registered same-origin callback. The CMS template never handles a password, API key, or access token.",
+    "A signed-in user does not open private customer data in this package. Orders, appointments, tasks, profile data, and mutations remain closed until their customer-scoped backend contracts are proven."
   ]
 }

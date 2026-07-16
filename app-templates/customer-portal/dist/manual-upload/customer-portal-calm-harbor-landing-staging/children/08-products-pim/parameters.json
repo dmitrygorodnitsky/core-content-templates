@@ -1,0 +1,238 @@
+[
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Spa retail"
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Take the ritual home"
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS SUB",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "A short shelf from the public catalog - the products our specialists actually use."
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS API BASE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "/core-pim/api"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS ORGANIZATION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "CALM_HARBOR_SPA_STAGING"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRODUCT_TYPE_CODES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS PRODUCT TYPE CODES",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "SPA_RETAIL"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS PRICE TYPE CODE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "SPA_STANDARD_PRICE"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS PRICE ATTRIBUTE CODE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "INTERVAL"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS PRICE ATTRIBUTE VALUES",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "ONE_TIME,MONTH"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS CURRENCY",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "USD"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS CURRENCY ATTRIBUTE CODE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "CURRENCY"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS CURRENCY ATTRIBUTE VALUES",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "USD"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS AMOUNT ATTRIBUTE CODE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "AMOUNT_MINOR"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_MINOR_DIVISOR",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS AMOUNT MINOR DIVISOR",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "100"
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_EMPTY_COPY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS EMPTY COPY",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Retail products appear here as soon as they are published in the public catalog - nothing is shown until real products exist."
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS ERROR TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "The shop is unavailable"
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_ERROR_COPY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS ERROR COPY",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "The public catalog could not be loaded. No catalog data is shown."
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_RETRY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS RETRY LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Try again"
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS CTA LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Visit the shop"
+    }
+  },
+  {
+    "code": "CHS_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PRODUCTS CTA HREF",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "#"
+  }
+]

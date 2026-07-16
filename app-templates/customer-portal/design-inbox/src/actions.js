@@ -7,12 +7,27 @@ import { StatusBadge } from "./components/primitives/StatusBadge.js";
 export var ACTIONS = {
   "nav.go":            function (id) { go(id); },
   "nav.landing":       function ()   { go("landing"); },
-  "auth.gotoSignin":   function ()   { state.authError = null; state.code = ""; go("auth.phone"); },
+  /* wave 11 — honest public navigation for the SEO landing (Calm Harbor
+     release): scroll to live sections / open the existing public Shop
+     route. No booking, payment or checkout command is ever dispatched
+     from the public landing. */
+  "nav.services":      function ()   { seoScrollTo("seo-services"); },
+  "nav.pricing":       function ()   { seoScrollTo("seo-pricing"); },
+  "nav.products":      function ()   { go("products"); },
+  "auth.gotoSignin":   function ()   { state.authError = null; state.code = ""; go("auth.oidc"); }, /* wave 10: → Core OIDC login */
   "auth.sendCode":     function ()   { validatePhone(); },
   "auth.verifyCode":   function ()   { validateCode(); },
   "auth.back":         function ()   { state.authError = null; go("auth.phone"); },
   "auth.resend":       function ()   { toast("New code sent"); },
-  "auth.apple":        function ()   { signIn(); },
+  "auth.apple":        function ()   { signIn(); }, /* reference only — auth.phone/auth.code fixture flow (superseded by auth.oidc) */
+  /* wave 10 — Core OIDC login (route auth.oidc). DEMO bodies only: Codex replaces
+     auth.oidcSignIn with the real authorization-code+PKCE redirect (the browser
+     actually leaves for Core, so 'redirecting' persists until unload),
+     auth.retrySession with real discovery / library re-init, and auth.signOut
+     with the real Core logout. Only session status + one customer-safe display
+     name ever reach this presentation layer. */
+  "auth.oidcSignIn":   function ()   { oidcSignIn(); },
+  "auth.retrySession": function ()   { oidcRetry(); },
   "order.open":        function (id) { openOrder(id); },
   "order.back":        function ()   { go("orders.list"); },
   "order.cancel":      function (id) { cancelOrder(id); },
@@ -89,7 +104,7 @@ export var ACTIONS = {
   "profile.updateAddress": function () { toast("Edit address"); },
   "profile.togglePref": function (id) { togglePref(id); },
   "profile.managePlan": function ()  { go("pricing"); },
-  "auth.signOut":      function ()   { toast("Signed out"); },
+  "auth.signOut":      function ()   { oidcSignOut(); },
   "calendar.open":     function ()   { go("calendar"); },
   "calendar.prev":     function ()   { calShift(-1); },
   "calendar.next":     function ()   { calShift(1); },
@@ -162,6 +177,36 @@ export function validatePhone() {
 export function validateCode() {
   if ((state.code || "").length < 4) { setState({ authError: "Enter all 4 digits" }); return; }
   signIn();
+}
+
+/* ---- wave 10: Core OIDC demo transitions (DEMO ONLY — see ACTIONS comment) ---- */
+var oidcTimer;
+
+export function oidcSignIn() {
+  if (state.oidc === "redirecting" || state.oidc === "signing-out") return;
+  clearTimeout(oidcTimer);
+  setState({ oidc: "redirecting" });
+  /* demo stand-in for the redirect round-trip; in production the page unloads here */
+  oidcTimer = setTimeout(function () {
+    setState({ oidc: "ready-signed-in", sessionName: F.customer.firstName });
+    toast("Signed in \u2014 welcome back");
+  }, 1600);
+}
+
+export function oidcRetry() {
+  clearTimeout(oidcTimer);
+  setState({ oidc: "ready-signed-out" });
+  toast("Secure sign-in is back \u2014 try again");
+}
+
+export function oidcSignOut() {
+  clearTimeout(oidcTimer);
+  state.route = "auth.oidc";
+  setState({ oidc: "signing-out" });
+  oidcTimer = setTimeout(function () {
+    setState({ oidc: "ready-signed-out", sessionName: null });
+    toast("Signed out");
+  }, 1400);
 }
 
 export function togglePref(key) { state.prefs = Object.assign({}, state.prefs, { }); state.prefs[key] = !state.prefs[key]; render(); }
@@ -264,13 +309,15 @@ export function ctaDemo(actionId, onSuccess) {
   }, 900);
 }
 
-/* jump to the services grid (scrollIntoView is not allowed in this workspace) */
-export function seoScrollToServices() {
-  var el = document.getElementById("seo-services");
+/* jump to a live landing section by id (scrollIntoView is not allowed
+   in this workspace) */
+export function seoScrollTo(id) {
+  var el = document.getElementById(id);
   if (!el) return;
   var top = el.getBoundingClientRect().top + window.scrollY - 24;
   window.scrollTo({ top: top, behavior: "smooth" });
 }
+export function seoScrollToServices() { seoScrollTo("seo-services"); }
 
 export function openDrawer(name) { state.drawer = name; render(); }
 

@@ -1560,6 +1560,48 @@ button { font-family: inherit; }
   opacity: .72;
 }
 
+/* ============================================================
+   WAVE 10 - Core OIDC login (data-route="auth.oidc", /login)
+   Module core-oidc-auth. Reuses the accepted auth-grid /
+   auth-card composition; the fixture phone / OTP / Apple
+   controls are NOT part of this route.
+   ============================================================ */
+.oidc-status { display: flex; align-items: center; margin-bottom: 16px; }
+
+.oidc-glyph { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; font-weight: 800; font-size: 19px; }
+
+.oidc-glyph--warn { background: rgba(255,59,48,.14); color: var(--danger); }
+
+.oidc-glyph--ok { background: rgba(52,199,89,.16); color: #1f8a44; }
+
+.oidc-spinner { width: 28px; height: 28px; border-radius: var(--radius-pill); border: 3px solid rgba(var(--accent-rgb),.16); border-top-color: var(--accent); animation: oidc-spin .8s linear infinite; }
+
+@keyframes oidc-spin { to { transform: rotate(360deg); } }
+
+.oidc-title { font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+
+.oidc-sub { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin: 6px 0 22px; }
+
+.oidc-sub--tail { margin-bottom: 0; }
+
+.oidc-steps { display: flex; flex-direction: column; gap: 9px; margin: 0 0 22px; }
+
+.oidc-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink-2); }
+
+.oidc-step__num { width: 21px; height: 21px; border-radius: 7px; background: rgba(var(--accent-rgb),.12); color: var(--accent); display: grid; place-items: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+
+.oidc-session { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-radius: 16px; background: rgba(var(--glass),.7); border: 1px solid rgba(var(--hair),.08); margin: 4px 0 16px; }
+
+.oidc-session__ava { width: 40px; height: 40px; border-radius: 13px; background: rgba(var(--accent-rgb),.14); color: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
+
+.oidc-session__label { font-weight: 600; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); }
+
+.oidc-session__name { font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
+
+.oidc-actions { display: flex; flex-direction: column; gap: 10px; }
+
+.oidc-note { text-align: center; font-size: 12px; line-height: 1.5; color: var(--ink-3); margin-top: 18px; }
+
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
 
@@ -1642,6 +1684,9 @@ button { font-family: inherit; }
 .vw-tablet .auth-grid, .vw-mobile .auth-grid { grid-template-columns: 1fr; }
 
 .vw-mobile .auth-pitch__title { font-size: 30px; }
+
+/* Wave 10 - Core OIDC login */
+.vw-mobile .oidc-title { font-size: 20px; }
 /* Wave 7 — care hub */
 .vw-tablet .care-grid, .vw-mobile .care-grid { grid-template-columns: 1fr; }
 .vw-mobile .care-stats { grid-template-columns: 1fr 1fr; }

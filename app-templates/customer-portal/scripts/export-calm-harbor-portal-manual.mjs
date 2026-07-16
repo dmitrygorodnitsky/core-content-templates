@@ -10,6 +10,10 @@ const inputPath = path.join(portalRoot, "content/cases/calm-harbor-spa.portal-pi
 const defaultOutputDir = path.join(portalRoot, "dist/manual-upload/customer-portal-calm-harbor-pim-staging");
 const styleFiles = ["tokens.css", "base.css", "shell.css", "components.css", "routes.css", "responsive.css", "seo.css"];
 const runtimePath = path.join(portalRoot, "runtime/manual/calm-harbor-pim-runtime.js");
+const oidcLibrary = {
+  integrity: "sha384-EX6IlpbPbIxs1Zi4cPDGkFJm4YuPKx31VxifYK2nLwYtwc7EoKJRA9a2BFBNxz1H",
+  src: "https://cdnjs.cloudflare.com/ajax/libs/oidc-client-ts/3.0.1/browser/oidc-client-ts.js",
+};
 
 export async function exportCalmHarborPortalManual(options = {}) {
   const sourcePath = path.resolve(options.inputPath || inputPath);
@@ -39,9 +43,13 @@ function validateSource(source) {
   if (source.schemaVersion !== 1) throw new Error("Calm Harbor portal source schemaVersion must be 1");
   if (!source.template || source.template.code !== "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING") throw new Error("Unexpected Calm Harbor portal template code");
   if (!source.runtime || source.runtime.dataMode !== "live") throw new Error("Manual Calm Harbor portal must use live data mode");
+  if (source.runtime.authMode !== "required") throw new Error("Manual Calm Harbor portal must require Core OIDC authentication");
   if (JSON.stringify(source.runtime.enabledModules) !== JSON.stringify(["pricing", "products"])) throw new Error("Manual Calm Harbor portal may open only pricing and products");
   if (!source.pim || source.pim.organization !== "CALM_HARBOR_SPA_STAGING") throw new Error("Manual Calm Harbor portal must target CALM_HARBOR_SPA_STAGING");
   if (source.pim.apiBase !== "/core-pim/api") throw new Error("Manual Calm Harbor portal must use the same-origin Core PIM base");
+  if (!source.auth || source.auth.coreBase !== "/core" || source.auth.callbackPath !== "/core/oauth2-callback.html") {
+    throw new Error("Manual Calm Harbor portal must use the registered same-origin Core OIDC callback");
+  }
   for (const key of ["pricingProductTypeCodes", "productsProductTypeCodes", "priceAttributeValues", "currencyAttributeValues"]) {
     if (!Array.isArray(source.pim[key]) || !source.pim[key].length || source.pim[key].some((value) => typeof value !== "string" || !value)) {
       throw new Error("Manual Calm Harbor portal PIM " + key + " must be a nonempty string array");
@@ -52,6 +60,7 @@ function validateSource(source) {
 function templateFor(source, css, javascript) {
   const runtime = source.runtime;
   const pim = source.pim;
+  const auth = source.auth;
   const attributes = {
     "data-portal-vertical": runtime.vertical,
     "data-portal-profile": runtime.profile,
@@ -78,6 +87,10 @@ function templateFor(source, css, javascript) {
     "data-portal-pim-amount-attribute-code": pim.amountAttributeCode,
     "data-portal-pim-amount-minor-divisor": String(pim.amountMinorDivisor),
     "data-portal-pim-cta": pim.cta,
+    "data-portal-auth-core-base": auth.coreBase,
+    "data-portal-auth-callback-path": auth.callbackPath,
+    "data-portal-auth-return-storage-key": auth.returnStorageKey,
+    "data-portal-auth-logout-return-storage-key": auth.logoutReturnStorageKey,
   };
   return {
     code: source.template.code,
@@ -85,7 +98,7 @@ function templateFor(source, css, javascript) {
     templateLanguage: "JTE",
     parent: null,
     children: [],
-    head: '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>' + escapeHtml(source.template.title) + '</title>\n<link rel="icon" href="data:,">',
+    head: '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>' + escapeHtml(source.template.title) + '</title>\n<link rel="icon" href="data:,">\n<script src="' + oidcLibrary.src + '" integrity="' + oidcLibrary.integrity + '" crossorigin="anonymous" referrerpolicy="no-referrer"></script>',
     html: '<section id="app" ' + attrs(attributes) + '></section>',
     css,
     javascript,
@@ -115,6 +128,11 @@ function manifestFor(sourcePath, source, template) {
       delivery: "inline-template-javascript",
       sameOriginRequired: true,
       openedModules: source.runtime.enabledModules,
+      auth: {
+        callbackPath: source.auth.callbackPath,
+        coreBase: source.auth.coreBase,
+        flow: "oidc-authorization-code-pkce",
+      },
       pim: source.pim,
     },
   };
@@ -155,14 +173,14 @@ async function splitTemplate(root, template) {
 
 function readme(packageData) {
   return "# Manual upload: Calm Harbor Spa live PIM catalog\n\n" +
-    "This is a staging-only root template. It exposes only the opened Core PIM surfaces: pricing and retail products. It is not an authenticated customer portal and must not be presented as one.\n\n" +
+    "This is a staging-only root template. It exposes live Core PIM pricing and retail products, plus the Core OIDC sign-in boundary. It does not open private customer data.\n\n" +
     "## Upload order\n\n" +
     "1. Create a root JTE template with code `" + packageData.template.code + "`.\n" +
     "2. Paste `root/head.html`, `root/html.html`, `root/css.css`, and `root/javascript.js` into the matching CMS fields. `root/template.json` is the complete reference record.\n" +
-    "3. Publish the template, then open it on `dev-1.servicewand.com` at `#/pricing`, then `#/products`.\n\n" +
+    "3. Publish the template, then open it on `dev-1.servicewand.com` at `#/pricing`, `#/products`, and `#/login`.\n\n" +
     "## Runtime contract\n\n" +
     "The browser sends unauthenticated same-origin POST requests to `" + publicCatalogPath(packageData.source.pim) + "`. Pricing queries `" + packageData.source.pim.pricingProductTypeCodes.join(", ") + "`; products query `" + packageData.source.pim.productsProductTypeCodes.join(", ") + "`. The runtime reads `" + packageData.source.pim.amountAttributeCode + "` with divisor `" + packageData.source.pim.amountMinorDivisor + "`.\n\n" +
-    "The package is intentionally same-origin only. Do not host it on another domain: the current Core PIM CORS policy denies that path. No price, product, customer, order, appointment, or account value is authored in CMS. The runtime is self-contained in `javascript.js`; no static asset upload is required.\n\n" +
+    "The package is intentionally same-origin only. Do not host it on another domain: the current Core PIM CORS policy denies that path. Sign-in uses the Core discovery document and registered `/core/oauth2-callback.html` redirect; `oidc-client-ts` is loaded from a pinned CDN URL with SRI. The CMS template never stores or authors a password, API key, access token, customer, order, appointment, or account value. The runtime is self-contained in `javascript.js`; no static asset upload is required.\n\n" +
     "`preview.html` is a structural preview. It cannot validate live PIM when opened from `file://`; validate the deployed template on `dev-1` instead.\n";
 }
 

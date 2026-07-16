@@ -1,8 +1,8 @@
 {
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
-  "wave": 9,
-  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content.",
+  "wave": 11,
+  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content. Wave 10 replaces the fixture phone/OTP login with the Core OIDC redirect presentation: route auth.oidc at /login, module core-oidc-auth. Wave 11 ships the Beauty seo.landing as the Calm Harbor Spa release: seo-products-teaser (public PIM retail teaser), CMS media slots on hero/proof, and honest-navigation public CTAs (nav.services / nav.pricing / nav.products / auth.gotoSignin — no booking/payment/checkout command).",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -21,9 +21,10 @@
   "viewports": [390, 768, 1180, 1440],
   "routes": [
     { "id": "landing",          "path": "/",                 "wave": 6, "implemented": true,  "auth": "public", "states": ["ready"], "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)." },
-    { "id": "seo.landing",      "path": "cms.meta.canonicalPath (e.g. /hvac/{locality-slug})", "wave": 8, "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "note": "Public SEO landing — ONE reusable section set (src/components/seo/SeoSections.js) serves all eight verticals; content = CMS slots in data/seo-fixtures.js keyed by vertical. Sections: seo-hero, seo-trust-strip, seo-services-grid, seo-how-it-works, seo-proof, seo-pricing, seo-service-area, seo-reviews, seo-faq (schema.org FAQPage microdata), seo-final-cta, seo-footer. loading/empty apply ONLY to dynamic-data sections (trust, pricing, service-area, reviews, faq, hero offer); hero/how/proof/footer are static. CTA lifecycle idle|pending|success|error on data-state of every seo-cta — preview via dev-toolbar 'cta' select. Head-level CMS fields (seoTitle, metaDescription, canonical, locality, primaryCta.destination) surfaced by the dev-only seo-meta-preview block (data-dev-toolbar — stripped on integration)." },
-    { "id": "auth.phone",       "path": "/login",            "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='phone'" },
-    { "id": "auth.code",        "path": "/login/verify",     "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "auth route, authStep='code'; 4-digit OTP" },
+    { "id": "seo.landing",      "path": "cms.meta.canonicalPath (e.g. /hvac/{locality-slug})", "wave": 8, "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "note": "Public SEO landing — ONE reusable section set (src/components/seo/SeoSections.js) serves all eight verticals; content = CMS slots in data/seo-fixtures.js keyed by vertical. Sections: seo-hero, seo-trust-strip, seo-services-grid, seo-how-it-works, seo-proof, seo-pricing, seo-service-area, seo-reviews, seo-faq (schema.org FAQPage microdata), seo-final-cta, seo-footer. loading/empty apply ONLY to dynamic-data sections (trust, pricing, service-area, reviews, faq, hero offer); hero/how/proof/footer are static. CTA lifecycle idle|pending|success|error on data-state of every seo-cta — preview via dev-toolbar 'cta' select. Head-level CMS fields (seoTitle, metaDescription, canonical, locality, primaryCta.destination) surfaced by the dev-only seo-meta-preview block (data-dev-toolbar — stripped on integration). Wave 11 (Calm Harbor / Beauty): seo-products-teaser sits between seo-pricing and seo-service-area — 3–4 cards from the repeated public PIM collection (pim.products[], data-product-code), public fields only, ONE action nav.products; states ready|loading|empty (seo-products-teaser-empty = honest empty catalog, no invented products). Hero + proof accept CMS media slots (cms.media.hero/proof — spec in MEDIA-SPEC.md). Beauty public CTAs are honest navigation ONLY: nav.services / nav.pricing (scroll to live sections), nav.products (public Shop route), auth.gotoSignin — no seo.cta.book/quote, payment, checkout, booking command or 'request sent' state; service cards route to pricing in this mode. book/quote verticals unchanged. Cover ready+empty at 1440/1180/768/390 in light and dark beauty modes. Wave 12: Beauty seo-pricing ready state renders the repeated LIVE public PIM collection pim.pricing[] (seo-pricing-row: code/name/displayPrice/optional interval|shortDescription, data-product-code; SPA_SERVICE + SPA_MEMBERSHIP only, never SPA_RETAIL; displayPrice verbatim — never computed); empty = honest no-published-items copy, no quote/booking/fallback price; public preview nav brand = cms.meta.brand (Calm Harbor Spa). Pricing evidence: previews/calm-harbor/pricing-{state}-{width}-{mode}.png — real viewport pixels, ready/loading/empty × desktop 1440 (1440×900, upscaled from a scaled-to-fit capture) + mobile 390 (true 390×540) × light/dark." },
+    { "id": "auth.oidc",        "path": "/login",            "wave": 10, "implemented": true, "auth": "public", "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"], "note": "Core OIDC login (module core-oidc-auth) — authorization-code+PKCE redirect to the Core account service, returning to the same /login URL. checking-session = bootstrap on every load (incl. the callback return): discovery + session restore — non-interactive, no redirect claim, no controls, no session name. One primary action per interactive state: auth.oidcSignIn / auth.retrySession (unavailable = discovery/library init failure, no fallback login) / auth.signOut. Dynamic data = session status + one customer-safe display name (data-bind session.displayName). No password/token/Account-id in the browser. Public catalog nav stays before and after auth. Preview the states via the dev-toolbar 'oidc' select." },
+    { "id": "auth.phone",       "path": "/login (REFERENCE ONLY — superseded by auth.oidc, wave 10)", "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "fixture phone step — kept for visual reference, reachable only via dev toolbar (auth.gotoSignin now routes to auth.oidc)" },
+    { "id": "auth.code",        "path": "/login/verify (REFERENCE ONLY — superseded by auth.oidc, wave 10)", "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "fixture 4-digit OTP step — kept for visual reference, reachable only via dev toolbar" },
     { "id": "orders.list",      "path": "/orders",           "wave": 1, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
     { "id": "order.detail",     "path": "/orders/:id",       "wave": 2, "implemented": true,  "auth": "private", "states": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error"] },
     { "id": "calendar",         "path": "/calendar",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"], "variants": { "onDemand": "month grid", "stormOps": "weather-ops agenda: served, clear, storm-watch, snow-expected + event statuses scheduled/on-route/completed/skipped/delayed" } },
@@ -39,6 +40,7 @@
     { "id": "care",             "path": "/care",             "wave": 7, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "unauthorized"], "note": "Vertical care hub — content is vertical-specific (fixtures.careModules): HVAC equipment passport + diagnostics; Snow season/compliance log; Lawn season program + re-entry; Pool water quality; Roofing inspection report + project tracker; Pest station monitoring. Nav label comes from careModules[theme].navLabel. 'unauthorized' renders the entitlement-gate (plan doesn't include the hub). Wave 9: Health hub (kind healthCare) = upcoming appointment + care-plan milestones + follow-up tasks + secure documents (metadata only — NO clinical metrics/results rendered, by design) + provider card; Beauty hub (kind beautyCare) = appointment + session package + specialist preference + treatment/routine history + loyalty + routine products. Data contracts: care.selectUnit -> unit.id; care.download -> document.id; care.requestRetreat -> plan.planId + data-property-id + data-service-id; care.selectSpecialist -> specialist.id; care.completeTask -> task.id; care.contactProvider -> provider.id; care.openSecureDoc -> document.id. Stable entity ids: appt-*, prov-*, plan-*, pkg-*, spec-*, task-*, doc-*." }
   ],
   "actions": [
+    "auth.oidcSignIn", "auth.retrySession", "auth.signOut",
     "auth.sendCode", "auth.verifyCode",
     "order.open", "order.cancel", "order.reschedule", "order.downloadInvoice", "order.filter",
     "booking.open", "booking.confirm",
@@ -52,12 +54,21 @@
     "care.selectUnit", "care.download", "care.requestRetreat",
     "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc",
     "seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle",
+    "nav.services", "nav.pricing", "nav.products",
     "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
   ],
   "moduleStates": {
+    "core-oidc-auth (auth.oidc)": {
+      "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"],
+      "note": "data-state on the auth card. checking-session = initial bootstrap on every page load (incl. the return from /core/oauth2-callback.html): discovery + session restore from browser storage; non-interactive, claims no redirect, reveals no name — Codex resolves it to ready-signed-out / ready-signed-in / unavailable. Demo cycle: auth.oidcSignIn → redirecting (1.6s) → ready-signed-in (sets the fixture display name); auth.signOut → signing-out (1.4s) → ready-signed-out. In production 'redirecting' persists until the browser unloads for Core and 'unavailable' is set by Codex when discovery or the authorization library fails to initialize. Preview any state via the dev-toolbar 'oidc' select (visible on the route)."
+    },
     "seo-cta (seo.landing)": {
       "states": ["idle", "pending", "success", "error"],
-      "note": "Fixed action ids: seo.cta.book / seo.cta.quote (primary, destination from cms.meta.primaryCta.destination), seo.cta.call, seo.cta.services (jump to grid), seo.service.select (grid card → booking/quote flow). Demo lifecycle: pending 900ms → success 800ms → booking drawer. 'error' is set by Codex on real command failure; preview any state via dev-toolbar 'cta' select (state.seoCtaForce)."
+      "note": "Fixed action ids: seo.cta.book / seo.cta.quote (primary, destination from cms.meta.primaryCta.destination), seo.cta.call, seo.cta.services (jump to grid), seo.service.select (grid card → booking/quote flow). Demo lifecycle: pending 900ms → success 800ms → booking drawer. 'error' is set by Codex on real command failure; preview any state via dev-toolbar 'cta' select (state.seoCtaForce). Wave 11: honest-navigation CTAs (nav.* / auth.gotoSignin) have NO lifecycle — data-state stays idle and ignores seoCtaForce."
+    },
+    "seo-products-teaser (seo.landing)": {
+      "states": ["ready", "loading", "empty"],
+      "note": "Follows the global dev-toolbar view switch (state select). ready = 3–4 seo-product-teaser-card from pim.products[] (data-product-code); empty = seo-products-teaser-empty (honest copy, section CTA hidden); loading = skeleton cards. Every interactive element fires nav.products only."
     },
     "retreat-card (care, Pest Control)": {
       "states": ["available", "requesting", "used"],
@@ -88,7 +99,8 @@
     "care": ["ready", "loading", "empty", "error", "unauthorized"],
     "landing": ["ready"],
     "auth.phone": ["ready", "validation-error"],
-    "auth.code": ["ready", "validation-error"]
+    "auth.code": ["ready", "validation-error"],
+    "auth.oidc": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"]
   },
   "notImplementedYet": {
     "routes": [],

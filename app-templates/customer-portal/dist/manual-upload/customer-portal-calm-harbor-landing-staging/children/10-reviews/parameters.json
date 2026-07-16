@@ -1,0 +1,54 @@
+[
+  {
+    "code": "CHS_LANDING_10_REVIEWS_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Reviews"
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "What customers say"
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_EMPTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Reviews appear here"
+    }
+  },
+  {
+    "code": "CHS_LANDING_10_REVIEWS_EMPTY_COPY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY COPY",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Verified customer reviews are shown only when they are available."
+    }
+  }
+]

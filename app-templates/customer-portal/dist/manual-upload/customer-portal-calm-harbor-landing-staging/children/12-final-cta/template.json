@@ -1,0 +1,93 @@
+{
+  "code": "CHS_LANDING_12_FINAL_CTA",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Final CTA"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-final\" data-module=\"seo-final-cta\" data-visual-id=\"seo-final-cta\"><h2 class=\"seo-final__title\">${CHS_LANDING_12_FINAL_CTA_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-final__sub\">${CHS_LANDING_12_FINAL_CTA_SUB@LOCALIZED_STRING_SS}</p><div class=\"seo-final__ctas\"><a class=\"btn btn--onaccent btn--lg\" href=\"${CHS_LANDING_12_FINAL_CTA_PRIMARY_HREF@STRING}\" data-action=\"nav.products\">${CHS_LANDING_12_FINAL_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}</a><a class=\"btn btn--glass-hero btn--lg\" href=\"${CHS_LANDING_12_FINAL_CTA_SECONDARY_HREF@STRING}\" data-action=\"auth.gotoSignin\">${CHS_LANDING_12_FINAL_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}</a></div></section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Make room for your reset"
+      }
+    },
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_SUB",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "SUB",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Every price on this page is live from the public catalog - browse the shop, or sign in to your routine."
+      }
+    },
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "PRIMARY LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Browse the spa shop"
+      }
+    },
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_PRIMARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "PRIMARY HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-products"
+    },
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_SECONDARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "SECONDARY LABEL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Sign in"
+      }
+    },
+    {
+      "code": "CHS_LANDING_12_FINAL_CTA_SECONDARY_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "SECONDARY HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#"
+    }
+  ]
+}

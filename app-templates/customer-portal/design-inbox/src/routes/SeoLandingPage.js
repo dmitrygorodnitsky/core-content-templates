@@ -9,7 +9,7 @@ import { h } from "../dom.js";
 import { state } from "../state.js";
 import {
   SeoMetaPreview, SeoHero, SeoTrustStrip, SeoServicesGrid, SeoHowItWorks,
-  SeoProofBlock, SeoPricing, SeoServiceArea, SeoReviews, SeoFaq, SeoFinalCta, SeoFooter
+  SeoProofBlock, SeoPricing, SeoProductsTeaser, SeoServiceArea, SeoReviews, SeoFaq, SeoFinalCta, SeoFooter
 } from "../components/seo/SeoSections.js";
 
 export function SeoLanding() {
@@ -23,6 +23,7 @@ export function SeoLanding() {
     SeoHowItWorks(seo),
     SeoProofBlock(seo),
     SeoPricing(seo),
+    SeoProductsTeaser(seo, v, F.TINTS), /* wave 11 — after pricing, before service area */
     SeoServiceArea(seo),
     SeoReviews(seo),
     SeoFaq(seo),

@@ -1,0 +1,65 @@
+{
+  "code": "CHS_LANDING_01_PUBLIC_NAV",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Public navigation"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<div class=\"top-nav-wrap\"><nav class=\"top-nav\" data-module=\"public-nav\" data-visual-id=\"public-nav\"><a class=\"top-nav__brand\" href=\"${CHS_LANDING_01_PUBLIC_NAV_HOME_URL@STRING}\" aria-label=\"${CHS_LANDING_01_PUBLIC_NAV_BRAND@LOCALIZED_STRING_SS}\"><span class=\"brand-logo\" aria-hidden=\"true\"></span><span class=\"brand-name\" data-bind=\"brand.name\">${CHS_LANDING_01_PUBLIC_NAV_BRAND@LOCALIZED_STRING_SS}</span></a><div class=\"nav-links\"><a class=\"nav-link\" href=\"#seo-services\">Services</a><a class=\"nav-link\" href=\"${CHS_LANDING_01_PUBLIC_NAV_SHOP_URL@STRING}\">Shop</a></div><div class=\"top-nav__actions\"><button class=\"icon-btn\" type=\"button\" data-action=\"ui.toggleMode\" title=\"Toggle light/dark\" aria-label=\"Toggle light/dark\">&#9790;</button><a class=\"btn btn--primary\" href=\"${CHS_LANDING_01_PUBLIC_NAV_SIGN_IN_URL@STRING}\" data-action=\"auth.gotoSignin\">Sign in</a></div></nav></div>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_01_PUBLIC_NAV_BRAND",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "BRAND",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Calm Harbor Spa"
+      }
+    },
+    {
+      "code": "CHS_LANDING_01_PUBLIC_NAV_HOME_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "HOME URL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#calm-harbor-landing"
+    },
+    {
+      "code": "CHS_LANDING_01_PUBLIC_NAV_SIGN_IN_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "SIGN IN URL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "CHS_LANDING_01_PUBLIC_NAV_SHOP_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "SHOP URL",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-products"
+    }
+  ]
+}

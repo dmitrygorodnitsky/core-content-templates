@@ -69,7 +69,7 @@ DevToolbar lists both. Matches `scenarios.json`. Flow tested: phone → code (nu
 Every `data-module` present in source has a component entry; every ACTION-map key is listed in
 `manifest.actions`; `auth-card` props changed `["authStep"]` → `["route"]`; `proposals-list` id aligned to
 source `proposal-list`; inline-only pieces are listed as `"inline in X"` factories. Kept in lock-step
-through waves 7–9 (current version: `wave-9`).
+through waves 7–11 (current version: `wave-11`).
 
 ### scenarios ⊆ manifest — drift fixed
 `scenarios.json` referenced `profile.updatePaymentMethod`, which is not a real action. Replaced with the
@@ -110,6 +110,64 @@ New actions: `care.selectSpecialist`, `care.completeTask`, `care.contactProvider
 Stable entity ids: `appt-*`, `prov-*`/`spec-*`, `plan-*`/`pkg-*`, `task-*`, `doc-*`. SEO-landing content for
 both verticals added to `data/seo-fixtures.js` (Health copy is logistics-only — no clinical claims;
 regulated facts are null CMS slots).
+
+
+### Wave 10 — Core OIDC login (`auth.oidc`) — done
+Route **`auth.oidc`** at `/login` (module **`core-oidc-auth`**, `src/routes/AuthOidcPage.js`) replaces the
+fixture phone/OTP/Apple flow with the Core OIDC authorization-code+PKCE redirect presentation. Six states
+on the card's `data-state`: `checking-session` (bootstrap on every /login load, incl. the callback
+return: discovery + session restore — non-interactive, no redirect claim, no controls, no name),
+`ready-signed-out` (one primary **Continue to secure sign-in**),
+`redirecting` (non-interactive, page is leaving for Core), `unavailable` (honest retry, NO fallback login),
+`ready-signed-in` (one customer-safe display name — `data-bind="session.displayName"` — + Browse the
+catalog + Sign out), `signing-out` (non-interactive). Actions: `auth.oidcSignIn`, `auth.retrySession`,
+`auth.signOut` (bodies are DEMO transitions; Codex swaps in the real redirect/re-init/logout).
+No password input, token, API key or Account id is ever rendered — dynamic data is session status +
+one display name only. `auth.gotoSignin` now routes to `auth.oidc`; **`auth.phone`/`auth.code` stay in the
+package as reference only** (dev-toolbar "(ref)" entries, no product navigation reaches them).
+Dev toolbar gains an `oidc` state select on the route. Previews: `previews/oidc-*.png`.
+
+### Wave 11 — Calm Harbor Spa public landing (Beauty) — done
+The Beauty `seo.landing` ships as the **Calm Harbor Spa** release — same section set, Beauty theme/tokens/
+nav/buttons untouched. All additions are per-vertical opt-in slots in `data/seo-fixtures.js`; other
+verticals render byte-identically.
+- **`seo-products-teaser`** (between seo-pricing and seo-service-area): 3–4 cards from the repeated public
+  PIM collection (`pim.products[]`; public fields ONLY: code / name / short description / displayed price /
+  optional image; `data-product-code` on every card). Reuses the accepted `product-card` classes — no second
+  card system, no Add/cart. ONE action everywhere (cards + section CTA): **`nav.products`** → existing Shop
+  route. States ready|loading|empty; `seo-products-teaser-empty` = honest empty-catalog copy, CTA hidden,
+  nothing invented. `productsTeaser.codes[]` = CMS slot choosing featured catalog codes; Beauty products in
+  `data/fixtures.js` gained stable `code` fields (`rtl-beauty-01…06`).
+- **Honest-navigation CTA mode**: CTA kinds `services|pricing|products|signin` → `nav.services` /
+  `nav.pricing` (scroll to live sections; the pricing section now carries `id="seo-pricing"`) /
+  `nav.products` / `auth.gotoSignin`. Nav CTAs render NO pending/success lifecycle (ignore `seoCtaForce`).
+  Beauty uses ONLY these four public actions — no seo.cta.book/quote, payment, checkout, booking command or
+  "request sent" state; service cards route to pricing ("Pricing →") in this mode. book/quote verticals
+  unchanged.
+- **`seo-media`** CMS media slots on hero + proof (`cms.media.hero/proof`: src, alt, focal). Renders the
+  real public image (cover + focal point); missing file → striped spec slot. DELIVERED (wave 12):
+  `design-inbox/media/spa-massage-1448.webp` (hero, 1448×1086) and `design-inbox/media/spa-room-1600.webp`
+  (proof, 1600×686) — crops / focal / alt / ratios in **MEDIA-SPEC.md**. No logos/text/prices/claims inside bitmaps.
+- New optional per-vertical fixture slots: `meta.brand` (footer/proof fall back to "Aircove"), `hero.note`,
+  `services{eyebrow,title,sub}`, `pricing.cta`, `finalCta{sub,primary,secondary}`, `media{hero,proof}`,
+  `productsTeaser{…}`. New actions: `nav.services`, `nav.pricing`, `nav.products` (+ generalized
+  `seoScrollTo(id)` in actions.js). manifest wave-11, scenarios wave 11, README §Wave 11, previews
+  `previews/calm-harbor/`.
+
+### Wave 12 — Calm Harbor live PIM pricing contract — done
+`seo-pricing` keeps its accepted composition/ids; only the DATA contract changed for verticals that supply
+`pimPricing` (Beauty/Calm Harbor only — others still render `cms.pricing.rows[]`):
+- ready = repeated LIVE public PIM collection **`pim.pricing[]`** — `seo-pricing-row` (new stable
+  data-module/data-visual-id, also added to legacy CMS rows) binds `code` / `name` / `displayPrice` /
+  optional `interval` | `shortDescription`, carries `data-product-code`. SPA_SERVICE + SPA_MEMBERSHIP only,
+  never SPA_RETAIL. `displayPrice` renders VERBATIM — no calculation/estimation/comparison in presentation.
+- `loading` keeps the accepted skeleton; `empty` truthfully says no treatments/memberships are published —
+  no quote, booking or fallback price. Section CTA stays honest navigation (`auth.gotoSignin`).
+- Public preview nav brand now comes from `cms.meta.brand` (PublicNav → "Calm Harbor Spa" on Beauty,
+  "Aircove" fallback; nav composition unchanged).
+- Evidence: `previews/calm-harbor/pricing-{state}-{width}-{mode}.png` — REAL viewport pixels: desktop 1440 (1440×900, upscaled scaled-to-fit capture) + mobile 390 (true 390×540), ready/loading/empty × light/dark.
+- Demo PIM response lives in `seo-fixtures.js` → `Beauty.pimPricing` (Codex swaps it for the real
+  public Core PIM response; the old bridal from:null quote row is gone — quotes are not part of this release).
 
 ### previews — real viewport sizes
 `previews/desktop-1440.png` (1440×768), `tablet-768.png` (768×540), `mobile-390.png` (390×527) — actual

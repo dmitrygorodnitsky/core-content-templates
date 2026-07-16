@@ -459,64 +459,106 @@ export const SEO = {
   },
 
   /* ============================ Beauty ============================ */
+  /* Wave 11 — the Beauty landing ships as the CALM HARBOR SPA release.
+     Two data classes only: public Core PIM (SPA_SERVICE treatments,
+     SPA_MEMBERSHIP plans, SPA_RETAIL products + displayed prices) and
+     explicit CMS content slots. ALL public CTAs are honest navigation
+     (nav.services / nav.pricing / nav.products / auth.gotoSignin) —
+     no seo.cta.book / seo.cta.quote, no payment, checkout, booking
+     command or "request sent" state anywhere on this page. */
   "Beauty": {
     meta: {
-      seoTitle: "At-Home Beauty Services in {locality} | Aircove",
-      metaDescription: "Hair, nails and skin by vetted specialists in {locality} — at home or in-studio. Your formulas and routine remembered visit to visit; packages and member pricing.",
-      h1: "Beauty services in {locality} that remember your routine",
-      canonicalPath: "/beauty/{locality-slug}",
+      brand: "Calm Harbor Spa",
+      seoTitle: "Calm Harbor Spa — Hair, Skin & Body Treatments in {locality}",
+      metaDescription: "Hair, nails, skin and massage at Calm Harbor Spa in {locality}. Live treatment and membership prices from the public catalog, plus the spa retail shop online.",
+      h1: "Unhurried spa care in {locality}",
+      canonicalPath: "/spa/{locality-slug}",
       locality: "Miami, FL",
       serviceArea: "Miami-Dade",
-      primaryCta: { kind: "book", label: "Book a specialist", destination: "flow.booking" },
-      secondaryCta: { kind: "call", label: "Call us" }
+      /* honest-navigation kinds (wave 11): services|pricing|products|signin */
+      primaryCta: { kind: "services", label: "Explore treatments", destination: "nav.services" },
+      secondaryCta: { kind: "pricing", label: "See pricing" }
     },
     hero: {
-      service: "Hair, nails and skin by vetted specialists — at home or in-studio.",
-      offer: { tag: "First visit", text: "Intro offer on your first routine visit", until: "valid-until: CMS" }
+      service: "Hair, nails, skin and massage by licensed specialists — quiet single-guest rooms in the harbor studio, or at your place.",
+      offer: null, /* no seasonal sales claim in this release — the slot stays empty */
+      note: "Prices on this page are live from the public catalog — no account needed to browse"
+    },
+    /* Calm Harbor media — DELIVERED (wave 12). Files live in
+       customer-portal-design/design-inbox/media/; full spec in MEDIA-SPEC.md.
+       No logos, text, prices, ratings or promo claims inside the bitmaps. */
+    media: {
+      hero: { src: "design-inbox/media/spa-massage-1448.webp", alt: "Specialist smoothing a warm towel across a guest's shoulders in a daylit Calm Harbor treatment room", focal: "62% 40%", label: "hero media · design-inbox/media/spa-massage-1448.webp · 1448×1086 (4:3) · focal 62% 40%", bind: "cms.media.hero" },
+      proof: { src: "design-inbox/media/spa-room-1600.webp", alt: "Empty Calm Harbor treatment room with a linen-covered table, stone basin and folded towels by a window", focal: "50% 58%", label: "proof media · design-inbox/media/spa-room-1600.webp · 1600×686 (21:9) · focal 50% 58%", bind: "cms.media.proof" }
     },
     trust: {
-      rating: { value: "4.9", count: "2,036 reviews" },
-      licence: { label: "Cosmetology licences", value: null },
+      rating: null, /* CMS slot — shown only once a verified rating is supplied */
+      licence: { label: "Cosmetology & massage licences", value: null },
       insurance: { label: "Insured specialists", value: null },
-      guarantee: { label: "Guarantee", value: "Redo within 48h if you're not happy" },
-      response: { label: "Slots", value: "Evenings & weekends available" }
+      guarantee: { label: "Guarantee", value: "Redo within 48 hours if you're not happy" },
+      response: { label: "Appointments", value: "Evenings & weekends available" }
     },
     how: steps({
-      request: "Pick the service and where — your place or a partner studio.",
-      schedule: "Choose your specialist or let us match one; keep them for every visit.",
-      service: "The specialist arrives with a sanitised pro kit; formulas come from your profile.",
-      report: "Formulas, shades and routine notes saved to your profile for next time."
+      request: "Choose a treatment and where — the harbor studio or your place.",
+      schedule: "Pick a time; keep the same specialist for every visit.",
+      service: "Arrive to a warm, prepared room — or your specialist arrives with a sanitised kit.",
+      report: "Pressure notes, sensitivities and product picks saved to your routine for next time."
     }),
+    services: { eyebrow: "Treatments", title: "The Calm Harbor menu", sub: "Every treatment card lists what's included — prices are live on this page." },
     proof: {
-      title: "A routine, not one-off appointments",
+      title: "A harbor, not an appointment mill",
       items: [
+        { title: "Quiet by design", desc: "Single-guest rooms, warm tables, no double-booking — the hour is yours." },
         { title: "Your specialist, every time", desc: "Set a preferred specialist — priority rebooking keeps them on your routine." },
-        { title: "Formulas remembered", desc: "Color formulas, shades and skin notes carry over visit to visit — no re-explaining." },
-        { title: "Packages & loyalty", desc: "Session packages and member points tracked in the portal, redeemable on any visit." }
+        { title: "Routine remembered", desc: "Pressure notes, skin sensitivities and product picks carry over visit to visit." }
       ]
     },
     pricing: {
-      note: "Prices are set per market by the operator — shown from the CMS, never computed on the page.",
-      rows: [
-        { name: "Manicure & Nails", from: "$45", unit: "visit" },
-        { name: "Hair Styling", from: "$65", unit: "visit" },
-        { name: "Event & bridal package", from: null, reason: "Quoted after a trial consultation" }
-      ]
+      note: "Displayed prices come from the public catalog — shown as published, never computed on the page.",
+      cta: { kind: "signin", label: "Members — sign in to your plan" }
+    },
+    /* Wave 12 — DEMO of the live public Core PIM pricing response
+       (pim.pricing[]): public SPA_SERVICE + SPA_MEMBERSHIP items only,
+       NEVER SPA_RETAIL. displayPrice renders verbatim — presentation
+       never calculates, estimates, compares or transforms a price.
+       Codex swaps this array for the real PIM response. */
+    pimPricing: [
+      { code: "svc-spa-01", class: "SPA_SERVICE", name: "Manicure & nails", displayPrice: "$45", interval: "visit" },
+      { code: "svc-spa-02", class: "SPA_SERVICE", name: "Hair styling", displayPrice: "$65", interval: "visit" },
+      { code: "svc-spa-03", class: "SPA_SERVICE", name: "Facial treatment", displayPrice: "$85", interval: "visit" },
+      { code: "mem-spa-01", class: "SPA_MEMBERSHIP", name: "Harbor membership", displayPrice: "$129", interval: "month", shortDescription: "Member pricing on every treatment" }
+    ],
+    /* Wave 11 — retail teaser (seo-products-teaser). Cards bind ONLY to
+       public PIM fields (code, name, short description, displayed price,
+       optional image); codes[] is a CMS slot picking which catalog
+       products to feature. One action: nav.products → public Shop route. */
+    productsTeaser: {
+      eyebrow: "Spa retail",
+      title: "Take the ritual home",
+      sub: "A short shelf from the public catalog — the products our specialists actually use.",
+      cta: "Visit the shop",
+      note: "Prices shown as published in the public catalog.",
+      codes: ["rtl-beauty-01", "rtl-beauty-05", "rtl-beauty-06", "rtl-beauty-03"]
+    },
+    finalCta: {
+      sub: "Every price on this page is live from the public catalog — browse the shop, or sign in to your routine.",
+      primary: { kind: "products", label: "Browse the spa shop" },
+      secondary: { kind: "signin", label: "Sign in" }
     },
     area: {
       cities: ["Miami", "Coral Gables", "Miami Beach", "Doral", "Aventura"],
-      note: "In-studio appointments at partner locations; at-home slots by neighborhood."
+      note: "Treatments in the harbor studio; selected rituals travel to your neighborhood."
     },
     reviews: [
-      { name: "Client · Miami Beach", rating: 5, text: "Alina has my color formula saved — 'the usual' actually means something now.", media: true },
-      { name: "Bride · Coral Gables", rating: 5, text: "Trial, timeline, day-of team — one coordinator handled all of it.", media: true },
-      { name: "Client · Doral", rating: 4, text: "Gel set at my kitchen table on a Sunday evening. The kit was spotless.", media: false }
+      { name: "Guest · Miami Beach", rating: 5, text: "The room was warm before I walked in, and nobody rushed me out at the hour.", media: true },
+      { name: "Member · Coral Gables", rating: 5, text: "Same specialist every month — she remembers exactly where my shoulder acts up.", media: true },
+      { name: "Guest · Doral", rating: 4, text: "Booked a facial for my mom; the shop shelf had the same serum they used on her.", media: false }
     ],
     faq: [
-      { q: "Home or studio?", a: "Both — book at-home visits or a partner studio near you; the price is shown before you confirm." },
-      { q: "Can I keep the same specialist?", a: "Yes — set a preferred specialist and they get priority on your bookings; your formulas travel with your profile either way." },
-      { q: "How do packages work?", a: "Buy a session package once, book sessions whenever — usage is tracked in the portal and never expires early." },
-      { q: "What if I'm not happy with the result?", a: "Report it from the visit — a redo within 48 hours is covered by the guarantee." }
+      { q: "Studio or at home?", a: "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card." },
+      { q: "How do memberships work?", a: "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan." },
+      { q: "Are the shop products the ones you use?", a: "Yes — the retail shelf is the same public catalog our specialists pull from during treatments." },
+      { q: "What if I'm not happy with the result?", a: "Tell us within 48 hours — a redo is covered by the guarantee." }
     ]
   }
 };

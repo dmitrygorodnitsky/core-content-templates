@@ -1,0 +1,206 @@
+{
+  "code": "CHS_LANDING_04_SERVICES",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Services"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-sec\" id=\"seo-services\" data-module=\"seo-services-grid\" data-visual-id=\"seo-services-grid\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_04_SERVICES_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_04_SERVICES_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-sec__sub\">${CHS_LANDING_04_SERVICES_SUB@LOCALIZED_STRING_SS}</p></div><div class=\"seo-svc-grid\"><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_1_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_1_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_1_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_2_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_2_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_2_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_3_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_3_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_3_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a><a class=\"seo-svc\" href=\"${CHS_LANDING_04_SERVICES_ITEM_4_HREF@STRING}\" data-action=\"nav.pricing\" data-bind=\"cms.services[]\"><div class=\"seo-svc__icon\"><i></i></div><div class=\"seo-svc__name\">${CHS_LANDING_04_SERVICES_ITEM_4_NAME@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__benefit\">${CHS_LANDING_04_SERVICES_ITEM_4_BENEFIT@LOCALIZED_STRING_SS}</div><div class=\"seo-svc__meta\"><span>Live price</span><span class=\"seo-svc__go\">Pricing &rarr;</span></div></a></div></section>",
+  "css": "",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_04_SERVICES_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Treatments"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "The Calm Harbor menu"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_SUB",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "SUB",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Every treatment card lists what's included - prices are live on this page."
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_1_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 1 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Grounding massage"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_1_BENEFIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 1 BENEFIT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Release held tension with a slow full-body ritual."
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_1_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 1 HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-pricing"
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_2_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 2 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Custom facial"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_2_BENEFIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 2 BENEFIT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "A skin-focused session shaped around your complexion today."
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_2_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 2 HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-pricing"
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_3_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 3 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Harbor reset"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_3_BENEFIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 3 BENEFIT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Massage and facial care in one longer visit."
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_3_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 3 HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-pricing"
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_4_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 4 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Seasonal body ritual"
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_4_BENEFIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 4 BENEFIT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "A longer seasonal treatment to slow down and reset."
+      }
+    },
+    {
+      "code": "CHS_LANDING_04_SERVICES_ITEM_4_HREF",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 4 HREF",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": "#seo-pricing"
+    }
+  ]
+}

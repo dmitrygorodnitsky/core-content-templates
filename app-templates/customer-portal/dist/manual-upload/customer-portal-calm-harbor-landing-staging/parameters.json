@@ -1,0 +1,78 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Day spa treatments | Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META DESCRIPTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Calm Harbor Spa treatments, membership pricing, and spa retail products."
+    }
+  },
+  {
+    "code": "ROOT_FAQ_JSON_LD",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "ROOT FAQ JSON LD",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Studio or at home?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do memberships work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to manage their plan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are the shop products the ones you use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. The retail shelf is the same public catalog our specialists use during treatments."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if I am not happy with the result?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tell us within 48 hours. A redo is covered by the guarantee."
+            }
+          }
+        ]
+      }
+    }
+  }
+]

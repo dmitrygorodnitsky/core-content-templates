@@ -16,10 +16,18 @@ try {
   assert.equal(template.code, "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING");
   assert.equal(template.templateLanguage, "JTE");
   assert.deepEqual(template.parameters, []);
-  assert.doesNotMatch(template.head, /<script|assets\/customer-portal/);
+  assert.match(template.head, /oidc-client-ts\/3\.0\.1\/browser\/oidc-client-ts\.js/);
+  assert.match(template.head, /integrity="sha384-EX6IlpbPbIxs1Zi4cPDGkFJm4YuPKx31VxifYK2nLwYtwc7EoKJRA9a2BFBNxz1H"/);
+  assert.doesNotMatch(template.head, /assets\/customer-portal/);
   assert.match(template.html, /data-portal-data-mode="live"/);
   assert.match(template.html, /data-portal-enabled-modules="pricing,products"/);
   assert.match(template.html, /data-portal-pim-organization="CALM_HARBOR_SPA_STAGING"/);
+  assert.match(template.html, /data-portal-auth-mode="required"/);
+  assert.match(template.html, /data-portal-auth-callback-path="\/core\/oauth2-callback\.html"/);
+  assert.match(template.html, /data-portal-auth-return-storage-key="oidc-return-url"/);
+  for (const selector of [".oidc-status", ".oidc-glyph", ".oidc-spinner", ".oidc-session", ".oidc-actions"]) {
+    assert.ok(template.css.includes(selector), "Missing OIDC CSS selector: " + selector);
+  }
   assert.doesNotMatch(template.head + template.html + template.css, /\/Users\/|\.\.\/runtime/);
   assert.equal(manifest.uploadPerformed, false);
   assert.equal(manifest.launchState, "staging-only");
@@ -29,6 +37,17 @@ try {
   assert.match(template.javascript, /Manual CMS runtime for the Calm Harbor staging catalog/);
   assert.match(template.javascript, /catalog\/price-comparison\.json/);
   assert.match(template.javascript, /credentials: "omit"/);
+  assert.match(template.javascript, /signinRedirect/);
+  assert.match(template.javascript, /signoutRedirect/);
+  assert.match(template.javascript, /authReturnStorageKey/);
+  for (const state of ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"]) {
+    assert.match(template.javascript, new RegExp(state));
+  }
+  assert.match(template.javascript, /core-oidc-auth/);
+  assert.match(template.javascript, /auth\.oidcSignIn/);
+  assert.match(template.javascript, /auth\.retrySession/);
+  assert.match(template.javascript, /auth\.signOut/);
+  assert.doesNotMatch(template.javascript, /className: "[^"]*portal-auth|className: "[^"]*portal-session/);
   assert.doesNotMatch(template.javascript, /^\s*import\s/m);
   assert.doesNotMatch(template.javascript, /fixture|mock/i);
   assert.doesNotMatch(template.javascript, /assets\/customer-portal/);

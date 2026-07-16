@@ -30,6 +30,12 @@ export var state = {
   phone: "",
   code: "",
   authError: null,
+  /* wave 10 — Core OIDC login (auth.oidc). DEMO fields: Codex derives both from
+     the real Core session/library status. sessionName is the ONLY dynamic session
+     value besides status — one customer-safe display name (binding
+     session.displayName). Never an Account id, token, role or claim. */
+  oidc: "ready-signed-out", // checking-session | ready-signed-out | redirecting | unavailable | ready-signed-in | signing-out (checking-session = bootstrap: discovery + session restore on every /login load, incl. the callback return — Codex resolves it to signed-out/signed-in/unavailable)
+  sessionName: null,
   mobileNav: false,
   seoCta: {},        // CTA lifecycle per action id: idle|pending|success|error (seo.landing)
   seoCtaForce: null, // dev-toolbar override: null | "pending" | "success" | "error"
@@ -59,7 +65,7 @@ export function findProduct(name) {
 
 export function activeProfile() { return F.profiles[F.profileFor[state.theme] || "onDemand"]; }
 
-export function isPublic() { return state.route === "landing" || state.route === "seo.landing" || state.route === "auth.phone" || state.route === "auth.code"; }
+export function isPublic() { return state.route === "landing" || state.route === "seo.landing" || state.route === "auth.oidc" || state.route === "auth.phone" || state.route === "auth.code"; }
 
 export function buildCalendarGrid(year, month) {
   var first = new Date(year, month, 1);

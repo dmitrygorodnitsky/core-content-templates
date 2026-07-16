@@ -1,6 +1,7 @@
 // customer-portal-design/src/components/shell/PublicNav.js — presentation runtime (auto-split from app.js). No business logic.
 import { h } from "../../dom.js";
 import { state } from "../../state.js";
+import { SEO } from "../../../data/seo-fixtures.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { Toggle } from "../primitives/Toggle.js";
 
@@ -9,7 +10,10 @@ export function PublicNav() {
     h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
       h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
         h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Aircove")
+        /* wave 12 — public preview shows the vertical's brand (e.g. Calm
+           Harbor Spa) when the SEO fixture defines meta.brand; same nav
+           composition, Aircove fallback for all other verticals. */
+        h("span", { "class": "brand-name", "data-bind": "brand.name" }, (((SEO[state.theme] || {}).meta || {}).brand) || "Aircove")
       ]),
       h("div", { "class": "top-nav__actions" }, [
         h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e"),

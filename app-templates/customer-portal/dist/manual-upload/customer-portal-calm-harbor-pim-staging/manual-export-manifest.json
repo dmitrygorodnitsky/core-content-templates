@@ -9,10 +9,10 @@
     "templateLanguage": "JTE",
     "parameters": [],
     "sha256": {
-      "head": "39e256c3ef7d9f434e4e6122976fb1e86198feb51edd96904cdf3efd0572dc3e",
-      "html": "3f371651c6c6d741fb92cb3e76cb0d9269dca3f5ea7e743cd9df4f0dff14c0a4",
-      "css": "492246ac5d0ca24268a78ccac0c4542634cf48de1836c64dbd482db706a6681a",
-      "javascript": "8b8f3e04bfd4b027b0cff60d53c0ac4e43a44e73d6d1b8c5e7f4ac9c7703b0fd"
+      "head": "348a251e0b864871d1ff35341f2f161f1ebe6b0b5ad9faedb408c430a4eb3491",
+      "html": "a3964ca14bda5b5b3c2168298c4d84e1cb7309efb8c0b98fa4b7cbfd02614341",
+      "css": "0f8d9a64d23fcb34499accc1d237ecb64052f2762fb45664882814b718d8700e",
+      "javascript": "ab659c5865a2d610aacf02a02d94d119e6a586824ae205027aa2e494373b6fc3"
     }
   },
   "runtime": {
@@ -22,6 +22,11 @@
       "pricing",
       "products"
     ],
+    "auth": {
+      "callbackPath": "/core/oauth2-callback.html",
+      "coreBase": "/core",
+      "flow": "oidc-authorization-code-pkce"
+    },
     "pim": {
       "apiBase": "/core-pim/api",
       "organization": "CALM_HARBOR_SPA_STAGING",
