@@ -3,24 +3,33 @@
   "uploadPerformed": false,
   "mode": "staging",
   "launchState": "staging-only",
-  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.portal-pim-staging.json",
+  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-portal-staging.json",
   "template": {
-    "code": "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING",
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",
     "templateLanguage": "JTE",
     "parameters": [],
     "sha256": {
-      "head": "348a251e0b864871d1ff35341f2f161f1ebe6b0b5ad9faedb408c430a4eb3491",
-      "html": "a3964ca14bda5b5b3c2168298c4d84e1cb7309efb8c0b98fa4b7cbfd02614341",
-      "css": "0f8d9a64d23fcb34499accc1d237ecb64052f2762fb45664882814b718d8700e",
-      "javascript": "63c5edb40414628e4235448ac324dc7bf48510c2854653da52ce08aea386f887"
+      "head": "4c4081e5bbc919b52bc35e86c1b9e17ee59ce5fd127ef83e836a6ad498fe3d1a",
+      "html": "0062e7f117e60fb494501d433ab0228f1d3c65c0a62986b8c9b29b3b274e93fd",
+      "css": "079e2620fea581752d40e39aeda998b51b54ddb097ded0415cdf70fdd37b1413",
+      "javascript": "d5159dec557e5bb6bfbb648723592fe815e43b50d5528fba6705b4cfc9b491b9"
     }
   },
   "runtime": {
     "delivery": "inline-template-javascript",
     "sameOriginRequired": true,
     "openedModules": [
+      "appointments",
+      "orders",
+      "services",
       "pricing",
-      "products"
+      "products",
+      "account",
+      "cart",
+      "checkout",
+      "purchases",
+      "plan",
+      "profile"
     ],
     "auth": {
       "callbackPath": "/core/oauth2-callback.html",
@@ -32,7 +41,8 @@
       "organization": "CALM_HARBOR_SPA_STAGING",
       "pricingProductTypeCodes": [
         "SPA_SERVICE",
-        "SPA_MEMBERSHIP"
+        "SPA_MEMBERSHIP",
+        "SPA_PACKAGE"
       ],
       "productsProductTypeCodes": [
         "SPA_RETAIL"
@@ -50,8 +60,15 @@
       ],
       "amountAttributeCode": "AMOUNT_MINOR",
       "amountMinorDivisor": 100,
-      "cta": "Book service"
+      "cta": "Browse services"
     },
-    "account": null
+    "account": {
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "coreApiBase": "/core",
+      "serviceApiBase": "/core-svc",
+      "accountApiBase": "/core-acct",
+      "billApiBase": "/core-bill",
+      "accountTypeCode": "SPA_CUSTOMER"
+    }
   }
 }

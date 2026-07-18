@@ -1,5 +1,6 @@
 /*
- * Manual CMS runtime for the Calm Harbor staging catalog.
+ * Manual CMS runtime for the Calm Harbor staging catalog and first
+ * authenticated customer-portal increment.
  * It has no imports because the CMS stores it in the template javascript field.
  */
 (function () {
@@ -14,6 +15,7 @@
     document.documentElement.dataset.mode = mode;
     var model = {
       auth: { error: null, manager: null, state: "checking-session", user: null },
+      customer: { account: null, error: null, orders: [], state: "signed-out" },
       error: null,
       pricing: [],
       products: [],
@@ -21,11 +23,13 @@
     };
 
     var resizeObserver = null;
+    var customerGeneration = 0;
     window.addEventListener("hashchange", render);
     render();
     loadSession(config).then(function (auth) {
       model.auth = auth;
       render();
+      if (auth.user && config.enabledModules.includes("orders")) resolveCustomerOrders(auth.user);
     }).catch(function (error) {
       model.auth = { error: error, manager: null, state: "unavailable", user: null };
       render();
@@ -45,13 +49,15 @@
       clear(root);
       var shell = el("div", { className: "app-shell" });
       shell.appendChild(nav());
+      var current = route(config);
       var page;
-      if (route() === "login") page = loginPage();
+      if (current === "login" || current === "orders" && model.auth.state !== "ready-signed-in") page = loginPage();
+      else if (current === "orders") page = ordersPage();
       else {
-        page = el("main", { className: "page", dataset: { route: route() } });
+        page = el("main", { className: "page", dataset: { route: current } });
         if (model.status === "loading") page.appendChild(loading());
         else if (model.status === "error") page.appendChild(failure(model.error));
-        else if (route() === "products") page.appendChild(productsPage(model.products));
+        else if (current === "products") page.appendChild(productsPage(model.products));
         else page.appendChild(pricingPage(model.pricing));
       }
       shell.appendChild(page);
@@ -60,30 +66,34 @@
     }
 
     function nav() {
-      if (route() === "login") return loginNav();
-      var current = route();
+      if (route(config) === "login" || route(config) === "orders" && model.auth.state !== "ready-signed-in") return loginNav();
+      var current = route(config);
       var bar = el("nav", { className: "top-nav", dataset: { module: "public-nav", visualId: "public-nav" } });
-      var brand = el("a", { className: "top-nav__brand", href: "#/pricing", ariaLabel: "Calm Harbor Spa catalog" });
+      var home = config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in" ? "orders" : "pricing";
+      var brand = el("a", { className: "top-nav__brand", href: "#/" + home, ariaLabel: "Calm Harbor Spa portal" });
       brand.appendChild(el("span", { className: "brand-logo", ariaHidden: "true" }));
       brand.appendChild(el("span", { className: "brand-name", text: "Calm Harbor Spa" }));
       bar.appendChild(brand);
-      bar.appendChild(el("div", { className: "nav-links" }, [
-        navLink("pricing", "Services & membership", current), navLink("products", "Shop", current),
-      ]));
-      var actions = [el("span", { className: "eyebrow", text: "Live catalog" }), actionLink("Sign in", "btn btn--primary", "auth.gotoSignin", "public-signin", "#/login")];
+      var links = [];
+      if (config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in") links.push(navLink("orders", "My orders", current));
+      links.push(navLink("pricing", "Services & membership", current), navLink("products", "Shop", current));
+      bar.appendChild(el("div", { className: "nav-links" }, links));
+      var signedIn = model.auth.state === "ready-signed-in";
+      var actions = [el("span", { className: "eyebrow", text: signedIn ? "Customer portal" : "Live catalog" }), actionLink(signedIn ? "Account" : "Sign in", signedIn ? "btn btn--ghost" : "btn btn--primary", "auth.gotoSignin", "public-signin", "#/login")];
       bar.appendChild(el("div", { className: "top-nav__actions" }, actions));
       return el("div", { className: "top-nav-wrap" }, [bar]);
     }
 
     function loginNav() {
       var bar = el("nav", { className: "top-nav", dataset: { module: "public-nav", visualId: "public-nav" } });
-      var brand = el("a", { className: "top-nav__brand", href: "#/pricing", ariaLabel: "Calm Harbor Spa catalog", dataset: { action: "nav.landing" } });
+      var home = config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in" ? "orders" : "pricing";
+      var brand = el("a", { className: "top-nav__brand", href: "#/" + home, ariaLabel: "Calm Harbor Spa portal", dataset: { action: "nav.landing" } });
       brand.appendChild(el("span", { className: "brand-logo", ariaHidden: "true" }));
       brand.appendChild(el("span", { className: "brand-name", text: "Calm Harbor Spa", dataset: { bind: "brand.name" } }));
       bar.appendChild(brand);
       bar.appendChild(el("div", { className: "top-nav__actions" }, [
         el("button", { className: "icon-btn icon-btn--optional", text: modeIcon(), type: "button", ariaLabel: "Toggle light/dark", title: "Toggle light/dark", dataset: { action: "ui.toggleMode" }, onClick: toggleMode }),
-        actionLink("< Home", "btn btn--ghost", "nav.landing", "public-home", "#/pricing"),
+        actionLink("< Home", "btn btn--ghost", "nav.landing", "public-home", "#/" + home),
       ]));
       return el("div", { className: "top-nav-wrap" }, [bar]);
     }
@@ -141,9 +151,69 @@
         el("div", { className: "oidc-status" }, [el("div", { className: "oidc-glyph oidc-glyph--ok", text: "\u2713" })]),
         el("div", { className: "oidc-title", text: "You're signed in" }),
         el("div", { className: "oidc-session" }, [el("div", { className: "oidc-session__ava", text: initial }), el("div", null, [el("div", { className: "oidc-session__label", text: "Signed in as" }), el("div", { className: "oidc-session__name", text: name, dataset: { bind: "session.displayName" } })])]),
-        el("div", { className: "oidc-sub", text: "You can keep browsing while signed in." }),
-        el("div", { className: "oidc-actions" }, [actionLink("Browse the catalog", "btn btn--primary btn--block btn--lg", "nav.landing", "oidc-browse-catalog", "#/pricing"), actionButton("Sign out", "btn btn--ghost btn--block", "auth.signOut", "oidc-signout", signOut)]),
+        el("div", { className: "oidc-sub", text: config.enabledModules.includes("orders") ? "Your customer Account and orders are resolved only after this secure sign-in." : "You can keep browsing while signed in." }),
+        el("div", { className: "oidc-actions" }, [actionLink(config.enabledModules.includes("orders") ? "Open my portal" : "Browse the catalog", "btn btn--primary btn--block btn--lg", "nav.landing", "oidc-browse-catalog", config.enabledModules.includes("orders") ? "#/orders" : "#/pricing"), actionButton("Sign out", "btn btn--ghost btn--block", "auth.signOut", "oidc-signout", signOut)]),
       ]);
+    }
+
+    function ordersPage() {
+      var page = el("main", { className: "page", dataset: { route: "orders.list", state: model.customer.state, module: "customer-orders", visualId: "customer-orders" } });
+      if (model.customer.state === "resolving-customer") {
+        page.appendChild(heading("Opening your account", "Securely matching your sign-in to your Calm Harbor customer account."));
+        page.appendChild(oidcProgress("resolving-customer", "Loading your orders...", "No customer data is shown until the account match is complete."));
+        return page;
+      }
+      if (model.customer.state !== "ready" && model.customer.state !== "empty") {
+        page.appendChild(customerFailure(model.customer.error));
+        return page;
+      }
+      var accountName = model.customer.account && model.customer.account.displayName || "Customer";
+      page.appendChild(heading("Welcome back, " + accountName, "Your current Calm Harbor orders, loaded from your customer account."));
+      var card = el("section", { className: "card", dataset: { module: "order-list", visualId: "order-list", state: model.customer.state } });
+      card.appendChild(el("div", { className: "card__head" }, [el("span", { className: "card__title", text: "Your orders" }), el("span", { className: "status-badge status-badge--info", text: String(model.customer.orders.length) + (model.customer.orders.length === 1 ? " order" : " orders") })]));
+      var list = el("div", { className: "order-list" });
+      if (!model.customer.orders.length) list.appendChild(empty("No orders are currently linked to your customer account."));
+      else model.customer.orders.forEach(function (order) { list.appendChild(orderCard(order)); });
+      card.appendChild(list);
+      page.appendChild(card);
+      return page;
+    }
+
+    function orderCard(order) {
+      var status = order.statusCode || "CURRENT";
+      var article = el("article", { className: "order-card", dataset: { module: "order-card", visualId: "order-card", id: String(order.id) } });
+      article.appendChild(el("div", { className: "order-card__icon", style: "background:rgba(var(--accent-rgb),.14)" }, [el("i", { style: "background:var(--accent)" })]));
+      article.appendChild(el("div", { className: "order-card__body" }, [el("div", { className: "order-card__name", text: order.typeLabel || order.typeCode || "Calm Harbor order", dataset: { bind: "order.type" } }), el("div", { className: "order-card__meta", text: "Order #" + order.id, dataset: { bind: "order.id" } })]));
+      article.appendChild(el("span", { className: "status-badge status-badge--info", text: status, dataset: { bind: "order.status" } }));
+      article.appendChild(el("div", { className: "order-card__price", text: order.displayTotal, dataset: { bind: "order.grandTotal" } }));
+      return article;
+    }
+
+    function customerFailure(error) {
+      var code = error && error.code || "customer-unavailable";
+      var copy = code === "customer-not-linked" ? ["Customer account not linked", "This sign-in is not linked to an active Calm Harbor customer account."]
+        : code === "customer-forbidden" || code === "orders-forbidden" ? ["Portal access unavailable", "Your sign-in is valid, but this customer portal cannot be opened."]
+          : code === "session-expired" ? ["Session expired", "Sign in again to securely reopen your customer portal."]
+            : ["Customer portal is unavailable", "We could not safely load your customer account and orders. No private fallback data is shown."];
+      var section = el("section", { className: "page--narrow", dataset: { state: code } });
+      section.appendChild(heading(copy[0], copy[1]));
+      section.appendChild(el("div", { className: "oidc-actions" }, [actionButton("Try again", "btn btn--primary", "customer.retry", "customer-retry", function () { if (model.auth.user) resolveCustomerOrders(model.auth.user); }), actionLink("Account & sign out", "btn btn--ghost", "auth.gotoSignin", "customer-account", "#/login")]));
+      return section;
+    }
+
+    function resolveCustomerOrders(user) {
+      var generation = ++customerGeneration;
+      model.customer = { account: null, error: null, orders: [], state: "resolving-customer" };
+      render();
+      loadCustomerOrders(user, config).then(function (result) {
+        if (generation !== customerGeneration || model.auth.user !== user || model.auth.state !== "ready-signed-in") return;
+        model.customer = { account: result.account, error: null, orders: result.orders, state: result.orders.length ? "ready" : "empty" };
+        render();
+      }).catch(function (error) {
+        if (generation !== customerGeneration || model.auth.user !== user || model.auth.state !== "ready-signed-in") return;
+        model.customer = { account: null, error: error, orders: [], state: error && error.code || "customer-unavailable" };
+        render();
+      });
     }
 
     function pricingPage(items) {
@@ -228,7 +298,9 @@
 
     function signOut() {
       if (!model.auth.manager || !model.auth.user || model.auth.state !== "ready-signed-in") return;
+      customerGeneration += 1;
       model.auth.state = "signing-out";
+      model.customer = { account: null, error: null, orders: [], state: "signed-out" };
       render();
       try {
         var returnUrl = new URL(window.location.href);
@@ -245,11 +317,14 @@
     }
 
     function refreshSession() {
+      customerGeneration += 1;
       model.auth = { error: null, manager: null, state: "checking-session", user: null };
+      model.customer = { account: null, error: null, orders: [], state: "signed-out" };
       render();
       loadSession(config).then(function (auth) {
         model.auth = auth;
         render();
+        if (auth.user && config.enabledModules.includes("orders")) resolveCustomerOrders(auth.user);
       }).catch(function (error) {
         model.auth = { error: error, manager: null, state: "unavailable", user: null };
         render();
@@ -296,6 +371,13 @@
       currencyAttributeValues: values(root.getAttribute("data-portal-pim-currency-attribute-values")),
       amountAttributeCode: required(root, "data-portal-pim-amount-attribute-code"),
       amountMinorDivisor: Number(root.getAttribute("data-portal-pim-amount-minor-divisor") || "100"),
+      enabledModules: values(root.getAttribute("data-portal-enabled-modules")),
+      defaultRoute: root.getAttribute("data-portal-default-route") || "pricing",
+      portalOrganization: root.getAttribute("data-portal-organization") || root.getAttribute("data-portal-pim-organization") || "",
+      coreApiBase: root.getAttribute("data-portal-core-api-base") || "/core",
+      accountApiBase: root.getAttribute("data-portal-account-api-base") || "/core-acct",
+      billApiBase: root.getAttribute("data-portal-bill-api-base") || "/core-bill",
+      accountTypeCode: root.getAttribute("data-portal-account-type-code") || "SPA_CUSTOMER",
       authCallbackPath: required(root, "data-portal-auth-callback-path"),
       authCoreBase: required(root, "data-portal-auth-core-base"),
       authLogoutReturnStorageKey: required(root, "data-portal-auth-logout-return-storage-key"),
@@ -356,6 +438,94 @@
     return url.href;
   }
 
+  async function loadCustomerOrders(user, config) {
+    var accessToken = user && user.access_token;
+    if (!accessToken) throw customerError("session-required", "OIDC session does not include an access token");
+    var authorization = String(user.token_type || "Bearer") + " " + accessToken;
+    var coreBase = sameOriginUrl(config.coreApiBase, "Core API base").replace(/\/+$/, "");
+    var accountBase = sameOriginUrl(config.accountApiBase, "Core Account API base").replace(/\/+$/, "");
+    var billBase = sameOriginUrl(config.billApiBase, "Core Bill API base").replace(/\/+$/, "");
+    var basicInfo = await coreJson(coreBase + "/api/user/basic-info.json", {
+      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(["code", "id", "name", "nls"].map(function (name) { return { name: name }; })),
+    }, "customer");
+    var userId = positiveInteger(basicInfo.authenticatedUserId || basicInfo.id);
+    if (!userId) throw customerError("invalid-session-user", "Core basic-info did not return authenticatedUserId");
+    var authorizedOrganizations = Array.isArray(basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function (item) { return text(item && item.code); }).filter(Boolean) : [];
+    var organization = text(config.portalOrganization);
+    if (!organization) throw customerError("organization-required", "Portal organization is missing");
+    if (authorizedOrganizations.length && !authorizedOrganizations.includes(organization)) throw customerError("organization-forbidden", "Portal organization is not authorized");
+    var accountReply = await coreJson(accountBase + "/api/account/list.json", {
+      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json", "X-Organization-Code": organization },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(userId) },
+          { type: "STRING", operator: "=", property: "type.code", value: config.accountTypeCode },
+        ],
+        mappings: [
+          { name: "code" }, { name: "id" }, { name: "nls" }, { name: "optimistic" },
+          { key: "id", name: "organization", type: "identifier" }, { key: "id", name: "type", type: "identifier" }, { key: "id", name: "user", type: "identifier" },
+        ],
+        offset: 0, pageSize: 2,
+      }),
+    }, "customer");
+    var accounts = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+    if (!accounts.length) throw customerError("customer-not-linked", "No customer Account is linked to this User");
+    if (accounts.length !== 1 || Number(accountReply.resultSize || accounts.length) > 1) throw customerError("customer-account-ambiguous", "Customer Account resolution is ambiguous");
+    var rawAccount = accounts[0] || {};
+    var accountId = positiveInteger(rawAccount.id);
+    if (!accountId) throw customerError("invalid-customer-account", "Customer Account id is missing");
+    if (rawAccount.user && positiveInteger(rawAccount.user.id) && Number(rawAccount.user.id) !== userId) throw customerError("customer-scope-mismatch", "Customer Account does not match the authenticated User");
+    var ordersReply = await coreJson(billBase + "/api/order/list.json", {
+      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json", "X-Organization-Code": organization },
+      body: JSON.stringify({
+        filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
+        mappings: [
+          { name: "grandTotal" }, { name: "id" }, { name: "optimistic" }, { name: "totalCharges" }, { name: "totalTaxes" },
+          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "account", type: "identifier" },
+          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "currency", type: "identifier" },
+          { key: "id", name: "organization", type: "identifier" },
+          { mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
+          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" },
+        ],
+        offset: 0, pageSize: 50, sorting: [{ field: "id", direction: "DESC" }],
+      }),
+    }, "orders");
+    var orders = (Array.isArray(ordersReply && ordersReply.result) ? ordersReply.result : []).map(function (row) {
+      if (!row.account || positiveInteger(row.account.id) !== accountId) throw customerError("order-scope-mismatch", "Order does not belong to the resolved Account");
+      var id = positiveInteger(row.id);
+      if (!id) throw customerError("invalid-order", "Order id is missing");
+      var states = Array.isArray(row.states) ? row.states : [];
+      var statusCode = Array.from(new Set(states.map(function (state) { return text(state && state.code); }).filter(Boolean))).join(" · ");
+      var currencyCode = text(row.currency && row.currency.code) || "USD";
+      var total = Number(row.grandTotal);
+      return {
+        id: id,
+        statusCode: statusCode,
+        typeCode: text(row.type && row.type.code),
+        typeLabel: localizedName(row.type && row.type.nls),
+        displayTotal: Number.isFinite(total) ? new Intl.NumberFormat("en", { style: "currency", currency: currencyCode }).format(total) : "",
+      };
+    });
+    return { account: { id: accountId, displayName: localizedName(rawAccount.nls) || text(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name) || "Customer" }, orders: orders };
+  }
+
+  async function coreJson(url, options, family) {
+    var response = await window.fetch(url, options);
+    if (!response || !response.ok) {
+      var status = response && response.status;
+      var code = status === 401 ? "session-expired" : status === 403 ? family === "orders" ? "orders-forbidden" : "customer-forbidden" : family + "-request-failed";
+      throw customerError(code, "Core " + family + " request failed");
+    }
+    try { return await response.json(); }
+    catch (_) { throw customerError("invalid-response", "Core response was not valid JSON"); }
+  }
+
+  function customerError(code, message) { var error = new Error(message); error.code = code; return error; }
+  function positiveInteger(value) { var number = Number(value); return Number.isInteger(number) && number > 0 ? number : null; }
+  function localizedName(value) { if (!value || typeof value !== "object") return ""; var localized = value.en || value["en-US"] || Object.values(value)[0] || {}; return text(localized && (localized.NAME || localized.name)); }
+  function text(value) { return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim(); }
+
   async function loadCatalog(config) {
     var pricingRows = await loadTypes(config.pricingTypes, config);
     var productRows = await loadTypes(config.productTypes, config);
@@ -391,9 +561,11 @@
   function productFrom(row) { return (row && row.product && (row.product.product || row.product)) || {}; }
   function attribute(entity, code) { var groups = entity && entity.attributes; if (!groups || typeof groups !== "object") return null; for (var groupName in groups) { var value = groups[groupName] && groups[groupName][code]; if (value && value.value !== undefined && value.value !== null) return value.value; } return null; }
   function strip(value) { return String(value || "").replace(/<[^>]*>/g, "").trim(); }
-  function route() {
+  function route(config) {
     var value = location.hash.replace(/^#\/?/, "").split("?", 1)[0];
-    return value === "products" || value === "login" ? value : "pricing";
+    if (value === "login") return value;
+    if (config.enabledModules.includes(value) && ["orders", "pricing", "products"].includes(value)) return value;
+    return config.enabledModules.includes(config.defaultRoute) ? config.defaultRoute : "pricing";
   }
   function navLink(id, label, current) { return el("a", { className: "nav-link" + (id === current ? " nav-link--active" : ""), href: "#/" + id, text: label }); }
   function actionButton(label, className, action, visualId, onClick) { return el("button", { className: className, onClick: onClick, text: label, type: "button", dataset: { module: "action-button", action: action, visualId: visualId } }); }

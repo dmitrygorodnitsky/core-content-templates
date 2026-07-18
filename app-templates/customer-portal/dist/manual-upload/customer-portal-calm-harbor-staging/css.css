@@ -1,12 +1,3 @@
-<!doctype html>
-<html lang="en" data-theme="beauty" data-mode="light">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Calm Harbor Spa | Live Catalog</title>
-<link rel="icon" href="data:,">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/oidc-client-ts/3.0.1/browser/oidc-client-ts.js" integrity="sha384-EX6IlpbPbIxs1Zi4cPDGkFJm4YuPKx31VxifYK2nLwYtwc7EoKJRA9a2BFBNxz1H" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<style>
 /* manual portal source: runtime/styles/tokens.css */
 /* tokens.css — design tokens: fonts, neutral/vertical/dark theme variables */
 
@@ -318,6 +309,82 @@ button { font-family: inherit; }
 
 .avatar-stack__a + .avatar-stack__a { margin-left: -9px; }
 
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa shell: secondary nav link, account
+   control + menu (session identity + sign-out only)
+   ============================================================ */
+.nav-link--secondary { color: var(--ink-3); }
+
+.nav-link--secondary.nav-link--active { color: var(--ink); }
+
+.account-btn {
+  display: flex; align-items: center; gap: 8px; max-width: 200px; flex-shrink: 0;
+  background: rgba(var(--glass), .65); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 3px 12px 3px 3px; cursor: pointer;
+  font: inherit; color: var(--ink);
+}
+
+.account-btn:hover, .account-btn[data-state="open"] { background: rgba(var(--glass), .95); }
+
+.account-btn__ava {
+  width: 28px; height: 28px; border-radius: var(--radius-pill); flex-shrink: 0;
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), .3), rgba(var(--accent-rgb), .6));
+  color: var(--ink); font-weight: 700; font-size: 12.5px;
+  display: grid; place-items: center;
+}
+
+.account-btn__name {
+  font-weight: 600; font-size: 13px; max-width: 140px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.account-menu {
+  position: absolute; top: calc(100% + 10px); right: 8px; z-index: 140;
+  min-width: 252px; max-width: 320px; padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--glass-border); border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(13, 38, 76, .18); animation: fadein .18s ease;
+}
+
+.account-menu__head { display: flex; gap: 10px; align-items: center; padding: 8px 8px 12px; border-bottom: 1px solid var(--glass-border); margin-bottom: 6px; }
+
+.account-menu__ava { width: 34px; height: 34px; font-size: 14px; }
+
+.account-menu__name { font-weight: 700; font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+
+.account-menu__sub { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; }
+
+.account-menu__item {
+  display: block; width: 100%; text-align: left; font: inherit; font-size: 13.5px; font-weight: 550;
+  color: var(--ink-2); background: transparent; border: 0; border-radius: 10px; padding: 10px; cursor: pointer;
+}
+
+.account-menu__item:hover { background: rgba(var(--glass), .95); color: var(--ink); }
+
+.account-menu__divider, .mobile-nav__divider { height: 1px; background: var(--glass-border); margin: 6px 4px; }
+
+.account-menu__item--danger { color: var(--danger); }
+
+
+/* Wave 14.1 — honest support-unavailable notice (Calm Harbor: no approved
+   support destination configured; fixture chat is unreachable via spa nav) */
+.spa-support-scrim {
+  position: fixed; inset: 0; z-index: 220; background: rgba(15, 23, 42, .38);
+  display: grid; place-items: center; padding: 20px; animation: fadein .18s ease;
+}
+
+.spa-support-card {
+  width: min(420px, 100%); background: var(--surface);
+  border: 1px solid var(--glass-border); border-radius: 20px; padding: 28px 24px;
+  box-shadow: 0 24px 60px rgba(13, 38, 76, .28); text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+
+.spa-support-card .state-block__title { line-height: 1.35; font-size: 17px; white-space: nowrap; }
+
+.spa-support-card .state-block__desc { line-height: 1.55; }
+
 /* manual portal source: runtime/styles/components.css */
 /* components.css — buttons, badges, tabs, cards, panels, states, toast, drawer, dev harness */
 
@@ -486,6 +553,49 @@ button { font-family: inherit; }
 
 .drawer__close { width: 34px; height: 34px; border-radius: var(--radius-pill); background: var(--surface-2); border: 0; cursor: pointer; font-size: 16px; }
 
+/* ============================================================
+   Dev harness  — data-dev-toolbar  (PREVIEW ONLY — Codex strips this)
+   ============================================================ */
+.dev-toolbar {
+  position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+  z-index: 400; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+  background: rgba(16,21,31,.9); backdrop-filter: blur(14px); color: #cfd6e4;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+  padding: 8px 10px; font: 500 11.5px var(--font); max-width: 96vw;
+}
+
+.dev-toolbar select, .dev-toolbar button {
+  background: rgba(255,255,255,.08); color: #eef2f8; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px; padding: 5px 8px; font: 500 11.5px var(--font); cursor: pointer;
+}
+
+.dev-toolbar__group { display: flex; align-items: center; gap: 4px; }
+
+.dev-toolbar__label { color: #79839a; text-transform: uppercase; letter-spacing: .06em; font-size: 9.5px; }
+
+.dev-toolbar button.is-on { background: var(--accent); border-color: transparent; color: #fff; }
+
+/* Viewport simulation frame (preview harness) */
+.viewport-host { display: flex; justify-content: center; }
+
+.viewport-frame { width: 100%; transition: max-width .2s ease; }
+
+.viewport-frame[data-vw="390"]  { max-width: 390px; }
+
+.viewport-frame[data-vw="768"]  { max-width: 768px; }
+
+/* Wave 14.1 — wide presets are TRUE-width: an explicit width (not just max-width)
+   so a narrower preview pane never clamps the layout; the host scrolls instead. */
+.viewport-frame[data-vw="1180"] { width: 1180px; min-width: 1180px; max-width: 1180px; }
+
+.viewport-frame[data-vw="1440"] { width: 1440px; min-width: 1440px; max-width: 1440px; background: var(--base); }
+
+.viewport-host:has(.viewport-frame[data-vw="1180"]), .viewport-host:has(.viewport-frame[data-vw="1440"]) { justify-content: flex-start; overflow-x: auto; }
+
+.viewport-frame:not([data-vw="1440"]):not([data-vw="full"]) {
+  margin: 14px auto; box-shadow: 0 20px 60px rgba(13,38,76,.18); border-radius: 20px; overflow: hidden; background: var(--base);
+}
+
 /* Panel — frosted section card used across detail */
 .panel {
   background: rgba(var(--glass), .55);
@@ -497,6 +607,128 @@ button { font-family: inherit; }
 .panel__title { font-weight: 700; font-size: 15px; }
 
 .chip { background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 6px 12px; font-weight: 590; font-size: 12px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+
+
+/* ============================================================
+   Wave 13 — authenticated live-data states
+   (account bootstrap gate, conflict / command-failure banners,
+   contact form fields, message send lifecycle)
+   ============================================================ */
+.account-gate { display: grid; place-items: center; min-height: min(72vh, 640px); }
+
+.account-gate__card { width: 100%; max-width: 460px; }
+
+.account-gate__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+.account-gate__route {
+  display: inline-flex; align-items: center; gap: 2px; margin: 4px 0 6px; white-space: nowrap;
+  padding: 7px 13px; border-radius: var(--radius-pill); font-size: 12.5px; color: var(--ink-2);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+}
+
+.conflict-banner {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 13px 16px; margin: 0 0 16px;
+  border-radius: 14px; background: rgba(255, 159, 10, .1); border: 1px solid rgba(255, 159, 10, .38);
+  animation: fadein .3s ease;
+}
+
+.conflict-banner__icon {
+  width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex: none;
+  font-size: 17px; font-weight: 800; color: var(--warn); background: rgba(255, 159, 10, .16);
+}
+
+.conflict-banner__body { flex: 1; min-width: 160px; }
+
+.inline-fail {
+  display: flex; gap: 11px; align-items: center; padding: 11px 13px;
+  border-radius: 12px; background: var(--danger-bg); border: 1px solid rgba(255, 69, 58, .32);
+  animation: fadein .3s ease;
+}
+
+.inline-fail__icon {
+  width: 22px; height: 22px; border-radius: var(--radius-pill); display: grid; place-items: center; flex: none;
+  font-size: 12px; font-weight: 800; color: var(--danger); background: rgba(255, 69, 58, .16);
+}
+
+/* contact-details form (profile) */
+.field-row { display: flex; flex-direction: column; gap: 6px; }
+
+.field-label { font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .02em; }
+
+.field {
+  width: 100%; padding: 11px 13px; border-radius: 12px; font: inherit; font-size: 14px; color: var(--ink);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); outline: none;
+}
+
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.field[data-state="invalid"] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255, 69, 58, .1); }
+
+.field-error { font-size: 12px; color: var(--danger); }
+
+.contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.vw-mobile .contact-form { grid-template-columns: 1fr; }
+
+/* chat message lifecycle */
+.msg-bubble[data-state="sending"] { opacity: .55; }
+
+.msg-bubble[data-state="failed"] { border: 1px solid rgba(255, 69, 58, .45); }
+
+.msg-status { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; text-align: right; }
+
+.msg-status--failed { color: var(--danger); }
+
+.msg-retry { color: var(--accent); font-weight: 700; cursor: pointer; margin-left: 6px; }
+
+/* pending buttons (command in flight — duplicate submission disabled) */
+.btn[data-state="pending"] { opacity: .8; }
+
+.btn[data-state="failed"] { box-shadow: 0 0 0 2px rgba(255, 69, 58, .28); }
+
+/* cart row while its mutation command is pending */
+.cart-row[data-state="pending"] { opacity: .6; pointer-events: none; }
+
+.cart-row__note { font-size: 12px; color: var(--danger); }
+
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa primitives: unmapped raw status,
+   visit-mode chip, read-only chip, code chip, card footnote
+   ============================================================ */
+/* honest UNMAPPED status: the raw backend code, visually distinct from every
+   customer-status badge — never restyled to look reassuring */
+.status-badge--unmapped {
+  background: transparent; border: 1px dashed rgba(120,120,128,.55); color: var(--ink-2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .03em;
+}
+
+/* visit mode is explicit text, never color alone */
+.visit-mode {
+  display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-pill);
+  padding: 4px 11px; font-size: 12px; font-weight: 620;
+  background: rgba(var(--accent-rgb), .08); border: 1px solid rgba(var(--accent-rgb), .22); color: var(--ink);
+  white-space: nowrap;
+}
+
+.visit-mode__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.visit-mode--home .visit-mode__dot { background: transparent; border: 2px solid var(--accent); width: 5px; height: 5px; }
+
+.readonly-chip {
+  display: inline-flex; align-items: center; border-radius: var(--radius-pill); padding: 4px 10px;
+  font-size: 10.5px; font-weight: 680; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(120,120,128,.14); color: var(--ink-3); margin-left: auto; white-space: nowrap;
+}
+
+.code-chip {
+  display: inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10.5px; background: rgba(120,120,128,.12); border-radius: 6px;
+  padding: 1px 6px; margin-left: 8px; color: var(--ink-3); overflow-wrap: anywhere;
+}
+
+.card__footnote { padding: 12px 16px 14px; font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--glass-border); line-height: 1.5; }
 
 /* manual portal source: runtime/styles/routes.css */
 /* routes.css — route/module-specific layouts */
@@ -1152,7 +1384,22 @@ button { font-family: inherit; }
 
 .list-panel__title { font-weight: 700; font-size: 16px; }
 
-.link-action { font-weight: 600; font-size: 13px; color: var(--accent); cursor: pointer; }
+.link-action {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 .saved-row { display: flex; align-items: center; gap: 12px; background: rgba(var(--glass),.55); border: 1px solid var(--glass-border); border-radius: 16px; padding: 13px 15px; }
 
@@ -1503,48 +1750,76 @@ button { font-family: inherit; }
    portal profiles).
    ============================================================ */
 .care-grid { display: grid; grid-template-columns: 1.55fr 1fr; gap: 16px; align-items: start; }
+
 .care-col { display: flex; flex-direction: column; gap: 16px; }
+
 /* Unit picker (HVAC equipment) — data-module="unit-picker" */
 .unit-row { display: flex; gap: 10px; }
+
 .unit-pick {
   flex: 1; min-width: 0; text-align: left; cursor: pointer; font: inherit; color: inherit;
   border-radius: 16px; padding: 12px 14px;
   background: rgba(var(--glass), .5); border: 1px solid var(--glass-border);
 }
+
 .unit-pick--active { border-color: rgba(var(--accent-rgb), .5); box-shadow: 0 0 0 1.5px rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .06); }
+
 .health-bar { height: 7px; border-radius: var(--radius-pill); background: rgba(120,120,128,.16); overflow: hidden; }
+
 .health-bar__fill { height: 100%; border-radius: var(--radius-pill); }
+
 /* Diagnostic checks — data-module="diagnostic-report" */
 .check-group { font-weight: 700; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); margin: 14px 0 3px; }
+
 .check-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--glass-border); font-size: 13.5px; }
+
 .check-dot { width: 9px; height: 9px; border-radius: var(--radius-pill); flex-shrink: 0; }
+
 /* Stat strip + shared log rows (season log, doses, alerts, documents) */
 .care-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+
 .care-stat { background: rgba(var(--glass), .55); border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 14px; }
+
 .log-row { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-top: 1px solid var(--glass-border); }
+
 .log-date { min-width: 52px; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+
 .meter { height: 8px; border-radius: var(--radius-pill); background: rgba(120,120,128,.16); overflow: hidden; margin-top: 12px; }
+
 .meter__fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+
 .score-big { font-weight: 800; font-size: 40px; letter-spacing: -.03em; line-height: 1; }
+
 /* Program steps (lawn) — data-module="program-steps" */
 .step-row { display: flex; align-items: center; gap: 13px; padding: 12px 0; border-top: 1px solid var(--glass-border); }
+
 .step-num { width: 30px; height: 30px; border-radius: var(--radius-pill); display: grid; place-items: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+
 .reentry-card { background: rgba(255,159,10,.08); border: 1px solid rgba(255,159,10,.22); border-radius: 18px; padding: 16px 18px; }
+
 /* Water readings (pool) — data-module="water-readings" */
 .reading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
 .reading-card { background: rgba(var(--glass), .55); border: 1px solid var(--glass-border); border-radius: 16px; padding: 14px 15px; }
+
 .spark { display: flex; align-items: flex-end; gap: 3px; height: 32px; margin-top: 12px; }
+
 .spark span { flex: 1; border-radius: 3px 3px 1px 1px; background: rgba(var(--accent-rgb), .22); min-height: 3px; }
+
 .spark span:last-child { background: var(--accent); }
+
 /* Station map (pest) — data-module="station-map" */
 .station-map { position: relative; height: 170px; border-radius: 16px; overflow: hidden; background: repeating-linear-gradient(45deg, #dfe6f2, #dfe6f2 13px, #d6deec 13px, #d6deec 26px); }
+
 :root[data-mode="dark"] .station-map { background: repeating-linear-gradient(45deg, #1c2431, #1c2431 13px, #222c3d 13px, #222c3d 26px); }
+
 .station-pin {
   position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px;
   border-radius: var(--radius-pill); display: grid; place-items: center;
   font-weight: 800; font-size: 10.5px; color: #fff; border: 2px solid #fff;
   box-shadow: 0 3px 10px rgba(8,24,60,.25);
 }
+
 /* Wave 7.1 — retreat request "requesting" spinner (visual state only) */
 .btn-spinner {
   width: 13px; height: 13px; border-radius: var(--radius-pill);
@@ -1552,25 +1827,14 @@ button { font-family: inherit; }
   display: inline-block; margin-right: 8px; vertical-align: -2px;
   animation: care-spin .7s linear infinite;
 }
+
 @keyframes care-spin { to { transform: rotate(360deg); } }
+
 .btn[disabled] { opacity: .62; cursor: default; }
 
-[data-route="care"] .btn[data-state="unavailable"][disabled] {
-  opacity: 1;
-  color: var(--ink-3);
-  background: var(--surface-2);
-  border-color: var(--line);
-  cursor: default;
-}
-
-[data-route="care"] .link-action[data-state="unavailable"] {
-  color: var(--ink-3);
-  cursor: default;
-  opacity: .72;
-}
 
 /* ============================================================
-   WAVE 10 - Core OIDC login (data-route="auth.oidc", /login)
+   WAVE 10 — Core OIDC login (data-route="auth.oidc", /login)
    Module core-oidc-auth. Reuses the accepted auth-grid /
    auth-card composition; the fixture phone / OTP / Apple
    controls are NOT part of this route.
@@ -1610,6 +1874,429 @@ button { font-family: inherit; }
 .oidc-actions { display: flex; flex-direction: column; gap: 10px; }
 
 .oidc-note { text-align: center; font-size: 12px; line-height: 1.5; color: var(--ink-3); margin-top: 18px; }
+
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa portal (Beauty): staging Orders,
+   target Appointments, Services & prices, browse-only Shop
+   ============================================================ */
+.spa-order-row { display: flex; align-items: center; gap: 13px; padding: 13px; border-top: 1px solid var(--glass-border); }
+
+.spa-order-row:first-child { border-top: 0; }
+
+.spa-order-row__body { flex: 1; min-width: 0; }
+
+.spa-order-row__body .order-card__name { overflow-wrap: anywhere; white-space: normal; }
+
+.spa-order-row__amount { text-align: right; display: flex; flex-direction: column; line-height: 1.3; }
+
+.spa-order-row__amount b { font-weight: 700; font-size: 14.5px; }
+
+.spa-order-row__amount span { font-size: 10px; color: var(--ink-3); letter-spacing: .06em; }
+
+/* target appointments */
+.appt-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+
+.appt-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+
+.appt-hero__service { font-weight: 800; font-size: 21px; letter-spacing: -.02em; margin: 12px 0 3px; overflow-wrap: anywhere; text-wrap: pretty; }
+
+.appt-hero__when { font-weight: 650; font-size: 15px; color: var(--ink); }
+
+.appt-hero__tz { font-size: 11.5px; color: var(--ink-3); font-weight: 400; margin-left: 7px; }
+
+.appt-details { margin-top: 8px; border: 1px solid var(--glass-border); border-radius: 14px; padding: 4px 14px; }
+
+.appt-details__row { display: flex; gap: 12px; padding: 9px 0; border-top: 1px solid var(--glass-border); font-size: 13px; }
+
+.appt-details__row:first-child { border-top: 0; }
+
+.appt-details__label { width: 74px; flex-shrink: 0; color: var(--ink-3); font-size: 12px; padding-top: 1px; }
+
+.appt-details__val { flex: 1; min-width: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.appt-details__val b { color: var(--ink); font-weight: 650; }
+
+.appt-hero__ref { margin-top: 10px; font-size: 11.5px; color: var(--ink-3); }
+
+.appt-hero__actions { display: flex; gap: 10px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+
+.appt-hero__note {
+  margin-top: 12px; background: rgba(var(--glass), .5); border: 1px solid var(--glass-border);
+  border-radius: 14px; padding: 11px 14px; font-size: 12.5px; color: var(--ink-2); line-height: 1.55;
+}
+
+.appt-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--glass-border); flex-wrap: wrap; }
+
+.appt-row:first-of-type { border-top: 0; }
+
+.appt-row__body { flex: 1; min-width: 140px; }
+
+.appt-row__name { font-weight: 600; font-size: 13.5px; overflow-wrap: anywhere; }
+
+.appt-row__meta { font-size: 12px; color: var(--ink-3); margin-top: 2px; overflow-wrap: anywhere; }
+
+.appt-row__price { font-weight: 700; font-size: 13.5px; }
+
+.appt-empty { text-align: center; padding: 44px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.appt-empty__actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+
+/* services & prices */
+.spa-tabs { margin: 2px 0 18px; }
+
+.spa-svc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.spa-svc-card__price { display: flex; align-items: baseline; gap: 5px; margin-top: 10px; }
+
+.spa-svc-card__price b { font-size: 18px; font-weight: 800; }
+
+.spa-svc-card__price span { font-size: 12px; color: var(--ink-3); }
+
+.spa-svc-card__foot { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 10px; }
+
+.catalog-note { font-size: 12px; color: var(--ink-3); margin-top: 14px; line-height: 1.55; max-width: 640px; }
+
+/* browse-only shop */
+.spa-shop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ============================================================
+   Wave 15 — Calm Harbor commercial lifecycle: Account, Purchases,
+   purchase detail, My plan, sellable Shop, server cart, SIMULATED
+   checkout + confirmation. Composes accepted tokens/components only.
+   ============================================================ */
+/* account overview */
+.account-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.account-entry__desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; margin-top: 5px; }
+
+.account-entry__foot { margin-top: 12px; min-height: 18px; }
+
+.account-entry--unavailable { opacity: .82; }
+
+.account-entry--unavailable .card__title { color: var(--ink-2); }
+
+/* purchases list */
+.purch-row { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-top: 1px solid var(--glass-border); cursor: pointer; }
+
+.purch-row:first-child { border-top: 0; }
+
+.purch-row__body { flex: 1; min-width: 0; }
+
+.purch-row__top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+
+.purch-row__ref { font-weight: 700; font-size: 14px; }
+
+.purch-row__date { font-size: 12px; color: var(--ink-3); }
+
+.purch-row__summary { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; overflow-wrap: anywhere; }
+
+.purch-row__attention {
+  display: inline-flex; margin-top: 7px; font-size: 12px; font-weight: 600; color: var(--ink);
+  background: rgba(255,159,10,.14); border: 1px solid rgba(255,159,10,.35); border-radius: 9px; padding: 4px 9px; line-height: 1.4;
+}
+
+.purch-row__side { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+
+.purch-row__total { display: flex; align-items: baseline; gap: 4px; }
+
+.purch-row__total b { font-weight: 700; font-size: 14.5px; }
+
+.purch-row__total span { font-size: 10px; color: var(--ink-3); letter-spacing: .06em; }
+
+.purch-row__chev { color: var(--ink-3); font-size: 16px; flex-shrink: 0; }
+
+/* kind chip — purchase/plan classification, distinct from status */
+.kind-chip {
+  display: inline-flex; align-items: center; border-radius: var(--radius-pill); padding: 3px 9px;
+  font-size: 10.5px; font-weight: 680; letter-spacing: .05em; text-transform: uppercase;
+  background: rgba(var(--accent-rgb), .1); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), .22);
+}
+
+.kind-chip--retail, .kind-chip--mixed { background: rgba(120,120,128,.1); color: var(--ink-2); border-color: rgba(120,120,128,.24); }
+
+/* purchase detail */
+.purch-head__ref { font-weight: 800; font-size: 21px; letter-spacing: -.02em; margin: 10px 0 2px; }
+
+.purch-head__meta { font-size: 13px; color: var(--ink-2); display: flex; gap: 7px; flex-wrap: wrap; }
+
+.purch-head__dot { color: var(--ink-3); }
+
+.purch-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 18px; align-items: start; margin-top: 18px; }
+
+.purch-lines__group { font-size: 11.5px; font-weight: 680; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); margin-top: 14px; }
+
+.purch-line { display: flex; gap: 12px; padding: 11px 0; border-top: 1px solid var(--glass-border); align-items: flex-start; }
+
+.purch-line:first-child, .purch-lines__group + .purch-line { border-top: 0; }
+
+.purch-line__title { font-weight: 600; font-size: 13.5px; overflow-wrap: anywhere; }
+
+.purch-line__meta { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+.purch-line__note {
+  margin-top: 8px; font-size: 12px; line-height: 1.5; color: var(--ink-2);
+  background: rgba(var(--glass), .5); border: 1px solid var(--glass-border); border-radius: 10px; padding: 8px 11px;
+}
+
+.purch-line__side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+.purch-line__side b { font-size: 13.5px; }
+
+/* server-owned commercial totals */
+.money-rows { margin-top: 10px; }
+
+.money-rows__row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; font-size: 13px; color: var(--ink-2); border-top: 1px solid var(--glass-border); }
+
+.money-rows__row:first-child { border-top: 0; }
+
+.money-rows__row--total { font-weight: 800; font-size: 15px; color: var(--ink); }
+
+.purch-paynote { display: flex; flex-direction: column; gap: 7px; margin-top: 12px; }
+
+.purch-paynote__txt { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+
+.purch-ful__row { font-weight: 600; font-size: 13.5px; margin-top: 8px; }
+
+.purch-ful__note { font-size: 12px; color: var(--ink-3); line-height: 1.5; margin-top: 6px; }
+
+.purch-appt { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--glass-border); flex-wrap: wrap; }
+
+.purch-appt:nth-of-type(2) { border-top: 0; margin-top: 4px; }
+
+.purch-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+/* simulation treatment */
+.sim-badge {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--ink-2);
+  background: rgba(var(--accent-rgb), .07); border: 1px dashed rgba(var(--accent-rgb), .45);
+  border-radius: var(--radius-pill); padding: 6px 12px; line-height: 1.3;
+}
+
+.sim-badge b { font-weight: 750; letter-spacing: .04em; text-transform: uppercase; font-size: 10.5px; color: var(--accent); }
+
+.sim-badge__dot { width: 7px; height: 7px; border-radius: 50%; border: 2px solid var(--accent); flex-shrink: 0; }
+
+.sim-badge--block { display: flex; justify-content: center; margin-top: 12px; }
+
+/* my plan */
+.plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
+
+.plan-card__title { font-weight: 800; font-size: 19px; letter-spacing: -.02em; margin: 10px 0 4px; text-wrap: pretty; }
+
+.plan-card[data-state="exhausted"] .plan-meter__bar i { background: var(--ink-3); }
+
+.plan-meter { margin: 10px 0 4px; }
+
+.plan-meter__bar { height: 7px; border-radius: 999px; background: rgba(120,120,128,.16); overflow: hidden; }
+
+.plan-meter__bar i { display: block; height: 100%; border-radius: 999px; background: var(--accent); }
+
+.plan-meter__label { font-size: 12.5px; color: var(--ink-2); margin-top: 7px; }
+
+.plan-meter__label b { font-size: 14px; color: var(--ink); }
+
+/* sellable shop */
+.spa-shop-card--muted { opacity: .68; }
+
+.shop-chip {
+  display: inline-flex; align-self: flex-start; margin-top: 9px; font-size: 11px; font-weight: 650;
+  border-radius: var(--radius-pill); padding: 3px 9px; color: var(--ink-2);
+  background: rgba(120,120,128,.12); border: 1px solid rgba(120,120,128,.2);
+}
+
+.shop-chip--stock { color: var(--danger, #c0392b); background: rgba(255,69,58,.1); border-color: rgba(255,69,58,.28); }
+
+.shop-chip--price { color: var(--accent); background: rgba(var(--accent-rgb), .09); border-color: rgba(var(--accent-rgb), .28); }
+
+.shop-variants { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+
+.shop-variant {
+  font: inherit; font-size: 12px; font-weight: 600; color: var(--ink-2); cursor: pointer;
+  background: rgba(var(--glass), .5); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 5px 11px;
+}
+
+.shop-variant--on { color: var(--accent); border-color: rgba(var(--accent-rgb), .5); background: rgba(var(--accent-rgb), .09); }
+
+/* cart */
+.spa-cart-row { border-top: 1px solid var(--glass-border); }
+
+.spa-cart-row:first-child { border-top: 0; }
+
+.spa-cart-row[data-state="stale-price"], .spa-cart-row[data-state="inventory-conflict"] { background: rgba(255,159,10,.05); border-radius: 12px; }
+
+/* bag indicator (top-nav) */
+.spa-bag { position: relative; }
+
+.spa-bag__count {
+  position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 999px;
+  background: var(--accent); color: #fff; font-size: 10px; font-weight: 750;
+  display: inline-flex; align-items: center; justify-content: center; padding: 0 4px;
+}
+
+/* checkout */
+.co-contact { font-size: 13.5px; margin-top: 8px; line-height: 1.6; overflow-wrap: anywhere; }
+
+.co-ful { display: flex; align-items: center; gap: 11px; padding: 11px 13px; border: 1px solid var(--glass-border); border-radius: 14px; margin-top: 10px; cursor: pointer; }
+
+.co-ful--on { border-color: rgba(var(--accent-rgb), .5); background: rgba(var(--accent-rgb), .05); }
+
+.co-ful__dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--ink-3); flex-shrink: 0; }
+
+.co-ful--on .co-ful__dot { border-color: var(--accent); background: var(--accent); }
+
+.co-line { display: flex; align-items: baseline; gap: 12px; padding: 9px 0; border-top: 1px solid var(--glass-border); font-size: 13px; }
+
+.co-line:nth-of-type(2) { border-top: 0; }
+
+.co-line b { font-size: 13.5px; }
+
+.co-policy { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
+
+.co-policy__box {
+  font: inherit; width: 20px; height: 20px; border-radius: 7px; flex-shrink: 0; cursor: pointer;
+  border: 1.5px solid var(--glass-border); background: rgba(var(--glass), .5); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 12px; padding: 0;
+}
+
+.co-policy__box--on { background: var(--accent); border-color: var(--accent); }
+
+/* confirmation — authoritative readback only */
+.co-confirm { text-align: center; padding: 34px 26px; }
+
+.co-confirm__glyph {
+  width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 12px;
+  background: rgba(52,199,89,.14); color: #34c759; font-size: 21px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.co-confirm__title { font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
+
+.co-confirm__sub { font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.5; }
+
+/* booking review bridge (drawer) */
+.booking-review { margin-bottom: 14px; }
+
+.booking-review__hold {
+  font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
+  background: rgba(var(--glass), .5); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px 13px;
+}
+
+/* detail sections (shared) */
+.detail-section { margin-top: 12px; }
+
+.detail-section__title { font-size: 11.5px; font-weight: 680; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+
+/* ============================================================
+   Wave 16 — full flow activation: appointment detail navigation,
+   the complete booking flow (drawer), published plan offers,
+   Calm Harbor profile. Composes accepted tokens/components only.
+   ============================================================ */
+
+/* appointment rows now navigate to the detail route */
+.appt-row--link { cursor: pointer; }
+
+.appt-row--link:hover { background: rgba(var(--accent-rgb), .04); }
+
+.appt-row__chev { color: var(--ink-3); font-size: 16px; font-weight: 600; padding: 0 2px; }
+
+/* booking flow — step rail */
+.bk-steps { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+
+.bk-step {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 650; color: var(--ink-3);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 4px 10px 4px 5px;
+}
+
+.bk-step i {
+  display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(120,120,128,.14); font-style: normal; font-size: 10.5px; font-weight: 750;
+}
+
+.bk-step--on { color: var(--ink); border-color: rgba(var(--accent-rgb), .5); background: rgba(var(--accent-rgb), .06); }
+
+.bk-step--on i { background: var(--accent); color: var(--on-accent, #fff); }
+
+.bk-step--done { color: var(--ink-2); }
+
+.bk-step--done i { background: rgba(var(--accent-rgb), .16); color: var(--accent); }
+
+.bk-section-label { font-size: 12px; font-weight: 680; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin: 4px 0 10px; }
+
+/* option rows (service / specialist) */
+.bk-opts { display: flex; flex-direction: column; gap: 9px; }
+
+.bk-opt {
+  display: flex; align-items: center; gap: 11px; width: 100%; padding: 11px 13px; font: inherit; color: var(--ink);
+  border: 1px solid var(--glass-border); border-radius: 14px; background: rgba(var(--glass), .4); cursor: pointer; text-align: left;
+}
+
+.bk-opt:hover { border-color: rgba(var(--accent-rgb), .35); }
+
+.bk-opt--on { border-color: rgba(var(--accent-rgb), .55); background: rgba(var(--accent-rgb), .06); }
+
+.bk-opt__dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--ink-3); flex-shrink: 0; }
+
+.bk-opt--on .bk-opt__dot { border-color: var(--accent); background: var(--accent); }
+
+/* day chips + slot grid */
+.bk-days { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+
+.bk-day {
+  font: inherit; font-size: 12.5px; font-weight: 650; color: var(--ink-2); padding: 7px 12px; cursor: pointer;
+  border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: rgba(var(--glass), .4);
+}
+
+.bk-day--on { color: var(--accent); border-color: rgba(var(--accent-rgb), .55); background: rgba(var(--accent-rgb), .08); }
+
+.bk-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+.bk-slot {
+  font: inherit; font-size: 13px; font-weight: 650; color: var(--ink); padding: 10px 6px; cursor: pointer;
+  border: 1px solid var(--glass-border); border-radius: 12px; background: rgba(var(--glass), .4); text-align: center;
+}
+
+.bk-slot:hover { border-color: rgba(var(--accent-rgb), .35); }
+
+.bk-slot--on { border-color: var(--accent); background: rgba(var(--accent-rgb), .1); color: var(--accent); }
+
+.bk-note { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; margin-top: 8px; }
+
+.bk-empty { border: 1px dashed var(--glass-border); border-radius: 14px; padding: 16px; }
+
+/* the currently booked visit (reschedule) + plan-credit context */
+.bk-current, .bk-credit {
+  border: 1px solid var(--glass-border); border-radius: 14px; padding: 12px 13px; margin-bottom: 12px;
+  background: rgba(var(--glass), .4);
+}
+
+.bk-credit[data-state="unavailable"], .bk-credit[data-state="exhausted"], .bk-credit[data-state="changed"] {
+  border-color: rgba(255,159,10,.45); background: rgba(255,159,10,.07);
+}
+
+.bk-current__label { font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 4px; }
+
+/* reschedule comparison — current vs proposed, never merged */
+.bk-compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-bottom: 12px; }
+
+.bk-compare__cell { border: 1px solid var(--glass-border); border-radius: 14px; padding: 11px 12px; min-width: 0; }
+
+.bk-compare__cell--new { border-color: rgba(var(--accent-rgb), .5); background: rgba(var(--accent-rgb), .05); }
+
+.bk-compare__arrow { color: var(--ink-3); font-size: 16px; font-weight: 700; }
+
+/* published plan offers (catalog) */
+.offer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
+
+.offer-card__price { font-weight: 800; font-size: 24px; letter-spacing: -.02em; margin-top: 8px; }
+
+.offer-benefits { margin: 10px 0 0; padding: 0 0 0 2px; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+.offer-benefits li { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; padding-left: 18px; position: relative; }
+
+.offer-benefits li::before { content: "\2713"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+.offer-card[data-state="unavailable"] .offer-card__price { color: var(--ink-3); }
 
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
@@ -1694,13 +2381,88 @@ button { font-family: inherit; }
 
 .vw-mobile .auth-pitch__title { font-size: 30px; }
 
-/* Wave 10 - Core OIDC login */
-.vw-mobile .oidc-title { font-size: 20px; }
 /* Wave 7 — care hub */
 .vw-tablet .care-grid, .vw-mobile .care-grid { grid-template-columns: 1fr; }
+
 .vw-mobile .care-stats { grid-template-columns: 1fr 1fr; }
+
 .vw-mobile .reading-grid { grid-template-columns: 1fr; }
+
 .vw-mobile .unit-row { flex-direction: column; }
+
+/* Wave 10 — Core OIDC login */
+.vw-mobile .oidc-title { font-size: 20px; }
+
+/* Wave 14 — Calm Harbor spa portal */
+.vw-compact .account-btn__name { display: none; }
+
+.vw-compact .account-btn { padding: 3px; }
+
+.vw-mobile .spa-cta--browse { display: none; } /* honest browse CTA lives in the menu on phones — the global CTA never crowds brand/menu */
+
+.vw-tablet .appt-grid, .vw-mobile .appt-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .spa-svc-grid, .vw-mobile .spa-svc-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .spa-shop-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-mobile .spa-shop-grid { grid-template-columns: 1fr 1fr; }
+
+/* Wave 14.1 — intentional mobile Orders row: the identity column owns the full
+   width beside the icon (no sibling badge/amount starving it); raw status +
+   amount move to their own row. Nothing is truncated; long names/codes wrap at
+   normal boundaries; no horizontal overflow. */
+.vw-mobile .spa-order-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "icon body body" "icon status status" "icon amount amount";
+  row-gap: 9px; align-items: start;
+}
+
+.vw-mobile .spa-order-row .order-card__icon { grid-area: icon; }
+
+.vw-mobile .spa-order-row__body { grid-area: body; }
+
+.vw-mobile .spa-order-row .status-badge { grid-area: status; justify-self: start; white-space: normal; overflow-wrap: break-word; text-align: left; width: max-content; max-width: 100%; }
+
+.vw-mobile .spa-order-row__amount { grid-area: amount; justify-self: end; flex-direction: row; align-items: baseline; gap: 5px; }
+
+.vw-mobile .appt-hero__service { font-size: 19px; }
+
+/* Wave 15 — Calm Harbor commerce */
+.vw-tablet .purch-grid, .vw-mobile .purch-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .account-grid, .vw-tablet .plan-grid, .vw-mobile .plan-grid { grid-template-columns: 1fr; }
+
+/* purchases row on phones: identity owns the width; status + amount get their own row */
+.vw-mobile .purch-row { flex-wrap: wrap; }
+
+.vw-mobile .purch-row__side { flex-direction: row; align-items: baseline; width: 100%; justify-content: space-between; order: 3; }
+
+.vw-mobile .purch-row__chev { display: none; }
+
+.vw-mobile .cart-row { flex-wrap: wrap; }
+
+.vw-mobile .spa-cart-row .cart-row__body { flex: 1 1 100%; min-width: 0; }
+
+.vw-mobile .cart-row__total { margin-left: auto; }
+
+/* Wave 16 — full flow activation */
+.vw-tablet .offer-grid, .vw-mobile .offer-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .bk-slots { grid-template-columns: repeat(2, 1fr); }
+
+.vw-mobile .bk-compare { grid-template-columns: 1fr; }
+
+.vw-mobile .bk-compare__arrow { transform: rotate(90deg); justify-self: center; }
+
+/* appointment rows on phones: identity owns the width; status/price/next wrap below */
+.vw-mobile .appt-row { flex-wrap: wrap; }
+
+.vw-mobile .appt-row .appt-row__body { flex: 1 1 60%; min-width: 0; }
+
+.vw-mobile .appt-row__chev { margin-left: auto; }
+
+.vw-mobile .contact-form { grid-template-columns: 1fr; }
 
 /* manual portal source: runtime/styles/seo.css */
 /* seo.css — public SEO landing sections (route: seo.landing)
@@ -2007,608 +2769,3 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   .seo-public .seo-trust, .seo-public .seo-svc-grid, .seo-public .seo-how, .seo-public .seo-proof, .seo-public .seo-reviews { grid-template-columns: 1fr; }
   .seo-public .seo-footer__grid { grid-template-columns: 1fr; }
 }
-</style>
-</head>
-<body>
-<section id="app" data-portal-vertical="beauty" data-portal-profile="appointments" data-portal-theme="beauty" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="pricing" data-portal-enabled-modules="pricing,products" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-case="" data-portal-pim-api-base="/core-pim/api" data-portal-pim-organization="CALM_HARBOR_SPA_STAGING" data-portal-pim-product-type-code="SPA_SERVICE" data-portal-pim-pricing-product-type-codes="SPA_SERVICE,SPA_MEMBERSHIP" data-portal-pim-products-product-type-codes="SPA_RETAIL" data-portal-pim-price-type-code="SPA_STANDARD_PRICE" data-portal-pim-price-attribute-code="INTERVAL" data-portal-pim-price-attribute-values="ONE_TIME,MONTH" data-portal-pim-currency="USD" data-portal-pim-currency-attribute-code="CURRENCY" data-portal-pim-currency-attribute-values="USD" data-portal-pim-amount-attribute-code="AMOUNT_MINOR" data-portal-pim-amount-minor-divisor="100" data-portal-pim-cta="Book service" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url"></section>
-<script>
-/*
- * Manual CMS runtime for the Calm Harbor staging catalog and first
- * authenticated customer-portal increment.
- * It has no imports because the CMS stores it in the template javascript field.
- */
-(function () {
-  "use strict";
-
-  function boot() {
-    var root = document.querySelector("#app[data-portal-pim-organization]");
-    if (!root) throw new Error("Calm Harbor PIM root is missing");
-    var config = readConfig(root);
-    document.documentElement.dataset.theme = root.getAttribute("data-portal-theme") || "beauty";
-    var mode = document.documentElement.dataset.mode || root.getAttribute("data-portal-default-mode") || "light";
-    document.documentElement.dataset.mode = mode;
-    var model = {
-      auth: { error: null, manager: null, state: "checking-session", user: null },
-      customer: { account: null, error: null, orders: [], state: "signed-out" },
-      error: null,
-      pricing: [],
-      products: [],
-      status: "loading",
-    };
-
-    var resizeObserver = null;
-    var customerGeneration = 0;
-    window.addEventListener("hashchange", render);
-    render();
-    loadSession(config).then(function (auth) {
-      model.auth = auth;
-      render();
-      if (auth.user && config.enabledModules.includes("orders")) resolveCustomerOrders(auth.user);
-    }).catch(function (error) {
-      model.auth = { error: error, manager: null, state: "unavailable", user: null };
-      render();
-    });
-    loadCatalog(config).then(function (catalog) {
-      model.status = "ready";
-      model.pricing = catalog.pricing;
-      model.products = catalog.products;
-      render();
-    }).catch(function (error) {
-      model.status = "error";
-      model.error = error;
-      render();
-    });
-
-    function render() {
-      clear(root);
-      var shell = el("div", { className: "app-shell" });
-      shell.appendChild(nav());
-      var current = route(config);
-      var page;
-      if (current === "login" || current === "orders" && model.auth.state !== "ready-signed-in") page = loginPage();
-      else if (current === "orders") page = ordersPage();
-      else {
-        page = el("main", { className: "page", dataset: { route: current } });
-        if (model.status === "loading") page.appendChild(loading());
-        else if (model.status === "error") page.appendChild(failure(model.error));
-        else if (current === "products") page.appendChild(productsPage(model.products));
-        else page.appendChild(pricingPage(model.pricing));
-      }
-      shell.appendChild(page);
-      root.appendChild(shell);
-      applyResponsive(shell);
-    }
-
-    function nav() {
-      if (route(config) === "login" || route(config) === "orders" && model.auth.state !== "ready-signed-in") return loginNav();
-      var current = route(config);
-      var bar = el("nav", { className: "top-nav", dataset: { module: "public-nav", visualId: "public-nav" } });
-      var home = config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in" ? "orders" : "pricing";
-      var brand = el("a", { className: "top-nav__brand", href: "#/" + home, ariaLabel: "Calm Harbor Spa portal" });
-      brand.appendChild(el("span", { className: "brand-logo", ariaHidden: "true" }));
-      brand.appendChild(el("span", { className: "brand-name", text: "Calm Harbor Spa" }));
-      bar.appendChild(brand);
-      var links = [];
-      if (config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in") links.push(navLink("orders", "My orders", current));
-      links.push(navLink("pricing", "Services & membership", current), navLink("products", "Shop", current));
-      bar.appendChild(el("div", { className: "nav-links" }, links));
-      var signedIn = model.auth.state === "ready-signed-in";
-      var actions = [el("span", { className: "eyebrow", text: signedIn ? "Customer portal" : "Live catalog" }), actionLink(signedIn ? "Account" : "Sign in", signedIn ? "btn btn--ghost" : "btn btn--primary", "auth.gotoSignin", "public-signin", "#/login")];
-      bar.appendChild(el("div", { className: "top-nav__actions" }, actions));
-      return el("div", { className: "top-nav-wrap" }, [bar]);
-    }
-
-    function loginNav() {
-      var bar = el("nav", { className: "top-nav", dataset: { module: "public-nav", visualId: "public-nav" } });
-      var home = config.enabledModules.includes("orders") && model.auth.state === "ready-signed-in" ? "orders" : "pricing";
-      var brand = el("a", { className: "top-nav__brand", href: "#/" + home, ariaLabel: "Calm Harbor Spa portal", dataset: { action: "nav.landing" } });
-      brand.appendChild(el("span", { className: "brand-logo", ariaHidden: "true" }));
-      brand.appendChild(el("span", { className: "brand-name", text: "Calm Harbor Spa", dataset: { bind: "brand.name" } }));
-      bar.appendChild(brand);
-      bar.appendChild(el("div", { className: "top-nav__actions" }, [
-        el("button", { className: "icon-btn icon-btn--optional", text: modeIcon(), type: "button", ariaLabel: "Toggle light/dark", title: "Toggle light/dark", dataset: { action: "ui.toggleMode" }, onClick: toggleMode }),
-        actionLink("< Home", "btn btn--ghost", "nav.landing", "public-home", "#/" + home),
-      ]));
-      return el("div", { className: "top-nav-wrap" }, [bar]);
-    }
-
-    function loginPage() {
-      var state = model.auth.state;
-      var section = el("section", { className: "page auth-page", dataset: { route: "auth.oidc", visualId: "auth.oidc", screenLabel: "Login (" + state + ")" } });
-      var grid = el("div", { className: "auth-grid" });
-      grid.appendChild(el("div", { className: "auth-pitch" }, [
-        el("span", { className: "eyebrow", text: "Customer account" }),
-        el("h1", { className: "auth-pitch__title", text: "Secure sign-in, handled in one place." }),
-        el("p", { className: "auth-pitch__sub", text: "You sign in with our secure account service and come straight back here. Your password is never entered on this site." }),
-      ]));
-      var card = el("div", { className: "auth-card", dataset: { module: "core-oidc-auth", visualId: "core-oidc-auth", state: state } });
-      if (state === "checking-session") card.appendChild(oidcProgress("checking-session", "Checking your session...", "Securely restoring your existing sign-in. This only takes a moment - no need to do anything."));
-      else if (state === "ready-signed-out") card.appendChild(oidcSignedOut());
-      else if (state === "redirecting") card.appendChild(oidcProgress("redirecting", "Taking you to secure sign-in...", "This page is leaving for the secure account service. You'll come back here automatically - no need to do anything."));
-      else if (state === "unavailable") card.appendChild(oidcUnavailable());
-      else if (state === "ready-signed-in") card.appendChild(oidcSignedIn());
-      else if (state === "signing-out") card.appendChild(oidcProgress("signing-out", "Signing you out...", "Finishing sign-out with the secure account service. One moment."));
-      grid.appendChild(card);
-      section.appendChild(grid);
-      return section;
-    }
-
-    function oidcProgress(state, title, copy) {
-      return el("div", { dataset: { state: state }, ariaBusy: "true" }, [
-        el("div", { className: "oidc-status" }, [el("span", { className: "oidc-spinner" })]),
-        el("div", { className: "oidc-title", text: title }),
-        el("div", { className: "oidc-sub oidc-sub--tail", text: copy }),
-      ]);
-    }
-    function oidcStep(number, text) { return el("div", { className: "oidc-step" }, [el("span", { className: "oidc-step__num", text: String(number) }), document.createTextNode(text)]); }
-    function oidcSignedOut() {
-      return el("div", { dataset: { state: "ready-signed-out" } }, [
-        el("div", { className: "brand-logo brand-logo--lg", style: "margin-bottom:18px", ariaHidden: "true" }),
-        el("div", { className: "oidc-title", text: "Sign in to your account" }),
-        el("div", { className: "oidc-sub", text: "Sign-in continues in the secure account service. When you're done, you'll return right here." }),
-        el("div", { className: "oidc-steps" }, [oidcStep(1, "Continue to the secure account service"), oidcStep(2, "Sign in there - we never see your password"), oidcStep(3, "Come back here, signed in")]),
-        actionButton("Continue to secure sign-in", "btn btn--primary btn--block btn--lg", "auth.oidcSignIn", "oidc-signin", startSignIn),
-        el("div", { className: "oidc-note", text: "By continuing you agree to our Terms & Privacy Policy." }),
-      ]);
-    }
-    function oidcUnavailable() {
-      return el("div", { dataset: { state: "unavailable" } }, [
-        el("div", { className: "oidc-status" }, [el("div", { className: "oidc-glyph oidc-glyph--warn", text: "!" })]),
-        el("div", { className: "oidc-title", text: "Secure sign-in isn't available" }),
-        el("div", { className: "oidc-sub", text: "We couldn't reach the secure account service, so sign-in can't start right now. There's no other way to sign in here - please try again in a moment." }),
-        el("div", { className: "oidc-actions" }, [actionButton("Try again", "btn btn--primary btn--block btn--lg", "auth.retrySession", "oidc-retry", refreshSession), actionLink("Back to the catalog", "btn btn--ghost btn--block", "nav.landing", "oidc-back-catalog", "#/pricing")]),
-      ]);
-    }
-    function oidcSignedIn() {
-      var name = displayName(model.auth.user), initial = name.charAt(0).toUpperCase() || "?";
-      return el("div", { dataset: { state: "ready-signed-in" } }, [
-        el("div", { className: "oidc-status" }, [el("div", { className: "oidc-glyph oidc-glyph--ok", text: "\u2713" })]),
-        el("div", { className: "oidc-title", text: "You're signed in" }),
-        el("div", { className: "oidc-session" }, [el("div", { className: "oidc-session__ava", text: initial }), el("div", null, [el("div", { className: "oidc-session__label", text: "Signed in as" }), el("div", { className: "oidc-session__name", text: name, dataset: { bind: "session.displayName" } })])]),
-        el("div", { className: "oidc-sub", text: config.enabledModules.includes("orders") ? "Your customer Account and orders are resolved only after this secure sign-in." : "You can keep browsing while signed in." }),
-        el("div", { className: "oidc-actions" }, [actionLink(config.enabledModules.includes("orders") ? "Open my portal" : "Browse the catalog", "btn btn--primary btn--block btn--lg", "nav.landing", "oidc-browse-catalog", config.enabledModules.includes("orders") ? "#/orders" : "#/pricing"), actionButton("Sign out", "btn btn--ghost btn--block", "auth.signOut", "oidc-signout", signOut)]),
-      ]);
-    }
-
-    function ordersPage() {
-      var page = el("main", { className: "page", dataset: { route: "orders.list", state: model.customer.state, module: "customer-orders", visualId: "customer-orders" } });
-      if (model.customer.state === "resolving-customer") {
-        page.appendChild(heading("Opening your account", "Securely matching your sign-in to your Calm Harbor customer account."));
-        page.appendChild(oidcProgress("resolving-customer", "Loading your orders...", "No customer data is shown until the account match is complete."));
-        return page;
-      }
-      if (model.customer.state !== "ready" && model.customer.state !== "empty") {
-        page.appendChild(customerFailure(model.customer.error));
-        return page;
-      }
-      var accountName = model.customer.account && model.customer.account.displayName || "Customer";
-      page.appendChild(heading("Welcome back, " + accountName, "Your current Calm Harbor orders, loaded from your customer account."));
-      var card = el("section", { className: "card", dataset: { module: "order-list", visualId: "order-list", state: model.customer.state } });
-      card.appendChild(el("div", { className: "card__head" }, [el("span", { className: "card__title", text: "Your orders" }), el("span", { className: "status-badge status-badge--info", text: String(model.customer.orders.length) + (model.customer.orders.length === 1 ? " order" : " orders") })]));
-      var list = el("div", { className: "order-list" });
-      if (!model.customer.orders.length) list.appendChild(empty("No orders are currently linked to your customer account."));
-      else model.customer.orders.forEach(function (order) { list.appendChild(orderCard(order)); });
-      card.appendChild(list);
-      page.appendChild(card);
-      return page;
-    }
-
-    function orderCard(order) {
-      var status = order.statusCode || "CURRENT";
-      var article = el("article", { className: "order-card", dataset: { module: "order-card", visualId: "order-card", id: String(order.id) } });
-      article.appendChild(el("div", { className: "order-card__icon", style: "background:rgba(var(--accent-rgb),.14)" }, [el("i", { style: "background:var(--accent)" })]));
-      article.appendChild(el("div", { className: "order-card__body" }, [el("div", { className: "order-card__name", text: order.typeLabel || order.typeCode || "Calm Harbor order", dataset: { bind: "order.type" } }), el("div", { className: "order-card__meta", text: "Order #" + order.id, dataset: { bind: "order.id" } })]));
-      article.appendChild(el("span", { className: "status-badge status-badge--info", text: status, dataset: { bind: "order.status" } }));
-      article.appendChild(el("div", { className: "order-card__price", text: order.displayTotal, dataset: { bind: "order.grandTotal" } }));
-      return article;
-    }
-
-    function customerFailure(error) {
-      var code = error && error.code || "customer-unavailable";
-      var copy = code === "customer-not-linked" ? ["Customer account not linked", "This sign-in is not linked to an active Calm Harbor customer account."]
-        : code === "customer-forbidden" || code === "orders-forbidden" ? ["Portal access unavailable", "Your sign-in is valid, but this customer portal cannot be opened."]
-          : code === "session-expired" ? ["Session expired", "Sign in again to securely reopen your customer portal."]
-            : ["Customer portal is unavailable", "We could not safely load your customer account and orders. No private fallback data is shown."];
-      var section = el("section", { className: "page--narrow", dataset: { state: code } });
-      section.appendChild(heading(copy[0], copy[1]));
-      section.appendChild(el("div", { className: "oidc-actions" }, [actionButton("Try again", "btn btn--primary", "customer.retry", "customer-retry", function () { if (model.auth.user) resolveCustomerOrders(model.auth.user); }), actionLink("Account & sign out", "btn btn--ghost", "auth.gotoSignin", "customer-account", "#/login")]));
-      return section;
-    }
-
-    function resolveCustomerOrders(user) {
-      var generation = ++customerGeneration;
-      model.customer = { account: null, error: null, orders: [], state: "resolving-customer" };
-      render();
-      loadCustomerOrders(user, config).then(function (result) {
-        if (generation !== customerGeneration || model.auth.user !== user || model.auth.state !== "ready-signed-in") return;
-        model.customer = { account: result.account, error: null, orders: result.orders, state: result.orders.length ? "ready" : "empty" };
-        render();
-      }).catch(function (error) {
-        if (generation !== customerGeneration || model.auth.user !== user || model.auth.state !== "ready-signed-in") return;
-        model.customer = { account: null, error: error, orders: [], state: error && error.code || "customer-unavailable" };
-        render();
-      });
-    }
-
-    function pricingPage(items) {
-      var section = el("section", { dataset: { visualId: "pricing" } });
-      section.appendChild(el("div", { className: "pricing-head" }, [
-        el("span", { className: "eyebrow", text: "Live availability from Calm Harbor" }),
-        el("h1", { text: "Care, priced clearly" }),
-        el("p", { text: "Services and membership options are loaded directly from the Calm Harbor catalog." }),
-      ]));
-      if (!items.length) { section.appendChild(empty("No services or memberships are currently published.")); return section; }
-      var cards = el("div", { className: "pricing-grid", dataset: { module: "pim-pricing" } });
-      items.forEach(function (item, index) { cards.appendChild(pricingCard(item, index)); });
-      section.appendChild(cards);
-      return section;
-    }
-
-    function pricingCard(item, index) {
-      var featured = index === 1;
-      var card = el("article", { className: "plan-card" + (featured ? " plan-card--featured" : "") });
-      card.appendChild(el("div", { className: "plan-card__name", text: item.name }));
-      card.appendChild(el("div", { className: "plan-card__price" }, [el("b", { text: item.price }), el("span", { text: item.interval ? " / " + item.interval.toLowerCase() : "" })]));
-      card.appendChild(el("p", { className: "plan-card__tag", text: item.description || "Details are confirmed by Calm Harbor at booking." }));
-      card.appendChild(el("div", { className: "plan-features" }, [el("div", { text: item.code }), el("div", { text: "Availability is confirmed before booking." })]));
-      card.appendChild(el("div", { className: "plan-cta", text: "Contact Calm Harbor to book" }));
-      return card;
-    }
-
-    function productsPage(items) {
-      var section = el("section", { dataset: { visualId: "products" } });
-      section.appendChild(el("div", { className: "featured-banner" }, [
-        el("div", { style: "flex:1" }, [
-          el("span", { className: "eyebrow", text: "Live catalog" }),
-          el("h1", { text: "Bring the ritual home" }),
-          el("p", { text: "Retail products currently published by Calm Harbor Spa." }),
-        ]),
-        el("div", { className: "featured-banner__art" }, [el("div", { className: "brand-logo brand-logo--lg", ariaHidden: "true" })]),
-      ]));
-      section.appendChild(el("div", { className: "shop-head" }, [el("div", { className: "shop-head__title", text: "Shop" })]));
-      if (!items.length) { section.appendChild(empty("No retail products are currently published.")); return section; }
-      var grid = el("div", { className: "product-grid", dataset: { module: "pim-products" } });
-      items.forEach(function (item, index) { grid.appendChild(productCard(item, index)); });
-      section.appendChild(grid);
-      return section;
-    }
-
-    function productCard(item, index) {
-      var colors = ["#f7c6d8", "#e8c9f0", "#f7ddb2", "#cce9dd"];
-      var card = el("article", { className: "product-card" });
-      card.appendChild(el("div", { className: "product-card__art", style: "background:" + colors[index % colors.length] }, [el("div", { className: "product-card__thumb" }, [el("i", { style: "background:var(--accent)" })]) ]));
-      card.appendChild(el("span", { className: "product-tag", text: "Calm Harbor" }));
-      card.appendChild(el("div", { className: "product-card__name", text: item.name }));
-      card.appendChild(el("div", { className: "product-card__blurb", text: item.description || item.code }));
-      card.appendChild(el("div", { className: "product-card__foot" }, [el("span", { className: "price-lg", text: item.price })]));
-      return card;
-    }
-
-    function loading() { return heading("Loading Calm Harbor catalog", "Requesting current products and prices from Core PIM."); }
-    function failure(error) {
-      var section = el("section", { className: "page--narrow" });
-      section.appendChild(heading("Catalog is unavailable", "The live catalog could not be loaded. No catalog data is shown."));
-      section.appendChild(el("div", { className: "rates-card" }, [el("div", { className: "panel__title", text: error && error.message ? error.message : "Core PIM request failed" })]));
-      return section;
-    }
-    function heading(title, copy) { return el("div", { className: "page-header" }, [el("div", null, [el("h1", { className: "page-header__title", text: title }), el("p", { className: "page-header__sub", text: copy })])]); }
-    function empty(message) { return el("div", { className: "rates-card" }, [el("div", { className: "panel__title", text: message })]); }
-
-    function startSignIn() {
-      if (!model.auth.manager || model.auth.state !== "ready-signed-out") return;
-      model.auth.state = "redirecting";
-      render();
-      try {
-        window.sessionStorage.setItem(config.authReturnStorageKey, window.location.href);
-        model.auth.manager.signinRedirect().catch(function (error) {
-          model.auth = { error: error, manager: model.auth.manager, state: "unavailable", user: null };
-          render();
-        });
-      } catch (error) {
-        model.auth = { error: error, manager: model.auth.manager, state: "unavailable", user: null };
-        render();
-      }
-    }
-
-    function signOut() {
-      if (!model.auth.manager || !model.auth.user || model.auth.state !== "ready-signed-in") return;
-      customerGeneration += 1;
-      model.auth.state = "signing-out";
-      model.customer = { account: null, error: null, orders: [], state: "signed-out" };
-      render();
-      try {
-        var returnUrl = new URL(window.location.href);
-        returnUrl.hash = "#/pricing";
-        window.sessionStorage.setItem(config.authLogoutReturnStorageKey, returnUrl.href);
-        model.auth.manager.signoutRedirect().catch(function (error) {
-          model.auth = { error: error, manager: model.auth.manager, state: "unavailable", user: model.auth.user };
-          render();
-        });
-      } catch (error) {
-        model.auth = { error: error, manager: model.auth.manager, state: "unavailable", user: model.auth.user };
-        render();
-      }
-    }
-
-    function refreshSession() {
-      customerGeneration += 1;
-      model.auth = { error: null, manager: null, state: "checking-session", user: null };
-      model.customer = { account: null, error: null, orders: [], state: "signed-out" };
-      render();
-      loadSession(config).then(function (auth) {
-        model.auth = auth;
-        render();
-        if (auth.user && config.enabledModules.includes("orders")) resolveCustomerOrders(auth.user);
-      }).catch(function (error) {
-        model.auth = { error: error, manager: null, state: "unavailable", user: null };
-        render();
-      });
-    }
-
-    function toggleMode() {
-      mode = mode === "dark" ? "light" : "dark";
-      document.documentElement.dataset.mode = mode;
-      render();
-    }
-
-    function modeIcon() { return mode === "dark" ? "\u2600" : "\u263e"; }
-
-    function applyResponsive(shell) {
-      if (resizeObserver) resizeObserver.disconnect();
-      function apply(width) {
-        shell.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
-        if (width <= 560) shell.classList.add("vw-mobile");
-        else if (width <= 900) shell.classList.add("vw-tablet");
-        if (width <= 1040) shell.classList.add("vw-compact");
-      }
-      apply(shell.getBoundingClientRect().width);
-      if (window.ResizeObserver) {
-        resizeObserver = new window.ResizeObserver(function (entries) {
-          if (entries[0]) apply(entries[0].contentRect.width);
-        });
-        resizeObserver.observe(shell);
-      }
-    }
-  }
-
-  function readConfig(root) {
-    return {
-      apiBase: root.getAttribute("data-portal-pim-api-base") || "/core-pim/api",
-      organization: required(root, "data-portal-pim-organization"),
-      pricingTypes: values(root.getAttribute("data-portal-pim-pricing-product-type-codes")),
-      productTypes: values(root.getAttribute("data-portal-pim-products-product-type-codes")),
-      priceTypeCode: required(root, "data-portal-pim-price-type-code"),
-      priceAttributeCode: required(root, "data-portal-pim-price-attribute-code"),
-      priceAttributeValues: values(root.getAttribute("data-portal-pim-price-attribute-values")),
-      currency: required(root, "data-portal-pim-currency"),
-      currencyAttributeCode: required(root, "data-portal-pim-currency-attribute-code"),
-      currencyAttributeValues: values(root.getAttribute("data-portal-pim-currency-attribute-values")),
-      amountAttributeCode: required(root, "data-portal-pim-amount-attribute-code"),
-      amountMinorDivisor: Number(root.getAttribute("data-portal-pim-amount-minor-divisor") || "100"),
-      enabledModules: values(root.getAttribute("data-portal-enabled-modules")),
-      defaultRoute: root.getAttribute("data-portal-default-route") || "pricing",
-      portalOrganization: root.getAttribute("data-portal-organization") || root.getAttribute("data-portal-pim-organization") || "",
-      coreApiBase: root.getAttribute("data-portal-core-api-base") || "/core",
-      accountApiBase: root.getAttribute("data-portal-account-api-base") || "/core-acct",
-      billApiBase: root.getAttribute("data-portal-bill-api-base") || "/core-bill",
-      accountTypeCode: root.getAttribute("data-portal-account-type-code") || "SPA_CUSTOMER",
-      authCallbackPath: required(root, "data-portal-auth-callback-path"),
-      authCoreBase: required(root, "data-portal-auth-core-base"),
-      authLogoutReturnStorageKey: required(root, "data-portal-auth-logout-return-storage-key"),
-      authReturnStorageKey: required(root, "data-portal-auth-return-storage-key"),
-    };
-  }
-  function required(root, name) { var value = root.getAttribute(name); if (!value) throw new Error("Missing required portal config: " + name); return value; }
-  function values(value) { return String(value || "").split(",").map(function (item) { return item.trim(); }).filter(Boolean); }
-
-  async function loadSession(config) {
-    if (!window.oidc || !window.oidc.UserManager || !window.oidc.WebStorageStateStore) {
-      throw new Error("Core sign-in library did not load");
-    }
-    var coreBase = sameOriginUrl(config.authCoreBase, "Core base").replace(/\/+$/, "");
-    var expectedCallback = sameOriginUrl(config.authCallbackPath, "Core callback");
-    var response = await window.fetch(coreBase + "/.well-known/oauth-protected-resource/", {
-      credentials: "omit",
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) throw new Error("Core authentication discovery HTTP " + response.status);
-    var metadata = await response.json();
-    var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
-    if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
-      throw new Error("Core authentication discovery is incomplete");
-    }
-    if (new URL(metadata.resource, window.location.origin).origin !== window.location.origin) {
-      throw new Error("Core authentication resource must be same-origin");
-    }
-    if (new URL(authority, window.location.origin).origin !== window.location.origin) {
-      throw new Error("Core authorization server must be same-origin");
-    }
-    if (new URL(metadata.x_redirect_uri, window.location.origin).href !== expectedCallback) {
-      throw new Error("Core authentication callback does not match the portal contract");
-    }
-    if (new URL(metadata.x_post_logout_redirect_uri, window.location.origin).href !== expectedCallback) {
-      throw new Error("Core logout callback does not match the portal contract");
-    }
-    var manager = new window.oidc.UserManager({
-      authority: authority,
-      client_id: metadata.x_client_id,
-      post_logout_redirect_uri: expectedCallback,
-      redirect_uri: expectedCallback,
-      response_type: "code",
-      scope: "openid profile email roles",
-      userStore: new window.oidc.WebStorageStateStore({ store: window.localStorage }),
-    });
-    var user = await manager.getUser();
-    if (user && user.expired) {
-      await manager.removeUser();
-      user = null;
-    }
-    return { error: null, manager: manager, state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
-  }
-
-  function sameOriginUrl(value, label) {
-    var url = new URL(value, window.location.origin);
-    if (url.origin !== window.location.origin) throw new Error(label + " must be same-origin");
-    return url.href;
-  }
-
-  async function loadCustomerOrders(user, config) {
-    var accessToken = user && user.access_token;
-    if (!accessToken) throw customerError("session-required", "OIDC session does not include an access token");
-    var authorization = String(user.token_type || "Bearer") + " " + accessToken;
-    var coreBase = sameOriginUrl(config.coreApiBase, "Core API base").replace(/\/+$/, "");
-    var accountBase = sameOriginUrl(config.accountApiBase, "Core Account API base").replace(/\/+$/, "");
-    var billBase = sameOriginUrl(config.billApiBase, "Core Bill API base").replace(/\/+$/, "");
-    var basicInfo = await coreJson(coreBase + "/api/user/basic-info.json", {
-      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(["code", "id", "name", "nls"].map(function (name) { return { name: name }; })),
-    }, "customer");
-    var userId = positiveInteger(basicInfo.authenticatedUserId || basicInfo.id);
-    if (!userId) throw customerError("invalid-session-user", "Core basic-info did not return authenticatedUserId");
-    var authorizedOrganizations = Array.isArray(basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function (item) { return text(item && item.code); }).filter(Boolean) : [];
-    var organization = text(config.portalOrganization);
-    if (!organization) throw customerError("organization-required", "Portal organization is missing");
-    if (authorizedOrganizations.length && !authorizedOrganizations.includes(organization)) throw customerError("organization-forbidden", "Portal organization is not authorized");
-    var accountReply = await coreJson(accountBase + "/api/account/list.json", {
-      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json", "X-Organization-Code": organization },
-      body: JSON.stringify({
-        filters: [
-          { type: "INTEGER", operator: "=", property: "user.id", value: String(userId) },
-          { type: "STRING", operator: "=", property: "type.code", value: config.accountTypeCode },
-        ],
-        mappings: [
-          { name: "code" }, { name: "id" }, { name: "nls" }, { name: "optimistic" },
-          { key: "id", name: "organization", type: "identifier" }, { key: "id", name: "type", type: "identifier" }, { key: "id", name: "user", type: "identifier" },
-        ],
-        offset: 0, pageSize: 2,
-      }),
-    }, "customer");
-    var accounts = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
-    if (!accounts.length) throw customerError("customer-not-linked", "No customer Account is linked to this User");
-    if (accounts.length !== 1 || Number(accountReply.resultSize || accounts.length) > 1) throw customerError("customer-account-ambiguous", "Customer Account resolution is ambiguous");
-    var rawAccount = accounts[0] || {};
-    var accountId = positiveInteger(rawAccount.id);
-    if (!accountId) throw customerError("invalid-customer-account", "Customer Account id is missing");
-    if (rawAccount.user && positiveInteger(rawAccount.user.id) && Number(rawAccount.user.id) !== userId) throw customerError("customer-scope-mismatch", "Customer Account does not match the authenticated User");
-    var ordersReply = await coreJson(billBase + "/api/order/list.json", {
-      method: "POST", credentials: "same-origin", headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json", "X-Organization-Code": organization },
-      body: JSON.stringify({
-        filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
-        mappings: [
-          { name: "grandTotal" }, { name: "id" }, { name: "optimistic" }, { name: "totalCharges" }, { name: "totalTaxes" },
-          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "account", type: "identifier" },
-          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "currency", type: "identifier" },
-          { key: "id", name: "organization", type: "identifier" },
-          { mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
-          { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" },
-        ],
-        offset: 0, pageSize: 50, sorting: [{ field: "id", direction: "DESC" }],
-      }),
-    }, "orders");
-    var orders = (Array.isArray(ordersReply && ordersReply.result) ? ordersReply.result : []).map(function (row) {
-      if (!row.account || positiveInteger(row.account.id) !== accountId) throw customerError("order-scope-mismatch", "Order does not belong to the resolved Account");
-      var id = positiveInteger(row.id);
-      if (!id) throw customerError("invalid-order", "Order id is missing");
-      var states = Array.isArray(row.states) ? row.states : [];
-      var statusCode = Array.from(new Set(states.map(function (state) { return text(state && state.code); }).filter(Boolean))).join(" · ");
-      var currencyCode = text(row.currency && row.currency.code) || "USD";
-      var total = Number(row.grandTotal);
-      return {
-        id: id,
-        statusCode: statusCode,
-        typeCode: text(row.type && row.type.code),
-        typeLabel: localizedName(row.type && row.type.nls),
-        displayTotal: Number.isFinite(total) ? new Intl.NumberFormat("en", { style: "currency", currency: currencyCode }).format(total) : "",
-      };
-    });
-    return { account: { id: accountId, displayName: localizedName(rawAccount.nls) || text(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name) || "Customer" }, orders: orders };
-  }
-
-  async function coreJson(url, options, family) {
-    var response = await window.fetch(url, options);
-    if (!response || !response.ok) {
-      var status = response && response.status;
-      var code = status === 401 ? "session-expired" : status === 403 ? family === "orders" ? "orders-forbidden" : "customer-forbidden" : family + "-request-failed";
-      throw customerError(code, "Core " + family + " request failed");
-    }
-    try { return await response.json(); }
-    catch (_) { throw customerError("invalid-response", "Core response was not valid JSON"); }
-  }
-
-  function customerError(code, message) { var error = new Error(message); error.code = code; return error; }
-  function positiveInteger(value) { var number = Number(value); return Number.isInteger(number) && number > 0 ? number : null; }
-  function localizedName(value) { if (!value || typeof value !== "object") return ""; var localized = value.en || value["en-US"] || Object.values(value)[0] || {}; return text(localized && (localized.NAME || localized.name)); }
-  function text(value) { return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim(); }
-
-  async function loadCatalog(config) {
-    var pricingRows = await loadTypes(config.pricingTypes, config);
-    var productRows = await loadTypes(config.productTypes, config);
-    return { pricing: normalize(pricingRows, config), products: normalize(productRows, config) };
-  }
-  async function loadTypes(types, config) {
-    if (!types.length) throw new Error("No Core PIM product types are configured");
-    var responses = await Promise.all(types.map(function (type) { return request(type, config); }));
-    return responses.reduce(function (all, response) { return all.concat(Array.isArray(response && response.prices) ? response.prices : []); }, []);
-  }
-  async function request(productTypeCode, config) {
-    var base = String(config.apiBase).replace(/\/+$/, "").replace(/\/api$/, "");
-    var response = await window.fetch(base + "/public/" + encodeURIComponent(config.organization) + "/catalog/price-comparison.json", {
-      method: "POST", credentials: "omit", headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ productTypeCode: productTypeCode, includeChildProductTypes: true, priceTypeCode: config.priceTypeCode, includeChildPriceTypes: true, priceAttributeCode: config.priceAttributeCode, priceAttributeValues: config.priceAttributeValues, currencyAttributeCode: config.currencyAttributeCode, currencyAttributeValues: config.currencyAttributeValues, nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"] }),
-    });
-    if (!response.ok) throw new Error("Core PIM HTTP " + response.status);
-    return response.json();
-  }
-  function normalize(rows, config) {
-    var deduped = {};
-    rows.forEach(function (row) { var product = productFrom(row); if (product.code) deduped[product.code] = row; });
-    return Object.keys(deduped).map(function (code) { return item(deduped[code], config); }).sort(function (left, right) { return left.priority - right.priority || left.name.localeCompare(right.name); });
-  }
-  function item(row, config) {
-    var product = productFrom(row), nls = (product.nls && (product.nls.en || product.nls["en"])) || {}, price = row.price || {};
-    var amount = Number(price.display && price.display.amount);
-    if (!Number.isFinite(amount)) amount = Number(attribute(price, config.amountAttributeCode)) / config.amountMinorDivisor;
-    var currency = (price.display && price.display.currency) || attribute(price, config.currencyAttributeCode) || config.currency;
-    var interval = (price.display && price.display.intervalLabel) || attribute(price, config.priceAttributeCode) || "";
-    return { code: product.code || "PIM_ITEM", name: nls.NAME || product.code || "Catalog item", description: strip(nls.DESCRIPTION || ""), price: Number.isFinite(amount) ? new Intl.NumberFormat("en", { style: "currency", currency: currency, maximumFractionDigits: amount % 1 ? 2 : 0 }).format(amount) : "Price on request", interval: interval === "MONTH" ? "Monthly" : interval === "ONE_TIME" ? "One time" : interval, priority: Number(attribute(product, "SORT_ORDER_PRIORITY")) || 999 };
-  }
-  function productFrom(row) { return (row && row.product && (row.product.product || row.product)) || {}; }
-  function attribute(entity, code) { var groups = entity && entity.attributes; if (!groups || typeof groups !== "object") return null; for (var groupName in groups) { var value = groups[groupName] && groups[groupName][code]; if (value && value.value !== undefined && value.value !== null) return value.value; } return null; }
-  function strip(value) { return String(value || "").replace(/<[^>]*>/g, "").trim(); }
-  function route(config) {
-    var value = location.hash.replace(/^#\/?/, "").split("?", 1)[0];
-    if (value === "login") return value;
-    if (config.enabledModules.includes(value) && ["orders", "pricing", "products"].includes(value)) return value;
-    return config.enabledModules.includes(config.defaultRoute) ? config.defaultRoute : "pricing";
-  }
-  function navLink(id, label, current) { return el("a", { className: "nav-link" + (id === current ? " nav-link--active" : ""), href: "#/" + id, text: label }); }
-  function actionButton(label, className, action, visualId, onClick) { return el("button", { className: className, onClick: onClick, text: label, type: "button", dataset: { module: "action-button", action: action, visualId: visualId } }); }
-  function actionLink(label, className, action, visualId, href) { return el("a", { className: className, href: href, text: label, dataset: { module: "action-button", action: action, visualId: visualId } }); }
-  function displayName(user) {
-    var profile = user && user.profile ? user.profile : {};
-    return profile.name || profile.preferred_username || profile.email || "Customer";
-  }
-  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
-  function el(tag, options, children) {
-    var node = document.createElement(tag); options = options || {};
-    if (options.className) node.className = options.className;
-    if (options.text !== undefined) node.textContent = options.text;
-    if (options.href) node.href = options.href;
-    if (options.type) node.type = options.type;
-    if (options.disabled) node.disabled = true;
-    if (options.style) node.setAttribute("style", options.style);
-    if (options.ariaLabel) node.setAttribute("aria-label", options.ariaLabel);
-    if (options.ariaHidden) node.setAttribute("aria-hidden", options.ariaHidden);
-    if (options.ariaBusy) node.setAttribute("aria-busy", options.ariaBusy);
-    if (options.title) node.title = options.title;
-    if (options.dataset) Object.keys(options.dataset).forEach(function (key) { node.dataset[key] = options.dataset[key]; });
-    if (options.onClick) node.addEventListener("click", options.onClick);
-    (children || []).forEach(function (child) { if (child) node.appendChild(child); });
-    return node;
-  }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true }); else boot();
-}());
-
-</script>
-</body>
-</html>
