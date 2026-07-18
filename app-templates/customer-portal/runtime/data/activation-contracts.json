@@ -7,7 +7,7 @@
   "repositorySearch": {
     "root": ".",
     "excluded": [".git/**", "app-templates/customer-portal/design-inbox/**", "app-templates/customer-portal/dist/**"],
-    "result": "No repository-proven non-PIM Care endpoint, command, auth/permission, idempotence, or readback contract exists. Core PIM remains the only opened live portal adapter.",
+    "result": "No repository-proven non-PIM Care endpoint, command, idempotence, or readback contract exists. Core PIM remains the only opened live module adapter in this S5 Care/SEO inventory. Separately, Core User to Account bootstrap and Account-scoped read-only Orders are source-traced, proven on dev-1, and activated in the dedicated Calm Harbor manual staging root.",
     "provenLiveException": "app-templates/customer-portal/runtime/src/adapters/core-pim-adapter.js"
   },
   "dataSources": [

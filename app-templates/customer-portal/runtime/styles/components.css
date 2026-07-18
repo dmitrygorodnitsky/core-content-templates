@@ -165,6 +165,49 @@
 
 .drawer__close { width: 34px; height: 34px; border-radius: var(--radius-pill); background: var(--surface-2); border: 0; cursor: pointer; font-size: 16px; }
 
+/* ============================================================
+   Dev harness  — data-dev-toolbar  (PREVIEW ONLY — Codex strips this)
+   ============================================================ */
+.dev-toolbar {
+  position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+  z-index: 400; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+  background: rgba(16,21,31,.9); backdrop-filter: blur(14px); color: #cfd6e4;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+  padding: 8px 10px; font: 500 11.5px var(--font); max-width: 96vw;
+}
+
+.dev-toolbar select, .dev-toolbar button {
+  background: rgba(255,255,255,.08); color: #eef2f8; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px; padding: 5px 8px; font: 500 11.5px var(--font); cursor: pointer;
+}
+
+.dev-toolbar__group { display: flex; align-items: center; gap: 4px; }
+
+.dev-toolbar__label { color: #79839a; text-transform: uppercase; letter-spacing: .06em; font-size: 9.5px; }
+
+.dev-toolbar button.is-on { background: var(--accent); border-color: transparent; color: #fff; }
+
+/* Viewport simulation frame (preview harness) */
+.viewport-host { display: flex; justify-content: center; }
+
+.viewport-frame { width: 100%; transition: max-width .2s ease; }
+
+.viewport-frame[data-vw="390"]  { max-width: 390px; }
+
+.viewport-frame[data-vw="768"]  { max-width: 768px; }
+
+/* Wave 14.1 — wide presets are TRUE-width: an explicit width (not just max-width)
+   so a narrower preview pane never clamps the layout; the host scrolls instead. */
+.viewport-frame[data-vw="1180"] { width: 1180px; min-width: 1180px; max-width: 1180px; }
+
+.viewport-frame[data-vw="1440"] { width: 1440px; min-width: 1440px; max-width: 1440px; background: var(--base); }
+
+.viewport-host:has(.viewport-frame[data-vw="1180"]), .viewport-host:has(.viewport-frame[data-vw="1440"]) { justify-content: flex-start; overflow-x: auto; }
+
+.viewport-frame:not([data-vw="1440"]):not([data-vw="full"]) {
+  margin: 14px auto; box-shadow: 0 20px 60px rgba(13,38,76,.18); border-radius: 20px; overflow: hidden; background: var(--base);
+}
+
 /* Panel — frosted section card used across detail */
 .panel {
   background: rgba(var(--glass), .55);
@@ -176,3 +219,125 @@
 .panel__title { font-weight: 700; font-size: 15px; }
 
 .chip { background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 6px 12px; font-weight: 590; font-size: 12px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+
+
+/* ============================================================
+   Wave 13 — authenticated live-data states
+   (account bootstrap gate, conflict / command-failure banners,
+   contact form fields, message send lifecycle)
+   ============================================================ */
+.account-gate { display: grid; place-items: center; min-height: min(72vh, 640px); }
+
+.account-gate__card { width: 100%; max-width: 460px; }
+
+.account-gate__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+.account-gate__route {
+  display: inline-flex; align-items: center; gap: 2px; margin: 4px 0 6px; white-space: nowrap;
+  padding: 7px 13px; border-radius: var(--radius-pill); font-size: 12.5px; color: var(--ink-2);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+}
+
+.conflict-banner {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 13px 16px; margin: 0 0 16px;
+  border-radius: 14px; background: rgba(255, 159, 10, .1); border: 1px solid rgba(255, 159, 10, .38);
+  animation: fadein .3s ease;
+}
+
+.conflict-banner__icon {
+  width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex: none;
+  font-size: 17px; font-weight: 800; color: var(--warn); background: rgba(255, 159, 10, .16);
+}
+
+.conflict-banner__body { flex: 1; min-width: 160px; }
+
+.inline-fail {
+  display: flex; gap: 11px; align-items: center; padding: 11px 13px;
+  border-radius: 12px; background: var(--danger-bg); border: 1px solid rgba(255, 69, 58, .32);
+  animation: fadein .3s ease;
+}
+
+.inline-fail__icon {
+  width: 22px; height: 22px; border-radius: var(--radius-pill); display: grid; place-items: center; flex: none;
+  font-size: 12px; font-weight: 800; color: var(--danger); background: rgba(255, 69, 58, .16);
+}
+
+/* contact-details form (profile) */
+.field-row { display: flex; flex-direction: column; gap: 6px; }
+
+.field-label { font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .02em; }
+
+.field {
+  width: 100%; padding: 11px 13px; border-radius: 12px; font: inherit; font-size: 14px; color: var(--ink);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); outline: none;
+}
+
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.field[data-state="invalid"] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255, 69, 58, .1); }
+
+.field-error { font-size: 12px; color: var(--danger); }
+
+.contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.vw-mobile .contact-form { grid-template-columns: 1fr; }
+
+/* chat message lifecycle */
+.msg-bubble[data-state="sending"] { opacity: .55; }
+
+.msg-bubble[data-state="failed"] { border: 1px solid rgba(255, 69, 58, .45); }
+
+.msg-status { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; text-align: right; }
+
+.msg-status--failed { color: var(--danger); }
+
+.msg-retry { color: var(--accent); font-weight: 700; cursor: pointer; margin-left: 6px; }
+
+/* pending buttons (command in flight — duplicate submission disabled) */
+.btn[data-state="pending"] { opacity: .8; }
+
+.btn[data-state="failed"] { box-shadow: 0 0 0 2px rgba(255, 69, 58, .28); }
+
+/* cart row while its mutation command is pending */
+.cart-row[data-state="pending"] { opacity: .6; pointer-events: none; }
+
+.cart-row__note { font-size: 12px; color: var(--danger); }
+
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa primitives: unmapped raw status,
+   visit-mode chip, read-only chip, code chip, card footnote
+   ============================================================ */
+/* honest UNMAPPED status: the raw backend code, visually distinct from every
+   customer-status badge — never restyled to look reassuring */
+.status-badge--unmapped {
+  background: transparent; border: 1px dashed rgba(120,120,128,.55); color: var(--ink-2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .03em;
+}
+
+/* visit mode is explicit text, never color alone */
+.visit-mode {
+  display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-pill);
+  padding: 4px 11px; font-size: 12px; font-weight: 620;
+  background: rgba(var(--accent-rgb), .08); border: 1px solid rgba(var(--accent-rgb), .22); color: var(--ink);
+  white-space: nowrap;
+}
+
+.visit-mode__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.visit-mode--home .visit-mode__dot { background: transparent; border: 2px solid var(--accent); width: 5px; height: 5px; }
+
+.readonly-chip {
+  display: inline-flex; align-items: center; border-radius: var(--radius-pill); padding: 4px 10px;
+  font-size: 10.5px; font-weight: 680; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(120,120,128,.14); color: var(--ink-3); margin-left: auto; white-space: nowrap;
+}
+
+.code-chip {
+  display: inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10.5px; background: rgba(120,120,128,.12); border-radius: 6px;
+  padding: 1px 6px; margin-left: 8px; color: var(--ink-3); overflow-wrap: anywhere;
+}
+
+.card__footnote { padding: 12px 16px 14px; font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--glass-border); line-height: 1.5; }

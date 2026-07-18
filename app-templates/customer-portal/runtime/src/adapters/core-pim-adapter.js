@@ -2,7 +2,7 @@ const API_PATH = "/public/{organization}/catalog/price-comparison.json";
 
 export const corePimAdapter = {
   supports(moduleId) {
-    return moduleId === "pricing" || moduleId === "products";
+    return moduleId === "services" || moduleId === "pricing" || moduleId === "products";
   },
 
   async load(moduleId, context) {
@@ -11,9 +11,15 @@ export const corePimAdapter = {
     var requests = productTypeCodes(config, moduleId).map(function (productTypeCode) {
       return buildRequest(config, productTypeCode);
     });
-    var responses = await Promise.all(requests.map(fetchPim));
-    var plans = normalizePimRows({ prices: responses.flatMap(function (data) { return Array.isArray(data && data.prices) ? data.prices : []; }) }, config);
-    if (moduleId === "pricing") return { pimPlans: plans };
+    var responses = await Promise.all(requests.map(async function (request) {
+      return { data: await fetchPim(request), productTypeCode: request.payload.productTypeCode };
+    }));
+    var plans = normalizePimRows({ prices: responses.flatMap(function (response) {
+      return (Array.isArray(response.data && response.data.prices) ? response.data.prices : []).map(function (row) {
+        return Object.assign({ __productTypeCode: response.productTypeCode }, row);
+      });
+    }) }, config);
+    if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans };
     return { pimProducts: plans };
   },
 };
@@ -39,7 +45,7 @@ function buildRequest(config, productTypeCode) {
 }
 
 function productTypeCodes(config, moduleId) {
-  var configured = moduleId === "pricing" ? config.pimPricingProductTypeCodes : config.pimProductsProductTypeCodes;
+  var configured = moduleId === "pricing" || moduleId === "services" ? config.pimPricingProductTypeCodes : config.pimProductsProductTypeCodes;
   var values = configuredValues(configured, [config.pimProductTypeCode || "SERVICEWAND_SAAS"]);
   return Array.from(new Set(values));
 }
@@ -92,6 +98,7 @@ function normalizePimRows(data, config) {
       interval: formatInterval(interval),
       cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
       attributes: product.attributes || {},
+      productTypeCode: product.type && product.type.code || row.productTypeCode || row.__productTypeCode || "",
       allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
       row: row,
     };

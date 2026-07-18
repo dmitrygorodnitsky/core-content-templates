@@ -4,16 +4,21 @@ import path from "node:path";
 import { exportCalmHarborPortalManual } from "./export-calm-harbor-portal-manual.mjs";
 
 const root = path.resolve("app-templates/customer-portal");
+const inputPath = path.join(root, "content/cases/calm-harbor-spa.portal-pim-staging.json");
 const outputDir = path.join(root, ".calm-harbor-portal-manual-check");
 
 try {
   await fs.rm(outputDir, { recursive: true, force: true });
-  await exportCalmHarborPortalManual({ outputDir });
+  await exportCalmHarborPortalManual({ inputPath, outputDir });
   const template = JSON.parse(await fs.readFile(path.join(outputDir, "root/template.json"), "utf8"));
+  const familyPayload = JSON.parse(await fs.readFile(path.join(outputDir, "cms-family.payload.json"), "utf8"));
   const manifest = JSON.parse(await fs.readFile(path.join(outputDir, "manual-export-manifest.json"), "utf8"));
   const readme = await fs.readFile(path.join(outputDir, "README.md"), "utf8");
 
   assert.equal(template.code, "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING");
+  assert.equal(familyPayload.schemaVersion, 1);
+  assert.equal(familyPayload.root.code, template.code);
+  assert.deepEqual(familyPayload.children, []);
   assert.equal(template.templateLanguage, "JTE");
   assert.deepEqual(template.parameters, []);
   assert.match(template.head, /oidc-client-ts\/3\.0\.1\/browser\/oidc-client-ts\.js/);

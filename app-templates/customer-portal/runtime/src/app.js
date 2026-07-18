@@ -2,26 +2,57 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, currentTheme, state } from "./state.js";
+import { activeProfile, applyPortalConfig, cmdPhase, currentTheme, isPublic, isSpa, state } from "./state.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
+import { InlineFailure } from "./components/primitives/RouteStates.js";
+import { SimulationBadge } from "./components/spa/CommerceBits.js";
+import { SpaBookingFlow, flowTitle } from "./components/spa/SpaBookingFlow.js";
 import { ServiceCard } from "./components/commerce/ServiceCard.js";
 import { AppShell } from "./components/shell/AppShell.js";
+import { AccountBootstrap } from "./components/shell/AccountBootstrap.js";
 
 export function BookingDrawer() {
+  if (state.spaFlow) {
+    return h("div", null, [
+      h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
+      h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": flowTitle(state.spaFlow) }, [
+        h("div", { "class": "drawer__head" }, [
+          h("div", { "class": "drawer__title" }, flowTitle(state.spaFlow)),
+          h("button", { "class": "drawer__close", "data-action": "booking.close", "aria-label": "Close" }, "✕")
+        ]),
+        SpaBookingFlow()
+      ])
+    ]);
+  }
   var v = currentTheme();
+  var phase = cmdPhase("booking.confirm:booking");
+  var spaBridge = isSpa() && state.capability === "target-appointments";
+  var holdBlocked = spaBridge && state.spaHold !== "held";
+  var spaReview = spaBridge ? h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": state.spaHold }, [
+    state.spaHold === "held" ? h("div", { "class": "booking-review__hold" }, "Your time is held for 10 minutes while you review — confirming books it.") : null,
+    state.spaHold === "slot-expired" ? InlineFailure({ msg: "Your held time expired — nothing was booked. Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }) : null,
+    state.spaHold === "repriced" ? InlineFailure({ msg: "The price for this time changed while you were reviewing — reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }) : null,
+    SimulationBadge(true),
+    h("div", { style: "font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-top:6px" }, "No charge is made when you confirm — you pay at the studio as usual.")
+  ]) : null;
   return h("div", null, [
-    h("div", { "class": "scrim", "data-action": "booking.confirm", "data-visual-id": "scrim" }),
+    h("div", { "class": "scrim", "data-action": "booking.close", "data-visual-id": "scrim" }),
     h("aside", { "class": "drawer", "data-module": "drawer", "data-visual-id": "booking-drawer", "data-state": "drawer-open", role: "dialog", "aria-label": "Book a service" }, [
       h("div", { "class": "drawer__head" }, [
         h("div", { "class": "drawer__title" }, activeProfile().drawerTitle),
-        h("button", { "class": "drawer__close", "data-action": "booking.confirm", "aria-label": "Close" }, "\u2715")
+        h("button", { "class": "drawer__close", "data-action": "booking.close", "aria-label": "Close" }, "\u2715")
       ]),
       h("div", { style: "display:flex;flex-direction:column;gap:9px;margin-bottom:18px" },
         v.svc.map(function (s, i) { return ServiceCard(s, i); })),
-      ActionButton({ variant: "btn--primary", label: "Confirm booking", action: "booking.confirm", block: true, lg: true, visualId: "confirm-booking" })
+      spaReview,
+      phase === "failed" || phase === "conflict" ? InlineFailure({
+        msg: phase === "conflict" ? "That time window just changed — pick again before confirming." : "Your booking wasn’t confirmed — nothing is scheduled yet.",
+        retryAction: "booking.confirm", retryLabel: phase === "conflict" ? "Re-check & confirm" : "Try again",
+      }) : null,
+      ActionButton({ variant: "btn--primary", label: spaBridge ? "Book — no charge" : "Confirm booking", action: "booking.confirm", block: true, lg: true, visualId: "confirm-booking", disabled: holdBlocked, pending: phase === "pending", pendingLabel: "Confirming…" })
     ])
   ]);
 }
@@ -64,7 +95,7 @@ export function render() {
   if (runtime) runtime.syncPreflight("care");
   if (runtime) loadGrantedCareTransition();
 
-  var content = renderRoute();
+  var content = !isPublic() && state.account !== "ready" ? AccountBootstrap() : renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
   lastRoute = state.route;
   shell = AppShell(content);
@@ -167,6 +198,19 @@ export function reloadCareRuntime() {
   });
 }
 
+export function reloadRuntimeModule(moduleId) {
+  if (!runtime) return Promise.reject(new Error("Portal runtime is not ready"));
+  var pending = runtime.reloadAsync(moduleId);
+  render();
+  return pending.then(function (result) {
+    render();
+    return result;
+  }).catch(function (error) {
+    render();
+    throw error;
+  });
+}
+
 /* boot */
 document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
@@ -175,7 +219,15 @@ document.addEventListener("DOMContentLoaded", function () {
   var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);
-  loaded.then(render).catch(function (error) {
+  loaded.then(function () {
+    if (state.session.authenticated && state.route === "auth.oidc" && state.session.intendedRoute) {
+      var intended = state.session.intendedRoute;
+      state.session.intendedRoute = null;
+      go(intended);
+      return;
+    }
+    render();
+  }).catch(function (error) {
     state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
     console.error("[aircove] runtime load failed", error);
     render();

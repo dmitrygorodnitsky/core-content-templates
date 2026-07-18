@@ -98,8 +98,9 @@ export class PortalRuntime {
     } catch (error) {
       this.cache.delete(moduleId);
       if (descriptor.clearProtectedState) descriptor.clearProtectedState(context);
+      if (descriptor.onError) descriptor.onError(error, context);
       this.state.moduleStatus[moduleId] = "error";
-      this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(context) : null;
+      this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(context, error) : null;
       throw error;
     }
   }
@@ -156,8 +157,9 @@ export class PortalRuntime {
       }
       this.cache.delete(moduleId);
       if (descriptor.clearProtectedState) descriptor.clearProtectedState(this.context());
+      if (descriptor.onError) descriptor.onError(error, this.context());
       this.state.moduleStatus[moduleId] = "error";
-      this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(this.context()) : null;
+      this.state.moduleData[moduleId] = descriptor.failureEnvelope ? descriptor.failureEnvelope(this.context(), error) : null;
       throw error;
     }).finally(() => {
       var flight = this.inFlight.get(moduleId);
@@ -176,14 +178,23 @@ export class PortalRuntime {
     return !preflight || preflight.status === "granted";
   }
 
-  loadAllAsync(moduleIds) {
+  async loadAllAsync(moduleIds) {
     var ids = moduleIds || this.enabledModuleIds();
+    if (ids.includes("auth")) {
+      await this.loadAsync("auth");
+      ids = ids.filter((moduleId) => moduleId !== "auth");
+      if (this.state.config.dataMode === "live" && this.state.config.authMode === "required" && !this.state.session.authenticated) return [];
+    }
+    if (ids.includes("account")) {
+      await this.loadAsync("account");
+      ids = ids.filter((moduleId) => moduleId !== "account");
+    }
     return Promise.all(ids.map((moduleId) => this.loadAsync(moduleId)));
   }
 
   enabledModuleIds() {
     var enabled = this.state.config && this.state.config.enabledModules || [];
-    return openedModuleIds.filter((moduleId) => enabled.includes(moduleId));
+    return openedModuleIds.filter((moduleId) => moduleId === "auth" || enabled.includes(moduleId));
   }
 
   invalidate(moduleId) {

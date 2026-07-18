@@ -1,11 +1,11 @@
 {
   "product": "Aircove Customer Portal",
   "version": "runtime-wave9-s6-cms-packaging",
-  "format": "no-build ES modules: source.html + 7 stylesheets + 71 src JavaScript modules + 5 data fixture modules",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 94 src JavaScript modules + 7 non-src runtime JavaScript modules",
   "fileInventory": {
     "stylesheets": 7,
-    "srcJavaScript": 71,
-    "runtimeJavaScript": 76
+    "srcJavaScript": 94,
+    "runtimeJavaScript": 101
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
@@ -93,8 +93,7 @@
       },
       "appointments": {
         "verticals": [
-          "Health",
-          "Beauty"
+          "Health"
         ],
         "nav": [
           { "key": "orders.list", "label": "Appointments" },
@@ -111,6 +110,36 @@
         "calendarVariant": "month",
         "showCart": true,
         "drawerTitle": "Book an appointment"
+      },
+      "spaStaging": {
+        "verticals": ["Beauty"],
+        "nav": [
+          { "key": "orders.list", "label": "Orders" },
+          { "key": "services", "label": "Services & prices" },
+          { "key": "products", "label": "Shop" },
+          { "key": "account", "label": "Account" }
+        ],
+        "enabledModules": ["orders", "services", "pricing", "products", "account"],
+        "primary": { "label": "Browse services", "action": "nav.go" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": false,
+        "drawerTitle": "Book an appointment"
+      },
+      "spaTarget": {
+        "verticals": ["Beauty"],
+        "nav": [
+          { "key": "orders.list", "label": "Appointments" },
+          { "key": "services", "label": "Services & prices" },
+          { "key": "products", "label": "Shop" },
+          { "key": "account", "label": "Account" }
+        ],
+        "enabledModules": ["appointments", "orders", "services", "pricing", "products", "account", "purchases", "plan", "cart", "checkout", "profile"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": false,
+        "drawerTitle": "Book an appointment"
       }
     },
     "note": "Calendar renders StormCalendar only when the business vertical supports weather and the effective profile is stormOps; visual config.theme never changes this decision. Health and Beauty have no weather fixture and never fall back to Snow content. Care labels come from the business vertical registry."
@@ -118,16 +147,23 @@
   "routeRegistry": [
     { "id": "landing", "path": "/", "module": "landing", "auth": "public", "status": "done" },
     { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "done", "disposition": "Executable portal-shell reference parity route only", "productionOwner": "cms/seo-public-root-template.html strict authored public document contract" },
-    { "id": "auth.phone", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "auth.oidc", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "auth.phone", "path": "/login/phone-reference", "module": "auth", "auth": "public", "status": "reference" },
     { "id": "auth.code", "path": "/login/verify", "module": "auth", "auth": "public", "status": "done" },
     { "id": "orders.list", "path": "/orders", "module": "orders", "auth": "private", "status": "done" },
     { "id": "order.detail", "path": "/orders/:id", "module": "orders", "auth": "private", "status": "done" },
+    { "id": "appointment.detail", "path": "/appointments/:id", "module": "appointments", "auth": "private", "status": "live-demo-open", "wave": 16 },
     { "id": "calendar", "path": "/calendar", "module": "calendar", "auth": "private", "status": "done" },
     { "id": "activity", "path": "/activity", "module": "activity", "auth": "private", "status": "done" },
     { "id": "services", "path": "/services", "module": "services", "auth": "private", "status": "done" },
     { "id": "pricing", "path": "/pricing", "module": "pricing", "auth": "private", "status": "done" },
     { "id": "products", "path": "/products", "module": "products", "auth": "private", "status": "done" },
     { "id": "checkout", "path": "/checkout", "module": "checkout", "auth": "private", "status": "done" },
+    { "id": "account", "path": "/account", "module": "account", "auth": "private", "status": "done" },
+    { "id": "purchases.list", "path": "/purchases", "module": "purchases", "auth": "private", "status": "capability-gated" },
+    { "id": "purchase.detail", "path": "/purchases/:id", "module": "purchases", "auth": "private", "status": "capability-gated" },
+    { "id": "plan", "path": "/account/plan", "module": "plan", "auth": "private", "status": "capability-gated" },
+    { "id": "cart", "path": "/cart", "module": "cart", "auth": "private", "status": "capability-gated" },
     { "id": "proposals.list", "path": "/proposals", "module": "proposals", "auth": "private", "status": "done" },
     { "id": "proposal.detail", "path": "/proposals/:id", "module": "proposals", "auth": "private", "status": "done" },
     { "id": "profile", "path": "/profile", "module": "profile", "auth": "private", "status": "done" },
@@ -1384,7 +1420,11 @@
     { "id": "seo-final-cta", "factory": "SeoFinalCta", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
     { "id": "seo-footer", "factory": "SeoFooter", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
     { "id": "seo-cta", "factory": "SeoCta", "props": ["normalized validated CTA", "reference-only lifecycle view"], "wave": 9, "status": "done" },
-    { "id": "seo-meta-preview", "factory": "SeoMetaPreview", "props": ["normalized SEO model"], "wave": 9, "status": "parity-only", "note": "Portal parity route only; omitted from public production entry." }
+    { "id": "seo-meta-preview", "factory": "SeoMetaPreview", "props": ["normalized SEO model"], "wave": 9, "status": "parity-only", "note": "Portal parity route only; omitted from public production entry." },
+    { "id": "appointment-detail", "factory": "SpaAppointmentDetail", "props": ["customer-owned appointment read model"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "booking-flow", "factory": "SpaBookingFlow", "props": ["server-shaped booking flow and slot hold state"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "plan-offer-card", "factory": "inline in SpaCatalog", "props": ["published sellable package or membership offer"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "spa-profile", "factory": "SpaProfile", "props": ["least-data profile readback and edit draft"], "wave": 16, "status": "fixture-transferred" }
   ],
   "dataBindings": [
     "brand.name",
@@ -1445,7 +1485,15 @@
     "auth.signOut",
     "auth.verifyCode",
     "booking.confirm",
+    "booking.ackPolicy",
+    "booking.back",
+    "booking.close",
+    "booking.hold",
     "booking.open",
+    "booking.retry",
+    "booking.selectService",
+    "booking.selectSlot",
+    "booking.selectSpecialist",
     "calendar.next",
     "calendar.open",
     "calendar.prev",
@@ -1481,12 +1529,23 @@
     "order.filter",
     "order.open",
     "order.reschedule",
+    "appointment.bookAgain",
+    "appointment.cancel",
+    "appointment.open",
+    "appointment.openPurchase",
+    "appointment.reschedule",
+    "plan.bookWithCredit",
+    "plan.purchase",
     "products.filter",
     "profile.addAddress",
     "profile.addCard",
+    "profile.changeField",
+    "profile.edit",
     "profile.filter",
     "profile.managePlan",
     "profile.open",
+    "profile.reload",
+    "profile.save",
     "profile.setDefaultAddress",
     "profile.setDefaultPayment",
     "profile.togglePref",

@@ -41,6 +41,7 @@ export function normalizeProposals(raw) {
 }
 
 export function normalizeServices(raw) {
+  if (raw.pimPlans) return { items: clone(raw.pimPlans), source: "core-pim" };
   return { items: clone(raw.services) };
 }
 

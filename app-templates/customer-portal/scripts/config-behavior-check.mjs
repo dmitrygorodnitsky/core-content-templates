@@ -59,7 +59,7 @@ const profileContracts = {
     drawerTitle: "Request service",
   },
   appointments: {
-    verticals: ["health", "beauty"],
+    verticals: ["health"],
     nav: [
       { key: "orders.list", label: "Appointments" },
       { key: "calendar", label: "Calendar" },
@@ -76,6 +76,36 @@ const profileContracts = {
     showCart: true,
     drawerTitle: "Book an appointment",
   },
+  spaStaging: {
+    verticals: ["beauty"],
+    nav: [
+      { key: "orders.list", label: "Orders" },
+      { key: "services", label: "Services & prices" },
+      { key: "products", label: "Shop" },
+      { key: "account", label: "Account" },
+    ],
+    modules: ["orders", "services", "pricing", "products", "account"],
+    primary: { label: "Browse services", action: "nav.go" },
+    weatherCalendar: false,
+    calendarVariant: "month",
+    showCart: false,
+    drawerTitle: "Book an appointment",
+  },
+  spaTarget: {
+    verticals: ["beauty"],
+    nav: [
+      { key: "orders.list", label: "Appointments" },
+      { key: "services", label: "Services & prices" },
+      { key: "products", label: "Shop" },
+      { key: "account", label: "Account" },
+    ],
+    modules: ["appointments", "orders", "services", "pricing", "products", "account", "purchases", "plan", "cart", "checkout", "profile"],
+    primary: { label: "+ Book", action: "booking.open" },
+    weatherCalendar: false,
+    calendarVariant: "month",
+    showCart: false,
+    drawerTitle: "Book an appointment",
+  },
 };
 const verticalContracts = [
   { slug: "hvac", displayName: "HVAC", profile: "onDemand", theme: "hvac", careLabel: "Equipment" },
@@ -85,7 +115,7 @@ const verticalContracts = [
   { slug: "roofing", displayName: "Roofing", profile: "stormOps", theme: "roofing", careLabel: "Roof report" },
   { slug: "pest", displayName: "Pest Control", profile: "stormOps", theme: "pest", careLabel: "Monitoring" },
   { slug: "health", displayName: "Health", profile: "appointments", theme: "health", careLabel: "Care plan" },
-  { slug: "beauty", displayName: "Beauty", profile: "appointments", theme: "beauty", careLabel: "My routine" },
+  { slug: "beauty", displayName: "Beauty", profile: "spaStaging", theme: "beauty", careLabel: "My routine" },
 ];
 const playwrightNodeModules = process.env.PLAYWRIGHT_NODE_MODULES;
 const requireFrom = playwrightNodeModules
@@ -157,7 +187,7 @@ try {
   });
   await guarded.goto(url, { waitUntil: "networkidle" });
   await guarded.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
-  await guarded.waitForSelector('[data-route="auth.phone"]', { timeout: 2000 });
+  await guarded.waitForSelector('[data-route="auth.oidc"]', { timeout: 2000 });
   await guarded.evaluate(() => {
     const config = window.AircovePortal.state.config;
     if (window.AircovePortal.state.session.authenticated !== false) {
@@ -221,8 +251,8 @@ try {
   await themeOverride.close();
 
   const visualThemeOverrides = [
-    { vertical: "health", displayName: "Health", firstOrder: "Home care visit", firstService: "Home Care Visit", careLabel: "Care plan" },
-    { vertical: "beauty", displayName: "Beauty", firstOrder: "Blowout & style", firstService: "Hair Styling", careLabel: "My routine" },
+    { vertical: "health", displayName: "Health", firstOrder: "Home care visit", firstService: "Home Care Visit", careLabel: "Care plan", profile: "appointments" },
+    { vertical: "beauty", displayName: "Beauty", firstOrder: "Blowout & style", firstService: "Hair Styling", careLabel: "My routine", profile: "spaStaging" },
   ];
   for (const expected of visualThemeOverrides) {
     const visualOverride = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -256,16 +286,17 @@ try {
     assert.equal(result.configVertical, expected.vertical, `${expected.vertical} business vertical`);
     assert.equal(result.configTheme, "snow", `${expected.vertical} visual config theme`);
     assert.equal(result.documentTheme, "snow", `${expected.vertical} document theme`);
-    assert.equal(result.profile, "appointments", `${expected.vertical} profile under visual override`);
+    assert.equal(result.profile, expected.profile, `${expected.vertical} profile under visual override`);
     assert.equal(result.stateTheme, expected.displayName, `${expected.vertical} content state`);
     assert.equal(result.firstOrder, expected.firstOrder, `${expected.vertical} fixture orders`);
     assert.equal(result.firstService, expected.firstService, `${expected.vertical} fixture services`);
     assert.equal(result.weatherOrders, 0, `${expected.vertical} weather orders`);
     assert.equal(result.weatherFeed, false, `${expected.vertical} weather feed`);
     assert.equal(result.weatherDom, 0, `${expected.vertical} weather DOM`);
-    assert.deepEqual(result.nav, visibleNav(profileContracts.appointments, expected.careLabel), `${expected.vertical} nav under visual override`);
+    assert.deepEqual(result.nav, visibleNav(profileContracts[expected.profile], expected.careLabel), `${expected.vertical} nav under visual override`);
     await visualOverride.evaluate(() => window.AircovePortal.go("calendar"));
-    await visualOverride.waitForSelector('[data-route="calendar"][data-visual-id="calendar"]', { timeout: 2000 });
+    if (profileContracts[expected.profile].modules.includes("calendar")) await visualOverride.waitForSelector('[data-route="calendar"][data-visual-id="calendar"]', { timeout: 2000 });
+    else await visualOverride.waitForSelector('[data-route="orders.list"]', { timeout: 2000 });
     if (await visualOverride.locator('[data-visual-id="storm-calendar"], [data-visual-id="weather-card"], [data-visual-id="weather-banner"]').count()) {
       throw new Error(`${expected.vertical} visual Snow theme enabled weather UI`);
     }
@@ -330,11 +361,15 @@ try {
     assert.equal(result.hasCmsEntitlementDefault, false, `${vertical.slug} CMS Care entitlement default`);
 
     await matrixPage.evaluate(() => window.AircovePortal.go("calendar"));
-    const expectedCalendar = expectedProfile.calendarVariant === "storm" ? "storm-calendar" : "calendar";
-    await matrixPage.waitForSelector(`[data-route="calendar"][data-visual-id="${expectedCalendar}"]`, { timeout: 2000 });
-    const wrongCalendar = expectedCalendar === "storm-calendar" ? "calendar" : "storm-calendar";
-    if (await matrixPage.locator(`[data-route="calendar"][data-visual-id="${wrongCalendar}"]`).count()) {
-      throw new Error(`${vertical.slug} rendered wrong calendar variant`);
+    if (expectedProfile.modules.includes("calendar")) {
+      const expectedCalendar = expectedProfile.calendarVariant === "storm" ? "storm-calendar" : "calendar";
+      await matrixPage.waitForSelector(`[data-route="calendar"][data-visual-id="${expectedCalendar}"]`, { timeout: 2000 });
+      const wrongCalendar = expectedCalendar === "storm-calendar" ? "calendar" : "storm-calendar";
+      if (await matrixPage.locator(`[data-route="calendar"][data-visual-id="${wrongCalendar}"]`).count()) {
+        throw new Error(`${vertical.slug} rendered wrong calendar variant`);
+      }
+    } else {
+      await matrixPage.waitForSelector('[data-route="orders.list"]', { timeout: 2000 });
     }
     if (vertical.profile === "appointments") {
       const body = await matrixPage.locator("body").innerText();
@@ -373,7 +408,7 @@ try {
       weatherOrders: window.AircovePortal.state.orders.filter((order) => order.wt).length,
     }));
     assert.deepEqual(safeProfile, {
-      profile: "appointments",
+      profile: vertical === "health" ? "appointments" : "spaStaging",
       content: vertical === "health" ? "Health" : "Beauty",
       documentTheme: "snow",
       weatherOrders: 0,
@@ -407,7 +442,7 @@ try {
     window.AircovePortal.state.session.authenticated = false;
     window.AircovePortal.go("care");
   });
-  await careGuards.waitForSelector('[data-route="auth.phone"]', { timeout: 2000 });
+  await careGuards.waitForSelector('[data-route="auth.oidc"]', { timeout: 2000 });
   await careGuards.evaluate(() => window.AircovePortal.go("seo.landing"));
   await careGuards.waitForSelector('[data-route="seo.landing"][data-state="ready"] [data-module="seo-hero"]', { timeout: 2000 });
   const careIsolation = await careGuards.evaluate(() => ({
@@ -544,7 +579,7 @@ async function validateStaticContracts() {
   assert.match(manifest.themingContract.note, /config\.theme.*CSS tokens only/, "manifest visual theme axis");
   assert.match(manifest.themingContract.note, /config\.vertical.*fixture\/content\/business behavior/, "manifest business vertical axis");
   assert.equal(config.resolveProfile("health", "stormOps"), "appointments", "Health rejects stormOps by business capability");
-  assert.equal(config.resolveProfile("beauty", "stormOps"), "appointments", "Beauty rejects stormOps by business capability");
+  assert.equal(config.resolveProfile("beauty", "stormOps"), "spaStaging", "Beauty rejects stormOps by business capability");
   assert.equal(config.resolveProfile("hvac", "stormOps"), "stormOps", "HVAC accepts explicit stormOps");
   assert.deepEqual(
     pick(config.readPortalConfig({ dataset: { portalTheme: "snow" } }), ["vertical", "theme", "profile"]),
@@ -589,7 +624,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 71, runtimeJavaScript: 76 }, "accepted fixture integration file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 94, runtimeJavaScript: 101 }, "Wave 16 + current API demo runtime file inventory");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {

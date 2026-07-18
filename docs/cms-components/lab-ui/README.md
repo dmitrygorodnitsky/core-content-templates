@@ -203,8 +203,10 @@ sample page context can still show a complete placeholder landing.
 Use upload only when explicitly requested. Credentials must come from
 environment variables, never from committed files.
 
-For a live PageContext route, prefer revision deployment instead of updating the
-existing template family in place:
+`upload-cms-family.mjs` is deliberately a flat BlockTemplate uploader. It reads
+`cms-family.payload.json`, resolves every template by its `code`, then creates a
+missing template or updates the matching record. It does not write parent links,
+root include markup, `enabledTemplates`, or `PageContext` records.
 
 ```bash
 SERVICEWAND_API_KEY=... \
@@ -212,86 +214,22 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
   --out docs/cms-components/lab-ui/dist/<slug> \
   --base-url https://lsrc.pixelnation.com/core \
   --org SYSTEM \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --strategy revision \
-  --revision-suffix 20260608_001 \
-  --page-id 36 \
-  --live
-```
-
-Revision deployment creates a new root and new child `BlockTemplate` records,
-saves the root include list with the new child ids, migrates authored
-`PageContext.values` into the new UUID buckets by parameter code, switches the
-PageContext to the new root, and verifies that `enabledTemplates` and value
-buckets point only at the new family.
-
-Pass `--page-id <id>` when updating an existing known PageContext. This makes the
-deployment target the CMS record by id and preserves that record's current URL,
-even if the generated payload contains a different `pageContext.url`.
-
-Use legacy `--strategy upsert` only for first uploads, disposable tests, or an
-explicitly approved in-place maintenance operation. Do not use upsert as the
-default path for an already published page; it can leave root include cache,
-child bodies, and PageContext values out of sync.
-
-To upload a generated template family for inspection without applying it to a
-PageContext route, use `--templates-only`. Prefer this with `revision` so the
-uploaded `BlockTemplate` codes are fresh and the live page remains untouched:
-
-```bash
-SERVICEWAND_API_KEY=... \
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/<slug> \
-  --base-url https://lsrc.pixelnation.com/core \
-  --org SYSTEM \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --strategy revision \
-  --revision-suffix 20260608_001 \
-  --templates-only \
-  --live
-```
-
-This creates the root and child `BlockTemplate` records, saves the root include
-list, and prints a preview URL with explicit `templateId` and `enabledTemplates`.
-The preview URL emits every enabled template as a separate query parameter
-(`enabledTemplates=id1&enabledTemplates=id2`), matching the CMS
-`renderPage` controller contract.
-It does not call `page-context/save.json`.
-
-To update a template family that is already attached to a page, prefer
-`--strategy update-existing`. This mode starts from `--page-id`, reads the
-current root and enabled child template ids, and updates matching block codes in
-place by id instead of creating a new family:
-
-```bash
-SERVICEWAND_API_KEY=... \
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/<slug> \
-  --base-url https://lsrc.pixelnation.com/core \
-  --org SYSTEM \
-  --page-id 36 \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --strategy update-existing \
   --dry-run
 ```
 
-`update-existing` preserves the PageContext route, root template id, saved
-values, and existing enabled template ids. New local child codes are created and
-added to `enabledTemplates`; CMS child codes missing from the local payload are
-left in place unless `--prune` is explicitly passed. Live mode fails if the
-local root code does not match the PageContext root code.
+After the dry run, replace `--dry-run` with `--live` to apply. Compose the root,
+set child parents, configure includes, and attach a PageContext manually in CMS.
+That manual step is intentional: template relationships are not stable enough to
+infer safely from an export.
 
 Production uploads need a current-thread confirmation of:
 
 - base URL;
 - organization;
-- root/template code;
-- whether an existing production template family/root has been deleted or the
-  exact overwrite/reuse path is approved.
+- template codes being created or updated.
 
-Do not upload a fresh production root over an existing production template
-family unless the old root/family has been removed or the user explicitly
-accepts that reuse path.
+Review the code list before a live upload. A matching code updates its existing
+template; an absent code creates a new independent template.
 
 ### BlockTemplate Parameter Transfer
 

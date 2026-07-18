@@ -1,6 +1,11 @@
 import { fixtureAdapter } from "../adapters/fixture-adapter.js";
 import { corePimAdapter } from "../adapters/core-pim-adapter.js";
 import { createCareFixtureAdapter } from "../adapters/care-fixture-adapter.js";
+import { createCoreAccountAdapter } from "../adapters/core-account-adapter.js";
+import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
+import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
+import { createCoreOidcAdapter } from "../adapters/core-oidc-adapter.js";
+import { createCoreUserProfileAdapter } from "../adapters/core-user-profile-adapter.js";
 import {
   normalizeCare,
   normalizeCareFailure,
@@ -110,17 +115,138 @@ const careModule = {
   },
 };
 
+const accountModule = {
+  id: "account",
+  asyncOnly: true,
+  adapter(context) {
+    if (context.config.dataMode === "live") return createCoreAccountAdapter();
+    return {
+      load() {
+        var customer = context.state.currentCustomer || {};
+        return {
+          state: "ready",
+          organization: { code: context.config.organization },
+          user: { id: null, displayName: customer.fullName || "Customer" },
+          account: { id: null, code: "fixture", displayName: customer.fullName || "Customer", typeCode: context.config.accountTypeCode },
+        };
+      },
+    };
+  },
+  normalize(raw) { return raw; },
+  onResult(envelope, context) {
+    context.state.customerAccount = envelope.account;
+    context.state.session.account = envelope.account;
+    context.state.sessionName = envelope.user && envelope.user.displayName || envelope.account && envelope.account.displayName || null;
+    context.state.session.userId = envelope.user && envelope.user.id || null;
+    context.state.account = "ready";
+  },
+  onError(error, context) {
+    context.state.customerAccount = null;
+    delete context.state.session.account;
+    context.state.account = error && error.code || "customer-unavailable";
+  },
+  failureEnvelope(context, error) { return { state: error && error.code || "customer-unavailable", items: [] }; },
+};
+
+const profileModule = {
+  id: "profile",
+  asyncOnly: true,
+  adapter(context) { return context.config.dataMode === "live" ? createCoreUserProfileAdapter() : fixtureAdapter; },
+  normalize(raw, context) { return context.config.dataMode === "live" ? raw : normalizeProfile(raw); },
+  onError(error, context) { if (error && error.code === "session-expired") context.state.account = "session-expired"; },
+  failureEnvelope(context, error) { return { state: error && error.code === "customer-forbidden" ? "unauthorized" : "error", email: "", phone: null, prefs: {}, allowedActions: [] }; },
+};
+
+const authModule = {
+  id: "auth",
+  asyncOnly: true,
+  adapter(context) { return createCoreOidcAdapter(); },
+  normalize(raw) { return raw; },
+  onResult(envelope, context) {
+    if (context.config.dataMode !== "live") {
+      context.state.oidc = context.config.authMode === "required" ? "ready-signed-out" : "ready-signed-in";
+      context.state.session.authenticated = context.config.authMode !== "required";
+      return;
+    }
+    var user = envelope && envelope.user;
+    context.state.oidc = envelope && envelope.state || "ready-signed-out";
+    context.state.session.authenticated = !!user || context.config.authMode !== "required";
+    if (user) {
+      context.state.session.accessToken = user.access_token;
+      context.state.session.tokenType = user.token_type || "Bearer";
+      var profile = user.profile || {};
+      context.state.sessionName = profile.name || profile.preferred_username || profile.email || null;
+    } else {
+      delete context.state.session.accessToken;
+      delete context.state.session.tokenType;
+      context.state.account = "session-required";
+    }
+  },
+  onError(error, context) {
+    context.state.oidc = "unavailable";
+    context.state.session.authenticated = false;
+    context.state.account = "session-required";
+  },
+  failureEnvelope() { return { state: "unavailable", user: null }; },
+};
+
+const ordersModule = {
+  id: "orders",
+  asyncOnly: true,
+  adapter(context) {
+    return context.config.dataMode === "live" ? createCoreOrdersAdapter() : fixtureAdapter;
+  },
+  normalize(raw, context) {
+    return context.config.dataMode === "live" ? raw : normalizeOrders(raw);
+  },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) { return { state: error && error.code || "error", items: [] }; },
+};
+
+const appointmentsModule = {
+  id: "appointments",
+  asyncOnly: true,
+  adapter(context) {
+    if (context.config.dataMode === "live") return createCoreSpaDemoAdapter();
+    return {
+      load() { return { state: "ready", items: [], next: null, upcoming: [], past: [], byRef: {} }; },
+    };
+  },
+  normalize(raw) { return raw; },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return { state: error && error.code === "customer-forbidden" ? "unauthorized" : "error", items: [], next: null, upcoming: [], past: [], byRef: {} };
+  },
+};
+
+const checkoutModule = {
+  id: "checkout",
+  adapter(context) {
+    if (context.config.dataMode === "live") return { load() { return { state: "ready" }; } };
+    return fixtureAdapter;
+  },
+  normalize(raw, context) {
+    return context.config.dataMode === "live" ? raw : normalizeCheckout(raw);
+  },
+};
+
 export const modules = {
-  auth: module("auth", normalizeAuth),
-  orders: module("orders", normalizeOrders),
+  auth: authModule,
+  account: accountModule,
+  appointments: appointmentsModule,
+  orders: ordersModule,
   proposals: module("proposals", normalizeProposals),
   services: module("services", normalizeServices),
   pricing: module("pricing", normalizePricing),
   products: module("products", normalizeProducts),
-  checkout: module("checkout", normalizeCheckout),
+  checkout: checkoutModule,
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
-  profile: module("profile", normalizeProfile),
+  profile: profileModule,
   support: module("support", normalizeSupport),
   care: careModule,
 };

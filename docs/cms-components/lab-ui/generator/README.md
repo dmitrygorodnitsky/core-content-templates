@@ -247,7 +247,9 @@ Migration contract:
 ## Uploader
 
 Uploading is deliberately separate from composition. The uploader reads
-`cms-family.payload.json` and uses environment-driven credentials only:
+`cms-family.payload.json`, resolves each template by code, and creates or
+updates only that `BlockTemplate`. It never writes parent links, include lists,
+`enabledTemplates`, or a `PageContext`.
 
 - `SERVICEWAND_API_KEY`
 - `SERVICEWAND_BEARER`
@@ -262,76 +264,21 @@ node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
   --out docs/cms-components/lab-ui/dist/<slug> \
   --base-url https://lsrc.pixelnation.com/core \
   --org SYSTEM \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --live
+  --dry-run
 ```
 
-For an existing public route, use revision deployment instead of in-place
-upsert:
-
-```bash
-SERVICEWAND_API_KEY=... \
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/<slug> \
-  --base-url https://lsrc.pixelnation.com/core \
-  --org SYSTEM \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --strategy revision \
-  --revision-suffix 20260608_001 \
-  --page-id 36 \
-  --live
-```
-
-To upload the new template family without applying it to a PageContext route,
-add `--templates-only`:
-
-```bash
-SERVICEWAND_API_KEY=... \
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
-  --out docs/cms-components/lab-ui/dist/<slug> \
-  --base-url https://lsrc.pixelnation.com/core \
-  --org SYSTEM \
-  --root-code FIELD_SERVICE_OPERATIONS_JTE \
-  --strategy revision \
-  --revision-suffix 20260608_001 \
-  --templates-only \
-  --live
-```
-
-This still saves the root include list and prints an explicit template preview
-URL, but it skips `page-context/save.json`.
-
-Revision deployment is the safe PageContext update path:
-
-1. create a new root `BlockTemplate` with a suffixed code;
-2. create new child `BlockTemplate` records with suffixed codes;
-3. reparent the children under the new root;
-4. save the root include list with the new child ids;
-5. canonicalize and migrate existing `PageContext.values` into the new UUID
-   buckets by parameter code;
-6. switch the PageContext template and `enabledTemplates` to the new family;
-7. verify that no old value buckets remain.
-
-When the published page must keep its existing template history, use
-`--strategy update-existing` instead of `revision`. That mode reads the current
-family from `--page-id`, updates matching template codes by their existing ids,
-creates only new child codes, and preserves existing `PageContext.values`.
-Always run it as `--dry-run` first; live mode refuses to proceed when the local
-root code does not match the PageContext root code.
+After reviewing the dry-run output, replace `--dry-run` with `--live`. Build the
+root/child relationship, include list, and PageContext manually in CMS.
 
 Upload rules:
 
 - Upload only after an explicit user request.
 - Never paste credentials into committed files.
-- Verify CMS preview using the returned root id and enabled template ids.
-- Verify the final public URL when a PageContext route is involved.
-- Use `--page-id <id>` for known existing PageContexts so the deployment
-  targets the CMS record by id and preserves its current URL, even if the
-  generated payload contains a different `pageContext.url`.
-- Use `--strategy revision` for existing live PageContext routes unless the
-  user explicitly asks for an in-place upsert and accepts the cache/value risks.
+- Verify the live output identifies each template as `created` or `updated` by
+  its code.
+- Set parents, includes, enabled templates, and PageContext manually after the
+  flat upload.
 - Production uploads require explicit confirmation of base URL, organization,
-  root/template code, and whether an existing production root/family has been
-  deleted or may be reused.
+  and every template code that may be updated.
 - If production still has an old root and the requested deployment depends on a
   fresh root, stop and report the blocker.

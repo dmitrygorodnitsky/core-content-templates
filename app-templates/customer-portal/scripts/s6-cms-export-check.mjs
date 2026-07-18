@@ -34,7 +34,8 @@ assert.doesNotMatch(JSON.stringify(portalBlock.params), /entitlement|permission|
 const params = new Map(portalBlock.params.map((param) => [param.code, param]));
 assert.equal(params.size, portalBlock.params.length, "portal parameter codes are unique");
 assert.deepEqual([...params.keys()], [
-  "portal_title", "portal_api_base", "portal_organization", "portal_vertical", "portal_profile", "portal_theme",
+  "portal_title", "portal_api_base", "portal_organization", "portal_core_api_base", "portal_account_api_base", "portal_bill_api_base", "portal_account_type_code",
+  "portal_vertical", "portal_profile", "portal_theme",
   "portal_default_mode", "portal_router_mode", "portal_default_route", "portal_enabled_modules", "portal_auth_mode",
   "portal_error_mode", "portal_data_mode", "portal_case", "portal_pim_fixture_url", "portal_pim_product_type_code", "portal_pim_currency",
 ], "portal CMS exposes only the current production parameter codes");
@@ -169,6 +170,21 @@ for (const vertical of verticals) {
 for (const [profile, vertical] of [["onDemand", "hvac"], ["stormOps", "snow"], ["appointments", "health"]]) {
   const html = await renderPortalFromValues({ portal_vertical: vertical, portal_theme: vertical, portal_profile: profile });
   assert.equal(readPortalConfig({ dataset: datasetFromPortalHtml(html) }).profile, profile, profile + " profile round trip");
+}
+{
+  const html = await renderPortalFromValues({
+    portal_organization: "CALM_HARBOR_SPA_STAGING",
+    portal_core_api_base: "/core",
+    portal_account_api_base: "/core-acct",
+    portal_bill_api_base: "/core-bill",
+    portal_account_type_code: "SPA_CUSTOMER",
+  });
+  const config = readPortalConfig({ dataset: datasetFromPortalHtml(html) });
+  assert.equal(config.organization, "CALM_HARBOR_SPA_STAGING", "customer organization round trip");
+  assert.equal(config.coreApiBase, "/core", "Core API base round trip");
+  assert.equal(config.accountApiBase, "/core-acct", "Core Account API base round trip");
+  assert.equal(config.billApiBase, "/core-bill", "Core Bill API base round trip");
+  assert.equal(config.accountTypeCode, "SPA_CUSTOMER", "customer Account type round trip");
 }
 for (const authMode of ["fixture", "required"]) {
   const html = await renderPortalFromValues({ portal_auth_mode: authMode });
@@ -312,7 +328,7 @@ function datasetFromPortalHtml(html) {
 }
 
 function assertRootAttributes(html) {
-  for (const name of ["api-base", "organization", "vertical", "profile", "theme", "default-mode", "router-mode", "default-route", "enabled-modules", "auth-mode", "error-mode", "data-mode", "pim-api-base", "pim-organization", "pim-fixture-url", "pim-product-type-code", "pim-currency"]) {
+  for (const name of ["api-base", "organization", "core-api-base", "account-api-base", "bill-api-base", "account-type-code", "vertical", "profile", "theme", "default-mode", "router-mode", "default-route", "enabled-modules", "auth-mode", "error-mode", "data-mode", "pim-api-base", "pim-organization", "pim-fixture-url", "pim-product-type-code", "pim-currency"]) {
     assert.match(html, new RegExp(`data-portal-${name}="[^"]*"`), "portal root emits " + name);
   }
 }

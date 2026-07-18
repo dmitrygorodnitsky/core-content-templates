@@ -459,6 +459,10 @@ async function showVertical(page, vertical, route) {
     portal.state.session.hasTenantScope = true;
     portal.state.access.care = { status: "granted", reasonCode: null };
     await portal.ACTIONS["theme.pick"](vertical);
+    if (route === "care" && !portal.state.config.enabledModules.includes("care")) {
+      portal.state.config.enabledModules.push("care");
+      await portal.runtime().reloadAsync("care");
+    }
     portal.go(route);
   }, { vertical, route });
   await page.waitForSelector(`[data-route="${route}"][data-state="ready"]`);

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="beauty" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calm Harbor Spa | Current API Live Demo</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/routes.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="stylesheet" href="styles/seo.css">
+</head>
+<body>
+  <section
+    id="app"
+    data-portal-vertical="beauty"
+    data-portal-profile="spaTarget"
+    data-portal-theme="beauty"
+    data-portal-default-mode="light"
+    data-portal-router-mode="hash"
+    data-portal-default-route="orders.list"
+    data-portal-enabled-modules="appointments,orders,services,pricing,products,account,cart,checkout,purchases,plan,profile"
+    data-portal-auth-mode="required"
+    data-portal-data-mode="live"
+    data-portal-capability="target-appointments"
+    data-portal-booking="open"
+    data-portal-retail="retail-commerce-open"
+    data-portal-plan-commerce="open"
+    data-portal-demo-commands="current-api"
+    data-portal-organization="CALM_HARBOR_SPA_STAGING"
+    data-portal-pim-organization="CALM_HARBOR_SPA_STAGING"
+    data-portal-service-api-base="/core-svc"
+    data-portal-auth-core-base="/core"
+    data-portal-auth-callback-path="/core/oauth2-callback.html"
+    data-portal-auth-return-storage-key="oidc-return-url"
+    data-portal-auth-logout-return-storage-key="oidc-logout-return-url"
+  ></section>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>

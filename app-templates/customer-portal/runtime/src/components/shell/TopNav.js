@@ -1,11 +1,20 @@
 // customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, activeVerticalConfig, cartCount, isModuleEnabled, state } from "../../state.js";
+import { activeProfile, activeVerticalConfig, cartCount, isModuleEnabled, isSpa, state } from "../../state.js";
 import { routeRegistry } from "../../config.js";
 import { ActionButton } from "../primitives/ActionButton.js";
+import { SpaTopNav } from "./SpaTopNav.js";
 
-export function TopNav() {
+export function TopNav(gated) {
+  if (isSpa()) return SpaTopNav(gated);
   var profile = activeProfile();
+  if (gated) {
+    return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
+      h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, "Aircove")]),
+      h("div", { "class": "nav-links" }),
+      h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "☀" : "☾")])
+    ]));
+  }
   var navItems = profile.nav.filter(isNavItemEnabled);
   var links = navItems.map(function (n) {
     var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");

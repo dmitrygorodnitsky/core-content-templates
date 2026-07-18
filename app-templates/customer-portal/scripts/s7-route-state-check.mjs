@@ -83,7 +83,7 @@ try {
     for (const routeId of privateRoutes.filter((id) => portalProfiles[profile.id].modules.includes(routeRegistry[id].module))) {
       await page.evaluate(() => { window.AircovePortal.state.session.authenticated = false; });
       await page.evaluate((id) => window.AircovePortal.go(id), routeId);
-      await page.waitForSelector('[data-route="auth.phone"]');
+      await page.waitForSelector('[data-route="auth.oidc"]');
       assert.equal(await page.evaluate(() => window.AircovePortal.state.session.intendedRoute), routeId, `${profile.id} ${routeId} intended route`);
       await page.evaluate(() => {
         window.AircovePortal.state.session.authenticated = true;
@@ -111,9 +111,10 @@ try {
   }
 
   const stateCoverage = await executeStateProbes(browser, server.url, scenarios.implementedStates);
-  assert.equal(coverage.routeAttempts, Object.keys(routeRegistry).length * profiles.length, "all 17 routes attempted for all three profiles");
+  assert.equal(coverage.routeAttempts, Object.keys(routeRegistry).length * profiles.length, "all registered routes attempted for all three profiles");
   assert.equal(coverage.enabledRouteProfileCombinations + coverage.disabledRouteProfileCombinations, coverage.routeAttempts);
-  assert.equal(coverage.unauthenticatedPrivateRouteCombinations, 33, "all enabled private route/profile combinations are auth-guarded");
+  const expectedAuthGuards = profiles.reduce((count, profile) => count + privateRoutes.filter((id) => portalProfiles[profile.id].modules.includes(routeRegistry[id].module)).length, 0);
+  assert.equal(coverage.unauthenticatedPrivateRouteCombinations, expectedAuthGuards, "all enabled private route/profile combinations are auth-guarded");
   assert.deepEqual(browserFailures, [], browserFailures.join("\n"));
   assert.deepEqual(networkFailures, [], networkFailures.join("\n"));
 
@@ -551,6 +552,7 @@ async function executeStateProbes(browser, baseUrl, implementedStates) {
 
 async function prepareDetail(page, routeId) {
   if (routeId === "order.detail") await page.evaluate(() => { window.AircovePortal.state.currentOrderId = window.AircovePortal.state.orders[0].id; });
+  if (routeId === "appointment.detail") await page.evaluate(() => { window.AircovePortal.state.spaCurrentAppointment = "appt-ch-10318"; });
   if (routeId === "proposal.detail") await page.evaluate(() => { window.AircovePortal.state.currentSiteId = "s2"; });
 }
 

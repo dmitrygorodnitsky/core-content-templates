@@ -10,6 +10,12 @@ export var state = {
   theme: "HVAC",     // vertical display name
   mode: "Light",     // Light | Dark
   view: "ready",     // ready | loading | empty | error
+  account: "ready",  // ready | resolving-customer | customer-* | session-expired
+  commands: {},
+  cmdForce: null,
+  contact: null,
+  contactDraft: null,
+  contactErrors: null,
   filter: "all",     // order tab
   currentOrderId: null, // open order for order.detail
   cartItems: [],     // checkout cart
@@ -32,6 +38,8 @@ export var state = {
   phone: "",
   code: "",
   authError: null,
+  oidc: "ready-signed-out",
+  sessionName: null,
   session: { authenticated: true, intendedRoute: null, hasCustomerScope: true, hasTenantScope: true },
   access: { care: { status: "granted", reasonCode: null } },
   carePayloadState: "ready",
@@ -60,9 +68,52 @@ export var state = {
     dataMode: "fixture",
     caseId: "",
     defaultMode: "light",
+    capability: "current-staging",
+    booking: "closed",
+    retail: "browse-only",
+    planCommerce: "closed",
+    demoCommands: "closed",
   },
   userModeOverridden: false,
   mobileNav: false,
+  capability: "current-staging",
+  spaBooking: "closed",
+  spaAppt: "salon",
+  spaRows: "many",
+  spaLongName: false,
+  spaCancelled: {},
+  accountMenu: false,
+  spaSupport: false,
+  spaRetail: "browse-only",
+  spaAccountPartial: false,
+  spaPurchFilter: "all",
+  spaPurchMore: "idle",
+  spaCurrentPurchase: null,
+  spaPlanScenario: "active",
+  spaPlanCancelled: {},
+  spaCart: null,
+  spaCartDemo: "as-added",
+  spaVariantPick: {},
+  spaCheckoutSource: "cart",
+  spaCheckoutDemo: "ready",
+  spaPolicyAck: false,
+  spaResult: null,
+  spaHold: "held",
+  spaBookResult: "appointment-and-order",
+  spaReturns: {},
+  spaCancelReqs: {},
+  spaCurrentAppointment: null,
+  spaFlow: null,
+  spaBookAck: false,
+  spaSlots: "ready",
+  spaCredit: "ok",
+  spaPlanCommerce: "closed",
+  spaOfferDemo: "sellable",
+  spaPlanOffer: null,
+  spaRescheduled: {},
+  spaProfile: null,
+  spaProfileDraft: null,
+  spaProfileErrors: null,
   drawer: null,      // null | "booking"
   orders: F.ordersFor("HVAC")
 };
@@ -92,6 +143,40 @@ export function productItems() {
   return (state.moduleData.products && state.moduleData.products.items) || v.products;
 }
 
+export function spaCatalogServices() {
+  if (state.config.dataMode !== "live") return F.spa.pim.services;
+  var source = state.moduleData.pricing && state.moduleData.pricing.rates || state.moduleData.services && state.moduleData.services.items || [];
+  return source.filter(function (item) { return !item.productTypeCode || item.productTypeCode === "SPA_SERVICE"; }).map(function (item) {
+    return {
+      code: item.code,
+      name: item.name,
+      shortDescription: item.description || "Published spa service",
+      displayPrice: item.price,
+      interval: item.interval === "one time" ? "" : item.interval,
+    };
+  });
+}
+
+export function spaPlanOffers() {
+  if (state.config.dataMode !== "live") return F.spaCommerce.planOffers;
+  var source = state.moduleData.pricing && state.moduleData.pricing.rates || [];
+  return source.filter(function (item) { return item.productTypeCode === "SPA_MEMBERSHIP" || item.productTypeCode === "SPA_PACKAGE"; }).map(function (item) {
+    var kind = item.productTypeCode === "SPA_MEMBERSHIP" ? "MEMBERSHIP" : "PACKAGE";
+    return {
+      ref: "offer-" + item.code,
+      productCode: item.code,
+      kind: kind,
+      title: item.name,
+      displayPrice: item.price + (item.interval && item.interval !== "one time" ? " / " + item.interval : ""),
+      amount: Number(item.priceNum) || 0,
+      termsSummary: item.description || "Published catalog offer",
+      benefits: [],
+      sellability: "sellable",
+      allowedActions: ["purchase"],
+    };
+  });
+}
+
 export function currentFixture() {
   var fixture = caseFixtureFor(state.config.caseId);
   if (fixture) return fixture;
@@ -118,7 +203,132 @@ export function activeVerticalConfig() { return verticalProfiles[state.config.ve
 
 export function activeProfile() {
   var vertical = activeVerticalConfig();
+  if (isSpa()) return portalProfiles[spaCapability() === "target-appointments" ? "spaTarget" : "spaStaging"];
   return portalProfiles[state.config.profile] || portalProfiles[vertical.profile];
+}
+
+export function isSpa() { return state.config.vertical === "beauty" || state.theme === "Beauty"; }
+
+export function spaCapability() {
+  return state.capability === "target-appointments" ? "target-appointments" : "current-staging";
+}
+
+export function spaBookingOpen() {
+  return isSpa() && spaCapability() === "target-appointments" && state.spaBooking === "open";
+}
+
+export function spaCurrentApiDemoOpen() {
+  return isSpa() && state.config.dataMode === "live" && state.config.demoCommands === "current-api";
+}
+
+export function spaAppointments() {
+  if (state.config.dataMode === "live") {
+    return state.moduleData.appointments || { state: state.moduleStatus.appointments || "loading", items: [], next: null, upcoming: [], past: [], byRef: {} };
+  }
+  var sc = state.spaAppt;
+  var next = sc === "empty" || sc === "no-history" ? null : (F.spa.appointments.nextVariants[sc] || F.spa.appointments.nextVariants.salon);
+  return {
+    state: next || F.spa.appointments.past.length ? "ready" : "empty",
+    next: next,
+    upcoming: F.spa.appointments.upcoming,
+    past: sc === "no-history" ? [] : F.spa.appointments.past,
+    byRef: F.spaCommerce.appointmentDetails,
+  };
+}
+
+export function spaCustomer() {
+  if (state.spaLongName) return F.spa.longCustomer;
+  var fixtureCustomer = currentFixture().customer || F.customer;
+  var displayName = state.sessionName || fixtureCustomer.fullName || fixtureCustomer.name || "Customer";
+  var first = fixtureCustomer.firstName || displayName.split(/\s+/, 1)[0] || "Customer";
+  return { first: first, greeting: fixtureCustomer.greeting || ("Welcome back, " + first), fullName: displayName };
+}
+
+export function spaRetailOpen() {
+  return isSpa() && spaCapability() === "target-appointments" && state.spaRetail === "retail-commerce-open";
+}
+
+export function spaPlanSellOpen() {
+  return isSpa() && spaCapability() === "target-appointments" && state.spaPlanCommerce === "open";
+}
+
+export function currentAppointment() {
+  if (state.config.dataMode === "live") {
+    var live = state.moduleData.appointments && state.moduleData.appointments.byRef || {};
+    return state.spaCurrentAppointment ? live[state.spaCurrentAppointment] || null : null;
+  }
+  var appointment = state.spaCurrentAppointment ? F.spaCommerce.appointmentDetails[state.spaCurrentAppointment] || null : null;
+  if (!appointment) return null;
+  var rescheduled = state.spaRescheduled[appointment.ref];
+  if (!rescheduled) return appointment;
+  return Object.assign({}, appointment, {
+    start: rescheduled.start,
+    customerStatus: "Confirmed",
+    attention: "Rescheduled — confirmed by the studio. The previous time was released.",
+  });
+}
+
+export function spaProfileValues() {
+  if (state.config.dataMode === "live") {
+    var live = state.moduleData.profile || {};
+    return {
+      phone: live.phone == null ? null : live.phone,
+      email: live.email || "",
+      prefs: live.prefs || {},
+      allowedActions: live.allowedActions || [],
+      unavailableFields: live.unavailableFields || [],
+    };
+  }
+  if (state.spaProfile) return state.spaProfile;
+  var prefs = {};
+  F.spaProfileSrv.preferences.forEach(function (preference) { prefs[preference.key] = preference.value; });
+  return { phone: F.spaProfileSrv.phone, email: F.spaProfileSrv.email, prefs: prefs };
+}
+
+export function spaCartLines() { return (state.spaCart && state.spaCart.lines) || []; }
+
+export function spaCartCount() {
+  return spaCartLines().reduce(function (count, line) { return count + line.qty; }, 0);
+}
+
+export function currentPurchase() {
+  if (state.config.dataMode === "live") {
+    var live = state.moduleData.orders && state.moduleData.orders.byRef || {};
+    return state.spaCurrentPurchase ? live[state.spaCurrentPurchase] || null : null;
+  }
+  return state.spaCurrentPurchase ? F.spaCommerce.purchaseDetails[state.spaCurrentPurchase] || null : null;
+}
+
+export function spaPlans() {
+  var refs = F.spaCommerce.plans.scenarios[state.spaPlanScenario] || [];
+  return refs.map(function (ref) {
+    var plan = F.spaCommerce.plans.byRef[ref];
+    if (!state.spaPlanCancelled[ref]) return plan;
+    return Object.assign({}, plan, {
+      status: "Cancelled",
+      note: "Renewal cancelled — your benefits continue to the end of the paid period.",
+      allowedActions: [],
+    });
+  });
+}
+
+export function routeLabel(routeId) {
+  var nav = activeProfile().nav.find(function (item) { return item.key === routeId; });
+  if (nav) return nav.label || "your page";
+  var labels = {
+    "order.detail": "Order details", checkout: "Checkout", profile: "Profile", calendar: "Calendar",
+    activity: "Activity", "orders.list": "Home", account: "Account", "purchases.list": "Purchases",
+    "purchase.detail": "Purchase details", plan: "My plan", cart: "Your bag",
+    "appointment.detail": "Your visit",
+  };
+  return labels[routeId] || "your page";
+}
+
+export function cmdPhase(key) { return state.commands[key] || "idle"; }
+
+export function currentContact() {
+  var customer = currentFixture().customer || F.customer;
+  return state.contact || { phone: customer.phone || "", email: customer.email || "" };
 }
 
 export function isPublic(routeId) {
@@ -143,6 +353,10 @@ export function applyPortalConfig(config) {
     defaultRoute: config.defaultRoute || verticalConfig.defaultRoute,
     enabledModules: config.enabledModules && config.enabledModules.length ? config.enabledModules : portalProfiles[profile].modules.slice(),
   });
+  state.capability = state.config.capability === "target-appointments" ? "target-appointments" : "current-staging";
+  state.spaBooking = state.config.booking === "open" ? "open" : "closed";
+  state.spaRetail = state.config.retail === "retail-commerce-open" ? "retail-commerce-open" : "browse-only";
+  state.spaPlanCommerce = state.config.planCommerce === "open" ? "open" : "closed";
   state.session.authenticated = state.config.authMode !== "required";
   state.session.intendedRoute = null;
   var fixture = caseFixtureFor(state.config.caseId);
@@ -154,6 +368,35 @@ export function applyPortalConfig(config) {
   state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";
   state.cartItems = [];
+  state.account = state.config.dataMode === "live" && state.config.authMode === "required" ? "resolving-customer" : "ready";
+  state.commands = {};
+  state.accountMenu = false;
+  state.spaSupport = false;
+  state.spaCart = null;
+  state.spaCartDemo = "as-added";
+  state.spaVariantPick = {};
+  state.spaResult = null;
+  state.spaPolicyAck = false;
+  state.spaCheckoutDemo = "ready";
+  state.spaCheckoutSource = "cart";
+  state.spaReturns = {};
+  state.spaCancelReqs = {};
+  state.spaPlanCancelled = {};
+  state.spaPurchMore = "idle";
+  state.spaPurchFilter = "all";
+  state.spaCurrentPurchase = null;
+  state.spaHold = "held";
+  state.spaCurrentAppointment = null;
+  state.spaFlow = null;
+  state.spaBookAck = false;
+  state.spaSlots = "ready";
+  state.spaCredit = "ok";
+  state.spaOfferDemo = "sellable";
+  state.spaPlanOffer = null;
+  state.spaRescheduled = {};
+  state.spaProfile = null;
+  state.spaProfileDraft = null;
+  state.spaProfileErrors = null;
   state.carePayloadState = "ready";
   state.careStateVertical = null;
   state.careSelectedUnitId = null;
