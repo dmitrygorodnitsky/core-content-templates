@@ -8,6 +8,7 @@ export function ErrorState(props) {
     h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26a0"),
     h("div", { "class": "state-block__title" }, props.title || "Something went wrong"),
     h("div", { "class": "state-block__desc" }, props.desc || "We couldn\u2019t load your orders. Check your connection and try again."),
-    ActionButton({ variant: "btn--primary", label: "Try again", action: "ui.retry", visualId: "retry" })
+    /* wave 13 — retry keeps the existing ui.retry action; retryId scopes it to a module/entity */
+    ActionButton({ variant: "btn--primary", label: props.retryLabel || "Try again", action: "ui.retry", id: props.retryId, visualId: "retry" })
   ]);
 }

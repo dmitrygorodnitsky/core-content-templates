@@ -18,7 +18,7 @@ import { StormHome } from "../components/storm/StormHome.js";
 export function Cabinet() {
   if (activeProfile().weatherCalendar) return StormHome();
   var v = F.themes[state.theme];
-  var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "cabinet" });
+  var page = h("section", { "class": "page", "data-route": "orders.list", "data-state": state.view, "data-visual-id": "cabinet" });
 
   page.appendChild(PageHeader({ title: F.customer.greeting, sub: F.customer.subline }));
 

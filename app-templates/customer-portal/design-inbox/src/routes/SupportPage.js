@@ -3,15 +3,31 @@ import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
 import { state } from "../state.js";
 import { sendChat } from "../actions.js";
+import { routeStateBody, skel } from "../components/primitives/RouteStates.js";
 import { render } from "../app.js";
 
 export function Support() {
   var v = F.themes[state.theme];
-  var page = h("section", { "class": "page", "data-route": "support", "data-visual-id": "support" });
+  var page = h("section", { "class": "page", "data-route": "support", "data-state": state.view, "data-visual-id": "support" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "How can we help, " + F.customer.firstName + "?"),
     h("div", { "class": "section-head__sub" }, "Chat with us \u2014 agents reply in under 2 minutes, 24/7.")
   ]));
+
+  /* wave 13 — threads/messages are customer-scoped; help content alone is not
+     worth rendering over a broken customer scope, so the route gates whole */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: function () {
+      return h("div", { "class": "support-grid", "data-state": "loading", "aria-busy": "true" }, [
+        h("div", { style: "display:flex;flex-direction:column;gap:16px" }, [skel("height:260px;border-radius:20px"), skel("height:140px;border-radius:20px")]),
+        skel("height:440px;border-radius:20px")
+      ]);
+    },
+    error: { title: "Couldn\u2019t load support", desc: "Your conversations didn\u2019t load. Nothing was sent \u2014 try again.", retryId: "support" },
+    scope: "support"
+  });
+  if (gate) { page.appendChild(gate); return page; }
 
   var grid = h("div", { "class": "support-grid" });
 
@@ -41,12 +57,27 @@ export function Support() {
   ]));
   grid.appendChild(rail);
 
-  /* chat panel */
+  /* chat panel — wave 13: messages carry an entity-scoped send lifecycle.
+     sending = command pending; sent = server readback; failed = explicit
+     per-message retry (support.retryMessage, data-id = m<index>). */
   var thread = h("div", { "class": "chat-thread", "data-module": "chat-thread", "data-visual-id": "chat-thread" }, [h("div", { "class": "chat-day" }, "Today")]);
-  state.messages.forEach(function (m) {
+  if (state.view === "empty") {
+    thread.appendChild(h("div", { "class": "state-block", style: "padding:36px 20px", "data-module": "empty-state", "data-visual-id": "chat-empty", "data-state": "empty" }, [
+      h("div", { "class": "state-block__glyph" }, "\ud83d\udcac"),
+      h("div", { "class": "state-block__title" }, "No messages yet"),
+      h("div", { "class": "state-block__desc" }, "Start the conversation below \u2014 your messages and our replies stay here.")
+    ]));
+  } else state.messages.forEach(function (m, i) {
     var user = m.from === "user";
-    thread.appendChild(h("div", { "class": "msg-row " + (user ? "msg-row--user" : "msg-row--agent") },
-      h("div", { "class": "msg-bubble " + (user ? "msg-bubble--user" : "msg-bubble--agent") }, m.text)));
+    var bubble = h("div", { "class": "msg-bubble " + (user ? "msg-bubble--user" : "msg-bubble--agent"), "data-state": user && m.status ? m.status : undefined }, m.text);
+    var body = bubble;
+    if (user && m.status === "sending") {
+      body = h("div", { style: "display:flex;flex-direction:column;align-items:flex-end;min-width:0" }, [bubble, h("div", { "class": "msg-status" }, "Sending\u2026")]);
+    } else if (user && m.status === "failed") {
+      body = h("div", { style: "display:flex;flex-direction:column;align-items:flex-end;min-width:0" }, [bubble,
+        h("div", { "class": "msg-status msg-status--failed" }, ["Not delivered", h("span", { "class": "msg-retry", "data-action": "support.retryMessage", "data-id": "m" + i, role: "button" }, "Retry")])]);
+    }
+    thread.appendChild(h("div", { "class": "msg-row " + (user ? "msg-row--user" : "msg-row--agent") }, body));
   });
   if (state.typing) thread.appendChild(h("div", { "class": "msg-row msg-row--agent" }, h("div", { "class": "typing" }, [
     h("span", { "class": "typing-dot" }), h("span", { "class": "typing-dot", style: "animation-delay:.2s" }), h("span", { "class": "typing-dot", style: "animation-delay:.4s" })

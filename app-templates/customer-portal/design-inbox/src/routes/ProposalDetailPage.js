@@ -1,10 +1,12 @@
 // customer-portal-design/src/routes/ProposalDetailPage.js — presentation runtime (auto-split from app.js). No business logic.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { computeSite, currentSite, state } from "../state.js";
+import { cmdPhase, computeSite, currentSite, state } from "../state.js";
 import { go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
+import { detailSkeleton } from "../components/primitives/LoadingState.js";
+import { ConflictBanner, InlineFailure, NotFoundState, routeStateBody } from "../components/primitives/RouteStates.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
@@ -40,9 +42,34 @@ export function ProposalDetail() {
   var p = currentSite();
   var c = computeSite(p);
   var st = F.pstatus[p.status];
-  var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
+
+  /* wave 13 — versioned proposal lifecycle. While unresolved / failed /
+     unauthorized / not-found, NO entity field (address, area, price) renders.
+     not-found is non-enumerating: identical whether the id never existed,
+     was withdrawn, or belongs to another customer. */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: detailSkeleton,
+    error: { title: "Couldn\u2019t load this proposal", desc: "The proposal didn\u2019t load, so nothing is shown. Nothing was decided \u2014 try again.", retryId: "proposal.detail" },
+    scope: "this proposal", backRoute: "proposals.list"
+  });
+  if (state.view === "not-found") gate = NotFoundState({ noun: "proposal", backLabel: "proposals", backRoute: "proposals.list" });
+  if (gate) {
+    var gpage = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-state": state.view, "data-visual-id": "proposal-detail" });
+    gpage.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
+    gpage.appendChild(gate);
+    return gpage;
+  }
+
+  /* decision command state for THIS site only — other sites stay actionable */
+  var dKey = "proposal.decide:" + p.id;
+  var dPhase = cmdPhase(dKey);
+  var hasConflict = state.view === "conflict" || dPhase === "conflict";
+  var lifecycle = hasConflict ? "conflict" : dPhase === "pending" ? "pending-action" : p.status;
+  var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": lifecycle, "data-entity-id": p.id });
 
   page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
+  if (hasConflict) page.appendChild(ConflictBanner({ noun: "proposal", desc: "A newer version was issued while you were viewing this one. Load the latest and review it \u2014 your decision was NOT submitted.", retryId: dKey }));
   page.appendChild(h("div", { "class": "proposal-detail-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { "class": "proposal-detail-head__title", "data-bind": "site.addr" }, p.addr),
@@ -123,12 +150,22 @@ export function ProposalDetail() {
     ]));
   }
 
-  /* actions */
+  /* actions — entity-scoped command lifecycle: the clicked decision shows
+     pending, all three are locked against duplicate submission, failure keeps
+     the proposal unchanged with the buttons as the explicit retry, and a
+     conflict blocks deciding until the latest version is loaded. */
   var selId = p.selected || "898";
-  page.appendChild(h("div", { "class": "proposal-actions" }, [
-    ActionButton({ variant: "btn--primary", label: "Approve " + F.planName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
-    ActionButton({ variant: "btn--ghost", label: "Request revision", action: "proposal.requestRevision", lg: true, visualId: "proposal-revise" }),
-    ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline" })
+  var busy = dPhase === "pending";
+  if (dPhase === "failed") {
+    page.appendChild(h("div", { style: "margin:0 4px 12px" }, InlineFailure({ msg: "Your decision wasn\u2019t submitted \u2014 this proposal is unchanged. Try again below." })));
+  }
+  page.appendChild(h("div", { "class": "proposal-actions", "data-state": busy ? "pending" : hasConflict ? "conflict" : dPhase === "failed" ? "failed" : "ready" }, [
+    ActionButton({ variant: "btn--primary", label: "Approve " + F.planName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve",
+      pending: busy && state.lastDecide === "approved", pendingLabel: "Submitting\u2026", disabled: busy || hasConflict }),
+    ActionButton({ variant: "btn--ghost", label: "Request revision", action: "proposal.requestRevision", lg: true, visualId: "proposal-revise",
+      pending: busy && state.lastDecide === "revision", pendingLabel: "Submitting\u2026", disabled: busy || hasConflict }),
+    ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline",
+      pending: busy && state.lastDecide === "declined", pendingLabel: "Submitting\u2026", disabled: busy || hasConflict })
   ]));
   return page;
 }

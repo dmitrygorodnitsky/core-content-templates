@@ -1,11 +1,12 @@
 // customer-portal-design/src/routes/OrderDetailPage.js — presentation runtime (auto-split from app.js). No business logic.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { currentOrder, state } from "../state.js";
+import { currentOrder, cmdPhase, state } from "../state.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { detailSkeleton } from "../components/primitives/LoadingState.js";
+import { InlineFailure } from "../components/primitives/RouteStates.js";
 import { WeatherDetail } from "../components/orders/WeatherCard.js";
 import { Timeline } from "../components/orders/Timeline.js";
 
@@ -206,8 +207,18 @@ export function OrderDetail() {
   } else if (vm.isInProgress) {
     acts.appendChild(ActionButton({ variant: "btn--primary", label: "Contact technician", action: "support.open", block: true, lg: true, visualId: "contact-tech" }));
   } else if (vm.isScheduled) {
-    acts.appendChild(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: o.id, block: true, lg: true, visualId: "reschedule" }));
-    acts.appendChild(ActionButton({ variant: "btn--danger", label: "Cancel visit", action: "order.cancel", id: o.id, confirm: true, block: true, lg: true, visualId: "cancel-visit" }));
+    /* wave 13 — cancel is an entity-scoped command on THIS visit: pending on the
+       exact button, failure keeps the visit scheduled with explicit retry */
+    var cnKey = "order.cancel:" + o.id;
+    var cnPhase = cmdPhase(cnKey);
+    acts.appendChild(ActionButton({ variant: "btn--primary", label: "Reschedule", action: "order.reschedule", id: o.id, block: true, lg: true, visualId: "reschedule", disabled: cnPhase === "pending" }));
+    if (cnPhase === "failed" || cnPhase === "conflict") acts.appendChild(InlineFailure({
+      msg: cnPhase === "conflict" ? "This visit changed while you were viewing it \u2014 it was NOT cancelled. Refresh and review it first." : "The visit wasn\u2019t cancelled \u2014 it\u2019s still scheduled.",
+      retryAction: cnPhase === "conflict" ? "ui.retry" : "order.cancel", retryId: cnPhase === "conflict" ? cnKey : o.id,
+      retryLabel: cnPhase === "conflict" ? "Refresh" : "Retry cancel"
+    }));
+    acts.appendChild(ActionButton({ variant: "btn--danger", label: "Cancel visit", action: "order.cancel", id: o.id, confirm: true, block: true, lg: true, visualId: "cancel-visit",
+      pending: cnPhase === "pending", pendingLabel: "Cancelling\u2026" }));
   } else if (vm.isCancelled) {
     acts.appendChild(ActionButton({ variant: "btn--primary", label: "Rebook this service", action: "order.bookAgain", block: true, lg: true, visualId: "rebook" }));
   }

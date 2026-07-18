@@ -205,3 +205,27 @@ the centered viewport frame. Faithful 1440 desktop captures still can't be produ
 - Pure decomposition only. No redesign, no business logic.
 - Keep `aircove-portal-design/` untouched as the fallback.
 - Any contract change (attributes / ids / class names / fixture shape) → document in README + this file.
+
+## Wave 15 — Calm Harbor commercial lifecycle — done
+Account / Purchases / purchase detail / My plan / sellable Shop / server cart / SIMULATED checkout,
+per the "spa purchases, simulated checkout, and account" design request + product contract. See
+README §Wave 15 for the full contract. Key facts for continuation:
+- **New routes** (stable ids): `account`, `purchases.list`, `purchase.detail`, `plan`, `cart`;
+  `checkout` renders SpaCheckout on Beauty (other verticals keep the accepted generic checkout).
+  New files: `src/routes/Spa{Account,Purchases,PurchaseDetail,Plan,Cart,Checkout}Page.js`,
+  `src/components/spa/CommerceBits.js` (UnavailableState, SimulationBadge, KindChip, MoneyRows,
+  spaGate). SpaShopPage gains the sellable variant; SpaTopNav gains the Account link + bag
+  indicator; BookingDrawer gains the simulated booking-review bridge.
+- **New capability**: `retail-commerce-open` (`state.spaRetail`, `data-retail` hook) gates
+  sellable Shop / cart / checkout. Account entries are available|unavailable per contract;
+  staging keeps its raw Orders variant — target purchase labels never touch unmapped `OPEN`.
+- **Payment is simulated only**: simulation-notice treatment wherever a payment step or
+  confirmation shows; copy Order confirmed / Booking confirmed / Demo checkout completed; success
+  renders ONLY from `state.spaResult` readback; no refund consequences anywhere.
+- **New actions** in README §Wave 15 / manifest; every entity action carries an opaque
+  `data-*-ref`. Demo server = `F.spaServerCart` + `F.spaCommerce.*` fixtures.
+- **Dev toolbar**: retail / acct / plan / cart / co / src / hold / bookres selects; `state` select
+  adds `unavailable`; `AircovePortal.seedCart()` preview helper.
+- **CSS**: additive Wave 15 section at the end of `routes.css` + `responsive.css` (no accepted
+  rule modified). manifest wave-15; scenarios wave 15 (descriptionWave15 + new route entries).
+

@@ -1,8 +1,10 @@
 {
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
-  "wave": 11,
-  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content. Wave 10 replaces the fixture phone/OTP login with the Core OIDC redirect presentation: route auth.oidc at /login, module core-oidc-auth. Wave 11 ships the Beauty seo.landing as the Calm Harbor Spa release: seo-products-teaser (public PIM retail teaser), CMS media slots on hero/proof, and honest-navigation public CTAs (nav.services / nav.pricing / nav.products / auth.gotoSignin — no booking/payment/checkout command).",
+  "wave": 16,
+  "descriptionWave16": "Wave 16 activates every remaining Calm Harbor flow except Support: (1) a standalone customer-owned Appointment detail route (appointment.detail) opened from upcoming/past rows — source-provided fields only, actions rendered exactly from allowedActions, ONE non-enumerating not-found for foreign/removed/unknown refs, cancelled/rescheduled readback states; (2) the COMPLETE booking flow in the accepted drawer from every supported entry (service Book, empty Appointments, Book again, Book with a credit, Reschedule): context → optional specialist (only when returned) → eligible date/slot selection with loading/empty/error → expiring SERVER slot hold (display label, never a local countdown; hold pending/held/expired/failed) → review with server display total, policy ack, repriced/conflict blocking, explicit 'Simulation — no charge will be made', and the authoritative Appointment-only / Appointment+Order confirmation; reschedules show current vs proposed and release the original visit only in the readback; plan-credit states ok/unavailable/exhausted/changed gate the flow verbatim; (3) package & membership purchase entry on the published offers while the sellable plan contract is open (data-plan-commerce, plan.purchase → the accepted SIMULATED checkout with source plan; sellable/unavailable/changed states; confirmation links to BOTH the created purchase and My plan); (4) the Calm Harbor least-data Profile (phone, email, approved preferences only; unchanged/dirty, invalid, saving, save-failed with confirmed values preserved, version conflict requiring profile.reload, session-lost, confirmed readback). Preserved runtime ALIASES (documented): order.reschedule/order.cancel/order.bookAgain → appointment.*, profile.saveContact (legacy generic panel). New dev selects: adet, plansell, offers, slots, credit.",
+  "descriptionWave15": "Wave 15 extends the Calm Harbor portal with the customer commercial lifecycle under the accepted shell: Account (4th primary destination; entries available|unavailable per contract), Purchases list (backend-mapped customer statuses; filters only for returned kinds; cursor append), purchase detail (source-provided grouping only, separate totals/fulfillment/appointment/plan dimensions, capability-driven request flows for cancellation and returns with accepted-for-review readbacks and no refund claims), My plan (package vs recurring membership, server-provided balances only), the sellable Shop + persistent server cart + SIMULATED checkout behind the new retail-commerce-open capability (explicit 'Simulation — no charge will be made' treatment, 'Confirm order' — never 'Pay now', confirmation only from the authoritative readback: 'Order confirmed' / 'Booking confirmed' / 'Demo checkout completed'), and the booking confirmation bridge (paymentMode SIMULATED, blocking held-slot-expired / repriced review states, confirm result Appointment-only or Appointment+Order). New dev-toolbar selects: retail, acct, plan, cart, co, src, hold, bookres; state select adds unavailable.",
+  "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content. Wave 10 replaces the fixture phone/OTP login with the Core OIDC redirect presentation: route auth.oidc at /login, module core-oidc-auth. Wave 11 ships the Beauty seo.landing as the Calm Harbor Spa release: seo-products-teaser (public PIM retail teaser), CMS media slots on hero/proof, and honest-navigation public CTAs (nav.services / nav.pricing / nav.products / auth.gotoSignin — no booking/payment/checkout command). Wave 13 adds the authenticated live-data states: a shared account-bootstrap gate (resolving-customer / customer-unavailable / customer-not-linked / customer-forbidden / session-expired — no private fixture data renders while unresolved/failed, TopNav renders gated), route lifecycle states on every private route root (loading/empty/error/unauthorized plus not-found/conflict where the route is entity-scoped), and an entity-scoped command lifecycle (state.commands['<action>:<entityId>'] = pending|failed|conflict; succeeded renders ONLY from the server readback; session-lost clears pending, suppresses success and opens the expired-session gate with the intended route preserved). Preview: dev-toolbar 'account' select (private routes), 'cmd' outcome select, extended 'state' select. Wave 14 ships the Calm Harbor Spa authenticated portal IA on the Beauty vertical: two capability variants of one portal (data-capability current-staging | target-appointments, data-booking closed | open, data-portal-profile spaStaging | spaTarget — deployment config, dev-toolbar preview). current-staging: Orders (neutral READ-ONLY Core Order rows — raw status unmapped, no dates/commands/navigation), Services & prices (one destination over the stable services+pricing routes), Shop (browse-only public PIM fields), account menu. target-appointments: Appointments as the authenticated default (next-appointment hero + upcoming/past; at-salon and at-your-place visit modes; long-label and missing-optional-field scenarios), '+ Book' and reschedule/cancel/book-again ONLY while booking is open; cancel is a full entity-scoped command (pending/failed/conflict/session-lost; success from readback only). Account bootstrap gains customer-account-ambiguous and organization-forbidden.",
   "featureFlags": {
     "showProducts": true,
     "showProposals": true,
@@ -10,97 +12,696 @@
     "weatherTriggers": true,
     "darkMode": true
   },
-  "themes": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"],
-  "modes": ["light", "dark"],
+  "themes": [
+    "HVAC",
+    "Snow Removal",
+    "Lawn & Garden",
+    "Pool & Spa",
+    "Roofing",
+    "Pest Control",
+    "Health",
+    "Beauty"
+  ],
+  "modes": [
+    "light",
+    "dark"
+  ],
   "profiles": {
-    "note": "Portal profile is config-driven per vertical (fixtures.profileFor). Drives nav, primary action, cart, and which Calendar renders.",
-    "onDemand": { "verticals": ["HVAC"], "calendar": "MonthCalendar", "primary": "+ Book" },
-    "stormOps": { "verticals": ["Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control"], "calendar": "StormCalendar (weather-operational)", "primary": "Request service" },
-    "appointments": { "verticals": ["Health", "Beauty"], "calendar": "MonthCalendar", "primary": "+ Book", "note": "No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere." }
+    "note": "Portal profile is config-driven per vertical. Non-Beauty verticals map via fixtures.profileFor; Beauty (Calm Harbor) resolves from the capability config (state.capability -> spaStaging | spaTarget) and is intentionally absent from profileFor. Drives nav, primary action, cart, and which Calendar renders.",
+    "onDemand": {
+      "verticals": [
+        "HVAC"
+      ],
+      "calendar": "MonthCalendar",
+      "primary": "+ Book"
+    },
+    "stormOps": {
+      "verticals": [
+        "Snow Removal",
+        "Lawn & Garden",
+        "Pool & Spa",
+        "Roofing",
+        "Pest Control"
+      ],
+      "calendar": "StormCalendar (weather-operational)",
+      "primary": "Request service"
+    },
+    "appointments": {
+      "verticals": [
+        "Health"
+      ],
+      "calendar": "MonthCalendar",
+      "primary": "+ Book",
+      "note": "No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere. Wave 14.1: Health only — Beauty moved to spaStaging/spaTarget."
+    },
+    "spaStaging": {
+      "verticals": [
+        "Beauty — Calm Harbor (capability current-staging)"
+      ],
+      "nav": [
+        "Orders (orders.list, read-only)",
+        "Services & prices (services + pricing)",
+        "Shop (products, secondary)"
+      ],
+      "calendar": null,
+      "cart": false,
+      "booking": "no booking command exists — no + Book anywhere",
+      "primary": "Browse services (honest navigation)",
+      "note": "Wave 14. Account menu = identity + Support (honest unavailable notice) + light/dark + sign-out. Cannot select target appointment fixtures, Beauty Care/My routine navigation, membership state, cart/checkout or fixture support data."
+    },
+    "spaTarget": {
+      "verticals": [
+        "Beauty — Calm Harbor (capability target-appointments)"
+      ],
+      "nav": [
+        "Appointments (orders.list, authenticated default)",
+        "Services & prices (services + pricing)",
+        "Shop (products, secondary)"
+      ],
+      "calendar": "appointments/booking-flow concern only — not a destination",
+      "cart": false,
+      "booking": "+ Book and reschedule/cancel/book-again ONLY while data-booking=open; closed shows disabled controls + honest note",
+      "primary": "+ Book (open) / Browse services (closed)",
+      "note": "Wave 14. Target fixtures are capability-gated; loading/error/unauthorized gates render before any fixture. Same support-unavailable rule as spaStaging."
+    }
   },
-  "viewports": [390, 768, 1180, 1440],
+  "viewports": [
+    390,
+    768,
+    1180,
+    1440
+  ],
   "routes": [
-    { "id": "landing",          "path": "/",                 "wave": 6, "implemented": true,  "auth": "public", "states": ["ready"], "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)." },
-    { "id": "seo.landing",      "path": "cms.meta.canonicalPath (e.g. /hvac/{locality-slug})", "wave": 8, "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "note": "Public SEO landing — ONE reusable section set (src/components/seo/SeoSections.js) serves all eight verticals; content = CMS slots in data/seo-fixtures.js keyed by vertical. Sections: seo-hero, seo-trust-strip, seo-services-grid, seo-how-it-works, seo-proof, seo-pricing, seo-service-area, seo-reviews, seo-faq (schema.org FAQPage microdata), seo-final-cta, seo-footer. loading/empty apply ONLY to dynamic-data sections (trust, pricing, service-area, reviews, faq, hero offer); hero/how/proof/footer are static. CTA lifecycle idle|pending|success|error on data-state of every seo-cta — preview via dev-toolbar 'cta' select. Head-level CMS fields (seoTitle, metaDescription, canonical, locality, primaryCta.destination) surfaced by the dev-only seo-meta-preview block (data-dev-toolbar — stripped on integration). Wave 11 (Calm Harbor / Beauty): seo-products-teaser sits between seo-pricing and seo-service-area — 3–4 cards from the repeated public PIM collection (pim.products[], data-product-code), public fields only, ONE action nav.products; states ready|loading|empty (seo-products-teaser-empty = honest empty catalog, no invented products). Hero + proof accept CMS media slots (cms.media.hero/proof — spec in MEDIA-SPEC.md). Beauty public CTAs are honest navigation ONLY: nav.services / nav.pricing (scroll to live sections), nav.products (public Shop route), auth.gotoSignin — no seo.cta.book/quote, payment, checkout, booking command or 'request sent' state; service cards route to pricing in this mode. book/quote verticals unchanged. Cover ready+empty at 1440/1180/768/390 in light and dark beauty modes. Wave 12: Beauty seo-pricing ready state renders the repeated LIVE public PIM collection pim.pricing[] (seo-pricing-row: code/name/displayPrice/optional interval|shortDescription, data-product-code; SPA_SERVICE + SPA_MEMBERSHIP only, never SPA_RETAIL; displayPrice verbatim — never computed); empty = honest no-published-items copy, no quote/booking/fallback price; public preview nav brand = cms.meta.brand (Calm Harbor Spa). Pricing evidence: previews/calm-harbor/pricing-{state}-{width}-{mode}.png — real viewport pixels, ready/loading/empty × desktop 1440 (1440×900, upscaled from a scaled-to-fit capture) + mobile 390 (true 390×540) × light/dark." },
-    { "id": "auth.oidc",        "path": "/login",            "wave": 10, "implemented": true, "auth": "public", "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"], "note": "Core OIDC login (module core-oidc-auth) — authorization-code+PKCE redirect to the Core account service, returning to the same /login URL. checking-session = bootstrap on every load (incl. the callback return): discovery + session restore — non-interactive, no redirect claim, no controls, no session name. One primary action per interactive state: auth.oidcSignIn / auth.retrySession (unavailable = discovery/library init failure, no fallback login) / auth.signOut. Dynamic data = session status + one customer-safe display name (data-bind session.displayName). No password/token/Account-id in the browser. Public catalog nav stays before and after auth. Preview the states via the dev-toolbar 'oidc' select." },
-    { "id": "auth.phone",       "path": "/login (REFERENCE ONLY — superseded by auth.oidc, wave 10)", "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "fixture phone step — kept for visual reference, reachable only via dev toolbar (auth.gotoSignin now routes to auth.oidc)" },
-    { "id": "auth.code",        "path": "/login/verify (REFERENCE ONLY — superseded by auth.oidc, wave 10)", "wave": 6, "implemented": true,  "auth": "public", "states": ["ready", "validation-error"], "note": "fixture 4-digit OTP step — kept for visual reference, reachable only via dev toolbar" },
-    { "id": "orders.list",      "path": "/orders",           "wave": 1, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"] },
-    { "id": "order.detail",     "path": "/orders/:id",       "wave": 2, "implemented": true,  "auth": "private", "states": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error"] },
-    { "id": "calendar",         "path": "/calendar",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"], "variants": { "onDemand": "month grid", "stormOps": "weather-ops agenda: served, clear, storm-watch, snow-expected + event statuses scheduled/on-route/completed/skipped/delayed" } },
-    { "id": "services",         "path": "/services",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "loading"] },
-    { "id": "pricing",          "path": "/pricing",          "wave": 3, "implemented": true,  "auth": "private", "states": ["ready"] },
-    { "id": "products",         "path": "/products",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "loading"] },
-    { "id": "checkout",         "path": "/checkout",         "wave": 3, "implemented": true,  "auth": "private", "states": ["ready", "empty", "pending-action", "success-toast"] },
-    { "id": "proposals.list",   "path": "/proposals",        "wave": 4, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
-    { "id": "proposal.detail",  "path": "/proposals/:id",    "wave": 4, "implemented": true,  "auth": "private", "states": ["unseen", "viewed", "approved", "revision", "declined"] },
-    { "id": "profile",          "path": "/profile",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "success-toast"] },
-    { "id": "activity",         "path": "/activity",         "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "empty"] },
-    { "id": "support",          "path": "/support",          "wave": 5, "implemented": true,  "auth": "private", "states": ["ready", "pending-action"] },
-    { "id": "care",             "path": "/care",             "wave": 7, "implemented": true,  "auth": "private", "states": ["ready", "loading", "empty", "error", "unauthorized"], "note": "Vertical care hub — content is vertical-specific (fixtures.careModules): HVAC equipment passport + diagnostics; Snow season/compliance log; Lawn season program + re-entry; Pool water quality; Roofing inspection report + project tracker; Pest station monitoring. Nav label comes from careModules[theme].navLabel. 'unauthorized' renders the entitlement-gate (plan doesn't include the hub). Wave 9: Health hub (kind healthCare) = upcoming appointment + care-plan milestones + follow-up tasks + secure documents (metadata only — NO clinical metrics/results rendered, by design) + provider card; Beauty hub (kind beautyCare) = appointment + session package + specialist preference + treatment/routine history + loyalty + routine products. Data contracts: care.selectUnit -> unit.id; care.download -> document.id; care.requestRetreat -> plan.planId + data-property-id + data-service-id; care.selectSpecialist -> specialist.id; care.completeTask -> task.id; care.contactProvider -> provider.id; care.openSecureDoc -> document.id. Stable entity ids: appt-*, prov-*, plan-*, pkg-*, spec-*, task-*, doc-*." }
+    {
+      "id": "landing",
+      "path": "/",
+      "wave": 6,
+      "implemented": true,
+      "auth": "public",
+      "states": [
+        "ready"
+      ],
+      "note": "Hero + quote card + service teasers; adapts per profile (onDemand vs stormOps copy)."
+    },
+    {
+      "id": "seo.landing",
+      "path": "cms.meta.canonicalPath (e.g. /hvac/{locality-slug})",
+      "wave": 8,
+      "implemented": true,
+      "auth": "public",
+      "states": [
+        "ready",
+        "loading",
+        "empty"
+      ],
+      "note": "Public SEO landing — ONE reusable section set (src/components/seo/SeoSections.js) serves all eight verticals; content = CMS slots in data/seo-fixtures.js keyed by vertical. Sections: seo-hero, seo-trust-strip, seo-services-grid, seo-how-it-works, seo-proof, seo-pricing, seo-service-area, seo-reviews, seo-faq (schema.org FAQPage microdata), seo-final-cta, seo-footer. loading/empty apply ONLY to dynamic-data sections (trust, pricing, service-area, reviews, faq, hero offer); hero/how/proof/footer are static. CTA lifecycle idle|pending|success|error on data-state of every seo-cta — preview via dev-toolbar 'cta' select. Head-level CMS fields (seoTitle, metaDescription, canonical, locality, primaryCta.destination) surfaced by the dev-only seo-meta-preview block (data-dev-toolbar — stripped on integration). Wave 11 (Calm Harbor / Beauty): seo-products-teaser sits between seo-pricing and seo-service-area — 3–4 cards from the repeated public PIM collection (pim.products[], data-product-code), public fields only, ONE action nav.products; states ready|loading|empty (seo-products-teaser-empty = honest empty catalog, no invented products). Hero + proof accept CMS media slots (cms.media.hero/proof — spec in MEDIA-SPEC.md). Beauty public CTAs are honest navigation ONLY: nav.services / nav.pricing (scroll to live sections), nav.products (public Shop route), auth.gotoSignin — no seo.cta.book/quote, payment, checkout, booking command or 'request sent' state; service cards route to pricing in this mode. book/quote verticals unchanged. Cover ready+empty at 1440/1180/768/390 in light and dark beauty modes. Wave 12: Beauty seo-pricing ready state renders the repeated LIVE public PIM collection pim.pricing[] (seo-pricing-row: code/name/displayPrice/optional interval|shortDescription, data-product-code; SPA_SERVICE + SPA_MEMBERSHIP only, never SPA_RETAIL; displayPrice verbatim — never computed); empty = honest no-published-items copy, no quote/booking/fallback price; public preview nav brand = cms.meta.brand (Calm Harbor Spa). Pricing evidence: previews/calm-harbor/pricing-{state}-{width}-{mode}.png — real viewport pixels, ready/loading/empty × desktop 1440 (1440×900, upscaled from a scaled-to-fit capture) + mobile 390 (true 390×540) × light/dark."
+    },
+    {
+      "id": "auth.oidc",
+      "path": "/login",
+      "wave": 10,
+      "implemented": true,
+      "auth": "public",
+      "states": [
+        "checking-session",
+        "ready-signed-out",
+        "redirecting",
+        "unavailable",
+        "ready-signed-in",
+        "signing-out"
+      ],
+      "note": "Core OIDC login (module core-oidc-auth) — authorization-code+PKCE redirect to the Core account service, returning to the same /login URL. checking-session = bootstrap on every load (incl. the callback return): discovery + session restore — non-interactive, no redirect claim, no controls, no session name. One primary action per interactive state: auth.oidcSignIn / auth.retrySession (unavailable = discovery/library init failure, no fallback login) / auth.signOut. Dynamic data = session status + one customer-safe display name (data-bind session.displayName). No password/token/Account-id in the browser. Public catalog nav stays before and after auth. Preview the states via the dev-toolbar 'oidc' select."
+    },
+    {
+      "id": "auth.phone",
+      "path": "/login (REFERENCE ONLY — superseded by auth.oidc, wave 10)",
+      "wave": 6,
+      "implemented": true,
+      "auth": "public",
+      "states": [
+        "ready",
+        "validation-error"
+      ],
+      "note": "fixture phone step — kept for visual reference, reachable only via dev toolbar (auth.gotoSignin now routes to auth.oidc)"
+    },
+    {
+      "id": "auth.code",
+      "path": "/login/verify (REFERENCE ONLY — superseded by auth.oidc, wave 10)",
+      "wave": 6,
+      "implemented": true,
+      "auth": "public",
+      "states": [
+        "ready",
+        "validation-error"
+      ],
+      "note": "fixture 4-digit OTP step — kept for visual reference, reachable only via dev toolbar"
+    },
+    {
+      "id": "orders.list",
+      "path": "/orders",
+      "wave": 1,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "mobile-navigation-open",
+        "drawer-open",
+        "pending-action",
+        "success-toast",
+        "unauthorized"
+      ],
+      "note": "Wave 14 (Beauty/Calm Harbor): capability current-staging renders SpaOrders — a neutral read-only Core Order list (type label/code, reference, raw UNMAPPED status, displayed total + currency; no date/time, specialist, location, tracking, invoice, detail navigation or reschedule/cancel/book-again); states ready(one|many via dev 'rows')/loading/empty/error/unauthorized. Capability target-appointments renders SpaAppointments — the appointment-first default (greeting, next-appointment hero, primary valid action, Upcoming/Past): scenarios salon | home | long | minimal | empty | no-history via dev 'appt' select, plus loading/error/unauthorized gates that never show a fixture. Other verticals keep the accepted Cabinet/StormHome."
+    },
+    {
+      "id": "order.detail",
+      "path": "/orders/:id",
+      "wave": 2,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "scheduled",
+        "inProgress",
+        "completed",
+        "cancelled",
+        "loading",
+        "error"
+      ]
+    },
+    {
+      "id": "calendar",
+      "path": "/calendar",
+      "wave": 5,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "empty"
+      ],
+      "variants": {
+        "onDemand": "month grid",
+        "stormOps": "weather-ops agenda: served, clear, storm-watch, snow-expected + event statuses scheduled/on-route/completed/skipped/delayed"
+      }
+    },
+    {
+      "id": "services",
+      "path": "/services",
+      "wave": 3,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
+      "note": "Wave 14 (Beauty): services + pricing render ONE 'Services & prices' destination (SpaCatalog) with an in-section tab; both stable route ids preserved (nav.go carries the route id). Public PIM lifecycle loading/ready/empty/error — prices verbatim, no availability claim; Book on cards only while data-booking=open, otherwise catalog navigation."
+    },
+    {
+      "id": "pricing",
+      "path": "/pricing",
+      "wave": 3,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "note": "Wave 14 (Beauty): the pricing tab of SpaCatalog — SPA_SERVICE rows + 'Membership options' (public offers, never enrollment/balance). Other verticals keep the accepted Pricing page."
+    },
+    {
+      "id": "products",
+      "path": "/products",
+      "wave": 3,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "note": "Wave 14 (Beauty): browse-only Shop (SpaShop) — code/name/short description/displayed price only; Browse-only chip; no Add to cart, inventory, availability, checkout or purchase success. Visually secondary to Appointments and Services & prices (muted last nav item; no rail placement). Other verticals keep the accepted Products page. Wave 15: under retail-commerce-open (data-retail) the SAME cards become sellable with SERVER sellability states (sellable | unavailable | out-of-stock | price-changed | variant-required), row-scoped add-to-bag commands and a bag indicator — copy never implies reservation."
+    },
+    {
+      "id": "checkout",
+      "path": "/checkout",
+      "wave": 3,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "empty",
+        "pending-action",
+        "success-toast"
+      ],
+      "note": "Wave 15 (Beauty): SpaCheckout — SIMULATED checkout with states loading|ready|repriced|inventory-conflict|slot-expired|confirm-pending|confirm-failed|conflict|session-lost|unavailable|confirmed. Confirmation renders only from the authoritative readback. Other verticals keep the accepted generic checkout."
+    },
+    {
+      "id": "account",
+      "path": "/account",
+      "wave": 15,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor)"],
+      "states": ["ready", "partially-unavailable", "loading", "error", "unauthorized", "unavailable"]
+    },
+    {
+      "id": "purchases.list",
+      "path": "/account/purchases",
+      "wave": 15,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor)"],
+      "states": ["ready", "empty", "loading", "cursor-loading", "error", "unauthorized", "unavailable"]
+    },
+    {
+      "id": "appointment.detail",
+      "path": "/appointments/:ref",
+      "wave": 16,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor, target-appointments)"],
+      "states": ["ready", "loading", "error", "unauthorized", "not-found (non-enumerating — unknown/removed/foreign refs identical)", "conflict", "card: pending|failed|conflict", "cancelled (readback only)", "rescheduled (readback only)", "session-lost (global gate)"],
+      "note": "Opened via appointment.open (data-appointment-ref) from upcoming/past rows and the hero's View details. Actions render exactly from allowedActions (appointment.reschedule / appointment.cancel / appointment.bookAgain / appointment.openPurchase); while data-booking=closed they are honestly disabled with the support path. Dev select adet picks the scenario incl. unknown-ref."
+    },
+    {
+      "id": "purchase.detail",
+      "path": "/account/purchases/:ref",
+      "wave": 15,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor)"],
+      "states": ["ready", "loading", "not-found", "error", "unauthorized", "unavailable", "command: pending|failed|conflict|session-lost", "return-accepted-for-review"]
+    },
+    {
+      "id": "plan",
+      "path": "/account/plan",
+      "wave": 15,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor)"],
+      "states": ["active", "expiring", "exhausted", "cancelled", "empty", "loading", "error", "unauthorized", "unavailable"]
+    },
+    {
+      "id": "cart",
+      "path": "/cart",
+      "wave": 15,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor, retail-commerce-open)"],
+      "states": ["ready", "empty", "row-pending", "stale-price", "inventory-conflict", "loading", "error", "unauthorized", "unavailable"]
+    },
+    {
+      "id": "proposals.list",
+      "path": "/proposals",
+      "wave": 4,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "empty"
+      ]
+    },
+    {
+      "id": "proposal.detail",
+      "path": "/proposals/:id",
+      "wave": 4,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "unseen",
+        "viewed",
+        "approved",
+        "revision",
+        "declined"
+      ]
+    },
+    {
+      "id": "profile",
+      "path": "/profile",
+      "wave": 5,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "success-toast"
+      ],
+      "note": "Wave 16: on Beauty (Calm Harbor) this stable route renders the least-data SpaProfile instead — states loading|ready|error|unauthorized|unavailable, panel unchanged|dirty|invalid|saving|save-failed|conflict, session-lost via the global gate; only phone, email and the approved preferences render. Other verticals keep this accepted generic Profile."
+    },
+    {
+      "id": "activity",
+      "path": "/activity",
+      "wave": 5,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "empty"
+      ]
+    },
+    {
+      "id": "support",
+      "path": "/support",
+      "wave": 5,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "pending-action"
+      ]
+    },
+    {
+      "id": "care",
+      "path": "/care",
+      "wave": 7,
+      "implemented": true,
+      "auth": "private",
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
+      "note": "Vertical care hub — content is vertical-specific (fixtures.careModules): HVAC equipment passport + diagnostics; Snow season/compliance log; Lawn season program + re-entry; Pool water quality; Roofing inspection report + project tracker; Pest station monitoring. Nav label comes from careModules[theme].navLabel. 'unauthorized' renders the entitlement-gate (plan doesn't include the hub). Wave 9: Health hub (kind healthCare) = upcoming appointment + care-plan milestones + follow-up tasks + secure documents (metadata only — NO clinical metrics/results rendered, by design) + provider card; Beauty hub (kind beautyCare) = appointment + session package + specialist preference + treatment/routine history + loyalty + routine products. Data contracts: care.selectUnit -> unit.id; care.download -> document.id; care.requestRetreat -> plan.planId + data-property-id + data-service-id; care.selectSpecialist -> specialist.id; care.completeTask -> task.id; care.contactProvider -> provider.id; care.openSecureDoc -> document.id. Stable entity ids: appt-*, prov-*, plan-*, pkg-*, spec-*, task-*, doc-*."
+    }
   ],
   "actions": [
-    "auth.oidcSignIn", "auth.retrySession", "auth.signOut",
-    "auth.sendCode", "auth.verifyCode",
-    "order.open", "order.cancel", "order.reschedule", "order.downloadInvoice", "order.filter",
-    "booking.open", "booking.confirm",
-    "weather.confirm", "weather.decline",
-    "proposal.review", "proposal.approve", "proposal.requestRevision", "proposal.decline",
-    "cart.addItem", "cart.removeItem", "cart.open", "checkout.placeOrder",
-    "service.request", "service.requestExtra", "service.reportIssue", "access.confirm", "access.update",
+    "auth.oidcSignIn",
+    "auth.retrySession",
+    "auth.signOut",
+    "auth.sendCode",
+    "auth.verifyCode",
+    "order.open",
+    "order.cancel",
+    "order.reschedule",
+    "order.downloadInvoice",
+    "order.filter",
+    "booking.open",
+    "booking.confirm",
+    "weather.confirm",
+    "weather.decline",
+    "proposal.review",
+    "proposal.approve",
+    "proposal.requestRevision",
+    "proposal.decline",
+    "cart.addItem",
+    "cart.removeItem",
+    "cart.open",
+    "checkout.placeOrder",
+    "service.request",
+    "service.requestExtra",
+    "service.reportIssue",
+    "access.confirm",
+    "access.update",
     "membership.activate",
-    "profile.updateAddress", "profile.setDefaultPayment",
-    "support.open", "support.sendMessage",
-    "care.selectUnit", "care.download", "care.requestRetreat",
-    "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc",
-    "seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle",
-    "nav.services", "nav.pricing", "nav.products",
-    "nav.go", "theme.pick", "ui.toggleMode", "ui.toggleMobileNav", "ui.retry"
+    "profile.updateAddress",
+    "profile.setDefaultPayment",
+    "support.open",
+    "support.sendMessage",
+    "care.selectUnit",
+    "care.download",
+    "care.requestRetreat",
+    "care.selectSpecialist",
+    "care.completeTask",
+    "care.contactProvider",
+    "care.openSecureDoc",
+    "seo.cta.book",
+    "seo.cta.quote",
+    "seo.cta.call",
+    "seo.cta.services",
+    "seo.service.select",
+    "seo.faq.toggle",
+    "nav.services",
+    "nav.pricing",
+    "nav.products",
+    "nav.go",
+    "theme.pick",
+    "ui.toggleMode",
+    "ui.toggleMobileNav",
+    "ui.retry",
+    "booking.close",
+    "profile.saveContact",
+    "support.retryMessage",
+    "account.menu",
+    "support.dismiss"
   ],
   "moduleStates": {
+    "account-bootstrap (all private routes, wave 13)": {
+      "states": [
+        "resolving-customer",
+        "customer-unavailable",
+        "customer-not-linked",
+        "customer-account-ambiguous",
+        "organization-forbidden",
+        "customer-forbidden",
+        "session-expired"
+      ],
+      "note": "data-state on the account-bootstrap module (data-intended-route = preserved route id). While state.account != ready the module replaces every private route body and the top-nav renders gated (brand + light/dark only). resolving-customer: non-interactive, no ids/claims. customer-unavailable: ui.retry data-id=account-bootstrap + auth.signOut, never a fixture fallback. customer-not-linked / customer-forbidden: non-enumerating, support.email + auth.signOut only. session-expired: auth.oidcSignIn returns to the preserved route; stale private data is never shown as current. Preview via the dev-toolbar 'account' select. Wave 14: customer-account-ambiguous (multiple Account matches — never enumerated, browser never picks; support.email + auth.signOut) and organization-forbidden (organization check failed — no org name/code/reason; support.email + auth.signOut)."
+    },
+    "command lifecycle (all mutable actions, wave 13)": {
+      "states": [
+        "pending",
+        "failed",
+        "conflict",
+        "(succeeded = readback only)",
+        "session-lost"
+      ],
+      "note": "state.commands['<action>:<entityId>'] stamps data-state on the exact actionable entity — one row/card pending never disables unrelated entities; duplicate submission is blocked while pending. Covered commands: booking.confirm (booking.close closes without confirming), order.cancel:<orderId>, proposal.decide:<siteId> (approve/revision/decline; conflict blocks deciding until ui.retry reloads the latest version), cart.addItem:<name>, cart.mutate:<name> (inc/dec/remove), checkout.placeOrder:cart (failed = order NOT placed, cart intact; conflict = server re-priced cart, submit blocked until refresh; NO local success — the confirmation renders only after the readback navigates to orders), profile.saveContact:contact (validation → saving → confirmed readback / save failure), support.sendMessage:m<idx> (sending → sent on readback / failed with per-message support.retryMessage), care.requestRetreat:<planId>. Forced outcome via dev-toolbar 'cmd' select (state.cmdForce); session-lost clears pending, suppresses success and opens the expired-session gate."
+    },
     "core-oidc-auth (auth.oidc)": {
-      "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"],
+      "states": [
+        "checking-session",
+        "ready-signed-out",
+        "redirecting",
+        "unavailable",
+        "ready-signed-in",
+        "signing-out"
+      ],
       "note": "data-state on the auth card. checking-session = initial bootstrap on every page load (incl. the return from /core/oauth2-callback.html): discovery + session restore from browser storage; non-interactive, claims no redirect, reveals no name — Codex resolves it to ready-signed-out / ready-signed-in / unavailable. Demo cycle: auth.oidcSignIn → redirecting (1.6s) → ready-signed-in (sets the fixture display name); auth.signOut → signing-out (1.4s) → ready-signed-out. In production 'redirecting' persists until the browser unloads for Core and 'unavailable' is set by Codex when discovery or the authorization library fails to initialize. Preview any state via the dev-toolbar 'oidc' select (visible on the route)."
     },
     "seo-cta (seo.landing)": {
-      "states": ["idle", "pending", "success", "error"],
+      "states": [
+        "idle",
+        "pending",
+        "success",
+        "error"
+      ],
       "note": "Fixed action ids: seo.cta.book / seo.cta.quote (primary, destination from cms.meta.primaryCta.destination), seo.cta.call, seo.cta.services (jump to grid), seo.service.select (grid card → booking/quote flow). Demo lifecycle: pending 900ms → success 800ms → booking drawer. 'error' is set by Codex on real command failure; preview any state via dev-toolbar 'cta' select (state.seoCtaForce). Wave 11: honest-navigation CTAs (nav.* / auth.gotoSignin) have NO lifecycle — data-state stays idle and ignores seoCtaForce."
     },
     "seo-products-teaser (seo.landing)": {
-      "states": ["ready", "loading", "empty"],
+      "states": [
+        "ready",
+        "loading",
+        "empty"
+      ],
       "note": "Follows the global dev-toolbar view switch (state select). ready = 3–4 seo-product-teaser-card from pim.products[] (data-product-code); empty = seo-products-teaser-empty (honest copy, section CTA hidden); loading = skeleton cards. Every interactive element fires nav.products only."
     },
     "retreat-card (care, Pest Control)": {
-      "states": ["available", "requesting", "used"],
+      "states": [
+        "available",
+        "requesting",
+        "used"
+      ],
       "note": "Visual states only — demo body of care.requestRetreat sets 'requesting' and stops; 'used' shows the guarantee-spent copy with a disabled button. Codex owns the real request, resolution and entitlement check. Preview via dev-toolbar 'retreat' select (visible on the pest care hub) or state.careRetreat."
     },
     "follow-up-tasks (care, Health)": {
-      "states": ["open", "done"],
+      "states": [
+        "open",
+        "done"
+      ],
       "note": "care.completeTask toggles the per-task visual state (state.careTasksDone overrides the fixture done flag). Codex owns real task completion and sync."
     },
     "specialist-picker (care, Beauty)": {
-      "states": ["active"],
+      "states": [
+        "active"
+      ],
       "note": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01); state.careSpecialist overrides the fixture preferredId. Codex owns persisting the preference."
+    },
+    "spa capability (Beauty — Calm Harbor, wave 14)": {
+      "states": [
+        "current-staging",
+        "target-appointments (booking closed)",
+        "target-appointments (booking open)"
+      ],
+      "note": "data-capability + data-booking + data-portal-profile on app-shell/top-nav/route roots. Target fixtures are capability-gated: not reachable while data-capability=current-staging. '+ Book' exists only in target+open; staging's only global CTA is honest navigation (Browse services). Preview via dev-toolbar 'spa'/'booking' selects."
+    },
+    "next-appointment commands (Beauty target, wave 14)": {
+      "states": [
+        "unavailable (booking closed — disabled controls + honest note)",
+        "pending",
+        "failed (inline retry)",
+        "conflict (reload before changing)",
+        "cancelled (authoritative readback only)",
+        "session-lost (expired-session gate, route preserved)"
+      ],
+      "note": "order.cancel:<appointmentId> runs the wave-13 command engine scoped to the exact card; reschedule/book/book-again enter the accepted booking drawer whose confirm carries the same lifecycle. Success is never local: the cancelled state renders only from the (demo) readback (state.spaCancelled). Force outcomes via the dev-toolbar 'cmd' select."
+    },
+    "account-menu (spa shell, wave 14)": {
+      "states": [
+        "account-menu-open"
+      ],
+      "note": "Session identity (one customer-safe display name), Support, light/dark, secure sign-out. No profile editing or entitlement claims. Long-name wrap via dev-toolbar 'name' select. Wave 14.1: Support item ends at the support-unavailable notice."
+    },
+    "support (Beauty — Calm Harbor, wave 14.1)": {
+      "states": [
+        "unavailable (support-unavailable notice)"
+      ],
+      "note": "No approved support destination and no opened customer support-thread source: support.open/support.email/support.call all end at the honest modal notice ('nothing was opened, sent or recorded'). The fixture support route, chat-panel, threads, tickets and agent state are unreachable through Calm Harbor navigation, and no success-like toast implies delivery."
     }
   },
   "implementedStates": {
-    "orders.list": ["ready", "loading", "empty", "error", "mobile-navigation-open", "drawer-open", "pending-action", "success-toast"],
-    "order.detail": ["scheduled", "inProgress", "completed", "cancelled", "loading", "error", "pending-action"],
-    "services": ["ready", "loading"],
-    "pricing": ["ready"],
-    "products": ["ready", "empty"],
-    "checkout": ["ready", "empty", "success-toast"],
-    "proposals.list": ["ready", "empty"],
-    "proposal.detail": ["unseen", "viewed", "approved", "revision", "declined"],
-    "profile": ["ready", "success-toast"],
-    "activity": ["ready", "empty"],
-    "calendar": ["ready"],
-    "support": ["ready", "pending-action"],
-    "care": ["ready", "loading", "empty", "error", "unauthorized"],
-    "landing": ["ready"],
-    "auth.phone": ["ready", "validation-error"],
-    "auth.code": ["ready", "validation-error"],
-    "auth.oidc": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"]
+    "orders.list": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "mobile-navigation-open",
+      "drawer-open",
+      "pending-action",
+      "success-toast",
+      "unauthorized (spa)",
+      "spa staging: ready one/many + unmapped raw status",
+      "spa target: salon/home/long/minimal/empty/no-history + cancel pending/failed/conflict/cancelled-readback",
+      "spa staging: intentional mobile long-row composition (390 grid)",
+      "spa: support-unavailable notice"
+    ],
+    "order.detail": [
+      "scheduled",
+      "inProgress",
+      "completed",
+      "cancelled",
+      "loading",
+      "error",
+      "pending-action",
+      "cancel pending/failed/conflict (wave 13, entity-scoped)"
+    ],
+    "services": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized",
+      "spa catalog tab (stable route id)"
+    ],
+    "pricing": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "spa catalog tab + membership options (public offers)"
+    ],
+    "products": [
+      "ready",
+      "empty",
+      "error",
+      "cart.addItem pending/failed (entity-scoped)",
+      "loading (spa)",
+      "empty (spa honest shelf)",
+      "browse-only (no cart/checkout)"
+    ],
+    "checkout": [
+      "ready",
+      "empty",
+      "loading",
+      "error",
+      "unauthorized",
+      "placeOrder pending/failed/conflict-stale (no local success)",
+      "cart.mutate pending/failed (row-scoped)"
+    ],
+    "proposals.list": [
+      "ready",
+      "empty",
+      "loading",
+      "error",
+      "unauthorized"
+    ],
+    "proposal.detail": [
+      "unseen",
+      "viewed",
+      "approved",
+      "revision",
+      "declined",
+      "loading",
+      "error",
+      "unauthorized",
+      "not-found",
+      "conflict (version)",
+      "decide pending/failed (entity-scoped)"
+    ],
+    "profile": [
+      "ready",
+      "loading",
+      "error",
+      "unauthorized",
+      "contact idle/invalid/saving/save-failed",
+      "success-toast"
+    ],
+    "activity": [
+      "ready",
+      "empty",
+      "loading",
+      "error",
+      "unauthorized"
+    ],
+    "calendar": [
+      "ready",
+      "loading",
+      "error",
+      "unauthorized"
+    ],
+    "support": [
+      "ready",
+      "empty",
+      "loading",
+      "error",
+      "unauthorized",
+      "message sending/failed (per-message retry)",
+      "pending-action"
+    ],
+    "care": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized",
+      "retreat request pending/failed (wave 13, command-scoped)"
+    ],
+    "landing": [
+      "ready"
+    ],
+    "auth.phone": [
+      "ready",
+      "validation-error"
+    ],
+    "auth.code": [
+      "ready",
+      "validation-error"
+    ],
+    "auth.oidc": [
+      "checking-session",
+      "ready-signed-out",
+      "redirecting",
+      "unavailable",
+      "ready-signed-in",
+      "signing-out"
+    ],
+    "account-bootstrap (shell, all private routes)": [
+      "ready",
+      "resolving-customer",
+      "customer-unavailable",
+      "customer-not-linked",
+      "customer-account-ambiguous",
+      "organization-forbidden",
+      "customer-forbidden",
+      "session-expired"
+    ]
   },
   "notImplementedYet": {
     "routes": [],

@@ -1,118 +1,149 @@
 # Core Customer Portal Contract
 
-Status: proposed private-data backend contract. No private-data endpoint in
-this document is open for the browser until it is implemented, authorized, and
-proven on staging.
+Status: source-traced and backend-verified staging contract. Account bootstrap
+and Account-scoped Orders list adapters are implemented, proven read-only on
+`dev-1`, and wired into the dedicated Calm Harbor manual CMS root. The generic
+multi-vertical CMS runtime has not yet adopted this bootstrap.
 
-The host OIDC sign-in bridge is proven on `dev-1`: the manual CMS runtime reads
-`/core/.well-known/oauth-protected-resource/`, starts the registered Core PKCE
-flow, and returns via `/core/oauth2-callback.html`. This establishes an access
-token session only. It does not resolve that subject to a customer Account and
-does not open any customer record to the browser.
+## Current Identity Decision
 
-## Research Baseline
+The customer is the one `Account` whose `user` relation points to the currently
+authenticated Core `User`. There is no separate customer-login entity or
+customer subject mapping at this stage.
 
-The Core UI generated clients expose generic, organization-scoped entity APIs:
+The browser follows the same Core calling convention as `core-ui`:
 
-| Service | Existing generic endpoints | Portal status |
+1. Core OIDC authorization-code with PKCE supplies an access token.
+2. `POST /core/api/user/basic-info.json` returns the authenticated User id and
+   authorized organizations. This request has a bearer token and deliberately
+   has no `X-Organization-Code` header.
+3. The portal verifies its configured organization against
+   `authorizedOrganizations`.
+4. `POST /core-acct/api/account/list.json` uses the bearer token plus the
+   verified `X-Organization-Code` and filters by both:
+   - `user.id = authenticatedUserId`;
+   - `type.code = SPA_CUSTOMER` (or the configured customer Account type).
+5. Exactly one result is required. Zero results means `customer-not-linked`;
+   multiple results mean `customer-account-ambiguous`. Neither state may fall
+   back to a fixture Account.
+
+The executable request contract is owned by
+`runtime/src/adapters/core-account-adapter.js` and validated by
+`scripts/core-account-adapter-check.mjs`. The sanitized live probe is owned by
+`scripts/core-account-live-check.mjs`; it does not print or persist the bearer
+token.
+
+## Core Request Shape
+
+Every private Core service request uses:
+
+```text
+Authorization: Bearer <OIDC access token>
+Content-Type: application/json
+X-Organization-Code: <organization verified by user/basic-info>
+```
+
+`X-Organization-Code` is omitted only for `user/basic-info`, matching the
+`core-ui` OIDC interceptor. Service bases are same-origin and configured as
+`/core`, `/core-acct`, `/core-bill`, `/core-svc`, and `/core-pim` as their
+adapters are opened.
+
+Mappings are explicit and least-data. Components never consume generic raw
+entity responses directly; adapters normalize them into customer-safe module
+shapes.
+
+## Current Entity Relationships
+
+| Portal concern | Core relationship | Current result |
 | --- | --- | --- |
-| `core-acct` | `POST /api/account/{list,get,save}.json` | Not opened |
-| `core-svc` | `POST /api/{project,task,appointment}/{list,get,save}.json` | Not opened |
-| `core-bill` | `POST /api/order/{list,get,save}.json` | Not opened |
+| Customer identity/profile | `Account.user -> User` and `Account.type -> SPA_CUSTOMER` | Implemented, live-proven on `dev-1`, and activated in `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`. |
+| Orders | `Order.account -> Account` | Read-only list implemented, live-proven, and activated in the same manual staging root. |
+| Appointments | `Appointment.task -> Task.project` | No Account relationship is present; customer-safe activation remains closed. |
+| Care plans/tasks | `Task.project`; Project has no Account relationship | Customer-safe activation remains closed. |
+| PIM pricing/products | Public PIM query by configured product types | Already opened independently; it is not customer-scoped. |
 
-Those APIs accept caller-supplied mappings and filters. Core UI sends an OIDC
-bearer token plus `X-Organization-Code`; it is an authenticated staff surface,
-not a customer-scoped browser API. The portal must never call it directly or
-make `X-Organization-Code` an authority chosen by browser code.
+## Read-Only Staging Queries
 
-The only opened public browser contract remains the anonymous Core PIM catalog
-endpoint used by the Calm Harbor staging catalog. It must not share a session,
-token, or authorization design with private customer data.
-
-## Entity Reality
-
-`Account` is the customer entity. A portal identity must resolve to exactly one
-active `SPA_CUSTOMER` account in the selected organization.
-
-| Customer portal concern | Current Core relationship | Result |
-| --- | --- | --- |
-| Account identity | `Account.user` exists in the data model. The Calm Harbor staging Account is bound to the customer User. | OIDC authentication is opened; the authenticated subject-to-Account resolution is not opened. |
-| Orders | `Order.account` is a direct Core relationship. | A server projection can safely scope orders after account resolution. |
-| Appointments | `Appointment.task -> Task.project`; neither `Task` nor `Project` has an `Account` relation in the generated model. | Customer ownership is absent. |
-| Care tasks/plans | `Task.project` is direct, but `Project` has no customer relation. | Customer ownership is absent. |
-
-The existing Calm Harbor sample organization intentionally contains an account,
-care plan, task, appointment, and order, but it is integration seed data, not
-proof that the appointment and care graph belongs to that account.
-
-## Required Backend Boundary
-
-The backend must resolve identity and ownership before it returns an entity. It
-must not accept an account id, organization id, or account filter as an access
-decision from the browser.
-
-Proposed same-origin API namespace: `/core-portal/api/v1`.
-
-| Method and path | Server-derived scope | Minimal response / command result | Gate |
+| Module | Endpoint | Mandatory filters | Observed staging access |
 | --- | --- | --- | --- |
-| `GET /me` | bearer subject -> active `SPA_CUSTOMER` account -> organization | account id, display name, organization code, allowed capabilities | identity bridge |
-| `GET /appointments?cursor=` | resolved account | appointment id, state, start/end, service label, permitted actions | explicit appointment ownership |
-| `GET /care-plans?cursor=` | resolved account | care plan, task ids, state, customer-safe labels | explicit plan ownership |
-| `GET /orders?cursor=` | resolved account | order id, state, currency, total, line-item summary | account ownership projection |
-| `GET /orders/{id}` | resolved account and requested id | same order only | ownership test |
-| `POST /booking-requests` | resolved account | request id, idempotency key, returned request/appointment state | availability hold and idempotency |
-| `POST /orders` | resolved account | server-calculated order, id, state; no payment token in this stage | product/price validation and idempotency |
+| Account bootstrap/profile | `POST /core-acct/api/account/list.json` | `user.id`, `type.code` | Allowed for the supplied low-rights test session on `dev-1`; exact permission evaluation is not yet source-proven. |
+| Orders list | `POST /core-bill/api/order/list.json` | `account.id = resolved Account.id` | Allowed for the same session; returned only the resolved Account's row in the live probe. |
+| Order detail | Filtered `POST /core-bill/api/order/list.json` | resolved Account id plus requested order id | Not yet implemented or live-proven. |
 
-The namespace is a contract proposal, not a request to expose generic Core
-entity controllers under a public route.
+Order detail must not trust a route id alone. If the generic `get` endpoint
+cannot enforce or prove Account ownership, the adapter loads through the
+filtered list path and requires exactly one result.
 
-## Authorization Rules
+Appointments, Care, proposals, checkout, and support conversations remain
+unopened until a real customer relationship and matching Core endpoint are
+source-traced.
 
-1. All private portal endpoints require an OIDC access token. A missing or
-   invalid token returns `401`.
-2. The backend derives account and organization from the token subject. Any
-   browser-sent organization or account value is ignored for authorization.
-3. Access to an entity outside the resolved account returns a non-enumerating
-   `404` response. List endpoints never expose cross-account counts.
-4. The portal receives only the fields required for its view. PII, staff notes,
-   payment data, internal attributes, generic entity mappings, and workflow
-   internals are excluded by default.
-5. A mutation uses an idempotency key and returns its canonical server state.
-   Browser-side success must be driven only by that returned state.
+## RBAC Gate
 
-## Data Model Gate
+The repository seed `core-ui/scripts/dev/seeds/beautySpaCustomerPortalRbac.json`
+lists only sign-in and self-service User permissions. Nevertheless, the
+supplied low-rights test session successfully read its matching Account and one
+Account-scoped Order on the deployed `dev-1` stack. That proves the requests
+work; it does not prove whether access came from self-scope behavior, another
+deployed role, or entity permissions not represented by that seed.
 
-Before `/appointments` or `/care-plans` is implemented, add a server-enforced
-customer ownership relation. A suitable model is a `CarePlanCustomerLink` or a
-mandatory customer account reference on the care-plan aggregate; appointment
-and task ownership then derives through the care plan. Do not use a browser
-filter or an unvalidated free-form attribute as the authorization mechanism.
+Do not add speculative permission codes merely to match the repository seed.
+Before production activation, trace and test the deployed permission decision,
+including a negative user and a foreign Account filter. Write, event,
+transition, delete, import, and broad `*` permissions remain prohibited.
 
-The Calm Harbor seed may be extended only after this relation exists:
+Important limitation: the generic Core permissions are service/entity
+permissions, not evidence of row-level Account isolation. The browser filters
+by `user.id` and resolved `account.id`, but a modified client may try another
+filter. Until Core enforces the same relation server-side, this direct generic
+API approach is staging-only and must not be described as production tenant
+isolation.
 
-1. Bind the demo login subject to `CHS_STG_ELENA_RIOS`.
-2. Link Elena's care plan to that account through the enforced relation.
-3. Recreate/read the task and appointment through that care plan.
-4. Verify an unrelated customer receives neither records nor their counts.
+## Fail-Closed States
+
+| Condition | Portal state |
+| --- | --- |
+| Missing/expired token or Core `401` | `session-expired` |
+| Configured organization is absent from `authorizedOrganizations` | `organization-forbidden` |
+| Account endpoint returns `403` | `customer-forbidden` |
+| No matching Account | `customer-not-linked` |
+| More than one matching Account | `customer-account-ambiguous` |
+| Account relation does not match authenticated User | `customer-scope-mismatch` |
+| Malformed response or Core failure | `customer-unavailable` / module error |
+
+No condition above may load fixture customer data in live mode.
 
 ## Delivery Order
 
-1. Implement and test the authenticated identity bridge and `GET /me`.
-2. Add enforced care-plan customer ownership and seed the Calm Harbor link.
-3. Ship read-only appointments, care plans/tasks, and orders projections.
-4. Add booking request creation with availability hold and idempotency.
-5. Add order creation without payment token, using server-side PIM pricing.
-6. Only then enable corresponding portal routes and commands; until then they
-   remain explicitly not opened in the runtime.
+1. Keep the existing Core OIDC authorization-code/PKCE boundary.
+2. Preserve the activated `user/basic-info -> Account.user` bootstrap in the
+   Calm Harbor staging root.
+3. Preserve the activated read-only Orders list filter using the resolved
+   Account id.
+4. Trace the deployed RBAC/self-scope decision and verify negative and foreign-
+   Account attempts fail closed.
+5. Transfer accepted account/loading/empty/forbidden/error states 1:1 into the CMS
+   portal package.
+6. Add a customer relation before opening Appointments or Care.
+7. Open writes one command at a time only with idempotency and authoritative
+   readback.
 
 ## Acceptance Evidence
 
-For every private endpoint, staging evidence must include:
+- `user/basic-info` returns the signed-in User without an organization header;
+- configured organization is present in `authorizedOrganizations`;
+- the Account query contains both `user.id` and `type.code` filters and returns
+  exactly one Account;
+- a User without an Account receives no fixture customer;
+- an unauthorized organization and missing permissions fail closed;
+- Orders queries always include the resolved Account id;
+- the `dev-1` probe resolved the test customer Account and returned one Order
+  with status `OPEN` through that exact Account filter;
+- browser responses omit unnecessary internal mappings and sensitive fields;
+- loading, empty, forbidden, expired-session, and source-failure states remain
+  visually truthful.
 
-- the authenticated customer receives only their account's records;
-- an unrelated customer cannot read a known foreign id or infer list size;
-- each response omits sensitive/internal fields;
-- pagination is deterministic and cursor-scoped;
-- command retries with the same idempotency key return the same logical result;
-- the portal renders loading, empty, unauthorized, and error states without
-  replacing them with fixture data.
+The generated staging package and its browser contract are:
+
+- `dist/manual-upload/customer-portal-calm-harbor-staging`;
+- `scripts/calm-harbor-customer-portal-manual-check.mjs`.

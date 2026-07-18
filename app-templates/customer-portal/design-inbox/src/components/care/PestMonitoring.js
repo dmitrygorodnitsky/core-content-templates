@@ -75,6 +75,11 @@ export function PestMonitoring(m) {
     h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:6px", "data-bind": "guarantee.note" },
       rStatus === "used" ? m.guarantee.usedNote : m.guarantee.note),
     rStatus === "requesting" ? h("div", { style: "font-size:12px;color:var(--ink-3);margin-top:8px" }, "Sending your request \u2014 your technician confirms the visit window.") : null,
+    /* wave 13 — explicit command failure: nothing was scheduled, retry is the button */
+    (state.commands["care.requestRetreat:" + sc.planId] === "failed" || state.commands["care.requestRetreat:" + sc.planId] === "conflict")
+      ? h("div", { style: "margin-top:10px;display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:var(--danger-bg);font-size:12.5px;line-height:1.4" },
+          "The request didn\u2019t go through \u2014 nothing was scheduled. Try again below.")
+      : null,
     h("div", { style: "margin-top:14px" }, [retreatBody])
   ]);
 

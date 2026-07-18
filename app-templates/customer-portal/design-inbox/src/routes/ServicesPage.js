@@ -4,14 +4,24 @@ import { h } from "../dom.js";
 import { state } from "../state.js";
 import { ServiceCatalogCard } from "../components/commerce/ServiceCard.js";
 import { PricingCard } from "../components/commerce/PricingCard.js";
+import { routeStateBody } from "../components/primitives/RouteStates.js";
 
 export function Services() {
   var v = F.themes[state.theme];
-  var page = h("section", { "class": "page", "data-route": "services", "data-visual-id": "services" });
+  var page = h("section", { "class": "page", "data-route": "services", "data-state": state.view, "data-visual-id": "services" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "Our services"),
     h("div", { "class": "section-head__sub" }, "Certified technicians, upfront pricing, every visit tracked live.")
   ]));
+  /* wave 13 — eligible/bookable services are live customer-scoped data */
+  var gate = routeStateBody({
+    states: ["empty", "error", "unauthorized"],
+    empty: { glyph: "\u2692", title: "No services are available yet", desc: "Your account doesn\u2019t have bookable services right now. As soon as any are enabled for you, they\u2019ll show up here.",
+      action: { variant: "btn--ghost", label: "Contact support", action: "support.email", visualId: "services-empty-support" } },
+    error: { title: "Couldn\u2019t load services", desc: "The services available to your account didn\u2019t load. Nothing was changed \u2014 try again.", retryId: "services" },
+    scope: "services"
+  });
+  if (gate) { page.appendChild(gate); return page; }
   if (state.view === "loading") {
     var g = h("div", { "class": "services-grid" });
     for (var i = 0; i < 4; i++) g.appendChild(h("div", { "class": "skeleton", style: "height:280px;border-radius:24px" }));

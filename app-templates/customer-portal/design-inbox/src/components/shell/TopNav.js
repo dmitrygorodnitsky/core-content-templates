@@ -1,7 +1,8 @@
 // customer-portal-design/src/components/shell/TopNav.js — presentation runtime (auto-split from app.js). No business logic.
 import { h } from "../../dom.js";
 import { F } from "../../../data/fixtures.js";
-import { activeProfile, cartCount, state } from "../../state.js";
+import { activeProfile, cartCount, isSpa, state } from "../../state.js";
+import { SpaTopNav } from "./SpaTopNav.js";
 import { go } from "../../actions.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { Toggle } from "../primitives/Toggle.js";
@@ -12,8 +13,26 @@ import { Calendar } from "../../routes/CalendarPage.js";
 /* the care hub's nav label is vertical-specific (fixtures.careModules) */
 function navLabel(n) { return n.key === "care" ? F.careModules[state.theme].navLabel : n.label; }
 
-export function TopNav() {
+export function TopNav(gated) {
+  /* wave 14 — Beauty renders the Calm Harbor spa shell (capability-driven
+     nav, account menu, no cart/badge/avatar). Other verticals unchanged. */
+  if (isSpa()) return SpaTopNav(gated);
   var profile = activeProfile();
+  /* wave 13 — gated shell (account not ready): brand + light/dark toggle only.
+     Nav links, cart count, activity badge and avatar imply resolved customer
+     capabilities/entities, so they must not render yet. */
+  if (gated) {
+    return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
+      h("div", { "class": "top-nav__brand" }, [
+        h("div", { "class": "brand-logo" }),
+        h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Aircove")
+      ]),
+      h("div", { "class": "nav-links" }),
+      h("div", { "class": "top-nav__actions" }, [
+        h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e")
+      ])
+    ]));
+  }
   var links = profile.nav.map(function (n) {
     var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
     return h("span", {

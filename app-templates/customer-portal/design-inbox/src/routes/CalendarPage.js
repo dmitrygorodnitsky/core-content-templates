@@ -4,14 +4,40 @@ import { h } from "../dom.js";
 import { activeProfile, buildCalendarGrid, state } from "../state.js";
 import { OrderCard } from "../components/orders/OrderCard.js";
 import { StormCalendar } from "../components/storm/StormCalendar.js";
+import { routeStateBody, skel } from "../components/primitives/RouteStates.js";
+
+/* wave 13 — loading skeleton mirrors the month-grid + two-list shape */
+function calendarSkeleton() {
+  return h("div", { "data-state": "loading", "aria-busy": "true" }, [
+    skel("height:380px;border-radius:22px;margin-bottom:22px"),
+    h("div", { "class": "cal-lists" }, [skel("height:200px;border-radius:18px"), skel("height:200px;border-radius:18px")])
+  ]);
+}
 
 export function Calendar() {
+  /* wave 13 — live appointments/service windows: no fixture entities render
+     while the request is unresolved, failed or unauthorized */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: calendarSkeleton,
+    error: { title: "Couldn\u2019t load your calendar", desc: "Your appointments and service windows didn\u2019t load. Nothing was changed \u2014 try again.", retryId: "calendar" },
+    scope: "the calendar"
+  });
+  if (gate) {
+    var page = h("section", { "class": "page", style: "max-width:920px", "data-route": "calendar", "data-state": state.view, "data-visual-id": "calendar" });
+    page.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Calendar"),
+      h("div", { "class": "section-head__sub" }, "Every upcoming and past service, at a glance.")
+    ]));
+    page.appendChild(gate);
+    return page;
+  }
   if (activeProfile().weatherCalendar) return StormCalendar();
   return MonthCalendar();
 }
 
 export function MonthCalendar() {
-  var page = h("section", { "class": "page", style: "max-width:920px", "data-route": "calendar", "data-visual-id": "calendar" });
+  var page = h("section", { "class": "page", style: "max-width:920px", "data-route": "calendar", "data-state": "ready", "data-visual-id": "calendar" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "Calendar"),
     h("div", { "class": "section-head__sub" }, "Every upcoming and past service, at a glance.")

@@ -452,6 +452,36 @@
       weatherCalendar: false,
       showCart: true,
       drawerTitle: "Book an appointment"
+    },
+    /* WAVE 14 — Calm Harbor Spa (Beauty): a capability-driven pair that replaces
+       the wave-9 'appointments' profile for THIS vertical only (Health keeps it).
+       Selection: state.capability ("current-staging" | "target-appointments") is
+       DEPLOYMENT CONFIG — previewed via the dev toolbar, never a user control.
+       Shop is marked secondary; there is no cart, no Calendar destination, no
+       proposals and no care hub in primary navigation for this release. */
+    spaStaging: {
+      id: "spaStaging", capability: "current-staging",
+      nav: [
+        { key: "orders.list", label: "Orders" },
+        { key: "services", label: "Services & prices" },
+        { key: "products", label: "Shop", secondary: true },
+        { key: "account", label: "Account" } /* wave 15 — Account owns Purchases / My plan / Profile / Support */
+      ],
+      primary: { label: "Browse services", action: "nav.go" }, /* honest navigation — no booking command exists in staging */
+      weatherCalendar: false, showCart: false,
+      drawerTitle: "Book an appointment" /* unreachable in staging — no booking entry point renders */
+    },
+    spaTarget: {
+      id: "spaTarget", capability: "target-appointments",
+      nav: [
+        { key: "orders.list", label: "Appointments" },
+        { key: "services", label: "Services & prices" },
+        { key: "products", label: "Shop", secondary: true },
+        { key: "account", label: "Account" } /* wave 15 — Account owns Purchases / My plan / Profile / Support */
+      ],
+      primary: { label: "+ Book", action: "booking.open" }, /* renders ONLY while the booking command contract is open (state.spaBooking === "open") */
+      weatherCalendar: false, showCart: false,
+      drawerTitle: "Book an appointment"
     }
   };
   var profileFor = {
@@ -461,8 +491,10 @@
     "Pool & Spa": "stormOps",
     "Roofing": "stormOps",
     "Pest Control": "stormOps",
-    "Health": "appointments",
-    "Beauty": "appointments"
+    "Health": "appointments"
+    /* wave 14.1 — "Beauty" is intentionally ABSENT: the Calm Harbor portal resolves
+       via the capability config (state.capability -> spaStaging | spaTarget) in
+       state.js activeProfile(), never through this legacy map. */
   };
 
   /* Weather-operational calendar (stormOps). Derives service names +
@@ -714,6 +746,413 @@
     }
   };
 
+  /* ============================================================
+     WAVE 14 — Calm Harbor Spa authenticated portal (Beauty).
+     Two capability variants of one portal, chosen by DEPLOYMENT
+     CONFIG (state.capability; data-capability on the shell):
+       current-staging      only the proven read-only sources render
+       target-appointments  capability-gated target fixtures render
+     Nothing in `stagingOrders` is an appointment; nothing in
+     `appointments` is selectable by the current-staging profile.
+     ============================================================ */
+  var spa = {
+    brand: "Calm Harbor Spa",
+    /* long-name / long-label review scenario (dev toolbar "name") */
+    longCustomer: { first: "Anna-Katarina", greeting: "Good afternoon, Anna-Katarina", fullName: "Anna-Katarina Villanueva-\u00d6str\u00f6m" },
+    /* CURRENT STAGING — read-only Core Order rows. ONLY the normalized safe
+       fields the staging adapter proves: order type label/code, reference,
+       raw status, displayed total, currency. NO date/time, specialist,
+       location, tracking or invoice fields exist here, and the raw status
+       (e.g. OPEN) is NEVER translated into a customer status. */
+    stagingOrders: [
+      { ref: "ORD-10318", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "OPEN", total: "$85.00", currency: "USD" },
+      { ref: "ORD-10292", typeLabel: "Retail order", typeCode: "SPA_RETAIL", status: "OPEN", total: "$64.00", currency: "USD" },
+      { ref: "ORD-10241-PKG-TRANSFER", typeLabel: "Prepaid treatment package \u2014 six-session series transfer", typeCode: "SPA_SERVICE_PACKAGE_PREPAID", status: "AWAITING_SETTLEMENT_REVIEW", total: "$510.00", currency: "USD" },
+      { ref: "ORD-10186", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "CLOSED", total: "$45.00", currency: "USD" }
+    ],
+    /* Public Core PIM rows (mirrors the accepted wave-12 pim.pricing demo).
+       displayPrice renders VERBATIM; no availability, duration, savings or
+       eligibility may be inferred. SPA_MEMBERSHIP rows are public offers. */
+    pim: {
+      services: [
+        { code: "svc-spa-01", "class": "SPA_SERVICE", name: "Manicure & nails", displayPrice: "$45", interval: "visit", shortDescription: "Classic to gel \u2014 sanitised, sealed kit" },
+        { code: "svc-spa-02", "class": "SPA_SERVICE", name: "Hair styling", displayPrice: "$65", interval: "visit", shortDescription: "Cut, color & blowout \u2014 formulas saved" },
+        { code: "svc-spa-03", "class": "SPA_SERVICE", name: "Facial treatment", displayPrice: "$85", interval: "visit", shortDescription: "A routine that carries over visit to visit" },
+        { code: "svc-spa-04", "class": "SPA_SERVICE", name: "Event & bridal package", displayPrice: "Quote", interval: null, shortDescription: "Trials, timeline and a day-of team" }
+      ],
+      memberships: [
+        { code: "mem-spa-01", "class": "SPA_MEMBERSHIP", name: "Harbor membership", displayPrice: "$129", interval: "month", shortDescription: "Member pricing on every treatment" }
+      ]
+    },
+    /* TARGET terminology + approved-mapping PLACEHOLDER: these customer status
+       labels stand in for a BACKEND-OWNED mapping that must exist before
+       production renders them. They are never derived from raw Core statuses. */
+    modeLabels: { salon: "At Calm Harbor", home: "At your place" },
+    statusBadges: { "Confirmed": "status-badge--ok", "Needs confirmation": "status-badge--warn", "Completed": "status-badge--ok", "Cancelled": "status-badge--danger" },
+    /* TARGET APPOINTMENTS — capability-gated fixtures (target-appointments only).
+       Stable entity ids appt-ch-*; the reference is secondary detail, never the
+       card headline. `minimal` demonstrates missing OPTIONAL specialist and
+       location-detail fields. */
+    appointments: {
+      tzNote: "local time",
+      nextVariants: {
+        salon:   { id: "appt-ch-10318", service: "Facial treatment", specialist: "Alina V.", date: "Tue, Jul 21", time: "2:00\u20133:00 PM", mode: "salon", location: "Harbor Front studio \u00b7 Room 2", status: "Confirmed", price: "$85", ref: "APT-10318" },
+        home:    { id: "appt-ch-10322", service: "Gel manicure", specialist: "Dana P.", date: "Wed, Jul 22", time: "11:00 AM\u201312:00 PM", mode: "home", location: "Address on file", status: "Confirmed", price: "$45", ref: "APT-10322" },
+        long:    { id: "appt-ch-10330", service: "Signature deep-renewal ritual with warm-stone massage and extended aromatherapy", specialist: "Alexandra-Marguerite Konstantinidou-Vandermeer", date: "Thu, Jul 30", time: "1:00\u20133:30 PM", mode: "salon", location: "Harbor Front studio \u00b7 Quiet wing, Room 5", status: "Needs confirmation", price: "$310", ref: "APT-10330-SIGNATURE-RITUAL" },
+        minimal: { id: "appt-ch-10334", service: "Facial treatment", specialist: null, date: "Fri, Jul 24", time: "4:00 PM", mode: "salon", location: null, status: "Confirmed", price: null, ref: "APT-10334" }
+      },
+      upcoming: [
+        { id: "appt-ch-10340", service: "Hair styling", specialist: "Alina V.", date: "Aug 4", time: "2:00 PM", mode: "salon", location: "Harbor Front studio", status: "Confirmed", price: "$65", ref: "APT-10340" },
+        { id: "appt-ch-10351", service: "Manicure & nails", specialist: null, date: "Aug 14", time: "11:00 AM", mode: "home", location: "Address on file", status: "Needs confirmation", price: "$45", ref: "APT-10351" }
+      ],
+      past: [
+        { id: "appt-ch-10203", service: "Facial treatment", specialist: "Alina V.", date: "Jun 30", mode: "salon", status: "Completed", price: "$85", ref: "APT-10203" },
+        { id: "appt-ch-10164", service: "Gel manicure", specialist: "Dana P.", date: "Jun 12", mode: "home", status: "Completed", price: "$45", ref: "APT-10164" },
+        { id: "appt-ch-10101", service: "Hair styling", specialist: "Alina V.", date: "May 28", mode: "salon", status: "Cancelled", price: null, ref: "APT-10101" }
+      ]
+    }
+  };
+
+  /* ============================================================
+     WAVE 15 — Calm Harbor commercial lifecycle (Beauty).
+     Customer READ MODELS from the product contract: purchases,
+     purchase detail, plans, sellable retail, server cart, simulated
+     checkout. Every money/status field is a DISPLAY-READY string
+     owned by the (demo) server — presentation renders it VERBATIM
+     and never calculates savings, tax, balance, deadlines or
+     eligibility. paymentMode is always "SIMULATED": nothing here is,
+     or may look like, a real financial event. Opaque `ref` values
+     (pur-*, pln-*, plan-*, cln-*, chk-*) are stable non-sequential
+     handles — never raw Core ids.
+     ============================================================ */
+  var spaCommerce = {
+    /* Account overview entries. `availability` is decided by the PAGE from
+       capability config — this is only the customer-safe copy per state. */
+    accountEntries: [
+      { key: "purchases", route: "purchases.list", action: "account.openPurchases", title: "Purchases",
+        desc: "Everything you\u2019ve ordered \u2014 services, shop items and plans, with their current state.",
+        unavailableDesc: "Purchase history with customer statuses isn\u2019t available on this portal yet. Your raw order records are on the Orders page." },
+      { key: "plan", route: "plan", action: "account.openPlan", title: "My plan",
+        desc: "Your packages and membership \u2014 remaining visits, renewal and valid actions.",
+        unavailableDesc: "Plan and membership balances aren\u2019t connected yet. Published membership options are in Services & prices." },
+      { key: "profile", route: "profile", action: "account.openProfile", title: "Profile",
+        desc: "Your contact details and preferences.",
+        unavailableDesc: "Profile editing isn\u2019t connected yet \u2014 our team can update your details for you." },
+      { key: "support", route: null, action: "support.open", title: "Support",
+        desc: "Get help with a visit, an order or your plan.",
+        unavailableDesc: "A support destination hasn\u2019t been set up for this portal yet." }
+    ],
+    /* ---- Purchases (customer-safe Order read model) ---- */
+    purchases: {
+      filters: [{ key: "all", label: "All" }, { key: "services", label: "Services" }, { key: "shop", label: "Shop" }, { key: "plans", label: "Plans" }],
+      kindFilter: { services: ["SERVICE", "MIXED"], shop: ["RETAIL", "MIXED"], plans: ["PACKAGE", "MEMBERSHIP"] },
+      kindLabels: { SERVICE: "Service", RETAIL: "Shop", PACKAGE: "Plan", MEMBERSHIP: "Plan", MIXED: "Service + shop" },
+      /* approved contract vocabulary — a BACKEND-OWNED mapping, never derived
+         from raw workflow states in the browser */
+      statusBadges: { "Confirmed": "status-badge--ok", "In progress": "status-badge--scheduled", "Ready for pickup": "status-badge--warn", "Fulfilled": "status-badge--ok", "Cancelled": "status-badge--danger" },
+      list: [
+        { ref: "pur-9f27a1", reference: "CH-2417", kind: "SERVICE", customerStatus: "Confirmed", placedAt: "Jul 12, 2026", displayTotal: "$85.00", currency: "USD", itemSummary: "Facial treatment \u00b7 books your Jul 21 visit", attention: null },
+        { ref: "pur-52e88d", reference: "CH-2409", kind: "RETAIL", customerStatus: "Ready for pickup", placedAt: "Jul 8, 2026", displayTotal: "$88.56", currency: "USD", itemSummary: "2 shop items \u00b7 pickup", attention: "Ready \u2014 please pick up by Jul 22" },
+        { ref: "pur-3d76c2", reference: "CH-2371", kind: "MIXED", customerStatus: "In progress", placedAt: "Jun 28, 2026", displayTotal: "$131.40", currency: "USD", itemSummary: "Gel manicure + 2 shop items", attention: null },
+        { ref: "pur-b104fe", reference: "CH-2350", kind: "PACKAGE", customerStatus: "Fulfilled", placedAt: "Jun 14, 2026", displayTotal: "$510.00", currency: "USD", itemSummary: "Six-visit facial series", attention: null },
+        { ref: "pur-64c913", reference: "CH-2334", kind: "RETAIL", customerStatus: "Fulfilled", placedAt: "Jun 2, 2026", displayTotal: "$73.44", currency: "USD", itemSummary: "2 shop items \u00b7 picked up Jun 4", attention: null },
+        { ref: "pur-1a45e0", reference: "CH-2242", kind: "MEMBERSHIP", customerStatus: "Confirmed", placedAt: "May 1, 2026", displayTotal: "$129.00", currency: "USD", itemSummary: "Harbor membership \u00b7 monthly", attention: null }
+      ],
+      /* cursor page 2 — appended below already-rendered rows, never replacing them */
+      nextPage: [
+        { ref: "pur-77d20b", reference: "CH-2168", kind: "SERVICE", customerStatus: "Fulfilled", placedAt: "Apr 2, 2026", displayTotal: "$65.00", currency: "USD", itemSummary: "Hair styling", attention: null },
+        { ref: "pur-08c5b7", reference: "CH-2104", kind: "RETAIL", customerStatus: "Cancelled", placedAt: "Mar 19, 2026", displayTotal: "$28.00", currency: "USD", itemSummary: "1 shop item", attention: null }
+      ]
+    },
+    /* ---- Purchase detail read models (keyed by opaque ref).
+       Sections that are absent here are OMITTED by the page — never filled
+       with guessed facts. `groups` exists only where the source groups lines. ---- */
+    purchaseDetails: {
+      "pur-9f27a1": {
+        ref: "pur-9f27a1", reference: "CH-2417", kind: "SERVICE", customerStatus: "Confirmed", placedAt: "Jul 12, 2026", version: "v2",
+        lines: [{ ref: "pln-4ac1", kind: "SERVICE", title: "Facial treatment", variant: null, quantity: 1, displayUnitPrice: "$85.00", displayTotal: "$85.00" }],
+        money: { subtotal: "$85.00", tax: "$0.00", total: "$85.00", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: null,
+        relatedAppointments: [{ ref: "appt-ch-10318", service: "Facial treatment", start: "Tue, Jul 21 \u00b7 2:00\u20133:00 PM", customerStatus: "Confirmed" }],
+        relatedPlan: null, allowedActions: ["openAppointment"]
+      },
+      "pur-52e88d": {
+        ref: "pur-52e88d", reference: "CH-2409", kind: "RETAIL", customerStatus: "Ready for pickup", placedAt: "Jul 8, 2026", version: "v3",
+        lines: [
+          { ref: "pln-b210", kind: "RETAIL", title: "Silk Repair Set", variant: null, quantity: 1, displayUnitPrice: "$64.00", displayTotal: "$64.00" },
+          { ref: "pln-b211", kind: "RETAIL", title: "Gel Removal Kit", variant: null, quantity: 1, displayUnitPrice: "$18.00", displayTotal: "$18.00" }
+        ],
+        money: { subtotal: "$82.00", tax: "$6.56", total: "$88.56", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "PICKUP", status: "Ready for pickup", pickupWindow: "Until Jul 22 \u00b7 10:00 AM\u20136:00 PM", note: "Harbor Front studio front desk" },
+        relatedAppointments: [], relatedPlan: null, allowedActions: ["cancelRequest"]
+      },
+      "pur-3d76c2": {
+        ref: "pur-3d76c2", reference: "CH-2371", kind: "MIXED", customerStatus: "In progress", placedAt: "Jun 28, 2026", version: "v5",
+        groups: [{ label: "Service", lines: ["pln-c310"] }, { label: "Pickup items", lines: ["pln-c311", "pln-c312"] }],
+        lines: [
+          { ref: "pln-c310", kind: "SERVICE", title: "Gel manicure", variant: null, quantity: 1, displayUnitPrice: "$45.00", displayTotal: "$45.00" },
+          { ref: "pln-c311", kind: "RETAIL", title: "Hydration Serum", variant: null, quantity: 1, displayUnitPrice: "$46.00", displayTotal: "$46.00" },
+          { ref: "pln-c312", kind: "RETAIL", title: "Overnight Mask", variant: null, quantity: 1, displayUnitPrice: "$34.00", displayTotal: "$34.00" }
+        ],
+        money: { subtotal: "$125.00", tax: "$6.40", total: "$131.40", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "PICKUP", status: "Being prepared", pickupWindow: null, note: "We\u2019ll let you know when your items are ready" },
+        relatedAppointments: [{ ref: "appt-ch-10322", service: "Gel manicure", start: "Wed, Jul 22 \u00b7 11:00 AM\u201312:00 PM", customerStatus: "Confirmed" }],
+        relatedPlan: null, allowedActions: ["openAppointment"]
+      },
+      "pur-b104fe": {
+        ref: "pur-b104fe", reference: "CH-2350", kind: "PACKAGE", customerStatus: "Fulfilled", placedAt: "Jun 14, 2026", version: "v1",
+        lines: [{ ref: "pln-d410", kind: "PLAN", title: "Six-visit facial series", variant: null, quantity: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
+        money: { subtotal: "$510.00", tax: "$0.00", total: "$510.00", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "ENTITLEMENT", status: "Credits granted", pickupWindow: null, note: "Visit credits were added to your plan" },
+        relatedAppointments: [], relatedPlan: { ref: "plan-4e19c3", kind: "PACKAGE", status: "Active", title: "Six-visit facial series" },
+        allowedActions: ["buyAgain"]
+      },
+      "pur-64c913": {
+        ref: "pur-64c913", reference: "CH-2334", kind: "RETAIL", customerStatus: "Fulfilled", placedAt: "Jun 2, 2026", version: "v4",
+        lines: [
+          { ref: "pln-e510", kind: "RETAIL", title: "Hydration Serum", variant: null, quantity: 1, displayUnitPrice: "$46.00", displayTotal: "$46.00", returnable: true },
+          { ref: "pln-e511", kind: "RETAIL", title: "Cuticle Care Kit", variant: null, quantity: 1, displayUnitPrice: "$22.00", displayTotal: "$22.00", returnable: true }
+        ],
+        money: { subtotal: "$68.00", tax: "$5.44", total: "$73.44", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "PICKUP", status: "Picked up Jun 4", pickupWindow: null, note: null },
+        relatedAppointments: [], relatedPlan: null, allowedActions: ["returnRequest", "buyAgain"]
+      },
+      "pur-1a45e0": {
+        ref: "pur-1a45e0", reference: "CH-2242", kind: "MEMBERSHIP", customerStatus: "Confirmed", placedAt: "May 1, 2026", version: "v1",
+        lines: [{ ref: "pln-f610", kind: "PLAN", title: "Harbor membership", variant: "Monthly", quantity: 1, displayUnitPrice: "$129.00", displayTotal: "$129.00" }],
+        money: { subtotal: "$129.00", tax: "$0.00", total: "$129.00", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "ENTITLEMENT", status: "Membership active", pickupWindow: null, note: "Renews monthly \u2014 manage it under My plan" },
+        relatedAppointments: [], relatedPlan: { ref: "plan-8b02d7", kind: "MEMBERSHIP", status: "Active", title: "Harbor membership" },
+        allowedActions: []
+      },
+      "pur-77d20b": {
+        ref: "pur-77d20b", reference: "CH-2168", kind: "SERVICE", customerStatus: "Fulfilled", placedAt: "Apr 2, 2026", version: "v2",
+        lines: [{ ref: "pln-g710", kind: "SERVICE", title: "Hair styling", variant: null, quantity: 1, displayUnitPrice: "$65.00", displayTotal: "$65.00" }],
+        money: { subtotal: "$65.00", tax: "$0.00", total: "$65.00", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: null,
+        relatedAppointments: [{ ref: "appt-ch-10203", service: "Facial treatment", start: "Jun 30", customerStatus: "Completed" }],
+        relatedPlan: null, allowedActions: []
+      },
+      "pur-08c5b7": {
+        ref: "pur-08c5b7", reference: "CH-2104", kind: "RETAIL", customerStatus: "Cancelled", placedAt: "Mar 19, 2026", version: "v2",
+        lines: [{ ref: "pln-h810", kind: "RETAIL", title: "Heat Shield Spray", variant: "150 ml", quantity: 1, displayUnitPrice: "$28.00", displayTotal: "$28.00" }],
+        money: { subtotal: "$28.00", tax: "$2.24", total: "$30.24", currency: "USD" }, paymentMode: "SIMULATED",
+        fulfillment: { kind: "PICKUP", status: "Cancelled before pickup", pickupWindow: null, note: null },
+        relatedAppointments: [], relatedPlan: null, allowedActions: ["buyAgain"]
+      }
+    },
+    /* appointment detail -> its purchase (deep link, target only) */
+    purchaseByAppointment: { "appt-ch-10318": "pur-9f27a1", "appt-ch-10322": "pur-3d76c2" },
+    /* ============ WAVE 16 — Appointment detail read models ============
+       Keyed by opaque ref (data-appointment-ref). ONLY source-provided
+       fields exist here; absent optional fields are omitted by the page,
+       never guessed. `attention` and the policy copy are SERVER-OWNED
+       strings; `allowedActions` is the server's capability list — the page
+       renders exactly those actions and derives none. A ref that is not in
+       this map (foreign / removed / unknown) gets ONE non-enumerating
+       not-found treatment. */
+    appointmentDetails: {
+      "appt-ch-10318": { ref: "appt-ch-10318", service: "Facial treatment", customerStatus: "Confirmed", start: "Tue, Jul 21 \u00b7 2:00\u20133:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio \u00b7 Room 2", displayPrice: "$85", reference: "APT-10318", attention: "Free rescheduling and cancellation for this visit until Jul 20, 6:00 PM \u2014 after that the studio\u2019s policy applies.", relatedPurchaseRef: "pur-9f27a1", allowedActions: ["reschedule", "cancel", "openPurchase"], version: "a3" },
+      "appt-ch-10322": { ref: "appt-ch-10322", service: "Gel manicure", customerStatus: "Confirmed", start: "Wed, Jul 22 \u00b7 11:00 AM\u201312:00 PM", timezoneNote: "local time", specialist: "Dana P.", visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10322", attention: "Your specialist brings a sanitised, sealed kit \u2014 just have a clear table spot ready.", relatedPurchaseRef: "pur-3d76c2", allowedActions: ["reschedule", "cancel", "openPurchase"], version: "a1" },
+      "appt-ch-10334": { ref: "appt-ch-10334", service: "Facial treatment", customerStatus: "Confirmed", start: "Fri, Jul 24 \u00b7 4:00 PM", timezoneNote: "local time", specialist: null, visitMode: "salon", location: null, displayPrice: null, reference: "APT-10334", attention: null, relatedPurchaseRef: null, allowedActions: ["cancel"], version: "a1" },
+      "appt-ch-10330": { ref: "appt-ch-10330", service: "Signature deep-renewal ritual with warm-stone massage and extended aromatherapy", customerStatus: "Needs confirmation", start: "Thu, Jul 30 \u00b7 1:00\u20133:30 PM", timezoneNote: "local time", specialist: "Alexandra-Marguerite Konstantinidou-Vandermeer", visitMode: "salon", location: "Harbor Front studio \u00b7 Quiet wing, Room 5", displayPrice: "$310", reference: "APT-10330-SIGNATURE-RITUAL", attention: "The studio still needs to confirm this time \u2014 you\u2019ll hear from us within a day. Nothing is charged either way.", relatedPurchaseRef: null, allowedActions: ["reschedule", "cancel"], version: "a1" },
+      "appt-ch-10340": { ref: "appt-ch-10340", service: "Hair styling", customerStatus: "Confirmed", start: "Tue, Aug 4 \u00b7 2:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: "$65", reference: "APT-10340", attention: null, relatedPurchaseRef: null, allowedActions: ["reschedule", "cancel"], version: "a2" },
+      "appt-ch-10351": { ref: "appt-ch-10351", service: "Manicure & nails", customerStatus: "Needs confirmation", start: "Fri, Aug 14 \u00b7 11:00 AM", timezoneNote: "local time", specialist: null, visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10351", attention: "The studio still needs to confirm this time \u2014 you\u2019ll hear from us within a day. Nothing is charged either way.", relatedPurchaseRef: null, allowedActions: ["cancel"], version: "a1" },
+      "appt-ch-10203": { ref: "appt-ch-10203", service: "Facial treatment", customerStatus: "Completed", start: "Tue, Jun 30 \u00b7 2:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: "$85", reference: "APT-10203", attention: null, relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a4" },
+      "appt-ch-10164": { ref: "appt-ch-10164", service: "Gel manicure", customerStatus: "Completed", start: "Fri, Jun 12 \u00b7 11:00 AM", timezoneNote: "local time", specialist: "Dana P.", visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10164", attention: null, relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a2" },
+      "appt-ch-10101": { ref: "appt-ch-10101", service: "Hair styling", customerStatus: "Cancelled", start: "Thu, May 28 \u00b7 3:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: null, reference: "APT-10101", attention: "This visit was cancelled \u2014 nothing further is scheduled from it.", relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a2" }
+    },
+    /* ============ WAVE 16 — Published plan offers (sellable contract) ====
+       PUBLIC catalog offers — visually and semantically distinct from the
+       customer's My plan. Only server-provided display price, terms summary,
+       benefits and sellability render; the buy entry exists ONLY while the
+       sellable-plan contract is open (data-plan-commerce="open") AND the
+       offer's sellability is "sellable". */
+    planOffers: [
+      { ref: "off-pkg-4c21", kind: "PACKAGE", title: "Six-visit facial series", displayPrice: "$510.00", termsSummary: "6 facial visits \u00b7 valid 12 months from purchase", benefits: ["Six full facial treatments", "Book each visit with a credit", "Credits never expire early"], sellability: "sellable", allowedActions: ["purchase"] },
+      { ref: "off-mem-8d02", kind: "MEMBERSHIP", title: "Harbor membership", displayPrice: "$129.00 / month", termsSummary: "Renews monthly \u00b7 cancel renewal anytime", benefits: ["Member pricing on every treatment", "Priority booking windows", "One guest pass per season"], sellability: "sellable", allowedActions: ["purchase"] }
+    ],
+    offerNotes: {
+      unavailable: "Not available to buy right now \u2014 the published offer is shown for reference only.",
+      changed: "The price or terms of this offer changed while you were looking \u2014 reload to see the current offer before buying."
+    },
+    /* ---- My plan (customer-scoped entitlements — NEVER the public
+       "Membership options" offers) ---- */
+    plans: {
+      statusBadges: { "Active": "status-badge--ok", "Expiring soon": "status-badge--warn", "Used up": "status-badge--neutral", "Cancelled": "status-badge--danger" },
+      scenarios: { active: ["plan-4e19c3", "plan-8b02d7"], expiring: ["plan-ex91b4", "plan-8b02d7"], exhausted: ["plan-x201aa"], cancelled: ["plan-c77f02"], empty: [] },
+      byRef: {
+        "plan-4e19c3": { ref: "plan-4e19c3", kind: "PACKAGE", title: "Six-visit facial series", status: "Active", remainingUses: 4, totalUses: 6, expiresAt: "Dec 31, 2026", displayRecurringPrice: null, allowedActions: ["bookWithCredit"], sourcePurchase: "pur-b104fe" },
+        "plan-8b02d7": { ref: "plan-8b02d7", kind: "MEMBERSHIP", title: "Harbor membership", status: "Active", remainingUses: null, totalUses: null, renewsAt: "Aug 1, 2026", displayRecurringPrice: "$129 / month", allowedActions: ["cancelRenewal"], sourcePurchase: "pur-1a45e0" },
+        "plan-ex91b4": { ref: "plan-ex91b4", kind: "PACKAGE", title: "Six-visit facial series", status: "Expiring soon", remainingUses: 2, totalUses: 6, expiresAt: "Jul 31, 2026", attention: "2 visits left \u2014 they expire Jul 31", displayRecurringPrice: null, allowedActions: ["bookWithCredit"] },
+        "plan-x201aa": { ref: "plan-x201aa", kind: "PACKAGE", title: "Six-visit facial series", status: "Used up", remainingUses: 0, totalUses: 6, expiresAt: "Dec 31, 2026", displayRecurringPrice: null, allowedActions: [] },
+        "plan-c77f02": { ref: "plan-c77f02", kind: "MEMBERSHIP", title: "Harbor membership", status: "Cancelled", expiresAt: "Jul 31, 2026", note: "Your benefits continue to the end of the paid period.", displayRecurringPrice: "$129 / month", allowedActions: [] }
+      }
+    },
+    /* ---- Sellable retail (capability retail-commerce-open). Joined to the
+       public PIM card by `code`; `state` is SERVER sellability, never inferred. ---- */
+    retail: {
+      products: [
+        { code: "rtl-beauty-01", state: "sellable", cents: 6400, displayPrice: "$64.00" },
+        { code: "rtl-beauty-02", state: "variant-required", variants: [
+          { ref: "var-hs-150", label: "150 ml", displayPrice: "$28.00", cents: 2800 },
+          { ref: "var-hs-250", label: "250 ml", displayPrice: "$42.00", cents: 4200 }
+        ] },
+        { code: "rtl-beauty-03", state: "out-of-stock" },
+        { code: "rtl-beauty-04", state: "sellable", cents: 1800, displayPrice: "$18.00" },
+        { code: "rtl-beauty-05", state: "price-changed", cents: 5200, displayPrice: "$52.00", priceNote: "Price recently updated in the catalog" },
+        { code: "rtl-beauty-06", state: "unavailable", note: "Not sold online" }
+      ]
+    },
+    /* ---- Simulated checkout scaffolding ---- */
+    checkout: {
+      ref: "chk-5b8d31",
+      expiresNote: "This quote holds for 15 minutes \u2014 prices and stock are re-checked at confirmation.",
+      fulfillmentOptions: [
+        { ref: "ful-pickup", kind: "PICKUP", label: "Pickup \u2014 Harbor Front studio", detail: "Usually ready in 2 days \u00b7 free" }
+      ],
+      fulfillmentNote: "Delivery isn\u2019t offered on this portal yet \u2014 pickup only.",
+      policy: "I understand pickup orders are held for 14 days and services follow the studio\u2019s cancellation policy.",
+      /* the plan-enrollment checkout source (a frozen server quote).
+         WAVE 16: one quote per published offer ref (source `plan` carries
+         data-plan-offer-ref); planQuote stays as the package default. */
+      planQuote: {
+        lines: [{ ref: "cln-pl01", title: "Six-visit facial series", variant: null, qty: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
+        displayTotals: { subtotal: "$510.00", tax: "$0.00", total: "$510.00" }
+      },
+      planQuotes: {
+        "off-pkg-4c21": {
+          lines: [{ ref: "cln-pl01", title: "Six-visit facial series", variant: null, qty: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
+          displayTotals: { subtotal: "$510.00", tax: "$0.00", total: "$510.00" }, recurringNote: null
+        },
+        "off-mem-8d02": {
+          lines: [{ ref: "cln-pl02", title: "Harbor membership", variant: "Monthly", qty: 1, displayUnitPrice: "$129.00", displayTotal: "$129.00" }],
+          displayTotals: { subtotal: "$129.00", tax: "$0.00", total: "$129.00" },
+          recurringNote: "Renews at $129.00 / month until you cancel renewal \u2014 each renewal is recorded the same simulated way."
+        }
+      }
+    },
+    /* ---- Authoritative confirmation READBACKS (demo). The confirmation
+       surface renders ONLY from one of these. Copy is contract-approved:
+       "Order confirmed" / "Booking confirmed" / "Demo checkout completed" —
+       never "Paid", "Charged" or "Payment successful". ---- */
+    confirmations: {
+      retail: { kind: "retail", headline: "Order confirmed", sub: "Demo checkout completed \u2014 no charge was made.",
+        purchase: { ref: "pur-n3w001", reference: "CH-2431" },
+        fulfillment: "Pickup \u2014 Harbor Front studio. We\u2019ll let you know when your items are ready.",
+        appointment: null, plan: null },
+      "appointment-and-order": { kind: "booking", headline: "Booking confirmed", sub: "Demo checkout completed \u2014 no charge was made.",
+        purchase: { ref: "pur-n3w002", reference: "CH-2432" },
+        appointment: { ref: "appt-ch-10360", service: "Facial treatment", start: "Tue, Jul 28 \u00b7 2:00 PM", customerStatus: "Confirmed" },
+        fulfillment: null, plan: null },
+      "appointment-only": { kind: "booking", headline: "Booking confirmed", sub: "No charge was made \u2014 you pay at the studio as usual.",
+        purchase: null,
+        appointment: { ref: "appt-ch-10361", service: "Facial treatment", start: "Tue, Jul 28 \u00b7 2:00 PM", customerStatus: "Confirmed" },
+        fulfillment: null, plan: null },
+      plan: { kind: "plan", headline: "Order confirmed", sub: "Demo checkout completed \u2014 no charge was made.",
+        purchase: { ref: "pur-n3w003", reference: "CH-2433" },
+        appointment: null, fulfillment: null,
+        plan: { ref: "plan-n3w01", kind: "PACKAGE", title: "Six-visit facial series", status: "Active" } },
+      /* wave 16 — membership enrollment (source plan, offer off-mem-8d02) */
+      membership: { kind: "plan", headline: "Order confirmed", sub: "Demo checkout completed \u2014 no charge was made.",
+        purchase: { ref: "pur-n3w004", reference: "CH-2434" },
+        appointment: null, fulfillment: null,
+        plan: { ref: "plan-n3w02", kind: "MEMBERSHIP", title: "Harbor membership", status: "Active" } },
+      /* wave 16 — booking with a package credit (appointment only + plan readback) */
+      credit: { kind: "booking", headline: "Booking confirmed", sub: "A package credit was used \u2014 no charge was made.",
+        purchase: null, fulfillment: null,
+        appointment: { ref: "appt-ch-10362", service: "Facial treatment", start: "Tue, Jul 28 \u00b7 2:00 PM", customerStatus: "Confirmed" },
+        plan: { ref: "plan-4e19c3", kind: "PACKAGE", title: "Six-visit facial series \u2014 3 of 6 visits left", status: "Active" } },
+      /* wave 16 — reschedule readback: the ORIGINAL visit is only released here */
+      reschedule: { kind: "booking", headline: "Booking confirmed", sub: "Your visit was moved \u2014 the previous time was released. No charge was made.",
+        purchase: null, fulfillment: null, plan: null,
+        appointment: { ref: "appt-ch-10318", service: "Facial treatment", start: "Tue, Jul 28 \u00b7 2:00 PM", customerStatus: "Confirmed" } }
+    }
+  };
+
+  /* ============================================================
+     WAVE 16 — Booking flow read model (Calm Harbor target).
+     Everything the drawer shows is SERVER-OWNED: eligible services,
+     specialists (returned per service \u2014 the step exists only when the
+     list is non-empty), eligible days/slots, the slot hold (an opaque
+     ref + a display-ready expiry label; the browser NEVER counts it
+     down or extends it), the review display total, and the policy
+     copy. paymentMode is always "SIMULATED".
+     ============================================================ */
+  var spaBooking = {
+    ref: "bkg-7a31f2", version: "b1", paymentMode: "SIMULATED",
+    eligibleServices: ["svc-spa-01", "svc-spa-02", "svc-spa-03"],
+    /* appointment service title -> bookable service code (server mapping;
+       an unmapped title simply starts the flow at the service choice) */
+    serviceForTitle: { "Facial treatment": "svc-spa-03", "Gel manicure": "svc-spa-01", "Manicure & nails": "svc-spa-01", "Hair styling": "svc-spa-02" },
+    displayTotals: { "svc-spa-01": "$45.00", "svc-spa-02": "$65.00", "svc-spa-03": "$85.00" },
+    specialists: {
+      "spc-a1v": { ref: "spc-a1v", name: "Alina V.", role: "Hair & skin" },
+      "spc-m3k": { ref: "spc-m3k", name: "Marta K.", role: "Facials" },
+      "spc-d2p": { ref: "spc-d2p", name: "Dana P.", role: "Nails" }
+    },
+    /* returned per service — an empty list means the server offers no choice
+       and the specialist step is SKIPPED (never invented) */
+    eligibleSpecialists: { "svc-spa-01": [], "svc-spa-02": ["spc-a1v", "spc-m3k"], "svc-spa-03": ["spc-a1v", "spc-m3k"] },
+    days: [
+      { key: "d-0728", label: "Tue, Jul 28", slots: [{ ref: "sl-0728-09", label: "9:00 AM" }, { ref: "sl-0728-1130", label: "11:30 AM" }, { ref: "sl-0728-14", label: "2:00 PM" }, { ref: "sl-0728-1630", label: "4:30 PM" }] },
+      { key: "d-0729", label: "Wed, Jul 29", slots: [{ ref: "sl-0729-10", label: "10:00 AM" }, { ref: "sl-0729-13", label: "1:00 PM" }, { ref: "sl-0729-1530", label: "3:30 PM" }] },
+      { key: "d-0730", label: "Thu, Jul 30", slots: [{ ref: "sl-0730-0930", label: "9:30 AM" }, { ref: "sl-0730-12", label: "12:00 PM" }, { ref: "sl-0730-1430", label: "2:30 PM" }, { ref: "sl-0730-17", label: "5:00 PM" }] },
+      { key: "d-0801", label: "Sat, Aug 1", slots: [{ ref: "sl-0801-11", label: "11:00 AM" }, { ref: "sl-0801-1330", label: "1:30 PM" }] }
+    ],
+    /* the server slot hold: opaque ref + display-ready expiry. The label is
+       rendered verbatim; expiry itself is a SERVER event (dev select `hold`). */
+    hold: { ref: "hld-2f91c4", version: "h1", untilLabel: "Held until 2:47 PM (studio clock)", note: "The studio releases the time automatically after that \u2014 it\u2019s re-checked when you confirm." },
+    reviewLocation: "Harbor Front studio", /* server review context for a NEW booking; reschedules keep the original visit's mode/location */
+    policy: "I understand this visit follows the studio\u2019s cancellation policy.",
+    policyNote: "Free rescheduling and cancellation until 24 hours before the visit \u2014 after that the studio\u2019s policy applies.",
+    /* plan-credit context strings (SERVER copy per credit state) */
+    creditNotes: {
+      ok: "1 visit credit from your Six-visit facial series will be used \u2014 no charge for this visit.",
+      unavailable: "Your plan can\u2019t be used for this booking right now \u2014 nothing was used or booked. The studio can help.",
+      exhausted: "Your package has no visits left \u2014 nothing was used or booked. You can buy the package again or book at the published price.",
+      changed: "Your plan balance changed while you were booking \u2014 reload to see the current balance before continuing."
+    }
+  };
+
+  /* ============================================================
+     WAVE 16 — Calm Harbor Profile read model (scoped API).
+     LEAST DATA by design: phone, email and the explicitly approved
+     preference list below are the ONLY fields this source returns.
+     No spend, savings, order stats, addresses, saved cards, plan or
+     member-since claims, raw ids, roles or organization exist here.
+     ============================================================ */
+  var spaProfileSrv = {
+    version: "p4",
+    phone: "+1 (415) 555-0134",
+    email: "mia.chen@example.com",
+    preferences: [
+      { key: "appt-reminders", label: "Appointment reminders", desc: "A reminder before each visit", value: true },
+      { key: "appt-changes", label: "Schedule change alerts", desc: "If the studio needs to move or confirm a visit", value: true },
+      { key: "care-tips", label: "Care tips between visits", desc: "Occasional tips from your specialist", value: false }
+    ],
+    allowedActions: ["edit", "save"]
+  };
+
+  /* DEMO stand-in for the AUTHORITATIVE server cart recalculation: every cart
+     mutation returns a COMPLETE recalculated cart read model (versioned, with
+     display-ready totals). Presentation renders the returned strings verbatim.
+     Codex replaces this with the real /portal/v1/cart responses. */
+  var spaCartSeq = 0;
+  function spaServerCart(lines) {
+    var sub = 0;
+    lines.forEach(function (l) { sub += l.cents * l.qty; });
+    var tax = Math.round(sub * 0.08);
+    var fmt = function (c) { return "$" + (c / 100).toFixed(2); };
+    spaCartSeq += 1;
+    return {
+      version: "c" + spaCartSeq,
+      lines: lines.map(function (l) { return Object.assign({}, l, { displayUnitPrice: fmt(l.cents), displayTotal: fmt(l.cents * l.qty) }); }),
+      displayTotals: lines.length ? { subtotal: fmt(sub), tax: fmt(tax), total: fmt(sub + tax) } : null,
+      fulfillment: { kind: "PICKUP", label: "Pickup \u2014 Harbor Front studio", detail: "Usually ready in 2 days \u00b7 free" }
+    };
+  }
+
   window.AircoveFixtures = {
     PAL: PAL, TINTS: TINTS,
     themeSlugs: themeSlugs,
@@ -733,6 +1172,11 @@
     profileFor: profileFor,
     stormCalendar: stormCalendar,
     careModules: careModules,
+    spa: spa,
+    spaCommerce: spaCommerce,
+    spaServerCart: spaServerCart,
+    spaBooking: spaBooking,
+    spaProfileSrv: spaProfileSrv,
     addresses: addresses,
     cards: cards,
     proposal: proposal,

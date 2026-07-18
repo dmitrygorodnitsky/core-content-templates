@@ -137,6 +137,10 @@ The stable root section emitted by `cms/root-template.html` is:
   id="app"
   data-portal-api-base="{{portal_api_base}}"
   data-portal-organization="{{portal_organization}}"
+  data-portal-core-api-base="{{portal_core_api_base}}"
+  data-portal-account-api-base="{{portal_account_api_base}}"
+  data-portal-bill-api-base="{{portal_bill_api_base}}"
+  data-portal-account-type-code="{{portal_account_type_code}}"
   data-portal-vertical="{{portal_vertical}}"
   data-portal-profile="{{portal_profile}}"
   data-portal-theme="{{portal_theme}}"
@@ -159,7 +163,10 @@ The stable root section emitted by `cms/root-template.html` is:
 These attribute names are production contracts. CMS exposes their values
 through stable parameter codes; runtime code parses them without hidden template
 edits. `data-portal-auth-mode` and `data-portal-data-mode` are independent, and
-the PIM attributes remain the pricing/products adapter inputs.
+the PIM attributes remain the pricing/products adapter inputs. The Core,
+Account, and Bill service bases select same-origin services only. The Account type code
+narrows the signed-in User lookup to the configured customer Account kind; it
+is not an Account id or an authorization result.
 
 ## Configuration Axes
 

@@ -51,7 +51,10 @@ its static authored content can ship before any customer backend is opened.
 
 The required backend and authorization boundary for the next private portal
 increment is specified in `content/cases/CORE-CUSTOMER-PORTAL-CONTRACT.md`.
-Its generic Core list/save endpoints are explicitly not browser contracts.
+The current staging contract follows the `core-ui` bearer/header/mapping
+convention and resolves the customer through `Account.user`. Generic entity
+permissions still do not prove server-side row isolation, so this path remains
+staging-only until that is enforced.
 
 `Opened` means that a repository-proven adapter currently exists. It does not
 mean that every deployment has configured its credentials, gateway, or source
@@ -60,8 +63,9 @@ data. `Not opened` means no live contract may be inferred from the UI.
 | Domain and entities | Source of truth | UI modules/routes | Current disposition | CMS role | Opening condition |
 | --- | --- | --- | --- | --- | --- |
 | Portal configuration: vertical, profile, theme, enabled modules, default route, initial mode | CMS template configuration | shell and all routes | CMS-authored | Owns allowed configuration only | Validate enum/profile compatibility at render time. |
-| Authentication, session, customer id, tenant id, roles | Identity/session service | `auth`, private-route guards | fixture; live not opened | Cannot author identity, scope, token, or role | Define host auth bridge, session transport, expiry/sign-out, and scope claims. |
-| Orders: order, status, service history, invoice metadata | Order/service backend | `orders.list`, `order.detail` | fixture; live not opened | None | Authorized list/detail contract and explicit document-download contract. |
+| Authentication and Core User session | Core OIDC plus `/core/api/user/basic-info.json` | `auth`, private-route guards | OIDC opened; basic-info source-traced | Cannot author identity, token, User id, or role | Activate the source-traced session bootstrap in the full portal runtime. |
+| Customer Account scope | Core Account `Account.user` plus customer Account type | shell and private adapters | adapter implemented, live-proven, and activated in the Calm Harbor manual staging root | Cannot author Account id or scope | Preserve the verified organization, exactly-one-Account checks, and stale-session invalidation. Generic multi-vertical runtime wiring remains pending. |
+| Orders: order, status, totals and safe type/currency fields | Core Bill `Order.account` | `orders.list` | Account-scoped list implemented, live-proven, and activated in the Calm Harbor manual staging root | None | Keep every list request bound to the resolved Account; trace deployed negative RBAC before production. Detail and writes remain unopened. |
 | Appointments and service calendar: visits, windows, slot availability | Scheduling backend | `calendar`, booking drawer | fixture; live not opened | May author labels only | Customer-scoped read contract; booking/reschedule requires availability hold, idempotency, and returned appointment state. |
 | Activity and notifications | Event/notification backend | `activity` | fixture; live not opened | May author empty-state copy only | Customer-scoped event feed, pagination/cursor, read acknowledgement semantics. |
 | Proposals: sites, line items, choices, approval/revision/decline | Proposal/CRM backend | `proposals.list`, `proposal.detail` | fixture; live not opened | None | Versioned proposal read model; write commands with optimistic-concurrency/version check and returned proposal state. |
@@ -169,7 +173,7 @@ its own is never sufficient readback.
 | P0 | Public SEO landing manual CMS package | Ship the complete authored landing with server-visible SEO, native CTAs, and no private/session dependency. |
 | P1 | Dynamic public pricing block | The anonymous PIM price endpoint is proven on `dev-1` same-origin for Calm Harbor Spa. Add the block with `loading`, `empty`, and `error` states; CMS price rows are not a silent fallback. External origins remain blocked by CORS. |
 | P2 | Public product/catalog block | Do not ship product cards from the price-comparison baseline. Open a catalog contract for product identity, category, media, availability, and destination first. Until then use CMS-authored service cards without price/inventory claims. |
-| P3 | Authenticated portal foundation: host auth/session bridge, Orders read, Calendar read | Establishes an actual customer portal and validates the hosting boundary. |
+| P3 | Authenticated portal foundation: Core OIDC, `user/basic-info`, `Account.user` bootstrap, then Orders read | Establishes an actual customer portal using the current Core identity model. Calendar remains closed until appointments have a customer relation. |
 | P4 | Proposals read and decisions; then Profile, cart, checkout, and support conversations | Direct commercial value first; payment, PII, and mutable workflow open source by source. |
 | P5 | Care by vertical and optional public live availability | Care requires entitlement preflight and per-vertical contracts. Health remains closed until the full sensitive-data control set is proven. Availability needs freshness, locality, and SEO claim policy. |
 
@@ -194,6 +198,12 @@ may be represented as live merely because the CMS template was uploaded.
 package. It is intentionally narrower than an authenticated portal: only the
 PIM-backed `pricing` and `products` modules are enabled, and its runtime asset
 tree is uploaded under one same-origin static path on `dev-1`.
+
+`customer-portal-calm-harbor-staging` is the first authenticated customer
+package. It adds the live-proven read-only Orders list to the same Core OIDC and
+public PIM rails. Its inline runtime derives Account scope from the signed-in
+User, invalidates in-flight private reads on sign-out/session refresh, and has no
+CMS parameter or URL input for User, Account, or Order ownership.
 
 ## Landing-First Composition
 
@@ -242,9 +252,14 @@ price on the same page.
 
 ## Known Open Contracts
 
-- The identity/session host bridge is not yet specified.
-- Orders, proposals, appointments, cart/checkout, profile, support, and Care
-  have no repository-proven live endpoint contracts.
+- Core OIDC and the `core-ui` bearer/header convention are source-traced. The
+  Account bootstrap is implemented, read-only live-proven on `dev-1`, and
+  activated in the dedicated Calm Harbor manual staging root. Generic runtime
+  activation and deployed negative authorization evidence remain.
+- The Account-scoped Orders list is implemented, live-proven, and activated in
+  that staging root. Order detail and writes, proposals, appointments,
+  cart/checkout, support, and Care remain unopened. Account and Order reads
+  expose only explicitly mapped safe fields.
 - The current Core PIM Products path is a price-comparison baseline, not a
   complete product-catalog contract.
 - The anonymous PIM price contract is proven only for `dev-1` same-origin:

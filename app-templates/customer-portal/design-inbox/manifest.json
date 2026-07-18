@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "wave-11 (modular / customer-portal-design)",
+  "version": "wave-16 (modular / customer-portal-design)",
   "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
   "runtime": "presentation-only. Business logic, API, auth, permissions, persistence are owned by Codex.",
   "entry": "customer-portal-design/source.html",
@@ -9,7 +9,7 @@
     "data-module": "reusable component id (matches components[].id)",
     "data-bind": "fixture field(s) the rendered value came from",
     "data-action": "user command name (matches actions[])",
-    "data-state": "ui state on the element (ready|loading|empty|error|pending-action|drawer-open|mobile-navigation-open|active)",
+    "data-state": "ui state on the element. Route roots: ready|loading|empty|error|unauthorized|not-found|conflict (wave 13). Account bootstrap module: resolving-customer|customer-unavailable|customer-not-linked|customer-account-ambiguous|organization-forbidden|customer-forbidden|session-expired (wave 14 adds the ambiguity/organization gates). Actionable entities (command lifecycle): pending|failed|conflict (succeeded is never stored — success renders only from the server readback). Plus the accepted pending-action|drawer-open|mobile-navigation-open|active. Wave 14: account-menu-open on the spa top-nav; the unmapped raw-status badge carries data-state=unmapped. Wave 15: route roots add unavailable (unopened capability — honest notice, never empty data); purchase lines carry return-accepted-for-review; shop cards carry SERVER sellability (sellable|unavailable|out-of-stock|price-changed|variant-required); cart lines stale-price|inventory-conflict (row-scoped pending); the checkout root carries ready|repriced|inventory-conflict|slot-expired|confirmed (confirmed renders ONLY from the authoritative readback); booking-review carries held|slot-expired|repriced. Wave 16: booking-flow carries the step (context|specialist|slots|review); plan-credit-context carries the SERVER credit state ok|unavailable|exhausted|changed; plan-offer-card carries SERVER sellability sellable|unavailable|changed; the Calm Harbor profile contact panel carries ready|unchanged|dirty|invalid|saving|save-failed|conflict; the appointment detail card carries ready|pending|failed|conflict|cancelled (cancelled/rescheduled only from the readback).",
     "data-visual-id": "stable id for screenshot parity / visual transfer",
     "data-dev-toolbar": "PREVIEW-ONLY harness; Codex strips elements carrying this"
   },
@@ -34,7 +34,7 @@
     "note": "data-theme (vertical) is CONFIG-DRIVEN — set once from deployment config, NOT a user control (the in-app theme picker was removed). data-mode (light/dark) stays a user toggle. All colors derive from CSS custom properties in styles.css; app.js only flips these two attributes."
   },
   "portalProfiles": {
-    "mechanism": "config-driven by vertical (fixtures.profileFor maps theme -> profile). Sets nav set, primary action, whether the weather-operational Calendar is used, and cart visibility.",
+    "mechanism": "config-driven by vertical (fixtures.profileFor maps theme -> profile). Sets nav set, primary action, whether the weather-operational Calendar is used, and cart visibility. Wave 14: for Beauty the profile follows the capability config (spaStaging | spaTarget) — the wave-9 'appointments' profile now applies to Health only. Wave 14.1: fixtures.profileFor no longer lists Beauty at all — the capability config is the only Beauty profile contract.",
     "profiles": {
       "onDemand": {
         "verticals": [
@@ -76,8 +76,7 @@
       },
       "appointments": {
         "verticals": [
-          "Health",
-          "Beauty"
+          "Health"
         ],
         "nav": [
           "orders.list (Appointments)",
@@ -91,7 +90,35 @@
         "primary": "booking.open (+ Book)",
         "weatherCalendar": false,
         "cart": true,
-        "note": "Wave 9. No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere."
+        "note": "Wave 9. No weather triggers: these verticals set fixtures.themes[x].wt = null, which removes the Weather Trigger banner/panel and the weather feed item everywhere. Wave 14.1: Health ONLY — Beauty moved to the capability-aware spaStaging/spaTarget profiles and is intentionally absent from fixtures.profileFor (activeProfile() resolves Beauty from state.capability, never this legacy map)."
+      },
+      "spaStaging": {
+        "verticals": [
+          "Beauty — Calm Harbor (capability current-staging)"
+        ],
+        "nav": [
+          "orders.list (Orders — read-only)",
+          "services + pricing (Services & prices, one destination)",
+          "products (Shop — secondary)"
+        ],
+        "primary": "nav.go services (Browse services — honest navigation; no booking command exists)",
+        "weatherCalendar": false,
+        "cart": false,
+        "note": "Wave 14. Account/session control lives in the account menu (display name + Support + sign-out). No + Book, Calendar, My routine, cart, notification badge or editable profile. Wave 14.1: Support (account/mobile menu) and every support-related link end at the honest support-unavailable notice — no approved destination exists, so no fixture chat/thread/ticket, email/call toast or delivery claim is reachable."
+      },
+      "spaTarget": {
+        "verticals": [
+          "Beauty — Calm Harbor (capability target-appointments)"
+        ],
+        "nav": [
+          "orders.list (Appointments — authenticated default)",
+          "services + pricing (Services & prices)",
+          "products (Shop — secondary)"
+        ],
+        "primary": "booking.open (+ Book) ONLY while data-booking=open; otherwise the honest browse CTA",
+        "weatherCalendar": false,
+        "cart": false,
+        "note": "Wave 14. Calendar is an appointments/booking-flow concern, not a destination. My plan is reserved by the IA but outside this increment (no customer-scoped membership/package source). Wave 14.1: same support-unavailable rule as spaStaging (closed-target Contact support, catalog-empty support, membership enquiry)."
       }
     },
     "note": "Calendar renders StormCalendar (weather-operational) for stormOps and MonthCalendar for onDemand. StormCalendar derives service names + trigger copy from the active vertical, so one component serves all 5 weather-triggered verticals."
@@ -738,7 +765,10 @@
     {
       "id": "seo-hero",
       "factory": "SeoHero (components/seo/SeoSections.js)",
-      "props": ["cms.meta (h1, locality, serviceArea, primaryCta, secondaryCta)", "cms.hero (service, offer)"],
+      "props": [
+        "cms.meta (h1, locality, serviceArea, primaryCta, secondaryCta)",
+        "cms.hero (service, offer)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "Geography slot: {locality} merge tag in cms.meta.h1 rendered as highlighted .seo-hero__geo. Seasonal offer = dynamic CMS slot (skeleton on loading, hidden when absent). Hero media = image slot, no drawn imagery."
@@ -746,7 +776,9 @@
     {
       "id": "seo-trust-strip",
       "factory": "SeoTrustStrip",
-      "props": ["cms.trust (rating, licence, insurance, guarantee, response)"],
+      "props": [
+        "cms.trust (rating, licence, insurance, guarantee, response)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "CMS DATA SLOTS ONLY — null values render an explicit 'from CMS' slot chip (.seo-slot), never an invented fact. States: ready|loading|empty."
@@ -754,7 +786,9 @@
     {
       "id": "seo-service-card",
       "factory": "inline in SeoServicesGrid",
-      "props": ["cms.services[] (name, benefit, priceFrom)"],
+      "props": [
+        "cms.services[] (name, benefit, priceFrom)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "3–6 cards; whole card fires seo.service.select → booking/quote flow."
@@ -762,21 +796,27 @@
     {
       "id": "seo-services-grid",
       "factory": "SeoServicesGrid",
-      "props": ["cms.services[]"],
+      "props": [
+        "cms.services[]"
+      ],
       "status": "done",
       "wave": 8
     },
     {
       "id": "seo-how-it-works",
       "factory": "SeoHowItWorks",
-      "props": ["cms.how[] (request → scheduling/dispatch → service → report/payment)"],
+      "props": [
+        "cms.how[] (request → scheduling/dispatch → service → report/payment)"
+      ],
       "status": "done",
       "wave": 8
     },
     {
       "id": "seo-proof",
       "factory": "SeoProofBlock",
-      "props": ["cms.proof (title, items[3])"],
+      "props": [
+        "cms.proof (title, items[3])"
+      ],
       "status": "done",
       "wave": 8,
       "note": "Vertical-specific: HVAC equipment/maintenance/emergency; Snow trigger/SLA/compliance; Lawn programme/re-entry; Pool readings/swim-ready; Roofing inspection/report/project; Pest monitoring/guarantee; Health coordination/milestones/secure-docs (logistics only, no clinical claims); Beauty specialist/formulas/loyalty."
@@ -784,7 +824,9 @@
     {
       "id": "seo-pricing",
       "factory": "SeoPricing",
-      "props": ["cms.pricing (note, rows[] {name, from|null, unit|reason})"],
+      "props": [
+        "cms.pricing (note, rows[] {name, from|null, unit|reason})"
+      ],
       "status": "done",
       "wave": 8,
       "note": "'from' prices come ONLY from CMS; from:null renders the needs-assessment variant. States: ready|loading|empty (empty = no published prices, quote-only copy). Wave 12 (Calm Harbor/Beauty): when the vertical supplies pimPricing, ready renders the repeated LIVE public PIM collection pim.pricing[] instead of cms.pricing.rows[] — public SPA_SERVICE + SPA_MEMBERSHIP items only (never SPA_RETAIL); each seo-pricing-row binds code/name/displayPrice/optional interval|shortDescription, carries data-product-code, and renders displayPrice VERBATIM (presentation never calculates, estimates, compares or transforms a price). empty truthfully states nothing is published — no quote, booking or fallback price. Section CTA stays honest navigation (auth.gotoSignin)."
@@ -792,7 +834,9 @@
     {
       "id": "seo-pricing-row",
       "factory": "inline in SeoPricing",
-      "props": ["pim.pricing[] (code, name, displayPrice, interval?, shortDescription?) OR cms.pricing.rows[i]"],
+      "props": [
+        "pim.pricing[] (code, name, displayPrice, interval?, shortDescription?) OR cms.pricing.rows[i]"
+      ],
       "status": "done",
       "wave": 12,
       "note": "Stable row hook (data-module + data-visual-id seo-pricing-row). PIM rows carry data-product-code and data-bind=pim.pricing[]; legacy CMS rows keep data-bind=cms.pricing.rows[i]. Same accepted visual composition either way."
@@ -800,7 +844,10 @@
     {
       "id": "seo-service-area",
       "factory": "SeoServiceArea",
-      "props": ["cms.meta.serviceArea", "cms.area (cities[], note)"],
+      "props": [
+        "cms.meta.serviceArea",
+        "cms.area (cities[], note)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "City/region chips + abstract coverage rings (deliberately schematic — no fake addresses/pins). Real map/polygon is a CMS media slot."
@@ -808,7 +855,9 @@
     {
       "id": "seo-reviews",
       "factory": "SeoReviews",
-      "props": ["cms.reviews[] (name, rating, text, media)"],
+      "props": [
+        "cms.reviews[] (name, rating, text, media)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "media:true renders a striped media slot for the real customer photo; media:false = text-only card. Fallback when the collection is empty — nothing invented."
@@ -816,7 +865,9 @@
     {
       "id": "seo-faq",
       "factory": "SeoFaq",
-      "props": ["cms.faq[] (q, a)"],
+      "props": [
+        "cms.faq[] (q, a)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "Accordion with schema.org FAQPage/Question/Answer microdata — Codex emits FAQ schema from the same collection. seo.faq.toggle; states ready|loading|empty."
@@ -824,14 +875,20 @@
     {
       "id": "seo-final-cta",
       "factory": "SeoFinalCta",
-      "props": ["cms.meta (locality, primaryCta)"],
+      "props": [
+        "cms.meta (locality, primaryCta)"
+      ],
       "status": "done",
       "wave": 8
     },
     {
       "id": "seo-footer",
       "factory": "SeoFooter",
-      "props": ["cms.footer (contacts, hours, legal)", "cms.meta (serviceArea, canonicalPath)", "cms.area.cities"],
+      "props": [
+        "cms.footer (contacts, hours, legal)",
+        "cms.meta (serviceArea, canonicalPath)",
+        "cms.area.cities"
+      ],
       "status": "done",
       "wave": 8,
       "note": "Contacts are nullable slots (phone/email chips until supplied)."
@@ -839,7 +896,12 @@
     {
       "id": "seo-cta",
       "factory": "SeoCta",
-      "props": ["action (fixed id)", "label", "successLabel", "variant"],
+      "props": [
+        "action (fixed id)",
+        "label",
+        "successLabel",
+        "variant"
+      ],
       "status": "done",
       "wave": 8,
       "note": "data-state = idle|pending|success|error from state.seoCta[actionId]; state.seoCtaForce (dev toolbar 'cta' select) previews any state on all CTAs. Wave 11: CTA kinds services|pricing|products|signin map to HONEST NAVIGATION (nav.services / nav.pricing / nav.products / auth.gotoSignin) — those CTAs render NO lifecycle (data-state stays idle, unaffected by seoCtaForce)."
@@ -847,16 +909,25 @@
     {
       "id": "seo-products-teaser",
       "factory": "SeoProductsTeaser (components/seo/SeoSections.js)",
-      "props": ["cms.productsTeaser (eyebrow, title, sub, cta, note, codes[])", "pim.products[] (public fields only)"],
+      "props": [
+        "cms.productsTeaser (eyebrow, title, sub, cta, note, codes[])",
+        "pim.products[] (public fields only)"
+      ],
       "status": "done",
       "wave": 11,
-      "states": ["ready", "loading", "empty"],
+      "states": [
+        "ready",
+        "loading",
+        "empty"
+      ],
       "note": "Retail teaser between seo-pricing and seo-service-area (Calm Harbor release). Renders 3–4 cards from the repeated public PIM collection; per-vertical opt-in — the section is omitted when cms.productsTeaser is absent, other verticals unchanged. codes[] = CMS slot choosing featured catalog product codes. ONE action for the section CTA and every card: nav.products → existing public Shop route. Empty retail collection renders seo-products-teaser-empty (honest copy, CTA hidden, no invented products or sales claims). No cart, checkout, order, payment, booking command or success state on the public landing."
     },
     {
       "id": "seo-product-teaser-card",
       "factory": "inline in SeoProductsTeaser",
-      "props": ["pim.products[] — code, name, shortDescription, displayPrice, optional image"],
+      "props": [
+        "pim.products[] — code, name, shortDescription, displayPrice, optional image"
+      ],
       "status": "done",
       "wave": 11,
       "note": "Reuses the accepted product-card visual language (product-card classes) — NOT a second catalog-card system; no Add/cart button. data-product-code carries the source PIM product code. A missing public image keeps the accepted tinted-thumb art. Whole card fires nav.products."
@@ -872,7 +943,9 @@
     {
       "id": "seo-media",
       "factory": "seoMedia (components/seo/SeoSections.js)",
-      "props": ["cms.media.hero / cms.media.proof (src, alt, focal, label)"],
+      "props": [
+        "cms.media.hero / cms.media.proof (src, alt, focal, label)"
+      ],
       "status": "done",
       "wave": 11,
       "note": "CMS media slot that renders the supplied public image (object-fit cover + CMS focal point) inside the existing seo-hero / seo-proof composition. While the file is missing it falls back to the striped spec slot (data-state no-data) — never drawn imagery; no logos, text, prices, ratings or promo claims inside bitmaps. Files: customer-portal-design/design-inbox/media/calm-harbor-{hero,proof}.jpg; crops/focal/alt spec in MEDIA-SPEC.md."
@@ -880,7 +953,9 @@
     {
       "id": "seo-meta-preview",
       "factory": "SeoMetaPreview",
-      "props": ["cms.meta (seoTitle, metaDescription, canonicalPath, locality, primaryCta.destination)"],
+      "props": [
+        "cms.meta (seoTitle, metaDescription, canonicalPath, locality, primaryCta.destination)"
+      ],
       "status": "done",
       "wave": 8,
       "note": "DEV-ONLY (data-dev-toolbar) — surfaces head-level CMS fields that have no visible place on the page. Stripped on integration."
@@ -902,7 +977,14 @@
         "sessionName (session.displayName)"
       ],
       "wave": 10,
-      "states": ["checking-session", "ready-signed-out", "redirecting", "unavailable", "ready-signed-in", "signing-out"],
+      "states": [
+        "checking-session",
+        "ready-signed-out",
+        "redirecting",
+        "unavailable",
+        "ready-signed-in",
+        "signing-out"
+      ],
       "note": "Core OIDC login card — route auth.oidc at /login. Replaces the fixture phone/OTP/Apple controls. 'checking-session' = initial bootstrap on EVERY page load (incl. the return from /core/oauth2-callback.html): discovery + session restore from browser storage — non-interactive, claims no redirect, shows no sign-in controls and no session name; Codex resolves it to ready-signed-out / ready-signed-in / unavailable. auth.oidcSignIn starts the authorization-code+PKCE redirect (demo body only sets 'redirecting'; in production the browser leaves for Core and returns to the same /login URL). 'unavailable' = Core discovery / authorization-library init failure — retry only, NO fallback login method. ready-signed-in renders ONE customer-safe display name (data-bind session.displayName), a catalog route and sign-out — it does NOT imply orders/appointments/profile/booking data. No password input, token, API key or Account id is ever rendered.",
       "status": "done"
     },
@@ -1046,25 +1128,41 @@
     {
       "id": "care-hub",
       "factory": "Care()",
-      "props": ["theme"],
+      "props": [
+        "theme"
+      ],
       "wave": 7,
       "note": "one route, six vertical-specific module sets (fixtures.careModules[theme]); nav label = careModules[theme].navLabel",
-      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
       "status": "done"
     },
     {
       "id": "entitlement-gate",
       "factory": "inline in Care()",
-      "props": ["module.navLabel", "module.title"],
+      "props": [
+        "module.navLabel",
+        "module.title"
+      ],
       "wave": 7,
       "note": "unauthorized / entitlement-denied state; upgrade -> profile.managePlan, questions -> support.open",
-      "states": ["unauthorized"],
+      "states": [
+        "unauthorized"
+      ],
       "status": "done"
     },
     {
       "id": "unit-picker",
       "factory": "inline in EquipmentHub",
-      "props": ["units", "careUnit"],
+      "props": [
+        "units",
+        "careUnit"
+      ],
       "wave": 7,
       "vertical": "HVAC",
       "contract": "care.selectUnit data-id = unit.id (stable, e.g. unit-ac-01), never the display name",
@@ -1073,7 +1171,9 @@
     {
       "id": "equipment-passport",
       "factory": "inline in EquipmentHub",
-      "props": ["unit"],
+      "props": [
+        "unit"
+      ],
       "wave": 7,
       "vertical": "HVAC",
       "status": "done"
@@ -1081,7 +1181,9 @@
     {
       "id": "diagnostic-report",
       "factory": "inline in EquipmentHub",
-      "props": ["unit.checks"],
+      "props": [
+        "unit.checks"
+      ],
       "wave": 7,
       "vertical": "HVAC",
       "status": "done"
@@ -1089,14 +1191,18 @@
     {
       "id": "document-vault",
       "factory": "inline in EquipmentHub / RoofReport",
-      "props": ["docs"],
+      "props": [
+        "docs"
+      ],
       "wave": 7,
       "status": "done"
     },
     {
       "id": "document-row",
       "factory": "DocRow",
-      "props": ["doc"],
+      "props": [
+        "doc"
+      ],
       "wave": 7,
       "contract": "care.download data-id = document.id (e.g. doc-hvac-diag-2026-01); row carries data-document-id",
       "status": "done"
@@ -1104,7 +1210,9 @@
     {
       "id": "season-stats",
       "factory": "inline in SeasonLog",
-      "props": ["stats"],
+      "props": [
+        "stats"
+      ],
       "wave": 7,
       "vertical": "Snow Removal",
       "status": "done"
@@ -1112,7 +1220,9 @@
     {
       "id": "storm-log",
       "factory": "inline in SeasonLog",
-      "props": ["events"],
+      "props": [
+        "events"
+      ],
       "wave": 7,
       "vertical": "Snow Removal",
       "status": "done"
@@ -1120,7 +1230,9 @@
     {
       "id": "sla-meter",
       "factory": "inline in SeasonLog",
-      "props": ["sla"],
+      "props": [
+        "sla"
+      ],
       "wave": 7,
       "vertical": "Snow Removal",
       "status": "done"
@@ -1128,7 +1240,9 @@
     {
       "id": "compliance-reports",
       "factory": "inline in SeasonLog",
-      "props": ["docs"],
+      "props": [
+        "docs"
+      ],
       "wave": 7,
       "vertical": "Snow Removal",
       "status": "done"
@@ -1136,7 +1250,9 @@
     {
       "id": "program-steps",
       "factory": "inline in LawnProgram",
-      "props": ["steps"],
+      "props": [
+        "steps"
+      ],
       "wave": 7,
       "vertical": "Lawn & Garden",
       "status": "done"
@@ -1144,7 +1260,9 @@
     {
       "id": "reentry-card",
       "factory": "inline in LawnProgram",
-      "props": ["reentry"],
+      "props": [
+        "reentry"
+      ],
       "wave": 7,
       "vertical": "Lawn & Garden",
       "status": "done"
@@ -1152,7 +1270,9 @@
     {
       "id": "soil-snapshot",
       "factory": "inline in LawnProgram",
-      "props": ["soil"],
+      "props": [
+        "soil"
+      ],
       "wave": 7,
       "vertical": "Lawn & Garden",
       "status": "done"
@@ -1160,7 +1280,9 @@
     {
       "id": "progress-photos",
       "factory": "inline in LawnProgram",
-      "props": ["photos"],
+      "props": [
+        "photos"
+      ],
       "wave": 7,
       "vertical": "Lawn & Garden",
       "status": "done"
@@ -1168,7 +1290,9 @@
     {
       "id": "water-readings",
       "factory": "inline in WaterQuality",
-      "props": ["readings"],
+      "props": [
+        "readings"
+      ],
       "wave": 7,
       "vertical": "Pool & Spa",
       "status": "done"
@@ -1176,7 +1300,9 @@
     {
       "id": "dose-log",
       "factory": "inline in WaterQuality",
-      "props": ["doses"],
+      "props": [
+        "doses"
+      ],
       "wave": 7,
       "vertical": "Pool & Spa",
       "status": "done"
@@ -1184,7 +1310,10 @@
     {
       "id": "test-cadence",
       "factory": "inline in WaterQuality",
-      "props": ["tested", "nextTest"],
+      "props": [
+        "tested",
+        "nextTest"
+      ],
       "wave": 7,
       "vertical": "Pool & Spa",
       "status": "done"
@@ -1192,7 +1321,9 @@
     {
       "id": "roof-zones",
       "factory": "inline in RoofReport",
-      "props": ["zones"],
+      "props": [
+        "zones"
+      ],
       "wave": 7,
       "vertical": "Roofing",
       "status": "done"
@@ -1200,7 +1331,10 @@
     {
       "id": "roof-score",
       "factory": "inline in RoofReport",
-      "props": ["score", "grade"],
+      "props": [
+        "score",
+        "grade"
+      ],
       "wave": 7,
       "vertical": "Roofing",
       "status": "done"
@@ -1208,7 +1342,9 @@
     {
       "id": "project-tracker",
       "factory": "inline in RoofReport (reuses timeline classes)",
-      "props": ["project"],
+      "props": [
+        "project"
+      ],
       "wave": 7,
       "vertical": "Roofing",
       "status": "done"
@@ -1216,7 +1352,9 @@
     {
       "id": "monitoring-summary",
       "factory": "inline in PestMonitoring",
-      "props": ["summary"],
+      "props": [
+        "summary"
+      ],
       "wave": 7,
       "vertical": "Pest Control",
       "status": "done"
@@ -1224,7 +1362,9 @@
     {
       "id": "station-map",
       "factory": "inline in PestMonitoring",
-      "props": ["stations"],
+      "props": [
+        "stations"
+      ],
       "wave": 7,
       "vertical": "Pest Control",
       "status": "done"
@@ -1232,7 +1372,9 @@
     {
       "id": "station-list",
       "factory": "inline in PestMonitoring",
-      "props": ["stations"],
+      "props": [
+        "stations"
+      ],
       "wave": 7,
       "vertical": "Pest Control",
       "status": "done"
@@ -1240,7 +1382,9 @@
     {
       "id": "alert-log",
       "factory": "inline in PestMonitoring",
-      "props": ["alerts"],
+      "props": [
+        "alerts"
+      ],
       "wave": 7,
       "vertical": "Pest Control",
       "status": "done"
@@ -1248,27 +1392,43 @@
     {
       "id": "retreat-card",
       "factory": "inline in PestMonitoring",
-      "props": ["guarantee"],
+      "props": [
+        "guarantee"
+      ],
       "wave": 7,
       "vertical": "Pest Control",
-      "states": ["available", "requesting", "used"],
+      "states": [
+        "available",
+        "requesting",
+        "used"
+      ],
       "contract": "care.requestRetreat data-id = plan.planId; button also carries data-property-id + data-service-id (stable scope, never display names). Demo body only sets the 'requesting' visual state — Codex owns the real request + resolution.",
       "status": "done"
     },
     {
       "id": "health-care-hub",
       "factory": "HealthCareHub()",
-      "props": ["careModules['Health']"],
+      "props": [
+        "careModules['Health']"
+      ],
       "wave": 9,
       "vertical": "Health",
       "note": "LOGISTICS ONLY BY DESIGN — renders scheduling, milestones, tasks and document METADATA; never clinical metrics, readings, results or medical advice.",
-      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
       "status": "done"
     },
     {
       "id": "care-appointment",
       "factory": "inline in HealthCareHub / BeautyCareHub",
-      "props": ["appointment"],
+      "props": [
+        "appointment"
+      ],
       "wave": 9,
       "contract": "card carries data-appointment-id (stable, e.g. appt-health-2026-0130 / appt-beauty-2026-0116) + data-provider-id / data-specialist-id; reschedule & details use the linked order id",
       "status": "done"
@@ -1276,7 +1436,9 @@
     {
       "id": "care-plan",
       "factory": "inline in HealthCareHub",
-      "props": ["plan.milestones"],
+      "props": [
+        "plan.milestones"
+      ],
       "wave": 9,
       "vertical": "Health",
       "contract": "card carries data-plan-id (e.g. plan-health-2026); milestones are logistics steps (intake/review/cadence), never clinical outcomes",
@@ -1285,17 +1447,24 @@
     {
       "id": "follow-up-tasks",
       "factory": "inline in HealthCareHub",
-      "props": ["tasks"],
+      "props": [
+        "tasks"
+      ],
       "wave": 9,
       "vertical": "Health",
-      "states": ["open", "done"],
+      "states": [
+        "open",
+        "done"
+      ],
       "contract": "care.completeTask data-id = task.id (e.g. task-health-01); row carries data-task-id + data-state open|done",
       "status": "done"
     },
     {
       "id": "provider-card",
       "factory": "inline in HealthCareHub",
-      "props": ["provider"],
+      "props": [
+        "provider"
+      ],
       "wave": 9,
       "vertical": "Health",
       "contract": "care.contactProvider data-id = provider.id (e.g. prov-health-pt-01); card carries data-provider-id",
@@ -1304,7 +1473,10 @@
     {
       "id": "secure-documents",
       "factory": "inline in HealthCareHub",
-      "props": ["docs", "docsNote"],
+      "props": [
+        "docs",
+        "docsNote"
+      ],
       "wave": 9,
       "vertical": "Health",
       "contract": "care.openSecureDoc data-id = document.id (e.g. doc-health-results-2026-01); row carries data-document-id. Contents are NEVER previewed in the portal — secure viewer only, access logged (Codex owns the viewer + audit).",
@@ -1313,7 +1485,9 @@
     {
       "id": "care-disclaimer",
       "factory": "inline in HealthCareHub",
-      "props": ["disclaimer"],
+      "props": [
+        "disclaimer"
+      ],
       "wave": 9,
       "vertical": "Health",
       "status": "done"
@@ -1321,16 +1495,26 @@
     {
       "id": "beauty-care-hub",
       "factory": "BeautyCareHub()",
-      "props": ["careModules['Beauty']"],
+      "props": [
+        "careModules['Beauty']"
+      ],
       "wave": 9,
       "vertical": "Beauty",
-      "states": ["ready", "loading", "empty", "error", "unauthorized"],
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
       "status": "done"
     },
     {
       "id": "package-card",
       "factory": "inline in BeautyCareHub",
-      "props": ["pkg"],
+      "props": [
+        "pkg"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "contract": "card carries data-package-id (e.g. pkg-beauty-glow-2026)",
@@ -1339,7 +1523,11 @@
     {
       "id": "specialist-picker",
       "factory": "inline in BeautyCareHub",
-      "props": ["specialists", "preferredId", "state.careSpecialist"],
+      "props": [
+        "specialists",
+        "preferredId",
+        "state.careSpecialist"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "contract": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01), never the display name",
@@ -1348,7 +1536,9 @@
     {
       "id": "treatment-history",
       "factory": "inline in BeautyCareHub",
-      "props": ["history"],
+      "props": [
+        "history"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "status": "done"
@@ -1356,7 +1546,9 @@
     {
       "id": "routine-card",
       "factory": "inline in BeautyCareHub",
-      "props": ["routine"],
+      "props": [
+        "routine"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "status": "done"
@@ -1364,7 +1556,9 @@
     {
       "id": "loyalty-card",
       "factory": "inline in BeautyCareHub",
-      "props": ["loyalty"],
+      "props": [
+        "loyalty"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "contract": "card carries data-plan-id (e.g. plan-beauty-member-2026); manage → profile.managePlan",
@@ -1373,10 +1567,501 @@
     {
       "id": "care-products",
       "factory": "inline in BeautyCareHub",
-      "props": ["productRecs", "themes[theme].products"],
+      "props": [
+        "productRecs",
+        "themes[theme].products"
+      ],
       "wave": 9,
       "vertical": "Beauty",
       "note": "reuses the existing cart contract: cart.addItem data-id = product name",
+      "status": "done"
+    },
+    {
+      "id": "account-bootstrap",
+      "factory": "AccountBootstrap() (components/shell/AccountBootstrap.js)",
+      "props": [
+        "state.account",
+        "state.route (intended route — preserved, exposed as data-intended-route)"
+      ],
+      "wave": 13,
+      "states": [
+        "resolving-customer",
+        "customer-unavailable",
+        "customer-not-linked",
+        "customer-account-ambiguous",
+        "organization-forbidden",
+        "customer-forbidden",
+        "session-expired"
+      ],
+      "note": "Shared session/account gate. While state.account != ready, render() substitutes this module for EVERY private route body — no private fixture entity ever renders as a fallback — and TopNav renders gated (brand + light/dark only; no nav links, cart count, activity badge or avatar). resolving-customer is non-interactive (aria-busy, no ids/claims). customer-unavailable: ui.retry data-id=account-bootstrap + auth.signOut — honest retry, no fixture fallback. customer-not-linked / customer-forbidden: non-enumerating; support.email + auth.signOut only. session-expired: intended route preserved in state.route (shown as a customer-safe label, never an id); auth.oidcSignIn re-enters sign-in and returns to it; stale private data is never shown as current. Demo transitions only — Codex resolves the real Account from the authenticated subject (Core user/basic-info → organization check → exactly one SPA_CUSTOMER Account via Account.user); the browser NEVER chooses Account/tenant from CMS, URL or form input. Wave 14 adds customer-account-ambiguous (the sign-in matches more than one Account — candidates are never enumerated and the browser never picks) and organization-forbidden (the subject fails the organization check — no organization name, code or reason is rendered).",
+      "status": "done"
+    },
+    {
+      "id": "unauthorized-state",
+      "factory": "UnauthorizedState (components/primitives/RouteStates.js)",
+      "props": [
+        "scope",
+        "backRoute"
+      ],
+      "wave": 13,
+      "note": "Non-enumerating route/module access-denied: no reason, no role/claim, no hint whether the resource exists. Actions: support.email + nav.go back.",
+      "status": "done"
+    },
+    {
+      "id": "not-found-state",
+      "factory": "NotFoundState (components/primitives/RouteStates.js)",
+      "props": [
+        "noun",
+        "backLabel",
+        "backRoute"
+      ],
+      "wave": 13,
+      "note": "Non-enumerating not-found for private entities: identical whether the id never existed, was removed, or belongs to another customer.",
+      "status": "done"
+    },
+    {
+      "id": "conflict-banner",
+      "factory": "ConflictBanner (components/primitives/RouteStates.js)",
+      "props": [
+        "noun",
+        "desc",
+        "retryId (ui.retry scope: command key or module id)"
+      ],
+      "wave": 13,
+      "note": "Version-conflict / stale-entity treatment: prompts refresh-and-review, never success on stale data. Used by proposal.detail (version conflict blocks deciding) and checkout (server re-priced cart blocks submitting).",
+      "status": "done"
+    },
+    {
+      "id": "command-failure",
+      "factory": "InlineFailure (components/primitives/RouteStates.js)",
+      "props": [
+        "msg",
+        "retryAction",
+        "retryId",
+        "retryLabel"
+      ],
+      "wave": 13,
+      "note": "Inline command failure next to the exact entity: states the action did NOT complete, keeps authoritative data visible, retry explicitly re-fires the original action.",
+      "status": "done"
+    },
+    {
+      "id": "contact-details",
+      "factory": "ContactPanel (inline in Profile)",
+      "props": [
+        "currentContact() (server-confirmed values)",
+        "state.contactDraft",
+        "state.contactErrors"
+      ],
+      "wave": 13,
+      "states": [
+        "idle",
+        "invalid",
+        "saving",
+        "save-failed"
+      ],
+      "note": "Customer-safe contact fields (phone, email) with field validation (data-state=invalid on the exact field + field-error), saving (profile.saveContact command pending), and save failure (values on file unchanged, explicit retry). Values render from the last server-confirmed readback — never an optimistic claim.",
+      "status": "done"
+    },
+    {
+      "id": "account-control",
+      "factory": "inline in SpaTopNav (components/shell/SpaTopNav.js)",
+      "props": [
+        "session.displayName"
+      ],
+      "wave": 14,
+      "note": "Account/session button in the spa shell (avatar initial + one customer-safe display name). Opens the account menu (account.menu). Replaces cart/bell/avatar-to-profile for the Calm Harbor portal — those capabilities are not open.",
+      "status": "done"
+    },
+    {
+      "id": "account-menu",
+      "factory": "inline in SpaTopNav",
+      "props": [
+        "session.displayName",
+        "state.accountMenu"
+      ],
+      "wave": 14,
+      "states": [
+        "account-menu-open"
+      ],
+      "note": "Session-safe identity + Support + light/dark + secure sign-out ONLY. No profile editing, Account id, plan or entitlement claim. Wave 14.1: Support opens the honest support-unavailable notice (support.open is destination-less for Calm Harbor).",
+      "status": "done"
+    },
+    {
+      "id": "spa-order-list",
+      "factory": "SpaOrders() (routes/SpaOrdersPage.js)",
+      "props": [
+        "spa.stagingOrders",
+        "state.spaRows"
+      ],
+      "wave": 14,
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error",
+        "unauthorized"
+      ],
+      "note": "CURRENT STAGING read-only Core Order list (route orders.list, data-capability=current-staging). Carries the Read-only chip and a footnote; no row navigation, dates, tracking, invoices or commands.",
+      "status": "done"
+    },
+    {
+      "id": "spa-order-row",
+      "factory": "inline in SpaOrders",
+      "props": [
+        "order.typeLabel",
+        "order.typeCode",
+        "order.reference",
+        "order.rawStatus",
+        "order.displayTotal",
+        "order.currency"
+      ],
+      "wave": 14,
+      "note": "Non-interactive row of normalized safe staging fields only. Raw status renders via status-badge--unmapped (data-state=unmapped) — OPEN is never translated to Upcoming/Confirmed. Row carries data-order-ref. Wave 14.1: at vw-mobile the row is a two-row grid — identity column owns the full width beside the icon (>=180px guaranteed; long names wrap at word boundaries), raw status + amount move to a second row (badge may wrap, never truncates).",
+      "status": "done"
+    },
+    {
+      "id": "next-appointment",
+      "factory": "inline in SpaAppointments (routes/SpaAppointmentsPage.js)",
+      "props": [
+        "spa.appointments.nextVariants[state.spaAppt]"
+      ],
+      "wave": 14,
+      "states": [
+        "ready",
+        "pending",
+        "failed",
+        "conflict",
+        "cancelled (readback only)",
+        "unavailable (booking closed)"
+      ],
+      "note": "TARGET-ONLY hero card (capability-gated). Source-owned fields: service (headline), start + local-time note, optional specialist, visit mode (At Calm Harbor / At your place), least-data location, mapped customer status, optional price; reference is secondary detail — never 'Order #' as the headline. data-appointment-id on the card. Wave 14.1: closed-booking 'Contact support' ends at the support-unavailable notice. The at-home fixture location is neutral least-data copy ('Address on file') — no address-sharing claim.",
+      "status": "done"
+    },
+    {
+      "id": "visit-mode",
+      "factory": "modeChip (inline in SpaAppointments)",
+      "props": [
+        "appointment.visitMode"
+      ],
+      "wave": 14,
+      "note": "Explicit visit-mode chip — text label always present, never color alone. Labels from spa.modeLabels.",
+      "status": "done"
+    },
+    {
+      "id": "appointment-list",
+      "factory": "inline in SpaAppointments",
+      "props": [
+        "spa.appointments.upcoming / .past"
+      ],
+      "wave": 14,
+      "note": "Upcoming and Past groups (list-panel). Rows do NOT navigate to a detail read until Account ownership is enforced there. Book again renders on completed past rows only while booking is open.",
+      "status": "done"
+    },
+    {
+      "id": "appointment-row",
+      "factory": "apptRow (inline in SpaAppointments)",
+      "props": [
+        "appointment.*"
+      ],
+      "wave": 14,
+      "note": "data-appointment-id per row; status badge from the approved-mapping placeholder; price optional.",
+      "status": "done"
+    },
+    {
+      "id": "appointment-empty",
+      "factory": "inline in SpaAppointments",
+      "props": [
+        "state.spaAppt (empty | no-history)"
+      ],
+      "wave": 14,
+      "note": "'Book an appointment' exists ONLY while booking is open; closed offers Browse services / See prices. Past history stays below when it exists.",
+      "status": "done"
+    },
+    {
+      "id": "catalog-teaser",
+      "factory": "inline in SpaAppointments",
+      "props": [
+        "spa.pim.services"
+      ],
+      "wave": 14,
+      "note": "Right-rail Services & prices teaser (public PIM rows, verbatim prices). Keeps catalog behind the next visit; Shop is absent from the rail.",
+      "status": "done"
+    },
+    {
+      "id": "spa-catalog",
+      "factory": "SpaCatalog() (routes/SpaCatalogPage.js)",
+      "props": [
+        "state.route (services|pricing)",
+        "spa.pim"
+      ],
+      "wave": 14,
+      "states": [
+        "ready",
+        "loading",
+        "empty",
+        "error"
+      ],
+      "note": "ONE customer destination 'Services & prices' over the two STABLE route ids (services, pricing) — the in-section tab (accepted Tabs primitive, action nav.go) is the transition between them. displayPrice verbatim; no availability claim; closed-booking cards navigate within the catalog ('See in the price list'), never a reservation.",
+      "status": "done"
+    },
+    {
+      "id": "spa-service-card",
+      "factory": "inline in SpaCatalog",
+      "props": [
+        "pim.services[] (code, name, shortDescription, displayPrice, interval)"
+      ],
+      "wave": 14,
+      "note": "data-product-code per card. Book button exists only while data-booking=open.",
+      "status": "done"
+    },
+    {
+      "id": "spa-pricing-row",
+      "factory": "inline in SpaCatalog",
+      "props": [
+        "pim.services[] / pim.memberships[]"
+      ],
+      "wave": 14,
+      "note": "SPA_SERVICE + SPA_MEMBERSHIP rows; data-product-code; price verbatim with interval.",
+      "status": "done"
+    },
+    {
+      "id": "membership-options",
+      "factory": "inline in SpaCatalog",
+      "props": [
+        "pim.memberships[]"
+      ],
+      "wave": 14,
+      "note": "PUBLIC membership offers — labelled 'Membership options', never 'My membership', enrollment or balance. Ask-about action = support.email. Wave 14.1: the enquiry action ends at the support-unavailable notice — no email/delivery claim.",
+      "status": "done"
+    },
+    {
+      "id": "spa-shop-card",
+      "factory": "inline in SpaShop (routes/SpaShopPage.js)",
+      "props": [
+        "pim.products[] (code, name, shortDescription, displayPrice)"
+      ],
+      "wave": 14,
+      "note": "Browse-only retail card: proven public PIM fields only. No Add to cart, inventory, availability, checkout or purchase success anywhere on the route; the page carries the Browse-only chip + footnote.",
+      "status": "done"
+    },
+    {
+      "id": "support-unavailable",
+      "factory": "inline in AppShell (components/shell/AppShell.js)",
+      "props": [
+        "state.spaSupport"
+      ],
+      "wave": 14.1,
+      "states": [
+        "unavailable"
+      ],
+      "note": "Honest treatment for the missing support destination (Beauty/Calm Harbor only): modal notice stating a support contact isn't set up and that nothing was opened, sent or recorded. Reached from every visible support action (support.open/support.email/support.call); dismissed via support.dismiss. Never renders fixture threads, agent state, tickets or sent-message success.",
+      "status": "done"
+    },
+    {
+      "id": "unavailable-state",
+      "factory": "UnavailableState (components/spa/CommerceBits.js)",
+      "props": ["title", "desc", "action"],
+      "wave": 15,
+      "states": ["unavailable"],
+      "note": "Honest treatment for an UNOPENED capability or module — explicitly not empty data; never renders fixture records in the meantime.",
+      "status": "done"
+    },
+    {
+      "id": "simulation-notice",
+      "factory": "SimulationBadge (components/spa/CommerceBits.js)",
+      "props": [],
+      "wave": 15,
+      "note": "The explicit 'Simulation — no charge will be made' treatment. REQUIRED wherever a payment step or confirmation renders (checkout payment card, booking review, confirmation, purchase totals note). Never a payment/success claim.",
+      "status": "done"
+    },
+    {
+      "id": "spa-account",
+      "factory": "SpaAccount (routes/SpaAccountPage.js)",
+      "props": ["session.displayName", "capability config"],
+      "wave": 15,
+      "states": ["ready", "loading", "error", "unauthorized", "unavailable"],
+      "note": "Account overview — 4th primary destination. Entry cards for Purchases / My plan / Profile / Support, each available|unavailable per its OWN contract (account-entry, data-state on the card). No Account/User id, role, permission or organization selector.",
+      "status": "done"
+    },
+    {
+      "id": "account-entry",
+      "factory": "inline in SpaAccount",
+      "props": ["entry copy per availability"],
+      "wave": 15,
+      "states": ["available", "unavailable"],
+      "note": "Unavailable renders honest copy + an honest alternative link (staging Purchases -> raw Orders; plan -> public Membership options) — never empty data.",
+      "status": "done"
+    },
+    {
+      "id": "purchase-row",
+      "factory": "inline in SpaPurchases (routes/SpaPurchasesPage.js)",
+      "props": ["purchase summary read model"],
+      "wave": 15,
+      "note": "Binds purchase.{reference,kind,customerStatus,placedAt,displayTotal,currency,itemSummary,attention}; data-purchase-ref = opaque stable ref (never a raw sequential Core id); opens purchase.open. Customer status is the BACKEND-OWNED mapping — the raw staging Orders variant (spa-order-row) stays separate and never borrows these labels.",
+      "status": "done"
+    },
+    {
+      "id": "spa-purchases",
+      "factory": "SpaPurchases (routes/SpaPurchasesPage.js)",
+      "props": ["purchases list + filters"],
+      "wave": 15,
+      "states": ["ready", "loading", "empty", "error", "unauthorized", "unavailable", "cursor-loading"],
+      "note": "Filters (All/Services/Shop/Plans) render ONLY for kinds present in the returned data. Cursor loading appends skeletons BELOW kept rows — already-rendered rows are never replaced. current-staging renders the honest unavailable notice pointing at the raw Orders page.",
+      "status": "done"
+    },
+    {
+      "id": "spa-purchase-detail",
+      "factory": "SpaPurchaseDetail (routes/SpaPurchaseDetailPage.js) + purchase-summary / purchase-lines / purchase-line / commercial-totals / purchase-fulfillment / purchase-appointments / purchase-plan / purchase-actions",
+      "props": ["purchase detail read model"],
+      "wave": 15,
+      "states": ["ready", "loading", "not-found", "error", "unauthorized", "unavailable"],
+      "note": "Line grouping ONLY when source-provided (groups[]); absent sections are OMITTED, never guessed. Totals / fulfillment / appointments / plan are SEPARATE state dimensions. Actions are capability-driven from allowedActions with per-entity command lifecycle (idle|pending|failed|conflict|session-lost); cancel/return are REQUEST flows whose success readback is accepted-for-review — no refund consequence is shown or calculated.",
+      "status": "done"
+    },
+    {
+      "id": "spa-plan",
+      "factory": "SpaPlan (routes/SpaPlanPage.js) + plan-card / plan-usage",
+      "props": ["plan summary read model"],
+      "wave": 15,
+      "states": ["ready(active|expiring|exhausted|cancelled)", "empty", "loading", "error", "unauthorized", "unavailable"],
+      "note": "PACKAGE (finite credits, usage meter from server-provided remaining/total) is distinct from MEMBERSHIP (recurring, renewsAt + displayRecurringPrice verbatim). Unknown fields are omitted — a membership without a proven balance never shows '0 visits'. plan.bookWithCredit / plan.cancelRenewal render only when returned in allowedActions; public offers stay 'Membership options' in the catalog.",
+      "status": "done"
+    },
+    {
+      "id": "variant-picker",
+      "factory": "inline in SpaShop (sellable variant)",
+      "props": ["retail.variants[]"],
+      "wave": 15,
+      "note": "variant-required product state: Add is disabled until a variant (data-variant-ref) is picked; per-variant display price verbatim.",
+      "status": "done"
+    },
+    {
+      "id": "cart-indicator",
+      "factory": "inline in SpaTopNav",
+      "props": ["server cart line count"],
+      "wave": 15,
+      "note": "Renders ONLY under retail-commerce-open. The count is the server cart's contents and never implies a reservation.",
+      "status": "done"
+    },
+    {
+      "id": "spa-cart",
+      "factory": "SpaCart (routes/SpaCartPage.js) + cart-line / cart-totals / cart-fulfillment",
+      "props": ["server cart read model"],
+      "wave": 15,
+      "states": ["ready", "empty", "loading", "error", "unauthorized", "unavailable", "line: pending|stale-price|inventory-conflict"],
+      "note": "PERSISTENT SERVER cart: every mutation (cart.addItem / cart.changeQuantity / cart.removeItem) returns a COMPLETE recalculated cart — display totals verbatim, nothing computed locally. Pending is row-scoped (data-line-ref); unrelated rows stay interactive. Stale-price / inventory-conflict block checkout until an explicit reload/fix. Copy states items are NOT reserved.",
+      "status": "done"
+    },
+    {
+      "id": "spa-checkout",
+      "factory": "SpaCheckout (routes/SpaCheckoutPage.js) + checkout-contact / checkout-fulfillment / checkout-lines / checkout-payment / policy-ack",
+      "props": ["frozen checkout quote (source cart | plan; bookings via the drawer bridge)"],
+      "wave": 15,
+      "states": ["loading", "ready", "repriced", "inventory-conflict", "slot-expired", "confirm-pending", "confirm-failed", "conflict", "session-lost", "unavailable", "confirmed"],
+      "note": "SIMULATED checkout: review sections contact / fulfillment / order lines / server totals / policy ack. The payment step ALWAYS carries simulation-notice; NO card fields, saved payment methods, PSP controls, redirects or payment-success treatment exists. Primary command is 'Confirm order'. Blocking states disable confirm until an explicit reload (ui.retry checkout-quote).",
+      "status": "done"
+    },
+    {
+      "id": "spa-confirmation",
+      "factory": "inline in SpaCheckout",
+      "props": ["authoritative confirmation readback (state.spaResult)"],
+      "wave": 15,
+      "states": ["confirmed"],
+      "note": "Renders ONLY from the authoritative (demo) readback — never from a local transition, closed drawer, toast or HTTP success. Copy is 'Order confirmed' / 'Booking confirmed' / 'Demo checkout completed' — never Paid/Charged/Payment successful. Includes created purchase reference + related Appointment/plan when present, with deep links (purchase.open / account.openPlan).",
+      "status": "done"
+    },
+    {
+      "id": "booking-review",
+      "factory": "inline in BookingDrawer (app.js)",
+      "props": ["paymentMode SIMULATED", "state.spaHold"],
+      "wave": 15,
+      "states": ["held", "slot-expired", "repriced"],
+      "note": "Booking confirmation bridge: the review is explicitly simulated (no charge); held-slot expiry and price change are BLOCKING states — confirm disabled until ui.retry booking-hold. The confirm readback may create an Appointment only, or an Appointment plus Order (dev select bookres). Wave 16: rendered by SpaBookingFlow's review step (same module id, same blocking contract) with the server hold label, policy acknowledgement and per-entry confirm labels.",
+      "status": "done"
+    },
+    {
+      "id": "appointment-detail",
+      "factory": "SpaAppointmentDetail (routes/SpaAppointmentDetailPage.js)",
+      "props": ["appointment detail read model (F.spaCommerce.appointmentDetails[ref])"],
+      "wave": 16,
+      "states": ["ready", "loading", "error", "unauthorized", "not-found", "conflict", "card: pending|failed|conflict|cancelled"],
+      "note": "Standalone customer-owned detail (route appointment.detail), opened from upcoming/past rows via appointment.open (opaque data-appointment-ref). Renders ONLY source-provided fields — service headline (never 'Order #'), mapped customer status, start + timezone note, optional specialist, visit mode + least-data location, optional display price, customer-safe reference, related-purchase link when provided, server-owned attention/policy copy — and exactly the actions in allowedActions (Reschedule / Cancel visit / Book again / View purchase), disabled honestly while booking is closed. Foreign/removed/unknown refs share ONE non-enumerating not-found. Cancelled and rescheduled states render exclusively from the authoritative (demo) readback.",
+      "status": "done"
+    },
+    {
+      "id": "booking-flow",
+      "factory": "SpaBookingFlow (components/spa/SpaBookingFlow.js)",
+      "props": ["state.spaFlow (entry, step, serviceCode, planRef, specialistRef, dayKey, slotRef, rescheduleOf, held)", "F.spaBooking (server read model)"],
+      "wave": 16,
+      "states": ["context", "specialist (ONLY when the server returns specialists)", "slots (ready|loading|empty|error)", "review (held|slot-expired|repriced)"],
+      "note": "ONE flow for every supported entry: service Book (booking.open + service code), empty Appointments, past Book again (appointment.bookAgain), active package Book with a credit (plan.bookWithCredit), upcoming Reschedule (appointment.reschedule). Steps: context → optional specialist → eligible date/slot selection → expiring SERVER slot hold (booking.hold — display-ready expiry label, NEVER a local countdown; expiry/reprice are server events) → review with server display total, policy ack (booking.ackPolicy) and the explicit simulation treatment. Confirm (booking.confirm) is entity-scoped; the result is the authoritative readback (Appointment only or Appointment+Order); a reschedule releases the original visit ONLY in that readback. Plan-credit state (ok|unavailable|exhausted|changed) gates the flow verbatim — nothing about balance or eligibility is calculated in presentation.",
+      "status": "done"
+    },
+    {
+      "id": "booking-steps",
+      "factory": "inline in SpaBookingFlow",
+      "props": ["flow step list (specialist appears only when returned)"],
+      "wave": 16,
+      "status": "done"
+    },
+    {
+      "id": "reschedule-current",
+      "factory": "inline in SpaBookingFlow",
+      "props": ["the currently booked visit (appointmentDetails[rescheduleOf])"],
+      "wave": 16,
+      "note": "A reschedule must clearly identify the currently booked visit and never imply it changed before confirmation — this card says 'unchanged until you confirm'.",
+      "status": "done"
+    },
+    {
+      "id": "reschedule-compare",
+      "factory": "inline in SpaBookingFlow (review step)",
+      "props": ["origin appointment", "proposed slot"],
+      "wave": 16,
+      "note": "Current vs proposed time side by side; the proposed cell says 'not booked yet'.",
+      "status": "done"
+    },
+    {
+      "id": "slot-grid",
+      "factory": "inline in SpaBookingFlow (slots step)",
+      "props": ["booking.eligibleSlots (days[] + slots[] — server-returned only)"],
+      "wave": 16,
+      "states": ["ready", "loading", "empty", "error"],
+      "note": "Day chips + slot buttons (booking.selectSlot, data-slot-ref / data-day-key). loading/empty/error come from the slot source — no time is ever invented; error retries via ui.retry slots.",
+      "status": "done"
+    },
+    {
+      "id": "booking-hold",
+      "factory": "inline in SpaBookingFlow (review step)",
+      "props": ["booking.hold {ref, version, untilLabel}"],
+      "wave": 16,
+      "note": "The server slot hold: opaque data-hold-ref + a display-ready expiry label rendered VERBATIM. The browser never counts it down, extends it, or treats a locally elapsed hold as authoritative — expiry (slot-expired) and reprice are SERVER-reported blocking states on booking-review.",
+      "status": "done"
+    },
+    {
+      "id": "plan-credit-context",
+      "factory": "inline in SpaBookingFlow",
+      "props": ["server credit state + copy (booking.creditNotes)"],
+      "wave": 16,
+      "states": ["ok", "unavailable", "exhausted", "changed"],
+      "note": "Book-with-a-credit context (data-plan-ref). Non-ok states BLOCK the flow with the server's copy verbatim; changed offers an explicit reload (ui.retry plan-credit). Presentation never calculates the balance.",
+      "status": "done"
+    },
+    {
+      "id": "plan-offer-card",
+      "factory": "offerCard (inline in SpaCatalog)",
+      "props": ["planOffer {ref, kind, title, displayPrice, termsSummary, benefits, sellability, allowedActions}"],
+      "wave": 16,
+      "states": ["sellable", "unavailable", "changed"],
+      "note": "Published PACKAGE/MEMBERSHIP offer with the buy entry (plan.purchase, data-plan-offer-ref) — rendered ONLY while the sellable plan contract is open (data-plan-commerce=open); otherwise the accepted wave-14 offer rows stay. Kind chips keep Package ≠ Membership distinct; 'Published offer' chip + copy keep offers visually distinct from My plan. unavailable disables the action honestly; changed blocks buying until ui.retry plan-offers reloads. Buying enters the accepted SIMULATED checkout with source plan; the confirmation links to BOTH the created purchase and My plan from the authoritative readback.",
+      "status": "done"
+    },
+    {
+      "id": "spa-profile",
+      "factory": "SpaProfile (routes/SpaProfilePage.js) + spa-profile-contact / spa-profile-preferences / profile-preference",
+      "props": ["profile {version, phone, email, preferences[], allowedActions} (F.spaProfileSrv + state.spaProfile readback)"],
+      "wave": 16,
+      "states": ["loading", "ready", "error", "unauthorized", "unavailable", "panel: unchanged|dirty|invalid|saving|save-failed|conflict", "session-lost (global gate)"],
+      "note": "Calm Harbor least-data Profile (route profile, Beauty only — other verticals keep the accepted generic Profile). Shows/edits ONLY phone, email and the explicitly approved preferences the scoped API returns; NO spend, savings, order stats, addresses, saved cards, plan claims, member-since, raw ids, roles, permissions or organization. Values are the last server-confirmed readback until profile.save succeeds; save failure keeps old confirmed values; version conflict blocks edits until profile.reload; per-field invalid states carry accessible error copy (role=alert, aria-invalid/aria-describedby). Clear Account back path; visually subordinate to the appointment-first product. profile.saveContact remains a preserved alias with its legacy generic-panel meaning.",
       "status": "done"
     }
   ],
@@ -1402,15 +2087,56 @@
     "session.displayName",
     "status.label",
     "visit.techName",
-    "visit.eta"
+    "visit.eta",
+    "order.typeLabel (staging — Core Order type label)",
+    "order.typeCode (staging — Core Order type code, code-chip)",
+    "order.reference (staging — secondary reference, never a headline)",
+    "order.rawStatus (staging — VERBATIM backend status via the unmapped treatment)",
+    "order.displayTotal (staging — displayed total, verbatim)",
+    "order.currency (staging)",
+    "appointment.service (target — card headline)",
+    "appointment.start (target — date + local time)",
+    "appointment.specialist (target — optional)",
+    "appointment.visitMode (target — At Calm Harbor | At your place)",
+    "appointment.location (target — optional, least-data)",
+    "appointment.status (target — backend-owned approved mapping only)",
+    "appointment.displayPrice (target — optional, verbatim)",
+    "appointment.reference (target — secondary detail)",
+    "appointment.time",
+    "pim.services[] (public: code, name, displayPrice, interval, shortDescription)",
+    "pim.memberships[] (public offers: code, name, displayPrice, interval, shortDescription)",
+    "purchase.{reference,kind,customerStatus,placedAt,displayTotal,currency,itemSummary,attention} (wave 15 — customer-safe Order read model; data-purchase-ref = opaque stable ref)",
+    "purchase.lines[].{title,variant,quantity,displayUnitPrice,displayTotal} (verbatim; data-line-ref)",
+    "money.{subtotal,discount,tax,total,currency} (server-owned display strings — presentation never calculates)",
+    "purchase.fulfillment.{kind,status,pickupWindow} (separate state dimension)",
+    "purchase.relatedAppointments[].{service,start,customerStatus} / purchase.relatedPlan.{title,status}",
+    "plan.{kind,title,status,remainingUses,totalUses,renewsAt,expiresAt,displayRecurringPrice,allowedActions} (wave 15 — unknown fields omitted, never guessed)",
+    "retail.{state,displayPrice,priceNote} + retail.variants[] (wave 15 — SERVER sellability; data-product-ref / data-variant-ref)",
+    "cart.{version,lines,displayTotals,fulfillment} (wave 15 — complete recalculated server cart per mutation)",
+    "checkout.{paymentMode,displayTotals,lines,fulfillment,policy} (wave 15 — frozen server quote; paymentMode SIMULATED)",
+    "result.{headline,sub,purchase,appointment,plan,fulfillment} (wave 15 — authoritative confirmation readback only)",
+    "appointment.{ref,service,start,timezoneNote,specialist,visitMode,location,customerStatus,displayPrice,reference,attention,relatedPurchaseRef,allowedActions,version} (wave 16 — appointment detail read model; unknown fields omitted, never guessed)",
+    "booking.{ref,version,source,service,planRef,eligibleSpecialists,eligibleSlots,hold{ref,version,expiresAt/untilLabel},review,paymentMode:SIMULATED,displayTotal,policy,allowedActions} (wave 16 — booking flow read model; every option/price/hold label is server-returned)",
+    "planOffer.{ref,kind,title,displayPrice,termsSummary,benefits,sellability,allowedActions} (wave 16 — published offers; data-plan-offer-ref)",
+    "profile.{version,displayName,phone,email,preferences,allowedActions} (wave 16 — least-data scoped profile; values are the last server-confirmed readback)"
   ],
   "actions": [
     "access.confirm",
     "access.update",
+    "account.menu",
+    "account.open",
+    "account.openPlan",
+    "account.openProfile",
+    "account.openPurchases",
     "activity.act",
     "activity.filter",
     "activity.markRead",
     "activity.open",
+    "appointment.bookAgain",
+    "appointment.cancel",
+    "appointment.open",
+    "appointment.openPurchase",
+    "appointment.reschedule",
     "auth.apple",
     "auth.back",
     "auth.gotoSignin",
@@ -1420,8 +2146,16 @@
     "auth.sendCode",
     "auth.signOut",
     "auth.verifyCode",
+    "booking.ackPolicy",
+    "booking.back",
+    "booking.close",
     "booking.confirm",
+    "booking.hold",
     "booking.open",
+    "booking.retry",
+    "booking.selectService",
+    "booking.selectSlot",
+    "booking.selectSpecialist",
     "calendar.next",
     "calendar.open",
     "calendar.prev",
@@ -1433,13 +2167,19 @@
     "care.selectSpecialist",
     "care.selectUnit",
     "cart.addItem",
+    "cart.changeQuantity",
     "cart.dec",
     "cart.inc",
     "cart.open",
     "cart.removeItem",
+    "checkout.ackPolicy",
+    "checkout.confirm",
     "checkout.pickAddress",
     "checkout.pickPayment",
     "checkout.placeOrder",
+    "checkout.retryConfirm",
+    "checkout.selectFulfillment",
+    "checkout.start",
     "compliance.unlock",
     "membership.activate",
     "nav.go",
@@ -1454,12 +2194,20 @@
     "order.filter",
     "order.open",
     "order.reschedule",
+    "plan.bookWithCredit",
+    "plan.cancelRenewal",
+    "plan.purchase",
     "products.filter",
     "profile.addAddress",
     "profile.addCard",
+    "profile.changeField",
+    "profile.edit",
     "profile.filter",
     "profile.managePlan",
     "profile.open",
+    "profile.reload",
+    "profile.save",
+    "profile.saveContact",
     "profile.setDefaultAddress",
     "profile.setDefaultPayment",
     "profile.togglePref",
@@ -1470,6 +2218,13 @@
     "proposal.requestRevision",
     "proposal.review",
     "proposal.selectPlan",
+    "purchase.buyAgain",
+    "purchase.cancelRequest",
+    "purchase.open",
+    "purchase.openAppointment",
+    "purchase.returnRequest",
+    "purchases.filter",
+    "purchases.more",
     "seo.cta.book",
     "seo.cta.call",
     "seo.cta.quote",
@@ -1479,11 +2234,14 @@
     "service.reportIssue",
     "service.request",
     "service.requestExtra",
+    "shop.pickVariant",
     "support.call",
+    "support.dismiss",
     "support.email",
     "support.helpTopic",
     "support.open",
     "support.quickReply",
+    "support.retryMessage",
     "support.sendMessage",
     "theme.pick",
     "ui.retry",
@@ -1530,5 +2288,12 @@
     "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care,seo}/*.js": "leaf components (seo/SeoSections.js = reusable public SEO-landing sections)",
     "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
     "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`"
+  },
+  "capabilityContract": {
+    "mechanism": "Wave 14 — Calm Harbor Spa (Beauty) capability config. data-capability on app-shell / top-nav / route roots = current-staging | target-appointments; data-booking = closed | open (target only); data-portal-profile = spaStaging | spaTarget. In the preview the config lives in state.capability / state.spaBooking (dev-toolbar 'spa' + 'booking' selects); in production it is deployment config, never a user control.",
+    "rule": "current-staging renders ONLY proven read-only sources: the neutral Orders list (raw statuses unmapped), the public PIM Services & prices + browse-only Shop, and the session/account gates. target-appointments renders the capability-gated Appointments IA; none of its fixtures are selectable by the current-staging profile. '+ Book' and the reschedule / cancel / book-again controls exist only while data-booking=open — closed shows an honest disabled treatment, staging shows nothing.",
+    "preview": "dev-toolbar selects: spa (capability), booking (closed|open), retail (browse-only|retail-commerce-open — wave 15), appt (salon|home|long|minimal|empty|no-history), rows (many|one), name (default|long), acct (full|partial — account route), plan (active|expiring|exhausted|cancelled|empty — plan route), cart (as-added|stale-price|inventory-conflict — cart route), co + src (checkout route), hold + bookres (open booking), and the state select gains unavailable. All preview-only (data-dev-toolbar).",
+    "wave15": "retail-commerce-open (data-retail on top-nav / products / cart / checkout roots) opens the sellable Shop, the persistent server cart and the SIMULATED checkout. Every entity action carries a stable opaque data-*-ref (data-purchase-ref, data-line-ref, data-plan-ref, data-product-ref, data-variant-ref, data-appointment-ref) — never a display name or raw sequential Core id. A simulated confirmation never creates a BalanceTransaction, marks an Invoice paid, issues a receipt or implies that money moved.",
+    "wave16": "Full flow activation. NEW deployment capability: the sellable plan contract (preview: dev select plansell; DOM: data-plan-commerce=closed|open on membership-options) gates the Buy package / Join membership entry — closed keeps the accepted wave-14 offer rows. New opaque refs: data-plan-offer-ref, data-slot-ref, data-day-key, data-hold-ref, data-booking-ref, data-specialist-ref. ALIASES preserved for runtime compatibility (documented, not silently changed): order.reschedule → appointment.reschedule, order.cancel → appointment.cancel (both share the command key order.cancel:<ref>, so the lifecycle is identical), order.bookAgain → appointment.bookAgain; profile.saveContact keeps its legacy generic-panel meaning while the Calm Harbor profile uses profile.save. New dev selects: adet (appointment.detail scenario incl. unknown-ref), plansell + offers (catalog), slots + credit (open booking flow). Exact actionable entities carry data-state=pending|failed|conflict; unrelated entities stay interactive."
   }
 }

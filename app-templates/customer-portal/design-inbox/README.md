@@ -128,7 +128,7 @@ it for preview.
 
 ### Portal profiles (config-driven per vertical)
 
-The portal reshapes by **profile**, chosen from the vertical (`fixtures.profileFor`):
+The portal reshapes by **profile**. Non-Beauty verticals map via `fixtures.profileFor`; Beauty (Calm Harbor) resolves from the capability config (`state.capability` → `spaStaging` | `spaTarget`) and is intentionally absent from `profileFor` (wave 14.1):
 
 - **`onDemand`** (HVAC): booking-first. Nav = Orders / **Equipment** / Proposals / Services / Pricing / Products / Support;
   primary action **+ Book**; cart on; Calendar = month grid.
@@ -136,7 +136,7 @@ The portal reshapes by **profile**, chosen from the vertical (`fixtures.profileF
   service. Nav = **Home / Calendar / ‹care hub› / Contracts / Services / Activity / Support**; primary action **Request
   service**; cart off; Calendar = **weather-operational agenda**. The **StormCalendar** derives service names
   and trigger copy from the active vertical, so one component serves all five weather-triggered verticals.
-- **`appointments`** (Health, Beauty — wave 9): booking-first, no weather triggers (`themes[x].wt = null`
+- **`appointments`** (**Health only** — wave 9; Beauty moved to `spaStaging`/`spaTarget` in wave 14): booking-first, no weather triggers (`themes[x].wt = null`
   removes the Weather Trigger banner/panel and feed item everywhere). Nav = **Appointments / Calendar /
   ‹care hub› / Services / Pricing / Products / Support**; primary action **+ Book**; cart on; Calendar = month grid.
 
@@ -356,3 +356,445 @@ Evidence: `previews/calm-harbor/pricing-{state}-{width}-{mode}.png` — real vie
 (1440×900, upscaled from a scaled-to-fit capture) + mobile 390 (true 390×540), ready/loading/empty ×
 light/dark. Media assets are delivered: `design-inbox/media/spa-massage-1448.webp` (hero) and
 `design-inbox/media/spa-room-1600.webp` (proof) — see MEDIA-SPEC.md.
+
+
+## Wave 13 — Authenticated live-data states (accounts, routes, commands)
+
+Presentation for the phase that replaces fixtures with customer-scoped data behind the Core OIDC
+session. **Presentation-only:** nothing here authorizes an API, permission, customer relation,
+mutation or success result. Loading, empty, error, unauthorized, unavailable, and stale are distinct
+states — none ever falls back to fixture success.
+
+**Shared account bootstrap** (`src/components/shell/AccountBootstrap.js`, module `account-bootstrap`).
+After Core sign-in the server must resolve the subject to exactly one active `SPA_CUSTOMER` Account
+(Core `user/basic-info` → organization check → `Account.user`); the browser never chooses Account or
+tenant. While `state.account != "ready"`, `render()` substitutes this module for EVERY private route
+body — no private fixture entity renders — and `TopNav` renders **gated** (brand + light/dark only;
+no nav links, cart count, badges or avatar, since those imply resolved capabilities/entities).
+States (`data-state`, + `data-intended-route` = preserved route id):
+- `resolving-customer` — non-interactive progress (aria-busy); exposes no ids/claims.
+- `customer-unavailable` — honest retry (`ui.retry` `data-id="account-bootstrap"`) + `auth.signOut`.
+- `customer-not-linked` / `customer-forbidden` — non-enumerating (no reason, role or claim);
+  `support.email` + `auth.signOut` only.
+- `session-expired` — intended route preserved in `state.route` and shown as a customer-safe label;
+  `auth.oidcSignIn` re-enters secure sign-in and returns to it; stale data never shown as current.
+Demo transitions only (`accountRetry`/`reauthDemo`) — Codex owns real resolution.
+
+**Route lifecycle** — `data-state` on every private route root; shared primitives in
+`src/components/primitives/RouteStates.js` (`UnauthorizedState` non-enumerating access-denied,
+`NotFoundState` non-enumerating not-found, `ConflictBanner` stale-version refresh prompt,
+`InlineFailure` command failure, `routeStateBody` gate, skeleton helpers mirroring each route's
+layout). `ErrorState` now takes `retryId` — retry stays `ui.retry`, scoped by module/entity id.
+Added states: calendar loading/error/unauthorized (gates both MonthCalendar and StormCalendar);
+services empty/error/unauthorized; pricing loading/empty/error (live PIM rows — empty shows no
+fallback or estimated price); products error; checkout loading/error/unauthorized; proposals.list
+loading/error/unauthorized (+ its empty no longer renders the fixture proposal header);
+proposal.detail loading/error/unauthorized/not-found/conflict; profile loading/error/unauthorized;
+activity loading/error/unauthorized; support loading/empty/error/unauthorized. `orders.list`,
+`order.detail` and `care` keep their accepted treatments (confirmed valid for customer-scope
+failures; no separate visual system added).
+
+**Command lifecycle** (`runCommand` in `actions.js`): `state.commands["<action>:<entityId>"]` =
+`pending | failed | conflict`, stamped as `data-state` on the exact actionable entity — one pending
+row/card never disables unrelated entities; duplicate submission is blocked while pending.
+**`succeeded` is never stored: success renders only from the (demo) readback callback**, a fixture
+stand-in for the authoritative entity the server returns. `session-lost` clears pending, suppresses
+success, closes any drawer and opens the expired-session gate with the route preserved. Covered:
+`booking.confirm:booking` (new `booking.close` closes the drawer without confirming — the scrim/✕
+no longer fire `booking.confirm`), `order.cancel:<orderId>`, `proposal.decide:<siteId>` (approve/
+revision/decline; version conflict blocks deciding until `ui.retry` reloads), `cart.addItem:<name>`,
+`cart.mutate:<name>`, `checkout.placeOrder:cart` (failed = order NOT placed, cart intact; conflict =
+server re-priced the cart, submit disabled until refreshed; **no local order-success state exists**),
+`profile.saveContact:contact` (new `contact-details` panel: field validation → saving →
+server-confirmed readback / save failure; values shown are the last confirmed ones),
+`support.sendMessage:m<idx>` (sending → sent on readback / failed with per-message
+`support.retryMessage`), `care.requestRetreat:<planId>`.
+
+**Dev toolbar additions:** `account` select (private routes), `cmd` outcome select
+(succeeded | failed | conflict | session-lost → `state.cmdForce`), `state` select extended with
+`unauthorized | not-found | conflict`. All preview-only (`data-dev-toolbar`).
+
+**New actions:** `booking.close`, `profile.saveContact`, `support.retryMessage`. Changed demo
+bodies: `checkout.placeOrder`, `order.cancel`, `proposal.*` decisions, `cart.*`, `booking.confirm`,
+`support.sendMessage`, `care.requestRetreat`, `ui.retry` (now id-scoped), `auth.oidcSignIn` (from the
+expired-session gate it preserves the intended route). Markup contract otherwise unchanged.
+
+**Privacy:** no Account id, tenant id, token, raw role, claim or internal mapping is ever rendered;
+not-found/forbidden are non-enumerating; payment UI still shows only approved PSP references.
+
+Evidence: `previews/wave13/*.png` — descriptive names `{scope}-{state}-{width}-{mode}.png` covering
+account resolution/not-linked/forbidden/unavailable/session-expired (1440 + 390, light + dark),
+proposals list loading/empty/error/unauthorized (768 light, 1440 dark), proposal detail
+loading/not-found/conflict + decide pending/failed/succeeded (768), checkout pending/failed/
+conflict-stale + cart-row pending (1180), profile validation/saving/save-failed (390 light,
+768 dark), support empty/sending/send-failed (390/1180). Same capture-pane caveat as earlier waves:
+wide widths are scaled-to-fit captures; the live page at true viewport width is authoritative
+(html-to-image can also mis-wrap a centered state-block title in captures — the DOM does not overlap).
+
+
+## Wave 14 — Calm Harbor Spa authenticated portal IA (Beauty)
+
+The Beauty vertical now ships as the **Calm Harbor Spa authenticated portal** — the product IA from
+`calm-harbor-spa-customer-portal-ia.md` implemented inside the accepted Beauty system (tokens, glass
+surfaces, buttons, badges, state blocks and responsive conventions unchanged). Presentation only:
+no API, auth, permission, adapter, mapping, persistence or command implementation was added.
+
+### Capability config (the staging ↔ target hook)
+
+One portal, two capability variants, selected by **deployment config** — in the preview,
+`state.capability` via the dev-toolbar **spa** select; in the DOM,
+`data-capability="current-staging|target-appointments"` + `data-booking="closed|open"` +
+`data-portal-profile="spaStaging|spaTarget"` on `app-shell`, `top-nav` and the route roots.
+Production activates modules from these hooks — no ambiguous labels.
+
+- **current-staging** — only the proven read-only sources render: neutral `Orders` list, public PIM
+  `Services & prices`, browse-only `Shop`, session/account gates. No `+ Book`, Calendar, My routine,
+  cart, notification badge or editable profile. The only global CTA is honest navigation
+  (**Browse services**).
+- **target-appointments** — the capability-gated appointment-first IA. Its fixtures are **not
+  selectable** by the current-staging profile. `+ Book` and reschedule / cancel / book-again exist
+  only while `data-booking="open"`; closed shows an honest disabled treatment.
+
+### IA / route migration map (stable ids preserved)
+
+| Stable route id | Staging renders | Target renders | Nav label |
+|---|---|---|---|
+| `orders.list` | `SpaOrders` — read-only Core Order list | `SpaAppointments` — appointment-first default | Orders → Appointments |
+| `services` / `pricing` | `SpaCatalog` — ONE "Services & prices" destination; in-section tab (accepted Tabs, `nav.go` carries the route id) | same | Services & prices |
+| `products` | `SpaShop` — browse-only public PIM fields | same | Shop (secondary, muted, last) |
+| `care` (My routine), `calendar`, `activity`, `proposals.*`, `checkout`, `profile` | **out of primary navigation** (dev-toolbar reachable reference only) | same | — |
+
+Action ids are unchanged: `order.cancel` / `order.reschedule` / `order.bookAgain` /
+`booking.open|confirm|close` carry the appointment commands on the target portal (entity id =
+`data-appointment-id`). New action: `account.menu`. The wave-9 `appointments` profile now applies
+to Health only.
+
+### Truth rules demonstrated (failure-mode coverage)
+
+1. Staging rows are **orders, never appointments**: no date/time, specialist, location, tracking,
+   invoice, detail navigation or scheduling command exists on `spa-order-row`.
+2. Raw `OPEN` is never translated — `status-badge--unmapped` renders the backend code verbatim
+   (dashed, monospaced, text label) with a read-only footnote.
+3. Fixture appointments can never appear during load/failure: the target route gates
+   loading/error/unauthorized before any fixture renders, and staging cannot select target fixtures.
+4. No active Book/Reschedule/Cancel in staging (absent) or closed target (disabled + honest note).
+5. Public `SPA_MEMBERSHIP` rows are **Membership options** — never "My membership", enrollment or
+   balance.
+6. Shop has no Add-to-cart/inventory/checkout and carries a Browse-only chip + footnote.
+7. At 390 the greeting, next-appointment hero and primary action precede all catalog content;
+   Shop is last and muted.
+8. At-home visits always show the explicit **At your place** chip + least-data location line.
+9. `session-lost` during a command clears pending, suppresses success and opens the expired-session
+   gate with the intended route preserved (wave-13 engine, reused).
+10. Cancel success renders **only** from the authoritative (demo) readback — the hero flips to a
+    confirmed "Cancelled" state; nothing is optimistic.
+
+### Reused / changed / new
+
+- **Reused unchanged:** app-shell, page-header, card/order-card visual language, status-badge,
+  ActionButton (incl. pending), Tabs, Empty/Error/Loading + wave-13 RouteStates + command engine +
+  booking drawer, AccountBootstrap composition, Beauty tokens + light/dark, rate-row/list-panel/
+  log-row vocabulary from the accepted care hubs.
+- **Changed:** TopNav delegates to SpaTopNav for Beauty; AccountBootstrap adds
+  `customer-account-ambiguous` + `organization-forbidden`; `order.cancel` readback is
+  appointment-aware on the spa target; AppShell exposes the capability hooks; dev toolbar gains
+  spa/booking/appt/rows/name selects and the two new account states.
+- **New (wave 14):** SpaTopNav + account-control/account-menu, SpaOrdersPage (spa-order-list/row,
+  unmapped status treatment), SpaAppointmentsPage (next-appointment, visit-mode,
+  appointment-list/row/empty, catalog-teaser), SpaCatalogPage (spa-catalog, spa-service-card,
+  spa-pricing-row, membership-options), SpaShopPage (spa-shop-card), `spa` fixture block +
+  spaStaging/spaTarget profiles.
+
+### Evidence
+
+`previews/wave14/` — naming `{scope}-{state}-{width}-{mode}.png`: staging orders ready/empty/error
+(1440 + 390), target next-appointment ready/empty (1440 + 390), at-salon + at-your-place (390),
+account bootstrap failure (390), mobile navigation open (390), cancel pending + failed (390),
+services & prices ready/empty (1440 + 390), dark shell + next appointment (390). Same capture-pane
+caveat as earlier waves: wide widths are scaled-to-fit captures; the live page at true viewport
+width is authoritative.
+
+### Unresolved product assumptions (recorded, not resolved by design)
+
+1. The Calm Harbor operator has **not** confirmed the top three existing-customer tasks — the
+   appointment-first default follows the IA's stated priority.
+2. The customer-facing status mapping ("Confirmed", "Needs confirmation") is a backend-owned
+   contract that does not exist yet — target fixtures mark it as a placeholder.
+3. Whether the backend can distinguish appointment-like Orders from retail Orders is unproven;
+   staging therefore shows both as neutral orders with type codes.
+4. Hybrid (at-salon + at-home) service and the least-data address policy for home visits are
+   inherited assumptions from the accepted landing.
+5. Packages / membership / loyalty as separate concepts (`My plan`) stay out of this increment —
+   no customer-scoped source.
+6. Timezone policy for appointment times ("local time") needs a real policy decision.
+
+States that could not be represented without inventing a backend fact: a live "Reschedule" picker
+(needs availability), a real booked-confirmation, membership enrollment/balance, and any customer
+status derived from `OPEN` — all deliberately absent or capability-gated.
+
+
+## Wave 15 — Calm Harbor commercial lifecycle (Account, Purchases, My plan, sellable Shop, server cart, SIMULATED checkout)
+
+Implements the design request "Calm Harbor spa purchases, simulated checkout, and account" on top of
+the accepted Wave 14/14.1 shell — tokens, components, responsive conventions, stable hooks and the
+appointment-first priority unchanged. Presentation only. **Payment is an explicit simulation:**
+`paymentMode: "SIMULATED"` everywhere, no card fields / saved methods / PSP controls / redirects /
+payment-success treatment; a confirmation never claims Paid/Charged and never implies a
+BalanceTransaction, paid Invoice or receipt.
+
+### IA — four primary destinations
+
+Nav (both capability variants): **Appointments (Orders in staging) / Services & prices / Shop /
+Account**. Account owns `Purchases`, `My plan`, `Profile`, `Support` as entry cards, each
+`available | unavailable` per its OWN contract (unavailable = honest notice + honest alternative
+link, never empty data). Purchases never replaces Appointments as home; the appointment hero
+deep-links to its purchase (`purchase.open` with `data-purchase-ref`) and checkout confirmation
+deep-links to the created purchase.
+
+### New routes (stable ids) × states
+
+| route | renders | states |
+|---|---|---|
+| `account` | SpaAccount (module `spa-account`, entries `account-entry`) | ready / partially-unavailable (dev `acct`) / loading / error / unauthorized / unavailable |
+| `purchases.list` | SpaPurchases (`purchase-row`, filters only for returned kinds, cursor append) | ready / empty / loading / cursor-loading / error / unauthorized / unavailable; staging → honest unavailable pointing at raw Orders |
+| `purchase.detail` | SpaPurchaseDetail (summary / lines / totals / fulfillment / appointments / plan — absent sections OMITTED; grouping only when source-provided) | ready / loading / not-found / error / unauthorized / unavailable + per-action command states |
+| `plan` | SpaPlan (`plan-card`: PACKAGE ≠ MEMBERSHIP, meter only from server numbers) | active / expiring / exhausted / cancelled / empty / loading / error / unauthorized / unavailable (dev `plan`) |
+| `cart` | SpaCart (persistent SERVER cart) | ready / empty / loading / error / unauthorized / unavailable; line: pending / stale-price / inventory-conflict (dev `cart`) |
+| `checkout` | SpaCheckout (spa only; other verticals keep the accepted checkout) | loading / ready / repriced / inventory-conflict / slot-expired / confirm-pending / confirm-failed / conflict / session-lost / unavailable / confirmed |
+
+### Truth rules demonstrated
+
+1. **Money is server-owned display strings** (`purchase.money`, `cart.displayTotals`,
+   `checkout.displayTotals`) rendered VERBATIM — presentation never calculates savings, tax,
+   balance, deadlines or eligibility. The demo recalculation lives in `fixtures.js`
+   (`spaServerCart`) as a stand-in for `/portal/v1/cart` responses.
+2. **Success only from authoritative readback** (wave-13 engine): the confirmation surface
+   (`spa-confirmation`) renders exclusively from `state.spaResult`; cancel/return/renewal write
+   back `accepted-for-review`/cancelled states — never optimistic, no refund consequence shown.
+3. **Customer status mapping stays backend-owned**: `purchase-row` uses the contract vocabulary
+   (Confirmed / In progress / Ready for pickup / Fulfilled / Cancelled); the staging raw
+   `spa-order-row` variant is untouched and never borrows these labels for unmapped `OPEN` data.
+4. **Order ≠ fulfillment ≠ Appointment ≠ plan**: purchase detail renders them as separate sections
+   with separate statuses (the MIXED fixture `pur-3d76c2` shows In progress + Being prepared +
+   Confirmed visit at once).
+5. **Cart never reserves**: explicit copy on shop, cart and checkout; the bag indicator counts
+   server-cart contents only. Row-scoped pending — one busy line never freezes others.
+6. **Blocking review states**: cart stale-price / inventory-conflict and checkout repriced /
+   inventory-conflict / slot-expired disable checkout/confirm until an explicit reload
+   (`ui.retry` ids `cart-quote` / `checkout-quote` / `booking-hold`).
+7. **Simulation treatment** (`simulation-notice`) renders wherever a payment step or confirmation
+   is shown; approved copy only: `Order confirmed` / `Booking confirmed` / `Demo checkout
+   completed`.
+8. **Booking bridge**: the drawer review carries `data-payment-mode="SIMULATED"` +
+   `booking-review` with held / slot-expired / repriced blocking states; confirm result is
+   Appointment-only or Appointment+Order (dev `bookres`), rendered on the confirmation surface.
+9. **Opaque refs**: every entity action carries `data-purchase-ref` / `data-line-ref` /
+   `data-plan-ref` / `data-product-ref` / `data-variant-ref` / `data-appointment-ref` — stable
+   non-sequential handles, never display names or raw Core ids. Not-found is non-enumerating.
+10. **Unavailable ≠ empty**: the new `unavailable-state` treatment (and per-entry Account states)
+    says the capability isn't connected — it never renders as "no data".
+
+### Capability config
+
+`retail-commerce-open` is a NEW deployment capability (preview: dev-toolbar `retail` select;
+DOM: `data-retail="browse-only|retail-commerce-open"` on top-nav / products / cart / checkout
+roots). Browse-only keeps the accepted wave-14 Shop byte-for-byte in behavior; sellable adds SERVER
+sellability states per card: `sellable | unavailable | out-of-stock | price-changed |
+variant-required` (variant picker `data-variant-ref`, Add disabled until picked).
+
+### Stable action contract (new ids)
+
+`account.open` / `account.openPurchases` / `account.openPlan` / `account.openProfile`;
+`purchases.filter` / `purchases.more`; `purchase.open` / `purchase.openAppointment` /
+`purchase.cancelRequest` / `purchase.returnRequest` / `purchase.buyAgain`;
+`plan.bookWithCredit` / `plan.cancelRenewal`; `cart.open` (spa → the bag) / `cart.addItem` /
+`cart.changeQuantity` (data-id `<lineRef>|<qty>`) / `cart.removeItem`; `checkout.start` /
+`checkout.selectFulfillment` / `checkout.ackPolicy` / `checkout.confirm` / `checkout.retryConfirm`;
+`shop.pickVariant`. All demo bodies — Codex owns the real commands (Idempotency-Key, versions,
+scoped readback).
+
+### Dev toolbar additions (wave 15)
+
+`retail` (capability), `acct` (account route), `plan` (plan route), `cart` (cart route), `co` +
+`src` (checkout route), `hold` + `bookres` (open booking); global `state` select gains
+`unavailable`. `window.AircovePortal.seedCart()` is a preview convenience that replays add commands
+against the demo server cart.
+
+### Evidence
+
+`previews/wave15/` — naming `{scope}-{state}-{width}-{mode}.png`; see the folder for the full
+matrix (account ready/partial, purchases ready/empty/loading/error, purchase detail
+service/retail/plan/mixed, plan active/exhausted, shop sellable/out-of-stock, cart ready/pending/
+stale/conflict, checkout ready/sim/confirm states, confirmations, return request states, mobile
+nav). Same capture-pane caveat as earlier waves: wide widths are scaled-to-fit captures; the live
+page at true viewport width is authoritative.
+
+### Unresolved product assumptions (recorded, not resolved by design)
+
+1. Whether the demo checkout is visibly labelled a simulation in production copy (Calm Harbor
+   decision #1) — the current treatment labels it explicitly.
+2. Retail is pickup-only per the baseline assumption; delivery/tracking/returns ownership is
+   unconfirmed (the fulfillment section renders a tracking slot only if the source provides one).
+3. Package = finite one-time credits, membership = recurring — per baseline assumptions.
+4. Return/cancellation policy windows are backend capabilities; the UI never derives eligibility.
+5. The Purchases "attention" message vocabulary is a backend contract that does not exist yet.
+
+
+
+## Wave 14.1 — acceptance corrections (blocking review)
+
+Files changed: `src/components/shell/AppShell.js`, `src/actions.js`, `src/state.js`,
+`data/fixtures.js`, `styles/responsive.css`, `styles/shell.css`, `manifest.json`,
+`data/scenarios.json`, this README, regenerated `previews/wave14/` evidence.
+
+1. **Mobile Orders row (390):** `.spa-order-row` becomes a two-row grid at `vw-mobile` —
+   the identity column owns the full width beside the icon (no sibling badge/amount starving it);
+   raw status + amount move to their own row. Nothing is truncated; long names/codes wrap at word
+   boundaries; the long unmapped badge may wrap rather than overflow.
+2. **Support truth (staging + closed target):** Calm Harbor has **no approved support destination**
+   — chosen contract: the honest **support-unavailable** notice (`data-module="support-unavailable"`,
+   `data-state="unavailable"`). Every visible support action (`support.open`, `support.email`,
+   `support.call`) ends there; it states nothing was opened, sent or recorded. The fixture support
+   route/chat-panel/threads/tickets are unreachable through Calm Harbor navigation, and no
+   success-like toast implies delivery. New action: `support.dismiss`.
+3. **Address-sharing claim removed:** the at-home fixture location is now neutral least-data copy
+   (`Address on file`). The `At your place` chip is unchanged. Address policy, consent and
+   specialist-sharing behavior remain **unresolved product/backend assumptions** (README §Wave 14).
+4. **Profile contract sync:** legacy `appointments` lists **Health only** in manifest + scenarios;
+   `spaStaging`/`spaTarget` are declared in both with capability, nav, primary, cart and booking
+   rules; `fixtures.profileFor` no longer contains Beauty at all — `activeProfile()` resolves
+   Beauty exclusively from the capability config.
+
+Evidence regenerated at true CSS widths: the wide presets set an explicit `width` on
+`.viewport-frame` (`data-vw="1180"` → 1180px, `"1440"` → 1440px; the host scrolls instead of
+clamping), so the shell's width observer applies the real desktop classes — at 1440 nav links are
+visible and the hamburger is hidden. Files: `staging-orders-long-{390,768,1180,1440}-light`, `staging-orders-long-390-dark`,
+`target-long-{390,768}-light`, `shop-ready-{390,768}-light`, `support-unavailable-390-light`,
+`target-appt-home-390-light` (re-shot), `shell-1440-light`.
+
+
+## Wave 16 — Calm Harbor full flow activation (Appointment detail, complete booking flow, plan purchase entry, least-data Profile)
+
+Completes the presentation contract for every Calm Harbor flow except Support, on the accepted
+Wave 15 shell — tokens, components, responsive conventions, commerce surfaces, stable hooks and the
+appointment-first IA unchanged. No Support flow was created or modified; no fifth primary
+destination exists. Payment stays explicitly `SIMULATED` — no card fields, PSP controls,
+paid/charged/refunded/receipt copy or payment-success visuals anywhere.
+
+### 1. Appointment detail (route `appointment.detail`, module `appointment-detail`)
+
+`src/routes/SpaAppointmentDetailPage.js`. Opened from upcoming/past rows (rows are now links —
+`appointment.open`, opaque `data-appointment-ref`) and the hero's `View details ›`. Renders ONLY
+source-provided fields from `F.spaCommerce.appointmentDetails[ref]`: service title as the headline
+(never Order language), backend-mapped customer status, start + timezone note, optional
+specialist, visit-mode chip + least-data location, optional display price, customer-safe
+reference, the related-purchase link when provided, and server-owned policy/attention copy
+verbatim. Actions render exactly from `allowedActions` (`Reschedule` / `Cancel visit` /
+`Book again` / `View purchase`); while `data-booking="closed"` they are honestly disabled with the
+support path. Foreign / removed / unknown refs share ONE non-enumerating not-found. States:
+route `loading | ready | error | unauthorized | not-found | conflict` (+ session-lost via the
+global gate); card `pending | failed | conflict`; cancelled and rescheduled render EXCLUSIVELY
+from the authoritative (demo) readback (`state.spaCancelled` / `state.spaRescheduled`).
+
+### 2. Complete booking flow (module `booking-flow`, in the accepted drawer)
+
+`src/components/spa/SpaBookingFlow.js`, rendered by `BookingDrawer` whenever `state.spaFlow` is
+open. ONE flow serves every supported entry: service card `Book` (`booking.open` + service code),
+empty Appointments `Book an appointment`, past `Book again` (`appointment.bookAgain`), active
+package `Book with a credit` (`plan.bookWithCredit`), upcoming `Reschedule`
+(`appointment.reschedule`). Steps: **context** (service/plan-credit) → **specialist** (ONLY when
+the server returns eligible specialists — manicure returns none and the step is skipped) →
+**slots** (server days/slots; `loading | empty | error` on the slot source, error retries via
+`ui.retry slots`) → **hold** (`booking.hold` — entity-scoped command `pending | held | failed`;
+the hold is an opaque `data-hold-ref` + a display-ready expiry label rendered verbatim — NEVER a
+local countdown, and a locally elapsed hold is never treated as authoritative; expiry and reprice
+are SERVER-reported blocking states `slot-expired | repriced` on `booking-review`) → **review**
+(visit details, server display total verbatim, policy acknowledgement `booking.ackPolicy`, the
+required `Simulation — no charge will be made` treatment, confirm `pending | failed | conflict |
+session-lost`). The confirmation renders only from the authoritative readback
+(Appointment-only or Appointment+Order — dev `bookres`) on the accepted `spa-confirmation`
+surface. **Reschedule truth:** `reschedule-current` identifies the currently booked visit
+("unchanged until you confirm") on every step, the review shows a current-vs-proposed
+`reschedule-compare` ("not booked yet"), and the original visit is released ONLY by the
+confirmation readback. **Plan credit:** `plan-credit-context` renders the server's credit state
+verbatim — `ok | unavailable | exhausted | changed` block the flow with server copy (changed
+reloads via `ui.retry plan-credit`); no balance, eligibility, price or deadline is calculated in
+presentation.
+
+### 3. Package & membership purchase entry (module `plan-offer-card`)
+
+`SpaCatalogPage` extends `membership-options`: while the NEW sellable-plan deployment contract is
+open (`data-plan-commerce="open"`, dev select `plansell`) the published offers render as offer
+cards — `Package` (finite uses) visually and semantically distinct from `Membership` (recurring
+terms), showing only server-provided display price, terms summary, benefits and sellability, with
+a `Published offer` chip and copy keeping them distinct from My plan. Primary action `Buy package`
+/ `Join membership` (`plan.purchase`, `data-plan-offer-ref`) is disabled/absent when not sellable:
+`unavailable` shows the honest note, `changed` blocks buying until an explicit `ui.retry
+plan-offers` reload. Buying enters the accepted SIMULATED checkout with source `plan` (per-offer
+frozen quotes `checkout.planQuotes`, membership quote carries the recurring-terms note), and the
+confirmation links to BOTH the created purchase and My plan from the authoritative readback
+(`confirmations.plan` / `confirmations.membership`). Contract closed keeps the accepted wave-14
+offer rows byte-for-byte in behavior.
+
+### 4. Calm Harbor Profile (route `profile`, module `spa-profile`)
+
+`src/routes/SpaProfilePage.js` replaces the generic legacy Profile for Beauty only (the stable
+route id is preserved; other verticals keep the accepted `Profile`). LEAST DATA: shows/edits only
+phone, email and the explicitly approved communication/appointment preferences returned by the
+scoped source (`F.spaProfileSrv`) — no spend, savings, order stats, addresses, saved cards/payment
+methods, plan claims, member-since claims, raw ids, roles, permissions or organization. Values are
+ALWAYS the last server-confirmed readback until `profile.save` succeeds; a failed save preserves
+the old confirmed values; a version conflict blocks further edits until an explicit
+`profile.reload`; per-field invalid states carry accessible error copy (`role=alert`,
+`aria-invalid` + `aria-describedby`). Panel states: `ready | unchanged | dirty | invalid | saving
+| save-failed | conflict` (+ route `loading | error | unauthorized | unavailable`, session-lost
+via the global gate). Clear `‹ Account` back path; the page stays visually subordinate to the
+appointment-first product.
+
+### Stable route & action contract (wave 16)
+
+New actions: `appointment.open` / `appointment.openPurchase` / `appointment.reschedule` /
+`appointment.cancel` / `appointment.bookAgain`; `booking.selectService` /
+`booking.selectSpecialist` / `booking.selectSlot` / `booking.hold` / `booking.retry` /
+`booking.back` / `booking.ackPolicy`; `plan.purchase`; `profile.edit` / `profile.changeField`
+(also the input-event hook on the profile fields) / `profile.save` / `profile.reload`.
+**Preserved aliases (documented, meanings unchanged):** `order.reschedule` → appointment
+reschedule, `order.cancel` → appointment cancel (both share the command key
+`order.cancel:<ref>`, so pending/failed/conflict render identically everywhere),
+`order.bookAgain` → appointment book-again, `profile.saveContact` → the legacy generic contact
+panel (the Calm Harbor profile uses `profile.save`). New opaque refs: `data-plan-offer-ref`,
+`data-slot-ref`, `data-day-key`, `data-hold-ref`, `data-booking-ref`, `data-specialist-ref`.
+Exact actionable entities carry `data-state=pending|failed|conflict`; unrelated entities stay
+interactive. Navigating (`go()`) now closes any open drawer/flow — navigation never confirms
+anything.
+
+### Dev toolbar additions (wave 16)
+
+`adet` (appointment.detail scenario — every fixture ref + `unknown-ref` for the non-enumerating
+not-found), `plansell` (`closed | open`), `offers` (`sellable | unavailable | changed`) on the
+catalog routes, `slots` (`ready | loading | empty | error`) and `credit`
+(`ok | unavailable | exhausted | changed`) while a flow is open; the existing `hold`, `bookres`,
+`cmd` and `state` selects drive the remaining review states. All preview-only (`data-dev-toolbar`).
+
+### Evidence
+
+`previews/wave16/` — naming `{scope}-{state}-{width}-{mode}.png`: appointment detail
+ready/not-found/conflict, booking slots + held review, reschedule compare + expired hold,
+cancellation pending/failed/confirmed, book-again + book-with-credit entries, offers
+sellable/unavailable, plan checkout/confirmation reuse, profile ready/invalid/saving/failed/
+conflict/session-lost, 390 mobile navigation + primary actions, long-name review. Same
+capture-pane caveat as earlier waves: wide widths are scaled-to-fit captures; the live page at
+true viewport width is authoritative.
+
+### Unresolved product assumptions (recorded, not resolved by design)
+
+1. The slot-hold duration and its customer-facing wording ("Held until …") are backend contracts
+   that do not exist yet — the label is a fixture stand-in rendered verbatim.
+2. Specialist choice is assumed optional per service; which services return specialists is a
+   backend capability.
+3. The approved preference list on the Profile is a placeholder for the scoped API's returned
+   set — nothing beyond phone/email/preferences may be added without a proven source.
+4. Whether a reschedule can change the service or specialist (not only the time) is unconfirmed —
+   this increment reschedules the time and keeps the visit's service/specialist context.
+5. Package/membership offer benefits copy is CMS/PIM-owned; the fixture list stands in.
+

@@ -3,6 +3,7 @@ import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
 import { state } from "../state.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { routeStateBody, skel } from "../components/primitives/RouteStates.js";
 import { ProposalCard } from "../components/proposals/ProposalCard.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
 
@@ -15,10 +16,43 @@ export function proposalRollup() {
 /* ProposalCard (portfolio site row) */
 
 export function ProposalsList() {
+  /* wave 13 — proposals/contracts are customer-scoped: while unresolved/failed/
+     unauthorized, no proposal id, address, rollup or map pin renders */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: function () {
+      return h("div", { "data-state": "loading", "aria-busy": "true" }, [
+        skel("height:190px;border-radius:22px;margin-bottom:16px"),
+        h("div", { "class": "rollup-grid" }, [skel("height:74px;border-radius:16px"), skel("height:74px;border-radius:16px"), skel("height:74px;border-radius:16px"), skel("height:74px;border-radius:16px")]),
+        skel("height:260px;border-radius:22px;margin-top:16px")
+      ]);
+    },
+    error: { title: "Couldn\u2019t load your proposals", desc: "Your proposals and contracts didn\u2019t load. Nothing was changed \u2014 try again.", retryId: "proposals.list" },
+    scope: "proposals & contracts"
+  });
+  if (gate) {
+    var gpage = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-state": state.view, "data-visual-id": "proposals-list" });
+    gpage.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Proposals"),
+      h("div", { "class": "section-head__sub" }, "Offers and contracts prepared for you.")
+    ]));
+    gpage.appendChild(gate);
+    return gpage;
+  }
+  if (state.view === "empty") {
+    /* wave 13 — empty means NO proposals exist: no fixture id/rollup renders */
+    var epage = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-state": "empty", "data-visual-id": "proposals-list" });
+    epage.appendChild(h("div", { "class": "section-head" }, [
+      h("div", { "class": "section-head__title" }, "Proposals"),
+      h("div", { "class": "section-head__sub" }, "Offers and contracts prepared for you.")
+    ]));
+    epage.appendChild(EmptyState({ glyph: "\ud83d\udcc4", title: "No proposals yet", desc: "When our team sends you a multi-site proposal, it shows up here." }));
+    return epage;
+  }
   var r = proposalRollup();
   var decided = r.approved + r.revision + r.declined;
   var open = r.unseen + r.viewed;
-  var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "proposals-list" });
+  var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-state": state.view === "empty" ? "empty" : "ready", "data-visual-id": "proposals-list" });
 
   page.appendChild(h("div", { "class": "proposals-head" }, [
     h("div", { style: "flex:1" }, [
@@ -27,11 +61,6 @@ export function ProposalsList() {
     ]),
     h("span", { "class": "proposals-head__pill" }, decided + " of " + state.psites.length + " decided")
   ]));
-
-  if (state.view === "empty") {
-    page.appendChild(EmptyState({ glyph: "\ud83d\udcc4", title: "No proposals yet", desc: "When our team sends you a multi-site proposal, it shows up here." }));
-    return page;
-  }
 
   /* portfolio map */
   var canvas = h("div", { "class": "portfolio-map__canvas" }, [

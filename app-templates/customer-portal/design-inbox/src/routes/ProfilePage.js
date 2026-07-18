@@ -1,25 +1,82 @@
 // customer-portal-design/src/routes/ProfilePage.js — presentation runtime (auto-split from app.js). No business logic.
 import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { cmdPhase, currentContact, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { Tabs } from "../components/primitives/Tabs.js";
 import { Toggle } from "../components/primitives/Toggle.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { InlineFailure, routeStateBody, skel } from "../components/primitives/RouteStates.js";
 import { OrderCard } from "../components/orders/OrderCard.js";
 import { statCard } from "../components/profile/StatCard.js";
+
+/* wave 13 — contact-details editor: field validation → saving → server-confirmed
+   readback or explicit save failure. Values shown are the last server-confirmed
+   ones (currentContact) until a save is confirmed — never an optimistic claim. */
+function ContactPanel() {
+  var cKey = "profile.saveContact:contact";
+  var cPhase = cmdPhase(cKey);
+  var saved = currentContact();
+  var draft = state.contactDraft || saved;
+  var errs = state.contactErrors || {};
+  var panelState = cPhase === "pending" ? "saving" : cPhase === "failed" ? "save-failed" : (errs.phone || errs.email) ? "invalid" : "idle";
+
+  function fieldRow(label, key, bind, type) {
+    var input = h("input", { "class": "field", type: type || "text", value: draft[key] || "", "aria-label": label, "data-bind": bind, "data-state": errs[key] ? "invalid" : undefined, disabled: cPhase === "pending" ? true : undefined });
+    input.addEventListener("input", function () { state.contactDraft = Object.assign({}, state.contactDraft || saved); state.contactDraft[key] = input.value; }); /* no re-render: preserve focus */
+    return h("div", { "class": "field-row" }, [
+      h("span", { "class": "field-label" }, label),
+      input,
+      errs[key] ? h("div", { "class": "field-error", role: "alert" }, errs[key]) : null
+    ]);
+  }
+
+  return h("div", { "class": "list-panel", "data-module": "contact-details", "data-visual-id": "contact-details", "data-state": panelState }, [
+    h("div", { "class": "list-panel__head" }, [
+      h("div", { "class": "list-panel__title", style: "flex:1" }, "Contact details"),
+      cPhase === "pending" ? h("span", { style: "font-size:12.5px;color:var(--ink-3)" }, "Saving\u2026") : null
+    ]),
+    h("div", { "class": "contact-form" }, [
+      fieldRow("Phone", "phone", "customer.phone", "tel"),
+      fieldRow("Email", "email", "customer.email", "email")
+    ]),
+    cPhase === "failed" ? h("div", { style: "margin-top:12px" }, InlineFailure({ msg: "Your changes weren\u2019t saved \u2014 the details on file are unchanged.", retryAction: "profile.saveContact", retryLabel: "Retry save" })) : null,
+    h("div", { style: "margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap" }, [
+      ActionButton({ variant: "btn--primary", label: "Save changes", action: "profile.saveContact", visualId: "save-contact", pending: cPhase === "pending", pendingLabel: "Saving\u2026" }),
+      h("span", { style: "font-size:12px;color:var(--ink-3)" }, "Changes apply only once the server confirms them.")
+    ])
+  ]);
+}
 
 export function Profile() {
   var v = F.themes[state.theme];
   var c = F.customer;
-  var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile" });
+  var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-state": state.view, "data-visual-id": "profile" });
+
+  /* wave 13 — profile is customer-scoped (contact fields, addresses, PSP
+     references): none of it renders while unresolved/failed/unauthorized */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: function () {
+      return h("div", { "data-state": "loading", "aria-busy": "true" }, [
+        skel("height:120px;border-radius:22px;margin-bottom:16px"),
+        h("div", { "class": "stats-grid" }, [skel("height:86px;border-radius:16px"), skel("height:86px;border-radius:16px"), skel("height:86px;border-radius:16px")]),
+        skel("height:280px;border-radius:22px;margin-top:16px")
+      ]);
+    },
+    error: { title: "Couldn\u2019t load your profile", desc: "Your contact details, addresses and payment references didn\u2019t load. Nothing was changed \u2014 try again.", retryId: "profile" },
+    scope: "your profile"
+  });
+  if (gate) { page.appendChild(gate); return page; }
+
+  var contact = currentContact();
 
   /* hero */
   page.appendChild(h("div", { "class": "profile-hero", "data-module": "profile-hero", "data-visual-id": "profile-hero" }, [
     h("div", { "class": "profile-hero__avatar" }),
     h("div", { style: "flex:1" }, [
       h("div", { "class": "profile-hero__name", "data-bind": "customer.fullName" }, c.fullName),
-      h("div", { "class": "profile-hero__meta" }, c.phone + " \u00b7 " + c.email),
+      h("div", { "class": "profile-hero__meta", "data-bind": "customer.phone customer.email" }, contact.phone + " \u00b7 " + contact.email),
       h("span", { "class": "profile-hero__badge" }, v.plan.name + " member \u00b7 since " + c.memberSince)
     ]),
     ActionButton({ variant: "btn--onaccent", label: "Manage plan", action: "profile.managePlan", visualId: "manage-plan" })
@@ -31,6 +88,9 @@ export function Profile() {
     statCard("Spent this year", c.stats.spent, null),
     statCard("Plan savings", c.stats.savings, "var(--ok)")
   ]));
+
+  /* contact details (wave 13) */
+  page.appendChild(ContactPanel());
 
   /* order history */
   var history = state.profileFilter === "all" ? state.orders : state.orders.filter(function (o) { return o.status === state.profileFilter; });

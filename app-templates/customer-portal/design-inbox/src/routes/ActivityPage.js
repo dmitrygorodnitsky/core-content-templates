@@ -3,10 +3,32 @@ import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
 import { state } from "../state.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { routeStateBody, skel } from "../components/primitives/RouteStates.js";
 
 export function Activity() {
   var v = F.themes[state.theme];
-  var page = h("section", { "class": "page", style: "max-width:760px", "data-route": "activity", "data-visual-id": "activity" });
+  var page = h("section", { "class": "page", style: "max-width:760px", "data-route": "activity", "data-state": state.view, "data-visual-id": "activity" });
+  /* wave 13 — the event feed is customer-scoped live data */
+  var gate = routeStateBody({
+    states: ["loading", "error", "unauthorized"],
+    skeleton: function () {
+      var wrap = h("div", { "data-state": "loading", "aria-busy": "true" }, [skel("width:90px;height:14px;margin:4px 4px 14px")]);
+      for (var i = 0; i < 4; i++) wrap.appendChild(skel("height:76px;border-radius:18px;margin-bottom:12px"));
+      return wrap;
+    },
+    error: { title: "Couldn\u2019t load your activity", desc: "Your event feed didn\u2019t load. Nothing was changed \u2014 try again.", retryId: "activity" },
+    scope: "activity"
+  });
+  if (gate) {
+    page.appendChild(h("div", { "class": "activity-head" }, [
+      h("div", { style: "flex:1" }, [
+        h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em" }, "Activity"),
+        h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, "Everything happening with your home, newest first.")
+      ])
+    ]));
+    page.appendChild(gate);
+    return page;
+  }
   page.appendChild(h("div", { "class": "activity-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em" }, "Activity"),

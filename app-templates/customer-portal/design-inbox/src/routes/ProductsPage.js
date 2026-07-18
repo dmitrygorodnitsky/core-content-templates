@@ -4,12 +4,19 @@ import { h } from "../dom.js";
 import { state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { routeStateBody } from "../components/primitives/RouteStates.js";
 import { ProductCard } from "../components/commerce/ProductCard.js";
 import { CartRow } from "../components/commerce/CartRow.js";
 
 export function Products() {
   var v = F.themes[state.theme];
-  var page = h("section", { "class": "page", "data-route": "products", "data-visual-id": "products" });
+  var page = h("section", { "class": "page", "data-route": "products", "data-state": state.view, "data-visual-id": "products" });
+  /* wave 13 — live catalog products: honest error, no fixture fallback */
+  var gate = routeStateBody({
+    states: ["error"],
+    error: { title: "Couldn\u2019t load the catalog", desc: "Products didn\u2019t load, so we\u2019re not showing anything stale. Nothing was changed \u2014 try again.", retryId: "products" }
+  });
+  if (gate) { page.appendChild(gate); return page; }
   page.appendChild(h("div", { "class": "featured-banner", "data-module": "featured-banner", "data-visual-id": "featured-banner" }, [
     h("div", { style: "flex:1" }, [
       h("span", { "class": "eyebrow", "data-bind": "feat.badge" }, v.feat.badge),
