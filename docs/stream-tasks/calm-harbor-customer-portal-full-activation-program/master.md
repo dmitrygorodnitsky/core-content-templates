@@ -533,3 +533,69 @@ because plan enrollment reuses checkout confirmation and Order readback.
   and W6 still waits on the audit — but the reason is those four failures, not
   missing tooling. D5 in the audit package is `todo`, not `blocked`; both child
   packages carry the setup and the known suite state.
+
+- **2026-07-28 — the design fidelity audit is closed, and W6's visual gate can
+  close with it.** Package:
+  `docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/`. All six slices are
+  `done`, including D5.
+
+  **Verdict: the transferred presentation is faithful; the live data path is
+  not.** The stable-hook contract is intact — `data-route` matches 23 for 23,
+  `routes.css` is 724/724 selectors identical, `SpaCartPage.js` and
+  `CommerceBits.js` are byte-identical to the design, and the two alarming line
+  deltas (product detail −92, shop −45) were proved mechanically to be comments
+  and collapsed calls, not lost presentation. 118 findings: `invention` 22,
+  `gap` 12, `drift` 34, `decision` 33, `design-gap` 15, inventory 2.
+
+  **D5 is runnable and was run.** Playwright 1.61.1 → system **Google Chrome
+  150.0.7871.129**. 44 paired surfaces at 390/768/1180/1440 — 16 measured in this
+  wave, 28 inherited from the two already-green suites. Evidence:
+  `…/calm-harbor-design-fidelity-audit-wave/evidence/responsive/README.md`.
+
+  **All four undiagnosed suites now have a cause**, and only one is a finding:
+
+  | suite | cause |
+  | --- | --- |
+  | `config-behavior-check` | **runtime drift** — `runtime/manifest.json` `fileInventory` is one short of disk (commit `84042c5` added two `src` files and bumped the counter by one) |
+  | `visual-acceptance` | harness — the stored S4 packet's accent colour was never painted; geometry and text are pixel-identical, so it is a baseline-browser artifact, not layout drift |
+  | `s7-route-state-check` | harness — it navigates every registered route without seeding `product.detail`'s required param, a route added after the check was written |
+  | `calm-harbor-customer-portal-manual-check` | harness — its stub predates the wave-15 order fan-out; the runtime correctly refuses to render a partial order list |
+
+  `calm-harbor-wave14-visual-check` was diagnosed too: it sets `capability` on
+  the reference page and not the implementation page, so the preview boots to the
+  OIDC route. Its three surfaces therefore have **no pixel measurement at any
+  width**, which is the one coverage gap and is stated as such.
+
+  **What W6 must not treat as closed.** Visual parity is proven; **data honesty
+  is not.** Eleven HIGH findings share one root cause — the live path supplies
+  what the server did not — and all of them sit in `adapters/`, `actions.js` and
+  `state.js`, outside the audit's ownership zone, so none was fixed. The sharpest:
+  an 8% tax computed in the browser and **written to Core**
+  (`runtime/src/actions.js:597-608,410-412`); a fabricated visit location that
+  makes the design's own honest fallback unreachable
+  (`core-spa-demo-adapter.js:520-521`); an appointment status falling through to
+  `Confirmed` for any unmapped Core state (`:553-558`); booking slots read from
+  fixtures and booked against (`SpaBookingFlow.js:180-191`); and two surfaces
+  telling customers in production that data is unavailable while displaying it
+  (`SpaAccountPage.js:64-65`, `SpaProfilePage.js:147`). 27 tickets, full detail in
+  `…/evidence/punch-list.md`.
+
+  **Two traps recorded so a later wave does not spring them.** The orders route
+  root carries raw adapter error codes as `data-state`, which reads as a contract
+  break and is asserted deliberately at
+  `scripts/calm-harbor-customer-portal-manual-check.mjs:198` as the fail-closed
+  signal for a foreign Order — briefed, not fixed. And correcting
+  `runtime/manifest.json` alone will **not** green `config-behavior-check.mjs`:
+  line 626 compares it to disk while line 627 pins the same numbers as a literal
+  contract, and 627 is in `scripts/`.
+
+  **One correction to this program's evidence.** `evidence/S4.md` §3 says "Both
+  treatments are accepted design" of the `SpaPlanPage` unavailable block. The
+  gate is a recorded decision and stands; the block itself has zero design
+  counterpart across 315 `design-inbox/` files. Recorded in the audit's
+  `audits/A1.md` §Corrections to the record.
+
+  Five design briefs filed and listed in
+  `app-templates/customer-portal/design-requests/README.md`. Nothing under
+  `runtime/` or `design-inbox/` was modified by the audit; the release compile was
+  run as a health check and is green and idempotent.

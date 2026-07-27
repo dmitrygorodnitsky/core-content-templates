@@ -97,12 +97,19 @@ confirmed, not rediscovered:
 
 | slice | zone lead | owner | status | depends_on | validation | done_when |
 | --- | --- | --- | --- | --- | --- | --- |
-| D1 manifest diff | inventory | executor | todo | — | diff artifact committed | every component/action/binding present in one manifest and not the other is listed |
-| D2 component audit | production presentation | executor | todo | D1 | per-component findings with both citations | every runtime component compared to its design counterpart |
-| D3 copy and hooks | production presentation | executor | todo | D1 | hook grep passes; copy table produced | stable hooks match the design; every user-visible string is traced |
-| D4 state reachability | production presentation | executor | todo | D2 | state matrix | declared-but-unreachable and reachable-but-undescribed states are both listed |
-| D5 responsive | production presentation | executor | todo | D2 | pixel pairs at four widths, browser named | drift at every width is measured and classified; the four undiagnosed suites have a verdict each |
-| D6 punch list and briefs | findings, design requests | executor | todo | D2–D4 | punch list committed; briefs filed | every finding classified and routed |
+| D1 manifest diff | inventory | executor | **done** | — | `evidence/manifest-diff.md` | every component/action/binding present in one manifest and not the other is listed |
+| D2 component audit | production presentation | 3 surface agents | **done** | D1 | `evidence/findings-components-{appointments,account,commerce}.md` | every runtime component compared to its design counterpart |
+| D3 copy and hooks | production presentation | 3 surface agents | **done** | D1 | `evidence/findings-copy-hooks-*.md`; 51 greps verified | stable hooks match the design; every user-visible string is traced |
+| D4 state reachability | production presentation | executor | **done** | D2 | `evidence/findings-states.md` | declared-but-unreachable and reachable-but-undescribed states are both listed |
+| D5 responsive | production presentation | executor | **done** | D2 | `evidence/responsive/README.md` | drift at every width is measured and classified; the four undiagnosed suites have a verdict each |
+| D6 punch list and briefs | findings, design requests | executor | **done** | D2–D4 | `evidence/punch-list.md`; 5 briefs | every finding classified and routed |
+
+D5 is `done`, not `blocked`: the earlier draft's tooling claim was wrong.
+Playwright 1.61.1 drove system **Google Chrome 150.0.7871.129**; 44 paired
+surfaces at the four widths (16 measured here, 28 inherited), and all four
+undiagnosed suites plus wave14 have a named cause. The one coverage gap —
+wave14's three surfaces have no pixel measurement — is stated in
+`evidence/closeout.md` rather than hidden behind a green ledger row.
 
 ## Definition of Done
 
@@ -123,4 +130,30 @@ confirmed, not rediscovered:
 
 ## Delivery Notes
 
-- (record commit hashes here as slices close)
+| slice | commit | artifact |
+| --- | --- | --- |
+| D1 | `9b28c35` | `evidence/manifest-diff.md` |
+| D4 | `4aca731` | `evidence/findings-states.md` |
+| D5 | `a66ae1c` | `evidence/responsive/README.md` + Chrome-150 artifacts |
+| D2/D3 appointments | `88ca410`, `103cccb` | `evidence/findings-{components,copy-hooks}-appointments.md` |
+| D2/D3 account | `f7fc636` | `evidence/findings-{components,copy-hooks}-account.md` |
+| D2/D3 commerce | `bb34032` | `evidence/findings-{components,copy-hooks}-commerce.md` |
+| D6 | see closeout commit | `evidence/punch-list.md`, `evidence/closeout.md`, `audits/A1.md`, 5 briefs |
+
+**Verdict: the transferred presentation is faithful; the live data path is not.**
+118 findings — `invention` 22 · `gap` 12 · `drift` 34 · `decision` 33 ·
+`design-gap` 15 · inventory 2. Nothing was corrected in `runtime/`, for the three
+reasons in `audits/A1.md` §What was corrected. Release compile run as a health
+check: green and idempotent.
+
+### Corrections to this package's own text
+
+- **Known Starting Point 2 is broader than reality.** `RETURN_REQUESTED` already
+  has an accepted treatment (`return-accepted-for-review`); only a completed
+  `RETURNED` lacks one. The brief asks for that alone.
+- **`slices.md:91`'s example grep does not hit.** These sources build attributes
+  as JS object literals; the working form is `rg -n '"data-visual-id": "plan-card"'`.
+- **D5's stated method cannot be executed as written** (`RS-01`): 170 of the 217
+  files in `design-inbox/previews/` are a fixed 908×540 frame, so the width in a
+  filename names the scenario, not the raster width. The correct instrument is
+  the same-run re-render the per-wave suites already use.

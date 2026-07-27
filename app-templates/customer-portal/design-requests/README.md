@@ -22,3 +22,27 @@ this repository. The user reviews it and imports the accepted package into
   owns shared authenticated lifecycle, authorization, and command-state design.
 - [`calm-harbor-spa-public-landing-media-and-products.md`](calm-harbor-spa-public-landing-media-and-products.md)
   owns the separate public landing media and retail teaser request.
+
+### From the design fidelity audit
+
+Filed by `docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/`. Each covers
+a state the live runtime reaches that the accepted source never described; see
+that wave's `evidence/punch-list.md` for the finding ids.
+
+- [`calm-harbor-plan-expired-and-terminal-enrolment-states.md`](calm-harbor-plan-expired-and-terminal-enrolment-states.md)
+  asks for the `Expired` plan card — the accepted vocabulary stops at four
+  labels and an expired enrolment falls through to the neutral badge.
+- [`calm-harbor-purchase-completed-return-state.md`](calm-harbor-purchase-completed-return-state.md)
+  asks for the **completed** return only; a return in progress is already
+  accepted as `return-accepted-for-review`.
+- [`calm-harbor-partially-unavailable-sections.md`](calm-harbor-partially-unavailable-sections.md)
+  asks for one reusable pattern for a section that is unavailable inside an
+  otherwise-ready page — production has improvised it three times, and two of
+  the three now say something untrue.
+- [`calm-harbor-route-root-access-and-source-failure-states.md`](calm-harbor-route-root-access-and-source-failure-states.md)
+  extends the route-root `data-state` grammar to the access and source-failure
+  states the runtime already reaches, including the fail-closed foreign-Order
+  signal a live check depends on.
+- [`calm-harbor-appointment-status-and-slot-availability-states.md`](calm-harbor-appointment-status-and-slot-availability-states.md)
+  covers `In progress`, the unreachable booking states, the specialist step, and
+  the honest treatment for "we cannot show you availability".
