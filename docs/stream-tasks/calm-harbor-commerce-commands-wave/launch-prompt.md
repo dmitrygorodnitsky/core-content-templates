@@ -10,8 +10,26 @@ authoritative readback.
 
 `docs/stream-tasks/calm-harbor-commerce-commands-wave/`
 
+Repo `core-content-templates`, branch `codex/lab-ui-durable-catalog`. Run every
+command from the repo root — several scripts resolve paths there, not from the
+template directory.
+
 Source of truth: `master.md` (ledger, backend truth table), `slices.md`
 (decomposition). Update `master.md` as slices close.
+
+## Concurrent streams
+
+The design-fidelity audit
+(`docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/`) may be running
+against this same repo. It removes invented markup from
+`runtime/src/components/**` and `runtime/src/routes/**`. Churn there came from
+that stream — reconcile it, do not stop to ask.
+
+Four files are yours for the duration and the audit is told to stay off them:
+`runtime/src/routes/SpaCartPage.js`, `runtime/src/routes/SpaCheckoutPage.js`,
+`runtime/src/actions.js`, `runtime/src/state.js`. If the other stream edits one
+anyway, stop the overlap, decide `re-slice` / `integrate-local` /
+`drop-one-result`, and record the decision in the ledger.
 
 Read first, in this order:
 

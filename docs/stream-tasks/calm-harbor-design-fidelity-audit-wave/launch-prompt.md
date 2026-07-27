@@ -13,8 +13,25 @@ list — including the parts you could not check.
 
 `docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/`
 
+Repo `core-content-templates`, branch `codex/lab-ui-durable-catalog`. Run every
+command from the repo root — several scripts resolve paths there, not from the
+template directory.
+
 Source of truth: `master.md` (ledger, known starting points), `slices.md`
 (method). Update `master.md` as slices close.
+
+## Concurrent streams
+
+W4 commerce (`docs/stream-tasks/calm-harbor-commerce-commands-wave/`) may be
+running against this same repo. Churn under `runtime/src/adapters/**` came from
+that stream — reconcile it, do not stop to ask.
+
+Four files belong to W4 for its duration: `runtime/src/routes/SpaCartPage.js`,
+`runtime/src/routes/SpaCheckoutPage.js`, `runtime/src/actions.js`,
+`runtime/src/state.js`. Audit them and file findings against them, but do not
+edit them — route even an obvious invention there through the punch list so W4
+lands it. If W4 is not running, that restriction lifts and you may correct them
+like any other file.
 
 Read first:
 
