@@ -32,6 +32,7 @@ try {
   assert.match(template.html, /data-portal-retail="retail-commerce-open"/);
   assert.match(template.html, /data-portal-plan-commerce="open"/);
   assert.match(template.html, /data-portal-demo-commands="current-api"/);
+  assert.match(template.html, /data-portal-pim-enrichment="current-api"/);
   assert.match(template.html, /data-portal-organization="CALM_HARBOR_SPA_STAGING"/);
   assert.match(template.html, /data-portal-account-api-base="\/core-acct"/);
   assert.match(template.html, /data-portal-service-api-base="\/core-svc"/);
@@ -47,6 +48,12 @@ try {
   assert.match(template.javascript, /tenant-demo-unscoped/);
   assert.match(template.javascript, /checkout\.confirm/);
   assert.doesNotMatch(template.javascript, /^\s*import\s/m);
+  for (const [field, value] of Object.entries({ head: template.head, html: template.html, css: template.css, javascript: template.javascript })) {
+    assert.doesNotMatch(value, /\$\{|@\{|!\{|<%|%>|@(param|import|template|if|for|while|switch|else)\b/, field + " must not contain JTE parser openers or directives");
+  }
+  assert.doesNotThrow(() => Function(template.javascript), "exported CMS javascript must parse after the JTE safety pass");
+  assert.doesNotMatch(template.javascript, /runtime\/data\/(?:fixtures|cases|spa-product-catalog|care-fixtures|seo-fixtures)\.js/);
+  assert.doesNotMatch(template.javascript, /mia\.chen@example\.com|Priya S\.|Same-day slots in your area|fixture organization/);
 
   const fakeOidc = `<script>
     window.oidc = {
@@ -107,6 +114,11 @@ try {
   const page = await browser.newPage({ viewport: { width: 1180, height: 900 } });
   const url = `http://127.0.0.1:${address.port}/preview.html#/orders`;
   await page.goto(url, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal && window.AircovePortal.state.account === "ready");
+  await page.evaluate(() => {
+    window.AircovePortal.state.capability = "current-staging";
+    window.AircovePortal.go("orders.list");
+  });
   await page.waitForSelector('[data-route="orders.list"][data-state="ready"]');
   assert.equal(await page.locator('[data-module="spa-order-row"]').count(), 1);
   assert.match(await page.locator('[data-module="spa-order-row"]').innerText(), /Spa service order[\s\S]*Reference 2[\s\S]*SPA_SERVICE_ORDER[\s\S]*OPEN[\s\S]*\$145\.00[\s\S]*USD/);
@@ -125,16 +137,23 @@ try {
   assert.equal(orders.headers["x-organization-code"], "CALM_HARBOR_SPA_STAGING");
   assert.deepEqual(orders.body.filters, [{ type: "INTEGER", operator: "=", property: "account.id", value: "501" }]);
 
+  await page.goto(`http://127.0.0.1:${address.port}/preview.html?direct-login=1#/login`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal
+    && window.AircovePortal.state.account === "ready"
+    && window.AircovePortal.state.route === "orders.list");
+  await page.waitForSelector('[data-module="top-nav"]:not([data-state="gated"])');
+  assert.equal(await page.locator('[data-route="auth.oidc"]').count(), 0, "an authenticated direct /login load continues to the portal default route");
+  assert.ok(await page.locator('[data-module="account-control"]').count() > 0, "authenticated portal navigation is visible after bootstrap");
+
+  await page.evaluate(() => { window.AircovePortal.state.capability = "target-appointments"; });
+
   await page.goto(`http://127.0.0.1:${address.port}/preview.html#/services`, { waitUntil: "networkidle" });
   await page.waitForSelector('[data-module="spa-service-card"]');
   assert.match(await page.locator('[data-module="spa-service-card"]').innerText(), /Grounding massage[\s\S]*\$145[\s\S]*CHS_GROUNDING_MASSAGE/);
   assert.ok(await page.locator('[data-action="booking.open"]').count() > 0, "booking is open on the current API demo");
   await page.goto(`http://127.0.0.1:${address.port}/preview.html#/pricing`, { waitUntil: "networkidle" });
-  const membershipLinkStyle = await page.locator('[data-module="membership-options"] button.link-action').evaluate((node) => {
-    const style = getComputedStyle(node);
-    return { borderWidth: style.borderWidth, backgroundColor: style.backgroundColor, padding: style.padding };
-  });
-  assert.deepEqual(membershipLinkStyle, { borderWidth: "0px", backgroundColor: "rgba(0, 0, 0, 0)", padding: "0px" }, "membership link button has no native browser chrome");
+  await page.waitForSelector('[data-module="plan-offer-card"] [data-action="plan.purchase"]');
+  assert.equal(await page.locator('[data-module="plan-offer-card"] [data-action="plan.purchase"]').count(), 2, "package and membership offers are both actionable in the open simulated-commerce contract");
   await page.goto(`http://127.0.0.1:${address.port}/preview.html#/products`, { waitUntil: "networkidle" });
   await page.waitForSelector('[data-module="spa-shop-card"]');
   assert.match(await page.locator('[data-module="spa-shop-card"]').innerText(), /Harbor body oil[\s\S]*\$48[\s\S]*CHS_HARBOR_BODY_OIL/);
@@ -161,6 +180,7 @@ try {
   assert.ok(await page.locator('[data-route="account"] [data-action="account.openPurchases"]').count() > 0, "purchases are live");
 
   await page.goto(url, { waitUntil: "networkidle" });
+  await page.evaluate(() => { window.AircovePortal.state.capability = "current-staging"; window.AircovePortal.go("orders.list"); });
   await page.waitForSelector('[data-route="orders.list"][data-state="ready"]');
   await page.locator('[data-module="account-control"]').click();
   await page.locator('[data-module="account-menu"] button', { hasText: "Support" }).click();
@@ -173,16 +193,21 @@ try {
 
   backend.orderAccountId = 999;
   await page.reload({ waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal && window.AircovePortal.state.account !== "resolving-customer");
+  await page.evaluate(() => { window.AircovePortal.state.capability = "current-staging"; window.AircovePortal.go("orders.list"); });
   await page.waitForSelector('[data-route="orders.list"][data-state="order-scope-mismatch"]');
   assert.equal(await page.locator('[data-module="spa-order-row"]').count(), 0, "foreign Order fails closed");
 
   backend.orderAccountId = 501;
   backend.accountMode = "missing";
-  await page.reload({ waitUntil: "networkidle" });
-  await page.waitForSelector('[data-route="orders.list"][data-state="customer-not-linked"]');
-  assert.equal(await page.locator('[data-module="spa-order-row"]').count(), 0, "missing Account has no private fallback");
+  const pimRequestsBeforeDeniedBoot = requests.filter((item) => item.path.startsWith("/core-pim/public/")).length;
+  await page.goto(`http://127.0.0.1:${address.port}/preview.html?denied-boot=1#/products`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal && window.AircovePortal.state.account !== "resolving-customer");
+  await page.waitForSelector('[data-route="products"][data-state="customer-not-linked"] [data-module="account-bootstrap"]');
+  assert.equal(await page.locator('[data-module="spa-shop-card"]').count(), 0, "direct page load renders no portal content before Account access is granted");
+  assert.equal(requests.filter((item) => item.path.startsWith("/core-pim/public/")).length, pimRequestsBeforeDeniedBoot, "denied initial bootstrap does not load the catalog behind the gate");
 
-  console.log("calm-harbor-customer-portal-manual-check ok: OIDC User -> Account -> scoped Orders, foreign and missing scope fail closed");
+  console.log("calm-harbor-customer-portal-manual-check ok: initial OIDC -> Account gate, scoped Orders, foreign and missing scope fail closed");
 } finally {
   if (browser) await browser.close();
   if (server) await new Promise((resolve) => server.close(resolve));

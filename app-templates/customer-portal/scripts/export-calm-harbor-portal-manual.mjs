@@ -24,7 +24,9 @@ export async function exportCalmHarborPortalManual(options = {}) {
   validateSource(source);
   const css = await readStyles();
   const javascript = await fs.readFile(source.template.code === "CUSTOMER_PORTAL_CALM_HARBOR_STAGING" ? targetRuntimePath : pimRuntimePath, "utf8");
+  assertLiveJavascript(source, javascript);
   const template = templateFor(source, css, javascript);
+  assertJteSafeTemplate(template);
   const manifest = manifestFor(sourcePath, source, template);
   const preview = previewFor(template);
 
@@ -37,6 +39,58 @@ export async function exportCalmHarborPortalManual(options = {}) {
     throw error;
   }
   return { outputDir, manifest };
+}
+
+function assertJteSafeTemplate(template) {
+  if (template.templateLanguage !== "JTE") return;
+  if (template.parameters.length) throw new Error("The Calm Harbor JTE root must remain parameter-free");
+  const markers = [
+    { token: "${", label: "JTE expression/parameter opener" },
+    { token: "@{", label: "JTE code opener" },
+    { token: "!{", label: "JTE unsafe-content opener" },
+    { token: "<%", label: "server-template code opener" },
+    { token: "%>", label: "server-template code closer" },
+  ];
+  const directive = /@(param|import|template|if|for|while|switch|else)\b/g;
+  for (const [field, value] of Object.entries({ head: template.head, html: template.html, css: template.css, javascript: template.javascript })) {
+    for (const marker of markers) {
+      const index = value.indexOf(marker.token);
+      if (index !== -1) throw jteSafetyError(field, value, index, marker.label + " " + JSON.stringify(marker.token));
+    }
+    const match = directive.exec(value);
+    directive.lastIndex = 0;
+    if (match) throw jteSafetyError(field, value, match.index, "JTE directive " + JSON.stringify(match[0]));
+    if (value.includes("\u0000")) throw new Error("JTE field " + field + " contains a NUL byte");
+  }
+  try {
+    Function(template.javascript);
+  } catch (error) {
+    throw new Error("CMS javascript is not syntactically valid after the JTE safety pass: " + error.message);
+  }
+}
+
+function jteSafetyError(field, value, index, marker) {
+  const line = value.slice(0, index).split("\n").length;
+  return new Error("Refusing to export JTE-unsafe " + field + ": " + marker + " at line " + line);
+}
+
+function assertLiveJavascript(source, javascript) {
+  if (source.template.code !== "CUSTOMER_PORTAL_CALM_HARBOR_STAGING") return;
+  const forbiddenFixtureMarkers = [
+    "runtime/data/fixtures.js",
+    "runtime/data/cases/",
+    "runtime/data/spa-product-catalog.js",
+    "runtime/data/care-fixtures.js",
+    "runtime/data/seo-fixtures.js",
+    "mia.chen@example.com",
+    "Priya S.",
+    "Same-day slots in your area",
+    "fixture organization",
+  ];
+  const leakedMarker = forbiddenFixtureMarkers.find((marker) => javascript.includes(marker));
+  if (leakedMarker) {
+    throw new Error("Refusing to export fixture data in the live customer portal JavaScript: " + leakedMarker + ". Rebuild the target runtime first.");
+  }
 }
 
 function validateSource(source) {
@@ -63,6 +117,7 @@ function validateSource(source) {
   }
   if (!source.pim || source.pim.organization !== "CALM_HARBOR_SPA_STAGING") throw new Error("Manual Calm Harbor portal must target CALM_HARBOR_SPA_STAGING");
   if (source.pim.apiBase !== "/core-pim/api") throw new Error("Manual Calm Harbor portal must use the same-origin Core PIM base");
+  if (customerPortal && source.pim.enrichmentMode !== "current-api") throw new Error("Authenticated Calm Harbor staging portal must explicitly enable current-API PIM enrichment");
   if (!source.auth || source.auth.coreBase !== "/core" || source.auth.callbackPath !== "/core/oauth2-callback.html") {
     throw new Error("Manual Calm Harbor portal must use the registered same-origin Core OIDC callback");
   }
@@ -75,10 +130,23 @@ function validateSource(source) {
     || source.account.accountTypeCode !== "SPA_CUSTOMER")) {
     throw new Error("Authenticated Calm Harbor portal requires the approved same-origin customer Account contract");
   }
-  for (const key of ["pricingProductTypeCodes", "productsProductTypeCodes", "priceAttributeValues", "currencyAttributeValues"]) {
+  for (const key of ["pricingProductTypeCodes", "productsProductTypeCodes", "currencyAttributeValues"]) {
     if (!Array.isArray(source.pim[key]) || !source.pim[key].length || source.pim[key].some((value) => typeof value !== "string" || !value)) {
       throw new Error("Manual Calm Harbor portal PIM " + key + " must be a nonempty string array");
     }
+  }
+  // The price-attribute filter is optional: under the SYSTEM price types a
+  // one-time price carries no INTERVAL, so filtering by it would drop every
+  // non-recurring row. It must be configured as a pair or not at all.
+  const hasPriceAttributeCode = Boolean(typeof source.pim.priceAttributeCode === "string" && source.pim.priceAttributeCode);
+  const hasPriceAttributeValues = Boolean(Array.isArray(source.pim.priceAttributeValues)
+    && source.pim.priceAttributeValues.length
+    && source.pim.priceAttributeValues.every((value) => typeof value === "string" && value));
+  if (hasPriceAttributeCode !== hasPriceAttributeValues) {
+    throw new Error("Manual Calm Harbor portal PIM price attribute filter needs both priceAttributeCode and priceAttributeValues, or neither");
+  }
+  if (!source.pim.amountAttributeCode || typeof source.pim.amountAttributeCode !== "string") {
+    throw new Error("Manual Calm Harbor portal PIM amountAttributeCode must name the price amount attribute");
   }
 }
 
@@ -105,17 +173,19 @@ function templateFor(source, css, javascript) {
     "data-portal-case": "",
     "data-portal-pim-api-base": pim.apiBase,
     "data-portal-pim-organization": pim.organization,
+    "data-portal-pim-enrichment": pim.enrichmentMode || "closed",
     "data-portal-pim-product-type-code": pim.pricingProductTypeCodes[0],
     "data-portal-pim-pricing-product-type-codes": pim.pricingProductTypeCodes.join(","),
     "data-portal-pim-products-product-type-codes": pim.productsProductTypeCodes.join(","),
     "data-portal-pim-price-type-code": pim.priceTypeCode,
-    "data-portal-pim-price-attribute-code": pim.priceAttributeCode,
-    "data-portal-pim-price-attribute-values": pim.priceAttributeValues.join(","),
+    "data-portal-pim-price-attribute-code": pim.priceAttributeCode || "",
+    "data-portal-pim-price-attribute-values": Array.isArray(pim.priceAttributeValues) ? pim.priceAttributeValues.join(",") : "",
     "data-portal-pim-currency": pim.currency,
     "data-portal-pim-currency-attribute-code": pim.currencyAttributeCode,
     "data-portal-pim-currency-attribute-values": pim.currencyAttributeValues.join(","),
     "data-portal-pim-amount-attribute-code": pim.amountAttributeCode,
-    "data-portal-pim-amount-minor-divisor": String(pim.amountMinorDivisor),
+    // Absent when the amount attribute is already in major units.
+    "data-portal-pim-amount-minor-divisor": pim.amountMinorDivisor == null ? "" : String(pim.amountMinorDivisor),
     "data-portal-pim-cta": pim.cta,
     "data-portal-auth-core-base": auth.coreBase,
     "data-portal-auth-callback-path": auth.callbackPath,
@@ -228,7 +298,7 @@ function readme(packageData) {
     "2. Paste `root/head.html`, `root/html.html`, `root/css.css`, and `root/javascript.js` into the matching CMS fields. `root/template.json` is the complete reference record.\n" +
     "3. Publish the template, then open it on `dev-1.servicewand.com` at " + (customerPortal ? "`#/orders`, " : "") + "`#/pricing`, `#/products`, and `#/login`.\n\n" +
     "## Runtime contract\n\n" +
-    "The browser sends unauthenticated same-origin POST requests to `" + publicCatalogPath(packageData.source.pim) + "`. Pricing queries `" + packageData.source.pim.pricingProductTypeCodes.join(", ") + "`; products query `" + packageData.source.pim.productsProductTypeCodes.join(", ") + "`. The runtime reads `" + packageData.source.pim.amountAttributeCode + "` with divisor `" + packageData.source.pim.amountMinorDivisor + "`.\n\n" +
+    "The browser sends unauthenticated same-origin POST requests to `" + publicCatalogPath(packageData.source.pim) + "`. Pricing queries `" + packageData.source.pim.pricingProductTypeCodes.join(", ") + "`; products query `" + packageData.source.pim.productsProductTypeCodes.join(", ") + "`. The runtime reads `" + packageData.source.pim.amountAttributeCode + "`" + (packageData.source.pim.amountMinorDivisor == null ? " as a major-unit amount" : " with divisor `" + packageData.source.pim.amountMinorDivisor + "`") + ".\n\n" +
     (customerPortal ? "After OIDC sign-in, the browser resolves the signed-in User to exactly one `SPA_CUSTOMER` Account. Orders are read with that Account id. Booking and rescheduling save `SPA_VISIT` Appointments through `/core-svc/api/appointment`; checkout saves an Order through `/core-bill/api/order`; profile editing saves only the signed-in User email through `/core/api/user`. Each mutation is single-flight and followed by authoritative readback. Payment is simulated: no card, charge, paid Invoice, receipt, cancellation, return, entitlement, or renewal mutation is claimed.\n\n" : "") +
     "The package is intentionally same-origin only. Do not host it on another domain: the current Core PIM CORS policy denies that path. Sign-in uses the Core discovery document and registered `/core/oauth2-callback.html` redirect; `oidc-client-ts` is loaded from a pinned CDN URL with SRI. The CMS template never stores or authors a password, API key, access token, customer, order, appointment, or account value. The runtime is self-contained in `javascript.js`; no static asset upload is required.\n\n" +
     "`preview.html` is a structural preview. It cannot validate live PIM when opened from `file://`; validate the deployed template on `dev-1` instead.\n";

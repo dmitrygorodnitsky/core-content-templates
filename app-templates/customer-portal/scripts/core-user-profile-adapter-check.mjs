@@ -14,6 +14,49 @@ const user = { id: 42, optimistic: 3, name: "elena", fullname: "Elena Rios", ema
   assert.deepEqual(JSON.parse(calls[0].options.body), coreUserProfileContract.mappings);
 }
 
+const scoped = {
+  config: { accountApiBase: "/core-acct", coreApiBase: "/core", origin },
+  state: { customerAccount: { code: "CHS_STG_ELENA_RIOS", id: 1 }, session: { accessToken: "test", tokenType: "Bearer", userId: 42 } },
+};
+const accountWithPhone = {
+  id: 1,
+  code: "CHS_STG_ELENA_RIOS",
+  contacts: [{
+    id: 7, firstName: "Elena", lastName: "Rios",
+    contactEntries: [
+      { id: 8, value: "elena@example.test", kind: { code: "HOME" }, type: { code: "EMAIL" } },
+      { id: 9, value: "+1 512 555 0143", kind: { code: "MOBILE" }, type: { code: "PHONE" } },
+    ],
+  }],
+};
+
+{
+  // With a resolved account, phone comes from the PRIMARY contact's PHONE entry.
+  const calls = [];
+  const adapter = createCoreUserProfileAdapter({ origin, fetch: sequence([json(user), json({ result: [accountWithPhone] })], calls) });
+  const result = await adapter.load("profile", scoped);
+  assert.equal(result.phone, "+1 512 555 0143");
+  assert.deepEqual(result.unavailableFields, ["preferences"], "phone is no longer unavailable once it is read");
+  assert.deepEqual(result.allowedActions, ["edit-email"], "phone stays read-only until a scoped contact write exists");
+  assert.equal(calls[1].url, origin + "/core-acct/api/account/list.json");
+  assert.deepEqual(JSON.parse(calls[1].options.body).filters, [{ type: "INTEGER", operator: "=", property: "id", value: "1" }]);
+}
+
+{
+  // A contact with no phone entry yields no phone, never a placeholder.
+  const withoutPhone = { ...accountWithPhone, contacts: [{ ...accountWithPhone.contacts[0], contactEntries: [accountWithPhone.contacts[0].contactEntries[0]] }] };
+  const result = await createCoreUserProfileAdapter({ origin, fetch: sequence([json(user), json({ result: [withoutPhone] })]) }).load("profile", scoped);
+  assert.equal(result.phone, null);
+  assert.deepEqual(result.unavailableFields, ["phone", "preferences"]);
+}
+
+{
+  // Another customer's account must never supply the phone.
+  const foreign = { ...accountWithPhone, id: 2099 };
+  const result = await createCoreUserProfileAdapter({ origin, fetch: sequence([json(user), json({ result: [foreign] })]) }).load("profile", scoped);
+  assert.equal(result.phone, null);
+}
+
 {
   const calls = [];
   const changed = { ...user, optimistic: 4, email: "new@example.test" };
@@ -32,4 +75,4 @@ await assert.rejects(
 console.log("core-user-profile-adapter-check ok: self User email save is optimistic and confirmed by readback");
 
 function json(value) { return { ok: true, status: 200, async json() { return structuredClone(value); } }; }
-function sequence(responses, calls) { let i = 0; return async (url, options) => { calls.push({ url, options }); return responses[i++]; }; }
+function sequence(responses, calls = []) { let i = 0; return async (url, options) => { calls.push({ url, options }); return responses[i++]; }; }

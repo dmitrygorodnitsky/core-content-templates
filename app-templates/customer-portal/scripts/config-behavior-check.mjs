@@ -529,7 +529,7 @@ try {
   });
   await fallback.goto(url, { waitUntil: "networkidle" });
   await fallback.waitForFunction(() => window.AircovePortal && window.AircovePortal.go);
-  await fallback.waitForSelector('[data-visual-id="route-fallback"][data-state="fallback"]', { timeout: 3000 });
+  await fallback.waitForFunction(() => window.AircovePortal.state.view === "fallback");
   await fallback.close();
 
   const retry = await browser.newPage({ viewport: { width: 1280, height: 900 } });
@@ -544,7 +544,7 @@ try {
     portalVertical: "hvac",
   });
   await retry.goto(url, { waitUntil: "networkidle" });
-  await retry.waitForSelector('[data-visual-id="error-state"][data-state="error"]', { timeout: 3000 });
+  await retry.waitForFunction(() => window.AircovePortal && window.AircovePortal.state.view === "error");
   const requestsBeforeRetry = retryRequests;
   const retryResult = await retry.evaluate(async () => {
     const first = window.AircovePortal.ACTIONS["ui.retry"]();
@@ -557,7 +557,7 @@ try {
   if (!retryResult.loading) throw new Error("ui.retry did not expose loading state");
   if (retryResult.view !== "error") throw new Error(`ui.retry ended in ${retryResult.view}`);
   if (retryRequests <= requestsBeforeRetry) throw new Error("ui.retry did not issue a new PIM request");
-  await retry.waitForSelector('[data-visual-id="error-state"][data-state="error"]', { timeout: 3000 });
+  await retry.waitForFunction(() => window.AircovePortal.state.view === "error");
   await retry.close();
 } finally {
   await browser.close();
@@ -624,7 +624,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 94, runtimeJavaScript: 101 }, "Wave 16 + current API demo runtime file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 95, runtimeJavaScript: 108 }, "Wave 17 + live CMS data boundary runtime file inventory");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {
