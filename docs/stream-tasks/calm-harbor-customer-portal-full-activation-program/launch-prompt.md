@@ -22,10 +22,22 @@ the whole program as one undifferentiated change.
 
 ## Current target wave
 
-W0 — exact scoped API and deterministic seed readiness.
+**W4 — commerce commands.** W0, W1 and W2 are closed; W3 is `blocked` on a
+backend fault. See `master.md` Delivery Notes for what actually landed.
 
-After W0 closes, W1 may be accepted as soon as the user imports the designer's
-executable result. Stop before W2 if either gate is incomplete.
+W4 has its own execution-ready package — **run that, not this file**:
+`docs/stream-tasks/calm-harbor-commerce-commands-wave/launch-prompt.md`
+
+A second, independent stream is also ready and does not compete for the same
+files:
+`docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/launch-prompt.md`
+It audits the transferred runtime against `design-inbox/**` and routes design
+gaps to Claude Design. **W6 cannot claim visual parity until it closes** — no
+Playwright machine has run the visual suites yet.
+
+This program file remains the roadmap container and the place where wave
+outcomes are recorded. Execute one wave per round; do not run the whole program
+continuously.
 
 ## Constraints
 
@@ -50,13 +62,24 @@ executable result. Stop before W2 if either gate is incomplete.
    Spa Profile design.
 3. W2 / S3-S4 — scoped read adapters first, then 1:1 presentation activation.
 4. W3 / S5 — appointment commands one at a time.
-5. W4 / S6-S6b — server commerce, simulated checkout, cancellation/return.
-6. W5 / S7-S7b — plan enrollment/use/manage and least-data Profile update.
+5. W4 / S6 — server commerce and simulated checkout, via its own package.
+   **Cancellation and return are excluded**: no accepted design for the return
+   states, and workflow event dispatch returns an opaque 500 tenant-wide.
+6. W5 / S7 — plan enrollment/use/manage and least-data Profile update. Plan
+   cancellation shares W3's blocker.
 7. W6 / S8 — capability switch, release export, full E2E, visual proof and CMS
-   dry run.
+   dry run. Gated on the design-fidelity audit.
 
 Stop between waves when a backend/design gate is not proven. Record the exact
 blocked contract; do not substitute a fixture implementation and continue.
+
+## Delegation protocol
+
+Both child packages carry the full current `/execution-operator` contract —
+delegation budget, the mandatory ambiguity line, the prompt shape, the
+first-spawn retry protocol, background lifecycle SLA, file-churn presumption and
+the escalation schema. Read the target wave's `launch-prompt.md` §Delegation
+protocol before dispatching anything; do not improvise from memory.
 
 ## Validation
 
