@@ -9,1407 +9,135 @@
       __defProp(target, name, { get: all[name], enumerable: true });
   };
 
-  // app-templates/customer-portal/runtime/data/care-fixtures.js
-  var care_fixtures_exports = {};
-  __export(care_fixtures_exports, {
+  // app-templates/customer-portal/runtime/data/live-care-fixtures.js
+  var live_care_fixtures_exports = {};
+  __export(live_care_fixtures_exports, {
     careFixtures: () => careFixtures
   });
   var careFixtures;
-  var init_care_fixtures = __esm({
-    "app-templates/customer-portal/runtime/data/care-fixtures.js"() {
-      careFixtures = {
-        "HVAC": {
-          kind: "equipment",
-          navLabel: "Equipment",
-          empty: { glyph: "\u2699", title: "No equipment on file yet", desc: "After your first visit, every unit we service appears here with its passport and diagnostics." },
-          title: "Your equipment",
-          sub: "Every unit we service \u2014 condition, warranty and the latest diagnostic in one place.",
-          units: [
-            {
-              id: "unit-ac-01",
-              name: "Central AC",
-              model: "Carrier 24ACC636",
-              place: "Backyard pad",
-              serial: "SN 4A88-22014",
-              installed: "2019",
-              warranty: "Parts until Aug 2029",
-              lastVisit: "Jan 12, 2026",
-              health: 86,
-              note: "Supply-air \u0394T is trending slightly low \u2014 worth a coil clean before summer.",
-              checks: [
-                { group: "Cooling performance", items: [
-                  { name: "Refrigerant pressure", state: "ok", val: "118 psi" },
-                  { name: "Supply air \u0394T", state: "warn", val: "19\xB0F", note: "target 20\u201322\xB0F" },
-                  { name: "Compressor draw", state: "ok", val: "6.4 A" }
-                ] },
-                { group: "Airflow & filtration", items: [
-                  { name: "Air filter", state: "warn", val: "88 days", note: "replace soon" },
-                  { name: "Blower motor", state: "ok", val: "normal" },
-                  { name: "Duct static pressure", state: "ok", val: "0.48 in" }
-                ] },
-                { group: "Safety & electrical", items: [
-                  { name: "Capacitor", state: "ok", val: "within spec" },
-                  { name: "Contactor & wiring", state: "ok", val: "no wear" },
-                  { name: "Condensate drain", state: "ok", val: "clear" }
-                ] }
-              ]
-            },
-            {
-              id: "unit-furnace-01",
-              name: "Furnace",
-              model: "Lennox EL296V",
-              place: "Basement",
-              serial: "SN 7C21-90387",
-              installed: "2016",
-              warranty: "Heat exchanger until 2036",
-              lastVisit: "Oct 3, 2025",
-              health: 71,
-              note: "Igniter is near end of life \u2014 replacement recommended at the next visit.",
-              checks: [
-                { group: "Heating performance", items: [
-                  { name: "Ignition system", state: "issue", val: "aging igniter", note: "replace recommended" },
-                  { name: "Flame sensor", state: "ok", val: "cleaned Oct 3" },
-                  { name: "Temperature rise", state: "ok", val: "52\xB0F" }
-                ] },
-                { group: "Safety", items: [
-                  { name: "Heat exchanger", state: "ok", val: "no cracks" },
-                  { name: "CO at registers", state: "ok", val: "0 ppm" },
-                  { name: "Gas connections", state: "ok", val: "no leaks" }
-                ] },
-                { group: "Airflow", items: [
-                  { name: "Blower wheel", state: "warn", val: "light dust", note: "clean at tune-up" },
-                  { name: "Return airflow", state: "ok", val: "normal" }
-                ] }
-              ]
-            }
-          ],
-          docs: [
-            { id: "doc-hvac-diag-2026-01", name: "Diagnostic report \u2014 Jan 12, 2026", meta: "PDF \xB7 21-point check" },
-            { id: "doc-hvac-warranty-carrier", name: "Carrier parts warranty", meta: "PDF \xB7 valid to 2029" }
-          ]
-        },
-        "Snow Removal": {
-          kind: "seasonLog",
-          navLabel: "Season log",
-          empty: { glyph: "\u2744", title: "No storm responses yet", desc: "When the first storm triggers a visit, the GPS-logged response appears here." },
-          title: "Season log",
-          sub: "Every storm response this winter \u2014 GPS-logged, timed against your SLA, with materials used.",
-          stats: [
-            { label: "Storms served", value: "9" },
-            { label: "Visits", value: "14" },
-            { label: "Avg response", value: "52 min" },
-            { label: "De-icer used", value: "310 kg" }
-          ],
-          sla: { pct: 93, label: "13 of 14 visits inside the 90-minute window \u2014 the missed one was credited per contract." },
-          events: [
-            { date: "Jan 12", storm: "Snowfall 3.2 cm", trigger: "Auto \xB7 2 cm rule", response: "38 min", sla: true, material: "22 kg salt", orderId: "#SV-3290", photos: true },
-            { date: "Jan 5", storm: "Snowfall 4.1 cm", trigger: "Auto \xB7 2 cm rule", response: "47 min", sla: true, material: "26 kg salt", orderId: "#SV-3290", photos: true },
-            { date: "Dec 28", storm: "Freezing rain", trigger: "Ice watch", response: "41 min", sla: true, material: "31 kg brine", photos: true },
-            { date: "Dec 19", storm: "Snowfall 8.6 cm", trigger: "Auto \xB7 2 cm rule", response: "104 min", sla: false, material: "24 kg salt", note: "crew rerouted \u2014 visit credited", photos: true },
-            { date: "Dec 12", storm: "Snowfall 2.3 cm", trigger: "Auto \xB7 2 cm rule", response: "55 min", sla: true, material: "18 kg salt", photos: true }
-          ],
-          docs: [
-            { id: "doc-snow-compliance-2025-12", name: "December compliance report", meta: "PDF \xB7 8 visits \xB7 slip-and-fall record" },
-            { id: "doc-snow-compliance-2025-11", name: "November compliance report", meta: "PDF \xB7 4 visits" }
-          ]
-        },
-        "Lawn & Garden": {
-          kind: "program",
-          navLabel: "Program",
-          empty: { glyph: "\u2618", title: "Program starts in spring", desc: "Your 5-step season program appears here once the first application is scheduled." },
-          title: "Season program",
-          sub: "Your 5-step feeding and care program \u2014 what\u2019s done, what\u2019s next, and when the lawn is safe to use.",
-          reentry: { active: true, treatment: "Fertilizing \u2014 applied today, 2:10 PM", safeAfter: "Safe after 6:00 PM today", note: "Water-in complete. Keep kids and pets off treated areas until dry." },
-          steps: [
-            { n: 1, name: "Early spring feed", detail: "Slow-release + pre-emergent", window: "April", status: "done", when: "Done \xB7 Apr 14" },
-            { n: 2, name: "Late spring feed", detail: "Balanced feed + broadleaf control", window: "May", status: "done", when: "Done \xB7 May 22" },
-            { n: 3, name: "Summer feed + grub control", detail: "Heat-safe formula", window: "July", status: "next", when: "Scheduled \xB7 Jul 18" },
-            { n: 4, name: "Fall feed", detail: "Root-builder + overseed", window: "September", status: "upcoming", when: "Auto-scheduled" },
-            { n: 5, name: "Winterizer", detail: "Potassium winterizer", window: "November", status: "upcoming", when: "Auto-scheduled" }
-          ],
-          soil: [
-            { label: "Soil pH", value: "6.6 \xB7 ideal" },
-            { label: "Nitrogen", value: "adequate" },
-            { label: "Thatch", value: "6 mm \xB7 fine" }
-          ],
-          photos: [{ label: "April" }, { label: "May" }, { label: "June", tone: "after" }]
-        },
-        "Pool & Spa": {
-          kind: "water",
-          navLabel: "Water",
-          empty: { glyph: "\u25CB", title: "No readings yet", desc: "Water chemistry from every visit lands here after your first test." },
-          title: "Water quality",
-          sub: "Readings from every visit, tracked against safe ranges \u2014 plus what your tech dosed and why.",
-          tested: "Last tested Jan 12 \xB7 9:40 AM \xB7 Daniel R.",
-          nextTest: "Next test \u2014 Jan 19 (weekly plan)",
-          readings: [
-            { name: "pH", value: "7.4", target: "target 7.2\u20137.6", state: "ok", series: [55, 70, 80, 45, 60] },
-            { name: "Free chlorine", value: "1.8 ppm", target: "target 1\u20133 ppm", state: "ok", series: [40, 35, 60, 70, 55] },
-            { name: "Alkalinity", value: "78 ppm", target: "target 80\u2013120 ppm", state: "warn", note: "Slightly low \u2014 dose added Jan 12", series: [80, 70, 60, 50, 45] },
-            { name: "Water temp", value: "27\xB0C", target: "heater set 28\xB0C", state: "ok", series: [50, 55, 60, 62, 65] }
-          ],
-          doses: [
-            { date: "Jan 12", what: "Alkalinity increaser 1.2 kg \xB7 chlorine tabs \xD72", why: "Alkalinity trending low" },
-            { date: "Jan 5", what: "Chlorine tabs \xD72", why: "Routine top-up" },
-            { date: "Dec 29", what: "Algaecide 250 ml", why: "Preventive \u2014 warm spell" }
-          ]
-        },
-        "Roofing": {
-          kind: "roof",
-          navLabel: "Roof report",
-          empty: { glyph: "\u2302", title: "No inspection yet", desc: "Book your first drone inspection to get a zone-by-zone condition report." },
-          title: "Roof condition",
-          sub: "Findings from your drone inspection on Jan 8 \u2014 and the repair project it kicked off.",
-          score: "82",
-          grade: "Good",
-          inspected: "Inspected Jan 8, 2026",
-          nextDue: "Next inspection \u2014 Jan 2027",
-          zones: [
-            { zone: "Main roof \u2014 south face", sev: "ok", note: "Shingles sound \xB7 no lifting or granule loss" },
-            { zone: "Valley at dormer", sev: "warn", note: "Early granule loss \u2014 monitor, reseal in 2026" },
-            { zone: "Chimney flashing", sev: "issue", note: "Cracked sealant \u2014 repair scheduled Jan 22" },
-            { zone: "Gutters \u2014 north run", sev: "warn", note: "60% debris \u2014 cleaning added to the visit" },
-            { zone: "Ridge & vents", sev: "ok", note: "Ventilation normal" }
-          ],
-          project: { name: "Chimney flashing repair", eta: "Crew arrives Jan 22 \xB7 9:00 AM", steps: [
-            { label: "Quote approved", sub: "Jan 9 \xB7 $180 \xB7 2-year warranty", dot: "var(--ok)" },
-            { label: "Materials ordered", sub: "Jan 10 \xB7 matching flashing kit", dot: "var(--ok)" },
-            { label: "Repair day", sub: "Jan 22 \xB7 one crew, ~2 h", dot: "var(--accent)" },
-            { label: "Final drone check", sub: "Within 7 days of repair", dot: "rgba(120,120,128,.35)", muted: true }
-          ] },
-          docs: [
-            { id: "doc-roof-inspection-2026-01", name: "Inspection report \u2014 Jan 2026", meta: "PDF \xB7 18 drone photos" },
-            { id: "doc-roof-warranty-shingle", name: "25-year shingle warranty", meta: "PDF \xB7 transferable" },
-            { id: "doc-roof-insurance-pack", name: "Insurance documentation pack", meta: "ZIP \xB7 photos + condition report" }
-          ]
-        },
-        "Pest Control": {
-          kind: "monitoring",
-          navLabel: "Monitoring",
-          empty: { glyph: "\u25C9", title: "No stations installed yet", desc: "After installation, every bait station and sensor reports its status here." },
-          title: "Station monitoring",
-          sub: "Bait stations and smart sensors watch your home between visits \u2014 alerts go straight to your technician.",
-          summary: [
-            { label: "Stations active", value: "8" },
-            { label: "Open alerts", value: "1" },
-            { label: "Last full sweep", value: "Jan 9" }
-          ],
-          stations: [
-            { id: "S1", label: "Garage \u2014 north wall", type: "Bait station", status: "clear", last: "Checked Jan 9", x: 20, y: 64 },
-            { id: "S2", label: "Kitchen \u2014 under sink", type: "Smart sensor", status: "alert", last: "Today \xB7 4:12 AM", note: "activity detected", x: 46, y: 30 },
-            { id: "S3", label: "Attic hatch", type: "Smart sensor", status: "clear", last: "Checked Jan 9", x: 62, y: 18 },
-            { id: "S4", label: "Foundation \u2014 SE corner", type: "Bait station", status: "refreshed", last: "Bait refreshed Jan 9", x: 78, y: 70 },
-            { id: "S5", label: "Crawl space entry", type: "Bait station", status: "clear", last: "Checked Jan 9", x: 34, y: 82 }
-          ],
-          alerts: [
-            { when: "Today \xB7 4:12 AM", text: "Sensor S2 (kitchen) \u2014 activity detected, Daniel notified automatically", state: "alert" },
-            { when: "Jan 9", text: "Quarterly sweep \u2014 all 8 stations checked, 2 baits refreshed", state: "ok" },
-            { when: "Dec 30", text: "Sensor S3 (attic) \u2014 false trigger cleared after review", state: "ok" }
-          ],
-          guarantee: {
-            title: "Free re-treatment",
-            note: "Seeing activity between visits? Re-treats are free under your Shield Plan \u2014 no questions asked.",
-            usedNote: "Guarantee used Dec 12 \u2014 the next free re-treat unlocks with your next quarterly visit.",
-            /* stable scope ids \u2014 the request payload contract (never display names) */
-            scope: { planId: "plan-shield-2026", propertyId: "prop-maple-1284", serviceId: "svc-pest-retreat" },
-            status: "available"
-          }
-        },
-        /* WAVE 9 — Health care hub. LOGISTICS ONLY BY DESIGN: appointments,
-           plan milestones, follow-up tasks, secure-document METADATA and the
-           care team. No clinical metrics, readings, results or medical advice
-           are ever rendered here \u2014 clinical data stays in the provider's own
-           systems. All ids are stable data-contract ids. */
-        "Health": {
-          kind: "healthCare",
-          navLabel: "Care plan",
-          empty: { glyph: "\u2661", title: "No care plan yet", desc: "After your intake assessment, appointments, milestones and documents appear here." },
-          title: "Your care plan",
-          sub: "Appointments, milestones, documents and your care team \u2014 the logistics in one place. Clinical details stay with your provider.",
-          disclaimer: "This portal shows scheduling and documents only \u2014 it is not a medical record. For clinical questions, contact your provider.",
-          appointment: { id: "appt-health-2026-0130", name: "Physio session \xB7 mid-plan review", providerId: "prov-health-pt-01", provider: "Priya N., physiotherapist", when: "Fri, Jan 30 \xB7 10:00\u201311:00 AM", where: "Home \u2014 1240 Pine Street", orderId: "#SV-2410", prep: "Clear a 2\xD72 m space and wear comfortable shoes. A family member is welcome to join the review." },
-          plan: { id: "plan-health-2026", name: "Mobility & independence plan", cadence: "Reviewed quarterly \xB7 started Nov 2025", milestones: [
-            { n: 1, name: "Intake & home assessment", detail: "Care team assigned \xB7 home setup reviewed", status: "done", when: "Done \xB7 Nov 12" },
-            { n: 2, name: "Weekly session rhythm", detail: "Twice-weekly sessions established", status: "done", when: "Done \xB7 Dec 8" },
-            { n: 3, name: "Mid-plan review", detail: "Review with you and your family", status: "next", when: "Scheduled \xB7 Jan 30" },
-            { n: 4, name: "Cadence check-in", detail: "Adjust visit frequency together", status: "upcoming", when: "Planned \xB7 Mar" }
-          ] },
-          tasks: [
-            { id: "task-health-01", label: "Confirm the Jan 30 session", due: "by Jan 28", done: false },
-            { id: "task-health-02", label: "Sign the updated care plan", due: "before the review", done: false },
-            { id: "task-health-03", label: "Send preferred times for February", due: "this month", done: true }
-          ],
-          provider: { id: "prov-health-pt-01", name: "Priya N.", role: "Physiotherapist \xB7 your care lead", org: "Aircove partner provider network", since: "Your care lead since Nov 2025", note: "Messages are answered within one business day. This channel is for scheduling \u2014 for anything urgent, call your provider directly." },
-          docs: [
-            { id: "doc-health-plan-2025-11", name: "Care plan \u2014 signed Nov 2025", meta: "Secure PDF \xB7 opens in the secure viewer", secure: true },
-            { id: "doc-health-visit-2026-01-12", name: "Visit summary \u2014 Jan 12", meta: "Secure PDF \xB7 session notes", secure: true },
-            { id: "doc-health-results-2026-01", name: "Results package \u2014 Jan 2026", meta: "Secure \xB7 contents never previewed here", secure: true }
-          ],
-          docsNote: "Documents open in the secure viewer only \u2014 nothing is previewed on this page and every access is logged."
-        },
-        /* WAVE 9 — Beauty care hub: appointments & packages, specialist
-           preference, treatment/routine history, loyalty, routine products. */
-        "Beauty": {
-          kind: "beautyCare",
-          navLabel: "My routine",
-          empty: { glyph: "\u2740", title: "No routine yet", desc: "After your first visit, appointments, history and your specialist\u2019s notes appear here." },
-          title: "Your routine",
-          sub: "Appointments, packages, your specialist and the formulas they use \u2014 remembered visit to visit.",
-          appointment: { id: "appt-beauty-2026-0116", name: "Gel manicure", specialistId: "spec-beauty-02", specialist: "Dana P., nail specialist", when: "Tomorrow \xB7 Jan 16 \xB7 2:00 PM", where: "Home \u2014 1240 Pine Street", orderId: "#SV-3312", prep: "Kit is sanitised and sealed \u2014 just have a clear table spot ready." },
-          pkg: { id: "pkg-beauty-glow-2026", name: "Glow package", detail: "6 facial treatments \xB7 valid to Jun 2026", used: 2, total: 6, next: "Session 3 \u2014 book anytime, it never expires early" },
-          specialists: [
-            { id: "spec-beauty-01", name: "Alina V.", role: "Hair & skin", rating: "4.9", visits: "18 visits with you" },
-            { id: "spec-beauty-02", name: "Dana P.", role: "Nails", rating: "4.8", visits: "6 visits with you" },
-            { id: "spec-beauty-03", name: "Marco T.", role: "Massage & spa", rating: "5.0", visits: "New to you" }
-          ],
-          preferredId: "spec-beauty-01",
-          history: [
-            { date: "Jan 8", what: "Facial treatment", who: "Alina V.", note: "Hydration serum \xB7 T-zone is sensitive \u2014 gentle exfoliant only" },
-            { date: "Dec 20", what: "Gel manicure", who: "Dana P.", note: "Shade \u201CRosewood 214\u201D saved to your profile" },
-            { date: "Dec 6", what: "Root touch-up & blowout", who: "Alina V.", note: "Formula 6N + 20 vol \xB7 35 min \u2014 saved" },
-            { date: "Nov 22", what: "Facial treatment", who: "Alina V.", note: "Winter routine started \u2014 overnight mask twice a week" }
-          ],
-          routine: { title: "Between visits", note: "Hydration serum every morning \xB7 overnight mask Tue & Sat. Next color window: early February \u2014 Alina will hold a slot.", by: "Set by Alina V. \xB7 Jan 8" },
-          loyalty: { id: "plan-beauty-member-2026", tier: "Gold member", points: 420, nextAt: 500, reward: "Free blowout at 500 pts", renews: "Renews Mar 1, 2026" },
-          productRecs: { note: "Picked by Alina for your routine", names: ["Silk Repair Set", "Hydration Serum", "Overnight Mask"] }
-        }
-      };
+  var init_live_care_fixtures = __esm({
+    "app-templates/customer-portal/runtime/data/live-care-fixtures.js"() {
+      careFixtures = Object.freeze({});
     }
   });
 
-  // app-templates/customer-portal/runtime/data/fixtures.js
-  (function() {
-    "use strict";
-    var PAL = [
-      ["var(--accent)", "rgba(var(--accent-rgb),.12)"],
-      ["#1f8a44", "rgba(52,199,89,.16)"],
-      ["#ff8a3d", "rgba(255,159,10,.16)"],
-      ["#7a52e0", "rgba(122,82,224,.16)"]
-    ];
-    var TINTS = [
-      ["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"],
-      ["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"],
-      ["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"],
-      ["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"]
-    ];
-    var themeSlugs = {
-      "HVAC": "hvac",
-      "Snow Removal": "snow",
-      "Lawn & Garden": "lawn",
-      "Pool & Spa": "pool",
-      "Roofing": "roofing",
-      "Pest Control": "pest",
-      "Health": "health",
-      "Beauty": "beauty"
-    };
-    var themes = {
-      "HVAC": {
-        slug: "hvac",
-        accent: "#0a5ae6",
-        hero: { badge: "\u26A1 Same-day slots in your area", title: "Home comfort, handled in a tap.", sub: "Book AC repair, maintenance and installs from certified local techs. Track them live, pay in the app." },
-        svc: [
-          { name: "AC Repair", price: "$60", tagline: "Fast diagnosis & on-site fix", duration: "~60 min", includes: ["Full fault diagnosis", "Most repairs done same visit", "90-day workmanship warranty"] },
-          { name: "Maintenance", price: "$120", tagline: "Seasonal tune-up & cleaning", duration: "~90 min", includes: ["Coil, filter & drain clean", "21-point performance check", "Written health report"] },
-          { name: "Installation", price: "Quote", tagline: "New system, expertly fitted", duration: "half day", includes: ["Free in-home site assessment", "Certified professional install", "Old unit haul-away included"] },
-          { name: "Air Quality Check", price: "$90", tagline: "Breathe cleaner, healthier air", duration: "~45 min", includes: ["Particle & VOC measurement", "Personalised filter advice", "Full home air report"] }
-        ],
-        orderNames: ["Filter replacement", "Emergency AC Check", "Annual maintenance", "AC Installation", "Diagnostics visit"],
-        wt: { icon: "\u{1F321}\uFE0F", trigger: "Heat wave \u2265 38\xB0C forecast tomorrow", past: "Heat spike 39.1\xB0C recorded", sla: "Checked within the 4-hour contracted window" },
-        plan: {
-          name: "Comfort Plan",
-          plusName: "Comfort Plus",
-          tag: "Best for a single home",
-          desc: "2 visits a year, priority slots, \u201315% on parts.",
-          headline: "Pricing that fits your home",
-          features: ["2 seasonal tune-ups a year", "Priority same-week slots", "\u201315% on all parts", "Free diagnostics visits"],
-          plusFeatures: ["4 visits a year", "Same-day priority dispatch", "\u201325% on all parts", "24/7 support line"]
-        },
-        feat: { badge: "New \xB7 Wi-Fi inverter", title: "Mini Split \u2014 whisper-quiet comfort", desc: "12,000 BTU, 22 SEER, app control. Professionally installed by your local team.", cta: "Buy & install \xB7 $1,290", fin: "or $108/mo \xB7 0% APR" },
-        cats: [{ key: "units", label: "AC units" }, { key: "thermostats", label: "Thermostats" }, { key: "filters", label: "Filters" }, { key: "purifiers", label: "Air purifiers" }],
-        products: [
-          { cat: "units", tag: "AC Unit", name: "Mini Split 12k BTU", blurb: "Quiet inverter \xB7 Wi-Fi \xB7 22 SEER", price: "$1,290", priceNum: 1290 },
-          { cat: "units", tag: "AC Unit", name: "Dual-Zone 24k BTU", blurb: "Cools two rooms independently", price: "$2,150", priceNum: 2150 },
-          { cat: "thermostats", tag: "Thermostat", name: "Smart Thermostat", blurb: "Learns your weekly schedule", price: "$189", priceNum: 189 },
-          { cat: "thermostats", tag: "Sensor", name: "Room Sensor Pack (3)", blurb: "Balance temperature room-by-room", price: "$99", priceNum: 99 },
-          { cat: "filters", tag: "Filter", name: "HEPA Filter 20\xD725", blurb: "Captures 99.97% of particles", price: "$34", priceNum: 34 },
-          { cat: "filters", tag: "Filter", name: "Carbon Odor Filter", blurb: "For kitchens, pets & smoke", price: "$28", priceNum: 28 },
-          { cat: "purifiers", tag: "Purifier", name: "Purifier Pro", blurb: "Whole-home \xB7 up to 1,500 sq ft", price: "$349", priceNum: 349 },
-          { cat: "purifiers", tag: "Purifier", name: "Desk Purifier", blurb: "Personal clean-air zone", price: "$129", priceNum: 129 }
-        ],
-        reminder: { title: "Replace your air filter", desc: "It has been 88 days since the last change" },
-        prop: { svc: "Seasonal HVAC Program", surfaces: ["Floor 1", "Floor 2", "Basement", "Attic", "Garage"], months: "May\u2013Sep", unlimDesc: "Unlimited tune-ups and priority heat-wave response.", colA: "Tune-up", colB: "Deep clean", unitA: "/ tune-up", unitB: "/ deep clean" }
-      },
-      "Snow Removal": {
-        slug: "snow",
-        accent: "#0e8fc4",
-        hero: { badge: "\u2744 24/7 storm response", title: "Winter, handled before you wake.", sub: "Snow clearing and de-icing by local crews \u2014 weather-triggered dispatch, GPS-logged visits, photo proof after every clear." },
-        svc: [
-          { name: "Snow Clearing", price: "$94", tagline: "Driveway, walkways & lanes", duration: "~45 min", includes: ["Cleared to bare surface", "GPS-logged arrival & photos", "90-minute storm-window SLA"] },
-          { name: "De-Icing", price: "$58", tagline: "Salt & brine application", duration: "~30 min", includes: ["Eco-friendly de-icer available", "Slip-risk spot treatment", "Free re-treat on refreeze"] },
-          { name: "Roof Snow Removal", price: "Quote", tagline: "Prevent ice dams & overload", duration: "half day", includes: ["Load assessment included", "Safe rope-access crew", "Gutter ice clearing"] },
-          { name: "Seasonal Contract", price: "$120", tagline: "Set-and-forget winter cover", duration: "~30 min", includes: ["Weather-triggered dispatch", "Unlimited storm visits", "Monthly compliance report"] }
-        ],
-        orderNames: ["Walkway salting", "Snow Clearing \u2014 De-Icing", "Seasonal contract visit", "Roof Snow Removal", "De-icing visit"],
-        wt: { icon: "\u2744\uFE0F", trigger: "Snowfall \u2265 2 cm forecast overnight", past: "Snowfall 3.2 cm recorded overnight", sla: "Cleared within the 90-minute contracted window" },
-        plan: {
-          name: "Winter Plan",
-          plusName: "Winter Plus",
-          tag: "Best for a single property",
-          desc: "Priority storm dispatch, \u201315% on de-icing.",
-          headline: "Pricing that fits your winter",
-          features: ["Priority storm dispatch", "2 free de-icing visits", "\u201315% on materials", "Photo report every visit"],
-          plusFeatures: ["Same-storm guarantee", "Unlimited de-icing", "\u201325% on materials", "24/7 storm line"]
-        },
-        feat: { badge: "New \xB7 App-scheduled", title: "Smart Brine Sprayer \u2014 de-ice before it freezes", desc: "Connected tank applies brine to driveways and walks ahead of the storm.", cta: "Buy & install \xB7 $890", fin: "or $75/mo \xB7 0% APR" },
-        cats: [{ key: "deicers", label: "De-icers" }, { key: "equipment", label: "Equipment" }, { key: "markers", label: "Markers & mats" }],
-        products: [
-          { cat: "deicers", tag: "De-icer", name: "Calcium Blend 20 kg", blurb: "Melts to \u221225\xB0C \xB7 concrete-safe", price: "$32", priceNum: 32 },
-          { cat: "deicers", tag: "De-icer", name: "Pet-Safe Granules", blurb: "Chloride-free \xB7 gentle on paws", price: "$38", priceNum: 38 },
-          { cat: "equipment", tag: "Equipment", name: "Poly Snow Pusher", blurb: "Wide blade \xB7 no-scratch edge", price: "$54", priceNum: 54 },
-          { cat: "equipment", tag: "Equipment", name: "Telescopic Roof Rake", blurb: "Reach 6 m from the ground", price: "$89", priceNum: 89 },
-          { cat: "markers", tag: "Marker", name: "Driveway Markers (12)", blurb: "Reflective \xB7 guide the plow", price: "$24", priceNum: 24 },
-          { cat: "markers", tag: "Mat", name: "Heated Walkway Mat", blurb: "Plug-in \xB7 melts 5 cm/hour", price: "$210", priceNum: 210 }
-        ],
-        reminder: { title: "Restock de-icer", desc: "Your last bag was delivered 60 days ago" },
-        prop: { svc: "Snow Removal & De-Icing", surfaces: ["Drive Lanes", "Driveway", "Pavement", "Private Sidewalk", "Public Sidewalk"], months: "Nov\u2013Mar", unlimDesc: "Unlimited de-icing at \u22640\xB0C and clearing at 2 cm.", colA: "Snow clearing", colB: "De-icing", unitA: "/ clearing", unitB: "/ de-ice" }
-      },
-      "Lawn & Garden": {
-        slug: "lawn",
-        accent: "#2f9e44",
-        hero: { badge: "\u{1F331} Weekly slots open", title: "A lawn worth staying home for.", sub: "Mowing, feeding and garden care by vetted local crews. Track visits live, pay in the app." },
-        svc: [
-          { name: "Lawn Mowing", price: "$45", tagline: "Cut, trim & blow", duration: "~40 min", includes: ["Edges & walkways trimmed", "Clippings removed", "Photo after every cut"] },
-          { name: "Fertilizing", price: "$80", tagline: "Seasonal feeding program", duration: "~30 min", includes: ["Soil-matched formula", "Kid & pet safe options", "Growth report included"] },
-          { name: "Landscaping", price: "Quote", tagline: "Beds, hedges & redesign", duration: "half day", includes: ["Free on-site design visit", "Licensed & insured crew", "1-year plant warranty"] },
-          { name: "Yard Cleanup", price: "$110", tagline: "Spring & fall resets", duration: "~2 h", includes: ["Leaves & debris hauled", "Beds edged & mulched", "Gutter-line sweep"] }
-        ],
-        orderNames: ["Lawn mowing", "Lawn Care \u2014 Rain Check", "Fertilizing visit", "Landscaping project", "Yard cleanup"],
-        wt: { icon: "\u{1F327}\uFE0F", trigger: "Heavy rain forecast \u2014 visit may shift", past: "Rain 22 mm recorded \u2014 visit completed late-day", sla: "Completed within the 48-hour weather window" },
-        plan: {
-          name: "Green Plan",
-          plusName: "Green Plus",
-          tag: "Best for a single yard",
-          desc: "Weekly mowing priority, \u201315% on treatments.",
-          headline: "Pricing that fits your yard",
-          features: ["Weekly mowing priority", "2 free spot treatments", "\u201315% on fertilizing", "Photo report every visit"],
-          plusFeatures: ["Mow + feed bundle", "Unlimited spot treatments", "\u201325% on landscaping", "Dedicated crew"]
-        },
-        feat: { badge: "New \xB7 GPS-guided", title: "Robotic Mower \u2014 hands-free stripes", desc: "Quiet, app-controlled, cuts on your schedule. Installed and tuned by your local crew.", cta: "Buy & install \xB7 $1,450", fin: "or $121/mo \xB7 0% APR" },
-        cats: [{ key: "care", label: "Lawn care" }, { key: "irrigation", label: "Irrigation" }, { key: "garden", label: "Garden" }],
-        products: [
-          { cat: "care", tag: "Lawn care", name: "Seed & Feed Mix", blurb: "Overseed + slow-release feed", price: "$28", priceNum: 28 },
-          { cat: "care", tag: "Lawn care", name: "Organic Fertilizer", blurb: "Kid & pet safe \xB7 4-week feed", price: "$36", priceNum: 36 },
-          { cat: "irrigation", tag: "Irrigation", name: "Smart Sprinkler Timer", blurb: "Skips rainy days automatically", price: "$129", priceNum: 129 },
-          { cat: "irrigation", tag: "Irrigation", name: "Drip Irrigation Kit", blurb: "Covers up to 20 beds", price: "$89", priceNum: 89 },
-          { cat: "garden", tag: "Garden", name: "Cedar Planter Box", blurb: "Rot-resistant \xB7 120\xD740 cm", price: "$74", priceNum: 74 },
-          { cat: "garden", tag: "Garden", name: "Garden Tool Set", blurb: "Ergonomic 5-piece set", price: "$59", priceNum: 59 }
-        ],
-        reminder: { title: "Time to fertilize", desc: "Last application was 45 days ago" },
-        prop: { svc: "Lawn Care & Fertilization", surfaces: ["Front Lawn", "Back Lawn", "Side Yard", "Boulevard", "Garden Beds"], months: "May\u2013Sep", unlimDesc: "Weekly mowing plus unlimited spot treatments.", colA: "Mowing", colB: "Fertilizing", unitA: "/ mow", unitB: "/ treatment" }
-      },
-      "Pool & Spa": {
-        slug: "pool",
-        accent: "#0d9488",
-        hero: { badge: "\u{1F4A7} Crystal-clear guarantee", title: "Your pool, always swim-ready.", sub: "Cleaning, balancing and equipment care by certified techs. Every visit logged with photos and readings." },
-        svc: [
-          { name: "Pool Cleaning", price: "$90", tagline: "Vacuum, skim & brush", duration: "~60 min", includes: ["Floor & walls vacuumed", "Baskets & filter rinsed", "Photo + reading log"] },
-          { name: "Chemical Balance", price: "$55", tagline: "Water testing & dosing", duration: "~30 min", includes: ["7-point water test", "Chemicals included", "Re-check if off-range"] },
-          { name: "Equipment Repair", price: "Quote", tagline: "Pumps, heaters & filters", duration: "~90 min", includes: ["Same-week diagnosis", "OEM parts warranty", "Energy-use check"] },
-          { name: "Opening / Closing", price: "$220", tagline: "Season start & shutdown", duration: "half day", includes: ["Lines blown & plugged", "Cover fitted & sealed", "Startup chemicals included"] }
-        ],
-        orderNames: ["Pool cleaning", "Chemical Balance \u2014 Heat Watch", "Weekly maintenance", "Heater installation", "Water test visit"],
-        wt: { icon: "\u2600\uFE0F", trigger: "Heat wave \u2265 34\xB0C \u2014 algae risk rising", past: "Heat wave 36\xB0C recorded \u2014 extra dose applied", sla: "Balanced within the 24-hour contracted window" },
-        plan: {
-          name: "Clear Plan",
-          plusName: "Clear Plus",
-          tag: "Best for a single pool",
-          desc: "Weekly testing, \u201315% on chemicals.",
-          headline: "Pricing that fits your pool",
-          features: ["Weekly water testing", "Priority heat-wave visits", "\u201315% on chemicals", "Reading log every visit"],
-          plusFeatures: ["Weekly clean + balance", "Unlimited re-balancing", "\u201325% on repairs", "24/7 equipment line"]
-        },
-        feat: { badge: "New \xB7 Energy Star", title: "Variable-Speed Pump \u2014 cut energy 70%", desc: "Whisper-quiet, app-scheduled, rebate-eligible. Installed by certified techs.", cta: "Buy & install \xB7 $1,150", fin: "or $96/mo \xB7 0% APR" },
-        cats: [{ key: "chemicals", label: "Chemicals" }, { key: "equipment", label: "Equipment" }, { key: "accessories", label: "Accessories" }],
-        products: [
-          { cat: "chemicals", tag: "Chemical", name: "Chlorine Tabs 8 kg", blurb: "Slow-dissolve \xB7 season supply", price: "$64", priceNum: 64 },
-          { cat: "chemicals", tag: "Chemical", name: "pH Balance Kit", blurb: "Raise & lower \xB7 40 doses", price: "$29", priceNum: 29 },
-          { cat: "equipment", tag: "Equipment", name: "Robotic Pool Vac", blurb: "Cleans floor & walls solo", price: "$649", priceNum: 649 },
-          { cat: "equipment", tag: "Equipment", name: "LED Pool Light", blurb: "16 colors \xB7 app control", price: "$89", priceNum: 89 },
-          { cat: "accessories", tag: "Accessory", name: "Solar Cover 16 ft", blurb: "Holds heat overnight", price: "$139", priceNum: 139 },
-          { cat: "accessories", tag: "Accessory", name: "Test Strips (100)", blurb: "7-way water check", price: "$18", priceNum: 18 }
-        ],
-        reminder: { title: "Water test due", desc: "Last full test was 30 days ago" },
-        prop: { svc: "Pool Care Program", surfaces: ["Main Pool", "Spa", "Pool Deck", "Coping", "Equipment Pad"], months: "May\u2013Sep", unlimDesc: "Weekly cleaning plus unlimited chemical balancing.", colA: "Cleaning", colB: "Balancing", unitA: "/ clean", unitB: "/ balance" }
-      },
-      "Roofing": {
-        slug: "roofing",
-        accent: "#4f46e5",
-        hero: { badge: "\u{1F6E1} Certified & insured crews", title: "A roof you never think about.", sub: "Inspections, repairs and replacements by certified local roofers. Drone reports, photo-logged work." },
-        svc: [
-          { name: "Roof Inspection", price: "$95", tagline: "Drone + on-roof check", duration: "~60 min", includes: ["Full drone survey", "Written condition report", "Repair plan & pricing"] },
-          { name: "Leak Repair", price: "$180", tagline: "Find & fix, guaranteed", duration: "~2 h", includes: ["Moisture-traced source", "Matching materials", "2-year repair warranty"] },
-          { name: "Gutter Cleaning", price: "$120", tagline: "Clear & flush downspouts", duration: "~90 min", includes: ["Debris hauled away", "Downspout flush test", "Photo before/after"] },
-          { name: "Full Replacement", price: "Quote", tagline: "Tear-off to new roof", duration: "multi-day", includes: ["Free on-site estimate", "Certified installers", "25-year system warranty"] }
-        ],
-        orderNames: ["Gutter cleaning", "Storm Inspection", "Annual inspection", "Leak repair", "Drone survey"],
-        wt: { icon: "\u{1F327}\uFE0F", trigger: "Storm gusts \u2265 80 km/h forecast tonight", past: "Gusts 92 km/h recorded overnight", sla: "Inspected within the 24-hour storm window" },
-        plan: {
-          name: "Shelter Plan",
-          plusName: "Shelter Plus",
-          tag: "Best for a single roof",
-          desc: "Annual inspection, priority storm response.",
-          headline: "Pricing that fits your roof",
-          features: ["Annual drone inspection", "Priority storm response", "\u201315% on repairs", "Yearly condition report"],
-          plusFeatures: ["Twice-yearly inspection", "Free minor repairs", "\u201325% on replacement", "24/7 storm line"]
-        },
-        feat: { badge: "New \xB7 25-yr warranty", title: "Gutter Guard System \u2014 never climb again", desc: "Micro-mesh guards keep leaves and needles out for good. Installed by certified crews.", cta: "Buy & install \xB7 $1,680", fin: "or $140/mo \xB7 0% APR" },
-        cats: [{ key: "protection", label: "Protection" }, { key: "ventilation", label: "Ventilation" }, { key: "materials", label: "Materials" }],
-        products: [
-          { cat: "protection", tag: "Protection", name: "Micro-Mesh Gutter Guard", blurb: "Keeps leaves out for good", price: "$86", priceNum: 86 },
-          { cat: "protection", tag: "Protection", name: "Heated De-Icing Cable", blurb: "Stops ice dams at the eave", price: "$115", priceNum: 115 },
-          { cat: "ventilation", tag: "Ventilation", name: "Ridge Vent Kit", blurb: "Cooler attic, longer shingle life", price: "$124", priceNum: 124 },
-          { cat: "ventilation", tag: "Ventilation", name: "Solar Attic Fan", blurb: "Self-powered airflow", price: "$189", priceNum: 189 },
-          { cat: "materials", tag: "Material", name: "Sealant Pro Pack", blurb: "Flash & seal small leaks", price: "$42", priceNum: 42 },
-          { cat: "materials", tag: "Material", name: "Skylight Flashing Kit", blurb: "Fits most 60\xD790 units", price: "$98", priceNum: 98 }
-        ],
-        reminder: { title: "Inspection due", desc: "Your annual roof inspection is due this month" },
-        prop: { svc: "Roof Care & Snow Load", surfaces: ["Main Roof", "Garage Roof", "Flat Section", "Gutters", "Valleys"], months: "Nov\u2013Mar", unlimDesc: "Unlimited storm inspections and debris clearing.", colA: "Debris clearing", colB: "Snow removal", unitA: "/ clearing", unitB: "/ removal" }
-      },
-      "Pest Control": {
-        slug: "pest",
-        accent: "#7c3aed",
-        hero: { badge: "\u{1F6E1} Family & pet safe", title: "A pest-free home, guaranteed.", sub: "Inspection, treatment and prevention by licensed local techs. Free re-treatments between visits." },
-        svc: [
-          { name: "General Treatment", price: "$85", tagline: "Interior + perimeter", duration: "~45 min", includes: ["Licensed technician", "Family & pet safe products", "30-day re-treat guarantee"] },
-          { name: "Rodent Control", price: "$140", tagline: "Trap, seal & monitor", duration: "~90 min", includes: ["Entry-point sealing", "Monitored bait stations", "Follow-up visit included"] },
-          { name: "Termite Inspection", price: "$95", tagline: "Detect before damage", duration: "~60 min", includes: ["Moisture & wood probe", "Written risk report", "Treatment plan & pricing"] },
-          { name: "Wasp Removal", price: "$120", tagline: "Same-day nest removal", duration: "~40 min", includes: ["Full nest removal", "Nest site treated", "Re-nest guarantee"] }
-        ],
-        orderNames: ["Interior treatment", "Perimeter Re-Treatment", "Quarterly treatment", "Rodent exclusion", "Termite inspection"],
-        wt: { icon: "\u{1F327}\uFE0F", trigger: "Heavy rain \u2014 perimeter barrier re-treat due", past: "Rain 28 mm recorded \u2014 barrier re-applied", sla: "Re-treated within the 48-hour contracted window" },
-        plan: {
-          name: "Shield Plan",
-          plusName: "Shield Plus",
-          tag: "Best for a single home",
-          desc: "Quarterly treatments, free re-visits.",
-          headline: "Pricing that fits your home",
-          features: ["4 quarterly treatments", "Free re-treats between visits", "\u201315% on exclusion work", "Report every visit"],
-          plusFeatures: ["Monthly perimeter service", "Rodent monitoring included", "\u201325% on exclusion work", "24/7 urgent line"]
-        },
-        feat: { badge: "New \xB7 App alerts", title: "Smart Rodent Sensors \u2014 know before you see", desc: "Connected sensors alert your technician automatically. Installed discreetly.", cta: "Buy & install \xB7 $340", fin: "or $29/mo \xB7 0% APR" },
-        cats: [{ key: "barriers", label: "Barriers" }, { key: "traps", label: "Traps & bait" }, { key: "sensors", label: "Sensors" }],
-        products: [
-          { cat: "barriers", tag: "Barrier", name: "Perimeter Granules", blurb: "3-month outdoor barrier", price: "$34", priceNum: 34 },
-          { cat: "barriers", tag: "Barrier", name: "Door Sweep Seal Kit", blurb: "Blocks entry gaps fast", price: "$28", priceNum: 28 },
-          { cat: "traps", tag: "Bait", name: "Ant Bait Stations (8)", blurb: "Kills the colony, not just ants", price: "$22", priceNum: 22 },
-          { cat: "traps", tag: "Trap", name: "Mosquito Trap Pro", blurb: "Covers a full backyard", price: "$119", priceNum: 119 },
-          { cat: "sensors", tag: "Sensor", name: "Smart Rodent Sensor (2)", blurb: "App alert on first activity", price: "$89", priceNum: 89 },
-          { cat: "sensors", tag: "Trap", name: "Pantry Moth Traps (6)", blurb: "Pheromone \xB7 non-toxic", price: "$16", priceNum: 16 }
-        ],
-        reminder: { title: "Quarterly treatment due", desc: "Last perimeter treatment was 80 days ago" },
-        prop: { svc: "Perimeter Protection Program", surfaces: ["Perimeter", "Foundation", "Lawn Zone", "Interior", "Crawl Space"], months: "Apr\u2013Aug", unlimDesc: "Unlimited re-treatments between scheduled visits.", colA: "Perimeter spray", colB: "Interior treatment", unitA: "/ spray", unitB: "/ treatment" }
-      },
-      "Health": {
-        slug: "health",
-        accent: "#0b7285",
-        hero: { badge: "\u2695\uFE0F Licensed & background-checked", title: "Care at home, coordinated.", sub: "Home care visits, physio and nursing support by licensed providers. One schedule the whole family can follow \u2014 documents kept secure." },
-        svc: [
-          { name: "Home Care Visit", price: "$75", tagline: "Support at home, on schedule", duration: "~60 min", includes: ["The same care team every visit", "Visit summary in your portal", "Family can follow the schedule"] },
-          { name: "Physio Session", price: "$95", tagline: "Mobility work at home", duration: "~60 min", includes: ["Licensed physiotherapist", "Plan milestones updated after each session", "Home exercise notes included"] },
-          { name: "Nursing Visit", price: "$110", tagline: "In-home nursing support", duration: "~45 min", includes: ["Registered nurse", "Coordinated with your care plan", "Secure visit notes"] },
-          { name: "Care Assessment", price: "Quote", tagline: "Care plan intake & setup", duration: "~90 min", includes: ["In-home intake assessment", "Personal care plan drafted", "Family walkthrough included"] }
-        ],
-        orderNames: ["Home care visit", "Physio session", "Nursing visit", "Care assessment", "Follow-up visit"],
-        wt: null,
-        plan: {
-          name: "Care Plan",
-          plusName: "Care Plus",
-          tag: "Best for one household",
-          desc: "A consistent care team, priority scheduling.",
-          headline: "Pricing that fits your care",
-          features: ["The same care team, visit to visit", "Priority scheduling", "Quarterly plan reviews", "Family access included"],
-          plusFeatures: ["Weekly scheduled visits", "Same-week rescheduling", "Dedicated care coordinator", "24/7 phone line"]
-        },
-        feat: { badge: "New \xB7 Fitted & installed", title: "Home Safety Rail Kit \u2014 steadier every day", desc: "Grab rails and threshold ramps, fitted by insured installers in one visit.", cta: "Buy & install \xB7 $240", fin: "or $20/mo \xB7 0% APR" },
-        cats: [{ key: "safety", label: "Home safety" }, { key: "mobility", label: "Mobility" }, { key: "comfort", label: "Daily comfort" }],
-        products: [
-          { cat: "safety", tag: "Safety", name: "Grab Rail Set", blurb: "Bathroom & hallway \xB7 installed", price: "$68", priceNum: 68 },
-          { cat: "safety", tag: "Safety", name: "Non-Slip Mat Pack", blurb: "Bath, shower & entry", price: "$32", priceNum: 32 },
-          { cat: "mobility", tag: "Mobility", name: "Folding Walker", blurb: "Light frame \xB7 folds flat", price: "$129", priceNum: 129 },
-          { cat: "mobility", tag: "Mobility", name: "Threshold Ramp", blurb: "Doorways up to 6 cm", price: "$84", priceNum: 84 },
-          { cat: "comfort", tag: "Comfort", name: "Adjustable Bed Wedge", blurb: "Rest & reading support", price: "$59", priceNum: 59 },
-          { cat: "comfort", tag: "Comfort", name: "Big-Button Phone", blurb: "Loud, simple, reliable", price: "$49", priceNum: 49 }
-        ],
-        reminder: { title: "Plan review due", desc: "Your quarterly care plan review is due this month" },
-        prop: { svc: "Home Safety Program", surfaces: ["Bathroom", "Bedroom", "Hallway", "Kitchen", "Entry"], months: "Year-round", unlimDesc: "Scheduled visits plus unlimited plan adjustments.", colA: "Care visit", colB: "Physio session", unitA: "/ visit", unitB: "/ session" }
-      },
-      "Beauty": {
-        slug: "beauty",
-        accent: "#d6336c",
-        hero: { badge: "\u2728 Vetted, licensed specialists", title: "Salon-level care, at your door.", sub: "Hair, nails and skin by vetted specialists \u2014 at home or in-studio. Formulas, shades and routine notes remembered visit to visit." },
-        svc: [
-          { name: "Hair Styling", price: "$65", tagline: "Cut, color & blowout", duration: "~75 min", includes: ["Licensed, vetted stylists", "Your color formulas saved", "Rebook the same specialist in a tap"] },
-          { name: "Manicure & Nails", price: "$45", tagline: "Classic to gel, at home", duration: "~60 min", includes: ["Sanitised, sealed pro kit", "Gel, classic or press-on", "Shade saved to your profile"] },
-          { name: "Facial Treatment", price: "$85", tagline: "A routine that carries over", duration: "~60 min", includes: ["Routine notes after every visit", "Products logged to your profile", "Sensitive-skin options"] },
-          { name: "Event & Bridal Package", price: "Quote", tagline: "Trials, timeline, day-of team", duration: "custom", includes: ["Trial session included", "Day-of team scheduling", "One coordinator end-to-end"] }
-        ],
-        orderNames: ["Blowout & style", "Gel manicure", "Facial treatment", "Bridal trial", "Root touch-up"],
-        wt: null,
-        plan: {
-          name: "Glow Plan",
-          plusName: "Glow Plus",
-          tag: "Best for a monthly routine",
-          desc: "Member pricing, priority slots with your specialist.",
-          headline: "Pricing that fits your routine",
-          features: ["Member pricing on every visit", "Priority slots with your specialist", "1 style refresh a quarter", "Formulas & routine history saved"],
-          plusFeatures: ["2 visits a month included", "Same-week rebooking guarantee", "\u201320% on all products", "Event styling priority"]
-        },
-        feat: { badge: "New \xB7 Pro-grade", title: "Silk Repair Set \u2014 salon results between visits", desc: "The treatment line your stylist uses, sized for home.", cta: "Buy \xB7 $64", fin: "or 4 \xD7 $16 \xB7 no fees" },
-        cats: [{ key: "hair", label: "Hair care" }, { key: "nails", label: "Nails" }, { key: "skin", label: "Skin" }],
-        products: [
-          { code: "rtl-beauty-01", cat: "hair", tag: "Hair", name: "Silk Repair Set", blurb: "Post-color bond care", price: "$64", priceNum: 64 },
-          { code: "rtl-beauty-02", cat: "hair", tag: "Hair", name: "Heat Shield Spray", blurb: "Before every hot tool", price: "$28", priceNum: 28 },
-          { code: "rtl-beauty-03", cat: "nails", tag: "Nails", name: "Cuticle Care Kit", blurb: "Between-visit upkeep", price: "$22", priceNum: 22 },
-          { code: "rtl-beauty-04", cat: "nails", tag: "Nails", name: "Gel Removal Kit", blurb: "Damage-free at home", price: "$18", priceNum: 18 },
-          { code: "rtl-beauty-05", cat: "skin", tag: "Skin", name: "Hydration Serum", blurb: "Your specialist\u2019s pick", price: "$46", priceNum: 46 },
-          { code: "rtl-beauty-06", cat: "skin", tag: "Skin", name: "Overnight Mask", blurb: "Twice-a-week routine", price: "$34", priceNum: 34 }
-        ],
-        reminder: { title: "Roots check-in", desc: "It has been 6 weeks since your last color visit" },
-        prop: { svc: "Routine Membership", surfaces: ["Hair", "Nails", "Skin", "Massage", "Makeup"], months: "Year-round", unlimDesc: "Monthly routine visits plus member pricing on extras.", colA: "Styling", colB: "Treatment", unitA: "/ visit", unitB: "/ treatment" }
-      }
-    };
-    var statusMeta = {
-      completed: { label: "Completed", badge: "status-badge--ok" },
-      inprogress: { label: "In progress", badge: "status-badge--progress" },
-      scheduled: { label: "Scheduled", badge: "status-badge--scheduled" },
-      cancelled: { label: "Cancelled", badge: "status-badge--danger" }
-    };
-    var technician = { name: "Daniel R.", role: "Senior HVAC technician", rating: "4.9", visits: "320", eta: "~14 min" };
-    var pstatus = {
-      approved: { label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" },
-      revision: { label: "\u27F3 Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" },
-      declined: { label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" },
-      unseen: { label: "\u25D4 Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" },
-      viewed: { label: "\u2022 Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" }
-    };
-    var customer = {
-      firstName: "Mara",
-      greeting: "Good afternoon, Mara",
-      subline: "One visit in progress \xB7 next service in 2 days",
-      fullName: "Mara Lindqvist",
-      phone: "+1 (555) \u2022\u2022\u2022-7740",
-      email: "mara@email.com",
-      memberSince: "2023",
-      stats: { orders: "12", spent: "$1,240", savings: "$186" }
-    };
-    var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    function buildFeed(v) {
-      var todayItems = v.wt ? [
-        { type: "orders", title: "Weather Trigger \u2014 confirm your visit", desc: v.wt.trigger + " at Office \xB7 respond by 8:00 PM today", time: "5:12 AM", dot: "#0e8fc4", iconBg: "rgba(14,143,196,.16)", action: "Review", act: "weather", unread: true }
-      ] : [];
-      todayItems = todayItems.concat([
-        { type: "orders", title: "Daniel is on the way", desc: v.orderNames[0] + " \xB7 arriving in ~14 min", time: "2:41 PM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", action: "Track", act: "orders", unread: true },
-        { type: "orders", title: "Technician assigned", desc: "Daniel R. (\u2605 4.9) will handle your visit", time: "9:02 AM", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", unread: true }
-      ]);
-      return [
-        { day: "Today", items: todayItems },
-        { day: "Yesterday", items: [
-          { type: "billing", title: "Payment received", desc: "$480 \xB7 " + v.orderNames[3] + " #SV-2381", time: "4:18 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", action: "View invoice", act: "invoice" },
-          { type: "orders", title: "Service completed", desc: v.orderNames[3] + " finished \u2014 you rated it \u2605\u2605\u2605\u2605\u2605", time: "3:50 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)" }
-        ] },
-        { day: "Earlier this week", items: [
-          { type: "reminders", title: "Upcoming visit", desc: v.orderNames[2] + " is due Jan 30", time: "Mon", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", action: "Book now", act: "book" },
-          { type: "billing", title: v.plan.name + " renewed", desc: "$9/mo \xB7 saved you $42 this quarter", time: "Mon", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)" },
-          { type: "reminders", title: v.reminder.title, desc: v.reminder.desc, time: "Sun", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", action: "Shop supplies", act: "products" }
-        ] }
-      ];
-    }
-    var feedTabs = [
-      { key: "all", label: "All" },
-      { key: "orders", label: "Orders" },
-      { key: "billing", label: "Billing" },
-      { key: "reminders", label: "Reminders" }
-    ];
-    var initialMessages = [{ from: "agent", text: "Hi Mara, I'm Avery from support. How can I help today?" }];
-    var quickReplies = ["Where's my technician?", "Reschedule a visit", "Billing question", "Talk to a human"];
-    var helpTopics = [
-      { label: "Track or contact my technician", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)", q: "Where's my technician?" },
-      { label: "Reschedule or cancel a visit", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", q: "I need to reschedule a visit" },
-      { label: "Invoices & payments", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", q: "I have a billing question" },
-      { label: "Report an issue after service", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I want to report an issue" }
-    ];
-    function chatReply(text5) {
-      var t = (text5 || "").toLowerCase();
-      if (/(where|track|technician|daniel|coming|arriv)/.test(t)) return "Daniel is about 14 minutes away \u2014 3 stops out. You can watch his live location in the Orders tab.";
-      if (/(reschedul|move|change.*(time|date|visit)|cancel)/.test(t)) return "Sure \u2014 which visit would you like to move? You can also reschedule straight from the order details.";
-      if (/(bill|invoice|charge|pay|refund|price)/.test(t)) return "Your last invoice #SV-2381 was $480, paid Jan 12. Want me to email you a copy?";
-      if (/(human|agent|person|representative|specialist)/.test(t)) return "Connecting you with a specialist now \u2014 typical wait is under 2 minutes. Stay with me here.";
-      if (/(filter|maintenance|repair|install)/.test(t)) return "Happy to help with that. Would you like me to book a visit, or check the status of an existing order?";
-      return "Got it, thanks Mara. A support specialist will follow up shortly. Is there anything else I can help with?";
-    }
-    var addresses = [
-      { id: "home", label: "Home", line: "1240 Pine Street, Apt 4B", city: "Vancouver, BC V6E 1A5", dot: "var(--accent)", iconBg: "rgba(var(--accent-rgb),.14)" },
-      { id: "office", label: "Office", line: "500 Granville St, Floor 12", city: "Vancouver, BC V6C 1W6", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)" }
-    ];
-    var cards = [
-      { id: "visa", brand: "Visa", last4: "4242", exp: "08/27" },
-      { id: "mc", brand: "Mastercard", last4: "8810", exp: "11/26" }
-    ];
-    var proposal = { id: "PR-1043", sent: "Dec 28", validUntil: "Mar 31, 2026" };
-    var proposalSites2 = [
-      { id: "s1", addr: "2381 Argue St", city: "Port Coquitlam, BC", postal: "V3C 6P9", lot: "17,303", areas: [876, 1026, 1539, 1456, 861], status: "approved", selected: "898", x: 22, y: 30 },
-      { id: "s2", addr: "2287 Argue St", city: "Port Coquitlam, BC", postal: "V3B 1A2", lot: "21,400", areas: [1180, 1320, 1980, 1820, 1100], status: "revision", selected: "898", x: 46, y: 22 },
-      { id: "s3", addr: "1618 Schooner St", city: "Coquitlam, BC", postal: "V3K 4M1", lot: "14,900", areas: [760, 900, 1400, 1340, 800], status: "declined", selected: "898", x: 72, y: 34 },
-      { id: "s4", addr: "1153 Knox Way", city: "Port Coquitlam, BC", postal: "V3C 0B5", lot: "48,200", areas: [5200, 3400, 7800, 5600, 2800], status: "unseen", selected: "898", x: 58, y: 74 }
-    ];
-    var surfaceDefs = [
-      { color: "#34c759", clear: 0.075, deice: 0.05 },
-      { color: "#ffd60a", clear: 0.055, deice: 0.04 },
-      { color: "#ff6b4a", clear: 0.045, deice: 0.03 },
-      { color: "#2f7be0", clear: 0.05, deice: 0.035 },
-      { color: "#c77dff", clear: 0.045, deice: 0.03 }
-    ];
-    var MOB_CLEAR = 47, MOB_DEICE = 37;
-    function planName(id) {
-      return id === "898" ? "Seasonal Unlimited" : id === "899" ? "Season-Lock" : "Flex Service";
-    }
-    function ordersFor(themeName) {
-      var v = themes[themeName] || themes["HVAC"];
-      var A = ["var(--accent)", "rgba(var(--accent-rgb),.12)"];
-      var G = ["#1f8a44", "rgba(52,199,89,.16)"];
-      var O = ["#ff8a3d", "rgba(255,159,10,.16)"];
-      var B = ["#0e8fc4", "rgba(14,143,196,.16)"];
-      var n = v.orderNames;
-      var auto = "If we don\u2019t hear back by the deadline, the visit proceeds automatically per your contract.";
-      return [
-        { id: "#SV-2402", name: n[0], date: "Today", status: "inprogress", price: "$60", dot: O[0], iconBg: O[1], locationId: "home", y: 2026, m: 0, d: 15 },
-        {
-          id: "#SV-3312",
-          name: n[1],
-          date: "Tomorrow",
-          status: "scheduled",
-          price: "$94",
-          dot: B[0],
-          iconBg: B[1],
-          locationId: "office",
-          y: 2026,
-          m: 0,
-          d: 16,
-          wt: v.wt ? { status: "pending", trigger: v.wt.trigger, detected: "Today \xB7 5:10 AM", deadline: "Today \xB7 8:00 PM", auto } : void 0
-        },
-        { id: "#SV-2410", name: n[2], date: "Jan 30", status: "scheduled", price: "$120", dot: A[0], iconBg: A[1], locationId: "home", y: 2026, m: 0, d: 30 },
-        { id: "#SV-2381", name: n[3], date: "Jan 12", status: "completed", price: "$480", dot: G[0], iconBg: G[1], locationId: "home", y: 2026, m: 0, d: 12, photos: true },
-        {
-          id: "#SV-3290",
-          name: n[1],
-          date: "Jan 5",
-          status: "completed",
-          price: "$94",
-          dot: B[0],
-          iconBg: B[1],
-          locationId: "office",
-          y: 2026,
-          m: 0,
-          d: 5,
-          photos: true,
-          wt: v.wt ? { status: "auto", trigger: v.wt.past, detected: "Jan 5 \xB7 4:46 AM", deadline: "Jan 5 \xB7 7:00 AM", sla: v.wt.sla } : void 0
-        },
-        { id: "#SV-2356", name: n[4], date: "Oct 24", status: "completed", price: "$45", dot: G[0], iconBg: G[1], locationId: "office", y: 2025, m: 9, d: 24 }
-      ];
-    }
-    function stormCalendar(themeName) {
-      var v = themes[themeName];
-      if (!v) throw new Error("Unknown calendar theme: " + themeName);
-      if (!v.wt) return null;
-      var s0 = v.svc[0].name, s1 = v.svc[1].name;
-      return {
-        contract: { rule: "Auto-dispatch by weather trigger", note: v.wt.sla },
-        accessNotes: [
-          { label: "Gate code", value: "4417" },
-          { label: "Driveway", value: "Do not block \u2014 car parked on the left" },
-          { label: "Sundays", value: "Do not service" }
-        ],
-        days: [
-          { date: "Mon", dateSub: "Jan 12", weather: { state: "served", label: v.wt.past, temp: "\u22124\xB0C" }, events: [
-            { type: s0, status: "completed", time: "7:38 AM", photos: true },
-            { type: s1, status: "completed", time: "8:51 AM" }
-          ] },
-          { date: "Wed", dateSub: "Jan 14", weather: { state: "clear", label: "Clear \xB7 below service trigger", temp: "\u22121\xB0C" }, events: [
-            { type: s0, status: "skipped", note: "Below trigger \u2014 visit not required" }
-          ] },
-          { date: "Today", dateSub: "Jan 15", today: true, weather: { state: "watch", label: "Storm watch \u2014 service likely tonight", temp: "\u22126\xB0C" }, events: [
-            { type: s0, status: "onroute", time: "ETA 2:40 PM", tech: "Daniel R." }
-          ] },
-          { date: "Thu", dateSub: "Jan 16", needsAccess: true, weather: { state: "expected", label: v.wt.trigger, temp: "\u22128\xB0C" }, events: [
-            { type: s0, status: "scheduled", trigger: true },
-            { type: s1, status: "scheduled", trigger: true }
-          ] },
-          { date: "Sat", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "\u22123\xB0C" }, events: [
-            { type: s1, status: "delayed", note: "Rescheduled from Fri \u2014 crew capacity" }
-          ] }
-        ]
-      };
-    }
-    var spa = {
-      brand: "Calm Harbor Spa",
-      /* long-name / long-label review scenario (dev toolbar "name") */
-      longCustomer: { first: "Anna-Katarina", greeting: "Good afternoon, Anna-Katarina", fullName: "Anna-Katarina Villanueva-\xD6str\xF6m" },
-      /* CURRENT STAGING — read-only Core Order rows. ONLY the normalized safe
-         fields the staging adapter proves: order type label/code, reference,
-         raw status, displayed total, currency. NO date/time, specialist,
-         location, tracking or invoice fields exist here, and the raw status
-         (e.g. OPEN) is NEVER translated into a customer status. */
-      stagingOrders: [
-        { ref: "ORD-10318", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "OPEN", total: "$85.00", currency: "USD" },
-        { ref: "ORD-10292", typeLabel: "Retail order", typeCode: "SPA_RETAIL", status: "OPEN", total: "$64.00", currency: "USD" },
-        { ref: "ORD-10241-PKG-TRANSFER", typeLabel: "Prepaid treatment package \u2014 six-session series transfer", typeCode: "SPA_SERVICE_PACKAGE_PREPAID", status: "AWAITING_SETTLEMENT_REVIEW", total: "$510.00", currency: "USD" },
-        { ref: "ORD-10186", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "CLOSED", total: "$45.00", currency: "USD" }
-      ],
-      /* Public Core PIM rows (mirrors the accepted wave-12 pim.pricing demo).
-         displayPrice renders VERBATIM; no availability, duration, savings or
-         eligibility may be inferred. SPA_MEMBERSHIP rows are public offers. */
-      pim: {
-        services: [
-          { code: "svc-spa-01", "class": "SPA_SERVICE", name: "Manicure & nails", displayPrice: "$45", interval: "visit", shortDescription: "Classic to gel \u2014 sanitised, sealed kit" },
-          { code: "svc-spa-02", "class": "SPA_SERVICE", name: "Hair styling", displayPrice: "$65", interval: "visit", shortDescription: "Cut, color & blowout \u2014 formulas saved" },
-          { code: "svc-spa-03", "class": "SPA_SERVICE", name: "Facial treatment", displayPrice: "$85", interval: "visit", shortDescription: "A routine that carries over visit to visit" },
-          { code: "svc-spa-04", "class": "SPA_SERVICE", name: "Event & bridal package", displayPrice: "Quote", interval: null, shortDescription: "Trials, timeline and a day-of team" }
-        ],
-        memberships: [
-          { code: "mem-spa-01", "class": "SPA_MEMBERSHIP", name: "Harbor membership", displayPrice: "$129", interval: "month", shortDescription: "Member pricing on every treatment" }
-        ]
-      },
-      /* TARGET terminology + approved-mapping PLACEHOLDER: these customer status
-         labels stand in for a BACKEND-OWNED mapping that must exist before
-         production renders them. They are never derived from raw Core statuses. */
-      modeLabels: { salon: "At Calm Harbor", home: "At your place" },
-      statusBadges: { "Confirmed": "status-badge--ok", "Needs confirmation": "status-badge--warn", "Completed": "status-badge--ok", "Cancelled": "status-badge--danger" },
-      /* TARGET APPOINTMENTS — capability-gated fixtures (target-appointments only).
-         Stable entity ids appt-ch-*; the reference is secondary detail, never the
-         card headline. `minimal` demonstrates missing OPTIONAL specialist and
-         location-detail fields. */
-      appointments: {
-        tzNote: "local time",
-        nextVariants: {
-          salon: { id: "appt-ch-10318", service: "Facial treatment", specialist: "Alina V.", date: "Tue, Jul 21", time: "2:00\u20133:00 PM", mode: "salon", location: "Harbor Front studio \xB7 Room 2", status: "Confirmed", price: "$85", ref: "APT-10318" },
-          home: { id: "appt-ch-10322", service: "Gel manicure", specialist: "Dana P.", date: "Wed, Jul 22", time: "11:00 AM\u201312:00 PM", mode: "home", location: "Address on file", status: "Confirmed", price: "$45", ref: "APT-10322" },
-          long: { id: "appt-ch-10330", service: "Signature deep-renewal ritual with warm-stone massage and extended aromatherapy", specialist: "Alexandra-Marguerite Konstantinidou-Vandermeer", date: "Thu, Jul 30", time: "1:00\u20133:30 PM", mode: "salon", location: "Harbor Front studio \xB7 Quiet wing, Room 5", status: "Needs confirmation", price: "$310", ref: "APT-10330-SIGNATURE-RITUAL" },
-          minimal: { id: "appt-ch-10334", service: "Facial treatment", specialist: null, date: "Fri, Jul 24", time: "4:00 PM", mode: "salon", location: null, status: "Confirmed", price: null, ref: "APT-10334" }
-        },
-        upcoming: [
-          { id: "appt-ch-10340", service: "Hair styling", specialist: "Alina V.", date: "Aug 4", time: "2:00 PM", mode: "salon", location: "Harbor Front studio", status: "Confirmed", price: "$65", ref: "APT-10340" },
-          { id: "appt-ch-10351", service: "Manicure & nails", specialist: null, date: "Aug 14", time: "11:00 AM", mode: "home", location: "Address on file", status: "Needs confirmation", price: "$45", ref: "APT-10351" }
-        ],
-        past: [
-          { id: "appt-ch-10203", service: "Facial treatment", specialist: "Alina V.", date: "Jun 30", mode: "salon", status: "Completed", price: "$85", ref: "APT-10203" },
-          { id: "appt-ch-10164", service: "Gel manicure", specialist: "Dana P.", date: "Jun 12", mode: "home", status: "Completed", price: "$45", ref: "APT-10164" },
-          { id: "appt-ch-10101", service: "Hair styling", specialist: "Alina V.", date: "May 28", mode: "salon", status: "Cancelled", price: null, ref: "APT-10101" }
-        ]
-      }
-    };
-    var spaCommerce = {
-      /* Account overview entries. `availability` is decided by the PAGE from
-         capability config — this is only the customer-safe copy per state. */
-      accountEntries: [
-        {
-          key: "purchases",
-          route: "purchases.list",
-          action: "account.openPurchases",
-          title: "Purchases",
-          desc: "Everything you\u2019ve ordered \u2014 services, shop items and plans, with their current state.",
-          unavailableDesc: "Purchase history with customer statuses isn\u2019t available on this portal yet. Your raw order records are on the Orders page."
-        },
-        {
-          key: "plan",
-          route: "plan",
-          action: "account.openPlan",
-          title: "My plan",
-          desc: "Your packages and membership \u2014 remaining visits, renewal and valid actions.",
-          unavailableDesc: "Plan and membership balances aren\u2019t connected yet. Published membership options are in Services & prices."
-        },
-        {
-          key: "profile",
-          route: "profile",
-          action: "account.openProfile",
-          title: "Profile",
-          desc: "Your contact details and preferences.",
-          unavailableDesc: "Profile editing isn\u2019t connected yet \u2014 our team can update your details for you."
-        },
-        {
-          key: "support",
-          route: null,
-          action: "support.open",
-          title: "Support",
-          desc: "Get help with a visit, an order or your plan.",
-          unavailableDesc: "A support destination hasn\u2019t been set up for this portal yet."
-        }
-      ],
-      /* ---- Purchases (customer-safe Order read model) ---- */
-      purchases: {
-        filters: [{ key: "all", label: "All" }, { key: "services", label: "Services" }, { key: "shop", label: "Shop" }, { key: "plans", label: "Plans" }],
-        kindFilter: { services: ["SERVICE", "MIXED"], shop: ["RETAIL", "MIXED"], plans: ["PACKAGE", "MEMBERSHIP"] },
-        kindLabels: { SERVICE: "Service", RETAIL: "Shop", PACKAGE: "Plan", MEMBERSHIP: "Plan", MIXED: "Service + shop" },
-        /* approved contract vocabulary — a BACKEND-OWNED mapping, never derived
-           from raw workflow states in the browser */
-        statusBadges: { "Confirmed": "status-badge--ok", "In progress": "status-badge--scheduled", "Ready for pickup": "status-badge--warn", "Fulfilled": "status-badge--ok", "Cancelled": "status-badge--danger" },
-        list: [
-          { ref: "pur-9f27a1", reference: "CH-2417", kind: "SERVICE", customerStatus: "Confirmed", placedAt: "Jul 12, 2026", displayTotal: "$85.00", currency: "USD", itemSummary: "Facial treatment \xB7 books your Jul 21 visit", attention: null },
-          { ref: "pur-52e88d", reference: "CH-2409", kind: "RETAIL", customerStatus: "Ready for pickup", placedAt: "Jul 8, 2026", displayTotal: "$88.56", currency: "USD", itemSummary: "2 shop items \xB7 pickup", attention: "Ready \u2014 please pick up by Jul 22" },
-          { ref: "pur-3d76c2", reference: "CH-2371", kind: "MIXED", customerStatus: "In progress", placedAt: "Jun 28, 2026", displayTotal: "$131.40", currency: "USD", itemSummary: "Gel manicure + 2 shop items", attention: null },
-          { ref: "pur-b104fe", reference: "CH-2350", kind: "PACKAGE", customerStatus: "Fulfilled", placedAt: "Jun 14, 2026", displayTotal: "$510.00", currency: "USD", itemSummary: "Six-visit facial series", attention: null },
-          { ref: "pur-64c913", reference: "CH-2334", kind: "RETAIL", customerStatus: "Fulfilled", placedAt: "Jun 2, 2026", displayTotal: "$73.44", currency: "USD", itemSummary: "2 shop items \xB7 picked up Jun 4", attention: null },
-          { ref: "pur-1a45e0", reference: "CH-2242", kind: "MEMBERSHIP", customerStatus: "Confirmed", placedAt: "May 1, 2026", displayTotal: "$129.00", currency: "USD", itemSummary: "Harbor membership \xB7 monthly", attention: null }
-        ],
-        /* cursor page 2 — appended below already-rendered rows, never replacing them */
-        nextPage: [
-          { ref: "pur-77d20b", reference: "CH-2168", kind: "SERVICE", customerStatus: "Fulfilled", placedAt: "Apr 2, 2026", displayTotal: "$65.00", currency: "USD", itemSummary: "Hair styling", attention: null },
-          { ref: "pur-08c5b7", reference: "CH-2104", kind: "RETAIL", customerStatus: "Cancelled", placedAt: "Mar 19, 2026", displayTotal: "$28.00", currency: "USD", itemSummary: "1 shop item", attention: null }
-        ]
-      },
-      /* ---- Purchase detail read models (keyed by opaque ref).
-         Sections that are absent here are OMITTED by the page — never filled
-         with guessed facts. `groups` exists only where the source groups lines. ---- */
-      purchaseDetails: {
-        "pur-9f27a1": {
-          ref: "pur-9f27a1",
-          reference: "CH-2417",
-          kind: "SERVICE",
-          customerStatus: "Confirmed",
-          placedAt: "Jul 12, 2026",
-          version: "v2",
-          lines: [{ ref: "pln-4ac1", kind: "SERVICE", title: "Facial treatment", variant: null, quantity: 1, displayUnitPrice: "$85.00", displayTotal: "$85.00" }],
-          money: { subtotal: "$85.00", tax: "$0.00", total: "$85.00", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: null,
-          relatedAppointments: [{ ref: "appt-ch-10318", service: "Facial treatment", start: "Tue, Jul 21 \xB7 2:00\u20133:00 PM", customerStatus: "Confirmed" }],
-          relatedPlan: null,
-          allowedActions: ["openAppointment"]
-        },
-        "pur-52e88d": {
-          ref: "pur-52e88d",
-          reference: "CH-2409",
-          kind: "RETAIL",
-          customerStatus: "Ready for pickup",
-          placedAt: "Jul 8, 2026",
-          version: "v3",
-          lines: [
-            { ref: "pln-b210", kind: "RETAIL", title: "Silk Repair Set", variant: null, quantity: 1, displayUnitPrice: "$64.00", displayTotal: "$64.00" },
-            { ref: "pln-b211", kind: "RETAIL", title: "Gel Removal Kit", variant: null, quantity: 1, displayUnitPrice: "$18.00", displayTotal: "$18.00" }
-          ],
-          money: { subtotal: "$82.00", tax: "$6.56", total: "$88.56", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "PICKUP", status: "Ready for pickup", pickupWindow: "Until Jul 22 \xB7 10:00 AM\u20136:00 PM", note: "Harbor Front studio front desk" },
-          relatedAppointments: [],
-          relatedPlan: null,
-          allowedActions: ["cancelRequest"]
-        },
-        "pur-3d76c2": {
-          ref: "pur-3d76c2",
-          reference: "CH-2371",
-          kind: "MIXED",
-          customerStatus: "In progress",
-          placedAt: "Jun 28, 2026",
-          version: "v5",
-          groups: [{ label: "Service", lines: ["pln-c310"] }, { label: "Pickup items", lines: ["pln-c311", "pln-c312"] }],
-          lines: [
-            { ref: "pln-c310", kind: "SERVICE", title: "Gel manicure", variant: null, quantity: 1, displayUnitPrice: "$45.00", displayTotal: "$45.00" },
-            { ref: "pln-c311", kind: "RETAIL", title: "Hydration Serum", variant: null, quantity: 1, displayUnitPrice: "$46.00", displayTotal: "$46.00" },
-            { ref: "pln-c312", kind: "RETAIL", title: "Overnight Mask", variant: null, quantity: 1, displayUnitPrice: "$34.00", displayTotal: "$34.00" }
-          ],
-          money: { subtotal: "$125.00", tax: "$6.40", total: "$131.40", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "PICKUP", status: "Being prepared", pickupWindow: null, note: "We\u2019ll let you know when your items are ready" },
-          relatedAppointments: [{ ref: "appt-ch-10322", service: "Gel manicure", start: "Wed, Jul 22 \xB7 11:00 AM\u201312:00 PM", customerStatus: "Confirmed" }],
-          relatedPlan: null,
-          allowedActions: ["openAppointment"]
-        },
-        "pur-b104fe": {
-          ref: "pur-b104fe",
-          reference: "CH-2350",
-          kind: "PACKAGE",
-          customerStatus: "Fulfilled",
-          placedAt: "Jun 14, 2026",
-          version: "v1",
-          lines: [{ ref: "pln-d410", kind: "PLAN", title: "Six-visit facial series", variant: null, quantity: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
-          money: { subtotal: "$510.00", tax: "$0.00", total: "$510.00", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "ENTITLEMENT", status: "Credits granted", pickupWindow: null, note: "Visit credits were added to your plan" },
-          relatedAppointments: [],
-          relatedPlan: { ref: "plan-4e19c3", kind: "PACKAGE", status: "Active", title: "Six-visit facial series" },
-          allowedActions: ["buyAgain"]
-        },
-        "pur-64c913": {
-          ref: "pur-64c913",
-          reference: "CH-2334",
-          kind: "RETAIL",
-          customerStatus: "Fulfilled",
-          placedAt: "Jun 2, 2026",
-          version: "v4",
-          lines: [
-            { ref: "pln-e510", kind: "RETAIL", title: "Hydration Serum", variant: null, quantity: 1, displayUnitPrice: "$46.00", displayTotal: "$46.00", returnable: true },
-            { ref: "pln-e511", kind: "RETAIL", title: "Cuticle Care Kit", variant: null, quantity: 1, displayUnitPrice: "$22.00", displayTotal: "$22.00", returnable: true }
-          ],
-          money: { subtotal: "$68.00", tax: "$5.44", total: "$73.44", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "PICKUP", status: "Picked up Jun 4", pickupWindow: null, note: null },
-          relatedAppointments: [],
-          relatedPlan: null,
-          allowedActions: ["returnRequest", "buyAgain"]
-        },
-        "pur-1a45e0": {
-          ref: "pur-1a45e0",
-          reference: "CH-2242",
-          kind: "MEMBERSHIP",
-          customerStatus: "Confirmed",
-          placedAt: "May 1, 2026",
-          version: "v1",
-          lines: [{ ref: "pln-f610", kind: "PLAN", title: "Harbor membership", variant: "Monthly", quantity: 1, displayUnitPrice: "$129.00", displayTotal: "$129.00" }],
-          money: { subtotal: "$129.00", tax: "$0.00", total: "$129.00", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "ENTITLEMENT", status: "Membership active", pickupWindow: null, note: "Renews monthly \u2014 manage it under My plan" },
-          relatedAppointments: [],
-          relatedPlan: { ref: "plan-8b02d7", kind: "MEMBERSHIP", status: "Active", title: "Harbor membership" },
-          allowedActions: []
-        },
-        "pur-77d20b": {
-          ref: "pur-77d20b",
-          reference: "CH-2168",
-          kind: "SERVICE",
-          customerStatus: "Fulfilled",
-          placedAt: "Apr 2, 2026",
-          version: "v2",
-          lines: [{ ref: "pln-g710", kind: "SERVICE", title: "Hair styling", variant: null, quantity: 1, displayUnitPrice: "$65.00", displayTotal: "$65.00" }],
-          money: { subtotal: "$65.00", tax: "$0.00", total: "$65.00", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: null,
-          relatedAppointments: [{ ref: "appt-ch-10203", service: "Facial treatment", start: "Jun 30", customerStatus: "Completed" }],
-          relatedPlan: null,
-          allowedActions: []
-        },
-        "pur-08c5b7": {
-          ref: "pur-08c5b7",
-          reference: "CH-2104",
-          kind: "RETAIL",
-          customerStatus: "Cancelled",
-          placedAt: "Mar 19, 2026",
-          version: "v2",
-          lines: [{ ref: "pln-h810", kind: "RETAIL", title: "Heat Shield Spray", variant: "150 ml", quantity: 1, displayUnitPrice: "$28.00", displayTotal: "$28.00" }],
-          money: { subtotal: "$28.00", tax: "$2.24", total: "$30.24", currency: "USD" },
-          paymentMode: "SIMULATED",
-          fulfillment: { kind: "PICKUP", status: "Cancelled before pickup", pickupWindow: null, note: null },
-          relatedAppointments: [],
-          relatedPlan: null,
-          allowedActions: ["buyAgain"]
-        }
-      },
-      /* appointment detail -> its purchase (deep link, target only) */
-      purchaseByAppointment: { "appt-ch-10318": "pur-9f27a1", "appt-ch-10322": "pur-3d76c2" },
-      /* ============ WAVE 16 — Appointment detail read models ============
-         Keyed by opaque ref (data-appointment-ref). ONLY source-provided
-         fields exist here; absent optional fields are omitted by the page,
-         never guessed. `attention` and the policy copy are SERVER-OWNED
-         strings; `allowedActions` is the server's capability list — the page
-         renders exactly those actions and derives none. A ref that is not in
-         this map (foreign / removed / unknown) gets ONE non-enumerating
-         not-found treatment. */
-      appointmentDetails: {
-        "appt-ch-10318": { ref: "appt-ch-10318", service: "Facial treatment", customerStatus: "Confirmed", start: "Tue, Jul 21 \xB7 2:00\u20133:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio \xB7 Room 2", displayPrice: "$85", reference: "APT-10318", attention: "Free rescheduling and cancellation for this visit until Jul 20, 6:00 PM \u2014 after that the studio\u2019s policy applies.", relatedPurchaseRef: "pur-9f27a1", allowedActions: ["reschedule", "cancel", "openPurchase"], version: "a3" },
-        "appt-ch-10322": { ref: "appt-ch-10322", service: "Gel manicure", customerStatus: "Confirmed", start: "Wed, Jul 22 \xB7 11:00 AM\u201312:00 PM", timezoneNote: "local time", specialist: "Dana P.", visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10322", attention: "Your specialist brings a sanitised, sealed kit \u2014 just have a clear table spot ready.", relatedPurchaseRef: "pur-3d76c2", allowedActions: ["reschedule", "cancel", "openPurchase"], version: "a1" },
-        "appt-ch-10334": { ref: "appt-ch-10334", service: "Facial treatment", customerStatus: "Confirmed", start: "Fri, Jul 24 \xB7 4:00 PM", timezoneNote: "local time", specialist: null, visitMode: "salon", location: null, displayPrice: null, reference: "APT-10334", attention: null, relatedPurchaseRef: null, allowedActions: ["cancel"], version: "a1" },
-        "appt-ch-10330": { ref: "appt-ch-10330", service: "Signature deep-renewal ritual with warm-stone massage and extended aromatherapy", customerStatus: "Needs confirmation", start: "Thu, Jul 30 \xB7 1:00\u20133:30 PM", timezoneNote: "local time", specialist: "Alexandra-Marguerite Konstantinidou-Vandermeer", visitMode: "salon", location: "Harbor Front studio \xB7 Quiet wing, Room 5", displayPrice: "$310", reference: "APT-10330-SIGNATURE-RITUAL", attention: "The studio still needs to confirm this time \u2014 you\u2019ll hear from us within a day. Nothing is charged either way.", relatedPurchaseRef: null, allowedActions: ["reschedule", "cancel"], version: "a1" },
-        "appt-ch-10340": { ref: "appt-ch-10340", service: "Hair styling", customerStatus: "Confirmed", start: "Tue, Aug 4 \xB7 2:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: "$65", reference: "APT-10340", attention: null, relatedPurchaseRef: null, allowedActions: ["reschedule", "cancel"], version: "a2" },
-        "appt-ch-10351": { ref: "appt-ch-10351", service: "Manicure & nails", customerStatus: "Needs confirmation", start: "Fri, Aug 14 \xB7 11:00 AM", timezoneNote: "local time", specialist: null, visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10351", attention: "The studio still needs to confirm this time \u2014 you\u2019ll hear from us within a day. Nothing is charged either way.", relatedPurchaseRef: null, allowedActions: ["cancel"], version: "a1" },
-        "appt-ch-10203": { ref: "appt-ch-10203", service: "Facial treatment", customerStatus: "Completed", start: "Tue, Jun 30 \xB7 2:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: "$85", reference: "APT-10203", attention: null, relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a4" },
-        "appt-ch-10164": { ref: "appt-ch-10164", service: "Gel manicure", customerStatus: "Completed", start: "Fri, Jun 12 \xB7 11:00 AM", timezoneNote: "local time", specialist: "Dana P.", visitMode: "home", location: "Address on file", displayPrice: "$45", reference: "APT-10164", attention: null, relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a2" },
-        "appt-ch-10101": { ref: "appt-ch-10101", service: "Hair styling", customerStatus: "Cancelled", start: "Thu, May 28 \xB7 3:00 PM", timezoneNote: "local time", specialist: "Alina V.", visitMode: "salon", location: "Harbor Front studio", displayPrice: null, reference: "APT-10101", attention: "This visit was cancelled \u2014 nothing further is scheduled from it.", relatedPurchaseRef: null, allowedActions: ["bookAgain"], version: "a2" }
-      },
-      /* ============ WAVE 16 — Published plan offers (sellable contract) ====
-         PUBLIC catalog offers — visually and semantically distinct from the
-         customer's My plan. Only server-provided display price, terms summary,
-         benefits and sellability render; the buy entry exists ONLY while the
-         sellable-plan contract is open (data-plan-commerce="open") AND the
-         offer's sellability is "sellable". */
-      planOffers: [
-        { ref: "off-pkg-4c21", kind: "PACKAGE", title: "Six-visit facial series", displayPrice: "$510.00", termsSummary: "6 facial visits \xB7 valid 12 months from purchase", benefits: ["Six full facial treatments", "Book each visit with a credit", "Credits never expire early"], sellability: "sellable", allowedActions: ["purchase"] },
-        { ref: "off-mem-8d02", kind: "MEMBERSHIP", title: "Harbor membership", displayPrice: "$129.00 / month", termsSummary: "Renews monthly \xB7 cancel renewal anytime", benefits: ["Member pricing on every treatment", "Priority booking windows", "One guest pass per season"], sellability: "sellable", allowedActions: ["purchase"] }
-      ],
-      offerNotes: {
-        unavailable: "Not available to buy right now \u2014 the published offer is shown for reference only.",
-        changed: "The price or terms of this offer changed while you were looking \u2014 reload to see the current offer before buying."
-      },
-      /* ---- My plan (customer-scoped entitlements — NEVER the public
-         "Membership options" offers) ---- */
-      plans: {
-        statusBadges: { "Active": "status-badge--ok", "Expiring soon": "status-badge--warn", "Used up": "status-badge--neutral", "Cancelled": "status-badge--danger" },
-        scenarios: { active: ["plan-4e19c3", "plan-8b02d7"], expiring: ["plan-ex91b4", "plan-8b02d7"], exhausted: ["plan-x201aa"], cancelled: ["plan-c77f02"], empty: [] },
-        byRef: {
-          "plan-4e19c3": { ref: "plan-4e19c3", kind: "PACKAGE", title: "Six-visit facial series", status: "Active", remainingUses: 4, totalUses: 6, expiresAt: "Dec 31, 2026", displayRecurringPrice: null, allowedActions: ["bookWithCredit"], sourcePurchase: "pur-b104fe" },
-          "plan-8b02d7": { ref: "plan-8b02d7", kind: "MEMBERSHIP", title: "Harbor membership", status: "Active", remainingUses: null, totalUses: null, renewsAt: "Aug 1, 2026", displayRecurringPrice: "$129 / month", allowedActions: ["cancelRenewal"], sourcePurchase: "pur-1a45e0" },
-          "plan-ex91b4": { ref: "plan-ex91b4", kind: "PACKAGE", title: "Six-visit facial series", status: "Expiring soon", remainingUses: 2, totalUses: 6, expiresAt: "Jul 31, 2026", attention: "2 visits left \u2014 they expire Jul 31", displayRecurringPrice: null, allowedActions: ["bookWithCredit"] },
-          "plan-x201aa": { ref: "plan-x201aa", kind: "PACKAGE", title: "Six-visit facial series", status: "Used up", remainingUses: 0, totalUses: 6, expiresAt: "Dec 31, 2026", displayRecurringPrice: null, allowedActions: [] },
-          "plan-c77f02": { ref: "plan-c77f02", kind: "MEMBERSHIP", title: "Harbor membership", status: "Cancelled", expiresAt: "Jul 31, 2026", note: "Your benefits continue to the end of the paid period.", displayRecurringPrice: "$129 / month", allowedActions: [] }
-        }
-      },
-      /* ---- Sellable retail (capability retail-commerce-open). Joined to the
-         public PIM card by `code`; `state` is SERVER sellability, never inferred. ---- */
-      retail: {
-        products: [
-          { code: "rtl-beauty-01", state: "sellable", cents: 6400, displayPrice: "$64.00" },
-          { code: "rtl-beauty-02", state: "variant-required", variants: [
-            { ref: "var-hs-150", label: "150 ml", displayPrice: "$28.00", cents: 2800 },
-            { ref: "var-hs-250", label: "250 ml", displayPrice: "$42.00", cents: 4200 }
-          ] },
-          { code: "rtl-beauty-03", state: "out-of-stock" },
-          { code: "rtl-beauty-04", state: "sellable", cents: 1800, displayPrice: "$18.00" },
-          { code: "rtl-beauty-05", state: "price-changed", cents: 5200, displayPrice: "$52.00", priceNote: "Price recently updated in the catalog" },
-          { code: "rtl-beauty-06", state: "unavailable", note: "Not sold online" }
-        ]
-      },
-      /* ---- Simulated checkout scaffolding ---- */
-      checkout: {
-        ref: "chk-5b8d31",
-        expiresNote: "This quote holds for 15 minutes \u2014 prices and stock are re-checked at confirmation.",
-        fulfillmentOptions: [
-          { ref: "ful-pickup", kind: "PICKUP", label: "Pickup \u2014 Harbor Front studio", detail: "Usually ready in 2 days \xB7 free" }
-        ],
-        fulfillmentNote: "Delivery isn\u2019t offered on this portal yet \u2014 pickup only.",
-        policy: "I understand pickup orders are held for 14 days and services follow the studio\u2019s cancellation policy.",
-        /* the plan-enrollment checkout source (a frozen server quote).
-           WAVE 16: one quote per published offer ref (source `plan` carries
-           data-plan-offer-ref); planQuote stays as the package default. */
-        planQuote: {
-          lines: [{ ref: "cln-pl01", title: "Six-visit facial series", variant: null, qty: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
-          displayTotals: { subtotal: "$510.00", tax: "$0.00", total: "$510.00" }
-        },
-        planQuotes: {
-          "off-pkg-4c21": {
-            lines: [{ ref: "cln-pl01", title: "Six-visit facial series", variant: null, qty: 1, displayUnitPrice: "$510.00", displayTotal: "$510.00" }],
-            displayTotals: { subtotal: "$510.00", tax: "$0.00", total: "$510.00" },
-            recurringNote: null
-          },
-          "off-mem-8d02": {
-            lines: [{ ref: "cln-pl02", title: "Harbor membership", variant: "Monthly", qty: 1, displayUnitPrice: "$129.00", displayTotal: "$129.00" }],
-            displayTotals: { subtotal: "$129.00", tax: "$0.00", total: "$129.00" },
-            recurringNote: "Renews at $129.00 / month until you cancel renewal \u2014 each renewal is recorded the same simulated way."
-          }
-        }
-      },
-      /* ---- Authoritative confirmation READBACKS (demo). The confirmation
-         surface renders ONLY from one of these. Copy is contract-approved:
-         "Order confirmed" / "Booking confirmed" / "Demo checkout completed" —
-         never "Paid", "Charged" or "Payment successful". ---- */
-      confirmations: {
-        retail: {
-          kind: "retail",
-          headline: "Order confirmed",
-          sub: "Demo checkout completed \u2014 no charge was made.",
-          purchase: { ref: "pur-n3w001", reference: "CH-2431" },
-          fulfillment: "Pickup \u2014 Harbor Front studio. We\u2019ll let you know when your items are ready.",
-          appointment: null,
-          plan: null
-        },
-        "appointment-and-order": {
-          kind: "booking",
-          headline: "Booking confirmed",
-          sub: "Demo checkout completed \u2014 no charge was made.",
-          purchase: { ref: "pur-n3w002", reference: "CH-2432" },
-          appointment: { ref: "appt-ch-10360", service: "Facial treatment", start: "Tue, Jul 28 \xB7 2:00 PM", customerStatus: "Confirmed" },
-          fulfillment: null,
-          plan: null
-        },
-        "appointment-only": {
-          kind: "booking",
-          headline: "Booking confirmed",
-          sub: "No charge was made \u2014 you pay at the studio as usual.",
-          purchase: null,
-          appointment: { ref: "appt-ch-10361", service: "Facial treatment", start: "Tue, Jul 28 \xB7 2:00 PM", customerStatus: "Confirmed" },
-          fulfillment: null,
-          plan: null
-        },
-        plan: {
-          kind: "plan",
-          headline: "Order confirmed",
-          sub: "Demo checkout completed \u2014 no charge was made.",
-          purchase: { ref: "pur-n3w003", reference: "CH-2433" },
-          appointment: null,
-          fulfillment: null,
-          plan: { ref: "plan-n3w01", kind: "PACKAGE", title: "Six-visit facial series", status: "Active" }
-        },
-        /* wave 16 — membership enrollment (source plan, offer off-mem-8d02) */
-        membership: {
-          kind: "plan",
-          headline: "Order confirmed",
-          sub: "Demo checkout completed \u2014 no charge was made.",
-          purchase: { ref: "pur-n3w004", reference: "CH-2434" },
-          appointment: null,
-          fulfillment: null,
-          plan: { ref: "plan-n3w02", kind: "MEMBERSHIP", title: "Harbor membership", status: "Active" }
-        },
-        /* wave 16 — booking with a package credit (appointment only + plan readback) */
-        credit: {
-          kind: "booking",
-          headline: "Booking confirmed",
-          sub: "A package credit was used \u2014 no charge was made.",
-          purchase: null,
-          fulfillment: null,
-          appointment: { ref: "appt-ch-10362", service: "Facial treatment", start: "Tue, Jul 28 \xB7 2:00 PM", customerStatus: "Confirmed" },
-          plan: { ref: "plan-4e19c3", kind: "PACKAGE", title: "Six-visit facial series \u2014 3 of 6 visits left", status: "Active" }
-        },
-        /* wave 16 — reschedule readback: the ORIGINAL visit is only released here */
-        reschedule: {
-          kind: "booking",
-          headline: "Booking confirmed",
-          sub: "Your visit was moved \u2014 the previous time was released. No charge was made.",
-          purchase: null,
-          fulfillment: null,
-          plan: null,
-          appointment: { ref: "appt-ch-10318", service: "Facial treatment", start: "Tue, Jul 28 \xB7 2:00 PM", customerStatus: "Confirmed" }
-        }
-      }
-    };
-    var spaBooking = {
-      ref: "bkg-7a31f2",
-      version: "b1",
-      paymentMode: "SIMULATED",
-      eligibleServices: ["svc-spa-01", "svc-spa-02", "svc-spa-03"],
-      /* appointment service title -> bookable service code (server mapping;
-         an unmapped title simply starts the flow at the service choice) */
-      serviceForTitle: { "Facial treatment": "svc-spa-03", "Gel manicure": "svc-spa-01", "Manicure & nails": "svc-spa-01", "Hair styling": "svc-spa-02" },
-      displayTotals: { "svc-spa-01": "$45.00", "svc-spa-02": "$65.00", "svc-spa-03": "$85.00" },
-      specialists: {
-        "spc-a1v": { ref: "spc-a1v", name: "Alina V.", role: "Hair & skin" },
-        "spc-m3k": { ref: "spc-m3k", name: "Marta K.", role: "Facials" },
-        "spc-d2p": { ref: "spc-d2p", name: "Dana P.", role: "Nails" }
-      },
-      /* returned per service — an empty list means the server offers no choice
-         and the specialist step is SKIPPED (never invented) */
-      eligibleSpecialists: { "svc-spa-01": [], "svc-spa-02": ["spc-a1v", "spc-m3k"], "svc-spa-03": ["spc-a1v", "spc-m3k"] },
-      days: [
-        { key: "d-0728", label: "Tue, Jul 28", slots: [{ ref: "sl-0728-09", label: "9:00 AM" }, { ref: "sl-0728-1130", label: "11:30 AM" }, { ref: "sl-0728-14", label: "2:00 PM" }, { ref: "sl-0728-1630", label: "4:30 PM" }] },
-        { key: "d-0729", label: "Wed, Jul 29", slots: [{ ref: "sl-0729-10", label: "10:00 AM" }, { ref: "sl-0729-13", label: "1:00 PM" }, { ref: "sl-0729-1530", label: "3:30 PM" }] },
-        { key: "d-0730", label: "Thu, Jul 30", slots: [{ ref: "sl-0730-0930", label: "9:30 AM" }, { ref: "sl-0730-12", label: "12:00 PM" }, { ref: "sl-0730-1430", label: "2:30 PM" }, { ref: "sl-0730-17", label: "5:00 PM" }] },
-        { key: "d-0801", label: "Sat, Aug 1", slots: [{ ref: "sl-0801-11", label: "11:00 AM" }, { ref: "sl-0801-1330", label: "1:30 PM" }] }
-      ],
-      /* the server slot hold: opaque ref + display-ready expiry. The label is
-         rendered verbatim; expiry itself is a SERVER event (dev select `hold`). */
-      hold: { ref: "hld-2f91c4", version: "h1", untilLabel: "Held until 2:47 PM (studio clock)", note: "The studio releases the time automatically after that \u2014 it\u2019s re-checked when you confirm." },
-      reviewLocation: "Harbor Front studio",
-      /* server review context for a NEW booking; reschedules keep the original visit's mode/location */
-      policy: "I understand this visit follows the studio\u2019s cancellation policy.",
-      policyNote: "Free rescheduling and cancellation until 24 hours before the visit \u2014 after that the studio\u2019s policy applies.",
-      /* plan-credit context strings (SERVER copy per credit state) */
-      creditNotes: {
-        ok: "1 visit credit from your Six-visit facial series will be used \u2014 no charge for this visit.",
-        unavailable: "Your plan can\u2019t be used for this booking right now \u2014 nothing was used or booked. The studio can help.",
-        exhausted: "Your package has no visits left \u2014 nothing was used or booked. You can buy the package again or book at the published price.",
-        changed: "Your plan balance changed while you were booking \u2014 reload to see the current balance before continuing."
-      }
-    };
-    var spaProfileSrv = {
-      version: "p4",
-      phone: "+1 (415) 555-0134",
-      email: "mia.chen@example.com",
-      preferences: [
-        { key: "appt-reminders", label: "Appointment reminders", desc: "A reminder before each visit", value: true },
-        { key: "appt-changes", label: "Schedule change alerts", desc: "If the studio needs to move or confirm a visit", value: true },
-        { key: "care-tips", label: "Care tips between visits", desc: "Occasional tips from your specialist", value: false }
-      ],
-      allowedActions: ["edit", "save"]
-    };
-    var spaCartSeq = 0;
-    function spaServerCart(lines) {
-      var sub = 0;
-      lines.forEach(function(l) {
-        sub += l.cents * l.qty;
-      });
-      var tax = Math.round(sub * 0.08);
-      var fmt = function(c) {
-        return "$" + (c / 100).toFixed(2);
-      };
-      spaCartSeq += 1;
-      return {
-        version: "c" + spaCartSeq,
-        lines: lines.map(function(l) {
-          return Object.assign({}, l, { displayUnitPrice: fmt(l.cents), displayTotal: fmt(l.cents * l.qty) });
-        }),
-        displayTotals: lines.length ? { subtotal: fmt(sub), tax: fmt(tax), total: fmt(sub + tax) } : null,
-        fulfillment: { kind: "PICKUP", label: "Pickup \u2014 Harbor Front studio", detail: "Usually ready in 2 days \xB7 free" }
-      };
-    }
-    window.AircoveFixtures = {
-      PAL,
-      TINTS,
-      themeSlugs,
-      themes,
-      statusMeta,
-      technician,
-      pstatus,
-      customer,
-      MONTHS,
-      buildFeed,
-      feedTabs,
-      initialMessages,
-      quickReplies,
-      helpTopics,
-      chatReply,
-      stormCalendar,
-      spa,
-      spaCommerce,
-      spaServerCart,
-      spaBooking,
-      spaProfileSrv,
-      addresses,
-      cards,
-      proposal,
-      proposalSites: proposalSites2,
-      surfaceDefs,
-      MOB_CLEAR,
-      MOB_DEICE,
-      planName,
-      ordersFor
-    };
-  })();
-  var F = window.AircoveFixtures;
-
-  // app-templates/customer-portal/runtime/data/cases/calm-harbor-spa.js
-  var accent = "#3f7d6a";
-  var softAccent = "rgba(63,125,106,.14)";
-  var calmHarborSpaFixture = Object.freeze({
-    id: "calm-harbor-spa",
-    organization: { name: "Calm Harbor Spa", locality: "Austin, Texas", mode: "fixture" },
-    theme: {
-      slug: "beauty",
-      accent,
-      hero: {
-        badge: "Austin day spa \xB7 fixture organization",
-        title: "A quieter reset, planned around you.",
-        sub: "Massage, facial care, and slower rituals at Calm Harbor Spa. Your appointments and routine stay together in one portal."
-      },
-      svc: [
-        { id: "chs-grounding-massage", name: "Grounding massage", price: "$145", tagline: "Restore pace, comfort, and ease", duration: "75 min", includes: ["Arrival consultation", "Full-body massage", "Aftercare recommendations"] },
-        { id: "chs-custom-facial", name: "Custom facial", price: "$130", tagline: "Care shaped around today's skin", duration: "60 min", includes: ["Routine check-in", "Tailored facial care", "Home-care notes"] },
-        { id: "chs-harbor-reset", name: "Harbor reset", price: "$245", tagline: "Massage and facial in one longer visit", duration: "135 min", includes: ["Grounding massage", "Custom facial", "Quiet reset time"] },
-        { id: "chs-seasonal-body-ritual", name: "Seasonal body ritual", price: "$165", tagline: "A sensory full-body seasonal reset", duration: "90 min", includes: ["Seasonal body care", "Aroma journey", "Take-home ritual note"] }
-      ],
-      orderNames: ["Grounding massage", "Custom facial", "Harbor reset", "Seasonal body ritual"],
-      wt: null,
-      plan: {
-        name: "Harbor Membership",
-        plusName: "Harbor Ritual Membership",
-        monthlyPrice: "$18",
-        plusMonthlyPrice: "$34",
-        tag: "For a steadier self-care rhythm",
-        desc: "Priority routine booking and member care notes in your portal.",
-        headline: "A membership for your reset rhythm",
-        features: ["Priority routine booking", "One seasonal care note each month", "Member treatment add-ons", "Routine history in one place"],
-        plusFeatures: ["Two ritual credits a month", "Priority with your preferred specialist", "Member retail benefits", "Longer seasonal planning visit"]
-      },
-      feat: {
-        badge: "Fixture retail catalog",
-        title: "Harbor body oil for your at-home ritual",
-        desc: "A fixture retail product linked to Calm Harbor's aftercare routine.",
-        cta: "Add to cart \xB7 $42",
-        fin: "Fixture checkout only"
-      },
-      cats: [{ key: "body", label: "Body care" }, { key: "bath", label: "Bath" }, { key: "skin", label: "Skin" }],
-      products: [
-        { id: "chs-body-oil", sku: "CHS-BODY-001", cat: "body", tag: "Body care", name: "Harbor body oil", blurb: "A quiet finish after bath or massage", price: "$42", priceNum: 42 },
-        { id: "chs-bath-soak", sku: "CHS-BATH-001", cat: "bath", tag: "Bath", name: "Mineral bath soak", blurb: "A slow evening reset", price: "$28", priceNum: 28 },
-        { id: "chs-body-cream", sku: "CHS-BODY-002", cat: "body", tag: "Body care", name: "Restorative body cream", blurb: "Daily comfort for dry skin", price: "$36", priceNum: 36 },
-        { id: "chs-cleansing-balm", sku: "CHS-SKIN-001", cat: "skin", tag: "Skin", name: "Gentle cleansing balm", blurb: "First step in an unhurried evening routine", price: "$34", priceNum: 34 },
-        { id: "chs-hydration-mist", sku: "CHS-SKIN-002", cat: "skin", tag: "Skin", name: "Hydration mist", blurb: "A light layer between visits", price: "$26", priceNum: 26 }
-      ],
-      reminder: { title: "Your next reset is coming up", desc: "A custom facial is scheduled for tomorrow." },
-      checkout: { emptyCart: "Your ritual cart is empty", emptyCartDescription: "Browse Calm Harbor aftercare products.", fulfillmentNote: "Fixture checkout records the order in this Calm Harbor demo only." }
+  // app-templates/customer-portal/runtime/data/live-fixtures.js
+  var EMPTY_THEME = Object.freeze({
+    slug: "beauty",
+    accent: "#df2f73",
+    hero: Object.freeze({ badge: "", title: "", sub: "" }),
+    svc: Object.freeze([]),
+    orderNames: Object.freeze([]),
+    wt: Object.freeze({ icon: "", trigger: "", past: "", sla: "" }),
+    plan: Object.freeze({ name: "", plusName: "", tag: "", desc: "", headline: "", features: Object.freeze([]), plusFeatures: Object.freeze([]) }),
+    feat: Object.freeze({ badge: "", title: "", desc: "", cta: "", fin: "" }),
+    cats: Object.freeze([]),
+    products: Object.freeze([]),
+    reminder: Object.freeze({ title: "", desc: "" }),
+    prop: Object.freeze({ svc: "", surfaces: Object.freeze([]), months: "", unlimDesc: "", colA: "", colB: "", unitA: "", unitB: "" })
+  });
+  var EMPTY_THEMES = Object.freeze({
+    HVAC: EMPTY_THEME,
+    "Snow Removal": EMPTY_THEME,
+    "Lawn & Garden": EMPTY_THEME,
+    "Pool & Spa": EMPTY_THEME,
+    Roofing: EMPTY_THEME,
+    "Pest Control": EMPTY_THEME,
+    Health: EMPTY_THEME,
+    Beauty: EMPTY_THEME
+  });
+  var EMPTY_SPA = Object.freeze({
+    stagingOrders: Object.freeze([]),
+    appointments: Object.freeze({ upcoming: Object.freeze([]), past: Object.freeze([]), nextVariants: Object.freeze({ salon: Object.freeze([]), mobile: Object.freeze([]) }), tzNote: "" }),
+    longCustomer: "",
+    modeLabels: Object.freeze({ salon: "", mobile: "" }),
+    pim: Object.freeze({ services: Object.freeze([]), products: Object.freeze([]) }),
+    statusBadges: Object.freeze({})
+  });
+  var EMPTY_COMMERCE = Object.freeze({
+    accountEntries: Object.freeze([]),
+    appointmentDetails: Object.freeze({}),
+    checkout: Object.freeze({ ref: "", planQuote: null, planQuotes: Object.freeze({}) }),
+    confirmations: Object.freeze({ membership: null, plan: null, retail: null }),
+    offerNotes: Object.freeze({ changed: "", unavailable: "" }),
+    planOffers: Object.freeze([]),
+    plans: Object.freeze({ byRef: Object.freeze({}), scenarios: Object.freeze({}), statusBadges: Object.freeze({}) }),
+    purchaseByAppointment: Object.freeze({}),
+    purchaseDetails: Object.freeze({}),
+    purchases: Object.freeze({ filters: Object.freeze([]), kindFilter: Object.freeze({}), kindLabels: Object.freeze({}), list: Object.freeze([]), nextPage: Object.freeze([]), statusBadges: Object.freeze({}) }),
+    retail: Object.freeze({ products: Object.freeze([]) })
+  });
+  var EMPTY_BOOKING = Object.freeze({
+    ref: "",
+    days: Object.freeze([]),
+    eligibleServices: Object.freeze([]),
+    eligibleSpecialists: Object.freeze([]),
+    specialists: Object.freeze([]),
+    serviceForTitle: Object.freeze({}),
+    displayTotals: null,
+    hold: Object.freeze({ ref: "", untilLabel: "", note: "" }),
+    reviewLocation: "",
+    policy: "",
+    policyNote: "",
+    creditNotes: Object.freeze({ ok: "", unavailable: "", exhausted: "", changed: "" })
+  });
+  var F = Object.freeze({
+    PAL: Object.freeze([["var(--accent)", "rgba(var(--accent-rgb),.12)"]]),
+    TINTS: Object.freeze([["var(--accent)", "rgba(var(--accent-rgb),.12)"]]),
+    themeSlugs: Object.freeze({}),
+    themes: EMPTY_THEMES,
+    statusMeta: Object.freeze({}),
+    technician: Object.freeze({}),
+    pstatus: Object.freeze({}),
+    customer: Object.freeze({ firstName: "", fullName: "", name: "", greeting: "", subline: "" }),
+    MONTHS: Object.freeze([]),
+    buildFeed: function() {
+      return [];
     },
-    customer: {
-      firstName: "Elena",
-      greeting: "Good afternoon, Elena",
-      subline: "One treatment today \xB7 next ritual tomorrow",
-      fullName: "Elena Rios",
-      phone: "+1 (512) 555-0182",
-      email: "elena.rios@example.test",
-      memberSince: "2025",
-      stats: { orders: "8", spent: "$1,084", savings: "$96" }
+    feedTabs: Object.freeze([]),
+    initialMessages: Object.freeze([]),
+    quickReplies: Object.freeze([]),
+    helpTopics: Object.freeze([]),
+    chatReply: function() {
+      return "";
     },
-    addresses: [
-      { id: "home", label: "Home", line: "1407 Garden Street", city: "Austin, TX 78703", dot: accent, iconBg: softAccent },
-      { id: "studio", label: "Calm Harbor Spa", line: "214 Westfield Lane", city: "Austin, TX 78703", dot: "#b06b45", iconBg: "rgba(176,107,69,.14)" }
-    ],
-    cards: [{ id: "visa", brand: "Visa", last4: "0198", exp: "09/28" }],
-    technician: { name: "Maya Chen", role: "Senior massage therapist", rating: "4.9", visits: "24 visits with you", eta: "arriving in ~12 min" },
-    statusMeta: {
-      inprogress: { badge: "accent", label: "In progress" },
-      scheduled: { badge: "info", label: "Scheduled" },
-      completed: { badge: "ok", label: "Completed" },
-      cancelled: { badge: "danger", label: "Cancelled" }
+    stormCalendar: Object.freeze({}),
+    spa: EMPTY_SPA,
+    spaCommerce: EMPTY_COMMERCE,
+    spaServerCart: function() {
+      return { version: "", lines: [], displayTotals: null, fulfillment: null };
     },
-    orders: [
-      { id: "#CHS-1042", name: "Grounding massage", date: "Today \xB7 2:30 PM", status: "inprogress", price: "$145", dot: "#b06b45", iconBg: "rgba(176,107,69,.14)", locationId: "studio", y: 2026, m: 0, d: 15, slot: "2:30 PM", serviceName: "Grounding massage", timeline: ["Appointment confirmed", "Maya checked in", "Treatment in progress"] },
-      { id: "#CHS-1050", name: "Custom facial", date: "Tomorrow \xB7 11:00 AM", status: "scheduled", price: "$130", dot: accent, iconBg: softAccent, locationId: "studio", y: 2026, m: 0, d: 16, slot: "11:00 AM", serviceName: "Custom facial", timeline: ["Appointment confirmed", "Practitioner assignment pending"] },
-      { id: "#CHS-1008", name: "Harbor reset", date: "Jan 8", status: "completed", price: "$245", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", locationId: "studio", y: 2026, m: 0, d: 8, slot: "10:00 AM", serviceName: "Harbor reset", timeline: ["Appointment completed", "Aftercare routine saved"] },
-      { id: "#CHS-0987", name: "Seasonal body ritual", date: "Dec 14", status: "completed", price: "$165", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", locationId: "studio", y: 2025, m: 11, d: 14, slot: "4:00 PM", serviceName: "Seasonal body ritual", timeline: ["Appointment completed", "Seasonal care note saved"] }
-    ],
-    prefs: { receipts: true, sms: true, marketing: false },
-    initialMessages: [{ from: "agent", text: "Hi Elena, I'm Nina at Calm Harbor. I can help with your appointments, routine, or retail order." }],
-    quickReplies: ["Today's appointment", "Move my facial", "Retail order question", "Talk to the studio"],
-    helpTopics: [
-      { label: "Today's appointment", dot: accent, iconBg: softAccent, q: "Tell me about today's appointment" },
-      { label: "Move or cancel an appointment", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", q: "I need to change an appointment" },
-      { label: "Membership and credits", dot: "#b06b45", iconBg: "rgba(176,107,69,.14)", q: "I have a membership question" },
-      { label: "Retail order support", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I need help with a retail order" }
-    ],
-    feedTabs: [{ key: "all", label: "All" }, { key: "appointments", label: "Appointments" }, { key: "billing", label: "Billing" }, { key: "routine", label: "Routine" }],
-    activity: [
-      { day: "Today", items: [
-        { type: "appointments", title: "Maya is ready for you", desc: "Grounding massage \xB7 Calm Harbor Spa \xB7 2:30 PM", time: "2:18 PM", dot: accent, iconBg: softAccent, action: "View appointment", act: "orders", unread: true },
-        { type: "routine", title: "Your aftercare note is ready", desc: "Open your routine after today's treatment.", time: "9:10 AM", dot: "#b06b45", iconBg: "rgba(176,107,69,.14)", action: "Open routine", act: "care" }
-      ] },
-      { day: "Yesterday", items: [
-        { type: "appointments", title: "Custom facial confirmed", desc: "Tomorrow \xB7 11:00 AM \xB7 Maya will review your current routine.", time: "4:22 PM", dot: accent, iconBg: softAccent, action: "View appointment", act: "orders" },
-        { type: "billing", title: "Retail order delivered", desc: "Mineral bath soak and hydration mist \xB7 fixture order #CHS-R-122", time: "1:40 PM", dot: "#1f8a44", iconBg: "rgba(52,199,89,.16)", action: "Browse products", act: "products" }
-      ] },
-      { day: "Earlier this week", items: [
-        { type: "routine", title: "Membership care note", desc: "Your Harbor Membership renewal is coming up next month.", time: "Mon", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", action: "View membership", act: "pricing" }
-      ] }
-    ],
-    support: { agentName: "Nina", label: "Calm Harbor Support", ticket: "CHS-104", availability: "Studio support \xB7 replies during open hours" },
-    care: {
-      kind: "beautyCare",
-      navLabel: "My routine",
-      empty: { glyph: "\u2726", title: "No routine yet", desc: "After your first Calm Harbor visit, appointments and care notes appear here." },
-      title: "Your routine",
-      sub: "Appointments, ritual progress, preferred specialists, tasks, and aftercare in one place.",
-      appointment: { id: "appt-chs-1050", name: "Custom facial", specialistId: "spec-chs-maya", specialist: "Maya Chen, skin and massage therapist", when: "Tomorrow \xB7 Jan 16 \xB7 11:00 AM", where: "Calm Harbor Spa \xB7 Austin", orderId: "#CHS-1050", prep: "Arrive a few minutes early and let Maya know about any routine changes." },
-      pkg: { id: "pkg-chs-reset-2026", name: "Harbor reset series", detail: "4 rituals \xB7 active through Jun 2026", used: 1, total: 4, next: "Your next included ritual is ready to schedule after the booking contract opens." },
-      specialists: [
-        { id: "spec-chs-maya", name: "Maya Chen", role: "Massage and facial care", rating: "4.9", visits: "5 visits with you" },
-        { id: "spec-chs-lena", name: "Lena Ortiz", role: "Body rituals", rating: "4.8", visits: "New to you" }
-      ],
-      preferredId: "spec-chs-maya",
-      history: [
-        { date: "Jan 8", what: "Harbor reset", who: "Maya Chen", note: "Aftercare note saved to your routine." },
-        { date: "Dec 14", what: "Seasonal body ritual", who: "Lena Ortiz", note: "Evening bath ritual recommended twice a week." },
-        { date: "Nov 22", what: "Custom facial", who: "Maya Chen", note: "Keep the routine simple and use gentle cleansing." }
-      ],
-      tasks: [
-        { id: "task-chs-intake", label: "Complete your facial check-in", due: "before tomorrow", done: false },
-        { id: "task-chs-routine", label: "Save your aftercare note", due: "after today's treatment", done: false },
-        { id: "task-chs-membership", label: "Review your ritual credit", due: "this month", done: true }
-      ],
-      routine: { title: "Between visits", note: "Use gentle cleansing in the evening and take a slower bath ritual when it fits your week.", by: "Set with Maya Chen \xB7 Jan 8" },
-      loyalty: { id: "plan-chs-member-2026", tier: "Harbor member", points: 280, nextAt: 400, reward: "A seasonal add-on at 400 pts", renews: "Renews Feb 1, 2026" },
-      productRecs: { note: "Saved from your Calm Harbor aftercare routine", names: ["Harbor body oil", "Gentle cleansing balm", "Hydration mist"] }
+    spaBooking: EMPTY_BOOKING,
+    spaProfileSrv: Object.freeze({ version: "", phone: "", email: "", preferences: Object.freeze([]), allowedActions: Object.freeze([]) }),
+    addresses: Object.freeze([]),
+    cards: Object.freeze([]),
+    proposal: Object.freeze({}),
+    proposalSites: Object.freeze([]),
+    surfaceDefs: Object.freeze({}),
+    MOB_CLEAR: 0,
+    MOB_DEICE: 0,
+    planName: "",
+    ordersFor: function() {
+      return [];
     }
   });
 
-  // app-templates/customer-portal/runtime/data/case-fixtures.js
-  var cases = Object.freeze({ "calm-harbor-spa": calmHarborSpaFixture });
-  var knownCaseIds = Object.freeze(Object.keys(cases));
-  function caseFixtureFor(caseId) {
-    return cases[String(caseId || "")] || null;
+  // app-templates/customer-portal/runtime/data/live-spa-product-catalog.js
+  var SPA_PRODUCT_CATALOG = Object.freeze({
+    codeToRef: Object.freeze({}),
+    models: Object.freeze([]),
+    othersLabel: "Other products",
+    byRef: Object.freeze({}),
+    reviews: Object.freeze({})
+  });
+
+  // app-templates/customer-portal/runtime/data/live-case-fixtures.js
+  var knownCaseIds = Object.freeze([]);
+  function caseFixtureFor() {
+    return null;
   }
   function cloneCaseValue(value) {
+    if (value === void 0 || value === null) return value;
     return JSON.parse(JSON.stringify(value));
   }
 
@@ -1519,6 +247,7 @@
     services: { id: "services", path: "/services", module: "services" },
     pricing: { id: "pricing", path: "/pricing", module: "pricing" },
     products: { id: "products", path: "/products", module: "products" },
+    "product.detail": { id: "product.detail", path: "/products/:id", module: "products", param: "id" },
     checkout: { id: "checkout", path: "/checkout", module: "checkout" },
     account: { id: "account", path: "/account", module: "account" },
     "purchases.list": { id: "purchases.list", path: "/purchases", module: "purchases" },
@@ -1612,6 +341,7 @@
       pimFixtureUrl: dataset.portalPimFixtureUrl || "",
       pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
       pimOrganization: dataset.portalPimOrganization || "SERVICEWAND",
+      pimEnrichmentMode: allowed(dataset.portalPimEnrichment, ["closed", "current-api"], "closed"),
       pimProductTypeCode: dataset.portalPimProductTypeCode || "SERVICEWAND_SAAS",
       pimPricingProductTypeCodes: splitList(dataset.portalPimPricingProductTypeCodes),
       pimProductsProductTypeCodes: splitList(dataset.portalPimProductsProductTypeCodes),
@@ -1662,7 +392,7 @@
     return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
   }
   function escapeRegExp(value) {
-    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
   }
 
   // app-templates/customer-portal/runtime/src/state.js
@@ -1774,6 +504,11 @@
     spaCart: null,
     spaCartDemo: "as-added",
     spaVariantPick: {},
+    spaCurrentProduct: null,
+    spaGallery: 0,
+    spaModels: "ready",
+    spaReviews: "ready",
+    spaOrderMedia: "mixed",
     spaCheckoutSource: "cart",
     spaCheckoutDemo: "ready",
     spaPolicyAck: false,
@@ -1824,7 +559,148 @@
   }
   function productItems() {
     var v = currentFixture().theme;
-    return state.moduleData.products && state.moduleData.products.items || v.products;
+    var items = state.moduleData.products && state.moduleData.products.items || v.products;
+    return items.map(function(product) {
+      if (product.code) return product;
+      return Object.assign({}, product, { code: product.sku || product.id });
+    });
+  }
+  function spaSellInfo(code) {
+    if (state.config.dataMode === "live") {
+      var product = productItems().find(function(item) {
+        return item.code === code;
+      });
+      return product ? { state: "sellable", cents: Math.round(Number(product.priceNum || 0) * 100), displayPrice: product.price } : { state: "unavailable" };
+    }
+    var fixtureRetail = F.spaCommerce.retail.products.find(function(item) {
+      return item.code === code;
+    });
+    if (fixtureRetail) return fixtureRetail;
+    var fixtureProduct = productItems().find(function(item) {
+      return item.code === code;
+    });
+    return fixtureProduct ? { state: "sellable", cents: Math.round(Number(fixtureProduct.priceNum || 0) * 100), displayPrice: fixtureProduct.price } : { state: "unavailable" };
+  }
+  function spaProductRef(code) {
+    var product = productItems().find(function(item) {
+      return item.code === code;
+    });
+    if (product && product.ref) return product.ref;
+    var catalog = SPA_PRODUCT_CATALOG;
+    return catalog && catalog.codeToRef && catalog.codeToRef[code] || opaqueRef("product", code);
+  }
+  function spaModelsReady() {
+    if (state.config.dataMode !== "live") return state.spaModels === "ready";
+    return !!(state.moduleData.products && state.moduleData.products.enrichment && state.moduleData.products.enrichment.models === "ready");
+  }
+  function spaReviewsState() {
+    if (state.config.dataMode !== "live") return state.spaReviews;
+    var enrichment = state.moduleData.products && state.moduleData.products.enrichment;
+    var value = enrichment && enrichment.reviews;
+    return value === "ready" ? "ready" : value === "error" ? "error" : "unavailable";
+  }
+  function spaProductModels() {
+    if (state.config.dataMode !== "live") {
+      var available = new Set(productItems().map(function(product) {
+        return product.code;
+      }));
+      return SPA_PRODUCT_CATALOG.models.map(function(model) {
+        return Object.assign({}, model, { productCodes: model.productCodes.filter(function(code) {
+          return available.has(code);
+        }) });
+      }).filter(function(model) {
+        return model.productCodes.length;
+      });
+    }
+    return (state.moduleData.products && state.moduleData.products.models || []).map(function(model) {
+      return {
+        ref: model.ref,
+        name: model.name,
+        media: model.media || null,
+        variants: (model.variantAttributes || []).map(displayAttributeLabel),
+        productCodes: model.productCodes || []
+      };
+    });
+  }
+  function productDetailByCode(code) {
+    if (state.config.dataMode !== "live") {
+      var fixtureCatalog = SPA_PRODUCT_CATALOG;
+      var fixtureProduct = productItems().find(function(item) {
+        return item.code === code;
+      });
+      var fixtureDetail = fixtureCatalog && fixtureCatalog.byRef[fixtureCatalog.codeToRef[code]];
+      if (fixtureDetail) return fixtureDetail;
+      return fixtureProduct ? {
+        ref: opaqueRef("product", code),
+        code,
+        name: fixtureProduct.name,
+        displayPrice: fixtureProduct.price,
+        description: fixtureProduct.description || fixtureProduct.blurb || "",
+        collection: null,
+        variantFacts: [],
+        media: []
+      } : null;
+    }
+    var product = productItems().find(function(item) {
+      return item.code === code;
+    });
+    if (!product) return null;
+    var model = spaProductModels().find(function(item) {
+      return item.ref === product.modelRef;
+    });
+    return {
+      ref: product.ref,
+      code: product.code,
+      name: product.name,
+      displayPrice: product.price,
+      description: product.description || "",
+      collection: model ? { ref: model.ref, name: model.name } : null,
+      variantFacts: product.variantFacts || [],
+      media: product.media || []
+    };
+  }
+  function currentProduct() {
+    if (!state.spaCurrentProduct) return null;
+    if (state.config.dataMode !== "live") {
+      var fixtureDetail = SPA_PRODUCT_CATALOG.byRef[state.spaCurrentProduct];
+      if (fixtureDetail) return fixtureDetail;
+      var fixtureProduct = productItems().find(function(item) {
+        return opaqueRef("product", item.code) === state.spaCurrentProduct;
+      });
+      return fixtureProduct ? productDetailByCode(fixtureProduct.code) : null;
+    }
+    var product = productItems().find(function(item) {
+      return item.ref === state.spaCurrentProduct;
+    });
+    return product ? productDetailByCode(product.code) : null;
+  }
+  function productReviews(productRef) {
+    if (state.config.dataMode !== "live") {
+      return SPA_PRODUCT_CATALOG.reviews[productRef] || [];
+    }
+    var product = productItems().find(function(item) {
+      return item.ref === productRef;
+    });
+    if (!product) return [];
+    return (state.moduleData.products && state.moduleData.products.reviews || []).filter(function(review) {
+      return review.productCode === product.code;
+    });
+  }
+  function displayAttributeLabel(value) {
+    return String(value || "").toLowerCase().split("_").map(function(part) {
+      return part ? part.charAt(0).toUpperCase() + part.slice(1) : "";
+    }).join(" ");
+  }
+  function opaqueRef(prefix, value) {
+    var text6 = String(value || prefix);
+    var left = 2166136261;
+    var right = 2246822507;
+    for (var index = 0; index < text6.length; index += 1) {
+      var code = text6.charCodeAt(index);
+      left = Math.imul(left ^ code, 16777619);
+      right = Math.imul(right ^ code, 3266489909);
+    }
+    return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
   }
   function spaCatalogServices() {
     if (state.config.dataMode !== "live") return F.spa.pim.services;
@@ -1981,6 +857,11 @@
     return state.spaCurrentPurchase ? F.spaCommerce.purchaseDetails[state.spaCurrentPurchase] || null : null;
   }
   function spaPlans() {
+    if (state.config.dataMode === "live") {
+      var envelope2 = state.moduleData.plan;
+      var items = envelope2 && Array.isArray(envelope2.items) ? envelope2.items : [];
+      return items;
+    }
     var refs = F.spaCommerce.plans.scenarios[state.spaPlanScenario] || [];
     return refs.map(function(ref) {
       var plan = F.spaCommerce.plans.byRef[ref];
@@ -2017,12 +898,22 @@
     return state.commands[key] || "idle";
   }
   function currentContact() {
+    if (state.config.dataMode === "live") {
+      var profile = state.moduleData.profile || {};
+      return state.contact || { phone: profile.phone || "", email: profile.email || "" };
+    }
     var customer = currentFixture().customer || F.customer;
     return state.contact || { phone: customer.phone || "", email: customer.email || "" };
   }
   function isPublic(routeId) {
     var route = routeRegistry[routeId || state.route];
     return !!(route && route.public);
+  }
+  function customerPortalAccessRequired() {
+    return state.config.dataMode === "live" && state.config.authMode === "required" && state.config.enabledModules.includes("account");
+  }
+  function customerPortalGateActive() {
+    return customerPortalAccessRequired() && state.session.authenticated === true && state.account !== "ready";
   }
   function isModuleEnabled(moduleId) {
     if (!moduleId || moduleId === "auth" || moduleId === "landing" || moduleId === "seo-parity") return true;
@@ -2062,6 +953,11 @@
     state.spaCart = null;
     state.spaCartDemo = "as-added";
     state.spaVariantPick = {};
+    state.spaCurrentProduct = null;
+    state.spaGallery = 0;
+    state.spaModels = "ready";
+    state.spaReviews = "ready";
+    state.spaOrderMedia = "mixed";
     state.spaResult = null;
     state.spaPolicyAck = false;
     state.spaCheckoutDemo = "ready";
@@ -2188,6 +1084,8 @@
   var REF_PREFIX = "appt-core-";
   var DEMO_CODE_PREFIX = "CP_DEMO_";
   var APPOINTMENT_TYPE = "SPA_VISIT";
+  var CARE_TASK_TYPE = "SPA_CARE_TASK";
+  var ORDER_TYPE = "SPA_ORDER";
   var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var APPOINTMENT_MAPPINGS = [
     { name: "attributes" },
@@ -2233,10 +1131,43 @@
       rescheduleAppointment(ref, input, context) {
         return rescheduleCoreAppointment(ref, input, context, fetchImpl, options2.origin);
       },
+      cancelAppointment(ref, context) {
+        return cancelCoreAppointment(ref, context, fetchImpl, options2.origin);
+      },
       createOrder(input, context) {
         return createCoreOrder(input, context, fetchImpl, options2.origin);
       }
     };
+  }
+  var CANCEL_EVENT = "SCHEDULED-CANCELLED";
+  function cancelCoreAppointment(ref, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var id = appointmentId(ref);
+    return singleFlight("appointment:cancel:" + id, async function() {
+      var api = requestContext(context, explicitOrigin);
+      var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
+      if (!current || positiveInteger(current.id) !== id) throw contractError("appointment-not-found", "Core Appointment was not found");
+      var accountId = positiveInteger(api.customer && api.customer.id);
+      if (!accountId || customerAttributeId(current, "CUSTOMER_ACCOUNT") !== accountId) {
+        throw contractError("appointment-forbidden", "This appointment does not belong to the signed-in customer");
+      }
+      var before = normalizeAppointment(current);
+      if (before.customerStatus === "Cancelled") return before;
+      if (before.allowedActions.indexOf("cancel") === -1) {
+        throw contractError("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
+      }
+      await requestJson(
+        fetchImpl,
+        api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
+        requestOptions(api, {})
+      );
+      var readback = normalizeAppointment(
+        await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS)
+      );
+      if (readback.customerStatus !== "Cancelled") {
+        throw contractError("appointment-cancel-unconfirmed", "Core did not report the appointment as cancelled");
+      }
+      return readback;
+    });
   }
   async function loadCoreAppointments(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext(context, explicitOrigin);
@@ -2248,7 +1179,11 @@
       sorting: [{ field: "start", direction: "ASC" }]
     }));
     var rows = Array.isArray(response && response.result) ? response.result : [];
-    var items = rows.map(normalizeAppointment);
+    var customerAccountId = positiveInteger(api.customer && api.customer.id);
+    var scoped = customerAccountId ? rows.filter(function(row) {
+      return customerAttributeId(row, "CUSTOMER_ACCOUNT") === customerAccountId;
+    }) : [];
+    var items = scoped.map(normalizeAppointment);
     var now = Number.isFinite(Number(api.config.now)) ? Number(api.config.now) : Date.now();
     var upcoming = items.filter(function(item) {
       return item.startEpoch >= now && item.customerStatus !== "Cancelled";
@@ -2262,8 +1197,10 @@
     });
     return {
       state: items.length ? "ready" : "empty",
-      scopeMode: "tenant-demo-unscoped",
-      resultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : items.length,
+      // Named to stay honest: the narrowing is done by this client, not by Core.
+      scopeMode: "customer-filtered-client-side",
+      resultSize: items.length,
+      tenantResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
       items,
       next: upcoming[0] || null,
       upcoming: upcoming.slice(1),
@@ -2280,22 +1217,40 @@
         { type: "STRING", operator: "=", property: "code", value: code }
       ], APPOINTMENT_MAPPINGS);
       if (existing) return normalizeAppointment(existing);
-      var template = await appointmentTemplate(fetchImpl, api);
+      var resolved = await Promise.all([
+        resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "appointment-type", APPOINTMENT_TYPE, "appointment-type-missing"),
+        resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "task-type", CARE_TASK_TYPE, "task-type-missing"),
+        resolveOrganization(fetchImpl, api),
+        resolveCarePlan(fetchImpl, api)
+      ]);
+      var visitType = resolved[0];
+      var taskType = resolved[1];
+      var organization = resolved[2];
+      var carePlan = resolved[3];
       var start = validIso(input && input.start);
       var durationMinutes = positiveInteger(input && input.durationMinutes) || 60;
       var end = new Date(Date.parse(start) + durationMinutes * 6e4).toISOString();
       var serviceName = text(input && input.serviceName) || "Spa appointment";
+      var taskId = await ensureVisitTask(fetchImpl, api, {
+        carePlan,
+        code: code + "_TASK",
+        organization,
+        serviceName,
+        taskType
+      });
       var entity = {
+        attributes: customerAttributes(api, visitType, {
+          SERVICE_PRODUCT: positiveInteger(input && input.serviceProductId) || null
+        }),
         code,
         end,
         nls: { en: { NAME: serviceName } },
-        organization: requiredRef(template.organization, "Appointment organization"),
+        organization: { id: organization.id },
         start,
-        task: optionalRef(template.task),
-        type: requiredRef(template.type, "Appointment type"),
-        workflow: requiredRef(template.workflow, "Appointment workflow")
+        task: { id: taskId },
+        type: { id: visitType.id },
+        workflow: { id: visitType.workflow.id }
       };
-      if (!entity.task) delete entity.task;
       var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions(api, {
         entities: [entity],
         mappings: APPOINTMENT_MAPPINGS
@@ -2343,26 +1298,33 @@
       var accountId = positiveInteger(api.customer.id);
       if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before checkout");
       var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
-      var existing = await listOne(fetchImpl, api.billBase + "/api/order/list.json", api, [
-        { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) },
-        { type: "STRING", operator: "=", property: "notes", value: marker }
-      ], ORDER_MAPPINGS);
-      if (existing) return normalizeOrder(existing, accountId);
-      var template = await listOne(fetchImpl, api.billBase + "/api/order/list.json", api, [
+      var rows = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
         { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }
       ], ORDER_MAPPINGS, [{ field: "id", direction: "DESC" }]);
-      if (!template) throw contractError("order-template-missing", "A seeded Core Order is required for the current-api checkout demo");
+      var existing = rows.find(function(row) {
+        return recordCodeOf(row) === marker || text(row.notes) === marker;
+      });
+      if (existing) return normalizeOrder(existing, accountId);
+      var resolved = await Promise.all([
+        resolveTypeWithWorkflow(fetchImpl, api, api.billBase, "order-type", ORDER_TYPE, "order-type-missing"),
+        resolveOrganization(fetchImpl, api),
+        resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing")
+      ]);
+      var orderType = resolved[0];
+      var organization = resolved[1];
+      var currency = resolved[2];
       var total = finiteNumber(input && input.total, 0);
       var entity = {
         account: { id: accountId },
-        currency: requiredRef(template.currency, "Order currency"),
+        attributes: recordCodeAttributes(orderType, marker),
+        currency: { id: currency.id },
         grandTotal: total,
-        notes: marker,
-        organization: requiredRef(template.organization, "Order organization"),
+        notes: text(input && input.label) || "Customer portal checkout",
+        organization: { id: organization.id },
         totalCharges: total,
         totalTaxes: finiteNumber(input && input.taxes, 0),
-        type: requiredRef(template.type, "Order type"),
-        workflow: requiredRef(template.workflow, "Order workflow")
+        type: { id: orderType.id },
+        workflow: { id: orderType.workflow.id }
       };
       var savedIds = await requestJson(fetchImpl, api.billBase + "/api/order/save.json", requestOptions(api, {
         entities: [entity],
@@ -2374,13 +1336,81 @@
       return normalizeOrder(readback, accountId);
     });
   }
-  function appointmentTemplate(fetchImpl, api) {
-    return listOne(fetchImpl, api.serviceBase + "/api/appointment/list.json", api, [
-      { type: "STRING", operator: "=", property: "type.code", value: APPOINTMENT_TYPE }
-    ], APPOINTMENT_MAPPINGS).then(function(template) {
-      if (!template) throw contractError("appointment-template-missing", "A seeded SPA_VISIT is required for the current-api booking demo");
-      return template;
+  var TYPE_WITH_WORKFLOW_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+  ];
+  async function resolveByCode(fetchImpl, api, base, endpoint, code, mappings, errorCode) {
+    var row = await listOne(fetchImpl, base + "/api/" + endpoint + "/list.json", api, [
+      { type: "STRING", operator: "=", property: "code", value: code }
+    ], mappings || [{ name: "id" }, { name: "code" }]);
+    if (!row) throw contractError(errorCode || "reference-missing", endpoint + " " + code + " is not provisioned in this organization");
+    return row;
+  }
+  function resolveTypeWithWorkflow(fetchImpl, api, base, endpoint, code, errorCode) {
+    return resolveByCode(fetchImpl, api, base, endpoint, code, TYPE_WITH_WORKFLOW_MAPPINGS, errorCode).then(function(row) {
+      if (!row.workflow || !positiveInteger(row.workflow.id))
+        throw contractError(errorCode || "reference-missing", endpoint + " " + code + " has no workflow");
+      return row;
     });
+  }
+  function resolveOrganization(fetchImpl, api) {
+    return resolveByCode(fetchImpl, api, api.coreBase, "organization", api.organization, null, "organization-missing");
+  }
+  function orderCurrencyCode(api) {
+    return text(api.config.currency || api.config.pimCurrency) || "USD";
+  }
+  var TASK_MAPPINGS = [
+    { name: "attributes" },
+    { name: "code" },
+    { name: "id" },
+    { name: "nls" },
+    { name: "optimistic" },
+    { key: "id", name: "organization", type: "identifier" },
+    { key: "id", name: "project", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+  ];
+  var CARE_PLAN_TYPE = "SPA_CARE_PLAN";
+  var CARE_PLAN_MAPPINGS = [
+    { name: "attributes" },
+    { name: "code" },
+    { name: "id" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  async function resolveCarePlan(fetchImpl, api) {
+    var accountId = positiveInteger(api.customer && api.customer.id);
+    if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before booking");
+    var rows = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
+      { type: "STRING", operator: "=", property: "type.code", value: CARE_PLAN_TYPE }
+    ], CARE_PLAN_MAPPINGS);
+    var owned = rows.find(function(row) {
+      return customerAttributeId(row, "CUSTOMER_ACCOUNT") === accountId;
+    });
+    if (!owned) throw contractError("care-plan-missing", "This customer has no care plan to record a visit against");
+    return owned;
+  }
+  async function ensureVisitTask(fetchImpl, api, options2) {
+    var existing = await listOne(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
+      { type: "STRING", operator: "=", property: "code", value: options2.code }
+    ], TASK_MAPPINGS);
+    if (existing) return positiveInteger(existing.id);
+    var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions(api, {
+      entities: [{
+        attributes: customerAttributes(api, options2.taskType),
+        code: options2.code,
+        nls: { en: { NAME: options2.serviceName } },
+        organization: { id: options2.organization.id },
+        project: { id: options2.carePlan.id },
+        type: { id: options2.taskType.id },
+        workflow: { id: options2.taskType.workflow.id }
+      }],
+      mappings: TASK_MAPPINGS
+    }));
+    var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
+    if (!id) throw contractError("invalid-save-response", "Core Task save did not return an id");
+    return id;
   }
   async function listOne(fetchImpl, url, api, filters, mappings, sorting) {
     var body = { filters, mappings, offset: 0, pageSize: 1 };
@@ -2388,6 +1418,45 @@
     var response = await requestJson(fetchImpl, url, requestOptions(api, body));
     var rows = Array.isArray(response && response.result) ? response.result : [];
     return rows[0] || null;
+  }
+  async function listMany(fetchImpl, url, api, filters, mappings, sorting, pageSize) {
+    var body = { filters, mappings, offset: 0, pageSize: pageSize || 200 };
+    if (sorting) body.sorting = sorting;
+    var response = await requestJson(fetchImpl, url, requestOptions(api, body));
+    return Array.isArray(response && response.result) ? response.result : [];
+  }
+  function recordCodeOf(row) {
+    var typeId = row && row.type && row.type.id;
+    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+    var entry = group && group.RECORD_CODE;
+    return entry && entry.value != null ? String(entry.value) : "";
+  }
+  function recordCodeAttributes(typeRef, code) {
+    var typeId = typeRef && typeRef.id;
+    if (typeId == null) return {};
+    var attributes = {};
+    attributes[String(typeId)] = { RECORD_CODE: { value: code } };
+    return attributes;
+  }
+  function customerAttributeId(row, code) {
+    var typeId = row && row.type && row.type.id;
+    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+    var entry = group && group[code];
+    return entry && entry.value != null ? positiveInteger(entry.value) : null;
+  }
+  function customerAttributes(api, typeRef, extra) {
+    var typeId = typeRef && typeRef.id;
+    if (typeId == null) return {};
+    var values = {};
+    var accountId = positiveInteger(api.customer && api.customer.id);
+    if (accountId) values.CUSTOMER_ACCOUNT = { value: accountId };
+    if (api.customerUserId) values.CUSTOMER_USER = { value: api.customerUserId };
+    Object.keys(extra || {}).forEach(function(key) {
+      if (extra[key] != null) values[key] = { value: extra[key] };
+    });
+    var attributes = {};
+    attributes[String(typeId)] = values;
+    return attributes;
   }
   function getEntity(fetchImpl, url, api, mappings) {
     return requestJson(fetchImpl, url, requestOptions(api, mappings));
@@ -2406,7 +1475,9 @@
       authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       config,
+      coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
       customer,
+      customerUserId: positiveInteger(session.userId || state2.session && state2.session.userId) || null,
       organization,
       serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };
@@ -2449,7 +1520,7 @@
     }).filter(Boolean) : [];
     var status = appointmentStatus(states);
     var allowedActions = [];
-    if (status === "Confirmed") allowedActions.push("reschedule");
+    if (status === "Confirmed") allowedActions.push("reschedule", "cancel");
     if (status === "Completed") allowedActions.push("bookAgain");
     return {
       ref: REF_PREFIX + id,
@@ -2664,6 +1735,26 @@
   }
 
   // app-templates/customer-portal/runtime/src/adapters/core-user-profile-adapter.js
+  var CONTACT_ENTRY_MAPPINGS = [
+    { name: "id" },
+    { name: "value" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "kind", type: "identifier" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" }
+  ];
+  var ACCOUNT_CONTACT_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { mappings: CONTACT_ENTRY_MAPPINGS, name: "contactEntries", type: "collection" }
+      ],
+      name: "contacts",
+      type: "collection"
+    }
+  ];
   var USER_MAPPINGS = [
     { name: "email" },
     { name: "enabled" },
@@ -2694,7 +1785,28 @@
   async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext2(context, explicitOrigin);
     var row = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
-    return normalize(row, api.userId);
+    var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
+    return normalize(row, api.userId, phone);
+  }
+  async function loadAccountPhone(api, fetchImpl) {
+    if (!api.accountBase) return null;
+    var response = await requestJson2(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+      filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
+      mappings: ACCOUNT_CONTACT_MAPPINGS,
+      offset: 0,
+      pageSize: 1
+    }));
+    var account = (Array.isArray(response && response.result) ? response.result : [])[0];
+    if (!account || positiveInteger2(account.id) !== api.accountId) return null;
+    var contacts = Array.isArray(account.contacts) ? account.contacts : [];
+    for (var index = 0; index < contacts.length; index += 1) {
+      var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
+      for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
+        var entry = entries[entryIndex];
+        if (text2(entry.type && entry.type.code) === "PHONE" && text2(entry.value)) return text2(entry.value);
+      }
+    }
+    return null;
   }
   async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext2(context, explicitOrigin);
@@ -2714,16 +1826,18 @@
     var readback = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     return normalize(readback, api.userId);
   }
-  function normalize(row, userId) {
+  function normalize(row, userId, phone) {
     if (!row || positiveInteger2(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
     return {
       state: "ready",
       email: text2(row.email),
-      phone: null,
+      phone: phone || null,
       prefs: {},
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
+      // Phone is read-only until a scoped contact write contract exists; only the
+      // email edit is opened. Preferences have nowhere to persist in Core.
       allowedActions: ["edit-email"],
-      unavailableFields: ["phone", "preferences"]
+      unavailableFields: phone ? ["preferences"] : ["phone", "preferences"]
     };
   }
   function requestContext2(context, explicitOrigin) {
@@ -2736,13 +1850,20 @@
     if (!userId) throw error("session-user-required", "The signed-in Core User is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
     var base = sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base");
-    return { base, token: text2(session.tokenType || session.token_type || "Bearer") + " " + token, userId };
+    var customer = context && context.account || state2.customerAccount || session.account || {};
+    return {
+      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId: positiveInteger2(customer.id) || null,
+      base,
+      token: text2(session.tokenType || session.token_type || "Bearer") + " " + token,
+      userId
+    };
   }
   function options(api, body) {
     return { method: "POST", credentials: "same-origin", headers: { Authorization: api.token, "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) };
   }
-  async function requestJson2(fetchImpl, url, requestOptions2) {
-    var response = await fetchImpl(url, requestOptions2);
+  async function requestJson2(fetchImpl, url, requestOptions3) {
+    var response = await fetchImpl(url, requestOptions3);
     if (!response || typeof response.ok !== "boolean") throw error("invalid-response", "Core User returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "profile-request-failed";
@@ -2991,18 +2112,18 @@
 
   // app-templates/customer-portal/runtime/src/components/shell/AppShell.js
   function AppShell(content) {
-    var gated = !isPublic() && state.account !== "ready";
+    var gated = customerPortalGateActive() || !isPublic() && state.account !== "ready";
     var capability = isSpa() ? spaCapability() : void 0;
     return h("div", {
       "class": "app-shell",
       "data-module": "app-shell",
       "data-visual-id": "app-shell",
-      "data-account-state": isPublic() ? void 0 : state.account,
+      "data-account-state": gated || !isPublic() ? state.account : void 0,
       "data-capability": capability,
       "data-booking": capability === "target-appointments" ? state.spaBooking : void 0,
       "data-portal-profile": isSpa() ? activeProfile().id : void 0
     }, [
-      isPublic() ? PublicNav() : TopNav(gated),
+      gated ? TopNav(true) : isPublic() ? PublicNav() : TopNav(false),
       content,
       isSpa() && state.spaSupport ? h(
         "div",
@@ -3072,11 +2193,11 @@
   }
 
   // app-templates/customer-portal/runtime/src/components/orders/Timeline.js
-  function Timeline(steps2) {
+  function Timeline(steps) {
     return h("div", { "class": "panel", "data-module": "timeline", "data-visual-id": "timeline" }, [
       h("div", { "class": "panel__title", style: "margin-bottom:16px" }, "Progress"),
       h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(
-        steps2.map(function(st) {
+        steps.map(function(st) {
           return h("div", { "class": "timeline-step", "data-module": "timeline-step" }, [
             h("div", { "class": "timeline-step__dot", style: "background:" + st.dot }),
             h("div", null, [
@@ -3103,7 +2224,7 @@
       { label: "Appointment in progress", sub: "Status shared in your portal" },
       { label: "Service complete", sub: o.status === "completed" ? "Rated \u2605\u2605\u2605\u2605\u2605" : "Pending" }
     ];
-    var steps2 = stepDefs.map(function(st, i) {
+    var steps = stepDefs.map(function(st, i) {
       var dot, done;
       if (o.status === "cancelled") {
         dot = i === 0 ? "#1f8a44" : "#cfd4dd";
@@ -3131,7 +2252,7 @@
       hasPrice,
       laborStr: "$" + labor,
       partsStr: "$" + parts,
-      steps: steps2,
+      steps,
       location: loc,
       isScheduled: o.status === "scheduled",
       isInProgress: o.status === "inprogress",
@@ -3797,14 +2918,14 @@
     page.appendChild(h("div", { "class": "services-grid", "data-module": "service-list" }, v.svc.map(function(s, i2) {
       return ServiceCatalogCard(s, i2);
     })));
-    var steps2 = [
+    var steps = [
       { n: "1", t: "Choose your ritual", d: "Review the service that fits your day" },
       { n: "2", t: "Confirm your visit", d: "Your appointment appears in the portal" },
       { n: "3", t: "Keep your routine", d: "Return to notes and aftercare after the visit" }
     ];
     page.appendChild(h("div", { "class": "howto", "data-module": "how-it-works" }, [
       h("div", { "class": "panel__title", style: "margin-bottom:16px" }, "How it works"),
-      h("div", { "class": "howto-grid" }, steps2.map(function(s) {
+      h("div", { "class": "howto-grid" }, steps.map(function(s) {
         return h("div", { "class": "howto-step" }, [
           h("div", { "class": "howto-step__num" }, s.n),
           h("div", null, [h("div", { style: "font-weight:600;font-size:14px" }, s.t), h("div", { style: "font-size:12.5px;color:var(--ink-2)" }, s.d)])
@@ -4591,10 +3712,10 @@
       h("span", { style: "font-weight:700;color:var(--ink)" }, value + " \u25BE")
     ]);
   }
-  function pitchRow(dot, bg, text5) {
+  function pitchRow(dot, bg, text6) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text5)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text6)
     ]);
   }
 
@@ -4989,7 +4110,7 @@
         careChip(s[0], s[1])
       ]));
     });
-    var steps2 = h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(
+    var steps = h("div", { "class": "timeline" }, [h("div", { "class": "timeline__line" })].concat(
       m.project.steps.map(function(st) {
         return h("div", { "class": "timeline-step", "data-module": "timeline-step" }, [
           h("div", { "class": "timeline-step__dot", style: "background:" + st.dot }),
@@ -5006,7 +4127,7 @@
         careChip("info", "In progress")
       ]),
       h("div", { style: "font-size:12.5px;color:var(--ink-2);margin:2px 0 16px" }, m.project.eta),
-      steps2
+      steps
     ]);
     var score = h("div", { "class": "card card--pad", "data-module": "roof-score", "data-visual-id": "roof-score" }, [
       h("div", { style: "display:flex;align-items:center;gap:9px" }, [
@@ -5465,512 +4586,9 @@
     return page;
   }
 
-  // app-templates/customer-portal/runtime/data/seo-fixtures.js
-  var STEP_DEFAULT = [
-    { key: "request", title: "Request", desc: "Tell us what you need and where \u2014 30 seconds, no account required." },
-    { key: "schedule", title: "Scheduling", desc: "Pick a slot, or let dispatch assign the nearest certified crew." },
-    { key: "service", title: "Service", desc: "The crew arrives in the window, tracked live in the portal." },
-    { key: "report", title: "Report & payment", desc: "Photo report + digital invoice. Pay in the app, keep the history." }
-  ];
-  function steps(overrides) {
-    return STEP_DEFAULT.map(function(s) {
-      return Object.assign({}, s, (overrides || {})[s.key] ? { desc: overrides[s.key] } : {});
-    });
-  }
-  var SEO = {
-    /* ============================ HVAC ============================ */
-    "HVAC": {
-      meta: {
-        seoTitle: "AC Repair & HVAC Maintenance in {locality} | Aircove",
-        metaDescription: "Book certified HVAC techs in {locality}: same-day AC repair, seasonal maintenance and installs. Live tracking, photo reports, up-front pricing.",
-        h1: "AC repair & HVAC maintenance in {locality}",
-        canonicalPath: "/hvac/{locality-slug}",
-        locality: "Austin, TX",
-        serviceArea: "Travis County + 25 mi",
-        primaryCta: { kind: "book", label: "Book a visit", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "AC repair, tune-ups and installs by certified local techs.",
-        offer: { tag: "Season offer", text: "Pre-summer tune-up special on maintenance plans", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "1,284 reviews" },
-        licence: { label: "State HVAC licence", value: null },
-        insurance: { label: "Insured & bonded", value: null },
-        guarantee: { label: "Guarantee", value: "90-day workmanship warranty" },
-        response: { label: "Response", value: "Same-day slots in most areas" }
-      },
-      how: steps({ service: "Certified tech diagnoses on site \u2014 most repairs done same visit." }),
-      proof: {
-        title: "Built around your equipment",
-        items: [
-          { title: "Equipment passport", desc: "Every unit tracked: make, model, serial, warranty \u2014 the tech arrives knowing your system." },
-          { title: "Maintenance with a report", desc: "Each visit ends with a point-by-point diagnostic and the technician's notes in your portal." },
-          { title: "Emergency response", desc: "No-cool emergencies get priority dispatch with live arrival tracking." }
-        ]
-      },
-      pricing: {
-        note: "Prices are set per market by the operator \u2014 shown from the CMS, never computed on the page.",
-        rows: [
-          { name: "AC Repair", from: "$60", unit: "visit" },
-          { name: "Seasonal Maintenance", from: "$120", unit: "visit" },
-          { name: "New Install / Replacement", from: null, reason: "Sized after a free on-site assessment" }
-        ]
-      },
-      area: {
-        cities: ["Austin", "Round Rock", "Cedar Park", "Pflugerville", "Georgetown"],
-        note: "Full postcode list comes from dispatch coverage \u2014 no addresses shown on the page."
-      },
-      reviews: [
-        { name: "Homeowner \xB7 Austin", rating: 5, text: "Tech showed up in the window, fixed the capacitor same visit, report in the app before he left the driveway.", media: true },
-        { name: "Homeowner \xB7 Round Rock", rating: 5, text: "Maintenance plan pays for itself \u2014 the diagnostic caught a failing blower before summer.", media: false },
-        { name: "Property manager", rating: 4, text: "Six units across three properties, one dashboard. Scheduling is the easy part now.", media: true }
-      ],
-      faq: [
-        { q: "Do you charge for the diagnostic visit?", a: "The diagnostic fee is shown up front when you book and is credited toward the repair if you proceed." },
-        { q: "How fast can a tech arrive?", a: "Same-day slots are offered in most of the service area; emergency no-cool calls get priority dispatch." },
-        { q: "Is the repair guaranteed?", a: "Workmanship is covered by a 90-day warranty; parts carry the manufacturer's warranty." },
-        { q: "Do I need an account to book?", a: "No \u2014 book as a guest. An account is created automatically so you can track the visit and keep reports." }
-      ]
-    },
-    /* ========================= Snow Removal ========================= */
-    "Snow Removal": {
-      meta: {
-        seoTitle: "Snow Removal & De-icing in {locality} | Aircove",
-        metaDescription: "Weather-triggered snow clearing and de-icing for homes and commercial lots in {locality}. SLA response windows, GPS-logged visits, compliance reports.",
-        h1: "Snow removal in {locality}, dispatched by the storm",
-        canonicalPath: "/snow/{locality-slug}",
-        locality: "Minneapolis, MN",
-        serviceArea: "Hennepin County",
-        primaryCta: { kind: "quote", label: "Request seasonal quote", destination: "flow.quote" },
-        secondaryCta: { kind: "services", label: "View services" }
-      },
-      hero: {
-        service: "Weather-triggered clearing and de-icing \u2014 crews roll before you wake.",
-        offer: { tag: "Early-bird", text: "Season-lock pricing before the first snowfall", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.8", count: "912 reviews" },
-        licence: { label: "Municipal contractor licence", value: null },
-        insurance: { label: "Liability insurance", value: null },
-        guarantee: { label: "SLA", value: "Cleared within the contracted storm window" },
-        response: { label: "Dispatch", value: "Automatic at your snowfall trigger" }
-      },
-      how: steps({
-        request: "Tell us the property and surfaces \u2014 we quote from measured area, not guesses.",
-        schedule: "No calendar needed: dispatch fires automatically at your snowfall trigger.",
-        service: "Crew clears to the contracted spec; arrival and route are GPS-logged.",
-        report: "Timestamped photo log per storm \u2014 your slip-and-fall compliance record."
-      }),
-      proof: {
-        title: "Compliance-grade storm response",
-        items: [
-          { title: "Weather trigger", desc: "Your contract sets the snowfall threshold \u2014 dispatch is automatic, no phone calls at 5 am." },
-          { title: "SLA response window", desc: "Every storm response is timed against the contracted window and logged, met or missed." },
-          { title: "Slip-and-fall compliance", desc: "GPS + photo + materials log per visit, exportable as a season compliance report." }
-        ]
-      },
-      pricing: {
-        note: "Seasonal contracts are quoted from measured surface area; per-storm pricing from the CMS.",
-        rows: [
-          { name: "Per-storm clearing", from: "$94", unit: "storm" },
-          { name: "De-icing add-on", from: "$38", unit: "application" },
-          { name: "Seasonal contract", from: null, reason: "Quoted from measured area and trigger level" }
-        ]
-      },
-      area: {
-        cities: ["Minneapolis", "St. Paul", "Bloomington", "Edina", "Plymouth"],
-        note: "Commercial routes are planned per storm \u2014 coverage confirmed at quote time."
-      },
-      reviews: [
-        { name: "Facilities manager", rating: 5, text: "The compliance log alone is worth it \u2014 every storm documented before our insurer even asks.", media: true },
-        { name: "Homeowner \xB7 Edina", rating: 5, text: "Driveway was clear at 6:10 am after an overnight storm. Photo in the app as proof.", media: false }
-      ],
-      faq: [
-        { q: "What triggers a visit?", a: "Your contract sets a snowfall threshold (e.g. 2 in / 5 cm). When the local station reports it, dispatch is automatic." },
-        { q: "What if the SLA window is missed?", a: "Every response is logged against the window; misses are flagged in your season log and credited per contract terms." },
-        { q: "Do you serve commercial lots?", a: "Yes \u2014 lots, walkways and loading zones, with per-surface pricing and a compliance report per storm." },
-        { q: "Can I get proof of service for insurance?", a: "Each visit carries GPS, timestamps, photos and materials used \u2014 exportable as a compliance pack." }
-      ]
-    },
-    /* ========================= Lawn & Garden ========================= */
-    "Lawn & Garden": {
-      meta: {
-        seoTitle: "Lawn Care & Garden Maintenance in {locality} | Aircove",
-        metaDescription: "Season-programme lawn care in {locality}: mowing, feeding, aeration on schedule. Re-entry safety after treatments, photo log of every visit.",
-        h1: "Lawn care in {locality} on a season programme",
-        canonicalPath: "/lawn/{locality-slug}",
-        locality: "Raleigh, NC",
-        serviceArea: "Wake County",
-        primaryCta: { kind: "quote", label: "Request a quote", destination: "flow.quote" },
-        secondaryCta: { kind: "services", label: "View services" }
-      },
-      hero: {
-        service: "Mowing, feeding and garden care by vetted local crews.",
-        offer: { tag: "Spring start", text: "Programme sign-up offer for the new season", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "1,040 reviews" },
-        licence: { label: "Applicator licence", value: null },
-        insurance: { label: "Insured crews", value: null },
-        guarantee: { label: "Guarantee", value: "Re-cut within 48h if you're not happy" },
-        response: { label: "Cadence", value: "Weekly slots, same crew" }
-      },
-      how: steps({
-        schedule: "Pick a weekly slot \u2014 the same crew keeps it all season.",
-        report: "Photo after every cut + treatment log with re-entry guidance."
-      }),
-      proof: {
-        title: "A programme, not one-off mows",
-        items: [
-          { title: "Season programme", desc: "Five steps from spring cleanup to winterizing \u2014 you see what's done, what's next, and when." },
-          { title: "Kids & pets re-entry", desc: "After every treatment: what was applied and exactly when the lawn is safe to re-enter." },
-          { title: "Visible progress", desc: "Soil snapshot and progress photos visit over visit \u2014 the lawn's history in one place." }
-        ]
-      },
-      pricing: {
-        note: "Programme pricing depends on lot size \u2014 quoted after a measured assessment.",
-        rows: [
-          { name: "Lawn Mowing", from: "$45", unit: "visit" },
-          { name: "Feeding & Treatment", from: "$60", unit: "application" },
-          { name: "Season Programme", from: null, reason: "Priced from measured lawn area" }
-        ]
-      },
-      area: {
-        cities: ["Raleigh", "Cary", "Apex", "Wake Forest", "Garner"],
-        note: "Crews are routed by neighborhood for weekly cadence."
-      },
-      reviews: [
-        { name: "Homeowner \xB7 Cary", rating: 5, text: "Same two guys every Thursday. Photo when they're done, re-entry note after treatments \u2014 kids out by dinner.", media: true },
-        { name: "Homeowner \xB7 Raleigh", rating: 4, text: "The season programme took the guesswork out. Aeration happened exactly when the plan said.", media: false }
-      ],
-      faq: [
-        { q: "Is it safe for kids and pets after treatment?", a: "Every treatment logs what was applied and the re-entry window \u2014 you get a notification when the lawn is safe." },
-        { q: "Do I get the same crew?", a: "Yes \u2014 weekly routes keep the same crew on your lawn all season." },
-        { q: "What's in the season programme?", a: "Five steps: spring cleanup, feeding, aeration & overseeding, weed control, winterizing \u2014 tracked in your portal." },
-        { q: "What if I'm not happy with a cut?", a: "Report it from the visit photo \u2014 the crew re-cuts within 48 hours at no charge." }
-      ]
-    },
-    /* ========================== Pool & Spa ========================== */
-    "Pool & Spa": {
-      meta: {
-        seoTitle: "Pool Cleaning & Water Care in {locality} | Aircove",
-        metaDescription: "Certified pool techs in {locality}: cleaning, chemical balancing, equipment care. Water readings logged every visit \u2014 always swim-ready.",
-        h1: "Pool care in {locality}, always swim-ready",
-        canonicalPath: "/pool/{locality-slug}",
-        locality: "Scottsdale, AZ",
-        serviceArea: "Maricopa County East",
-        primaryCta: { kind: "book", label: "Book a visit", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "Cleaning, balancing and equipment care by certified techs.",
-        offer: { tag: "Season opening", text: "Opening + first month of weekly care bundled", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "768 reviews" },
-        licence: { label: "CPO certification", value: null },
-        insurance: { label: "Insured techs", value: null },
-        guarantee: { label: "Guarantee", value: "Crystal-clear or we come back free" },
-        response: { label: "Cadence", value: "Weekly visits, readings every time" }
-      },
-      how: steps({
-        service: "Tech cleans, tests and doses \u2014 every reading logged against safe ranges.",
-        report: "Water readings + dosing log per visit; swim-ready status in the app."
-      }),
-      proof: {
-        title: "Water you can see into \u2014 literally",
-        items: [
-          { title: "Readings every visit", desc: "Chlorine, pH, alkalinity logged against safe ranges with trends over time." },
-          { title: "Swim-ready status", desc: "One clear answer in the app: safe to swim now, or when it will be." },
-          { title: "Dosing log", desc: "What was added, how much, and why \u2014 no mystery chemicals." }
-        ]
-      },
-      pricing: {
-        note: "Weekly care is priced by pool volume and equipment \u2014 from the CMS per market.",
-        rows: [
-          { name: "Pool Cleaning", from: "$90", unit: "visit" },
-          { name: "Chemical Balancing", from: "$45", unit: "visit" },
-          { name: "Equipment repair", from: null, reason: "Diagnosed on site, quoted before work starts" }
-        ]
-      },
-      area: {
-        cities: ["Scottsdale", "Tempe", "Mesa", "Paradise Valley", "Fountain Hills"],
-        note: "Routes are weekly; one-time cleanups subject to slot availability."
-      },
-      reviews: [
-        { name: "Homeowner \xB7 Scottsdale", rating: 5, text: "The swim-ready status ended the 'can we swim yet?' debate forever. Readings right in the app.", media: true },
-        { name: "Airbnb host", rating: 5, text: "Guests check in to a clear pool every time. The dosing log covers me if anyone asks.", media: true }
-      ],
-      faq: [
-        { q: "How do I know the water is safe?", a: "Every visit logs chlorine, pH and alkalinity against safe ranges \u2014 the app shows a single swim-ready status." },
-        { q: "Do you service spas and hot tubs?", a: "Yes \u2014 spa care follows the same visit + readings + dosing log model." },
-        { q: "What if the pool turns green between visits?", a: "Covered by the clear-water guarantee \u2014 we return free of charge and adjust the programme." },
-        { q: "Do you repair equipment?", a: "Pumps, filters and heaters are diagnosed on site; you approve the quote in the app before any work." }
-      ]
-    },
-    /* =========================== Roofing =========================== */
-    "Roofing": {
-      meta: {
-        seoTitle: "Roof Inspection & Repair in {locality} | Aircove",
-        metaDescription: "Certified roofers in {locality}: drone inspections with written reports, tracked repairs and replacements. Photo-logged, insured crews.",
-        h1: "Roofing in {locality} \u2014 inspected, documented, tracked",
-        canonicalPath: "/roofing/{locality-slug}",
-        locality: "Denver, CO",
-        serviceArea: "Denver metro",
-        primaryCta: { kind: "book", label: "Book an inspection", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "Drone inspections, repairs and replacements by certified crews.",
-        offer: { tag: "Post-storm", text: "Priority inspection slots after hail events", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.8", count: "534 reviews" },
-        licence: { label: "Roofing contractor licence", value: null },
-        insurance: { label: "Liability + workers' comp", value: null },
-        guarantee: { label: "Guarantee", value: "Workmanship warranty on every repair" },
-        response: { label: "Reports", value: "Written condition report within 24h" }
-      },
-      how: steps({
-        service: "Drone survey + on-roof check; findings mapped by zone with severity.",
-        report: "Written condition report, repair plan and pricing \u2014 approve in the app."
-      }),
-      proof: {
-        title: "Paper trail for your biggest asset",
-        items: [
-          { title: "Drone inspection", desc: "Full survey mapped by roof zone with severity per finding \u2014 no guesswork from the ground." },
-          { title: "Written report", desc: "Condition score, photos and repair plan in a document you keep \u2014 useful for insurance." },
-          { title: "Project tracking", desc: "Repairs and replacements tracked stage by stage in the portal, with photos at each milestone." }
-        ]
-      },
-      pricing: {
-        note: "Repair and replacement pricing always follows an inspection \u2014 only the inspection is priced up front.",
-        rows: [
-          { name: "Roof Inspection", from: "$95", unit: "visit" },
-          { name: "Minor repair", from: "$240", unit: "job" },
-          { name: "Replacement / major repair", from: null, reason: "Quoted from the inspection report" }
-        ]
-      },
-      area: {
-        cities: ["Denver", "Aurora", "Lakewood", "Arvada", "Centennial"],
-        note: "Post-storm demand is triaged \u2014 inspection slots prioritized by damage severity."
-      },
-      reviews: [
-        { name: "Homeowner \xB7 Denver", rating: 5, text: "The drone report found hail damage the adjuster missed. Claim approved with their photos.", media: true },
-        { name: "Homeowner \xB7 Arvada", rating: 4, text: "Replacement tracked stage by stage \u2014 I knew exactly which day the crane was coming.", media: false }
-      ],
-      faq: [
-        { q: "What does the inspection include?", a: "A drone survey plus on-roof check, mapped by zone with severity, delivered as a written report within 24 hours." },
-        { q: "Can I use the report for an insurance claim?", a: "Yes \u2014 the report includes dated photos, findings by zone and a condition score in a shareable document." },
-        { q: "How are big projects tracked?", a: "Replacements run as tracked projects: stages, milestone photos and payments all in the portal." },
-        { q: "Is the work guaranteed?", a: "Every repair carries a workmanship warranty; materials carry the manufacturer's warranty." }
-      ]
-    },
-    /* ========================= Pest Control ========================= */
-    "Pest Control": {
-      meta: {
-        seoTitle: "Pest Control & Prevention in {locality} | Aircove",
-        metaDescription: "Licensed pest control in {locality}: inspection, treatment and station monitoring. Family & pet safe, free re-treatments under the plan guarantee.",
-        h1: "Pest control in {locality} that stays on watch",
-        canonicalPath: "/pest/{locality-slug}",
-        locality: "Tampa, FL",
-        serviceArea: "Hillsborough County",
-        primaryCta: { kind: "book", label: "Book a treatment", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "Inspection, treatment and prevention by licensed techs.",
-        offer: { tag: "Plan offer", text: "First quarterly treatment discounted on annual plans", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "1,102 reviews" },
-        licence: { label: "State applicator licence", value: null },
-        insurance: { label: "Insured technicians", value: null },
-        guarantee: { label: "Guarantee", value: "Free re-treat between visits on a plan" },
-        response: { label: "Products", value: "Family & pet safe options logged per visit" }
-      },
-      how: steps({
-        service: "Licensed tech treats interior + perimeter; products logged per visit.",
-        report: "Treatment log + station status in the app; re-treat requests one tap away."
-      }),
-      proof: {
-        title: "Monitoring between visits",
-        items: [
-          { title: "Station & sensor map", desc: "Bait stations and smart sensors around the property, each with its own status in the app." },
-          { title: "Alert log", desc: "First activity triggers an alert \u2014 you see it the moment the sensor does." },
-          { title: "Re-treat guarantee", desc: "Activity between visits? Request a free re-treatment from the app \u2014 covered by the plan." }
-        ]
-      },
-      pricing: {
-        note: "Plan pricing depends on property size and pest pressure \u2014 quoted after inspection.",
-        rows: [
-          { name: "General Treatment", from: "$85", unit: "visit" },
-          { name: "Rodent Control", from: "$120", unit: "setup" },
-          { name: "Annual plan", from: null, reason: "Quoted after the initial inspection" }
-        ]
-      },
-      area: {
-        cities: ["Tampa", "Brandon", "Riverview", "Wesley Chapel", "Carrollwood"],
-        note: "Quarterly routes; acute infestations get priority slots."
-      },
-      reviews: [
-        { name: "Homeowner \xB7 Tampa", rating: 5, text: "Sensor pinged at 2 am, re-treat requested from bed, tech out two days later. Zero drama.", media: false },
-        { name: "Restaurant owner", rating: 5, text: "The station log is our health-inspection insurance. Every check documented.", media: true }
-      ],
-      faq: [
-        { q: "Are the products safe for kids and pets?", a: "Techs use family & pet safe options where possible; every product applied is logged with re-entry guidance." },
-        { q: "What if pests come back between visits?", a: "On a plan, re-treatments between scheduled visits are free \u2014 request one from the app." },
-        { q: "How does monitoring work?", a: "Bait stations and smart sensors report status to your portal; first activity triggers an alert." },
-        { q: "Do you handle commercial properties?", a: "Yes \u2014 restaurants and offices get documented station checks suitable for health inspections." }
-      ]
-    },
-    /* ============================ Health ============================
-       LOGISTICS ONLY — the page markets scheduling, coordination and
-       secure documents. NO clinical claims, outcomes or medical advice;
-       regulated statements (registrations, insurance) are null CMS slots. */
-    "Health": {
-      meta: {
-        seoTitle: "In-Home Care & Support Visits in {locality} | Aircove",
-        metaDescription: "Book licensed in-home care providers in {locality}: home care visits, physio and nursing support. One family schedule, secure documents, a consistent care team.",
-        h1: "In-home care in {locality}, coordinated in one portal",
-        canonicalPath: "/health/{locality-slug}",
-        locality: "Portland, OR",
-        serviceArea: "Multnomah County",
-        primaryCta: { kind: "book", label: "Book an intake visit", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "Home care visits, physio and nursing support by licensed providers.",
-        offer: { tag: "New clients", text: "Intake assessment bundled with the first visit", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "486 reviews" },
-        licence: { label: "Provider registration", value: null },
-        insurance: { label: "Insured & background-checked", value: null },
-        guarantee: { label: "Continuity", value: "The same care team, visit to visit" },
-        response: { label: "Intake", value: "First visit within a week in most areas" }
-      },
-      how: steps({
-        request: "Tell us who the care is for and what kind of support \u2014 30 seconds, no paperwork to start.",
-        schedule: "Pick times that fit the household \u2014 the same care team keeps the slot.",
-        service: "A licensed provider arrives in the window; family can follow the schedule live.",
-        report: "The visit summary lands in the secure portal \u2014 documents stay locked to your account."
-      }),
-      proof: {
-        title: "Coordination, not paperwork",
-        items: [
-          { title: "One schedule for everyone", desc: "Appointments, reminders and reschedules in one portal the whole family can follow." },
-          { title: "Care plan milestones", desc: "Intake, reviews and cadence changes tracked step by step \u2014 you always know what's next." },
-          { title: "Secure documents", desc: "Visit summaries and results packages open in a secure viewer \u2014 never over email, every access logged." }
-        ]
-      },
-      pricing: {
-        note: "Care pricing is set per market and per program \u2014 always from the CMS, never computed on the page.",
-        rows: [
-          { name: "Home Care Visit", from: "$75", unit: "visit" },
-          { name: "Physio Session", from: "$95", unit: "session" },
-          { name: "Care program", from: null, reason: "Planned after the in-home intake assessment" }
-        ]
-      },
-      area: {
-        cities: ["Portland", "Beaverton", "Lake Oswego", "Gresham", "Tigard"],
-        note: "Coverage depends on provider availability \u2014 confirmed at intake."
-      },
-      reviews: [
-        { name: "Family caregiver \xB7 Portland", rating: 5, text: "Scheduling for my dad stopped being a group chat. Everyone sees the same calendar.", media: false },
-        { name: "Client \xB7 Beaverton", rating: 5, text: "Same physio every Tuesday, and the visit summary is in the portal before dinner.", media: true }
-      ],
-      faq: [
-        { q: "Is this a medical service?", a: "Aircove partners with licensed providers for in-home support visits. The portal handles scheduling and documents; clinical care and medical records stay with your provider." },
-        { q: "Who can see the documents?", a: "Only account holders you invite. Documents open in a secure viewer and every access is logged." },
-        { q: "Can family manage the schedule?", a: "Yes \u2014 invite family members with scheduling access. They see appointments and reminders; documents stay private unless you share them." },
-        { q: "What if we need to cancel a visit?", a: "Reschedule from the appointment up to 24 hours ahead at no charge." }
-      ]
-    },
-    /* ============================ Beauty ============================ */
-    "Beauty": {
-      meta: {
-        seoTitle: "At-Home Beauty Services in {locality} | Aircove",
-        metaDescription: "Hair, nails and skin by vetted specialists in {locality} \u2014 at home or in-studio. Your formulas and routine remembered visit to visit; packages and member pricing.",
-        h1: "Beauty services in {locality} that remember your routine",
-        canonicalPath: "/beauty/{locality-slug}",
-        locality: "Miami, FL",
-        serviceArea: "Miami-Dade",
-        primaryCta: { kind: "book", label: "Book a specialist", destination: "flow.booking" },
-        secondaryCta: { kind: "call", label: "Call us" }
-      },
-      hero: {
-        service: "Hair, nails and skin by vetted specialists \u2014 at home or in-studio.",
-        offer: { tag: "First visit", text: "Intro offer on your first routine visit", until: "valid-until: CMS" }
-      },
-      trust: {
-        rating: { value: "4.9", count: "2,036 reviews" },
-        licence: { label: "Cosmetology licences", value: null },
-        insurance: { label: "Insured specialists", value: null },
-        guarantee: { label: "Guarantee", value: "Redo within 48h if you're not happy" },
-        response: { label: "Slots", value: "Evenings & weekends available" }
-      },
-      how: steps({
-        request: "Pick the service and where \u2014 your place or a partner studio.",
-        schedule: "Choose your specialist or let us match one; keep them for every visit.",
-        service: "The specialist arrives with a sanitised pro kit; formulas come from your profile.",
-        report: "Formulas, shades and routine notes saved to your profile for next time."
-      }),
-      proof: {
-        title: "A routine, not one-off appointments",
-        items: [
-          { title: "Your specialist, every time", desc: "Set a preferred specialist \u2014 priority rebooking keeps them on your routine." },
-          { title: "Formulas remembered", desc: "Color formulas, shades and skin notes carry over visit to visit \u2014 no re-explaining." },
-          { title: "Packages & loyalty", desc: "Session packages and member points tracked in the portal, redeemable on any visit." }
-        ]
-      },
-      pricing: {
-        note: "Prices are set per market by the operator \u2014 shown from the CMS, never computed on the page.",
-        rows: [
-          { name: "Manicure & Nails", from: "$45", unit: "visit" },
-          { name: "Hair Styling", from: "$65", unit: "visit" },
-          { name: "Event & bridal package", from: null, reason: "Quoted after a trial consultation" }
-        ]
-      },
-      area: {
-        cities: ["Miami", "Coral Gables", "Miami Beach", "Doral", "Aventura"],
-        note: "In-studio appointments at partner locations; at-home slots by neighborhood."
-      },
-      reviews: [
-        { name: "Client \xB7 Miami Beach", rating: 5, text: "Alina has my color formula saved \u2014 'the usual' actually means something now.", media: true },
-        { name: "Bride \xB7 Coral Gables", rating: 5, text: "Trial, timeline, day-of team \u2014 one coordinator handled all of it.", media: true },
-        { name: "Client \xB7 Doral", rating: 4, text: "Gel set at my kitchen table on a Sunday evening. The kit was spotless.", media: false }
-      ],
-      faq: [
-        { q: "Home or studio?", a: "Both \u2014 book at-home visits or a partner studio near you; the price is shown before you confirm." },
-        { q: "Can I keep the same specialist?", a: "Yes \u2014 set a preferred specialist and they get priority on your bookings; your formulas travel with your profile either way." },
-        { q: "How do packages work?", a: "Buy a session package once, book sessions whenever \u2014 usage is tracked in the portal and never expires early." },
-        { q: "What if I'm not happy with the result?", a: "Report it from the visit \u2014 a redo within 48 hours is covered by the guarantee." }
-      ]
-    }
-  };
-  var SEO_FOOTER = {
-    contacts: {
-      phone: null,
-      /* slot: operator phone */
-      email: null,
-      /* slot: operator email */
-      address: null
-      /* slot: registered business address (optional) */
-    },
-    hours: [
-      { d: "Mon\u2013Fri", h: "7:00 \u2013 20:00" },
-      { d: "Sat", h: "8:00 \u2013 18:00" },
-      { d: "Sun", h: "Emergency only" }
-    ],
-    legal: [
-      { label: "Privacy policy", href: "#" },
-      { label: "Terms of service", href: "#" },
-      { label: "Licence & insurance", href: "#" }
-    ]
-  };
+  // app-templates/customer-portal/runtime/data/live-seo-fixtures.js
+  var SEO = Object.freeze({});
+  var SEO_FOOTER = Object.freeze({});
 
   // app-templates/customer-portal/runtime/src/normalizers/seo.js
   var MERGE_TAG = /\{([a-z][a-z0-9-]*)\}/gi;
@@ -6184,10 +4802,10 @@
     if (new Set(faq.map(function(item) {
       return item.id;
     })).size !== faq.length) throw new Error("content.faq ids must be unique");
-    var trust = array(own(content, "trust", "content"), "content.trust", 0).map(function(fact, index) {
+    var trust = array(own(content, "trust", "content"), "content.trust", 0).map(function(fact2, index) {
       var path = "content.trust[" + index + "]";
-      fact = object(fact, path);
-      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own(fact, "label", path), tags, path + ".label"), value: merge(own(fact, "value", path), tags, path + ".value"), count: optionalMerge(own(fact, "count", path), tags, path + ".count"), slot: null };
+      fact2 = object(fact2, path);
+      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own(fact2, "label", path), tags, path + ".label"), value: merge(own(fact2, "value", path), tags, path + ".value"), count: optionalMerge(own(fact2, "count", path), tags, path + ".count"), slot: null };
     });
     var reviews = array(own(content, "reviews", "content"), "content.reviews", 0).map(function(review, index) {
       var path = "content.reviews[" + index + "]";
@@ -6293,10 +4911,10 @@
         services: rawVertical.svc.slice(0, 6).map(function(service) {
           return { id: service.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""), name: service.name, benefit: service.tagline, priceFrom: service.price, destination: null };
         }),
-        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact) {
-          return fact && fact.value;
-        }).map(function(fact) {
-          return { label: fact.label || "Rating", value: fact.value, count: fact.count || null };
+        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact2) {
+          return fact2 && fact2.value;
+        }).map(function(fact2) {
+          return { label: fact2.label || "Rating", value: fact2.value, count: fact2.count || null };
         }),
         how: rawSeo.how.map(function(item) {
           return { title: item.title, description: item.desc };
@@ -6429,9 +5047,9 @@
   function SeoTrustStrip(model, view) {
     if (view.dataState === "loading") return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="loading">' + Array(5).fill('<div class="seo-trust__item">' + skel("40%") + skel("70%") + "</div>").join("") + "</section>";
     if (view.dataState === "empty" || !model.trust.length) return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="empty"><div class="seo-trust__fallback" data-state="no-data">Trust claims (rating, licence, insurance) appear here once supplied in the CMS &mdash; nothing is shown unverified.</div></section>';
-    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact) {
-      var value = fact.value ? fact.key === "rating" ? "<b>" + esc(fact.value) + "</b> &middot; " + esc(fact.count || "") : esc(fact.value) : slotChip(fact.slot || fact.label.toLowerCase());
-      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact.key) + '"><span class="seo-trust__icon">' + esc(fact.icon) + '</span><div><div class="seo-trust__label">' + esc(fact.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
+    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact2) {
+      var value = fact2.value ? fact2.key === "rating" ? "<b>" + esc(fact2.value) + "</b> &middot; " + esc(fact2.count || "") : esc(fact2.value) : slotChip(fact2.slot || fact2.label.toLowerCase());
+      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact2.key) + '"><span class="seo-trust__icon">' + esc(fact2.icon) + '</span><div><div class="seo-trust__label">' + esc(fact2.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
     }).join("") + "</section>";
   }
   function serviceControl(service, view) {
@@ -6564,8 +5182,8 @@
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text5) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text5]);
+  function oidcStep(n, text6) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text6]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -6728,6 +5346,12 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/SpaAccountPage.js
+  var ACCOUNT_ENTRIES = Object.freeze([
+    { key: "purchases", action: "account.openPurchases", title: "Purchases", desc: "Everything you\u2019ve ordered \u2014 services, shop items and plans, with their current state.", unavailableDesc: "Purchase history with customer statuses isn\u2019t available on this portal yet. Your raw order records are on the Orders page." },
+    { key: "plan", action: "account.openPlan", title: "My plan", desc: "Your packages and membership \u2014 remaining visits, renewal and valid actions.", unavailableDesc: "Plan and membership balances aren\u2019t connected yet. Published membership options are in Services & prices." },
+    { key: "profile", action: "account.openProfile", title: "Profile", desc: "Your contact details and preferences.", unavailableDesc: "Profile editing isn\u2019t connected yet \u2014 our team can update your details for you." },
+    { key: "support", action: "support.open", title: "Support", desc: "Get help with a visit, an order or your plan.", unavailableDesc: "A support destination hasn\u2019t been set up for this portal yet." }
+  ]);
   function entryAvailability(key) {
     if (spaCurrentApiDemoOpen()) {
       if (key === "support" || key === "plan") return "unavailable";
@@ -6759,7 +5383,7 @@
       return page;
     }
     var grid = h("div", { "class": "account-grid", "data-module": "account-entry-list", "data-visual-id": "account-entry-list" });
-    F.spaCommerce.accountEntries.forEach(function(e) {
+    ACCOUNT_ENTRIES.forEach(function(e) {
       var avail = entryAvailability(e.key);
       var card = h("div", {
         "class": "card card--pad account-entry" + (avail === "unavailable" ? " account-entry--unavailable" : ""),
@@ -7365,6 +5989,18 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/SpaCheckoutPage.js
+  var LIVE_CHECKOUT = Object.freeze({
+    ref: "customer-portal-checkout",
+    expiresNote: "Prices and availability are re-checked when you confirm.",
+    fulfillmentOptions: Object.freeze([
+      Object.freeze({ ref: "ful-pickup", kind: "PICKUP", label: "Pickup at the studio", detail: "The studio confirms availability after the order is recorded" })
+    ]),
+    fulfillmentNote: "Delivery isn\u2019t offered on this portal yet \u2014 pickup only.",
+    policy: "I understand this is a simulated checkout and no payment will be taken."
+  });
+  function checkoutContract() {
+    return state.config.dataMode === "live" ? LIVE_CHECKOUT : F.spaCommerce.checkout;
+  }
   function quoteSource() {
     if (state.spaCheckoutSource === "plan") {
       if (state.config.dataMode === "live") {
@@ -7437,7 +6073,8 @@
   function SpaCheckout() {
     var demo = state.spaCheckoutDemo;
     var res = state.spaResult;
-    var page = h("section", { "class": "page", "data-route": "checkout", "data-state": res ? "confirmed" : state.view !== "ready" ? state.view : demo, "data-visual-id": "spa-checkout", "data-module": "spa-checkout", "data-capability": spaCapability(), "data-checkout-ref": F.spaCommerce.checkout.ref, "data-payment-mode": "SIMULATED", "data-screen-label": "Checkout (simulated)" });
+    var co = checkoutContract();
+    var page = h("section", { "class": "page", "data-route": "checkout", "data-state": res ? "confirmed" : state.view !== "ready" ? state.view : demo, "data-visual-id": "spa-checkout", "data-module": "spa-checkout", "data-capability": spaCapability(), "data-checkout-ref": co.ref, "data-payment-mode": "SIMULATED", "data-screen-label": "Checkout (simulated)" });
     if (res) {
       page.appendChild(h("div", { style: "max-width:560px;margin:26px auto 0" }, Confirmation(res)));
       return page;
@@ -7469,7 +6106,6 @@
       page.appendChild(UnavailableState({ title: "There\u2019s nothing to check out", desc: "Your bag is empty, so there\u2019s nothing to review here.", action: { variant: "btn--ghost", label: "Browse the shop", action: "nav.products", visualId: "co-empty-shop" } }));
       return page;
     }
-    var co = F.spaCommerce.checkout;
     var key = "checkout.confirm:" + co.ref;
     var phase = cmdPhase(key);
     var blocked = demo !== "ready";
@@ -7483,7 +6119,7 @@
     left.appendChild(h("div", { "class": "card card--pad", "data-module": "checkout-contact", "data-visual-id": "checkout-contact" }, [
       h("div", { "class": "card__title" }, "Contact"),
       h("div", { "class": "co-contact" }, [
-        h("div", { "data-bind": "session.displayName" }, F.customer.fullName),
+        h("div", { "data-bind": "session.displayName" }, state.sessionName || "Customer"),
         h("div", { style: "color:var(--ink-2)", "data-bind": "profile.email,profile.phone" }, contact.email + " \xB7 " + contact.phone)
       ]),
       h("div", { "class": "purch-ful__note" }, "We use these only to tell you about this order.")
@@ -7558,6 +6194,29 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/SpaOrdersPage.js
+  function orderThumb(order) {
+    var mode = state.spaOrderMedia;
+    var attrs = { "class": "order-card__icon spa-order-thumb", "data-visual-id": "order-thumb", "data-media-kind": order.media && order.media.kind || "none", "aria-hidden": "true" };
+    if (mode === "loading") {
+      attrs["class"] += " skeleton";
+      attrs["data-state"] = "loading";
+      return h("div", attrs);
+    }
+    var showImage = mode === "broken" || mode !== "missing" && mode !== "forbidden" && order.media && order.media.url;
+    if (!showImage) {
+      attrs["data-state"] = "no-media";
+      return h("div", attrs);
+    }
+    attrs["data-state"] = "ready";
+    var wrap = h("div", attrs);
+    var image = h("img", { "class": "spa-order-thumb__img", src: mode === "broken" ? "media/orders/__unresolved__.webp" : order.media.url, alt: "", "data-bind": "order.media.url" });
+    image.addEventListener("error", function() {
+      wrap.setAttribute("data-state", "no-media");
+      if (image.parentNode) wrap.removeChild(image);
+    });
+    wrap.appendChild(image);
+    return wrap;
+  }
   function SpaOrders() {
     var liveEnvelope = state.config.dataMode === "live" ? state.moduleData.orders : null;
     var routeState = liveEnvelope && liveEnvelope.state || state.moduleStatus.orders || state.view;
@@ -7592,9 +6251,8 @@
       }));
     } else {
       rows.forEach(function(o, i2) {
-        var pal = F.PAL[i2 % 4];
         listWrap.appendChild(h("article", { "class": "spa-order-row", "data-module": "spa-order-row", "data-visual-id": "spa-order-row", "data-order-ref": o.ref }, [
-          h("div", { "class": "order-card__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+          orderThumb(o),
           h("div", { "class": "spa-order-row__body" }, [
             h("div", { "class": "order-card__name", "data-bind": "order.typeLabel" }, o.typeLabel),
             h("div", { "class": "order-card__meta" }, [
@@ -7624,7 +6282,8 @@
       typeCode: order.type && order.type.code || "ORDER",
       status: order.statusCode || "UNMAPPED",
       total,
-      currency
+      currency,
+      media: order.media || null
     };
   }
 
@@ -7682,10 +6341,13 @@
     ]);
   }
   function SpaPlan() {
-    var page = h("section", { "class": "page", "data-route": "plan", "data-state": state.view, "data-visual-id": "spa-plan", "data-module": "spa-plan", "data-capability": spaCapability(), "data-screen-label": "My plan" });
+    var live = state.config.dataMode === "live";
+    var source = live ? state.moduleData.plan : null;
+    var view = live ? state.moduleStatus.plan || source && source.state || "loading" : state.view;
+    var page = h("section", { "class": "page", "data-route": "plan", "data-state": view, "data-visual-id": "spa-plan", "data-module": "spa-plan", "data-capability": spaCapability(), "data-screen-label": "My plan" });
     page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "account.open" }, "\u2039 Account")));
     page.appendChild(PageHeader({ title: "My plan", sub: "Your packages and membership \u2014 balances and renewal, exactly as recorded." }));
-    if (spaCurrentApiDemoOpen()) {
+    if (spaCurrentApiDemoOpen() && !isModuleEnabled("plan")) {
       page.appendChild(h("div", { "class": "state-block", "data-module": "unavailable-state", "data-visual-id": "plan-current-api-unavailable", "data-state": "unavailable" }, [
         h("div", { "class": "state-block__glyph" }, "\u2740"),
         h("div", { "class": "state-block__title" }, "Personal plan details aren\u2019t in the current API"),
@@ -7695,6 +6357,7 @@
       return page;
     }
     var gate = spaGate({
+      view,
       states: ["loading", "error", "unauthorized"],
       skeleton: function() {
         var w = h("div", { "class": "plan-grid", "data-state": "loading", "aria-busy": "true" });
@@ -7715,7 +6378,7 @@
       page.appendChild(gate);
       return page;
     }
-    var plans = state.view === "empty" ? [] : spaPlans();
+    var plans = view === "empty" ? [] : spaPlans();
     if (!plans.length) {
       page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "plan-empty", "data-state": "empty" }, [
         h("div", { "class": "state-block__glyph" }, "\u2740"),
@@ -8132,92 +6795,138 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/SpaShopPage.js
-  function sellInfo(code) {
-    if (state.config.dataMode === "live") {
-      var product = productItems().find(function(item) {
-        return item.code === code;
-      });
-      return product ? { state: "sellable", cents: Math.round(Number(product.priceNum || 0) * 100), displayPrice: product.price } : { state: "unavailable" };
-    }
-    return F.spaCommerce.retail.products.find(function(r) {
-      return r.code === code;
-    }) || { state: "unavailable" };
+  function pimByCode(code) {
+    return productItems().find(function(product) {
+      return product.code === code;
+    });
   }
-  function sellableCard(p) {
-    var r = sellInfo(p.code);
-    var pickedRef = state.spaVariantPick[p.code] || null;
-    var picked = r.variants ? r.variants.find(function(v) {
-      return v.ref === pickedRef;
+  function cardThumb(detail) {
+    var media = detail && detail.media && detail.media[0];
+    var thumb = h("div", { "class": "spa-shop-card__thumb", "data-state": media && media.url ? "ready" : "no-data", "aria-hidden": "true" });
+    if (media && media.url) thumb.appendChild(h("img", { "class": "spa-shop-card__thumb-img", src: media.url, alt: "" }));
+    return thumb;
+  }
+  function productCard(code, open) {
+    var product = pimByCode(code);
+    if (!product) return null;
+    var detail = productDetailByCode(code);
+    var ref = detail && detail.ref || spaProductRef(code);
+    var retail = open ? spaSellInfo(code) : null;
+    var pickedRef = state.spaVariantPick[code] || null;
+    var picked = retail && retail.variants ? retail.variants.find(function(variant) {
+      return variant.ref === pickedRef;
     }) : null;
-    var phase = cmdPhase("cart.addItem:" + p.code);
-    var canAdd = r.state === "sellable" || r.state === "price-changed" || r.state === "variant-required" && picked;
-    var muted = r.state === "out-of-stock" || r.state === "unavailable";
-    var card = h("div", { "class": "card card--pad spa-shop-card" + (muted ? " spa-shop-card--muted" : ""), "data-module": "spa-shop-card", "data-visual-id": "spa-shop-card", "data-product-code": p.code, "data-product-ref": p.code, "data-state": phase !== "idle" ? phase : r.state }, [
-      h("div", { style: "font-weight:700;font-size:14.5px;overflow-wrap:anywhere", "data-bind": "pim.products[].name" }, p.name),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.45", "data-bind": "pim.products[].shortDescription" }, p.blurb || p.description || "Published retail product")
-    ]);
-    if (r.state === "out-of-stock") {
-      card.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
-    } else if (r.state === "unavailable") {
-      card.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, r.note || "Not sold online"));
-    } else if (r.state === "variant-required") {
-      var vRow = h("div", { "class": "shop-variants", "data-module": "variant-picker", "data-visual-id": "variant-picker" });
-      r.variants.forEach(function(v) {
-        vRow.appendChild(h("button", {
-          "class": "shop-variant" + (pickedRef === v.ref ? " shop-variant--on" : ""),
-          "data-action": "shop.pickVariant",
-          "data-id": p.code + "|" + v.ref,
-          "data-variant-ref": v.ref,
-          "data-state": pickedRef === v.ref ? "active" : void 0
-        }, v.label + " \xB7 " + v.displayPrice));
-      });
-      card.appendChild(vRow);
+    var phase = open ? cmdPhase("cart.addItem:" + code) : "idle";
+    var canAdd = retail && (retail.state === "sellable" || retail.state === "price-changed" || retail.state === "variant-required" && picked);
+    var muted = retail && (retail.state === "out-of-stock" || retail.state === "unavailable");
+    var card = h("div", { "class": "card spa-shop-card" + (muted ? " spa-shop-card--muted" : ""), "data-module": "spa-shop-card", "data-visual-id": "spa-shop-card", "data-product-code": code, "data-product-ref": ref, "data-state": phase !== "idle" ? phase : retail ? retail.state : void 0 });
+    card.appendChild(h("button", { "class": "spa-shop-card__open", "data-action": "product.open", "data-id": ref, "data-product-ref": ref, "aria-label": "View " + product.name }, [
+      cardThumb(detail),
+      h("div", { "class": "spa-shop-card__id" }, [
+        detail && detail.collection && spaModelsReady() ? h("div", { "class": "spa-shop-card__collection", "data-product-model-ref": detail.collection.ref, "data-bind": "product.collection.name" }, detail.collection.name) : null,
+        h("div", { "class": "spa-shop-card__name", "data-bind": "pim.products[].name" }, product.name),
+        h("div", { "class": "spa-shop-card__blurb", "data-bind": "pim.products[].shortDescription" }, product.blurb || product.description || "Published retail product"),
+        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact2) {
+          return h("span", { "class": "fact-chip" }, fact2.value);
+        })) : null
+      ])
+    ]));
+    var body = h("div", { "class": "spa-shop-card__buy" });
+    if (open) {
+      if (retail.state === "out-of-stock") body.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
+      else if (retail.state === "unavailable") body.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, retail.note || "Not sold online"));
+      else if (retail.state === "variant-required") {
+        var variants = h("div", { "class": "shop-variants", "data-module": "variant-picker", "data-visual-id": "variant-picker" });
+        retail.variants.forEach(function(variant) {
+          variants.appendChild(h("button", {
+            "class": "shop-variant" + (pickedRef === variant.ref ? " shop-variant--on" : ""),
+            "data-action": "shop.pickVariant",
+            "data-id": code + "|" + variant.ref,
+            "data-variant-ref": variant.ref,
+            "data-state": pickedRef === variant.ref ? "active" : void 0
+          }, variant.label + " \xB7 " + variant.displayPrice));
+        });
+        body.appendChild(variants);
+      }
     }
-    var price = r.state === "variant-required" ? picked ? picked.displayPrice : "from " + r.variants[0].displayPrice : r.displayPrice || p.price;
-    var priceRow = h("div", { style: "display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap" }, [
-      h("b", { style: "font-size:15px", "data-bind": "retail.displayPrice" }, price),
-      r.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
-      h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].code" }, p.code)
-    ]);
-    card.appendChild(priceRow);
-    if (!muted) {
-      card.appendChild(h("div", { style: "margin-top:10px" }, ActionButton({
+    var displayPrice = open ? retail.state === "variant-required" ? picked ? picked.displayPrice : "from " + retail.variants[0].displayPrice : retail.displayPrice || product.price : product.price;
+    body.appendChild(h("div", { "class": "spa-shop-card__price" }, [
+      h("b", { "data-bind": open ? "retail.displayPrice" : "pim.products[].displayPrice" }, displayPrice),
+      open && retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
+      h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].code" }, code)
+    ]));
+    if (open && !muted) {
+      body.appendChild(h("div", { style: "margin-top:10px" }, ActionButton({
         variant: "btn--primary",
         label: "Add to bag",
         action: "cart.addItem",
-        id: p.code,
+        id: code,
         block: true,
         pending: phase === "pending",
         pendingLabel: "Adding\u2026",
         disabled: !canAdd,
         visualId: "shop-add-to-bag"
       })));
-      if (r.state === "variant-required" && !picked) card.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:6px" }, "Pick a size first"));
-      if (phase === "failed") card.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Not added \u2014 your bag is unchanged. Try again."));
-      if (phase === "conflict") card.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Stock changed just now \u2014 nothing was added."));
+      if (retail.state === "variant-required" && !picked) body.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:6px" }, "Pick a size first"));
+      if (phase === "failed") body.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Not added \u2014 your bag is unchanged. Try again."));
+      if (phase === "conflict") body.appendChild(h("div", { "class": "cart-row__note", role: "alert" }, "Stock changed just now \u2014 nothing was added."));
     }
+    card.appendChild(body);
     return card;
+  }
+  function productGrid(codes, open) {
+    var grid = h("div", { "class": "spa-shop-grid", "data-module": "spa-shop-list", "data-visual-id": "spa-shop-list" });
+    codes.forEach(function(code) {
+      var card = productCard(code, open);
+      if (card) grid.appendChild(card);
+    });
+    return grid;
+  }
+  function modelSection(model, open) {
+    var codes = (model.productCodes || []).filter(pimByCode);
+    var section = h("section", { "class": "product-model-section", "data-module": "product-model-section", "data-visual-id": "product-model-section", "data-product-model-ref": model.ref });
+    var header = [];
+    if (model.media) {
+      var media = h("div", { "class": "pmodel-head__media", "data-state": model.media.url ? "ready" : "no-data", "aria-hidden": "true" });
+      if (model.media.url) media.appendChild(h("img", { "class": "pmodel-head__img", src: model.media.url, alt: "" }));
+      header.push(media);
+    }
+    header.push(h("div", { "class": "pmodel-head__body" }, [
+      h("h2", { "class": "pmodel-head__name", "data-bind": "model.name" }, model.name),
+      h("div", { "class": "pmodel-head__meta" }, [
+        h("span", { "data-bind": "model.productCount" }, codes.length === 1 ? "1 product" : codes.length + " products"),
+        model.variants && model.variants.length ? h("span", { "class": "pmodel-head__dims", "data-bind": "model.variants" }, "Varies by " + model.variants.join(", ")) : null
+      ])
+    ]));
+    section.appendChild(h("div", { "class": "pmodel-head" }, header));
+    section.appendChild(productGrid(codes, open));
+    return section;
+  }
+  function othersSection(codes, open) {
+    var section = h("section", { "class": "product-model-section product-model-section--others", "data-module": "product-model-section", "data-visual-id": "product-model-section-others" });
+    section.appendChild(h("div", { "class": "pmodel-head" }, h("div", { "class": "pmodel-head__body" }, [
+      h("h2", { "class": "pmodel-head__name" }, "Other products"),
+      h("div", { "class": "pmodel-head__meta" }, h("span", null, codes.length === 1 ? "1 product" : codes.length + " products"))
+    ])));
+    section.appendChild(productGrid(codes, open));
+    return section;
   }
   function SpaShop() {
     var open = spaRetailOpen();
     var liveView = state.config.dataMode === "live" ? state.moduleStatus.products || "loading" : state.view;
     var page = h("section", { "class": "page", "data-route": "products", "data-state": liveView, "data-visual-id": "spa-shop", "data-module": "spa-shop", "data-retail": open ? "retail-commerce-open" : "browse-only", "data-capability": spaCapability(), "data-screen-label": open ? "Shop (sellable)" : "Shop (browse-only)" });
-    var head2 = h("div", { "class": "section-head", style: "display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap" }, [
+    page.appendChild(h("div", { "class": "section-head", style: "display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap" }, [
       h("div", { style: "flex:1;min-width:220px" }, [
-        h("div", { style: "display:flex;align-items:center;gap:10px" }, [
-          h("div", { "class": "section-head__title" }, "Spa shop"),
-          open ? null : h("span", { "class": "readonly-chip", style: "margin-left:0" }, "Browse-only")
-        ]),
+        h("div", { style: "display:flex;align-items:center;gap:10px" }, [h("div", { "class": "section-head__title" }, "Spa shop"), open ? null : h("span", { "class": "readonly-chip", style: "margin-left:0" }, "Browse-only")]),
         h("div", { "class": "section-head__sub" }, "Retail from the public catalog \u2014 the products our specialists use.")
       ]),
       open ? h("span", { "class": "link-action", "data-action": "cart.open", "data-visual-id": "shop-open-cart" }, "Your bag" + (spaCartCount() ? " \xB7 " + spaCartCount() : "") + " \u203A") : h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "services" }, "Services & prices \u203A")
-    ]);
-    page.appendChild(head2);
+    ]));
     var gate = routeStateBody({
       view: liveView,
       states: ["loading", "empty", "error"],
       skeleton: function() {
-        return gridSkeleton("spa-shop-grid", 4, 150);
+        return gridSkeleton("spa-shop-grid", 4, 220);
       },
       empty: { glyph: "\u25A1", title: "The shelf is empty right now", desc: "No retail products are published in the catalog at the moment \u2014 nothing is invented in the meantime." },
       error: { title: "Couldn\u2019t load the shelf", desc: "Retail products didn\u2019t load, so nothing stale is shown. Nothing was changed \u2014 try again.", retryId: "products" }
@@ -8226,23 +6935,221 @@
       page.appendChild(gate);
       return page;
     }
-    var grid = h("div", { "class": "spa-shop-grid", "data-module": "spa-shop-list", "data-visual-id": "spa-shop-list" });
-    productItems().forEach(function(p) {
-      if (open) {
-        grid.appendChild(sellableCard(p));
-        return;
-      }
-      grid.appendChild(h("div", { "class": "card card--pad spa-shop-card", "data-module": "spa-shop-card", "data-visual-id": "spa-shop-card", "data-product-code": p.code }, [
-        h("div", { style: "font-weight:700;font-size:14.5px;overflow-wrap:anywhere", "data-bind": "pim.products[].name" }, p.name),
-        h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.45", "data-bind": "pim.products[].shortDescription" }, p.blurb || p.description || "Published retail product"),
-        h("div", { style: "display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap" }, [
-          h("b", { style: "font-size:15px", "data-bind": "pim.products[].displayPrice" }, p.price),
-          h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].code" }, p.code)
-        ])
-      ]));
+    var codes = productItems().map(function(product) {
+      return product.code;
     });
-    page.appendChild(grid);
+    if (spaModelsReady()) {
+      var list = h("div", { "class": "product-model-list", "data-module": "product-model-list", "data-visual-id": "product-model-list", "data-state": "ready" });
+      var claimed = {};
+      spaProductModels().forEach(function(model) {
+        model.productCodes.forEach(function(code) {
+          claimed[code] = true;
+        });
+        list.appendChild(modelSection(model, open));
+      });
+      var others = codes.filter(function(code) {
+        return !claimed[code];
+      });
+      if (others.length) list.appendChild(othersSection(others, open));
+      page.appendChild(list);
+    } else {
+      page.appendChild(h("div", { "class": "shop-models-note", "data-module": "product-model-list", "data-visual-id": "product-model-list", "data-state": "unavailable" }, "Collections couldn\u2019t load right now \u2014 showing all products. Grouping will return automatically; nothing is grouped by guesswork."));
+      page.appendChild(productGrid(codes, open));
+    }
     page.appendChild(h("div", { "class": "catalog-note" }, open ? "Prices and stock come from the store at this moment. Adding something to your bag doesn\u2019t reserve it \u2014 availability and prices are confirmed at checkout." : "Prices as published in the public catalog. There\u2019s no cart or checkout here \u2014 nothing on this page starts a purchase."));
+    return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/SpaProductDetailPage.js
+  function mediaFrame(media, cls) {
+    var wrap = h("div", { "class": "pd-media " + (cls || ""), "data-media-ref": media ? media.ref : void 0, "data-state": media && media.url ? "ready" : "no-data" });
+    if (media && media.url) {
+      var image = h("img", { "class": "pd-media__img", src: media.url, alt: media.alt || "", loading: "lazy" });
+      image.addEventListener("error", function() {
+        wrap.setAttribute("data-state", "no-data");
+        if (image.parentNode) wrap.removeChild(image);
+        wrap.appendChild(h("span", { "class": "pd-media__label" }, media.alt || "product image"));
+      });
+      wrap.appendChild(image);
+    } else {
+      wrap.appendChild(h("span", { "class": "pd-media__label" }, media && media.alt ? media.alt : "product image"));
+    }
+    return wrap;
+  }
+  function gallery(product) {
+    var media = product.media || [];
+    var root = h("div", { "class": "product-gallery", "data-module": "product-gallery", "data-visual-id": "product-gallery" });
+    if (!media.length) {
+      root.appendChild(h("div", { "class": "pd-media pd-media--empty", "data-visual-id": "product-gallery-primary", "data-state": "no-media" }, [
+        h("div", { "class": "pd-media__glyph", "aria-hidden": "true" }, "\u25A1"),
+        h("div", { "class": "pd-media__empty-title" }, "No product photos yet"),
+        h("div", { "class": "pd-media__empty-desc" }, "Photos appear here once the studio adds them \u2014 we don\u2019t show a stand-in image in the meantime.")
+      ]));
+      return root;
+    }
+    var selected = Math.min(state.spaGallery || 0, media.length - 1);
+    var primary = mediaFrame(media[selected], "pd-media--primary");
+    primary.setAttribute("data-visual-id", "product-gallery-primary");
+    root.appendChild(primary);
+    if (media.length > 1) {
+      var thumbs = h("div", { "class": "product-gallery__thumbs", role: "group", "aria-label": "Product images" });
+      media.forEach(function(item, index) {
+        var active = index === selected;
+        thumbs.appendChild(h("button", {
+          "class": "product-gallery-thumb" + (active ? " product-gallery-thumb--on" : ""),
+          "data-module": "product-gallery-thumb",
+          "data-visual-id": "product-gallery-thumb",
+          "data-action": "product.gallerySelect",
+          "data-id": String(index),
+          "data-media-ref": item.ref,
+          "data-state": active ? "active" : void 0,
+          "aria-current": active ? "true" : void 0,
+          "aria-label": "Show image " + (index + 1) + " of " + media.length + (item.alt ? ": " + item.alt : "")
+        }, mediaFrame(item, "pd-media--thumb")));
+      });
+      root.appendChild(thumbs);
+    } else {
+      root.appendChild(h("div", { "class": "pd-media__single-note" }, "One photo provided for this product."));
+    }
+    return root;
+  }
+  function stars(rating) {
+    var full = Math.max(0, Math.min(5, rating | 0));
+    return h("span", { "class": "pd-stars", role: "img", "aria-label": full + " out of 5" }, [
+      h("span", { "class": "pd-stars__on", "aria-hidden": "true" }, "\u2605\u2605\u2605\u2605\u2605".slice(0, full)),
+      h("span", { "class": "pd-stars__off", "aria-hidden": "true" }, "\u2605\u2605\u2605\u2605\u2605".slice(full))
+    ]);
+  }
+  function reviewCard(review) {
+    var footer = [h("span", { "class": "pd-review__author", "data-bind": "review.authorName" }, review.authorName)];
+    if (review.verified) footer.push(h("span", { "class": "pd-review__verified", "data-bind": "review.verified" }, [h("i", { "aria-hidden": "true" }, "\u2713"), "Verified purchase"]));
+    if (review.publishedAt) footer.push(h("span", { "class": "pd-review__date", "data-bind": "review.publishedAt" }, review.publishedAt));
+    return h("div", { "class": "product-review-card", "data-module": "product-review-card", "data-visual-id": "product-review-card", "data-review-ref": review.ref }, [
+      h("div", { "class": "pd-review__head" }, [stars(review.rating), review.title ? h("div", { "class": "pd-review__title", "data-bind": "review.title" }, review.title) : null]),
+      h("p", { "class": "pd-review__body", "data-bind": "review.body" }, review.body),
+      h("div", { "class": "pd-review__foot" }, footer)
+    ]);
+  }
+  function reviewsRegion(product) {
+    var view = spaReviewsState();
+    var reviews = productReviews(product.ref);
+    var panel = h("div", { "class": "list-panel product-review-list", "data-module": "product-review-list", "data-visual-id": "product-review-list", "data-product-ref": product.ref, "data-state": view });
+    panel.appendChild(h("div", { "class": "list-panel__head" }, [
+      h("div", { "class": "list-panel__title", style: "flex:1" }, "Reviews"),
+      view === "ready" && reviews.length ? h("span", { "class": "pd-review__count", "data-bind": "reviews.loadedCount" }, reviews.length === 1 ? "1 published review" : reviews.length + " published reviews") : null
+    ]));
+    if (view === "loading") {
+      panel.appendChild(h("div", { "data-state": "loading", "aria-busy": "true" }, [skel2("height:64px;border-radius:14px"), skel2("height:64px;border-radius:14px;margin-top:10px")]));
+      return panel;
+    }
+    if (view === "unavailable") {
+      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "unavailable" }, [
+        h("div", { "class": "pd-region-state__title" }, "Reviews aren\u2019t available right now"),
+        h("div", { "class": "pd-region-state__desc" }, "We couldn\u2019t load reviews for this product \u2014 this doesn\u2019t affect anything else on the page. You can still see the product and add it to your bag.")
+      ]));
+      return panel;
+    }
+    if (view === "error") {
+      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "error" }, [
+        h("div", { "class": "pd-region-state__title" }, "Couldn\u2019t load reviews"),
+        h("div", { "class": "pd-region-state__desc" }, "Reviews didn\u2019t load, so nothing is shown here \u2014 we never show stale or guessed reviews. The rest of the page is fine."),
+        h("div", { style: "margin-top:12px" }, ActionButton({ variant: "btn--ghost", label: "Try again", action: "ui.retry", id: "product-reviews", visualId: "pd-reviews-retry" }))
+      ]));
+      return panel;
+    }
+    if (view === "empty" || !reviews.length) {
+      panel.appendChild(h("div", { "class": "pd-region-state", "data-state": "empty" }, [
+        h("div", { "class": "pd-region-state__title" }, "No reviews yet"),
+        h("div", { "class": "pd-region-state__desc" }, "This product doesn\u2019t have any published reviews yet.")
+      ]));
+      return panel;
+    }
+    panel.appendChild(h("div", { "class": "pd-review__scope" }, "Showing every published review for this product. We don\u2019t show an average score."));
+    reviews.forEach(function(review) {
+      panel.appendChild(reviewCard(review));
+    });
+    return panel;
+  }
+  function buyRegion(product) {
+    var open = spaRetailOpen();
+    var root = h("div", { "class": "pd-buy" });
+    if (!open) {
+      root.appendChild(h("div", { "class": "pd-price" }, [h("b", { "data-bind": "product.displayPrice" }, product.displayPrice), h("span", { "class": "code-chip", "data-bind": "pim.products[].code" }, product.code)]));
+      root.appendChild(h("div", { "class": "pd-buy__note", "data-state": "browse-only" }, "This is a browse-only catalogue \u2014 there\u2019s no cart or checkout here. Nothing on this page starts a purchase."));
+      return root;
+    }
+    var retail = spaSellInfo(product.code);
+    var pickedRef = state.spaVariantPick[product.code] || null;
+    var picked = retail.variants ? retail.variants.find(function(variant) {
+      return variant.ref === pickedRef;
+    }) : null;
+    var phase = cmdPhase("cart.addItem:" + product.code);
+    var canAdd = retail.state === "sellable" || retail.state === "price-changed" || retail.state === "variant-required" && picked;
+    var muted = retail.state === "out-of-stock" || retail.state === "unavailable";
+    var displayPrice = retail.state === "variant-required" ? picked ? picked.displayPrice : "from " + retail.variants[0].displayPrice : retail.displayPrice || product.displayPrice;
+    root.appendChild(h("div", { "class": "pd-price" }, [
+      h("b", { "data-bind": "retail.displayPrice" }, displayPrice),
+      retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
+      h("span", { "class": "code-chip", "data-bind": "pim.products[].code" }, product.code)
+    ]));
+    if (retail.state === "out-of-stock") root.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
+    else if (retail.state === "unavailable") root.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, retail.note || "Not sold online"));
+    else if (retail.state === "variant-required") {
+      var variants = h("div", { "class": "shop-variants", "data-module": "variant-picker", "data-visual-id": "variant-picker" });
+      retail.variants.forEach(function(variant) {
+        variants.appendChild(h("button", { "class": "shop-variant" + (pickedRef === variant.ref ? " shop-variant--on" : ""), "data-action": "shop.pickVariant", "data-id": product.code + "|" + variant.ref, "data-variant-ref": variant.ref, "data-state": pickedRef === variant.ref ? "active" : void 0 }, variant.label + " \xB7 " + variant.displayPrice));
+      });
+      root.appendChild(variants);
+    }
+    if (!muted) {
+      root.appendChild(h("div", { style: "margin-top:12px" }, ActionButton({ variant: "btn--primary", label: "Add to bag", action: "cart.addItem", id: product.code, block: true, lg: true, pending: phase === "pending", pendingLabel: "Adding\u2026", disabled: !canAdd, visualId: "pd-add-to-bag" })));
+      if (retail.state === "variant-required" && !picked) root.appendChild(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:6px" }, "Pick a size first"));
+      if (phase === "failed") root.appendChild(h("div", { "class": "cart-row__note", role: "alert", style: "margin-top:8px" }, "Not added \u2014 your bag is unchanged. Try again."));
+      if (phase === "conflict") root.appendChild(h("div", { "class": "cart-row__note", role: "alert", style: "margin-top:8px" }, "Stock changed just now \u2014 nothing was added."));
+    }
+    root.appendChild(h("div", { "class": "pd-buy__note" }, "Adding something to your bag doesn\u2019t reserve it \u2014 availability and prices are confirmed at checkout."));
+    return root;
+  }
+  function SpaProductDetail() {
+    var liveView = state.config.dataMode === "live" ? state.moduleStatus.products || "loading" : state.view;
+    var product = currentProduct();
+    var open = spaRetailOpen();
+    var page = h("section", { "class": "page page--narrow", "data-route": "product.detail", "data-state": liveView, "data-visual-id": "product-detail", "data-module": "product-detail", "data-capability": spaCapability(), "data-retail": open ? "retail-commerce-open" : "browse-only", "data-product-ref": product ? product.ref : void 0, "data-screen-label": "Product detail" });
+    page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "nav.products", "data-visual-id": "pd-back" }, "\u2039 Shop")));
+    var gate = routeStateBody({
+      view: liveView,
+      states: ["loading", "error", "unauthorized"],
+      skeleton: function() {
+        return h("div", { "class": "pd-grid", "data-state": "loading", "aria-busy": "true" }, [skel2("height:340px;border-radius:22px"), h("div", null, [skel2("height:26px;border-radius:9px"), skel2("height:80px;border-radius:12px;margin-top:12px"), skel2("height:48px;border-radius:14px;margin-top:16px")])]);
+      },
+      error: { title: "Couldn\u2019t load this product", desc: "The product didn\u2019t load, so nothing is shown \u2014 we never show a stale or guessed product. Nothing was changed; try again.", retryId: "product.detail" },
+      scope: "this product",
+      backRoute: "products"
+    });
+    if (gate) {
+      page.appendChild(gate);
+      return page;
+    }
+    if (!product || liveView === "not-found") {
+      page.appendChild(NotFoundState({ noun: "product", backLabel: "shop", backRoute: "products" }));
+      return page;
+    }
+    var info = h("div", { "class": "pd-info" }, [
+      product.collection && spaModelsReady() ? h("div", { "class": "pd-collection", "data-product-model-ref": product.collection.ref }, [h("span", { "class": "pd-collection__label" }, "Collection"), h("span", { "class": "link-action pd-collection__link", "data-action": "nav.products", "data-visual-id": "pd-collection-link", "data-bind": "product.collection.name" }, product.collection.name + " \u203A")]) : null,
+      h("h1", { "class": "pd-name", "data-bind": "product.name" }, product.name),
+      h("p", { "class": "pd-desc", "data-bind": "product.description" }, product.description)
+    ]);
+    if (product.variantFacts && product.variantFacts.length) {
+      var facts = h("dl", { "class": "pd-facts", "data-visual-id": "product-facts" });
+      product.variantFacts.forEach(function(fact2) {
+        facts.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact2.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact2.value)]));
+      });
+      info.appendChild(facts);
+    }
+    info.appendChild(buyRegion(product));
+    page.appendChild(h("div", { "class": "card card--pad pd-hero" }, h("div", { "class": "pd-grid" }, [gallery(product), info])));
+    page.appendChild(reviewsRegion(product));
+    page.appendChild(h("div", { "class": "catalog-note" }, "Photos, prices and reviews are shown exactly as provided by the studio \u2014 this page never invents an image, a rating average or a review."));
     return page;
   }
 
@@ -8356,6 +7263,8 @@
         return isSpa() ? SpaCatalog() : Pricing();
       case "products":
         return isSpa() ? SpaShop() : Products();
+      case "product.detail":
+        return isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
       case "checkout":
         return isSpa() ? SpaCheckout() : Checkout();
       case "account":
@@ -8419,6 +7328,7 @@
     if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
     if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
     if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
+    if (match.id === "product.detail" && match.params.id) state.spaCurrentProduct = match.params.id;
   }
   function paramsForRoute(routeId) {
     if (routeId === "order.detail") {
@@ -8428,6 +7338,7 @@
     if (routeId === "proposal.detail") return { id: state.currentSiteId };
     if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
     if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
+    if (routeId === "product.detail") return { id: state.spaCurrentProduct };
     return {};
   }
   function queryFrom(value) {
@@ -8438,6 +7349,7 @@
     if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
     if (routeId === "proposals.list" || routeId === "proposal.detail") return "proposals";
     if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
+    if (routeId === "products" || routeId === "product.detail") return "products";
     return null;
   }
   function setRouteQuery(routeId, value) {
@@ -8647,6 +7559,15 @@
     },
     "appointment.bookAgain": function(id) {
       return openSpaFlow({ entry: "book-again", fromAppt: id });
+    },
+    "product.open": function(id) {
+      state.spaCurrentProduct = id;
+      state.spaGallery = 0;
+      state.view = "ready";
+      go("product.detail");
+    },
+    "product.gallerySelect": function(id) {
+      setState({ spaGallery: Math.max(0, Number(id) || 0) });
     },
     "proposal.review": function() {
       go("proposals.list");
@@ -9164,8 +8085,27 @@
   function spaLines() {
     return state.spaCart && state.spaCart.lines || [];
   }
+  var spaCartVersion = 0;
   function spaSetLines(lines) {
-    state.spaCart = F.spaServerCart(lines);
+    var subtotal = lines.reduce(function(sum, line) {
+      return sum + Number(line.cents || 0) * Number(line.qty || 0);
+    }, 0);
+    var taxes = Math.round(subtotal * 0.08);
+    var displayMoney = function(cents) {
+      return "$" + (cents / 100).toFixed(2);
+    };
+    spaCartVersion += 1;
+    state.spaCart = {
+      version: "cart-" + spaCartVersion,
+      lines: lines.map(function(line) {
+        return Object.assign({}, line, {
+          displayUnitPrice: displayMoney(Number(line.cents || 0)),
+          displayTotal: displayMoney(Number(line.cents || 0) * Number(line.qty || 0))
+        });
+      }),
+      displayTotals: lines.length ? { subtotal: displayMoney(subtotal), tax: displayMoney(taxes), total: displayMoney(subtotal + taxes) } : null,
+      fulfillment: { kind: "PICKUP", label: "Pickup at the studio", detail: "Availability is confirmed by the studio" }
+    };
   }
   function spaAddLine(code) {
     if (!spaRetailOpen()) return;
@@ -9248,17 +8188,18 @@
     state.spaResult = null;
     state.spaPolicyAck = false;
     state.spaCheckoutDemo = "ready";
-    delete state.commands["checkout.confirm:" + F.spaCommerce.checkout.ref];
+    delete state.commands["checkout.confirm:" + spaCheckoutRef()];
     go("checkout");
     return true;
   }
   function spaConfirmCheckout() {
     var commerceOpen = state.spaCheckoutSource === "plan" ? spaPlanSellOpen() : spaRetailOpen();
     if (!commerceOpen || state.spaCheckoutDemo !== "ready" || !state.spaPolicyAck) return false;
-    var key = "checkout.confirm:" + F.spaCommerce.checkout.ref;
+    var checkoutRef = spaCheckoutRef();
+    var key = "checkout.confirm:" + checkoutRef;
     if (spaCurrentApiDemoOpen()) {
       var lines = state.spaCheckoutSource === "plan" ? [] : spaLines();
-      var requestRef = F.spaCommerce.checkout.ref + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan" ? state.spaPlanOffer || "offer" : lines.map(function(line) {
+      var requestRef = checkoutRef + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan" ? state.spaPlanOffer || "offer" : lines.map(function(line) {
         return line.ref + "x" + line.qty;
       }).sort().join("-"));
       var amounts = spaLiveCheckoutAmounts();
@@ -9277,7 +8218,7 @@
           fulfillment: "Pickup at Harbor Front studio"
         };
         if (state.spaCheckoutSource === "cart") {
-          state.spaCart = F.spaServerCart([]);
+          spaSetLines([]);
           state.spaCartDemo = "as-added";
         }
       }, { toast: "Order created \u2014 confirmed by Core" });
@@ -9290,10 +8231,13 @@
         state.spaResult = offer && offer.kind === "MEMBERSHIP" ? F.spaCommerce.confirmations.membership : F.spaCommerce.confirmations.plan;
       } else state.spaResult = F.spaCommerce.confirmations.retail;
       if (state.spaCheckoutSource === "cart") {
-        state.spaCart = F.spaServerCart([]);
+        spaSetLines([]);
         state.spaCartDemo = "as-added";
       }
     }, { ms: 900 });
+  }
+  function spaCheckoutRef() {
+    return state.config.dataMode === "live" ? "customer-portal-checkout" : F.spaCommerce.checkout.ref;
   }
   function spaBookingConfirm() {
     if (state.capability !== "target-appointments" || state.spaBooking !== "open" || state.spaHold !== "held") return false;
@@ -9568,6 +8512,11 @@
     }
     if (id === "plan-credit") {
       setState({ spaCredit: "ok" });
+      return true;
+    }
+    if (id === "product-reviews") {
+      if (state.config.dataMode === "live") return reloadRuntimeModule("products");
+      setState({ spaReviews: "ready" });
       return true;
     }
     if (id && state.commands[id]) {
@@ -9871,9 +8820,9 @@
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text5) {
-    if (!text5 || !text5.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text5.trim() }]);
+  function pushChat(text6) {
+    if (!text6 || !text6.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text6.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -10241,21 +9190,201 @@
         });
       }) }, config);
       if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans };
-      return { pimProducts: plans };
+      var enrichment = await loadProductEnrichment(context, plans);
+      return {
+        pimProducts: plans.map(function(product) {
+          var model = enrichment.modelsByProductCode[product.code] || null;
+          return Object.assign({}, product, {
+            ref: opaqueRef2("product", product.code),
+            modelRef: model && model.ref || null,
+            modelName: model && model.name || null,
+            media: [],
+            reviews: enrichment.reviewsByProductCode[product.code] || []
+          });
+        }),
+        pimProductModels: enrichment.models,
+        pimProductReviews: enrichment.reviews,
+        pimEnrichment: enrichment.state
+      };
     }
   };
+  async function loadProductEnrichment(context, products) {
+    var config = context.config || {};
+    var session = context.state && context.state.session || {};
+    var token = session.accessToken;
+    var empty = {
+      models: [],
+      reviews: [],
+      modelsByProductCode: {},
+      reviewsByProductCode: {},
+      state: { models: "unavailable", reviews: "unavailable" }
+    };
+    if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
+    var headers = {
+      Accept: "application/json",
+      Authorization: (session.tokenType || "Bearer") + " " + token,
+      "Content-Type": "application/json",
+      "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND"
+    };
+    var [modelResult, reviewResult] = await Promise.all([
+      fetchPrivateList(privateUrl(config, "product-model"), productModelRequest(), headers),
+      fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers)
+    ]);
+    var productCodes = new Set(products.map(function(product) {
+      return product.code;
+    }));
+    var models = modelResult.ok ? normalizeModels(modelResult.items, productCodes) : [];
+    var reviews = reviewResult.ok ? normalizeReviews(reviewResult.items, productCodes) : [];
+    var modelsByProductCode = {};
+    models.forEach(function(model) {
+      model.productCodes.forEach(function(code) {
+        modelsByProductCode[code] = model;
+      });
+    });
+    var reviewsByProductCode = {};
+    reviews.forEach(function(review) {
+      if (!reviewsByProductCode[review.productCode]) reviewsByProductCode[review.productCode] = [];
+      reviewsByProductCode[review.productCode].push(review);
+    });
+    return {
+      models,
+      reviews,
+      modelsByProductCode,
+      reviewsByProductCode,
+      state: { models: modelResult.state, reviews: reviewResult.state }
+    };
+  }
+  async function fetchPrivateList(url, payload, headers) {
+    try {
+      var response = await window.fetch(url, { method: "POST", headers, credentials: "include", body: JSON.stringify(payload) });
+      if (!response.ok) return { ok: false, state: response.status === 401 ? "session-expired" : response.status === 403 ? "forbidden" : "error", items: [] };
+      var data = await response.json();
+      return { ok: true, state: "ready", items: Array.isArray(data && data.result) ? data.result : [] };
+    } catch (error2) {
+      return { ok: false, state: "error", items: [] };
+    }
+  }
+  function privateUrl(config, entity) {
+    var base = String(config.pimApiBase || "/core-pim/api").trim().replace(/\/+$/, "");
+    if (!/\/api$/i.test(base)) base += "/api";
+    return base + "/" + entity + "/list.json";
+  }
+  function productModelRequest() {
+    return {
+      filters: [],
+      offset: 0,
+      pageSize: 200,
+      mappings: [
+        { name: "id" },
+        { name: "code" },
+        { name: "nls" },
+        { name: "variants" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "products", type: "collection" }
+      ]
+    };
+  }
+  function productReviewRequest() {
+    return {
+      filters: [],
+      offset: 0,
+      pageSize: 500,
+      mappings: [
+        { name: "id" },
+        { name: "attributes" },
+        { name: "created" },
+        { name: "updated" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "product", type: "identifier" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" }
+      ]
+    };
+  }
+  function normalizeModels(rows, productCodes) {
+    return rows.map(function(row) {
+      var products = Array.isArray(row && row.products) ? row.products : [];
+      var codes = products.map(function(product) {
+        return String(product && product.code || "");
+      }).filter(function(code) {
+        return productCodes.has(code);
+      });
+      var nls = localized(row && row.nls, "en");
+      var variantAttributes = [];
+      Object.values(row && row.variants || {}).forEach(function(values) {
+        if (Array.isArray(values)) values.forEach(function(value) {
+          if (!variantAttributes.includes(String(value))) variantAttributes.push(String(value));
+        });
+      });
+      return {
+        ref: opaqueRef2("product-model", row.code),
+        code: String(row.code || ""),
+        name: nls.NAME || String(row.code || "Collection"),
+        description: stripHtml(nls.DESCRIPTION || ""),
+        productCodes: codes,
+        variantAttributes
+      };
+    }).filter(function(model) {
+      return model.code && model.productCodes.length;
+    });
+  }
+  function normalizeReviews(rows, productCodes) {
+    return rows.map(function(row) {
+      var states = Array.isArray(row && row.states) ? row.states.map(function(state2) {
+        return String(state2 && state2.code || "");
+      }) : [];
+      var productCode = String(row && row.product && row.product.code || "");
+      if (!states.includes("PUBLISHED") || !productCodes.has(productCode)) return null;
+      var rating = Number(reviewAttribute(row, "RATING"));
+      var body = String(reviewAttribute(row, "BODY") || "").trim();
+      var authorName = String(reviewAttribute(row, "AUTHOR_NAME") || "").trim();
+      if (!Number.isInteger(rating) || rating < 1 || rating > 5 || !body || !authorName) return null;
+      var identity = reviewAttribute(row, "REVIEW_KEY") || [row.id, productCode, authorName, body, row.created].join("|");
+      return {
+        ref: opaqueRef2("product-review", identity),
+        productCode,
+        rating,
+        title: String(reviewAttribute(row, "TITLE") || "").trim() || null,
+        body,
+        authorName,
+        verified: reviewAttribute(row, "VERIFIED") === true || String(reviewAttribute(row, "VERIFIED")).toLowerCase() === "true",
+        publishedAt: row.updated || row.created || null
+      };
+    }).filter(Boolean);
+  }
+  function reviewAttribute(row, code) {
+    var groups = row && row.attributes;
+    if (!groups || typeof groups !== "object") return null;
+    for (var group of Object.values(groups)) {
+      if (group && group[code] && group[code].value !== void 0) return group[code].value;
+    }
+    return null;
+  }
+  function opaqueRef2(prefix, value) {
+    var text6 = String(value || prefix);
+    var left = 2166136261;
+    var right = 2246822507;
+    for (var index = 0; index < text6.length; index += 1) {
+      var code = text6.charCodeAt(index);
+      left = Math.imul(left ^ code, 16777619);
+      right = Math.imul(right ^ code, 3266489909);
+    }
+    return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
+  }
   function buildRequest(config, productTypeCode) {
     var payload = {
       productTypeCode,
       includeChildProductTypes: true,
       priceTypeCode: config.pimPriceTypeCode || "RECURRENT",
       includeChildPriceTypes: true,
-      priceAttributeCode: config.pimPriceAttributeCode || "INTERVAL",
-      priceAttributeValues: configuredValues(config.pimPriceAttributeValues, ["1"]),
       currencyAttributeCode: config.pimCurrencyAttributeCode || "CURRENCY",
       currencyAttributeValues: configuredValues(config.pimCurrencyAttributeValues, [config.pimCurrency || "CAD"]),
       nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"]
     };
+    var priceAttributeCode = typeof config.pimPriceAttributeCode === "string" ? config.pimPriceAttributeCode.trim() : "";
+    var priceAttributeValues = configuredValues(config.pimPriceAttributeValues, []);
+    if (priceAttributeCode && priceAttributeValues.length) {
+      payload.priceAttributeCode = priceAttributeCode;
+      payload.priceAttributeValues = priceAttributeValues;
+    }
     return {
       url: config.pimFixtureUrl || buildUrl(config),
       fixture: !!config.pimFixtureUrl,
@@ -10311,11 +9440,35 @@
         interval: formatInterval(interval),
         cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
         attributes: product.attributes || {},
+        variantFacts: variantFacts(product.attributes),
         productTypeCode: product.type && product.type.code || row.productTypeCode || row.__productTypeCode || "",
         allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
         row
       };
     });
+  }
+  function variantFacts(attributes) {
+    return [
+      fact("Format", productAttribute(attributes, "FORMAT")),
+      fact("Size", volumeLabel(productAttribute(attributes, "VOLUME_ML"))),
+      fact("Scent", productAttribute(attributes, "SCENT_PROFILE"))
+    ].filter(Boolean);
+  }
+  function fact(label, value) {
+    if (value === void 0 || value === null || value === "") return null;
+    return { label, value: String(value) };
+  }
+  function volumeLabel(value) {
+    if (value === void 0 || value === null || value === "") return null;
+    return String(value) + " ml";
+  }
+  function productAttribute(attributes, code) {
+    if (!attributes || typeof attributes !== "object") return null;
+    for (var group of Object.values(attributes)) {
+      var attribute = group && group[code];
+      if (attribute && attribute.value !== void 0 && attribute.value !== null) return attribute.value;
+    }
+    return null;
   }
   function configuredValues(value, fallback) {
     if (Array.isArray(value) && value.length) return value.map(String);
@@ -10391,7 +9544,7 @@
           fixture = caseFixture.care;
           products = caseFixture.theme.products;
         } else {
-          const { careFixtures: careFixtures2 } = await Promise.resolve().then(() => (init_care_fixtures(), care_fixtures_exports));
+          const { careFixtures: careFixtures2 } = await Promise.resolve().then(() => (init_live_care_fixtures(), live_care_fixtures_exports));
           var vertical2 = verticalProfiles[context.config.vertical];
           var displayName = vertical2 && vertical2.displayName;
           fixture = careFixtures2[displayName];
@@ -10566,6 +9719,41 @@
   });
 
   // app-templates/customer-portal/runtime/src/adapters/core-orders-adapter.js
+  var ITEM_KINDS = {
+    SPA_ITEM_MEMBERSHIP: "MEMBERSHIP",
+    SPA_ITEM_PACKAGE: "PACKAGE",
+    SPA_ITEM_RETAIL: "RETAIL",
+    SPA_ITEM_SERVICE: "SERVICE"
+  };
+  var ORDER_STATUS = {
+    CANCELLED: "Cancelled",
+    COMPLETED: "Fulfilled",
+    IN_PROGRESS: "In progress",
+    OPEN: "Confirmed"
+  };
+  var FULFILLMENT_TYPE = "SPA_FULFILLMENT";
+  var REF_MAPPINGS2 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var ORDER_ITEM_MAPPINGS = [
+    { name: "amount" },
+    { name: "attributes" },
+    { name: "id" },
+    { name: "itemCount" },
+    { name: "notes" },
+    { name: "sortOrder" },
+    {
+      key: "id",
+      mappings: REF_MAPPINGS2.concat([{ key: "id", mappings: REF_MAPPINGS2, name: "product", type: "identifier" }]),
+      name: "itemPrice",
+      type: "identifier"
+    },
+    { key: "id", mappings: REF_MAPPINGS2, name: "order", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
+  ];
+  var SHIPMENT_MAPPINGS = [
+    { name: "attributes" },
+    { name: "id" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
+  ];
   var ORDER_MAPPINGS2 = [
     { name: "attributes" },
     { name: "created" },
@@ -10624,8 +9812,27 @@
       body: JSON.stringify(request)
     });
     var rows = Array.isArray(response && response.result) ? response.result : [];
-    var items = rows.map(function(row) {
-      return normalizeOrder2(row, accountId);
+    var headers = {
+      Accept: "application/json",
+      Authorization: authorization,
+      "Content-Type": "application/json",
+      "X-Organization-Code": organization
+    };
+    var context2 = { billBase, fetchImpl, headers };
+    var orderIds = rows.map(function(row) {
+      return positiveInteger4(row && row.id);
+    }).filter(Boolean);
+    var joined = await Promise.all([linesByOrder(context2, orderIds), fulfillmentByOrder(context2, orderIds)]);
+    rows.forEach(function(row) {
+      assertOwnedBy(row, accountId);
+    });
+    var withoutLines = 0;
+    var items = rows.filter(function(row) {
+      var hasLines = (joined[0][String(row.id)] || []).length > 0;
+      if (!hasLines) withoutLines += 1;
+      return hasLines;
+    }).map(function(row) {
+      return normalizeOrder2(row, accountId, joined[0][String(row.id)], joined[1][String(row.id)] || null);
     });
     var byRef = {};
     items.forEach(function(item) {
@@ -10634,19 +9841,149 @@
     return {
       state: items.length ? "ready" : "empty",
       accountId,
-      resultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : items.length,
+      resultSize: items.length,
+      ordersWithoutLines: withoutLines,
+      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
       items,
       byRef
     };
   }
-  function normalizeOrder2(row, accountId) {
+  async function postList(context, path, body) {
+    return requestJson4(context.fetchImpl, context.billBase + path, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: context.headers,
+      body: JSON.stringify(body)
+    });
+  }
+  async function linesByOrder(context, orderIds) {
+    if (!orderIds.length) return {};
+    var response = await postList(context, "/api/order-item/list.json", {
+      filters: [],
+      mappings: ORDER_ITEM_MAPPINGS,
+      offset: 0,
+      pageSize: 500,
+      sorting: [{ field: "sortOrder", direction: "ASC" }]
+    });
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var grouped = {};
+    rows.forEach(function(row) {
+      var id = positiveInteger4(row.order && row.order.id);
+      if (orderIds.indexOf(id) < 0) return;
+      (grouped[String(id)] = grouped[String(id)] || []).push(row);
+    });
+    return grouped;
+  }
+  async function fulfillmentByOrder(context, orderIds) {
+    if (!orderIds.length) return {};
+    var response = await postList(context, "/api/shipment/list.json", {
+      filters: [{ type: "STRING", operator: "=", property: "type.code", value: FULFILLMENT_TYPE }],
+      mappings: SHIPMENT_MAPPINGS,
+      offset: 0,
+      pageSize: 200
+    });
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var byOrder = {};
+    rows.forEach(function(row) {
+      var id = attributeNumber(row, "SOURCE_ORDER");
+      if (!id || orderIds.indexOf(id) < 0) return;
+      byOrder[String(id)] = {
+        kind: attributeText(row, "FULFILLMENT_KIND"),
+        location: attributeNumber(row, "PICKUP_LOCATION"),
+        status: attributeText(row, "FULFILLMENT_STATUS"),
+        windowEnd: attributeNumber(row, "WINDOW_END"),
+        windowStart: attributeNumber(row, "WINDOW_START")
+      };
+    });
+    return byOrder;
+  }
+  function attributeEntry(row, code) {
+    var typeId = row && row.type && row.type.id;
+    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+    return group && group[code] ? group[code] : null;
+  }
+  function attributeNumber(row, code) {
+    var entry = attributeEntry(row, code);
+    return entry && entry.value != null ? positiveInteger4(entry.value) : null;
+  }
+  function attributeText(row, code) {
+    var entry = attributeEntry(row, code);
+    return entry && entry.value != null ? text4(entry.value) : "";
+  }
+  function purchaseKind(lines) {
+    var kinds = [];
+    lines.forEach(function(line) {
+      var kind = ITEM_KINDS[text4(line.type && line.type.code)];
+      if (kind && kinds.indexOf(kind) < 0) kinds.push(kind);
+    });
+    if (!kinds.length) return null;
+    return kinds.length === 1 ? kinds[0] : "MIXED";
+  }
+  function lineTitle(line) {
+    var product = line.itemPrice && line.itemPrice.product;
+    return localizedName3(product && product.nls) || text4(product && product.code) || text4(line.notes) || "Item";
+  }
+  function normalizeLine(line, currencyCode) {
+    var id = positiveInteger4(line && line.id);
+    var count = positiveInteger4(line.itemCount) || 1;
+    var unit = finiteNumber3(line.amount);
+    return {
+      ref: "pln-core-" + id,
+      kind: ITEM_KINDS[text4(line.type && line.type.code)] || null,
+      title: lineTitle(line),
+      variant: null,
+      quantity: count,
+      displayUnitPrice: unit != null ? formatMoney(unit, currencyCode) : null,
+      displayTotal: null
+    };
+  }
+  function itemSummary(lines) {
+    if (!lines.length) return null;
+    return lines.map(function(line) {
+      return line.quantity > 1 ? line.quantity + " \xD7 " + line.title : line.title;
+    }).join(" \xB7 ");
+  }
+  function normalizeFulfillment(raw) {
+    if (!raw || !raw.kind) return null;
+    return {
+      kind: raw.kind,
+      status: raw.status || null,
+      // An absent window stays absent; formatDate would render the epoch.
+      windowEndLabel: raw.windowEnd ? formatDate2(raw.windowEnd) : null,
+      windowStartLabel: raw.windowStart ? formatDate2(raw.windowStart) : null
+    };
+  }
+  function assertOwnedBy(row, accountId) {
     var rowAccountId = row && row.account && positiveInteger4(row.account.id);
     if (rowAccountId !== accountId) throw contractError4("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
+  }
+  function normalizeOrder2(row, accountId, rawLines, rawFulfillment) {
+    assertOwnedBy(row, accountId);
     var id = positiveInteger4(row && row.id);
     if (!id) throw contractError4("invalid-order", "Core Order response did not include an id");
     var states = Array.isArray(row.states) ? row.states.map(function(state2) {
       return { id: positiveInteger4(state2 && state2.id), code: text4(state2 && state2.code), label: localizedName3(state2 && state2.nls) };
     }) : [];
+    var stateCode = states.map(function(state2) {
+      return state2.code;
+    }).filter(Boolean)[0] || "";
+    var status = ORDER_STATUS[stateCode];
+    if (!status)
+      throw contractError4(
+        "order-status-unmapped",
+        "Workflow state " + (stateCode || "(none)") + " has no approved customer status for a purchase"
+      );
+    var currencyCode = text4(row.currency && row.currency.code) || "USD";
+    var lines = rawLines.map(function(line) {
+      return normalizeLine(line, currencyCode);
+    });
+    var kind = purchaseKind(rawLines);
+    var fulfillment = normalizeFulfillment(rawFulfillment);
+    var attention = null;
+    if (fulfillment && fulfillment.status === "READY" && status !== "Cancelled") {
+      status = "Ready for pickup";
+      attention = "Ready \u2014 please pick up" + (fulfillment.windowEndLabel ? " by " + fulfillment.windowEndLabel : "");
+    }
     return {
       ref: "order-core-" + id,
       reference: "order-core-" + id,
@@ -10659,28 +9996,24 @@
       currency: { code: text4(row.currency && row.currency.code), label: localizedName3(row.currency && row.currency.nls) },
       type: { code: text4(row.type && row.type.code), label: localizedName3(row.type && row.type.nls) },
       states,
-      statusCode: Array.from(new Set(states.map(function(state2) {
-        return state2.code;
-      }).filter(Boolean))).join(" \xB7 "),
-      customerStatus: Array.from(new Set(states.map(function(state2) {
-        return state2.code;
-      }).filter(Boolean))).join(" \xB7 ") || "UNMAPPED",
-      kind: "MIXED",
+      statusCode: stateCode,
+      customerStatus: status,
+      kind,
       placedAt: formatDate2(row.created),
-      itemSummary: text4(row.notes).startsWith("CP_DEMO_") ? "Demo order recorded through the customer portal" : localizedName3(row.type && row.type.nls) || text4(row.type && row.type.code) || "Core order",
-      displayTotal: formatMoney(row.grandTotal, text4(row.currency && row.currency.code) || "USD"),
-      displayCurrency: text4(row.currency && row.currency.code) || "USD",
-      attention: null,
+      itemSummary: itemSummary(lines) || null,
+      displayTotal: formatMoney(row.grandTotal, currencyCode),
+      displayCurrency: currencyCode,
+      attention,
       allowedActions: [],
-      lines: [],
+      lines,
       money: {
-        subtotal: formatMoney(row.totalCharges, text4(row.currency && row.currency.code) || "USD"),
-        tax: formatMoney(row.totalTaxes, text4(row.currency && row.currency.code) || "USD"),
-        total: formatMoney(row.grandTotal, text4(row.currency && row.currency.code) || "USD"),
-        currency: text4(row.currency && row.currency.code) || "USD"
+        subtotal: formatMoney(row.totalCharges, currencyCode),
+        tax: formatMoney(row.totalTaxes, currencyCode),
+        total: formatMoney(row.grandTotal, currencyCode),
+        currency: currencyCode
       },
       paymentMode: "SIMULATED",
-      fulfillment: null,
+      fulfillment,
       relatedAppointments: [],
       relatedPlan: null
     };
@@ -10738,7 +10071,365 @@
     error2.code = code;
     return error2;
   }
-  var coreOrdersContract = Object.freeze({ mappings: ORDER_MAPPINGS2, filters: ["account.id"] });
+  var coreOrdersContract = Object.freeze({
+    filters: ["account.id"],
+    itemKinds: ITEM_KINDS,
+    itemMappings: ORDER_ITEM_MAPPINGS,
+    mappings: ORDER_MAPPINGS2,
+    orderStatus: ORDER_STATUS,
+    shipmentMappings: SHIPMENT_MAPPINGS
+  });
+
+  // app-templates/customer-portal/runtime/src/adapters/core-plans-adapter.js
+  var ENROLLMENT_TYPE = "SPA_PLAN_ENROLLMENT";
+  var MEMBERSHIP_ITEM_TYPE = "SPA_ITEM_MEMBERSHIP";
+  var PLAN_REF_PREFIX = "plan-core-";
+  var PURCHASE_REF_PREFIX = "order-core-";
+  var REF_MAPPINGS3 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var ENROLLMENT_MAPPINGS = [
+    { name: "attributes" },
+    { name: "code" },
+    { name: "id" },
+    { name: "nls" },
+    { name: "optimistic" },
+    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" },
+    { mappings: REF_MAPPINGS3, name: "states", type: "collection" }
+  ];
+  var SUBSCRIPTION_MAPPINGS = [
+    { name: "autoRenew" },
+    { name: "expiresOn" },
+    { name: "id" },
+    { name: "nextBillingAt" },
+    { name: "optimistic" },
+    { name: "period" },
+    { name: "startsOn" },
+    { key: "id", mappings: REF_MAPPINGS3, name: "account", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS3, name: "order", type: "identifier" },
+    { mappings: REF_MAPPINGS3, name: "states", type: "collection" }
+  ];
+  var ORDER_ITEM_MAPPINGS2 = [
+    { name: "amount" },
+    { name: "attributes" },
+    { name: "id" },
+    { name: "itemCount" },
+    { name: "notes" },
+    {
+      key: "id",
+      // The membership's display name lives on the Product behind the price.
+      mappings: REF_MAPPINGS3.concat([
+        { name: "attributes" },
+        { key: "id", mappings: REF_MAPPINGS3, name: "product", type: "identifier" }
+      ]),
+      name: "itemPrice",
+      type: "identifier"
+    },
+    { key: "id", mappings: REF_MAPPINGS3, name: "order", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS3, name: "type", type: "identifier" }
+  ];
+  var ENROLLMENT_STATUS = { ACTIVE: "Active", CANCELLED: "Cancelled", EXHAUSTED: "Used up" };
+  var SUBSCRIPTION_STATUS = { ACTIVE: "Active", CANCELLED: "Cancelled" };
+  function createCorePlansAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError5("fetch-unavailable", "Core plans adapter requires fetch");
+    return {
+      load(moduleId, context) {
+        if (moduleId !== "plan") throw contractError5("unsupported-module", "Core plans adapter cannot load " + moduleId);
+        return loadCorePlans(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCorePlans(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = planContext(context, explicitOrigin);
+    var accountId = positiveInteger5(api.customer && api.customer.id);
+    if (!accountId) return { items: [], byRef: {}, scopeMode: "customer-filtered-client-side", state: "empty" };
+    var results = await Promise.all([
+      loadEnrollments(api, accountId, fetchImpl),
+      loadMemberships(api, accountId, fetchImpl)
+    ]);
+    var items = results[0].concat(results[1]);
+    var byRef = {};
+    items.forEach(function(item) {
+      byRef[item.ref] = item;
+    });
+    return {
+      byRef,
+      items,
+      scopeMode: "customer-filtered-client-side",
+      state: items.length ? "ready" : "empty"
+    };
+  }
+  async function loadEnrollments(api, accountId, fetchImpl) {
+    var response = await requestJson5(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions2(api, {
+      filters: [{ type: "STRING", operator: "=", property: "type.code", value: ENROLLMENT_TYPE }],
+      mappings: ENROLLMENT_MAPPINGS,
+      offset: 0,
+      pageSize: positiveInteger5(api.config.plansPageSize) || 100
+    }));
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    return rows.filter(function(row) {
+      return attributeNumber2(row, "CUSTOMER_ACCOUNT") === accountId;
+    }).map(normalizeEnrollment);
+  }
+  function normalizeEnrollment(row) {
+    var id = positiveInteger5(row && row.id);
+    if (!id) throw contractError5("invalid-plan", "Core plan enrollment response did not include an id");
+    var state2 = firstState(row);
+    var status = ENROLLMENT_STATUS[state2];
+    if (!status)
+      throw contractError5(
+        "plan-status-unmapped",
+        "Workflow state " + (state2 || "(none)") + " has no approved customer status for a package plan"
+      );
+    var total = attributeNumber2(row, "CREDITS_TOTAL");
+    var used = attributeNumber2(row, "CREDITS_USED");
+    var remaining = total != null && used != null ? Math.max(total - used, 0) : null;
+    var sourceOrder = attributeNumber2(row, "SOURCE_ORDER");
+    return {
+      allowedActions: status === "Active" && remaining > 0 ? ["bookWithCredit"] : [],
+      backendId: id,
+      expiresAt: formatDate3(attributeText2(row, "VALID_UNTIL")),
+      kind: "PACKAGE",
+      optimistic: finiteNumber4(row.optimistic, null),
+      ref: PLAN_REF_PREFIX + id,
+      remainingUses: remaining,
+      sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
+      status,
+      title: localizedName4(row.nls) || text5(row.code) || "Package",
+      totalUses: total
+    };
+  }
+  async function loadMemberships(api, accountId, fetchImpl) {
+    var response = await requestJson5(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions2(api, {
+      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
+      mappings: SUBSCRIPTION_MAPPINGS,
+      offset: 0,
+      pageSize: positiveInteger5(api.config.plansPageSize) || 100
+    }));
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    if (!rows.length) return [];
+    var lines = await membershipLines(api, rows, fetchImpl);
+    var lineRows = Object.values(lines);
+    var resolved = await Promise.all([
+      codesById(api, api.coreBase, "dictionary", uniqueIds(lineRows, currencyId), fetchImpl),
+      codesById(api, api.coreBase, "unit", uniqueIds(lineRows, intervalUnitId), fetchImpl)
+    ]);
+    return rows.map(function(row) {
+      var line = lines[String(orderId(row))] || null;
+      return normalizeMembership(row, line, {
+        currency: resolved[0][String(currencyId(line))] || "",
+        intervalUnit: resolved[1][String(intervalUnitId(line))] || ""
+      });
+    });
+  }
+  function priceAttributeEntry(line, code) {
+    var groups = line && line.itemPrice && line.itemPrice.attributes ? Object.values(line.itemPrice.attributes) : [];
+    for (var index = 0; index < groups.length; index += 1) {
+      var entry = groups[index] && groups[index][code];
+      if (entry && entry.value != null) return entry;
+    }
+    return null;
+  }
+  function currencyId(line) {
+    var entry = priceAttributeEntry(line, "CURRENCY");
+    return entry ? positiveInteger5(entry.value) : 0;
+  }
+  function intervalUnitId(line) {
+    var entry = priceAttributeEntry(line, "INTERVAL");
+    return entry ? positiveInteger5(entry.unit) : 0;
+  }
+  async function codesById(api, base, endpoint, ids, fetchImpl) {
+    if (!ids.length) return {};
+    var response = await requestJson5(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions2(api, {
+      filters: ids.map(function(id) {
+        return { type: "INTEGER", operator: "=", property: "id", value: String(id) };
+      }),
+      mappings: [{ name: "id" }, { name: "code" }],
+      offset: 0,
+      pageSize: 50
+    }));
+    var byId = {};
+    (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
+      byId[String(row.id)] = text5(row.code);
+    });
+    return byId;
+  }
+  function uniqueIds(lines, pick) {
+    var ids = [];
+    lines.forEach(function(line) {
+      var id = pick(line);
+      if (id && ids.indexOf(id) < 0) ids.push(id);
+    });
+    return ids;
+  }
+  async function membershipLines(api, subscriptions, fetchImpl) {
+    var orderIds = subscriptions.map(orderId).filter(Boolean);
+    if (!orderIds.length) return {};
+    var response = await requestJson5(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions2(api, {
+      filters: [{ type: "STRING", operator: "=", property: "type.code", value: MEMBERSHIP_ITEM_TYPE }],
+      mappings: ORDER_ITEM_MAPPINGS2,
+      offset: 0,
+      pageSize: 200
+    }));
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var byOrder = {};
+    rows.forEach(function(row) {
+      var key = String(row.order && row.order.id);
+      if (orderIds.indexOf(positiveInteger5(row.order && row.order.id)) >= 0 && !byOrder[key]) byOrder[key] = row;
+    });
+    return byOrder;
+  }
+  function recurringPrice(line, labels) {
+    var unitPrice = priceAttributeEntry(line, "UNIT_PRICE");
+    if (!unitPrice || !labels.currency) return null;
+    var interval = priceAttributeEntry(line, "INTERVAL");
+    var period = interval ? Number(interval.value) : 0;
+    var suffix = period && labels.intervalUnit ? " / " + (period === 1 ? "" : period + " ") + labels.intervalUnit.toLowerCase() : "";
+    return formatMoney2(Number(unitPrice.value), labels.currency) + suffix;
+  }
+  function normalizeMembership(row, line, labels) {
+    var id = positiveInteger5(row && row.id);
+    if (!id) throw contractError5("invalid-plan", "Core subscription response did not include an id");
+    var state2 = firstState(row);
+    var status = SUBSCRIPTION_STATUS[state2];
+    if (!status)
+      throw contractError5(
+        "plan-status-unmapped",
+        "Workflow state " + (state2 || "(none)") + " has no approved customer status for a membership plan"
+      );
+    var source = orderId(row);
+    return {
+      allowedActions: status === "Active" && row.autoRenew ? ["cancelRenewal"] : [],
+      backendId: id,
+      displayRecurringPrice: recurringPrice(line, labels),
+      expiresAt: formatDate3(row.expiresOn),
+      kind: "MEMBERSHIP",
+      optimistic: finiteNumber4(row.optimistic, null),
+      ref: PLAN_REF_PREFIX + "sub-" + id,
+      remainingUses: null,
+      renewsAt: formatDate3(row.nextBillingAt || null),
+      sourcePurchase: source ? PURCHASE_REF_PREFIX + source : null,
+      status,
+      title: membershipTitle(line),
+      totalUses: null
+    };
+  }
+  function planContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var state2 = context && context.state || {};
+    var session = context && context.session || state2.session || {};
+    var accessToken = text5(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError5("session-required", "A Core access token is required");
+    var organization = text5(config.organization);
+    if (!organization) throw contractError5("organization-required", "Verified portal organization is required");
+    var origin = explicitOrigin || config.origin || browserOrigin4();
+    return {
+      authorization: text5(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase5(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base"),
+      config,
+      customer: context && context.account || state2.customerAccount || session.account || {},
+      organization,
+      serviceBase: sameOriginBase5(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
+    };
+  }
+  function requestOptions2(api, body) {
+    return {
+      body: JSON.stringify(body),
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        "X-Organization-Code": api.organization
+      },
+      method: "POST"
+    };
+  }
+  async function requestJson5(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (response.status === 401) throw contractError5("session-expired", "Core rejected the portal session");
+    if (response.status === 403) throw contractError5("customer-forbidden", "Core refused the plan read for this customer");
+    if (!response.ok) throw contractError5("plans-unavailable", "Core plan read failed with HTTP " + response.status);
+    return response.json();
+  }
+  function attributeGroup(row) {
+    var typeId = row && row.type && row.type.id;
+    if (typeId == null || !row.attributes) return null;
+    return row.attributes[String(typeId)] || null;
+  }
+  function attributeNumber2(row, code) {
+    var group = attributeGroup(row);
+    var entry = group && group[code];
+    return entry && entry.value != null ? Number(entry.value) : null;
+  }
+  function attributeText2(row, code) {
+    var group = attributeGroup(row);
+    var entry = group && group[code];
+    return entry && entry.value != null ? String(entry.value) : "";
+  }
+  function firstState(row) {
+    var states = Array.isArray(row && row.states) ? row.states : [];
+    for (var index = 0; index < states.length; index += 1) {
+      var code = text5(states[index] && states[index].code);
+      if (code) return code;
+    }
+    return "";
+  }
+  function orderId(row) {
+    return positiveInteger5(row && row.order && row.order.id);
+  }
+  function membershipTitle(line) {
+    if (!line) return "Membership";
+    var product = line.itemPrice && line.itemPrice.product;
+    return localizedName4(product && product.nls) || localizedName4(line.itemPrice && line.itemPrice.nls) || "Membership";
+  }
+  function formatMoney2(amount, currency) {
+    return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(Number(amount)).replace(/\.00$/, "");
+  }
+  function formatDate3(value) {
+    if (!value) return null;
+    var date = Array.isArray(value) ? new Date(Date.UTC(value[0], (value[1] || 1) - 1, value[2] || 1)) : new Date(value);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC", year: "numeric" });
+  }
+  function localizedName4(nls) {
+    if (!nls || typeof nls !== "object") return "";
+    var locales = Object.keys(nls);
+    for (var index = 0; index < locales.length; index += 1) {
+      var entry = nls[locales[index]];
+      var name = entry && text5(entry.NAME);
+      if (name) return name;
+    }
+    return "";
+  }
+  function sameOriginBase5(base, origin, label) {
+    var value = text5(base);
+    if (!value) throw contractError5("api-base-required", label + " is required");
+    if (/^https?:\/\//i.test(value)) {
+      if (value.indexOf(origin) !== 0) throw contractError5("cross-origin-base", label + " must stay same-origin");
+      return value.replace(/\/$/, "");
+    }
+    return (origin || "").replace(/\/$/, "") + (value.charAt(0) === "/" ? value : "/" + value).replace(/\/$/, "");
+  }
+  function browserOrigin4() {
+    return typeof window !== "undefined" && window.location ? window.location.origin : "";
+  }
+  function positiveInteger5(value) {
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : 0;
+  }
+  function finiteNumber4(value, fallback) {
+    var number = Number(value);
+    return Number.isFinite(number) ? number : fallback;
+  }
+  function text5(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
+  }
+  function contractError5(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
 
   // app-templates/customer-portal/runtime/src/normalizers/care.js
   var CARE_KINDS = ["equipment", "seasonLog", "program", "water", "roof", "monitoring", "healthCare", "beautyCare"];
@@ -10900,6 +10591,9 @@
         feature: null,
         categories: [],
         items: clone3(raw.pimProducts),
+        models: clone3(raw.pimProductModels || []),
+        reviews: clone3(raw.pimProductReviews || []),
+        enrichment: clone3(raw.pimEnrichment || { models: "unavailable", reviews: "unavailable" }),
         source: "core-pim"
       };
     }
@@ -11163,6 +10857,29 @@
       return { state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error", items: [], next: null, upcoming: [], past: [], byRef: {} };
     }
   };
+  var planModule = {
+    id: "plan",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") return createCorePlansAdapter();
+      return { load() {
+        return { state: "ready", items: [], byRef: {} };
+      } };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return {
+        state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error",
+        items: [],
+        byRef: {}
+      };
+    }
+  };
   var checkoutModule = {
     id: "checkout",
     adapter(context) {
@@ -11185,6 +10902,7 @@
     pricing: module("pricing", normalizePricing),
     products: module("products", normalizeProducts),
     checkout: checkoutModule,
+    plan: planModule,
     calendar: module("calendar", normalizeCalendar),
     activity: module("activity", normalizeActivity),
     profile: profileModule,
@@ -11414,12 +11132,12 @@
   }
   function stepsBar(f) {
     var hasSpec = !!(f.serviceCode && (F.spaBooking.eligibleSpecialists[f.serviceCode] || []).length);
-    var steps2 = f.entry === "reschedule" ? [{ k: "slots", l: "New time" }, { k: "review", l: "Review" }] : [{ k: "context", l: "Service" }].concat(hasSpec ? [{ k: "specialist", l: "Specialist" }] : []).concat([{ k: "slots", l: "Time" }, { k: "review", l: "Review" }]);
-    var idx = steps2.findIndex(function(s) {
+    var steps = f.entry === "reschedule" ? [{ k: "slots", l: "New time" }, { k: "review", l: "Review" }] : [{ k: "context", l: "Service" }].concat(hasSpec ? [{ k: "specialist", l: "Specialist" }] : []).concat([{ k: "slots", l: "Time" }, { k: "review", l: "Review" }]);
+    var idx = steps.findIndex(function(s) {
       return s.k === f.step;
     });
     if (idx === -1) idx = 0;
-    return h("div", { "class": "bk-steps", "data-module": "booking-steps", "data-visual-id": "booking-steps" }, steps2.map(function(s, i) {
+    return h("div", { "class": "bk-steps", "data-module": "booking-steps", "data-visual-id": "booking-steps" }, steps.map(function(s, i) {
       return h("span", { "class": "bk-step" + (i === idx ? " bk-step--on" : i < idx ? " bk-step--done" : "") }, [
         h("i", null, i < idx ? "\u2713" : String(i + 1)),
         s.l
@@ -11666,8 +11384,9 @@
   }
   function AccountBootstrap() {
     var s = state.account;
-    var page = h("section", { "class": "page account-gate", "data-route": state.route, "data-state": s, "data-visual-id": "account-gate", "data-screen-label": "Account (" + s + ")" });
-    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "account-bootstrap", "data-visual-id": "account-bootstrap", "data-state": s, "data-intended-route": state.route });
+    var intendedRoute = state.session.intendedRoute || state.route;
+    var page = h("section", { "class": "page account-gate", "data-route": intendedRoute, "data-state": s, "data-visual-id": "account-gate", "data-screen-label": "Account (" + s + ")" });
+    var card = h("div", { "class": "auth-card account-gate__card", "data-module": "account-bootstrap", "data-visual-id": "account-bootstrap", "data-state": s, "data-intended-route": intendedRoute });
     if (s === "resolving-customer") {
       card.setAttribute("aria-busy", "true");
       card.appendChild(h("div", { "class": "oidc-status" }, [h("span", { "class": "oidc-spinner" })]));
@@ -11717,7 +11436,7 @@
       card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u23F1")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "Your session ended"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "For your security you were signed out. Nothing you see below is live anymore. Sign in again and you\u2019ll come right back here."));
-      card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(state.route))]));
+      card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(intendedRoute))]));
       card.appendChild(gateActions([
         ActionButton({ variant: "btn--primary", label: "Sign in again", action: "auth.oidcSignIn", block: true, lg: true, visualId: "account-reauth" }),
         ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "account-catalog" })
@@ -11805,7 +11524,7 @@
     if (runtime && state.config.dataMode !== "live") runtime.loadAll();
     if (runtime) runtime.syncPreflight("care");
     if (runtime) loadGrantedCareTransition();
-    var content = !isPublic() && state.account !== "ready" ? AccountBootstrap() : renderRoute();
+    var content = customerPortalGateActive() || !isPublic() && state.account !== "ready" ? AccountBootstrap() : renderRoute();
     if (content && state.route !== lastRoute) content.classList.add("route-enter");
     lastRoute = state.route;
     shell = AppShell(content);
@@ -11876,6 +11595,7 @@
     render();
     liveRetryPromise = runtime.loadAllAsync().then(function() {
       state.view = "ready";
+      if (continueToIntendedRoute()) return;
       render();
     }).catch(function(error2) {
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
@@ -11885,6 +11605,15 @@
       liveRetryPromise = null;
     });
     return liveRetryPromise;
+  }
+  function continueToIntendedRoute() {
+    if (!state.session.authenticated || state.account !== "ready") return false;
+    var intended = state.session.intendedRoute;
+    if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
+    if (!intended) return false;
+    state.session.intendedRoute = null;
+    go(intended);
+    return true;
   }
   function invalidateCareRuntime() {
     if (!runtime) return null;
@@ -11922,12 +11651,7 @@
     initRouter(render);
     bindActions(mount);
     loaded.then(function() {
-      if (state.session.authenticated && state.route === "auth.oidc" && state.session.intendedRoute) {
-        var intended = state.session.intendedRoute;
-        state.session.intendedRoute = null;
-        go(intended);
-        return;
-      }
+      if (continueToIntendedRoute()) return;
       render();
     }).catch(function(error2) {
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";

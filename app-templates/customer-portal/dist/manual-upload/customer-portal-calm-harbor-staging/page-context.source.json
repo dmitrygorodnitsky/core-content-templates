@@ -44,6 +44,7 @@
   "pim": {
     "apiBase": "/core-pim/api",
     "organization": "CALM_HARBOR_SPA_STAGING",
+    "enrichmentMode": "current-api",
     "pricingProductTypeCodes": [
       "SPA_SERVICE",
       "SPA_MEMBERSHIP",
@@ -52,19 +53,13 @@
     "productsProductTypeCodes": [
       "SPA_RETAIL"
     ],
-    "priceTypeCode": "SPA_STANDARD_PRICE",
-    "priceAttributeCode": "INTERVAL",
-    "priceAttributeValues": [
-      "ONE_TIME",
-      "MONTH"
-    ],
+    "priceTypeCode": "PRICE_CURRENCY",
     "currency": "USD",
     "currencyAttributeCode": "CURRENCY",
     "currencyAttributeValues": [
       "USD"
     ],
-    "amountAttributeCode": "AMOUNT_MINOR",
-    "amountMinorDivisor": 100,
+    "amountAttributeCode": "UNIT_PRICE",
     "cta": "Browse services"
   },
   "auth": {
@@ -78,6 +73,7 @@
     "The signed-in Core User resolves to exactly one SPA_CUSTOMER Account through Account.user before Orders load.",
     "Every Orders request is filtered by the resolved Account id; CMS, URL state, and form input cannot select the customer Account.",
     "This one-customer staging demo reads SPA_VISIT Appointments through the current tenant-level generic list API. That list is not customer-scoped and must be replaced by the planned customer portal scope API before production or multi-customer use.",
+    "ProductModel and PUBLISHED ProductReview enrichment uses the current authenticated tenant-level generic PIM list APIs. It is staging-only and must be replaced by a public/customer-safe catalog detail contract before production or multi-customer use.",
     "Booking and rescheduling save Core Appointment records; product, service, package, and membership checkout saves a Core Order and confirms it by readback; profile editing saves only the signed-in Core User email.",
     "The checkout simulates payment: it never requests a card, moves money, marks an Invoice paid, or creates a receipt. Its success state is a confirmed Core Order, not proof of payment or fulfillment.",
     "Appointment cancellation, order cancellation or return, support, personal plan balances, entitlement creation, and renewal controls remain unavailable because the current APIs do not expose a truthful command or customer entitlement contract for them.",

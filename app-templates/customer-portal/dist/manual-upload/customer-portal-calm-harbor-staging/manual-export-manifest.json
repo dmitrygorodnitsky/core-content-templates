@@ -10,9 +10,9 @@
     "parameters": [],
     "sha256": {
       "head": "4c4081e5bbc919b52bc35e86c1b9e17ee59ce5fd127ef83e836a6ad498fe3d1a",
-      "html": "0062e7f117e60fb494501d433ab0228f1d3c65c0a62986b8c9b29b3b274e93fd",
-      "css": "079e2620fea581752d40e39aeda998b51b54ddb097ded0415cdf70fdd37b1413",
-      "javascript": "d5159dec557e5bb6bfbb648723592fe815e43b50d5528fba6705b4cfc9b491b9"
+      "html": "f3e3721c1786ca77eb63bdfda976e285b6b6290d7fac80821cddbea2b213b89f",
+      "css": "cc89de6ca2e887aed27e1ba3a35d1ccb3bf1910f592927cd3f21d584f3e672de",
+      "javascript": "9a9ebee2e54a0b440ddd105deb291f835557631b429f11b5c44840915387ebd0"
     }
   },
   "runtime": {
@@ -39,6 +39,7 @@
     "pim": {
       "apiBase": "/core-pim/api",
       "organization": "CALM_HARBOR_SPA_STAGING",
+      "enrichmentMode": "current-api",
       "pricingProductTypeCodes": [
         "SPA_SERVICE",
         "SPA_MEMBERSHIP",
@@ -47,19 +48,13 @@
       "productsProductTypeCodes": [
         "SPA_RETAIL"
       ],
-      "priceTypeCode": "SPA_STANDARD_PRICE",
-      "priceAttributeCode": "INTERVAL",
-      "priceAttributeValues": [
-        "ONE_TIME",
-        "MONTH"
-      ],
+      "priceTypeCode": "PRICE_CURRENCY",
       "currency": "USD",
       "currencyAttributeCode": "CURRENCY",
       "currencyAttributeValues": [
         "USD"
       ],
-      "amountAttributeCode": "AMOUNT_MINOR",
-      "amountMinorDivisor": 100,
+      "amountAttributeCode": "UNIT_PRICE",
       "cta": "Browse services"
     },
     "account": {

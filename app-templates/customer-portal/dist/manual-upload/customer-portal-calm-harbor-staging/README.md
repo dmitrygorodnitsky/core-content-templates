@@ -10,7 +10,7 @@ This is a staging-only authenticated root template. It resolves the signed-in Co
 
 ## Runtime contract
 
-The browser sends unauthenticated same-origin POST requests to `/core-pim/public/CALM_HARBOR_SPA_STAGING/catalog/price-comparison.json`. Pricing queries `SPA_SERVICE, SPA_MEMBERSHIP, SPA_PACKAGE`; products query `SPA_RETAIL`. The runtime reads `AMOUNT_MINOR` with divisor `100`.
+The browser sends unauthenticated same-origin POST requests to `/core-pim/public/CALM_HARBOR_SPA_STAGING/catalog/price-comparison.json`. Pricing queries `SPA_SERVICE, SPA_MEMBERSHIP, SPA_PACKAGE`; products query `SPA_RETAIL`. The runtime reads `UNIT_PRICE` as a major-unit amount.
 
 After OIDC sign-in, the browser resolves the signed-in User to exactly one `SPA_CUSTOMER` Account. Orders are read with that Account id. Booking and rescheduling save `SPA_VISIT` Appointments through `/core-svc/api/appointment`; checkout saves an Order through `/core-bill/api/order`; profile editing saves only the signed-in User email through `/core/api/user`. Each mutation is single-flight and followed by authoritative readback. Payment is simulated: no card, charge, paid Invoice, receipt, cancellation, return, entitlement, or renewal mutation is claimed.
 
