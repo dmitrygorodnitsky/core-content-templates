@@ -19,8 +19,9 @@ Nothing under `runtime/` or `design-inbox/` was edited.
 - **Copy: 4 strings changed meaning**, all four because the data behind them
   changed, not because the words changed. Three of them assert something that is
   no longer true in live mode (C-01, C-02, C-04).
-- Every grep below was executed and its output pasted. 23 greps recorded; **22 hit
-  and 1 is an intentional negative that correctly returns no hit** (H-6).
+- Every grep below was executed and its output pasted. **19 greps recorded: 18 hit,
+  and 1 is an intentional negative that correctly returns no hit** (H-6). Counted
+  mechanically: `grep -c '^rg -n ' <this file>` returns 19.
 
 ## Findings index
 
