@@ -1,5 +1,33 @@
 const API_PATH = "/public/{organization}/catalog/price-comparison.json";
 
+// Sellability is stock truth and nothing else.
+//
+// `SPA_STOCK` inventory rows are the only input. Price presence, product
+// lifecycle state, whether the catalog returned a row at all, and how a
+// neighbouring product looks are all irrelevant: a product is buyable when an
+// inventory row says a unit exists, and in no other case.
+//
+// Three values, and only three:
+//   `sellable`      an inventory row reports a positive count
+//   `out-of-stock`  an inventory row reports zero
+//   `unknown`       no inventory row exists, or inventory could not be read
+//
+// `unknown` is NOT `sellable`. Absence of stock data is absence of permission
+// to sell — the buy action stays closed rather than assuming availability.
+// It is also not `out-of-stock`: the store never said the shelf was empty, so
+// the presentation must not say so either.
+//
+// **There is no server-side backstop.** Verified live on staging 2026-07-28:
+// adding `CHS_SKIN_002` — inventory count 0 — to the cart returns `200` and
+// Core creates the line. The cart API does not consult inventory and will not
+// refuse an out-of-stock product. This join is therefore not a nicety layered
+// over a server that would catch the mistake anyway; it is the only thing
+// standing between a customer and a purchase the studio cannot fulfil.
+const INVENTORY_TYPE_CODE = "SPA_STOCK";
+const SELLABLE = "sellable";
+const OUT_OF_STOCK = "out-of-stock";
+const STOCK_UNKNOWN = "unknown";
+
 export const corePimAdapter = {
   supports(moduleId) {
     return moduleId === "services" || moduleId === "pricing" || moduleId === "products";
@@ -24,12 +52,15 @@ export const corePimAdapter = {
     return {
       pimProducts: plans.map(function (product) {
         var model = enrichment.modelsByProductCode[product.code] || null;
+        var sellability = enrichment.sellabilityByProductCode[product.code] || STOCK_UNKNOWN;
         return Object.assign({}, product, {
           ref: opaqueRef("product", product.code),
           modelRef: model && model.ref || null,
           modelName: model && model.name || null,
           media: [],
           reviews: enrichment.reviewsByProductCode[product.code] || [],
+          sellability: sellability,
+          allowedActions: buyActions(product.allowedActions, sellability),
         });
       }),
       pimProductModels: enrichment.models,
@@ -45,7 +76,8 @@ async function loadProductEnrichment(context, products) {
   var token = session.accessToken;
   var empty = {
     models: [], reviews: [], modelsByProductCode: {}, reviewsByProductCode: {},
-    state: { models: "unavailable", reviews: "unavailable" },
+    sellabilityByProductCode: unknownSellability(products),
+    state: { models: "unavailable", reviews: "unavailable", inventory: "unavailable" },
   };
   if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
 
@@ -55,9 +87,10 @@ async function loadProductEnrichment(context, products) {
     "Content-Type": "application/json",
     "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND",
   };
-  var [modelResult, reviewResult] = await Promise.all([
+  var [modelResult, reviewResult, inventoryResult] = await Promise.all([
     fetchPrivateList(privateUrl(config, "product-model"), productModelRequest(), headers),
     fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers),
+    fetchPrivateList(privateUrl(config, "inventory"), inventoryRequest(), headers),
   ]);
   var productCodes = new Set(products.map(function (product) { return product.code; }));
   var models = modelResult.ok ? normalizeModels(modelResult.items, productCodes) : [];
@@ -76,8 +109,89 @@ async function loadProductEnrichment(context, products) {
     reviews: reviews,
     modelsByProductCode: modelsByProductCode,
     reviewsByProductCode: reviewsByProductCode,
-    state: { models: modelResult.state, reviews: reviewResult.state },
+    sellabilityByProductCode: sellabilityByProductCode(inventoryResult.ok ? inventoryResult.items : [], products),
+    state: { models: modelResult.state, reviews: reviewResult.state, inventory: inventoryResult.state },
   };
+}
+
+/**
+ * Asks Core for the `SPA_STOCK` inventory rows.
+ *
+ * The type narrowing is a filter on `type.code`, a real relation column that
+ * Core does filter on — the same shape the shipment and enrolment reads use.
+ * It is deliberately NOT a filter on `attributes.*`: Core cannot filter dynamic
+ * attributes and fails silently when asked to, returning `200` with zero rows,
+ * which would read as "nothing is in stock" instead of as an error.
+ *
+ * `Inventory` has no `code` column either, so the join key requested here is
+ * the `product` relation's id. The row's own `RECORD_CODE` attribute is seed
+ * identity, not a product reference, and `notes` is never identity at all.
+ */
+function inventoryRequest() {
+  return {
+    filters: [{ type: "STRING", operator: "=", property: "type.code", value: INVENTORY_TYPE_CODE }],
+    offset: 0, pageSize: 500,
+    mappings: [
+      { name: "id" }, { name: "count" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "product", type: "identifier" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" },
+    ],
+  };
+}
+
+/**
+ * Joins inventory rows to catalog products by product id and reduces each
+ * product to one sellability value.
+ *
+ * A product Core returned no inventory row for is `unknown`, never `sellable`
+ * and never `out-of-stock`. When several rows exist for the same product, a
+ * single positive count is enough to make it sellable; no count is summed,
+ * because a total the store did not state is a number this adapter invented.
+ */
+function sellabilityByProductCode(rows, products) {
+  var inStockByProductId = new Map();
+  rows.forEach(function (row) {
+    if (!isStockRow(row)) return;
+    var productId = referenceId(row && row.product);
+    if (productId === null) return;
+    var count = Number(row && row.count);
+    if (!Number.isFinite(count)) return;
+    inStockByProductId.set(productId, inStockByProductId.get(productId) === true || count > 0);
+  });
+  var byProductCode = {};
+  products.forEach(function (product) {
+    var productId = referenceId(productFromRow(product.row));
+    var inStock = productId === null ? undefined : inStockByProductId.get(productId);
+    byProductCode[product.code] = inStock === undefined ? STOCK_UNKNOWN : inStock ? SELLABLE : OUT_OF_STOCK;
+  });
+  return byProductCode;
+}
+
+function unknownSellability(products) {
+  var byProductCode = {};
+  (products || []).forEach(function (product) { byProductCode[product.code] = STOCK_UNKNOWN; });
+  return byProductCode;
+}
+
+function isStockRow(row) {
+  var typeCode = String(row && row.type && row.type.code || "");
+  return !typeCode || typeCode === INVENTORY_TYPE_CODE;
+}
+
+function referenceId(reference) {
+  var id = Number(reference && reference.id);
+  return Number.isInteger(id) ? id : null;
+}
+
+/**
+ * The buy action is opened by an in-stock inventory row and by nothing else.
+ * Zero stock and unknown stock both close it — they differ in what the design
+ * is allowed to say, not in what the customer is allowed to do.
+ */
+function buyActions(actions, sellability) {
+  var list = Array.isArray(actions) ? actions.slice() : [];
+  if (sellability === SELLABLE) return list;
+  return list.filter(function (action) { return action !== "cart.addItem"; });
 }
 
 async function fetchPrivateList(url, payload, headers) {

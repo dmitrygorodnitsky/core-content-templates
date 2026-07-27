@@ -17,6 +17,10 @@ globalThis.window = {
       variants: { 2: ["FORMAT", "VOLUME_ML", "SCENT_PROFILE"] },
       products: [{ id: 5, code: "CHS_BODY_001" }, { id: 7, code: "CHS_BODY_002" }, { id: 99, code: "FOREIGN_PRODUCT" }],
     }] });
+    // Stock truth is proven in pim-adapter-check.mjs; here the inventory read
+    // only has to succeed and report nothing, so every product stays honestly
+    // unknown rather than borrowing sellability from the enrichment rows.
+    if (String(url).endsWith("/api/inventory/list.json")) return response({ result: [] });
     if (String(url).endsWith("/api/product-review/list.json")) return response({ result: [
       review(101, "CHS_BODY_001", "PUBLISHED", 5, true),
       review(102, "CHS_BODY_001", "PENDING", 4, true),
@@ -64,7 +68,8 @@ assert.equal(normalized.reviews[0].verified, true);
 assert.match(normalized.items[0].modelRef, /^product-model-[a-z0-9]+$/);
 assert.doesNotMatch(normalized.items[0].modelRef, /11|CHS_MODEL/);
 assert.equal(normalized.items[0].reviews.length, 1);
-assert.deepEqual(normalized.enrichment, { models: "ready", reviews: "ready" });
+assert.deepEqual(normalized.enrichment, { models: "ready", reviews: "ready", inventory: "ready" });
+assert.equal(normalized.items[0].sellability, "unknown", "an empty inventory read leaves stock unknown, never in stock");
 
 const privateRequests = requests.filter((request) => request.url.includes("/api/product-"));
 assert.equal(privateRequests.length, 2);
@@ -87,7 +92,7 @@ const closed = await corePimAdapter.load("products", {
   },
   state: { session: { accessToken: "test-token", tokenType: "Bearer" } },
 });
-assert.deepEqual(closed.pimEnrichment, { models: "unavailable", reviews: "unavailable" });
+assert.deepEqual(closed.pimEnrichment, { models: "unavailable", reviews: "unavailable", inventory: "unavailable" });
 assert.equal(requests.filter((request) => request.url.includes("/api/product-")).length, privateRequestCount, "closed mode must not call generic private list APIs");
 
 console.log("core-pim-enrichment-check ok: ProductModel groups products and only valid PUBLISHED ProductReview rows are exposed");

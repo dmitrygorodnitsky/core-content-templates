@@ -46,3 +46,10 @@ that wave's `evidence/punch-list.md` for the finding ids.
 - [`calm-harbor-appointment-status-and-slot-availability-states.md`](calm-harbor-appointment-status-and-slot-availability-states.md)
   covers `In progress`, the unreachable booking states, the specialist step, and
   the honest treatment for "we cannot show you availability".
+
+### From the commerce commands wave
+
+- [`calm-harbor-unknown-stock-shop-state.md`](calm-harbor-unknown-stock-shop-state.md)
+  asks for the Shop treatment when the store has stated no stock at all —
+  distinct from `out-of-stock`, which is a counted zero. Filed by
+  `docs/stream-tasks/calm-harbor-commerce-commands-wave/` slice C2.
