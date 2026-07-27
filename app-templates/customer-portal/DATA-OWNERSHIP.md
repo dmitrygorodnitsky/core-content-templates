@@ -70,7 +70,7 @@ data. `Not opened` means no live contract may be inferred from the UI.
 | Activity and notifications | Event/notification backend | `activity` | fixture; live not opened | May author empty-state copy only | Customer-scoped event feed, pagination/cursor, read acknowledgement semantics. |
 | Proposals: sites, line items, choices, approval/revision/decline | Proposal/CRM backend | `proposals.list`, `proposal.detail` | fixture; live not opened | None | Versioned proposal read model; write commands with optimistic-concurrency/version check and returned proposal state. |
 | Pricing: plan, price, currency, price interval | Core PIM | `pricing` | opened live on dev-1 same-origin | May select PIM query configuration; never author a live price | `POST /core-pim/public/{organization}/catalog/price-comparison.json` is proven for Calm Harbor Spa. Validate normalized rows and retain loading, empty, and error states. |
-| Products: SKU/catalog item, category, attributes, media, availability | Core PIM product catalog | `products`, cart entry points, future public product grid | opened live price-comparison baseline on dev-1; catalog expansion not opened | May control visual module availability only | The adapter reads identity and price rows for configured product types. It does not prove media, inventory, availability, or a complete public catalog contract. |
+| Products: SKU/catalog item, category, attributes, media, availability | Core PIM product catalog | `products`, cart entry points, future public product grid | public identity/price rows opened; authenticated ProductModel and published-review enrichment opened for one-user staging only | May control visual module availability only | The public adapter owns identity and price. `current-api` enrichment may join ProductModel groups and valid PUBLISHED ProductReview rows; generic list scope is not production-safe. Media, inventory, and availability remain unopened until dedicated contracts exist. |
 | Cart, checkout, payment, final total, order creation | Commerce backend and PSP | `checkout` | local/fixture; live not opened | Cannot author cart, payment method, payment token, or price result | Server-calculated total, payment-token handoff, idempotent order creation, and returned order id/status. |
 | Customer profile: name, contacts, addresses, payment-method references, preferences | Customer/profile service and PSP | `profile` | fixture; live not opened | May author labels and field visibility policy, never customer values | Scoped read/write contracts; payment data must use PSP tokens/references only. |
 | Services: service definitions and marketing descriptions | CMS or service catalog | `services`, public SEO | mixed; fixture runtime | Owns editorial service copy and static media | If availability, eligibility, price, or bookability is shown, source it dynamically from service/catalog backend. |
@@ -262,6 +262,13 @@ price on the same page.
   expose only explicitly mapped safe fields.
 - The current Core PIM Products path is a price-comparison baseline, not a
   complete product-catalog contract.
+- The authenticated Calm Harbor staging root explicitly enables
+  `current-api` ProductModel/ProductReview enrichment. It filters reviews to
+  `PUBLISHED` and valid 1–5 ratings, but the server list remains tenant-level;
+  production requires a public/customer-safe published-review endpoint.
+- Product `media` identifiers are not browser image URLs. Galleries remain
+  unopened until Core exposes approved media delivery URLs and the accepted
+  product-detail/gallery design is imported from `design-requests`.
 - The anonymous PIM price contract is proven only for `dev-1` same-origin:
   `POST /core-pim/public/{organization}/catalog/price-comparison.json` returns
   Calm Harbor Spa rows without a bearer token. It sends `no-store`; cross-origin

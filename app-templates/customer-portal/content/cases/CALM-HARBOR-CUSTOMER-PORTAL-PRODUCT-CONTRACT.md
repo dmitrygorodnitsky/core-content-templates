@@ -5,6 +5,7 @@ Status: proposed target contract, v0.1
 Related sources:
 
 - [`CORE-CUSTOMER-PORTAL-CONTRACT.md`](CORE-CUSTOMER-PORTAL-CONTRACT.md)
+- [`SPA-VERTICAL-CORE-MODEL.md`](SPA-VERTICAL-CORE-MODEL.md) — the tenant-side types, workflows and money ownership this contract runs on
 - [`BEAUTY-SCHEDULING-CONTRACT.md`](BEAUTY-SCHEDULING-CONTRACT.md)
 - [`PRODUCTS-AND-SERVICES.md`](PRODUCTS-AND-SERVICES.md)
 - [`../../DATA-OWNERSHIP.md`](../../DATA-OWNERSHIP.md)

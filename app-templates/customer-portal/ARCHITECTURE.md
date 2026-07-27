@@ -154,6 +154,7 @@ The stable root section emitted by `cms/root-template.html` is:
   data-portal-case="{{portal_case}}"
   data-portal-pim-api-base="{{portal_api_base}}"
   data-portal-pim-organization="{{portal_organization}}"
+  data-portal-pim-enrichment="{{portal_pim_enrichment}}"
   data-portal-pim-fixture-url="{{portal_pim_fixture_url}}"
   data-portal-pim-product-type-code="{{portal_pim_product_type_code}}"
   data-portal-pim-currency="{{portal_pim_currency}}"
@@ -296,10 +297,16 @@ the public SEO document remains a separate delivery surface.
 - Static read-only fallback content may remain useful, but must be visibly
   `fallback` and must not enable mutations or masquerade as fresh live data.
 
-The current Core PIM adapter for pricing/products is the only proven live data
-path in the closed baseline. Preserve its request/normalization behavior and
-fixture path. Non-PIM live modules remain `not_opened` until their contracts
-exist.
+The public Core PIM price-comparison adapter remains authoritative for product
+identity and price rows. The Calm Harbor authenticated staging root may opt in
+to `data-portal-pim-enrichment="current-api"`: it joins `ProductModel` groups
+and valid `PUBLISHED` `ProductReview` rows from the current generic PIM list
+APIs. This enrichment is best-effort and never replaces or fabricates public
+catalog rows. The opt-in is staging-only because the generic review list is
+tenant-level, not a public/customer-scoped catalog-detail contract. Product
+media also remains unopened until Core returns a browser-usable approved media
+URL rather than only a `Media` identifier. Non-PIM live modules remain
+`not_opened` until their contracts exist.
 
 ### Canonical Target Shapes And Current Legacy Baseline
 

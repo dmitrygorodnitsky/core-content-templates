@@ -5,6 +5,10 @@ and Account-scoped Orders list adapters are implemented, proven read-only on
 `dev-1`, and wired into the dedicated Calm Harbor manual CMS root. The generic
 multi-vertical CMS runtime has not yet adopted this bootstrap.
 
+The tenant-side model this contract runs on — the Spa types, their attributes,
+the workflows, and who owns each money figure — is
+[`SPA-VERTICAL-CORE-MODEL.md`](SPA-VERTICAL-CORE-MODEL.md).
+
 ## Current Identity Decision
 
 The customer is the one `Account` whose `user` relation points to the currently
