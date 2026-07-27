@@ -115,7 +115,7 @@ surface it, do not silently proceed.
 | slice | zone lead | owner | status | depends_on | validation | done_when |
 | --- | --- | --- | --- | --- | --- | --- |
 | C1 cart adapter | commerce adapters | executor | done | — | `scripts/core-cart-adapter-check.mjs`; live read/add/count/remove against staging | cart reads and mutates through Core with server totals only |
-| C2 sellability | commerce adapters | executor | todo | C1 | inventory join check; out-of-stock row proves an unbuyable product | Shop shows server stock truth, never inferred |
+| C2 sellability | commerce adapters | executor | done | C1 | inventory join check; out-of-stock row proves an unbuyable product | Shop shows server stock truth, never inferred |
 | C3 cart presentation | presentation | executor | todo | C1 | route-state matrix for cart empty/ready/error | accepted cart states render from the live envelope |
 | C4 checkout | command orchestration | executor | todo | C1–C3 | replay, conflict, and readback cases in the adapter check; live order created with typed lines | confirmation renders only from Order readback |
 | C5 fulfillment record | commerce adapters | executor | todo | C4 | pickup shipment joined to the order by `SOURCE_ORDER` | a retail order carries its pickup record |
@@ -144,6 +144,20 @@ surface it, do not silently proceed.
   Core's) → replayed identical count wrote nothing → remove → clear → foreign
   account 4 refused `403 cart-forbidden` → no resolved account refused locally
   with `customer-account-required` and zero calls.
+
+- **C2 sellability — done.** `13bad3f`. One `sellability` field with exactly
+  three values, sourced only from a `SPA_STOCK` row joined by product **id**:
+  `sellable` (positive count), `out-of-stock` (zero), `unknown` (no row, or
+  inventory unreadable). `unknown` is neither of the other two — absence of
+  stock data is absence of permission to sell, so the buy action closes without
+  the presentation claiming an empty shelf. The inventory read filters
+  `type.code`, a real relation column, never `attributes.*`. Counts are never
+  summed. Verified independently by the operator: six adapter checks green.
+  Filed `design-requests/calm-harbor-unknown-stock-shop-state.md`.
+  **Handoff to C4:** `state.js` `spaSellInfo()` still hardcodes
+  `{state: "sellable"}` in live mode, so the adapter's truth does not reach the
+  customer yet. C2 correctly refused to touch the serial hotspot; C4 owns the
+  one-line fix.
 
 ## Backend Corrections Found Live (2026-07-28)
 
