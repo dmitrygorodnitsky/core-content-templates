@@ -81,7 +81,7 @@ export function DevToolbar() {
   }
   var routeSel = h("select", {}, [
     { v: "orders.list", l: "orders.list" }, { v: "order.detail", l: "order.detail" }, { v: "appointment.detail", l: "appointment.detail" }, { v: "care", l: "care" }, { v: "services", l: "services" },
-    { v: "pricing", l: "pricing" }, { v: "products", l: "products" }, { v: "cart", l: "cart" }, { v: "checkout", l: "checkout" },
+    { v: "pricing", l: "pricing" }, { v: "products", l: "products" }, { v: "product.detail", l: "product.detail" }, { v: "cart", l: "cart" }, { v: "checkout", l: "checkout" },
     { v: "account", l: "account" }, { v: "purchases.list", l: "purchases.list" }, { v: "purchase.detail", l: "purchase.detail" }, { v: "plan", l: "plan" },
     { v: "proposals.list", l: "proposals.list" }, { v: "proposal.detail", l: "proposal.detail" },
     { v: "profile", l: "profile" }, { v: "calendar", l: "calendar" }, { v: "activity", l: "activity" }, { v: "support", l: "support" },
@@ -91,6 +91,7 @@ export function DevToolbar() {
     if (routeSel.value === "order.detail" && !state.currentOrderId) { openOrder((currentOrder() || {}).id); }
     else if (routeSel.value === "purchase.detail" && !state.spaCurrentPurchase) { state.spaCurrentPurchase = "pur-9f27a1"; go("purchase.detail"); }
     else if (routeSel.value === "appointment.detail") { if (!state.spaCurrentAppointment) state.spaCurrentAppointment = "appt-ch-10318"; go("appointment.detail"); }
+    else if (routeSel.value === "product.detail") { if (!state.spaCurrentProduct) state.spaCurrentProduct = "prd-7f3a91"; state.spaGallery = 0; go("product.detail"); }
     else go(routeSel.value);
   });
 
@@ -214,6 +215,15 @@ export function DevToolbar() {
       }
     } else if (state.route === "orders.list") {
       spaGroups.push(group("rows", mkSel(["many", "one"], state.spaRows, function (v) { setState({ spaRows: v }); })));
+      spaGroups.push(group("omedia", mkSel(["mixed", "loading", "missing", "forbidden", "broken"], state.spaOrderMedia, function (v) { setState({ spaOrderMedia: v }); })));
+    }
+    /* wave 17 — Shop model grouping + product detail scenarios (both capabilities) */
+    if (state.route === "products" || state.route === "product.detail") {
+      spaGroups.push(group("models", mkSel(["ready", "unavailable"], state.spaModels, function (v) { setState({ spaModels: v }); })));
+    }
+    if (state.route === "product.detail") {
+      spaGroups.push(group("pdet", mkSel(["prd-7f3a91", "prd-2c88de", "prd-b41f07", "prd-9d20c5", "prd-5e6a12", "prd-c130fb", "prd-longform", "unknown-ref"], state.spaCurrentProduct || "prd-7f3a91", function (v) { setState({ spaCurrentProduct: v, spaGallery: 0, view: "ready" }); })));
+      spaGroups.push(group("rev", mkSel(["ready", "loading", "empty", "unavailable", "error"], state.spaReviews, function (v) { setState({ spaReviews: v }); })));
     }
     spaGroups.push(group("name", mkSel(["default", "long"], state.spaLongName ? "long" : "default", function (v) { setState({ spaLongName: v === "long" }); })));
   }

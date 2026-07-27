@@ -798,3 +798,125 @@ true viewport width is authoritative.
    this increment reschedules the time and keeps the visit's service/specialist context.
 5. Package/membership offer benefits copy is CMS/PIM-owned; the fixture list stands in.
 
+
+## Wave 17 — Calm Harbor product models, media galleries & published reviews (Beauty)
+
+Adds the accepted visual system for browsing collections, opening a product, and reading published
+reviews on top of the Wave 14/15 Calm Harbor Shop — tokens, components, responsive conventions, stable
+hooks and the appointment-first IA unchanged. Presentation only: no API, auth, permission, adapter,
+mapping, persistence or command implementation was added. Models, reviews and media are OPTIONAL
+enrichments merged onto the sellable product by the immutable product code / opaque product ref; a failed
+enrichment degrades ONLY its region and never blanks the product.
+
+### 1. Shop grouping (route `products`, modules `product-model-list` / `product-model-section`)
+
+`src/routes/SpaShopPage.js`. When the ProductModel enrichment is available (`state.spaModels === "ready"`)
+the grid is grouped into `product-model-section` blocks (heading = model name + optional **decorative**
+model media (empty alt) + product count + the variant dimensions the model DECLARES via `model.variants`),
+in returned order, followed by a neutral **`Other products`** group for unmodeled products — a series is
+NEVER inferred from a product's code or name. When the enrichment is unavailable the accepted flat grid
+renders with an honest notice and the products stay sellable. Cards gain an OPTIONAL primary image
+(`media[0]`, decorative), the collection name (shown only while models are available) and compact variant
+facts, and carry **`product.open`** (opaque `data-product-ref`) to the detail as a SEPARATE affordance from
+`cart.addItem` (the media + identity are one open button; the Add control is a sibling — no nested
+interactive). Browse-only and retail-commerce-open both group and both link to the detail.
+
+### 2. Product detail (route `product.detail`, module `product-detail`)
+
+`src/routes/SpaProductDetailPage.js`. Opened with an OPAQUE product ref (never an authored id or the PIM
+code as the route param). Composition: back to Shop (`nav.products`), product name, current display price
+(verbatim), description, media gallery, source-provided variant facts, collection link (shown only while
+models are available), add-to-bag and published reviews. Foreign / removed / unknown refs share ONE
+non-enumerating not-found. States: route `loading | ready | error | unauthorized | not-found`; add-to-bag
+reuses the wave-13 command lifecycle (`idle | pending | failed | conflict`; success only from the server
+cart readback) and is present only under `retail-commerce-open` (adding never reserves).
+
+- **Gallery** (`product-gallery` / `product-gallery-primary` / `product-gallery-thumb`, `data-media-ref`):
+  the primary image and thumbnails come from `product.media[]` in EXPLICIT backend order — no image is
+  duplicated to pad the gallery. A raw Media id is never used as a URL (`media.url` is a public/approved
+  asset; while it is missing the accepted striped media slot renders with the backend alt text). Three
+  images render primary + thumbs; **one image** is a deliberate single-image composition; **zero images**
+  renders the accepted no-media state. Thumbnails are keyboard-reachable `<button>`s exposing the selected
+  state (`aria-current` + `data-state="active"`). `product.gallerySelect` changes ONLY the shown image
+  (`state.spaGallery`) — never the product or cart identity. Product images carry backend/CMS alt text;
+  decorative model/collection images use empty alt text.
+
+- **Reviews** (`product-review-list` / `product-review-card`, `data-review-ref`): region-scoped and
+  INDEPENDENT of the route lifecycle (`state.spaReviews` = `ready | empty | loading | unavailable | error`)
+  — the product stays fully sellable while reviews load, are forbidden, or error. Renders ONLY the
+  backend-`PUBLISHED` set; shows the count of the VISIBLE loaded set and claims **no aggregate score /
+  rating average**. Each card: star rating with a textual accessible label (`X out of 5`), optional title,
+  body, backend-supplied public `authorName`, `Verified purchase` ONLY when `review.verified` is true, and
+  optional `publishedAt`. Never exposes Review / Product / User / Account / workflow ids, raw attributes or
+  moderation state. **Read-only initial release — no `Write a review`** (no customer-scoped create contract
+  / moderation submission command exists yet).
+
+### Data (`data/fixtures.js` → `spaCommerce.productCatalog`)
+
+`codeToRef` (merge key), `models[]` (ProductModel enrichment: `ref, name, media?, variants[],
+productCodes[]`), `byRef` (product read models: `ref, code, name, displayPrice, collection?, description,
+variantFacts[], media[]` in explicit order), `reviews` (PUBLISHED-only, keyed by product ref). Opaque refs
+(`prd-* / pmd-* / med-* / rev-*`) are stable non-sequential handles, never raw Core/Media/Review/User ids.
+`prd-longform` is a preview-only long-content scenario for the 390 px overflow check.
+
+### Stable action & state contract
+
+New actions: `product.open` (opaque ref → detail), `product.gallerySelect` (presentation-only image
+select). `cart.addItem` / `nav.products` unchanged. New dev-toolbar selects (on `products` /
+`product.detail`): `models` (`ready | unavailable`), `pdet` (product ref incl. `unknown-ref` for the
+non-enumerating not-found, and `prd-longform`), `rev` (reviews region state). `ui.retry product-reviews`
+reloads only the reviews region.
+
+### Constraints honored
+
+Reuses the accepted Beauty tokens and primitives; the shell, nav, cart and simulated checkout are
+untouched. No fake stock, bestseller label, discount, crossed-out price, rating average, before/after claim
+or invented review count (the count is the visible loaded set only). No generated person is presented as a
+real reviewer (author names are backend-supplied public display names, consistent with every other fixture
+name). Product media is a public / approved asset URL — a raw Media id is never an image URL.
+
+### Evidence
+
+`previews/wave17/` — naming `{scope}-{state}-{width}-{mode}.png`: shop models-ready / models-unavailable,
+product ready (3 images / 1 image / no media), gallery first- vs non-first-selected, reviews ready / empty /
+unavailable / error / loading, add-to-bag pending, not-found, long-content at 390, product ready + reviews
+unavailable in dark mode, across 1440 / 1180 / 768 / 390. Same capture-pane caveat as earlier waves: wide
+widths are scaled-to-fit captures; the live page at true viewport width is authoritative.
+
+### Unresolved product assumptions (recorded, not resolved by design)
+
+1. The customer-facing review count wording ("N published reviews", the visible loaded set) stands in for a
+   backend-owned presentation decision; no aggregate/average is claimed until the backend supplies one.
+2. Which products belong to which ProductModel, and the declared `model.variants` dimensions, are a
+   backend/PIM contract — the fixtures stand in.
+3. Real product photography (public or approved-URL) is not yet delivered; every gallery renders the
+   accepted striped media slot with the backend alt text until assets exist (see MEDIA-SPEC.md conventions).
+4. Whether a collection link should filter the Shop to that model (vs. return to the grouped Shop) is
+   unconfirmed — this increment returns to the Shop, where the collection lives.
+
+
+## Wave 17.1 — staging Order-row representative thumbnail (addendum)
+
+Scoped addendum to the `orders.list` current-staging Order rows only — no other page, component, navigation,
+type, status badge, amount column, route or action changed. The former abstract colored square is replaced by
+an OPTIONAL backend-supplied representative thumbnail (`order-thumb`) in the **same footprint** (38×38,
+`--radius-sm`, same position):
+
+- **retail order → product primary image · service order → service image · package/series order → package or
+  ProductModel hero.** The backend supplies `order.media` (`{kind, url, alt}`); it is NEVER inferred from the
+  order title, type, amount, filename or first order line, and a multi-line order is never rendered as a
+  collage.
+- **No approved image → neutral no-media fallback** in the same footprint (the accepted striped placeholder).
+- Executable media states (dev `omedia`): `mixed` (per-row backend media), `loading` (skeleton in footprint),
+  `missing`, `forbidden`, and `broken` (a supplied `url` that fails → `onerror` swaps to the no-media
+  fallback). Every failure resolves to the neutral fallback **without turning the row into an error or moving
+  the text / status / amount columns**.
+- The thumbnail is decorative (`alt=""`), **not a separate button**, and does not change the read-only
+  behavior of the row. Textual product/service identity (type label + reference + code) is preserved so the
+  list reads without images. Long titles still wrap at 390 px beside a fixed-footprint thumbnail.
+
+Files touched: `data/fixtures.js` (`spa.stagingOrders[].media`), `src/state.js` (`spaOrderMedia`),
+`src/routes/SpaOrdersPage.js` (`orderThumb`), `src/app.js` (dev `omedia`), `styles/routes.css`
+(`.spa-order-thumb`), `manifest.json`, `data/scenarios.json`. Evidence:
+`previews/wave17/orders-thumb-{mixed,broken,loading}-{1440,768,390}-{light,dark}.png`.
+

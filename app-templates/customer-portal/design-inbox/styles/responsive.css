@@ -150,6 +150,15 @@
 
 .vw-mobile .bk-slots { grid-template-columns: repeat(2, 1fr); }
 
+/* Wave 17 — product models, gallery & reviews */
+.vw-tablet .pd-grid, .vw-mobile .pd-grid { grid-template-columns: 1fr; }
+
+/* enriched shop cards (image + facts + add) get one column on phones so the
+   media, facts and add-to-bag never crowd or overflow at 390 */
+.vw-mobile .spa-shop-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .pd-name { font-size: 22px; }
+
 .vw-mobile .bk-compare { grid-template-columns: 1fr; }
 
 .vw-mobile .bk-compare__arrow { transform: rotate(90deg); justify-self: center; }

@@ -153,7 +153,7 @@
    Wave 14 — Calm Harbor spa shell: secondary nav link, account
    control + menu (session identity + sign-out only)
    ============================================================ */
-.nav-link--secondary { color: var(--ink-3); }
+.nav-link--secondary { color: var(--ink-2); }
 
 .nav-link--secondary.nav-link--active { color: var(--ink); }
 

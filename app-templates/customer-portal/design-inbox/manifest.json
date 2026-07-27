@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "wave-16 (modular / customer-portal-design)",
+  "version": "wave-17 (modular / customer-portal-design)",
   "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
   "runtime": "presentation-only. Business logic, API, auth, permissions, persistence are owned by Codex.",
   "entry": "customer-portal-design/source.html",
@@ -9,7 +9,7 @@
     "data-module": "reusable component id (matches components[].id)",
     "data-bind": "fixture field(s) the rendered value came from",
     "data-action": "user command name (matches actions[])",
-    "data-state": "ui state on the element. Route roots: ready|loading|empty|error|unauthorized|not-found|conflict (wave 13). Account bootstrap module: resolving-customer|customer-unavailable|customer-not-linked|customer-account-ambiguous|organization-forbidden|customer-forbidden|session-expired (wave 14 adds the ambiguity/organization gates). Actionable entities (command lifecycle): pending|failed|conflict (succeeded is never stored — success renders only from the server readback). Plus the accepted pending-action|drawer-open|mobile-navigation-open|active. Wave 14: account-menu-open on the spa top-nav; the unmapped raw-status badge carries data-state=unmapped. Wave 15: route roots add unavailable (unopened capability — honest notice, never empty data); purchase lines carry return-accepted-for-review; shop cards carry SERVER sellability (sellable|unavailable|out-of-stock|price-changed|variant-required); cart lines stale-price|inventory-conflict (row-scoped pending); the checkout root carries ready|repriced|inventory-conflict|slot-expired|confirmed (confirmed renders ONLY from the authoritative readback); booking-review carries held|slot-expired|repriced. Wave 16: booking-flow carries the step (context|specialist|slots|review); plan-credit-context carries the SERVER credit state ok|unavailable|exhausted|changed; plan-offer-card carries SERVER sellability sellable|unavailable|changed; the Calm Harbor profile contact panel carries ready|unchanged|dirty|invalid|saving|save-failed|conflict; the appointment detail card carries ready|pending|failed|conflict|cancelled (cancelled/rescheduled only from the readback).",
+    "data-state": "ui state on the element. Route roots: ready|loading|empty|error|unauthorized|not-found|conflict (wave 13). Account bootstrap module: resolving-customer|customer-unavailable|customer-not-linked|customer-account-ambiguous|organization-forbidden|customer-forbidden|session-expired (wave 14 adds the ambiguity/organization gates). Actionable entities (command lifecycle): pending|failed|conflict (succeeded is never stored — success renders only from the server readback). Plus the accepted pending-action|drawer-open|mobile-navigation-open|active. Wave 14: account-menu-open on the spa top-nav; the unmapped raw-status badge carries data-state=unmapped. Wave 15: route roots add unavailable (unopened capability — honest notice, never empty data); purchase lines carry return-accepted-for-review; shop cards carry SERVER sellability (sellable|unavailable|out-of-stock|price-changed|variant-required); cart lines stale-price|inventory-conflict (row-scoped pending); the checkout root carries ready|repriced|inventory-conflict|slot-expired|confirmed (confirmed renders ONLY from the authoritative readback); booking-review carries held|slot-expired|repriced. Wave 16: booking-flow carries the step (context|specialist|slots|review); plan-credit-context carries the SERVER credit state ok|unavailable|exhausted|changed; plan-offer-card carries SERVER sellability sellable|unavailable|changed; the Calm Harbor profile contact panel carries ready|unchanged|dirty|invalid|saving|save-failed|conflict; the appointment detail card carries ready|pending|failed|conflict|cancelled (cancelled/rescheduled only from the readback). Wave 17: product-model-list carries ready|unavailable (optional ProductModel enrichment); product-gallery-thumb carries active (+ aria-current) on the selected image; product-review-list carries ready|loading|empty|unavailable|error (region-scoped — independent of the product route lifecycle); the product-detail add-to-bag reuses the command lifecycle idle|pending|failed|conflict (success only from the server cart readback).",
     "data-visual-id": "stable id for screenshot parity / visual transfer",
     "data-dev-toolbar": "PREVIEW-ONLY harness; Codex strips elements carrying this"
   },
@@ -1716,7 +1716,7 @@
         "order.currency"
       ],
       "wave": 14,
-      "note": "Non-interactive row of normalized safe staging fields only. Raw status renders via status-badge--unmapped (data-state=unmapped) — OPEN is never translated to Upcoming/Confirmed. Row carries data-order-ref. Wave 14.1: at vw-mobile the row is a two-row grid — identity column owns the full width beside the icon (>=180px guaranteed; long names wrap at word boundaries), raw status + amount move to a second row (badge may wrap, never truncates).",
+      "note": "Non-interactive row of normalized safe staging fields only. Raw status renders via status-badge--unmapped (data-state=unmapped) — OPEN is never translated to Upcoming/Confirmed. Row carries data-order-ref. Wave 14.1: at vw-mobile the row is a two-row grid — identity column owns the full width beside the icon (>=180px guaranteed; long names wrap at word boundaries), raw status + amount move to a second row (badge may wrap, never truncates). Wave 17.1: the former abstract colored square is replaced by an OPTIONAL backend-supplied representative thumbnail (order-thumb) in the SAME footprint (38×38, radius-sm) — retail→product primary, service→service image, package/series→package or ProductModel hero; never inferred from title/type/amount/filename/first line, and never a collage for multi-line orders. media states (dev 'omedia'): mixed | loading | missing | forbidden | broken all resolve to the neutral no-media striped fallback WITHOUT turning the row into an error or moving the text/status/amount columns; the thumbnail is decorative (empty alt), not a button, and the row stays read-only. Textual product/service identity is preserved so the list reads without images.",
       "status": "done"
     },
     {
@@ -2063,6 +2063,65 @@
       "states": ["loading", "ready", "error", "unauthorized", "unavailable", "panel: unchanged|dirty|invalid|saving|save-failed|conflict", "session-lost (global gate)"],
       "note": "Calm Harbor least-data Profile (route profile, Beauty only — other verticals keep the accepted generic Profile). Shows/edits ONLY phone, email and the explicitly approved preferences the scoped API returns; NO spend, savings, order stats, addresses, saved cards, plan claims, member-since, raw ids, roles, permissions or organization. Values are the last server-confirmed readback until profile.save succeeds; save failure keeps old confirmed values; version conflict blocks edits until profile.reload; per-field invalid states carry accessible error copy (role=alert, aria-invalid/aria-describedby). Clear Account back path; visually subordinate to the appointment-first product. profile.saveContact remains a preserved alias with its legacy generic-panel meaning.",
       "status": "done"
+    },
+    {
+      "id": "product-model-list",
+      "factory": "inline in SpaShop (routes/SpaShopPage.js)",
+      "props": ["F.spaCommerce.productCatalog.models", "state.spaModels"],
+      "wave": 17,
+      "states": ["ready", "unavailable"],
+      "note": "OPTIONAL ProductModel enrichment on the Shop (data-state on the container). ready = the grid is grouped into product-model-section blocks in returned order + a neutral 'Other products' group; unavailable = the accepted flat grid renders with an honest notice and the products stay sellable. A series is NEVER inferred from a product's code or name.",
+      "status": "done"
+    },
+    {
+      "id": "product-model-section",
+      "factory": "inline in SpaShop",
+      "props": ["model {ref, name, media, variants[], productCodes[]}"],
+      "wave": 17,
+      "note": "One collection/series: heading = model name + OPTIONAL decorative model media (empty alt) + product count + the variant dimensions the model DECLARES via model.variants; then the model's product cards. data-product-model-ref = opaque model ref. The 'Other products' group carries no model ref, no media and no variant dimensions.",
+      "status": "done"
+    },
+    {
+      "id": "spa-shop-card (wave 17 enrichment)",
+      "factory": "productCard (inline in SpaShop)",
+      "props": ["pim product", "product detail read model (media[0], collection, variantFacts)", "retail sellability"],
+      "wave": 17,
+      "note": "The accepted card gains an OPTIONAL primary image (media[0], decorative), the collection name (shown only while models are available) and compact variant facts. product.open (opaque data-product-ref) opens the detail as a SEPARATE affordance from cart.addItem — the media + identity are one open button, the Add control is a sibling (no nested interactive). Sellability + add-to-bag unchanged from wave 15.",
+      "status": "done"
+    },
+    {
+      "id": "product-detail",
+      "factory": "SpaProductDetail (routes/SpaProductDetailPage.js)",
+      "props": ["product read model (F.spaCommerce.productCatalog.byRef[ref])", "state.spaGallery", "state.spaReviews", "state.spaModels"],
+      "wave": 17,
+      "states": ["ready (3 images | 1 image | no media)", "loading", "not-found (non-enumerating)", "error", "unauthorized", "add-to-bag idle|pending|failed|conflict|succeeded-readback"],
+      "note": "Calm Harbor product detail (route product.detail, Beauty only; opaque data-product-ref). Composition: back to Shop (nav.products), product name, current display price (verbatim), description, media gallery, source-provided variant facts, collection link (shown only while models are available), add-to-bag (cart.addItem — SEPARATE from product.open; only under retail-commerce-open; adding never reserves), and published reviews. Foreign/removed/unknown refs share ONE non-enumerating not-found. Models/reviews/media are optional enrichments — a failure degrades only its region, never the sellable product.",
+      "status": "done"
+    },
+    {
+      "id": "product-gallery",
+      "factory": "inline in SpaProductDetail (product-gallery-primary / product-gallery-thumb)",
+      "props": ["product.media[] (ordered)", "state.spaGallery"],
+      "wave": 17,
+      "note": "Media gallery: product-gallery-primary (the selected image) + keyboard-reachable product-gallery-thumb buttons (data-media-ref, data-state=active + aria-current on the selected, aria-label describing the image). Images render from product.media[] in EXPLICIT backend order — no image is duplicated to pad the gallery; a raw Media id is never used as a URL (media.url is a public/approved asset, and while missing the accepted striped slot renders with the backend alt text). One image = a single-image composition; zero = the accepted no-media state. product.gallerySelect changes ONLY the shown image (state.spaGallery), never the product or cart identity.",
+      "status": "done"
+    },
+    {
+      "id": "product-review-list",
+      "factory": "inline in SpaProductDetail",
+      "props": ["F.spaCommerce.productCatalog.reviews[productRef]", "state.spaReviews"],
+      "wave": 17,
+      "states": ["ready", "empty", "loading", "unavailable", "error"],
+      "note": "Region-scoped reviews, INDEPENDENT of the route lifecycle (can be loading/unavailable/error while the product is fully sellable). Renders ONLY the PUBLISHED set the backend resolved; shows the count of the VISIBLE loaded set and claims NO aggregate score / rating average. unavailable/forbidden and error are honest and non-enumerating; error retries via ui.retry product-reviews. data-state on the list.",
+      "status": "done"
+    },
+    {
+      "id": "product-review-card",
+      "factory": "inline in SpaProductDetail",
+      "props": ["review {ref, rating, title?, body, authorName, verified, publishedAt?}"],
+      "wave": 17,
+      "note": "One published review: star rating with a textual accessible label ('X out of 5'), optional title, body, footer (backend-supplied public authorName + 'Verified purchase' ONLY when review.verified is true + optional publishedAt). data-review-ref = opaque review ref. NEVER exposes Review/Product/User/Account/workflow ids, raw attributes or moderation state. No 'Write a review' (read-only initial release).",
+      "status": "done"
     }
   ],
   "dataBindings": [
@@ -2094,6 +2153,7 @@
     "order.rawStatus (staging — VERBATIM backend status via the unmapped treatment)",
     "order.displayTotal (staging — displayed total, verbatim)",
     "order.currency (staging)",
+    "order.media (staging, wave 17.1 — OPTIONAL backend representative thumbnail {kind: product|service|model, url, alt}; url = public/approved asset, never a raw Media id; never inferred from title/type/amount/filename/line)",
     "appointment.service (target — card headline)",
     "appointment.start (target — date + local time)",
     "appointment.specialist (target — optional)",
@@ -2118,7 +2178,11 @@
     "appointment.{ref,service,start,timezoneNote,specialist,visitMode,location,customerStatus,displayPrice,reference,attention,relatedPurchaseRef,allowedActions,version} (wave 16 — appointment detail read model; unknown fields omitted, never guessed)",
     "booking.{ref,version,source,service,planRef,eligibleSpecialists,eligibleSlots,hold{ref,version,expiresAt/untilLabel},review,paymentMode:SIMULATED,displayTotal,policy,allowedActions} (wave 16 — booking flow read model; every option/price/hold label is server-returned)",
     "planOffer.{ref,kind,title,displayPrice,termsSummary,benefits,sellability,allowedActions} (wave 16 — published offers; data-plan-offer-ref)",
-    "profile.{version,displayName,phone,email,preferences,allowedActions} (wave 16 — least-data scoped profile; values are the last server-confirmed readback)"
+    "profile.{version,displayName,phone,email,preferences,allowedActions} (wave 16 — least-data scoped profile; values are the last server-confirmed readback)",
+    "product.{ref,code,name,displayPrice,description,collection,variantFacts[],media[]} (wave 17 — product detail read model; data-product-ref = opaque ref, never an authored id or PIM code as the route param)",
+    "product.media[].{ref,url,alt} (wave 17 — ordered gallery media; data-media-ref; product images carry backend/CMS alt, decorative model/collection images use empty alt; media.url = public/approved asset, never a raw Media id)",
+    "model.{ref,name,media,variants[],productCodes[]} (wave 17 — ProductModel enrichment; data-product-model-ref; model.variants = the declared variant dimensions)",
+    "review.{ref,rating,title,body,authorName,verified,publishedAt} (wave 17 — PUBLISHED reviews only; data-review-ref; no id / raw attribute / moderation state / aggregate score ever)"
   ],
   "actions": [
     "access.confirm",
@@ -2197,6 +2261,8 @@
     "plan.bookWithCredit",
     "plan.cancelRenewal",
     "plan.purchase",
+    "product.gallerySelect",
+    "product.open",
     "products.filter",
     "profile.addAddress",
     "profile.addCard",
@@ -2294,6 +2360,7 @@
     "rule": "current-staging renders ONLY proven read-only sources: the neutral Orders list (raw statuses unmapped), the public PIM Services & prices + browse-only Shop, and the session/account gates. target-appointments renders the capability-gated Appointments IA; none of its fixtures are selectable by the current-staging profile. '+ Book' and the reschedule / cancel / book-again controls exist only while data-booking=open — closed shows an honest disabled treatment, staging shows nothing.",
     "preview": "dev-toolbar selects: spa (capability), booking (closed|open), retail (browse-only|retail-commerce-open — wave 15), appt (salon|home|long|minimal|empty|no-history), rows (many|one), name (default|long), acct (full|partial — account route), plan (active|expiring|exhausted|cancelled|empty — plan route), cart (as-added|stale-price|inventory-conflict — cart route), co + src (checkout route), hold + bookres (open booking), and the state select gains unavailable. All preview-only (data-dev-toolbar).",
     "wave15": "retail-commerce-open (data-retail on top-nav / products / cart / checkout roots) opens the sellable Shop, the persistent server cart and the SIMULATED checkout. Every entity action carries a stable opaque data-*-ref (data-purchase-ref, data-line-ref, data-plan-ref, data-product-ref, data-variant-ref, data-appointment-ref) — never a display name or raw sequential Core id. A simulated confirmation never creates a BalanceTransaction, marks an Invoice paid, issues a receipt or implies that money moved.",
-    "wave16": "Full flow activation. NEW deployment capability: the sellable plan contract (preview: dev select plansell; DOM: data-plan-commerce=closed|open on membership-options) gates the Buy package / Join membership entry — closed keeps the accepted wave-14 offer rows. New opaque refs: data-plan-offer-ref, data-slot-ref, data-day-key, data-hold-ref, data-booking-ref, data-specialist-ref. ALIASES preserved for runtime compatibility (documented, not silently changed): order.reschedule → appointment.reschedule, order.cancel → appointment.cancel (both share the command key order.cancel:<ref>, so the lifecycle is identical), order.bookAgain → appointment.bookAgain; profile.saveContact keeps its legacy generic-panel meaning while the Calm Harbor profile uses profile.save. New dev selects: adet (appointment.detail scenario incl. unknown-ref), plansell + offers (catalog), slots + credit (open booking flow). Exact actionable entities carry data-state=pending|failed|conflict; unrelated entities stay interactive."
+    "wave16": "Full flow activation. NEW deployment capability: the sellable plan contract (preview: dev select plansell; DOM: data-plan-commerce=closed|open on membership-options) gates the Buy package / Join membership entry — closed keeps the accepted wave-14 offer rows. New opaque refs: data-plan-offer-ref, data-slot-ref, data-day-key, data-hold-ref, data-booking-ref, data-specialist-ref. ALIASES preserved for runtime compatibility (documented, not silently changed): order.reschedule → appointment.reschedule, order.cancel → appointment.cancel (both share the command key order.cancel:<ref>, so the lifecycle is identical), order.bookAgain → appointment.bookAgain; profile.saveContact keeps its legacy generic-panel meaning while the Calm Harbor profile uses profile.save. New dev selects: adet (appointment.detail scenario incl. unknown-ref), plansell + offers (catalog), slots + credit (open booking flow). Exact actionable entities carry data-state=pending|failed|conflict; unrelated entities stay interactive.",
+    "wave17": "Product models, media galleries & published reviews (Calm Harbor Shop + new route product.detail, Beauty only). New route hooks: data-route=product.detail, data-product-ref (opaque). Models: product-model-list / product-model-section / data-product-model-ref. Gallery: product-gallery / product-gallery-primary / product-gallery-thumb / data-media-ref. Reviews: product-review-list / product-review-card / data-review-ref. New actions: product.open (opaque ref), product.gallerySelect (presentation-only image select) — cart.addItem stays the separate add command. Models/reviews/media are OPTIONAL enrichments (state.spaModels / state.spaReviews / media[]): a failed enrichment degrades ONLY its region and never blanks the sellable product. New dev selects (products / product.detail routes): models (ready|unavailable), pdet (product ref incl. unknown-ref for the non-enumerating not-found), rev (ready|loading|empty|unavailable|error). No rating average, stock, bestseller, discount, crossed-out price or before/after claim; review count is the visible loaded set only; no 'Write a review' in the read-only initial release."
   }
 }

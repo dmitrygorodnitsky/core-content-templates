@@ -24,6 +24,7 @@ import { SpaOrders } from "./routes/SpaOrdersPage.js";
 import { SpaAppointments } from "./routes/SpaAppointmentsPage.js";
 import { SpaCatalog } from "./routes/SpaCatalogPage.js";
 import { SpaShop } from "./routes/SpaShopPage.js";
+import { SpaProductDetail } from "./routes/SpaProductDetailPage.js";
 import { SpaAccount } from "./routes/SpaAccountPage.js";
 import { SpaPurchases } from "./routes/SpaPurchasesPage.js";
 import { SpaPurchaseDetail } from "./routes/SpaPurchaseDetailPage.js";
@@ -57,6 +58,9 @@ export function renderRoute() {
     case "services":    return isSpa() ? SpaCatalog() : Services();
     case "pricing":     return isSpa() ? SpaCatalog() : Pricing();
     case "products":    return isSpa() ? SpaShop() : Products();
+    /* wave 17 — Calm Harbor product detail: media gallery + published reviews
+       (spa only; opaque product ref). Other verticals keep the accepted Products page. */
+    case "product.detail": return isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
     /* wave 15 — Calm Harbor commercial lifecycle: Account owns Purchases /
        My plan; cart + checkout are the SIMULATED commerce surfaces (spa only —
        other verticals keep the accepted generic checkout). */

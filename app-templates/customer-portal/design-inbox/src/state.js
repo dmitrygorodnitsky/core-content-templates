@@ -95,6 +95,16 @@ export var state = {
   spaOfferDemo: "sellable",        // published-offer review scenario: sellable | unavailable | changed
   spaPlanOffer: null,              // offer ref feeding checkout source `plan`
   spaRescheduled: {},              // appointment ref -> { start } from the authoritative readback
+  /* wave 17 — product models, media galleries & published reviews. `spaModels`
+     and `spaReviews` are OPTIONAL-ENRICHMENT states, region-scoped: a failure
+     never blanks the sellable product/shop, it only degrades its own region.
+     `spaGallery` is presentation-only (selected media index) — it never changes
+     the product or cart identity. */
+  spaCurrentProduct: null,         // opaque product ref of the open product.detail (null -> not-found)
+  spaGallery: 0,                   // selected gallery media index (presentation state only)
+  spaModels: "ready",              // ProductModel enrichment on the shop: ready | unavailable
+  spaOrderMedia: "mixed",          // staging Order-row thumbnails (wave 17.1): mixed | loading | missing | forbidden | broken
+  spaReviews: "ready",             // reviews region: ready | loading | empty | unavailable | error
   spaProfile: null,                // server-confirmed profile readback override: {phone,email,prefs} | null(=fixture)
   spaProfileDraft: null,           // in-progress edit buffer | null (null = not editing)
   spaProfileErrors: null,          // per-field validation: {phone?,email?} | null (conflict is read from the profile.save command phase)
@@ -152,6 +162,23 @@ export function currentAppointment() {
   var r = state.spaRescheduled[a.ref];
   if (r) return Object.assign({}, a, { start: r.start, customerStatus: "Confirmed", attention: "Rescheduled \u2014 confirmed by the studio. The previous time was released." });
   return a;
+}
+/* wave 17 — product catalog helpers (Calm Harbor Shop + product detail).
+   Models / reviews are optional enrichments: these resolve source-provided
+   read models only, never inferring a collection, image or review. */
+export function spaProductRef(code) { return F.spaCommerce.productCatalog.codeToRef[code] || null; }
+/* open product detail read model (null = non-enumerating not-found) */
+export function currentProduct() {
+  var ref = state.spaCurrentProduct;
+  return ref ? (F.spaCommerce.productCatalog.byRef[ref] || null) : null;
+}
+/* published reviews for one product ref (already PUBLISHED-only in the fixture) */
+export function productReviews(ref) { return F.spaCommerce.productCatalog.reviews[ref] || []; }
+/* ProductModel enrichment availability on the shop (region-scoped) */
+export function spaModelsReady() { return state.spaModels === "ready"; }
+/* SERVER sellability for a retail code (never inferred in the browser) */
+export function spaSellInfo(code) {
+  return F.spaCommerce.retail.products.find(function (r) { return r.code === code; }) || { state: "unavailable" };
 }
 /* wave 16 — last server-confirmed profile values (readback override over fixture) */
 export function spaProfileValues() {

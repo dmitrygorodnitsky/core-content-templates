@@ -1,7 +1,8 @@
 {
   "$schema": "./scenarios.schema (informal)",
   "product": "Aircove Customer Portal",
-  "wave": 16,
+  "wave": 17,
+  "descriptionWave17": "Wave 17 adds product models, media galleries and published reviews to the Calm Harbor Shop (Beauty). The Shop route gains an OPTIONAL ProductModel grouping (product-model-list / product-model-section, data-product-model-ref): heading = model name + optional decorative model media + product count + the variant dimensions the model declares; unmodeled products fall under a neutral 'Other products' group (no inferred series); when the models enrichment is unavailable the accepted flat grid renders with an honest notice and products stay sellable. Cards gain an optional primary image, collection name and compact variant facts, and open the product via product.open (opaque data-product-ref) as a SEPARATE affordance from cart.addItem. NEW route product.detail (Beauty only, opaque product ref): back to Shop, product name, current display price, description, media gallery (product-gallery / product-gallery-primary / product-gallery-thumb, data-media-ref — images in explicit backend order, no duplicated image; 3-image, single-image and no-media compositions; keyboard-reachable thumbnails exposing selected state via product.gallerySelect, presentation-only), source-provided variant facts, collection link, add-to-bag (retail-commerce-open only; idle/pending/failed/conflict/readback), and published reviews (product-review-list / product-review-card, data-review-ref): PUBLISHED set only, count of the visible loaded set, NO aggregate score, 'Verified purchase' only when review.verified, no exposed ids, read-only (no 'Write a review'). Models/reviews/media are optional enrichments (state.spaModels / state.spaReviews): a failed enrichment degrades only its region and never blanks the sellable product. New dev selects: models, pdet (incl. unknown-ref → non-enumerating not-found), rev.",
   "descriptionWave16": "Wave 16 activates every remaining Calm Harbor flow except Support: (1) a standalone customer-owned Appointment detail route (appointment.detail) opened from upcoming/past rows — source-provided fields only, actions rendered exactly from allowedActions, ONE non-enumerating not-found for foreign/removed/unknown refs, cancelled/rescheduled readback states; (2) the COMPLETE booking flow in the accepted drawer from every supported entry (service Book, empty Appointments, Book again, Book with a credit, Reschedule): context → optional specialist (only when returned) → eligible date/slot selection with loading/empty/error → expiring SERVER slot hold (display label, never a local countdown; hold pending/held/expired/failed) → review with server display total, policy ack, repriced/conflict blocking, explicit 'Simulation — no charge will be made', and the authoritative Appointment-only / Appointment+Order confirmation; reschedules show current vs proposed and release the original visit only in the readback; plan-credit states ok/unavailable/exhausted/changed gate the flow verbatim; (3) package & membership purchase entry on the published offers while the sellable plan contract is open (data-plan-commerce, plan.purchase → the accepted SIMULATED checkout with source plan; sellable/unavailable/changed states; confirmation links to BOTH the created purchase and My plan); (4) the Calm Harbor least-data Profile (phone, email, approved preferences only; unchanged/dirty, invalid, saving, save-failed with confirmed values preserved, version conflict requiring profile.reload, session-lost, confirmed readback). Preserved runtime ALIASES (documented): order.reschedule/order.cancel/order.bookAgain → appointment.*, profile.saveContact (legacy generic panel). New dev selects: adet, plansell, offers, slots, credit.",
   "descriptionWave15": "Wave 15 extends the Calm Harbor portal with the customer commercial lifecycle under the accepted shell: Account (4th primary destination; entries available|unavailable per contract), Purchases list (backend-mapped customer statuses; filters only for returned kinds; cursor append), purchase detail (source-provided grouping only, separate totals/fulfillment/appointment/plan dimensions, capability-driven request flows for cancellation and returns with accepted-for-review readbacks and no refund claims), My plan (package vs recurring membership, server-provided balances only), the sellable Shop + persistent server cart + SIMULATED checkout behind the new retail-commerce-open capability (explicit 'Simulation — no charge will be made' treatment, 'Confirm order' — never 'Pay now', confirmation only from the authoritative readback: 'Order confirmed' / 'Booking confirmed' / 'Demo checkout completed'), and the booking confirmation bridge (paymentMode SIMULATED, blocking held-slot-expired / repriced review states, confirm result Appointment-only or Appointment+Order). New dev-toolbar selects: retail, acct, plan, cart, co, src, hold, bookres; state select adds unavailable.",
   "description": "Coverage map of routes, UI states, verticals (themes), feature flags and viewports. Wave 9 adds two non-weather verticals (Health, Beauty) on the new 'appointments' profile, with their own care hubs and SEO-landing content. Wave 10 replaces the fixture phone/OTP login with the Core OIDC redirect presentation: route auth.oidc at /login, module core-oidc-auth. Wave 11 ships the Beauty seo.landing as the Calm Harbor Spa release: seo-products-teaser (public PIM retail teaser), CMS media slots on hero/proof, and honest-navigation public CTAs (nav.services / nav.pricing / nav.products / auth.gotoSignin — no booking/payment/checkout command). Wave 13 adds the authenticated live-data states: a shared account-bootstrap gate (resolving-customer / customer-unavailable / customer-not-linked / customer-forbidden / session-expired — no private fixture data renders while unresolved/failed, TopNav renders gated), route lifecycle states on every private route root (loading/empty/error/unauthorized plus not-found/conflict where the route is entity-scoped), and an entity-scoped command lifecycle (state.commands['<action>:<entityId>'] = pending|failed|conflict; succeeded renders ONLY from the server readback; session-lost clears pending, suppresses success and opens the expired-session gate with the intended route preserved). Preview: dev-toolbar 'account' select (private routes), 'cmd' outcome select, extended 'state' select. Wave 14 ships the Calm Harbor Spa authenticated portal IA on the Beauty vertical: two capability variants of one portal (data-capability current-staging | target-appointments, data-booking closed | open, data-portal-profile spaStaging | spaTarget — deployment config, dev-toolbar preview). current-staging: Orders (neutral READ-ONLY Core Order rows — raw status unmapped, no dates/commands/navigation), Services & prices (one destination over the stable services+pricing routes), Shop (browse-only public PIM fields), account menu. target-appointments: Appointments as the authenticated default (next-appointment hero + upcoming/past; at-salon and at-your-place visit modes; long-label and missing-optional-field scenarios), '+ Book' and reschedule/cancel/book-again ONLY while booking is open; cancel is a full entity-scoped command (pending/failed/conflict/session-lost; success from readback only). Account bootstrap gains customer-account-ambiguous and organization-forbidden.",
@@ -173,7 +174,7 @@
         "success-toast",
         "unauthorized"
       ],
-      "note": "Wave 14 (Beauty/Calm Harbor): capability current-staging renders SpaOrders — a neutral read-only Core Order list (type label/code, reference, raw UNMAPPED status, displayed total + currency; no date/time, specialist, location, tracking, invoice, detail navigation or reschedule/cancel/book-again); states ready(one|many via dev 'rows')/loading/empty/error/unauthorized. Capability target-appointments renders SpaAppointments — the appointment-first default (greeting, next-appointment hero, primary valid action, Upcoming/Past): scenarios salon | home | long | minimal | empty | no-history via dev 'appt' select, plus loading/error/unauthorized gates that never show a fixture. Other verticals keep the accepted Cabinet/StormHome."
+      "note": "Wave 14 (Beauty/Calm Harbor): capability current-staging renders SpaOrders — a neutral read-only Core Order list (type label/code, reference, raw UNMAPPED status, displayed total + currency; no date/time, specialist, location, tracking, invoice, detail navigation or reschedule/cancel/book-again); states ready(one|many via dev 'rows')/loading/empty/error/unauthorized. Capability target-appointments renders SpaAppointments — the appointment-first default (greeting, next-appointment hero, primary valid action, Upcoming/Past): scenarios salon | home | long | minimal | empty | no-history via dev 'appt' select, plus loading/error/unauthorized gates that never show a fixture. Other verticals keep the accepted Cabinet/StormHome. Wave 17.1: each staging Order row shows an OPTIONAL backend-supplied representative thumbnail (order-thumb) in the SAME footprint as the former abstract square — media states mixed | loading | missing | forbidden | broken (dev 'omedia') all resolve to the neutral no-media fallback without erroring the row or moving the text/status/amount columns; media is never inferred from title/type/amount/filename/line and multi-line orders are never a collage."
     },
     {
       "id": "order.detail",
@@ -244,9 +245,21 @@
         "ready",
         "empty",
         "loading",
-        "error"
+        "error",
+        "models-ready (grouped by ProductModel + Other products)",
+        "models-unavailable (flat grid + honest notice)"
       ],
-      "note": "Wave 14 (Beauty): browse-only Shop (SpaShop) — code/name/short description/displayed price only; Browse-only chip; no Add to cart, inventory, availability, checkout or purchase success. Visually secondary to Appointments and Services & prices (muted last nav item; no rail placement). Other verticals keep the accepted Products page. Wave 15: under retail-commerce-open (data-retail) the SAME cards become sellable with SERVER sellability states (sellable | unavailable | out-of-stock | price-changed | variant-required), row-scoped add-to-bag commands and a bag indicator — copy never implies reservation."
+      "note": "Wave 14 (Beauty): browse-only Shop (SpaShop) — code/name/short description/displayed price only; Browse-only chip; no Add to cart, inventory, availability, checkout or purchase success. Visually secondary to Appointments and Services & prices (muted last nav item; no rail placement). Other verticals keep the accepted Products page. Wave 15: under retail-commerce-open (data-retail) the SAME cards become sellable with SERVER sellability states (sellable | unavailable | out-of-stock | price-changed | variant-required), row-scoped add-to-bag commands and a bag indicator — copy never implies reservation. Wave 17: OPTIONAL ProductModel grouping (product-model-list / product-model-section) with an 'Other products' group for unmodeled items (no inferred series); models-unavailable falls back to the accepted flat grid + honest notice with products still sellable; cards gain an optional primary image, collection name and compact variant facts and open the product detail via product.open (opaque data-product-ref), a SEPARATE affordance from cart.addItem."
+    },
+    {
+      "id": "product.detail",
+      "path": "/products/:ref",
+      "wave": 17,
+      "implemented": true,
+      "auth": "private",
+      "verticals": ["Beauty (Calm Harbor)"],
+      "states": ["ready (3 images)", "ready (1 image)", "ready (no media)", "loading", "not-found (non-enumerating — unknown/removed/foreign refs identical)", "error", "unauthorized", "gallery: first-selected | non-first-selected", "add-to-bag: idle|pending|failed|conflict|succeeded-readback", "reviews: ready|empty|loading|unavailable|error"],
+      "note": "Opened via product.open (opaque data-product-ref) from the Shop cards. Composition: back to Shop (nav.products), product name, current display price (verbatim), description, media gallery (product.media[] in explicit backend order — no duplicated image; 1 image = single composition; 0 = accepted no-media state), source-provided variant facts, collection link (shown only while models are available), add-to-bag (cart.addItem — SEPARATE command, retail-commerce-open only, adding never reserves) and published reviews. product.gallerySelect changes ONLY the shown image (state.spaGallery) — never the product or cart identity. Reviews are region-scoped (state.spaReviews) and independent of the route lifecycle. Dev select pdet picks the scenario incl. prd-longform (390 overflow check) and unknown-ref (not-found); rev drives the reviews region; models drives grouping/unavailable."
     },
     {
       "id": "checkout",
@@ -441,6 +454,8 @@
     "nav.services",
     "nav.pricing",
     "nav.products",
+    "product.open",
+    "product.gallerySelect",
     "nav.go",
     "theme.pick",
     "ui.toggleMode",
@@ -554,6 +569,14 @@
         "unavailable (support-unavailable notice)"
       ],
       "note": "No approved support destination and no opened customer support-thread source: support.open/support.email/support.call all end at the honest modal notice ('nothing was opened, sent or recorded'). The fixture support route, chat-panel, threads, tickets and agent state are unreachable through Calm Harbor navigation, and no success-like toast implies delivery."
+    },
+    "product-model-list (products, wave 17)": {
+      "states": ["ready", "unavailable"],
+      "note": "OPTIONAL ProductModel enrichment on the Shop. ready groups products into product-model-section blocks (name + optional decorative media + count + declared variant dimensions) plus a neutral 'Other products' group; unavailable renders the accepted flat grid with an honest notice and keeps products sellable. A series is never inferred from a code or name. Preview via dev 'models'."
+    },
+    "product-review-list (product.detail, wave 17)": {
+      "states": ["ready", "empty", "loading", "unavailable", "error"],
+      "note": "Region-scoped published reviews, independent of the product route lifecycle. Renders only the PUBLISHED loaded set and shows its count — never an aggregate score. 'Verified purchase' renders only when review.verified is true; no id/attribute/moderation state is exposed; read-only (no 'Write a review'). unavailable/forbidden and error are non-enumerating; error retries via ui.retry product-reviews. Preview via dev 'rev'."
     }
   },
   "implementedStates": {
@@ -570,6 +593,7 @@
       "spa staging: ready one/many + unmapped raw status",
       "spa target: salon/home/long/minimal/empty/no-history + cancel pending/failed/conflict/cancelled-readback",
       "spa staging: intentional mobile long-row composition (390 grid)",
+      "spa staging: order-row thumbnail mixed/loading/missing/forbidden/broken-fallback (same footprint, no column shift) + long title at 390",
       "spa: support-unavailable notice"
     ],
     "order.detail": [
@@ -604,7 +628,24 @@
       "cart.addItem pending/failed (entity-scoped)",
       "loading (spa)",
       "empty (spa honest shelf)",
-      "browse-only (no cart/checkout)"
+      "browse-only (no cart/checkout)",
+      "models grouped (ProductModel sections + Other products)",
+      "models unavailable (flat grid + notice)",
+      "card product.open (opaque ref) + primary image + collection + variant facts"
+    ],
+    "product.detail": [
+      "ready (3 images)",
+      "ready (1 image)",
+      "ready (no media)",
+      "loading",
+      "not-found (non-enumerating)",
+      "error",
+      "unauthorized",
+      "gallery first-selected / non-first-selected (keyboard-reachable thumbs, aria-current)",
+      "add-to-bag idle/pending/failed/conflict/readback",
+      "reviews ready/empty/loading/unavailable/error",
+      "collection link + source-provided variant facts",
+      "long name/description/collection/review-body no-overflow at 390"
     ],
     "checkout": [
       "ready",

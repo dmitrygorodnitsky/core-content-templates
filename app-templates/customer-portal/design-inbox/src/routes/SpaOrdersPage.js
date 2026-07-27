@@ -17,6 +17,31 @@ import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { routeStateBody } from "../components/primitives/RouteStates.js";
 import { skeletonRow } from "../components/primitives/LoadingState.js";
 
+/* wave 17.1 — the row's representative thumbnail, in the SAME footprint as the
+   former abstract square (.order-card__icon). The image is BACKEND-supplied
+   (o.media) and never inferred; any media failure (missing / forbidden /
+   broken) resolves to the neutral no-media fallback WITHOUT turning the row
+   into an error or shifting the text / status / amount columns. It is not a
+   button and does not change the read-only row. state.spaOrderMedia is a
+   preview override for the media states (dev 'omedia'). */
+function orderThumb(o) {
+  var mode = state.spaOrderMedia;
+  var base = { "class": "order-card__icon spa-order-thumb", "data-visual-id": "order-thumb", "data-media-kind": (o.media && o.media.kind) || "none", "aria-hidden": "true" };
+  if (mode === "loading") { base["class"] += " skeleton"; base["data-state"] = "loading"; return h("div", base); }
+  var showImg = mode === "broken" ? true : (mode !== "missing" && mode !== "forbidden" && o.media && o.media.url);
+  if (showImg) {
+    base["data-state"] = "ready";
+    var wrap = h("div", base);
+    var src = mode === "broken" ? "media/orders/__unresolved__.webp" : o.media.url;
+    var img = h("img", { "class": "spa-order-thumb__img", src: src, alt: "", "data-bind": "order.media.url" });
+    img.addEventListener("error", function () { wrap.setAttribute("data-state", "no-media"); if (img.parentNode) wrap.removeChild(img); });
+    wrap.appendChild(img);
+    return wrap;
+  }
+  base["data-state"] = "no-media"; /* missing / forbidden / no approved image — same neutral footprint */
+  return h("div", base);
+}
+
 export function SpaOrders() {
   var page = h("section", { "class": "page", "data-route": "orders.list", "data-state": state.view, "data-visual-id": "spa-orders", "data-capability": "current-staging", "data-screen-label": "Orders (current staging)" });
   page.appendChild(PageHeader({ title: spaCustomer().greeting, sub: "Here\u2019s what\u2019s on your account." }));
@@ -46,9 +71,8 @@ export function SpaOrders() {
     }));
   } else {
     rows.forEach(function (o, i) {
-      var pal = F.PAL[i % 4];
       listWrap.appendChild(h("article", { "class": "spa-order-row", "data-module": "spa-order-row", "data-visual-id": "spa-order-row", "data-order-ref": o.ref }, [
-        h("div", { "class": "order-card__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+        orderThumb(o),
         h("div", { "class": "spa-order-row__body" }, [
           h("div", { "class": "order-card__name", "data-bind": "order.typeLabel" }, o.typeLabel),
           h("div", { "class": "order-card__meta" }, [

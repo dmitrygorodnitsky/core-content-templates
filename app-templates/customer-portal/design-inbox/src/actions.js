@@ -93,6 +93,12 @@ export var ACTIONS = {
   "appointment.reschedule": function (id) { openSpaFlow({ entry: "reschedule", rescheduleOf: id }); },
   "appointment.cancel": function (id) { spaApptCancel(id); },
   "appointment.bookAgain": function (id) { openSpaFlow({ entry: "book-again", fromAppt: id }); },
+  /* ============ wave 17 — product detail + media gallery (Calm Harbor Shop) ============
+     product.open carries the OPAQUE product ref (never the PIM code or a name).
+     product.gallerySelect is presentation-only: it changes the shown image, never
+     the product or cart identity. cart.addItem stays the SEPARATE add command. */
+  "product.open":      function (id) { state.spaCurrentProduct = id; state.spaGallery = 0; state.view = "ready"; go("product.detail"); },
+  "product.gallerySelect": function (id) { setState({ spaGallery: Math.max(0, Number(id) || 0) }); },
   "proposal.review":   function ()   { go("proposals.list"); },
   "proposal.open":     function (id) { openProposal(id); },
   "proposal.selectPlan": function (id) { selectPlan(id); },
@@ -257,6 +263,8 @@ export var ACTIONS = {
     if (id === "slots") { setState({ spaSlots: "ready" }); toast("Times reloaded — current availability shown"); return; }
     if (id === "plan-offers") { setState({ spaOfferDemo: "sellable" }); toast("Offers reloaded — current price and terms shown"); return; }
     if (id === "plan-credit") { setState({ spaCredit: "ok" }); toast("Plan balance reloaded"); return; }
+    /* wave 17 — reviews are a region-scoped enrichment: retry reloads only that region */
+    if (id === "product-reviews") { setState({ spaReviews: "ready" }); toast("Reviews reloaded"); return; }
     if (id && state.commands[id]) { clearCommand(id); render(); return; }
     setState({ view: "ready" });
   },
@@ -740,6 +748,8 @@ export function pickTheme(name) {
   state.spaCurrentAppointment = null; state.spaFlow = null; state.spaBookAck = false;
   state.spaSlots = "ready"; state.spaCredit = "ok"; state.spaOfferDemo = "sellable"; state.spaPlanOffer = null;
   state.spaRescheduled = {}; state.spaProfile = null; state.spaProfileDraft = null; state.spaProfileErrors = null;
+  /* wave 17 — nothing product-detail/enrichment-session-scoped survives a vertical switch */
+  state.spaCurrentProduct = null; state.spaGallery = 0; state.spaModels = "ready"; state.spaReviews = "ready"; state.spaOrderMedia = "mixed";
   pickThemeResetCart();
   render();
 }
