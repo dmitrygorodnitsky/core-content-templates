@@ -85,10 +85,14 @@ export function addCoreCartItem(input, context, fetchImpl = globalThis.fetch, ex
 
   return singleFlight("cart:add:" + api.accountId + ":" + priceId + ":" + requestRef, async function () {
     var before = await readCart(api, fetchImpl);
+    // `CartItemRequest.currency` is the Dictionary entity id, not the code:
+    // Core answers a code with `404 "No sellable price found"` wrapped in a 500.
+    var currencyId = positiveInteger(input && input.currencyId)
+      || await currencyIdByCode(api, fetchImpl, text(input && input.currency) || before.currencyCode || defaultCurrency(api));
     await requestJson(fetchImpl, api.billBase + ITEMS_PATH, requestOptions(api, "POST", {
       accountId: api.accountId,
       count: count,
-      currency: text(input && input.currency) || before.currencyCode || defaultCurrency(api),
+      currency: currencyId,
       metadata: (input && input.metadata) || null,
       notes: text(input && input.notes) || null,
       priceId: priceId,
@@ -170,16 +174,29 @@ async function readCart(api, fetchImpl) {
   var view = await requestJson(fetchImpl,
     api.billBase + CART_PATH + "?accountId=" + api.accountId,
     requestOptions(api, "GET", null));
-  return normalizeCart(view, api);
+  // Cart rows carry their currency as a Dictionary id, so the code that formats
+  // the money is resolved from Core rather than assumed from configuration.
+  var codes = await currencyCodesByIds(api, fetchImpl, currencyIdsIn(view));
+  return normalizeCart(view, api, codes);
 }
 
 /* Every money field below is copied, never derived. `lineAmount` is Core's own
    figure for the line; the portal does not multiply `unitAmount` by `count`
    even though it could, because a computed figure is not a server figure. */
-function normalizeCart(view, api) {
-  var currencyCode = currencyOf(view && view.currency) || defaultCurrency(api);
+function normalizeCart(view, api, codes) {
   var rows = Array.isArray(view && view.items) ? view.items : [];
-  var lines = rows.map(function (row) { return normalizeLine(row, currencyCode, api); });
+  // `CartView` carries no currency of its own on this deployment; the cart's
+  // currency is the one its lines agree on, and the configured default only
+  // when there are no lines to ask.
+  var lineCodes = [];
+  rows.forEach(function (row) {
+    var code = codes[String(row && row.currency)] || currencyOf(row && row.currency);
+    if (code && lineCodes.indexOf(code) < 0) lineCodes.push(code);
+  });
+  var currencyCode = currencyOf(view && view.currency)
+    || (lineCodes.length === 1 ? lineCodes[0] : "")
+    || defaultCurrency(api);
+  var lines = rows.map(function (row) { return normalizeLine(row, currencyCode, api, codes); });
   var byRef = {};
   lines.forEach(function (line) { byRef[line.ref] = line; });
   var subtotal = finiteNumber(view && view.subtotal, null);
@@ -198,10 +215,10 @@ function normalizeCart(view, api) {
   };
 }
 
-function normalizeLine(row, cartCurrency, api) {
+function normalizeLine(row, cartCurrency, api, codes) {
   var priceId = positiveInteger(row && row.priceId);
   if (!priceId) throw contractError("invalid-cart-line", "Core cart item did not include a price id");
-  var currencyCode = currencyOf(row && row.currency) || cartCurrency;
+  var currencyCode = codes[String(row && row.currency)] || currencyOf(row && row.currency) || cartCurrency;
   var unitAmount = finiteNumber(row && row.unitAmount, null);
   var lineAmount = finiteNumber(row && row.lineAmount, null);
   var productCode = text(row && row.productCode);
@@ -239,6 +256,47 @@ function catalogTitle(api, productCode, productId) {
   return "";
 }
 
+/* Currency crosses this boundary in both directions and in two shapes: a write
+   sends the Dictionary id, a read returns it, and only its code can format
+   money. Both lookups go to Core — nothing here assumes that 17 means USD. */
+function currencyIdsIn(view) {
+  var ids = [];
+  var rows = Array.isArray(view && view.items) ? view.items : [];
+  rows.concat([view || {}]).forEach(function (row) {
+    var id = positiveInteger(row && row.currency);
+    if (id && ids.indexOf(id) < 0) ids.push(id);
+  });
+  return ids;
+}
+
+async function currencyCodesByIds(api, fetchImpl, ids) {
+  if (!ids.length) return {};
+  var rows = await listDictionary(api, fetchImpl, ids.map(function (id) {
+    return { operator: "=", property: "id", type: "INTEGER", value: String(id) };
+  }));
+  var byId = {};
+  rows.forEach(function (row) { byId[String(row.id)] = text(row.code); });
+  return byId;
+}
+
+async function currencyIdByCode(api, fetchImpl, code) {
+  if (!code) throw contractError("cart-currency-missing", "A currency is required to add a cart item");
+  var rows = await listDictionary(api, fetchImpl, [{ operator: "=", property: "code", type: "STRING", value: code }]);
+  var id = positiveInteger(rows[0] && rows[0].id);
+  if (!id) throw contractError("cart-currency-missing", "Currency " + code + " is not provisioned in this organization");
+  return id;
+}
+
+async function listDictionary(api, fetchImpl, filters) {
+  var response = await requestJson(fetchImpl, api.coreBase + "/api/dictionary/list.json", requestOptions(api, "POST", {
+    filters: filters,
+    mappings: [{ name: "id" }, { name: "code" }],
+    offset: 0,
+    pageSize: 50,
+  }));
+  return Array.isArray(response && response.result) ? response.result : [];
+}
+
 function cartPriceId(input) {
   var direct = positiveInteger(input && input.priceId);
   if (direct) return direct;
@@ -274,6 +332,7 @@ function cartContext(context, explicitOrigin) {
     billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
     catalog: (products && Array.isArray(products.items) ? products.items : []),
     config: config,
+    coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
     organization: organization,
   };
 }
@@ -303,10 +362,14 @@ async function requestJson(fetchImpl, url, options) {
   var response = await fetchImpl(url, options);
   if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core cart request returned an invalid response");
   if (!response.ok) {
+    // An existing account that is not the caller's is refused with 403; an
+    // accountId that does not exist at all comes back 404, which is a different
+    // fault and must not be reported as someone else's cart.
     var code = response.status === 401 ? "session-expired"
       : response.status === 403 ? "cart-forbidden"
-        : response.status === 409 || response.status === 412 ? "cart-conflict"
-          : "cart-unavailable";
+        : response.status === 404 ? "cart-account-unknown"
+          : response.status === 409 || response.status === 412 ? "cart-conflict"
+            : "cart-unavailable";
     var error = contractError(code, "Core cart request failed with HTTP " + response.status);
     error.status = response.status;
     throw error;

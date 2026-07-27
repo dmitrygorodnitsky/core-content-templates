@@ -19,6 +19,7 @@ function contextFor(overrides = {}) {
   return {
     config: {
       billApiBase: "/core-bill",
+      coreApiBase: "/core",
       currency: "USD",
       organization: "CALM_HARBOR_SPA_STAGING",
       origin,
@@ -47,27 +48,34 @@ function cartServer(options = {}) {
     swallowWrites: options.swallowWrites || false,
   };
 
+  /* Mirrors the live shape: `CartView` carries NO currency of its own, and each
+     item's `currency` is a stringified Dictionary id, not a code. */
   function view() {
-    if (options.omitSubtotal) {
-      return { currency: "USD", id: 7, items: state.items, itemCount: state.items.length, organization: { code: "CALM_HARBOR_SPA_STAGING" } };
-    }
-    return {
-      currency: "USD",
+    const base = {
       id: 7,
       itemCount: state.items.reduce((sum, item) => sum + item.count, 0),
       items: state.items,
-      notes: "",
-      organization: { code: "CALM_HARBOR_SPA_STAGING" },
-      // Deliberately the server's own arithmetic, not the client's.
-      subtotal: options.subtotal != null ? options.subtotal : state.items.reduce((sum, item) => sum + item.lineAmount, 0),
+      organization: "CALM_HARBOR_SPA_STAGING",
     };
+    if (options.omitSubtotal) return base;
+    // Deliberately the server's own arithmetic, not the client's.
+    return { ...base, subtotal: options.subtotal != null ? options.subtotal : state.items.reduce((sum, item) => sum + item.lineAmount, 0) };
   }
 
   const fetchImpl = async function (url, init) {
     calls.push({ body: init && init.body ? JSON.parse(init.body) : null, method: init.method, url });
     const parsed = new URL(url);
-    const accountId = Number(parsed.searchParams.get("accountId"));
     if (options.status) return { ok: false, status: options.status, async json() { return {}; } };
+
+    // Currency lives in the core Dictionary and is resolved in both directions.
+    if (parsed.pathname.endsWith("/api/dictionary/list.json")) {
+      const filters = JSON.parse(init.body).filters;
+      const matches = [{ code: "USD", id: 17 }].filter((row) => filters.some((filter) =>
+        filter.property === "id" ? String(row.id) === filter.value : row.code === filter.value));
+      return { ok: true, status: 200, async json() { return { result: matches, resultSize: matches.length }; } };
+    }
+
+    const accountId = Number(parsed.searchParams.get("accountId"));
     if (accountId !== ACCOUNT_ID && init.method !== "POST") {
       return { ok: false, status: 403, async json() { return {}; } };
     }
@@ -92,7 +100,7 @@ function cartServer(options = {}) {
         if (line) { line.count += body.count; line.lineAmount = line.unitAmount * line.count; }
         else {
           state.items.push({
-            count: body.count, currency: body.currency, id: 900 + state.items.length,
+            count: body.count, currency: String(body.currency), id: 900 + state.items.length,
             lineAmount: 42 * body.count, priceId: body.priceId, productCode: "CHS_BODY_001",
             productId: body.productId, unitAmount: 42,
           });
@@ -116,7 +124,7 @@ function cartServer(options = {}) {
 }
 
 const bodyOil = {
-  count: 2, currency: "USD", id: 901, lineAmount: 84, metadata: null, notes: "",
+  count: 2, currency: "17", id: 901, lineAmount: 84, metadata: null,
   priceId: 55, productCode: "CHS_BODY_001", productId: 41, unitAmount: 42,
 };
 
@@ -130,7 +138,11 @@ const bodyOil = {
   assert.equal(cart.itemCount, 2);
   assert.equal(cart.subtotal, 84);
   assert.equal(cart.displaySubtotal, "$84.00");
+  // The line carries Dictionary id 17; the code that formats the money was
+  // resolved from Core, not assumed from configuration.
   assert.equal(cart.currencyCode, "USD");
+  assert.ok(server.calls.some((call) => call.url.includes("/api/dictionary/list.json")),
+    "the currency code is resolved from Core, never inferred from the id");
   assert.equal(cart.lines.length, 1);
   const line = cart.lines[0];
   assert.equal(line.ref, coreCartContract.lineRefPrefix + "55");
@@ -182,9 +194,11 @@ const bodyOil = {
   // Add: the request is a CartItemRequest, and success comes from the readback.
   const server = cartServer({ items: [] });
   const cart = await addCoreCartItem({ count: 1, priceId: 55, productId: 41 }, context, server.fetchImpl, origin);
-  const post = server.calls.find((call) => call.method === "POST");
+  const post = server.calls.find((call) => call.url.endsWith("/api/cart/current/items.json") && call.method === "POST");
+  // `currency` is the Dictionary id. Core answers a currency CODE here with
+  // `404 "No sellable price found"` wrapped in a 500.
   assert.deepEqual(post.body, {
-    accountId: 1, count: 1, currency: "USD", metadata: null, notes: null, priceId: 55, productId: 41,
+    accountId: 1, count: 1, currency: 17, metadata: null, notes: null, priceId: 55, productId: 41,
   });
   assert.equal(cart.lines.length, 1);
   assert.equal(cart.lines[0].qty, 1);
@@ -204,7 +218,7 @@ const bodyOil = {
   // Count change: the delta is derived from the count Core reports right now.
   const server = cartServer({ items: [{ ...bodyOil, count: 2 }] });
   const cart = await setCoreCartItemCount({ count: 5, ref: "cart-line-55" }, context, server.fetchImpl, origin);
-  const post = server.calls.find((call) => call.method === "POST");
+  const post = server.calls.find((call) => call.url.includes("/count.json"));
   assert.ok(post.url.includes("/items/55/count.json"), "the count endpoint is keyed by priceId");
   assert.ok(post.url.includes("delta=3"), "delta is target minus the server's current count");
   assert.equal(cart.lines[0].qty, 5);
@@ -216,7 +230,8 @@ const bodyOil = {
   // never double the quantity.
   const server = cartServer({ items: [{ ...bodyOil, count: 2 }] });
   const cart = await setCoreCartItemCount({ count: 2, ref: "cart-line-55" }, context, server.fetchImpl, origin);
-  assert.equal(server.calls.filter((call) => call.method === "POST").length, 0);
+  assert.equal(server.calls.filter((call) => call.url.includes("/api/cart/")  && call.method !== "GET").length, 0,
+    "an unchanged target writes nothing at all");
   assert.equal(cart.lines[0].qty, 2);
 }
 
@@ -228,7 +243,8 @@ const bodyOil = {
     addCoreCartItem(input, context, server.fetchImpl, origin),
     addCoreCartItem(input, context, server.fetchImpl, origin),
   ]);
-  assert.equal(server.calls.filter((call) => call.method === "POST").length, 1, "a replayed in-flight add writes once");
+  assert.equal(server.calls.filter((call) => call.url.endsWith("/api/cart/current/items.json") && call.method === "POST").length, 1,
+    "a replayed in-flight add writes once");
   assert.equal(first.lines[0].qty, 1, "the quantity did not double");
   assert.equal(second, first, "both callers get the same authoritative cart");
 }
@@ -307,7 +323,13 @@ const bodyOil = {
   );
 }
 
-for (const [status, code] of [[401, "session-expired"], [403, "cart-forbidden"], [409, "cart-conflict"], [500, "cart-unavailable"]]) {
+// 403 is an account that exists and is not the caller's; 404 is an accountId
+// that exists nowhere. Core answers a request with NO accountId with a raw 500,
+// which is why the adapter refuses locally instead of ever sending one.
+for (const [status, code] of [
+  [401, "session-expired"], [403, "cart-forbidden"], [404, "cart-account-unknown"],
+  [409, "cart-conflict"], [500, "cart-unavailable"],
+]) {
   const server = cartServer({ items: [], status });
   await assert.rejects(
     () => loadCoreCart(context, server.fetchImpl, origin),
