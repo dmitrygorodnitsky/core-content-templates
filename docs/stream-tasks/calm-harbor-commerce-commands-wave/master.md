@@ -114,7 +114,7 @@ surface it, do not silently proceed.
 
 | slice | zone lead | owner | status | depends_on | validation | done_when |
 | --- | --- | --- | --- | --- | --- | --- |
-| C1 cart adapter | commerce adapters | executor | todo | — | `scripts/core-cart-adapter-check.mjs`; live read/add/count/remove against staging | cart reads and mutates through Core with server totals only |
+| C1 cart adapter | commerce adapters | executor | done | — | `scripts/core-cart-adapter-check.mjs`; live read/add/count/remove against staging | cart reads and mutates through Core with server totals only |
 | C2 sellability | commerce adapters | executor | todo | C1 | inventory join check; out-of-stock row proves an unbuyable product | Shop shows server stock truth, never inferred |
 | C3 cart presentation | presentation | executor | todo | C1 | route-state matrix for cart empty/ready/error | accepted cart states render from the live envelope |
 | C4 checkout | command orchestration | executor | todo | C1–C3 | replay, conflict, and readback cases in the adapter check; live order created with typed lines | confirmation renders only from Order readback |
@@ -137,4 +137,39 @@ surface it, do not silently proceed.
 
 ## Delivery Notes
 
-- (record commit hashes here as slices close)
+- **C1 cart adapter — done.** `e08b0de` the adapter and its check; `4634280` the
+  corrections live probing forced. Proven live against `CALM_HARBOR_SPA_STAGING`
+  as `CHS_STG_ELENA_RIOS`: empty read → add `CHS_BODY_001` (`$42.00` subtotal
+  from Core) → count 2 (`unitAmount` 42, `lineAmount` 84, `subtotal` 84, all
+  Core's) → replayed identical count wrote nothing → remove → clear → foreign
+  account 4 refused `403 cart-forbidden` → no resolved account refused locally
+  with `customer-account-required` and zero calls.
+
+## Backend Corrections Found Live (2026-07-28)
+
+Four things the written contract had wrong or unstated. Each cost a probe cycle;
+they are recorded so the next wave does not rediscover them.
+
+1. **`CartItemRequest.currency` is the Dictionary entity id, not the code.**
+   Sending `"USD"` returns `404 "No sellable price found"` wrapped in a `500`.
+   Sending `17` succeeds. Currency ids are resolved from Core in both
+   directions — nothing assumes 17 means USD.
+2. **`CartView` has no `currency` and no `notes`.** The live shape is
+   `{id, organization, itemCount, subtotal, items[]}`; `organization` is a plain
+   code string. `CartItemView.currency` is a *stringified* Dictionary id.
+   `itemCount` is the sum of line quantities, not the number of lines.
+3. **A foreign accountId that EXISTS returns 403; one that exists nowhere
+   returns 404.** The truth table recorded only the 403. 404 maps to
+   `cart-account-unknown` so a missing account is never reported to a customer
+   as somebody else's cart.
+4. **The cart API does not enforce stock.** `CHS_SKIN_002` (`SPA_STOCK` count 0)
+   was accepted into the live cart with a `200` and a created line. Sellability
+   is entirely the portal's job from the inventory join; there is no server-side
+   refusal to lean on. Live inventory holds only two rows — `CHS_BODY_001` 12
+   and `CHS_SKIN_002` 0 — so the other ten retail products have **no inventory
+   row**, making "unknown stock" the dominant live case rather than an edge one.
+
+Confirmed for C4, read-only: order type `SPA_ORDER` is id 4 on
+`SPA_ORDER_LIFECYCLE`; all four `SPA_ITEM_*` types exist on
+`SPA_ORDER_ITEM_LIFECYCLE`. Financial baseline before any checkout this wave:
+`invoice` and `balance-transaction` both return `resultSize 0`.
