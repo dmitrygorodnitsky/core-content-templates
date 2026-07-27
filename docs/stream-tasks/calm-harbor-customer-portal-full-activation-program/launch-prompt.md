@@ -32,8 +32,10 @@ A second, independent stream is also ready and does not compete for the same
 files:
 `docs/stream-tasks/calm-harbor-design-fidelity-audit-wave/launch-prompt.md`
 It audits the transferred runtime against `design-inbox/**` and routes design
-gaps to Claude Design. **W6 cannot claim visual parity until it closes** — no
-Playwright machine has run the visual suites yet.
+gaps to Claude Design. **W6 cannot claim visual parity until it closes.** The
+browser suites do run on this machine — that package's §Validation carries the
+setup — but four of them fail for reasons nobody has diagnosed, so parity is
+still unproven.
 
 This program file remains the roadmap container and the place where wave
 outcomes are recorded. Execute one wave per round; do not run the whole program

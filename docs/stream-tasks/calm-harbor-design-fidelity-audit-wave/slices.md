@@ -144,25 +144,43 @@ blank cells.
 
 **Owned paths.** `evidence/responsive/`.
 
-**Status: blocked on tooling.** Playwright is not installed on the machine where
-this package was written. Every responsive and pixel check in this repo needs
-it: `scripts/calm-harbor-wave1{4,5,6,7}-visual-check.mjs`,
-`visual-acceptance.mjs`, `s7-route-state-check.mjs`, `config-behavior-check.mjs`,
+**Status: runnable.** An earlier draft of this package called D5 blocked on
+tooling. That was wrong. Playwright is available — see the Playwright setup
+block in `launch-prompt.md` §Validation for the two environment variables and
+why they are needed.
+
+Every responsive and pixel check in this repo goes through it:
+`scripts/calm-harbor-wave1{4,5,6,7}-visual-check.mjs`, `visual-acceptance.mjs`,
+`s7-route-state-check.mjs`, `config-behavior-check.mjs`,
 `calm-harbor-customer-portal-manual-check.mjs`.
 
-**Task, when a Playwright machine is available.**
+**Task.**
 - Run the per-wave visual suites and `visual-acceptance.mjs` at 390 / 768 /
   1180 / 1440.
 - Compare runtime renders against `design-inbox/previews/` for the same
   scenario and width.
 - Record every non-zero drift with the pair, and classify it like any other
   finding.
+- Record which browser rendered the pixels — bundled chromium or system Chrome
+  — because a drift measured against previews shot by the other one is not a
+  finding about the layout.
 
-**If it cannot run:** leave the ledger row `blocked`, say so in the punch list,
-and do **not** describe the layout as verified. An unrun check is unrun.
+These suites are slow. Start them in the background and work other slices while
+they run; do not re-run a green suite for reassurance.
 
-**Validation.** Pixel pairs at four widths, or an explicit blocked status with
-the reason.
+**Diagnose before you judge.** Four suites exited non-zero when this package was
+written and nobody looked at why: `visual-acceptance.mjs`,
+`s7-route-state-check.mjs`, `config-behavior-check.mjs`,
+`calm-harbor-customer-portal-manual-check.mjs`. A suite failing because the
+runtime drifted is a finding. One failing because it wants a live session, a
+seeded tenant or an argument is a harness problem and belongs in the evidence as
+exactly that. Reporting either as "unrun" without saying which is not acceptable.
+
+**If a suite genuinely cannot run**, say which one and why, and do **not**
+describe that layout as verified. An unrun check is unrun.
+
+**Validation.** Pixel pairs at four widths, with the browser named; plus a
+per-suite verdict for the four above.
 
 ---
 

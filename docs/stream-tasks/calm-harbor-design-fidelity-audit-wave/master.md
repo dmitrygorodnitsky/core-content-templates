@@ -38,8 +38,7 @@ In scope:
 - stable hooks: `data-route`, `data-module`, `data-action`, `data-bind`,
   `data-state`, `data-visual-id` — these are contract, and drift breaks the
   visual suites;
-- responsive behaviour at 390 / 768 / 1180 / 1440 **where a Playwright machine is
-  available**;
+- responsive behaviour at 390 / 768 / 1180 / 1440;
 - producing the punch list and any design briefs.
 
 Out of scope:
@@ -102,7 +101,7 @@ confirmed, not rediscovered:
 | D2 component audit | production presentation | executor | todo | D1 | per-component findings with both citations | every runtime component compared to its design counterpart |
 | D3 copy and hooks | production presentation | executor | todo | D1 | hook grep passes; copy table produced | stable hooks match the design; every user-visible string is traced |
 | D4 state reachability | production presentation | executor | todo | D2 | state matrix | declared-but-unreachable and reachable-but-undescribed states are both listed |
-| D5 responsive | production presentation | executor | blocked | D2 | pixel pairs at four widths | needs a Playwright machine — see Validation |
+| D5 responsive | production presentation | executor | todo | D2 | pixel pairs at four widths, browser named | drift at every width is measured and classified; the four undiagnosed suites have a verdict each |
 | D6 punch list and briefs | findings, design requests | executor | todo | D2–D4 | punch list committed; briefs filed | every finding classified and routed |
 
 ## Definition of Done
@@ -117,8 +116,10 @@ confirmed, not rediscovered:
   README.
 - `runtime/manifest.json` reflects the real production inventory.
 - The stable-hook contract is proven intact by grep.
-- Whatever could not run (responsive, if no Playwright) is reported as **unrun**,
-  never as passed.
+- Every browser suite has a verdict: passed, or failed with the cause named —
+  runtime drift is a finding, a missing session or seed is a harness problem.
+  Nothing is reported as passed on the strength of reading code, and no crash is
+  filed as "unrun" without its cause.
 
 ## Delivery Notes
 

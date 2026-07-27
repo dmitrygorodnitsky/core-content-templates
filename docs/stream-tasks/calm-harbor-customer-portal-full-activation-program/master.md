@@ -517,3 +517,19 @@ because plan enrollment reuses checkout confirmation and Order readback.
   booking path reuses another visit's Task to satisfy the NOT NULL `task_id`
   instead of creating its own. W3 touches both commands anyway and owns the fix;
   until then this is demo scaffolding, not production behaviour.
+- 2026-07-28: **Correction — Playwright is available; the two entries above that
+  call it absent are wrong.** This repo has no `package.json` and no
+  `node_modules` by design, so every browser check resolves `playwright` and
+  `pngjs` through `PLAYWRIGHT_NODE_MODULES`; pointed at the codex runtime cache,
+  with `PLAYWRIGHT_EXECUTABLE_PATH` set to system Chrome, the suites run.
+  `calm-harbor-wave17-visual-check.mjs` passes with 16 strict pairs and
+  `changed=0`, and `calm-harbor-wave15-visual-check.mjs` passes with 12 paired
+  surfaces. The bundled chromium is not downloaded — playwright 1.61.1 wants
+  build 1228 and the cache holds 1217 — which is why the executable path is
+  needed, or `playwright/cli.js install chromium` once.
+  Four suites (`visual-acceptance`, `s7-route-state-check`,
+  `config-behavior-check`, `calm-harbor-customer-portal-manual-check`) exit
+  non-zero for reasons nobody has diagnosed. So visual parity is still unproven
+  and W6 still waits on the audit — but the reason is those four failures, not
+  missing tooling. D5 in the audit package is `todo`, not `blocked`; both child
+  packages carry the setup and the known suite state.

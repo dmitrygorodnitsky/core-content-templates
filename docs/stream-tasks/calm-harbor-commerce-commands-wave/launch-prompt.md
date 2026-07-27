@@ -151,10 +151,29 @@ Live probing as the customer needs the portal API key from the user — the depl
 key gives an admin session, which does not reproduce the cart's account binding.
 Never commit it.
 
-**Cannot run here:** every Playwright suite (`config-behavior-check.mjs`,
-`s7-route-state-check.mjs`, per-wave visual checks,
-`calm-harbor-customer-portal-manual-check.mjs`). Report them as **unrun**, not
-passed. Visual parity is W6's gate and needs a machine with Playwright.
+**Browser suites.** An earlier draft of this package said Playwright was
+unavailable. That was wrong.
+
+This repo has no `package.json` and no `node_modules` by design; the browser
+checks resolve `playwright` and `pngjs` through `PLAYWRIGHT_NODE_MODULES`:
+
+```bash
+export PLAYWRIGHT_NODE_MODULES=/Users/imighty/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules
+export PLAYWRIGHT_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+```
+
+`playwright` is 1.61.1; its own chromium is not downloaded (wants build 1228,
+cache holds 1217), hence system Chrome. To use the bundled browser instead, run
+`node "$PLAYWRIGHT_NODE_MODULES/playwright/cli.js" install chromium` once and
+drop the second variable.
+
+`calm-harbor-wave17-visual-check.mjs` and `calm-harbor-wave15-visual-check.mjs`
+pass. `visual-acceptance.mjs`, `s7-route-state-check.mjs`,
+`config-behavior-check.mjs` and `calm-harbor-customer-portal-manual-check.mjs`
+exit non-zero with a cause nobody has diagnosed. This wave does not own that
+diagnosis — the design-fidelity audit does — but if a commerce change breaks a
+suite that was green, that is yours. Report a crash with its cause, never as
+"unrun".
 
 ## Closeout
 

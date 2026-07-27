@@ -219,12 +219,14 @@ C1 ──┬── C2        (parallel)
 Run every command from the **repo root** (`core-content-templates`), not from
 the template directory — several scripts resolve paths relative to the root.
 
-**Cannot run in this environment:** anything requiring Playwright —
-`config-behavior-check.mjs`, `s7-route-state-check.mjs`, the per-wave visual
-suites, `calm-harbor-customer-portal-manual-check.mjs`. Pixel and route-state
-acceptance are therefore **unrun, not passed**, and must execute where Playwright
-is installed before W6 claims visual parity. Say so in the evidence rather than
-implying coverage.
+**Browser suites run here** — see `launch-prompt.md` §Validation for the two
+environment variables. `calm-harbor-wave17-visual-check.mjs` and
+`calm-harbor-wave15-visual-check.mjs` are green and are your regression net: if a
+commerce change turns one red, that is this wave's problem. `visual-acceptance`,
+`s7-route-state-check`, `config-behavior-check` and the manual check were already
+failing for undiagnosed reasons before this wave started; the design-fidelity
+audit owns them. Record a crash with its cause rather than filing it as
+"unrun".
 
 ## Operator notes
 

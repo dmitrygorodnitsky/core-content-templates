@@ -55,8 +55,8 @@ Read first:
    never by dimension.
 3. **D3 copy and hooks** — parallel with D2, same split rule.
 4. **D4 state reachability** — after D2.
-5. **D5 responsive** — **blocked** unless the machine has Playwright. If it does,
-   run it; if not, leave the row `blocked` and say so.
+5. **D5 responsive** — runnable; see §Validation for the Playwright setup. The
+   suites are slow, so start them in the background and work D4 while they run.
 6. **D6 punch list and briefs** — last; proceeds even if D5 is blocked.
 
 ## Delegation protocol
@@ -141,12 +141,48 @@ assumption that preserves motion.
 
 Run every command from the repo root (`core-content-templates`).
 
-**Playwright is not installed on the machine where this package was written.**
-Everything visual depends on it: the per-wave visual suites,
-`visual-acceptance.mjs`, `s7-route-state-check.mjs`,
-`config-behavior-check.mjs`, `calm-harbor-customer-portal-manual-check.mjs`. If
-your machine lacks it, those are **unrun, not passed**, and the closeout must say
-so plainly. Do not describe layout as verified on the strength of reading code.
+### Playwright setup
+
+An earlier draft of this package said Playwright was not installed. That was
+wrong, and D5 is a real slice, not a blocked one.
+
+This repo has no `package.json` and no `node_modules` by design. Every browser
+check resolves `playwright` and `pngjs` through `PLAYWRIGHT_NODE_MODULES`:
+
+```bash
+export PLAYWRIGHT_NODE_MODULES=/Users/imighty/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules
+export PLAYWRIGHT_EXECUTABLE_PATH='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+```
+
+`playwright` there is 1.61.1. Its own chromium is **not** downloaded — it wants
+build 1228 and the cache holds 1217 — which is why the second variable points at
+system Chrome. To use the bundled browser instead, download it once and drop
+that variable:
+
+```bash
+node "$PLAYWRIGHT_NODE_MODULES/playwright/cli.js" install chromium
+```
+
+Either route is fine. Name the one you used, and the browser version, in the
+evidence: pixel drift measured against previews shot by the other browser is not
+a finding about the layout.
+
+**Known suite state, established but incomplete:**
+
+| suite | state |
+| --- | --- |
+| `calm-harbor-wave17-visual-check.mjs` | passes — 16 strict pairs, `changed=0` |
+| `calm-harbor-wave15-visual-check.mjs` | passes — 12 paired surfaces |
+| `visual-acceptance.mjs` | exits non-zero, cause undiagnosed |
+| `s7-route-state-check.mjs` | exits non-zero, cause undiagnosed |
+| `config-behavior-check.mjs` | exits non-zero, cause undiagnosed |
+| `calm-harbor-customer-portal-manual-check.mjs` | exits non-zero, cause undiagnosed |
+
+Diagnose each of the four before judging it. A failure caused by runtime drift
+is a finding; a failure caused by a missing live session, an unseeded tenant or a
+missing argument is a harness problem. Say which. Do not describe layout as
+verified on the strength of reading code, and do not report a crash as "unrun"
+without naming its cause.
 
 ## Closeout
 
