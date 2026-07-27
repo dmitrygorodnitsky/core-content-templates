@@ -17,6 +17,30 @@ import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { routeStateBody } from "../components/primitives/RouteStates.js";
 import { skeletonRow } from "../components/primitives/LoadingState.js";
 
+function orderThumb(order) {
+  var mode = state.spaOrderMedia;
+  var attrs = { "class": "order-card__icon spa-order-thumb", "data-visual-id": "order-thumb", "data-media-kind": order.media && order.media.kind || "none", "aria-hidden": "true" };
+  if (mode === "loading") {
+    attrs["class"] += " skeleton";
+    attrs["data-state"] = "loading";
+    return h("div", attrs);
+  }
+  var showImage = mode === "broken" || mode !== "missing" && mode !== "forbidden" && order.media && order.media.url;
+  if (!showImage) {
+    attrs["data-state"] = "no-media";
+    return h("div", attrs);
+  }
+  attrs["data-state"] = "ready";
+  var wrap = h("div", attrs);
+  var image = h("img", { "class": "spa-order-thumb__img", src: mode === "broken" ? "media/orders/__unresolved__.webp" : order.media.url, alt: "", "data-bind": "order.media.url" });
+  image.addEventListener("error", function () {
+    wrap.setAttribute("data-state", "no-media");
+    if (image.parentNode) wrap.removeChild(image);
+  });
+  wrap.appendChild(image);
+  return wrap;
+}
+
 export function SpaOrders() {
   var liveEnvelope = state.config.dataMode === "live" ? state.moduleData.orders : null;
   var routeState = liveEnvelope && liveEnvelope.state || state.moduleStatus.orders || state.view;
@@ -49,9 +73,8 @@ export function SpaOrders() {
     }));
   } else {
     rows.forEach(function (o, i) {
-      var pal = F.PAL[i % 4];
       listWrap.appendChild(h("article", { "class": "spa-order-row", "data-module": "spa-order-row", "data-visual-id": "spa-order-row", "data-order-ref": o.ref }, [
-        h("div", { "class": "order-card__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
+        orderThumb(o),
         h("div", { "class": "spa-order-row__body" }, [
           h("div", { "class": "order-card__name", "data-bind": "order.typeLabel" }, o.typeLabel),
           h("div", { "class": "order-card__meta" }, [
@@ -85,5 +108,6 @@ function liveOrder(order) {
     status: order.statusCode || "UNMAPPED",
     total: total,
     currency: currency,
+    media: order.media || null,
   };
 }

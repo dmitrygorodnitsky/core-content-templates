@@ -19,6 +19,20 @@ import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ConflictBanner, InlineFailure, skel } from "../components/primitives/RouteStates.js";
 import { SimulationBadge, UnavailableState, spaGate } from "../components/spa/CommerceBits.js";
 
+const LIVE_CHECKOUT = Object.freeze({
+  ref: "customer-portal-checkout",
+  expiresNote: "Prices and availability are re-checked when you confirm.",
+  fulfillmentOptions: Object.freeze([
+    Object.freeze({ ref: "ful-pickup", kind: "PICKUP", label: "Pickup at the studio", detail: "The studio confirms availability after the order is recorded" }),
+  ]),
+  fulfillmentNote: "Delivery isn’t offered on this portal yet — pickup only.",
+  policy: "I understand this is a simulated checkout and no payment will be taken.",
+});
+
+function checkoutContract() {
+  return state.config.dataMode === "live" ? LIVE_CHECKOUT : F.spaCommerce.checkout;
+}
+
 function quoteSource() {
   /* wave 16 — source `plan` is the frozen quote of ONE published offer
      (data-plan-offer-ref); packages and memberships have distinct quotes */
@@ -91,7 +105,8 @@ function Confirmation(res) {
 export function SpaCheckout() {
   var demo = state.spaCheckoutDemo;
   var res = state.spaResult;
-  var page = h("section", { "class": "page", "data-route": "checkout", "data-state": res ? "confirmed" : (state.view !== "ready" ? state.view : demo), "data-visual-id": "spa-checkout", "data-module": "spa-checkout", "data-capability": spaCapability(), "data-checkout-ref": F.spaCommerce.checkout.ref, "data-payment-mode": "SIMULATED", "data-screen-label": "Checkout (simulated)" });
+  var co = checkoutContract();
+  var page = h("section", { "class": "page", "data-route": "checkout", "data-state": res ? "confirmed" : (state.view !== "ready" ? state.view : demo), "data-visual-id": "spa-checkout", "data-module": "spa-checkout", "data-capability": spaCapability(), "data-checkout-ref": co.ref, "data-payment-mode": "SIMULATED", "data-screen-label": "Checkout (simulated)" });
 
   if (res) {
     page.appendChild(h("div", { style: "max-width:560px;margin:26px auto 0" }, Confirmation(res)));
@@ -125,7 +140,6 @@ export function SpaCheckout() {
     return page;
   }
 
-  var co = F.spaCommerce.checkout;
   var key = "checkout.confirm:" + co.ref;
   var phase = cmdPhase(key);
   var blocked = demo !== "ready";
@@ -144,7 +158,7 @@ export function SpaCheckout() {
   left.appendChild(h("div", { "class": "card card--pad", "data-module": "checkout-contact", "data-visual-id": "checkout-contact" }, [
     h("div", { "class": "card__title" }, "Contact"),
     h("div", { "class": "co-contact" }, [
-      h("div", { "data-bind": "session.displayName" }, F.customer.fullName),
+      h("div", { "data-bind": "session.displayName" }, state.sessionName || "Customer"),
       h("div", { style: "color:var(--ink-2)", "data-bind": "profile.email,profile.phone" }, contact.email + " \u00b7 " + contact.phone)
     ]),
     h("div", { "class": "purch-ful__note" }, "We use these only to tell you about this order.")

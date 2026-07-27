@@ -1,11 +1,11 @@
 {
   "product": "Aircove Customer Portal",
   "version": "runtime-wave9-s6-cms-packaging",
-  "format": "no-build ES modules: source.html + 7 stylesheets + 94 src JavaScript modules + 7 non-src runtime JavaScript modules",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 95 src JavaScript modules + 8 non-src runtime JavaScript modules",
   "fileInventory": {
     "stylesheets": 7,
-    "srcJavaScript": 94,
-    "runtimeJavaScript": 101
+    "srcJavaScript": 95,
+    "runtimeJavaScript": 108
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",

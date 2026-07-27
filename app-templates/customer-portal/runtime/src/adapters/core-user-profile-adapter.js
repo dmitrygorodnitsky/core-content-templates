@@ -1,3 +1,30 @@
+// Spa Profile is deliberately least-data: the signed-in User's email, and the
+// phone carried by the customer Account's PRIMARY contact. Preferences have no
+// storage in Core — UserOrganizationPreferences holds only {id, user} and both
+// preference endpoints return empty — so they stay explicitly unavailable
+// rather than being faked client-side.
+const CONTACT_ENTRY_MAPPINGS = [
+  { name: "id" },
+  { name: "value" },
+  { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "kind", type: "identifier" },
+  { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" },
+];
+
+const ACCOUNT_CONTACT_MAPPINGS = [
+  { name: "id" },
+  { name: "code" },
+  {
+    mappings: [
+      { name: "id" },
+      { name: "firstName" },
+      { name: "lastName" },
+      { mappings: CONTACT_ENTRY_MAPPINGS, name: "contactEntries", type: "collection" },
+    ],
+    name: "contacts",
+    type: "collection",
+  },
+];
+
 const USER_MAPPINGS = [
   { name: "email" },
   { name: "enabled" },
@@ -29,7 +56,31 @@ export function createCoreUserProfileAdapter(options = {}) {
 export async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
   var api = requestContext(context, explicitOrigin);
   var row = await requestJson(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
-  return normalize(row, api.userId);
+  var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
+  return normalize(row, api.userId, phone);
+}
+
+/* Phone lives on the Account's contact entries. A missing contact is a missing
+   phone, never a placeholder. */
+async function loadAccountPhone(api, fetchImpl) {
+  if (!api.accountBase) return null;
+  var response = await requestJson(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+    filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
+    mappings: ACCOUNT_CONTACT_MAPPINGS,
+    offset: 0,
+    pageSize: 1,
+  }));
+  var account = (Array.isArray(response && response.result) ? response.result : [])[0];
+  if (!account || positiveInteger(account.id) !== api.accountId) return null;
+  var contacts = Array.isArray(account.contacts) ? account.contacts : [];
+  for (var index = 0; index < contacts.length; index += 1) {
+    var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
+    for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
+      var entry = entries[entryIndex];
+      if (text(entry.type && entry.type.code) === "PHONE" && text(entry.value)) return text(entry.value);
+    }
+  }
+  return null;
 }
 
 export async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
@@ -51,16 +102,18 @@ export async function saveCoreUserProfile(input, context, fetchImpl = globalThis
   return normalize(readback, api.userId);
 }
 
-function normalize(row, userId) {
+function normalize(row, userId, phone) {
   if (!row || positiveInteger(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
   return {
     state: "ready",
     email: text(row.email),
-    phone: null,
+    phone: phone || null,
     prefs: {},
     optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
+    // Phone is read-only until a scoped contact write contract exists; only the
+    // email edit is opened. Preferences have nowhere to persist in Core.
     allowedActions: ["edit-email"],
-    unavailableFields: ["phone", "preferences"],
+    unavailableFields: phone ? ["preferences"] : ["phone", "preferences"],
   };
 }
 
@@ -74,7 +127,14 @@ function requestContext(context, explicitOrigin) {
   if (!userId) throw error("session-user-required", "The signed-in Core User is required");
   var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
   var base = sameOriginBase(config.coreApiBase || "/core", origin, "Core API base");
-  return { base: base, token: text(session.tokenType || session.token_type || "Bearer") + " " + token, userId: userId };
+  var customer = context && context.account || state.customerAccount || session.account || {};
+  return {
+    accountBase: sameOriginBase(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+    accountId: positiveInteger(customer.id) || null,
+    base: base,
+    token: text(session.tokenType || session.token_type || "Bearer") + " " + token,
+    userId: userId,
+  };
 }
 
 function options(api, body) {

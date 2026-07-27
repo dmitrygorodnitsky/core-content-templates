@@ -69,6 +69,9 @@ export function normalizeProducts(raw) {
       feature: null,
       categories: [],
       items: clone(raw.pimProducts),
+      models: clone(raw.pimProductModels || []),
+      reviews: clone(raw.pimProductReviews || []),
+      enrichment: clone(raw.pimEnrichment || { models: "unavailable", reviews: "unavailable" }),
       source: "core-pim",
     };
   }

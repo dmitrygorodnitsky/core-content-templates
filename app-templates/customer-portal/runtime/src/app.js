@@ -2,7 +2,7 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, cmdPhase, currentTheme, isPublic, isSpa, state } from "./state.js";
+import { activeProfile, applyPortalConfig, cmdPhase, currentTheme, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
@@ -95,7 +95,7 @@ export function render() {
   if (runtime) runtime.syncPreflight("care");
   if (runtime) loadGrantedCareTransition();
 
-  var content = !isPublic() && state.account !== "ready" ? AccountBootstrap() : renderRoute();
+  var content = customerPortalGateActive() || (!isPublic() && state.account !== "ready") ? AccountBootstrap() : renderRoute();
   if (content && state.route !== lastRoute) content.classList.add("route-enter");
   lastRoute = state.route;
   shell = AppShell(content);
@@ -167,6 +167,7 @@ export function retryRuntimeLoad() {
   liveRetryPromise = runtime.loadAllAsync()
     .then(function () {
       state.view = "ready";
+      if (continueToIntendedRoute()) return;
       render();
     })
     .catch(function (error) {
@@ -178,6 +179,16 @@ export function retryRuntimeLoad() {
       liveRetryPromise = null;
     });
   return liveRetryPromise;
+}
+
+function continueToIntendedRoute() {
+  if (!state.session.authenticated || state.account !== "ready") return false;
+  var intended = state.session.intendedRoute;
+  if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
+  if (!intended) return false;
+  state.session.intendedRoute = null;
+  go(intended);
+  return true;
 }
 
 export function invalidateCareRuntime() {
@@ -220,12 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initRouter(render);
   bindActions(mount);
   loaded.then(function () {
-    if (state.session.authenticated && state.route === "auth.oidc" && state.session.intendedRoute) {
-      var intended = state.session.intendedRoute;
-      state.session.intendedRoute = null;
-      go(intended);
-      return;
-    }
+    if (continueToIntendedRoute()) return;
     render();
   }).catch(function (error) {
     state.view = state.config.errorMode === "fallback" ? "fallback" : "error";

@@ -432,10 +432,10 @@
        location, tracking or invoice fields exist here, and the raw status
        (e.g. OPEN) is NEVER translated into a customer status. */
     stagingOrders: [
-      { ref: "ORD-10318", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "OPEN", total: "$85.00", currency: "USD" },
-      { ref: "ORD-10292", typeLabel: "Retail order", typeCode: "SPA_RETAIL", status: "OPEN", total: "$64.00", currency: "USD" },
-      { ref: "ORD-10241-PKG-TRANSFER", typeLabel: "Prepaid treatment package \u2014 six-session series transfer", typeCode: "SPA_SERVICE_PACKAGE_PREPAID", status: "AWAITING_SETTLEMENT_REVIEW", total: "$510.00", currency: "USD" },
-      { ref: "ORD-10186", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "CLOSED", total: "$45.00", currency: "USD" }
+      { ref: "ORD-10318", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "OPEN", total: "$85.00", currency: "USD", media: { kind: "service", url: null, alt: "Facial treatment" } },
+      { ref: "ORD-10292", typeLabel: "Retail order", typeCode: "SPA_RETAIL", status: "OPEN", total: "$64.00", currency: "USD", media: { kind: "product", url: "media/orders/silk-repair-primary.webp", alt: "Silk Repair Set" } },
+      { ref: "ORD-10241-PKG-TRANSFER", typeLabel: "Prepaid treatment package \u2014 six-session series transfer", typeCode: "SPA_SERVICE_PACKAGE_PREPAID", status: "AWAITING_SETTLEMENT_REVIEW", total: "$510.00", currency: "USD", media: { kind: "model", url: null, alt: "Six-session facial series" } },
+      { ref: "ORD-10186", typeLabel: "Service order", typeCode: "SPA_SERVICE", status: "CLOSED", total: "$45.00", currency: "USD", media: null }
     ],
     /* Public Core PIM rows (mirrors the accepted wave-12 pim.pricing demo).
        displayPrice renders VERBATIM; no availability, duration, savings or

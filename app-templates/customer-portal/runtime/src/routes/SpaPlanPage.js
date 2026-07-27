@@ -10,7 +10,7 @@
 // catalog — this page never mixes offers into enrollment.
 import { h } from "../dom.js";
 import { F } from "../../data/fixtures.js";
-import { cmdPhase, spaBookingOpen, spaCapability, spaCurrentApiDemoOpen, spaPlans, state } from "../state.js";
+import { cmdPhase, isModuleEnabled, spaBookingOpen, spaCapability, spaCurrentApiDemoOpen, spaPlans, state } from "../state.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
@@ -75,11 +75,21 @@ function factRow(label, val, bind) {
 }
 
 export function SpaPlan() {
-  var page = h("section", { "class": "page", "data-route": "plan", "data-state": state.view, "data-visual-id": "spa-plan", "data-module": "spa-plan", "data-capability": spaCapability(), "data-screen-label": "My plan" });
+  /* live plan state comes from the module, exactly as Purchases does; the
+     fixture scenario view applies only when the portal is not live */
+  var live = state.config.dataMode === "live";
+  var source = live ? state.moduleData.plan : null;
+  var view = live ? (state.moduleStatus.plan || source && source.state || "loading") : state.view;
+  var page = h("section", { "class": "page", "data-route": "plan", "data-state": view, "data-visual-id": "spa-plan", "data-module": "spa-plan", "data-capability": spaCapability(), "data-screen-label": "My plan" });
   page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "account.open" }, "\u2039 Account")));
   page.appendChild(PageHeader({ title: "My plan", sub: "Your packages and membership \u2014 balances and renewal, exactly as recorded." }));
 
-  if (spaCurrentApiDemoOpen()) {
+  /* Plan reads are opened by the plan module. When the deployment does not
+     enable it there is no customer entitlement source, and this accepted
+     unavailable treatment is the truth. Once the module is on, the real plan
+     list renders with its own loading / error / empty / unauthorized gates —
+     saying "not in the current API" then would be false. */
+  if (spaCurrentApiDemoOpen() && !isModuleEnabled("plan")) {
     page.appendChild(h("div", { "class": "state-block", "data-module": "unavailable-state", "data-visual-id": "plan-current-api-unavailable", "data-state": "unavailable" }, [
       h("div", { "class": "state-block__glyph" }, "\u2740"),
       h("div", { "class": "state-block__title" }, "Personal plan details aren\u2019t in the current API"),
@@ -90,6 +100,7 @@ export function SpaPlan() {
   }
 
   var gate = spaGate({
+    view: view,
     states: ["loading", "error", "unauthorized"],
     skeleton: function () {
       var w = h("div", { "class": "plan-grid", "data-state": "loading", "aria-busy": "true" });
@@ -104,7 +115,7 @@ export function SpaPlan() {
   });
   if (gate) { page.appendChild(gate); return page; }
 
-  var plans = state.view === "empty" ? [] : spaPlans();
+  var plans = view === "empty" ? [] : spaPlans();
   if (!plans.length) {
     page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "plan-empty", "data-state": "empty" }, [
       h("div", { "class": "state-block__glyph" }, "\u2740"),

@@ -1,5 +1,6 @@
 // customer-portal/runtime/src/state.js — production transfer module.
 import { F } from "../data/fixtures.js";
+import { SPA_PRODUCT_CATALOG } from "../data/spa-product-catalog.js";
 import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
 import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 
@@ -94,6 +95,11 @@ export var state = {
   spaCart: null,
   spaCartDemo: "as-added",
   spaVariantPick: {},
+  spaCurrentProduct: null,
+  spaGallery: 0,
+  spaModels: "ready",
+  spaReviews: "ready",
+  spaOrderMedia: "mixed",
   spaCheckoutSource: "cart",
   spaCheckoutDemo: "ready",
   spaPolicyAck: false,
@@ -140,7 +146,127 @@ export function orderItems() { return (state.moduleData.orders && state.moduleDa
 
 export function productItems() {
   var v = currentFixture().theme;
-  return (state.moduleData.products && state.moduleData.products.items) || v.products;
+  var items = (state.moduleData.products && state.moduleData.products.items) || v.products;
+  return items.map(function (product) {
+    if (product.code) return product;
+    return Object.assign({}, product, { code: product.sku || product.id });
+  });
+}
+
+export function spaSellInfo(code) {
+  if (state.config.dataMode === "live") {
+    var product = productItems().find(function (item) { return item.code === code; });
+    return product ? { state: "sellable", cents: Math.round(Number(product.priceNum || 0) * 100), displayPrice: product.price } : { state: "unavailable" };
+  }
+  var fixtureRetail = F.spaCommerce.retail.products.find(function (item) { return item.code === code; });
+  if (fixtureRetail) return fixtureRetail;
+  var fixtureProduct = productItems().find(function (item) { return item.code === code; });
+  return fixtureProduct ? { state: "sellable", cents: Math.round(Number(fixtureProduct.priceNum || 0) * 100), displayPrice: fixtureProduct.price } : { state: "unavailable" };
+}
+
+export function spaProductRef(code) {
+  var product = productItems().find(function (item) { return item.code === code; });
+  if (product && product.ref) return product.ref;
+  var catalog = SPA_PRODUCT_CATALOG;
+  return catalog && catalog.codeToRef && catalog.codeToRef[code] || opaqueRef("product", code);
+}
+
+export function spaModelsReady() {
+  if (state.config.dataMode !== "live") return state.spaModels === "ready";
+  return !!(state.moduleData.products && state.moduleData.products.enrichment && state.moduleData.products.enrichment.models === "ready");
+}
+
+export function spaReviewsState() {
+  if (state.config.dataMode !== "live") return state.spaReviews;
+  var enrichment = state.moduleData.products && state.moduleData.products.enrichment;
+  var value = enrichment && enrichment.reviews;
+  return value === "ready" ? "ready" : value === "error" ? "error" : "unavailable";
+}
+
+export function spaProductModels() {
+  if (state.config.dataMode !== "live") {
+    var available = new Set(productItems().map(function (product) { return product.code; }));
+    return SPA_PRODUCT_CATALOG.models.map(function (model) {
+      return Object.assign({}, model, { productCodes: model.productCodes.filter(function (code) { return available.has(code); }) });
+    }).filter(function (model) { return model.productCodes.length; });
+  }
+  return (state.moduleData.products && state.moduleData.products.models || []).map(function (model) {
+    return {
+      ref: model.ref,
+      name: model.name,
+      media: model.media || null,
+      variants: (model.variantAttributes || []).map(displayAttributeLabel),
+      productCodes: model.productCodes || [],
+    };
+  });
+}
+
+export function productDetailByCode(code) {
+  if (state.config.dataMode !== "live") {
+    var fixtureCatalog = SPA_PRODUCT_CATALOG;
+    var fixtureProduct = productItems().find(function (item) { return item.code === code; });
+    var fixtureDetail = fixtureCatalog && fixtureCatalog.byRef[fixtureCatalog.codeToRef[code]];
+    if (fixtureDetail) return fixtureDetail;
+    return fixtureProduct ? {
+      ref: opaqueRef("product", code), code: code, name: fixtureProduct.name,
+      displayPrice: fixtureProduct.price, description: fixtureProduct.description || fixtureProduct.blurb || "",
+      collection: null, variantFacts: [], media: [],
+    } : null;
+  }
+  var product = productItems().find(function (item) { return item.code === code; });
+  if (!product) return null;
+  var model = spaProductModels().find(function (item) { return item.ref === product.modelRef; });
+  return {
+    ref: product.ref,
+    code: product.code,
+    name: product.name,
+    displayPrice: product.price,
+    description: product.description || "",
+    collection: model ? { ref: model.ref, name: model.name } : null,
+    variantFacts: product.variantFacts || [],
+    media: product.media || [],
+  };
+}
+
+export function currentProduct() {
+  if (!state.spaCurrentProduct) return null;
+  if (state.config.dataMode !== "live") {
+    var fixtureDetail = SPA_PRODUCT_CATALOG.byRef[state.spaCurrentProduct];
+    if (fixtureDetail) return fixtureDetail;
+    var fixtureProduct = productItems().find(function (item) { return opaqueRef("product", item.code) === state.spaCurrentProduct; });
+    return fixtureProduct ? productDetailByCode(fixtureProduct.code) : null;
+  }
+  var product = productItems().find(function (item) { return item.ref === state.spaCurrentProduct; });
+  return product ? productDetailByCode(product.code) : null;
+}
+
+export function productReviews(productRef) {
+  if (state.config.dataMode !== "live") {
+    return SPA_PRODUCT_CATALOG.reviews[productRef] || [];
+  }
+  var product = productItems().find(function (item) { return item.ref === productRef; });
+  if (!product) return [];
+  return (state.moduleData.products && state.moduleData.products.reviews || []).filter(function (review) {
+    return review.productCode === product.code;
+  });
+}
+
+function displayAttributeLabel(value) {
+  return String(value || "").toLowerCase().split("_").map(function (part) {
+    return part ? part.charAt(0).toUpperCase() + part.slice(1) : "";
+  }).join(" ");
+}
+
+function opaqueRef(prefix, value) {
+  var text = String(value || prefix);
+  var left = 2166136261;
+  var right = 2246822507;
+  for (var index = 0; index < text.length; index += 1) {
+    var code = text.charCodeAt(index);
+    left = Math.imul(left ^ code, 16777619);
+    right = Math.imul(right ^ code, 3266489909);
+  }
+  return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
 }
 
 export function spaCatalogServices() {
@@ -300,6 +426,13 @@ export function currentPurchase() {
 }
 
 export function spaPlans() {
+  if (state.config.dataMode === "live") {
+    var envelope = state.moduleData.plan;
+    var items = envelope && Array.isArray(envelope.items) ? envelope.items : [];
+    // Cancelled renewals still render from the server readback; the local map is
+    // fixture-only and must not mask what Core returned.
+    return items;
+  }
   var refs = F.spaCommerce.plans.scenarios[state.spaPlanScenario] || [];
   return refs.map(function (ref) {
     var plan = F.spaCommerce.plans.byRef[ref];
@@ -327,6 +460,10 @@ export function routeLabel(routeId) {
 export function cmdPhase(key) { return state.commands[key] || "idle"; }
 
 export function currentContact() {
+  if (state.config.dataMode === "live") {
+    var profile = state.moduleData.profile || {};
+    return state.contact || { phone: profile.phone || "", email: profile.email || "" };
+  }
   var customer = currentFixture().customer || F.customer;
   return state.contact || { phone: customer.phone || "", email: customer.email || "" };
 }
@@ -334,6 +471,18 @@ export function currentContact() {
 export function isPublic(routeId) {
   var route = routeRegistry[routeId || state.route];
   return !!(route && route.public);
+}
+
+export function customerPortalAccessRequired() {
+  return state.config.dataMode === "live"
+    && state.config.authMode === "required"
+    && state.config.enabledModules.includes("account");
+}
+
+export function customerPortalGateActive() {
+  return customerPortalAccessRequired()
+    && state.session.authenticated === true
+    && state.account !== "ready";
 }
 
 export function isModuleEnabled(moduleId) {
@@ -375,6 +524,11 @@ export function applyPortalConfig(config) {
   state.spaCart = null;
   state.spaCartDemo = "as-added";
   state.spaVariantPick = {};
+  state.spaCurrentProduct = null;
+  state.spaGallery = 0;
+  state.spaModels = "ready";
+  state.spaReviews = "ready";
+  state.spaOrderMedia = "mixed";
   state.spaResult = null;
   state.spaPolicyAck = false;
   state.spaCheckoutDemo = "ready";

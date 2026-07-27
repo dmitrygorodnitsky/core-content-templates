@@ -1,20 +1,20 @@
 // customer-portal/runtime/src/components/shell/AppShell.js — production transfer module.
 import { h } from "../../dom.js";
-import { activeProfile, isPublic, isSpa, spaCapability, state } from "../../state.js";
+import { activeProfile, customerPortalGateActive, isPublic, isSpa, spaCapability, state } from "../../state.js";
 import { TopNav } from "./TopNav.js";
 import { PublicNav } from "./PublicNav.js";
 
 export function AppShell(content) {
-  var gated = !isPublic() && state.account !== "ready";
+  var gated = customerPortalGateActive() || (!isPublic() && state.account !== "ready");
   var capability = isSpa() ? spaCapability() : undefined;
   return h("div", {
     "class": "app-shell", "data-module": "app-shell", "data-visual-id": "app-shell",
-    "data-account-state": isPublic() ? undefined : state.account,
+    "data-account-state": gated || !isPublic() ? state.account : undefined,
     "data-capability": capability,
     "data-booking": capability === "target-appointments" ? state.spaBooking : undefined,
     "data-portal-profile": isSpa() ? activeProfile().id : undefined,
   }, [
-    isPublic() ? PublicNav() : TopNav(gated),
+    gated ? TopNav(true) : (isPublic() ? PublicNav() : TopNav(false)),
     content,
     isSpa() && state.spaSupport ? h("div", { "class": "spa-support-scrim" },
       h("div", { "class": "spa-support-card", "data-module": "support-unavailable", "data-visual-id": "support-unavailable", "data-state": "unavailable", role: "dialog", "aria-modal": "true", "aria-label": "Support unavailable" }, [

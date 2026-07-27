@@ -8,6 +8,8 @@
 const REF_PREFIX = "appt-core-";
 const DEMO_CODE_PREFIX = "CP_DEMO_";
 const APPOINTMENT_TYPE = "SPA_VISIT";
+const CARE_TASK_TYPE = "SPA_CARE_TASK";
+const ORDER_TYPE = "SPA_ORDER";
 
 const REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
 const APPOINTMENT_MAPPINGS = [
@@ -57,10 +59,51 @@ export function createCoreSpaDemoAdapter(options = {}) {
     rescheduleAppointment(ref, input, context) {
       return rescheduleCoreAppointment(ref, input, context, fetchImpl, options.origin);
     },
+    cancelAppointment(ref, context) {
+      return cancelCoreAppointment(ref, context, fetchImpl, options.origin);
+    },
     createOrder(input, context) {
       return createCoreOrder(input, context, fetchImpl, options.origin);
     },
   };
+}
+
+const CANCEL_EVENT = "SCHEDULED-CANCELLED";
+
+/**
+ * Cancels a visit through its workflow event and proves it from the readback.
+ * A 2xx on send-event is not success: only the state actually reported by Core
+ * is. An appointment that is already cancelled returns unchanged.
+ */
+export function cancelCoreAppointment(ref, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  var id = appointmentId(ref);
+  return singleFlight("appointment:cancel:" + id, async function () {
+    var api = requestContext(context, explicitOrigin);
+    var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
+    if (!current || positiveInteger(current.id) !== id) throw contractError("appointment-not-found", "Core Appointment was not found");
+
+    // Ownership is re-checked here: a route id is never proof on its own.
+    var accountId = positiveInteger(api.customer && api.customer.id);
+    if (!accountId || customerAttributeId(current, "CUSTOMER_ACCOUNT") !== accountId) {
+      throw contractError("appointment-forbidden", "This appointment does not belong to the signed-in customer");
+    }
+
+    var before = normalizeAppointment(current);
+    if (before.customerStatus === "Cancelled") return before;
+    if (before.allowedActions.indexOf("cancel") === -1) {
+      throw contractError("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
+    }
+
+    await requestJson(fetchImpl, api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
+      requestOptions(api, {}));
+
+    var readback = normalizeAppointment(
+      await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS));
+    if (readback.customerStatus !== "Cancelled") {
+      throw contractError("appointment-cancel-unconfirmed", "Core did not report the appointment as cancelled");
+    }
+    return readback;
+  });
 }
 
 export async function loadCoreAppointments(context, fetchImpl = globalThis.fetch, explicitOrigin) {
@@ -73,7 +116,15 @@ export async function loadCoreAppointments(context, fetchImpl = globalThis.fetch
     sorting: [{ field: "start", direction: "ASC" }],
   }));
   var rows = Array.isArray(response && response.result) ? response.result : [];
-  var items = rows.map(normalizeAppointment);
+  // SPA_VISIT carries the customer link in a dynamic attribute, which Core
+  // cannot filter on, so the narrowing happens here. This is presentation:
+  // the server still returns the tenant's appointments to any portal session,
+  // and this filter must never be described as an authorization boundary.
+  var customerAccountId = positiveInteger(api.customer && api.customer.id);
+  var scoped = customerAccountId
+    ? rows.filter(function (row) { return customerAttributeId(row, "CUSTOMER_ACCOUNT") === customerAccountId; })
+    : [];
+  var items = scoped.map(normalizeAppointment);
   var now = Number.isFinite(Number(api.config.now)) ? Number(api.config.now) : Date.now();
   var upcoming = items.filter(function (item) { return item.startEpoch >= now && item.customerStatus !== "Cancelled"; });
   var past = items.filter(function (item) { return item.startEpoch < now || item.customerStatus === "Completed" || item.customerStatus === "Cancelled"; }).reverse();
@@ -81,8 +132,10 @@ export async function loadCoreAppointments(context, fetchImpl = globalThis.fetch
   items.forEach(function (item) { byRef[item.ref] = item; });
   return {
     state: items.length ? "ready" : "empty",
-    scopeMode: "tenant-demo-unscoped",
-    resultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : items.length,
+    // Named to stay honest: the narrowing is done by this client, not by Core.
+    scopeMode: "customer-filtered-client-side",
+    resultSize: items.length,
+    tenantResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
     items: items,
     next: upcoming[0] || null,
     upcoming: upcoming.slice(1),
@@ -101,22 +154,45 @@ export function createCoreAppointment(input, context, fetchImpl = globalThis.fet
     ], APPOINTMENT_MAPPINGS);
     if (existing) return normalizeAppointment(existing);
 
-    var template = await appointmentTemplate(fetchImpl, api);
+    var resolved = await Promise.all([
+      resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "appointment-type", APPOINTMENT_TYPE, "appointment-type-missing"),
+      resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "task-type", CARE_TASK_TYPE, "task-type-missing"),
+      resolveOrganization(fetchImpl, api),
+      resolveCarePlan(fetchImpl, api),
+    ]);
+    var visitType = resolved[0];
+    var taskType = resolved[1];
+    var organization = resolved[2];
+    var carePlan = resolved[3];
+
     var start = validIso(input && input.start);
     var durationMinutes = positiveInteger(input && input.durationMinutes) || 60;
     var end = new Date(Date.parse(start) + durationMinutes * 60000).toISOString();
     var serviceName = text(input && input.serviceName) || "Spa appointment";
+
+    // appointment.task_id is NOT NULL in core-svc, so each visit gets its own
+    // task rather than borrowing another appointment's.
+    var taskId = await ensureVisitTask(fetchImpl, api, {
+      carePlan: carePlan,
+      code: code + "_TASK",
+      organization: organization,
+      serviceName: serviceName,
+      taskType: taskType,
+    });
+
     var entity = {
+      attributes: customerAttributes(api, visitType, {
+        SERVICE_PRODUCT: positiveInteger(input && input.serviceProductId) || null,
+      }),
       code: code,
       end: end,
       nls: { en: { NAME: serviceName } },
-      organization: requiredRef(template.organization, "Appointment organization"),
+      organization: { id: organization.id },
       start: start,
-      task: optionalRef(template.task),
-      type: requiredRef(template.type, "Appointment type"),
-      workflow: requiredRef(template.workflow, "Appointment workflow"),
+      task: { id: taskId },
+      type: { id: visitType.id },
+      workflow: { id: visitType.workflow.id },
     };
-    if (!entity.task) delete entity.task;
     var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions(api, {
       entities: [entity], mappings: APPOINTMENT_MAPPINGS,
     }));
@@ -164,27 +240,36 @@ export function createCoreOrder(input, context, fetchImpl = globalThis.fetch, ex
     var accountId = positiveInteger(api.customer.id);
     if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before checkout");
     var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
-    var existing = await listOne(fetchImpl, api.billBase + "/api/order/list.json", api, [
-      { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) },
-      { type: "STRING", operator: "=", property: "notes", value: marker },
-    ], ORDER_MAPPINGS);
-    if (existing) return normalizeOrder(existing, accountId);
-
-    var template = await listOne(fetchImpl, api.billBase + "/api/order/list.json", api, [
+    // Idempotency check: a replayed requestRef must return the existing order.
+    var rows = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
       { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) },
     ], ORDER_MAPPINGS, [{ field: "id", direction: "DESC" }]);
-    if (!template) throw contractError("order-template-missing", "A seeded Core Order is required for the current-api checkout demo");
+    var existing = rows.find(function (row) {
+      // `notes` is the legacy marker of orders written before RECORD_CODE existed.
+      return recordCodeOf(row) === marker || text(row.notes) === marker;
+    });
+    if (existing) return normalizeOrder(existing, accountId);
+
+    var resolved = await Promise.all([
+      resolveTypeWithWorkflow(fetchImpl, api, api.billBase, "order-type", ORDER_TYPE, "order-type-missing"),
+      resolveOrganization(fetchImpl, api),
+      resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing"),
+    ]);
+    var orderType = resolved[0];
+    var organization = resolved[1];
+    var currency = resolved[2];
     var total = finiteNumber(input && input.total, 0);
     var entity = {
       account: { id: accountId },
-      currency: requiredRef(template.currency, "Order currency"),
+      attributes: recordCodeAttributes(orderType, marker),
+      currency: { id: currency.id },
       grandTotal: total,
-      notes: marker,
-      organization: requiredRef(template.organization, "Order organization"),
+      notes: text(input && input.label) || "Customer portal checkout",
+      organization: { id: organization.id },
       totalCharges: total,
       totalTaxes: finiteNumber(input && input.taxes, 0),
-      type: requiredRef(template.type, "Order type"),
-      workflow: requiredRef(template.workflow, "Order workflow"),
+      type: { id: orderType.id },
+      workflow: { id: orderType.workflow.id },
     };
     var savedIds = await requestJson(fetchImpl, api.billBase + "/api/order/save.json", requestOptions(api, {
       entities: [entity], mappings: ORDER_MAPPINGS,
@@ -196,13 +281,97 @@ export function createCoreOrder(input, context, fetchImpl = globalThis.fetch, ex
   });
 }
 
-function appointmentTemplate(fetchImpl, api) {
-  return listOne(fetchImpl, api.serviceBase + "/api/appointment/list.json", api, [
-    { type: "STRING", operator: "=", property: "type.code", value: APPOINTMENT_TYPE },
-  ], APPOINTMENT_MAPPINGS).then(function (template) {
-    if (!template) throw contractError("appointment-template-missing", "A seeded SPA_VISIT is required for the current-api booking demo");
-    return template;
+// References are resolved by code, never copied off whichever row happens to be
+// newest. A typed entity carries its own workflow, so one lookup yields both.
+const TYPE_WITH_WORKFLOW_MAPPINGS = [
+  { name: "id" },
+  { name: "code" },
+  { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
+];
+
+async function resolveByCode(fetchImpl, api, base, endpoint, code, mappings, errorCode) {
+  var row = await listOne(fetchImpl, base + "/api/" + endpoint + "/list.json", api, [
+    { type: "STRING", operator: "=", property: "code", value: code },
+  ], mappings || [{ name: "id" }, { name: "code" }]);
+  if (!row) throw contractError(errorCode || "reference-missing", endpoint + " " + code + " is not provisioned in this organization");
+  return row;
+}
+
+function resolveTypeWithWorkflow(fetchImpl, api, base, endpoint, code, errorCode) {
+  return resolveByCode(fetchImpl, api, base, endpoint, code, TYPE_WITH_WORKFLOW_MAPPINGS, errorCode).then(function (row) {
+    if (!row.workflow || !positiveInteger(row.workflow.id))
+      throw contractError(errorCode || "reference-missing", endpoint + " " + code + " has no workflow");
+    return row;
   });
+}
+
+function resolveOrganization(fetchImpl, api) {
+  return resolveByCode(fetchImpl, api, api.coreBase, "organization", api.organization, null, "organization-missing");
+}
+
+function orderCurrencyCode(api) {
+  return text(api.config.currency || api.config.pimCurrency) || "USD";
+}
+
+// `project` must be mapped as well as set: core-svc NPEs on a Task save whose
+// mappings omit it, even though the entity carries the reference.
+const TASK_MAPPINGS = [
+  { name: "attributes" },
+  { name: "code" },
+  { name: "id" },
+  { name: "nls" },
+  { name: "optimistic" },
+  { key: "id", name: "organization", type: "identifier" },
+  { key: "id", name: "project", type: "identifier" },
+  { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+  { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
+];
+
+const CARE_PLAN_TYPE = "SPA_CARE_PLAN";
+const CARE_PLAN_MAPPINGS = [
+  { name: "attributes" },
+  { name: "code" },
+  { name: "id" },
+  { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+];
+
+/**
+ * Finds the signed-in customer's care plan, which every booked visit's task
+ * hangs off — Core requires a Task to have a Project. The plan carries its
+ * customer link in a dynamic attribute, so the match happens here.
+ */
+async function resolveCarePlan(fetchImpl, api) {
+  var accountId = positiveInteger(api.customer && api.customer.id);
+  if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before booking");
+  var rows = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
+    { type: "STRING", operator: "=", property: "type.code", value: CARE_PLAN_TYPE },
+  ], CARE_PLAN_MAPPINGS);
+  var owned = rows.find(function (row) { return customerAttributeId(row, "CUSTOMER_ACCOUNT") === accountId; });
+  if (!owned) throw contractError("care-plan-missing", "This customer has no care plan to record a visit against");
+  return owned;
+}
+
+/** Creates (or re-finds) the task a booked visit hangs off. Idempotent by code. */
+async function ensureVisitTask(fetchImpl, api, options) {
+  var existing = await listOne(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
+    { type: "STRING", operator: "=", property: "code", value: options.code },
+  ], TASK_MAPPINGS);
+  if (existing) return positiveInteger(existing.id);
+  var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions(api, {
+    entities: [{
+      attributes: customerAttributes(api, options.taskType),
+      code: options.code,
+      nls: { en: { NAME: options.serviceName } },
+      organization: { id: options.organization.id },
+      project: { id: options.carePlan.id },
+      type: { id: options.taskType.id },
+      workflow: { id: options.taskType.workflow.id },
+    }],
+    mappings: TASK_MAPPINGS,
+  }));
+  var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
+  if (!id) throw contractError("invalid-save-response", "Core Task save did not return an id");
+  return id;
 }
 
 async function listOne(fetchImpl, url, api, filters, mappings, sorting) {
@@ -211,6 +380,58 @@ async function listOne(fetchImpl, url, api, filters, mappings, sorting) {
   var response = await requestJson(fetchImpl, url, requestOptions(api, body));
   var rows = Array.isArray(response && response.result) ? response.result : [];
   return rows[0] || null;
+}
+
+async function listMany(fetchImpl, url, api, filters, mappings, sorting, pageSize) {
+  var body = { filters: filters, mappings: mappings, offset: 0, pageSize: pageSize || 200 };
+  if (sorting) body.sorting = sorting;
+  var response = await requestJson(fetchImpl, url, requestOptions(api, body));
+  return Array.isArray(response && response.result) ? response.result : [];
+}
+
+// Order has no `code` column, so its type carries a RECORD_CODE attribute that
+// plays that role. Core cannot filter on dynamic attributes — a filter on
+// `attributes.RECORD_CODE` silently returns zero rows rather than erroring —
+// so callers must match client-side or they will create duplicates.
+function recordCodeOf(row) {
+  var typeId = row && row.type && row.type.id;
+  var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+  var entry = group && group.RECORD_CODE;
+  return entry && entry.value != null ? String(entry.value) : "";
+}
+
+function recordCodeAttributes(typeRef, code) {
+  var typeId = typeRef && typeRef.id;
+  if (typeId == null) return {};
+  var attributes = {};
+  attributes[String(typeId)] = { RECORD_CODE: { value: code } };
+  return attributes;
+}
+
+// Reads an entity-reference attribute (CUSTOMER_ACCOUNT, SERVICE_PRODUCT, ...)
+// from a row's own type group.
+function customerAttributeId(row, code) {
+  var typeId = row && row.type && row.type.id;
+  var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+  var entry = group && group[code];
+  return entry && entry.value != null ? positiveInteger(entry.value) : null;
+}
+
+// Every appointment this portal writes must carry the customer link the read
+// path filters on, or a freshly booked visit disappears from the list.
+function customerAttributes(api, typeRef, extra) {
+  var typeId = typeRef && typeRef.id;
+  if (typeId == null) return {};
+  var values = {};
+  var accountId = positiveInteger(api.customer && api.customer.id);
+  if (accountId) values.CUSTOMER_ACCOUNT = { value: accountId };
+  if (api.customerUserId) values.CUSTOMER_USER = { value: api.customerUserId };
+  Object.keys(extra || {}).forEach(function (key) {
+    if (extra[key] != null) values[key] = { value: extra[key] };
+  });
+  var attributes = {};
+  attributes[String(typeId)] = values;
+  return attributes;
 }
 
 function getEntity(fetchImpl, url, api, mappings) {
@@ -231,7 +452,9 @@ function requestContext(context, explicitOrigin) {
     authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
     billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
     config: config,
+    coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
     customer: customer,
+    customerUserId: positiveInteger(session.userId || state.session && state.session.userId) || null,
     organization: organization,
     serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
   };
@@ -274,8 +497,10 @@ function normalizeAppointment(row) {
   var end = validIso(row.end);
   var states = Array.isArray(row.states) ? row.states.map(function (state) { return text(state && state.code); }).filter(Boolean) : [];
   var status = appointmentStatus(states);
+  // Actions follow the workflow: only a scheduled visit can be moved or called
+  // off, and only a finished one can be repeated.
   var allowedActions = [];
-  if (status === "Confirmed") allowedActions.push("reschedule");
+  if (status === "Confirmed") allowedActions.push("reschedule", "cancel");
   if (status === "Completed") allowedActions.push("bookAgain");
   return {
     ref: REF_PREFIX + id,

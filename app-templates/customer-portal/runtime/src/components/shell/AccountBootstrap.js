@@ -15,8 +15,9 @@ function gateActions(list) {
 
 export function AccountBootstrap() {
   var s = state.account;
-  var page = h("section", { "class": "page account-gate", "data-route": state.route, "data-state": s, "data-visual-id": "account-gate", "data-screen-label": "Account (" + s + ")" });
-  var card = h("div", { "class": "auth-card account-gate__card", "data-module": "account-bootstrap", "data-visual-id": "account-bootstrap", "data-state": s, "data-intended-route": state.route });
+  var intendedRoute = state.session.intendedRoute || state.route;
+  var page = h("section", { "class": "page account-gate", "data-route": intendedRoute, "data-state": s, "data-visual-id": "account-gate", "data-screen-label": "Account (" + s + ")" });
+  var card = h("div", { "class": "auth-card account-gate__card", "data-module": "account-bootstrap", "data-visual-id": "account-bootstrap", "data-state": s, "data-intended-route": intendedRoute });
 
   if (s === "resolving-customer") {
     /* non-interactive: no private entities, no ids, no claims */
@@ -71,7 +72,7 @@ export function AccountBootstrap() {
     card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u23f1")]));
     card.appendChild(h("div", { "class": "oidc-title" }, "Your session ended"));
     card.appendChild(h("div", { "class": "oidc-sub" }, "For your security you were signed out. Nothing you see below is live anymore. Sign in again and you\u2019ll come right back here."));
-    card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(state.route))]));
+    card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(intendedRoute))]));
     card.appendChild(gateActions([
       ActionButton({ variant: "btn--primary", label: "Sign in again", action: "auth.oidcSignIn", block: true, lg: true, visualId: "account-reauth" }),
       ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "account-catalog" })

@@ -20,9 +20,168 @@ export const corePimAdapter = {
       });
     }) }, config);
     if (moduleId === "pricing" || moduleId === "services") return { pimPlans: plans };
-    return { pimProducts: plans };
+    var enrichment = await loadProductEnrichment(context, plans);
+    return {
+      pimProducts: plans.map(function (product) {
+        var model = enrichment.modelsByProductCode[product.code] || null;
+        return Object.assign({}, product, {
+          ref: opaqueRef("product", product.code),
+          modelRef: model && model.ref || null,
+          modelName: model && model.name || null,
+          media: [],
+          reviews: enrichment.reviewsByProductCode[product.code] || [],
+        });
+      }),
+      pimProductModels: enrichment.models,
+      pimProductReviews: enrichment.reviews,
+      pimEnrichment: enrichment.state,
+    };
   },
 };
+
+async function loadProductEnrichment(context, products) {
+  var config = context.config || {};
+  var session = context.state && context.state.session || {};
+  var token = session.accessToken;
+  var empty = {
+    models: [], reviews: [], modelsByProductCode: {}, reviewsByProductCode: {},
+    state: { models: "unavailable", reviews: "unavailable" },
+  };
+  if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
+
+  var headers = {
+    Accept: "application/json",
+    Authorization: (session.tokenType || "Bearer") + " " + token,
+    "Content-Type": "application/json",
+    "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND",
+  };
+  var [modelResult, reviewResult] = await Promise.all([
+    fetchPrivateList(privateUrl(config, "product-model"), productModelRequest(), headers),
+    fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers),
+  ]);
+  var productCodes = new Set(products.map(function (product) { return product.code; }));
+  var models = modelResult.ok ? normalizeModels(modelResult.items, productCodes) : [];
+  var reviews = reviewResult.ok ? normalizeReviews(reviewResult.items, productCodes) : [];
+  var modelsByProductCode = {};
+  models.forEach(function (model) {
+    model.productCodes.forEach(function (code) { modelsByProductCode[code] = model; });
+  });
+  var reviewsByProductCode = {};
+  reviews.forEach(function (review) {
+    if (!reviewsByProductCode[review.productCode]) reviewsByProductCode[review.productCode] = [];
+    reviewsByProductCode[review.productCode].push(review);
+  });
+  return {
+    models: models,
+    reviews: reviews,
+    modelsByProductCode: modelsByProductCode,
+    reviewsByProductCode: reviewsByProductCode,
+    state: { models: modelResult.state, reviews: reviewResult.state },
+  };
+}
+
+async function fetchPrivateList(url, payload, headers) {
+  try {
+    var response = await window.fetch(url, { method: "POST", headers: headers, credentials: "include", body: JSON.stringify(payload) });
+    if (!response.ok) return { ok: false, state: response.status === 401 ? "session-expired" : response.status === 403 ? "forbidden" : "error", items: [] };
+    var data = await response.json();
+    return { ok: true, state: "ready", items: Array.isArray(data && data.result) ? data.result : [] };
+  } catch (error) {
+    return { ok: false, state: "error", items: [] };
+  }
+}
+
+function privateUrl(config, entity) {
+  var base = String(config.pimApiBase || "/core-pim/api").trim().replace(/\/+$/, "");
+  if (!/\/api$/i.test(base)) base += "/api";
+  return base + "/" + entity + "/list.json";
+}
+
+function productModelRequest() {
+  return {
+    filters: [], offset: 0, pageSize: 200,
+    mappings: [
+      { name: "id" }, { name: "code" }, { name: "nls" }, { name: "variants" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "products", type: "collection" },
+    ],
+  };
+}
+
+function productReviewRequest() {
+  return {
+    filters: [], offset: 0, pageSize: 500,
+    mappings: [
+      { name: "id" }, { name: "attributes" }, { name: "created" }, { name: "updated" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "product", type: "identifier" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" },
+      { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
+    ],
+  };
+}
+
+function normalizeModels(rows, productCodes) {
+  return rows.map(function (row) {
+    var products = Array.isArray(row && row.products) ? row.products : [];
+    var codes = products.map(function (product) { return String(product && product.code || ""); }).filter(function (code) { return productCodes.has(code); });
+    var nls = localized(row && row.nls, "en");
+    var variantAttributes = [];
+    Object.values(row && row.variants || {}).forEach(function (values) {
+      if (Array.isArray(values)) values.forEach(function (value) { if (!variantAttributes.includes(String(value))) variantAttributes.push(String(value)); });
+    });
+    return {
+      ref: opaqueRef("product-model", row.code),
+      code: String(row.code || ""),
+      name: nls.NAME || String(row.code || "Collection"),
+      description: stripHtml(nls.DESCRIPTION || ""),
+      productCodes: codes,
+      variantAttributes: variantAttributes,
+    };
+  }).filter(function (model) { return model.code && model.productCodes.length; });
+}
+
+function normalizeReviews(rows, productCodes) {
+  return rows.map(function (row) {
+    var states = Array.isArray(row && row.states) ? row.states.map(function (state) { return String(state && state.code || ""); }) : [];
+    var productCode = String(row && row.product && row.product.code || "");
+    if (!states.includes("PUBLISHED") || !productCodes.has(productCode)) return null;
+    var rating = Number(reviewAttribute(row, "RATING"));
+    var body = String(reviewAttribute(row, "BODY") || "").trim();
+    var authorName = String(reviewAttribute(row, "AUTHOR_NAME") || "").trim();
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5 || !body || !authorName) return null;
+    var identity = reviewAttribute(row, "REVIEW_KEY") || [row.id, productCode, authorName, body, row.created].join("|");
+    return {
+      ref: opaqueRef("product-review", identity),
+      productCode: productCode,
+      rating: rating,
+      title: String(reviewAttribute(row, "TITLE") || "").trim() || null,
+      body: body,
+      authorName: authorName,
+      verified: reviewAttribute(row, "VERIFIED") === true || String(reviewAttribute(row, "VERIFIED")).toLowerCase() === "true",
+      publishedAt: row.updated || row.created || null,
+    };
+  }).filter(Boolean);
+}
+
+function reviewAttribute(row, code) {
+  var groups = row && row.attributes;
+  if (!groups || typeof groups !== "object") return null;
+  for (var group of Object.values(groups)) {
+    if (group && group[code] && group[code].value !== undefined) return group[code].value;
+  }
+  return null;
+}
+
+function opaqueRef(prefix, value) {
+  var text = String(value || prefix);
+  var left = 2166136261;
+  var right = 2246822507;
+  for (var index = 0; index < text.length; index += 1) {
+    var code = text.charCodeAt(index);
+    left = Math.imul(left ^ code, 16777619);
+    right = Math.imul(right ^ code, 3266489909);
+  }
+  return prefix + "-" + (left >>> 0).toString(36) + (right >>> 0).toString(36);
+}
 
 function buildRequest(config, productTypeCode) {
   var payload = {
@@ -30,12 +189,20 @@ function buildRequest(config, productTypeCode) {
     includeChildProductTypes: true,
     priceTypeCode: config.pimPriceTypeCode || "RECURRENT",
     includeChildPriceTypes: true,
-    priceAttributeCode: config.pimPriceAttributeCode || "INTERVAL",
-    priceAttributeValues: configuredValues(config.pimPriceAttributeValues, ["1"]),
     currencyAttributeCode: config.pimCurrencyAttributeCode || "CURRENCY",
     currencyAttributeValues: configuredValues(config.pimCurrencyAttributeValues, [config.pimCurrency || "CAD"]),
     nlsKeys: ["NAME", "DESCRIPTION", "PLACEHOLDER"],
   };
+
+  // The price-attribute filter is optional. Under the SYSTEM price types a
+  // one-time price carries no INTERVAL at all, so applying the filter would drop
+  // every non-recurring row; it is sent only when a deployment configures it.
+  var priceAttributeCode = typeof config.pimPriceAttributeCode === "string" ? config.pimPriceAttributeCode.trim() : "";
+  var priceAttributeValues = configuredValues(config.pimPriceAttributeValues, []);
+  if (priceAttributeCode && priceAttributeValues.length) {
+    payload.priceAttributeCode = priceAttributeCode;
+    payload.priceAttributeValues = priceAttributeValues;
+  }
 
   return {
     url: config.pimFixtureUrl || buildUrl(config),
@@ -98,11 +265,39 @@ function normalizePimRows(data, config) {
       interval: formatInterval(interval),
       cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
       attributes: product.attributes || {},
+      variantFacts: variantFacts(product.attributes),
       productTypeCode: product.type && product.type.code || row.productTypeCode || row.__productTypeCode || "",
       allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
       row: row,
     };
   });
+}
+
+function variantFacts(attributes) {
+  return [
+    fact("Format", productAttribute(attributes, "FORMAT")),
+    fact("Size", volumeLabel(productAttribute(attributes, "VOLUME_ML"))),
+    fact("Scent", productAttribute(attributes, "SCENT_PROFILE")),
+  ].filter(Boolean);
+}
+
+function fact(label, value) {
+  if (value === undefined || value === null || value === "") return null;
+  return { label: label, value: String(value) };
+}
+
+function volumeLabel(value) {
+  if (value === undefined || value === null || value === "") return null;
+  return String(value) + " ml";
+}
+
+function productAttribute(attributes, code) {
+  if (!attributes || typeof attributes !== "object") return null;
+  for (var group of Object.values(attributes)) {
+    var attribute = group && group[code];
+    if (attribute && attribute.value !== undefined && attribute.value !== null) return attribute.value;
+  }
+  return null;
 }
 
 function configuredValues(value, fallback) {

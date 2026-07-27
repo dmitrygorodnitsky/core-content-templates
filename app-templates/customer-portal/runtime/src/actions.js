@@ -59,6 +59,8 @@ export var ACTIONS = {
   "appointment.reschedule": function (id) { return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); },
   "appointment.cancel": function (id) { return spaApptCancel(id); },
   "appointment.bookAgain": function (id) { return openSpaFlow({ entry: "book-again", fromAppt: id }); },
+  "product.open": function (id) { state.spaCurrentProduct = id; state.spaGallery = 0; state.view = "ready"; go("product.detail"); },
+  "product.gallerySelect": function (id) { setState({ spaGallery: Math.max(0, Number(id) || 0) }); },
   "proposal.review":   function ()   { go("proposals.list"); },
   "proposal.open":     function (id) { openProposal(id); },
   "proposal.selectPlan": function (id) { runCommand("proposal.selectPlan", id, function () { selectPlan(id); }); },
@@ -310,7 +312,24 @@ function spaLiveContext() {
 
 function spaLines() { return state.spaCart && state.spaCart.lines || []; }
 
-function spaSetLines(lines) { state.spaCart = F.spaServerCart(lines); }
+var spaCartVersion = 0;
+function spaSetLines(lines) {
+  var subtotal = lines.reduce(function (sum, line) { return sum + Number(line.cents || 0) * Number(line.qty || 0); }, 0);
+  var taxes = Math.round(subtotal * 0.08);
+  var displayMoney = function (cents) { return "$" + (cents / 100).toFixed(2); };
+  spaCartVersion += 1;
+  state.spaCart = {
+    version: "cart-" + spaCartVersion,
+    lines: lines.map(function (line) {
+      return Object.assign({}, line, {
+        displayUnitPrice: displayMoney(Number(line.cents || 0)),
+        displayTotal: displayMoney(Number(line.cents || 0) * Number(line.qty || 0)),
+      });
+    }),
+    displayTotals: lines.length ? { subtotal: displayMoney(subtotal), tax: displayMoney(taxes), total: displayMoney(subtotal + taxes) } : null,
+    fulfillment: { kind: "PICKUP", label: "Pickup at the studio", detail: "Availability is confirmed by the studio" },
+  };
+}
 
 function spaAddLine(code) {
   if (!spaRetailOpen()) return;
@@ -373,7 +392,7 @@ function spaCheckoutStart(source) {
   state.spaResult = null;
   state.spaPolicyAck = false;
   state.spaCheckoutDemo = "ready";
-  delete state.commands["checkout.confirm:" + F.spaCommerce.checkout.ref];
+  delete state.commands["checkout.confirm:" + spaCheckoutRef()];
   go("checkout");
   return true;
 }
@@ -381,10 +400,11 @@ function spaCheckoutStart(source) {
 function spaConfirmCheckout() {
   var commerceOpen = state.spaCheckoutSource === "plan" ? spaPlanSellOpen() : spaRetailOpen();
   if (!commerceOpen || state.spaCheckoutDemo !== "ready" || !state.spaPolicyAck) return false;
-  var key = "checkout.confirm:" + F.spaCommerce.checkout.ref;
+  var checkoutRef = spaCheckoutRef();
+  var key = "checkout.confirm:" + checkoutRef;
   if (spaCurrentApiDemoOpen()) {
     var lines = state.spaCheckoutSource === "plan" ? [] : spaLines();
-    var requestRef = F.spaCommerce.checkout.ref + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan"
+    var requestRef = checkoutRef + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan"
       ? state.spaPlanOffer || "offer"
       : lines.map(function (line) { return line.ref + "x" + line.qty; }).sort().join("-"));
     var amounts = spaLiveCheckoutAmounts();
@@ -400,7 +420,7 @@ function spaConfirmCheckout() {
         fulfillment: "Pickup at Harbor Front studio",
       };
       if (state.spaCheckoutSource === "cart") {
-        state.spaCart = F.spaServerCart([]);
+        spaSetLines([]);
         state.spaCartDemo = "as-added";
       }
     }, { toast: "Order created — confirmed by Core" });
@@ -411,10 +431,14 @@ function spaConfirmCheckout() {
       state.spaResult = offer && offer.kind === "MEMBERSHIP" ? F.spaCommerce.confirmations.membership : F.spaCommerce.confirmations.plan;
     } else state.spaResult = F.spaCommerce.confirmations.retail;
     if (state.spaCheckoutSource === "cart") {
-      state.spaCart = F.spaServerCart([]);
+      spaSetLines([]);
       state.spaCartDemo = "as-added";
     }
   }, { ms: 900 });
+}
+
+function spaCheckoutRef() {
+  return state.config.dataMode === "live" ? "customer-portal-checkout" : F.spaCommerce.checkout.ref;
 }
 
 function spaBookingConfirm() {
@@ -667,6 +691,11 @@ function retrySpaOrRuntime(id) {
   if (id === "slots") { setState({ spaSlots: "ready" }); return true; }
   if (id === "plan-offers") { setState({ spaOfferDemo: "sellable" }); return true; }
   if (id === "plan-credit") { setState({ spaCredit: "ok" }); return true; }
+  if (id === "product-reviews") {
+    if (state.config.dataMode === "live") return reloadRuntimeModule("products");
+    setState({ spaReviews: "ready" });
+    return true;
+  }
   if (id && state.commands[id]) {
     state.commands = Object.assign({}, state.commands);
     delete state.commands[id];

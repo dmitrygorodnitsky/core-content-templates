@@ -32,6 +32,7 @@ import { SpaPurchaseDetail } from "./routes/SpaPurchaseDetailPage.js";
 import { SpaPurchases } from "./routes/SpaPurchasesPage.js";
 import { SpaProfile } from "./routes/SpaProfilePage.js";
 import { SpaShop } from "./routes/SpaShopPage.js";
+import { SpaProductDetail } from "./routes/SpaProductDetailPage.js";
 
 export function ComingSoon(routeId, wave) {
   return h("section", { "class": "page", "data-route": routeId, "data-visual-id": routeId }, [
@@ -150,6 +151,7 @@ export function renderRoute() {
     case "services":    return isSpa() ? SpaCatalog() : Services();
     case "pricing":     return isSpa() ? SpaCatalog() : Pricing();
     case "products":    return isSpa() ? SpaShop() : Products();
+    case "product.detail": return isSpa() ? SpaProductDetail() : ComingSoon("product.detail", "a later wave");
     case "checkout":    return isSpa() ? SpaCheckout() : Checkout();
     case "account":     return isSpa() ? SpaAccount() : ComingSoon("account", "a later wave");
     case "purchases.list": return isSpa() ? SpaPurchases() : ComingSoon("purchases.list", "a later wave");
@@ -197,6 +199,7 @@ function applyRouteParams(match) {
   if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
   if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
   if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
+  if (match.id === "product.detail" && match.params.id) state.spaCurrentProduct = match.params.id;
 }
 
 function paramsForRoute(routeId) {
@@ -207,6 +210,7 @@ function paramsForRoute(routeId) {
   if (routeId === "proposal.detail") return { id: state.currentSiteId };
   if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
   if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
+  if (routeId === "product.detail") return { id: state.spaCurrentProduct };
   return {};
 }
 
@@ -219,6 +223,7 @@ function routeFamily(routeId) {
   if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
   if (routeId === "proposals.list" || routeId === "proposal.detail") return "proposals";
   if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
+  if (routeId === "products" || routeId === "product.detail") return "products";
   return null;
 }
 

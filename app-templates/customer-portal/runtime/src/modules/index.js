@@ -3,6 +3,7 @@ import { corePimAdapter } from "../adapters/core-pim-adapter.js";
 import { createCareFixtureAdapter } from "../adapters/care-fixture-adapter.js";
 import { createCoreAccountAdapter } from "../adapters/core-account-adapter.js";
 import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
+import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
 import { createCoreOidcAdapter } from "../adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "../adapters/core-user-profile-adapter.js";
@@ -223,6 +224,26 @@ const appointmentsModule = {
   },
 };
 
+const planModule = {
+  id: "plan",
+  asyncOnly: true,
+  adapter(context) {
+    if (context.config.dataMode === "live") return createCorePlansAdapter();
+    return { load() { return { state: "ready", items: [], byRef: {} }; } };
+  },
+  normalize(raw) { return raw; },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return {
+      state: error && error.code === "customer-forbidden" ? "unauthorized" : "error",
+      items: [],
+      byRef: {},
+    };
+  },
+};
+
 const checkoutModule = {
   id: "checkout",
   adapter(context) {
@@ -244,6 +265,7 @@ export const modules = {
   pricing: module("pricing", normalizePricing),
   products: module("products", normalizeProducts),
   checkout: checkoutModule,
+  plan: planModule,
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,

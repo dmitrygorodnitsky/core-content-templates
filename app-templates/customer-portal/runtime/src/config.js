@@ -107,6 +107,7 @@ export const routeRegistry = {
   services: { id: "services", path: "/services", module: "services" },
   pricing: { id: "pricing", path: "/pricing", module: "pricing" },
   products: { id: "products", path: "/products", module: "products" },
+  "product.detail": { id: "product.detail", path: "/products/:id", module: "products", param: "id" },
   checkout: { id: "checkout", path: "/checkout", module: "checkout" },
   account: { id: "account", path: "/account", module: "account" },
   "purchases.list": { id: "purchases.list", path: "/purchases", module: "purchases" },
@@ -210,6 +211,7 @@ export function readPortalConfig(root) {
     pimFixtureUrl: dataset.portalPimFixtureUrl || "",
     pimApiBase: dataset.portalPimApiBase || "/core-pim/api",
     pimOrganization: dataset.portalPimOrganization || "SERVICEWAND",
+    pimEnrichmentMode: allowed(dataset.portalPimEnrichment, ["closed", "current-api"], "closed"),
     pimProductTypeCode: dataset.portalPimProductTypeCode || "SERVICEWAND_SAAS",
     pimPricingProductTypeCodes: splitList(dataset.portalPimPricingProductTypeCodes),
     pimProductsProductTypeCodes: splitList(dataset.portalPimProductsProductTypeCodes),
@@ -267,5 +269,7 @@ function positiveNumber(value, fallback) {
 }
 
 function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  /* Keep `$` away from `{` in the emitted source: `${` is a JTE expression
+     opener even when those characters happen to live inside a JS regex. */
+  return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
 }

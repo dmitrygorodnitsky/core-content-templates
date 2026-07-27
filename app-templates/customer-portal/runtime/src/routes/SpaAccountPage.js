@@ -5,11 +5,18 @@
 // customer-safe display name; no Account/User id, role, permission or
 // organization selector exists anywhere on this surface.
 import { h } from "../dom.js";
-import { F } from "../../data/fixtures.js";
 import { spaCapability, spaCurrentApiDemoOpen, spaCustomer, state } from "../state.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { skel } from "../components/primitives/RouteStates.js";
 import { spaGate } from "../components/spa/CommerceBits.js";
+
+/* Navigation copy is product UI configuration, not account data. */
+const ACCOUNT_ENTRIES = Object.freeze([
+  { key: "purchases", action: "account.openPurchases", title: "Purchases", desc: "Everything you’ve ordered — services, shop items and plans, with their current state.", unavailableDesc: "Purchase history with customer statuses isn’t available on this portal yet. Your raw order records are on the Orders page." },
+  { key: "plan", action: "account.openPlan", title: "My plan", desc: "Your packages and membership — remaining visits, renewal and valid actions.", unavailableDesc: "Plan and membership balances aren’t connected yet. Published membership options are in Services & prices." },
+  { key: "profile", action: "account.openProfile", title: "Profile", desc: "Your contact details and preferences.", unavailableDesc: "Profile editing isn’t connected yet — our team can update your details for you." },
+  { key: "support", action: "support.open", title: "Support", desc: "Get help with a visit, an order or your plan.", unavailableDesc: "A support destination hasn’t been set up for this portal yet." },
+]);
 
 /* availability is decided from the capability config — the page never guesses */
 function entryAvailability(key) {
@@ -42,7 +49,7 @@ export function SpaAccount() {
   if (gate) { page.appendChild(gate); return page; }
 
   var grid = h("div", { "class": "account-grid", "data-module": "account-entry-list", "data-visual-id": "account-entry-list" });
-  F.spaCommerce.accountEntries.forEach(function (e) {
+  ACCOUNT_ENTRIES.forEach(function (e) {
     var avail = entryAvailability(e.key);
     var card = h("div", {
       "class": "card card--pad account-entry" + (avail === "unavailable" ? " account-entry--unavailable" : ""),

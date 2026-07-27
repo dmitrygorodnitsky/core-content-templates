@@ -11,7 +11,10 @@
     "theme": "beauty",
     "routerMode": "hash",
     "defaultRoute": "pricing",
-    "enabledModules": ["pricing", "products"],
+    "enabledModules": [
+      "pricing",
+      "products"
+    ],
     "authMode": "required",
     "dataMode": "live",
     "errorMode": "error"
@@ -19,16 +22,20 @@
   "pim": {
     "apiBase": "/core-pim/api",
     "organization": "CALM_HARBOR_SPA_STAGING",
-    "pricingProductTypeCodes": ["SPA_SERVICE", "SPA_MEMBERSHIP"],
-    "productsProductTypeCodes": ["SPA_RETAIL"],
-    "priceTypeCode": "SPA_STANDARD_PRICE",
-    "priceAttributeCode": "INTERVAL",
-    "priceAttributeValues": ["ONE_TIME", "MONTH"],
+    "pricingProductTypeCodes": [
+      "SPA_SERVICE",
+      "SPA_MEMBERSHIP"
+    ],
+    "productsProductTypeCodes": [
+      "SPA_RETAIL"
+    ],
+    "priceTypeCode": "PRICE_CURRENCY",
     "currency": "USD",
     "currencyAttributeCode": "CURRENCY",
-    "currencyAttributeValues": ["USD"],
-    "amountAttributeCode": "AMOUNT_MINOR",
-    "amountMinorDivisor": 100,
+    "currencyAttributeValues": [
+      "USD"
+    ],
+    "amountAttributeCode": "UNIT_PRICE",
     "cta": "Book service"
   },
   "auth": {
