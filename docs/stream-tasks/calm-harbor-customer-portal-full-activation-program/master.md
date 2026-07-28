@@ -599,3 +599,44 @@ because plan enrollment reuses checkout confirmation and Order readback.
   `app-templates/customer-portal/design-requests/README.md`. Nothing under
   `runtime/` or `design-inbox/` was modified by the audit; the release compile was
   run as a health check and is green and idempotent.
+
+- **W4 — Calm Harbor Commerce Commands: done.** Package
+  `docs/stream-tasks/calm-harbor-commerce-commands-wave/`; closeout in its
+  `evidence/closeout.md`, per-slice record in `audits/A1.md`. Commits `e08b0de`,
+  `4634280`, `13bad3f`, `08274ce`, `3fd2329`, `1a4c936` on
+  `codex/lab-ui-durable-catalog`.
+
+  **The customer now has a server-owned cart and a real order.** One adapter owns
+  every Core cart call; the bag renders only from the live envelope; sellability
+  comes from the `SPA_STOCK` join and nothing else; and confirming creates one
+  `SPA_ORDER` with typed `SPA_ITEM_*` lines, replay-safe, reported only from the
+  Order readback, with the pickup dimension recorded for a retail order.
+
+  **The money violation this program flagged twice is closed.** The 8% tax
+  computed in the browser and written to Core — S3 §5a's lesson and the
+  design-fidelity audit's sharpest finding — is deleted. `createCoreOrder` sends
+  no `grandTotal`, `totalCharges` or `totalTaxes`; Core computes the total from
+  the lines. Proven live: `order-core-13`, `grandTotal` 179 = Σ(`amount` ×
+  `itemCount`), lines `SPA_ITEM_RETAIL` + `SPA_ITEM_SERVICE`, cart cleared only
+  after readback, replay creating nothing. `invoice` and `balance-transaction`
+  stayed at zero rows throughout; `payment` and `refund` have no endpoint.
+
+  **Cancel and return stay `not_opened`**, both blockers unchanged: no accepted
+  design for `RETURN_REQUESTED`/`RETURNED` (S3 §5) and tenant-wide workflow-event
+  500s (S5 §4). Nothing was built against the dead endpoint.
+
+  **Three backend faults found live, none of them the portal's.** The
+  authenticated `core-pim` API alternates 200/401 on identical requests — one bad
+  replica behind the load balancer — which W4's checkout was restructured to
+  avoid but which **still degrades W2's inventory enrichment about half the
+  time** (fails closed to `unknown`, so the Shop intermittently shows everything
+  as unbuyable). `core-svc` and `core-rm` refuse a customer token outright, which
+  blocks the appointments read and is why a customer-created pickup carries no
+  studio. And two `=` filters on the same property are ANDed into an empty body
+  — the same silent-zero-rows class as the unfilterable dynamic attribute.
+
+  Two design requests are open and gate live states: the `unknown` stock
+  treatment (10 of 12 retail products have no inventory row) and the cart totals
+  card (Core states only a subtotal). Two browser suites fail that were not on
+  the package's known-bad list; both were verified to fail identically at
+  `b808ac4`, before the wave opened. No CMS upload was performed.

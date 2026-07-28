@@ -117,9 +117,9 @@ surface it, do not silently proceed.
 | C1 cart adapter | commerce adapters | executor | done | — | `scripts/core-cart-adapter-check.mjs`; live read/add/count/remove against staging | cart reads and mutates through Core with server totals only |
 | C2 sellability | commerce adapters | executor | done | C1 | inventory join check; out-of-stock row proves an unbuyable product | Shop shows server stock truth, never inferred |
 | C3 cart presentation | presentation | executor | done | C1 | route-state matrix for cart empty/ready/error | accepted cart states render from the live envelope |
-| C4 checkout | command orchestration | executor | todo | C1–C3 | replay, conflict, and readback cases in the adapter check; live order created with typed lines | confirmation renders only from Order readback |
-| C5 fulfillment record | commerce adapters | executor | todo | C4 | pickup shipment joined to the order by `SOURCE_ORDER` | a retail order carries its pickup record |
-| C6 evidence | evidence | executor | todo | C1–C5 | all checks green; live transcript recorded | `evidence/` holds live proof and honest residuals |
+| C4 checkout | command orchestration | executor | done | C1–C3 | replay, conflict, and readback cases in the adapter check; live order created with typed lines | confirmation renders only from Order readback |
+| C5 fulfillment record | commerce adapters | executor | done | C4 | pickup shipment joined to the order by `SOURCE_ORDER` | a retail order carries its pickup record |
+| C6 evidence | evidence | executor | done | C1–C5 | all checks green; live transcript recorded | `evidence/` holds live proof and honest residuals |
 
 ## Definition of Done
 
@@ -174,6 +174,30 @@ surface it, do not silently proceed.
   Operator re-ran the integrated suite: 10 checks + release compile + CMS
   export, all green.
 
+- **C4 checkout — done.** `3fd2329`. Confirming creates one `SPA_ORDER` from the
+  server cart with one `SPA_ITEM_*` line per item, and renders only from the
+  Order readback. No totals are sent; `spaLiveCheckoutAmounts` and its hardcoded
+  8% tax are deleted. Cart commands route through the C1 adapter and reload the
+  module, so the bag re-renders from Core's recalculated totals. `spaSellInfo()`
+  stops hardcoding `sellable` and reports C2's join, closing the C2 handoff.
+  Live proof, `CHS_STG_ELENA_RIOS`: cart of Harbor body oil x2 @42 + Quiet
+  shoulders x1 @95, subtotal 179 → `order-core-11`, `grandTotal` 179 =
+  SUM(amount x itemCount), lines `SPA_ITEM_RETAIL` + `SPA_ITEM_SERVICE`; replay
+  created nothing; cart cleared only after readback; `invoice` and
+  `balance-transaction` still 0 rows, `payment`/`refund` have no endpoint.
+
+- **C5 pickup fulfillment — done.** `1a4c936`. A retail checkout writes the
+  `SPA_FULFILLMENT` shipment, idempotent by `RECORD_CODE` + `SOURCE_ORDER`, read
+  back before it is reported, with no workflow transition ever attempted. Only a
+  retail line writes one; a failed pickup does not fail a confirmed order. No
+  window is invented. `PICKUP_LOCATION` is absent because **core-rm refuses this
+  customer session** (401 on 6/6), and `locationUnresolvedReason` keeps that
+  apart from a tenant with no studio. Live: `order-core-13` carries pickup
+  record 3, `PICKUP`/`PENDING`, replay wrote nothing.
+- **C6 evidence — done.** `evidence/closeout.md`, `audits/A1.md` (485 lines,
+  all five slices plus backend faults and the suite-by-suite pre-existing-failure
+  proof), and two live transcripts under `evidence/`.
+
 ## Backend Corrections Found Live (2026-07-28)
 
 Four things the written contract had wrong or unstated. Each cost a probe cycle;
@@ -197,6 +221,17 @@ they are recorded so the next wave does not rediscover them.
    refusal to lean on. Live inventory holds only two rows — `CHS_BODY_001` 12
    and `CHS_SKIN_002` 0 — so the other ten retail products have **no inventory
    row**, making "unknown stock" the dominant live case rather than an edge one.
+
+5. **The authenticated `core-pim` API alternates 200/401 on identical
+   requests** — perfectly every other call across 20 probes, while `core-bill`,
+   `core` and `core-acct` are stable at 200 and the PUBLIC catalog endpoint is
+   stable at 200. It reads as one bad replica behind the load balancer.
+   `core-svc` refuses this customer token outright (12/12 401). Consequences:
+   checkout must not read product types from authenticated PIM (C4 takes them
+   from the catalog the portal already holds), and C2's inventory enrichment
+   will fail roughly half the time — it fails closed to `unknown`, so the
+   degradation is safe but visible. **This is a backend fault, not a portal
+   one, and it is not this wave's to fix.**
 
 Confirmed for C4, read-only: order type `SPA_ORDER` is id 4 on
 `SPA_ORDER_LIFECYCLE`; all four `SPA_ITEM_*` types exist on

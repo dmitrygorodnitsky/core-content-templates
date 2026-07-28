@@ -3595,7 +3595,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var product = productItems().find(function(item) {
         return item.code === code;
       });
-      return product ? { state: "sellable", cents: Math.round(Number(product.priceNum || 0) * 100), displayPrice: product.price } : { state: "unavailable" };
+      if (!product) return { state: "unavailable" };
+      var sellability = product.sellability === "sellable" || product.sellability === "out-of-stock" ? product.sellability : "unknown";
+      return {
+        state: sellability,
+        backendPriceId: product.backendPriceId || null,
+        backendProductId: product.backendProductId || null,
+        displayPrice: product.price
+      };
     }
     var fixtureRetail = F.spaCommerce.retail.products.find(function(item) {
       return item.code === code;
@@ -3717,11 +3724,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }).join(" ");
   }
   function opaqueRef(prefix, value) {
-    var text6 = String(value || prefix);
+    var text7 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text6.length; index += 1) {
-      var code = text6.charCodeAt(index);
+    for (var index = 0; index < text7.length; index += 1) {
+      var code = text7.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -3752,6 +3759,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return {
         ref: "offer-" + item.code,
         productCode: item.code,
+        // Carried so confirming an offer can create a typed order line without a
+        // second catalog lookup, exactly as a cart line does.
+        backendPriceId: item.backendPriceId || null,
+        backendProductId: item.backendProductId || null,
+        productTypeCode: item.productTypeCode,
         kind,
         title: item.name,
         displayPrice: item.price + (item.interval && item.interval !== "one time" ? " / " + item.interval : ""),
@@ -3866,10 +3878,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     return { phone: F.spaProfileSrv.phone, email: F.spaProfileSrv.email, prefs };
   }
+  function spaCartEnvelope() {
+    if (state.config.dataMode === "live") return state.moduleData.cart || null;
+    return state.spaCart;
+  }
   function spaCartLines() {
-    return state.spaCart && state.spaCart.lines || [];
+    var envelope2 = spaCartEnvelope();
+    return envelope2 && Array.isArray(envelope2.lines) && envelope2.lines || [];
   }
   function spaCartCount() {
+    if (state.config.dataMode === "live") {
+      var envelope2 = state.moduleData.cart;
+      var itemCount = envelope2 == null ? null : envelope2.itemCount;
+      return itemCount == null || !Number.isFinite(Number(itemCount)) ? 0 : Number(itemCount);
+    }
     return spaCartLines().reduce(function(count, line) {
       return count + line.qty;
     }, 0);
@@ -4105,13 +4127,874 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }, props.label);
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/core-cart-adapter.js
+  var LINE_REF_PREFIX = "cart-line-";
+  var CART_PATH = "/api/cart/current.json";
+  var ITEMS_PATH = "/api/cart/current/items.json";
+  function countPath(priceId) {
+    return "/api/cart/current/items/" + priceId + "/count.json";
+  }
+  function itemPath(priceId) {
+    return "/api/cart/current/items/" + priceId + ".json";
+  }
+  var flights = /* @__PURE__ */ new Map();
+  function createCoreCartAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core cart adapter requires fetch");
+    return {
+      load(moduleId, context) {
+        if (moduleId !== "cart") throw contractError("unsupported-module", "Core cart adapter cannot load " + moduleId);
+        return loadCoreCart(context, fetchImpl, options2.origin);
+      },
+      addItem(input, context) {
+        return addCoreCartItem(input, context, fetchImpl, options2.origin);
+      },
+      setItemCount(input, context) {
+        return setCoreCartItemCount(input, context, fetchImpl, options2.origin);
+      },
+      removeItem(input, context) {
+        return removeCoreCartItem(input, context, fetchImpl, options2.origin);
+      },
+      clear(context) {
+        return clearCoreCart(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCoreCart(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = cartContext(context, explicitOrigin);
+    return readCart(api, fetchImpl);
+  }
+  function addCoreCartItem(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = cartContext(context, explicitOrigin);
+    var priceId = positiveInteger(input && input.priceId);
+    if (!priceId) throw contractError("cart-price-required", "A Core price id is required to add a cart item");
+    var productId = positiveInteger(input && input.productId);
+    if (!productId) throw contractError("cart-product-required", "A Core product id is required to add a cart item");
+    var count = positiveInteger(input && input.count) || 1;
+    var requestRef = text(input && input.requestRef) || String(priceId) + "x" + count;
+    return singleFlight("cart:add:" + api.accountId + ":" + priceId + ":" + requestRef, async function() {
+      var before = await readCart(api, fetchImpl);
+      var currencyId2 = positiveInteger(input && input.currencyId) || await currencyIdByCode(api, fetchImpl, text(input && input.currency) || before.currencyCode || defaultCurrency(api));
+      await requestJson(fetchImpl, api.billBase + ITEMS_PATH, requestOptions(api, "POST", {
+        accountId: api.accountId,
+        count,
+        currency: currencyId2,
+        metadata: input && input.metadata || null,
+        notes: text(input && input.notes) || null,
+        priceId,
+        productId
+      }));
+      var after = await readCart(api, fetchImpl);
+      if (!after.byRef[LINE_REF_PREFIX + priceId]) {
+        throw contractError("cart-add-unconfirmed", "Core did not report the item in the cart after the add");
+      }
+      return after;
+    });
+  }
+  function setCoreCartItemCount(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = cartContext(context, explicitOrigin);
+    var priceId = cartPriceId(input);
+    var count = finiteNumber(input && input.count, NaN);
+    if (!Number.isInteger(count) || count < 0) throw contractError("cart-count-invalid", "A cart quantity must be a non-negative integer");
+    if (count === 0) return removeCoreCartItem(input, context, fetchImpl, explicitOrigin);
+    return singleFlight("cart:count:" + api.accountId + ":" + priceId + ":" + count, async function() {
+      var before = await readCart(api, fetchImpl);
+      var line = before.byRef[LINE_REF_PREFIX + priceId];
+      if (!line) throw contractError("cart-line-missing", "That item is no longer in the cart");
+      var delta = count - line.qty;
+      if (delta === 0) return before;
+      await requestJson(
+        fetchImpl,
+        api.billBase + countPath(priceId) + "?accountId=" + api.accountId + "&delta=" + delta,
+        requestOptions(api, "POST", null)
+      );
+      var after = await readCart(api, fetchImpl);
+      var updated = after.byRef[LINE_REF_PREFIX + priceId];
+      if (!updated || updated.qty !== count) {
+        throw contractError("cart-count-unconfirmed", "Core did not report the requested quantity after the change");
+      }
+      return after;
+    });
+  }
+  function removeCoreCartItem(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = cartContext(context, explicitOrigin);
+    var priceId = cartPriceId(input);
+    return singleFlight("cart:remove:" + api.accountId + ":" + priceId, async function() {
+      await requestJson(
+        fetchImpl,
+        api.billBase + itemPath(priceId) + "?accountId=" + api.accountId,
+        requestOptions(api, "DELETE", null)
+      );
+      var after = await readCart(api, fetchImpl);
+      if (after.byRef[LINE_REF_PREFIX + priceId]) {
+        throw contractError("cart-remove-unconfirmed", "Core still reports the item in the cart after the removal");
+      }
+      return after;
+    });
+  }
+  function clearCoreCart(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = cartContext(context, explicitOrigin);
+    return singleFlight("cart:clear:" + api.accountId, async function() {
+      await requestJson(
+        fetchImpl,
+        api.billBase + ITEMS_PATH + "?accountId=" + api.accountId,
+        requestOptions(api, "DELETE", null)
+      );
+      var after = await readCart(api, fetchImpl);
+      if (after.lines.length) throw contractError("cart-clear-unconfirmed", "Core still reports items in the cart after the clear");
+      return after;
+    });
+  }
+  async function readCart(api, fetchImpl) {
+    var view = await requestJson(
+      fetchImpl,
+      api.billBase + CART_PATH + "?accountId=" + api.accountId,
+      requestOptions(api, "GET", null)
+    );
+    var codes = await currencyCodesByIds(api, fetchImpl, currencyIdsIn(view));
+    return normalizeCart(view, api, codes);
+  }
+  function normalizeCart(view, api, codes) {
+    var rows = Array.isArray(view && view.items) ? view.items : [];
+    var lineCodes = [];
+    rows.forEach(function(row) {
+      var code = codes[String(row && row.currency)] || currencyOf(row && row.currency);
+      if (code && lineCodes.indexOf(code) < 0) lineCodes.push(code);
+    });
+    var currencyCode = currencyOf(view && view.currency) || (lineCodes.length === 1 ? lineCodes[0] : "") || defaultCurrency(api);
+    var lines = rows.map(function(row) {
+      return normalizeLine(row, currencyCode, api, codes);
+    });
+    var byRef = {};
+    lines.forEach(function(line) {
+      byRef[line.ref] = line;
+    });
+    var subtotal = finiteNumber(view && view.subtotal, null);
+    return {
+      backendId: positiveInteger(view && view.id) || null,
+      byRef,
+      currencyCode,
+      displaySubtotal: subtotal == null ? null : formatMoney(subtotal, currencyCode),
+      itemCount: finiteNumber(view && view.itemCount, null),
+      lines,
+      notes: text(view && view.notes),
+      organizationCode: codeOf(view && view.organization),
+      scopeMode: "server-account-bound",
+      state: lines.length ? "ready" : "empty",
+      subtotal
+    };
+  }
+  function normalizeLine(row, cartCurrency, api, codes) {
+    var priceId = positiveInteger(row && row.priceId);
+    if (!priceId) throw contractError("invalid-cart-line", "Core cart item did not include a price id");
+    var currencyCode = codes[String(row && row.currency)] || currencyOf(row && row.currency) || cartCurrency;
+    var unitAmount = finiteNumber(row && row.unitAmount, null);
+    var lineAmount = finiteNumber(row && row.lineAmount, null);
+    var productCode = text(row && row.productCode);
+    var productId = positiveInteger(row && row.productId) || null;
+    var catalogRow = catalogEntry(api, productCode, productId);
+    return {
+      backendId: positiveInteger(row && row.id) || null,
+      currencyCode,
+      displayTotal: lineAmount == null ? null : formatMoney(lineAmount, currencyCode),
+      displayUnitPrice: unitAmount == null ? null : formatMoney(unitAmount, currencyCode),
+      lineAmount,
+      metadata: row && row.metadata || null,
+      notes: text(row && row.notes),
+      priceId,
+      productCode,
+      productId,
+      // The SPA_* product type, carried so checkout can pick the matching
+      // SPA_ITEM_* line type without a second lookup. See catalogEntry.
+      productTypeCode: text(catalogRow && catalogRow.productTypeCode),
+      qty: finiteNumber(row && row.count, 0),
+      ref: LINE_REF_PREFIX + priceId,
+      title: text(catalogRow && (catalogRow.name || catalogRow.title)) || productCode || "Item",
+      unitAmount,
+      variant: null
+    };
+  }
+  function catalogEntry(api, productCode, productId) {
+    var items = api.catalog;
+    for (var index = 0; index < items.length; index += 1) {
+      var item = items[index];
+      var code = text(item && (item.code || item.sku));
+      if (productCode && code && code === productCode) return item;
+      if (productId && positiveInteger(item && (item.backendProductId || item.backendId || item.id)) === productId) return item;
+    }
+    return null;
+  }
+  function currencyIdsIn(view) {
+    var ids = [];
+    var rows = Array.isArray(view && view.items) ? view.items : [];
+    rows.concat([view || {}]).forEach(function(row) {
+      var id = positiveInteger(row && row.currency);
+      if (id && ids.indexOf(id) < 0) ids.push(id);
+    });
+    return ids;
+  }
+  async function currencyCodesByIds(api, fetchImpl, ids) {
+    if (!ids.length) return {};
+    var results = await Promise.all(ids.map(function(id) {
+      return listDictionary(api, fetchImpl, [{ operator: "=", property: "id", type: "INTEGER", value: String(id) }]);
+    }));
+    var byId = {};
+    results.forEach(function(rows) {
+      rows.forEach(function(row) {
+        byId[String(row.id)] = text(row.code);
+      });
+    });
+    return byId;
+  }
+  async function currencyIdByCode(api, fetchImpl, code) {
+    if (!code) throw contractError("cart-currency-missing", "A currency is required to add a cart item");
+    var rows = await listDictionary(api, fetchImpl, [{ operator: "=", property: "code", type: "STRING", value: code }]);
+    var id = positiveInteger(rows[0] && rows[0].id);
+    if (!id) throw contractError("cart-currency-missing", "Currency " + code + " is not provisioned in this organization");
+    return id;
+  }
+  async function listDictionary(api, fetchImpl, filters) {
+    var response = await requestJson(fetchImpl, api.coreBase + "/api/dictionary/list.json", requestOptions(api, "POST", {
+      filters,
+      mappings: [{ name: "id" }, { name: "code" }],
+      offset: 0,
+      pageSize: 50
+    }));
+    return Array.isArray(response && response.result) ? response.result : [];
+  }
+  function cartPriceId(input) {
+    var direct = positiveInteger(input && input.priceId);
+    if (direct) return direct;
+    var ref = text(input && (input.ref || input));
+    if (ref.indexOf(LINE_REF_PREFIX) === 0) {
+      var parsed = positiveInteger(ref.slice(LINE_REF_PREFIX.length));
+      if (parsed) return parsed;
+    }
+    throw contractError("cart-line-ref-invalid", "A cart line reference is required");
+  }
+  function cartContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var state2 = context && context.state || {};
+    var session = context && context.session || state2.session || {};
+    var accessToken = text(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError("session-required", "A Core access token is required");
+    var organization = text(config.organization);
+    if (!organization) throw contractError("organization-required", "Verified portal organization is required");
+    var customer = context && context.account || state2.customerAccount || session.account || {};
+    var accountId = positiveInteger(customer && customer.id);
+    if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before any cart call");
+    var origin = explicitOrigin || config.origin || browserOrigin();
+    var products = state2.moduleData && state2.moduleData.products;
+    return {
+      accountId,
+      authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      catalog: products && Array.isArray(products.items) ? products.items : [],
+      config,
+      coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
+      organization
+    };
+  }
+  function defaultCurrency(api) {
+    return text(api.config.currency || api.config.pimCurrency) || "USD";
+  }
+  function requestOptions(api, method, body) {
+    var options2 = {
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        Authorization: api.authorization,
+        "X-Organization-Code": api.organization
+      },
+      method
+    };
+    if (body != null) {
+      options2.headers["Content-Type"] = "application/json";
+      options2.body = JSON.stringify(body);
+    }
+    return options2;
+  }
+  async function requestJson(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core cart request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "cart-forbidden" : response.status === 404 ? "cart-account-unknown" : response.status === 409 || response.status === 412 ? "cart-conflict" : "cart-unavailable";
+      var error2 = contractError(code, "Core cart request failed with HTTP " + response.status);
+      error2.status = response.status;
+      throw error2;
+    }
+    if (response.status === 204) return null;
+    try {
+      return await response.json();
+    } catch (_) {
+      return null;
+    }
+  }
+  function singleFlight(key, operation) {
+    if (flights.has(key)) return flights.get(key);
+    var promise = Promise.resolve().then(operation).finally(function() {
+      flights.delete(key);
+    });
+    flights.set(key, promise);
+    return promise;
+  }
+  function currencyOf(value) {
+    if (value == null) return "";
+    if (typeof value === "string") return value.trim();
+    return codeOf(value);
+  }
+  function codeOf(value) {
+    if (value == null) return "";
+    if (typeof value === "string") return value.trim();
+    return text(value.code);
+  }
+  function formatMoney(value, currency) {
+    var number = Number(value);
+    if (!Number.isFinite(number) || !currency) return null;
+    return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(number);
+  }
+  function sameOriginBase(base, origin, label) {
+    var value = text(base);
+    if (!value) throw contractError("api-base-required", label + " is required");
+    if (/^https?:\/\//i.test(value)) {
+      if (value.indexOf(origin) !== 0) throw contractError("cross-origin-base", label + " must stay same-origin");
+      return value.replace(/\/$/, "");
+    }
+    return (origin || "").replace(/\/$/, "") + (value.charAt(0) === "/" ? value : "/" + value).replace(/\/$/, "");
+  }
+  function browserOrigin() {
+    return globalThis.location && globalThis.location.origin || "";
+  }
+  function positiveInteger(value) {
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : 0;
+  }
+  function finiteNumber(value, fallback) {
+    var number = Number(value);
+    return value == null || value === "" || !Number.isFinite(number) ? fallback : number;
+  }
+  function text(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function contractError(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-orders-adapter.js
+  var ITEM_KINDS = {
+    SPA_ITEM_MEMBERSHIP: "MEMBERSHIP",
+    SPA_ITEM_PACKAGE: "PACKAGE",
+    SPA_ITEM_RETAIL: "RETAIL",
+    SPA_ITEM_SERVICE: "SERVICE"
+  };
+  var ORDER_STATUS = {
+    CANCELLED: "Cancelled",
+    COMPLETED: "Fulfilled",
+    IN_PROGRESS: "In progress",
+    OPEN: "Confirmed"
+  };
+  var FULFILLMENT_TYPE = "SPA_FULFILLMENT";
+  var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var ORDER_ITEM_MAPPINGS = [
+    { name: "amount" },
+    { name: "attributes" },
+    { name: "id" },
+    { name: "itemCount" },
+    { name: "notes" },
+    { name: "sortOrder" },
+    {
+      key: "id",
+      mappings: REF_MAPPINGS.concat([{ key: "id", mappings: REF_MAPPINGS, name: "product", type: "identifier" }]),
+      name: "itemPrice",
+      type: "identifier"
+    },
+    { key: "id", mappings: REF_MAPPINGS, name: "order", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var SHIPMENT_MAPPINGS = [
+    { name: "attributes" },
+    { name: "id" },
+    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+  ];
+  var ORDER_MAPPINGS = [
+    { name: "attributes" },
+    { name: "created" },
+    { name: "grandTotal" },
+    { name: "id" },
+    { name: "notes" },
+    { name: "optimistic" },
+    { name: "totalCharges" },
+    { name: "totalTaxes" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "account", type: "identifier" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "currency", type: "identifier" },
+    { key: "id", name: "organization", type: "identifier" },
+    { mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" }
+  ];
+  function createCoreOrdersAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError2("fetch-unavailable", "Core Orders adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "orders") throw contractError2("unsupported-module", "Core Orders adapter cannot load " + moduleId);
+        return loadCoreOrders(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  var STUDIO_TYPE = "SPA_STUDIO";
+  var FULFILLMENT_CODE_PREFIX = "CP_DEMO_FULFILLMENT_";
+  var TYPE_WITH_WORKFLOW_MAPPINGS = [
+    { name: "id" },
+    { name: "code" },
+    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+  ];
+  function createPickupFulfillment(orderId2, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = writeContext(context, explicitOrigin);
+    var id = positiveInteger2(orderId2);
+    if (!id) throw contractError2("fulfillment-order-required", "A Core Order id is required to record a pickup");
+    var marker = FULFILLMENT_CODE_PREFIX + id;
+    return (async function() {
+      var existing = await pickupForOrder(api, fetchImpl, id, marker);
+      if (existing) return existing;
+      var resolved = await Promise.all([
+        resolveOne(
+          api,
+          fetchImpl,
+          api.billBase + "/api/shipment-type/list.json",
+          [{ operator: "=", property: "code", type: "STRING", value: FULFILLMENT_TYPE }],
+          TYPE_WITH_WORKFLOW_MAPPINGS,
+          "fulfillment-type-missing"
+        ),
+        resolveOne(
+          api,
+          fetchImpl,
+          api.coreBase + "/api/organization/list.json",
+          [{ operator: "=", property: "code", type: "STRING", value: api.organization }],
+          [{ name: "id" }, { name: "code" }],
+          "organization-missing"
+        ),
+        studioResource(api, fetchImpl)
+      ]);
+      var fulfillmentType = resolved[0];
+      var organization = resolved[1];
+      var studio = resolved[2];
+      var values = {
+        FULFILLMENT_KIND: { value: "PICKUP" },
+        // PENDING is the workflow's initial state and matches the accepted copy:
+        // the studio confirms availability after the order is recorded.
+        FULFILLMENT_STATUS: { value: "PENDING" },
+        RECORD_CODE: { value: marker },
+        SOURCE_ORDER: { value: id }
+      };
+      if (studio.row) values.PICKUP_LOCATION = { value: studio.row.id };
+      var attributes = {};
+      attributes[String(fulfillmentType.id)] = values;
+      var savedIds = await requestJson2(fetchImpl, api.billBase + "/api/shipment/save.json", writeOptions(api, {
+        entities: [{
+          attributes,
+          organization: { id: organization.id },
+          type: { id: fulfillmentType.id },
+          workflow: { id: fulfillmentType.workflow.id }
+        }],
+        mappings: SHIPMENT_MAPPINGS
+      }));
+      if (!positiveInteger2(Array.isArray(savedIds) && savedIds[0])) {
+        throw contractError2("invalid-save-response", "Core Shipment save did not return an id");
+      }
+      var readback = await pickupForOrder(api, fetchImpl, id, marker);
+      if (!readback) throw contractError2("fulfillment-unconfirmed", "Core did not report the pickup record after the save");
+      return Object.assign(readback, { locationUnresolvedReason: studio.reason });
+    })();
+  }
+  async function pickupForOrder(api, fetchImpl, orderId2, marker) {
+    var response = await requestJson2(fetchImpl, api.billBase + "/api/shipment/list.json", writeOptions(api, {
+      filters: [{ operator: "=", property: "type.code", type: "STRING", value: FULFILLMENT_TYPE }],
+      mappings: SHIPMENT_MAPPINGS,
+      offset: 0,
+      pageSize: 200
+    }));
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var row = rows.find(function(candidate) {
+      return attributeNumber(candidate, "SOURCE_ORDER") === orderId2 && attributeText(candidate, "RECORD_CODE") === marker;
+    });
+    if (!row) return null;
+    var normalized = normalizeFulfillment({
+      kind: attributeText(row, "FULFILLMENT_KIND"),
+      status: attributeText(row, "FULFILLMENT_STATUS"),
+      windowEnd: attributeNumber(row, "WINDOW_END"),
+      windowStart: attributeNumber(row, "WINDOW_START")
+    });
+    return Object.assign({
+      backendId: positiveInteger2(row.id),
+      locationId: attributeNumber(row, "PICKUP_LOCATION"),
+      sourceOrderId: orderId2
+    }, normalized);
+  }
+  async function studioResource(api, fetchImpl) {
+    var response;
+    try {
+      response = await requestJson2(fetchImpl, api.rmBase + "/api/resource/list.json", writeOptions(api, {
+        filters: [{ operator: "=", property: "type.code", type: "STRING", value: STUDIO_TYPE }],
+        mappings: [{ name: "id" }, { name: "code" }],
+        offset: 0,
+        pageSize: 10
+      }));
+    } catch (error2) {
+      return { reason: "resource-read-refused", row: null, status: error2 && error2.status || null };
+    }
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var row = rows[0] && positiveInteger2(rows[0].id) ? rows[0] : null;
+    return { reason: row ? null : "no-studio-row", row, status: null };
+  }
+  async function resolveOne(api, fetchImpl, url, filters, mappings, errorCode) {
+    var response = await requestJson2(fetchImpl, url, writeOptions(api, { filters, mappings, offset: 0, pageSize: 1 }));
+    var row = (Array.isArray(response && response.result) ? response.result : [])[0];
+    if (!row || !positiveInteger2(row.id)) throw contractError2(errorCode, errorCode.replace(/-/g, " "));
+    if (mappings === TYPE_WITH_WORKFLOW_MAPPINGS && !(row.workflow && positiveInteger2(row.workflow.id))) {
+      throw contractError2(errorCode, FULFILLMENT_TYPE + " has no workflow");
+    }
+    return row;
+  }
+  function writeContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var state2 = context && context.state || {};
+    var session = context && context.session || state2.session || {};
+    var accessToken = text2(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError2("session-required", "A Core access token is required");
+    var organization = text2(config.organization);
+    if (!organization) throw contractError2("organization-required", "Verified portal organization is required");
+    var origin = explicitOrigin || config.origin || browserOrigin2();
+    return {
+      authorization: text2(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base"),
+      organization,
+      rmBase: sameOriginBase2(config.resourceApiBase || "/core-rm", origin, "Core Resource API base")
+    };
+  }
+  function writeOptions(api, body) {
+    return {
+      body: JSON.stringify(body),
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        "X-Organization-Code": api.organization
+      },
+      method: "POST"
+    };
+  }
+  async function loadCoreOrders(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var config = context && context.config || {};
+    var state2 = context && context.state || {};
+    var session = context && context.session || state2.session || {};
+    var customer = context && context.account || state2.customerAccount || state2.session && state2.session.account || {};
+    var accountId = positiveInteger2(customer.id);
+    if (!accountId) throw contractError2("customer-account-required", "Resolved customer Account is required before Orders load");
+    var accessToken = text2(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError2("session-required", "A Core access token is required");
+    var organization = text2(config.organization);
+    if (!organization) throw contractError2("organization-required", "Verified portal organization is required");
+    var origin = explicitOrigin || config.origin || browserOrigin2();
+    var billBase = sameOriginBase2(config.billApiBase || "/core-bill", origin, "Core Bill API base");
+    var authorization = text2(session.tokenType || session.token_type || "Bearer") + " " + accessToken;
+    var request = {
+      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
+      mappings: ORDER_MAPPINGS,
+      offset: 0,
+      pageSize: positiveInteger2(config.ordersPageSize) || 50,
+      sorting: [{ field: "id", direction: "DESC" }]
+    };
+    var response = await requestJson2(fetchImpl, billBase + "/api/order/list.json", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": organization
+      },
+      body: JSON.stringify(request)
+    });
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var headers = {
+      Accept: "application/json",
+      Authorization: authorization,
+      "Content-Type": "application/json",
+      "X-Organization-Code": organization
+    };
+    var context2 = { billBase, fetchImpl, headers };
+    var orderIds = rows.map(function(row) {
+      return positiveInteger2(row && row.id);
+    }).filter(Boolean);
+    var joined = await Promise.all([linesByOrder(context2, orderIds), fulfillmentByOrder(context2, orderIds)]);
+    rows.forEach(function(row) {
+      assertOwnedBy(row, accountId);
+    });
+    var withoutLines = 0;
+    var items = rows.filter(function(row) {
+      var hasLines = (joined[0][String(row.id)] || []).length > 0;
+      if (!hasLines) withoutLines += 1;
+      return hasLines;
+    }).map(function(row) {
+      return normalizeOrder(row, accountId, joined[0][String(row.id)], joined[1][String(row.id)] || null);
+    });
+    var byRef = {};
+    items.forEach(function(item) {
+      byRef[item.ref] = item;
+    });
+    return {
+      state: items.length ? "ready" : "empty",
+      accountId,
+      resultSize: items.length,
+      ordersWithoutLines: withoutLines,
+      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
+      items,
+      byRef
+    };
+  }
+  async function postList(context, path, body) {
+    return requestJson2(context.fetchImpl, context.billBase + path, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: context.headers,
+      body: JSON.stringify(body)
+    });
+  }
+  async function linesByOrder(context, orderIds) {
+    if (!orderIds.length) return {};
+    var response = await postList(context, "/api/order-item/list.json", {
+      filters: [],
+      mappings: ORDER_ITEM_MAPPINGS,
+      offset: 0,
+      pageSize: 500,
+      sorting: [{ field: "sortOrder", direction: "ASC" }]
+    });
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var grouped = {};
+    rows.forEach(function(row) {
+      var id = positiveInteger2(row.order && row.order.id);
+      if (orderIds.indexOf(id) < 0) return;
+      (grouped[String(id)] = grouped[String(id)] || []).push(row);
+    });
+    return grouped;
+  }
+  async function fulfillmentByOrder(context, orderIds) {
+    if (!orderIds.length) return {};
+    var response = await postList(context, "/api/shipment/list.json", {
+      filters: [{ type: "STRING", operator: "=", property: "type.code", value: FULFILLMENT_TYPE }],
+      mappings: SHIPMENT_MAPPINGS,
+      offset: 0,
+      pageSize: 200
+    });
+    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var byOrder = {};
+    rows.forEach(function(row) {
+      var id = attributeNumber(row, "SOURCE_ORDER");
+      if (!id || orderIds.indexOf(id) < 0) return;
+      byOrder[String(id)] = {
+        kind: attributeText(row, "FULFILLMENT_KIND"),
+        location: attributeNumber(row, "PICKUP_LOCATION"),
+        status: attributeText(row, "FULFILLMENT_STATUS"),
+        windowEnd: attributeNumber(row, "WINDOW_END"),
+        windowStart: attributeNumber(row, "WINDOW_START")
+      };
+    });
+    return byOrder;
+  }
+  function attributeEntry(row, code) {
+    var typeId = row && row.type && row.type.id;
+    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+    return group && group[code] ? group[code] : null;
+  }
+  function attributeNumber(row, code) {
+    var entry = attributeEntry(row, code);
+    return entry && entry.value != null ? positiveInteger2(entry.value) : null;
+  }
+  function attributeText(row, code) {
+    var entry = attributeEntry(row, code);
+    return entry && entry.value != null ? text2(entry.value) : "";
+  }
+  function purchaseKind(lines) {
+    var kinds = [];
+    lines.forEach(function(line) {
+      var kind = ITEM_KINDS[text2(line.type && line.type.code)];
+      if (kind && kinds.indexOf(kind) < 0) kinds.push(kind);
+    });
+    if (!kinds.length) return null;
+    return kinds.length === 1 ? kinds[0] : "MIXED";
+  }
+  function lineTitle(line) {
+    var product = line.itemPrice && line.itemPrice.product;
+    return localizedName(product && product.nls) || text2(product && product.code) || text2(line.notes) || "Item";
+  }
+  function normalizeLine2(line, currencyCode) {
+    var id = positiveInteger2(line && line.id);
+    var count = positiveInteger2(line.itemCount) || 1;
+    var unit = finiteNumber2(line.amount);
+    return {
+      ref: "pln-core-" + id,
+      kind: ITEM_KINDS[text2(line.type && line.type.code)] || null,
+      title: lineTitle(line),
+      variant: null,
+      quantity: count,
+      displayUnitPrice: unit != null ? formatMoney2(unit, currencyCode) : null,
+      displayTotal: null
+    };
+  }
+  function itemSummary(lines) {
+    if (!lines.length) return null;
+    return lines.map(function(line) {
+      return line.quantity > 1 ? line.quantity + " \xD7 " + line.title : line.title;
+    }).join(" \xB7 ");
+  }
+  function normalizeFulfillment(raw) {
+    if (!raw || !raw.kind) return null;
+    return {
+      kind: raw.kind,
+      status: raw.status || null,
+      // An absent window stays absent; formatDate would render the epoch.
+      windowEndLabel: raw.windowEnd ? formatDate(raw.windowEnd) : null,
+      windowStartLabel: raw.windowStart ? formatDate(raw.windowStart) : null
+    };
+  }
+  function assertOwnedBy(row, accountId) {
+    var rowAccountId = row && row.account && positiveInteger2(row.account.id);
+    if (rowAccountId !== accountId) throw contractError2("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
+  }
+  function normalizeOrder(row, accountId, rawLines, rawFulfillment) {
+    assertOwnedBy(row, accountId);
+    var id = positiveInteger2(row && row.id);
+    if (!id) throw contractError2("invalid-order", "Core Order response did not include an id");
+    var states = Array.isArray(row.states) ? row.states.map(function(state2) {
+      return { id: positiveInteger2(state2 && state2.id), code: text2(state2 && state2.code), label: localizedName(state2 && state2.nls) };
+    }) : [];
+    var stateCode = states.map(function(state2) {
+      return state2.code;
+    }).filter(Boolean)[0] || "";
+    var status = ORDER_STATUS[stateCode];
+    if (!status)
+      throw contractError2(
+        "order-status-unmapped",
+        "Workflow state " + (stateCode || "(none)") + " has no approved customer status for a purchase"
+      );
+    var currencyCode = text2(row.currency && row.currency.code) || "USD";
+    var lines = rawLines.map(function(line) {
+      return normalizeLine2(line, currencyCode);
+    });
+    var kind = purchaseKind(rawLines);
+    var fulfillment = normalizeFulfillment(rawFulfillment);
+    var attention = null;
+    if (fulfillment && fulfillment.status === "READY" && status !== "Cancelled") {
+      status = "Ready for pickup";
+      attention = "Ready \u2014 please pick up" + (fulfillment.windowEndLabel ? " by " + fulfillment.windowEndLabel : "");
+    }
+    return {
+      ref: "order-core-" + id,
+      reference: "order-core-" + id,
+      id,
+      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
+      notes: text2(row.notes),
+      grandTotal: finiteNumber2(row.grandTotal),
+      totalCharges: finiteNumber2(row.totalCharges),
+      totalTaxes: finiteNumber2(row.totalTaxes),
+      currency: { code: text2(row.currency && row.currency.code), label: localizedName(row.currency && row.currency.nls) },
+      type: { code: text2(row.type && row.type.code), label: localizedName(row.type && row.type.nls) },
+      states,
+      statusCode: stateCode,
+      customerStatus: status,
+      kind,
+      placedAt: formatDate(row.created),
+      itemSummary: itemSummary(lines) || null,
+      displayTotal: formatMoney2(row.grandTotal, currencyCode),
+      displayCurrency: currencyCode,
+      attention,
+      allowedActions: [],
+      lines,
+      money: {
+        subtotal: formatMoney2(row.totalCharges, currencyCode),
+        tax: formatMoney2(row.totalTaxes, currencyCode),
+        total: formatMoney2(row.grandTotal, currencyCode),
+        currency: currencyCode
+      },
+      paymentMode: "SIMULATED",
+      fulfillment,
+      relatedAppointments: [],
+      relatedPlan: null
+    };
+  }
+  async function requestJson2(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw contractError2("invalid-response", "Core Bill returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "orders-forbidden" : "orders-request-failed";
+      var error2 = contractError2(code, "Core Orders request failed with HTTP " + response.status);
+      error2.status = response.status;
+      throw error2;
+    }
+    try {
+      return await response.json();
+    } catch (_) {
+      throw contractError2("invalid-response", "Core Orders response was not valid JSON");
+    }
+  }
+  function sameOriginBase2(value, origin, label) {
+    if (!origin) throw contractError2("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw contractError2("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function browserOrigin2() {
+    return globalThis.location && globalThis.location.origin || "";
+  }
+  function positiveInteger2(value) {
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+  function finiteNumber2(value) {
+    var number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+  function formatDate(value) {
+    var date = new Date(value);
+    return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date) : "Date not returned";
+  }
+  function formatMoney2(value, currency) {
+    var number = Number(value);
+    return Number.isFinite(number) ? new Intl.NumberFormat("en-US", { style: "currency", currency }).format(number) : "";
+  }
+  function localizedName(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text2(localized2 && (localized2.NAME || localized2.name));
+  }
+  function text2(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function contractError2(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+  var coreOrdersContract = Object.freeze({
+    filters: ["account.id"],
+    itemKinds: ITEM_KINDS,
+    itemMappings: ORDER_ITEM_MAPPINGS,
+    mappings: ORDER_MAPPINGS,
+    orderStatus: ORDER_STATUS,
+    shipmentMappings: SHIPMENT_MAPPINGS
+  });
+
   // app-templates/customer-portal/runtime/src/adapters/core-spa-demo-adapter.js
   var REF_PREFIX = "appt-core-";
   var DEMO_CODE_PREFIX = "CP_DEMO_";
   var APPOINTMENT_TYPE = "SPA_VISIT";
   var CARE_TASK_TYPE = "SPA_CARE_TASK";
   var ORDER_TYPE = "SPA_ORDER";
-  var REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var REF_MAPPINGS2 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
   var APPOINTMENT_MAPPINGS = [
     { name: "attributes" },
     { name: "code" },
@@ -4121,12 +5004,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     { name: "optimistic" },
     { name: "start" },
     { key: "id", name: "organization", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "task", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
-    { mappings: REF_MAPPINGS, name: "states", type: "collection" }
+    { key: "id", mappings: REF_MAPPINGS2, name: "task", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" },
+    { mappings: REF_MAPPINGS2, name: "states", type: "collection" }
   ];
-  var ORDER_MAPPINGS = [
+  var ORDER_MAPPINGS2 = [
     { name: "attributes" },
     { name: "grandTotal" },
     { name: "id" },
@@ -4134,20 +5017,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     { name: "optimistic" },
     { name: "totalCharges" },
     { name: "totalTaxes" },
-    { key: "id", mappings: REF_MAPPINGS, name: "account", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "currency", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "account", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "currency", type: "identifier" },
     { key: "id", name: "organization", type: "identifier" },
-    { mappings: REF_MAPPINGS, name: "states", type: "collection" },
-    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+    { mappings: REF_MAPPINGS2, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" }
   ];
-  var flights = /* @__PURE__ */ new Map();
+  var flights2 = /* @__PURE__ */ new Map();
   function createCoreSpaDemoAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core SPA demo adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core SPA demo adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "appointments") throw contractError("unsupported-module", "Core SPA demo adapter cannot load " + moduleId);
+        if (moduleId !== "appointments") throw contractError3("unsupported-module", "Core SPA demo adapter cannot load " + moduleId);
         return loadCoreAppointments(context, fetchImpl, options2.origin);
       },
       createAppointment(input, context) {
@@ -4167,44 +5050,44 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var CANCEL_EVENT = "SCHEDULED-CANCELLED";
   function cancelCoreAppointment(ref, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var id = appointmentId(ref);
-    return singleFlight("appointment:cancel:" + id, async function() {
+    return singleFlight2("appointment:cancel:" + id, async function() {
       var api = requestContext(context, explicitOrigin);
       var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      if (!current || positiveInteger(current.id) !== id) throw contractError("appointment-not-found", "Core Appointment was not found");
-      var accountId = positiveInteger(api.customer && api.customer.id);
+      if (!current || positiveInteger3(current.id) !== id) throw contractError3("appointment-not-found", "Core Appointment was not found");
+      var accountId = positiveInteger3(api.customer && api.customer.id);
       if (!accountId || customerAttributeId(current, "CUSTOMER_ACCOUNT") !== accountId) {
-        throw contractError("appointment-forbidden", "This appointment does not belong to the signed-in customer");
+        throw contractError3("appointment-forbidden", "This appointment does not belong to the signed-in customer");
       }
       var before = normalizeAppointment(current);
       if (before.customerStatus === "Cancelled") return before;
       if (before.allowedActions.indexOf("cancel") === -1) {
-        throw contractError("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
+        throw contractError3("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
       }
-      await requestJson(
+      await requestJson3(
         fetchImpl,
         api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
-        requestOptions(api, {})
+        requestOptions2(api, {})
       );
       var readback = normalizeAppointment(
         await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS)
       );
       if (readback.customerStatus !== "Cancelled") {
-        throw contractError("appointment-cancel-unconfirmed", "Core did not report the appointment as cancelled");
+        throw contractError3("appointment-cancel-unconfirmed", "Core did not report the appointment as cancelled");
       }
       return readback;
     });
   }
   async function loadCoreAppointments(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext(context, explicitOrigin);
-    var response = await requestJson(fetchImpl, api.serviceBase + "/api/appointment/list.json", requestOptions(api, {
+    var response = await requestJson3(fetchImpl, api.serviceBase + "/api/appointment/list.json", requestOptions2(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: APPOINTMENT_TYPE }],
       mappings: APPOINTMENT_MAPPINGS,
       offset: 0,
-      pageSize: positiveInteger(api.config.appointmentsPageSize) || 100,
+      pageSize: positiveInteger3(api.config.appointmentsPageSize) || 100,
       sorting: [{ field: "start", direction: "ASC" }]
     }));
     var rows = Array.isArray(response && response.result) ? response.result : [];
-    var customerAccountId = positiveInteger(api.customer && api.customer.id);
+    var customerAccountId = positiveInteger3(api.customer && api.customer.id);
     var scoped = customerAccountId ? rows.filter(function(row) {
       return customerAttributeId(row, "CUSTOMER_ACCOUNT") === customerAccountId;
     }) : [];
@@ -4235,7 +5118,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function createCoreAppointment(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var key = "appointment:create:" + idempotencyPart(input && input.requestRef || input && input.slotRef || "booking");
-    return singleFlight(key, async function() {
+    return singleFlight2(key, async function() {
       var api = requestContext(context, explicitOrigin);
       var code = DEMO_CODE_PREFIX + "APPT_" + idempotencyPart(input && input.requestRef || input && input.slotRef || Date.now());
       var existing = await listOne(fetchImpl, api.serviceBase + "/api/appointment/list.json", api, [
@@ -4253,9 +5136,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var organization = resolved[2];
       var carePlan = resolved[3];
       var start = validIso(input && input.start);
-      var durationMinutes = positiveInteger(input && input.durationMinutes) || 60;
+      var durationMinutes = positiveInteger3(input && input.durationMinutes) || 60;
       var end = new Date(Date.parse(start) + durationMinutes * 6e4).toISOString();
-      var serviceName = text(input && input.serviceName) || "Spa appointment";
+      var serviceName = text3(input && input.serviceName) || "Spa appointment";
       var taskId = await ensureVisitTask(fetchImpl, api, {
         carePlan,
         code: code + "_TASK",
@@ -4265,7 +5148,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       });
       var entity = {
         attributes: customerAttributes(api, visitType, {
-          SERVICE_PRODUCT: positiveInteger(input && input.serviceProductId) || null
+          SERVICE_PRODUCT: positiveInteger3(input && input.serviceProductId) || null
         }),
         code,
         end,
@@ -4276,32 +5159,32 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         type: { id: visitType.id },
         workflow: { id: visitType.workflow.id }
       };
-      var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions(api, {
+      var savedIds = await requestJson3(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions2(api, {
         entities: [entity],
         mappings: APPOINTMENT_MAPPINGS
       }));
-      var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
-      if (!id) throw contractError("invalid-save-response", "Core Appointment save did not return an id");
+      var id = positiveInteger3(Array.isArray(savedIds) && savedIds[0]);
+      if (!id) throw contractError3("invalid-save-response", "Core Appointment save did not return an id");
       return normalizeAppointment(await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS));
     });
   }
   function rescheduleCoreAppointment(ref, input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var id = appointmentId(ref);
-    return singleFlight("appointment:reschedule:" + id, async function() {
+    return singleFlight2("appointment:reschedule:" + id, async function() {
       var api = requestContext(context, explicitOrigin);
       var current = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
-      if (!current || positiveInteger(current.id) !== id) throw contractError("appointment-not-found", "Core Appointment was not found");
+      if (!current || positiveInteger3(current.id) !== id) throw contractError3("appointment-not-found", "Core Appointment was not found");
       var start = validIso(input && input.start);
       var currentStart = Date.parse(current.start);
       var currentEnd = Date.parse(current.end);
       var duration = Number.isFinite(currentEnd - currentStart) && currentEnd > currentStart ? currentEnd - currentStart : 60 * 6e4;
       var entity = {
         attributes: current.attributes || {},
-        code: text(current.code),
+        code: text3(current.code),
         end: new Date(Date.parse(start) + duration).toISOString(),
         id,
         nls: current.nls || { en: { NAME: "Spa appointment" } },
-        optimistic: finiteNumber(current.optimistic, 0),
+        optimistic: finiteNumber3(current.optimistic, 0),
         organization: requiredRef(current.organization, "Appointment organization"),
         start,
         task: optionalRef(current.task),
@@ -4309,74 +5192,173 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         workflow: requiredRef(current.workflow, "Appointment workflow")
       };
       if (!entity.task) delete entity.task;
-      await requestJson(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions(api, {
+      await requestJson3(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions2(api, {
         entities: [entity],
         mappings: APPOINTMENT_MAPPINGS
       }));
       return normalizeAppointment(await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS));
     });
   }
+  var ITEM_TYPE_BY_PRODUCT_TYPE = {
+    SPA_MEMBERSHIP: "SPA_ITEM_MEMBERSHIP",
+    SPA_PACKAGE: "SPA_ITEM_PACKAGE",
+    SPA_RETAIL: "SPA_ITEM_RETAIL",
+    SPA_SERVICE: "SPA_ITEM_SERVICE"
+  };
+  var ORDER_ITEM_SAVE_MAPPINGS = [
+    { name: "amount" },
+    { name: "attributes" },
+    { name: "id" },
+    { name: "itemCount" },
+    { name: "notes" },
+    { name: "optimistic" },
+    { name: "sortOrder" },
+    { key: "id", name: "itemPrice", type: "identifier" },
+    { key: "id", name: "order", type: "identifier" },
+    { key: "id", name: "organization", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" }
+  ];
   function createCoreOrder(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var requestRef = idempotencyPart(input && input.requestRef || "checkout");
-    return singleFlight("order:create:" + requestRef, async function() {
+    var lines = Array.isArray(input && input.lines) ? input.lines : [];
+    return singleFlight2("order:create:" + requestRef, async function() {
       var api = requestContext(context, explicitOrigin);
-      var accountId = positiveInteger(api.customer.id);
-      if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before checkout");
+      var accountId = positiveInteger3(api.customer.id);
+      if (!accountId) throw contractError3("customer-account-required", "Resolved customer Account is required before checkout");
+      if (!lines.length) throw contractError3("order-lines-required", "An order needs at least one cart line");
       var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
       var rows = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
         { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }
-      ], ORDER_MAPPINGS, [{ field: "id", direction: "DESC" }]);
+      ], ORDER_MAPPINGS2, [{ field: "id", direction: "DESC" }]);
       var existing = rows.find(function(row) {
-        return recordCodeOf(row) === marker || text(row.notes) === marker;
+        return recordCodeOf(row) === marker || text3(row.notes) === marker;
       });
-      if (existing) return normalizeOrder(existing, accountId);
+      if (existing) return withOrderLines(fetchImpl, api, normalizeOrder2(existing, accountId), accountId);
       var resolved = await Promise.all([
         resolveTypeWithWorkflow(fetchImpl, api, api.billBase, "order-type", ORDER_TYPE, "order-type-missing"),
         resolveOrganization(fetchImpl, api),
-        resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing")
+        resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing"),
+        itemTypesByCode(fetchImpl, api)
       ]);
       var orderType = resolved[0];
       var organization = resolved[1];
       var currency = resolved[2];
-      var total = finiteNumber(input && input.total, 0);
-      var entity = {
-        account: { id: accountId },
-        attributes: recordCodeAttributes(orderType, marker),
-        currency: { id: currency.id },
-        grandTotal: total,
-        notes: text(input && input.label) || "Customer portal checkout",
-        organization: { id: organization.id },
-        totalCharges: total,
-        totalTaxes: finiteNumber(input && input.taxes, 0),
-        type: { id: orderType.id },
-        workflow: { id: orderType.workflow.id }
-      };
-      var savedIds = await requestJson(fetchImpl, api.billBase + "/api/order/save.json", requestOptions(api, {
-        entities: [entity],
-        mappings: ORDER_MAPPINGS
+      var itemTypes = resolved[3];
+      var planned = lines.map(function(line2, index2) {
+        return plannedLine(line2, index2, itemTypes);
+      });
+      var savedIds = await requestJson3(fetchImpl, api.billBase + "/api/order/save.json", requestOptions2(api, {
+        entities: [{
+          account: { id: accountId },
+          attributes: recordCodeAttributes(orderType, marker),
+          currency: { id: currency.id },
+          // Totals are NOT sent — Core computes grandTotal from the lines.
+          notes: text3(input && input.label) || "Customer portal checkout",
+          organization: { id: organization.id },
+          type: { id: orderType.id },
+          workflow: { id: orderType.workflow.id }
+        }],
+        mappings: ORDER_MAPPINGS2
       }));
-      var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
-      if (!id) throw contractError("invalid-save-response", "Core Order save did not return an id");
-      var readback = await getEntity(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, api, ORDER_MAPPINGS);
-      return normalizeOrder(readback, accountId);
+      var id = positiveInteger3(Array.isArray(savedIds) && savedIds[0]);
+      if (!id) throw contractError3("invalid-save-response", "Core Order save did not return an id");
+      for (var index = 0; index < planned.length; index += 1) {
+        var line = planned[index];
+        await requestJson3(fetchImpl, api.billBase + "/api/order-item/save.json", requestOptions2(api, {
+          entities: [{
+            amount: line.unitAmount,
+            attributes: recordCodeAttributes(line.itemType, marker + "_L" + (index + 1)),
+            itemCount: line.qty,
+            itemPrice: { id: line.priceId },
+            notes: line.productCode,
+            order: { id },
+            organization: { id: organization.id },
+            sortOrder: index + 1,
+            type: { id: line.itemType.id },
+            workflow: { id: line.itemType.workflow.id }
+          }],
+          mappings: ORDER_ITEM_SAVE_MAPPINGS
+        }));
+      }
+      var readback = await getEntity(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, api, ORDER_MAPPINGS2);
+      var order = await withOrderLines(fetchImpl, api, normalizeOrder2(readback, accountId), accountId);
+      if (order.lines.length !== planned.length) {
+        throw contractError3(
+          "order-lines-unconfirmed",
+          "Core reported " + order.lines.length + " of " + planned.length + " order lines after the save"
+        );
+      }
+      return order;
     });
   }
-  var TYPE_WITH_WORKFLOW_MAPPINGS = [
+  function plannedLine(line, index, itemTypes) {
+    var priceId = positiveInteger3(line && line.priceId);
+    if (!priceId) throw contractError3("order-line-price-missing", "Cart line " + (index + 1) + " has no price id");
+    var qty = positiveInteger3(line && line.qty);
+    if (!qty) throw contractError3("order-line-count-missing", "Cart line " + (index + 1) + " has no quantity");
+    var unitAmount = finiteNumber3(line && line.unitAmount, null);
+    if (unitAmount == null) throw contractError3("order-line-amount-missing", "Cart line " + (index + 1) + " has no server unit amount");
+    var productTypeCode = text3(line && line.productTypeCode);
+    var itemTypeCode = ITEM_TYPE_BY_PRODUCT_TYPE[productTypeCode];
+    if (!itemTypeCode)
+      throw contractError3(
+        "order-item-type-unmapped",
+        "Product type " + (productTypeCode || "(none)") + " has no SPA_ITEM_* line type"
+      );
+    var itemType = itemTypes[itemTypeCode];
+    if (!itemType) throw contractError3("order-item-type-missing", itemTypeCode + " is not provisioned in this organization");
+    return { itemType, priceId, productCode: text3(line && line.productCode), qty, unitAmount };
+  }
+  async function itemTypesByCode(fetchImpl, api) {
+    var rows = await listMany(
+      fetchImpl,
+      api.billBase + "/api/order-item-type/list.json",
+      api,
+      [],
+      TYPE_WITH_WORKFLOW_MAPPINGS2,
+      null,
+      100
+    );
+    var byCode = {};
+    rows.forEach(function(row) {
+      if (row.workflow && positiveInteger3(row.workflow.id)) byCode[text3(row.code)] = row;
+    });
+    return byCode;
+  }
+  async function withOrderLines(fetchImpl, api, order, accountId) {
+    var rows = await listMany(fetchImpl, api.billBase + "/api/order-item/list.json", api, [
+      { type: "INTEGER", operator: "=", property: "order.id", value: String(order.id) }
+    ], ORDER_ITEM_SAVE_MAPPINGS, [{ field: "sortOrder", direction: "ASC" }], 200);
+    return Object.assign({}, order, {
+      accountId,
+      lines: rows.map(function(row) {
+        return {
+          itemCount: finiteNumber3(row.itemCount, 0),
+          priceId: positiveInteger3(row.itemPrice && row.itemPrice.id),
+          productCode: text3(row.notes),
+          typeCode: text3(row.type && row.type.code),
+          unitAmount: finiteNumber3(row.amount, null)
+        };
+      })
+    });
+  }
+  var TYPE_WITH_WORKFLOW_MAPPINGS2 = [
     { name: "id" },
     { name: "code" },
-    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" }
   ];
   async function resolveByCode(fetchImpl, api, base, endpoint, code, mappings, errorCode) {
     var row = await listOne(fetchImpl, base + "/api/" + endpoint + "/list.json", api, [
       { type: "STRING", operator: "=", property: "code", value: code }
     ], mappings || [{ name: "id" }, { name: "code" }]);
-    if (!row) throw contractError(errorCode || "reference-missing", endpoint + " " + code + " is not provisioned in this organization");
+    if (!row) throw contractError3(errorCode || "reference-missing", endpoint + " " + code + " is not provisioned in this organization");
     return row;
   }
   function resolveTypeWithWorkflow(fetchImpl, api, base, endpoint, code, errorCode) {
-    return resolveByCode(fetchImpl, api, base, endpoint, code, TYPE_WITH_WORKFLOW_MAPPINGS, errorCode).then(function(row) {
-      if (!row.workflow || !positiveInteger(row.workflow.id))
-        throw contractError(errorCode || "reference-missing", endpoint + " " + code + " has no workflow");
+    return resolveByCode(fetchImpl, api, base, endpoint, code, TYPE_WITH_WORKFLOW_MAPPINGS2, errorCode).then(function(row) {
+      if (!row.workflow || !positiveInteger3(row.workflow.id))
+        throw contractError3(errorCode || "reference-missing", endpoint + " " + code + " has no workflow");
       return row;
     });
   }
@@ -4384,7 +5366,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return resolveByCode(fetchImpl, api, api.coreBase, "organization", api.organization, null, "organization-missing");
   }
   function orderCurrencyCode(api) {
-    return text(api.config.currency || api.config.pimCurrency) || "USD";
+    return text3(api.config.currency || api.config.pimCurrency) || "USD";
   }
   var TASK_MAPPINGS = [
     { name: "attributes" },
@@ -4394,34 +5376,34 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     { name: "optimistic" },
     { key: "id", name: "organization", type: "identifier" },
     { key: "id", name: "project", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" }
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS2, name: "workflow", type: "identifier" }
   ];
   var CARE_PLAN_TYPE = "SPA_CARE_PLAN";
   var CARE_PLAN_MAPPINGS = [
     { name: "attributes" },
     { name: "code" },
     { name: "id" },
-    { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" }
+    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
   ];
   async function resolveCarePlan(fetchImpl, api) {
-    var accountId = positiveInteger(api.customer && api.customer.id);
-    if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before booking");
+    var accountId = positiveInteger3(api.customer && api.customer.id);
+    if (!accountId) throw contractError3("customer-account-required", "Resolved customer Account is required before booking");
     var rows = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
       { type: "STRING", operator: "=", property: "type.code", value: CARE_PLAN_TYPE }
     ], CARE_PLAN_MAPPINGS);
     var owned = rows.find(function(row) {
       return customerAttributeId(row, "CUSTOMER_ACCOUNT") === accountId;
     });
-    if (!owned) throw contractError("care-plan-missing", "This customer has no care plan to record a visit against");
+    if (!owned) throw contractError3("care-plan-missing", "This customer has no care plan to record a visit against");
     return owned;
   }
   async function ensureVisitTask(fetchImpl, api, options2) {
     var existing = await listOne(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
       { type: "STRING", operator: "=", property: "code", value: options2.code }
     ], TASK_MAPPINGS);
-    if (existing) return positiveInteger(existing.id);
-    var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions(api, {
+    if (existing) return positiveInteger3(existing.id);
+    var savedIds = await requestJson3(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions2(api, {
       entities: [{
         attributes: customerAttributes(api, options2.taskType),
         code: options2.code,
@@ -4433,21 +5415,21 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       }],
       mappings: TASK_MAPPINGS
     }));
-    var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
-    if (!id) throw contractError("invalid-save-response", "Core Task save did not return an id");
+    var id = positiveInteger3(Array.isArray(savedIds) && savedIds[0]);
+    if (!id) throw contractError3("invalid-save-response", "Core Task save did not return an id");
     return id;
   }
   async function listOne(fetchImpl, url, api, filters, mappings, sorting) {
     var body = { filters, mappings, offset: 0, pageSize: 1 };
     if (sorting) body.sorting = sorting;
-    var response = await requestJson(fetchImpl, url, requestOptions(api, body));
+    var response = await requestJson3(fetchImpl, url, requestOptions2(api, body));
     var rows = Array.isArray(response && response.result) ? response.result : [];
     return rows[0] || null;
   }
   async function listMany(fetchImpl, url, api, filters, mappings, sorting, pageSize) {
     var body = { filters, mappings, offset: 0, pageSize: pageSize || 200 };
     if (sorting) body.sorting = sorting;
-    var response = await requestJson(fetchImpl, url, requestOptions(api, body));
+    var response = await requestJson3(fetchImpl, url, requestOptions2(api, body));
     return Array.isArray(response && response.result) ? response.result : [];
   }
   function recordCodeOf(row) {
@@ -4467,13 +5449,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var typeId = row && row.type && row.type.id;
     var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
     var entry = group && group[code];
-    return entry && entry.value != null ? positiveInteger(entry.value) : null;
+    return entry && entry.value != null ? positiveInteger3(entry.value) : null;
   }
   function customerAttributes(api, typeRef, extra) {
     var typeId = typeRef && typeRef.id;
     if (typeId == null) return {};
     var values = {};
-    var accountId = positiveInteger(api.customer && api.customer.id);
+    var accountId = positiveInteger3(api.customer && api.customer.id);
     if (accountId) values.CUSTOMER_ACCOUNT = { value: accountId };
     if (api.customerUserId) values.CUSTOMER_USER = { value: api.customerUserId };
     Object.keys(extra || {}).forEach(function(key) {
@@ -4484,30 +5466,30 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return attributes;
   }
   function getEntity(fetchImpl, url, api, mappings) {
-    return requestJson(fetchImpl, url, requestOptions(api, mappings));
+    return requestJson3(fetchImpl, url, requestOptions2(api, mappings));
   }
   function requestContext(context, explicitOrigin) {
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
     var customer = context && context.account || state2.customerAccount || session.account || {};
-    var accessToken = text(session.accessToken || session.access_token);
-    if (!accessToken) throw contractError("session-required", "A Core access token is required");
-    var organization = text(config.organization);
-    if (!organization) throw contractError("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin();
+    var accessToken = text3(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
+    var organization = text3(config.organization);
+    if (!organization) throw contractError3("organization-required", "Verified portal organization is required");
+    var origin = explicitOrigin || config.origin || browserOrigin3();
     return {
-      authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase3(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       config,
-      coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
+      coreBase: sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base"),
       customer,
-      customerUserId: positiveInteger(session.userId || state2.session && state2.session.userId) || null,
+      customerUserId: positiveInteger3(session.userId || state2.session && state2.session.userId) || null,
       organization,
-      serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
+      serviceBase: sameOriginBase3(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };
   }
-  function requestOptions(api, body) {
+  function requestOptions2(api, body) {
     return {
       method: "POST",
       credentials: "same-origin",
@@ -4520,28 +5502,28 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       body: JSON.stringify(body)
     };
   }
-  async function requestJson(fetchImpl, url, options2) {
+  async function requestJson3(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw contractError3("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "core-request-failed";
-      var error2 = contractError(code, "Core request failed with HTTP " + response.status);
+      var error2 = contractError3(code, "Core request failed with HTTP " + response.status);
       error2.status = response.status;
       throw error2;
     }
     try {
       return await response.json();
     } catch (_) {
-      throw contractError("invalid-response", "Core response was not valid JSON");
+      throw contractError3("invalid-response", "Core response was not valid JSON");
     }
   }
   function normalizeAppointment(row) {
-    var id = positiveInteger(row && row.id);
-    if (!id) throw contractError("invalid-appointment", "Core Appointment response did not include an id");
+    var id = positiveInteger3(row && row.id);
+    if (!id) throw contractError3("invalid-appointment", "Core Appointment response did not include an id");
     var start = validIso(row.start);
     var end = validIso(row.end);
     var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return text(state2 && state2.code);
+      return text3(state2 && state2.code);
     }).filter(Boolean) : [];
     var status = appointmentStatus(states);
     var allowedActions = [];
@@ -4552,13 +5534,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       id: REF_PREFIX + id,
       backendId: id,
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      code: text(row.code),
-      service: localizedName(row.nls) || text(row.code) || "Spa appointment",
+      code: text3(row.code),
+      service: localizedName2(row.nls) || text3(row.code) || "Spa appointment",
       startIso: start,
       endIso: end,
       startEpoch: Date.parse(start),
       start: formatDateTime(start),
-      date: formatDate(start),
+      date: formatDate2(start),
       time: formatTime(start),
       specialist: "",
       mode: "salon",
@@ -4574,24 +5556,24 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       allowedActions
     };
   }
-  function normalizeOrder(row, accountId) {
-    var rowAccountId = row && row.account && positiveInteger(row.account.id);
-    if (rowAccountId !== accountId) throw contractError("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
-    var id = positiveInteger(row && row.id);
-    if (!id) throw contractError("invalid-order", "Core Order response did not include an id");
+  function normalizeOrder2(row, accountId) {
+    var rowAccountId = row && row.account && positiveInteger3(row.account.id);
+    if (rowAccountId !== accountId) throw contractError3("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
+    var id = positiveInteger3(row && row.id);
+    if (!id) throw contractError3("invalid-order", "Core Order response did not include an id");
     var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return text(state2 && state2.code);
+      return text3(state2 && state2.code);
     }).filter(Boolean) : [];
     return {
       ref: "order-core-" + id,
       id,
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      notes: text(row.notes),
-      grandTotal: finiteNumber(row.grandTotal, 0),
-      totalCharges: finiteNumber(row.totalCharges, 0),
-      totalTaxes: finiteNumber(row.totalTaxes, 0),
-      currencyCode: text(row.currency && row.currency.code),
-      typeCode: text(row.type && row.type.code),
+      notes: text3(row.notes),
+      grandTotal: finiteNumber3(row.grandTotal, 0),
+      totalCharges: finiteNumber3(row.totalCharges, 0),
+      totalTaxes: finiteNumber3(row.totalTaxes, 0),
+      currencyCode: text3(row.currency && row.currency.code),
+      typeCode: text3(row.type && row.type.code),
       statusCode: states.join(" \xB7 ")
     };
   }
@@ -4602,64 +5584,64 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return "Confirmed";
   }
   function appointmentId(ref) {
-    var value = text(ref);
-    if (!value.startsWith(REF_PREFIX)) throw contractError("invalid-appointment-ref", "Appointment reference is invalid");
-    var id = positiveInteger(value.slice(REF_PREFIX.length));
-    if (!id) throw contractError("invalid-appointment-ref", "Appointment reference is invalid");
+    var value = text3(ref);
+    if (!value.startsWith(REF_PREFIX)) throw contractError3("invalid-appointment-ref", "Appointment reference is invalid");
+    var id = positiveInteger3(value.slice(REF_PREFIX.length));
+    if (!id) throw contractError3("invalid-appointment-ref", "Appointment reference is invalid");
     return id;
   }
-  function singleFlight(key, operation) {
-    if (flights.has(key)) return flights.get(key);
+  function singleFlight2(key, operation) {
+    if (flights2.has(key)) return flights2.get(key);
     var promise = Promise.resolve().then(operation).finally(function() {
-      flights.delete(key);
+      flights2.delete(key);
     });
-    flights.set(key, promise);
+    flights2.set(key, promise);
     return promise;
   }
-  function sameOriginBase(value, origin, label) {
-    if (!origin) throw contractError("origin-required", label + " requires a browser origin");
+  function sameOriginBase3(value, origin, label) {
+    if (!origin) throw contractError3("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw contractError3("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function browserOrigin() {
+  function browserOrigin3() {
     return globalThis.location && globalThis.location.origin || "";
   }
-  function positiveInteger(value) {
+  function positiveInteger3(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber(value, fallback) {
+  function finiteNumber3(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text(value) {
+  function text3(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
-  function localizedName(value) {
+  function localizedName2(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text(localized2 && (localized2.NAME || localized2.name));
+    return text3(localized2 && (localized2.NAME || localized2.name));
   }
   function requiredRef(value, label) {
-    var id = value && positiveInteger(value.id);
-    if (!id) throw contractError("template-reference-missing", label + " is missing");
+    var id = value && positiveInteger3(value.id);
+    if (!id) throw contractError3("template-reference-missing", label + " is missing");
     return { id };
   }
   function optionalRef(value) {
-    var id = value && positiveInteger(value.id);
+    var id = value && positiveInteger3(value.id);
     return id ? { id } : null;
   }
   function validIso(value) {
     var date = new Date(value);
-    if (!Number.isFinite(date.getTime())) throw contractError("invalid-date", "Appointment date is invalid");
+    if (!Number.isFinite(date.getTime())) throw contractError3("invalid-date", "Appointment date is invalid");
     return date.toISOString();
   }
   function idempotencyPart(value) {
-    var clean = text(value).toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, "");
+    var clean = text3(value).toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, "");
     return (clean || "REQUEST").slice(0, 72);
   }
-  function formatDate(value) {
+  function formatDate2(value) {
     return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/Chicago" }).format(new Date(value));
   }
   function formatTime(value) {
@@ -4668,7 +5650,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function formatDateTime(value) {
     return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" }).format(new Date(value));
   }
-  function contractError(code, message) {
+  function contractError3(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -4676,7 +5658,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var coreSpaDemoContract = Object.freeze({
     appointmentMappings: APPOINTMENT_MAPPINGS,
     appointmentTypeCode: APPOINTMENT_TYPE,
-    orderMappings: ORDER_MAPPINGS,
+    orderMappings: ORDER_MAPPINGS2,
     scopeMode: "tenant-demo-unscoped"
   });
 
@@ -4695,7 +5677,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   async function loadCoreOidcSession(config) {
     if (!globalThis.oidc || !globalThis.oidc.UserManager || !globalThis.oidc.WebStorageStateStore) {
-      throw contractError2("oidc-library-unavailable", "Core sign-in library did not load");
+      throw contractError4("oidc-library-unavailable", "Core sign-in library did not load");
     }
     var coreBase = sameOriginUrl(config.authCoreBase || "/core", "Core authentication base").replace(/\/+$/, "");
     var expectedCallback = sameOriginUrl(config.authCallbackPath || "/core/oauth2-callback.html", "Core callback");
@@ -4703,20 +5685,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       credentials: "omit",
       headers: { Accept: "application/json" }
     });
-    if (!response.ok) throw contractError2("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
+    if (!response.ok) throw contractError4("oidc-discovery-failed", "Core authentication discovery failed with HTTP " + response.status);
     var metadata = await response.json();
     var authority = Array.isArray(metadata.authorization_servers) ? metadata.authorization_servers[0] : "";
     if (!authority || !metadata.resource || !metadata.x_client_id || !metadata.x_redirect_uri || !metadata.x_post_logout_redirect_uri) {
-      throw contractError2("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
+      throw contractError4("oidc-discovery-incomplete", "Core authentication discovery is incomplete");
     }
     if (new URL(metadata.resource, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError2("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
+      throw contractError4("oidc-cross-origin-resource", "Core authentication resource must be same-origin");
     }
     if (new URL(authority, globalThis.location.origin).origin !== globalThis.location.origin) {
-      throw contractError2("oidc-cross-origin-authority", "Core authorization server must be same-origin");
+      throw contractError4("oidc-cross-origin-authority", "Core authorization server must be same-origin");
     }
     if (new URL(metadata.x_redirect_uri, globalThis.location.origin).href !== expectedCallback || new URL(metadata.x_post_logout_redirect_uri, globalThis.location.origin).href !== expectedCallback) {
-      throw contractError2("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
+      throw contractError4("oidc-callback-mismatch", "Core authentication callback does not match the portal contract");
     }
     manager = new globalThis.oidc.UserManager({
       authority,
@@ -4735,14 +5717,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
   }
   function startCoreOidcSignIn(config) {
-    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-in is not ready"));
+    if (!manager) return Promise.reject(contractError4("oidc-manager-unavailable", "Core sign-in is not ready"));
     var returnUrl = new URL(globalThis.location.href);
     returnUrl.hash = "#/orders";
     globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
     return manager.signinRedirect();
   }
   function startCoreOidcSignOut(config) {
-    if (!manager) return Promise.reject(contractError2("oidc-manager-unavailable", "Core sign-out is not ready"));
+    if (!manager) return Promise.reject(contractError4("oidc-manager-unavailable", "Core sign-out is not ready"));
     var returnUrl = new URL(globalThis.location.href);
     returnUrl.hash = "#/login";
     globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
@@ -4750,10 +5732,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function sameOriginUrl(value, label) {
     var url = new URL(value, globalThis.location.origin);
-    if (url.origin !== globalThis.location.origin) throw contractError2("cross-origin-service", label + " must be same-origin");
+    if (url.origin !== globalThis.location.origin) throw contractError4("cross-origin-service", label + " must be same-origin");
     return url.href;
   }
-  function contractError2(code, message) {
+  function contractError4(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -4809,53 +5791,53 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   async function loadCoreUserProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext2(context, explicitOrigin);
-    var row = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var row = await requestJson4(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var phone = api.accountId ? await loadAccountPhone(api, fetchImpl) : null;
     return normalize(row, api.userId, phone);
   }
   async function loadAccountPhone(api, fetchImpl) {
     if (!api.accountBase) return null;
-    var response = await requestJson2(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
+    var response = await requestJson4(fetchImpl, api.accountBase + "/api/account/list.json", options(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) }],
       mappings: ACCOUNT_CONTACT_MAPPINGS,
       offset: 0,
       pageSize: 1
     }));
     var account = (Array.isArray(response && response.result) ? response.result : [])[0];
-    if (!account || positiveInteger2(account.id) !== api.accountId) return null;
+    if (!account || positiveInteger4(account.id) !== api.accountId) return null;
     var contacts = Array.isArray(account.contacts) ? account.contacts : [];
     for (var index = 0; index < contacts.length; index += 1) {
       var entries = Array.isArray(contacts[index].contactEntries) ? contacts[index].contactEntries : [];
       for (var entryIndex = 0; entryIndex < entries.length; entryIndex += 1) {
         var entry = entries[entryIndex];
-        if (text2(entry.type && entry.type.code) === "PHONE" && text2(entry.value)) return text2(entry.value);
+        if (text4(entry.type && entry.type.code) === "PHONE" && text4(entry.value)) return text4(entry.value);
       }
     }
     return null;
   }
   async function saveCoreUserProfile(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = requestContext2(context, explicitOrigin);
-    var current = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    var current = await requestJson4(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     var entity = {
-      email: text2(input && input.email),
+      email: text4(input && input.email),
       enabled: current.enabled !== false,
-      fullname: text2(current.fullname),
+      fullname: text4(current.fullname),
       id: api.userId,
       language: requiredRef2(current.language, "User language"),
-      name: text2(current.name),
-      optimistic: finiteNumber2(current.optimistic, 0),
+      name: text4(current.name),
+      optimistic: finiteNumber4(current.optimistic, 0),
       workflow: requiredRef2(current.workflow, "User workflow")
     };
     if (!entity.email) throw error("profile-email-required", "Email is required");
-    await requestJson2(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
-    var readback = await requestJson2(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
+    await requestJson4(fetchImpl, api.base + "/api/user/save.json", options(api, { entities: [entity], mappings: USER_MAPPINGS }));
+    var readback = await requestJson4(fetchImpl, api.base + "/api/user/get.json?id=" + api.userId, options(api, USER_MAPPINGS));
     return normalize(readback, api.userId);
   }
   function normalize(row, userId, phone) {
-    if (!row || positiveInteger2(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
+    if (!row || positiveInteger4(row.id) !== userId) throw error("profile-scope-mismatch", "Core User readback did not match the signed-in User");
     return {
       state: "ready",
-      email: text2(row.email),
+      email: text4(row.email),
       phone: phone || null,
       prefs: {},
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
@@ -4869,26 +5851,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var token = text2(session.accessToken || session.access_token);
-    var userId = positiveInteger2(session.userId);
+    var token = text4(session.accessToken || session.access_token);
+    var userId = positiveInteger4(session.userId);
     if (!token) throw error("session-required", "A Core access token is required");
     if (!userId) throw error("session-user-required", "The signed-in Core User is required");
     var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin;
-    var base = sameOriginBase2(config.coreApiBase || "/core", origin, "Core API base");
+    var base = sameOriginBase4(config.coreApiBase || "/core", origin, "Core API base");
     var customer = context && context.account || state2.customerAccount || session.account || {};
     return {
-      accountBase: sameOriginBase2(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
-      accountId: positiveInteger2(customer.id) || null,
+      accountBase: sameOriginBase4(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId: positiveInteger4(customer.id) || null,
       base,
-      token: text2(session.tokenType || session.token_type || "Bearer") + " " + token,
+      token: text4(session.tokenType || session.token_type || "Bearer") + " " + token,
       userId
     };
   }
   function options(api, body) {
     return { method: "POST", credentials: "same-origin", headers: { Authorization: api.token, "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) };
   }
-  async function requestJson2(fetchImpl, url, requestOptions3) {
-    var response = await fetchImpl(url, requestOptions3);
+  async function requestJson4(fetchImpl, url, requestOptions4) {
+    var response = await fetchImpl(url, requestOptions4);
     if (!response || typeof response.ok !== "boolean") throw error("invalid-response", "Core User returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : response.status === 409 || response.status === 412 ? "conflict" : "profile-request-failed";
@@ -4902,26 +5884,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       throw error("invalid-response", "Core User response was not valid JSON");
     }
   }
-  function sameOriginBase2(value, origin, label) {
+  function sameOriginBase4(value, origin, label) {
     if (!origin) throw error("origin-required", label + " requires a browser origin");
     var url = new URL(value, origin);
     if (url.origin !== new URL(origin).origin) throw error("cross-origin-service", label + " must be same-origin");
     return url.href.replace(/\/+$/, "");
   }
   function requiredRef2(value, label) {
-    var id = value && positiveInteger2(value.id);
+    var id = value && positiveInteger4(value.id);
     if (!id) throw error("profile-reference-missing", label + " is missing");
     return { id };
   }
-  function positiveInteger2(value) {
+  function positiveInteger4(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber2(value, fallback) {
+  function finiteNumber4(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text2(value) {
+  function text4(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function error(code, message) {
@@ -6737,10 +7719,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("span", { style: "font-weight:700;color:var(--ink)" }, value + " \u25BE")
     ]);
   }
-  function pitchRow(dot, bg, text6) {
+  function pitchRow(dot, bg, text7) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text6)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text7)
     ]);
   }
 
@@ -8207,8 +9189,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text6) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text6]);
+  function oidcStep(n, text7) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text7]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -8749,9 +9731,23 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return page;
   }
 
+  // app-templates/customer-portal/runtime/src/routes/spa-cart-view.js
+  function spaCartRouteState(live, moduleStatus, envelope2, fixtureView) {
+    if (!live) return fixtureView;
+    return moduleStatus || envelope2 && envelope2.state || "loading";
+  }
+  function spaCartDisplayTotals(live, source) {
+    if (live) return { subtotal: source && source.displaySubtotal || null, tax: null, total: null };
+    var totals = source && source.displayTotals || null;
+    return {
+      subtotal: totals && totals.subtotal != null ? totals.subtotal : null,
+      tax: totals && totals.tax != null ? totals.tax : null,
+      total: totals && totals.total != null ? totals.total : null
+    };
+  }
+
   // app-templates/customer-portal/runtime/src/routes/SpaCartPage.js
-  function cartLineRow(l, i) {
-    var demo = state.spaCartDemo;
+  function cartLineRow(l, i, demo) {
     var lineState = i === 0 && demo === "stale-price" ? "stale-price" : i === 0 && demo === "inventory-conflict" ? "inventory-conflict" : null;
     var qPhase = cmdPhase("cart.changeQuantity:" + l.ref);
     var rPhase = cmdPhase("cart.removeItem:" + l.ref);
@@ -8759,7 +9755,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var row = h("div", { "class": "cart-row spa-cart-row", "data-module": "cart-line", "data-visual-id": "cart-line", "data-line-ref": l.ref, "data-state": lineState || (busy ? "pending" : qPhase !== "idle" ? qPhase : void 0) }, [
       h("div", { "class": "cart-row__body" }, [
         h("div", { style: "font-weight:700;font-size:14.5px", "data-bind": "cart.lines[].title" }, l.title + (l.variant ? " \xB7 " + l.variant : "")),
-        h("div", { style: "font-size:13px;color:var(--ink-2)", "data-bind": "cart.lines[].displayUnitPrice" }, l.displayUnitPrice + " each"),
+        /* both line figures are server strings: a line Core priced without one
+           keeps its place in the row and shows nothing there */
+        h("div", { style: "font-size:13px;color:var(--ink-2)", "data-bind": "cart.lines[].displayUnitPrice" }, l.displayUnitPrice ? l.displayUnitPrice + " each" : ""),
         qPhase === "failed" ? h("div", { "class": "cart-row__note", role: "alert" }, "Didn\u2019t save \u2014 quantity unchanged. Try again.") : null,
         lineState === "stale-price" ? h("div", { "class": "cart-row__note", role: "alert", "data-bind": "cart.lines[].priceNote" }, "The price of this item changed since you added it \u2014 refresh the bag to see current totals.") : null,
         lineState === "inventory-conflict" ? h("div", { "class": "cart-row__note", role: "alert" }, [
@@ -8774,20 +9772,34 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("div", { "class": "qty__val", "data-bind": "cart.lines[].quantity" }, String(l.qty)),
         h("button", { "class": "qty__btn qty__btn--plus", "data-action": "cart.changeQuantity", "data-id": l.ref + "|" + (l.qty + 1), "aria-label": "Increase", disabled: busy ? true : void 0 }, "+")
       ]),
-      h("div", { "class": "cart-row__total", "data-bind": "cart.lines[].displayTotal" }, l.displayTotal),
+      h("div", { "class": "cart-row__total", "data-bind": "cart.lines[].displayTotal" }, l.displayTotal || ""),
       h("button", { "class": "cart-remove", "data-action": "cart.removeItem", "data-id": l.ref, disabled: busy ? true : void 0 }, rPhase === "pending" ? "Removing\u2026" : "Remove")
     ]);
     return row;
   }
+  function moneyRow(label, value, bind, isTotal) {
+    return h("div", { "class": "money-rows__row" + (isTotal ? " money-rows__row--total" : "") }, [
+      h("span", null, label),
+      h("span", { "data-bind": bind }, value)
+    ]);
+  }
   function SpaCart() {
-    var page = h("section", { "class": "page", "data-route": "cart", "data-state": state.view, "data-visual-id": "spa-cart", "data-module": "spa-cart", "data-capability": spaCapability(), "data-cart-ref": state.spaCart ? state.spaCart.version : void 0, "data-screen-label": "Your bag" });
+    var live = state.config.dataMode === "live";
+    var source = live ? state.moduleData.cart : state.spaCart;
+    var view = spaCartRouteState(live, state.moduleStatus.cart, source, state.view);
+    var page = h("section", { "class": "page", "data-route": "cart", "data-state": view, "data-visual-id": "spa-cart", "data-module": "spa-cart", "data-capability": spaCapability(), "data-cart-ref": !live && state.spaCart ? state.spaCart.version : void 0, "data-screen-label": "Your bag" });
     page.appendChild(h("div", { "class": "detail-back" }, h("span", { "class": "link-action", "data-action": "nav.products" }, "\u2039 Keep shopping")));
     page.appendChild(PageHeader({ title: "Your bag", sub: "Items you\u2019re planning to buy \u2014 totals come from the store, and nothing is reserved yet." }));
     if (!spaRetailOpen()) {
       page.appendChild(UnavailableState({ title: "Online shopping isn\u2019t open yet", desc: "The shop is browse-only on this portal for now \u2014 nothing can be added to a bag or purchased online.", action: { variant: "btn--ghost", label: "Browse the shop", action: "nav.products", visualId: "cart-unavailable-shop" } }));
       return page;
     }
+    if (live && !isModuleEnabled("cart")) {
+      page.appendChild(UnavailableState({ title: "The bag isn\u2019t available right now", desc: "The store can\u2019t open your bag at the moment. Your items aren\u2019t lost \u2014 try again in a bit." }));
+      return page;
+    }
     var gate = spaGate({
+      view,
       states: ["loading", "error", "unauthorized"],
       skeleton: function() {
         var w = h("div", { "data-state": "loading", "aria-busy": "true" });
@@ -8805,7 +9817,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return page;
     }
     var lines = spaCartLines();
-    if (state.view === "empty" || lines.length === 0) {
+    if (view === "empty" || lines.length === 0) {
       page.appendChild(h("div", { "class": "state-block", "data-module": "empty-state", "data-visual-id": "cart-empty", "data-state": "empty" }, [
         h("div", { "class": "state-block__glyph" }, "\u25A1"),
         h("div", { "class": "state-block__title" }, "Your bag is empty"),
@@ -8814,14 +9826,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]));
       return page;
     }
-    var demo = state.spaCartDemo;
+    var demo = live ? null : state.spaCartDemo;
     var grid = h("div", { "class": "purch-grid" });
     var left = h("div", { "class": "appt-col" });
     var right = h("div", { "class": "appt-col" });
     if (demo === "stale-price") {
       left.appendChild(ConflictBanner({ noun: "bag", desc: "The store re-checked your items and a price changed. Load the latest bag before checking out \u2014 nothing was ordered.", retryId: "cart-quote" }));
     }
-    var card = h("div", { "class": "card", "data-module": "cart-list", "data-visual-id": "cart-list", "data-state": demo !== "as-added" ? demo : void 0 }, [
+    var card = h("div", { "class": "card", "data-module": "cart-list", "data-visual-id": "cart-list", "data-state": demo && demo !== "as-added" ? demo : void 0 }, [
       h("div", { "class": "card__head" }, [
         h("span", { "class": "card__title" }, "Items"),
         h("span", { style: "font-size:12px;color:var(--ink-3)", "data-bind": "cart.version" }, "kept in your account \u2014 not reserved")
@@ -8829,28 +9841,31 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
     var listWrap = h("div", { style: "padding:0 16px 8px" });
     lines.forEach(function(l, i) {
-      listWrap.appendChild(cartLineRow(l, i));
+      listWrap.appendChild(cartLineRow(l, i, demo));
     });
     card.appendChild(listWrap);
     left.appendChild(card);
-    var totals = state.spaCart.displayTotals;
-    var totalsCard = h("div", { "class": "card card--pad", "data-module": "cart-totals", "data-visual-id": "cart-totals" }, [
-      h("div", { "class": "card__title" }, "Totals"),
-      h("div", { "class": "money-rows" }, [
-        h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "cart.displayTotals.subtotal" }, totals.subtotal)]),
-        h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "cart.displayTotals.tax" }, totals.tax)]),
-        h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "cart.displayTotals.total" }, totals.total)])
-      ]),
-      demo === "stale-price" ? h("div", { "class": "purch-ful__note", "data-state": "stale" }, "Shown totals are the last confirmed ones \u2014 they update when you load the latest bag.") : null
-    ]);
-    right.appendChild(totalsCard);
-    var ful = state.spaCart.fulfillment;
-    right.appendChild(h("div", { "class": "card card--pad", "data-module": "cart-fulfillment", "data-visual-id": "cart-fulfillment" }, [
-      h("div", { "class": "card__title" }, "How you\u2019ll get it"),
-      h("div", { style: "font-weight:600;font-size:13.5px;margin-top:6px", "data-bind": "cart.fulfillment.label" }, ful.label),
-      h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px", "data-bind": "cart.fulfillment.detail" }, ful.detail),
-      h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, "Items in your bag aren\u2019t reserved \u2014 stock and prices are confirmed at checkout.")
-    ]));
+    var totals = spaCartDisplayTotals(live, source);
+    var moneyRows = h("div", { "class": "money-rows" });
+    if (totals.subtotal != null) moneyRows.appendChild(moneyRow("Subtotal", totals.subtotal, "cart.displayTotals.subtotal", false));
+    if (totals.tax != null) moneyRows.appendChild(moneyRow("Tax", totals.tax, "cart.displayTotals.tax", false));
+    if (totals.total != null) moneyRows.appendChild(moneyRow("Total", totals.total, "cart.displayTotals.total", true));
+    if (moneyRows.childNodes.length) {
+      right.appendChild(h("div", { "class": "card card--pad", "data-module": "cart-totals", "data-visual-id": "cart-totals" }, [
+        h("div", { "class": "card__title" }, "Totals"),
+        moneyRows,
+        demo === "stale-price" ? h("div", { "class": "purch-ful__note", "data-state": "stale" }, "Shown totals are the last confirmed ones \u2014 they update when you load the latest bag.") : null
+      ]));
+    }
+    var ful = source && source.fulfillment;
+    if (ful) {
+      right.appendChild(h("div", { "class": "card card--pad", "data-module": "cart-fulfillment", "data-visual-id": "cart-fulfillment" }, [
+        h("div", { "class": "card__title" }, "How you\u2019ll get it"),
+        h("div", { style: "font-weight:600;font-size:13.5px;margin-top:6px", "data-bind": "cart.fulfillment.label" }, ful.label),
+        h("div", { style: "font-size:12.5px;color:var(--ink-2);margin-top:2px", "data-bind": "cart.fulfillment.detail" }, ful.detail),
+        h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, "Items in your bag aren\u2019t reserved \u2014 stock and prices are confirmed at checkout.")
+      ]));
+    }
     var blocked = demo === "stale-price" || demo === "inventory-conflict";
     right.appendChild(h("div", { style: "display:flex;flex-direction:column;gap:8px" }, [
       ActionButton({ variant: "btn--primary", label: "Go to checkout", action: "checkout.start", id: "cart", lg: true, block: true, disabled: blocked, visualId: "cart-checkout" }),
@@ -9041,6 +10056,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       }
       return F.spaCommerce.checkout.planQuotes[state.spaPlanOffer || "off-pkg-4c21"] || F.spaCommerce.checkout.planQuote;
     }
+    if (state.config.dataMode === "live") {
+      var envelope2 = spaCartEnvelope();
+      var liveLines = envelope2 && envelope2.lines || [];
+      if (!liveLines.length) return null;
+      return { lines: liveLines, displayTotals: { subtotal: envelope2.displaySubtotal }, serverPriced: true };
+    }
     var cart = state.spaCart;
     return cart && cart.lines.length ? { lines: cart.lines, displayTotals: cart.displayTotals } : null;
   }
@@ -9172,13 +10193,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (q.recurringNote) linesCard.appendChild(h("div", { "class": "purch-row__attention", "data-bind": "checkout.recurringNote", role: "note", style: "margin-top:8px" }, q.recurringNote));
     left.appendChild(linesCard);
     var t = q.displayTotals;
+    var moneyRows = [];
+    if (t.subtotal != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "checkout.displayTotals.subtotal" }, t.subtotal)]));
+    if (t.tax != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "checkout.displayTotals.tax" }, t.tax)]));
+    if (t.total != null) moneyRows.push(h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "checkout.displayTotals.total" }, t.total)]));
     var payCard = h("div", { "class": "card card--pad", "data-module": "checkout-payment", "data-visual-id": "checkout-payment", "data-payment-mode": "SIMULATED" }, [
       h("div", { "class": "card__title" }, "Totals & confirmation"),
-      h("div", { "class": "money-rows" }, [
-        h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "checkout.displayTotals.subtotal" }, t.subtotal)]),
-        h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "checkout.displayTotals.tax" }, t.tax)]),
-        h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "checkout.displayTotals.total" }, t.total)])
-      ]),
+      h("div", { "class": "money-rows", "data-state": q.serverPriced ? "subtotal-only" : void 0 }, moneyRows),
       SimulationBadge(true),
       h("div", { "class": "purch-ful__note" }, "This is a demonstration checkout: confirming records your order without any payment. There\u2019s nothing to enter \u2014 no card, no charge, no receipt."),
       h("label", { "class": "co-policy", "data-module": "policy-ack", "data-visual-id": "policy-ack", "data-state": state.spaPolicyAck ? "acked" : "required" }, [
@@ -10726,11 +11747,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     },
     "cart.addItem": function(id) {
       if (isSpa() && state.capability === "target-appointments") {
-        if (spaCurrentApiDemoOpen()) {
-          spaAddLine(id);
-          render();
-          return true;
-        }
+        if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id);
         return runSpaCommand("cart.addItem:" + id, function() {
           spaAddLine(id);
         });
@@ -10741,13 +11758,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     },
     "cart.removeItem": function(id) {
       if (isSpa() && state.capability === "target-appointments") {
-        if (spaCurrentApiDemoOpen()) {
-          spaSetLines(spaLines().filter(function(line) {
-            return line.ref !== id;
-          }));
-          render();
-          return true;
-        }
+        if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id);
         return runSpaCommand("cart.removeItem:" + id, function() {
           spaSetLines(spaLines().filter(function(line) {
             return line.ref !== id;
@@ -11173,19 +12184,45 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     else lines.push({ ref: lineRef, code, variantRef: variant ? variant.ref : null, title: product.name, variant: variant ? variant.label : null, qty: 1, cents: variant ? variant.cents : retail.cents });
     spaSetLines(lines);
   }
+  function spaLiveCartAdapter() {
+    return createCoreCartAdapter();
+  }
+  function spaLiveCartCommand(key, run, toastText) {
+    return runLiveSpaCommand(key, function() {
+      return run().then(function(cart) {
+        return reloadRuntimeModule("cart").then(function() {
+          return cart;
+        });
+      });
+    }, null, { toast: toastText });
+  }
+  function spaLiveCartAdd(code) {
+    var sell = spaSellInfo(code);
+    if (!sell || sell.state !== "sellable" || !sell.backendPriceId || !sell.backendProductId) return false;
+    return spaLiveCartCommand("cart.addItem:" + code, function() {
+      return spaLiveCartAdapter().addItem({
+        count: 1,
+        priceId: sell.backendPriceId,
+        productId: sell.backendProductId,
+        requestRef: "add-" + code
+      }, spaLiveContext());
+    }, "Added to your bag \u2014 confirmed by the store");
+  }
+  function spaLiveCartRemove(ref) {
+    return spaLiveCartCommand("cart.removeItem:" + ref, function() {
+      return spaLiveCartAdapter().removeItem({ ref }, spaLiveContext());
+    }, "Removed from your bag");
+  }
+  function spaLiveCartCount(ref, qty) {
+    return spaLiveCartCommand("cart.changeQuantity:" + ref, function() {
+      return spaLiveCartAdapter().setItemCount({ count: qty, ref }, spaLiveContext());
+    }, "Bag updated \u2014 totals recalculated by the store");
+  }
   function spaChangeQuantity(id) {
     var parts = String(id || "").split("|");
     var ref = parts[0];
     var qty = Math.max(0, Number(parts[1] || 0));
-    if (spaCurrentApiDemoOpen()) {
-      spaSetLines(qty === 0 ? spaLines().filter(function(line) {
-        return line.ref !== ref;
-      }) : spaLines().map(function(line) {
-        return line.ref === ref ? Object.assign({}, line, { qty }) : line;
-      }));
-      render();
-      return true;
-    }
+    if (spaCurrentApiDemoOpen()) return spaLiveCartCount(ref, qty);
     return runSpaCommand("cart.changeQuantity:" + ref, function() {
       spaSetLines(qty === 0 ? spaLines().filter(function(line) {
         return line.ref !== ref;
@@ -11223,30 +12260,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var checkoutRef = spaCheckoutRef();
     var key = "checkout.confirm:" + checkoutRef;
     if (spaCurrentApiDemoOpen()) {
-      var lines = state.spaCheckoutSource === "plan" ? [] : spaLines();
-      var requestRef = checkoutRef + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan" ? state.spaPlanOffer || "offer" : lines.map(function(line) {
-        return line.ref + "x" + line.qty;
-      }).sort().join("-"));
-      var amounts = spaLiveCheckoutAmounts();
-      return runLiveSpaCommand(key, function() {
-        return spaLiveAdapter().createOrder({ requestRef, total: amounts.total, taxes: amounts.taxes }, spaLiveContext()).then(function(order) {
-          return reloadRuntimeModule("orders").then(function() {
-            return order;
-          });
-        });
-      }, function(order) {
-        state.spaResult = {
-          kind: "purchase",
-          headline: "Order confirmed",
-          sub: "The order was recorded in Core. This demo did not take a payment.",
-          purchase: { ref: order.ref, reference: order.ref },
-          fulfillment: "Pickup at Harbor Front studio"
-        };
-        if (state.spaCheckoutSource === "cart") {
-          spaSetLines([]);
-          state.spaCartDemo = "as-added";
-        }
-      }, { toast: "Order created \u2014 confirmed by Core" });
+      if (state.spaCheckoutSource === "plan") return spaConfirmLivePlanCheckout(key, checkoutRef);
+      return spaConfirmLiveCartCheckout(key, checkoutRef);
     }
     return runSpaCommand(key, function() {
       if (state.spaCheckoutSource === "plan") {
@@ -11260,6 +12275,106 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         state.spaCartDemo = "as-added";
       }
     }, { ms: 900 });
+  }
+  function spaConfirmLiveCartCheckout(key, checkoutRef) {
+    var reviewed = spaCartEnvelope();
+    var reviewedLines = reviewed && reviewed.lines || [];
+    if (!reviewedLines.length) return false;
+    var requestRef = checkoutRef + "-cart-" + cartFingerprint(reviewedLines);
+    return runLiveSpaCommand(key, function() {
+      var cartAdapter = spaLiveCartAdapter();
+      return cartAdapter.load("cart", spaLiveContext()).then(function(current) {
+        if (cartFingerprint(current.lines) !== cartFingerprint(reviewedLines)) {
+          var conflict = new Error("The bag changed while you were reviewing it");
+          conflict.code = "conflict";
+          throw conflict;
+        }
+        return spaLiveAdapter().createOrder({
+          label: "Customer portal checkout",
+          // `unitAmount` is the server's own unit price. It is passed through, not
+          // multiplied: Core multiplies by itemCount for the order total.
+          lines: current.lines.map(function(line) {
+            return {
+              priceId: line.priceId,
+              productCode: line.productCode,
+              productId: line.productId,
+              productTypeCode: line.productTypeCode,
+              qty: line.qty,
+              unitAmount: line.unitAmount
+            };
+          }),
+          requestRef
+        }, spaLiveContext()).then(function(order) {
+          return spaRecordPickup(order).then(function(pickup) {
+            return cartAdapter.clear(spaLiveContext()).then(function() {
+              return Promise.all([reloadRuntimeModule("orders"), reloadRuntimeModule("cart")]);
+            }).then(function() {
+              return Object.assign({}, order, { pickup });
+            });
+          });
+        });
+      });
+    }, function(order) {
+      state.spaResult = {
+        kind: "purchase",
+        headline: "Order confirmed",
+        sub: "The order was recorded in Core. This demo did not take a payment.",
+        purchase: { ref: order.ref, reference: order.ref },
+        // Shown only when Core actually returned a pickup record, and only with
+        // the window Core stated — an absent window renders as absent.
+        fulfillment: order.pickup ? pickupLabel(order.pickup) : null
+      };
+    }, { toast: "Order created \u2014 confirmed by Core" });
+  }
+  function spaRecordPickup(order) {
+    var hasRetail = (order.lines || []).some(function(line) {
+      return line.typeCode === "SPA_ITEM_RETAIL";
+    });
+    if (!hasRetail) return Promise.resolve(null);
+    return createPickupFulfillment(order.id, spaLiveContext()).catch(function(error2) {
+      console.error("[aircove] pickup record not created for order", order.ref, error2);
+      return null;
+    });
+  }
+  function pickupLabel(pickup) {
+    if (!pickup || pickup.kind !== "PICKUP") return null;
+    return pickup.windowStartLabel ? "Pickup \xB7 " + pickup.windowStartLabel : "Pickup";
+  }
+  function spaConfirmLivePlanCheckout(key, checkoutRef) {
+    var offer = spaPlanOffers().find(function(item) {
+      return item.ref === state.spaPlanOffer;
+    });
+    if (!offer || !offer.backendPriceId || !offer.backendProductId) return false;
+    return runLiveSpaCommand(key, function() {
+      return spaLiveAdapter().createOrder({
+        label: "Customer portal plan checkout",
+        lines: [{
+          priceId: offer.backendPriceId,
+          productCode: offer.productCode || null,
+          productId: offer.backendProductId,
+          productTypeCode: offer.productTypeCode,
+          qty: 1,
+          unitAmount: offer.amount
+        }],
+        requestRef: checkoutRef + "-plan-" + (state.spaPlanOffer || "offer")
+      }, spaLiveContext()).then(function(order) {
+        return reloadRuntimeModule("orders").then(function() {
+          return order;
+        });
+      });
+    }, function(order) {
+      state.spaResult = {
+        kind: "purchase",
+        headline: "Order confirmed",
+        sub: "The order was recorded in Core. This demo did not take a payment.",
+        purchase: { ref: order.ref, reference: order.ref }
+      };
+    }, { toast: "Order created \u2014 confirmed by Core" });
+  }
+  function cartFingerprint(lines) {
+    return (lines || []).map(function(line) {
+      return line.priceId + "x" + line.qty + "@" + line.unitAmount;
+    }).sort().join("|");
   }
   function spaCheckoutRef() {
     return state.config.dataMode === "live" ? "customer-portal-checkout" : F.spaCommerce.checkout.ref;
@@ -11413,22 +12528,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var minute = compact.length <= 2 ? 0 : Number(compact.slice(-2));
     var year = Number(state.config.demoCalendarYear) || 2026;
     return new Date(Date.UTC(year, month - 1, day, hour + 5, minute)).toISOString();
-  }
-  function spaLiveCheckoutAmounts() {
-    if (state.spaCheckoutSource === "plan") {
-      var offer = spaPlanOffers().find(function(item) {
-        return item.ref === state.spaPlanOffer;
-      });
-      if (offer && Number.isFinite(Number(offer.amount))) return { total: Number(offer.amount), taxes: 0 };
-      if (offer && Number.isFinite(Number(offer.cents))) return { total: Number(offer.cents) / 100, taxes: 0 };
-      var match = offer && String(offer.displayPrice || "").replace(/,/g, "").match(/\d+(?:\.\d+)?/);
-      return { total: match ? Number(match[0]) : 0, taxes: 0 };
-    }
-    var subtotalCents = spaLines().reduce(function(sum, line) {
-      return sum + Number(line.cents || 0) * Number(line.qty || 0);
-    }, 0);
-    var taxCents = Math.round(subtotalCents * 0.08);
-    return { total: (subtotalCents + taxCents) / 100, taxes: taxCents / 100 };
   }
   function spaFlowResult() {
     var flow = state.spaFlow;
@@ -11845,9 +12944,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text6) {
-    if (!text6 || !text6.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text6.trim() }]);
+  function pushChat(text7) {
+    if (!text7 || !text7.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text7.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -12196,6 +13295,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 
   // app-templates/customer-portal/runtime/src/adapters/core-pim-adapter.js
   var API_PATH = "/public/{organization}/catalog/price-comparison.json";
+  var INVENTORY_TYPE_CODE = "SPA_STOCK";
+  var SELLABLE = "sellable";
+  var OUT_OF_STOCK = "out-of-stock";
+  var STOCK_UNKNOWN = "unknown";
   var corePimAdapter = {
     supports(moduleId) {
       return moduleId === "services" || moduleId === "pricing" || moduleId === "products";
@@ -12219,12 +13322,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return {
         pimProducts: plans.map(function(product) {
           var model = enrichment.modelsByProductCode[product.code] || null;
+          var sellability = enrichment.sellabilityByProductCode[product.code] || STOCK_UNKNOWN;
           return Object.assign({}, product, {
             ref: opaqueRef2("product", product.code),
             modelRef: model && model.ref || null,
             modelName: model && model.name || null,
             media: [],
-            reviews: enrichment.reviewsByProductCode[product.code] || []
+            reviews: enrichment.reviewsByProductCode[product.code] || [],
+            sellability,
+            allowedActions: buyActions(product.allowedActions, sellability)
           });
         }),
         pimProductModels: enrichment.models,
@@ -12242,7 +13348,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       reviews: [],
       modelsByProductCode: {},
       reviewsByProductCode: {},
-      state: { models: "unavailable", reviews: "unavailable" }
+      sellabilityByProductCode: unknownSellability(products),
+      state: { models: "unavailable", reviews: "unavailable", inventory: "unavailable" }
     };
     if (!token || config.pimFixtureUrl || config.pimEnrichmentMode !== "current-api") return empty;
     var headers = {
@@ -12251,9 +13358,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       "Content-Type": "application/json",
       "X-Organization-Code": config.pimOrganization || config.organization || "SERVICEWAND"
     };
-    var [modelResult, reviewResult] = await Promise.all([
+    var [modelResult, reviewResult, inventoryResult] = await Promise.all([
       fetchPrivateList(privateUrl(config, "product-model"), productModelRequest(), headers),
-      fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers)
+      fetchPrivateList(privateUrl(config, "product-review"), productReviewRequest(), headers),
+      fetchPrivateList(privateUrl(config, "inventory"), inventoryRequest(), headers)
     ]);
     var productCodes = new Set(products.map(function(product) {
       return product.code;
@@ -12276,8 +13384,62 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       reviews,
       modelsByProductCode,
       reviewsByProductCode,
-      state: { models: modelResult.state, reviews: reviewResult.state }
+      sellabilityByProductCode: sellabilityByProductCode(inventoryResult.ok ? inventoryResult.items : [], products),
+      state: { models: modelResult.state, reviews: reviewResult.state, inventory: inventoryResult.state }
     };
+  }
+  function inventoryRequest() {
+    return {
+      filters: [{ type: "STRING", operator: "=", property: "type.code", value: INVENTORY_TYPE_CODE }],
+      offset: 0,
+      pageSize: 500,
+      mappings: [
+        { name: "id" },
+        { name: "count" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "product", type: "identifier" },
+        { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" }
+      ]
+    };
+  }
+  function sellabilityByProductCode(rows, products) {
+    var inStockByProductId = /* @__PURE__ */ new Map();
+    rows.forEach(function(row) {
+      if (!isStockRow(row)) return;
+      var productId = referenceId(row && row.product);
+      if (productId === null) return;
+      var count = Number(row && row.count);
+      if (!Number.isFinite(count)) return;
+      inStockByProductId.set(productId, inStockByProductId.get(productId) === true || count > 0);
+    });
+    var byProductCode = {};
+    products.forEach(function(product) {
+      var productId = referenceId(productFromRow(product.row));
+      var inStock = productId === null ? void 0 : inStockByProductId.get(productId);
+      byProductCode[product.code] = inStock === void 0 ? STOCK_UNKNOWN : inStock ? SELLABLE : OUT_OF_STOCK;
+    });
+    return byProductCode;
+  }
+  function unknownSellability(products) {
+    var byProductCode = {};
+    (products || []).forEach(function(product) {
+      byProductCode[product.code] = STOCK_UNKNOWN;
+    });
+    return byProductCode;
+  }
+  function isStockRow(row) {
+    var typeCode = String(row && row.type && row.type.code || "");
+    return !typeCode || typeCode === INVENTORY_TYPE_CODE;
+  }
+  function referenceId(reference) {
+    var id = Number(reference && reference.id);
+    return Number.isInteger(id) ? id : null;
+  }
+  function buyActions(actions, sellability) {
+    var list = Array.isArray(actions) ? actions.slice() : [];
+    if (sellability === SELLABLE) return list;
+    return list.filter(function(action) {
+      return action !== "cart.addItem";
+    });
   }
   async function fetchPrivateList(url, payload, headers) {
     try {
@@ -12384,11 +13546,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
   function opaqueRef2(prefix, value) {
-    var text6 = String(value || prefix);
+    var text7 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text6.length; index += 1) {
-      var code = text6.charCodeAt(index);
+    for (var index = 0; index < text7.length; index += 1) {
+      var code = text7.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -12457,6 +13619,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return {
         id: product.code || "pim-" + index,
         code: product.code || "pim-" + index,
+        // The Core ids behind this catalog row. `id`/`code` above are the
+        // customer-facing product code; adding to the server cart needs the real
+        // Product and ProductPrice ids, and reaching into `row` for them from a
+        // route or a command is exactly the brittleness this avoids.
+        backendProductId: Number.isInteger(Number(product.id)) ? Number(product.id) : null,
+        backendPriceId: Number.isInteger(Number(row.price && row.price.price && row.price.price.id)) ? Number(row.price.price.id) : null,
         name: nls.NAME || product.code || "Plan",
         description: stripHtml(nls.DESCRIPTION || ""),
         price: customPrice ? "Custom" : formatCurrency(amount, currency),
@@ -12607,10 +13775,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   ];
   function createCoreAccountAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError3("fetch-unavailable", "Core account adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw contractError5("fetch-unavailable", "Core account adapter requires fetch");
     return {
       async load(moduleId, context) {
-        if (moduleId !== "account") throw contractError3("unsupported-module", "Core account adapter cannot load " + moduleId);
+        if (moduleId !== "account") throw contractError5("unsupported-module", "Core account adapter cannot load " + moduleId);
         return resolveCoreAccount(context, fetchImpl, options2.origin);
       },
       async resolve(context) {
@@ -12621,24 +13789,24 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text3(session.accessToken || session.access_token);
-    if (!accessToken) throw contractError3("session-required", "A Core access token is required");
-    var origin = explicitOrigin || config.origin || browserOrigin2();
-    var coreBase = sameOriginBase3(config.coreApiBase || "/core", origin, "Core API base");
-    var accountBase = sameOriginBase3(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text3(session.tokenType || session.token_type || "Bearer");
+    var accessToken = text5(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError5("session-required", "A Core access token is required");
+    var origin = explicitOrigin || config.origin || browserOrigin4();
+    var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
+    var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
+    var tokenType = text5(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
-    var basicInfo = await requestJson3(fetchImpl, coreBase + "/api/user/basic-info.json", {
+    var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
       credentials: "same-origin",
       headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(BASIC_INFO_MAPPINGS)
     });
-    var userId = positiveInteger3(basicInfo.authenticatedUserId || basicInfo.id);
-    if (!userId) throw contractError3("invalid-session-user", "Core basic-info did not return authenticatedUserId");
+    var userId = positiveInteger5(basicInfo.authenticatedUserId || basicInfo.id);
+    if (!userId) throw contractError5("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text3(config.accountTypeCode || "SPA_CUSTOMER");
-    var accountReply = await requestJson3(fetchImpl, accountBase + "/api/account/list.json", {
+    var accountTypeCode = text5(config.accountTypeCode || "SPA_CUSTOMER");
+    var accountReply = await requestJson5(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -12658,81 +13826,81 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       })
     });
     var accounts = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
-    if (!accounts.length) throw contractError3("customer-not-linked", "No customer Account is linked to the signed-in Core User");
+    if (!accounts.length) throw contractError5("customer-not-linked", "No customer Account is linked to the signed-in Core User");
     if (accounts.length !== 1 || Number(accountReply.resultSize || accounts.length) > 1) {
-      throw contractError3("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
+      throw contractError5("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
     }
     var account = accounts[0] || {};
-    if (!positiveInteger3(account.id)) throw contractError3("invalid-customer-account", "Core Account response did not include an id");
-    if (account.user && positiveInteger3(account.user.id) && Number(account.user.id) !== userId) {
-      throw contractError3("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
+    if (!positiveInteger5(account.id)) throw contractError5("invalid-customer-account", "Core Account response did not include an id");
+    if (account.user && positiveInteger5(account.user.id) && Number(account.user.id) !== userId) {
+      throw contractError5("customer-scope-mismatch", "Core Account user does not match the authenticated Core User");
     }
     return {
       state: "ready",
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text3(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text5(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text3(account.code),
-        displayName: localizedName2(account.nls) || text3(account.code),
+        code: text5(account.code),
+        displayName: localizedName3(account.nls) || text5(account.code),
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
       }
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text3(configuredCode);
+    var configured = text5(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text3(item && item.code);
+      return text5(item && item.code);
     }).filter(Boolean) : [];
-    var current = text3(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text5(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
-    if (!selected) throw contractError3("organization-required", "Core basic-info did not provide an organization");
+    if (!selected) throw contractError5("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
-      throw contractError3("organization-forbidden", "Configured portal organization is not authorized for the signed-in Core User");
+      throw contractError5("organization-forbidden", "Configured portal organization is not authorized for the signed-in Core User");
     }
     return selected;
   }
-  async function requestJson3(fetchImpl, url, options2) {
+  async function requestJson5(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError3("invalid-response", "Core request returned an invalid response");
+    if (!response || typeof response.ok !== "boolean") throw contractError5("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
       var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "core-request-failed";
-      var error2 = contractError3(code, "Core request failed with HTTP " + response.status);
+      var error2 = contractError5(code, "Core request failed with HTTP " + response.status);
       error2.status = response.status;
       throw error2;
     }
     try {
       return await response.json();
     } catch (_) {
-      throw contractError3("invalid-response", "Core response was not valid JSON");
+      throw contractError5("invalid-response", "Core response was not valid JSON");
     }
   }
-  function sameOriginBase3(value, origin, label) {
-    if (!origin) throw contractError3("origin-required", label + " requires a browser origin");
+  function sameOriginBase5(value, origin, label) {
+    if (!origin) throw contractError5("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError3("cross-origin-service", label + " must be same-origin");
+    if (target.origin !== new URL(origin).origin) throw contractError5("cross-origin-service", label + " must be same-origin");
     return target.href.replace(/\/+$/, "");
   }
-  function browserOrigin2() {
+  function browserOrigin4() {
     return globalThis.location && globalThis.location.origin || "";
   }
-  function positiveInteger3(value) {
+  function positiveInteger5(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function localizedName2(value) {
+  function localizedName3(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text3(localized2 && (localized2.NAME || localized2.name));
+    return text5(localized2 && (localized2.NAME || localized2.name));
   }
-  function text3(value) {
+  function text5(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
-  function contractError3(code, message) {
+  function contractError5(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -12741,368 +13909,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     basicInfoMappings: BASIC_INFO_MAPPINGS,
     accountMappings: ACCOUNT_MAPPINGS,
     accountFilters: ["user.id", "type.code"]
-  });
-
-  // app-templates/customer-portal/runtime/src/adapters/core-orders-adapter.js
-  var ITEM_KINDS = {
-    SPA_ITEM_MEMBERSHIP: "MEMBERSHIP",
-    SPA_ITEM_PACKAGE: "PACKAGE",
-    SPA_ITEM_RETAIL: "RETAIL",
-    SPA_ITEM_SERVICE: "SERVICE"
-  };
-  var ORDER_STATUS = {
-    CANCELLED: "Cancelled",
-    COMPLETED: "Fulfilled",
-    IN_PROGRESS: "In progress",
-    OPEN: "Confirmed"
-  };
-  var FULFILLMENT_TYPE = "SPA_FULFILLMENT";
-  var REF_MAPPINGS2 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
-  var ORDER_ITEM_MAPPINGS = [
-    { name: "amount" },
-    { name: "attributes" },
-    { name: "id" },
-    { name: "itemCount" },
-    { name: "notes" },
-    { name: "sortOrder" },
-    {
-      key: "id",
-      mappings: REF_MAPPINGS2.concat([{ key: "id", mappings: REF_MAPPINGS2, name: "product", type: "identifier" }]),
-      name: "itemPrice",
-      type: "identifier"
-    },
-    { key: "id", mappings: REF_MAPPINGS2, name: "order", type: "identifier" },
-    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
-  ];
-  var SHIPMENT_MAPPINGS = [
-    { name: "attributes" },
-    { name: "id" },
-    { key: "id", mappings: REF_MAPPINGS2, name: "type", type: "identifier" }
-  ];
-  var ORDER_MAPPINGS2 = [
-    { name: "attributes" },
-    { name: "created" },
-    { name: "grandTotal" },
-    { name: "id" },
-    { name: "notes" },
-    { name: "optimistic" },
-    { name: "totalCharges" },
-    { name: "totalTaxes" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "account", type: "identifier" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "currency", type: "identifier" },
-    { key: "id", name: "organization", type: "identifier" },
-    { mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "states", type: "collection" },
-    { key: "id", mappings: [{ name: "id" }, { name: "code" }, { name: "nls" }], name: "type", type: "identifier" }
-  ];
-  function createCoreOrdersAdapter(options2 = {}) {
-    var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError4("fetch-unavailable", "Core Orders adapter requires fetch");
-    return {
-      async load(moduleId, context) {
-        if (moduleId !== "orders") throw contractError4("unsupported-module", "Core Orders adapter cannot load " + moduleId);
-        return loadCoreOrders(context, fetchImpl, options2.origin);
-      }
-    };
-  }
-  async function loadCoreOrders(context, fetchImpl = globalThis.fetch, explicitOrigin) {
-    var config = context && context.config || {};
-    var state2 = context && context.state || {};
-    var session = context && context.session || state2.session || {};
-    var customer = context && context.account || state2.customerAccount || state2.session && state2.session.account || {};
-    var accountId = positiveInteger4(customer.id);
-    if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before Orders load");
-    var accessToken = text4(session.accessToken || session.access_token);
-    if (!accessToken) throw contractError4("session-required", "A Core access token is required");
-    var organization = text4(config.organization);
-    if (!organization) throw contractError4("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin3();
-    var billBase = sameOriginBase4(config.billApiBase || "/core-bill", origin, "Core Bill API base");
-    var authorization = text4(session.tokenType || session.token_type || "Bearer") + " " + accessToken;
-    var request = {
-      filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
-      mappings: ORDER_MAPPINGS2,
-      offset: 0,
-      pageSize: positiveInteger4(config.ordersPageSize) || 50,
-      sorting: [{ field: "id", direction: "DESC" }]
-    };
-    var response = await requestJson4(fetchImpl, billBase + "/api/order/list.json", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Authorization: authorization,
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "X-Organization-Code": organization
-      },
-      body: JSON.stringify(request)
-    });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    var headers = {
-      Accept: "application/json",
-      Authorization: authorization,
-      "Content-Type": "application/json",
-      "X-Organization-Code": organization
-    };
-    var context2 = { billBase, fetchImpl, headers };
-    var orderIds = rows.map(function(row) {
-      return positiveInteger4(row && row.id);
-    }).filter(Boolean);
-    var joined = await Promise.all([linesByOrder(context2, orderIds), fulfillmentByOrder(context2, orderIds)]);
-    rows.forEach(function(row) {
-      assertOwnedBy(row, accountId);
-    });
-    var withoutLines = 0;
-    var items = rows.filter(function(row) {
-      var hasLines = (joined[0][String(row.id)] || []).length > 0;
-      if (!hasLines) withoutLines += 1;
-      return hasLines;
-    }).map(function(row) {
-      return normalizeOrder2(row, accountId, joined[0][String(row.id)], joined[1][String(row.id)] || null);
-    });
-    var byRef = {};
-    items.forEach(function(item) {
-      byRef[item.ref] = item;
-    });
-    return {
-      state: items.length ? "ready" : "empty",
-      accountId,
-      resultSize: items.length,
-      ordersWithoutLines: withoutLines,
-      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
-      items,
-      byRef
-    };
-  }
-  async function postList(context, path, body) {
-    return requestJson4(context.fetchImpl, context.billBase + path, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: context.headers,
-      body: JSON.stringify(body)
-    });
-  }
-  async function linesByOrder(context, orderIds) {
-    if (!orderIds.length) return {};
-    var response = await postList(context, "/api/order-item/list.json", {
-      filters: [],
-      mappings: ORDER_ITEM_MAPPINGS,
-      offset: 0,
-      pageSize: 500,
-      sorting: [{ field: "sortOrder", direction: "ASC" }]
-    });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    var grouped = {};
-    rows.forEach(function(row) {
-      var id = positiveInteger4(row.order && row.order.id);
-      if (orderIds.indexOf(id) < 0) return;
-      (grouped[String(id)] = grouped[String(id)] || []).push(row);
-    });
-    return grouped;
-  }
-  async function fulfillmentByOrder(context, orderIds) {
-    if (!orderIds.length) return {};
-    var response = await postList(context, "/api/shipment/list.json", {
-      filters: [{ type: "STRING", operator: "=", property: "type.code", value: FULFILLMENT_TYPE }],
-      mappings: SHIPMENT_MAPPINGS,
-      offset: 0,
-      pageSize: 200
-    });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    var byOrder = {};
-    rows.forEach(function(row) {
-      var id = attributeNumber(row, "SOURCE_ORDER");
-      if (!id || orderIds.indexOf(id) < 0) return;
-      byOrder[String(id)] = {
-        kind: attributeText(row, "FULFILLMENT_KIND"),
-        location: attributeNumber(row, "PICKUP_LOCATION"),
-        status: attributeText(row, "FULFILLMENT_STATUS"),
-        windowEnd: attributeNumber(row, "WINDOW_END"),
-        windowStart: attributeNumber(row, "WINDOW_START")
-      };
-    });
-    return byOrder;
-  }
-  function attributeEntry(row, code) {
-    var typeId = row && row.type && row.type.id;
-    var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
-    return group && group[code] ? group[code] : null;
-  }
-  function attributeNumber(row, code) {
-    var entry = attributeEntry(row, code);
-    return entry && entry.value != null ? positiveInteger4(entry.value) : null;
-  }
-  function attributeText(row, code) {
-    var entry = attributeEntry(row, code);
-    return entry && entry.value != null ? text4(entry.value) : "";
-  }
-  function purchaseKind(lines) {
-    var kinds = [];
-    lines.forEach(function(line) {
-      var kind = ITEM_KINDS[text4(line.type && line.type.code)];
-      if (kind && kinds.indexOf(kind) < 0) kinds.push(kind);
-    });
-    if (!kinds.length) return null;
-    return kinds.length === 1 ? kinds[0] : "MIXED";
-  }
-  function lineTitle(line) {
-    var product = line.itemPrice && line.itemPrice.product;
-    return localizedName3(product && product.nls) || text4(product && product.code) || text4(line.notes) || "Item";
-  }
-  function normalizeLine(line, currencyCode) {
-    var id = positiveInteger4(line && line.id);
-    var count = positiveInteger4(line.itemCount) || 1;
-    var unit = finiteNumber3(line.amount);
-    return {
-      ref: "pln-core-" + id,
-      kind: ITEM_KINDS[text4(line.type && line.type.code)] || null,
-      title: lineTitle(line),
-      variant: null,
-      quantity: count,
-      displayUnitPrice: unit != null ? formatMoney(unit, currencyCode) : null,
-      displayTotal: null
-    };
-  }
-  function itemSummary(lines) {
-    if (!lines.length) return null;
-    return lines.map(function(line) {
-      return line.quantity > 1 ? line.quantity + " \xD7 " + line.title : line.title;
-    }).join(" \xB7 ");
-  }
-  function normalizeFulfillment(raw) {
-    if (!raw || !raw.kind) return null;
-    return {
-      kind: raw.kind,
-      status: raw.status || null,
-      // An absent window stays absent; formatDate would render the epoch.
-      windowEndLabel: raw.windowEnd ? formatDate2(raw.windowEnd) : null,
-      windowStartLabel: raw.windowStart ? formatDate2(raw.windowStart) : null
-    };
-  }
-  function assertOwnedBy(row, accountId) {
-    var rowAccountId = row && row.account && positiveInteger4(row.account.id);
-    if (rowAccountId !== accountId) throw contractError4("order-scope-mismatch", "Core Order does not belong to the resolved customer Account");
-  }
-  function normalizeOrder2(row, accountId, rawLines, rawFulfillment) {
-    assertOwnedBy(row, accountId);
-    var id = positiveInteger4(row && row.id);
-    if (!id) throw contractError4("invalid-order", "Core Order response did not include an id");
-    var states = Array.isArray(row.states) ? row.states.map(function(state2) {
-      return { id: positiveInteger4(state2 && state2.id), code: text4(state2 && state2.code), label: localizedName3(state2 && state2.nls) };
-    }) : [];
-    var stateCode = states.map(function(state2) {
-      return state2.code;
-    }).filter(Boolean)[0] || "";
-    var status = ORDER_STATUS[stateCode];
-    if (!status)
-      throw contractError4(
-        "order-status-unmapped",
-        "Workflow state " + (stateCode || "(none)") + " has no approved customer status for a purchase"
-      );
-    var currencyCode = text4(row.currency && row.currency.code) || "USD";
-    var lines = rawLines.map(function(line) {
-      return normalizeLine(line, currencyCode);
-    });
-    var kind = purchaseKind(rawLines);
-    var fulfillment = normalizeFulfillment(rawFulfillment);
-    var attention = null;
-    if (fulfillment && fulfillment.status === "READY" && status !== "Cancelled") {
-      status = "Ready for pickup";
-      attention = "Ready \u2014 please pick up" + (fulfillment.windowEndLabel ? " by " + fulfillment.windowEndLabel : "");
-    }
-    return {
-      ref: "order-core-" + id,
-      reference: "order-core-" + id,
-      id,
-      optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
-      notes: text4(row.notes),
-      grandTotal: finiteNumber3(row.grandTotal),
-      totalCharges: finiteNumber3(row.totalCharges),
-      totalTaxes: finiteNumber3(row.totalTaxes),
-      currency: { code: text4(row.currency && row.currency.code), label: localizedName3(row.currency && row.currency.nls) },
-      type: { code: text4(row.type && row.type.code), label: localizedName3(row.type && row.type.nls) },
-      states,
-      statusCode: stateCode,
-      customerStatus: status,
-      kind,
-      placedAt: formatDate2(row.created),
-      itemSummary: itemSummary(lines) || null,
-      displayTotal: formatMoney(row.grandTotal, currencyCode),
-      displayCurrency: currencyCode,
-      attention,
-      allowedActions: [],
-      lines,
-      money: {
-        subtotal: formatMoney(row.totalCharges, currencyCode),
-        tax: formatMoney(row.totalTaxes, currencyCode),
-        total: formatMoney(row.grandTotal, currencyCode),
-        currency: currencyCode
-      },
-      paymentMode: "SIMULATED",
-      fulfillment,
-      relatedAppointments: [],
-      relatedPlan: null
-    };
-  }
-  async function requestJson4(fetchImpl, url, options2) {
-    var response = await fetchImpl(url, options2);
-    if (!response || typeof response.ok !== "boolean") throw contractError4("invalid-response", "Core Bill returned an invalid response");
-    if (!response.ok) {
-      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "orders-forbidden" : "orders-request-failed";
-      var error2 = contractError4(code, "Core Orders request failed with HTTP " + response.status);
-      error2.status = response.status;
-      throw error2;
-    }
-    try {
-      return await response.json();
-    } catch (_) {
-      throw contractError4("invalid-response", "Core Orders response was not valid JSON");
-    }
-  }
-  function sameOriginBase4(value, origin, label) {
-    if (!origin) throw contractError4("origin-required", label + " requires a browser origin");
-    var target = new URL(String(value || ""), origin);
-    if (target.origin !== new URL(origin).origin) throw contractError4("cross-origin-service", label + " must be same-origin");
-    return target.href.replace(/\/+$/, "");
-  }
-  function browserOrigin3() {
-    return globalThis.location && globalThis.location.origin || "";
-  }
-  function positiveInteger4(value) {
-    var number = Number(value);
-    return Number.isInteger(number) && number > 0 ? number : null;
-  }
-  function finiteNumber3(value) {
-    var number = Number(value);
-    return Number.isFinite(number) ? number : null;
-  }
-  function formatDate2(value) {
-    var date = new Date(value);
-    return Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date) : "Date not returned";
-  }
-  function formatMoney(value, currency) {
-    var number = Number(value);
-    return Number.isFinite(number) ? new Intl.NumberFormat("en-US", { style: "currency", currency }).format(number) : "";
-  }
-  function localizedName3(value) {
-    if (!value || typeof value !== "object") return "";
-    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text4(localized2 && (localized2.NAME || localized2.name));
-  }
-  function text4(value) {
-    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
-  }
-  function contractError4(code, message) {
-    var error2 = new Error(message);
-    error2.code = code;
-    return error2;
-  }
-  var coreOrdersContract = Object.freeze({
-    filters: ["account.id"],
-    itemKinds: ITEM_KINDS,
-    itemMappings: ORDER_ITEM_MAPPINGS,
-    mappings: ORDER_MAPPINGS2,
-    orderStatus: ORDER_STATUS,
-    shipmentMappings: SHIPMENT_MAPPINGS
   });
 
   // app-templates/customer-portal/runtime/src/adapters/core-plans-adapter.js
@@ -13155,17 +13961,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var SUBSCRIPTION_STATUS = { ACTIVE: "Active", CANCELLED: "Cancelled" };
   function createCorePlansAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
-    if (typeof fetchImpl !== "function") throw contractError5("fetch-unavailable", "Core plans adapter requires fetch");
+    if (typeof fetchImpl !== "function") throw contractError6("fetch-unavailable", "Core plans adapter requires fetch");
     return {
       load(moduleId, context) {
-        if (moduleId !== "plan") throw contractError5("unsupported-module", "Core plans adapter cannot load " + moduleId);
+        if (moduleId !== "plan") throw contractError6("unsupported-module", "Core plans adapter cannot load " + moduleId);
         return loadCorePlans(context, fetchImpl, options2.origin);
       }
     };
   }
   async function loadCorePlans(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = planContext(context, explicitOrigin);
-    var accountId = positiveInteger5(api.customer && api.customer.id);
+    var accountId = positiveInteger6(api.customer && api.customer.id);
     if (!accountId) return { items: [], byRef: {}, scopeMode: "customer-filtered-client-side", state: "empty" };
     var results = await Promise.all([
       loadEnrollments(api, accountId, fetchImpl),
@@ -13184,11 +13990,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
   async function loadEnrollments(api, accountId, fetchImpl) {
-    var response = await requestJson5(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions2(api, {
+    var response = await requestJson6(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: ENROLLMENT_TYPE }],
       mappings: ENROLLMENT_MAPPINGS,
       offset: 0,
-      pageSize: positiveInteger5(api.config.plansPageSize) || 100
+      pageSize: positiveInteger6(api.config.plansPageSize) || 100
     }));
     var rows = Array.isArray(response && response.result) ? response.result : [];
     return rows.filter(function(row) {
@@ -13196,12 +14002,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }).map(normalizeEnrollment);
   }
   function normalizeEnrollment(row) {
-    var id = positiveInteger5(row && row.id);
-    if (!id) throw contractError5("invalid-plan", "Core plan enrollment response did not include an id");
+    var id = positiveInteger6(row && row.id);
+    if (!id) throw contractError6("invalid-plan", "Core plan enrollment response did not include an id");
     var state2 = firstState(row);
     var status = ENROLLMENT_STATUS[state2];
     if (!status)
-      throw contractError5(
+      throw contractError6(
         "plan-status-unmapped",
         "Workflow state " + (state2 || "(none)") + " has no approved customer status for a package plan"
       );
@@ -13214,21 +14020,21 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       backendId: id,
       expiresAt: formatDate3(attributeText2(row, "VALID_UNTIL")),
       kind: "PACKAGE",
-      optimistic: finiteNumber4(row.optimistic, null),
+      optimistic: finiteNumber5(row.optimistic, null),
       ref: PLAN_REF_PREFIX + id,
       remainingUses: remaining,
       sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
       status,
-      title: localizedName4(row.nls) || text5(row.code) || "Package",
+      title: localizedName4(row.nls) || text6(row.code) || "Package",
       totalUses: total
     };
   }
   async function loadMemberships(api, accountId, fetchImpl) {
-    var response = await requestJson5(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions2(api, {
+    var response = await requestJson6(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
       mappings: SUBSCRIPTION_MAPPINGS,
       offset: 0,
-      pageSize: positiveInteger5(api.config.plansPageSize) || 100
+      pageSize: positiveInteger6(api.config.plansPageSize) || 100
     }));
     var rows = Array.isArray(response && response.result) ? response.result : [];
     if (!rows.length) return [];
@@ -13256,15 +14062,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function currencyId(line) {
     var entry = priceAttributeEntry(line, "CURRENCY");
-    return entry ? positiveInteger5(entry.value) : 0;
+    return entry ? positiveInteger6(entry.value) : 0;
   }
   function intervalUnitId(line) {
     var entry = priceAttributeEntry(line, "INTERVAL");
-    return entry ? positiveInteger5(entry.unit) : 0;
+    return entry ? positiveInteger6(entry.unit) : 0;
   }
   async function codesById(api, base, endpoint, ids, fetchImpl) {
     if (!ids.length) return {};
-    var response = await requestJson5(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions2(api, {
+    var response = await requestJson6(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
       filters: ids.map(function(id) {
         return { type: "INTEGER", operator: "=", property: "id", value: String(id) };
       }),
@@ -13274,7 +14080,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text5(row.code);
+      byId[String(row.id)] = text6(row.code);
     });
     return byId;
   }
@@ -13289,7 +14095,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function membershipLines(api, subscriptions, fetchImpl) {
     var orderIds = subscriptions.map(orderId).filter(Boolean);
     if (!orderIds.length) return {};
-    var response = await requestJson5(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions2(api, {
+    var response = await requestJson6(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: MEMBERSHIP_ITEM_TYPE }],
       mappings: ORDER_ITEM_MAPPINGS2,
       offset: 0,
@@ -13299,7 +14105,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var byOrder = {};
     rows.forEach(function(row) {
       var key = String(row.order && row.order.id);
-      if (orderIds.indexOf(positiveInteger5(row.order && row.order.id)) >= 0 && !byOrder[key]) byOrder[key] = row;
+      if (orderIds.indexOf(positiveInteger6(row.order && row.order.id)) >= 0 && !byOrder[key]) byOrder[key] = row;
     });
     return byOrder;
   }
@@ -13309,15 +14115,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var interval = priceAttributeEntry(line, "INTERVAL");
     var period = interval ? Number(interval.value) : 0;
     var suffix = period && labels.intervalUnit ? " / " + (period === 1 ? "" : period + " ") + labels.intervalUnit.toLowerCase() : "";
-    return formatMoney2(Number(unitPrice.value), labels.currency) + suffix;
+    return formatMoney3(Number(unitPrice.value), labels.currency) + suffix;
   }
   function normalizeMembership(row, line, labels) {
-    var id = positiveInteger5(row && row.id);
-    if (!id) throw contractError5("invalid-plan", "Core subscription response did not include an id");
+    var id = positiveInteger6(row && row.id);
+    if (!id) throw contractError6("invalid-plan", "Core subscription response did not include an id");
     var state2 = firstState(row);
     var status = SUBSCRIPTION_STATUS[state2];
     if (!status)
-      throw contractError5(
+      throw contractError6(
         "plan-status-unmapped",
         "Workflow state " + (state2 || "(none)") + " has no approved customer status for a membership plan"
       );
@@ -13328,7 +14134,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       displayRecurringPrice: recurringPrice(line, labels),
       expiresAt: formatDate3(row.expiresOn),
       kind: "MEMBERSHIP",
-      optimistic: finiteNumber4(row.optimistic, null),
+      optimistic: finiteNumber5(row.optimistic, null),
       ref: PLAN_REF_PREFIX + "sub-" + id,
       remainingUses: null,
       renewsAt: formatDate3(row.nextBillingAt || null),
@@ -13342,22 +14148,22 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text5(session.accessToken || session.access_token);
-    if (!accessToken) throw contractError5("session-required", "A Core access token is required");
-    var organization = text5(config.organization);
-    if (!organization) throw contractError5("organization-required", "Verified portal organization is required");
-    var origin = explicitOrigin || config.origin || browserOrigin4();
+    var accessToken = text6(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError6("session-required", "A Core access token is required");
+    var organization = text6(config.organization);
+    if (!organization) throw contractError6("organization-required", "Verified portal organization is required");
+    var origin = explicitOrigin || config.origin || browserOrigin5();
     return {
-      authorization: text5(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase5(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base"),
+      authorization: text6(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase6(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
       config,
       customer: context && context.account || state2.customerAccount || session.account || {},
       organization,
-      serviceBase: sameOriginBase5(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
+      serviceBase: sameOriginBase6(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };
   }
-  function requestOptions2(api, body) {
+  function requestOptions3(api, body) {
     return {
       body: JSON.stringify(body),
       credentials: "same-origin",
@@ -13370,11 +14176,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       method: "POST"
     };
   }
-  async function requestJson5(fetchImpl, url, options2) {
+  async function requestJson6(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
-    if (response.status === 401) throw contractError5("session-expired", "Core rejected the portal session");
-    if (response.status === 403) throw contractError5("customer-forbidden", "Core refused the plan read for this customer");
-    if (!response.ok) throw contractError5("plans-unavailable", "Core plan read failed with HTTP " + response.status);
+    if (response.status === 401) throw contractError6("session-expired", "Core rejected the portal session");
+    if (response.status === 403) throw contractError6("customer-forbidden", "Core refused the plan read for this customer");
+    if (!response.ok) throw contractError6("plans-unavailable", "Core plan read failed with HTTP " + response.status);
     return response.json();
   }
   function attributeGroup(row) {
@@ -13395,20 +14201,20 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text5(states[index] && states[index].code);
+      var code = text6(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
   }
   function orderId(row) {
-    return positiveInteger5(row && row.order && row.order.id);
+    return positiveInteger6(row && row.order && row.order.id);
   }
   function membershipTitle(line) {
     if (!line) return "Membership";
     var product = line.itemPrice && line.itemPrice.product;
     return localizedName4(product && product.nls) || localizedName4(line.itemPrice && line.itemPrice.nls) || "Membership";
   }
-  function formatMoney2(amount, currency) {
+  function formatMoney3(amount, currency) {
     return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(Number(amount)).replace(/\.00$/, "");
   }
   function formatDate3(value) {
@@ -13422,35 +14228,35 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text5(entry.NAME);
+      var name = entry && text6(entry.NAME);
       if (name) return name;
     }
     return "";
   }
-  function sameOriginBase5(base, origin, label) {
-    var value = text5(base);
-    if (!value) throw contractError5("api-base-required", label + " is required");
+  function sameOriginBase6(base, origin, label) {
+    var value = text6(base);
+    if (!value) throw contractError6("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
-      if (value.indexOf(origin) !== 0) throw contractError5("cross-origin-base", label + " must stay same-origin");
+      if (value.indexOf(origin) !== 0) throw contractError6("cross-origin-base", label + " must stay same-origin");
       return value.replace(/\/$/, "");
     }
     return (origin || "").replace(/\/$/, "") + (value.charAt(0) === "/" ? value : "/" + value).replace(/\/$/, "");
   }
-  function browserOrigin4() {
+  function browserOrigin5() {
     return typeof window !== "undefined" && window.location ? window.location.origin : "";
   }
-  function positiveInteger5(value) {
+  function positiveInteger6(value) {
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : 0;
   }
-  function finiteNumber4(value, fallback) {
+  function finiteNumber5(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text5(value) {
+  function text6(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
-  function contractError5(code, message) {
+  function contractError6(code, message) {
     var error2 = new Error(message);
     error2.code = code;
     return error2;
@@ -13905,6 +14711,45 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       };
     }
   };
+  function localCartEnvelope(cartState) {
+    return {
+      backendId: null,
+      byRef: {},
+      currencyCode: null,
+      displaySubtotal: null,
+      itemCount: null,
+      lines: [],
+      notes: "",
+      organizationCode: "",
+      scopeMode: null,
+      state: cartState,
+      subtotal: null
+    };
+  }
+  var cartModule = {
+    id: "cart",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") return createCoreCartAdapter();
+      return { load() {
+        return localCartEnvelope("empty");
+      } };
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    /* `cart-forbidden` is the one refusal Core actually enforces on this route —
+       an existing Account that is not the caller's. `cart-account-unknown` (404)
+       is a different fault: the account does not exist at all, and telling the
+       customer they lack access to someone else's bag would be a lie. It takes
+       the plain error state. */
+    failureEnvelope(context, error2) {
+      return localCartEnvelope(error2 && error2.code === "cart-forbidden" ? "unauthorized" : "error");
+    }
+  };
   var checkoutModule = {
     id: "checkout",
     adapter(context) {
@@ -13926,6 +14771,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     services: module("services", normalizeServices),
     pricing: module("pricing", normalizePricing),
     products: module("products", normalizeProducts),
+    cart: cartModule,
     checkout: checkoutModule,
     plan: planModule,
     calendar: module("calendar", normalizeCalendar),
