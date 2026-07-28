@@ -197,7 +197,7 @@ owned sequentially. W3, W4, and W5 must not edit them in parallel.
 | W1 — design completion | accepted executable Wave 16 source for appointment detail, full booking/reschedule, plan purchase entry, and Spa Profile | done | product contract; may overlap W0 | designer source/evidence is absent or violates payment/privacy rules |
 | W2 — scoped cabinet reads | `/me`/capabilities, Appointments, Purchase list/detail, Plan and Profile reads populate accepted states | done | W0 + relevant W1 detail/profile surfaces | foreign-resource, zero/multiple-account, or status mapping fails closed incorrectly |
 | W3 — appointment commands | book, reschedule, cancel, book again, slot expiry/conflict, authoritative confirmation; also replaces the seeded-row cloning in both write paths (`evidence/S3.md` §6) | blocked | W2 + W1 | holds/idempotency/readback are not proven |
-| W4 — commerce and purchase recovery | sellable Shop, server Cart, simulated checkout, real test Order, cancellation/return requests | todo | W2 + W3 runtime hotspots released | Cart/quote/totals are client-owned or confirm performs a financial write |
+| W4 — commerce and purchase recovery | sellable Shop, server Cart, simulated checkout, real test Order, cancellation/return requests | done | W2 + W3 runtime hotspots released | Cart/quote/totals are client-owned or confirm performs a financial write |
 | W5 — plans and profile | buy/use plan, book with credit, cancel renewal, safe Profile update | todo | W2 + W4 + W1 | individual entitlement scope or versioned Profile update is not proven |
 | W6 — staging activation and closeout | full capability config, CMS package, end-to-end and visual evidence | todo | W2-W5 | any primary flow still uses fixture/local success or Support is accidentally opened |
 
@@ -640,3 +640,27 @@ because plan enrollment reuses checkout confirmation and Order readback.
   card (Core states only a subtotal). Two browser suites fail that were not on
   the package's known-bad list; both were verified to fail identically at
   `b808ac4`, before the wave opened. No CMS upload was performed.
+- 2026-07-28: **Customer RBAC grants applied, and two backend blockers turned out
+  to be permissions.** `SPA_CUSTOMER_PORTAL` held 13 permissions covering nothing
+  operational; eleven reads were added and applied to
+  `CALM_HARBOR_SPA_STAGING` (`core-ui` commits `2dbe4424`, `0ebf2215`).
+  Re-probed with a real customer session — `elena`, role `SPA_CUSTOMER_PORTAL` —
+  `core-svc` appointment/project/task, `core-rm` resource, `core-bill`
+  order/subscription and `core-pim` price/inventory all answer 200. **The pickup
+  studio resolves**, so W4's `locationUnresolvedReason` was a workaround for a
+  permission gap, not a missing capability. The `core-pim` 200/401 alternation
+  does not reproduce across either node. Both claims are corrected in the W4
+  closeout rather than rewritten. Backend items drop from four to two: the
+  workflow-event 500 and the double-`=`-filter empty body.
+  **The scoping hole is now measured rather than assumed**: the customer can list
+  four accounts including another live customer's, and 12 orders spanning three
+  accounts — but `cart/current` returns 403 for every foreign accountId and 200
+  for every owned one. Core can scope by account ownership and does it in exactly
+  one place. That makes the backend ask concrete: apply what `cart/current`
+  already does to order, appointment, account, project and subscription. Until
+  then client-side filtering is the only thing holding the line, which stays an
+  accepted residual for a one-customer demo and is not production behaviour.
+  Evidence: `evidence/S1a-rbac-grants-and-scope.md`.
+- 2026-07-28: **Ledger correction.** W4 is `done`, not `todo` — the wave closed
+  with all six slices delivered and its own closeout; the row below was never
+  updated when the delivery note landed.

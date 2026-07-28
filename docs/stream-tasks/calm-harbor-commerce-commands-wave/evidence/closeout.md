@@ -124,6 +124,17 @@ probes and are deliberately left on staging as evidence.
 
 ## Residuals — honest
 
+> **Correction, 2026-07-28 — residuals 2 and 3 below are superseded.** Both were
+> measured before the customer role had any grants for these services, and both
+> were true then. `core-svc` and `core-rm` do not refuse the customer token; that
+> was a missing permission and they answer 200 now, so the pickup studio resolves
+> and `locationUnresolvedReason` is no longer needed. The `core-pim` 200/401
+> alternation does not reproduce — 20 consecutive calls returned 200, balanced
+> across both nodes. Evidence, with the numbers and the method:
+> `docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/S1a-rbac-grants-and-scope.md`.
+> The rest of this section stands. Residual 1 in particular is unchanged: the
+> workflow-event 500 is not a permission problem.
+
 1. **Cancellation and return stay `not_opened`.** Two independent blockers: no
    accepted design exists for `RETURN_REQUESTED`/`RETURNED` on a purchase card
    (`../../calm-harbor-customer-portal-full-activation-program/evidence/S3.md`
