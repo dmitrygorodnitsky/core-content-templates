@@ -633,8 +633,29 @@ function clearSpaCommand(key) {
   delete state.commands[key];
 }
 
+// The booking flow reads its days, slots and specialists from `F.spaBooking`,
+// and the release build swaps `fixtures.js` for `live-fixtures.js`, whose
+// `spaBooking.days` is an empty frozen array. There is no live availability
+// source — `state.spaSlots` is a hardcoded "ready" — so in a live build the
+// flow has no data at all and `days[0].key` threw a TypeError on every Book
+// click.
+//
+// Fail closed rather than crash: without a day source the flow does not open.
+// Wiring booking to a real availability contract is W3, and the honest "we
+// cannot show you availability" treatment is requested in
+// design-requests/calm-harbor-appointment-status-and-slot-availability-states.md.
+// Do not improvise one here.
+function spaBookingDays() {
+  var booking = F.spaBooking;
+  var days = booking && booking.days;
+  return Array.isArray(days) ? days : [];
+}
+
 function spaFlowCapable() {
-  return isSpa() && state.capability === "target-appointments" && state.spaBooking === "open";
+  return isSpa()
+    && state.capability === "target-appointments"
+    && state.spaBooking === "open"
+    && spaBookingDays().length > 0;
 }
 
 function openSpaFlow(config) {
@@ -649,7 +670,7 @@ function openSpaFlow(config) {
     serviceCode: config.serviceCode || null,
     planRef: config.planRef || null,
     specialistRef: null,
-    dayKey: F.spaBooking.days[0].key,
+    dayKey: spaBookingDays()[0].key,
     slotRef: null,
     rescheduleOf: config.rescheduleOf || null,
     held: false,
@@ -710,7 +731,7 @@ function spaSlotLabel() {
     var slot = (day.slots || []).find(function (item) { return item.ref === flow.slotRef; });
     if (slot) return day.label + " · " + slot.label;
   }
-  var fallback = F.spaBooking.days.find(function (item) { return item.key === flow.dayKey; }) || F.spaBooking.days[0];
+  var fallback = spaBookingDays().find(function (item) { return item.key === flow.dayKey; }) || spaBookingDays()[0];
   return fallback.label;
 }
 

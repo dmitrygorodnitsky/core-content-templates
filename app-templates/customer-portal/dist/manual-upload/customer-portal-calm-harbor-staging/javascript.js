@@ -9422,8 +9422,13 @@
     state.commands = Object.assign({}, state.commands);
     delete state.commands[key];
   }
+  function spaBookingDays() {
+    var booking = F.spaBooking;
+    var days = booking && booking.days;
+    return Array.isArray(days) ? days : [];
+  }
   function spaFlowCapable() {
-    return isSpa() && state.capability === "target-appointments" && state.spaBooking === "open";
+    return isSpa() && state.capability === "target-appointments" && state.spaBooking === "open" && spaBookingDays().length > 0;
   }
   function openSpaFlow(config) {
     if (!spaFlowCapable()) return false;
@@ -9437,7 +9442,7 @@
       serviceCode: config.serviceCode || null,
       planRef: config.planRef || null,
       specialistRef: null,
-      dayKey: F.spaBooking.days[0].key,
+      dayKey: spaBookingDays()[0].key,
       slotRef: null,
       rescheduleOf: config.rescheduleOf || null,
       held: false
@@ -9497,9 +9502,9 @@
       });
       if (slot) return day.label + " \xB7 " + slot.label;
     }
-    var fallback = F.spaBooking.days.find(function(item) {
+    var fallback = spaBookingDays().find(function(item) {
       return item.key === flow.dayKey;
-    }) || F.spaBooking.days[0];
+    }) || spaBookingDays()[0];
     return fallback.label;
   }
   function spaSlotIso(slotRef) {
@@ -11972,9 +11977,10 @@
     }) || null;
   }
   function dayByKey(key) {
-    return F.spaBooking.days.find(function(d) {
+    var days = F.spaBooking && Array.isArray(F.spaBooking.days) ? F.spaBooking.days : [];
+    return days.find(function(d) {
       return d.key === key;
-    }) || F.spaBooking.days[0];
+    }) || days[0] || null;
   }
   function slotLabel(f) {
     for (var i = 0; i < F.spaBooking.days.length; i++) {
@@ -12126,7 +12132,7 @@
     parts.push(days);
     var day = dayByKey(f.dayKey);
     var grid = h("div", { "class": "bk-slots", "data-module": "slot-grid", "data-visual-id": "slot-grid", "data-bind": "booking.eligibleSlots" });
-    day.slots.forEach(function(s) {
+    (day && Array.isArray(day.slots) ? day.slots : []).forEach(function(s) {
       grid.appendChild(h("button", { "class": "bk-slot" + (f.slotRef === s.ref ? " bk-slot--on" : ""), "data-action": "booking.selectSlot", "data-id": s.ref, "data-slot-ref": s.ref, "data-state": f.slotRef === s.ref ? "active" : void 0 }, s.label));
     });
     parts.push(grid);

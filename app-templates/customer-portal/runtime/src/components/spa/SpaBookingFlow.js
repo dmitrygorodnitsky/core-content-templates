@@ -19,7 +19,13 @@ import { InlineFailure, skel } from "../primitives/RouteStates.js";
 import { SimulationBadge } from "./CommerceBits.js";
 
 function svcByCode(code) { return spaCatalogServices().find(function (s) { return s.code === code; }) || null; }
-function dayByKey(key) { return F.spaBooking.days.find(function (d) { return d.key === key; }) || F.spaBooking.days[0]; }
+// `days` is empty in a release build — see the note on spaFlowCapable in
+// actions.js. Returning null here keeps every caller on its absent-data path
+// instead of dereferencing undefined.
+function dayByKey(key) {
+  var days = (F.spaBooking && Array.isArray(F.spaBooking.days)) ? F.spaBooking.days : [];
+  return days.find(function (d) { return d.key === key; }) || days[0] || null;
+}
 function slotLabel(f) {
   for (var i = 0; i < F.spaBooking.days.length; i++) {
     var d = F.spaBooking.days[i];
@@ -185,7 +191,7 @@ function stepSlots(f) {
 
   var day = dayByKey(f.dayKey);
   var grid = h("div", { "class": "bk-slots", "data-module": "slot-grid", "data-visual-id": "slot-grid", "data-bind": "booking.eligibleSlots" });
-  day.slots.forEach(function (s) {
+  ((day && Array.isArray(day.slots)) ? day.slots : []).forEach(function (s) {
     grid.appendChild(h("button", { "class": "bk-slot" + (f.slotRef === s.ref ? " bk-slot--on" : ""), "data-action": "booking.selectSlot", "data-id": s.ref, "data-slot-ref": s.ref, "data-state": f.slotRef === s.ref ? "active" : undefined }, s.label));
   });
   parts.push(grid);
