@@ -411,9 +411,27 @@ export function spaProfileValues() {
   return { phone: F.spaProfileSrv.phone, email: F.spaProfileSrv.email, prefs: prefs };
 }
 
-export function spaCartLines() { return (state.spaCart && state.spaCart.lines) || []; }
+/* The cart envelope is the SERVER cart as the cart module last read it. In live
+   mode there is no fixture fallback: a module that has not loaded returns null,
+   and the bag renders as unloaded rather than showing lines nobody bought. */
+export function spaCartEnvelope() {
+  if (state.config.dataMode === "live") return state.moduleData.cart || null;
+  return state.spaCart;
+}
+
+export function spaCartLines() {
+  var envelope = spaCartEnvelope();
+  return (envelope && Array.isArray(envelope.lines) && envelope.lines) || [];
+}
 
 export function spaCartCount() {
+  if (state.config.dataMode === "live") {
+    // `itemCount` is Core's own figure. When Core reports none the bag shows no
+    // count — the browser does not add the line quantities up to invent one.
+    var envelope = state.moduleData.cart;
+    var itemCount = envelope == null ? null : envelope.itemCount;
+    return itemCount == null || !Number.isFinite(Number(itemCount)) ? 0 : Number(itemCount);
+  }
   return spaCartLines().reduce(function (count, line) { return count + line.qty; }, 0);
 }
 

@@ -53,3 +53,7 @@ that wave's `evidence/punch-list.md` for the finding ids.
   asks for the Shop treatment when the store has stated no stock at all —
   distinct from `out-of-stock`, which is a counted zero. Filed by
   `docs/stream-tasks/calm-harbor-commerce-commands-wave/` slice C2.
+- [`calm-harbor-cart-server-subtotal-and-fulfillment.md`](calm-harbor-cart-server-subtotal-and-fulfillment.md)
+  asks for the totals card that can state only a subtotal — Core gives a cart no
+  tax and no total — and for the bag's fulfillment card, which has no live
+  source at all. Filed by the same wave, slice C3.

@@ -2,6 +2,7 @@ import { fixtureAdapter } from "../adapters/fixture-adapter.js";
 import { corePimAdapter } from "../adapters/core-pim-adapter.js";
 import { createCareFixtureAdapter } from "../adapters/care-fixture-adapter.js";
 import { createCoreAccountAdapter } from "../adapters/core-account-adapter.js";
+import { createCoreCartAdapter } from "../adapters/core-cart-adapter.js";
 import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
 import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
@@ -244,6 +245,51 @@ const planModule = {
   },
 };
 
+/* Every money field on a cart envelope is server-read. An envelope the portal
+   produces itself — inert or failed — therefore carries no figures at all: null
+   is "Core told us nothing", which the cart page renders as nothing. `scopeMode`
+   is null here too, because a locally produced envelope was not scoped by any
+   server. */
+function localCartEnvelope(cartState) {
+  return {
+    backendId: null,
+    byRef: {},
+    currencyCode: null,
+    displaySubtotal: null,
+    itemCount: null,
+    lines: [],
+    notes: "",
+    organizationCode: "",
+    scopeMode: null,
+    state: cartState,
+    subtotal: null,
+  };
+}
+
+const cartModule = {
+  id: "cart",
+  asyncOnly: true,
+  adapter(context) {
+    if (context.config.dataMode === "live") return createCoreCartAdapter();
+    // No fixture cart is ever published through the module: the fixture cart
+    // lives in `state.spaCart` and the page reads it there. This path exists so
+    // a non-live deployment can enable the module without reaching Core.
+    return { load() { return localCartEnvelope("empty"); } };
+  },
+  normalize(raw) { return raw; },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  /* `cart-forbidden` is the one refusal Core actually enforces on this route —
+     an existing Account that is not the caller's. `cart-account-unknown` (404)
+     is a different fault: the account does not exist at all, and telling the
+     customer they lack access to someone else's bag would be a lie. It takes
+     the plain error state. */
+  failureEnvelope(context, error) {
+    return localCartEnvelope(error && error.code === "cart-forbidden" ? "unauthorized" : "error");
+  },
+};
+
 const checkoutModule = {
   id: "checkout",
   adapter(context) {
@@ -264,6 +310,7 @@ export const modules = {
   services: module("services", normalizeServices),
   pricing: module("pricing", normalizePricing),
   products: module("products", normalizeProducts),
+  cart: cartModule,
   checkout: checkoutModule,
   plan: planModule,
   calendar: module("calendar", normalizeCalendar),
