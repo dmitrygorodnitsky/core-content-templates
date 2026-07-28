@@ -3107,8 +3107,28 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     creditNotes: Object.freeze({ ok: "", unavailable: "", exhausted: "", changed: "" })
   });
   var F = Object.freeze({
-    PAL: Object.freeze([["var(--accent)", "rgba(var(--accent-rgb),.12)"]]),
-    TINTS: Object.freeze([["var(--accent)", "rgba(var(--accent-rgb),.12)"]]),
+    // PAL and TINTS are design tokens, not fixture data. The accepted design
+    // declares four pairs and every call site indexes `[i % 4]`, so trimming them
+    // to one entry both destroyed the accepted four-colour rhythm and made
+    // `pal[1]` throw on the second row of any list — which is what crashed the
+    // Prices & memberships tab. Copied verbatim from
+    // design-inbox/data/fixtures.js; keep them in step with it.
+    //
+    // The fixture boundary exists to keep invented *customer data* out of
+    // production. Colours are not customer data, and stripping them is not what
+    // it is for.
+    PAL: Object.freeze([
+      Object.freeze(["var(--accent)", "rgba(var(--accent-rgb),.12)"]),
+      Object.freeze(["#1f8a44", "rgba(52,199,89,.16)"]),
+      Object.freeze(["#ff8a3d", "rgba(255,159,10,.16)"]),
+      Object.freeze(["#7a52e0", "rgba(122,82,224,.16)"])
+    ]),
+    TINTS: Object.freeze([
+      Object.freeze(["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"]),
+      Object.freeze(["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"]),
+      Object.freeze(["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"]),
+      Object.freeze(["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"])
+    ]),
     themeSlugs: Object.freeze({}),
     themes: EMPTY_THEMES,
     statusMeta: Object.freeze({}),
