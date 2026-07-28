@@ -116,7 +116,7 @@ surface it, do not silently proceed.
 | --- | --- | --- | --- | --- | --- | --- |
 | C1 cart adapter | commerce adapters | executor | done | — | `scripts/core-cart-adapter-check.mjs`; live read/add/count/remove against staging | cart reads and mutates through Core with server totals only |
 | C2 sellability | commerce adapters | executor | done | C1 | inventory join check; out-of-stock row proves an unbuyable product | Shop shows server stock truth, never inferred |
-| C3 cart presentation | presentation | executor | todo | C1 | route-state matrix for cart empty/ready/error | accepted cart states render from the live envelope |
+| C3 cart presentation | presentation | executor | done | C1 | route-state matrix for cart empty/ready/error | accepted cart states render from the live envelope |
 | C4 checkout | command orchestration | executor | todo | C1–C3 | replay, conflict, and readback cases in the adapter check; live order created with typed lines | confirmation renders only from Order readback |
 | C5 fulfillment record | commerce adapters | executor | todo | C4 | pickup shipment joined to the order by `SOURCE_ORDER` | a retail order carries its pickup record |
 | C6 evidence | evidence | executor | todo | C1–C5 | all checks green; live transcript recorded | `evidence/` holds live proof and honest residuals |
@@ -158,6 +158,21 @@ surface it, do not silently proceed.
   `{state: "sellable"}` in live mode, so the adapter's truth does not reach the
   customer yet. C2 correctly refused to touch the serial hotspot; C4 owns the
   one-line fix.
+
+- **C3 cart presentation — done.** `08274ce`. A `cart` module selects the C1
+  adapter in live mode and an inert empty envelope otherwise; the bag renders
+  from `state.moduleData.cart` and from nothing else. Unloaded → accepted
+  skeleton, never fixture lines. `cart-forbidden` (403) → unauthorized gate;
+  `session-expired` (401) → the account, as plan and orders do;
+  `cart-account-unknown` (404) → plain error, because a bag that exists nowhere
+  is not somebody else's bag. The live totals card renders the server
+  `subtotal` and omits Tax and Total; the fulfillment card is omitted entirely.
+  `spaCartCount()` is Core's `itemCount` verbatim — a quantity, not a line
+  count. `state.js` gained only the selector and `actions.js` was untouched,
+  verified by the operator against the diff. Filed
+  `design-requests/calm-harbor-cart-server-subtotal-and-fulfillment.md`.
+  Operator re-ran the integrated suite: 10 checks + release compile + CMS
+  export, all green.
 
 ## Backend Corrections Found Live (2026-07-28)
 
