@@ -156,7 +156,23 @@ export function productItems() {
 export function spaSellInfo(code) {
   if (state.config.dataMode === "live") {
     var product = productItems().find(function (item) { return item.code === code; });
-    return product ? { state: "sellable", cents: Math.round(Number(product.priceNum || 0) * 100), displayPrice: product.price } : { state: "unavailable" };
+    if (!product) return { state: "unavailable" };
+    /* Sellability is the PIM adapter's inventory join and nothing else — never
+       the presence of a price. `unknown` stays its own state rather than being
+       folded into `unavailable`, which renders "Not sold online": the store
+       never said that, and for these products it is false. Unknown closes the
+       buy action and says nothing, pending
+       design-requests/calm-harbor-unknown-stock-shop-state.md. No `cents`: the
+       live cart is priced by the server, so nothing needs a client-side minor
+       unit any more. */
+    var sellability = product.sellability === "sellable" || product.sellability === "out-of-stock"
+      ? product.sellability : "unknown";
+    return {
+      state: sellability,
+      backendPriceId: product.backendPriceId || null,
+      backendProductId: product.backendProductId || null,
+      displayPrice: product.price,
+    };
   }
   var fixtureRetail = F.spaCommerce.retail.products.find(function (item) { return item.code === code; });
   if (fixtureRetail) return fixtureRetail;
@@ -291,6 +307,11 @@ export function spaPlanOffers() {
     return {
       ref: "offer-" + item.code,
       productCode: item.code,
+      // Carried so confirming an offer can create a typed order line without a
+      // second catalog lookup, exactly as a cart line does.
+      backendPriceId: item.backendPriceId || null,
+      backendProductId: item.backendProductId || null,
+      productTypeCode: item.productTypeCode,
       kind: kind,
       title: item.name,
       displayPrice: item.price + (item.interval && item.interval !== "one time" ? " / " + item.interval : ""),

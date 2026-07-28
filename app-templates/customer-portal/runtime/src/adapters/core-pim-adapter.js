@@ -371,6 +371,13 @@ function normalizePimRows(data, config) {
     return {
       id: product.code || "pim-" + index,
       code: product.code || "pim-" + index,
+      // The Core ids behind this catalog row. `id`/`code` above are the
+      // customer-facing product code; adding to the server cart needs the real
+      // Product and ProductPrice ids, and reaching into `row` for them from a
+      // route or a command is exactly the brittleness this avoids.
+      backendProductId: Number.isInteger(Number(product.id)) ? Number(product.id) : null,
+      backendPriceId: Number.isInteger(Number(row.price && row.price.price && row.price.price.id))
+        ? Number(row.price.price.id) : null,
       name: nls.NAME || product.code || "Plan",
       description: stripHtml(nls.DESCRIPTION || ""),
       price: customPrice ? "Custom" : formatCurrency(amount, currency),

@@ -12,7 +12,7 @@
 // "Demo checkout completed", never a payment-success claim.
 import { h } from "../dom.js";
 import { F } from "../../data/fixtures.js";
-import { cmdPhase, currentContact, spaCapability, spaCartLines, spaPlanOffers, spaRetailOpen, state } from "../state.js";
+import { cmdPhase, currentContact, spaCapability, spaCartEnvelope, spaPlanOffers, spaRetailOpen, state } from "../state.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
@@ -47,6 +47,17 @@ function quoteSource() {
       };
     }
     return F.spaCommerce.checkout.planQuotes[state.spaPlanOffer || "off-pkg-4c21"] || F.spaCommerce.checkout.planQuote;
+  }
+  if (state.config.dataMode === "live") {
+    /* The quote IS the server cart as last read — this tenant has no
+       checkout-session or frozen-quote endpoint. Core states one figure about a
+       cart, `subtotal`, so the review shows that and omits Tax and Total rather
+       than deriving them. Same gap and same brief as the bag:
+       design-requests/calm-harbor-cart-server-subtotal-and-fulfillment.md. */
+    var envelope = spaCartEnvelope();
+    var liveLines = (envelope && envelope.lines) || [];
+    if (!liveLines.length) return null;
+    return { lines: liveLines, displayTotals: { subtotal: envelope.displaySubtotal }, serverPriced: true };
   }
   var cart = state.spaCart;
   return cart && cart.lines.length ? { lines: cart.lines, displayTotals: cart.displayTotals } : null;
@@ -192,13 +203,16 @@ export function SpaCheckout() {
 
   /* ---- server totals + THE payment step (simulation treatment) ---- */
   var t = q.displayTotals;
+  /* Only the rows Core stated. A cart has a subtotal and nothing else, so Tax
+     and Total are omitted rather than derived — the accepted three-row card has
+     no one-figure treatment yet and is briefed, not improvised. */
+  var moneyRows = [];
+  if (t.subtotal != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "checkout.displayTotals.subtotal" }, t.subtotal)]));
+  if (t.tax != null) moneyRows.push(h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "checkout.displayTotals.tax" }, t.tax)]));
+  if (t.total != null) moneyRows.push(h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "checkout.displayTotals.total" }, t.total)]));
   var payCard = h("div", { "class": "card card--pad", "data-module": "checkout-payment", "data-visual-id": "checkout-payment", "data-payment-mode": "SIMULATED" }, [
     h("div", { "class": "card__title" }, "Totals & confirmation"),
-    h("div", { "class": "money-rows" }, [
-      h("div", { "class": "money-rows__row" }, [h("span", null, "Subtotal"), h("span", { "data-bind": "checkout.displayTotals.subtotal" }, t.subtotal)]),
-      h("div", { "class": "money-rows__row" }, [h("span", null, "Tax"), h("span", { "data-bind": "checkout.displayTotals.tax" }, t.tax)]),
-      h("div", { "class": "money-rows__row money-rows__row--total" }, [h("span", null, "Total"), h("span", { "data-bind": "checkout.displayTotals.total" }, t.total)])
-    ]),
+    h("div", { "class": "money-rows", "data-state": q.serverPriced ? "subtotal-only" : undefined }, moneyRows),
     SimulationBadge(true),
     h("div", { "class": "purch-ful__note" }, "This is a demonstration checkout: confirming records your order without any payment. There\u2019s nothing to enter \u2014 no card, no charge, no receipt."),
     h("label", { "class": "co-policy", "data-module": "policy-ack", "data-visual-id": "policy-ack", "data-state": state.spaPolicyAck ? "acked" : "required" }, [

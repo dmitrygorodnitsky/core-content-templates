@@ -233,12 +233,54 @@ export function rescheduleCoreAppointment(ref, input, context, fetchImpl = globa
   });
 }
 
+/* A purchase is its lines. What the order delivers comes from the
+   `SPA_ITEM_*` type of each line, never from the order, which is always
+   `SPA_ORDER`. A product type outside this table is a contract gap: the order
+   fails rather than being filed under a guessed kind. */
+const ITEM_TYPE_BY_PRODUCT_TYPE = {
+  SPA_MEMBERSHIP: "SPA_ITEM_MEMBERSHIP",
+  SPA_PACKAGE: "SPA_ITEM_PACKAGE",
+  SPA_RETAIL: "SPA_ITEM_RETAIL",
+  SPA_SERVICE: "SPA_ITEM_SERVICE",
+};
+
+const ORDER_ITEM_SAVE_MAPPINGS = [
+  { name: "amount" },
+  { name: "attributes" },
+  { name: "id" },
+  { name: "itemCount" },
+  { name: "notes" },
+  { name: "optimistic" },
+  { name: "sortOrder" },
+  { key: "id", name: "itemPrice", type: "identifier" },
+  { key: "id", name: "order", type: "identifier" },
+  { key: "id", name: "organization", type: "identifier" },
+  { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+  { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
+];
+
+/**
+ * Creates one `SPA_ORDER` from the server cart, with one `SPA_ITEM_*` line per
+ * cart item.
+ *
+ * No totals are sent. `Order.grandTotal` is computed by Core as
+ * SUM(amount x itemCount) and a client-sent value is ignored, so writing one
+ * would only suggest the portal owns pricing when the server does.
+ * `OrderItem.amount` is the UNIT price — the cart's own `unitAmount`, never
+ * pre-multiplied, or every multi-quantity order doubles.
+ *
+ * Success is the readback: the order and its lines are re-read from Core and
+ * the command fails unless they are there. A save id is not proof.
+ */
 export function createCoreOrder(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
   var requestRef = idempotencyPart(input && input.requestRef || "checkout");
+  var lines = Array.isArray(input && input.lines) ? input.lines : [];
   return singleFlight("order:create:" + requestRef, async function () {
     var api = requestContext(context, explicitOrigin);
     var accountId = positiveInteger(api.customer.id);
     if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before checkout");
+    if (!lines.length) throw contractError("order-lines-required", "An order needs at least one cart line");
+
     var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
     // Idempotency check: a replayed requestRef must return the existing order.
     var rows = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
@@ -248,36 +290,115 @@ export function createCoreOrder(input, context, fetchImpl = globalThis.fetch, ex
       // `notes` is the legacy marker of orders written before RECORD_CODE existed.
       return recordCodeOf(row) === marker || text(row.notes) === marker;
     });
-    if (existing) return normalizeOrder(existing, accountId);
+    if (existing) return withOrderLines(fetchImpl, api, normalizeOrder(existing, accountId), accountId);
 
     var resolved = await Promise.all([
       resolveTypeWithWorkflow(fetchImpl, api, api.billBase, "order-type", ORDER_TYPE, "order-type-missing"),
       resolveOrganization(fetchImpl, api),
       resolveByCode(fetchImpl, api, api.coreBase, "dictionary", orderCurrencyCode(api), null, "currency-missing"),
+      itemTypesByCode(fetchImpl, api),
     ]);
     var orderType = resolved[0];
     var organization = resolved[1];
     var currency = resolved[2];
-    var total = finiteNumber(input && input.total, 0);
-    var entity = {
-      account: { id: accountId },
-      attributes: recordCodeAttributes(orderType, marker),
-      currency: { id: currency.id },
-      grandTotal: total,
-      notes: text(input && input.label) || "Customer portal checkout",
-      organization: { id: organization.id },
-      totalCharges: total,
-      totalTaxes: finiteNumber(input && input.taxes, 0),
-      type: { id: orderType.id },
-      workflow: { id: orderType.workflow.id },
-    };
+    var itemTypes = resolved[3];
+
+    var planned = lines.map(function (line, index) { return plannedLine(line, index, itemTypes); });
+
     var savedIds = await requestJson(fetchImpl, api.billBase + "/api/order/save.json", requestOptions(api, {
-      entities: [entity], mappings: ORDER_MAPPINGS,
+      entities: [{
+        account: { id: accountId },
+        attributes: recordCodeAttributes(orderType, marker),
+        currency: { id: currency.id },
+        // Totals are NOT sent — Core computes grandTotal from the lines.
+        notes: text(input && input.label) || "Customer portal checkout",
+        organization: { id: organization.id },
+        type: { id: orderType.id },
+        workflow: { id: orderType.workflow.id },
+      }],
+      mappings: ORDER_MAPPINGS,
     }));
     var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
     if (!id) throw contractError("invalid-save-response", "Core Order save did not return an id");
+
+    for (var index = 0; index < planned.length; index += 1) {
+      var line = planned[index];
+      await requestJson(fetchImpl, api.billBase + "/api/order-item/save.json", requestOptions(api, {
+        entities: [{
+          amount: line.unitAmount,
+          attributes: recordCodeAttributes(line.itemType, marker + "_L" + (index + 1)),
+          itemCount: line.qty,
+          itemPrice: { id: line.priceId },
+          notes: line.productCode,
+          order: { id: id },
+          organization: { id: organization.id },
+          sortOrder: index + 1,
+          type: { id: line.itemType.id },
+          workflow: { id: line.itemType.workflow.id },
+        }],
+        mappings: ORDER_ITEM_SAVE_MAPPINGS,
+      }));
+    }
+
     var readback = await getEntity(fetchImpl, api.billBase + "/api/order/get.json?id=" + id, api, ORDER_MAPPINGS);
-    return normalizeOrder(readback, accountId);
+    var order = await withOrderLines(fetchImpl, api, normalizeOrder(readback, accountId), accountId);
+    if (order.lines.length !== planned.length) {
+      throw contractError("order-lines-unconfirmed",
+        "Core reported " + order.lines.length + " of " + planned.length + " order lines after the save");
+    }
+    return order;
+  });
+}
+
+function plannedLine(line, index, itemTypes) {
+  var priceId = positiveInteger(line && line.priceId);
+  if (!priceId) throw contractError("order-line-price-missing", "Cart line " + (index + 1) + " has no price id");
+  var qty = positiveInteger(line && line.qty);
+  if (!qty) throw contractError("order-line-count-missing", "Cart line " + (index + 1) + " has no quantity");
+  var unitAmount = finiteNumber(line && line.unitAmount, null);
+  if (unitAmount == null) throw contractError("order-line-amount-missing", "Cart line " + (index + 1) + " has no server unit amount");
+  /* The product type rides in on the cart line, from the catalog the portal
+     already holds. It is deliberately NOT looked up here: the authenticated
+     core-pim API on this deployment 401s every other identical request, which
+     would fail roughly half of all checkouts. */
+  var productTypeCode = text(line && line.productTypeCode);
+  var itemTypeCode = ITEM_TYPE_BY_PRODUCT_TYPE[productTypeCode];
+  if (!itemTypeCode)
+    throw contractError("order-item-type-unmapped",
+      "Product type " + (productTypeCode || "(none)") + " has no SPA_ITEM_* line type");
+  var itemType = itemTypes[itemTypeCode];
+  if (!itemType) throw contractError("order-item-type-missing", itemTypeCode + " is not provisioned in this organization");
+  return { itemType: itemType, priceId: priceId, productCode: text(line && line.productCode), qty: qty, unitAmount: unitAmount };
+}
+
+async function itemTypesByCode(fetchImpl, api) {
+  var rows = await listMany(fetchImpl, api.billBase + "/api/order-item-type/list.json", api, [],
+    TYPE_WITH_WORKFLOW_MAPPINGS, null, 100);
+  var byCode = {};
+  rows.forEach(function (row) {
+    if (row.workflow && positiveInteger(row.workflow.id)) byCode[text(row.code)] = row;
+  });
+  return byCode;
+}
+
+/* Order lines are read back so the caller can prove what was created. Nothing
+   here multiplies: `amount` is shown as the unit price and Core exposes no
+   per-line total, so none is reported. */
+async function withOrderLines(fetchImpl, api, order, accountId) {
+  var rows = await listMany(fetchImpl, api.billBase + "/api/order-item/list.json", api, [
+    { type: "INTEGER", operator: "=", property: "order.id", value: String(order.id) },
+  ], ORDER_ITEM_SAVE_MAPPINGS, [{ field: "sortOrder", direction: "ASC" }], 200);
+  return Object.assign({}, order, {
+    accountId: accountId,
+    lines: rows.map(function (row) {
+      return {
+        itemCount: finiteNumber(row.itemCount, 0),
+        priceId: positiveInteger(row.itemPrice && row.itemPrice.id),
+        productCode: text(row.notes),
+        typeCode: text(row.type && row.type.code),
+        unitAmount: finiteNumber(row.amount, null),
+      };
+    }),
   });
 }
 

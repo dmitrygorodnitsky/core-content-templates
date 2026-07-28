@@ -223,6 +223,7 @@ function normalizeLine(row, cartCurrency, api, codes) {
   var lineAmount = finiteNumber(row && row.lineAmount, null);
   var productCode = text(row && row.productCode);
   var productId = positiveInteger(row && row.productId) || null;
+  var catalogRow = catalogEntry(api, productCode, productId);
   return {
     backendId: positiveInteger(row && row.id) || null,
     currencyCode: currencyCode,
@@ -234,26 +235,35 @@ function normalizeLine(row, cartCurrency, api, codes) {
     priceId: priceId,
     productCode: productCode,
     productId: productId,
+    // The SPA_* product type, carried so checkout can pick the matching
+    // SPA_ITEM_* line type without a second lookup. See catalogEntry.
+    productTypeCode: text(catalogRow && catalogRow.productTypeCode),
     qty: finiteNumber(row && row.count, 0),
     ref: LINE_REF_PREFIX + priceId,
-    title: catalogTitle(api, productCode, productId) || productCode || "Item",
+    title: text(catalogRow && (catalogRow.name || catalogRow.title)) || productCode || "Item",
     unitAmount: unitAmount,
     variant: null,
   };
 }
 
-/* `CartItemView` carries no display name, so the line title is joined from the
-   catalog the portal already loaded. It is a label, not a figure: an unmatched
-   product falls back to its code rather than to a guess. */
-function catalogTitle(api, productCode, productId) {
+/* `CartItemView` carries neither a display name nor a product type, so both are
+   joined from the catalog the portal already loaded.
+   That catalog comes from the PUBLIC price-comparison endpoint, which is
+   deliberate: the AUTHENTICATED core-pim API on this deployment answers every
+   other identical request with a 401 (see master.md §Backend Corrections), so
+   reading the product type from it at checkout time would fail about half of
+   all orders. The public catalog is stable and the portal has it already.
+   An unmatched product falls back to its code and to no type — checkout then
+   refuses the line by name rather than guessing what it is. */
+function catalogEntry(api, productCode, productId) {
   var items = api.catalog;
   for (var index = 0; index < items.length; index += 1) {
     var item = items[index];
     var code = text(item && (item.code || item.sku));
-    if (productCode && code && code === productCode) return text(item.name || item.title);
-    if (productId && positiveInteger(item && (item.backendId || item.id)) === productId) return text(item.name || item.title);
+    if (productCode && code && code === productCode) return item;
+    if (productId && positiveInteger(item && (item.backendProductId || item.backendId || item.id)) === productId) return item;
   }
-  return "";
+  return null;
 }
 
 /* Currency crosses this boundary in both directions and in two shapes: a write
@@ -269,13 +279,19 @@ function currencyIdsIn(view) {
   return ids;
 }
 
+/* One request per id, deliberately. Two `=` filters on the SAME property are
+   ANDed by Core, so a batched id lookup matches nothing and comes back with an
+   empty body — the same silent-zero-rows trap as filtering on a dynamic
+   attribute. A cart has one currency in practice, so this is one call. */
 async function currencyCodesByIds(api, fetchImpl, ids) {
   if (!ids.length) return {};
-  var rows = await listDictionary(api, fetchImpl, ids.map(function (id) {
-    return { operator: "=", property: "id", type: "INTEGER", value: String(id) };
+  var results = await Promise.all(ids.map(function (id) {
+    return listDictionary(api, fetchImpl, [{ operator: "=", property: "id", type: "INTEGER", value: String(id) }]);
   }));
   var byId = {};
-  rows.forEach(function (row) { byId[String(row.id)] = text(row.code); });
+  results.forEach(function (rows) {
+    rows.forEach(function (row) { byId[String(row.id)] = text(row.code); });
+  });
   return byId;
 }
 

@@ -1,7 +1,8 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaCurrentApiDemoOpen, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, state } from "./state.js";
+import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaCartEnvelope, spaCurrentApiDemoOpen, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSellInfo, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
+import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
 import { createCoreSpaDemoAdapter } from "./adapters/core-spa-demo-adapter.js";
 import { startCoreOidcSignIn, startCoreOidcSignOut } from "./adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapter.js";
@@ -96,8 +97,8 @@ export var ACTIONS = {
   "service.reportIssue": function () { failCommand("service.reportIssue"); },
   "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
   "access.update":     function ()   { failCommand("access.update"); },
-  "cart.addItem":      function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) { spaAddLine(id); render(); return true; } return runSpaCommand("cart.addItem:" + id, function () { spaAddLine(id); }); } runCommand("cart.addItem", id, function () { addToCart(id); }); },
-  "cart.removeItem":   function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) { spaSetLines(spaLines().filter(function (line) { return line.ref !== id; })); render(); return true; } return runSpaCommand("cart.removeItem:" + id, function () { spaSetLines(spaLines().filter(function (line) { return line.ref !== id; })); }); } runCommand("cart.removeItem", id, function () { removeCartItem(id); }); },
+  "cart.addItem":      function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartAdd(id); return runSpaCommand("cart.addItem:" + id, function () { spaAddLine(id); }); } runCommand("cart.addItem", id, function () { addToCart(id); }); },
+  "cart.removeItem":   function (id) { if (isSpa() && state.capability === "target-appointments") { if (spaCurrentApiDemoOpen()) return spaLiveCartRemove(id); return runSpaCommand("cart.removeItem:" + id, function () { spaSetLines(spaLines().filter(function (line) { return line.ref !== id; })); }); } runCommand("cart.removeItem", id, function () { removeCartItem(id); }); },
   "cart.changeQuantity": function (id) { return spaChangeQuantity(id); },
   "cart.inc":          function (id) { runCommand("cart.inc", id, function () { changeQty(id, 1); }); },
   "cart.dec":          function (id) { runCommand("cart.dec", id, function () { changeQty(id, -1); }); },
@@ -357,17 +358,49 @@ function spaAddLine(code) {
   spaSetLines(lines);
 }
 
+/* ---- live cart commands ------------------------------------------------
+   Every one of these is a Core mutation whose success is the cart the server
+   returns. Nothing below edits a local cart: the module is reloaded and the
+   page re-renders from the server's own recalculated totals. */
+
+function spaLiveCartAdapter() { return createCoreCartAdapter(); }
+
+function spaLiveCartCommand(key, run, toastText) {
+  return runLiveSpaCommand(key, function () {
+    return run().then(function (cart) { return reloadRuntimeModule("cart").then(function () { return cart; }); });
+  }, null, { toast: toastText });
+}
+
+function spaLiveCartAdd(code) {
+  var sell = spaSellInfo(code);
+  // The buy action is closed unless Core's inventory says the unit exists. The
+  // cart API will NOT refuse an out-of-stock product — verified live — so this
+  // is the only gate.
+  if (!sell || sell.state !== "sellable" || !sell.backendPriceId || !sell.backendProductId) return false;
+  return spaLiveCartCommand("cart.addItem:" + code, function () {
+    return spaLiveCartAdapter().addItem({
+      count: 1, priceId: sell.backendPriceId, productId: sell.backendProductId, requestRef: "add-" + code,
+    }, spaLiveContext());
+  }, "Added to your bag — confirmed by the store");
+}
+
+function spaLiveCartRemove(ref) {
+  return spaLiveCartCommand("cart.removeItem:" + ref, function () {
+    return spaLiveCartAdapter().removeItem({ ref: ref }, spaLiveContext());
+  }, "Removed from your bag");
+}
+
+function spaLiveCartCount(ref, qty) {
+  return spaLiveCartCommand("cart.changeQuantity:" + ref, function () {
+    return spaLiveCartAdapter().setItemCount({ count: qty, ref: ref }, spaLiveContext());
+  }, "Bag updated — totals recalculated by the store");
+}
+
 function spaChangeQuantity(id) {
   var parts = String(id || "").split("|");
   var ref = parts[0];
   var qty = Math.max(0, Number(parts[1] || 0));
-  if (spaCurrentApiDemoOpen()) {
-    spaSetLines(qty === 0
-      ? spaLines().filter(function (line) { return line.ref !== ref; })
-      : spaLines().map(function (line) { return line.ref === ref ? Object.assign({}, line, { qty: qty }) : line; }));
-    render();
-    return true;
-  }
+  if (spaCurrentApiDemoOpen()) return spaLiveCartCount(ref, qty);
   return runSpaCommand("cart.changeQuantity:" + ref, function () {
     spaSetLines(qty === 0
       ? spaLines().filter(function (line) { return line.ref !== ref; })
@@ -403,27 +436,8 @@ function spaConfirmCheckout() {
   var checkoutRef = spaCheckoutRef();
   var key = "checkout.confirm:" + checkoutRef;
   if (spaCurrentApiDemoOpen()) {
-    var lines = state.spaCheckoutSource === "plan" ? [] : spaLines();
-    var requestRef = checkoutRef + "-" + state.spaCheckoutSource + "-" + (state.spaCheckoutSource === "plan"
-      ? state.spaPlanOffer || "offer"
-      : lines.map(function (line) { return line.ref + "x" + line.qty; }).sort().join("-"));
-    var amounts = spaLiveCheckoutAmounts();
-    return runLiveSpaCommand(key, function () {
-      return spaLiveAdapter().createOrder({ requestRef: requestRef, total: amounts.total, taxes: amounts.taxes }, spaLiveContext())
-        .then(function (order) { return reloadRuntimeModule("orders").then(function () { return order; }); });
-    }, function (order) {
-      state.spaResult = {
-        kind: "purchase",
-        headline: "Order confirmed",
-        sub: "The order was recorded in Core. This demo did not take a payment.",
-        purchase: { ref: order.ref, reference: order.ref },
-        fulfillment: "Pickup at Harbor Front studio",
-      };
-      if (state.spaCheckoutSource === "cart") {
-        spaSetLines([]);
-        state.spaCartDemo = "as-added";
-      }
-    }, { toast: "Order created — confirmed by Core" });
+    if (state.spaCheckoutSource === "plan") return spaConfirmLivePlanCheckout(key, checkoutRef);
+    return spaConfirmLiveCartCheckout(key, checkoutRef);
   }
   return runSpaCommand(key, function () {
     if (state.spaCheckoutSource === "plan") {
@@ -435,6 +449,96 @@ function spaConfirmCheckout() {
       state.spaCartDemo = "as-added";
     }
   }, { ms: 900 });
+}
+
+/**
+ * Confirms a cart checkout against Core.
+ *
+ * There is no checkout-session or frozen-quote endpoint in this tenant, so the
+ * quote IS the server cart as last read. Confirmation re-reads it: if it no
+ * longer matches what the customer reviewed, that is a conflict and the order
+ * is not created. Otherwise one SPA_ORDER is created from the server's own
+ * figures, and the cart is cleared only after the order readback confirms.
+ */
+function spaConfirmLiveCartCheckout(key, checkoutRef) {
+  var reviewed = spaCartEnvelope();
+  var reviewedLines = (reviewed && reviewed.lines) || [];
+  if (!reviewedLines.length) return false;
+  var requestRef = checkoutRef + "-cart-" + cartFingerprint(reviewedLines);
+
+  return runLiveSpaCommand(key, function () {
+    var cartAdapter = spaLiveCartAdapter();
+    return cartAdapter.load("cart", spaLiveContext()).then(function (current) {
+      if (cartFingerprint(current.lines) !== cartFingerprint(reviewedLines)) {
+        // The customer reviewed a different bag. Surface it; never proceed.
+        var conflict = new Error("The bag changed while you were reviewing it");
+        conflict.code = "conflict";
+        throw conflict;
+      }
+      return spaLiveAdapter().createOrder({
+        label: "Customer portal checkout",
+        // `unitAmount` is the server's own unit price. It is passed through, not
+        // multiplied: Core multiplies by itemCount for the order total.
+        lines: current.lines.map(function (line) {
+          return {
+            priceId: line.priceId, productCode: line.productCode, productId: line.productId,
+            productTypeCode: line.productTypeCode, qty: line.qty, unitAmount: line.unitAmount,
+          };
+        }),
+        requestRef: requestRef,
+      }, spaLiveContext()).then(function (order) {
+        // The cart is cleared only now, after Core has confirmed the order.
+        return cartAdapter.clear(spaLiveContext())
+          .then(function () { return Promise.all([reloadRuntimeModule("orders"), reloadRuntimeModule("cart")]); })
+          .then(function () { return order; });
+      });
+    });
+  }, function (order) {
+    // Rendered from the Order readback and from nothing else. No payment
+    // language: Core recorded an order, it did not take money.
+    state.spaResult = {
+      kind: "purchase",
+      headline: "Order confirmed",
+      sub: "The order was recorded in Core. This demo did not take a payment.",
+      purchase: { ref: order.ref, reference: order.ref },
+    };
+  }, { toast: "Order created — confirmed by Core" });
+}
+
+/* A plan offer is a single published price, not a cart. It keeps its own
+   confirmation path until plan commerce opens properly in a later wave. */
+function spaConfirmLivePlanCheckout(key, checkoutRef) {
+  var offer = spaPlanOffers().find(function (item) { return item.ref === state.spaPlanOffer; });
+  if (!offer || !offer.backendPriceId || !offer.backendProductId) return false;
+  return runLiveSpaCommand(key, function () {
+    return spaLiveAdapter().createOrder({
+      label: "Customer portal plan checkout",
+      lines: [{
+        priceId: offer.backendPriceId, productCode: offer.productCode || null,
+        productId: offer.backendProductId, productTypeCode: offer.productTypeCode,
+        qty: 1, unitAmount: offer.amount,
+      }],
+      requestRef: checkoutRef + "-plan-" + (state.spaPlanOffer || "offer"),
+    }, spaLiveContext()).then(function (order) {
+      return reloadRuntimeModule("orders").then(function () { return order; });
+    });
+  }, function (order) {
+    state.spaResult = {
+      kind: "purchase",
+      headline: "Order confirmed",
+      sub: "The order was recorded in Core. This demo did not take a payment.",
+      purchase: { ref: order.ref, reference: order.ref },
+    };
+  }, { toast: "Order created — confirmed by Core" });
+}
+
+/* Identity of a bag for conflict detection and for the idempotency key: the
+   lines, their quantities and the server's unit price for each. A change in any
+   of them is a different bag from the one the customer agreed to. */
+function cartFingerprint(lines) {
+  return (lines || []).map(function (line) {
+    return line.priceId + "x" + line.qty + "@" + line.unitAmount;
+  }).sort().join("|");
 }
 
 function spaCheckoutRef() {
@@ -594,18 +698,11 @@ function spaSlotIso(slotRef) {
   return new Date(Date.UTC(year, month - 1, day, hour + 5, minute)).toISOString();
 }
 
-function spaLiveCheckoutAmounts() {
-  if (state.spaCheckoutSource === "plan") {
-    var offer = spaPlanOffers().find(function (item) { return item.ref === state.spaPlanOffer; });
-    if (offer && Number.isFinite(Number(offer.amount))) return { total: Number(offer.amount), taxes: 0 };
-    if (offer && Number.isFinite(Number(offer.cents))) return { total: Number(offer.cents) / 100, taxes: 0 };
-    var match = offer && String(offer.displayPrice || "").replace(/,/g, "").match(/\d+(?:\.\d+)?/);
-    return { total: match ? Number(match[0]) : 0, taxes: 0 };
-  }
-  var subtotalCents = spaLines().reduce(function (sum, line) { return sum + Number(line.cents || 0) * Number(line.qty || 0); }, 0);
-  var taxCents = Math.round(subtotalCents * 0.08);
-  return { total: (subtotalCents + taxCents) / 100, taxes: taxCents / 100 };
-}
+/* `spaLiveCheckoutAmounts` used to live here. It summed the line `cents`,
+   applied a hardcoded 8% tax and sent the result to Core as `grandTotal` and
+   `totalTaxes` — a figure the browser invented and the server ignored. Both the
+   function and the fields are gone: Core computes the order total from the
+   lines. See SPA-VERTICAL-CORE-MODEL.md §3. */
 
 function spaFlowResult() {
   var flow = state.spaFlow;

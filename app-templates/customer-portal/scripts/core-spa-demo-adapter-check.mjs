@@ -243,20 +243,45 @@ function cancelFetch(calls, states) {
 const spaOrderType = { id: 77, code: "SPA_ORDER", workflow: { id: 88, code: "SPA_ORDER_LIFECYCLE" } };
 const usd = { id: 17, code: "USD" };
 
-// Checkout resolves order type, organization and currency by code; the stub
-// answers each lookup instead of handing back a row to clone.
+const itemWorkflow = { id: 99, code: "SPA_ORDER_ITEM_LIFECYCLE" };
+const spaItemTypes = [
+  { id: 101, code: "SPA_ITEM_SERVICE", workflow: itemWorkflow },
+  { id: 102, code: "SPA_ITEM_RETAIL", workflow: itemWorkflow },
+  { id: 103, code: "SPA_ITEM_PACKAGE", workflow: itemWorkflow },
+  { id: 104, code: "SPA_ITEM_MEMBERSHIP", workflow: itemWorkflow },
+];
+// The line's SPA_ITEM_* type follows the PRODUCT's type, which lives in PIM.
+const pimProducts = [
+  { id: 5, code: "CHS_BODY_001", type: { id: 2, code: "SPA_RETAIL" } },
+  { id: 12, code: "CHS_FACIAL", type: { id: 1, code: "SPA_SERVICE" } },
+  { id: 30, code: "CHS_MYSTERY", type: { id: 9, code: "SPA_SOMETHING_NEW" } },
+];
+
+// Checkout resolves order type, organization, currency, product types and item
+// types by code; the stub answers each lookup instead of handing back a row to
+// clone.
 function checkoutFetch(rows, calls) {
+  let nextItemId = 9100;
   return async (url, options) => {
     if (calls) calls.push({ url, options });
     if (url.includes("/order-type/list.json")) return json({ result: [spaOrderType] });
+    if (url.includes("/order-item-type/list.json")) return json({ result: spaItemTypes });
     if (url.includes("/organization/list.json")) return json({ result: [organization] });
     if (url.includes("/dictionary/list.json")) return json({ result: [usd] });
+    if (url.includes("/order-item/list.json")) return json({ result: rows.itemReadback || [] });
+    if (url.includes("/order-item/save.json")) return json([nextItemId++]);
     if (url.includes("/order/list.json")) return json({ result: rows.list || [] });
     if (url.includes("/order/save.json")) return json([8002]);
     if (url.includes("/order/get.json")) return json(rows.readback);
     throw new Error("unexpected request: " + url);
   };
 }
+
+const retailLine = { priceId: 77, productCode: "CHS_BODY_001", productId: 5, productTypeCode: "SPA_RETAIL", qty: 2, unitAmount: 42 };
+const serviceLine = { priceId: 90, productCode: "CHS_FACIAL", productId: 12, productTypeCode: "SPA_SERVICE", qty: 1, unitAmount: 145 };
+// What Core reports back for those lines. `amount` is the UNIT price.
+const retailItemRow = { amount: 42, id: 9100, itemCount: 2, itemPrice: { id: 77 }, notes: "CHS_BODY_001", sortOrder: 1, type: { id: 102, code: "SPA_ITEM_RETAIL" } };
+const serviceItemRow = { amount: 145, id: 9101, itemCount: 1, itemPrice: { id: 90 }, notes: "CHS_FACIAL", sortOrder: 2, type: { id: 101, code: "SPA_ITEM_SERVICE" } };
 
 const templateOrder = {
   id: 7001, optimistic: 1, account: { id: 1042 }, currency: { id: 1, code: "USD" },
@@ -274,8 +299,8 @@ const templateOrder = {
     grandTotal: 70, totalCharges: 70,
     attributes: { 77: { RECORD_CODE: { value: "CP_DEMO_ORDER_1042_CART_1" } } },
   };
-  const result = await createCoreOrder({ requestRef: "cart-1", total: 70 }, context,
-    checkoutFetch({ list: [], readback: savedOrder }, calls), origin);
+  const result = await createCoreOrder({ lines: [retailLine, serviceLine], requestRef: "cart-1" }, context,
+    checkoutFetch({ itemReadback: [retailItemRow, serviceItemRow], list: [], readback: savedOrder }, calls), origin);
   assert.equal(result.ref, "order-core-8002");
   assert.equal(result.grandTotal, 70);
   assert.equal(calls.filter((call) => call.url.endsWith("/order/list.json")).length, 1);
@@ -287,6 +312,69 @@ const templateOrder = {
   assert.equal(save.workflow.id, 88, "workflow comes from the order type");
   assert.equal(save.organization.id, 11, "organization resolved by code");
   assert.equal(save.currency.id, 17, "currency resolved by code, not copied from a neighbouring order");
+
+  // NO TOTALS. Core computes grandTotal from the lines; a client value is
+  // ignored, and sending one would claim the portal owns pricing.
+  assert.equal("grandTotal" in save, false, "the order save must not carry grandTotal");
+  assert.equal("totalCharges" in save, false, "the order save must not carry totalCharges");
+  assert.equal("totalTaxes" in save, false, "the order save must not carry totalTaxes");
+
+  // One typed line per cart item, amount = the server's UNIT price.
+  const itemSaves = calls.filter((call) => call.url.endsWith("/order-item/save.json"))
+    .map((call) => JSON.parse(call.options.body).entities[0]);
+  assert.equal(itemSaves.length, 2);
+  assert.equal(itemSaves[0].type.id, 102, "a SPA_RETAIL product yields a SPA_ITEM_RETAIL line");
+  assert.equal(itemSaves[0].amount, 42, "amount is the server unitAmount, never pre-multiplied");
+  assert.equal(itemSaves[0].itemCount, 2);
+  assert.equal(itemSaves[0].itemPrice.id, 77, "the line points at the cart item's own price");
+  assert.equal(itemSaves[0].workflow.id, 99, "the line workflow comes from its own type");
+  assert.equal(itemSaves[0].attributes[102].RECORD_CODE.value, "CP_DEMO_ORDER_1042_CART_1_L1");
+  assert.equal(itemSaves[1].type.id, 101, "a SPA_SERVICE product yields a SPA_ITEM_SERVICE line");
+  assert.equal(itemSaves[1].amount, 145);
+  assert.equal(itemSaves[1].order.id, 8002, "lines attach to the order that was just created");
+
+  // The readback is what the caller gets, and it reports units, not line totals
+  // — Core exposes no per-line total, so none is invented.
+  assert.deepEqual(result.lines.map((line) => [line.typeCode, line.unitAmount, line.itemCount]), [
+    ["SPA_ITEM_RETAIL", 42, 2], ["SPA_ITEM_SERVICE", 145, 1],
+  ]);
+}
+
+{
+  // A product whose type has no SPA_ITEM_* mapping fails by name rather than
+  // being filed under a guessed kind — and nothing is saved.
+  const calls = [];
+  await assert.rejects(
+    () => createCoreOrder({
+      lines: [{ priceId: 5, productCode: "CHS_MYSTERY", productId: 30, productTypeCode: "SPA_SOMETHING_NEW", qty: 1, unitAmount: 10 }],
+      requestRef: "cart-mystery",
+    }, context, checkoutFetch({ list: [] }, calls), origin),
+    (error) => error && error.code === "order-item-type-unmapped",
+  );
+  assert.equal(calls.filter((call) => call.url.endsWith("/order/save.json")).length, 0,
+    "an unmappable line must stop the order before anything is written");
+}
+
+{
+  // A 2xx on the saves is not success: if Core does not report the lines back,
+  // the command fails rather than claiming an order that has none.
+  const savedOrder = {
+    ...templateOrder, id: 8002, notes: "Customer portal checkout",
+    attributes: { 77: { RECORD_CODE: { value: "CP_DEMO_ORDER_1042_CART_2" } } },
+  };
+  await assert.rejects(
+    () => createCoreOrder({ lines: [retailLine, serviceLine], requestRef: "cart-2" }, context,
+      checkoutFetch({ itemReadback: [retailItemRow], list: [], readback: savedOrder }), origin),
+    (error) => error && error.code === "order-lines-unconfirmed",
+  );
+}
+
+{
+  // An empty cart is not a purchase.
+  await assert.rejects(
+    () => createCoreOrder({ lines: [], requestRef: "cart-empty" }, context, checkoutFetch({ list: [] }), origin),
+    (error) => error && error.code === "order-lines-required",
+  );
 }
 
 {
@@ -296,8 +384,8 @@ const templateOrder = {
     ...templateOrder, id: 8002, grandTotal: 70, totalCharges: 70,
     attributes: { 77: { RECORD_CODE: { value: "CP_DEMO_ORDER_1042_CART_1" } } },
   };
-  const result = await createCoreOrder({ requestRef: "cart-1", total: 70 }, context,
-    checkoutFetch({ list: [existing] }, calls), origin);
+  const result = await createCoreOrder({ lines: [retailLine], requestRef: "cart-1" }, context,
+    checkoutFetch({ itemReadback: [retailItemRow], list: [existing] }, calls), origin);
   assert.equal(result.ref, "order-core-8002");
   assert.equal(calls.filter((call) => call.url.endsWith("/order/save.json")).length, 0);
 }
@@ -306,8 +394,8 @@ const templateOrder = {
   // Orders written before RECORD_CODE existed are still recognised by `notes`.
   const calls = [];
   const legacy = { ...templateOrder, id: 8003, notes: "CP_DEMO_ORDER_1042_CART_9", attributes: {} };
-  const result = await createCoreOrder({ requestRef: "cart-9", total: 70 }, context,
-    checkoutFetch({ list: [legacy] }, calls), origin);
+  const result = await createCoreOrder({ lines: [retailLine], requestRef: "cart-9" }, context,
+    checkoutFetch({ itemReadback: [retailItemRow], list: [legacy] }, calls), origin);
   assert.equal(result.ref, "order-core-8003");
   assert.equal(calls.filter((call) => call.url.endsWith("/order/save.json")).length, 0);
 }
