@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { createCoreOrdersAdapter, coreOrdersContract } from "../runtime/src/adapters/core-orders-adapter.js";
+import { createCoreOrdersAdapter, coreOrdersContract, createPickupFulfillment } from "../runtime/src/adapters/core-orders-adapter.js";
 
 const origin = "https://dev-1.servicewand.com";
 const context = {
@@ -145,7 +145,104 @@ await rejectsWith("orders-forbidden", async () => {
   await createCoreOrdersAdapter({ origin, fetch: async () => ({ ok: false, status: 403, async json() { return {}; } }) }).load("orders", context);
 });
 
-console.log("core-orders-adapter-check ok: read-only Core Bill Orders retain resolved Account scope");
+/* ---- C5: the pickup fulfillment record ------------------------------- */
+
+const shipmentType = { code: "SPA_FULFILLMENT", id: 1, workflow: { code: "SPA_FULFILLMENT_LIFECYCLE", id: 6 } };
+const studio = { code: "CHS_HARBOR_FRONT", id: 209 };
+
+function pickupFetch(state, calls) {
+  return async (url, options) => {
+    if (calls) calls.push({ body: options && options.body ? JSON.parse(options.body) : null, url });
+    if (url.includes("/shipment-type/list.json")) return json({ result: [shipmentType] });
+    if (url.includes("/organization/list.json")) return json({ result: [{ code: "CALM_HARBOR_SPA_STAGING", id: 11 }] });
+    if (url.includes("/resource/list.json")) {
+      if (state.noStudio) return json({ result: [] });
+      return json({ result: [studio] });
+    }
+    if (url.includes("/shipment/list.json")) return json({ result: state.rows });
+    if (url.includes("/shipment/save.json")) {
+      if (!state.swallowWrite) state.rows = state.rows.concat([state.pending]);
+      return json([555]);
+    }
+    throw new Error("unexpected request: " + url);
+  };
+}
+
+function shipmentRow(orderId, marker, extra = {}) {
+  return {
+    attributes: {
+      1: {
+        FULFILLMENT_KIND: { value: "PICKUP" }, FULFILLMENT_STATUS: { value: "PENDING" },
+        PICKUP_LOCATION: { value: 209 }, RECORD_CODE: { value: marker },
+        SOURCE_ORDER: { value: orderId }, ...extra,
+      },
+    },
+    id: 555,
+    type: { code: "SPA_FULFILLMENT", id: 1 },
+  };
+}
+
+{
+  const calls = [];
+  const state = { pending: shipmentRow(8002, "CP_DEMO_FULFILLMENT_8002"), rows: [] };
+  const pickup = await createPickupFulfillment(8002, context, pickupFetch(state, calls), origin);
+  assert.equal(pickup.kind, "PICKUP");
+  assert.equal(pickup.status, "PENDING", "the studio confirms availability after the order is recorded");
+  assert.equal(pickup.sourceOrderId, 8002);
+  assert.equal(pickup.windowStartLabel, null, "no window is invented at confirmation time");
+  assert.equal(pickup.windowEndLabel, null);
+
+  const save = calls.find((call) => call.url.includes("/shipment/save.json")).body.entities[0];
+  assert.equal(save.type.id, 1, "shipment type resolved by code");
+  assert.equal(save.workflow.id, 6, "the workflow stays attached even though Core assigns no state");
+  const written = save.attributes[1];
+  assert.equal(written.SOURCE_ORDER.value, 8002, "Shipment has no order relation; the link is this attribute");
+  assert.equal(written.RECORD_CODE.value, "CP_DEMO_FULFILLMENT_8002", "identity is RECORD_CODE, never notes");
+  assert.equal(written.FULFILLMENT_STATUS.value, "PENDING");
+  assert.equal(written.PICKUP_LOCATION.value, 209);
+  assert.equal("WINDOW_START" in written, false, "an absent window is written as absent, not as the epoch");
+  assert.equal("WINDOW_END" in written, false);
+  assert.equal("notes" in save, false);
+  // send-event on a stateless Shipment 500s; no transition may ever be tried.
+  assert.equal(calls.some((call) => call.url.includes("send-event")), false, "a pickup record is never transitioned");
+}
+
+{
+  // Replay: the pickup already exists, so nothing is written a second time.
+  const calls = [];
+  const state = { rows: [shipmentRow(8002, "CP_DEMO_FULFILLMENT_8002")] };
+  const pickup = await createPickupFulfillment(8002, context, pickupFetch(state, calls), origin);
+  assert.equal(pickup.backendId, 555);
+  assert.equal(calls.filter((call) => call.url.includes("/shipment/save.json")).length, 0);
+}
+
+{
+  // Another order's shipment must not attach to this one — Core cannot filter
+  // the attribute, so the match happens client-side and must be exact.
+  const calls = [];
+  const state = { pending: shipmentRow(8003, "CP_DEMO_FULFILLMENT_8003"), rows: [shipmentRow(9999, "CP_DEMO_FULFILLMENT_9999")] };
+  const pickup = await createPickupFulfillment(8003, context, pickupFetch(state, calls), origin);
+  assert.equal(pickup.sourceOrderId, 8003);
+  assert.equal(calls.filter((call) => call.url.includes("/shipment/save.json")).length, 1,
+    "a foreign order's pickup is not mistaken for this order's");
+}
+
+{
+  // No studio row means no location, never a guessed one.
+  const state = { noStudio: true, pending: shipmentRow(8004, "CP_DEMO_FULFILLMENT_8004"), rows: [] };
+  const calls = [];
+  await createPickupFulfillment(8004, context, pickupFetch(state, calls), origin);
+  const save = calls.find((call) => call.url.includes("/shipment/save.json")).body.entities[0];
+  assert.equal("PICKUP_LOCATION" in save.attributes[1], false);
+}
+
+{
+  // A 2xx on the save is not success.
+  const state = { pending: shipmentRow(8005, "CP_DEMO_FULFILLMENT_8005"), rows: [], swallowWrite: true };
+  await rejectsWith("fulfillment-unconfirmed", () => createPickupFulfillment(8005, context, pickupFetch(state), origin));
+}
+
+console.log("core-orders-adapter-check ok: read-only Core Bill Orders retain resolved Account scope, and pickup records join by SOURCE_ORDER");
 
 function json(value) { return { ok: true, status: 200, async json() { return structuredClone(value); } }; }
 async function rejectsWith(code, operation) { await assert.rejects(operation, function (error) { return error && error.code === code; }); }

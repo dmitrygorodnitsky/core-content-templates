@@ -3,6 +3,7 @@ import { F } from "../data/fixtures.js";
 import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaCartEnvelope, spaCurrentApiDemoOpen, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSellInfo, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
 import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
+import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
 import { createCoreSpaDemoAdapter } from "./adapters/core-spa-demo-adapter.js";
 import { startCoreOidcSignIn, startCoreOidcSignOut } from "./adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapter.js";
@@ -487,10 +488,14 @@ function spaConfirmLiveCartCheckout(key, checkoutRef) {
         }),
         requestRef: requestRef,
       }, spaLiveContext()).then(function (order) {
-        // The cart is cleared only now, after Core has confirmed the order.
-        return cartAdapter.clear(spaLiveContext())
-          .then(function () { return Promise.all([reloadRuntimeModule("orders"), reloadRuntimeModule("cart")]); })
-          .then(function () { return order; });
+        // Pickup is a separate dimension of the purchase, not an order state,
+        // and only a retail line has anything to collect.
+        return spaRecordPickup(order).then(function (pickup) {
+          // The cart is cleared only now, after Core has confirmed the order.
+          return cartAdapter.clear(spaLiveContext())
+            .then(function () { return Promise.all([reloadRuntimeModule("orders"), reloadRuntimeModule("cart")]); })
+            .then(function () { return Object.assign({}, order, { pickup: pickup }); });
+        });
       });
     });
   }, function (order) {
@@ -501,8 +506,32 @@ function spaConfirmLiveCartCheckout(key, checkoutRef) {
       headline: "Order confirmed",
       sub: "The order was recorded in Core. This demo did not take a payment.",
       purchase: { ref: order.ref, reference: order.ref },
+      // Shown only when Core actually returned a pickup record, and only with
+      // the window Core stated — an absent window renders as absent.
+      fulfillment: order.pickup ? pickupLabel(order.pickup) : null,
     };
   }, { toast: "Order created — confirmed by Core" });
+}
+
+/* Only a retail line is collected. A service- or plan-only order has nothing to
+   pick up, so no shipment is written for it. */
+function spaRecordPickup(order) {
+  var hasRetail = (order.lines || []).some(function (line) { return line.typeCode === "SPA_ITEM_RETAIL"; });
+  if (!hasRetail) return Promise.resolve(null);
+  return createPickupFulfillment(order.id, spaLiveContext()).catch(function (error) {
+    // The order exists and is confirmed. A pickup record that failed to write
+    // must not turn a real purchase into a failed one — the confirmation simply
+    // shows no pickup line, and the orders read will pick it up if it lands.
+    console.error("[aircove] pickup record not created for order", order.ref, error);
+    return null;
+  });
+}
+
+/* Only what Core stated. No window means no date rather than the epoch, and no
+   studio name is invented — the record carries a location id, not a label. */
+function pickupLabel(pickup) {
+  if (!pickup || pickup.kind !== "PICKUP") return null;
+  return pickup.windowStartLabel ? "Pickup · " + pickup.windowStartLabel : "Pickup";
 }
 
 /* A plan offer is a single published price, not a cart. It keeps its own

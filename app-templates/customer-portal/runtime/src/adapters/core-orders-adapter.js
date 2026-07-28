@@ -77,6 +77,187 @@ export function createCoreOrdersAdapter(options = {}) {
   };
 }
 
+const STUDIO_TYPE = "SPA_STUDIO";
+const FULFILLMENT_CODE_PREFIX = "CP_DEMO_FULFILLMENT_";
+const TYPE_WITH_WORKFLOW_MAPPINGS = [
+  { name: "id" }, { name: "code" },
+  { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
+];
+
+/**
+ * Records the pickup dimension of a retail order.
+ *
+ * Four things about `Shipment` shape this, all of them platform behaviour:
+ *   - it has NO order relation, so the link lives in the `SOURCE_ORDER`
+ *     attribute and every match is client-side;
+ *   - it has no `code` column, so identity is `RECORD_CODE`, never `notes`;
+ *   - it never receives an initial workflow state and `send-event` on a
+ *     stateless shipment 500s, so status is the `FULFILLMENT_STATUS` attribute
+ *     and NO transition is ever attempted. The workflow stays attached for the
+ *     day the backend fixes state initialisation;
+ *   - Core cannot filter dynamic attributes, so the idempotency match reads the
+ *     rows and compares here rather than asking the server to.
+ *
+ * No pickup window is written. Neither the accepted design nor the studio data
+ * supplies one at confirmation time, and an invented window is worse than an
+ * absent one — the reader already renders an absent window as absent.
+ */
+export function createPickupFulfillment(orderId, context, fetchImpl = globalThis.fetch, explicitOrigin) {
+  var api = writeContext(context, explicitOrigin);
+  var id = positiveInteger(orderId);
+  if (!id) throw contractError("fulfillment-order-required", "A Core Order id is required to record a pickup");
+  var marker = FULFILLMENT_CODE_PREFIX + id;
+
+  return (async function () {
+    var existing = await pickupForOrder(api, fetchImpl, id, marker);
+    if (existing) return existing;
+
+    var resolved = await Promise.all([
+      resolveOne(api, fetchImpl, api.billBase + "/api/shipment-type/list.json",
+        [{ operator: "=", property: "code", type: "STRING", value: FULFILLMENT_TYPE }],
+        TYPE_WITH_WORKFLOW_MAPPINGS, "fulfillment-type-missing"),
+      resolveOne(api, fetchImpl, api.coreBase + "/api/organization/list.json",
+        [{ operator: "=", property: "code", type: "STRING", value: api.organization }],
+        [{ name: "id" }, { name: "code" }], "organization-missing"),
+      studioResource(api, fetchImpl),
+    ]);
+    var fulfillmentType = resolved[0];
+    var organization = resolved[1];
+    var studio = resolved[2];
+
+    var values = {
+      FULFILLMENT_KIND: { value: "PICKUP" },
+      // PENDING is the workflow's initial state and matches the accepted copy:
+      // the studio confirms availability after the order is recorded.
+      FULFILLMENT_STATUS: { value: "PENDING" },
+      RECORD_CODE: { value: marker },
+      SOURCE_ORDER: { value: id },
+    };
+    if (studio.row) values.PICKUP_LOCATION = { value: studio.row.id };
+    var attributes = {};
+    attributes[String(fulfillmentType.id)] = values;
+
+    var savedIds = await requestJson(fetchImpl, api.billBase + "/api/shipment/save.json", writeOptions(api, {
+      entities: [{
+        attributes: attributes,
+        organization: { id: organization.id },
+        type: { id: fulfillmentType.id },
+        workflow: { id: fulfillmentType.workflow.id },
+      }],
+      mappings: SHIPMENT_MAPPINGS,
+    }));
+    if (!positiveInteger(Array.isArray(savedIds) && savedIds[0])) {
+      throw contractError("invalid-save-response", "Core Shipment save did not return an id");
+    }
+
+    // A 2xx is not success: the pickup must be readable and joined to this
+    // order, matched the only way Core allows.
+    var readback = await pickupForOrder(api, fetchImpl, id, marker);
+    if (!readback) throw contractError("fulfillment-unconfirmed", "Core did not report the pickup record after the save");
+    // Why a location is absent stays visible instead of looking like a studio
+    // that does not exist.
+    return Object.assign(readback, { locationUnresolvedReason: studio.reason });
+  })();
+}
+
+async function pickupForOrder(api, fetchImpl, orderId, marker) {
+  var response = await requestJson(fetchImpl, api.billBase + "/api/shipment/list.json", writeOptions(api, {
+    filters: [{ operator: "=", property: "type.code", type: "STRING", value: FULFILLMENT_TYPE }],
+    mappings: SHIPMENT_MAPPINGS,
+    offset: 0,
+    pageSize: 200,
+  }));
+  var rows = Array.isArray(response && response.result) ? response.result : [];
+  var row = rows.find(function (candidate) {
+    // Both must agree: another order's shipment must never attach to this one.
+    return attributeNumber(candidate, "SOURCE_ORDER") === orderId
+      && attributeText(candidate, "RECORD_CODE") === marker;
+  });
+  if (!row) return null;
+  var normalized = normalizeFulfillment({
+    kind: attributeText(row, "FULFILLMENT_KIND"),
+    status: attributeText(row, "FULFILLMENT_STATUS"),
+    windowEnd: attributeNumber(row, "WINDOW_END"),
+    windowStart: attributeNumber(row, "WINDOW_START"),
+  });
+  return Object.assign({
+    backendId: positiveInteger(row.id),
+    locationId: attributeNumber(row, "PICKUP_LOCATION"),
+    sourceOrderId: orderId,
+  }, normalized);
+}
+
+/**
+ * Finds the studio the pickup happens at.
+ *
+ * `PICKUP_LOCATION` is optional, and it stays absent rather than guessed in
+ * both failure cases — but the two are NOT the same and the caller is told
+ * which occurred:
+ *   - `no-studio-row`: the tenant has no `SPA_STUDIO` resource;
+ *   - `resource-read-refused`: core-rm rejected the read. On dev-1 it answers
+ *     a customer session with 401 for every request, so a customer-created
+ *     pickup currently never carries a location. That is a backend gap, not a
+ *     missing studio, and it must not be reported as one.
+ */
+async function studioResource(api, fetchImpl) {
+  var response;
+  try {
+    response = await requestJson(fetchImpl, api.rmBase + "/api/resource/list.json", writeOptions(api, {
+      filters: [{ operator: "=", property: "type.code", type: "STRING", value: STUDIO_TYPE }],
+      mappings: [{ name: "id" }, { name: "code" }],
+      offset: 0,
+      pageSize: 10,
+    }));
+  } catch (error) {
+    return { reason: "resource-read-refused", row: null, status: error && error.status || null };
+  }
+  var rows = Array.isArray(response && response.result) ? response.result : [];
+  var row = rows[0] && positiveInteger(rows[0].id) ? rows[0] : null;
+  return { reason: row ? null : "no-studio-row", row: row, status: null };
+}
+
+async function resolveOne(api, fetchImpl, url, filters, mappings, errorCode) {
+  var response = await requestJson(fetchImpl, url, writeOptions(api, { filters: filters, mappings: mappings, offset: 0, pageSize: 1 }));
+  var row = (Array.isArray(response && response.result) ? response.result : [])[0];
+  if (!row || !positiveInteger(row.id)) throw contractError(errorCode, errorCode.replace(/-/g, " "));
+  if (mappings === TYPE_WITH_WORKFLOW_MAPPINGS && !(row.workflow && positiveInteger(row.workflow.id))) {
+    throw contractError(errorCode, FULFILLMENT_TYPE + " has no workflow");
+  }
+  return row;
+}
+
+function writeContext(context, explicitOrigin) {
+  var config = context && context.config || {};
+  var state = context && context.state || {};
+  var session = context && context.session || state.session || {};
+  var accessToken = text(session.accessToken || session.access_token);
+  if (!accessToken) throw contractError("session-required", "A Core access token is required");
+  var organization = text(config.organization);
+  if (!organization) throw contractError("organization-required", "Verified portal organization is required");
+  var origin = explicitOrigin || config.origin || browserOrigin();
+  return {
+    authorization: text(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+    billBase: sameOriginBase(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+    coreBase: sameOriginBase(config.coreApiBase || "/core", origin, "Core API base"),
+    organization: organization,
+    rmBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
+  };
+}
+
+function writeOptions(api, body) {
+  return {
+    body: JSON.stringify(body),
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      Authorization: api.authorization,
+      "Content-Type": "application/json",
+      "X-Organization-Code": api.organization,
+    },
+    method: "POST",
+  };
+}
+
 export async function loadCoreOrders(context, fetchImpl = globalThis.fetch, explicitOrigin) {
   var config = context && context.config || {};
   var state = context && context.state || {};

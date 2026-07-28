@@ -21,6 +21,7 @@ import fs from "node:fs/promises";
 import process from "node:process";
 import { createCoreAccountAdapter } from "../runtime/src/adapters/core-account-adapter.js";
 import { addCoreCartItem, clearCoreCart, loadCoreCart, setCoreCartItemCount } from "../runtime/src/adapters/core-cart-adapter.js";
+import { createPickupFulfillment } from "../runtime/src/adapters/core-orders-adapter.js";
 import { createCoreOrder } from "../runtime/src/adapters/core-spa-demo-adapter.js";
 
 const accessToken = process.env.SERVICEWAND_BEARER
@@ -33,7 +34,7 @@ const requestRef = process.env.SERVICEWAND_CHECKOUT_REF || "w4-live-1";
 
 const config = {
   billApiBase: "/core-bill", coreApiBase: "/core", currency: "USD",
-  organization, origin, pimApiBase: "/core-pim/api",
+  organization, origin, pimApiBase: "/core-pim/api", resourceApiBase: "/core-rm",
 };
 const headers = {
   Accept: "application/json", Authorization: "Bearer " + accessToken,
@@ -97,6 +98,13 @@ try {
     totalCharges: order.totalCharges,
     totalTaxes: order.totalTaxes,
   });
+
+  // C5: the pickup dimension, written only because this order has a retail line.
+  const hasRetail = order.lines.some((line) => line.typeCode === "SPA_ITEM_RETAIL");
+  const pickup = hasRetail ? await createPickupFulfillment(order.id, context, globalThis.fetch, origin) : null;
+  note("pickup-record", { hasRetailLine: hasRetail, pickup });
+  const pickupReplay = hasRetail ? await createPickupFulfillment(order.id, context, globalThis.fetch, origin) : null;
+  note("pickup-replay", { sameRecord: !!pickup && !!pickupReplay && pickup.backendId === pickupReplay.backendId });
 
   const replay = await createCoreOrder(orderInput, context, globalThis.fetch, origin);
   note("replay-same-ref", {
