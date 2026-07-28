@@ -338,7 +338,14 @@ async function fetchPim(request) {
     : {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        credentials: "include",
+        // `omit`, not `include`. This is the PUBLIC catalog endpoint and the
+        // portal is same-origin with it, so `include` makes the browser attach
+        // the ACCESS_TOKEN cookie; the endpoint then takes its authenticated
+        // path and answers 404. Verified on staging 2026-07-28: the identical
+        // POST returns 200 anonymously on both core-pim nodes and 401 with a
+        // bogus ACCESS_TOKEN cookie, so the cookie alone decides the branch.
+        // A public read must be anonymous.
+        credentials: "omit",
         body: JSON.stringify(request.payload),
       };
   var response = await window.fetch(request.url, options);
