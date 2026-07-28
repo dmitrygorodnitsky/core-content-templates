@@ -729,9 +729,12 @@
         name: item.name,
         shortDescription: item.description || "Published spa service",
         displayPrice: item.price,
-        interval: item.interval === "one time" ? "" : item.interval
+        interval: isOneTimeInterval(item.interval) ? "" : item.interval || ""
       };
     });
+  }
+  function isOneTimeInterval(value) {
+    return String(value || "").trim().toLowerCase() === "one time";
   }
   function spaPlanOffers() {
     if (state.config.dataMode !== "live") return F.spaCommerce.planOffers;
@@ -750,7 +753,7 @@
         productTypeCode: item.productTypeCode,
         kind,
         title: item.name,
-        displayPrice: item.price + (item.interval && item.interval !== "one time" ? " / " + item.interval : ""),
+        displayPrice: item.price + (item.interval && !isOneTimeInterval(item.interval) ? " / " + item.interval : ""),
         amount: Number(item.priceNum) || 0,
         termsSummary: item.description || "Published catalog offer",
         benefits: [],
@@ -10609,7 +10612,7 @@
       var nls = localized(product.nls, "en");
       var display = row.price && row.price.display || {};
       var currency = display.currency || attributeValue(row.price, config.pimCurrencyAttributeCode || "CURRENCY") || config.pimCurrency || "CAD";
-      var interval = display.intervalLabel || attributeValue(row.price, config.pimPriceAttributeCode || "INTERVAL") || "1 Month";
+      var interval = typeof display.intervalLabel === "string" ? display.intervalLabel.trim() : "";
       var amount = displayAmount(row.price, config);
       var customPrice = !!display.customPrice || !Number.isFinite(amount) || amount >= 2147483647;
       return {
@@ -10685,10 +10688,12 @@
     return null;
   }
   function formatInterval(value) {
-    var normalized = String(value || "").toUpperCase();
+    var raw = String(value || "").trim();
+    if (!raw) return "";
+    var normalized = raw.toUpperCase();
     if (normalized === "ONE_TIME") return "One time";
     if (normalized === "MONTH") return "Monthly";
-    return String(value || "1 Month");
+    return raw;
   }
   function productFromRow(row) {
     var wrapper = row && row.product || {};

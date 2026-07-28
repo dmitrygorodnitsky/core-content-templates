@@ -294,9 +294,15 @@ export function spaCatalogServices() {
       name: item.name,
       shortDescription: item.description || "Published spa service",
       displayPrice: item.price,
-      interval: item.interval === "one time" ? "" : item.interval,
+      interval: isOneTimeInterval(item.interval) ? "" : (item.interval || ""),
     };
   });
+}
+
+// The adapter formats a one-time price as "One time"; these comparisons used to
+// test lowercase "one time" and so never matched. Compare case-insensitively.
+function isOneTimeInterval(value) {
+  return String(value || "").trim().toLowerCase() === "one time";
 }
 
 export function spaPlanOffers() {
@@ -314,7 +320,7 @@ export function spaPlanOffers() {
       productTypeCode: item.productTypeCode,
       kind: kind,
       title: item.name,
-      displayPrice: item.price + (item.interval && item.interval !== "one time" ? " / " + item.interval : ""),
+      displayPrice: item.price + (item.interval && !isOneTimeInterval(item.interval) ? " / " + item.interval : ""),
       amount: Number(item.priceNum) || 0,
       termsSummary: item.description || "Published catalog offer",
       benefits: [],

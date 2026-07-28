@@ -372,7 +372,12 @@ function normalizePimRows(data, config) {
     var nls = localized(product.nls, "en");
     var display = (row.price && row.price.display) || {};
     var currency = display.currency || attributeValue(row.price, config.pimCurrencyAttributeCode || "CURRENCY") || config.pimCurrency || "CAD";
-    var interval = display.intervalLabel || attributeValue(row.price, config.pimPriceAttributeCode || "INTERVAL") || "1 Month";
+    // The server states a cadence only where one exists: PER_UNIT_RECURRENT
+    // carries `display.intervalLabel`, PER_UNIT carries none at all. Absent
+    // means the price is one-time, so it must render without a cadence — the
+    // old `|| "1 Month"` fallback printed "$95 / 1 Month" on every one-off
+    // treatment, which is a price the studio never published.
+    var interval = typeof display.intervalLabel === "string" ? display.intervalLabel.trim() : "";
     var amount = displayAmount(row.price, config);
     var customPrice = !!display.customPrice || !Number.isFinite(amount) || amount >= 2147483647;
     return {
@@ -455,10 +460,12 @@ function attributeValue(price, code) {
 }
 
 function formatInterval(value) {
-  var normalized = String(value || "").toUpperCase();
+  var raw = String(value || "").trim();
+  if (!raw) return "";
+  var normalized = raw.toUpperCase();
   if (normalized === "ONE_TIME") return "One time";
   if (normalized === "MONTH") return "Monthly";
-  return String(value || "1 Month");
+  return raw;
 }
 
 function productFromRow(row) {
