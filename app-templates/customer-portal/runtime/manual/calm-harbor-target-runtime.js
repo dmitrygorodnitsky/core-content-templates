@@ -346,12 +346,21 @@
       pimPricingProductTypeCodes: splitList(dataset.portalPimPricingProductTypeCodes),
       pimProductsProductTypeCodes: splitList(dataset.portalPimProductsProductTypeCodes),
       pimCurrency: dataset.portalPimCurrency || "CAD",
-      pimPriceTypeCode: dataset.portalPimPriceTypeCode || "RECURRENT",
-      pimPriceAttributeCode: dataset.portalPimPriceAttributeCode || "INTERVAL",
-      pimPriceAttributeValues: splitList(dataset.portalPimPriceAttributeValues || "1"),
+      // Defaults follow the SYSTEM price types. `PRICE_CURRENCY` is the abstract
+      // root, so with `includeChildPriceTypes` it covers `PER_UNIT` (retail,
+      // services, packages) and `PER_UNIT_RECURRENT` (memberships) alike; naming
+      // either child directly loses the other.
+      pimPriceTypeCode: dataset.portalPimPriceTypeCode || "PRICE_CURRENCY",
+      // The price-attribute filter defaults to OFF, and an empty deployment
+      // attribute must keep it off. Under the SYSTEM types a one-time price
+      // carries no INTERVAL at all, so any non-empty filter drops every
+      // non-recurring row and the catalog comes back empty. Defaulting these to
+      // `INTERVAL`/`1` meant clearing them in the CMS silently restored them.
+      pimPriceAttributeCode: dataset.portalPimPriceAttributeCode || "",
+      pimPriceAttributeValues: splitList(dataset.portalPimPriceAttributeValues || ""),
       pimCurrencyAttributeCode: dataset.portalPimCurrencyAttributeCode || "CURRENCY",
       pimCurrencyAttributeValues: splitList(dataset.portalPimCurrencyAttributeValues || dataset.portalPimCurrency || "CAD"),
-      pimAmountAttributeCode: dataset.portalPimAmountAttributeCode || "AMOUNT_MINOR",
+      pimAmountAttributeCode: dataset.portalPimAmountAttributeCode || "UNIT_PRICE",
       pimAmountMinorDivisor: positiveNumber(dataset.portalPimAmountMinorDivisor, 100),
       pimCta: dataset.portalPimCta || "",
       defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light")
