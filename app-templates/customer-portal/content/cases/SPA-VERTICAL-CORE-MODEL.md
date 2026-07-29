@@ -9,6 +9,14 @@ creates which. It is the counterpart to the portal-side contracts — where
 `CORE-CUSTOMER-PORTAL-CONTRACT.md` describes how the portal talks to Core, this
 describes what Core is configured to hold.
 
+**Where these definitions belong is a separate question, answered in
+[`ORGANIZATION-CASCADE-AND-ENTITY-PLACEMENT.md`](ORGANIZATION-CASCADE-AND-ENTITY-PLACEMENT.md).**
+The short version: the `SPA_` prefix throughout this document is misleading.
+None of these 17 types and none of these 15 workflows is spa-specific — 14 of
+the types belong at service-industries level and would serve a nail salon,
+physiotherapy clinic or HVAC business unchanged. Treat the codes here as what is
+deployed today, not as what they should be called.
+
 **Source of truth for the definitions** is
 `core-ui/scripts/dev/seeds/beautySpaTypes.json` and
 `core-ui/scripts/dev/seeds/beautySpaWorkflows.json`, applied by
