@@ -103,7 +103,9 @@ const requestText = async (url, options = {}) => {
       const response = await fetch(url, options);
       const text = await response.text();
       if (!response.ok) {
-        throw new Error(`${options.method ?? "GET"} ${url} -> ${response.status}: ${text.slice(0, 800)}`);
+        const requestId = response.headers.get("x-request-id") || response.headers.get("x-correlation-id");
+        const detail = text.trim() ? text.slice(0, 800) : "<empty response body>";
+        throw new Error(`${options.method ?? "GET"} ${url} -> ${response.status}${requestId ? ` [request-id: ${requestId}]` : ""}: ${detail}`);
       }
       return text;
     } catch (error) {
@@ -219,19 +221,45 @@ const normalizeTemplateForSave = (template, existing, org) => {
   if (Array.isArray(result.parameters)) {
     result.parameters = result.parameters.map((parameter) => {
       const { options: _options, ...withoutOptions } = parameter;
+      if (withoutOptions.type === "IMAGE" && !withoutOptions.value) withoutOptions.value = null;
       return withoutOptions;
     });
   }
   return result;
 };
 
+const saveEntitySummary = (entity) => ({
+  id: entity.id || null,
+  code: entity.code,
+  fields: Object.keys(entity).sort(),
+  contentLengths: {
+    head: String(entity.head || "").length,
+    html: String(entity.html || "").length,
+    javascript: String(entity.javascript || "").length,
+    css: String(entity.css || "").length,
+  },
+  parameterCount: entity.parameters?.length || 0,
+  parameterTypes: Object.fromEntries(Object.entries((entity.parameters || []).reduce((counts, parameter) => {
+    counts[parameter.type] = (counts[parameter.type] || 0) + 1;
+    return counts;
+  }, {})).sort()),
+  nullImageCodes: (entity.parameters || [])
+    .filter((parameter) => parameter.type === "IMAGE" && parameter.value == null)
+    .map((parameter) => parameter.code),
+});
+
 const saveBlockTemplate = async ({ cmsBaseUrl, headers, template, existing, org }) => {
   const entity = normalizeTemplateForSave(template, existing, org);
-  const response = await requestText(`${cmsBaseUrl}/api/block-template/save.json`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ entities: [entity], mappings: blockMappings }),
-  });
+  let response;
+  try {
+    response = await requestText(`${cmsBaseUrl}/api/block-template/save.json`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ entities: [entity], mappings: blockMappings }),
+    });
+  } catch (error) {
+    throw new Error(`BlockTemplate save failed for ${template.code} (${existing?.id ? `update ${existing.id}` : "create"}).\nSafe entity summary: ${JSON.stringify(saveEntitySummary(entity), null, 2)}\n${error.message}`);
+  }
   try {
     const parsed = JSON.parse(response);
     return String(Array.isArray(parsed) ? parsed[0] : parsed);
@@ -304,6 +332,7 @@ const uploadLive = async (env, plan) => {
 
   const results = [];
   for (const { template, existing } of rows) {
+    console.log(`  saving ${existing?.id ? "update" : "create"}: ${template.code} -> ${existing?.id || "(new)"}`);
     const id = await saveBlockTemplate({
       cmsBaseUrl: env.cmsBaseUrl,
       headers,

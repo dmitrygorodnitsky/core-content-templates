@@ -77,7 +77,12 @@ const cmsType = (type) => {
   return type || "LOCALIZED_STRING_SS";
 };
 
-const localized = (type, value, locale) => (cmsType(type).startsWith("LOCALIZED") ? { [locale]: value ?? "" } : value ?? "");
+const localized = (type, value, locale) => {
+  const normalizedType = cmsType(type);
+  if (normalizedType.startsWith("LOCALIZED")) return { [locale]: value ?? "" };
+  if (normalizedType === "IMAGE") return value || null;
+  return value ?? "";
+};
 
 const humanize = (value) =>
   String(value || "")

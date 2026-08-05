@@ -24,7 +24,7 @@
           "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
@@ -239,7 +239,7 @@
           "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
@@ -289,7 +289,7 @@
           "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",

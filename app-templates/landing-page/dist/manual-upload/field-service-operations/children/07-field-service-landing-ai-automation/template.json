@@ -323,7 +323,7 @@
           "DESCRIPTION": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT",

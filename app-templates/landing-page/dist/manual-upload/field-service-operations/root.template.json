@@ -178,7 +178,7 @@
           "DESCRIPTION": "Default favicon image asset rendered by the root template."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "FAVICON_IMG_NAME",
@@ -200,7 +200,7 @@
           "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "FAVICON_LIGHT_IMG_NAME",
@@ -222,7 +222,7 @@
           "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
         }
       },
-      "value": ""
+      "value": null
     },
     {
       "code": "FAVICON_DARK_IMG_NAME",

@@ -51,7 +51,7 @@
         "DESCRIPTION": "Default favicon image asset rendered by the root template."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "FAVICON_IMG_NAME",
@@ -73,7 +73,7 @@
         "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "FAVICON_LIGHT_IMG_NAME",
@@ -95,7 +95,7 @@
         "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "FAVICON_DARK_IMG_NAME",
@@ -2153,7 +2153,7 @@
         "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
@@ -2164,7 +2164,7 @@
         "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
@@ -2379,7 +2379,7 @@
         "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
@@ -2429,7 +2429,7 @@
         "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
@@ -3877,7 +3877,7 @@
         "DESCRIPTION": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT",
@@ -4666,7 +4666,7 @@
         "DESCRIPTION": "Optional image for industry card slot 1. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT",
@@ -4766,7 +4766,7 @@
         "DESCRIPTION": "Optional image for industry card slot 2. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT",
@@ -4866,7 +4866,7 @@
         "DESCRIPTION": "Optional image for industry card slot 3. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT",
@@ -4966,7 +4966,7 @@
         "DESCRIPTION": "Optional image for industry card slot 4. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT",
@@ -5066,7 +5066,7 @@
         "DESCRIPTION": "Optional image for industry card slot 5. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT",
@@ -5166,7 +5166,7 @@
         "DESCRIPTION": "Optional image for industry card slot 6. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT",
@@ -5266,7 +5266,7 @@
         "DESCRIPTION": "Optional image for industry card slot 7. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT",
@@ -5366,7 +5366,7 @@
         "DESCRIPTION": "Optional image for industry card slot 8. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT",
@@ -5466,7 +5466,7 @@
         "DESCRIPTION": "Optional image for industry card slot 9. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT",
@@ -5566,7 +5566,7 @@
         "DESCRIPTION": "Optional image for industry card slot 10. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT",
@@ -5666,7 +5666,7 @@
         "DESCRIPTION": "Optional image for industry card slot 11. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT",
@@ -5766,7 +5766,7 @@
         "DESCRIPTION": "Optional image for industry card slot 12. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT",
@@ -5866,7 +5866,7 @@
         "DESCRIPTION": "Optional image for industry card slot 13. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT",
@@ -5966,7 +5966,7 @@
         "DESCRIPTION": "Optional image for industry card slot 14. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_ALT",
@@ -6066,7 +6066,7 @@
         "DESCRIPTION": "Optional image for industry card slot 15. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_ALT",
@@ -6166,7 +6166,7 @@
         "DESCRIPTION": "Optional image for industry card slot 16. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_ALT",
@@ -6266,7 +6266,7 @@
         "DESCRIPTION": "Optional image for industry card slot 17. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_ALT",
@@ -6366,7 +6366,7 @@
         "DESCRIPTION": "Optional image for industry card slot 18. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_ALT",
@@ -6466,7 +6466,7 @@
         "DESCRIPTION": "Optional image for industry card slot 19. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_ALT",
@@ -6566,7 +6566,7 @@
         "DESCRIPTION": "Optional image for industry card slot 20. Leave empty to show the striped placeholder."
       }
     },
-    "value": ""
+    "value": null
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_ALT",

@@ -117,6 +117,13 @@ try {
   assert.match(payload.root.javascript, /const FALLBACK_LOCALES = \[/);
   assert.match(payload.root.javascript, /fetch\('\/core\/api\/language\/active\.json'/);
   assert.match(payload.root.javascript, /\.finally\(rewriteLinks\)/);
+  for (const template of templates) {
+    for (const parameter of template.parameters) {
+      if (parameter.type === "IMAGE") {
+        assert.equal(parameter.value === null || (typeof parameter.value === "string" && parameter.value.length > 0), true, `${parameter.code} IMAGE value must be null or non-empty`);
+      }
+    }
+  }
   await assertNoLocalPaths(first);
   assert.deepEqual(await treeHashes(first), await treeHashes(second), "repeat exports must be byte-for-byte deterministic");
 

@@ -21,7 +21,7 @@ await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify(
   schemaVersion: 1,
   root: {
     code: "FIELD_SERVICE_LANDING",
-    parameters: [],
+    parameters: [{ code: "FAVICON_IMG", type: "IMAGE", value: "", nls: { en: { NAME: "Favicon", DESCRIPTION: "Favicon" } } }],
     children: [{ code: "MUST_NOT_BE_SAVED" }],
     parent: { code: "MUST_NOT_BE_SAVED" },
     includes: ["MUST_NOT_BE_SAVED"],
@@ -114,7 +114,9 @@ try {
       assert.equal(Object.hasOwn(entity, field), false, `${field} must never enter a BlockTemplate save request`);
     }
   }
-  console.log("upload-cms-family-check ok: IDs printed, root pin enforced, missing template rejected, relationship fields stripped");
+  const savedRoot = savedEntities.find((entity) => entity.code === "FIELD_SERVICE_LANDING");
+  assert.equal(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG").value, null, "blank IMAGE values normalize to null");
+  console.log("upload-cms-family-check ok: IDs printed, root pin enforced, missing template rejected, relationships stripped, IMAGE null normalized");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });
