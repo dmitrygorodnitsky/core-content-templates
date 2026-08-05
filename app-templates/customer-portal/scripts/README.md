@@ -14,4 +14,10 @@ and operator commands.
 | `s6-*`, `s7-*`, `config-behavior-check.mjs`, `route-smoke.mjs` | Broad CMS/runtime regression gates |
 
 Generated output must be changed through its owning build/export script, never
-by editing `../dist/` directly.
+by editing `../dist/` directly. Builders must not read `../dist/` or a generated
+tenant package as an upstream source.
+
+`customer-experience-login-check.mjs` and
+`customer-experience-2fa-check.mjs` protect the accepted Core Auth transfer
+contracts. Their visual companions require Playwright and compare accepted and
+compiled pages with a strict zero-diff gate.

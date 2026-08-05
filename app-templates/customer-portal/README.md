@@ -18,20 +18,22 @@ Core Auth login, and Core Auth 2FA.
 | `dist/` | Generated upload packages and previews | Never hand-edit |
 | `assets/`, `public/` | Public SEO assets and source | Authored public-surface input |
 
-The tenant login package intentionally lives at
-`../../cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/`: CMS templates are
-independent deployable packages. Generic compiled family output lives under
-`dist/customer-experience/`.
+All four generated family templates live only under
+`dist/customer-experience/<experience-id>/`. `cms-templates/` is reserved for
+independently authored reusable packages and is never an upstream or output
+location for a customer-experience build.
 
 ## Family Flow
 
 ```text
 experience/config + experience/descriptors
-                    |
-                    v
-scripts/customer-experience-*.mjs
-                    |
-                    v
+design-inbox/core-auth-login.html + core-auth-2fa.html
+runtime/ + authored landing/content pipeline
+                    │
+                    ▼
+scripts/build-customer-experience.mjs
+                    │
+                    ▼
 dist/customer-experience/<experience-id>/
   landing/  portal/  login/  twoFactor/
 ```
@@ -46,6 +48,7 @@ boundaries.
 node app-templates/customer-portal/scripts/customer-experience-wizard-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-config-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-build-check.mjs
+node app-templates/customer-portal/scripts/customer-experience-login-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-2fa-check.mjs
 node app-templates/customer-portal/scripts/config-behavior-check.mjs
 ```

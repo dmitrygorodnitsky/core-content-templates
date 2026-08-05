@@ -77,10 +77,20 @@ async function readSourceCss() {
 }
 
 function assertRootCssContract(css, source) {
-  ["tokens.css", "base.css", "components.css", "shell.css", "responsive.css"].forEach(function (name) {
+  ["tokens.css", "base.css"].forEach(function (name) {
     assert.match(css, new RegExp("/\\* design source: design-inbox/styles/" + escapeRegExp(name) + " \\*/"), "root CSS must identify " + name + " as its source");
     assert.ok(css.includes(source[name]), "root CSS must preserve " + name + " verbatim");
   });
+  const landingSections = [
+    ["components.css landing-safe section", before(source["components.css"], "/* ============================================================\n   Wave 13 — authenticated live-data states")],
+    ["shell.css landing-safe section", before(source["shell.css"], "/* ============================================================\n   Wave 14 — Calm Harbor spa shell")],
+    ["responsive.css landing-safe section", before(source["responsive.css"], "/* Wave 14 — Calm Harbor spa portal */")],
+  ];
+  for (const [name, section] of landingSections) {
+    assert.match(css, new RegExp("/\\* design source: design-inbox/styles/" + escapeRegExp(name) + " \\*/"), "root CSS must identify " + name + " as its source");
+    assert.ok(css.includes(section), "root CSS must preserve " + name + " verbatim");
+  }
+  assert.doesNotMatch(css, /account-gate|account-btn|spa-order-row/, "authenticated portal-only CSS must not enter the public landing root");
   assert.ok(css.includes(before(source["seo.css"], "/* ---------- 1 · hero ---------- */")), "root CSS must preserve the shared SEO foundation verbatim");
   assert.ok(css.includes(between(source["seo.css"], "/* ============================================================\n   Responsive", "/* ============================================================\n   wave 11")), "root CSS must preserve SEO responsive rules verbatim");
   const commerce = between(source["routes.css"], "/* ============================================================\n   WAVE 3 — Commerce", "/* ---- Pricing (data-route=\"pricing\") ---- */");

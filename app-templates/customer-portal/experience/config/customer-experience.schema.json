@@ -252,12 +252,11 @@
     "evidenceRefs": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["landingContent", "portalSource", "loginTemplate", "loginParameters", "twoFactorTemplate", "twoFactorParameters", "twoFactorManifest"],
+      "required": ["landingContent", "portalSource", "loginSource", "twoFactorTemplate", "twoFactorParameters", "twoFactorManifest"],
       "properties": {
         "landingContent": { "type": "string", "minLength": 1 },
         "portalSource": { "type": "string", "minLength": 1 },
-        "loginTemplate": { "type": "string", "minLength": 1 },
-        "loginParameters": { "type": "string", "minLength": 1 },
+        "loginSource": { "type": "string", "minLength": 1 },
         "twoFactorTemplate": { "type": "string", "minLength": 1 },
         "twoFactorParameters": { "type": "string", "minLength": 1 },
         "twoFactorManifest": { "type": "string", "minLength": 1 }

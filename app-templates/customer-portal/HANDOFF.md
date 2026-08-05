@@ -148,13 +148,23 @@ demo. Do not confuse this with a production-safe scoped portal.
 
 ## Core Auth CMS login checkpoint
 
-Source package:
+The old tenant-specific local package was removed. It was generated output in
+an authored-package zone and had incorrectly become an upstream dependency of
+the generic compiler.
+
+Canonical accepted source and generated output are now:
 
 ```text
-cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/
+app-templates/customer-portal/design-inbox/core-auth-login.html
+app-templates/customer-portal/dist/customer-experience/calm-harbor-spa-staging/login/
 ```
 
-Active new CMS BlockTemplate:
+`build-customer-experience.mjs` compiles login directly from the immutable Wave
+18 HTML and linked accepted styles. It also builds landing from the authored
+landing/content pipeline in memory; it never reads a prior package from
+`dist/**`.
+
+Historical deployed tenant-specific CMS BlockTemplate:
 
 ```text
 code: CUSTOMER_PORTAL_CALM_HARBOR_LOGIN
@@ -162,9 +172,10 @@ id:   17c450d7-963e-4837-891a-15d01fb35c80
 org:  SYSTEM
 ```
 
-The template was initialized on `dev-1` with exact local `head`, `html`,
-`javascript`, `css`, and 20 parameters. A raw CMS readback confirmed all four
-content fields match byte-for-byte and all 20 normalized parameters match.
+The historical tenant-specific template was initialized on `dev-1` with exact
+`head`, `html`, `javascript`, `css`, and 20 parameters. A raw CMS readback
+confirmed all four content fields match byte-for-byte and all 20 normalized
+parameters match.
 The final repeat run reported `Updated: 0`, `Content fields changed: 0`, and
 `Unchanged incoming: 20`, with no network write.
 
@@ -193,21 +204,17 @@ Do not use or delete the older experimental template ids
 7. For manual paste, use either complete `head.html` with its style block or the
    split `head.no-style.html` plus `css.css`; never paste the CSS twice.
 
-Initialization/update command:
+Current local build and transfer checks:
 
 ```bash
-node docs/cms-components/lab-ui/scripts/sync-block-template-parameters.mjs \
-  --template-id 17c450d7-963e-4837-891a-15d01fb35c80 \
-  --template-json cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/manual-upload/template.json \
-  --base-url https://dev-1.servicewand.com/core \
-  --org SYSTEM \
-  --mode replace \
-  --with-content \
-  --live
+node app-templates/customer-portal/scripts/build-customer-experience.mjs
+node app-templates/customer-portal/scripts/customer-experience-login-check.mjs
+node app-templates/customer-portal/scripts/customer-experience-login-visual-check.mjs
 ```
 
-Credentials must be provided through `SERVICEWAND_API_KEY` or
-`SERVICEWAND_BEARER`; never put them in a command committed to the repository.
+No upload or PageContext switch is performed by these commands. Any future CMS
+activation must use the generated generic `CUSTOMER_EXPERIENCE_LOGIN` template,
+a separately approved template id, and an explicit consumer-switch plan.
 
 Not yet proven after switching to the new template id: the PageContext at the
 canonical anonymous login URL and the complete Core Auth redirect/login/return

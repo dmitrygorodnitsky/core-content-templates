@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { assertValidCmsPayload } from "./cms-schema-validation.mjs";
+import { validateAcceptedLoginSource } from "./customer-experience-auth-source.mjs";
 
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const portalRoot = path.resolve(scriptsDir, "..");
@@ -429,8 +430,7 @@ function compareEvidence(descriptor, registry, evidence) {
   const findings = [];
   const landing = evidence.landingContent;
   const portal = evidence.portalSource;
-  const loginTemplate = evidence.loginTemplate;
-  const loginByCode = new Map(evidence.loginParameters.map((parameter) => [parameter.code, parameter.value]));
+  const loginSource = evidence.loginSource;
   const twoFactorTemplate = stripHtmlComments(evidence.twoFactorTemplate);
   const twoFactorParameterNames = evidence.twoFactorParameters.parameters.map((parameter) => parameter.name);
 
@@ -452,8 +452,7 @@ function compareEvidence(descriptor, registry, evidence) {
   requireEvidence(portal.pim.organization === descriptor.deployment.pim.organization, "Portal PIM organization disagrees with descriptor");
   requireEvidence(portal.auth.callbackPath === descriptor.deployment.auth.callbackPath, "Portal auth callback disagrees with descriptor");
 
-  const placeholders = ["LOGIN_ACTION", "CSRF_PARAMETER_NAME", "CSRF_TOKEN", "RESET_PASSWORD_URL", "ERROR_DISPLAY", "LOGOUT_DISPLAY"];
-  for (const placeholder of placeholders) requireEvidence(loginTemplate.html.includes("{{" + placeholder + "}}"), "Login template lost Core Auth placeholder " + placeholder);
+  validateAcceptedLoginSource(loginSource);
 
   const twoFactorRuntimePlaceholders = ["TWO_FACTOR_ACTION", "CSRF_PARAMETER_NAME", "CSRF_TOKEN", "SETUP_DISPLAY", "VERIFY_NOTICE_DISPLAY", "ERROR_DISPLAY", "TWO_FACTOR_QR_CODE", "TWO_FACTOR_SECRET"];
   for (const placeholder of twoFactorRuntimePlaceholders) {
@@ -471,27 +470,6 @@ function compareEvidence(descriptor, registry, evidence) {
   const registeredTwoFactorCodes = registry.parameters.filter((parameter) => parameter.consumers.includes("twoFactor") && expectedRegistryCodes.includes(parameter.code)).map((parameter) => parameter.code);
   requireEvidence(JSON.stringify([...registeredTwoFactorCodes].sort()) === JSON.stringify([...expectedRegistryCodes].sort()), "2FA localized parameters are not registered exactly once");
 
-  if (loginByCode.get("THEME") !== descriptor.experience.theme) findings.push({
-    severity: "warning",
-    id: "login-theme-drift",
-    current: loginByCode.get("THEME"),
-    intended: descriptor.experience.theme,
-    detail: "The current Calm Harbor login defaults to a different palette than the shared experience theme.",
-  });
-  if (loginByCode.get("BRAND_NAME")?.en !== descriptor.experience.brandName.en) findings.push({
-    severity: "warning",
-    id: "login-brand-drift",
-    current: loginByCode.get("BRAND_NAME"),
-    intended: descriptor.experience.brandName,
-    detail: "The current login brand differs from the shared experience brand.",
-  });
-  if (loginTemplate.code !== registry.templateCodes.login) findings.push({
-    severity: "info",
-    id: "tenant-specific-login-template",
-    current: loginTemplate.code,
-    intended: registry.templateCodes.login,
-    detail: "Expected during report-only migration; no consumer switch was performed.",
-  });
   if (portal.template.code !== registry.templateCodes.portal) findings.push({
     severity: "info",
     id: "tenant-specific-portal-template",

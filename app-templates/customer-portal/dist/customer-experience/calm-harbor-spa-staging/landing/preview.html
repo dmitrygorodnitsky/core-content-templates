@@ -166,7 +166,7 @@ button { font-family: inherit; }
 
 @keyframes drawer-in { from { transform: translateX(100%); } to { transform: none; } }
 
-/* design source: design-inbox/styles/components.css */
+/* design source: design-inbox/styles/components.css landing-safe section */
 /* components.css — buttons, badges, tabs, cards, panels, states, toast, drawer, dev harness */
 
 /* ============================================================
@@ -365,9 +365,13 @@ button { font-family: inherit; }
 
 .viewport-frame[data-vw="768"]  { max-width: 768px; }
 
-.viewport-frame[data-vw="1180"] { max-width: 1180px; }
+/* Wave 14.1 — wide presets are TRUE-width: an explicit width (not just max-width)
+   so a narrower preview pane never clamps the layout; the host scrolls instead. */
+.viewport-frame[data-vw="1180"] { width: 1180px; min-width: 1180px; max-width: 1180px; }
 
-.viewport-frame[data-vw="1440"] { max-width: 1440px; }
+.viewport-frame[data-vw="1440"] { width: 1440px; min-width: 1440px; max-width: 1440px; background: var(--base); }
+
+.viewport-host:has(.viewport-frame[data-vw="1180"]), .viewport-host:has(.viewport-frame[data-vw="1440"]) { justify-content: flex-start; overflow-x: auto; }
 
 .viewport-frame:not([data-vw="1440"]):not([data-vw="full"]) {
   margin: 14px auto; box-shadow: 0 20px 60px rgba(13,38,76,.18); border-radius: 20px; overflow: hidden; background: var(--base);
@@ -385,7 +389,7 @@ button { font-family: inherit; }
 
 .chip { background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 6px 12px; font-weight: 590; font-size: 12px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
 
-/* design source: design-inbox/styles/shell.css */
+/* design source: design-inbox/styles/shell.css landing-safe section */
 /* shell.css — app-shell, page layout, top-nav */
 
 /* ============================================================
@@ -638,7 +642,7 @@ button { font-family: inherit; }
 .vw-mobile .seo-footer__grid { grid-template-columns: 1fr; }
 .vw-mobile .seo-meta__row { flex-direction: column; gap: 0; }
 
-/* design source: design-inbox/styles/responsive.css */
+/* design source: design-inbox/styles/responsive.css landing-safe section */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
 
 /* ============================================================

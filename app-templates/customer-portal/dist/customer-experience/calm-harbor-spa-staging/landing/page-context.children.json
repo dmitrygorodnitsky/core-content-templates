@@ -469,17 +469,17 @@
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_TYPE_CODE",
         "type": "STRING",
-        "value": "SPA_STANDARD_PRICE"
+        "value": "PRICE_CURRENCY"
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_CODE",
         "type": "STRING",
-        "value": "INTERVAL"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_VALUES",
         "type": "STRING",
-        "value": "ONE_TIME,MONTH"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CURRENCY",
@@ -499,12 +499,12 @@
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_AMOUNT_ATTRIBUTE_CODE",
         "type": "STRING",
-        "value": "AMOUNT_MINOR"
+        "value": "UNIT_PRICE"
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_AMOUNT_MINOR_DIVISOR",
         "type": "STRING",
-        "value": "100"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_EMPTY_COPY",
@@ -592,17 +592,17 @@
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_TYPE_CODE",
         "type": "STRING",
-        "value": "SPA_STANDARD_PRICE"
+        "value": "PRICE_CURRENCY"
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_CODE",
         "type": "STRING",
-        "value": "INTERVAL"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_VALUES",
         "type": "STRING",
-        "value": "ONE_TIME,MONTH"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY",
@@ -622,12 +622,12 @@
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_ATTRIBUTE_CODE",
         "type": "STRING",
-        "value": "AMOUNT_MINOR"
+        "value": "UNIT_PRICE"
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_MINOR_DIVISOR",
         "type": "STRING",
-        "value": "100"
+        "value": ""
       },
       {
         "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_EMPTY_COPY",

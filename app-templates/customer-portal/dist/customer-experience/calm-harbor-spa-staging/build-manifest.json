@@ -78,7 +78,7 @@
       "code": "CUSTOMER_EXPERIENCE_LANDING",
       "parameterCount": 25,
       "pageContextParameterCount": 18,
-      "sha256": "0473c841fa93dd37455dadd8720a0335cc7230493c73dffce8e526c7dec9302b"
+      "sha256": "1a3fc1bc73210b36aa0f5f8cf384a9d3937e953f2be3b414abb86782b9f5a940"
     },
     "portal": {
       "code": "CUSTOMER_EXPERIENCE_PORTAL",
@@ -90,13 +90,27 @@
       "code": "CUSTOMER_EXPERIENCE_LOGIN",
       "parameterCount": 25,
       "pageContextParameterCount": 25,
-      "sha256": "929e8b3ff97ff21b677ee7e91a695315a8507f5e67fdb8ae41e26bd339cfc5db"
+      "sha256": "3e059fcf48de8a92dea3ebdd54a94864aa733dcf2a60513912b24063fa790fa7"
     },
     "twoFactor": {
       "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
       "parameterCount": 24,
       "pageContextParameterCount": 24,
-      "sha256": "add2bf1b7d9cf7f8acfe8521467f9b444b47340d70c18c44fb3e63a8c8e659d6"
+      "sha256": "b97f870bf906c2199576769b032f69cc34884701dbbd6536ba39f9dc5ca4b7ef"
+    }
+  },
+  "sources": {
+    "landing": {
+      "builder": "app-templates/customer-portal/scripts/export-calm-harbor-landing-blocks-manual.mjs",
+      "rootSha256": "4a8d963bd909cf44b169ebe027be44dc50c1c9d1ece32a54820f9722c3b20e8e"
+    },
+    "login": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-login.html",
+      "sha256": "561c42fe69f2069195bcbba2aab78ac8c86493f7ec3eae6ca54381323bf6c171"
+    },
+    "twoFactor": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-2fa.html",
+      "sha256": "f94ef948f7f3a38a87d7c47f6a2c9a8ecaca651450640f39a18a9066e70e6f95"
     }
   },
   "runtime": {

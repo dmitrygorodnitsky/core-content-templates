@@ -232,8 +232,7 @@
   "evidenceRefs": {
     "landingContent": "app-templates/customer-portal/content/cases/calm-harbor-spa.public-authored.json",
     "portalSource": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-portal-staging.json",
-    "loginTemplate": "cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/block_template_config.json",
-    "loginParameters": "cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/manual-upload/parameters.json",
+    "loginSource": "app-templates/customer-portal/design-inbox/core-auth-login.html",
     "twoFactorTemplate": "app-templates/customer-portal/design-inbox/core-auth-2fa.html",
     "twoFactorParameters": "app-templates/customer-portal/design-inbox/data/core-auth-2fa-parameters.json",
     "twoFactorManifest": "app-templates/customer-portal/design-inbox/data/core-auth-2fa.manifest.json"

@@ -5,14 +5,15 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { buildCustomerExperienceReport, loadCustomerExperienceInputs } from "./customer-experience-config-report.mjs";
+import { AUTH_LOGIN_STYLE_NAMES, compileAcceptedLoginSource } from "./customer-experience-auth-source.mjs";
+import { buildCalmHarborLandingFamily } from "./export-calm-harbor-landing-blocks-manual.mjs";
 
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const portalRoot = path.resolve(scriptsDir, "..");
 const repositoryRoot = path.resolve(portalRoot, "../..");
 const runtimePath = path.join(portalRoot, "runtime/manual/calm-harbor-target-runtime.js");
-const loginSourcePath = path.join(repositoryRoot, "cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/block_template_config.json");
+const loginSourcePath = path.join(portalRoot, "design-inbox/core-auth-login.html");
 const twoFactorStylePath = path.join(portalRoot, "design-inbox/styles/core-auth-2fa.css");
-const acceptedLandingPath = path.join(portalRoot, "dist/manual-upload/customer-portal-calm-harbor-landing-staging/cms-family.payload.json");
 const styleFiles = ["tokens.css", "base.css", "shell.css", "components.css", "routes.css", "responsive.css", "seo.css"];
 const surfaces = ["landing", "portal", "login", "twoFactor"];
 
@@ -39,26 +40,36 @@ export async function buildCustomerExperience(options = {}) {
 
   const outputDir = path.resolve(options.outputDir || path.join(portalRoot, "dist/customer-experience", safeSegment(inputs.descriptor.experience.id)));
   assertSafeOutput(outputDir);
-  const [portalCss, portalJavascript, loginSource, acceptedLanding, twoFactorCss] = await Promise.all([
+  const [portalCss, portalJavascript, acceptedLoginSource, acceptedLoginStyles, acceptedLanding, twoFactorCss] = await Promise.all([
     readPortalStyles(),
     fs.readFile(runtimePath, "utf8"),
-    readJson(loginSourcePath),
-    readJson(acceptedLandingPath),
+    fs.readFile(loginSourcePath, "utf8"),
+    readAcceptedLoginStyles(),
+    buildCalmHarborLandingFamily(),
     fs.readFile(twoFactorStylePath, "utf8"),
   ]);
   assertLiveRuntime(portalJavascript);
 
-  const landingFamily = landingTemplate(inputs, report, acceptedLanding);
+  const loginSource = compileAcceptedLoginSource(acceptedLoginSource, acceptedLoginStyles);
+  const landingFamily = landingTemplate(inputs, report, acceptedLanding.payload);
+  const login = loginTemplate(inputs, report, loginSource);
   const templates = {
     landing: landingFamily.root,
     portal: portalTemplate(inputs, report, portalCss, portalJavascript),
-    login: loginTemplate(inputs, report, loginSource),
-    twoFactor: twoFactorTemplate(inputs, report, loginSource, inputs.evidence.twoFactorTemplate, twoFactorCss),
+    login,
+    twoFactor: twoFactorTemplate(inputs, report, login, inputs.evidence.twoFactorTemplate, twoFactorCss),
   };
   validateTemplates(templates, inputs, report);
 
   const pageContexts = Object.fromEntries(surfaces.map((surface) => [surface, pageContextMap(surface, inputs, report)]));
-  const manifest = buildManifest(inputs, report, templates, pageContexts);
+  const manifest = buildManifest(inputs, report, templates, pageContexts, {
+    landing: {
+      builder: path.relative(repositoryRoot, path.join(scriptsDir, "export-calm-harbor-landing-blocks-manual.mjs")),
+      rootSha256: acceptedLanding.manifest.sha256.root,
+    },
+    login: { source: path.relative(repositoryRoot, loginSourcePath), sha256: sha256(acceptedLoginSource) },
+    twoFactor: { source: inputs.descriptor.evidenceRefs.twoFactorTemplate, sha256: sha256(inputs.evidence.twoFactorTemplate) },
+  });
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "customer-experience-build-"));
   try {
     await writeJson(path.join(tempDir, "build-manifest.json"), manifest);
@@ -222,18 +233,7 @@ function portalTemplate(inputs, report, css, javascript) {
   };
 }
 
-function loginTemplate(inputs, report, source) {
-  const tokenMap = {
-    THEME: "CX_THEME", MODE: "CX_DEFAULT_MODE", TITLE: "LOGIN_DOCUMENT_TITLE", BRAND_NAME: "CX_BRAND_NAME",
-    CARD_TITLE: "LOGIN_CARD_TITLE", CARD_SUBTITLE: "LOGIN_CARD_SUBTITLE", ERROR_TITLE: "LOGIN_ERROR_TITLE",
-    ERROR_BODY: "LOGIN_ERROR_BODY", LOGOUT_TITLE: "LOGIN_LOGOUT_TITLE", LOGOUT_BODY: "LOGIN_LOGOUT_BODY",
-    USERNAME_LABEL: "LOGIN_USERNAME_LABEL", PASSWORD_LABEL: "LOGIN_PASSWORD_LABEL", FORGOT_PASSWORD: "LOGIN_FORGOT_PASSWORD_LABEL",
-    SHOW_PASSWORD: "LOGIN_SHOW_PASSWORD_LABEL", HIDE_PASSWORD: "LOGIN_HIDE_PASSWORD_LABEL", LOGIN_BUTTON: "LOGIN_SUBMIT_LABEL",
-    CARD_NOTE: "LOGIN_CARD_NOTE", PITCH_EYEBROW: "LOGIN_PITCH_EYEBROW", PITCH_TITLE: "LOGIN_PITCH_TITLE", PITCH_BODY: "LOGIN_PITCH_BODY",
-  };
-  const rewrite = (value) => String(value).replace(/\$\{([A-Z0-9_]+)@([A-Z_]+)\}/g, function (match, code, type) {
-    return tokenMap[code] ? ref(tokenMap[code], type) : match;
-  });
+export function loginTemplate(inputs, report, source) {
   return {
     code: inputs.registry.templateCodes.login,
     nls: { en: { NAME: "Customer experience | Core Auth login" } },
@@ -241,11 +241,8 @@ function loginTemplate(inputs, report, source) {
     advanced: true,
     parent: null,
     children: [],
-    head: rewrite(source.head),
-    html: rewrite(source.html).replace(
-      '<div class="auth-root"',
-      '<div class="auth-root" lang="' + ref("CX_LANGUAGE", "STRING") + '" dir="' + ref("CX_DIRECTION", "STRING") + '"',
-    ),
+    head: source.head,
+    html: source.html,
     css: source.css || "",
     javascript: source.javascript,
     parameters: templateParameters("login", inputs, report),
@@ -269,7 +266,7 @@ export function twoFactorTemplate(inputs, report, loginSource, acceptedSource, t
     .replace(/@container\s+authpage\s*\(/g, "@media (")
     .trim();
   const baseHead = loginSource.head
-    .replace(/\$\{TITLE@LOCALIZED_STRING_SS\}/g, ref("TWO_FACTOR_DOCUMENT_TITLE", "LOCALIZED_STRING_SS"))
+    .replace(ref("LOGIN_DOCUMENT_TITLE", "LOCALIZED_STRING_SS"), ref("TWO_FACTOR_DOCUMENT_TITLE", "LOCALIZED_STRING_SS"))
     .replace(/<\/style>\s*$/, "\n/* Wave 19 AUTH_2FA additions */\n" + scopedTwoFactorCss + "\n</style>");
   return {
     code: inputs.registry.templateCodes.twoFactor,
@@ -343,7 +340,7 @@ function validateTemplates(templates, inputs, report) {
   if (!templates.portal.html.includes(ref("NAV_LANDING_URL", "STRING"))) throw new Error("Portal does not consume the resolved landing destination");
 }
 
-function buildManifest(inputs, report, templates, pageContexts) {
+function buildManifest(inputs, report, templates, pageContexts, sources) {
   return {
     schemaVersion: 1,
     kind: "customer-experience-local-build",
@@ -358,6 +355,7 @@ function buildManifest(inputs, report, templates, pageContexts) {
       pageContextParameterCount: pageContexts[surface].parameters.length,
       sha256: sha256(JSON.stringify(templates[surface])),
     }])),
+    sources,
     runtime: { source: path.relative(repositoryRoot, runtimePath), sha256: sha256(templates.portal.javascript) },
   };
 }
@@ -393,6 +391,11 @@ async function readPortalStyles() {
   return parts.join("\n\n") + "\n";
 }
 
+async function readAcceptedLoginStyles() {
+  const entries = await Promise.all(AUTH_LOGIN_STYLE_NAMES.map(async (name) => [name, await fs.readFile(path.join(portalRoot, "design-inbox/styles", name), "utf8")]));
+  return Object.fromEntries(entries);
+}
+
 function assertSafeOutput(value) {
   const allowed = path.join(portalRoot, "dist/customer-experience") + path.sep;
   if (!value.startsWith(allowed) || value === allowed.slice(0, -1)) throw new Error("Output must be a child of " + allowed.slice(0, -1));
@@ -424,8 +427,11 @@ function safeSegment(value) { if (!/^[a-z0-9][a-z0-9-]*$/.test(value)) throw new
 function sha256(value) { return crypto.createHash("sha256").update(value).digest("hex"); }
 function countOccurrences(value, needle) { return String(value).split(needle).length - 1; }
 function escapeHtml(value) { return String(value).replace(/[&<>\"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]); }
-async function readJson(file) { return JSON.parse(await fs.readFile(file, "utf8")); }
-async function writeText(file, value) { await fs.mkdir(path.dirname(file), { recursive: true }); await fs.writeFile(file, String(value).replace(/\n*$/, "\n"), "utf8"); }
+async function writeText(file, value) {
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  const normalized = String(value).replace(/[ \t]+$/gm, "").replace(/\n*$/, "\n");
+  await fs.writeFile(file, normalized, "utf8");
+}
 async function writeJson(file, value) { await writeText(file, JSON.stringify(value, null, 2)); }
 
 function parseArgs(argv) {

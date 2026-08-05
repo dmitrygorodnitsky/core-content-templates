@@ -1054,20 +1054,6 @@
   ],
   "findings": [
     {
-      "severity": "warning",
-      "id": "login-theme-drift",
-      "current": "hvac",
-      "intended": "beauty",
-      "detail": "The current Calm Harbor login defaults to a different palette than the shared experience theme."
-    },
-    {
-      "severity": "info",
-      "id": "tenant-specific-login-template",
-      "current": "CUSTOMER_PORTAL_CALM_HARBOR_LOGIN",
-      "intended": "CUSTOMER_EXPERIENCE_LOGIN",
-      "detail": "Expected during report-only migration; no consumer switch was performed."
-    },
-    {
       "severity": "info",
       "id": "tenant-specific-portal-template",
       "current": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",

@@ -26,7 +26,7 @@ assert.equal(report.navigation.landingUrl, null);
 assert.equal(report.navigation.portalUrl, null);
 assert.equal(report.deferredParameters.length, 10);
 assert.equal(report.blockers.some((item) => item.id === "login-page-context-selector-unproven"), true);
-assert.equal(report.findings.some((item) => item.id === "login-theme-drift" && item.current === "hvac" && item.intended === "beauty"), true);
+assert.equal(report.findings.some((item) => item.id.startsWith("login-") || item.id === "tenant-specific-login-template"), false, "login is compiled directly from accepted generic source");
 assert.equal(valueFor(report, "landing", "CX_THEME"), "beauty");
 assert.equal(valueFor(report, "portal", "CX_THEME"), "beauty");
 assert.equal(valueFor(report, "login", "CX_THEME"), "beauty");

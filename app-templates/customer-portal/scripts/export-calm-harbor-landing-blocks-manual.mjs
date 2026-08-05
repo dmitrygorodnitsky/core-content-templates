@@ -29,9 +29,7 @@ const CHILDREN = [
   ["footer", "Footer", "cms"],
 ];
 
-export async function exportCalmHarborLandingBlocksManual(options = {}) {
-  const target = path.resolve(options.outputDir || outputDir);
-  assertOutput(target);
+export async function buildCalmHarborLandingFamily() {
   const runtime = JSON.parse(await fs.readFile(sourcePath, "utf8"));
   const design = await readDesignData();
   const css = await readDesignCss();
@@ -75,6 +73,14 @@ export async function exportCalmHarborLandingBlocksManual(options = {}) {
       javascript: digest(root.javascript),
     },
   };
+
+  return { runtime, design, assets, root, children, payload, composition, manifest };
+}
+
+export async function exportCalmHarborLandingBlocksManual(options = {}) {
+  const target = path.resolve(options.outputDir || outputDir);
+  assertOutput(target);
+  const { runtime, design, assets, root, children, payload, composition, manifest } = await buildCalmHarborLandingFamily();
 
   const staging = target + ".staging-" + crypto.randomBytes(6).toString("hex");
   const backup = target + ".backup-" + crypto.randomBytes(6).toString("hex");
@@ -261,10 +267,10 @@ function pimParameters(pim, kind, types, seo) {
     field(prefix + "SUB", kind === "PRICING" ? seo.pricing.note : teaser.sub),
     field(prefix + "API_BASE", pim.apiBase, "STRING"), field(prefix + "ORGANIZATION", pim.organization, "STRING"),
     field(prefix + "PRODUCT_TYPE_CODES", types, "STRING"), field(prefix + "PRICE_TYPE_CODE", pim.priceTypeCode, "STRING"),
-    field(prefix + "PRICE_ATTRIBUTE_CODE", pim.priceAttributeCode, "STRING"), field(prefix + "PRICE_ATTRIBUTE_VALUES", pim.priceAttributeValues.join(","), "STRING"),
+    field(prefix + "PRICE_ATTRIBUTE_CODE", pim.priceAttributeCode || "", "STRING"), field(prefix + "PRICE_ATTRIBUTE_VALUES", csv(pim.priceAttributeValues), "STRING"),
     field(prefix + "CURRENCY", pim.currency, "STRING"), field(prefix + "CURRENCY_ATTRIBUTE_CODE", pim.currencyAttributeCode, "STRING"),
-    field(prefix + "CURRENCY_ATTRIBUTE_VALUES", pim.currencyAttributeValues.join(","), "STRING"),
-    field(prefix + "AMOUNT_ATTRIBUTE_CODE", pim.amountAttributeCode, "STRING"), field(prefix + "AMOUNT_MINOR_DIVISOR", String(pim.amountMinorDivisor), "STRING"),
+    field(prefix + "CURRENCY_ATTRIBUTE_VALUES", csv(pim.currencyAttributeValues), "STRING"),
+    field(prefix + "AMOUNT_ATTRIBUTE_CODE", pim.amountAttributeCode, "STRING"), field(prefix + "AMOUNT_MINOR_DIVISOR", pim.amountMinorDivisor == null ? "" : String(pim.amountMinorDivisor), "STRING"),
     field(prefix + "EMPTY_COPY", kind === "PRICING" ? "No treatments or memberships are currently published in the public catalog — prices appear here the moment they are." : "Retail products appear here as soon as they are published in the public catalog — nothing is shown until real products exist."),
     field(prefix + "ERROR_TITLE", kind === "PRICING" ? "Live pricing is unavailable" : "The shop is unavailable"),
     field(prefix + "ERROR_COPY", "The public catalog could not be loaded. No catalog data is shown."),
@@ -273,6 +279,8 @@ function pimParameters(pim, kind, types, seo) {
     field(prefix + "CTA_NOTE", kind === "PRODUCTS" ? teaser.note : ""),
   ];
 }
+
+function csv(value) { return Array.isArray(value) ? value.join(",") : ""; }
 
 function pricingHtml() {
   const p = "PRICING_";
@@ -401,15 +409,18 @@ async function readDesignCss() {
   const media = between(seo, "/* ============================================================\n   wave 11", "/* wave 12 · pim.pricing[] rows");
   const pricingDetails = from(seo, "/* wave 12 · pim.pricing[] rows");
   const commerceShared = between(routes, "/* ============================================================\n   WAVE 3 — Commerce", "/* ---- Pricing (data-route=\"pricing\") ---- */");
+  const landingComponents = before(components, "/* ============================================================\n   Wave 13 — authenticated live-data states");
+  const landingShell = before(shell, "/* ============================================================\n   Wave 14 — Calm Harbor spa shell");
+  const landingResponsive = before(responsive, "/* Wave 14 — Calm Harbor spa portal */");
   const root = [
     annotated("tokens.css", tokens),
     annotated("base.css", base),
-    annotated("components.css", components),
-    annotated("shell.css", shell),
+    annotated("components.css landing-safe section", landingComponents),
+    annotated("shell.css landing-safe section", landingShell),
     annotated("seo.css shared scaffolding", prefix),
     annotated("routes.css shared commerce primitives", commerceShared),
     annotated("seo.css responsive", sectionResponsive),
-    annotated("responsive.css", responsive),
+    annotated("responsive.css landing-safe section", landingResponsive),
   ].join("\n\n") + "\n";
 
   return {
