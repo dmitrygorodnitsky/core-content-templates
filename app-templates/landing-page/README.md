@@ -141,7 +141,6 @@ node app-templates/landing-page/scripts/upload-cms-family.mjs \
   --base-url https://dev-1.servicewand.com/core \
   --org SYSTEM \
   --require-existing \
-  --expected-root-id "$FIELD_SERVICE_ROOT_ID" \
   --dry-run
 ```
 
@@ -149,6 +148,9 @@ The compatibility path `docs/cms-components/lab-ui/scripts/upload-cms-family.mjs
 may be substituted for the canonical uploader above. Review the resolved IDs
 for all 15 templates, then use the identical command with `--live` only after
 explicit approval. An empty `SERVICEWAND_API_KEY` is not a valid live upload.
+Root/child relationships, parent links, includes, enabled templates, and
+PageContext remain manual CMS work; this flow neither requires a root UUID nor
+writes those fields.
 
 ## CMS Parameter Contract
 

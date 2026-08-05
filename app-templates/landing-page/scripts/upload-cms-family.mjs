@@ -193,7 +193,18 @@ const templatesFromPayload = (payload) => {
 const parameterCount = (templates) => templates.reduce((sum, template) => sum + (template.parameters?.length || 0), 0);
 
 const normalizeTemplateForSave = (template, existing, org) => {
-  const { children: _children, parent: _parent, slotMarker: _slotMarker, ...entity } = template;
+  const {
+    children: _children,
+    parent: _parent,
+    slotMarker: _slotMarker,
+    includes: _includes,
+    includeTemplates: _includeTemplates,
+    includedTemplates: _includedTemplates,
+    enabledTemplates: _enabledTemplates,
+    pageContext: _pageContext,
+    pageContexts: _pageContexts,
+    ...entity
+  } = template;
   const result = {
     ...entity,
     id: existing?.id,

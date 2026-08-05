@@ -15,11 +15,28 @@ const rootId = "11111111-1111-4111-8111-111111111111";
 const childId = "22222222-2222-4222-8222-222222222222";
 let missingCode = null;
 let saveRequests = 0;
+const savedEntities = [];
 
 await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
   schemaVersion: 1,
-  root: { code: "FIELD_SERVICE_LANDING", parameters: [] },
-  children: [{ code: "SECTION_01_HEADER_CORPORATE_REFERENCE", parameters: [] }],
+  root: {
+    code: "FIELD_SERVICE_LANDING",
+    parameters: [],
+    children: [{ code: "MUST_NOT_BE_SAVED" }],
+    parent: { code: "MUST_NOT_BE_SAVED" },
+    includes: ["MUST_NOT_BE_SAVED"],
+    includeTemplates: ["MUST_NOT_BE_SAVED"],
+    includedTemplates: ["MUST_NOT_BE_SAVED"],
+    enabledTemplates: ["MUST_NOT_BE_SAVED"],
+    pageContext: { code: "MUST_NOT_BE_SAVED" },
+    pageContexts: [{ code: "MUST_NOT_BE_SAVED" }],
+  },
+  children: [{
+    code: "SECTION_01_HEADER_CORPORATE_REFERENCE",
+    parameters: [],
+    parent: { code: "FIELD_SERVICE_LANDING" },
+    slotMarker: "MUST_NOT_BE_SAVED",
+  }],
 }, null, 2));
 
 const readBody = async (request) => {
@@ -51,7 +68,9 @@ const server = http.createServer(async (request, response) => {
   }
   if (request.url === "/core-cms/api/block-template/save.json") {
     saveRequests += 1;
-    return send(response, 500, { error: "dry-run must never save" });
+    const body = JSON.parse(await readBody(request));
+    savedEntities.push(...(body.entities || []));
+    return send(response, 200, (body.entities || []).map((entity) => entity.id));
   }
   return send(response, 404, { error: "not found" });
 });
@@ -80,7 +99,22 @@ try {
   missingCode = "SECTION_01_HEADER_CORPORATE_REFERENCE";
   await assert.rejects(execFileAsync(process.execPath, baseArgs, { env }), /Required existing templates were not found/);
   assert.equal(saveRequests, 0, "resolved dry-run must make no save requests");
-  console.log("upload-cms-family-check ok: existing IDs printed, root pin enforced, missing template rejected before writes");
+
+  missingCode = null;
+  const liveArgs = baseArgs.map((arg) => arg === "--dry-run" ? "--live" : arg);
+  await execFileAsync(process.execPath, liveArgs, { env });
+  assert.equal(saveRequests, 2, "live check saves exactly the root and child BlockTemplates");
+  assert.equal(savedEntities.length, 2);
+  const relationshipFields = [
+    "children", "parent", "slotMarker", "includes", "includeTemplates",
+    "includedTemplates", "enabledTemplates", "pageContext", "pageContexts",
+  ];
+  for (const entity of savedEntities) {
+    for (const field of relationshipFields) {
+      assert.equal(Object.hasOwn(entity, field), false, `${field} must never enter a BlockTemplate save request`);
+    }
+  }
+  console.log("upload-cms-family-check ok: IDs printed, root pin enforced, missing template rejected, relationship fields stripped");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });

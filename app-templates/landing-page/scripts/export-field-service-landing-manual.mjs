@@ -78,12 +78,14 @@ node app-templates/landing-page/scripts/upload-cms-family.mjs \\
   --base-url https://dev-1.servicewand.com/core \\
   --org SYSTEM \\
   --require-existing \\
-  --expected-root-id "$FIELD_SERVICE_ROOT_ID" \\
   --dry-run
 \`\`\`
 
 Review all 15 resolved codes and IDs. Only after explicit approval, repeat the
 same command with \`--live\` instead of \`--dry-run\`.
+Root/child relationships, parent links, includes, enabled templates, and
+PageContext remain manual CMS work; this flow neither requires a root UUID nor
+writes those fields.
 `;
 
 export async function exportFieldServiceLandingManual(options = {}) {
