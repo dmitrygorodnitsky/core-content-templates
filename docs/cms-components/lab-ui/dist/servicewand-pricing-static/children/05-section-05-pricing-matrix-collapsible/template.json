@@ -1,0 +1,2276 @@
+{
+  "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE",
+  "nls": {
+    "en": {
+      "NAME": "Pricing · matrix (collapsible)"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--pricing-matrix-collapsible\" data-composition-block=\"pricing.matrix-collapsible\">\n<!-- lab-ui block · pricing.matrix-collapsible\n     Full feature comparison.\n     Desktop: sticky-header grid driven by column_count (2 / 3 / 4 plan columns).\n     <= 720px: per-plan accordion, each plan = a <details> with all groups\n     listed inside. The same parameter values populate both modes.\n-->\n<section class=\"mx-matrix\" id=\"pricing-compare\" data-block=\"pricing.matrix-collapsible\" data-columns=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_COLUMN_COUNT@STRING}\" data-pricing-period=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_BILLING_DEFAULT@STRING}\">\n  <div class=\"container\">\n    <header class=\"mx-top\">\n      <p class=\"mx-eyebrow\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"mx-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"mx-lede\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"mx-shell mx-shell--table\" role=\"table\" aria-label=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_TABLE_LABEL@LOCALIZED_STRING_SS}\">\n      <div class=\"mx-row mx-row--head\" role=\"row\">\n        <div class=\"mx-cell mx-cell--feature\" role=\"columnheader\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_FEATURE_COLUMN_LABEL@LOCALIZED_STRING_SS}</div>\n        <div class=\"mx-cell mx-cell--plan\" role=\"columnheader\" data-plan-col=\"01\"><span class=\"mx-plan-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-plan-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_TAG@LOCALIZED_STRING_SS}</span></div>\n        <div class=\"mx-cell mx-cell--plan\" role=\"columnheader\" data-plan-col=\"02\"><span class=\"mx-plan-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-plan-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_TAG@LOCALIZED_STRING_SS}</span></div>\n        <div class=\"mx-cell mx-cell--plan\" role=\"columnheader\" data-plan-col=\"03\"><span class=\"mx-plan-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-plan-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_TAG@LOCALIZED_STRING_SS}</span></div>\n        <div class=\"mx-cell mx-cell--plan\" role=\"columnheader\" data-plan-col=\"04\"><span class=\"mx-plan-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-plan-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_TAG@LOCALIZED_STRING_SS}</span></div>\n      </div>\n\n      <div class=\"mx-group\" role=\"rowgroup\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE@STRING}\">\n        <div class=\"mx-group-title\" role=\"rowheader\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE@LOCALIZED_STRING_SS}</div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n      </div>\n\n      <div class=\"mx-group\" role=\"rowgroup\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE@STRING}\">\n        <div class=\"mx-group-title\" role=\"rowheader\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE@LOCALIZED_STRING_SS}</div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n      </div>\n\n      <div class=\"mx-group\" role=\"rowgroup\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE@STRING}\">\n        <div class=\"mx-group-title\" role=\"rowheader\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE@LOCALIZED_STRING_SS}</div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n      </div>\n\n      <div class=\"mx-group\" role=\"rowgroup\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE@STRING}\">\n        <div class=\"mx-group-title\" role=\"rowheader\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE@LOCALIZED_STRING_SS}</div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n        <div class=\"mx-row\" role=\"row\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE@STRING}\">\n          <div class=\"mx-cell mx-cell--feature\" role=\"rowheader\"><span class=\"mx-feature-label\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL@LOCALIZED_STRING_SS}</span><span class=\"mx-feature-hint\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_HINT@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"01\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"02\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"03\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_VALUE@LOCALIZED_STRING_SS}</span></div>\n          <div class=\"mx-cell\" role=\"cell\" data-plan-col=\"04\" data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_STATE@STRING}\"><span class=\"mx-mobile-plan\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-value\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_VALUE@LOCALIZED_STRING_SS}</span></div>\n        </div>\n      </div>\n    </div>\n\n    <div class=\"mx-shell mx-shell--accordion\" aria-label=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_TABLE_LABEL@LOCALIZED_STRING_SS}\">\n      <details class=\"mx-acc\" data-plan-col=\"01\" open>\n        <summary class=\"mx-acc-summary\"><span class=\"mx-acc-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_TAG@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-chev\" aria-hidden=\"true\"></span></summary>\n        <div class=\"mx-acc-body\">\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n        </div>\n      </details>\n      <details class=\"mx-acc\" data-plan-col=\"02\">\n        <summary class=\"mx-acc-summary\"><span class=\"mx-acc-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_TAG@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-chev\" aria-hidden=\"true\"></span></summary>\n        <div class=\"mx-acc-body\">\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n        </div>\n      </details>\n      <details class=\"mx-acc\" data-plan-col=\"03\">\n        <summary class=\"mx-acc-summary\"><span class=\"mx-acc-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_TAG@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-chev\" aria-hidden=\"true\"></span></summary>\n        <div class=\"mx-acc-body\">\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n        </div>\n      </details>\n      <details class=\"mx-acc\" data-plan-col=\"04\">\n        <summary class=\"mx-acc-summary\"><span class=\"mx-acc-name\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-tag\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_TAG@LOCALIZED_STRING_SS}</span><span class=\"mx-acc-chev\" aria-hidden=\"true\"></span></summary>\n        <div class=\"mx-acc-body\">\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n          <div class=\"mx-acc-group\" data-group-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE@STRING}\">\n            <p class=\"mx-acc-group-title\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE@LOCALIZED_STRING_SS}</p>\n            <dl class=\"mx-acc-list\">\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n              <div class=\"mx-acc-item\" data-row-visible=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE@STRING}\">\n                <dt>${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL@LOCALIZED_STRING_SS}</dt>\n                <dd data-state=\"${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_STATE@STRING}\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_VALUE@LOCALIZED_STRING_SS}</dd>\n              </div>\n            </dl>\n          </div>\n        </div>\n      </details>\n    </div>\n\n    <p class=\"mx-disclaimer\">${SECTION_05_PRICING_MATRIX_COLLAPSIBLE_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 14-pricing/pricing.matrix-collapsible/block.css */\n/* lab-ui block · pricing.matrix-collapsible\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.mx-matrix {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.mx-matrix .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n/* ─── Header ────────────────────────────────────────────────── */\n.mx-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2rem, 4vw, 3rem);\n  text-align: center;\n}\n.mx-eyebrow {\n  margin: 0 0 12px;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n}\n.mx-title {\n  margin: 0 0 12px;\n  color: var(--color-heading);\n  font-size: var(--type-h2-size);\n  font-weight: var(--type-h2-weight);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n}\n.mx-lede {\n  margin: 0;\n  font-size: 1.0625rem;\n  line-height: 1.55;\n}\n\n/* ─── Column count → grid tracks ───────────────────────────── */\n.mx-matrix {\n  --mx-feature-col: minmax(180px, 1.6fr);\n  --mx-plan-cols: 4;\n}\n.mx-matrix[data-columns=\"2\"] { --mx-plan-cols: 2; }\n.mx-matrix[data-columns=\"3\"] { --mx-plan-cols: 3; }\n.mx-matrix[data-columns=\"4\"] { --mx-plan-cols: 4; }\n\n/* Hide non-selected plan columns in desktop AND accordion modes */\n.mx-matrix[data-columns=\"2\"] [data-plan-col=\"03\"],\n.mx-matrix[data-columns=\"2\"] [data-plan-col=\"04\"],\n.mx-matrix[data-columns=\"3\"] [data-plan-col=\"04\"] {\n  display: none;\n}\n\n/* ─── Table shell (desktop) ─────────────────────────────────── */\n.mx-shell--table {\n  position: relative;\n  border: 1px solid rgba(146, 170, 205, 0.26);\n  border-radius: var(--radius-card);\n  background: var(--color-white);\n  overflow: hidden;\n}\n.mx-row {\n  display: grid;\n  grid-template-columns: var(--mx-feature-col) repeat(var(--mx-plan-cols), minmax(0, 1fr));\n  align-items: stretch;\n  border-bottom: 1px solid rgba(146, 170, 205, 0.16);\n}\n.mx-row:last-child { border-bottom: 0; }\n.mx-row--head {\n  position: sticky;\n  top: 0;\n  z-index: 2;\n  background: var(--color-gray-bg);\n  border-bottom: 1px solid rgba(146, 170, 205, 0.30);\n}\n\n.mx-cell {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  gap: 4px;\n  padding: 16px 18px;\n  font-size: 0.9375rem;\n  color: var(--color-heading);\n  border-right: 1px solid rgba(146, 170, 205, 0.10);\n}\n.mx-cell:last-child { border-right: 0; }\n.mx-cell--feature {\n  background: rgba(249, 249, 249, 0.6);\n  color: var(--color-heading);\n  font-weight: 600;\n  border-right: 1px solid rgba(146, 170, 205, 0.22);\n}\n.mx-cell--plan {\n  background: var(--color-gray-bg);\n  text-align: left;\n}\n.mx-plan-name {\n  font-size: 1.0625rem;\n  font-weight: 650;\n  color: var(--color-heading);\n}\n.mx-plan-tag {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n}\n.mx-feature-label { font-weight: 600; }\n.mx-feature-hint {\n  font-weight: 400;\n  font-size: 0.8125rem;\n  color: var(--color-gray-blue);\n}\n.mx-feature-hint:empty { display: none; }\n\n.mx-mobile-plan { display: none; }\n.mx-value {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n  min-width: 0;\n  min-height: 19px;\n  position: relative;\n}\n\n/* ─── Cell states ───────────────────────────────────────────── */\n.mx-cell[data-state=\"yes\"]     .mx-value::before,\n.mx-cell[data-state=\"no\"]      .mx-value::before,\n.mx-cell[data-state=\"partial\"] .mx-value::before {\n  content: \"\";\n  display: inline-block;\n  width: 19px;\n  height: 19px;\n  border-radius: 999px;\n  flex: 0 0 19px;\n}\n.mx-cell[data-state=\"yes\"]     .mx-value::before { background: var(--color-status-yes, #76D98F); }\n.mx-cell[data-state=\"no\"]      .mx-value::before { background: var(--color-status-no, #FF6B6B); }\n.mx-cell[data-state=\"partial\"] .mx-value::before { background: var(--color-status-partial, #D7D9DC); }\n.mx-cell[data-state=\"yes\"]     .mx-value::after,\n.mx-cell[data-state=\"partial\"] .mx-value::after {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 8px;\n  width: 8px;\n  height: 4px;\n  border-left: 2px solid #F9F9F9;\n  border-bottom: 2px solid #F9F9F9;\n  border-radius: 1px;\n  transform: rotate(-45deg);\n}\n.mx-cell[data-state=\"no\"] .mx-value::after {\n  content: \"\";\n  position: absolute;\n  left: 5px;\n  top: 5px;\n  width: 9px;\n  height: 9px;\n  background:\n    linear-gradient(45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px)),\n    linear-gradient(-45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px));\n}\n.mx-cell[data-state=\"yes\"] .mx-value:empty,\n.mx-cell[data-state=\"partial\"] .mx-value:empty,\n.mx-cell[data-state=\"no\"] .mx-value:empty {\n  gap: 0;\n}\n.mx-cell[data-state=\"no\"] .mx-value { color: var(--color-gray-blue); }\n\n/* ─── Group title row ───────────────────────────────────────── */\n.mx-group { display: contents; }\n.mx-group[data-group-visible=\"hide\"] { display: none; }\n.mx-row[data-row-visible=\"hide\"] { display: none; }\n.mx-group-title {\n  grid-column: 1 / -1;\n  padding: 18px 18px 10px;\n  background: var(--color-white);\n  color: var(--color-text-accent);\n  font-family: var(--font-mono);\n  font-size: 0.75rem;\n  letter-spacing: 0.10em;\n  text-transform: uppercase;\n  border-bottom: 1px solid rgba(146, 170, 205, 0.20);\n  border-top: 1px solid rgba(146, 170, 205, 0.16);\n}\n.mx-group:first-of-type .mx-group-title { border-top: 0; }\n\n/* ─── Accordion shell (mobile) ─────────────────────────────── */\n.mx-shell--accordion { display: none; }\n\n@media (max-width: 720px) {\n  .mx-matrix .container { padding-inline: 18px; }\n  .mx-shell--table { display: none; }\n  .mx-shell--accordion {\n    display: grid;\n    gap: 10px;\n  }\n  .mx-acc {\n    border: 1px solid rgba(146, 170, 205, 0.26);\n    border-radius: var(--radius-card);\n    background: var(--color-white);\n    overflow: hidden;\n  }\n  .mx-acc[open] { box-shadow: var(--shadow-1); }\n  .mx-acc-summary {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    padding: 18px 20px;\n    cursor: pointer;\n    list-style: none;\n  }\n  .mx-acc-summary::-webkit-details-marker { display: none; }\n  .mx-acc-name {\n    flex: 1;\n    color: var(--color-heading);\n    font-size: 1.0625rem;\n    font-weight: 650;\n  }\n  .mx-acc-tag {\n    padding: 3px 9px;\n    border-radius: var(--radius-pill);\n    background: var(--cta-accent-soft);\n    color: var(--color-heading);\n    font-family: var(--font-mono);\n    font-size: 0.6875rem;\n    letter-spacing: 0.08em;\n    text-transform: uppercase;\n  }\n  .mx-acc-chev {\n    width: 10px;\n    height: 10px;\n    border-right: 2px solid var(--color-gray-blue);\n    border-bottom: 2px solid var(--color-gray-blue);\n    transform: rotate(45deg);\n    transition: transform var(--transition-fast);\n  }\n  .mx-acc[open] .mx-acc-chev { transform: rotate(-135deg); }\n  .mx-acc-body {\n    padding: 0 20px 18px;\n    border-top: 1px solid rgba(146, 170, 205, 0.18);\n  }\n  .mx-acc-group { padding-top: 14px; }\n  .mx-acc-group[data-group-visible=\"hide\"] { display: none; }\n  .mx-acc-group-title {\n    margin: 0 0 8px;\n    color: var(--color-text-accent);\n    font-family: var(--font-mono);\n    font-size: 0.6875rem;\n    letter-spacing: 0.10em;\n    text-transform: uppercase;\n  }\n  .mx-acc-list { margin: 0; padding: 0; display: grid; gap: 4px; }\n  .mx-acc-item {\n    display: grid;\n    grid-template-columns: 1fr auto;\n    gap: 12px;\n    padding: 8px 0;\n    border-bottom: 1px dashed rgba(146, 170, 205, 0.22);\n  }\n  .mx-acc-item[data-row-visible=\"hide\"] { display: none; }\n  .mx-acc-item:last-child { border-bottom: 0; }\n  .mx-acc-item dt {\n    color: var(--color-text);\n    font-size: 0.875rem;\n  }\n  .mx-acc-item dd {\n    margin: 0;\n    color: var(--color-heading);\n    font-size: 0.875rem;\n    font-weight: 600;\n    text-align: right;\n  }\n  .mx-acc-item dd[data-state=\"yes\"],\n  .mx-acc-item dd[data-state=\"no\"],\n  .mx-acc-item dd[data-state=\"partial\"] {\n    display: inline-flex;\n    align-items: center;\n    justify-content: flex-end;\n    gap: 10px;\n    min-height: 19px;\n    position: relative;\n  }\n  .mx-acc-item dd[data-state=\"yes\"]::before,\n  .mx-acc-item dd[data-state=\"no\"]::before,\n  .mx-acc-item dd[data-state=\"partial\"]::before {\n    content: \"\";\n    display: inline-block;\n    width: 19px;\n    height: 19px;\n    border-radius: 999px;\n    flex: 0 0 19px;\n  }\n  .mx-acc-item dd[data-state=\"yes\"]::before { background: var(--color-status-yes, #76D98F); }\n  .mx-acc-item dd[data-state=\"no\"]::before { background: var(--color-status-no, #FF6B6B); }\n  .mx-acc-item dd[data-state=\"partial\"]::before { background: var(--color-status-partial, #D7D9DC); }\n  .mx-acc-item dd[data-state=\"yes\"]::after,\n  .mx-acc-item dd[data-state=\"partial\"]::after {\n    content: \"\";\n    position: absolute;\n    left: 5px;\n    top: 8px;\n    width: 8px;\n    height: 4px;\n    border-left: 2px solid #F9F9F9;\n    border-bottom: 2px solid #F9F9F9;\n    border-radius: 1px;\n    transform: rotate(-45deg);\n  }\n  .mx-acc-item dd[data-state=\"no\"]::after {\n    content: \"\";\n    position: absolute;\n    left: 5px;\n    top: 5px;\n    width: 9px;\n    height: 9px;\n    background:\n      linear-gradient(45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px)),\n      linear-gradient(-45deg, transparent calc(50% - 1px), #F9F9F9 calc(50% - 1px), #F9F9F9 calc(50% + 1px), transparent calc(50% + 1px));\n  }\n  .mx-acc-item dd[data-state=\"no\"] { color: var(--color-gray-blue); font-weight: 400; }\n  .mx-acc-item dd[data-state=\"yes\"]:empty,\n  .mx-acc-item dd[data-state=\"partial\"]:empty,\n  .mx-acc-item dd[data-state=\"no\"]:empty {\n    gap: 0;\n  }\n}\n\n.mx-disclaimer {\n  margin: 22px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.8125rem;\n  line-height: 1.5;\n  text-align: center;\n}\n",
+  "javascript": "/* generated child JS: 14-pricing/pricing.matrix-collapsible/block.js */\n// lab-ui block · pricing.matrix-collapsible\n// Listens for the cross-block `pricing:billing` CustomEvent and\n// mirrors the period on the section root so any downstream rule\n// like `.mx-matrix[data-pricing-period=\"annual\"] [data-price-monthly]`\n// can hide / show period-specific values without coupling to other blocks.\n\n(() => {\n  const EVENT = \"pricing:billing\";\n\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const apply = (section, mode) => {\n    section.dataset.pricingPeriod = mode === \"annual\" ? \"annual\" : \"monthly\";\n  };\n\n  const init = (section) => {\n    if (section.dataset.mxInit === \"1\") return;\n    section.dataset.mxInit = \"1\";\n    apply(section, section.dataset.pricingPeriod);\n\n    document.addEventListener(EVENT, (event) => {\n      if (!event.detail) return;\n      apply(section, event.detail.period);\n    });\n  };\n\n  ready(() => {\n    document.querySelectorAll('[data-block=\"pricing.matrix-collapsible\"]').forEach(init);\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_COLUMN_COUNT",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Plan Column Count",
+          "DESCRIPTION": "How many plan columns to render (2, 3, or 4). Hidden columns disappear from the desktop grid and the mobile accordion."
+        }
+      },
+      "value": "4",
+      "options": [
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_BILLING_DEFAULT",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Default Billing Period",
+          "DESCRIPTION": "Initial billing period before any pricing.* block broadcasts a different one."
+        }
+      },
+      "value": "monthly",
+      "options": [
+        "monthly",
+        "annual"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Matrix Eyebrow",
+          "DESCRIPTION": "Small uppercase label above the matrix heading."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Matrix Heading",
+          "DESCRIPTION": "Main heading for the comparison matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Matrix Lede",
+          "DESCRIPTION": "Introductory paragraph for the matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_TABLE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Table Accessible Label",
+          "DESCRIPTION": "Accessible label for the matrix table."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_FEATURE_COLUMN_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Feature Column Label",
+          "DESCRIPTION": "Label for the leftmost feature column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Name",
+          "DESCRIPTION": "Display name for plan 1 (column header and accordion summary)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_01_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 1 Tag",
+          "DESCRIPTION": "Small tag/kicker below the plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Name",
+          "DESCRIPTION": "Display name for plan 2 (column header and accordion summary)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_02_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 2 Tag",
+          "DESCRIPTION": "Small tag/kicker below the plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Name",
+          "DESCRIPTION": "Display name for plan 3 (column header and accordion summary)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_03_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 3 Tag",
+          "DESCRIPTION": "Small tag/kicker below the plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Name",
+          "DESCRIPTION": "Display name for plan 4 (column header and accordion summary)."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_PLAN_04_TAG",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Plan 4 Tag",
+          "DESCRIPTION": "Small tag/kicker below the plan name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Visible",
+          "DESCRIPTION": "Whether this feature group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 1 Title",
+          "DESCRIPTION": "Heading shown above the rows in this group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_01_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 1 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_02_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 2 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_03_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 3 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Visible",
+          "DESCRIPTION": "Whether this feature group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 2 Title",
+          "DESCRIPTION": "Heading shown above the rows in this group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_04_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 4 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_05_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 5 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_06_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 6 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Visible",
+          "DESCRIPTION": "Whether this feature group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 3 Title",
+          "DESCRIPTION": "Heading shown above the rows in this group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_07_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 7 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_08_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 8 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "partial",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_09_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 9 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Group 4 Visible",
+          "DESCRIPTION": "Whether this feature group is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_GROUP_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 4 Title",
+          "DESCRIPTION": "Heading shown above the rows in this group."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_10_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 10 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum do eiusmod tempor incididunt."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "no",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "yes",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_11_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 11 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 Visible",
+          "DESCRIPTION": "Whether this feature row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 Label",
+          "DESCRIPTION": "Feature name shown in the leftmost column."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_HINT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 Hint",
+          "DESCRIPTION": "Optional sub-label or tooltip-style hint under the feature name."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 1 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_01_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 1 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 2 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_02_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 2 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem ipsum dolor sit."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 3 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_03_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 3 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 4 State",
+          "DESCRIPTION": "Visual treatment for the cell value."
+        }
+      },
+      "value": "text",
+      "options": [
+        "yes",
+        "no",
+        "partial",
+        "text"
+      ]
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_ROW_12_PLAN_04_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Row 12 · Plan 4 Value",
+          "DESCRIPTION": "Cell value for this feature × plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi aliquip ex ea."
+      }
+    },
+    {
+      "code": "SECTION_05_PRICING_MATRIX_COLLAPSIBLE_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Matrix Disclaimer",
+          "DESCRIPTION": "Small disclaimer shown below the matrix."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    }
+  ]
+}

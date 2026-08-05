@@ -1,0 +1,125 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "section.stats-strip",
+  "category": "09-vertical-section",
+  "title": "Section · Stats strip (KPI metrics row)",
+  "description": "4-cell KPI metrics row. Each cell: large display-typed number + mono label + short body. Cells separated by 1px hairlines (top + bottom + verticals between). One cell can be marked .is-accent to tint its number with the secondary CTA accent (typically the headline metric). Collapses to 2×2 at ≤880, 1-col at ≤480.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/landing-template-design/src/kit/grids.jsx (StatsStrip)",
+    "adapted_from": "designer kit 2026-05-24 → light tokens",
+    "decision": "PM lock 2026-05-24 — stats-strip adopted as canonical KPI/proof-point pattern"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-heading",
+      "--color-gray-blue",
+      "--color-gray-second",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1200",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width stats section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "stat_1_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "stat_1_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "stat_1_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    },
+    {
+      "code": "stat_2_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "stat_2_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "stat_2_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do."
+    },
+    {
+      "code": "stat_3_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "stat_3_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "stat_3_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor."
+    },
+    {
+      "code": "stat_4_num",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "stat_4_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "stat_4_body",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Labels use the '// metric' mono pattern (matches the typographic hero variant). For more conventional labels, drop the leading '// '.",
+    "Cell 02 ships with .is-accent so the headline metric (jobs / day) reads as the platform's defining number. Move .is-accent to a different cell via CMS as needed.",
+    "Empty cells (.stat-num + .stat-label both empty) auto-hide via :has(). Grid columns won't reflow automatically though — for 3 visible cells the grid would leave a blank quarter. To get a clean 3-cell layout, change grid-template-columns at the section level."
+  ]
+}

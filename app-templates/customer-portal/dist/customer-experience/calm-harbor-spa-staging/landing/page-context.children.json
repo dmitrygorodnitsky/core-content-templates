@@ -1,0 +1,1038 @@
+[
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_01_PUBLIC_NAV",
+    "parameters": [
+      {
+        "code": "CX_BRAND_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": ""
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_02_HERO",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_SERVICE_AREA",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami-Dade"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_TITLE_PREFIX",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Unhurried spa care in "
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_LOCALITY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami, FL"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_TITLE_SUFFIX",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": ""
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_SERVICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Hair, nails, skin and massage by licensed specialists — quiet single-guest rooms in the harbor studio, or at your place."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_PRIMARY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Explore treatments"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_SECONDARY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "See pricing"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Prices on this page are live from the public catalog — no account needed to browse"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_HERO_IMAGE_URL",
+        "type": "STRING",
+        "value": "/assets/customer-portal/calm-harbor-landing-staging/spa-massage-1448.webp"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_HERO_IMAGE_ALT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Specialist smoothing a warm towel across a guest's shoulders in a daylit Calm Harbor treatment room"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_02_HERO_HERO_IMAGE_FOCAL",
+        "type": "STRING",
+        "value": "62% 40%"
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Rating"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_RATING_SLOT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "rating · from CMS"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Cosmetology & massage licences"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_LICENCE_SLOT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "licence № · from CMS"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Insured specialists"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_INSURANCE_SLOT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "policy · from CMS"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Guarantee"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_GUARANTEE_VALUE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Redo within 48 hours if you're not happy"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Appointments"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_03_TRUST_APPOINTMENTS_VALUE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Evenings & weekends available"
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Treatments"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The Calm Harbor menu"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_SUB",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Every treatment card lists what's included — prices are live on this page."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_1_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Hair Styling"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_1_BENEFIT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Cut, color & blowout"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_1_PRICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "$65"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_2_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Manicure & Nails"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_2_BENEFIT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Classic to gel, at home"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_2_PRICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "$45"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_3_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Facial Treatment"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_3_BENEFIT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A routine that carries over"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_3_PRICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "$85"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_4_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Event & Bridal Package"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_4_BENEFIT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Trials, timeline, day-of team"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_04_SERVICES_ITEM_4_PRICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Quote"
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_05_HOW",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "How it works"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "From request to report"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_1_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Request"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_1_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Choose a treatment and where — the harbor studio or your place."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_2_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Scheduling"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_2_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Pick a time; keep the same specialist for every visit."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_3_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Service"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_3_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Arrive to a warm, prepared room — or your specialist arrives with a sanitised kit."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_4_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Report & payment"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_05_HOW_STEP_4_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Pressure notes, sensitivities and product picks saved to your routine for next time."
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Why Calm Harbor Spa"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A harbor, not an appointment mill"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_IMAGE_URL",
+        "type": "STRING",
+        "value": "/assets/customer-portal/calm-harbor-landing-staging/spa-room-1600.webp"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_IMAGE_ALT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Empty Calm Harbor treatment room with a linen-covered table, stone basin and folded towels by a window"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_IMAGE_FOCAL",
+        "type": "STRING",
+        "value": "50% 58%"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_1_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Quiet by design"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_1_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Single-guest rooms, warm tables, no double-booking — the hour is yours."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_2_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Your specialist, every time"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_2_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Set a preferred specialist — priority rebooking keeps them on your routine."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_3_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Routine remembered"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_06_PROOF_ITEM_3_DESC",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Pressure notes, skin sensitivities and product picks carry over visit to visit."
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Pricing"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "What to expect"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_SUB",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Displayed prices come from the public catalog — shown as published, never computed on the page."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_API_BASE",
+        "type": "STRING",
+        "value": "/core-pim/api"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_ORGANIZATION",
+        "type": "STRING",
+        "value": "CALM_HARBOR_SPA_STAGING"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRODUCT_TYPE_CODES",
+        "type": "STRING",
+        "value": "SPA_SERVICE,SPA_MEMBERSHIP"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_TYPE_CODE",
+        "type": "STRING",
+        "value": "PRICE_CURRENCY"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_VALUES",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CURRENCY",
+        "type": "STRING",
+        "value": "USD"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "CURRENCY"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CURRENCY_ATTRIBUTE_VALUES",
+        "type": "STRING",
+        "value": "USD"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_AMOUNT_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "UNIT_PRICE"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_AMOUNT_MINOR_DIVISOR",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_EMPTY_COPY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "No treatments or memberships are currently published in the public catalog — prices appear here the moment they are."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_ERROR_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Live pricing is unavailable"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_ERROR_COPY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The public catalog could not be loaded. No catalog data is shown."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_RETRY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Try again"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CTA_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Members — sign in to your plan"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_07_PRICING_PIM_PRICING_CTA_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": ""
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Spa retail"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Take the ritual home"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_SUB",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A short shelf from the public catalog — the products our specialists actually use."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_API_BASE",
+        "type": "STRING",
+        "value": "/core-pim/api"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_ORGANIZATION",
+        "type": "STRING",
+        "value": "CALM_HARBOR_SPA_STAGING"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRODUCT_TYPE_CODES",
+        "type": "STRING",
+        "value": "SPA_RETAIL"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_TYPE_CODE",
+        "type": "STRING",
+        "value": "PRICE_CURRENCY"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_PRICE_ATTRIBUTE_VALUES",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY",
+        "type": "STRING",
+        "value": "USD"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "CURRENCY"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CURRENCY_ATTRIBUTE_VALUES",
+        "type": "STRING",
+        "value": "USD"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "UNIT_PRICE"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_AMOUNT_MINOR_DIVISOR",
+        "type": "STRING",
+        "value": ""
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_EMPTY_COPY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Retail products appear here as soon as they are published in the public catalog — nothing is shown until real products exist."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_ERROR_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The shop is unavailable"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_ERROR_COPY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The public catalog could not be loaded. No catalog data is shown."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_RETRY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Try again"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Visit the shop"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_08_PRODUCTS_PIM_PRODUCTS_CTA_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Prices shown as published in the public catalog."
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Coverage"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Where we work"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_REGION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami-Dade"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Treatments in the harbor studio; selected rituals travel to your neighborhood."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_CITY_1",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_CITY_2",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Coral Gables"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_CITY_3",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami Beach"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_CITY_4",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Doral"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_09_SERVICE_AREA_CITY_5",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Aventura"
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Reviews"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "What customers say"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_TEXT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The room was warm before I walked in, and nobody rushed me out at the hour."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_1_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Guest · Miami Beach"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_TEXT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Same specialist every month — she remembers exactly where my shoulder acts up."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_2_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Member · Coral Gables"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_TEXT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Booked a facial for my mom; the shop shelf had the same serum they used on her."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_10_REVIEWS_ITEM_3_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Guest · Doral"
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "FAQ"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Common questions"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_QUESTION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Studio or at home?"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_ANSWER",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_QUESTION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "How do memberships work?"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_ANSWER",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_QUESTION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Are the shop products the ones you use?"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_ANSWER",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Yes — the retail shelf is the same public catalog our specialists pull from during treatments."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_QUESTION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "What if I'm not happy with the result?"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_ANSWER",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Tell us within 48 hours — a redo is covered by the guarantee."
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Ready when you are in Miami, FL"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SUB",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Every price on this page is live from the public catalog — browse the shop, or sign in to your routine."
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_PRIMARY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Browse the spa shop"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SECONDARY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sign in"
+        }
+      }
+    ]
+  },
+  {
+    "templateCode": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER",
+    "parameters": [
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_PHONE_SLOT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "phone · from CMS"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_EMAIL_SLOT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "email · from CMS"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_SERVICE_AREA",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami-Dade"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_CITIES",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Miami · Coral Gables · Miami Beach · Doral · Aventura"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_BRAND",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_CANONICAL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "canonical: /spa/{locality-slug}"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_1_DAYS",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Mon–Fri"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_1_VALUE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "7:00 – 20:00"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_2_DAYS",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sat"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_2_VALUE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "8:00 – 18:00"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_3_DAYS",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sun"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_HOURS_3_VALUE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Emergency only"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_1_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Privacy policy"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_1_HREF",
+        "type": "STRING",
+        "value": "#"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_2_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Terms of service"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_2_HREF",
+        "type": "STRING",
+        "value": "#"
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_3_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Licence & insurance"
+        }
+      },
+      {
+        "code": "CUSTOMER_EXPERIENCE_LANDING_13_FOOTER_LEGAL_3_HREF",
+        "type": "STRING",
+        "value": "#"
+      }
+    ]
+  }
+]

@@ -1,0 +1,101 @@
+<!-- lab-ui block · signature.ai-shell
+     Hub-page signature AI section. Composite layout:
+       · top: eyebrow + H2 + 2 leads
+       · middle: ai-shell grid (terminal-style ops log + media side-panel)
+       · bottom: capability cards row (A.NN numbered)
+     Light theme. Adapted from designer kit signature-blocks.jsx.
+-->
+<section class="ai-section" data-block="signature.ai-shell">
+  <div class="container">
+    <header class="ai-top">
+      <p class="eyebrow">{{eyebrow}}</p>
+      <h2 class="ai-title">{{title}}</h2>
+      <div class="ai-leads">
+        <p>{{lead_1}}</p>
+        <p>{{lead_2}}</p>
+      </div>
+    </header>
+
+    <div class="ai-shell">
+      <!-- Stream: terminal-style activity log -->
+      <article class="ai-stream" data-ai-stream>
+        <header class="ai-stream-head">
+          <span class="ai-stream-title"><span class="dot-live" aria-hidden="true"></span>{{stream_title}}</span>
+          <span class="ai-stream-meta">{{stream_meta}}</span>
+        </header>
+        <div class="ai-stream-body" role="list">
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">{{row_1_time}}</span>
+            <span class="ai-stream-kind">{{row_1_kind}}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>{{row_1_trig}}</p>
+              <p class="act"><span class="lead-mark">→</span>{{row_1_act}}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">{{row_2_time}}</span>
+            <span class="ai-stream-kind">{{row_2_kind}}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>{{row_2_trig}}</p>
+              <p class="act"><span class="lead-mark">→</span>{{row_2_act}}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">{{row_3_time}}</span>
+            <span class="ai-stream-kind">{{row_3_kind}}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>{{row_3_trig}}</p>
+              <p class="act"><span class="lead-mark">→</span>{{row_3_act}}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">{{row_4_time}}</span>
+            <span class="ai-stream-kind">{{row_4_kind}}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>{{row_4_trig}}</p>
+              <p class="act"><span class="lead-mark">→</span>{{row_4_act}}</p>
+            </div>
+          </div>
+        </div>
+        <footer class="ai-stream-foot"><span>{{stream_footer}}</span></footer>
+      </article>
+
+      <!-- Side panel: media placeholder + H2 + short body copy -->
+      <aside class="ai-side-panel" data-ai-side-panel>
+        <div class="ai-media-placeholder" data-ai-media-slot>
+          <img class="ai-media-img" src="{{media_url}}" alt="{{media_alt}}" loading="lazy" decoding="async">
+          <span class="ai-media-fallback">
+            <span>{{media_placeholder_size}}</span>
+            <span>{{media_placeholder_label}}</span>
+          </span>
+        </div>
+
+        <h2 class="ai-side-heading">{{side_heading}}</h2>
+
+        <div class="ai-side-copy">
+          <p>{{feed_1_body}}</p>
+          <p>{{feed_2_body}}</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Capability cards: 3 numbered with A.NN prefix -->
+    <div class="ai-caps">
+      <article class="ai-cap">
+        <span class="ai-cap-num">{{cap_1_prefix}}{{cap_1_num}}</span>
+        <h3 class="ai-cap-title">{{cap_1_title}}</h3>
+        <p>{{cap_1_body}}</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">{{cap_2_prefix}}{{cap_2_num}}</span>
+        <h3 class="ai-cap-title">{{cap_2_title}}</h3>
+        <p>{{cap_2_body}}</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">{{cap_3_prefix}}{{cap_3_num}}</span>
+        <h3 class="ai-cap-title">{{cap_3_title}}</h3>
+        <p>{{cap_3_body}}</p>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,71 @@
+{
+  "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA",
+  "nls": {
+    "en": {
+      "NAME": "Customer experience | Final CTA"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_EXPERIENCE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-final\" data-module=\"seo-final-cta\" data-visual-id=\"seo-final-cta\"><h2 class=\"seo-final__title\" data-bind=\"cms.meta.h1\">${CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-final__sub\">${CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SUB@LOCALIZED_STRING_SS}</p><div class=\"seo-final__ctas\"><button class=\"btn btn--onaccent btn--lg seo-cta\" data-module=\"seo-cta\" data-visual-id=\"seo-final-primary-cta\" data-action=\"nav.products\" data-state=\"idle\" data-bind=\"cms.finalCta.primary\" aria-live=\"polite\">${CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}</button><button class=\"btn btn--glass-hero btn--lg seo-cta\" data-module=\"seo-cta\" data-visual-id=\"seo-final-secondary-cta\" data-action=\"auth.gotoSignin\" data-state=\"idle\" data-bind=\"cms.finalCta.secondary\" aria-live=\"polite\">${CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}</button></div></section>",
+  "css": "/* ---------- 10 · final CTA ---------- */\n.seo-final {\n  border-radius: 30px; text-align: center; padding: 52px 30px;\n  background:\n    radial-gradient(120% 130% at 50% 0%, var(--accent-2) 0%, transparent 70%),\n    var(--accent);\n  box-shadow: var(--shadow-float);\n}\n.seo-final__title { margin: 0; color: #fff; font-size: 32px; font-weight: 800; letter-spacing: -.03em; text-wrap: balance; }\n.seo-final__sub { margin: 12px 0 0; color: rgba(255,255,255,.85); font-size: 15px; }\n.seo-final__ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 12 final cta title",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SUB",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 12 final cta sub",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 12 final cta primary label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_12_FINAL_CTA_SECONDARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 12 final cta secondary label",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    }
+  ]
+}

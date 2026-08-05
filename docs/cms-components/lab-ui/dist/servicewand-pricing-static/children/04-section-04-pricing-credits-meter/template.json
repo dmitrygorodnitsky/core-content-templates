@@ -1,0 +1,894 @@
+{
+  "code": "SECTION_04_PRICING_CREDITS_METER",
+  "nls": {
+    "en": {
+      "NAME": "Pricing · credits and tokens"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--pricing-credits-meter\" data-composition-block=\"pricing.credits-meter\">\n<!-- lab-ui block · pricing.credits-meter\n     Usage/credits surface, distinct from add-on packs.\n     Two surfaces side-by-side on desktop, stacked on mobile:\n       1. Allowance — what each plan includes per month + overage rate.\n       2. Token packs — discrete tiers with per-token economics.\n     An optional explainer row sits below (\"1 routing call ≈ N tokens\").\n-->\n<section class=\"cm-credits\" id=\"pricing-credits\" data-block=\"pricing.credits-meter\" data-pricing-period=\"${SECTION_04_PRICING_CREDITS_METER_BILLING_DEFAULT@STRING}\">\n  <div class=\"container\">\n    <header class=\"cm-top\">\n      <p class=\"cm-eyebrow\">${SECTION_04_PRICING_CREDITS_METER_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"cm-title\">${SECTION_04_PRICING_CREDITS_METER_TITLE@LOCALIZED_STRING_SS}</h2>\n      <p class=\"cm-lede\">${SECTION_04_PRICING_CREDITS_METER_LEDE@LOCALIZED_STRING_SS}</p>\n    </header>\n\n    <div class=\"cm-grid\">\n      <!-- Surface A — what every plan includes -->\n      <article class=\"cm-card cm-card--allowance\">\n        <header class=\"cm-card-head\">\n          <span class=\"cm-card-kicker\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_KICKER@LOCALIZED_STRING_SS}</span>\n          <h3 class=\"cm-card-title\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_TITLE@LOCALIZED_STRING_SS}</h3>\n          <p class=\"cm-card-lede\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_LEDE@LOCALIZED_STRING_SS}</p>\n        </header>\n        <ul class=\"cm-rows\" aria-label=\"${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_TITLE@LOCALIZED_STRING_SS}\">\n          <li class=\"cm-row\" data-plan-visible=\"${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_VISIBLE@STRING}\">\n            <span class=\"cm-row-plan\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_PLAN@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-amount\" data-amount>${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_INCLUDED@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-unit\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_UNIT@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-overage\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_OVERAGE@LOCALIZED_STRING_SS}</span>\n          </li>\n          <li class=\"cm-row\" data-plan-visible=\"${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_VISIBLE@STRING}\">\n            <span class=\"cm-row-plan\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_PLAN@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-amount\" data-amount>${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_INCLUDED@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-unit\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_UNIT@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-overage\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_OVERAGE@LOCALIZED_STRING_SS}</span>\n          </li>\n          <li class=\"cm-row\" data-plan-visible=\"${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_VISIBLE@STRING}\">\n            <span class=\"cm-row-plan\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_PLAN@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-amount\" data-amount>${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_INCLUDED@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-unit\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_UNIT@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-overage\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_OVERAGE@LOCALIZED_STRING_SS}</span>\n          </li>\n          <li class=\"cm-row\" data-plan-visible=\"${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_VISIBLE@STRING}\">\n            <span class=\"cm-row-plan\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_PLAN@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-amount\" data-amount>${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_INCLUDED@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-unit\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_UNIT@LOCALIZED_STRING_SS}</span>\n            <span class=\"cm-row-overage\">${SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_OVERAGE@LOCALIZED_STRING_SS}</span>\n          </li>\n        </ul>\n      </article>\n\n      <!-- Surface B — discrete token packs with per-unit economics -->\n      <article class=\"cm-card cm-card--packs\">\n        <header class=\"cm-card-head\">\n          <span class=\"cm-card-kicker\">${SECTION_04_PRICING_CREDITS_METER_PACKS_KICKER@LOCALIZED_STRING_SS}</span>\n          <h3 class=\"cm-card-title\">${SECTION_04_PRICING_CREDITS_METER_PACKS_TITLE@LOCALIZED_STRING_SS}</h3>\n          <p class=\"cm-card-lede\">${SECTION_04_PRICING_CREDITS_METER_PACKS_LEDE@LOCALIZED_STRING_SS}</p>\n        </header>\n        <div class=\"cm-packs\" role=\"list\" aria-label=\"${SECTION_04_PRICING_CREDITS_METER_PACKS_TITLE@LOCALIZED_STRING_SS}\">\n          <article class=\"cm-pack cm-pack--${SECTION_04_PRICING_CREDITS_METER_PACK_01_STATE@STRING}\" role=\"listitem\" data-pack-visible=\"${SECTION_04_PRICING_CREDITS_METER_PACK_01_VISIBLE@STRING}\">\n            <span class=\"cm-pack-badge\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_BADGE@LOCALIZED_STRING_SS}</span>\n            <p class=\"cm-pack-name\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_NAME@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-amount\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_AMOUNT@LOCALIZED_STRING_SS}<span class=\"cm-pack-unit\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_UNIT@LOCALIZED_STRING_SS}</span></p>\n            <p class=\"cm-pack-price\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_PRICE@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-rate\">${SECTION_04_PRICING_CREDITS_METER_PACK_01_PER_UNIT@LOCALIZED_STRING_SS}</p>\n          </article>\n          <article class=\"cm-pack cm-pack--${SECTION_04_PRICING_CREDITS_METER_PACK_02_STATE@STRING}\" role=\"listitem\" data-pack-visible=\"${SECTION_04_PRICING_CREDITS_METER_PACK_02_VISIBLE@STRING}\">\n            <span class=\"cm-pack-badge\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_BADGE@LOCALIZED_STRING_SS}</span>\n            <p class=\"cm-pack-name\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_NAME@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-amount\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_AMOUNT@LOCALIZED_STRING_SS}<span class=\"cm-pack-unit\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_UNIT@LOCALIZED_STRING_SS}</span></p>\n            <p class=\"cm-pack-price\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_PRICE@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-rate\">${SECTION_04_PRICING_CREDITS_METER_PACK_02_PER_UNIT@LOCALIZED_STRING_SS}</p>\n          </article>\n          <article class=\"cm-pack cm-pack--${SECTION_04_PRICING_CREDITS_METER_PACK_03_STATE@STRING}\" role=\"listitem\" data-pack-visible=\"${SECTION_04_PRICING_CREDITS_METER_PACK_03_VISIBLE@STRING}\">\n            <span class=\"cm-pack-badge\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_BADGE@LOCALIZED_STRING_SS}</span>\n            <p class=\"cm-pack-name\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_NAME@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-amount\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_AMOUNT@LOCALIZED_STRING_SS}<span class=\"cm-pack-unit\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_UNIT@LOCALIZED_STRING_SS}</span></p>\n            <p class=\"cm-pack-price\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_PRICE@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-rate\">${SECTION_04_PRICING_CREDITS_METER_PACK_03_PER_UNIT@LOCALIZED_STRING_SS}</p>\n          </article>\n          <article class=\"cm-pack cm-pack--${SECTION_04_PRICING_CREDITS_METER_PACK_04_STATE@STRING}\" role=\"listitem\" data-pack-visible=\"${SECTION_04_PRICING_CREDITS_METER_PACK_04_VISIBLE@STRING}\">\n            <span class=\"cm-pack-badge\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_BADGE@LOCALIZED_STRING_SS}</span>\n            <p class=\"cm-pack-name\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_NAME@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-amount\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_AMOUNT@LOCALIZED_STRING_SS}<span class=\"cm-pack-unit\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_UNIT@LOCALIZED_STRING_SS}</span></p>\n            <p class=\"cm-pack-price\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_PRICE@LOCALIZED_STRING_SS}</p>\n            <p class=\"cm-pack-rate\">${SECTION_04_PRICING_CREDITS_METER_PACK_04_PER_UNIT@LOCALIZED_STRING_SS}</p>\n          </article>\n        </div>\n        <a class=\"cm-packs-cta\" href=\"${SECTION_04_PRICING_CREDITS_METER_PACKS_CTA_URL@STRING}\">${SECTION_04_PRICING_CREDITS_METER_PACKS_CTA_LABEL@LOCALIZED_STRING_SS}</a>\n      </article>\n    </div>\n\n    <aside class=\"cm-explainer\" data-explainer-visible=\"${SECTION_04_PRICING_CREDITS_METER_EXPLAINER_VISIBLE@STRING}\">\n      <p class=\"cm-explainer-kicker\">${SECTION_04_PRICING_CREDITS_METER_EXPLAINER_KICKER@LOCALIZED_STRING_SS}</p>\n      <p class=\"cm-explainer-text\">${SECTION_04_PRICING_CREDITS_METER_EXPLAINER_TEXT@LOCALIZED_STRING_SS}</p>\n    </aside>\n\n    <p class=\"cm-disclaimer\">${SECTION_04_PRICING_CREDITS_METER_DISCLAIMER@LOCALIZED_STRING_SS}</p>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 14-pricing/pricing.credits-meter/block.css */\n/* lab-ui block · pricing.credits-meter\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.cm-credits {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.cm-credits .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.cm-top {\n  max-width: 54rem;\n  margin: 0 auto clamp(2rem, 4vw, 2.75rem);\n  text-align: center;\n}\n.cm-eyebrow {\n  margin: 0 0 12px;\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  letter-spacing: var(--type-eyebrow-tracking);\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n}\n.cm-title {\n  margin: 0 0 12px;\n  color: var(--color-heading);\n  font-size: var(--type-h2-size);\n  font-weight: var(--type-h2-weight);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n}\n.cm-lede {\n  margin: 0;\n  font-size: 1.0625rem;\n  line-height: 1.55;\n}\n\n/* ─── Two-card grid ─────────────────────────────────────────── */\n.cm-grid {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);\n  gap: 18px;\n  align-items: stretch;\n}\n.cm-card {\n  display: flex;\n  flex-direction: column;\n  gap: 18px;\n  padding: 26px;\n  border: 1px solid rgba(146, 170, 205, 0.26);\n  border-radius: var(--radius-card);\n  background: var(--color-white);\n}\n.cm-card--allowance {\n  background:\n    radial-gradient(circle at 0% 0%, var(--cta-accent-soft), transparent 56%),\n    var(--color-white);\n}\n.cm-card--packs {\n  background: var(--color-gray-bg);\n}\n.cm-card-head { display: grid; gap: 6px; }\n.cm-card-kicker {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.10em;\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n}\n.cm-card-title {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 1.375rem;\n  font-weight: 650;\n  line-height: 1.2;\n  letter-spacing: -0.01em;\n}\n.cm-card-lede {\n  margin: 0;\n  color: var(--color-gray-blue);\n  font-size: 0.9375rem;\n  line-height: 1.5;\n}\n\n/* ─── Allowance rows · plan → included → overage ────────────── */\n.cm-rows {\n  display: grid;\n  gap: 4px;\n  margin: 0;\n  padding: 0;\n  list-style: none;\n}\n.cm-row {\n  display: grid;\n  grid-template-columns: minmax(120px, 1fr) auto auto minmax(120px, 1.1fr);\n  align-items: baseline;\n  gap: 10px;\n  padding: 12px 0;\n  border-bottom: 1px dashed rgba(146, 170, 205, 0.30);\n}\n.cm-row[data-plan-visible=\"hide\"] { display: none; }\n.cm-row:last-child { border-bottom: 0; }\n.cm-row-plan {\n  color: var(--color-heading);\n  font-weight: 600;\n  font-size: 0.9375rem;\n}\n.cm-row-amount {\n  font-family: var(--font-mono);\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--color-heading);\n  letter-spacing: -0.02em;\n}\n.cm-row-unit {\n  color: var(--color-gray-blue);\n  font-size: 0.8125rem;\n  letter-spacing: 0.02em;\n}\n.cm-row-overage {\n  text-align: right;\n  color: var(--color-text);\n  font-size: 0.8125rem;\n}\n.cm-row-overage::before {\n  content: \"Overage \";\n  color: var(--color-gray-blue);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  margin-right: 4px;\n}\n\n/* ─── Pack tiers ────────────────────────────────────────────── */\n.cm-packs {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n  gap: 12px;\n}\n.cm-pack {\n  position: relative;\n  display: grid;\n  gap: 6px;\n  padding: 16px 14px;\n  border: 1px solid rgba(146, 170, 205, 0.22);\n  border-radius: var(--radius-card-sm);\n  background: var(--color-white);\n}\n.cm-pack[data-pack-visible=\"hide\"] { display: none; }\n.cm-pack--featured {\n  border-color: var(--cta-accent);\n  box-shadow: 0 0 0 1px var(--cta-accent);\n}\n.cm-pack--muted {\n  border-style: dashed;\n  background: transparent;\n}\n.cm-pack-badge {\n  position: absolute;\n  top: -10px;\n  left: 14px;\n  padding: 3px 8px;\n  border-radius: var(--radius-pill);\n  background: var(--cta-accent);\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 0.625rem;\n  font-weight: 600;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n}\n.cm-pack-badge:empty { display: none; }\n.cm-pack-name {\n  margin: 0;\n  color: var(--color-gray-blue);\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n}\n.cm-pack-amount {\n  margin: 0;\n  color: var(--color-heading);\n  font-family: var(--font-mono);\n  font-size: 1.75rem;\n  font-weight: 700;\n  letter-spacing: -0.02em;\n  line-height: 1;\n}\n.cm-pack-unit {\n  margin-left: 4px;\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n  font-weight: 500;\n  letter-spacing: 0.04em;\n  text-transform: uppercase;\n}\n.cm-pack-price {\n  margin: 4px 0 0;\n  color: var(--color-heading);\n  font-size: 1rem;\n  font-weight: 650;\n}\n.cm-pack-rate {\n  margin: 0;\n  color: var(--color-gray-blue);\n  font-size: 0.75rem;\n}\n\n.cm-packs-cta {\n  align-self: start;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  min-height: 42px;\n  padding: 0 18px;\n  border-radius: var(--radius-pill);\n  background: var(--color-white);\n  border: 1px solid rgba(146, 170, 205, 0.35);\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  font-weight: 650;\n  text-decoration: none;\n  transition: transform var(--transition-fast), box-shadow var(--transition-fast);\n}\n.cm-packs-cta:hover {\n  transform: translateY(-1px);\n  box-shadow: var(--shadow-glow-soft);\n}\n\n/* ─── Explainer + disclaimer ────────────────────────────────── */\n.cm-explainer {\n  display: grid;\n  grid-template-columns: auto 1fr;\n  gap: 10px 16px;\n  align-items: baseline;\n  margin-top: 18px;\n  padding: 14px 18px;\n  border-left: 3px solid var(--cta-accent);\n  background: var(--cta-accent-soft);\n  border-radius: 8px;\n}\n.cm-explainer[data-explainer-visible=\"hide\"] { display: none; }\n.cm-explainer-kicker {\n  margin: 0;\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.10em;\n  text-transform: uppercase;\n  color: var(--color-text-accent);\n  white-space: nowrap;\n}\n.cm-explainer-text {\n  margin: 0;\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  line-height: 1.5;\n}\n.cm-disclaimer {\n  margin: 20px 0 0;\n  color: var(--color-gray-blue);\n  font-size: 0.8125rem;\n  line-height: 1.5;\n  text-align: center;\n}\n\n@media (max-width: 900px) {\n  .cm-grid { grid-template-columns: 1fr; }\n}\n@media (max-width: 540px) {\n  .cm-card { padding: 22px; }\n  .cm-row {\n    grid-template-columns: 1fr auto;\n    grid-template-areas:\n      \"plan amount\"\n      \"unit unit\"\n      \"overage overage\";\n    gap: 4px;\n  }\n  .cm-row-plan { grid-area: plan; }\n  .cm-row-amount { grid-area: amount; justify-self: end; }\n  .cm-row-unit { grid-area: unit; }\n  .cm-row-overage { grid-area: overage; text-align: left; }\n  .cm-explainer {\n    grid-template-columns: 1fr;\n  }\n}\n",
+  "javascript": "/* generated child JS: 14-pricing/pricing.credits-meter/block.js */\n// lab-ui block · pricing.credits-meter\n// Listens for the cross-block `pricing:billing` CustomEvent and mirrors\n// the period on the section root. The block has no own toggle; it only\n// reflects what plans-flex or other pricing.* blocks broadcast.\n\n(() => {\n  const EVENT = \"pricing:billing\";\n\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const apply = (section, mode) => {\n    section.dataset.pricingPeriod = mode === \"annual\" ? \"annual\" : \"monthly\";\n  };\n\n  const init = (section) => {\n    if (section.dataset.cmInit === \"1\") return;\n    section.dataset.cmInit = \"1\";\n    apply(section, section.dataset.pricingPeriod);\n\n    document.addEventListener(EVENT, (event) => {\n      if (!event.detail) return;\n      apply(section, event.detail.period);\n    });\n  };\n\n  ready(() => {\n    document.querySelectorAll('[data-block=\"pricing.credits-meter\"]').forEach(init);\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_BILLING_DEFAULT",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Default Billing Period",
+          "DESCRIPTION": "Initial billing period. Listens to the cross-block `pricing:billing` event so the section can mirror the toggle elsewhere on the page."
+        }
+      },
+      "value": "monthly",
+      "options": [
+        "monthly",
+        "annual"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Section Eyebrow",
+          "DESCRIPTION": "Small uppercase label above the section heading."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Section Heading",
+          "DESCRIPTION": "Main heading for the credits/tokens section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Section Lede",
+          "DESCRIPTION": "Introductory paragraph for the section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Kicker",
+          "DESCRIPTION": "Small label above the allowance card title."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Title",
+          "DESCRIPTION": "Heading for the included-allowance card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Lede",
+          "DESCRIPTION": "Sub-paragraph for the allowance card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 1 Visible",
+          "DESCRIPTION": "Whether the first plan row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_PLAN",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 1 Name",
+          "DESCRIPTION": "Plan label for the first allowance row."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_INCLUDED",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 1 Included",
+          "DESCRIPTION": "Included monthly token amount for the first plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Unit",
+          "DESCRIPTION": "Unit label shown next to each plan's included amount."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_01_OVERAGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 1 Overage",
+          "DESCRIPTION": "Per-token rate after the included pool is consumed."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 2 Visible",
+          "DESCRIPTION": "Whether the second plan row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_PLAN",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 2 Name",
+          "DESCRIPTION": "Plan label for the second allowance row."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_INCLUDED",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 2 Included",
+          "DESCRIPTION": "Included monthly token amount for the second plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea commodo consequat duis."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_02_OVERAGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 2 Overage",
+          "DESCRIPTION": "Per-token rate after the included pool is consumed."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 3 Visible",
+          "DESCRIPTION": "Whether the third plan row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_PLAN",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 3 Name",
+          "DESCRIPTION": "Plan label for the third allowance row."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_INCLUDED",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 3 Included",
+          "DESCRIPTION": "Included monthly token amount for the third plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_03_OVERAGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 3 Overage",
+          "DESCRIPTION": "Per-token rate after the included pool is consumed."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 4 Visible",
+          "DESCRIPTION": "Whether the fourth plan row is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_PLAN",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 4 Name",
+          "DESCRIPTION": "Plan label for the fourth allowance row."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_INCLUDED",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 4 Included",
+          "DESCRIPTION": "Included monthly token amount for the fourth plan."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_ALLOWANCE_04_OVERAGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Allowance Plan 4 Overage",
+          "DESCRIPTION": "Per-token rate after the included pool is consumed."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACKS_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Packs Kicker",
+          "DESCRIPTION": "Small label above the packs card title."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor incididunt ut labore."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACKS_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Packs Title",
+          "DESCRIPTION": "Heading for the packs card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACKS_LEDE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Packs Lede",
+          "DESCRIPTION": "Sub-paragraph for the packs card."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 State",
+          "DESCRIPTION": "Visual state for the first token pack."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Visible",
+          "DESCRIPTION": "Whether the first token pack is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Badge",
+          "DESCRIPTION": "Optional badge text above the first pack."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Name",
+          "DESCRIPTION": "Display name for the first token pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_AMOUNT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Amount",
+          "DESCRIPTION": "Token amount in the first pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Unit",
+          "DESCRIPTION": "Unit suffix next to the first pack amount."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Price",
+          "DESCRIPTION": "Display price for the first pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_01_PER_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 1 Per-Token Rate",
+          "DESCRIPTION": "Derived per-token rate for the first pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 State",
+          "DESCRIPTION": "Visual state for the second token pack."
+        }
+      },
+      "value": "featured",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Visible",
+          "DESCRIPTION": "Whether the second token pack is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Badge",
+          "DESCRIPTION": "Optional badge text above the second pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum incididunt ut labore et."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Name",
+          "DESCRIPTION": "Display name for the second token pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum enim."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_AMOUNT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Amount",
+          "DESCRIPTION": "Token amount in the second pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Unit",
+          "DESCRIPTION": "Unit suffix next to the second pack amount."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Price",
+          "DESCRIPTION": "Display price for the second pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum esse cillum fugiat nulla."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_02_PER_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 2 Per-Token Rate",
+          "DESCRIPTION": "Derived per-token rate for the second pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 State",
+          "DESCRIPTION": "Visual state for the third token pack."
+        }
+      },
+      "value": "standard",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Visible",
+          "DESCRIPTION": "Whether the third token pack is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Badge",
+          "DESCRIPTION": "Optional badge text above the third pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Name",
+          "DESCRIPTION": "Display name for the third token pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_AMOUNT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Amount",
+          "DESCRIPTION": "Token amount in the third pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Unit",
+          "DESCRIPTION": "Unit suffix next to the third pack amount."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Price",
+          "DESCRIPTION": "Display price for the third pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing elit sed do."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_03_PER_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 3 Per-Token Rate",
+          "DESCRIPTION": "Derived per-token rate for the third pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_STATE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 State",
+          "DESCRIPTION": "Visual state for the fourth token pack."
+        }
+      },
+      "value": "muted",
+      "options": [
+        "standard",
+        "featured",
+        "muted"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Visible",
+          "DESCRIPTION": "Whether the fourth token pack is rendered. Hidden by default — flip to 'show' for a fourth tier."
+        }
+      },
+      "value": "hide",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_BADGE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Badge",
+          "DESCRIPTION": "Optional badge text above the fourth pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis aute irure reprehenderit."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Name",
+          "DESCRIPTION": "Display name for the fourth token pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_AMOUNT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Amount",
+          "DESCRIPTION": "Token amount in the fourth pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit amet consectetur adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Unit",
+          "DESCRIPTION": "Unit suffix next to the fourth pack amount."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_PRICE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Price",
+          "DESCRIPTION": "Display price for the fourth pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna aliqua enim ad."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACK_04_PER_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Pack 4 Per-Token Rate",
+          "DESCRIPTION": "Per-token note for the fourth pack."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACKS_CTA_URL",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Packs CTA URL",
+          "DESCRIPTION": "URL target for the packs CTA."
+        }
+      },
+      "value": "#"
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_PACKS_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Packs CTA Label",
+          "DESCRIPTION": "Button label for the packs CTA."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_EXPLAINER_VISIBLE",
+      "type": "STRING",
+      "nls": {
+        "en": {
+          "NAME": "Explainer Visible",
+          "DESCRIPTION": "Whether the explainer aside is rendered."
+        }
+      },
+      "value": "show",
+      "options": [
+        "show",
+        "hide"
+      ]
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_EXPLAINER_KICKER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Explainer Kicker",
+          "DESCRIPTION": "Small label inside the explainer aside."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_EXPLAINER_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Explainer Text",
+          "DESCRIPTION": "Plain-language example of token economics."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore et dolore magna."
+      }
+    },
+    {
+      "code": "SECTION_04_PRICING_CREDITS_METER_DISCLAIMER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Section Disclaimer",
+          "DESCRIPTION": "Small disclaimer shown below the section."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud."
+      }
+    }
+  ]
+}

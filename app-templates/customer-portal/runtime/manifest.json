@@ -1,0 +1,1642 @@
+{
+  "product": "Aircove Customer Portal",
+  "version": "runtime-wave9-s6-cms-packaging",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 99 src JavaScript modules + 13 non-src runtime JavaScript modules",
+  "fileInventory": {
+    "stylesheets": 7,
+    "srcJavaScript": 99,
+    "runtimeJavaScript": 112
+  },
+  "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
+  "entry": "runtime/source.html",
+  "seoSurfaces": {
+    "portalParity": "seo.landing; portal shell allowed; accepted design fixtures are reference-only",
+    "checkedReferencePreview": "public/seo-reference-preview.html; deterministic noindex fixture preview with visible reference-only labeling",
+    "strictPublicTemplate": "cms/seo-public-root-template.html; token-only, no mock defaults, complete authored input required",
+    "strictPublicGenerator": "scripts/generate-seo-public.mjs --input <complete-authored-payload.json> --output <document.html>",
+    "finalCmsPackaging": "cms/block.json and cms/seo-public-block.json export independently through scripts/export-cms.mjs; no upload"
+  },
+  "dataAttributes": {
+    "data-route": "page / view id (matches scenarios.routes[].id)",
+    "data-module": "reusable component id (matches components[].id)",
+    "data-bind": "fixture field(s) the rendered value came from",
+    "data-action": "user command name (matches actions[])",
+    "data-state": "UI state. Shared production grammar: ready|loading|empty|error|fallback|disabled|unauthorized|validation-error|pending-action|success-toast|drawer-open|mobile-navigation-open|active. Existing component/entity states such as auth-phone/auth-code, selected/current/on/off, and order/proposal/weather/service statuses remain defined by their component contracts and scenarios.json.",
+    "data-visual-id": "stable id for screenshot parity / visual transfer"
+  },
+  "themingContract": {
+    "mechanism": "declarative attributes on <html>",
+    "attributes": {
+      "data-theme": [
+        "hvac",
+        "snow",
+        "lawn",
+        "pool",
+        "roofing",
+        "pest",
+        "health",
+        "beauty"
+      ],
+      "data-mode": [
+        "light",
+        "dark"
+      ]
+    },
+    "note": "data-theme is the validated visual skin from config.theme and controls CSS tokens only. config.vertical separately owns fixture/content/business behavior, weather capability, Care label, default profile, and orders. Neither axis is an end-user picker. data-mode (light/dark) remains a user toggle."
+  },
+  "portalProfiles": {
+    "mechanism": "config.vertical selects verticalProfiles business/content facts and a portalProfiles default. config.theme selects visual CSS tokens only. Profiles set nav, primary action, calendar mode, cart visibility, and enabled modules; verticalProfiles supplies the Care label and weather capability.",
+    "profiles": {
+      "onDemand": {
+        "verticals": [
+          "HVAC"
+        ],
+        "nav": [
+          { "key": "orders.list", "label": "Orders" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "proposals.list", "label": "Proposals" },
+          { "key": "services", "label": "Services" },
+          { "key": "pricing", "label": "Pricing" },
+          { "key": "products", "label": "Products" },
+          { "key": "support", "label": "Support" }
+        ],
+        "enabledModules": ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": true,
+        "drawerTitle": "Book a service"
+      },
+      "stormOps": {
+        "verticals": [
+          "Snow Removal",
+          "Lawn & Garden",
+          "Pool & Spa",
+          "Roofing",
+          "Pest Control"
+        ],
+        "nav": [
+          { "key": "orders.list", "label": "Home" },
+          { "key": "calendar", "label": "Calendar" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "proposals.list", "label": "Contracts" },
+          { "key": "services", "label": "Services" },
+          { "key": "activity", "label": "Activity" },
+          { "key": "support", "label": "Support" }
+        ],
+        "enabledModules": ["orders", "calendar", "activity", "proposals", "care", "services", "profile", "support"],
+        "primary": { "label": "Request service", "action": "service.request" },
+        "weatherCalendar": true,
+        "calendarVariant": "storm",
+        "showCart": false,
+        "drawerTitle": "Request service"
+      },
+      "appointments": {
+        "verticals": [
+          "Health"
+        ],
+        "nav": [
+          { "key": "orders.list", "label": "Appointments" },
+          { "key": "calendar", "label": "Calendar" },
+          { "key": "care", "labelSource": "verticalProfiles.careNavLabel" },
+          { "key": "services", "label": "Services" },
+          { "key": "pricing", "label": "Pricing" },
+          { "key": "products", "label": "Products" },
+          { "key": "support", "label": "Support" }
+        ],
+        "enabledModules": ["orders", "calendar", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": true,
+        "drawerTitle": "Book an appointment"
+      },
+      "spaStaging": {
+        "verticals": ["Beauty"],
+        "nav": [
+          { "key": "orders.list", "label": "Orders" },
+          { "key": "services", "label": "Services & prices" },
+          { "key": "products", "label": "Shop" },
+          { "key": "account", "label": "Account" }
+        ],
+        "enabledModules": ["orders", "services", "pricing", "products", "account"],
+        "primary": { "label": "Browse services", "action": "nav.go" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": false,
+        "drawerTitle": "Book an appointment"
+      },
+      "spaTarget": {
+        "verticals": ["Beauty"],
+        "nav": [
+          { "key": "orders.list", "label": "Appointments" },
+          { "key": "services", "label": "Services & prices" },
+          { "key": "products", "label": "Shop" },
+          { "key": "account", "label": "Account" }
+        ],
+        "enabledModules": ["appointments", "orders", "services", "pricing", "products", "account", "purchases", "plan", "cart", "checkout", "profile"],
+        "primary": { "label": "+ Book", "action": "booking.open" },
+        "weatherCalendar": false,
+        "calendarVariant": "month",
+        "showCart": false,
+        "drawerTitle": "Book an appointment"
+      }
+    },
+    "note": "Calendar renders StormCalendar only when the business vertical supports weather and the effective profile is stormOps; visual config.theme never changes this decision. Health and Beauty have no weather fixture and never fall back to Snow content. Care labels come from the business vertical registry."
+  },
+  "routeRegistry": [
+    { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "done", "disposition": "Executable portal-shell reference parity route only", "productionOwner": "cms/seo-public-root-template.html strict authored public document contract" },
+    { "id": "auth.oidc", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "auth.phone", "path": "/login/phone-reference", "module": "auth", "auth": "public", "status": "reference" },
+    { "id": "auth.code", "path": "/login/verify", "module": "auth", "auth": "public", "status": "done" },
+    { "id": "orders.list", "path": "/orders", "module": "orders", "auth": "private", "status": "done" },
+    { "id": "order.detail", "path": "/orders/:id", "module": "orders", "auth": "private", "status": "done" },
+    { "id": "appointment.detail", "path": "/appointments/:id", "module": "appointments", "auth": "private", "status": "live-demo-open", "wave": 16 },
+    { "id": "calendar", "path": "/calendar", "module": "calendar", "auth": "private", "status": "done" },
+    { "id": "activity", "path": "/activity", "module": "activity", "auth": "private", "status": "done" },
+    { "id": "services", "path": "/services", "module": "services", "auth": "private", "status": "done" },
+    { "id": "pricing", "path": "/pricing", "module": "pricing", "auth": "private", "status": "done" },
+    { "id": "products", "path": "/products", "module": "products", "auth": "private", "status": "done" },
+    { "id": "checkout", "path": "/checkout", "module": "checkout", "auth": "private", "status": "done" },
+    { "id": "account", "path": "/account", "module": "account", "auth": "private", "status": "done" },
+    { "id": "purchases.list", "path": "/purchases", "module": "purchases", "auth": "private", "status": "capability-gated" },
+    { "id": "purchase.detail", "path": "/purchases/:id", "module": "purchases", "auth": "private", "status": "capability-gated" },
+    { "id": "plan", "path": "/account/plan", "module": "plan", "auth": "private", "status": "capability-gated" },
+    { "id": "cart", "path": "/cart", "module": "cart", "auth": "private", "status": "capability-gated" },
+    { "id": "proposals.list", "path": "/proposals", "module": "proposals", "auth": "private", "status": "done" },
+    { "id": "proposal.detail", "path": "/proposals/:id", "module": "proposals", "auth": "private", "status": "done" },
+    { "id": "profile", "path": "/profile", "module": "profile", "auth": "private", "status": "done" },
+    { "id": "support", "path": "/support", "module": "support", "auth": "private", "status": "done" },
+    { "id": "care", "path": "/care", "module": "care", "auth": "private", "status": "done", "guard": "two-phase module + session + scope + entitlement preflight before protected fixture adapter" }
+  ],
+  "components": [
+    {
+      "id": "app-shell",
+      "factory": "render()",
+      "props": [
+        "route",
+        "theme",
+        "mode"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "top-nav",
+      "factory": "TopNav()",
+      "props": [
+        "route",
+        "theme",
+        "mode"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "page-header",
+      "factory": "PageHeader",
+      "props": [
+        "title",
+        "sub"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "status-badge",
+      "factory": "StatusBadge",
+      "props": [
+        "variant",
+        "label",
+        "bind",
+        "state"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "action-button",
+      "factory": "ActionButton",
+      "props": [
+        "variant",
+        "label",
+        "action",
+        "id",
+        "disabled",
+        "confirm",
+        "block",
+        "lg",
+        "href"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "tabs",
+      "factory": "Tabs",
+      "props": [
+        "items",
+        "active",
+        "action"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-card",
+      "factory": "OrderCard",
+      "props": [
+        "order"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-list",
+      "factory": "Cabinet()",
+      "props": [
+        "orders",
+        "filter",
+        "view"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "service-card",
+      "factory": "ServiceCard",
+      "props": [
+        "svc",
+        "index"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "membership-card",
+      "factory": "MembershipCard",
+      "props": [
+        "plan"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "alert-banner",
+      "factory": "ProposalBanner / WeatherBanner",
+      "props": [
+        "pendingCount",
+        "order"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "tracking-card",
+      "factory": "TrackingCard",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "empty-state",
+      "factory": "EmptyState",
+      "props": [
+        "glyph",
+        "title",
+        "desc",
+        "action"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "error-state",
+      "factory": "ErrorState",
+      "props": [
+        "title",
+        "desc"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "loading-state",
+      "factory": "skeletonRow",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "toast",
+      "factory": "toast()",
+      "props": [
+        "message"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "drawer",
+      "factory": "BookingDrawer",
+      "props": [],
+      "status": "partial"
+    },
+    {
+      "id": "filter-bar",
+      "factory": "inline in Cabinet",
+      "props": [
+        "addresses"
+      ],
+      "status": "done"
+    },
+    {
+      "id": "order-detail",
+      "factory": "OrderDetail()",
+      "props": [
+        "order",
+        "view"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "timeline",
+      "factory": "Timeline",
+      "props": [
+        "steps"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "status-banner",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "variant",
+        "title",
+        "sub"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "technician-card",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "technician"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "location-card",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "location",
+        "otherAppointments"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "weather-card",
+      "factory": "WeatherDetail",
+      "props": [
+        "order.wt"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "locked-report",
+      "factory": "inline in WeatherDetail",
+      "props": [],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "photo-report",
+      "factory": "PhotoReport",
+      "props": [],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "invoice",
+      "factory": "inline in OrderDetail",
+      "props": [
+        "hasPrice",
+        "labor",
+        "parts",
+        "total"
+      ],
+      "status": "done",
+      "wave": 2
+    },
+    {
+      "id": "service-catalog-card",
+      "factory": "ServiceCatalogCard",
+      "props": [
+        "svc",
+        "index"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "how-it-works",
+      "factory": "inline in Services",
+      "props": [],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "pricing-card",
+      "factory": "PricingCard",
+      "props": [
+        "name",
+        "price",
+        "tag",
+        "features",
+        "featured",
+        "current"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "rate-row",
+      "factory": "inline in Pricing",
+      "props": [
+        "svc"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "featured-banner",
+      "factory": "inline in Products",
+      "props": [
+        "feat"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "product-card",
+      "factory": "ProductCard",
+      "props": [
+        "product",
+        "catIndex"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "cart-row",
+      "factory": "CartRow",
+      "props": [
+        "item"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "address-card",
+      "factory": "AddressCard",
+      "props": [
+        "address",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "payment-method-card",
+      "factory": "PaymentCard",
+      "props": [
+        "card",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "checkout-summary",
+      "factory": "inline in Checkout",
+      "props": [
+        "subtotal",
+        "tax",
+        "total"
+      ],
+      "status": "done",
+      "wave": 3
+    },
+    {
+      "id": "proposal-list",
+      "factory": "ProposalsList()",
+      "props": [
+        "psites"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "portfolio-map",
+      "factory": "inline in ProposalsList",
+      "props": [
+        "psites"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-rollup",
+      "factory": "inline in ProposalsList",
+      "props": [
+        "rollup"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-card",
+      "factory": "ProposalCard",
+      "props": [
+        "site"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-detail",
+      "factory": "ProposalDetail()",
+      "props": [
+        "site"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "beam-report",
+      "factory": "inline in ProposalDetail",
+      "props": [
+        "surfaces",
+        "total"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "proposal-comparison",
+      "factory": "ProposalComparison",
+      "props": [
+        "site",
+        "computed"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "plan-option",
+      "factory": "inline in ProposalDetail",
+      "props": [
+        "plan",
+        "selected"
+      ],
+      "status": "done",
+      "wave": 4
+    },
+    {
+      "id": "profile-hero",
+      "factory": "inline in Profile",
+      "props": [
+        "customer",
+        "plan"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "stat-card",
+      "factory": "statCard",
+      "props": [
+        "label",
+        "num",
+        "color"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "toggle",
+      "factory": "Toggle",
+      "props": [
+        "on",
+        "id"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "activity-feed",
+      "factory": "Activity()",
+      "props": [
+        "feedFilter"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "activity-item",
+      "factory": "inline in Activity",
+      "props": [
+        "event"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "calendar-grid",
+      "factory": "Calendar()",
+      "props": [
+        "calYear",
+        "calMonth",
+        "orders"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "calendar-cell",
+      "factory": "inline in Calendar",
+      "props": [
+        "day",
+        "events",
+        "today"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "help-rail",
+      "factory": "inline in Support",
+      "props": [
+        "helpTopics"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "call-card",
+      "factory": "inline in Support",
+      "props": [],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "chat-thread",
+      "factory": "inline in Support",
+      "props": [
+        "messages",
+        "typing"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "chat-composer",
+      "factory": "inline in Support",
+      "props": [
+        "chatInput"
+      ],
+      "status": "done",
+      "wave": 5
+    },
+    {
+      "id": "storm-calendar",
+      "factory": "StormCalendar()",
+      "props": [
+        "theme"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-home",
+      "factory": "StormHome()",
+      "props": [
+        "theme"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-status",
+      "factory": "inline in StormHome",
+      "props": [
+        "today"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "next-windows",
+      "factory": "inline in StormHome",
+      "props": [
+        "days"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "season-status",
+      "factory": "inline in StormHome",
+      "props": [
+        "plan"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "contract-banner",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "rule",
+        "note"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "storm-day",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "day"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "weather-row",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "weather"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "service-window",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "event"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "access-notes",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "accessNotes"
+      ],
+      "status": "done",
+      "profile": "stormOps"
+    },
+    {
+      "id": "public-nav",
+      "factory": "PublicNav()",
+      "props": [
+        "route"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "landing-hero",
+      "factory": "inline in Landing",
+      "props": [
+        "hero",
+        "profile"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "quote-card",
+      "factory": "inline in Landing",
+      "props": [
+        "profile"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "auth-card",
+      "factory": "Auth()",
+      "props": [
+        "route"
+      ],
+      "status": "done",
+      "wave": 6,
+      "note": "route drives step: auth.phone -> AuthPhone, auth.code -> AuthCode"
+    },
+    {
+      "id": "auth-phone",
+      "factory": "AuthPhone",
+      "props": [
+        "phone",
+        "error"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "otp",
+      "factory": "AuthCode",
+      "props": [
+        "code",
+        "error"
+      ],
+      "status": "done",
+      "wave": 6
+    },
+    {
+      "id": "activity-filter",
+      "factory": "inline in Activity",
+      "props": [
+        "feedFilter"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "cart-list",
+      "factory": "inline in Checkout",
+      "props": [
+        "cartItems"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "chat-panel",
+      "factory": "inline in Support",
+      "props": [
+        "messages",
+        "typing"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "glass-card",
+      "factory": "card shell primitive (.card)",
+      "props": [],
+      "status": "done"
+    },
+    {
+      "id": "help-topic",
+      "factory": "inline in Support",
+      "props": [
+        "topic"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "preferences",
+      "factory": "inline in Profile",
+      "props": [
+        "prefs"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "product-list",
+      "factory": "inline in Products",
+      "props": [
+        "products",
+        "prodCat"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "profile-stats",
+      "factory": "inline in Profile",
+      "props": [
+        "customer"
+      ],
+      "wave": 5,
+      "status": "done"
+    },
+    {
+      "id": "rates-list",
+      "factory": "inline in Pricing",
+      "props": [
+        "rates"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "service-list",
+      "factory": "inline in Services",
+      "props": [
+        "services"
+      ],
+      "wave": 3,
+      "status": "done"
+    },
+    {
+      "id": "storm-agenda",
+      "factory": "inline in StormCalendar",
+      "props": [
+        "days"
+      ],
+      "profile": "stormOps",
+      "status": "done"
+    },
+    {
+      "id": "timeline-step",
+      "factory": "inline in Timeline",
+      "props": [
+        "step"
+      ],
+      "wave": 2,
+      "status": "done"
+    },
+  {
+    "id": "care-hub",
+    "factory": "Care()",
+    "props": [
+      "normalized Care envelope",
+      "Care UI state"
+    ],
+    "wave": 7,
+    "note": "one route, eight vertical-specific normalized payloads; business vertical selects the Care kind and nav label",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "entitlement-gate",
+    "factory": "inline in Care()",
+    "props": [
+      "module.navLabel",
+      "module.title"
+    ],
+    "wave": 7,
+    "note": "unauthorized / entitlement-denied state; upgrade -> profile.managePlan, questions -> support.open",
+    "states": [
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "unit-picker",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "units",
+      "careUnit"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "contract": "care.selectUnit data-id = unit.id (stable, e.g. unit-ac-01), never the display name",
+    "status": "done"
+  },
+  {
+    "id": "equipment-passport",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "unit"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "status": "done"
+  },
+  {
+    "id": "diagnostic-report",
+    "factory": "inline in EquipmentHub",
+    "props": [
+      "unit.checks"
+    ],
+    "wave": 7,
+    "vertical": "HVAC",
+    "status": "done"
+  },
+  {
+    "id": "document-vault",
+    "factory": "inline in EquipmentHub / RoofReport",
+    "props": [
+      "docs"
+    ],
+    "wave": 7,
+    "status": "done"
+  },
+  {
+    "id": "document-row",
+    "factory": "DocRow",
+    "props": [
+      "doc"
+    ],
+    "wave": 7,
+    "contract": "care.download data-id = document.id (e.g. doc-hvac-diag-2026-01); row carries data-document-id",
+    "status": "done"
+  },
+  {
+    "id": "season-stats",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "stats"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "storm-log",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "events"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "sla-meter",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "sla"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "compliance-reports",
+    "factory": "inline in SeasonLog",
+    "props": [
+      "docs"
+    ],
+    "wave": 7,
+    "vertical": "Snow Removal",
+    "status": "done"
+  },
+  {
+    "id": "program-steps",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "steps"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "reentry-card",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "reentry"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "soil-snapshot",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "soil"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "progress-photos",
+    "factory": "inline in LawnProgram",
+    "props": [
+      "photos"
+    ],
+    "wave": 7,
+    "vertical": "Lawn & Garden",
+    "status": "done"
+  },
+  {
+    "id": "water-readings",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "readings"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "dose-log",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "doses"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "test-cadence",
+    "factory": "inline in WaterQuality",
+    "props": [
+      "tested",
+      "nextTest"
+    ],
+    "wave": 7,
+    "vertical": "Pool & Spa",
+    "status": "done"
+  },
+  {
+    "id": "roof-zones",
+    "factory": "inline in RoofReport",
+    "props": [
+      "zones"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "roof-score",
+    "factory": "inline in RoofReport",
+    "props": [
+      "score",
+      "grade"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "project-tracker",
+    "factory": "inline in RoofReport (reuses timeline classes)",
+    "props": [
+      "project"
+    ],
+    "wave": 7,
+    "vertical": "Roofing",
+    "status": "done"
+  },
+  {
+    "id": "monitoring-summary",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "summary"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "station-map",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "stations"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "station-list",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "stations"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "alert-log",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "alerts"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "status": "done"
+  },
+  {
+    "id": "retreat-card",
+    "factory": "inline in PestMonitoring",
+    "props": [
+      "guarantee"
+    ],
+    "wave": 7,
+    "vertical": "Pest Control",
+    "states": [
+      "available",
+      "requesting",
+      "used"
+    ],
+    "contract": "care.requestRetreat data-id = plan.planId; button also carries data-property-id + data-service-id. Fixture command uses entity-keyed shared single-flight and records submitting -> submitted readback.",
+    "status": "done"
+  },
+  {
+    "id": "health-care-hub",
+    "factory": "HealthCareHub()",
+    "props": [
+      "careModules['Health']"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "note": "LOGISTICS ONLY BY DESIGN — renders scheduling, milestones, tasks and document METADATA; never clinical metrics, readings, results or medical advice.",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "care-appointment",
+    "factory": "inline in HealthCareHub / BeautyCareHub",
+    "props": [
+      "appointment"
+    ],
+    "wave": 9,
+    "contract": "card carries data-appointment-id (stable, e.g. appt-health-2026-0130 / appt-beauty-2026-0116) + data-provider-id / data-specialist-id; reschedule & details use the linked order id",
+    "status": "done"
+  },
+  {
+    "id": "care-plan",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "plan.milestones"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "card carries data-plan-id (e.g. plan-health-2026); milestones are logistics steps (intake/review/cadence), never clinical outcomes",
+    "status": "done"
+  },
+  {
+    "id": "follow-up-tasks",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "tasks"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "states": [
+      "open",
+      "done"
+    ],
+    "contract": "care.completeTask data-id = task.id (e.g. task-health-01); row carries data-task-id + data-state open|done",
+    "status": "done"
+  },
+  {
+    "id": "provider-card",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "provider"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "care.contactProvider data-id = provider.id (e.g. prov-health-pt-01); card carries data-provider-id",
+    "status": "done"
+  },
+  {
+    "id": "secure-documents",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "docs",
+      "docsNote"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "contract": "care.openSecureDoc data-id = document.id (e.g. doc-health-results-2026-01); row carries data-document-id. Contents are NEVER previewed in the portal — secure viewer only, access logged (Codex owns the viewer + audit).",
+    "status": "done"
+  },
+  {
+    "id": "care-disclaimer",
+    "factory": "inline in HealthCareHub",
+    "props": [
+      "disclaimer"
+    ],
+    "wave": 9,
+    "vertical": "Health",
+    "status": "done"
+  },
+  {
+    "id": "beauty-care-hub",
+    "factory": "BeautyCareHub()",
+    "props": [
+      "careModules['Beauty']"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "states": [
+      "ready",
+      "loading",
+      "empty",
+      "error",
+      "unauthorized"
+    ],
+    "status": "done"
+  },
+  {
+    "id": "package-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "pkg"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "card carries data-package-id (e.g. pkg-beauty-glow-2026)",
+    "status": "done"
+  },
+  {
+    "id": "specialist-picker",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "specialists",
+      "preferredId",
+      "Care UI selectedSpecialistId"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "care.selectSpecialist data-id = specialist.id (stable, e.g. spec-beauty-01), never the display name",
+    "status": "done"
+  },
+  {
+    "id": "treatment-history",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "history"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "status": "done"
+  },
+  {
+    "id": "routine-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "routine"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "status": "done"
+  },
+  {
+    "id": "loyalty-card",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "loyalty"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "contract": "card carries data-plan-id (e.g. plan-beauty-member-2026); manage → profile.managePlan",
+    "status": "done"
+  },
+  {
+    "id": "care-products",
+    "factory": "inline in BeautyCareHub",
+    "props": [
+      "productRecs",
+      "normalized productRecs.items"
+    ],
+    "wave": 9,
+    "vertical": "Beauty",
+    "note": "reuses the existing cart contract: cart.addItem data-id = product name",
+    "status": "done"
+  },
+    { "id": "seo-hero", "factory": "SeoHero", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-trust-strip", "factory": "SeoTrustStrip", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-service-card", "factory": "inline in SeoServicesGrid", "props": ["normalized service with stable id and nullable validated destination", "reference-only selectedServiceId"], "wave": 9, "status": "done" },
+    { "id": "seo-services-grid", "factory": "SeoServicesGrid", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-how-it-works", "factory": "SeoHowItWorks", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-proof", "factory": "SeoProofBlock", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-pricing", "factory": "SeoPricing", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-service-area", "factory": "SeoServiceArea", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-reviews", "factory": "SeoReviews", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-faq", "factory": "SeoFaq", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-final-cta", "factory": "SeoFinalCta", "props": ["normalized SEO model", "view"], "wave": 9, "status": "done" },
+    { "id": "seo-footer", "factory": "SeoFooter", "props": ["normalized SEO model"], "wave": 9, "status": "done" },
+    { "id": "seo-cta", "factory": "SeoCta", "props": ["normalized validated CTA", "reference-only lifecycle view"], "wave": 9, "status": "done" },
+    { "id": "seo-meta-preview", "factory": "SeoMetaPreview", "props": ["normalized SEO model"], "wave": 9, "status": "parity-only", "note": "Portal parity route only; omitted from public production entry." },
+    { "id": "appointment-detail", "factory": "SpaAppointmentDetail", "props": ["customer-owned appointment read model"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "booking-flow", "factory": "SpaBookingFlow", "props": ["server-shaped booking flow and slot hold state"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "plan-offer-card", "factory": "inline in SpaCatalog", "props": ["published sellable package or membership offer"], "wave": 16, "status": "fixture-transferred" },
+    { "id": "spa-profile", "factory": "SpaProfile", "props": ["least-data profile readback and edit draft"], "wave": 16, "status": "fixture-transferred" }
+  ],
+  "dataBindings": [
+    "brand.name",
+    "page.title",
+    "page.subtitle",
+    "order.name",
+    "order.id",
+    "order.date",
+    "order.price",
+    "order.statusLabel",
+    "service.name",
+    "service.price",
+    "plan.name",
+    "plan.desc",
+    "proposal.id",
+    "proposal.pendingCount",
+    "status.label",
+    "visit.techName",
+    "visit.eta",
+    "unit.name",
+    "unit.health",
+    "doc.name",
+    "doc.meta",
+    "event.storm",
+    "step.name",
+    "reentry.safeAfter",
+    "reading.name",
+    "reading.value",
+    "zone.name",
+    "roof.score",
+    "station.label",
+    "appointment.when",
+    "appointment.name",
+    "plan.name",
+    "milestone.name",
+    "task.label",
+    "provider.name",
+    "pkg.name",
+    "pkg.used",
+    "visit.what",
+    "specialist.name",
+    "routine.note",
+    "loyalty.points",
+    "product.name"
+  ],
+  "actions": [
+    "access.confirm",
+    "access.update",
+    "activity.act",
+    "activity.filter",
+    "activity.markRead",
+    "activity.open",
+    "auth.apple",
+    "auth.back",
+    "auth.gotoSignin",
+    "auth.resend",
+    "auth.sendCode",
+    "auth.signOut",
+    "auth.verifyCode",
+    "booking.confirm",
+    "booking.ackPolicy",
+    "booking.back",
+    "booking.close",
+    "booking.hold",
+    "booking.open",
+    "booking.retry",
+    "booking.selectService",
+    "booking.selectSlot",
+    "booking.selectSpecialist",
+    "calendar.next",
+    "calendar.open",
+    "calendar.prev",
+    "cart.addItem",
+    "cart.dec",
+    "cart.inc",
+    "cart.open",
+    "cart.removeItem",
+    "care.completeTask",
+    "care.contactProvider",
+    "care.download",
+    "care.openSecureDoc",
+    "care.requestRetreat",
+    "care.selectSpecialist",
+    "care.selectUnit",
+    "seo.cta.book",
+    "seo.cta.quote",
+    "seo.cta.call",
+    "seo.cta.services",
+    "seo.service.select",
+    "seo.faq.toggle",
+    "checkout.pickAddress",
+    "checkout.pickPayment",
+    "checkout.placeOrder",
+    "compliance.unlock",
+    "membership.activate",
+    "nav.go",
+    "nav.landing",
+    "order.back",
+    "order.bookAgain",
+    "order.cancel",
+    "order.downloadInvoice",
+    "order.filter",
+    "order.open",
+    "order.reschedule",
+    "appointment.bookAgain",
+    "appointment.cancel",
+    "appointment.open",
+    "appointment.openPurchase",
+    "appointment.reschedule",
+    "plan.bookWithCredit",
+    "plan.purchase",
+    "products.filter",
+    "profile.addAddress",
+    "profile.addCard",
+    "profile.changeField",
+    "profile.edit",
+    "profile.filter",
+    "profile.managePlan",
+    "profile.open",
+    "profile.reload",
+    "profile.save",
+    "profile.setDefaultAddress",
+    "profile.setDefaultPayment",
+    "profile.togglePref",
+    "profile.updateAddress",
+    "proposal.approve",
+    "proposal.decline",
+    "proposal.open",
+    "proposal.requestRevision",
+    "proposal.review",
+    "proposal.selectPlan",
+    "service.reportIssue",
+    "service.request",
+    "service.requestExtra",
+    "support.call",
+    "support.email",
+    "support.helpTopic",
+    "support.open",
+    "support.quickReply",
+    "support.sendMessage",
+    "theme.pick",
+    "ui.retry",
+    "ui.toggleMobileNav",
+    "ui.toggleMode",
+    "weather.confirm",
+    "weather.decline"
+  ],
+  "featureFlags": [
+    "showProducts",
+    "showProposals",
+    "showMemberships",
+    "weatherTriggers",
+    "darkMode"
+  ],
+  "fixtures": {
+    "module": "data/fixtures.js",
+    "global": "window.AircoveFixtures",
+    "exports": [
+      "themes",
+      "themeSlugs",
+      "statusMeta",
+      "pstatus",
+      "customer",
+      "addresses",
+      "cards",
+      "proposal",
+      "proposalSites",
+      "ordersFor",
+      "PAL",
+      "TINTS"
+    ],
+    "mode": "fixture",
+    "careModule": "data/care-fixtures.js",
+    "careBoundary": "Protected Care fixture adapter is constructed and called only after granted preflight. No Care live adapter is opened.",
+    "seoReferenceModule": "data/seo-fixtures.js; eight accepted design fixture sets are reference-only and imported solely by the parity/reference loader"
+  },
+  "activationContract": {
+    "inventory": "data/activation-contracts.json",
+    "schema": "data/activation-contracts.schema.json",
+    "check": "scripts/activation-contract-check.mjs",
+    "dataSources": ["care.fixture", "care.live", "seo.reference", "seo.publicAuthored"],
+    "surfaceControls": "data/activation-contracts.json#surfaceControls; 21 exact rows / 38 rendered Care control instances across eight verticals",
+    "careActions": ["care.selectUnit", "care.download", "care.requestRetreat", "care.selectSpecialist", "care.completeTask", "care.contactProvider", "care.openSecureDoc"],
+    "seoActions": ["seo.cta.book", "seo.cta.quote", "seo.cta.call", "seo.cta.services", "seo.service.select", "seo.faq.toggle"],
+    "openedLive": [],
+    "liveResidual": ["care.live"],
+    "rule": "Unknown non-PIM endpoint/auth/readback contracts remain not_opened; every visible Care control is inventoried; unavailable controls never dispatch network or success."
+  },
+  "serving": "MUST be served over HTTP (ES modules are blocked on file://). No bundler / no build step — many small files loaded natively.",
+  "moduleTree": {
+    "src/dom.js": "h, clear, svgPath",
+    "src/state.js": "state object + pure selectors + isPublic()",
+    "src/actions.js": "ACTIONS map + honest local fixture transitions + bindActions",
+    "src/activation-policy.js": "literal code-owned Health control set, sensitive ids, and Care surface closure policy",
+    "src/router.js": "renderRoute() switch + ComingSoon",
+    "src/app.js": "entry: render, positionNavPill, applyResponsive, BookingDrawer, boot, window.AircovePortal",
+    "src/components/{shell,primitives,orders,commerce,proposals,storm,profile,care,seo}/*.js": "leaf components; SEO leaves receive normalized model/view only",
+    "src/routes/*Page.js": "page-level renderers (export names kept original: OrdersPage.js exports Cabinet, etc.)",
+    "data/fixtures.js": "IIFE (window.AircoveFixtures) + `export const F`",
+    "data/care-fixtures.js": "Care-owned raw fixture payloads for eight verticals",
+    "data/seo-fixtures.js": "accepted reference-only SEO fixture payloads for eight parity verticals",
+    "src/normalizers/seo.js": "separate strict public-authored and reference-only normalization APIs; merge, completeness, canonical, URL allowlist, and FAQ JSON-LD validation",
+    "src/modules/seo.js": "reference-only SEO parity loader",
+    "cms/seo-public-root-template.html": "strict token-only public root contract with no mock defaults",
+    "public/seo-reference-preview.html": "deterministic noindex checked fixture preview; never production truth",
+    "scripts/fixtures/seo-public-authored.test.json": "explicit complete authored test fixture used only for temp strict-document validation",
+    "data/activation-contracts.json": "S5 machine-readable Care/SEO data and command disposition inventory",
+    "scripts/activation-contract-check.mjs": "S5 bijection, truth, concurrency, race, click-effect, and no-network validation",
+    "cms/block.json": "authenticated portal CMS contract with eight verticals, three profiles, Care module declaration, and runtime-owned entitlement preflight",
+    "cms/seo-public-block.json": "separate public document block with strict schema, document routing, and public-only asset ownership",
+    "cms/seo-public.schema.json": "draft 2020-12 authored metadata, content, CTA, FAQ, and footer input contract",
+    "scripts/cms-schema-validation.mjs": "single fail-closed draft-2020-12 subset validator shared by production/test SEO generation and S6 contract checks",
+    "scripts/export-cms.mjs": "deterministic transactional portal/public SEO export through validated sibling staging and rollback-safe directory replacement; upload is never performed",
+    "scripts/s6-cms-export-check.mjs": "S6 schema, enum, round-trip, ownership, dual-export hash, raw HTML, and independent browser-boot proof"
+  }
+}

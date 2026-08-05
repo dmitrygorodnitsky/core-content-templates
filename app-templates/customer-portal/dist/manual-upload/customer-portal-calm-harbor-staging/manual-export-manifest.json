@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-portal-staging.json",
+  "template": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",
+    "templateLanguage": "JTE",
+    "parameters": [],
+    "sha256": {
+      "head": "4c4081e5bbc919b52bc35e86c1b9e17ee59ce5fd127ef83e836a6ad498fe3d1a",
+      "html": "f3e3721c1786ca77eb63bdfda976e285b6b6290d7fac80821cddbea2b213b89f",
+      "css": "cc89de6ca2e887aed27e1ba3a35d1ccb3bf1910f592927cd3f21d584f3e672de",
+      "javascript": "860607d8c89c4f1eae579447e1779fe3b890cfe5e77bf25042e81fe91757928f"
+    }
+  },
+  "runtime": {
+    "delivery": "inline-template-javascript",
+    "sameOriginRequired": true,
+    "openedModules": [
+      "appointments",
+      "orders",
+      "services",
+      "pricing",
+      "products",
+      "account",
+      "cart",
+      "checkout",
+      "purchases",
+      "plan",
+      "profile"
+    ],
+    "auth": {
+      "callbackPath": "/core/oauth2-callback.html",
+      "coreBase": "/core",
+      "flow": "oidc-authorization-code-pkce"
+    },
+    "pim": {
+      "apiBase": "/core-pim/api",
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "enrichmentMode": "current-api",
+      "pricingProductTypeCodes": [
+        "SPA_SERVICE",
+        "SPA_MEMBERSHIP",
+        "SPA_PACKAGE"
+      ],
+      "productsProductTypeCodes": [
+        "SPA_RETAIL"
+      ],
+      "priceTypeCode": "PRICE_CURRENCY",
+      "currency": "USD",
+      "currencyAttributeCode": "CURRENCY",
+      "currencyAttributeValues": [
+        "USD"
+      ],
+      "amountAttributeCode": "UNIT_PRICE",
+      "cta": "Browse services"
+    },
+    "account": {
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "coreApiBase": "/core",
+      "serviceApiBase": "/core-svc",
+      "accountApiBase": "/core-acct",
+      "billApiBase": "/core-bill",
+      "accountTypeCode": "SPA_CUSTOMER"
+    }
+  }
+}

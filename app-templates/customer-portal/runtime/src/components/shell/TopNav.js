@@ -1,0 +1,88 @@
+// customer-portal/runtime/src/components/shell/TopNav.js — production transfer module.
+import { h } from "../../dom.js";
+import { activeProfile, activeVerticalConfig, cartCount, isModuleEnabled, isSpa, state } from "../../state.js";
+import { routeRegistry } from "../../config.js";
+import { ActionButton } from "../primitives/ActionButton.js";
+import { SpaTopNav } from "./SpaTopNav.js";
+
+export function TopNav(gated) {
+  if (isSpa()) return SpaTopNav(gated);
+  var profile = activeProfile();
+  if (gated) {
+    return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
+      h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, state.config.brandName || "Aircove")]),
+      h("div", { "class": "nav-links" }),
+      h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "☀" : "☾")])
+    ]));
+  }
+  var navItems = profile.nav.filter(isNavItemEnabled);
+  var links = navItems.map(function (n) {
+    var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
+    return h("span", {
+      "class": "nav-link" + (active ? " nav-link--active" : ""),
+      "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
+    }, navLabel(n));
+  });
+
+  var actions = [
+    h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e")
+  ];
+  if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+  if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\ud83d\udcc5"));
+  if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart" }, ["\ud83d\uded2", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
+  var activityEnabled = isModuleEnabled("activity");
+  actions.push(h("div", {
+    "class": "icon-btn icon-btn--optional",
+    "data-module": "activity-control",
+    "data-action": activityEnabled ? "activity.open" : undefined,
+    title: activityEnabled ? "Activity" : undefined,
+    "aria-disabled": activityEnabled ? undefined : "true",
+  }, ["\ud83d\udd14", h("span", { "class": "dot-badge" })]));
+  if (isModuleEnabled("profile")) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
+  actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
+
+  var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
+    h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
+      h("div", { "class": "brand-logo" }),
+      h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
+    ]),
+    h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
+    h("div", { "class": "top-nav__actions" }, actions)
+  ]);
+
+  if (state.mobileNav) {
+    nav.appendChild(h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
+      navItems.map(function (n) {
+        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
+        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
+      })
+    ));
+  }
+  return h("div", { "class": "top-nav-wrap" }, nav);
+}
+
+function isNavItemEnabled(item) {
+  var route = routeRegistry[item.key];
+  return !!(route && (route.public || isModuleEnabled(route.module)));
+}
+
+function navLabel(item) {
+  var configured = state.config.navigation || {};
+  var key = {
+    "orders.list": "primary",
+    calendar: "calendar",
+    activity: "activity",
+    care: "care",
+    "proposals.list": "proposals",
+    services: "services",
+    pricing: "pricing",
+    products: "products",
+    account: "account",
+    support: "support",
+  }[item.key];
+  return configured[key] || (item.key === "care" ? activeVerticalConfig().careNavLabel : item.label);
+}
+
+/* =========================================================
+   CABINET  (data-route="orders.list")
+   ========================================================= */

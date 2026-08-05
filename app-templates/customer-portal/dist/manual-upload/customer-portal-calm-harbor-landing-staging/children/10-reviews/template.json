@@ -1,0 +1,123 @@
+{
+  "code": "CHS_LANDING_10_REVIEWS",
+  "nls": {
+    "en": {
+      "NAME": "Calm Harbor Spa | Reviews"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-sec seo-sec--tint\" data-module=\"seo-reviews\" data-visual-id=\"seo-reviews\" data-state=\"ready\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CHS_LANDING_10_REVIEWS_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CHS_LANDING_10_REVIEWS_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-reviews\"><div class=\"seo-review\" data-bind=\"cms.reviews[0]\"><div class=\"seo-review__media\"><span class=\"seo-media-slot__label\">customer photo · media slot</span></div><div class=\"seo-review__stars\">★★★★★</div><p class=\"seo-review__text\">“${CHS_LANDING_10_REVIEWS_ITEM_1_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CHS_LANDING_10_REVIEWS_ITEM_1_NAME@LOCALIZED_STRING_SS}</div></div><div class=\"seo-review\" data-bind=\"cms.reviews[1]\"><div class=\"seo-review__media\"><span class=\"seo-media-slot__label\">customer photo · media slot</span></div><div class=\"seo-review__stars\">★★★★★</div><p class=\"seo-review__text\">“${CHS_LANDING_10_REVIEWS_ITEM_2_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CHS_LANDING_10_REVIEWS_ITEM_2_NAME@LOCALIZED_STRING_SS}</div></div><div class=\"seo-review\" data-bind=\"cms.reviews[2]\"><div class=\"seo-review__stars\">★★★★☆</div><p class=\"seo-review__text\">“${CHS_LANDING_10_REVIEWS_ITEM_3_TEXT@LOCALIZED_STRING_SS}”</p><div class=\"seo-review__name\">${CHS_LANDING_10_REVIEWS_ITEM_3_NAME@LOCALIZED_STRING_SS}</div></div></div></section>",
+  "css": "/* ---------- 8 · reviews ---------- */\n.seo-reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }\n.seo-review {\n  background: rgba(var(--glass),.6); border: 1px solid var(--glass-border); border-radius: var(--radius-card);\n  padding: 18px; box-shadow: var(--shadow-card);\n}\n.seo-review .seo-skel { display: block; margin: 6px 0; }\n.seo-review__media { border-radius: var(--radius-md); border: 1px dashed rgba(var(--hair),.2); background: repeating-linear-gradient(-45deg, rgba(var(--hair),.045) 0 10px, transparent 10px 20px); min-height: 110px; display: grid; place-items: center; margin-bottom: 12px; }\n.seo-review__stars { color: var(--warn); font-size: 13px; letter-spacing: 2px; }\n.seo-review__text { margin: 8px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }\n.seo-review__name { margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-3); }\n.seo-reviews__fallback {\n  border: 1px dashed rgba(var(--hair),.2); border-radius: var(--radius-card); padding: 26px;\n  font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 520px;\n}\n.seo-reviews__fallback-title { font-weight: 800; color: var(--ink-2); margin-bottom: 4px; }",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CHS_LANDING_10_REVIEWS_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Reviews"
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "What customers say"
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_1_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 1 TEXT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "The room was warm before I walked in, and nobody rushed me out at the hour."
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_1_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 1 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Guest · Miami Beach"
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_2_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 2 TEXT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Same specialist every month — she remembers exactly where my shoulder acts up."
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_2_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 2 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Member · Coral Gables"
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_3_TEXT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 3 TEXT",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Booked a facial for my mom; the shop shelf had the same serum they used on her."
+      }
+    },
+    {
+      "code": "CHS_LANDING_10_REVIEWS_ITEM_3_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ITEM 3 NAME",
+          "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+        }
+      },
+      "value": {
+        "en": "Guest · Doral"
+      }
+    }
+  ]
+}

@@ -1,0 +1,830 @@
+{
+  "id": "care-ready-lawn-and-garden-1180",
+  "surface": "care",
+  "vertical": "Lawn & Garden",
+  "width": 1180,
+  "height": 900,
+  "mode": "light",
+  "state": "ready",
+  "referenceState": "ready",
+  "variant": "default",
+  "comparisonMode": "source-effect-components",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "1f3e8bc590390ecfca066c54ab309dc947798c6fc56192da7e45f3ced7a94c3c",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1180,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 30,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 30,
+        "y": 78,
+        "width": 1120,
+        "height": 662.45,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 52,
+        "y": 181.03,
+        "width": 1076,
+        "height": 499.42,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 52,
+        "y": 181.03,
+        "width": 644.31,
+        "height": 391,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": null,
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1180,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "1f3e8bc590390ecfca066c54ab309dc947798c6fc56192da7e45f3ced7a94c3c",
+        "1f3e8bc590390ecfca066c54ab309dc947798c6fc56192da7e45f3ced7a94c3c"
+      ],
+      "firstSha256": "1f3e8bc590390ecfca066c54ab309dc947798c6fc56192da7e45f3ced7a94c3c",
+      "secondSha256": "1f3e8bc590390ecfca066c54ab309dc947798c6fc56192da7e45f3ced7a94c3c",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "2793c03b51e8c826af74f2476d8a3d188611c580d82982fabdd17eba528d77df",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 1180,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 30,
+        "y": 16,
+        "width": 1120,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 30,
+        "y": 78,
+        "width": 1120,
+        "height": 662.45,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": {
+        "x": 52,
+        "y": 181.03,
+        "width": 1076,
+        "height": 499.42,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "grid",
+        "gridTemplateColumns": "644.312px 415.688px"
+      },
+      "firstCard": {
+        "x": 52,
+        "y": 181.03,
+        "width": 644.31,
+        "height": 391,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.5)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "22px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "primaryAction": null,
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 1180,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "2793c03b51e8c826af74f2476d8a3d188611c580d82982fabdd17eba528d77df",
+        "2793c03b51e8c826af74f2476d8a3d188611c580d82982fabdd17eba528d77df"
+      ],
+      "firstSha256": "2793c03b51e8c826af74f2476d8a3d188611c580d82982fabdd17eba528d77df",
+      "secondSha256": "2793c03b51e8c826af74f2476d8a3d188611c580d82982fabdd17eba528d77df",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 362,
+    "changedPct": 0.034086629001883244,
+    "rms": 1.3394265199649573
+  },
+  "accepted": {
+    "changed": 0,
+    "changedPct": 0,
+    "rms": 0
+  },
+  "effectBounds": [
+    {
+      "controlIndex": 0,
+      "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+      "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+      "action": "service.requestExtra",
+      "entityId": null,
+      "disabled": true,
+      "ariaDisabled": "true",
+      "truthfulUnavailable": true,
+      "derivation": {
+        "borderBox": {
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        },
+        "computedBoxShadow": "none",
+        "blurKernelFormula": "ceil(1.5 * blur) + spread",
+        "shadows": [],
+        "extensions": {
+          "left": 0,
+          "right": 0,
+          "top": 0,
+          "bottom": 0
+        },
+        "clip": {
+          "width": 1180,
+          "height": 900
+        }
+      },
+      "x": 611,
+      "y": 201,
+      "width": 66,
+      "height": 16
+    }
+  ],
+  "unavailableInventory": {
+    "applies": true,
+    "expected": [
+      {
+        "action": "service.requestExtra",
+        "entityId": null
+      }
+    ],
+    "actual": [
+      {
+        "action": "service.requestExtra",
+        "entityId": null
+      }
+    ],
+    "expectedCount": 1,
+    "actualCount": 1,
+    "truthfulCount": 1,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "source-effect-components",
+    "modeMatch": true
+  },
+  "changedComponents": [
+    {
+      "componentIndex": 0,
+      "x": 612,
+      "y": 204,
+      "width": 16,
+      "height": 11,
+      "changedPixels": 109,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 1,
+      "x": 629,
+      "y": 204,
+      "width": 7,
+      "height": 11,
+      "changedPixels": 51,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 2,
+      "x": 659,
+      "y": 204,
+      "width": 2,
+      "height": 2,
+      "changedPixels": 4,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 3,
+      "x": 669,
+      "y": 204,
+      "width": 3,
+      "height": 2,
+      "changedPixels": 6,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 4,
+      "x": 662,
+      "y": 205,
+      "width": 15,
+      "height": 10,
+      "changedPixels": 96,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 5,
+      "x": 640,
+      "y": 207,
+      "width": 7,
+      "height": 8,
+      "changedPixels": 47,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 6,
+      "x": 651,
+      "y": 207,
+      "width": 7,
+      "height": 7,
+      "changedPixels": 35,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    },
+    {
+      "componentIndex": 7,
+      "x": 659,
+      "y": 207,
+      "width": 2,
+      "height": 7,
+      "changedPixels": 14,
+      "controlIndexes": [
+        0
+      ],
+      "fullyContainedInEffectEnvelope": true,
+      "intersectsOwningControlBorderBox": true,
+      "effectAssociations": [
+        {
+          "controlIndex": 0,
+          "fullyContainedInEffectEnvelope": true,
+          "intersectsOwningControlBorderBox": true,
+          "associated": true
+        }
+      ],
+      "controls": [
+        {
+          "controlIndex": 0,
+          "selector": "[data-route=\"care\"] [data-state=\"unavailable\"]",
+          "reason": "S5 truthful unavailable treatment is implementation-owned and absent from the accepted design",
+          "action": "service.requestExtra",
+          "entityId": null,
+          "disabled": true,
+          "ariaDisabled": "true",
+          "truthfulUnavailable": true,
+          "derivation": {
+            "borderBox": {
+              "x": 611,
+              "y": 201,
+              "width": 66,
+              "height": 16
+            },
+            "computedBoxShadow": "none",
+            "blurKernelFormula": "ceil(1.5 * blur) + spread",
+            "shadows": [],
+            "extensions": {
+              "left": 0,
+              "right": 0,
+              "top": 0,
+              "bottom": 0
+            },
+            "clip": {
+              "width": 1180,
+              "height": 900
+            }
+          },
+          "x": 611,
+          "y": 201,
+          "width": 66,
+          "height": 16
+        }
+      ]
+    }
+  ],
+  "unassociatedComponents": [],
+  "assertions": {
+    "unavailableControlsTruthful": true,
+    "unavailableControlCount": 1
+  },
+  "dimensions": {
+    "width": 1180,
+    "height": 900,
+    "referenceHeight": 900,
+    "implementationHeight": 900
+  },
+  "metricsEqual": true,
+  "metricDelta": {},
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [],
+    "exactUnavailableControlBounds": true
+  },
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "ce27c13df4609638d028607f565d772e8765e62b5127977020d42b0b19d8bfa8",
+      "decodedPixelSha256": "f5f27813f08d51614f5549933fbc8aae6bc1b789a5ec67453dd8bffd146defb7",
+      "width": 1180,
+      "height": 900
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "eb6aaf3141d363942b808652323df2abe619154ae2e558b36e244e980672c933",
+      "decodedPixelSha256": "b92e5092ff6b4e0cf0ec9c860309e9f3a1592a49f98ac742e61fd8164455f756",
+      "width": 1180,
+      "height": 900
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "649959fad2e8753932271903c7685c17d9689aac308bc76d57a6c9bec6774968",
+      "decodedPixelSha256": "09007cb6f4009a8b2a3de25763a7f8dd3db5638c4cd3587fd57927297319af33",
+      "width": 1180,
+      "height": 900
+    },
+    "componentDiff": {
+      "file": "component-diff.webp",
+      "sha256": "9482003dbfd795915c5deefd9851425d4b8d6d4185dbae6f8b07be199731db10",
+      "decodedPixelSha256": "45f57fa501b8f1030bd82060051dcdbd5ef8fb2eeb98a44da03e9c996852c749",
+      "width": 1180,
+      "height": 900
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

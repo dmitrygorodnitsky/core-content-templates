@@ -1,0 +1,22 @@
+{
+  "url": "/pricing-static",
+  "template": {
+    "code": "SERVICEWAND_PRICING_STATIC"
+  },
+  "enabledTemplates": [
+    "SERVICEWAND_PRICING_STATIC",
+    "SECTION_01_HEADER_CORPORATE_REFERENCE",
+    "SECTION_02_PRICING_PLANS_FLEX",
+    "SECTION_03_PRICING_ADDONS_BUNDLES",
+    "SECTION_04_PRICING_CREDITS_METER",
+    "SECTION_05_PRICING_MATRIX_COLLAPSIBLE",
+    "SECTION_06_PRICING_ADDONS",
+    "SECTION_07_FOOTER_CORPORATE_REFERENCE"
+  ],
+  "values": {},
+  "organization": {
+    "code": "SYSTEM"
+  },
+  "excludeFromSeo": false,
+  "theme": "cyan"
+}

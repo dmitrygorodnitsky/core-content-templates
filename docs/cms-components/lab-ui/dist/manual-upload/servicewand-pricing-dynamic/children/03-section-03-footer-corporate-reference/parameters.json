@@ -1,0 +1,403 @@
+[
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_BG_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer background image URL",
+        "DESCRIPTION": "URL target for the footer background image."
+      }
+    },
+    "value": "/core/image/728d0287-96c3-4430-b830-477f87d5ac5e/get"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TAGLINE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer tagline",
+        "DESCRIPTION": "Tagline text shown under the footer logo."
+      }
+    },
+    "value": {
+      "en": "Field service CRM for routing, dispatch, service proof, and customer operations."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_ADDRESS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer address",
+        "DESCRIPTION": "Address block shown in the footer."
+      }
+    },
+    "value": {
+      "en": "ServiceWand Inc.<br />Dynamic pricing preview<br />CMS-managed lab-ui composition<br />Service operations platform"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Platform href",
+        "DESCRIPTION": "URL target for the footer Platform navigation link."
+      }
+    },
+    "value": "index.html#hero"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PLATFORM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Platform",
+        "DESCRIPTION": "Footer navigation label for the platform section."
+      }
+    },
+    "value": {
+      "en": "Platform"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav How It Works href",
+        "DESCRIPTION": "URL target for the footer How It Works navigation link."
+      }
+    },
+    "value": "index.html#features"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_HOW_IT_WORKS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - How It Works",
+        "DESCRIPTION": "Footer navigation label for the features section."
+      }
+    },
+    "value": {
+      "en": "How It Works"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Industries href",
+        "DESCRIPTION": "URL target for the footer Industries navigation link."
+      }
+    },
+    "value": "index.html#foundation"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_INDUSTRIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Industries",
+        "DESCRIPTION": "Footer navigation label for the foundation section."
+      }
+    },
+    "value": {
+      "en": "Industries"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav Partners href",
+        "DESCRIPTION": "URL target for the footer Partners navigation link."
+      }
+    },
+    "value": "index.html#partners"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_PARTNERS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - Partners",
+        "DESCRIPTION": "Footer navigation label for the partners section."
+      }
+    },
+    "value": {
+      "en": "Partners"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_FAQ_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav FAQ href",
+        "DESCRIPTION": "URL target for the footer FAQ navigation link."
+      }
+    },
+    "value": "index.html#faq"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_NAV_FAQ",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer nav - FAQ",
+        "DESCRIPTION": "Footer navigation label for the FAQ section."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer LinkedIn href",
+        "DESCRIPTION": "URL target for the footer LinkedIn social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_LINKEDIN_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social LinkedIn aria label",
+        "DESCRIPTION": "Accessible label for the LinkedIn social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer GitHub href",
+        "DESCRIPTION": "URL target for the footer GitHub social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_GITHUB_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social GitHub aria label",
+        "DESCRIPTION": "Accessible label for the GitHub social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer YouTube href",
+        "DESCRIPTION": "URL target for the footer YouTube social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_YOUTUBE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social YouTube aria label",
+        "DESCRIPTION": "Accessible label for the YouTube social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer X href",
+        "DESCRIPTION": "URL target for the footer X social link."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_SOCIAL_X_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer social X aria label",
+        "DESCRIPTION": "Accessible label for the X social link in the footer."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships label",
+        "DESCRIPTION": "Label above the partnerships email address."
+      }
+    },
+    "value": {
+      "en": "Partnerships"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships email href",
+        "DESCRIPTION": "URL target for the footer partnerships email link."
+      }
+    },
+    "value": "mailto:partners@servicewand.com"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_PARTNERSHIPS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer partnerships email",
+        "DESCRIPTION": "Partnerships contact email shown in the footer."
+      }
+    },
+    "value": {
+      "en": "partners@servicewand.com"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer support label",
+        "DESCRIPTION": "Label above the support email address."
+      }
+    },
+    "value": {
+      "en": "Support"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer support email href",
+        "DESCRIPTION": "URL target for the footer support email link."
+      }
+    },
+    "value": "mailto:support@servicewand.com"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_EMAIL_SUPPORT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer support email",
+        "DESCRIPTION": "Support contact email shown in the footer."
+      }
+    },
+    "value": {
+      "en": "support@servicewand.com"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_TEXT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer copyright line",
+        "DESCRIPTION": "Primary copyright text shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "Copyright 2026 ServiceWand Inc."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_COPYRIGHT_RIGHTS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer rights line",
+        "DESCRIPTION": "Secondary rights notice shown in the footer bottom bar."
+      }
+    },
+    "value": {
+      "en": "All rights reserved."
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer privacy policy href",
+        "DESCRIPTION": "URL target for the footer Privacy Policy legal link."
+      }
+    },
+    "value": "privacy-policy.html"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_PRIVACY_POLICY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Privacy Policy",
+        "DESCRIPTION": "Footer legal link label for the privacy policy page."
+      }
+    },
+    "value": {
+      "en": "Privacy Policy"
+    }
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TERMS_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Footer terms href",
+        "DESCRIPTION": "URL target for the footer Terms legal link."
+      }
+    },
+    "value": "terms-and-conditions.html"
+  },
+  {
+    "code": "SECTION_03_FOOTER_CORPORATE_REFERENCE_TERMS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Footer legal - Terms & Conditions",
+        "DESCRIPTION": "Footer legal link label for the terms and conditions page."
+      }
+    },
+    "value": {
+      "en": "Terms & Conditions"
+    }
+  }
+]

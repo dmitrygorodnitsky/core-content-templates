@@ -1,0 +1,174 @@
+/* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
+
+/* ============================================================
+   Responsive  — container-width driven (set by app.js ResizeObserver
+   as .vw-mobile / .vw-tablet on .app-shell). Codex may swap to @media.
+   ============================================================ */
+.vw-tablet .cabinet-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .cabinet-grid { grid-template-columns: 1fr; }
+
+/* nav-links collapse into the hamburger menu once space runs low */
+.vw-compact .nav-links { display: none; }
+
+.vw-compact .hamburger { display: grid; }
+
+.vw-mobile .top-nav__actions .icon-btn--optional { display: none; }
+
+.vw-mobile .page-header__title { font-size: 23px; }
+
+.vw-mobile .detail-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .detail-grid { grid-template-columns: 1fr; }
+
+/* commerce responsive */
+.vw-tablet .pricing-grid, .vw-mobile .pricing-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .plan-card--featured, .vw-mobile .plan-card--featured { transform: none; }
+
+.vw-tablet .services-grid, .vw-mobile .services-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .howto-grid, .vw-mobile .howto-grid { grid-template-columns: 1fr; gap: 14px; }
+
+.vw-tablet .product-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-mobile .product-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-tablet .checkout-grid, .vw-mobile .checkout-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .checkout-summary, .vw-mobile .checkout-summary { position: static; }
+
+.vw-mobile .featured-banner { flex-direction: column; align-items: flex-start; padding: 24px; }
+
+.vw-mobile .featured-banner__art { display: none; }
+
+.vw-tablet .rollup-grid, .vw-mobile .rollup-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-tablet .beam-report__grid, .vw-mobile .beam-report__grid { grid-template-columns: 1fr; }
+
+.vw-mobile .beam-side { border-left: 0; border-top: 1px solid var(--glass-border); }
+
+.vw-mobile .plan-notes { grid-template-columns: 1fr; }
+
+.vw-mobile .proposal-actions { flex-wrap: wrap; }
+
+.vw-tablet .stats-grid, .vw-mobile .stats-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .cal-lists, .vw-mobile .cal-lists { grid-template-columns: 1fr; }
+
+.vw-tablet .support-grid, .vw-mobile .support-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .profile-hero { flex-direction: column; align-items: flex-start; text-align: left; }
+
+.vw-mobile .storm-day { flex-direction: column; }
+
+.vw-mobile .storm-day__date { width: auto; display: flex; gap: 8px; align-items: baseline; text-align: left; }
+
+.vw-mobile .storm-event { flex-wrap: wrap; }
+
+.vw-mobile .home-window { flex-wrap: wrap; }
+
+.vw-tablet .landing-hero__inner, .vw-mobile .landing-hero__inner { grid-template-columns: 1fr; }
+
+.vw-tablet .landing-services, .vw-mobile .landing-services { grid-template-columns: 1fr; }
+
+.vw-mobile .landing-hero__title { font-size: 34px; }
+
+.vw-mobile .landing-hero__inner { padding: 28px 22px; }
+
+.vw-tablet .auth-grid, .vw-mobile .auth-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .auth-pitch__title { font-size: 30px; }
+
+/* Wave 7 — care hub */
+.vw-tablet .care-grid, .vw-mobile .care-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .care-stats { grid-template-columns: 1fr 1fr; }
+
+.vw-mobile .reading-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .unit-row { flex-direction: column; }
+
+/* Wave 10 — Core OIDC login */
+.vw-mobile .oidc-title { font-size: 20px; }
+
+/* Wave 14 — Calm Harbor spa portal */
+.vw-compact .account-btn__name { display: none; }
+
+.vw-compact .account-btn { padding: 3px; }
+
+.vw-mobile .spa-cta--browse { display: none; } /* honest browse CTA lives in the menu on phones — the global CTA never crowds brand/menu */
+
+.vw-tablet .appt-grid, .vw-mobile .appt-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .spa-svc-grid, .vw-mobile .spa-svc-grid { grid-template-columns: 1fr; }
+
+.vw-tablet .spa-shop-grid { grid-template-columns: repeat(2, 1fr); }
+
+.vw-mobile .spa-shop-grid { grid-template-columns: 1fr 1fr; }
+
+/* Wave 14.1 — intentional mobile Orders row: the identity column owns the full
+   width beside the icon (no sibling badge/amount starving it); raw status +
+   amount move to their own row. Nothing is truncated; long names/codes wrap at
+   normal boundaries; no horizontal overflow. */
+.vw-mobile .spa-order-row {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "icon body body" "icon status status" "icon amount amount";
+  row-gap: 9px; align-items: start;
+}
+
+.vw-mobile .spa-order-row .order-card__icon { grid-area: icon; }
+
+.vw-mobile .spa-order-row__body { grid-area: body; }
+
+.vw-mobile .spa-order-row .status-badge { grid-area: status; justify-self: start; white-space: normal; overflow-wrap: break-word; text-align: left; width: max-content; max-width: 100%; }
+
+.vw-mobile .spa-order-row__amount { grid-area: amount; justify-self: end; flex-direction: row; align-items: baseline; gap: 5px; }
+
+.vw-mobile .appt-hero__service { font-size: 19px; }
+
+/* Wave 15 — Calm Harbor commerce */
+.vw-tablet .purch-grid, .vw-mobile .purch-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .account-grid, .vw-tablet .plan-grid, .vw-mobile .plan-grid { grid-template-columns: 1fr; }
+
+/* purchases row on phones: identity owns the width; status + amount get their own row */
+.vw-mobile .purch-row { flex-wrap: wrap; }
+
+.vw-mobile .purch-row__side { flex-direction: row; align-items: baseline; width: 100%; justify-content: space-between; order: 3; }
+
+.vw-mobile .purch-row__chev { display: none; }
+
+.vw-mobile .cart-row { flex-wrap: wrap; }
+
+.vw-mobile .spa-cart-row .cart-row__body { flex: 1 1 100%; min-width: 0; }
+
+.vw-mobile .cart-row__total { margin-left: auto; }
+
+/* Wave 16 — full flow activation */
+.vw-tablet .offer-grid, .vw-mobile .offer-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .bk-slots { grid-template-columns: repeat(2, 1fr); }
+
+/* Wave 17 — product models, gallery & reviews */
+.vw-tablet .pd-grid, .vw-mobile .pd-grid { grid-template-columns: 1fr; }
+
+/* enriched shop cards (image + facts + add) get one column on phones so the
+   media, facts and add-to-bag never crowd or overflow at 390 */
+.vw-mobile .spa-shop-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .pd-name { font-size: 22px; }
+
+.vw-mobile .bk-compare { grid-template-columns: 1fr; }
+
+.vw-mobile .bk-compare__arrow { transform: rotate(90deg); justify-self: center; }
+
+/* appointment rows on phones: identity owns the width; status/price/next wrap below */
+.vw-mobile .appt-row { flex-wrap: wrap; }
+
+.vw-mobile .appt-row .appt-row__body { flex: 1 1 60%; min-width: 0; }
+
+.vw-mobile .appt-row__chev { margin-left: auto; }
+
+.vw-mobile .contact-form { grid-template-columns: 1fr; }
+

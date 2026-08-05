@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-page-context-parameter-map",
+  "experienceId": "calm-harbor-spa-staging",
+  "surface": "landing",
+  "templateCode": "CUSTOMER_EXPERIENCE_LANDING",
+  "publishable": false,
+  "selector": null,
+  "parameters": [
+    {
+      "code": "CX_CONTRACT_VERSION",
+      "type": "STRING",
+      "value": "1",
+      "source": "contract.version"
+    },
+    {
+      "code": "CX_EXPERIENCE_ID",
+      "type": "STRING",
+      "value": "calm-harbor-spa-staging",
+      "source": "experience.id"
+    },
+    {
+      "code": "CX_VERTICAL",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.vertical"
+    },
+    {
+      "code": "CX_THEME",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.theme"
+    },
+    {
+      "code": "CX_DEFAULT_MODE",
+      "type": "STRING",
+      "value": "light",
+      "source": "experience.defaultMode"
+    },
+    {
+      "code": "CX_BRAND_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calm Harbor Spa"
+      },
+      "source": "experience.brandName"
+    },
+    {
+      "code": "CX_ALLOWED_NAV_ORIGINS",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com",
+      "source": "experience.allowedNavOrigins"
+    },
+    {
+      "code": "LANDING_META_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Day spa rituals in Austin, Texas | Calm Harbor Spa"
+      },
+      "source": "landing.metaTitle"
+    },
+    {
+      "code": "LANDING_META_DESCRIPTION",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "A quieter kind of day spa in Austin: restorative massage, skin rituals, and unhurried time to reset."
+      },
+      "source": "landing.metaDescription"
+    },
+    {
+      "code": "LANDING_CANONICAL_URL",
+      "type": "STRING",
+      "value": "https://calmharborspa.com/beauty/austin",
+      "source": "landing.canonicalUrl"
+    },
+    {
+      "code": "LANDING_HERO_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Central Austin, Clarksville, Tarrytown, and West Lake Hills"
+      },
+      "source": "landing.heroEyebrow"
+    },
+    {
+      "code": "LANDING_HERO_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "A softer pace in Austin, Texas"
+      },
+      "source": "landing.heroTitle"
+    },
+    {
+      "code": "LANDING_HERO_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Restorative rituals for the days when your calendar has taken more than it gave."
+      },
+      "source": "landing.heroBody"
+    },
+    {
+      "code": "LANDING_HERO_NOTE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Choose a ritual, then settle into an unhurried visit."
+      },
+      "source": "landing.heroNote"
+    },
+    {
+      "code": "LANDING_FINAL_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Make room for your reset"
+      },
+      "source": "landing.finalTitle"
+    },
+    {
+      "code": "LANDING_FINAL_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Choose a ritual for a quieter day in Austin, Texas."
+      },
+      "source": "landing.finalBody"
+    },
+    {
+      "code": "LANDING_PRIMARY_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Choose a ritual"
+      },
+      "source": "landing.primaryCtaLabel"
+    },
+    {
+      "code": "LANDING_SECONDARY_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Explore rituals"
+      },
+      "source": "landing.secondaryCtaLabel"
+    }
+  ],
+  "deferredParameters": [
+    {
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "CX_PORTAL_URL",
+      "source": "resolved.portalUrl",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_URL",
+      "source": "resolved.primaryDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "source": "resolved.servicesDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRICING_URL",
+      "source": "resolved.pricingDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "source": "resolved.productsDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    }
+  ]
+}

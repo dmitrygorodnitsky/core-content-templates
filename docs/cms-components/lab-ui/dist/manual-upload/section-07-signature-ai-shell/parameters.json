@@ -1,0 +1,557 @@
+[
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_LEAD_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 1",
+        "DESCRIPTION": "Text value for the Lead 1 field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_LEAD_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 2",
+        "DESCRIPTION": "Text value for the Lead 2 field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stream Title",
+        "DESCRIPTION": "Text value for the Stream Title field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_META",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stream Meta",
+        "DESCRIPTION": "Text value for the Stream Meta field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TIME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 1 Time",
+        "DESCRIPTION": "Text value for the Row 1 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_KIND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 1 Kind",
+        "DESCRIPTION": "Text value for the Row 1 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TRIG",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 1 Trig",
+        "DESCRIPTION": "Text value for the Row 1 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_1_ACT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 1 Act",
+        "DESCRIPTION": "Text value for the Row 1 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TIME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 2 Time",
+        "DESCRIPTION": "Text value for the Row 2 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_KIND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 2 Kind",
+        "DESCRIPTION": "Text value for the Row 2 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TRIG",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 2 Trig",
+        "DESCRIPTION": "Text value for the Row 2 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_2_ACT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 2 Act",
+        "DESCRIPTION": "Text value for the Row 2 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TIME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 3 Time",
+        "DESCRIPTION": "Text value for the Row 3 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_KIND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 3 Kind",
+        "DESCRIPTION": "Text value for the Row 3 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TRIG",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 3 Trig",
+        "DESCRIPTION": "Text value for the Row 3 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_3_ACT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 3 Act",
+        "DESCRIPTION": "Text value for the Row 3 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TIME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 4 Time",
+        "DESCRIPTION": "Text value for the Row 4 Time field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_KIND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 4 Kind",
+        "DESCRIPTION": "Text value for the Row 4 Kind field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TRIG",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 4 Trig",
+        "DESCRIPTION": "Text value for the Row 4 Trig field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_ROW_4_ACT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Row 4 Act",
+        "DESCRIPTION": "Text value for the Row 4 Act field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_STREAM_FOOTER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Stream Footer",
+        "DESCRIPTION": "Text value for the Stream Footer field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "AI Media Image",
+        "DESCRIPTION": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "AI Media Alt Text",
+        "DESCRIPTION": "Alternative text for the AI side-panel media image."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Media Placeholder Size",
+        "DESCRIPTION": "Fallback placeholder size label shown when the related image is not set in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Media Placeholder Label",
+        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_SIDE_HEADING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Side Heading",
+        "DESCRIPTION": "Text value for the Side Heading field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_1_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Feed 1 Body",
+        "DESCRIPTION": "Text value for the Feed 1 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_FEED_2_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Feed 2 Body",
+        "DESCRIPTION": "Text value for the Feed 2 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Capability 1 number prefix",
+        "DESCRIPTION": "Small mono prefix shown before the capability 1 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 1 Num",
+        "DESCRIPTION": "Text value for the Cap 1 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 1 Title",
+        "DESCRIPTION": "Text value for the Cap 1 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_1_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 1 Body",
+        "DESCRIPTION": "Text value for the Cap 1 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Capability 2 number prefix",
+        "DESCRIPTION": "Small mono prefix shown before the capability 2 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 2 Num",
+        "DESCRIPTION": "Text value for the Cap 2 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 2 Title",
+        "DESCRIPTION": "Text value for the Cap 2 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_2_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 2 Body",
+        "DESCRIPTION": "Text value for the Cap 2 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Capability 3 number prefix",
+        "DESCRIPTION": "Small mono prefix shown before the capability 3 number."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_NUM",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 3 Num",
+        "DESCRIPTION": "Text value for the Cap 3 Num field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 3 Title",
+        "DESCRIPTION": "Text value for the Cap 3 Title field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_CAP_3_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cap 3 Body",
+        "DESCRIPTION": "Text value for the Cap 3 Body field in Signature · AI-shell (stream + side panel + capability cards)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "AI Media Image Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Ai Media image in Signature · AI-shell (stream + side panel + capability cards). Required image size: 1280 × 800. Required aspect ratio: 16:10."
+      }
+    },
+    "value": ""
+  }
+]

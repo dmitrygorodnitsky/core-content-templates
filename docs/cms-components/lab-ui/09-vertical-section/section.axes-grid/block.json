@@ -1,0 +1,190 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "section.axes-grid",
+  "category": "09-vertical-section",
+  "title": "Section · Axes grid (multi-axis from→to)",
+  "description": "Standard section header plus multi-axis matrix of scaling dimensions. Up to 6 axes (cards with auto-hide for empty slots). Each axis: H3 label, a full-width tick track (7 ticks with opacity ramp suggesting growth), and from-to range labels in mono. 3-col grid -> 2-col at <=980 -> 1-col at <=640. Used for sections after StagesList.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/landing-template-design/src/kit/stages-axes.jsx (AxesGrid)",
+    "adapted_from": "designer kit 2026-05-24 → light tokens",
+    "decision": "PM lock 2026-05-24 — axes-grid adopted as canonical scalability pattern"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-gray-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-gray-blue",
+      "--color-gray-second",
+      "--cta-secondary-fill",
+      "--cta-accent",
+      "--transition-duration",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking",
+      "--type-h2-weight",
+      "--type-h2-size",
+      "--type-h2-leading",
+      "--type-h2-tracking",
+      "--font-family",
+      "--font-mono",
+      "--radius-card"
+    ],
+    "other_blocks": [
+      "effect.hover-rise"
+    ]
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1400",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width narrative section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum duis."
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum Dolor Sit Amet"
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+    },
+    {
+      "code": "axis_1_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "axis_1_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "axis_1_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "axis_2_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "axis_2_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_2_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "axis_3_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_3_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_3_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "axis_4_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "axis_4_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_4_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "axis_5_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_5_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "axis_5_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    },
+    {
+      "code": "axis_6_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "axis_6_from",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "axis_6_to",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "6 axes by default. Empty axis labels auto-hide via :has(.axis-label:empty), so admins can ship 3 or 4 axes without editing markup.",
+    "Each axis has a 7-tick track with opacity ramp (0.15 → 1.00) — visually suggests 'growth along this axis' without claiming a specific measurement.",
+    "from → to is mono-typed so it reads as a spec, not a sentence.",
+    "Hover glow + halo are delegated to effect.hover-rise via data-fx=\"rise\" on every .axis element — no local glow/halo CSS, single source of truth."
+  ]
+}

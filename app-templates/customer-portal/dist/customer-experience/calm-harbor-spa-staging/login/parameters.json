@@ -1,0 +1,313 @@
+[
+  {
+    "code": "CX_CONTRACT_VERSION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx contract version",
+        "DESCRIPTION": "Customer experience descriptor value: contract.version."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_EXPERIENCE_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx experience id",
+        "DESCRIPTION": "Customer experience descriptor value: experience.id."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_VERTICAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx vertical",
+        "DESCRIPTION": "Customer experience descriptor value: experience.vertical."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx theme",
+        "DESCRIPTION": "Customer experience descriptor value: experience.theme."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DEFAULT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx default mode",
+        "DESCRIPTION": "Customer experience descriptor value: experience.defaultMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_LANGUAGE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx language",
+        "DESCRIPTION": "Customer experience descriptor value: experience.language."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DIRECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx direction",
+        "DESCRIPTION": "Customer experience descriptor value: experience.direction."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cx brand name",
+        "DESCRIPTION": "Customer experience descriptor value: experience.brandName."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_DOCUMENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login document title",
+        "DESCRIPTION": "Customer experience descriptor value: login.documentTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_CARD_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login card title",
+        "DESCRIPTION": "Customer experience descriptor value: login.cardTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_CARD_SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login card subtitle",
+        "DESCRIPTION": "Customer experience descriptor value: login.cardSubtitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login error title",
+        "DESCRIPTION": "Customer experience descriptor value: login.errorTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login error body",
+        "DESCRIPTION": "Customer experience descriptor value: login.errorBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_LOGOUT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login logout title",
+        "DESCRIPTION": "Customer experience descriptor value: login.logoutTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_LOGOUT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login logout body",
+        "DESCRIPTION": "Customer experience descriptor value: login.logoutBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_USERNAME_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login username label",
+        "DESCRIPTION": "Customer experience descriptor value: login.usernameLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login password label",
+        "DESCRIPTION": "Customer experience descriptor value: login.passwordLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_FORGOT_PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login forgot password label",
+        "DESCRIPTION": "Customer experience descriptor value: login.forgotPasswordLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_SHOW_PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login show password label",
+        "DESCRIPTION": "Customer experience descriptor value: login.showPasswordLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_HIDE_PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login hide password label",
+        "DESCRIPTION": "Customer experience descriptor value: login.hidePasswordLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_SUBMIT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login submit label",
+        "DESCRIPTION": "Customer experience descriptor value: login.submitLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_CARD_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login card note",
+        "DESCRIPTION": "Customer experience descriptor value: login.cardNote."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_PITCH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login pitch eyebrow",
+        "DESCRIPTION": "Customer experience descriptor value: login.pitchEyebrow."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_PITCH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login pitch title",
+        "DESCRIPTION": "Customer experience descriptor value: login.pitchTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_PITCH_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login pitch body",
+        "DESCRIPTION": "Customer experience descriptor value: login.pitchBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  }
+]

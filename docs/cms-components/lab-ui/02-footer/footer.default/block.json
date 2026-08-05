@@ -1,0 +1,187 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "footer.default",
+  "category": "02-footer",
+  "title": "Footer · canonical",
+  "description": "Dark site footer used across example.com and all the platform landings. 3-column grid: brand+tagline+address / 5-link nav / socials+emails. Bottom row: copyright + legal links. Used regardless of page theme (light/dark) — the footer itself is always dark.",
+  "canonical": true,
+  "theme": "dark-always",
+  "source": {
+    "primary": "tmp/sw-footer.html",
+    "css": "tmp/source tokens (.footer-*)"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-black-bg",
+      "--color-white",
+      "--color-gray-light",
+      "--color-gray-blue",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--transition-duration"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    {
+      "code": "brand_name",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "brand_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "tagline",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing."
+    },
+    {
+      "code": "address_line_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "address_line_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "address_line_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit."
+    },
+    {
+      "code": "address_line_4",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "nav_1_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "nav_1_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "nav_2_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "nav_2_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "nav_3_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "nav_3_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "nav_4_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "nav_4_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "nav_5_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lor"
+    },
+    {
+      "code": "nav_5_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "social_linkedin",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "social_github",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "social_youtube",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "social_x",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "partnerships_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "partnerships_email",
+      "type": "STRING",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "support_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem"
+    },
+    {
+      "code": "support_email",
+      "type": "STRING",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "copyright",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "legal_1_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum"
+    },
+    {
+      "code": "legal_1_href",
+      "type": "URL",
+      "default": "#"
+    },
+    {
+      "code": "legal_2_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "legal_2_href",
+      "type": "URL",
+      "default": "#"
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Footer is dark on every theme — semantic tokens are not consumed here, only raw palette ones.",
+    "At ≤900px the 3-col grid becomes 2-col with contacts spanning both. At ≤600px everything stacks."
+  ]
+}

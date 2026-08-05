@@ -1,0 +1,136 @@
+{
+  "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+  "nls": {
+    "en": {
+      "NAME": "Section · H2 narrative"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--section-h2-narrative-only\" data-composition-block=\"section.h2-narrative-only\">\n<!-- lab-ui block · section.h2-narrative-only\n     Two-column narrative/framing section for vertical landings.\n-->\n<section class=\"snarr\" data-block=\"section.h2-narrative-only\">\n  <div class=\"container\">\n    <p class=\"eyebrow snarr-eyebrow\">${SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW@LOCALIZED_STRING_SS}</p>\n    <div class=\"snarr-grid\">\n      <div class=\"snarr-text\">\n        <h2 class=\"snarr-title\">${SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE@LOCALIZED_STRING_SS}</h2>\n        <div class=\"snarr-body\">\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3@LOCALIZED_STRING_SS}</p>\n        </div>\n      </div>\n\n      <div class=\"snarr-side\">\n        <h2 class=\"snarr-title\">${SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_TITLE@LOCALIZED_STRING_SS}</h2>\n        <div class=\"snarr-body\">\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_1@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_2@LOCALIZED_STRING_SS}</p>\n          <p>${SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_3@LOCALIZED_STRING_SS}</p>\n        </div>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 09-vertical-section/section.h2-narrative-only/block.css */\n/* lab-ui block · section.h2-narrative-only\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.snarr {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.snarr .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.snarr-grid {\n  display: grid;\n  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);\n  gap: clamp(2.5rem, 7vw, 7rem);\n  align-items: start;\n  max-width: none;\n}\n\n.snarr-eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n\n.snarr-title {\n  margin: 0 0 20px;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n.snarr-body { display: grid; gap: 14px; max-width: 42rem; }\n.snarr-body p {\n  margin: 0;\n  font-size: var(--type-lead-size);\n  line-height: var(--type-lead-leading);\n  color: var(--color-text);\n}\n\n@media (max-width: 900px) {\n  .snarr-grid {\n    grid-template-columns: 1fr;\n    gap: 36px;\n  }\n}\n",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 1",
+          "DESCRIPTION": "Text value for the Lede 1 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 2",
+          "DESCRIPTION": "Text value for the Lede 2 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_LEDE_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 3",
+          "DESCRIPTION": "Text value for the Lede 3 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Side Title",
+          "DESCRIPTION": "Text value for the Side Title field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Side Lede 1",
+          "DESCRIPTION": "Text value for the Side Lede 1 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Side Lede 2",
+          "DESCRIPTION": "Text value for the Side Lede 2 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad minim veniam quis."
+      }
+    },
+    {
+      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_SIDE_LEDE_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Side Lede 3",
+          "DESCRIPTION": "Text value for the Side Lede 3 field in Section · H2 narrative."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex."
+      }
+    }
+  ]
+}

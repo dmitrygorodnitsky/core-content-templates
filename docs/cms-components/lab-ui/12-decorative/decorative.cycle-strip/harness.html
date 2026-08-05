@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>decorative.cycle-strip · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); padding: 40px var(--container-padding-x); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue); margin-bottom: 12px;
+  }
+  .stage { max-width: 1100px; margin: 0 auto; }
+  .stage + .stage { margin-top: 40px; }
+  .variant-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-gray-blue); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <p class="variant-label">data-tone="warn" (default)</p>
+  <div class="cycle-strip" data-block="decorative.cycle-strip" data-tone="warn">
+    <span class="cycle-strip-label">The cycle this replaces</span>
+    <div class="cycle-strip-flow">
+      <span class="cycle-strip-item">Spreadsheets</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Outgrow</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Migrate</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Outgrow</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Migrate again</span>
+    </div>
+  </div>
+</div>
+
+<div class="stage">
+  <p class="variant-label">data-tone="neutral"</p>
+  <div class="cycle-strip" data-block="decorative.cycle-strip" data-tone="neutral">
+    <span class="cycle-strip-label">The cycle this enables</span>
+    <div class="cycle-strip-flow">
+      <span class="cycle-strip-item">Request</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Schedule</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Dispatch</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Mobile</span>
+      <span class="cycle-strip-arrow" aria-hidden="true">→</span>
+      <span class="cycle-strip-item">Bill</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

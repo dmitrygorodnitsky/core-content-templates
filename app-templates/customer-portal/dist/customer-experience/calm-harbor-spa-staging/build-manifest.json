@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-local-build",
+  "uploadPerformed": false,
+  "experienceId": "calm-harbor-spa-staging",
+  "descriptor": "app-templates/customer-portal/experience/descriptors/calm-harbor-spa.staging.json",
+  "publishable": false,
+  "blockers": [
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRICING_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "login-page-context-selector-unproven",
+      "surface": "login",
+      "code": null,
+      "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+    }
+  ],
+  "templates": {
+    "landing": {
+      "code": "CUSTOMER_EXPERIENCE_LANDING",
+      "parameterCount": 25,
+      "pageContextParameterCount": 18,
+      "sha256": "1a3fc1bc73210b36aa0f5f8cf384a9d3937e953f2be3b414abb86782b9f5a940"
+    },
+    "portal": {
+      "code": "CUSTOMER_EXPERIENCE_PORTAL",
+      "parameterCount": 65,
+      "pageContextParameterCount": 55,
+      "sha256": "d0e539cb1860b09c8ece483c9a09e5ae82c8da37080c8ac0632c6bb0492ba324"
+    },
+    "login": {
+      "code": "CUSTOMER_EXPERIENCE_LOGIN",
+      "parameterCount": 25,
+      "pageContextParameterCount": 25,
+      "sha256": "3e059fcf48de8a92dea3ebdd54a94864aa733dcf2a60513912b24063fa790fa7"
+    },
+    "twoFactor": {
+      "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
+      "parameterCount": 24,
+      "pageContextParameterCount": 24,
+      "sha256": "b97f870bf906c2199576769b032f69cc34884701dbbd6536ba39f9dc5ca4b7ef"
+    }
+  },
+  "sources": {
+    "landing": {
+      "builder": "app-templates/customer-portal/scripts/export-calm-harbor-landing-blocks-manual.mjs",
+      "rootSha256": "4a8d963bd909cf44b169ebe027be44dc50c1c9d1ece32a54820f9722c3b20e8e"
+    },
+    "login": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-login.html",
+      "sha256": "561c42fe69f2069195bcbba2aab78ac8c86493f7ec3eae6ca54381323bf6c171"
+    },
+    "twoFactor": {
+      "source": "app-templates/customer-portal/design-inbox/core-auth-2fa.html",
+      "sha256": "f94ef948f7f3a38a87d7c47f6a2c9a8ecaca651450640f39a18a9066e70e6f95"
+    }
+  },
+  "runtime": {
+    "source": "app-templates/customer-portal/runtime/manual/calm-harbor-target-runtime.js",
+    "sha256": "860607d8c89c4f1eae579447e1779fe3b890cfe5e77bf25042e81fe91757928f"
+  }
+}

@@ -1,0 +1,119 @@
+<!-- lab-ui block · section.stages-list
+     Standard section header + vertical growth ladder: 4 stages (01–04).
+     Each stage has a side rail with stage eyebrow + big number + 4-tick
+     scale that fills as stages progress, and a main area with title + lead +
+     additive capability chips. Light theme. Designer kit StagesList.
+-->
+<div class="stages-section" data-block="section.stages-list" aria-labelledby="stages-heading">
+  <header class="stages-section-head">
+    <p class="eyebrow">{{eyebrow}}</p>
+    <h2 id="stages-heading" class="stages-section-title">{{title}}</h2>
+    <div class="stages-section-lede">
+      <p>{{lede_1}}</p>
+      <p>{{lede_2}}</p>
+    </div>
+  </header>
+
+  <div class="stages-list">
+    <article class="stage stage--lv1" data-stage="01">
+      <div class="stage-side">
+        <span class="stage-eyebrow">{{stage_1_label}}</span>
+        <span class="stage-num">{{stage_1_num}}</span>
+        <div class="stage-scale" aria-hidden="true">
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick"></span>
+          <span class="stage-tick"></span>
+          <span class="stage-tick"></span>
+        </div>
+      </div>
+      <div class="stage-main">
+        <div class="stage-title-row">
+          <h3 class="stage-title">{{stage_1_title}}</h3>
+        </div>
+        <p class="stage-lead">{{stage_1_lead}}</p>
+        <div class="stage-caps">
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_1_chip_1}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_1_chip_2}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_1_chip_3}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_1_chip_4}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_1_chip_5}}</span></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage stage--lv2" data-stage="02">
+      <div class="stage-side">
+        <span class="stage-eyebrow">{{stage_2_label}}</span>
+        <span class="stage-num">{{stage_2_num}}</span>
+        <div class="stage-scale" aria-hidden="true">
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick"></span>
+          <span class="stage-tick"></span>
+        </div>
+      </div>
+      <div class="stage-main">
+        <div class="stage-title-row">
+          <h3 class="stage-title">{{stage_2_title}}</h3>
+        </div>
+        <p class="stage-lead">{{stage_2_lead}}</p>
+        <div class="stage-caps">
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_2_chip_1}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_2_chip_2}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_2_chip_3}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_2_chip_4}}</span></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage stage--lv3" data-stage="03">
+      <div class="stage-side">
+        <span class="stage-eyebrow">{{stage_3_label}}</span>
+        <span class="stage-num">{{stage_3_num}}</span>
+        <div class="stage-scale" aria-hidden="true">
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick"></span>
+        </div>
+      </div>
+      <div class="stage-main">
+        <div class="stage-title-row">
+          <h3 class="stage-title">{{stage_3_title}}</h3>
+        </div>
+        <p class="stage-lead">{{stage_3_lead}}</p>
+        <div class="stage-caps">
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_3_chip_1}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_3_chip_2}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_3_chip_3}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_3_chip_4}}</span></span>
+        </div>
+      </div>
+    </article>
+
+    <article class="stage stage--lv4" data-stage="04">
+      <div class="stage-side">
+        <span class="stage-eyebrow">{{stage_4_label}}</span>
+        <span class="stage-num">{{stage_4_num}}</span>
+        <div class="stage-scale" aria-hidden="true">
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+          <span class="stage-tick is-on"></span>
+        </div>
+      </div>
+      <div class="stage-main">
+        <div class="stage-title-row">
+          <h3 class="stage-title">{{stage_4_title}}</h3>
+        </div>
+        <p class="stage-lead">{{stage_4_lead}}</p>
+        <div class="stage-caps">
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_4_chip_1}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_4_chip_2}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_4_chip_3}}</span></span>
+          <span class="stage-chip"><span class="stage-chip-plus">+</span><span>{{stage_4_chip_4}}</span></span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

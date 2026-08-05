@@ -1,0 +1,474 @@
+{
+  "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED",
+  "nls": {
+    "en": {
+      "NAME": "Features · 2-col numbered accordion"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "HVAC_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--features-accordion-2col-numbered\" data-composition-block=\"features.accordion-2col-numbered\">\n<!-- lab-ui block · features.accordion-2col-numbered\n     15-row 2-col accordion list with F.NN mono badges. Light theme.\n     Multiple-open behavior (no one-open rule — matches v5 design source).\n     JS: see block.js — toggles .is-open per row.\n     Param contract: see block.json.\n-->\n<section class=\"features features--accordion\" id=\"features\" data-block=\"features.accordion-2col-numbered\">\n  <div class=\"container\">\n    <header class=\"features-top\">\n      <div>\n        <p class=\"eyebrow\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW@LOCALIZED_STRING_SS}</p>\n        <h2 class=\"features-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE@LOCALIZED_STRING_SS}</h2>\n      </div>\n      <div class=\"features-lede\">\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1@LOCALIZED_STRING_SS}</p>\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2@LOCALIZED_STRING_SS}</p>\n        <p>${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3@LOCALIZED_STRING_SS}</p>\n      </div>\n    </header>\n\n    <div class=\"features-list\" data-features-list>\n      <div class=\"features-col\" data-feature-col=\"left\">\n        <article class=\"f-row is-open\" data-feature-slot=\"01\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"true\">\n          <span class=\"f-num\">F.01</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"03\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.03</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"05\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.05</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"07\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.07</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"09\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.09</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"11\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.11</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"13\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.13</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"15\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.15</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n      </div>\n      <div class=\"features-col\" data-feature-col=\"right\">\n        <article class=\"f-row\" data-feature-slot=\"02\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.02</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"04\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.04</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"06\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.06</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"08\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.08</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"10\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.10</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"12\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.12</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n        <article class=\"f-row\" data-feature-slot=\"14\"><button class=\"f-row-head\" type=\"button\" aria-expanded=\"false\">\n          <span class=\"f-num\">F.14</span><span class=\"f-title\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE@LOCALIZED_STRING_SS}</span><span class=\"f-toggle\" aria-hidden=\"true\">\n            <svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg>\n          </span></button><div class=\"f-body\"><div class=\"f-body-inner\">${SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY@LOCALIZED_STRING_SS}</div></div>\n        </article>\n      </div>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: 06-features/features.accordion-2col-numbered/block.css */\n/* lab-ui block · features.accordion-2col-numbered\n   Depends: 00-tokens/tokens.css. Light theme. */\n\n.features--accordion {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n\n.features--accordion .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.features-top {\n  display: grid;\n  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);\n  gap: clamp(2rem, 4vw, 4rem);\n  align-items: start;\n  margin-bottom: clamp(2rem, 4vw, 3.5rem);\n}\n.features-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: 0.8125rem;\n  text-transform: uppercase;\n  letter-spacing: 0.12em;\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.features-title {\n  font-weight: 600;\n  font-size: clamp(1.75rem, 3.4vw, 3.125rem);\n  line-height: 1.15;\n  letter-spacing: -0.022em;\n  color: var(--color-heading);\n  margin: 0;\n}\n.features-lede { display: grid; gap: 14px; max-width: 44rem; }\n.features-lede p { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--color-text); }\n\n.features-list {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 16px;\n  align-items: start;\n}\n\n.features-col {\n  display: grid;\n  gap: 12px;\n  align-content: start;\n}\n\n.f-row {\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  border-radius: 12px;\n  background: var(--color-bg);\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n  overflow: hidden;\n}\n.f-row.is-open {\n  border-color: rgba(0, 0, 0, 0.16);\n  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.18);\n}\n\n.f-row-head {\n  display: grid;\n  grid-template-columns: auto 1fr auto;\n  gap: 12px;\n  align-items: center;\n  width: 100%;\n  padding: 14px 16px;\n  background: transparent;\n  border: 0;\n  cursor: pointer;\n  font: inherit;\n  text-align: left;\n  color: var(--color-heading);\n}\n.f-row-head:hover .f-title { color: var(--color-heading); }\n\n.f-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  color: var(--color-gray-blue);\n  letter-spacing: 0.08em;\n}\n\n.f-title {\n  font-size: 0.9375rem;\n  font-weight: 500;\n  letter-spacing: -0.01em;\n  color: var(--color-heading);\n}\n\n.f-toggle {\n  width: 26px;\n  height: 26px;\n  border-radius: 999px;\n  display: inline-grid;\n  place-items: center;\n  background: rgba(0, 0, 0, 0.04);\n  color: var(--color-heading);\n  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;\n}\n.f-row.is-open .f-toggle {\n  transform: rotate(45deg);\n  background: var(--color-heading);\n  color: var(--color-white);\n}\n\n.f-body {\n  display: grid;\n  grid-template-rows: 0fr;\n  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);\n}\n.f-row.is-open .f-body { grid-template-rows: 1fr; }\n\n.f-body-inner {\n  overflow: hidden;\n  min-height: 0;\n  padding: 0 16px;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.55;\n}\n.f-row.is-open .f-body-inner {\n  padding-bottom: 16px;\n}\n\n@media (max-width: 880px) {\n  .features-top { grid-template-columns: 1fr; }\n  .features-list { grid-template-columns: 1fr; }\n}\n",
+  "javascript": "/* generated child JS: 06-features/features.accordion-2col-numbered/block.js */\n// lab-ui block · features.accordion-2col-numbered\n// Toggle .is-open on click. Multiple rows can be open at the same time\n// (matches v5 design source — no one-open rule).\n// Hides empty slots automatically (slots whose title is empty / handlebars).\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"features.accordion-2col-numbered\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".f-row\").forEach((row) => {\n          // Hide empty slots\n          const title = row.querySelector(\".f-title\")?.textContent?.trim();\n          if (!title || /^\\{\\{slot_\\d+_title\\}\\}$/.test(title)) {\n            row.hidden = true;\n            return;\n          }\n          const btn = row.querySelector(\".f-row-head\");\n          if (!btn) return;\n          btn.addEventListener(\"click\", () => {\n            const isOpen = row.classList.toggle(\"is-open\");\n            btn.setAttribute(\"aria-expanded\", String(isOpen));\n          });\n        });\n      });\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum quis."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_1",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 1",
+          "DESCRIPTION": "Text value for the Lede 1 field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_2",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 2",
+          "DESCRIPTION": "Text value for the Lede 2 field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_LEDE_3",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Lede 3",
+          "DESCRIPTION": "Text value for the Lede 3 field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Title",
+          "DESCRIPTION": "Text value for the Slot 01 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum adipiscing."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_01_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 Body",
+          "DESCRIPTION": "Text value for the Slot 01 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Title",
+          "DESCRIPTION": "Text value for the Slot 03 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ad."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_03_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 Body",
+          "DESCRIPTION": "Text value for the Slot 03 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Title",
+          "DESCRIPTION": "Text value for the Slot 05 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_05_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 05 Body",
+          "DESCRIPTION": "Text value for the Slot 05 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Title",
+          "DESCRIPTION": "Text value for the Slot 07 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_07_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 07 Body",
+          "DESCRIPTION": "Text value for the Slot 07 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Title",
+          "DESCRIPTION": "Text value for the Slot 09 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum magna."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_09_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 09 Body",
+          "DESCRIPTION": "Text value for the Slot 09 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Title",
+          "DESCRIPTION": "Text value for the Slot 11 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ea."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_11_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 11 Body",
+          "DESCRIPTION": "Text value for the Slot 11 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Title",
+          "DESCRIPTION": "Text value for the Slot 13 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum lorem."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_13_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 13 Body",
+          "DESCRIPTION": "Text value for the Slot 13 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 15 Title",
+          "DESCRIPTION": "Text value for the Slot 15 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum labore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_15_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 15 Body",
+          "DESCRIPTION": "Text value for the Slot 15 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Title",
+          "DESCRIPTION": "Text value for the Slot 02 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum nisi."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_02_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 Body",
+          "DESCRIPTION": "Text value for the Slot 02 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Title",
+          "DESCRIPTION": "Text value for the Slot 04 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum fugiat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_04_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 Body",
+          "DESCRIPTION": "Text value for the Slot 04 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Title",
+          "DESCRIPTION": "Text value for the Slot 06 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum tempor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_06_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 06 Body",
+          "DESCRIPTION": "Text value for the Slot 06 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Title",
+          "DESCRIPTION": "Text value for the Slot 08 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum exercitation."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_08_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 08 Body",
+          "DESCRIPTION": "Text value for the Slot 08 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Title",
+          "DESCRIPTION": "Text value for the Slot 10 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum velit."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_10_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 10 Body",
+          "DESCRIPTION": "Text value for the Slot 10 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Title",
+          "DESCRIPTION": "Text value for the Slot 12 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum sed."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_12_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 12 Body",
+          "DESCRIPTION": "Text value for the Slot 12 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 14 Title",
+          "DESCRIPTION": "Text value for the Slot 14 Title field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum veniam."
+      }
+    },
+    {
+      "code": "SECTION_03_FEATURES_ACCORDION_2COL_NUMBERED_SLOT_14_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 14 Body",
+          "DESCRIPTION": "Text value for the Slot 14 Body field in Features · 2-col numbered accordion."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
+      }
+    }
+  ]
+}

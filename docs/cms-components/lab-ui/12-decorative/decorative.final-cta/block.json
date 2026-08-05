@@ -1,0 +1,110 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "decorative.final-cta",
+  "category": "12-decorative",
+  "title": "Decorative · final CTA banner",
+  "description": "Bottom-of-page CTA section adapted from Section 16 standalone. Dark card surface, mono eyebrow, large closing H2, three-copy rhythm, and canonical ServiceWand primary/secondary CTA pair. Intended as the final conversion section above the footer.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "/Users/imighty/Downloads/Section 16 - Standalone.html",
+    "adapted_from": "Section 16 · Get Started — static lab-ui block, no React runtime",
+    "decision": "Bottom CTA enters lab-ui as a durable block; uses existing CTA button contracts and page-level accent tokens."
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-white",
+      "--color-black",
+      "--color-dark-card-bg",
+      "--cta-accent",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--radius-card",
+      "--radius-pill",
+      "--transition-duration"
+    ],
+    "other_blocks": [
+      "cta.btn-base",
+      "cta.btn-primary-ring",
+      "cta.btn-secondary-filled"
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum · get started",
+      "name": "Eyebrow Label",
+      "description": "Small uppercase label shown above the final CTA heading."
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum Dolor Sit Amet",
+      "name": "CTA Heading",
+      "description": "Main heading for the bottom-of-page CTA banner."
+    },
+    {
+      "code": "body_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "name": "First Body Paragraph",
+      "description": "Opening supporting paragraph for the final CTA."
+    },
+    {
+      "code": "emphasis",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum is built for that next layer.",
+      "name": "Emphasis Line",
+      "description": "Short emphasized sentence between the two supporting paragraphs."
+    },
+    {
+      "code": "body_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "name": "Second Body Paragraph",
+      "description": "Closing supporting paragraph for the final CTA."
+    },
+    {
+      "code": "primary_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Primary CTA Label",
+      "description": "Text shown in the primary CTA button."
+    },
+    {
+      "code": "primary_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Primary CTA URL",
+      "description": "Destination URL for the primary CTA button."
+    },
+    {
+      "code": "secondary_label",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem Ipsum",
+      "name": "Secondary CTA Label",
+      "description": "Text shown in the secondary CTA button."
+    },
+    {
+      "code": "secondary_href",
+      "type": "URL",
+      "default": "#",
+      "name": "Secondary CTA URL",
+      "description": "Destination URL for the secondary CTA button."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Use once near the end of a landing page, directly above the footer.",
+    "The block does not ship its own button implementation; it depends on the canonical CTA button blocks.",
+    "All copy defaults begin with Lorem Ipsum so unfinished authored content remains easy to find."
+  ]
+}

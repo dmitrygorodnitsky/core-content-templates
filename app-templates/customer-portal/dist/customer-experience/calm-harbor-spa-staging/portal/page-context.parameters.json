@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-page-context-parameter-map",
+  "experienceId": "calm-harbor-spa-staging",
+  "surface": "portal",
+  "templateCode": "CUSTOMER_EXPERIENCE_PORTAL",
+  "publishable": false,
+  "selector": null,
+  "parameters": [
+    {
+      "code": "CX_CONTRACT_VERSION",
+      "type": "STRING",
+      "value": "1",
+      "source": "contract.version"
+    },
+    {
+      "code": "CX_EXPERIENCE_ID",
+      "type": "STRING",
+      "value": "calm-harbor-spa-staging",
+      "source": "experience.id"
+    },
+    {
+      "code": "CX_VERTICAL",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.vertical"
+    },
+    {
+      "code": "CX_THEME",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.theme"
+    },
+    {
+      "code": "CX_DEFAULT_MODE",
+      "type": "STRING",
+      "value": "light",
+      "source": "experience.defaultMode"
+    },
+    {
+      "code": "CX_BRAND_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calm Harbor Spa"
+      },
+      "source": "experience.brandName"
+    },
+    {
+      "code": "CX_ALLOWED_NAV_ORIGINS",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com",
+      "source": "experience.allowedNavOrigins"
+    },
+    {
+      "code": "PORTAL_DOCUMENT_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calm Harbor Spa | Customer Portal"
+      },
+      "source": "portal.documentTitle"
+    },
+    {
+      "code": "PORTAL_PROFILE",
+      "type": "STRING",
+      "value": "spaTarget",
+      "source": "portal.runtimeProfile"
+    },
+    {
+      "code": "PORTAL_CAPABILITY",
+      "type": "STRING",
+      "value": "target-appointments",
+      "source": "portal.capability"
+    },
+    {
+      "code": "PORTAL_ENABLED_MODULES",
+      "type": "STRING",
+      "value": "appointments,orders,services,pricing,products,account,cart,checkout,purchases,plan,profile",
+      "source": "portal.enabledModules"
+    },
+    {
+      "code": "PORTAL_DEFAULT_ROUTE_ID",
+      "type": "STRING",
+      "value": "orders.list",
+      "source": "portal.defaultRoute"
+    },
+    {
+      "code": "PORTAL_ROUTER_MODE",
+      "type": "STRING",
+      "value": "hash",
+      "source": "portal.routerMode"
+    },
+    {
+      "code": "PORTAL_AUTH_MODE",
+      "type": "STRING",
+      "value": "required",
+      "source": "portal.authMode"
+    },
+    {
+      "code": "PORTAL_DATA_MODE",
+      "type": "STRING",
+      "value": "live",
+      "source": "portal.dataMode"
+    },
+    {
+      "code": "PORTAL_ERROR_MODE",
+      "type": "STRING",
+      "value": "error",
+      "source": "portal.errorMode"
+    },
+    {
+      "code": "PORTAL_BOOKING_MODE",
+      "type": "STRING",
+      "value": "open",
+      "source": "portal.bookingMode"
+    },
+    {
+      "code": "PORTAL_RETAIL_MODE",
+      "type": "STRING",
+      "value": "retail-commerce-open",
+      "source": "portal.retailMode"
+    },
+    {
+      "code": "PORTAL_PLAN_COMMERCE_MODE",
+      "type": "STRING",
+      "value": "open",
+      "source": "portal.planCommerceMode"
+    },
+    {
+      "code": "PORTAL_PAYMENT_MODE",
+      "type": "STRING",
+      "value": "simulated",
+      "source": "portal.paymentMode"
+    },
+    {
+      "code": "PORTAL_DEMO_COMMANDS_MODE",
+      "type": "STRING",
+      "value": "current-api",
+      "source": "portal.demoCommandsMode"
+    },
+    {
+      "code": "PORTAL_ANONYMOUS_INTENT_MODE",
+      "type": "STRING",
+      "value": "closed",
+      "source": "portal.anonymousIntentMode"
+    },
+    {
+      "code": "PORTAL_ANONYMOUS_INTENT_TTL_SECONDS",
+      "type": "STRING",
+      "value": "1800",
+      "source": "portal.anonymousIntentTtlSeconds"
+    },
+    {
+      "code": "PORTAL_ANONYMOUS_INTENT_MAX_ITEMS",
+      "type": "STRING",
+      "value": "10",
+      "source": "portal.anonymousIntentMaxItems"
+    },
+    {
+      "code": "PORTAL_ANONYMOUS_INTENT_RECONCILIATION_MODE",
+      "type": "STRING",
+      "value": "authenticated-server",
+      "source": "portal.anonymousIntentReconciliationMode"
+    },
+    {
+      "code": "PORTAL_REGISTRATION_MODE",
+      "type": "STRING",
+      "value": "closed",
+      "source": "portal.registrationMode"
+    },
+    {
+      "code": "PORTAL_ORGANIZATION",
+      "type": "STRING",
+      "value": "CALM_HARBOR_SPA_STAGING",
+      "source": "portal.organization"
+    },
+    {
+      "code": "PORTAL_ACCOUNT_TYPE_CODE",
+      "type": "STRING",
+      "value": "SPA_CUSTOMER",
+      "source": "portal.accountTypeCode"
+    },
+    {
+      "code": "PORTAL_CORE_API_BASE",
+      "type": "STRING",
+      "value": "/core",
+      "source": "portal.coreApiBase"
+    },
+    {
+      "code": "PORTAL_ACCOUNT_API_BASE",
+      "type": "STRING",
+      "value": "/core-acct",
+      "source": "portal.accountApiBase"
+    },
+    {
+      "code": "PORTAL_SERVICE_API_BASE",
+      "type": "STRING",
+      "value": "/core-svc",
+      "source": "portal.serviceApiBase"
+    },
+    {
+      "code": "PORTAL_BILL_API_BASE",
+      "type": "STRING",
+      "value": "/core-bill",
+      "source": "portal.billApiBase"
+    },
+    {
+      "code": "PORTAL_PIM_API_BASE",
+      "type": "STRING",
+      "value": "/core-pim/api",
+      "source": "portal.pimApiBase"
+    },
+    {
+      "code": "PORTAL_PIM_ORGANIZATION",
+      "type": "STRING",
+      "value": "CALM_HARBOR_SPA_STAGING",
+      "source": "portal.pimOrganization"
+    },
+    {
+      "code": "PORTAL_PIM_ENRICHMENT_MODE",
+      "type": "STRING",
+      "value": "current-api",
+      "source": "portal.pimEnrichmentMode"
+    },
+    {
+      "code": "PORTAL_PIM_PRICING_PRODUCT_TYPE_CODES",
+      "type": "STRING",
+      "value": "SPA_SERVICE,SPA_MEMBERSHIP,SPA_PACKAGE",
+      "source": "portal.pimPricingProductTypeCodes"
+    },
+    {
+      "code": "PORTAL_PIM_PRODUCTS_PRODUCT_TYPE_CODES",
+      "type": "STRING",
+      "value": "SPA_RETAIL",
+      "source": "portal.pimProductsProductTypeCodes"
+    },
+    {
+      "code": "PORTAL_PIM_PRICE_TYPE_CODE",
+      "type": "STRING",
+      "value": "PRICE_CURRENCY",
+      "source": "portal.pimPriceTypeCode"
+    },
+    {
+      "code": "PORTAL_PIM_CURRENCY",
+      "type": "STRING",
+      "value": "USD",
+      "source": "portal.pimCurrency"
+    },
+    {
+      "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_CODE",
+      "type": "STRING",
+      "value": "CURRENCY",
+      "source": "portal.pimCurrencyAttributeCode"
+    },
+    {
+      "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_VALUES",
+      "type": "STRING",
+      "value": "USD",
+      "source": "portal.pimCurrencyAttributeValues"
+    },
+    {
+      "code": "PORTAL_PIM_AMOUNT_ATTRIBUTE_CODE",
+      "type": "STRING",
+      "value": "UNIT_PRICE",
+      "source": "portal.pimAmountAttributeCode"
+    },
+    {
+      "code": "PORTAL_AUTH_CORE_BASE",
+      "type": "STRING",
+      "value": "/core",
+      "source": "portal.authCoreBase"
+    },
+    {
+      "code": "PORTAL_AUTH_CALLBACK_PATH",
+      "type": "STRING",
+      "value": "/core/oauth2-callback.html",
+      "source": "portal.authCallbackPath"
+    },
+    {
+      "code": "PORTAL_NAV_PRIMARY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Appointments"
+      },
+      "source": "portal.navigation.primary"
+    },
+    {
+      "code": "PORTAL_NAV_CALENDAR_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calendar"
+      },
+      "source": "portal.navigation.calendar"
+    },
+    {
+      "code": "PORTAL_NAV_ACTIVITY_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Activity"
+      },
+      "source": "portal.navigation.activity"
+    },
+    {
+      "code": "PORTAL_NAV_CARE_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "My routine"
+      },
+      "source": "portal.navigation.care"
+    },
+    {
+      "code": "PORTAL_NAV_PROPOSALS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Proposals"
+      },
+      "source": "portal.navigation.proposals"
+    },
+    {
+      "code": "PORTAL_NAV_SERVICES_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Services & prices"
+      },
+      "source": "portal.navigation.services"
+    },
+    {
+      "code": "PORTAL_NAV_PRICING_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Pricing"
+      },
+      "source": "portal.navigation.pricing"
+    },
+    {
+      "code": "PORTAL_NAV_PRODUCTS_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Shop"
+      },
+      "source": "portal.navigation.products"
+    },
+    {
+      "code": "PORTAL_NAV_ACCOUNT_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Account"
+      },
+      "source": "portal.navigation.account"
+    },
+    {
+      "code": "PORTAL_NAV_SUPPORT_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Support"
+      },
+      "source": "portal.navigation.support"
+    },
+    {
+      "code": "PORTAL_PRIMARY_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "+ Book"
+      },
+      "source": "portal.primaryCtaLabel"
+    }
+  ],
+  "deferredParameters": [
+    {
+      "surface": "portal",
+      "code": "CX_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "source": "resolved.portalUrl",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "NAV_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "source": "resolved.logoutDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    }
+  ]
+}

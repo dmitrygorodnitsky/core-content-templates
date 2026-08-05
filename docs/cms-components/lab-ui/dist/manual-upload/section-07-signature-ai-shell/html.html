@@ -1,0 +1,104 @@
+<section class="composition-section composition-section--signature-ai-shell" data-composition-block="signature.ai-shell">
+<!-- lab-ui block · signature.ai-shell
+     Hub-page signature AI section. Composite layout:
+       · top: eyebrow + H2 + 2 leads
+       · middle: ai-shell grid (terminal-style ops log + media side-panel)
+       · bottom: capability cards row (A.NN numbered)
+     Light theme. Adapted from designer kit signature-blocks.jsx.
+-->
+<section class="ai-section" data-block="signature.ai-shell">
+  <div class="container">
+    <header class="ai-top">
+      <p class="eyebrow">${SECTION_07_SIGNATURE_AI_SHELL_EYEBROW@LOCALIZED_STRING_SS}</p>
+      <h2 class="ai-title">${SECTION_07_SIGNATURE_AI_SHELL_TITLE@LOCALIZED_STRING_SS}</h2>
+      <div class="ai-leads">
+        <p>${SECTION_07_SIGNATURE_AI_SHELL_LEAD_1@LOCALIZED_STRING_SS}</p>
+        <p>${SECTION_07_SIGNATURE_AI_SHELL_LEAD_2@LOCALIZED_STRING_SS}</p>
+      </div>
+    </header>
+
+    <div class="ai-shell">
+      <!-- Stream: terminal-style activity log -->
+      <article class="ai-stream" data-ai-stream>
+        <header class="ai-stream-head">
+          <span class="ai-stream-title"><span class="dot-live" aria-hidden="true"></span>${SECTION_07_SIGNATURE_AI_SHELL_STREAM_TITLE@LOCALIZED_STRING_SS}</span>
+          <span class="ai-stream-meta">${SECTION_07_SIGNATURE_AI_SHELL_STREAM_META@LOCALIZED_STRING_SS}</span>
+        </header>
+        <div class="ai-stream-body" role="list">
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TIME@LOCALIZED_STRING_SS}</span>
+            <span class="ai-stream-kind">${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_KIND@LOCALIZED_STRING_SS}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_TRIG@LOCALIZED_STRING_SS}</p>
+              <p class="act"><span class="lead-mark">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_1_ACT@LOCALIZED_STRING_SS}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TIME@LOCALIZED_STRING_SS}</span>
+            <span class="ai-stream-kind">${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_KIND@LOCALIZED_STRING_SS}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_TRIG@LOCALIZED_STRING_SS}</p>
+              <p class="act"><span class="lead-mark">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_2_ACT@LOCALIZED_STRING_SS}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TIME@LOCALIZED_STRING_SS}</span>
+            <span class="ai-stream-kind">${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_KIND@LOCALIZED_STRING_SS}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_TRIG@LOCALIZED_STRING_SS}</p>
+              <p class="act"><span class="lead-mark">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_3_ACT@LOCALIZED_STRING_SS}</p>
+            </div>
+          </div>
+          <div class="ai-stream-row" role="listitem">
+            <span class="ai-stream-time">${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TIME@LOCALIZED_STRING_SS}</span>
+            <span class="ai-stream-kind">${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_KIND@LOCALIZED_STRING_SS}</span>
+            <div class="ai-stream-content">
+              <p class="trig"><span class="lead-mark">›</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_TRIG@LOCALIZED_STRING_SS}</p>
+              <p class="act"><span class="lead-mark">→</span>${SECTION_07_SIGNATURE_AI_SHELL_ROW_4_ACT@LOCALIZED_STRING_SS}</p>
+            </div>
+          </div>
+        </div>
+        <footer class="ai-stream-foot"><span>${SECTION_07_SIGNATURE_AI_SHELL_STREAM_FOOTER@LOCALIZED_STRING_SS}</span></footer>
+      </article>
+
+      <!-- Side panel: media placeholder + H2 + short body copy -->
+      <aside class="ai-side-panel" data-ai-side-panel>
+        <div class="ai-media-placeholder" data-ai-media-slot>
+          <img class="ai-media-img" src="/core/image/${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_URL@IMAGE}/get/${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_NAME@STRING}" alt="${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT@LOCALIZED_STRING_SS}" loading="lazy" decoding="async" width="1280" height="800">
+          <span class="ai-media-fallback">
+            <span>${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_SIZE@LOCALIZED_STRING_SS}</span>
+            <span>${SECTION_07_SIGNATURE_AI_SHELL_MEDIA_PLACEHOLDER_LABEL@LOCALIZED_STRING_SS}</span>
+          </span>
+        </div>
+
+        <h2 class="ai-side-heading">${SECTION_07_SIGNATURE_AI_SHELL_SIDE_HEADING@LOCALIZED_STRING_SS}</h2>
+
+        <div class="ai-side-copy">
+          <p>${SECTION_07_SIGNATURE_AI_SHELL_FEED_1_BODY@LOCALIZED_STRING_SS}</p>
+          <p>${SECTION_07_SIGNATURE_AI_SHELL_FEED_2_BODY@LOCALIZED_STRING_SS}</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Capability cards: 3 numbered with A.NN prefix -->
+    <div class="ai-caps">
+      <article class="ai-cap">
+        <span class="ai-cap-num">${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_NUM@LOCALIZED_STRING_SS}</span>
+        <h3 class="ai-cap-title">${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_TITLE@LOCALIZED_STRING_SS}</h3>
+        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_1_BODY@LOCALIZED_STRING_SS}</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_NUM@LOCALIZED_STRING_SS}</span>
+        <h3 class="ai-cap-title">${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_TITLE@LOCALIZED_STRING_SS}</h3>
+        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_2_BODY@LOCALIZED_STRING_SS}</p>
+      </article>
+      <article class="ai-cap">
+        <span class="ai-cap-num">${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_PREFIX@LOCALIZED_STRING_SS}${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_NUM@LOCALIZED_STRING_SS}</span>
+        <h3 class="ai-cap-title">${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_TITLE@LOCALIZED_STRING_SS}</h3>
+        <p>${SECTION_07_SIGNATURE_AI_SHELL_CAP_3_BODY@LOCALIZED_STRING_SS}</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+</section>

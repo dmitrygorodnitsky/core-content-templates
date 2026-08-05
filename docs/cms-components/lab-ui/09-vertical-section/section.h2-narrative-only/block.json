@@ -1,0 +1,118 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "section.h2-narrative-only",
+  "category": "09-vertical-section",
+  "title": "Section · H2 narrative",
+  "description": "Two-column narrative section: left eyebrow + H2 + 3 paragraphs and right H2 + 3 paragraphs. Used as the framing pattern for soft sections (AI / SMB / Scalable / Operational philosophy) where the message is the visual.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "tmp/Lorem ipsum/src/sections-2.jsx (NarrativeSection)",
+    "adapted_from": "v5 dark → light tokens. Side glyph was replaced with a second text stack for SEO narrative coverage.",
+    "decision": "PM lock 2026-06-13 — canonical narrative block is two-column text; no decorative left rule"
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-lead-size",
+      "--type-lead-leading",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking"
+    ],
+    "other_blocks": []
+  },
+  "background": {
+    "optional": true,
+    "default": "none",
+    "modes": [
+      "none",
+      "gradient",
+      "image"
+    ],
+    "role": "decorative section background",
+    "image": {
+      "recommended_size": "2880 × 1200",
+      "fit": "cover",
+      "position": "center",
+      "alt": ""
+    },
+    "gradient": {
+      "recommended": "subtle neutral/accent gradient only; do not use freeform decorative orbs"
+    },
+    "url_params": {
+      "mode": "bg",
+      "image": "bgImage",
+      "gradient": "bgGradient"
+    },
+    "notes": [
+      "Full-width narrative section background.",
+      "Background is decorative and must not replace content media slots or block copy.",
+      "Preview in any supported harness with ?bg=gradient or ?bg=image&bgImage=<encoded-url>."
+    ]
+  },
+  "params": [
+    {
+      "code": "eyebrow",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor"
+    },
+    {
+      "code": "title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+    },
+    {
+      "code": "lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut."
+    },
+    {
+      "code": "side_title",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur."
+    },
+    {
+      "code": "side_lede_1",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+      "code": "side_lede_2",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna."
+    },
+    {
+      "code": "side_lede_3",
+      "type": "LOCALIZED_STRING_SS",
+      "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+    }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  },
+  "notes": [
+    "Canonical harness presents a two-column text-first narrative block.",
+    "The left decorative accent rule was removed; spacing is handled by the grid gap.",
+    "At ≤900px the two text stacks collapse to a single column."
+  ]
+}

@@ -1,0 +1,234 @@
+{
+  "classification": "public-authored",
+  "deployment": {
+    "canonicalOrigin": "https://calmharborspa.com",
+    "allowedOrigins": [
+      "https://calmharborspa.com",
+      "https://booking.calmharborspa.com"
+    ],
+    "allowCanonicalQuery": false,
+    "assetBase": "/assets/customer-portal",
+    "publicScriptUrl": "/assets/customer-portal/seo-public.js"
+  },
+  "content": {
+    "brand": {
+      "name": "Calm Harbor Spa",
+      "url": "https://calmharborspa.com/"
+    },
+    "vertical": {
+      "name": "Spa and wellness",
+      "slug": "beauty"
+    },
+    "meta": {
+      "title": "Day spa rituals in Austin, Texas | Calm Harbor Spa",
+      "description": "A quieter kind of day spa in Austin: restorative massage, skin rituals, and unhurried time to reset.",
+      "h1": "A softer pace in Austin, Texas",
+      "locality": "Austin, Texas",
+      "localitySlug": "austin",
+      "serviceArea": "Central Austin, Clarksville, Tarrytown, and West Lake Hills",
+      "canonical": "https://calmharborspa.com/beauty/{locality-slug}"
+    },
+    "hero": {
+      "service": "Restorative rituals for the days when your calendar has taken more than it gave.",
+      "note": "Choose a ritual, then settle into an unhurried visit.",
+      "offer": null,
+      "media": {
+        "url": "https://calmharborspa.com/assets/customer-portal/calm-harbor-spa-hero.png",
+        "alt": "Warm stone treatment room prepared with towels and natural light at Calm Harbor Spa"
+      }
+    },
+    "services": [
+      {
+        "id": "chs-grounding-massage",
+        "name": "Grounding massage",
+        "benefit": "A considered full-body session designed around how you want to leave feeling.",
+        "priceFrom": "$145",
+        "destination": "https://booking.calmharborspa.com/rituals/grounding-massage"
+      },
+      {
+        "id": "chs-custom-facial",
+        "name": "Custom facial",
+        "benefit": "A skin-focused ritual with time to understand what your complexion needs now.",
+        "priceFrom": "$130",
+        "destination": "https://booking.calmharborspa.com/rituals/custom-facial"
+      },
+      {
+        "id": "chs-harbor-reset",
+        "name": "Harbor reset",
+        "benefit": "Massage and facial care in one longer visit for a complete change of pace.",
+        "priceFrom": "$245",
+        "destination": "https://booking.calmharborspa.com/rituals/harbor-reset"
+      },
+      {
+        "id": "chs-seasonal-body-ritual",
+        "name": "Seasonal body ritual",
+        "benefit": "A longer, seasonal treatment to slow down and reset from head to toe.",
+        "priceFrom": "$165",
+        "destination": "https://booking.calmharborspa.com/rituals/seasonal-body-ritual"
+      }
+    ],
+    "trust": [
+      {
+        "label": "Approach",
+        "value": "One guest at a time",
+        "count": null
+      },
+      {
+        "label": "Setting",
+        "value": "Quiet treatment rooms",
+        "count": null
+      },
+      {
+        "label": "Planning",
+        "value": "Time to arrive slowly",
+        "count": null
+      }
+    ],
+    "how": [
+      {
+        "title": "Choose your intention",
+        "description": "Start with the kind of reset you need, from a focused massage to a longer ritual."
+      },
+      {
+        "title": "Find a calm window",
+        "description": "Book a time that lets the visit fit your day without asking you to rush."
+      },
+      {
+        "title": "Arrive as you are",
+        "description": "Your visit begins with a short conversation about comfort, focus, and pace."
+      },
+      {
+        "title": "Carry the calm forward",
+        "description": "Leave with simple aftercare and enough room in the day to feel the difference."
+      }
+    ],
+    "proof": {
+      "title": "Wellness without the performance",
+      "items": [
+        {
+          "title": "Room to exhale",
+          "description": "The experience is built around a slower arrival, quiet surroundings, and a clear transition back to your day."
+        },
+        {
+          "title": "Care that starts with listening",
+          "description": "Each ritual begins by understanding your preferences instead of routing everyone through the same visit."
+        },
+        {
+          "title": "An everyday retreat",
+          "description": "A thoughtful reset for residents of Central Austin and the west-side neighborhoods."
+        }
+      ]
+    },
+    "pricing": {
+      "note": "Staging PIM catalog snapshot in USD. Your selected ritual and total are confirmed before booking.",
+      "rows": [
+        {
+          "name": "Grounding massage",
+          "from": "$145",
+          "unit": "75-minute visit",
+          "reason": "PIM snapshot: CHS_GROUNDING_MASSAGE"
+        },
+        {
+          "name": "Custom facial",
+          "from": "$130",
+          "unit": "60-minute visit",
+          "reason": "PIM snapshot: CHS_CUSTOM_FACIAL"
+        },
+        {
+          "name": "Harbor reset",
+          "from": "$245",
+          "unit": "135-minute visit",
+          "reason": "PIM snapshot: CHS_HARBOR_RESET"
+        },
+        {
+          "name": "Seasonal body ritual",
+          "from": "$165",
+          "unit": "90-minute visit",
+          "reason": "PIM snapshot: CHS_SEASONAL_BODY_RITUAL"
+        },
+        {
+          "name": "Harbor membership",
+          "from": "$18",
+          "unit": "month",
+          "reason": "PIM snapshot: CHS_HARBOR_MEMBERSHIP"
+        }
+      ]
+    },
+    "area": {
+      "cities": [
+        "Central Austin",
+        "Clarksville",
+        "Tarrytown",
+        "West Lake Hills"
+      ],
+      "note": "Looking for a day spa near downtown Austin? Calm Harbor is designed for a considered visit, not a quick turnover."
+    },
+    "reviews": [],
+    "faq": [
+      {
+        "id": "first-visit",
+        "question": "What should I expect on a first visit?",
+        "answer": "Plan to arrive a few minutes early. Your practitioner begins with a short conversation about comfort, focus, and any preferences for the ritual."
+      },
+      {
+        "id": "choose-ritual",
+        "question": "How do I choose between massage and facial care?",
+        "answer": "Choose the intention that feels most useful today. The booking flow describes each ritual, and your practitioner can refine the visit when you arrive."
+      },
+      {
+        "id": "what-to-bring",
+        "question": "Do I need to bring anything?",
+        "answer": "Come comfortably. Everything needed for the treatment is prepared for you in the room."
+      },
+      {
+        "id": "pricing-before-booking",
+        "question": "When is the total confirmed?",
+        "answer": "The booking experience confirms the selected ritual and total before you finalize the appointment."
+      }
+    ],
+    "ctas": {
+      "primaryAction": "seo.cta.book",
+      "primary": {
+        "label": "Choose a ritual",
+        "destination": "https://booking.calmharborspa.com/"
+      },
+      "secondaryAction": "seo.cta.services",
+      "secondary": {
+        "label": "Explore rituals",
+        "destination": "#seo-services"
+      },
+      "call": {
+        "label": "Call the spa",
+        "destination": "tel:+15125550182"
+      }
+    },
+    "final": {
+      "heading": "Make room for your reset",
+      "body": "Choose a ritual for a quieter day in {locality}."
+    },
+    "footer": {
+      "phone": "+15125550182",
+      "email": "hello@calmharborspa.com",
+      "hours": [
+        {
+          "days": "Monday to Friday",
+          "hours": "9:00 AM to 7:00 PM"
+        },
+        {
+          "days": "Saturday and Sunday",
+          "hours": "10:00 AM to 5:00 PM"
+        }
+      ],
+      "legal": [
+        {
+          "label": "Privacy",
+          "url": "https://calmharborspa.com/privacy"
+        },
+        {
+          "label": "Booking policy",
+          "url": "https://calmharborspa.com/booking-policy"
+        }
+      ]
+    }
+  }
+}

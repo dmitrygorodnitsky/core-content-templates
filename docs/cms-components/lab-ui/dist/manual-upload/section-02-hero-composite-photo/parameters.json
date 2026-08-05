@@ -1,0 +1,350 @@
+[
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Photo URL",
+        "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow Root",
+        "DESCRIPTION": "Text value for the Eyebrow Root field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow Leaf",
+        "DESCRIPTION": "Text value for the Eyebrow Leaf field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Line 1",
+        "DESCRIPTION": "Text value for the Title Line 1 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Accent",
+        "DESCRIPTION": "Text value for the Title Accent field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title Line 2",
+        "DESCRIPTION": "Text value for the Title Line 2 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 1",
+        "DESCRIPTION": "Text value for the Lead 1 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Lead 2",
+        "DESCRIPTION": "Text value for the Lead 2 field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "CTA Primary Href",
+        "DESCRIPTION": "URL target for the CTA Primary Href link in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CTA Primary Label",
+        "DESCRIPTION": "Text value for the CTA Primary Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "CTA Secondary Href",
+        "DESCRIPTION": "URL target for the CTA Secondary Href link in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CTA Secondary Label",
+        "DESCRIPTION": "Text value for the CTA Secondary Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Photo Alt",
+        "DESCRIPTION": "Alternative text for the Photo image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit amet consectetur adipiscing."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Placeholder Size",
+        "DESCRIPTION": "Fallback placeholder size label shown when the related image is not set in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Placeholder Label",
+        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Chip Stat Value",
+        "DESCRIPTION": "Text value for the Chip Stat Value field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Chip Stat Label",
+        "DESCRIPTION": "Text value for the Chip Stat Label field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 1 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Name",
+        "DESCRIPTION": "Text value for the Person 1 Name field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Role",
+        "DESCRIPTION": "Text value for the Person 1 Role field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar URL",
+        "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Alt",
+        "DESCRIPTION": "Alternative text for the Person 2 Avatar image in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Name",
+        "DESCRIPTION": "Text value for the Person 2 Name field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Role",
+        "DESCRIPTION": "Text value for the Person 2 Role field in Hero · composite photo (vertical-landing)."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Photo Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 1 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Person 2 Avatar Image Name",
+        "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
+      }
+    },
+    "value": ""
+  }
+]

@@ -1,0 +1,94 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "SERVICEWAND_PRICING_DYNAMIC",
+  "name": "ServiceWand Pricing Dynamic",
+  "url": "/pricing-dynamic",
+  "locale": "en",
+  "topic": "pricing",
+  "targetWords": 900,
+  "theme": "cyan",
+  "background": "none",
+  "recipe": "pricing-dynamic",
+  "sourceReference": {
+    "kind": "local-lab-ui-preview",
+    "path": "docs/cms-components/lab-ui/14-pricing/_combined-preview.html",
+    "note": "Manual-upload CMS family with one permanent dynamic pricing monoblock. Dynamic content loads from Core PIM through the shared LabPricing runtime; static CMS fields remain fallback/editor preview."
+  },
+  "sections": [
+    {
+      "block": "header.corporate-reference",
+      "values": {
+        "demo_request_label": "Request demo",
+        "logo_aria_label": "ServiceWand",
+        "menu_platform": "Platform",
+        "menu_how_it_works": "How It Works",
+        "menu_industries": "Industries",
+        "menu_partners": "Partners",
+        "menu_resources": "Resources",
+        "menu_panel_title": "ServiceWand pricing",
+        "menu_panel_text": "Compare live plans, add-ons, and plan features from Core PIM.",
+        "menu_panel_subtext": "Dynamic pricing",
+        "menu_panel_cta_label": "Talk to sales",
+        "menu_resource_title": "Pricing resources",
+        "menu_resource_description": "Live pricing data with CMS fallback content.",
+        "nav_platform": "Platform",
+        "nav_how_it_works": "How It Works",
+        "nav_industries": "Industries",
+        "nav_partners": "Partners",
+        "nav_faq": "FAQ",
+        "open_menu_label": "Open menu",
+        "locale_selector_trigger_label": "Language",
+        "locale_selector_dropdown_aria_label": "Select language"
+      }
+    },
+    {
+      "block": "pricing.dynamic-servicewand",
+      "values": {
+        "render_plans_section": "true",
+        "render_addons_section": "true",
+        "render_matrix_section": "true",
+        "pricing_dynamic_enabled": "true",
+        "pricing_api_base": "/core-pim/api",
+        "pricing_organization": "SERVICEWAND",
+        "pricing_sort_attribute_code": "SORT_ORDER_PRIORITY",
+        "pricing_currency": "CAD",
+        "pricing_contact_label": "Contact us",
+        "pricing_error_mode": "fallback",
+        "saas_pricing_product_type_code": "SERVICEWAND_SAAS",
+        "saas_pricing_price_type_code": "RECURRENT",
+        "saas_pricing_price_attribute_code": "INTERVAL",
+        "saas_pricing_price_attribute_values": "1 month",
+        "saas_pricing_purchase_url": "#pricing",
+        "saas_pricing_buy_label": "Buy now",
+        "addons_pricing_catalog_specs": "SERVICEWAND_SAAS_EXT|RECURRENT|INTERVAL|1 month|",
+        "addons_pricing_purchase_url": "#pricing-addons",
+        "addons_pricing_buy_label": "Buy add-on",
+        "addons_collapsable": "true",
+        "addons_collapsed": "true",
+        "matrix_collapsable": "true",
+        "matrix_collapsed": "false"
+      }
+    },
+    {
+      "block": "footer.corporate-reference",
+      "values": {
+        "tagline": "Field service CRM for routing, dispatch, service proof, and customer operations.",
+        "address": "ServiceWand Inc.<br />Dynamic pricing preview<br />CMS-managed lab-ui composition<br />Service operations platform",
+        "nav_platform": "Platform",
+        "nav_how_it_works": "How It Works",
+        "nav_industries": "Industries",
+        "nav_partners": "Partners",
+        "nav_faq": "FAQ",
+        "email_general": "hello@servicewand.com",
+        "email_partnerships_label": "Partnerships",
+        "email_partnerships": "partners@servicewand.com",
+        "email_support_label": "Support",
+        "email_support": "support@servicewand.com",
+        "copyright_text": "Copyright 2026 ServiceWand Inc.",
+        "copyright_rights": "All rights reserved.",
+        "privacy_policy_label": "Privacy Policy",
+        "terms_label": "Terms & Conditions"
+      }
+    }
+  ]
+}

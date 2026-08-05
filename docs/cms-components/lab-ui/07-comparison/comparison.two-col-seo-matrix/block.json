@@ -1,0 +1,118 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "comparison.two-col-seo-matrix",
+  "category": "07-comparison",
+  "title": "Comparison · two-col SEO matrix",
+  "description": "Two-column SEO comparison matrix with a criteria column, highlighted ServiceWand column, competitor column, the standard ServiceWand wordmark logo in the H2 title (title param is the text after the logo), H3 column headings, H4 row headings, and mobile card layout.",
+  "canonical": false,
+  "theme": "light",
+  "source": {
+    "primary": "/Users/imighty/Downloads/Section - Comparison Two-Col SEO - Standalone.html",
+    "adapted_from": "Designer standalone HTML, normalized into lab-ui block contract with unique class prefix.",
+    "decision": "Added as a separate comparison variant so the legacy 6-column comparison remains available."
+  },
+  "depends_on": {
+    "tokens": [
+      "--color-bg",
+      "--color-text",
+      "--color-heading",
+      "--color-white",
+      "--color-gray-second",
+      "--color-gray-blue",
+      "--color-status-yes",
+      "--color-status-partial",
+      "--color-status-no",
+      "--color-light-card-bg",
+      "--color-light-gray-stroke",
+      "--cta-secondary-fill",
+      "--font-family",
+      "--font-mono",
+      "--container-width",
+      "--container-padding-x",
+      "--type-h2-size",
+      "--type-h2-weight",
+      "--type-h2-tracking",
+      "--type-h2-leading",
+      "--type-h3-size",
+      "--type-h3-weight",
+      "--type-h3-tracking",
+      "--type-h3-leading",
+      "--type-lead-size",
+      "--type-lead-weight",
+      "--type-lead-leading",
+      "--type-eyebrow-size",
+      "--type-eyebrow-tracking",
+      "--radius-card",
+      "--backdrop-blur-table"
+    ],
+    "other_blocks": []
+  },
+  "params": [
+    { "code": "aria_label", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum comparison" },
+    { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet" },
+    { "code": "lede", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "col_01_name", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum" },
+    { "code": "col_01_desc", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "col_02_name", "type": "LOCALIZED_STRING_SS", "default": "Lorem Ipsum Dolor" },
+    { "code": "col_02_desc", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+
+    { "code": "slot_01_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_01_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_01_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_01_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_01_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_02_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_02_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_02_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_02_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_02_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_03_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor" },
+    { "code": "slot_03_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_03_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_03_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_03_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_04_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_04_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_04_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_04_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_04_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_05_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_05_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_05_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_05_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_05_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_06_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor" },
+    { "code": "slot_06_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_06_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_06_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_06_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_07_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_07_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_07_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_07_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_07_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_08_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_08_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_08_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_08_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_08_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" },
+
+    { "code": "slot_09_capability", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum" },
+    { "code": "slot_09_col_01", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_09_col_01_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "check" },
+    { "code": "slot_09_col_02", "type": "LOCALIZED_STRING_SS", "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+    { "code": "slot_09_col_02_icon", "type": "ENUM", "options": ["check", "yes", "neutral", "partial", "cross", "no", "none"], "default": "neutral" }
+  ],
+  "preview": {
+    "390": "preview-390.png",
+    "1440": "preview-1440.png"
+  }
+}

@@ -1,0 +1,967 @@
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { basename, dirname, join, relative, resolve } from "node:path";
+import { DEFAULT_SECTION_BLOCKS, resolveSectionBlocks } from "./cms-family-contract.mjs";
+
+const labRoot = new URL("..", import.meta.url).pathname;
+
+// Per-run resolved section→block IDs. Populated from frontmatter inside
+// buildFamily(). Default = DEFAULT_SECTION_BLOCKS from the contract.
+let sectionBlockIds = { ...DEFAULT_SECTION_BLOCKS };
+
+const parseArgs = () => {
+  const args = process.argv.slice(2);
+  const out = {};
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+    if (arg === "--copy") out.copy = args[++i];
+    else if (arg === "--out") out.out = args[++i];
+    else if (arg === "--help" || arg === "-h") out.help = true;
+    else throw new Error(`Unknown argument: ${arg}`);
+  }
+  return out;
+};
+
+const usage = () => `Usage:
+node docs/cms-components/lab-ui/scripts/generate-cms-family.mjs \\
+  --copy docs/cms-components/lab-ui/compositions/generated/<legacy-copy>.md \\
+  --out docs/cms-components/lab-ui/dist/<slug>
+
+Legacy copy-driven generator. Prefer build-landing.mjs / compose-cms-family.mjs
+for new block-composed landings.`;
+
+const readJson = (file) => JSON.parse(readFileSync(file, "utf8"));
+const writeJson = (file, value) => writeFileSync(file, `${JSON.stringify(value, null, 2)}\n`);
+
+const slug = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const codeSlug = (value) =>
+  String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/&/g, "AND")
+    .replace(/[^A-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+const pad = (value) => String(value).padStart(2, "0");
+
+const escapeHtml = (value) =>
+  String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const parseFrontmatter = (text, file = "<unknown>") => {
+  if (!text.startsWith("---\n")) return [{}, text];
+  const end = text.indexOf("\n---", 4);
+  if (end === -1) throw new Error(`${file}: frontmatter opens with --- but has no closing ---`);
+  const raw = text.slice(4, end).trim();
+  const data = {};
+  const rawLines = raw.split(/\r?\n/);
+  for (let i = 0; i < rawLines.length; i += 1) {
+    const line = rawLines[i];
+    if (!line.trim()) continue;
+    const match = line.match(/^([A-Za-z0-9_.\-]+):\s*(.*)$/);
+    if (!match) {
+      throw new Error(`${file}:${i + 2}: invalid frontmatter line "${line}" — expected key: value`);
+    }
+    data[match[1]] = match[2].replace(/^["']|["']$/g, "");
+  }
+  return [data, text.slice(end + 4).trim()];
+};
+
+const parseInlineLinks = (text) => {
+  const links = [];
+  const clean = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
+    links.push({ label: label.trim(), href: href.trim() });
+    return label;
+  });
+  return { clean: clean.trim(), links };
+};
+
+const pushParagraph = (target, lines) => {
+  const raw = lines.join(" ").trim();
+  lines.length = 0;
+  if (!raw) return;
+  const parsed = parseInlineLinks(raw);
+  target.paragraphs.push(parsed.clean);
+  target.links.push(...parsed.links);
+};
+
+/* List support. Markdown unordered (`- item`, `* item`) and ordered
+   (`1. item`) lists are collected line-by-line and emitted as a single
+   pre-rendered `<ul>`/`<ol>` HTML string pushed onto target.paragraphs.
+   Downstream consumers treat the value as opaque text — the preview
+   renderer un-escapes a small whitelist of inline tags so the list
+   actually renders.
+
+   Inline links inside list items are kept as plain text — we keep the
+   list shape simple. If a list item is `[label](href)`, the link is
+   extracted into target.links and the label stays as the item text. */
+
+const isListItem = (line) => /^\s*(?:[-*]|(?:\d+\.))\s+\S/.test(line);
+
+const listItemPrefix = (line) => /^\s*(?:[-*]|(?:\d+\.))\s+/.exec(line)[0].length;
+
+const escapeHtmlInList = (text) =>
+  String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+const pushList = (target, items, ordered) => {
+  if (!items.length) return;
+  const li = items
+    .map((rawText) => {
+      const { clean, links } = parseInlineLinks(rawText.trim());
+      target.links.push(...links);
+      return `<li>${escapeHtmlInList(clean)}</li>`;
+    })
+    .join("");
+  const tag = ordered ? "ol" : "ul";
+  target.paragraphs.push(`<${tag}>${li}</${tag}>`);
+};
+
+const splitTableRow = (line) =>
+  line
+    .trim()
+    .replace(/^\|/, "")
+    .replace(/\|$/, "")
+    .split("|")
+    .map((cell) => cell.trim());
+
+const isTableDivider = (line) => /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+
+const parseMarkdownCopy = (file) => {
+  const [frontmatter, body] = parseFrontmatter(readFileSync(file, "utf8"), file);
+  const lines = body.split(/\r?\n/);
+  const model = {
+    sourceFile: file,
+    frontmatter,
+    title: "",
+    hero: { paragraphs: [], links: [] },
+    sections: {},
+  };
+
+  // The frontmatter occupies the first ---\n…\n--- block at the top of
+  // the file. body line numbers start AFTER it, so we offset for nice
+  // error messages.
+  const frontmatterLineCount = (() => {
+    const raw = readFileSync(file, "utf8");
+    if (!raw.startsWith("---\n")) return 0;
+    const end = raw.indexOf("\n---", 4);
+    if (end === -1) return 0;
+    return raw.slice(0, end + 4).split(/\r?\n/).length;
+  })();
+  const lineNo = (offset) => frontmatterLineCount + offset + 1;
+  const where = (offset) => `${file}:${lineNo(offset)}`;
+
+  let current = null;
+  let currentItem = null;
+  let paragraphLines = [];
+  let tableLines = [];
+  let tableStartIndex = -1;
+  let listItems = [];
+  let listOrdered = false;
+
+  const ensureSection = (key, title) => {
+    if (!model.sections[key]) model.sections[key] = { title, paragraphs: [], links: [], items: [], table: null };
+    return model.sections[key];
+  };
+
+  const flushTable = () => {
+    if (!tableLines.length || !current) return;
+    const rows = tableLines.filter((line) => line.includes("|"));
+    tableLines = [];
+    if (rows.length < 2) {
+      throw new Error(
+        `${where(tableStartIndex)}: malformed markdown table in "${current.title}" — need ≥1 header row + ≥1 divider + ≥1 body row`,
+      );
+    }
+    const headers = splitTableRow(rows[0]);
+    const bodyRows = rows.slice(2).map(splitTableRow).filter((row) => row.some(Boolean));
+    current.table = { headers, rows: bodyRows };
+  };
+
+  const flushList = () => {
+    if (!listItems.length) return;
+    const target = currentItem || current || model.hero;
+    pushList(target, listItems, listOrdered);
+    listItems = [];
+  };
+
+  const flushParagraph = () => {
+    if (tableLines.length) flushTable();
+    flushList();
+    const target = currentItem || current || model.hero;
+    pushParagraph(target, paragraphLines);
+  };
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+    const h1 = line.match(/^#\s+(.+)$/);
+    const h2 = line.match(/^##\s+(.+)$/);
+    const h3 = line.match(/^###\s+(.+)$/);
+    if (h1 || h2 || h3) {
+      flushParagraph();
+      if (h1) {
+        model.title = h1[1].trim();
+        current = null;
+        currentItem = null;
+      } else if (h2) {
+        const title = h2[1].trim();
+        current = ensureSection(slug(title), title);
+        currentItem = null;
+      } else if (h3) {
+        if (!current) {
+          throw new Error(`${where(i)}: subheading "${line.trim()}" appears before any ## section`);
+        }
+        currentItem = { title: h3[1].trim(), paragraphs: [], links: [] };
+        current.items.push(currentItem);
+      }
+      continue;
+    }
+    if (line.includes("|") && (current?.title || "").toLowerCase().includes("comparison")) {
+      pushParagraph(currentItem || current || model.hero, paragraphLines);
+      flushList();
+      if (tableLines.length === 0) tableStartIndex = i;
+      tableLines.push(line);
+      continue;
+    }
+    if (isListItem(line)) {
+      // Starting (or continuing) a list. Close any open paragraph first
+      // so the list becomes its own paragraph slot.
+      if (!listItems.length) {
+        pushParagraph(currentItem || current || model.hero, paragraphLines);
+        listOrdered = /^\s*\d+\./.test(line);
+      }
+      const itemText = line.slice(listItemPrefix(line));
+      listItems.push(itemText);
+      continue;
+    }
+    if (!line.trim()) {
+      flushParagraph();
+      continue;
+    }
+    paragraphLines.push(line.trim());
+  }
+  flushParagraph();
+
+  const missing = [];
+  if (!model.title) missing.push("a top-level `#` heading for the hero title");
+  if (!model.sections.features) missing.push("`## Features` with ≥1 `### Feature` item");
+  if (!model.sections.comparison) missing.push("`## Comparison` with a markdown table");
+  if (!model.sections.faq) missing.push("`## FAQ` with ≥1 `### Question` item");
+  if (missing.length) {
+    throw new Error(`${file}: copy is missing required sections — ${missing.join("; ")}`);
+  }
+
+  return model;
+};
+
+const loadCatalog = () => {
+  const manifest = readJson(join(labRoot, "manifest.json"));
+  const byId = new Map();
+  for (const block of manifest.blocks) {
+    const dir = join(labRoot, block.path);
+    byId.set(block.id, {
+      ...block,
+      dir,
+      json: readJson(join(dir, "block.json")),
+      html: readFileSync(join(dir, "block.html"), "utf8"),
+      css: existsSync(join(dir, "block.css")) ? readFileSync(join(dir, "block.css"), "utf8") : "",
+      js: existsSync(join(dir, "block.js")) ? readFileSync(join(dir, "block.js"), "utf8") : "",
+    });
+  }
+  return { manifest, byId };
+};
+
+const collectAssetBlocks = (blockIds, catalog) => {
+  const assets = [];
+  const visiting = new Set();
+  const visited = new Set();
+
+  const visit = (id) => {
+    if (visited.has(id)) return;
+    if (visiting.has(id)) throw new Error(`Circular lab-ui block dependency detected: ${id}`);
+    const block = catalog.byId.get(id);
+    if (!block) throw new Error(`Required block is missing from manifest: ${id}`);
+
+    visiting.add(id);
+    for (const depId of block.json.depends_on?.other_blocks || []) visit(depId);
+    visiting.delete(id);
+
+    visited.add(id);
+    assets.push(block);
+  };
+
+  blockIds.forEach(visit);
+  return assets;
+};
+
+const cmsType = (type) => {
+  if (type === "URL") return "STRING";
+  return type || "LOCALIZED_STRING_SS";
+};
+
+const localized = (type, value, locale) => (cmsType(type).startsWith("LOCALIZED") ? { [locale]: value ?? "" } : value ?? "");
+
+const parameter = (code, type, value, locale, name = code) => ({
+  code,
+  type: cmsType(type),
+  nls: { en: { NAME: name } },
+  value: localized(type, value, locale),
+});
+
+const placeholder = (code, type) => `\${${code}@${cmsType(type)}}`;
+
+const replaceBlockPlaceholders = (html, block, prefix, overrides, locale) => {
+  const params = [];
+  const blockParams = block.json.params || [];
+  const paramByCode = new Map(blockParams.map((param) => [param.code, param]));
+  const used = new Set();
+  const out = html.replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => {
+    const param = paramByCode.get(localCode) || { code: localCode, type: "LOCALIZED_STRING_SS", default: "" };
+    const code = `${prefix}_${codeSlug(localCode)}`;
+    const value = Object.hasOwn(overrides, localCode) ? overrides[localCode] : param.default ?? "";
+    if (!used.has(code)) {
+      params.push(parameter(code, param.type, value, locale, localCode));
+      used.add(code);
+    }
+    return placeholder(code, param.type);
+  });
+  return { html: out, params };
+};
+
+const splitHeroTitle = (title) => {
+  const match = title.match(/^(.+?)\s+for\s+(.+)$/i);
+  if (!match) return { line1: title, accent: "", line2: "" };
+  return { line1: match[1].trim(), accent: match[2].trim(), line2: "" };
+};
+
+const makeTemplate = ({ code, name, parentCode, html, params = [], children = [] }) => ({
+  code,
+  nls: { en: { NAME: name } },
+  templateLanguage: "JTE",
+  parent: parentCode ? { code: parentCode } : null,
+  children,
+  head: "",
+  html,
+  css: "",
+  javascript: "",
+  parameters: params,
+});
+
+const makeTextParam = (prefix, localCode, value, locale) =>
+  parameter(`${prefix}_${codeSlug(localCode)}`, "LOCALIZED_STRING_SS", value, locale, localCode);
+
+const makeStringParam = (prefix, localCode, value, locale) =>
+  parameter(`${prefix}_${codeSlug(localCode)}`, "STRING", value, locale, localCode);
+
+const featureItemHtml = (code, index) => {
+  const n = pad(index);
+  return `<article class="f-row${index === 1 ? " is-open" : ""}" data-feature-slot="${n}">
+  <button class="f-row-head" type="button" aria-expanded="${index === 1 ? "true" : "false"}">
+    <span class="f-num">F.${n}</span>
+    <span class="f-title">${placeholder(`${code}_TITLE`, "LOCALIZED_STRING_SS")}</span>
+    <span class="f-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+  </button>
+  <div class="f-body"><div class="f-body-inner">${placeholder(`${code}_BODY`, "LOCALIZED_STRING_SS")}</div></div>
+</article>`;
+};
+
+const faqItemHtml = (code, index) => `<details class="faq-item${index === 1 ? " is-open" : ""}" data-faq-slot="${pad(index)}"${index === 1 ? " open" : ""}>
+  <summary class="faq-q"><span class="faq-q-text">${placeholder(`${code}_QUESTION`, "LOCALIZED_STRING_SS")}</span><span class="faq-q-toggle" aria-hidden="true"><svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span></summary>
+  <div class="faq-a">${placeholder(`${code}_ANSWER`, "LOCALIZED_STRING_SS")}</div>
+</details>`;
+
+const statusClass = (value) => {
+  const normalized = String(value || "").toLowerCase();
+  if (!normalized || normalized === "no" || normalized === "none" || normalized === "false") return "no";
+  if (normalized.includes("partial") || normalized.includes("limited") || normalized.includes("manual")) return "partial";
+  return "yes";
+};
+
+const comparisonRowHtml = (code, columns, row) => {
+  const cells = columns
+    .map((column, index) => {
+      const key = codeSlug(column).replace(/^LOREM_IPSUM$/, "BRAND").slice(0, 24);
+      const status = placeholder(`${code}_${key}`, "LOCALIZED_STRING_SS");
+      const cls = index === 0 ? " compare-cell--sw" : "";
+      return `<div class="compare-cell${cls}" role="cell"><span class="compare-mobile-label">${escapeHtml(column)}</span><span class="compare-status compare-status--${statusClass(row[index + 1])}"><span class="compare-icon" aria-hidden="true"></span><span>${status}</span></span></div>`;
+    })
+    .join("\n    ");
+  return `<article class="compare-row" role="row">
+    <div class="compare-cell compare-cell--capability" role="rowheader"><span class="compare-capability">${placeholder(`${code}_CAPABILITY`, "LOCALIZED_STRING_SS")}</span></div>
+    ${cells}
+  </article>`;
+};
+
+const flattenTemplates = (templates) => templates.flatMap((template) => [template, ...flattenTemplates(template.children || [])]);
+
+const collectParameters = (templates) =>
+  templates.flatMap((template) => [...(template.parameters || []), ...collectParameters(template.children || [])]);
+
+const buildFamily = (model, catalog) => {
+  // Resolve section→block IDs from frontmatter overrides (blocks.<name>).
+  sectionBlockIds = resolveSectionBlocks(model.frontmatter);
+
+  const locale = model.frontmatter.locale || "en";
+  const rootCode = codeSlug(model.frontmatter.code || "SAMPLE_LANDING");
+  const rootName = model.frontmatter.name || model.title;
+  const heroTitle = splitHeroTitle(model.title);
+  const heroLinks = model.hero.links;
+  const featureSection = model.sections.features;
+  const comparisonSection = model.sections.comparison;
+  const faqSection = model.sections.faq;
+  const finalCta = model.sections["final-cta"] || { paragraphs: [], links: [] };
+
+  const requireBlock = (id) => {
+    const block = catalog.byId.get(id);
+    if (!block) throw new Error(`Required block is missing from manifest: ${id}`);
+    return block;
+  };
+
+  const selectedIds = [
+    sectionBlockIds.header,
+    sectionBlockIds.hero,
+    sectionBlockIds.features,
+    sectionBlockIds.comparison,
+    sectionBlockIds.faq,
+    sectionBlockIds.ctaPrimary,
+    sectionBlockIds.ctaSecondary,
+    sectionBlockIds.callout,
+    sectionBlockIds.footer,
+  ];
+  const selected = selectedIds.map(requireBlock);
+  const assetBlocks = collectAssetBlocks(selectedIds, catalog);
+
+  const css = [
+    "/* generated root CSS: 00-tokens/tokens.css */",
+    readFileSync(join(labRoot, "00-tokens/tokens.css"), "utf8"),
+    `
+/* generated preview/CMS composition glue */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  position: relative;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+.generated-cta {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0;
+  background: var(--color-bg);
+}
+.generated-cta .container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+.generated-cta-callout {
+  margin-top: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+.generated-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.generated-cta-actions .btn {
+  min-width: 13rem;
+}
+@media (max-width: 600px) {
+  .generated-cta-actions,
+  .generated-cta-actions .btn {
+    width: 100%;
+  }
+}
+.generated-cta-title {
+  margin: 0;
+}
+`,
+    ...assetBlocks.map((block) => `\n/* generated root CSS: ${block.path}/block.css */\n${block.css}`),
+  ].join("\n");
+
+  const jsParts = assetBlocks.filter((block) => block.js.trim()).map((block) => `\n/* generated root JS: ${block.path}/block.js */\n${block.js}`);
+  const javascript = `(() => {\n  if (window.__LAB_UI_CMS_FAMILY_INIT__) return;\n  window.__LAB_UI_CMS_FAMILY_INIT__ = true;\n})();\n${jsParts.join("\n")}\n`;
+
+  const children = [];
+  const values = {};
+
+  const addValues = (params) => {
+    for (const param of params) values[param.code] = param.value;
+  };
+
+  const addBlockChild = ({ code, name, block, overrides, wrapHtml }) => {
+    const rendered = replaceBlockPlaceholders(block.html, block, code, overrides, locale);
+    const html = wrapHtml ? wrapHtml(rendered.html) : rendered.html;
+    const template = makeTemplate({ code, name, parentCode: rootCode, html, params: rendered.params });
+    addValues(rendered.params);
+    children.push(template);
+    return template;
+  };
+
+  const header = requireBlock(sectionBlockIds.header);
+  addBlockChild({
+    code: "HEADER",
+    name: "Header",
+    block: header,
+    overrides: {
+      brand_name: "the platform",
+      brand_href: "/",
+      cta_label: heroLinks[0]?.label || "Book a Demo",
+      cta_href: heroLinks[0]?.href || "/request-demo",
+      breadcrumb_root_label: "the platform",
+      breadcrumb_mid_1_label: "",
+      breadcrumb_current_label: model.frontmatter.name || model.title,
+    },
+    wrapHtml: (html) => `<div class="header-host">\n${html}\n</div>`,
+  });
+
+  const hero = requireBlock(sectionBlockIds.hero);
+  addBlockChild({
+    code: "HERO",
+    name: "Hero",
+    block: hero,
+    overrides: {
+      eyebrow_root: "the platform",
+      eyebrow_leaf: model.frontmatter.name || "Landing",
+      title_line_1: heroTitle.line1,
+      title_accent: heroTitle.accent,
+      title_line_2: heroTitle.line2,
+      lead_1: model.hero.paragraphs[0] || "",
+      lead_2: model.hero.paragraphs[1] || "",
+      lead_3: model.hero.paragraphs[2] || "",
+      cta_primary_label: heroLinks[0]?.label || "Book a Demo",
+      cta_primary_href: heroLinks[0]?.href || "/request-demo",
+      cta_secondary_label: heroLinks[1]?.label || "Explore Platform",
+      cta_secondary_href: heroLinks[1]?.href || "/platform",
+    },
+  });
+
+  const featureItems = featureSection.items.map((item, index) => {
+    const code = `FEATURE_${index + 1}`;
+    const params = [
+      makeTextParam(code, "TITLE", item.title, locale),
+      makeTextParam(code, "BODY", item.paragraphs.join(" "), locale),
+    ];
+    addValues(params);
+    return makeTemplate({
+      code,
+      name: item.title,
+      parentCode: "FEATURES",
+      html: featureItemHtml(code, index + 1),
+      params,
+    });
+  });
+  const featureParams = [
+    makeTextParam("FEATURES", "EYEBROW", featureSection.title, locale),
+    makeTextParam("FEATURES", "TITLE", featureSection.title, locale),
+    makeTextParam("FEATURES", "LEDE", featureSection.paragraphs.join(" "), locale),
+  ];
+  addValues(featureParams);
+  const leftFeatureItems = featureItems.filter((_, index) => index % 2 === 0);
+  const rightFeatureItems = featureItems.filter((_, index) => index % 2 === 1);
+  const featureColumns = [
+    makeTemplate({
+      code: "FEATURE_COL_LEFT",
+      name: "Feature column left",
+      parentCode: "FEATURES",
+      html: `<div class="features-col" data-feature-col="left">
+  <!-- cms-child-slot:FEATURE_ITEMS -->
+</div>`,
+      children: leftFeatureItems,
+    }),
+    makeTemplate({
+      code: "FEATURE_COL_RIGHT",
+      name: "Feature column right",
+      parentCode: "FEATURES",
+      html: `<div class="features-col" data-feature-col="right">
+  <!-- cms-child-slot:FEATURE_ITEMS -->
+</div>`,
+      children: rightFeatureItems,
+    }),
+  ].filter((column) => column.children.length);
+  children.push(
+    makeTemplate({
+      code: "FEATURES",
+      name: "Features",
+      parentCode: rootCode,
+      html: `<section class="features features--accordion" id="features" data-block="features.accordion-2col-numbered">
+  <div class="container">
+    <header class="features-top">
+      <div>
+        <p class="eyebrow">${placeholder("FEATURES_EYEBROW", "LOCALIZED_STRING_SS")}</p>
+        <h2 class="features-title">${placeholder("FEATURES_TITLE", "LOCALIZED_STRING_SS")}</h2>
+      </div>
+      <div class="features-lede"><p>${placeholder("FEATURES_LEDE", "LOCALIZED_STRING_SS")}</p></div>
+    </header>
+    <div class="features-list" data-features-list>
+      <!-- cms-child-slot:FEATURE_COLUMNS -->
+    </div>
+  </div>
+</section>`,
+      params: featureParams,
+      children: featureColumns,
+    }),
+  );
+
+  const comparisonHeaders = comparisonSection.table?.headers || [];
+  const comparisonColumns = comparisonHeaders.slice(1);
+  const comparisonItems = (comparisonSection.table?.rows || []).map((row, index) => {
+    const code = `COMPARE_ROW_${index + 1}`;
+    const params = [makeTextParam(code, "CAPABILITY", row[0] || "", locale)];
+    comparisonColumns.forEach((column, columnIndex) => {
+      params.push(makeTextParam(code, codeSlug(column).replace(/^LOREM_IPSUM$/, "BRAND").slice(0, 24), row[columnIndex + 1] || "", locale));
+    });
+    addValues(params);
+    return makeTemplate({
+      code,
+      name: row[0] || `Compare row ${index + 1}`,
+      parentCode: "COMPARISON",
+      html: comparisonRowHtml(code, comparisonColumns, row),
+      params,
+    });
+  });
+  const comparisonParams = [
+    makeTextParam("COMPARISON", "EYEBROW", comparisonSection.title, locale),
+    makeTextParam("COMPARISON", "TITLE", "the platform unifies it all", locale),
+    makeTextParam("COMPARISON", "LEDE", comparisonSection.paragraphs.join(" "), locale),
+    ...comparisonColumns.map((column, index) =>
+      makeTextParam("COMPARISON", `COLUMN_${index + 1}`, column, locale),
+    ),
+  ];
+  addValues(comparisonParams);
+  children.push(
+    makeTemplate({
+      code: "COMPARISON",
+      name: "Comparison",
+      parentCode: rootCode,
+      html: `<section class="compare" id="compare" data-block="comparison.three-col-with-mobile-cards">
+  <div class="container">
+    <header class="compare-top">
+      <p class="eyebrow">${placeholder("COMPARISON_EYEBROW", "LOCALIZED_STRING_SS")}</p>
+      <h2 class="compare-title">${placeholder("COMPARISON_TITLE", "LOCALIZED_STRING_SS")}</h2>
+      <p class="compare-lede">${placeholder("COMPARISON_LEDE", "LOCALIZED_STRING_SS")}</p>
+    </header>
+    <div class="compare-grid" role="table" aria-label="Comparison">
+      <div class="compare-head" role="rowgroup">
+        <div class="compare-row compare-row--head" role="row">
+          <div class="compare-cell compare-cell--capability compare-cell--empty" role="columnheader"></div>
+          ${comparisonColumns.map((column, index) => {
+            // First data column is always the highlighted "brand" column,
+            // rendered with .compare-brand styling. Subsequent columns are
+            // plain text placeholders.
+            const isBrand = index === 0;
+            const slot = placeholder(`COMPARISON_COLUMN_${index + 1}`, "LOCALIZED_STRING_SS");
+            const content = isBrand
+              ? `<span class="compare-brand">${slot}</span>`
+              : slot;
+            return `<div class="compare-cell${isBrand ? " compare-cell--sw" : ""} compare-cell--head" role="columnheader">${content}</div>`;
+          }).join("\n          ")}
+        </div>
+      </div>
+      <div class="compare-body" role="rowgroup" data-compare-body>
+        <!-- cms-child-slot:COMPARE_ROWS -->
+      </div>
+    </div>
+  </div>
+</section>`,
+      params: comparisonParams,
+      children: comparisonItems,
+    }),
+  );
+
+  const faqItems = faqSection.items.map((item, index) => {
+    const code = `FAQ_${index + 1}`;
+    const params = [
+      makeTextParam(code, "QUESTION", item.title, locale),
+      makeTextParam(code, "ANSWER", item.paragraphs.join(" "), locale),
+    ];
+    addValues(params);
+    return makeTemplate({
+      code,
+      name: item.title,
+      parentCode: "FAQ",
+      html: faqItemHtml(code, index + 1),
+      params,
+    });
+  });
+  const faqParams = [
+    makeTextParam("FAQ", "EYEBROW", faqSection.title, locale),
+    makeTextParam("FAQ", "TITLE", "Frequently asked questions", locale),
+    makeTextParam("FAQ", "LEDE", faqSection.paragraphs.join(" "), locale),
+  ];
+  addValues(faqParams);
+  const faqMidpoint = Math.ceil(faqItems.length / 2);
+  const faqGroupDefs = [
+    { code: "FAQ_GROUP_1", label: "G.01", title: "Field service basics", items: faqItems.slice(0, faqMidpoint) },
+    { code: "FAQ_GROUP_2", label: "G.02", title: "Platform fit", items: faqItems.slice(faqMidpoint) },
+  ].filter((group) => group.items.length);
+  const faqGroups = faqGroupDefs.map((group, index) => {
+    const params = [makeTextParam(group.code, "TITLE", group.title, locale)];
+    addValues(params);
+    return makeTemplate({
+      code: group.code,
+      name: group.title,
+      parentCode: "FAQ",
+      html: `<article class="faq-group" data-faq-group="${pad(index + 1)}">
+  <header class="faq-group-head">
+    <span class="faq-group-num">${group.label}</span>
+    <h3 class="faq-group-title">${placeholder(`${group.code}_TITLE`, "LOCALIZED_STRING_SS")}</h3>
+  </header>
+  <div class="faq-group-body">
+    <!-- cms-child-slot:FAQ_ITEMS -->
+  </div>
+</article>`,
+      params,
+      children: group.items,
+    });
+  });
+  children.push(
+    makeTemplate({
+      code: "FAQ",
+      name: "FAQ",
+      parentCode: rootCode,
+      html: `<section class="faq" id="faq" data-block="faq.bubble-light-grouped">
+  <div class="container">
+    <header class="faq-top">
+      <p class="eyebrow">${placeholder("FAQ_EYEBROW", "LOCALIZED_STRING_SS")}</p>
+      <h2 class="faq-title">${placeholder("FAQ_TITLE", "LOCALIZED_STRING_SS")}</h2>
+      <p class="faq-lede">${placeholder("FAQ_LEDE", "LOCALIZED_STRING_SS")}</p>
+    </header>
+    <div class="faq-groups">
+      <!-- cms-child-slot:FAQ_GROUPS -->
+    </div>
+  </div>
+</section>`,
+      params: faqParams,
+      children: faqGroups,
+    }),
+  );
+
+  const ctaPrimary = requireBlock(sectionBlockIds.ctaPrimary);
+  const ctaRendered = replaceBlockPlaceholders(
+    ctaPrimary.html,
+    ctaPrimary,
+    "CTA",
+    {
+      href: finalCta.links[0]?.href || heroLinks[0]?.href || "/request-demo",
+      label: finalCta.links[0]?.label || heroLinks[0]?.label || "Book a Demo",
+    },
+    locale,
+  );
+  const ctaParams = [
+    makeTextParam("CTA", "EYEBROW", "Build the next layer", locale),
+    makeTextParam("CTA", "TITLE", finalCta.paragraphs[0] || "Ready to see the platform?", locale),
+    ...ctaRendered.params,
+  ];
+  addValues(ctaParams);
+  children.push(
+    makeTemplate({
+      code: "CTA",
+      name: "CTA",
+      parentCode: rootCode,
+      html: `<section class="generated-cta" id="cta">
+  <div class="container">
+    <div class="callout-band generated-cta-callout" data-block="decorative.callout-band">
+      <p class="callout-band-eyebrow">${placeholder("CTA_EYEBROW", "LOCALIZED_STRING_SS")}</p>
+      <p class="callout-band-body generated-cta-title">${placeholder("CTA_TITLE", "LOCALIZED_STRING_SS")}</p>
+      <div class="generated-cta-actions">
+        ${ctaRendered.html}
+      </div>
+    </div>
+  </div>
+</section>`,
+      params: ctaParams,
+    }),
+  );
+
+  const footer = requireBlock(sectionBlockIds.footer);
+  addBlockChild({
+    code: "FOOTER",
+    name: "Footer",
+    block: footer,
+    overrides: { brand_name: "the platform", brand_href: "/" },
+  });
+
+  const rootParams = [
+    makeTextParam("ROOT", "META_TITLE", `${rootName} | the platform`, locale),
+    makeTextParam("ROOT", "META_DESCRIPTION", model.hero.paragraphs[0] || rootName, locale),
+  ];
+  addValues(rootParams);
+
+  const allChildrenFlat = flattenTemplates(children);
+  const rootTemplate = {
+    code: rootCode,
+    nls: { en: { NAME: rootName } },
+    templateLanguage: "JTE",
+    parent: null,
+    children: children.map((child) => ({ code: child.code, nls: child.nls })),
+    head: `<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${placeholder("ROOT_META_TITLE", "LOCALIZED_STRING_SS")}</title>
+<meta name="description" content="${placeholder("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS")}">`,
+    html: `<div id="root" data-cms-family="${escapeHtml(rootCode)}">
+  <!-- cms-child-slot:ROOT_SECTIONS -->
+</div>`,
+    css,
+    javascript,
+    parameters: rootParams,
+  };
+
+  const parameters = [...rootParams, ...collectParameters(children)];
+  const enabledTemplates = [rootTemplate.code, ...allChildrenFlat.map((template) => template.code)];
+  const pageContext = {
+    url: model.frontmatter.url || `/${slug(rootName)}`,
+    template: { code: rootTemplate.code },
+    enabledTemplates,
+    values,
+    organization: { code: "SYSTEM" },
+    excludeFromSeo: false,
+    // Theme color name from frontmatter (cyan|green|orange|red|forest|blue|amber|magenta).
+    // Drives the [data-theme="…"] overlay defined in 00-tokens/tokens.css.
+    theme: model.frontmatter.theme || "",
+  };
+
+  const resolved = {
+    sourceCopy: model.sourceFile,
+    root: { code: rootTemplate.code, name: rootName, templateLanguage: "JTE" },
+    selectedBlocks: selected.map((block) => ({ id: block.id, path: block.path, hasJs: Boolean(block.js.trim()) })),
+    assetBlocks: assetBlocks.map((block) => ({ id: block.id, path: block.path, hasJs: Boolean(block.js.trim()) })),
+    tree: {
+      code: rootTemplate.code,
+      children: children.map((child) => ({
+        code: child.code,
+        children: (child.children || []).map((item) => ({ code: item.code })),
+      })),
+    },
+  };
+
+  return {
+    model,
+    resolved,
+    rootTemplate,
+    children,
+    parameters,
+    pageContext,
+    payload: {
+      generatedAt: new Date().toISOString(),
+      mode: "dry-run",
+      root: rootTemplate,
+      children,
+      pageContext,
+    },
+  };
+};
+
+const writeTemplateTree = (outDir, template, indexPrefix = "") => {
+  const dir = join(outDir, "children", `${indexPrefix}${slug(template.code)}`);
+  mkdirSync(dir, { recursive: true });
+  writeJson(join(dir, "template.json"), template);
+  (template.children || []).forEach((child, index) => writeTemplateTree(outDir, child, `${indexPrefix}${pad(index + 1)}-`));
+};
+
+const writeSummary = (outDir, family) => {
+  const flat = flattenTemplates(family.children);
+  const lines = [
+    "# Generated CMS Family",
+    "",
+    `Root: \`${family.rootTemplate.code}\``,
+    `Direct children: ${family.children.length}`,
+    `Nested/total child templates: ${flat.length}`,
+    `Parameters: ${family.parameters.length}`,
+    "",
+    "## Tree",
+    "",
+    `- \`${family.rootTemplate.code}\``,
+    ...family.children.flatMap((child) => [
+      `  - \`${child.code}\``,
+      ...(child.children || []).map((item) => `    - \`${item.code}\``),
+    ]),
+    "",
+    "## Files",
+    "",
+    "- `root.template.json`",
+    "- `children/**/template.json`",
+    "- `cms-family.payload.json`",
+    "- `page-context.sample.json`",
+  ];
+  writeFileSync(join(outDir, "summary.md"), `${lines.join("\n")}\n`);
+};
+
+const main = () => {
+  const args = parseArgs();
+  if (args.help) {
+    console.log(usage());
+    return;
+  }
+  if (!args.copy || !args.out) throw new Error(usage());
+  if (!existsSync(args.copy)) throw new Error(`Copy file not found: ${args.copy}`);
+
+  // Safety: the generator wipes args.out blindly. Refuse to wipe paths
+  // outside dist/ or paths that look dangerous (root, home, etc).
+  const outAbs = resolve(args.out);
+  const distMarker = `${"dist"}${"/"}`;
+  if (
+    outAbs === "/" ||
+    outAbs === resolve(process.env.HOME || "") ||
+    !(outAbs.includes(distMarker) || /\/lab-ui\/dist\//.test(outAbs))
+  ) {
+    throw new Error(
+      `Refusing to wipe --out path that is not inside a dist/ directory: ${args.out}`,
+    );
+  }
+
+  const catalog = loadCatalog();
+  const model = parseMarkdownCopy(args.copy);
+  model.sourceFile = relative(process.cwd(), resolve(args.copy));
+  const family = buildFamily(model, catalog);
+
+  rmSync(args.out, { recursive: true, force: true });
+  mkdirSync(args.out, { recursive: true });
+
+  writeJson(join(args.out, "landing.model.json"), family.model);
+  writeJson(join(args.out, "composition.resolved.json"), family.resolved);
+  writeFileSync(join(args.out, "head.html"), `${family.rootTemplate.head}\n`);
+  writeFileSync(join(args.out, "root.css"), `${family.rootTemplate.css}\n`);
+  writeFileSync(join(args.out, "root.js"), `${family.rootTemplate.javascript}\n`);
+  writeJson(join(args.out, "root.template.json"), family.rootTemplate);
+  family.children.forEach((child, index) => writeTemplateTree(args.out, child, `${pad(index + 1)}-`));
+  writeJson(join(args.out, "parameters.json"), family.parameters);
+  writeJson(join(args.out, "page-context.sample.json"), family.pageContext);
+  writeJson(join(args.out, "cms-family.payload.json"), family.payload);
+  writeSummary(args.out, family);
+
+  console.log(`Generated CMS family ${family.rootTemplate.code}`);
+  console.log(`Output: ${relative(process.cwd(), args.out)}`);
+  console.log(`Child templates: ${flattenTemplates(family.children).length}`);
+  console.log(`Parameters: ${family.parameters.length}`);
+};
+
+main();

@@ -1,0 +1,207 @@
+{
+  "prices": [
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SITES_FOUNDATION",
+          "nls": {
+            "en": {
+              "NAME": "Foundation Sites Expansion",
+              "DESCRIPTION": "Add property capacity for small crews."
+            }
+          }
+        },
+        "attributes": {
+          "20": {
+            "ACTIVE_PROPERTIES": {
+              "value": 25
+            },
+            "MAX_PROPERTIES": {
+              "value": 150
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 10
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 49,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SITES_GROWTH",
+          "nls": {
+            "en": {
+              "NAME": "Growth Sites Expansion",
+              "DESCRIPTION": "Add property capacity for growing route teams."
+            }
+          }
+        },
+        "attributes": {
+          "20": {
+            "ACTIVE_PROPERTIES": {
+              "value": 50
+            },
+            "MAX_PROPERTIES": {
+              "value": 450
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 20
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 89,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SITES_PROFESSIONAL",
+          "nls": {
+            "en": {
+              "NAME": "Professional Sites Expansion",
+              "DESCRIPTION": "Add property capacity for high-volume field operations."
+            }
+          }
+        },
+        "attributes": {
+          "20": {
+            "ACTIVE_PROPERTIES": {
+              "value": 100
+            },
+            "MAX_PROPERTIES": {
+              "value": 1000
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 30
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 149,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": false
+        }
+      }
+    },
+    {
+      "product": {
+        "product": {
+          "code": "SERVICEWAND_SITES_ENTERPRISE",
+          "nls": {
+            "en": {
+              "NAME": "Enterprise Sites Expansion",
+              "DESCRIPTION": "Custom property capacity for regional operators."
+            }
+          }
+        },
+        "attributes": {
+          "20": {
+            "ACTIVE_PROPERTIES": {
+              "value": "Custom"
+            },
+            "MAX_PROPERTIES": {
+              "value": "Custom"
+            }
+          },
+          "22": {
+            "SORT_ORDER_PRIORITY": {
+              "value": 40
+            }
+          }
+        }
+      },
+      "price": {
+        "display": {
+          "amount": 2147483647,
+          "currency": "CAD",
+          "intervalLabel": "1 Month",
+          "customPrice": true
+        }
+      }
+    }
+  ],
+  "productTypes": {
+    "SERVICEWAND_SAAS_EXT": {
+      "type": {
+        "id": 20,
+        "code": "SERVICEWAND_SAAS_EXT",
+        "nls": {
+          "en": {
+            "NAME": "ServiceWand SaaS Sites Expansion"
+          }
+        }
+      },
+      "attributeGroups": [
+        {
+          "code": "default",
+          "nls": {
+            "en": {
+              "NAME": "Sites Expansion"
+            }
+          }
+        }
+      ],
+      "attributeOrder": [
+        {
+          "default": [
+            {
+              "typeId": 20,
+              "attributeCode": "ACTIVE_PROPERTIES",
+              "visible": true
+            },
+            {
+              "typeId": 20,
+              "attributeCode": "MAX_PROPERTIES",
+              "visible": true
+            }
+          ]
+        }
+      ],
+      "attributes": {
+        "ACTIVE_PROPERTIES": {
+          "code": "ACTIVE_PROPERTIES",
+          "nls": {
+            "en": {
+              "NAME": "Active Properties",
+              "DESCRIPTION": "<p>Additional active service locations included in the expansion.</p>"
+            }
+          }
+        },
+        "MAX_PROPERTIES": {
+          "code": "MAX_PROPERTIES",
+          "nls": {
+            "en": {
+              "NAME": "Maximum Properties",
+              "DESCRIPTION": "<p>Maximum active property count supported after expansion.</p>"
+            }
+          }
+        }
+      }
+    }
+  }
+}

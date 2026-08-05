@@ -1,0 +1,72 @@
+{
+  "$schema": "lab-ui/landing-spec@1",
+  "code": "SERVICEWAND_PRICING_STATIC",
+  "name": "ServiceWand Pricing Static",
+  "url": "/pricing-static",
+  "locale": "en",
+  "topic": "pricing",
+  "targetWords": 1800,
+  "theme": "cyan",
+  "background": "none",
+  "recipe": "pricing-static",
+  "sourceReference": {
+    "kind": "local-lab-ui-preview",
+    "path": "docs/cms-components/lab-ui/14-pricing/pricing-landing-preview.html",
+    "note": "Static CMS-managed pricing landing assembled from durable lab-ui pricing blocks. No CRM/PIM runtime integration in this stage."
+  },
+  "sections": [
+    {
+      "block": "header.corporate-reference",
+      "values": {
+        "demo_request_label": "Request demo",
+        "logo_aria_label": "ServiceWand",
+        "menu_platform": "Platform",
+        "menu_how_it_works": "How It Works",
+        "menu_industries": "Industries",
+        "menu_partners": "Partners",
+        "menu_resources": "Resources",
+        "menu_panel_title": "ServiceWand pricing",
+        "menu_panel_text": "Compare plans, add-ons, and routing capacity for field service operations.",
+        "menu_panel_subtext": "Pricing preview",
+        "menu_panel_cta_label": "Talk to sales",
+        "menu_resource_title": "Pricing resources",
+        "menu_resource_description": "Plan, capacity, and add-on guidance for operational teams.",
+        "nav_platform": "Platform",
+        "nav_how_it_works": "How It Works",
+        "nav_industries": "Industries",
+        "nav_partners": "Partners",
+        "nav_faq": "FAQ",
+        "open_menu_label": "Open menu",
+        "locale_selector_trigger_label": "Language",
+        "locale_selector_dropdown_aria_label": "Select language"
+      }
+    },
+    "pricing.plans-flex",
+    "pricing.addons-bundles",
+    "pricing.credits-meter",
+    "pricing.matrix-collapsible",
+    "pricing.addons",
+    {
+      "block": "footer.corporate-reference",
+      "values": {
+        "tagline": "Field service CRM for routing, dispatch, service proof, and customer operations.",
+        "address": "ServiceWand Inc.<br />Pricing preview<br />CMS-managed lab-ui composition<br />Service operations platform",
+        "nav_platform": "Platform",
+        "nav_how_it_works": "How It Works",
+        "nav_industries": "Industries",
+        "nav_partners": "Partners",
+        "nav_faq": "FAQ",
+        "email_general": "hello@servicewand.com",
+        "email_partnerships_label": "Partnerships",
+        "email_partnerships": "partners@servicewand.com",
+        "email_support_label": "Support",
+        "email_support": "support@servicewand.com",
+        "copyright_text": "Copyright 2026 ServiceWand Inc.",
+        "copyright_rights": "All rights reserved.",
+        "privacy_policy_label": "Privacy Policy",
+        "terms_label": "Terms & Conditions"
+      }
+    }
+  ],
+  "sourceSpec": "docs/cms-components/lab-ui/compositions/generated/servicewand-pricing-static.spec.json"
+}

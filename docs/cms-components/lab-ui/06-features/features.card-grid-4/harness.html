@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>features.card-grid-4 · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">features.card-grid-4 · live</div>
+
+<section class="cards4" data-block="features.card-grid-4">
+  <div class="container">
+    <header class="cards4-top">
+      <div>
+        <p class="eyebrow">Lorem ipsum</p>
+        <h2 class="cards4-title">Lorem Ipsum Dolor Sit</h2>
+      </div>
+      <div class="cards4-lede">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+      </div>
+    </header>
+
+    <div class="cards4-grid">
+      <article class="cards4-card" data-slot="01">
+        <span class="cards4-num">01</span>
+        <h3 class="cards4-card-title">Lorem Ipsum</h3>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+      </article>
+      <article class="cards4-card" data-slot="02">
+        <span class="cards4-num">02</span>
+        <h3 class="cards4-card-title">Lorem Ipsum</h3>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </article>
+      <article class="cards4-card" data-slot="03">
+        <span class="cards4-num">03</span>
+        <h3 class="cards4-card-title">Lorem &amp; Ipsum</h3>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+      </article>
+      <article class="cards4-card" data-slot="04">
+        <span class="cards4-num">04</span>
+        <h3 class="cards4-card-title">Lorem &amp; Ipsum</h3>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+        <p class="cards4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+[
+  {
+    "code": "ROOT_META_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META TITLE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Calm Harbor Spa — Hair, Skin & Body Treatments in Miami, FL"
+    }
+  },
+  {
+    "code": "ROOT_META_DESCRIPTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ROOT META DESCRIPTION",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Hair, nails, skin and massage at Calm Harbor Spa in Miami, FL. Live treatment and membership prices from the public catalog, plus the spa retail shop online."
+    }
+  },
+  {
+    "code": "ROOT_FAQ_JSON_LD",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "ROOT FAQ JSON LD",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Studio or at home?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Both — most treatments run in the harbor studio; selected hair, nail and massage rituals travel to you. Where each is offered is shown on its card."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do memberships work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A monthly plan from the public catalog with member pricing on treatments. Members sign in to see and manage their plan."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are the shop products the ones you use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes — the retail shelf is the same public catalog our specialists pull from during treatments."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if I'm not happy with the result?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Tell us within 48 hours — a redo is covered by the guarantee."
+            }
+          }
+        ]
+      }
+    }
+  }
+]

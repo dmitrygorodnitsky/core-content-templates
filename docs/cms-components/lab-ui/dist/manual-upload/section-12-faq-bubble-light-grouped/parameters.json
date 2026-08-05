@@ -1,0 +1,808 @@
+[
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Eyebrow",
+        "DESCRIPTION": "Text value for the Eyebrow field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Title",
+        "DESCRIPTION": "Text value for the Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 01 Title",
+        "DESCRIPTION": "Text value for the Group 01 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 01 Q",
+        "DESCRIPTION": "Text value for the Slot 01 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 01 A",
+        "DESCRIPTION": "Text value for the Slot 01 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 02 Q",
+        "DESCRIPTION": "Text value for the Slot 01 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 02 A",
+        "DESCRIPTION": "Text value for the Slot 01 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 03 Q",
+        "DESCRIPTION": "Text value for the Slot 01 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 03 A",
+        "DESCRIPTION": "Text value for the Slot 01 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 04 Q",
+        "DESCRIPTION": "Text value for the Slot 01 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 04 A",
+        "DESCRIPTION": "Text value for the Slot 01 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 05 Q",
+        "DESCRIPTION": "Text value for the Slot 01 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 05 A",
+        "DESCRIPTION": "Text value for the Slot 01 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 06 Q",
+        "DESCRIPTION": "Text value for the Slot 01 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 06 A",
+        "DESCRIPTION": "Text value for the Slot 01 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 07 Q",
+        "DESCRIPTION": "Text value for the Slot 01 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 01 07 A",
+        "DESCRIPTION": "Text value for the Slot 01 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 02 Title",
+        "DESCRIPTION": "Text value for the Group 02 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliqua."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 01 Q",
+        "DESCRIPTION": "Text value for the Slot 02 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum exercitation ullamco laboris nisi."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 01 A",
+        "DESCRIPTION": "Text value for the Slot 02 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum commodo consequat duis aute."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 02 Q",
+        "DESCRIPTION": "Text value for the Slot 02 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum velit esse cillum fugiat."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 02 A",
+        "DESCRIPTION": "Text value for the Slot 02 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ipsum dolor sit amet."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 03 Q",
+        "DESCRIPTION": "Text value for the Slot 02 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sed do eiusmod tempor."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 03 A",
+        "DESCRIPTION": "Text value for the Slot 02 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum et dolore magna aliqua."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 04 Q",
+        "DESCRIPTION": "Text value for the Slot 02 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum veniam quis nostrud exercitation."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 04 A",
+        "DESCRIPTION": "Text value for the Slot 02 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aliquip ex ea commodo."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 05 Q",
+        "DESCRIPTION": "Text value for the Slot 02 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum irure reprehenderit voluptate velit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 05 A",
+        "DESCRIPTION": "Text value for the Slot 02 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nulla pariatur lorem ipsum."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 06 Q",
+        "DESCRIPTION": "Text value for the Slot 02 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consectetur adipiscing elit sed."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 06 A",
+        "DESCRIPTION": "Text value for the Slot 02 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum incididunt ut labore et."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 07 Q",
+        "DESCRIPTION": "Text value for the Slot 02 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum enim ad minim veniam."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 02 07 A",
+        "DESCRIPTION": "Text value for the Slot 02 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ullamco laboris nisi aliquip."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 03 Title",
+        "DESCRIPTION": "Text value for the Group 03 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum consequat."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 01 Q",
+        "DESCRIPTION": "Text value for the Slot 03 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum esse cillum fugiat nulla."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 01 A",
+        "DESCRIPTION": "Text value for the Slot 03 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolor sit amet consectetur."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 02 Q",
+        "DESCRIPTION": "Text value for the Slot 03 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum do eiusmod tempor incididunt."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 02 A",
+        "DESCRIPTION": "Text value for the Slot 03 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum dolore magna aliqua enim."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 03 Q",
+        "DESCRIPTION": "Text value for the Slot 03 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum quis nostrud exercitation ullamco."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 03 A",
+        "DESCRIPTION": "Text value for the Slot 03 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ex ea commodo consequat."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 04 Q",
+        "DESCRIPTION": "Text value for the Slot 03 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum reprehenderit voluptate velit esse."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 04 A",
+        "DESCRIPTION": "Text value for the Slot 03 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 05 Q",
+        "DESCRIPTION": "Text value for the Slot 03 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum adipiscing elit sed do."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 05 A",
+        "DESCRIPTION": "Text value for the Slot 03 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ut labore et dolore."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 06 Q",
+        "DESCRIPTION": "Text value for the Slot 03 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ad minim veniam quis."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 06 A",
+        "DESCRIPTION": "Text value for the Slot 03 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum laboris nisi aliquip ex."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 07 Q",
+        "DESCRIPTION": "Text value for the Slot 03 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum duis aute irure reprehenderit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 03 07 A",
+        "DESCRIPTION": "Text value for the Slot 03 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum cillum fugiat nulla pariatur."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Group 04 Title",
+        "DESCRIPTION": "Text value for the Group 04 Title field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum sit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 01 Q",
+        "DESCRIPTION": "Text value for the Slot 04 01 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 01 A",
+        "DESCRIPTION": "Text value for the Slot 04 01 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum magna aliqua enim ad."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 02 Q",
+        "DESCRIPTION": "Text value for the Slot 04 02 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 02 A",
+        "DESCRIPTION": "Text value for the Slot 04 02 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum ea commodo consequat duis."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 03 Q",
+        "DESCRIPTION": "Text value for the Slot 04 03 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum voluptate velit esse cillum."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 03 A",
+        "DESCRIPTION": "Text value for the Slot 04 03 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum lorem ipsum dolor sit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 04 Q",
+        "DESCRIPTION": "Text value for the Slot 04 04 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum elit sed do eiusmod."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 04 A",
+        "DESCRIPTION": "Text value for the Slot 04 04 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum labore et dolore magna."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 05 Q",
+        "DESCRIPTION": "Text value for the Slot 04 05 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum minim veniam quis nostrud."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 05 A",
+        "DESCRIPTION": "Text value for the Slot 04 05 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum nisi aliquip ex ea."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 06 Q",
+        "DESCRIPTION": "Text value for the Slot 04 06 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 06 A",
+        "DESCRIPTION": "Text value for the Slot 04 06 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_Q",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 07 Q",
+        "DESCRIPTION": "Text value for the Slot 04 07 Q field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum amet consectetur adipiscing elit."
+    }
+  },
+  {
+    "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_A",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Slot 04 07 A",
+        "DESCRIPTION": "Text value for the Slot 04 07 A field in FAQ · bubble light grouped."
+      }
+    },
+    "value": {
+      "en": "Lorem Ipsum tempor incididunt ut labore."
+    }
+  }
+]

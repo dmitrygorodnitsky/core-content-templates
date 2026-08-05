@@ -1,0 +1,63 @@
+{
+  "$schema": "app-template/customer-portal@2",
+  "id": "customer-portal.runtime",
+  "title": "Customer Portal Runtime",
+  "description": "CMS-compatible authenticated customer portal using native ES modules, vertical profiles, route guards, truthful adapters, and explicit command states.",
+  "runtime": {
+    "entry": "../runtime/src/app.js",
+    "styles": [
+      "../runtime/styles/tokens.css",
+      "../runtime/styles/base.css",
+      "../runtime/styles/shell.css",
+      "../runtime/styles/components.css",
+      "../runtime/styles/routes.css",
+      "../runtime/styles/responsive.css",
+      "../runtime/styles/seo.css"
+    ],
+    "modules": ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+    "authorization": {
+      "care": {
+        "source": "runtime-preflight",
+        "cmsAuthorable": false,
+        "decisionStates": ["granted", "denied", "loading", "error"],
+        "note": "Customer and tenant scope, permissions, and entitlements are resolved at runtime and are never CMS defaults."
+      }
+    },
+    "serving": "Must be served over HTTP. Native ES modules do not run from file://."
+  },
+  "params": [
+    { "code": "portal_title", "type": "STRING", "default": "Customer Portal Preview", "required": true, "name": "Portal Title" },
+    { "code": "portal_api_base", "type": "STRING", "default": "/core-pim/api", "required": true, "name": "Portal API Base" },
+    { "code": "portal_organization", "type": "STRING", "default": "SERVICEWAND", "required": true, "name": "Portal Organization" },
+    { "code": "portal_core_api_base", "type": "STRING", "default": "/core", "required": true, "name": "Core API Base" },
+    { "code": "portal_account_api_base", "type": "STRING", "default": "/core-acct", "required": true, "name": "Core Account API Base" },
+    { "code": "portal_bill_api_base", "type": "STRING", "default": "/core-bill", "required": true, "name": "Core Bill API Base" },
+    { "code": "portal_account_type_code", "type": "STRING", "default": "SPA_CUSTOMER", "required": true, "name": "Customer Account Type Code" },
+    { "code": "portal_vertical", "type": "ENUM", "options": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"], "default": "hvac", "required": true, "name": "Portal Vertical" },
+    { "code": "portal_profile", "type": "ENUM", "options": ["onDemand", "stormOps", "appointments"], "default": "onDemand", "required": true, "name": "Portal Profile" },
+    { "code": "portal_theme", "type": "ENUM", "options": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"], "default": "hvac", "required": true, "name": "Portal Theme" },
+    { "code": "portal_default_mode", "type": "ENUM", "options": ["light", "dark"], "default": "light", "required": true, "initialDefaultOnly": true, "name": "Portal Initial Mode" },
+    { "code": "portal_router_mode", "type": "ENUM", "options": ["hash", "history", "memory"], "default": "hash", "required": true, "name": "Portal Router Mode" },
+    { "code": "portal_default_route", "type": "STRING", "default": "orders.list", "required": true, "name": "Portal Default Route" },
+    { "code": "portal_enabled_modules", "type": "STRING", "default": "", "required": false, "defaultSource": "portalProfile.modules", "name": "Portal Enabled Modules Override" },
+    { "code": "portal_auth_mode", "type": "ENUM", "options": ["fixture", "required"], "default": "fixture", "required": true, "name": "Portal Auth Mode" },
+    { "code": "portal_error_mode", "type": "ENUM", "options": ["error", "fallback"], "default": "error", "required": true, "name": "Portal Error Mode" },
+    { "code": "portal_data_mode", "type": "ENUM", "options": ["fixture", "live"], "default": "fixture", "required": true, "name": "Portal Data Mode" },
+    { "code": "portal_case", "type": "STRING", "default": "", "required": false, "fixtureOnly": true, "name": "Fixture Case Id" },
+    { "code": "portal_pim_fixture_url", "type": "URL", "default": "", "required": false, "name": "Portal PIM Fixture URL" },
+    { "code": "portal_pim_product_type_code", "type": "STRING", "default": "SERVICEWAND_SAAS", "required": true, "name": "Portal PIM Product Type Code" },
+    { "code": "portal_pim_currency", "type": "STRING", "default": "CAD", "required": true, "name": "Portal PIM Currency" }
+  ],
+  "fallbackCopy": {
+    "loading": "Loading portal",
+    "error": "Portal is temporarily unavailable",
+    "disabledModule": "This portal module is not enabled for the current profile"
+  },
+  "uploadGuardrails": [
+    "Do not upload without explicit current-thread approval.",
+    "Do not encode live customer data as CMS defaults.",
+    "Keep PageContext values as authored overrides only.",
+    "Do not duplicate parameter codes.",
+    "Do not author customer entitlements, permission decisions, customer scope, tenant scope, or sensitive Care data in CMS parameters."
+  ]
+}

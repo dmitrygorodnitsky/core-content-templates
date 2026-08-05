@@ -1,0 +1,174 @@
+<section
+  class="composition-section composition-section--hero-composite-photo"
+  data-composition-block="hero.composite-photo"
+>
+  <!-- lab-ui block · hero.composite-photo
+     Vertical-landing hero · left text + right composite photo with
+     overlay person-cards + dark stat chip.
+     Photo slot accepts ${SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL@IMAGE} (URL param) so each vertical brings
+     its own imagery (lorem-cyan, lorem-green, etc.). Default fallback is
+     a neutral striped media placeholder.
+     Light theme.
+-->
+  <section class="herop" data-block="hero.composite-photo">
+    <div class="container herop-grid">
+      <div class="herop-content">
+        <div class="herop-eyebrow">
+          <span
+            >${SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT@LOCALIZED_STRING_SS}</span
+          >
+          <span class="crumb-sep">/</span>
+          <span class="crumb-cur"
+            >${SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_LEAF@LOCALIZED_STRING_SS}</span
+          >
+        </div>
+        <h1 class="herop-title">
+          ${SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_1@LOCALIZED_STRING_SS}
+          <span class="accent">
+            ${SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_ACCENT@LOCALIZED_STRING_SS}
+          </span>
+          ${SECTION_02_HERO_COMPOSITE_PHOTO_TITLE_LINE_2@LOCALIZED_STRING_SS}
+        </h1>
+        <div class="herop-leads">
+          <p>${SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_1@LOCALIZED_STRING_SS}</p>
+          <p>${SECTION_02_HERO_COMPOSITE_PHOTO_LEAD_2@LOCALIZED_STRING_SS}</p>
+        </div>
+        <div class="herop-cta">
+          <a
+            class="btn btn-primary btn-primary-ring"
+            href="${SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_HREF@STRING}"
+          >
+            <svg
+              class="btn-star"
+              width="16"
+              height="16"
+              viewBox="0 0 21 21"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"
+              />
+            </svg>
+            ${SECTION_02_HERO_COMPOSITE_PHOTO_CTA_PRIMARY_LABEL@LOCALIZED_STRING_SS}
+          </a>
+          <a
+            class="btn btn-secondary btn-secondary-filled"
+            href="${SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_HREF@STRING}"
+          >
+            <svg
+              class="btn-star"
+              width="16"
+              height="16"
+              viewBox="0 0 21 21"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"
+              />
+            </svg>
+            ${SECTION_02_HERO_COMPOSITE_PHOTO_CTA_SECONDARY_LABEL@LOCALIZED_STRING_SS}
+          </a>
+        </div>
+      </div>
+
+      <div class="herop-art">
+        <div class="herop-photo" data-photo-slot>
+          <img
+            class="herop-photo-img"
+            src="/core/image/${SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL@IMAGE}/get/${SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_NAME@STRING}"
+            alt="${SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_ALT@LOCALIZED_STRING_SS}"
+            loading="lazy"
+            decoding="async"
+            width="1000"
+            height="1200"
+          />
+          <div class="herop-photo-placeholder">
+            <span
+              >${SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_SIZE@LOCALIZED_STRING_SS}</span
+            >
+            <span
+              >${SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL@LOCALIZED_STRING_SS}</span
+            >
+          </div>
+        </div>
+
+        <!-- Overlay: dark stat chip -->
+        <div class="herop-chip" data-overlay="chip">
+          <span class="herop-chip-num"
+            >${SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_VALUE@LOCALIZED_STRING_SS}</span
+          >
+          <span class="herop-chip-label"
+            >${SECTION_02_HERO_COMPOSITE_PHOTO_CHIP_STAT_LABEL@LOCALIZED_STRING_SS}</span
+          >
+        </div>
+
+        <!-- Overlay: 2 person cards -->
+        <div class="herop-person herop-person--1" data-overlay="person-1">
+          <div class="herop-person-avatar">
+            <img
+              class="herop-person-avatar-img"
+              src="/core/image/${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_URL@IMAGE}/get/${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME@STRING}"
+              alt="${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT@LOCALIZED_STRING_SS}"
+              loading="lazy"
+              decoding="async"
+              width="160"
+              height="160"
+            />
+            <svg
+              class="herop-person-avatar-fallback"
+              viewBox="0 0 40 40"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle cx="20" cy="20" r="20" fill="#6BC0F9" />
+              <circle cx="20" cy="16" r="6" fill="#FFFFFF" />
+              <path d="M8 34 a12 12 0 0 1 24 0" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div>
+            <p class="herop-person-name">
+              ${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_NAME@LOCALIZED_STRING_SS}
+            </p>
+            <p class="herop-person-role">
+              ${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_ROLE@LOCALIZED_STRING_SS}
+            </p>
+          </div>
+        </div>
+
+        <div class="herop-person herop-person--2" data-overlay="person-2">
+          <div class="herop-person-avatar">
+            <img
+              class="herop-person-avatar-img"
+              src="/core/image/${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_URL@IMAGE}/get/${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME@STRING}"
+              alt="${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT@LOCALIZED_STRING_SS}"
+              loading="lazy"
+              decoding="async"
+              width="160"
+              height="160"
+            />
+            <svg
+              class="herop-person-avatar-fallback"
+              viewBox="0 0 40 40"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle cx="20" cy="20" r="20" fill="#FFA72C" />
+              <circle cx="20" cy="16" r="6" fill="#FFFFFF" />
+              <path d="M8 34 a12 12 0 0 1 24 0" fill="#FFFFFF" />
+            </svg>
+          </div>
+          <div>
+            <p class="herop-person-name">
+              ${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_NAME@LOCALIZED_STRING_SS}
+            </p>
+            <p class="herop-person-role">
+              ${SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_ROLE@LOCALIZED_STRING_SS}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>

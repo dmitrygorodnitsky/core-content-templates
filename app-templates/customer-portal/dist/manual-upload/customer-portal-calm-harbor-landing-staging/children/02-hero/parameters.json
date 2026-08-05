@@ -1,0 +1,141 @@
+[
+  {
+    "code": "CHS_LANDING_02_HERO_SERVICE_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE AREA",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami-Dade"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_TITLE_PREFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE PREFIX",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Unhurried spa care in "
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_LOCALITY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LOCALITY",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Miami, FL"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_TITLE_SUFFIX",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE SUFFIX",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_SERVICE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Hair, nails, skin and massage by licensed specialists — quiet single-guest rooms in the harbor studio, or at your place."
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Explore treatments"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SECONDARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "See pricing"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Prices on this page are live from the public catalog — no account needed to browse"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_HERO_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "HERO IMAGE URL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "/assets/customer-portal/calm-harbor-landing-staging/spa-massage-1448.webp"
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_HERO_IMAGE_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HERO IMAGE ALT",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Specialist smoothing a warm towel across a guest's shoulders in a daylit Calm Harbor treatment room"
+    }
+  },
+  {
+    "code": "CHS_LANDING_02_HERO_HERO_IMAGE_FOCAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "HERO IMAGE FOCAL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "62% 40%"
+  }
+]
