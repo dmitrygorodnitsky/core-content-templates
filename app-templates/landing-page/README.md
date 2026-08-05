@@ -132,9 +132,10 @@ The complete operator flow mirrors Calm Harbor while retaining the stronger
 update guard for the existing Field Service family:
 
 Every child BlockTemplate code uses the family prefix
-`FIELD_SERVICE_LANDING_`; section numbers remain structural ordering metadata
-and are not part of the CMS code. Existing Parameter Codes keep their previous
-names so this BlockTemplate rename does not force a parameter migration.
+`FIELD_SERVICE_LANDING_` plus a stable content role; component/layout details
+and section numbers are not part of the CMS code. Existing Parameter Codes keep
+their previous names so this BlockTemplate rename does not force a parameter
+migration.
 
 ```bash
 node app-templates/landing-page/scripts/export-field-service-landing-manual.mjs

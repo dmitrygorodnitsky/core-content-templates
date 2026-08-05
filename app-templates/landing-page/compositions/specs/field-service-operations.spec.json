@@ -33,7 +33,7 @@
   "sections": [
     {
       "block": "header.corporate-reference",
-      "code": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
+      "code": "FIELD_SERVICE_LANDING_HEADER",
       "values": {
         "demo_request_label": "Request Demo",
         "locale_selector_dropdown_aria_label": "Select language",
@@ -60,58 +60,58 @@
     },
     {
       "block": "hero.composite-photo",
-      "code": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO"
+      "code": "FIELD_SERVICE_LANDING_HERO"
     },
     {
       "block": "section.h2-narrative-only",
-      "code": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY"
+      "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS"
     },
     {
       "block": "features.card-grid-4",
-      "code": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4"
+      "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS"
     },
     {
       "block": "features.accordion-2col-numbered",
-      "code": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED"
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES"
     },
     {
       "block": "mobile.4-card-glyph",
-      "code": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH"
+      "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE"
     },
     {
       "block": "signature.ai-shell",
-      "code": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL"
+      "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION"
     },
     {
       "block": "section.stages-list",
-      "code": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST"
+      "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES"
     },
     {
       "block": "verticals.glyph-grid-20-slots",
-      "code": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS"
+      "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES"
     },
     {
       "block": "comparison.three-col-with-mobile-cards",
-      "code": "FIELD_SERVICE_LANDING_COMPARISON",
+      "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
       "values": {
         "column_count": "2"
       }
     },
     {
       "block": "section.axes-grid",
-      "code": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID"
+      "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS"
     },
     {
       "block": "faq.bubble-light-grouped",
-      "code": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED"
+      "code": "FIELD_SERVICE_LANDING_FAQ"
     },
     {
       "block": "decorative.final-cta",
-      "code": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA"
+      "code": "FIELD_SERVICE_LANDING_FINAL_CTA"
     },
     {
       "block": "footer.corporate-reference",
-      "code": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
+      "code": "FIELD_SERVICE_LANDING_FOOTER",
       "values": {
         "bg_pic": "728d0287-96c3-4430-b830-477f87d5ac5e"
       }

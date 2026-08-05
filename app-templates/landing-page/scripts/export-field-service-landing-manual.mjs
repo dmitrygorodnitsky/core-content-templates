@@ -63,7 +63,8 @@ hand.
 - Upload is intentionally separate and must start with \`--dry-run\`.
 - Parent links, root includes, enabled templates, and PageContext are not
   changed by the flat uploader.
-- Every child BlockTemplate code starts with \`FIELD_SERVICE_LANDING_\`.
+- Every child BlockTemplate code starts with \`FIELD_SERVICE_LANDING_\` and
+  describes a stable content role rather than its current component/layout.
 - Existing Parameter Codes keep their previous names; this template rename does
   not require a parameter migration.
 
