@@ -46,10 +46,34 @@
       "source": "experience.brandName"
     },
     {
+      "code": "CX_LANDING_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "source": "resolved.landingUrl"
+    },
+    {
+      "code": "CX_PORTAL_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "source": "resolved.portalUrl"
+    },
+    {
       "code": "CX_ALLOWED_NAV_ORIGINS",
       "type": "STRING",
       "value": "https://dev-1.servicewand.com",
       "source": "experience.allowedNavOrigins"
+    },
+    {
+      "code": "NAV_LANDING_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "source": "resolved.landingUrl"
+    },
+    {
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/login",
+      "source": "resolved.logoutDestination"
     },
     {
       "code": "PORTAL_DOCUMENT_TITLE",
@@ -364,30 +388,5 @@
       "source": "portal.primaryCtaLabel"
     }
   ],
-  "deferredParameters": [
-    {
-      "surface": "portal",
-      "code": "CX_LANDING_URL",
-      "source": "resolved.landingUrl",
-      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "portal",
-      "code": "CX_PORTAL_URL",
-      "source": "resolved.portalUrl",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "portal",
-      "code": "NAV_LANDING_URL",
-      "source": "resolved.landingUrl",
-      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "portal",
-      "code": "NAV_LOGOUT_RETURN_URL",
-      "source": "resolved.logoutDestination",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    }
-  ]
+  "deferredParameters": []
 }

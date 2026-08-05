@@ -276,7 +276,7 @@
       "additionalProperties": false,
       "required": ["status", "url", "reason"],
       "properties": {
-        "status": { "enum": ["resolved", "unresolved", "closed"] },
+        "status": { "enum": ["resolved", "planned", "unresolved", "closed"] },
         "url": { "type": ["string", "null"] },
         "reason": { "type": ["string", "null"] }
       }

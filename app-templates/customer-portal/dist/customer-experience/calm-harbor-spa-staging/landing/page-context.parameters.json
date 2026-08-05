@@ -46,10 +46,46 @@
       "source": "experience.brandName"
     },
     {
+      "code": "CX_LANDING_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "source": "resolved.landingUrl"
+    },
+    {
+      "code": "CX_PORTAL_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "source": "resolved.portalUrl"
+    },
+    {
       "code": "CX_ALLOWED_NAV_ORIGINS",
       "type": "STRING",
       "value": "https://dev-1.servicewand.com",
       "source": "experience.allowedNavOrigins"
+    },
+    {
+      "code": "NAV_PORTAL_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "source": "resolved.primaryDestination"
+    },
+    {
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/services",
+      "source": "resolved.servicesDestination"
+    },
+    {
+      "code": "NAV_PORTAL_PRICING_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/pricing",
+      "source": "resolved.pricingDestination"
+    },
+    {
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "type": "STRING",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/products",
+      "source": "resolved.productsDestination"
     },
     {
       "code": "LANDING_META_TITLE",
@@ -138,42 +174,5 @@
       "source": "landing.secondaryCtaLabel"
     }
   ],
-  "deferredParameters": [
-    {
-      "surface": "landing",
-      "code": "CX_LANDING_URL",
-      "source": "resolved.landingUrl",
-      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "landing",
-      "code": "CX_PORTAL_URL",
-      "source": "resolved.portalUrl",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "landing",
-      "code": "NAV_PORTAL_URL",
-      "source": "resolved.primaryDestination",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "landing",
-      "code": "NAV_PORTAL_SERVICES_URL",
-      "source": "resolved.servicesDestination",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "landing",
-      "code": "NAV_PORTAL_PRICING_URL",
-      "source": "resolved.pricingDestination",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    },
-    {
-      "surface": "landing",
-      "code": "NAV_PORTAL_PRODUCTS_URL",
-      "source": "resolved.productsDestination",
-      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
-    }
-  ]
+  "deferredParameters": []
 }

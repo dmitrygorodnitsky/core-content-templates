@@ -38,5 +38,7 @@ node app-templates/customer-portal/scripts/customer-experience-2fa-check.mjs
 ```
 
 The wizard writes new descriptors to `experience/descriptors/` by default.
-Unresolved URLs, Core Auth PageContext selection, or activation evidence remain
-fail-closed.
+Unresolved or merely planned URLs, Core Auth PageContext selection, or missing
+activation evidence remain fail-closed. Planned URLs may compile navigation
+maps, but become resolved only after CMS PageContext and anonymous readback
+verification.

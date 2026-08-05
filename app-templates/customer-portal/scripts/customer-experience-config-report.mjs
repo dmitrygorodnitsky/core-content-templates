@@ -63,6 +63,18 @@ export function buildCustomerExperienceReport(inputs) {
     reason: item.reason,
   }));
 
+  for (const surface of ["landing", "portal"]) {
+    const slot = descriptor.surfaces[surface].url;
+    if (slot.status === "planned") {
+      blockers.push({
+        id: "page-context-url-unverified",
+        surface,
+        code: surface === "landing" ? "CX_LANDING_URL" : "CX_PORTAL_URL",
+        reason: slot.reason,
+      });
+    }
+  }
+
   if (descriptor.surfaces.login.pageContextSelector.status !== "resolved") {
     blockers.push({
       id: "login-page-context-selector-unproven",
@@ -484,8 +496,10 @@ function stripHtmlComments(value) { return String(value).replace(/<!--[\s\S]*?--
 function countOccurrences(value, needle) { return String(value).split(needle).length - 1; }
 
 function validateUrlSlot(slot, label, allowedOrigins) {
-  if (slot.status === "resolved") {
-    if (!slot.url || slot.reason !== null) throw new Error("Resolved " + label + " URL must have a value and null reason");
+  if (slot.status === "resolved" || slot.status === "planned") {
+    if (!slot.url) throw new Error(slot.status + " " + label + " URL must have a value");
+    if (slot.status === "resolved" && slot.reason !== null) throw new Error("Resolved " + label + " URL must have a null reason");
+    if (slot.status === "planned" && !slot.reason) throw new Error("Planned " + label + " URL must explain what remains unverified");
     const parsed = parseHttpsUrl(slot.url, label + " URL");
     if (!allowedOrigins.includes(parsed.origin)) throw new Error(label + " URL origin is not allowlisted: " + parsed.origin);
     if (parsed.username || parsed.password || parsed.search || parsed.hash) throw new Error(label + " URL cannot contain credentials, query, or fragment");
@@ -506,7 +520,7 @@ function validateDestinationSyntax(destination, registry, allowedOrigins) {
 }
 
 function resolvedSlotValue(slot, source, deferredReasons, required = true) {
-  if (slot.status === "resolved") return slot.url;
+  if (slot.status === "resolved" || slot.status === "planned") return slot.url;
   if (required || slot.status === "unresolved") deferredReasons[source] = slot.reason;
   return undefined;
 }

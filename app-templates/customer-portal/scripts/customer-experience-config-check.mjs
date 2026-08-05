@@ -12,19 +12,22 @@ const report = buildCustomerExperienceReport(inputs);
 
 assert.equal(report.mode, "report-only");
 assert.equal(report.writesPerformed, false);
-assert.equal(report.publishable, false, "unknown PageContext URLs and login selector keep the report non-publishable");
+assert.equal(report.publishable, false, "planned PageContext URLs and the login selector keep the report non-publishable");
 assert.deepEqual(report.templates, {
-  landing: { code: "CUSTOMER_EXPERIENCE_LANDING", parameterCount: 18 },
-  portal: { code: "CUSTOMER_EXPERIENCE_PORTAL", parameterCount: 55 },
+  landing: { code: "CUSTOMER_EXPERIENCE_LANDING", parameterCount: 24 },
+  portal: { code: "CUSTOMER_EXPERIENCE_PORTAL", parameterCount: 59 },
   login: { code: "CUSTOMER_EXPERIENCE_LOGIN", parameterCount: 25 },
   twoFactor: { code: "CUSTOMER_EXPERIENCE_AUTH_2FA", parameterCount: 24 },
 });
 assert.equal(report.profile.intent, "appointments-commerce");
 assert.equal(report.profile.runtimeProfile, "spaTarget");
 assert.deepEqual(report.profile.enabledModules, ["appointments", "orders", "services", "pricing", "products", "account", "cart", "checkout", "purchases", "plan", "profile"]);
-assert.equal(report.navigation.landingUrl, null);
-assert.equal(report.navigation.portalUrl, null);
-assert.equal(report.deferredParameters.length, 10);
+assert.equal(report.navigation.landingUrl, "https://dev-1.servicewand.com/calm-harbor-spa/");
+assert.equal(report.navigation.portalUrl, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/");
+assert.equal(report.navigation.servicesDestination, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/services");
+assert.equal(report.navigation.logoutDestination, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/login");
+assert.equal(report.deferredParameters.length, 0);
+assert.equal(report.blockers.filter((item) => item.id === "page-context-url-unverified").length, 2);
 assert.equal(report.blockers.some((item) => item.id === "login-page-context-selector-unproven"), true);
 assert.equal(report.findings.some((item) => item.id.startsWith("login-") || item.id === "tenant-specific-login-template"), false, "login is compiled directly from accepted generic source");
 assert.equal(valueFor(report, "landing", "CX_THEME"), "beauty");
@@ -39,12 +42,12 @@ assert.equal(valueFor(report, "portal", "PORTAL_REGISTRATION_MODE"), "closed");
 const resolvedInputs = structuredClone(inputs);
 resolvedInputs.descriptor.surfaces.landing.url = {
   status: "resolved",
-  url: "https://dev-1.servicewand.com/pages/CALM_HARBOR_SPA_STAGING/public/landing.html",
+  url: inputs.descriptor.surfaces.landing.url.url,
   reason: null,
 };
 resolvedInputs.descriptor.surfaces.portal.url = {
   status: "resolved",
-  url: "https://dev-1.servicewand.com/pages/CALM_HARBOR_SPA_STAGING/customer/portal.html",
+  url: inputs.descriptor.surfaces.portal.url.url,
   reason: null,
 };
 resolvedInputs.descriptor.surfaces.login.pageContextSelector = {
@@ -56,9 +59,9 @@ validateDescriptorSemantics(resolvedInputs.descriptor, resolvedInputs.registry);
 const resolvedReport = buildCustomerExperienceReport(resolvedInputs);
 assert.equal(resolvedReport.publishable, true, "synthetic trusted URL/selector inputs close every report-only blocker");
 assert.equal(resolvedReport.deferredParameters.length, 0);
-assert.equal(resolvedReport.navigation.servicesDestination, "https://dev-1.servicewand.com/pages/CALM_HARBOR_SPA_STAGING/customer/portal.html#/services");
+assert.equal(resolvedReport.navigation.servicesDestination, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/services");
 assert.equal(valueFor(resolvedReport, "landing", "NAV_PORTAL_SERVICES_URL"), resolvedReport.navigation.servicesDestination);
-assert.equal(valueFor(resolvedReport, "portal", "NAV_LOGOUT_RETURN_URL"), "https://dev-1.servicewand.com/pages/CALM_HARBOR_SPA_STAGING/customer/portal.html#/login");
+assert.equal(valueFor(resolvedReport, "portal", "NAV_LOGOUT_RETURN_URL"), "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/login");
 
 const hvacInputs = structuredClone(inputs);
 hvacInputs.descriptor.experience.id = "northwind-hvac-staging";
@@ -125,6 +128,10 @@ assert.throws(() => validateDescriptorSemantics(unresolvedRegistration, inputs.r
 const crossOrigin = structuredClone(resolvedInputs.descriptor);
 crossOrigin.surfaces.portal.url.url = "https://attacker.invalid/portal";
 assert.throws(() => validateDescriptorSemantics(crossOrigin, inputs.registry), /origin is not allowlisted/);
+
+const unverifiedPlannedUrl = structuredClone(inputs.descriptor);
+unverifiedPlannedUrl.surfaces.landing.url.reason = null;
+assert.throws(() => validateDescriptorSemantics(unverifiedPlannedUrl, inputs.registry), /must explain what remains unverified/);
 
 const unknownRoute = structuredClone(inputs.descriptor);
 unknownRoute.surfaces.landing.servicesDestination = "portal-route:not.registered";

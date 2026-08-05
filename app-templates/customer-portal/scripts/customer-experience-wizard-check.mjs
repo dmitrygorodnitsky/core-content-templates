@@ -31,6 +31,15 @@ assert.equal(descriptor.surfaces.portal.registration.mode, "closed");
 assert.equal(descriptor.surfaces.portal.url.status, "unresolved");
 assert.equal(creationReport(descriptor).publishable, false);
 
+const plannedDescriptor = createDescriptorFromAnswers(base, {
+  ...answers,
+  landingUrl: "https://dev-1.servicewand.com/northwind-hvac/",
+  portalUrl: "https://dev-1.servicewand.com/northwind-hvac-customer-portal/",
+}, schema, registry);
+assert.equal(plannedDescriptor.surfaces.landing.url.status, "planned");
+assert.equal(plannedDescriptor.surfaces.portal.url.status, "planned");
+assert.equal(creationReport(plannedDescriptor).publishable, false, "wizard answers select routes but do not prove deployment");
+
 assert.throws(() => createDescriptorFromAnswers(base, { ...answers, allowedNavOrigin: "http://unsafe.invalid/" }, schema, registry), /canonical HTTPS origin/);
 assert.throws(() => createDescriptorFromAnswers(base, { ...answers, language: "not_a_locale" }, schema, registry), /BCP-47/);
 assert.throws(() => createDescriptorFromAnswers(base, { ...answers, profile: "appointments-commerce" }, schema, registry), /does not support vertical/);

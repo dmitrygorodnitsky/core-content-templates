@@ -48,8 +48,8 @@ export function createDescriptorFromAnswers(baseDescriptor, answers, schema, reg
   result.experience.allowedNavOrigins = [origin];
   result.experience.support = urlSlot(answers.supportUrl, origin, "Support URL was not supplied.", "closed");
 
-  result.surfaces.landing.url = urlSlot(answers.landingUrl, origin, "Landing PageContext URL is not known yet.");
-  result.surfaces.portal.url = urlSlot(answers.portalUrl, origin, "Portal PageContext URL is not known yet.");
+  result.surfaces.landing.url = urlSlot(answers.landingUrl, origin, "Landing PageContext URL is not known yet.", "unresolved", "planned");
+  result.surfaces.portal.url = urlSlot(answers.portalUrl, origin, "Portal PageContext URL is not known yet.", "unresolved", "planned");
   result.surfaces.portal.profile = profile;
   result.surfaces.portal.capability = profile === "appointments-commerce" ? "target-appointments" : "current-staging";
   result.surfaces.portal.defaultRoute = answers.defaultRoute || profileDefinition.navigationRoutes[0];
@@ -105,7 +105,7 @@ export function creationReport(descriptor) {
     unresolved,
     nextSteps: [
       "Author tenant-specific landing content and update evidenceRefs before compiling the family.",
-      "Resolve deployed landing and portal URLs.",
+      "Select landing and portal URLs, then deploy and verify their PageContexts before marking them resolved.",
       "Prove the Core Auth PageContext selector and registration/account-provisioning contract before opening them.",
       "Request accepted UI states before activating anonymous selection or resume feedback.",
     ],
@@ -191,13 +191,17 @@ async function atomicWrite(filePath, value) {
   await fs.rename(temporary, filePath);
 }
 
-function urlSlot(value, allowedOrigin, unresolvedReason, emptyStatus = "unresolved") {
+function urlSlot(value, allowedOrigin, unresolvedReason, emptyStatus = "unresolved", populatedStatus = "resolved") {
   if (!value) return { status: emptyStatus, url: null, reason: unresolvedReason };
   const parsed = new URL(value);
   if (parsed.protocol !== "https:" || parsed.origin !== allowedOrigin || parsed.search || parsed.hash || parsed.username || parsed.password) {
     throw new Error("URL must be a clean HTTPS URL on the allowed navigation origin");
   }
-  return { status: "resolved", url: parsed.href, reason: null };
+  return {
+    status: populatedStatus,
+    url: parsed.href,
+    reason: populatedStatus === "planned" ? "PageContext URL was selected, but deployment and anonymous readback are not yet proven." : null,
+  };
 }
 
 function canonicalOrigin(value) {

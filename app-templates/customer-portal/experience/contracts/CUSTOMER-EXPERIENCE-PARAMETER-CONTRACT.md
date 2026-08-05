@@ -10,8 +10,9 @@ Report-only implementation:
 - `experience/config/customer-experience.schema.json` — descriptor shape;
 - `experience/config/customer-experience.parameters.json` — generic template codes,
   profiles, routes, and parameter registry;
-- `experience/descriptors/calm-harbor-spa.staging.json` — current
-  staging descriptor with unresolved deployment URLs recorded explicitly;
+- `experience/descriptors/calm-harbor-spa.staging.json` — current staging
+  descriptor with planned deployment URLs and their verification state recorded
+  explicitly;
 - `scripts/customer-experience-config-report.mjs` — read-only compiler/report;
 - `scripts/customer-experience-config-check.mjs` — positive and adversarial
   contract checks.
@@ -22,9 +23,10 @@ Run the report without writing an output file:
 node app-templates/customer-portal/scripts/customer-experience-config-report.mjs
 ```
 
-Add `--require-resolved` when a publishability gate is intended. It currently
-fails closed until landing/portal PageContext URLs and the trusted Core Auth
-PageContext selector are proven.
+Add `--require-resolved` when a publishability gate is intended. A `planned`
+URL is sufficient to compile deterministic navigation but not to publish; the
+command fails closed until landing/portal PageContext readback and the trusted
+Core Auth PageContext selector are proven.
 
 ## Objective
 
@@ -123,6 +125,11 @@ codes everywhere they are consumed.
 | `CX_PORTAL_URL` | `STRING` | yes | Authenticated portal document entry, without a tenant-editable internal route. |
 | `CX_SUPPORT_URL` | `STRING` | no | Approved support destination. Empty means unavailable; it never invents support. |
 | `CX_ALLOWED_NAV_ORIGINS` | `STRING` | yes | Comma-separated allowlist used to validate generated cross-document destinations. |
+
+Deployment URL slots distinguish `unresolved`, `planned`, and `resolved`.
+`planned` carries a clean allowlisted URL into generated navigation maps while
+adding an explicit publication blocker. Only `resolved` means that the CMS
+PageContext exists at that address and anonymous readback has been verified.
 
 `CX_BRAND_LOGO`, arbitrary accent colors, and arbitrary font URLs are not phase-1
 parameters. The accepted design currently contains a CSS brand mark and eight
@@ -529,9 +536,11 @@ render another tenant's defaults.
 
 The compiler performs no CMS upload and no consumer/PageContext switch.
 `--require-resolved` refuses output unless all URL and login-selector gates are
-closed. The current Calm Harbor descriptor remains non-publishable because its
-deployed landing/portal URLs are not recorded and the trusted Core Auth
-PageContext selector is still unproven.
+closed. Calm Harbor now reserves `https://dev-1.servicewand.com/calm-harbor-spa/`
+for the landing and
+`https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/` for the portal.
+Both remain `planned` because anonymous probes returned HTTP 404 on 2026-08-05;
+the trusted Core Auth PageContext selector is also still unproven.
 
 The cross-vertical check proves that Beauty and HVAC use the same generic
 template identities and portal/login runtime structure with different maps.
@@ -549,6 +558,7 @@ node app-templates/customer-portal/scripts/create-customer-experience.mjs
 
 The wizard writes the descriptor and a sibling `.creation-report.json`. The
 report distinguishes schema/semantic validity from publication readiness and
-lists unresolved deployment, evidence, auth, and visual gates. The discoverable
+lists unresolved or planned deployment, evidence, auth, and visual gates. The
+discoverable
 `customer-experience-configurator` Codex skill runs the same workflow; it does
 not bypass report or build gates.

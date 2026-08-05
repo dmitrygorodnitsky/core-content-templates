@@ -280,6 +280,21 @@ registration/Account-provisioning evidence do not exist yet. The missing
 presentation is filed in
 `design-requests/customer-experience-anonymous-intent-auth-resume.md`.
 
+The staging descriptor now reserves these canonical PageContext routes:
+
+```text
+landing: https://dev-1.servicewand.com/calm-harbor-spa/
+portal:  https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/
+```
+
+They are `planned`, not `resolved`: anonymous probes returned HTTP 404 on
+2026-08-05. The compiler can already derive `#/services`, `#/pricing`,
+`#/products`, and `#/login` transitions, but publication remains blocked until
+the PageContexts are deployed and read back. Core discovery currently reports
+authority `https://dev-1.servicewand.com/oauth2`, authorization endpoint
+`/oauth2/oauth2/authorize`, and callback `/core/oauth2-callback.html`; these stay
+discovery-owned rather than CMS-authored navigation parameters.
+
 Wave 19 accepted the CMS-skinned `/auth/2fa.html`. The compiler now emits
 `CUSTOMER_EXPERIENCE_AUTH_2FA` from that immutable source, with 24 safe CMS
 parameters and eight byte-preserved Core Auth runtime placeholders. The
@@ -289,6 +304,7 @@ Core Auth PageContext selector gate with login.
 The `customer-experience-configurator` skill is installed under
 `~/.codex/skills/`. It runs the Q&A wizard, produces a descriptor plus creation
 report, and keeps unresolved deployment/evidence gates fail-closed.
+Planned routes remain deployment evidence gates until CMS readback succeeds.
 
 Focused checks:
 
