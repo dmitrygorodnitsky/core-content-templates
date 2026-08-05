@@ -371,7 +371,7 @@
   "assetOwnership": [
     {
       "index": 1,
-      "childCode": "SECTION_01_HEADER_CORPORATE_REFERENCE",
+      "childCode": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
       "block": "header.corporate-reference",
       "assets": [
         {
@@ -402,7 +402,7 @@
     },
     {
       "index": 2,
-      "childCode": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "childCode": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO",
       "block": "hero.composite-photo",
       "assets": [
         {
@@ -439,7 +439,7 @@
     },
     {
       "index": 3,
-      "childCode": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+      "childCode": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY",
       "block": "section.h2-narrative-only",
       "assets": [
         {
@@ -452,7 +452,7 @@
     },
     {
       "index": 4,
-      "childCode": "SECTION_04_FEATURES_CARD_GRID_4",
+      "childCode": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4",
       "block": "features.card-grid-4",
       "assets": [
         {
@@ -465,7 +465,7 @@
     },
     {
       "index": 5,
-      "childCode": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+      "childCode": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED",
       "block": "features.accordion-2col-numbered",
       "assets": [
         {
@@ -478,7 +478,7 @@
     },
     {
       "index": 6,
-      "childCode": "SECTION_06_MOBILE_4_CARD_GLYPH",
+      "childCode": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH",
       "block": "mobile.4-card-glyph",
       "assets": [
         {
@@ -491,7 +491,7 @@
     },
     {
       "index": 7,
-      "childCode": "SECTION_07_SIGNATURE_AI_SHELL",
+      "childCode": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL",
       "block": "signature.ai-shell",
       "assets": [
         {
@@ -504,7 +504,7 @@
     },
     {
       "index": 8,
-      "childCode": "SECTION_08_SECTION_STAGES_LIST",
+      "childCode": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST",
       "block": "section.stages-list",
       "assets": [
         {
@@ -517,7 +517,7 @@
     },
     {
       "index": 9,
-      "childCode": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+      "childCode": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS",
       "block": "verticals.glyph-grid-20-slots",
       "assets": [
         {
@@ -530,7 +530,7 @@
     },
     {
       "index": 10,
-      "childCode": "COMPARISON",
+      "childCode": "FIELD_SERVICE_LANDING_COMPARISON",
       "block": "comparison.three-col-with-mobile-cards",
       "assets": [
         {
@@ -543,7 +543,7 @@
     },
     {
       "index": 11,
-      "childCode": "SECTION_11_SECTION_AXES_GRID",
+      "childCode": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID",
       "block": "section.axes-grid",
       "assets": [
         {
@@ -562,7 +562,7 @@
     },
     {
       "index": 12,
-      "childCode": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+      "childCode": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED",
       "block": "faq.bubble-light-grouped",
       "assets": [
         {
@@ -575,7 +575,7 @@
     },
     {
       "index": 13,
-      "childCode": "SECTION_13_DECORATIVE_FINAL_CTA",
+      "childCode": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA",
       "block": "decorative.final-cta",
       "assets": [
         {
@@ -612,7 +612,7 @@
     },
     {
       "index": 14,
-      "childCode": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
+      "childCode": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
       "block": "footer.corporate-reference",
       "assets": [
         {
@@ -628,59 +628,59 @@
     "code": "FIELD_SERVICE_LANDING",
     "children": [
       {
-        "code": "SECTION_01_HEADER_CORPORATE_REFERENCE",
+        "code": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
         "children": []
       },
       {
-        "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+        "code": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO",
         "children": []
       },
       {
-        "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+        "code": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY",
         "children": []
       },
       {
-        "code": "SECTION_04_FEATURES_CARD_GRID_4",
+        "code": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4",
         "children": []
       },
       {
-        "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+        "code": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED",
         "children": []
       },
       {
-        "code": "SECTION_06_MOBILE_4_CARD_GLYPH",
+        "code": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH",
         "children": []
       },
       {
-        "code": "SECTION_07_SIGNATURE_AI_SHELL",
+        "code": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL",
         "children": []
       },
       {
-        "code": "SECTION_08_SECTION_STAGES_LIST",
+        "code": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST",
         "children": []
       },
       {
-        "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+        "code": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS",
         "children": []
       },
       {
-        "code": "COMPARISON",
+        "code": "FIELD_SERVICE_LANDING_COMPARISON",
         "children": []
       },
       {
-        "code": "SECTION_11_SECTION_AXES_GRID",
+        "code": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID",
         "children": []
       },
       {
-        "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+        "code": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED",
         "children": []
       },
       {
-        "code": "SECTION_13_DECORATIVE_FINAL_CTA",
+        "code": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA",
         "children": []
       },
       {
-        "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
+        "code": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
         "children": []
       }
     ]

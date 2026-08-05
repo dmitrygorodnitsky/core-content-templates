@@ -309,7 +309,7 @@ const paramCodeForLocal = ({ block, code, legacyCode, localCode }) => {
     const paramCode = comparisonParamCode(localCode);
     return { paramCode };
   }
-  return { paramCode: `${code}_${codeSlug(localCode)}` };
+  return { paramCode: `${legacyCode}_${codeSlug(localCode)}` };
 };
 
 const imageNameCodeForLocal = ({ block, code, legacyCode, localCode }) => {
@@ -317,7 +317,7 @@ const imageNameCodeForLocal = ({ block, code, legacyCode, localCode }) => {
     const paramCode = comparisonParamCode(localCode);
     return { paramCode };
   }
-  return { paramCode: `${code}_${codeSlug(localCode)}` };
+  return { paramCode: `${legacyCode}_${codeSlug(localCode)}` };
 };
 
 const childCodeForSection = (block, index) => {
@@ -496,7 +496,7 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
     const block = catalog.byId.get(section.block);
     const assetBlocks = collectAssetBlocks([section.block], catalog);
     const legacyCode = `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(section.block).slice(0, 42)}`;
-    const code = childCodeForSection(block, index);
+    const code = section.code ? codeSlug(section.code) : childCodeForSection(block, index);
     return renderBlockTemplate({
       block,
       code,
@@ -508,6 +508,12 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
       assetBlocks,
     });
   });
+  const duplicateChildCodes = children
+    .map((child) => child.code)
+    .filter((code, index, codes) => codes.indexOf(code) !== index);
+  if (duplicateChildCodes.length) {
+    throw new Error(`Child template codes must be unique: ${[...new Set(duplicateChildCodes)].join(", ")}`);
+  }
 
   const rootParams = [
     parameter("ROOT_META_TITLE", "LOCALIZED_STRING_SS", lorem(8, 0), locale, {

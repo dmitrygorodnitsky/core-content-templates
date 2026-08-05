@@ -131,6 +131,11 @@ facade.
 The complete operator flow mirrors Calm Harbor while retaining the stronger
 update guard for the existing Field Service family:
 
+Every child BlockTemplate code uses the family prefix
+`FIELD_SERVICE_LANDING_`; section numbers remain structural ordering metadata
+and are not part of the CMS code. Existing Parameter Codes keep their previous
+names so this BlockTemplate rename does not force a parameter migration.
+
 ```bash
 node app-templates/landing-page/scripts/export-field-service-landing-manual.mjs
 node app-templates/landing-page/scripts/field-service-landing-manual-check.mjs
@@ -151,6 +156,10 @@ explicit approval. An empty `SERVICEWAND_API_KEY` is not a valid live upload.
 Root/child relationships, parent links, includes, enabled templates, and
 PageContext remain manual CMS work; this flow neither requires a root UUID nor
 writes those fields.
+
+Because `--require-existing` forbids implicit creation, the renamed child Codes
+must already exist in CMS before authenticated dry-run. Rename or create those
+BlockTemplates manually; a missing Code makes the uploader stop before writes.
 
 ## CMS Parameter Contract
 

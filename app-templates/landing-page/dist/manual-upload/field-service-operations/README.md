@@ -10,6 +10,9 @@ hand.
 - Upload is intentionally separate and must start with `--dry-run`.
 - Parent links, root includes, enabled templates, and PageContext are not
   changed by the flat uploader.
+- Every child BlockTemplate code starts with `FIELD_SERVICE_LANDING_`.
+- Existing Parameter Codes keep their previous names; this template rename does
+  not require a parameter migration.
 
 ## Operator flow
 
@@ -33,3 +36,7 @@ same command with `--live` instead of `--dry-run`.
 Root/child relationships, parent links, includes, enabled templates, and
 PageContext remain manual CMS work; this flow neither requires a root UUID nor
 writes those fields.
+
+Because `--require-existing` forbids implicit creation, the renamed child Codes
+must already exist in CMS before authenticated dry-run. Rename or create those
+BlockTemplates manually; a missing Code makes the uploader stop before writes.

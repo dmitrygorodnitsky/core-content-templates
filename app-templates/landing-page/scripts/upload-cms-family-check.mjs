@@ -32,7 +32,7 @@ await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify(
     pageContexts: [{ code: "MUST_NOT_BE_SAVED" }],
   },
   children: [{
-    code: "SECTION_01_HEADER_CORPORATE_REFERENCE",
+    code: "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
     parameters: [],
     parent: { code: "FIELD_SERVICE_LANDING" },
     slotMarker: "MUST_NOT_BE_SAVED",
@@ -89,14 +89,14 @@ const env = { ...process.env, SERVICEWAND_API_KEY: "local-check-key", SERVICEWAN
 try {
   const success = await execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", rootId], { env });
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING -> ${rootId}`));
-  assert.match(success.stdout, new RegExp(`would update: SECTION_01_HEADER_CORPORATE_REFERENCE -> ${childId}`));
+  assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE -> ${childId}`));
 
   await assert.rejects(
     execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", "33333333-3333-4333-8333-333333333333"], { env }),
     /Root id mismatch/,
   );
 
-  missingCode = "SECTION_01_HEADER_CORPORATE_REFERENCE";
+  missingCode = "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE";
   await assert.rejects(execFileAsync(process.execPath, baseArgs, { env }), /Required existing templates were not found/);
   assert.equal(saveRequests, 0, "resolved dry-run must make no save requests");
 

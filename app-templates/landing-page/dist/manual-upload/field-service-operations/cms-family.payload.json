@@ -12,7 +12,7 @@
     "parent": null,
     "children": [
       {
-        "code": "SECTION_01_HEADER_CORPORATE_REFERENCE",
+        "code": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
         "nls": {
           "en": {
             "NAME": "Header · corporate reference"
@@ -20,7 +20,7 @@
         }
       },
       {
-        "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+        "code": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO",
         "nls": {
           "en": {
             "NAME": "Hero · composite photo (vertical-landing)"
@@ -28,7 +28,7 @@
         }
       },
       {
-        "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+        "code": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY",
         "nls": {
           "en": {
             "NAME": "Section · H2 narrative"
@@ -36,7 +36,7 @@
         }
       },
       {
-        "code": "SECTION_04_FEATURES_CARD_GRID_4",
+        "code": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4",
         "nls": {
           "en": {
             "NAME": "Features · 4-card horizontal grid"
@@ -44,7 +44,7 @@
         }
       },
       {
-        "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+        "code": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED",
         "nls": {
           "en": {
             "NAME": "Features · 2-col accordion"
@@ -52,7 +52,7 @@
         }
       },
       {
-        "code": "SECTION_06_MOBILE_4_CARD_GLYPH",
+        "code": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH",
         "nls": {
           "en": {
             "NAME": "Mobile section · 4 cards with glyphs"
@@ -60,7 +60,7 @@
         }
       },
       {
-        "code": "SECTION_07_SIGNATURE_AI_SHELL",
+        "code": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL",
         "nls": {
           "en": {
             "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
@@ -68,7 +68,7 @@
         }
       },
       {
-        "code": "SECTION_08_SECTION_STAGES_LIST",
+        "code": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST",
         "nls": {
           "en": {
             "NAME": "Section · Stages list (growth ladder, 01→04)"
@@ -76,7 +76,7 @@
         }
       },
       {
-        "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+        "code": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS",
         "nls": {
           "en": {
             "NAME": "Verticals grid · photo-card catalog"
@@ -84,7 +84,7 @@
         }
       },
       {
-        "code": "COMPARISON",
+        "code": "FIELD_SERVICE_LANDING_COMPARISON",
         "nls": {
           "en": {
             "NAME": "Comparison · the platform matrix"
@@ -92,7 +92,7 @@
         }
       },
       {
-        "code": "SECTION_11_SECTION_AXES_GRID",
+        "code": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID",
         "nls": {
           "en": {
             "NAME": "Section · Axes grid (multi-axis from→to)"
@@ -100,7 +100,7 @@
         }
       },
       {
-        "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+        "code": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED",
         "nls": {
           "en": {
             "NAME": "FAQ · bubble light grouped"
@@ -108,7 +108,7 @@
         }
       },
       {
-        "code": "SECTION_13_DECORATIVE_FINAL_CTA",
+        "code": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA",
         "nls": {
           "en": {
             "NAME": "Decorative · final CTA banner"
@@ -116,7 +116,7 @@
         }
       },
       {
-        "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
+        "code": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
         "nls": {
           "en": {
             "NAME": "Footer · corporate reference"
@@ -176,7 +176,7 @@
   },
   "children": [
     {
-      "code": "SECTION_01_HEADER_CORPORATE_REFERENCE",
+      "code": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
       "nls": {
         "en": {
           "NAME": "Header · corporate reference"
@@ -2242,7 +2242,7 @@
       ]
     },
     {
-      "code": "SECTION_02_HERO_COMPOSITE_PHOTO",
+      "code": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO",
       "nls": {
         "en": {
           "NAME": "Hero · composite photo (vertical-landing)"
@@ -2609,7 +2609,7 @@
       ]
     },
     {
-      "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
+      "code": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY",
       "nls": {
         "en": {
           "NAME": "Section · H2 narrative"
@@ -2745,7 +2745,7 @@
       ]
     },
     {
-      "code": "SECTION_04_FEATURES_CARD_GRID_4",
+      "code": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4",
       "nls": {
         "en": {
           "NAME": "Features · 4-card horizontal grid"
@@ -3037,7 +3037,7 @@
       ]
     },
     {
-      "code": "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
+      "code": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED",
       "nls": {
         "en": {
           "NAME": "Features · 2-col accordion"
@@ -3511,7 +3511,7 @@
       ]
     },
     {
-      "code": "SECTION_06_MOBILE_4_CARD_GLYPH",
+      "code": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH",
       "nls": {
         "en": {
           "NAME": "Mobile section · 4 cards with glyphs"
@@ -3751,7 +3751,7 @@
       ]
     },
     {
-      "code": "SECTION_07_SIGNATURE_AI_SHELL",
+      "code": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL",
       "nls": {
         "en": {
           "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
@@ -4325,7 +4325,7 @@
       ]
     },
     {
-      "code": "SECTION_08_SECTION_STAGES_LIST",
+      "code": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST",
       "nls": {
         "en": {
           "NAME": "Section · Stages list (growth ladder, 01→04)"
@@ -4825,7 +4825,7 @@
       ]
     },
     {
-      "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
+      "code": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS",
       "nls": {
         "en": {
           "NAME": "Verticals grid · photo-card catalog"
@@ -7116,7 +7116,7 @@
       ]
     },
     {
-      "code": "COMPARISON",
+      "code": "FIELD_SERVICE_LANDING_COMPARISON",
       "nls": {
         "en": {
           "NAME": "Comparison · the platform matrix"
@@ -9085,7 +9085,7 @@
       ]
     },
     {
-      "code": "SECTION_11_SECTION_AXES_GRID",
+      "code": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID",
       "nls": {
         "en": {
           "NAME": "Section · Axes grid (multi-axis from→to)"
@@ -9390,7 +9390,7 @@
       ]
     },
     {
-      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+      "code": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED",
       "nls": {
         "en": {
           "NAME": "FAQ · bubble light grouped"
@@ -10215,7 +10215,7 @@
       ]
     },
     {
-      "code": "SECTION_13_DECORATIVE_FINAL_CTA",
+      "code": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA",
       "nls": {
         "en": {
           "NAME": "Decorative · final CTA banner"
@@ -10347,7 +10347,7 @@
       ]
     },
     {
-      "code": "SECTION_14_FOOTER_CORPORATE_REFERENCE",
+      "code": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
       "nls": {
         "en": {
           "NAME": "Footer · corporate reference"
@@ -10774,20 +10774,20 @@
     },
     "enabledTemplates": [
       "FIELD_SERVICE_LANDING",
-      "SECTION_01_HEADER_CORPORATE_REFERENCE",
-      "SECTION_02_HERO_COMPOSITE_PHOTO",
-      "SECTION_03_SECTION_H2_NARRATIVE_ONLY",
-      "SECTION_04_FEATURES_CARD_GRID_4",
-      "SECTION_05_FEATURES_ACCORDION_2COL_NUMBERED",
-      "SECTION_06_MOBILE_4_CARD_GLYPH",
-      "SECTION_07_SIGNATURE_AI_SHELL",
-      "SECTION_08_SECTION_STAGES_LIST",
-      "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS",
-      "COMPARISON",
-      "SECTION_11_SECTION_AXES_GRID",
-      "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
-      "SECTION_13_DECORATIVE_FINAL_CTA",
-      "SECTION_14_FOOTER_CORPORATE_REFERENCE"
+      "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
+      "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO",
+      "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY",
+      "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4",
+      "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED",
+      "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH",
+      "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL",
+      "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST",
+      "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS",
+      "FIELD_SERVICE_LANDING_COMPARISON",
+      "FIELD_SERVICE_LANDING_SECTION_AXES_GRID",
+      "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED",
+      "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA",
+      "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE"
     ],
     "values": {},
     "organization": {

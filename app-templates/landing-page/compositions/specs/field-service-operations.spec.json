@@ -33,6 +33,7 @@
   "sections": [
     {
       "block": "header.corporate-reference",
+      "code": "FIELD_SERVICE_LANDING_HEADER_CORPORATE_REFERENCE",
       "values": {
         "demo_request_label": "Request Demo",
         "locale_selector_dropdown_aria_label": "Select language",
@@ -57,25 +58,60 @@
         "open_menu_label": "Open menu"
       }
     },
-    "hero.composite-photo",
-    "section.h2-narrative-only",
-    "features.card-grid-4",
-    "features.accordion-2col-numbered",
-    "mobile.4-card-glyph",
-    "signature.ai-shell",
-    "section.stages-list",
-    "verticals.glyph-grid-20-slots",
+    {
+      "block": "hero.composite-photo",
+      "code": "FIELD_SERVICE_LANDING_HERO_COMPOSITE_PHOTO"
+    },
+    {
+      "block": "section.h2-narrative-only",
+      "code": "FIELD_SERVICE_LANDING_SECTION_H2_NARRATIVE_ONLY"
+    },
+    {
+      "block": "features.card-grid-4",
+      "code": "FIELD_SERVICE_LANDING_FEATURES_CARD_GRID_4"
+    },
+    {
+      "block": "features.accordion-2col-numbered",
+      "code": "FIELD_SERVICE_LANDING_FEATURES_ACCORDION_2COL_NUMBERED"
+    },
+    {
+      "block": "mobile.4-card-glyph",
+      "code": "FIELD_SERVICE_LANDING_MOBILE_4_CARD_GLYPH"
+    },
+    {
+      "block": "signature.ai-shell",
+      "code": "FIELD_SERVICE_LANDING_SIGNATURE_AI_SHELL"
+    },
+    {
+      "block": "section.stages-list",
+      "code": "FIELD_SERVICE_LANDING_SECTION_STAGES_LIST"
+    },
+    {
+      "block": "verticals.glyph-grid-20-slots",
+      "code": "FIELD_SERVICE_LANDING_VERTICALS_GLYPH_GRID_20_SLOTS"
+    },
     {
       "block": "comparison.three-col-with-mobile-cards",
+      "code": "FIELD_SERVICE_LANDING_COMPARISON",
       "values": {
         "column_count": "2"
       }
     },
-    "section.axes-grid",
-    "faq.bubble-light-grouped",
-    "decorative.final-cta",
+    {
+      "block": "section.axes-grid",
+      "code": "FIELD_SERVICE_LANDING_SECTION_AXES_GRID"
+    },
+    {
+      "block": "faq.bubble-light-grouped",
+      "code": "FIELD_SERVICE_LANDING_FAQ_BUBBLE_LIGHT_GROUPED"
+    },
+    {
+      "block": "decorative.final-cta",
+      "code": "FIELD_SERVICE_LANDING_DECORATIVE_FINAL_CTA"
+    },
     {
       "block": "footer.corporate-reference",
+      "code": "FIELD_SERVICE_LANDING_FOOTER_CORPORATE_REFERENCE",
       "values": {
         "bg_pic": "728d0287-96c3-4430-b830-477f87d5ac5e"
       }
