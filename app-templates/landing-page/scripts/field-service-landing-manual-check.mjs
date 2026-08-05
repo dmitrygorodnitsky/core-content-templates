@@ -27,6 +27,23 @@ const expectedCodes = [
   "FIELD_SERVICE_LANDING_FINAL_CTA",
   "FIELD_SERVICE_LANDING_FOOTER",
 ];
+const expectedNames = [
+  "Field Service Landing",
+  "Field Service Landing | Header",
+  "Field Service Landing | Hero",
+  "Field Service Landing | Connected Operations",
+  "Field Service Landing | Operational Needs",
+  "Field Service Landing | Platform Capabilities",
+  "Field Service Landing | Mobile Workforce",
+  "Field Service Landing | AI Automation",
+  "Field Service Landing | Growth Stages",
+  "Field Service Landing | Supported Industries",
+  "Field Service Landing | Platform Comparison",
+  "Field Service Landing | Visibility, Reporting & Integrations",
+  "Field Service Landing | FAQ",
+  "Field Service Landing | Final CTA",
+  "Field Service Landing | Footer",
+];
 
 const readJson = async (dir, name) => JSON.parse(await fs.readFile(path.join(dir, name), "utf8"));
 const digest = (value) => crypto.createHash("sha256").update(value).digest("hex");
@@ -73,6 +90,7 @@ try {
   assert.equal(payload.schemaVersion, 1);
   assert.equal(payload.root.code, "FIELD_SERVICE_LANDING");
   assert.deepEqual(templates.map((template) => template.code), expectedCodes);
+  assert.deepEqual(templates.map((template) => template.nls?.en?.NAME), expectedNames);
   assert.equal(payload.children.every((template) => template.code.startsWith("FIELD_SERVICE_LANDING_")), true);
   assert.deepEqual(manifest.templateCodes, expectedCodes);
   assert.equal(payload.children.length, 14);

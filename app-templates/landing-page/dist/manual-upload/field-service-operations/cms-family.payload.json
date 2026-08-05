@@ -15,7 +15,7 @@
         "code": "FIELD_SERVICE_LANDING_HEADER",
         "nls": {
           "en": {
-            "NAME": "Header · corporate reference"
+            "NAME": "Field Service Landing | Header"
           }
         }
       },
@@ -23,7 +23,7 @@
         "code": "FIELD_SERVICE_LANDING_HERO",
         "nls": {
           "en": {
-            "NAME": "Hero · composite photo (vertical-landing)"
+            "NAME": "Field Service Landing | Hero"
           }
         }
       },
@@ -31,7 +31,7 @@
         "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
         "nls": {
           "en": {
-            "NAME": "Section · H2 narrative"
+            "NAME": "Field Service Landing | Connected Operations"
           }
         }
       },
@@ -39,7 +39,7 @@
         "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
         "nls": {
           "en": {
-            "NAME": "Features · 4-card horizontal grid"
+            "NAME": "Field Service Landing | Operational Needs"
           }
         }
       },
@@ -47,7 +47,7 @@
         "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
         "nls": {
           "en": {
-            "NAME": "Features · 2-col accordion"
+            "NAME": "Field Service Landing | Platform Capabilities"
           }
         }
       },
@@ -55,7 +55,7 @@
         "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
         "nls": {
           "en": {
-            "NAME": "Mobile section · 4 cards with glyphs"
+            "NAME": "Field Service Landing | Mobile Workforce"
           }
         }
       },
@@ -63,7 +63,7 @@
         "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
         "nls": {
           "en": {
-            "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
+            "NAME": "Field Service Landing | AI Automation"
           }
         }
       },
@@ -71,7 +71,7 @@
         "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
         "nls": {
           "en": {
-            "NAME": "Section · Stages list (growth ladder, 01→04)"
+            "NAME": "Field Service Landing | Growth Stages"
           }
         }
       },
@@ -79,7 +79,7 @@
         "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
         "nls": {
           "en": {
-            "NAME": "Verticals grid · photo-card catalog"
+            "NAME": "Field Service Landing | Supported Industries"
           }
         }
       },
@@ -87,7 +87,7 @@
         "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
         "nls": {
           "en": {
-            "NAME": "Comparison · the platform matrix"
+            "NAME": "Field Service Landing | Platform Comparison"
           }
         }
       },
@@ -95,7 +95,7 @@
         "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
         "nls": {
           "en": {
-            "NAME": "Section · Axes grid (multi-axis from→to)"
+            "NAME": "Field Service Landing | Visibility, Reporting & Integrations"
           }
         }
       },
@@ -103,7 +103,7 @@
         "code": "FIELD_SERVICE_LANDING_FAQ",
         "nls": {
           "en": {
-            "NAME": "FAQ · bubble light grouped"
+            "NAME": "Field Service Landing | FAQ"
           }
         }
       },
@@ -111,7 +111,7 @@
         "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
         "nls": {
           "en": {
-            "NAME": "Decorative · final CTA banner"
+            "NAME": "Field Service Landing | Final CTA"
           }
         }
       },
@@ -119,7 +119,7 @@
         "code": "FIELD_SERVICE_LANDING_FOOTER",
         "nls": {
           "en": {
-            "NAME": "Footer · corporate reference"
+            "NAME": "Field Service Landing | Footer"
           }
         }
       }
@@ -179,7 +179,7 @@
       "code": "FIELD_SERVICE_LANDING_HEADER",
       "nls": {
         "en": {
-          "NAME": "Header · corporate reference"
+          "NAME": "Field Service Landing | Header"
         }
       },
       "templateLanguage": "JTE",
@@ -2245,7 +2245,7 @@
       "code": "FIELD_SERVICE_LANDING_HERO",
       "nls": {
         "en": {
-          "NAME": "Hero · composite photo (vertical-landing)"
+          "NAME": "Field Service Landing | Hero"
         }
       },
       "templateLanguage": "JTE",
@@ -2612,7 +2612,7 @@
       "code": "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
       "nls": {
         "en": {
-          "NAME": "Section · H2 narrative"
+          "NAME": "Field Service Landing | Connected Operations"
         }
       },
       "templateLanguage": "JTE",
@@ -2748,7 +2748,7 @@
       "code": "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
       "nls": {
         "en": {
-          "NAME": "Features · 4-card horizontal grid"
+          "NAME": "Field Service Landing | Operational Needs"
         }
       },
       "templateLanguage": "JTE",
@@ -3040,7 +3040,7 @@
       "code": "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
       "nls": {
         "en": {
-          "NAME": "Features · 2-col accordion"
+          "NAME": "Field Service Landing | Platform Capabilities"
         }
       },
       "templateLanguage": "JTE",
@@ -3514,7 +3514,7 @@
       "code": "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
       "nls": {
         "en": {
-          "NAME": "Mobile section · 4 cards with glyphs"
+          "NAME": "Field Service Landing | Mobile Workforce"
         }
       },
       "templateLanguage": "JTE",
@@ -3754,7 +3754,7 @@
       "code": "FIELD_SERVICE_LANDING_AI_AUTOMATION",
       "nls": {
         "en": {
-          "NAME": "Signature · AI-shell (stream + side panel + capability cards)"
+          "NAME": "Field Service Landing | AI Automation"
         }
       },
       "templateLanguage": "JTE",
@@ -4328,7 +4328,7 @@
       "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
       "nls": {
         "en": {
-          "NAME": "Section · Stages list (growth ladder, 01→04)"
+          "NAME": "Field Service Landing | Growth Stages"
         }
       },
       "templateLanguage": "JTE",
@@ -4828,7 +4828,7 @@
       "code": "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
       "nls": {
         "en": {
-          "NAME": "Verticals grid · photo-card catalog"
+          "NAME": "Field Service Landing | Supported Industries"
         }
       },
       "templateLanguage": "JTE",
@@ -7119,7 +7119,7 @@
       "code": "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
       "nls": {
         "en": {
-          "NAME": "Comparison · the platform matrix"
+          "NAME": "Field Service Landing | Platform Comparison"
         }
       },
       "templateLanguage": "JTE",
@@ -9088,7 +9088,7 @@
       "code": "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
       "nls": {
         "en": {
-          "NAME": "Section · Axes grid (multi-axis from→to)"
+          "NAME": "Field Service Landing | Visibility, Reporting & Integrations"
         }
       },
       "templateLanguage": "JTE",
@@ -9393,7 +9393,7 @@
       "code": "FIELD_SERVICE_LANDING_FAQ",
       "nls": {
         "en": {
-          "NAME": "FAQ · bubble light grouped"
+          "NAME": "Field Service Landing | FAQ"
         }
       },
       "templateLanguage": "JTE",
@@ -10218,7 +10218,7 @@
       "code": "FIELD_SERVICE_LANDING_FINAL_CTA",
       "nls": {
         "en": {
-          "NAME": "Decorative · final CTA banner"
+          "NAME": "Field Service Landing | Final CTA"
         }
       },
       "templateLanguage": "JTE",
@@ -10350,7 +10350,7 @@
       "code": "FIELD_SERVICE_LANDING_FOOTER",
       "nls": {
         "en": {
-          "NAME": "Footer · corporate reference"
+          "NAME": "Field Service Landing | Footer"
         }
       },
       "templateLanguage": "JTE",

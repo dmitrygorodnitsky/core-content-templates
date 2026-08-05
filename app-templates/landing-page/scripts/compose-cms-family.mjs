@@ -335,7 +335,7 @@ const defaultValuesForBlock = (block) => {
   return {};
 };
 
-const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, locale, index, values = {}, assetBlocks = [] }) => {
+const renderBlockTemplate = ({ block, code, name, legacyCode = code, parentCode, locale, index, values = {}, assetBlocks = [] }) => {
   const params = [];
   const paramByCode = new Map((block.json.params || []).map((param) => [param.code, param]));
   const used = new Set();
@@ -412,7 +412,7 @@ const renderBlockTemplate = ({ block, code, legacyCode = code, parentCode, local
 
   return {
     code,
-    nls: { en: { NAME: block.title || block.id } },
+    nls: { en: { NAME: name || block.title || block.id } },
     templateLanguage: "JTE",
     parent: parentCode ? { code: parentCode } : null,
     children: [],
@@ -500,6 +500,7 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
     return renderBlockTemplate({
       block,
       code,
+      name: section.name,
       legacyCode,
       parentCode: rootCode,
       locale,

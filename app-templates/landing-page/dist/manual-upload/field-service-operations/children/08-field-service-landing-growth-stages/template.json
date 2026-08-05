@@ -2,7 +2,7 @@
   "code": "FIELD_SERVICE_LANDING_GROWTH_STAGES",
   "nls": {
     "en": {
-      "NAME": "Section · Stages list (growth ladder, 01→04)"
+      "NAME": "Field Service Landing | Growth Stages"
     }
   },
   "templateLanguage": "JTE",
