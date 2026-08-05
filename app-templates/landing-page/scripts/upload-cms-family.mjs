@@ -90,12 +90,6 @@ const maskSecret = (value) => {
   return `${value.slice(0, 4)}...${value.slice(-2)}`;
 };
 
-const organizationIdentifier = (org) => {
-  if (org && typeof org === "object") return org;
-  if (String(org).toUpperCase() === "SYSTEM") return { id: 1, code: "SYSTEM" };
-  return { code: org };
-};
-
 const requestText = async (url, options = {}) => {
   let lastError;
   for (let attempt = 1; attempt <= 5; attempt += 1) {
@@ -179,6 +173,23 @@ const listByCode = async ({ cmsBaseUrl, headers, code }) => {
   return matches[0] || null;
 };
 
+const resolveOrganization = async ({ baseUrl, headers, code }) => {
+  const response = await requestJson(`${baseUrl}/api/organization/list.json`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      filters: [{ property: "code", operator: "=", type: "STRING", value: code }],
+      mappings: [{ name: "id" }, { name: "code" }, { name: "name" }],
+      offset: 0,
+      pageSize: 10,
+    }),
+  });
+  const matches = (response?.result || []).filter((item) => item.code === code);
+  if (matches.length > 1) throw new Error(`Organization code is ambiguous: ${code} matched ${matches.length} records`);
+  if (!matches[0]?.id) throw new Error(`Organization was not found by code: ${code}`);
+  return { id: matches[0].id, code: matches[0].code };
+};
+
 const flattenTemplates = (templates = []) =>
   templates.flatMap((template) => [template, ...flattenTemplates(template.children || [])]);
 
@@ -194,7 +205,7 @@ const templatesFromPayload = (payload) => {
 
 const parameterCount = (templates) => templates.reduce((sum, template) => sum + (template.parameters?.length || 0), 0);
 
-const normalizeTemplateForSave = (template, existing, org) => {
+const normalizeTemplateForSave = (template, existing, organization) => {
   const {
     children: _children,
     parent: _parent,
@@ -213,7 +224,7 @@ const normalizeTemplateForSave = (template, existing, org) => {
     optimistic: existing?.optimistic,
     organization: existing?.organization?.id
       ? { id: existing.organization.id, code: existing.organization.code }
-      : organizationIdentifier(org),
+      : organization,
     advanced: template.advanced ?? existing?.advanced ?? false,
   };
   if (result.id === undefined) delete result.id;
@@ -248,8 +259,8 @@ const saveEntitySummary = (entity) => ({
     .map((parameter) => parameter.code),
 });
 
-const saveBlockTemplate = async ({ cmsBaseUrl, headers, template, existing, org }) => {
-  const entity = normalizeTemplateForSave(template, existing, org);
+const saveBlockTemplate = async ({ cmsBaseUrl, headers, template, existing, organization }) => {
+  const entity = normalizeTemplateForSave(template, existing, organization);
   let response;
   try {
     response = await requestText(`${cmsBaseUrl}/api/block-template/save.json`, {
@@ -292,12 +303,13 @@ const printDryRun = (env, templates) => {
 const resolvePlan = async (env, templates) => {
   const token = await getAccessToken(env);
   const headers = cmsHeaders(token, env.org);
+  const organization = await resolveOrganization({ baseUrl: env.baseUrl, headers, code: env.org });
   const rows = [];
   for (const template of templates) {
     const existing = await listByCode({ cmsBaseUrl: env.cmsBaseUrl, headers, code: template.code });
     rows.push({ template, existing });
   }
-  return { headers, rows };
+  return { headers, organization, rows };
 };
 
 const verifyPlan = (plan, options) => {
@@ -320,6 +332,7 @@ const verifyPlan = (plan, options) => {
 const printResolvedDryRun = (env, plan) => {
   console.log("\n=== upload-cms-family · RESOLVED DRY RUN ===\n");
   console.log(`Target: ${env.cmsBaseUrl} (${env.org})`);
+  console.log(`Organization: ${plan.organization.code} -> ${plan.organization.id}`);
   for (const row of plan.rows) {
     console.log(`  ${row.existing?.id ? "would update" : "would create"}: ${row.template.code} -> ${row.existing?.id || "(new)"}`);
   }
@@ -327,8 +340,9 @@ const printResolvedDryRun = (env, plan) => {
 };
 
 const uploadLive = async (env, plan) => {
-  const { headers, rows } = plan;
+  const { headers, organization, rows } = plan;
   console.log(`Uploading ${rows.length} independent BlockTemplates to ${env.cmsBaseUrl} (${env.org})`);
+  console.log(`Resolved organization: ${organization.code} -> ${organization.id}`);
 
   const results = [];
   for (const { template, existing } of rows) {
@@ -338,7 +352,7 @@ const uploadLive = async (env, plan) => {
       headers,
       template,
       existing,
-      org: env.org,
+      organization,
     });
     const action = existing?.id ? "updated" : "created";
     results.push({ action, code: template.code, id });

@@ -13,6 +13,7 @@ const landingRoot = path.resolve(scriptsDir, "..");
 const outDir = await fs.mkdtemp(path.join(landingRoot, "dist/.upload-check-"));
 const rootId = "11111111-1111-4111-8111-111111111111";
 const childId = "22222222-2222-4222-8222-222222222222";
+const organizationId = 42;
 let missingCode = null;
 let saveRequests = 0;
 const savedEntities = [];
@@ -59,6 +60,11 @@ const server = http.createServer(async (request, response) => {
     return send(response, 200, { token_endpoint: `${origin}/auth/token` });
   }
   if (request.url === "/auth/token") return send(response, 200, { access_token: "local-check-token" });
+  if (request.url === "/core/api/organization/list.json") {
+    const body = JSON.parse(await readBody(request));
+    const code = body.filters?.find((filter) => filter.property === "code")?.value;
+    return send(response, 200, { result: code === "SYSTEM" ? [{ id: organizationId, code: "SYSTEM", name: "System" }] : [] });
+  }
   if (request.url === "/core-cms/api/block-template/list.json") {
     const body = JSON.parse(await readBody(request));
     const code = body.filters?.find((filter) => filter.property === "code")?.value;
@@ -90,6 +96,7 @@ try {
   const success = await execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", rootId], { env });
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING -> ${rootId}`));
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING_HEADER -> ${childId}`));
+  assert.match(success.stdout, new RegExp(`Organization: SYSTEM -> ${organizationId}`));
 
   await assert.rejects(
     execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", "33333333-3333-4333-8333-333333333333"], { env }),
@@ -116,7 +123,8 @@ try {
   }
   const savedRoot = savedEntities.find((entity) => entity.code === "FIELD_SERVICE_LANDING");
   assert.equal(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG").value, null, "blank IMAGE values normalize to null");
-  console.log("upload-cms-family-check ok: IDs printed, root pin enforced, missing template rejected, relationships stripped, IMAGE null normalized");
+  assert.deepEqual(savedRoot.organization, { id: organizationId, code: "SYSTEM" }, "create/update payload uses the organization resolved by code");
+  console.log("upload-cms-family-check ok: IDs and organization resolved, root pin enforced, missing template rejected, relationships stripped, IMAGE null normalized");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });
