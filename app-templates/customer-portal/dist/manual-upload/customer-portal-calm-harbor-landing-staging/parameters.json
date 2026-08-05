@@ -74,5 +74,16 @@
         ]
       }
     }
+  },
+  {
+    "code": "ROOT_NAV_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "ROOT NAV PORTAL URL",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/"
   }
 ]

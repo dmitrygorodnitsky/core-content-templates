@@ -80,7 +80,7 @@
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "SPA_STANDARD_PRICE"
+    "value": "PRICE_CURRENCY"
   },
   {
     "code": "CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_CODE",
@@ -91,7 +91,7 @@
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "INTERVAL"
+    "value": ""
   },
   {
     "code": "CHS_LANDING_07_PRICING_PIM_PRICING_PRICE_ATTRIBUTE_VALUES",
@@ -102,7 +102,7 @@
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "ONE_TIME,MONTH"
+    "value": ""
   },
   {
     "code": "CHS_LANDING_07_PRICING_PIM_PRICING_CURRENCY",
@@ -146,7 +146,7 @@
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "AMOUNT_MINOR"
+    "value": "UNIT_PRICE"
   },
   {
     "code": "CHS_LANDING_07_PRICING_PIM_PRICING_AMOUNT_MINOR_DIVISOR",
@@ -157,7 +157,7 @@
         "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
       }
     },
-    "value": "100"
+    "value": ""
   },
   {
     "code": "CHS_LANDING_07_PRICING_PIM_PRICING_EMPTY_COPY",

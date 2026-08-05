@@ -295,6 +295,12 @@ authority `https://dev-1.servicewand.com/oauth2`, authorization endpoint
 `/oauth2/oauth2/authorize`, and callback `/core/oauth2-callback.html`; these stay
 discovery-owned rather than CMS-authored navigation parameters.
 
+The tenant-specific manual landing exporter also reads the planned portal URL
+from this descriptor. Its root exposes `ROOT_NAV_PORTAL_URL`, and every
+`auth.gotoSignin` action delegates to that value. This keeps the currently
+uploaded manual landing functional during the migration without hardcoding the
+Core Auth endpoint; the portal remains responsible for starting OIDC.
+
 Wave 19 accepted the CMS-skinned `/auth/2fa.html`. The compiler now emits
 `CUSTOMER_EXPERIENCE_AUTH_2FA` from that immutable source, with 24 safe CMS
 parameters and eight byte-preserved Core Auth runtime placeholders. The

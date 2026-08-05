@@ -30,7 +30,7 @@
       "code": "CUSTOMER_EXPERIENCE_LANDING",
       "parameterCount": 25,
       "pageContextParameterCount": 24,
-      "sha256": "1a3fc1bc73210b36aa0f5f8cf384a9d3937e953f2be3b414abb86782b9f5a940"
+      "sha256": "faa9b6bc2c21178020e3b5b7dae146f4381efd00da4d6a6b6f310cedd57d136b"
     },
     "portal": {
       "code": "CUSTOMER_EXPERIENCE_PORTAL",
@@ -54,7 +54,7 @@
   "sources": {
     "landing": {
       "builder": "app-templates/customer-portal/scripts/export-calm-harbor-landing-blocks-manual.mjs",
-      "rootSha256": "4a8d963bd909cf44b169ebe027be44dc50c1c9d1ece32a54820f9722c3b20e8e"
+      "rootSha256": "76562ec9c20943d6669fea39af261830f5eec41ffc8fc2bc0257ec03dcda6e6c"
     },
     "login": {
       "source": "app-templates/customer-portal/design-inbox/core-auth-login.html",

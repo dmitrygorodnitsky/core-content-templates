@@ -21,8 +21,13 @@ try {
   assert.match(payload.root.head, /application\/ld\+json/);
   assert.match(payload.root.head, /fonts\.googleapis\.com\/css2\?family=Manrope/);
   assert.ok(payload.root.parameters.some(function (parameter) { return parameter.code === "ROOT_FAQ_JSON_LD" && parameter.type === "LOCALIZED_JSON_OBJECT"; }));
+  const portalUrl = payload.root.parameters.find(function (parameter) { return parameter.code === "ROOT_NAV_PORTAL_URL"; });
+  assert.equal(portalUrl.type, "STRING");
+  assert.equal(portalUrl.value, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/");
+  assert.match(payload.root.html, /data-nav-portal-url="\$\{ROOT_NAV_PORTAL_URL@STRING\}"/);
+  assert.match(payload.root.javascript, /name === "auth\.gotoSignin"[\s\S]*window\.location\.assign\(root\.dataset\.navPortalUrl\)/);
   assert.equal(payload.children.length, 13);
-  assert.match(payload.root.html, /data-module="app-shell" data-visual-id="app-shell"/);
+  assert.match(payload.root.html, /data-module="app-shell"[^>]*data-visual-id="app-shell"/);
   assert.match(payload.root.html, /cms-child-slot:ROOT_NAV[\s\S]*class="page seo-page"[\s\S]*cms-child-slot:ROOT_SECTIONS/);
   assert.ok(payload.root.css.length < 32 * 1024, "root CSS must stay below the CMS field safety budget");
   assertRootCssContract(payload.root.css, sourceCss);
@@ -52,10 +57,16 @@ try {
   assert.match(payload.root.javascript, /credentials: "omit"/);
   assert.doesNotMatch(payload.root.javascript, /authorization|bearer|localStorage/i);
   assert.match(readme, /13 independently editable child templates/);
+  assert.match(readme, /ROOT_NAV_PORTAL_URL[\s\S]*portal starts Core OIDC/);
   assert.deepEqual((await fs.readdir(path.join(outputDir, "assets"))).sort(), ["spa-massage-1448.webp", "spa-room-1600.webp"]);
   assert.equal(manifest.assets.length, 2);
   assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+@[A-Z_]+\}/, "preview must resolve every CMS parameter");
+  assert.match(preview, /data-nav-portal-url="https:\/\/dev-1\.servicewand\.com\/calm-harbor-spa-customer-portal\/"/);
   assert.match(preview, /"@type":"FAQPage"/);
+  await assert.rejects(
+    exportCalmHarborLandingBlocksManual({ outputDir: path.join(outputDir, "unsafe-navigation"), portalUrl: "https://attacker.invalid/portal/" }),
+    /allowlisted origin/,
+  );
   console.log("calm-harbor-landing-blocks-manual-check ok: root, child order, source CSS contract, assets, and live PIM boundary");
 } finally {
   await fs.rm(outputDir, { recursive: true, force: true });

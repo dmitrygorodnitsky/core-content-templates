@@ -8,6 +8,7 @@ import { SEO, SEO_FOOTER } from "../design-inbox/data/seo-fixtures.js";
 const portalRoot = path.resolve("app-templates/customer-portal");
 const designRoot = path.join(portalRoot, "design-inbox");
 const sourcePath = path.join(portalRoot, "content/cases/calm-harbor-spa.portal-pim-staging.json");
+const experiencePath = path.join(portalRoot, "experience/descriptors/calm-harbor-spa.staging.json");
 const outputDir = path.join(portalRoot, "dist/manual-upload/customer-portal-calm-harbor-landing-staging");
 const rootCode = "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING";
 const assetPath = "/assets/customer-portal/calm-harbor-landing-staging";
@@ -29,12 +30,13 @@ const CHILDREN = [
   ["footer", "Footer", "cms"],
 ];
 
-export async function buildCalmHarborLandingFamily() {
+export async function buildCalmHarborLandingFamily(options = {}) {
   const runtime = JSON.parse(await fs.readFile(sourcePath, "utf8"));
   const design = await readDesignData();
   const css = await readDesignCss();
   const assets = await assetsForPackage();
-  const root = rootTemplate(css.root, design.seo);
+  const portalUrl = options.portalUrl || null;
+  const root = rootTemplate(css.root, design.seo, portalUrl);
   const children = childTemplates(runtime, css.sections, design);
   const payload = { schemaVersion: 1, root, children };
   const composition = {
@@ -65,6 +67,7 @@ export async function buildCalmHarborLandingFamily() {
     mode: "staging",
     package: { code: rootCode, children: children.map(function (child) { return child.code; }) },
     designSource: "app-templates/customer-portal/design-inbox",
+    navigation: { portalUrl },
     assets: assets.map(function (asset) { return { outputPath: asset.outputPath, publicUrl: asset.publicUrl, sha256: asset.sha256 }; }),
     sha256: {
       root: digest(JSON.stringify(root)),
@@ -74,13 +77,14 @@ export async function buildCalmHarborLandingFamily() {
     },
   };
 
-  return { runtime, design, assets, root, children, payload, composition, manifest };
+  return { runtime, design, assets, root, children, payload, composition, manifest, navigation: { portalUrl } };
 }
 
 export async function exportCalmHarborLandingBlocksManual(options = {}) {
   const target = path.resolve(options.outputDir || outputDir);
   assertOutput(target);
-  const { runtime, design, assets, root, children, payload, composition, manifest } = await buildCalmHarborLandingFamily();
+  const portalUrl = await readManualPortalUrl(options.portalUrl);
+  const { runtime, design, assets, root, children, payload, composition, manifest, navigation } = await buildCalmHarborLandingFamily({ portalUrl });
 
   const staging = target + ".staging-" + crypto.randomBytes(6).toString("hex");
   const backup = target + ".backup-" + crypto.randomBytes(6).toString("hex");
@@ -96,7 +100,7 @@ export async function exportCalmHarborLandingBlocksManual(options = {}) {
     await writeText(path.join(staging, "root.css"), root.css);
     await writeText(path.join(staging, "root.js"), root.javascript);
     await writeJson(path.join(staging, "parameters.json"), root.parameters);
-    await writeJson(path.join(staging, "page-context.source.json"), { runtime, rootCode, assetPath });
+    await writeJson(path.join(staging, "page-context.source.json"), { runtime, rootCode, assetPath, navigation });
     await writeText(path.join(staging, "README.md"), readme(children, assets));
     await writeText(path.join(staging, "preview.html"), preview(root, children, assets, design));
     for (let index = 0; index < children.length; index += 1) {
@@ -125,16 +129,32 @@ export async function exportCalmHarborLandingBlocksManual(options = {}) {
   return { outputDir: target, root, children, manifest };
 }
 
-function rootTemplate(css, seo) {
+async function readManualPortalUrl(override) {
+  const descriptor = JSON.parse(await fs.readFile(experiencePath, "utf8"));
+  const slot = descriptor?.surfaces?.portal?.url;
+  if (!override && (!slot || !["planned", "resolved"].includes(slot.status) || !slot.url)) {
+    throw new Error("Manual landing export requires a planned or resolved portal URL in the customer-experience descriptor");
+  }
+  const url = new URL(override || slot.url);
+  const allowedOrigins = descriptor.experience?.allowedNavOrigins || [];
+  if (url.protocol !== "https:" || !allowedOrigins.includes(url.origin) || url.username || url.password || url.search || url.hash) {
+    throw new Error("Manual landing portal URL must be a clean HTTPS URL on an allowlisted origin");
+  }
+  return url.href;
+}
+
+function rootTemplate(css, seo, portalUrl) {
   const metaTitle = mergeLocality(seo.meta.seoTitle, seo.meta);
   const metaDescription = mergeLocality(seo.meta.metaDescription, seo.meta);
-  return template(rootCode, "Calm Harbor Spa | Landing (staging)", null, [
+  const parameters = [
     field("ROOT_META_TITLE", metaTitle),
     field("ROOT_META_DESCRIPTION", metaDescription),
     field("ROOT_FAQ_JSON_LD", faqJsonLd(seo), "LOCALIZED_JSON_OBJECT"),
-  ], {
+  ];
+  if (portalUrl) parameters.push(field("ROOT_NAV_PORTAL_URL", portalUrl, "STRING"));
+  return template(rootCode, "Calm Harbor Spa | Landing (staging)", null, parameters, {
     head: '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="robots" content="noindex,nofollow">\n<title>' + ref("ROOT_META_TITLE") + '</title>\n<meta name="description" content="' + ref("ROOT_META_DESCRIPTION") + '">\n<script type="application/ld+json">' + ref("ROOT_FAQ_JSON_LD", "LOCALIZED_JSON_OBJECT") + '</script>\n<link rel="icon" href="data:,">\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">',
-    html: '<div class="app-shell" id="calm-harbor-landing" data-theme="beauty" data-mode="light" data-module="app-shell" data-visual-id="app-shell">\n  <!-- cms-child-slot:ROOT_NAV -->\n  <section class="page seo-page" data-route="seo.landing" data-visual-id="seo-landing" data-screen-label="SEO landing · Beauty">\n    <!-- cms-child-slot:ROOT_SECTIONS -->\n  </section>\n</div>',
+    html: '<div class="app-shell" id="calm-harbor-landing" data-theme="beauty" data-mode="light" data-module="app-shell"' + (portalUrl ? ' data-nav-portal-url="' + ref("ROOT_NAV_PORTAL_URL", "STRING") + '"' : "") + ' data-visual-id="app-shell">\n  <!-- cms-child-slot:ROOT_NAV -->\n  <section class="page seo-page" data-route="seo.landing" data-visual-id="seo-landing" data-screen-label="SEO landing · Beauty">\n    <!-- cms-child-slot:ROOT_SECTIONS -->\n  </section>\n</div>',
     css,
     javascript: runtimeScript(),
   });
@@ -392,7 +412,7 @@ function runtimeScript() {
   function pricing(root, rows) { root.dataset.state = "ready"; var head = root.querySelector(".seo-sec__head"); if (head && !head.querySelector(".seo-sec__sub")) head.appendChild(el("p", "seo-sec__sub", attr(root, "sub"))); var body = root.querySelector("[data-pim-body]"); body.replaceChildren(); rows.forEach(function (item) { var row = el("div", "seo-price__row"); row.dataset.module = "seo-pricing-row"; row.dataset.visualId = "seo-pricing-row"; row.dataset.bind = "pim.pricing[]"; row.dataset.productCode = item.code; var name = el("span", "seo-price__name", item.name); name.dataset.bind = "pim.pricing[].name"; if (item.description) { var desc = el("span", "seo-price__desc", item.description); desc.dataset.bind = "pim.pricing[].shortDescription"; name.appendChild(desc); } var value = el("span", "seo-price__val"); var amount = el("b", "", item.displayPrice); amount.dataset.bind = "pim.pricing[].displayPrice"; value.append(amount); if (item.interval) { var unit = el("span", "seo-price__unit", " / " + item.interval); unit.dataset.bind = "pim.pricing[].interval"; value.append(unit); } row.append(name, value); body.appendChild(row); }); }
   function products(root, rows) { root.dataset.state = "ready"; clearProductCta(root); var body = root.querySelector("[data-pim-body]"); body.replaceChildren(); var tints = [["var(--accent)", "linear-gradient(160deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.32))"], ["#1f8a44", "linear-gradient(160deg,#dcf5e2,#bff0cf)"], ["#ff8a3d", "linear-gradient(160deg,#ffe9d6,#ffd3ad)"], ["#7a52e0", "linear-gradient(160deg,#eee6ff,#d8c6ff)"]]; rows.slice(0, 4).forEach(function (item, index) { var tint = tints[Number.isInteger(item.tintIndex) ? item.tintIndex % tints.length : index % tints.length]; var card = el("div", "product-card seo-teaser-card"); card.dataset.module = "seo-product-teaser-card"; card.dataset.visualId = "seo-product-teaser-card"; card.dataset.action = "nav.products"; card.dataset.bind = "pim.products[]"; card.dataset.productCode = item.code; card.setAttribute("role", "button"); card.setAttribute("tabindex", "0"); card.setAttribute("aria-label", item.name + " — open the shop"); var art = el("div", "product-card__art"); art.style.background = tint[1]; var thumb = el("div", "product-card__thumb"); var mark = el("i"); mark.style.background = tint[0]; thumb.appendChild(mark); art.appendChild(thumb); var cardName = el("div", "product-card__name", item.name); cardName.dataset.bind = "pim.products[].name"; var blurb = el("div", "product-card__blurb", item.description || item.code); blurb.dataset.bind = "pim.products[].shortDescription"; var foot = el("div", "product-card__foot"); var amount = el("div", "price-lg", item.displayPrice); amount.dataset.bind = "pim.products[].displayPrice"; foot.append(amount, el("span", "seo-teaser-card__go", "Shop →")); card.append(art, cardName, blurb, foot); body.appendChild(card); }); var cta = el("div", "seo-teaser__cta"); var button = el("button", "btn btn--primary seo-cta", attr(root, "cta-label")); button.dataset.module = "seo-cta"; button.dataset.visualId = "seo-products-teaser-cta"; button.dataset.action = "nav.products"; button.dataset.state = "idle"; button.dataset.bind = "cms.productsTeaser.cta"; button.setAttribute("aria-live", "polite"); cta.appendChild(button); if (attr(root, "cta-note")) cta.appendChild(el("span", "seo-teaser__note", attr(root, "cta-note"))); body.after(cta); }
   async function load(root) { root.dataset.state = "loading"; try { var preview = window.__CALM_HARBOR_PREVIEW_PIM && window.__CALM_HARBOR_PREVIEW_PIM[root.dataset.pimKind]; if (preview) { if (root.dataset.pimKind === "pricing") pricing(root, preview); else products(root, preview); return; } var replies = await Promise.all(values(attr(root, "product-type-codes")).map(async function (type) { var response = await fetch(endpoint(root), { method: "POST", credentials: "omit", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(payload(root, type)) }); if (!response.ok) throw new Error("Core PIM HTTP " + response.status); return response.json(); })); var rows = normalize(replies.flatMap(function (reply) { return Array.isArray(reply && reply.prices) ? reply.prices : []; }), root); if (!rows.length) empty(root); else if (root.dataset.pimKind === "pricing") pricing(root, rows); else products(root, rows); } catch (_) { error(root); } }
-  function wire(root) { root.addEventListener("click", function (event) { var action = event.target.closest("[data-action]"); if (!action || !root.contains(action)) return; var name = action.dataset.action; if (name === "ui.toggleMode") { event.preventDefault(); document.documentElement.dataset.mode = document.documentElement.dataset.mode === "dark" ? "light" : "dark"; root.dataset.mode = document.documentElement.dataset.mode; } else if (name === "nav.services" || name === "nav.pricing" || name === "nav.products") { var target = document.querySelector(name === "nav.services" ? "#seo-services" : name === "nav.pricing" ? "#seo-pricing" : "#seo-products"); if (target) { event.preventDefault(); target.scrollIntoView({ behavior: "smooth", block: "start" }); } } else if (name === "seo.faq.toggle") { event.preventDefault(); var item = action.closest(".seo-faq__item"); var open = item.classList.toggle("is-open"); action.setAttribute("aria-expanded", open ? "true" : "false"); var chev = action.querySelector(".seo-faq__chev"); if (chev) chev.textContent = open ? "−" : "+"; var answer = item.querySelector(".seo-faq__a"); if (!open && answer) answer.remove(); else if (open && !answer) { answer = el("div", "seo-faq__a"); answer.setAttribute("itemscope", ""); answer.setAttribute("itemprop", "acceptedAnswer"); answer.setAttribute("itemtype", "https://schema.org/Answer"); var copy = el("p", "", action.dataset.faqAnswer || ""); copy.setAttribute("itemprop", "text"); answer.appendChild(copy); item.appendChild(answer); } } }); var apply = function () { var width = root.getBoundingClientRect().width; root.classList.toggle("vw-mobile", width <= 560); root.classList.toggle("vw-tablet", width > 560 && width <= 900); root.classList.toggle("vw-compact", width <= 1040); }; apply(); if (window.ResizeObserver) new ResizeObserver(apply).observe(root); }
+  function wire(root) { root.addEventListener("click", function (event) { var action = event.target.closest("[data-action]"); if (!action || !root.contains(action)) return; var name = action.dataset.action; if (name === "ui.toggleMode") { event.preventDefault(); document.documentElement.dataset.mode = document.documentElement.dataset.mode === "dark" ? "light" : "dark"; root.dataset.mode = document.documentElement.dataset.mode; } else if (name === "nav.services" || name === "nav.pricing" || name === "nav.products") { var target = document.querySelector(name === "nav.services" ? "#seo-services" : name === "nav.pricing" ? "#seo-pricing" : "#seo-products"); if (target) { event.preventDefault(); target.scrollIntoView({ behavior: "smooth", block: "start" }); } } else if (name === "auth.gotoSignin") { event.preventDefault(); if (root.dataset.navPortalUrl) window.location.assign(root.dataset.navPortalUrl); } else if (name === "seo.faq.toggle") { event.preventDefault(); var item = action.closest(".seo-faq__item"); var open = item.classList.toggle("is-open"); action.setAttribute("aria-expanded", open ? "true" : "false"); var chev = action.querySelector(".seo-faq__chev"); if (chev) chev.textContent = open ? "−" : "+"; var answer = item.querySelector(".seo-faq__a"); if (!open && answer) answer.remove(); else if (open && !answer) { answer = el("div", "seo-faq__a"); answer.setAttribute("itemscope", ""); answer.setAttribute("itemprop", "acceptedAnswer"); answer.setAttribute("itemtype", "https://schema.org/Answer"); var copy = el("p", "", action.dataset.faqAnswer || ""); copy.setAttribute("itemprop", "text"); answer.appendChild(copy); item.appendChild(answer); } } }); var apply = function () { var width = root.getBoundingClientRect().width; root.classList.toggle("vw-mobile", width <= 560); root.classList.toggle("vw-tablet", width > 560 && width <= 900); root.classList.toggle("vw-compact", width <= 1040); }; apply(); if (window.ResizeObserver) new ResizeObserver(apply).observe(root); }
   ready(function () { var root = document.querySelector("#calm-harbor-landing"); if (!root) return; document.documentElement.dataset.theme = "beauty"; document.documentElement.dataset.mode = root.dataset.mode || "light"; wire(root); root.querySelectorAll("[data-pim-kind]").forEach(load); });
 })();`;
 }
@@ -569,7 +589,7 @@ function readme(children, assets) {
     "2. Create the root template from `root.template.json` with code `" + rootCode + "`.\n" +
     "3. Create child templates in numeric order under `children/`. Each child records its parent as `" + rootCode + "`.\n" +
     "4. Compose `CHS_LANDING_01_PUBLIC_NAV` at `ROOT_NAV`. Compose children 02–13, in numeric order, at `ROOT_SECTIONS` inside `.page.seo-page`. The flat uploader intentionally does not create these include relationships.\n" +
-    "5. Before publishing, replace every `SIGN_IN_URL`, shop URL, phone, email, and legal URL placeholder with verified staging values. A `#` sign-in URL is intentionally non-functional and must not be treated as a login flow.\n\n" +
+    "5. Verify `ROOT_NAV_PORTAL_URL` against the customer-experience descriptor, then replace phone, email, and legal placeholders with verified staging values. Every `auth.gotoSignin` action enters the portal; the portal starts Core OIDC.\n\n" +
     "## Live data boundary\n\n" +
     "Only `CHS_LANDING_07_PRICING_PIM` and `CHS_LANDING_08_PRODUCTS_PIM` fetch Core PIM. They request the public same-origin endpoint with `credentials: omit`, render loading/ready/empty/error, and never use CMS numeric prices as a fallback. All other children are CMS-authored public content.\n\n" +
     "## Included media\n\n" + assets.map(function (asset) { return "- `" + asset.outputPath + "` -> `" + asset.publicUrl + "`"; }).join("\n") + "\n";

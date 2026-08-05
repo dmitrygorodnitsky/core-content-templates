@@ -21,6 +21,9 @@
     ]
   },
   "designSource": "app-templates/customer-portal/design-inbox",
+  "navigation": {
+    "portalUrl": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/"
+  },
   "assets": [
     {
       "outputPath": "spa-massage-1448.webp",
@@ -34,9 +37,9 @@
     }
   ],
   "sha256": {
-    "root": "273f3993868db787d82a560ffc4d1d52df11373d76639d5aa77063facd180177",
-    "children": "d1de515deea5dc79aa6673dba018a71f4654da45d46ba4a7fb9a90c09ba96ef7",
-    "css": "6239113dfd034bf3299e86c45ab79949b3da74b3b0f8bed4865e0f0a7d39f085",
-    "javascript": "f026bef3c539a2def3424ccec1f020d45618cfac33865251b559ac7258c5140f"
+    "root": "69623ef921770cfd9459fa41e0f80993f08631618c632a9c8bc0298cf646ef19",
+    "children": "08952d3d0e66c81a5cd93ddb92fde0ae6250a4203b80905e65602e7c4619d536",
+    "css": "fea73e1d931553db84846652003bafb4c80ebc3a27f69cf85297d0100029509a",
+    "javascript": "2e18ccb73323bef0103717687214f7c7890153f03ea91ff88cd87e77a784a6ef"
   }
 }
