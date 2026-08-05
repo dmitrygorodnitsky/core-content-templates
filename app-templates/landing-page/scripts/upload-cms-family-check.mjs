@@ -22,7 +22,10 @@ await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify(
   schemaVersion: 1,
   root: {
     code: "FIELD_SERVICE_LANDING",
-    parameters: [{ code: "FAVICON_IMG", type: "IMAGE", value: "", nls: { en: { NAME: "Favicon", DESCRIPTION: "Favicon" } } }],
+    parameters: [
+      { code: "FAVICON_IMG", type: "IMAGE", value: null, nls: { en: { NAME: "Favicon", DESCRIPTION: "Favicon" } } },
+      { code: "FAVICON_IMG_NAME", type: "STRING", value: "", nls: { en: { NAME: "Favicon name", DESCRIPTION: "Favicon name" } } },
+    ],
     children: [{ code: "MUST_NOT_BE_SAVED" }],
     parent: { code: "MUST_NOT_BE_SAVED" },
     includes: ["MUST_NOT_BE_SAVED"],
@@ -122,9 +125,10 @@ try {
     }
   }
   const savedRoot = savedEntities.find((entity) => entity.code === "FIELD_SERVICE_LANDING");
-  assert.equal(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG").value, null, "blank IMAGE values normalize to null");
-  assert.deepEqual(savedRoot.organization, { id: organizationId, code: "SYSTEM" }, "create/update payload uses the organization resolved by code");
-  console.log("upload-cms-family-check ok: IDs and organization resolved, root pin enforced, missing template rejected, relationships stripped, IMAGE null normalized");
+  assert.equal(Object.hasOwn(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG"), "value"), false, "null IMAGE values are omitted like core-ui");
+  assert.equal(Object.hasOwn(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG_NAME"), "value"), false, "blank STRING values are omitted like core-ui");
+  assert.deepEqual(savedRoot.organization, { id: organizationId }, "save payload uses the organization identifier shape emitted by core-ui");
+  console.log("upload-cms-family-check ok: IDs and organization resolved, root pin enforced, missing template rejected, relationships stripped, empty values omitted like core-ui");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });

@@ -146,7 +146,7 @@ const blockMappings = [
   { name: "id" },
   { name: "code" },
   { name: "nls" },
-  { name: "organization", type: "identifier", mappings: [{ name: "id" }, { name: "code" }, { name: "name" }] },
+  { name: "organization", type: "identifier", key: "id" },
   { name: "templateLanguage" },
   { name: "advanced" },
   { name: "head" },
@@ -205,6 +205,31 @@ const templatesFromPayload = (payload) => {
 
 const parameterCount = (templates) => templates.reduce((sum, template) => sum + (template.parameters?.length || 0), 0);
 
+// Keep the wire payload aligned with core-ui's createMutationMapping helper.
+// In particular, core-ui omits nulls, empty strings, and empty objects before
+// posting instead of sending explicit empty parameter values on create.
+const isCmsEmptyValue = (value) =>
+  value === null
+  || value === undefined
+  || value === ""
+  || (typeof value === "object" && Object.keys(value).length === 0);
+
+const removeCmsEmptyValues = (value) => {
+  if (Array.isArray(value)) {
+    return value
+      .map(removeCmsEmptyValues)
+      .filter((item) => !isCmsEmptyValue(item));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .map(([key, item]) => [key, removeCmsEmptyValues(item)])
+        .filter(([, item]) => !isCmsEmptyValue(item)),
+    );
+  }
+  return value;
+};
+
 const normalizeTemplateForSave = (template, existing, organization) => {
   const {
     children: _children,
@@ -223,8 +248,8 @@ const normalizeTemplateForSave = (template, existing, organization) => {
     id: existing?.id,
     optimistic: existing?.optimistic,
     organization: existing?.organization?.id
-      ? { id: existing.organization.id, code: existing.organization.code }
-      : organization,
+      ? { id: existing.organization.id }
+      : { id: organization.id },
     advanced: template.advanced ?? existing?.advanced ?? false,
   };
   if (result.id === undefined) delete result.id;
@@ -232,11 +257,10 @@ const normalizeTemplateForSave = (template, existing, organization) => {
   if (Array.isArray(result.parameters)) {
     result.parameters = result.parameters.map((parameter) => {
       const { options: _options, ...withoutOptions } = parameter;
-      if (withoutOptions.type === "IMAGE" && !withoutOptions.value) withoutOptions.value = null;
       return withoutOptions;
     });
   }
-  return result;
+  return removeCmsEmptyValues(result);
 };
 
 const saveEntitySummary = (entity) => ({
@@ -254,8 +278,8 @@ const saveEntitySummary = (entity) => ({
     counts[parameter.type] = (counts[parameter.type] || 0) + 1;
     return counts;
   }, {})).sort()),
-  nullImageCodes: (entity.parameters || [])
-    .filter((parameter) => parameter.type === "IMAGE" && parameter.value == null)
+  unsetValueCodes: (entity.parameters || [])
+    .filter((parameter) => !Object.hasOwn(parameter, "value"))
     .map((parameter) => parameter.code),
 });
 
