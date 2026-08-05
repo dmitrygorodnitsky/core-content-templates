@@ -12,7 +12,9 @@
 
 ## Repository Boundaries
 
-- `cms-templates/**` contains independently deployable CMS packages.
+- `cms-templates/**` contains independently authored deployable CMS packages;
+  generated customer-experience templates belong under
+  `app-templates/customer-portal/dist/**`.
 - `app-templates/customer-portal/design-inbox/**` is immutable and user-owned.
 - `app-templates/customer-portal/dist/**` is generated; update it only through
   the owning exporter or compiler.

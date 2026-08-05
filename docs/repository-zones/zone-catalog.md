@@ -4,7 +4,7 @@
 |---|---|---|---|---|---|---|---|
 | Repository governance | `/AGENTS.md`, `/.github/**`, `/.claude/**`, `/.vscode/**`, `/.gitignore`, `/LICENSE`, `/docs/repository-zones/**` | repository-maintenance | customer-experience | ownership, contribution, editor/agent and handoff rules | product behavior | scoped `AGENTS.md`, CODEOWNERS | high |
 | Repository documentation | `/README.md`, `/CMS_BLOCK_PORTAL_STRUCTURE.md`, `/docs/**` except `/docs/repository-zones/**` | documentation | repository-maintenance | CMS guidance, task evidence, design briefs | runtime implementation | links to canonical source paths | medium |
-| Shared CMS packages | `/cms-templates/**` | cms-packaging | repository-maintenance | independently deployable CMS templates | portal runtime source | `block_template_config.json`, manual-upload contract | high |
+| Shared CMS packages | `/cms-templates/**` | cms-packaging | repository-maintenance | independently authored reusable CMS templates | portal runtime source or generated customer-experience output | `block_template_config.json`, manual-upload contract | high |
 | Shared tooling | `/scripts/**`, `/js/**`, `/test/**` | shared-tooling | repository-maintenance | repository-wide generators and tests | customer-portal-only checks | CLI and fixture contracts | medium |
 | Portal family definition | `/app-templates/customer-portal/experience/**` | customer-experience | portal-runtime | schema, registry, contracts, descriptors | visual source and generated output | descriptor schema and parameter registry | high |
 | Portal runtime | `/app-templates/customer-portal/runtime/**` | portal-runtime | customer-experience | routes, state, adapters, commands, styles | accepted design source | runtime manifest and CMS data attributes | high |
