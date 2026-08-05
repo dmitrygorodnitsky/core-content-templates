@@ -9,7 +9,7 @@ export function PublicNav() {
     h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
       h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
         h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Aircove")
+        h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
       ]),
       h("div", { "class": "top-nav__actions" }, [
         h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263e"),

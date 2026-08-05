@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-local-build",
+  "uploadPerformed": false,
+  "experienceId": "calm-harbor-spa-staging",
+  "descriptor": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-experience-staging.json",
+  "publishable": false,
+  "blockers": [
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRICING_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "login-page-context-selector-unproven",
+      "surface": "login",
+      "code": null,
+      "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+    }
+  ],
+  "templates": {
+    "landing": {
+      "code": "CUSTOMER_EXPERIENCE_LANDING",
+      "parameterCount": 25,
+      "pageContextParameterCount": 18,
+      "sha256": "0473c841fa93dd37455dadd8720a0335cc7230493c73dffce8e526c7dec9302b"
+    },
+    "portal": {
+      "code": "CUSTOMER_EXPERIENCE_PORTAL",
+      "parameterCount": 65,
+      "pageContextParameterCount": 55,
+      "sha256": "d0e539cb1860b09c8ece483c9a09e5ae82c8da37080c8ac0632c6bb0492ba324"
+    },
+    "login": {
+      "code": "CUSTOMER_EXPERIENCE_LOGIN",
+      "parameterCount": 25,
+      "pageContextParameterCount": 25,
+      "sha256": "929e8b3ff97ff21b677ee7e91a695315a8507f5e67fdb8ae41e26bd339cfc5db"
+    },
+    "twoFactor": {
+      "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
+      "parameterCount": 24,
+      "pageContextParameterCount": 24,
+      "sha256": "add2bf1b7d9cf7f8acfe8521467f9b444b47340d70c18c44fb3e63a8c8e659d6"
+    }
+  },
+  "runtime": {
+    "source": "app-templates/customer-portal/runtime/manual/calm-harbor-target-runtime.js",
+    "sha256": "860607d8c89c4f1eae579447e1779fe3b890cfe5e77bf25042e81fe91757928f"
+  }
+}

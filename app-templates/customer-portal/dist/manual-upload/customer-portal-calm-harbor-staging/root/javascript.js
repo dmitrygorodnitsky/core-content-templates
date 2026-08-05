@@ -254,7 +254,6 @@
     beauty: vertical("beauty", "Beauty", "spaStaging", "My routine", false)
   };
   var routeRegistry = {
-    landing: { id: "landing", path: "/", module: "landing", public: true },
     "seo.landing": { id: "seo.landing", path: "/seo-preview", module: "seo-parity", public: true, parityOnly: true },
     "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
     "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
@@ -333,6 +332,27 @@
     var caseId = dataMode === "fixture" && caseFixtureFor(dataset.portalCase) ? dataset.portalCase : "";
     if (caseId && vertical2 !== "beauty") caseId = "";
     return {
+      experienceId: dataset.portalExperienceId || "local-preview",
+      brandName: dataset.portalBrandName || verticalConfig.displayName,
+      landingUrl: safeConfiguredUrl(dataset.portalLandingUrl),
+      portalUrl: safeConfiguredUrl(dataset.portalUrl),
+      supportUrl: safeConfiguredUrl(dataset.portalSupportUrl),
+      logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
+      registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
+      allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+      navigation: {
+        primary: dataset.portalNavPrimaryLabel || "",
+        calendar: dataset.portalNavCalendarLabel || "",
+        activity: dataset.portalNavActivityLabel || "",
+        care: dataset.portalNavCareLabel || "",
+        proposals: dataset.portalNavProposalsLabel || "",
+        services: dataset.portalNavServicesLabel || "",
+        pricing: dataset.portalNavPricingLabel || "",
+        products: dataset.portalNavProductsLabel || "",
+        account: dataset.portalNavAccountLabel || "",
+        support: dataset.portalNavSupportLabel || ""
+      },
+      primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
       vertical: vertical2,
       theme,
       profile,
@@ -341,6 +361,11 @@
       retail: allowed(dataset.portalRetail, ["browse-only", "retail-commerce-open"], "browse-only"),
       planCommerce: allowed(dataset.portalPlanCommerce, ["closed", "open"], "closed"),
       demoCommands: allowed(dataset.portalDemoCommands, ["closed", "current-api"], "closed"),
+      anonymousIntentMode: allowed(dataset.portalAnonymousIntentMode, ["closed", "selection-only"], "closed"),
+      anonymousIntentTtlSeconds: boundedInteger(dataset.portalAnonymousIntentTtlSeconds, 1800, 60, 86400),
+      anonymousIntentMaxItems: boundedInteger(dataset.portalAnonymousIntentMaxItems, 10, 1, 50),
+      anonymousIntentReconciliationMode: allowed(dataset.portalAnonymousIntentReconciliation, ["authenticated-server"], "authenticated-server"),
+      registrationMode: allowed(dataset.portalRegistrationMode, ["closed", "core-auth"], "closed"),
       organization: dataset.portalOrganization || dataset.portalPimOrganization || "SERVICEWAND",
       coreApiBase: dataset.portalCoreApiBase || "/core",
       accountApiBase: dataset.portalAccountApiBase || "/core-acct",
@@ -386,6 +411,28 @@
       defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light")
     };
   }
+  function configuredExternalUrl(config, key) {
+    var value = config && config[key];
+    if (!value) return "";
+    var parsed;
+    try {
+      parsed = new URL(value, globalThis.location && globalThis.location.href);
+    } catch (_) {
+      return "";
+    }
+    if (parsed.protocol !== "https:") return "";
+    var allowedOrigins = config.allowedNavOrigins || [];
+    return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+  }
+  function safeConfiguredUrl(value) {
+    if (!value) return "";
+    try {
+      var parsed = new URL(value);
+      return parsed.protocol === "https:" ? parsed.href : "";
+    } catch (_) {
+      return "";
+    }
+  }
   function routePath(routeId, params) {
     var route = routeRegistry[routeId];
     if (!route) return "/";
@@ -419,6 +466,10 @@
   function positiveNumber(value, fallback) {
     var parsed = Number(value);
     return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+  }
+  function boundedInteger(value, fallback, minimum, maximum) {
+    var parsed = Number(value);
+    return Number.isInteger(parsed) && parsed >= minimum && parsed <= maximum ? parsed : fallback;
   }
   function escapeRegExp(value) {
     return value.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&");
@@ -970,7 +1021,7 @@
     return customerPortalAccessRequired() && state.session.authenticated === true && state.account !== "ready";
   }
   function isModuleEnabled(moduleId) {
-    if (!moduleId || moduleId === "auth" || moduleId === "landing" || moduleId === "seo-parity") return true;
+    if (!moduleId || moduleId === "auth" || moduleId === "seo-parity") return true;
     return state.config.enabledModules.includes(moduleId);
   }
   function applyPortalConfig(config) {
@@ -2725,15 +2776,18 @@
   }
   function startCoreOidcSignIn(config) {
     if (!manager) return Promise.reject(contractError4("oidc-manager-unavailable", "Core sign-in is not ready"));
-    var returnUrl = new URL(globalThis.location.href);
-    returnUrl.hash = "#/orders";
+    var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
     globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
     return manager.signinRedirect();
   }
   function startCoreOidcSignOut(config) {
     if (!manager) return Promise.reject(contractError4("oidc-manager-unavailable", "Core sign-out is not ready"));
-    var returnUrl = new URL(globalThis.location.href);
-    returnUrl.hash = "#/login";
+    var configured = config && config.logoutReturnUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (!configured) returnUrl.hash = "#/login";
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      return Promise.reject(contractError4("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
+    }
     globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
     return manager.signoutRedirect();
   }
@@ -2741,6 +2795,21 @@
     var url = new URL(value, globalThis.location.origin);
     if (url.origin !== globalThis.location.origin) throw contractError4("cross-origin-service", label + " must be same-origin");
     return url.href;
+  }
+  function portalRouteUrl(config, routeId) {
+    var configured = config && config.portalUrl;
+    var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+    if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+      throw contractError4("oidc-return-invalid", "Configured portal return URL is not allowlisted");
+    }
+    var route = routePath(routeId);
+    if (config.routerMode === "history") {
+      if (!returnUrl.pathname.endsWith("/")) throw contractError4("oidc-return-invalid", "History-mode portal URL must end with a slash");
+      returnUrl.pathname += route.replace(/^\//, "");
+      return returnUrl;
+    }
+    returnUrl.hash = "#" + route;
+    return returnUrl;
   }
   function contractError4(code, message) {
     var error2 = new Error(message);
@@ -2934,7 +3003,7 @@
   function spaBrand() {
     return h("div", { "class": "top-nav__brand", "data-action": "nav.go", "data-id": "orders.list" }, [
       h("div", { "class": "brand-logo" }),
-      h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Calm Harbor Spa")
+      h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Calm Harbor Spa")
     ]);
   }
   function linkActive(key) {
@@ -2965,9 +3034,9 @@
         "data-action": "nav.go",
         "data-id": n.key,
         "data-state": active ? "active" : void 0
-      }, n.label);
+      }, navLabel(n));
     });
-    var cta = open ? ActionButton({ variant: "btn--primary", label: "+ Book", action: "booking.open", visualId: "primary-cta" }) : ActionButton({ variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "primary-cta" });
+    var cta = open ? ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || "+ Book", action: "booking.open", visualId: "primary-cta" }) : ActionButton({ variant: "btn--ghost", label: state.config.primaryCtaLabel || "Browse services", action: "nav.go", id: "services", visualId: "primary-cta" });
     cta.classList.add("spa-cta");
     if (!open) cta.classList.add("spa-cta--browse");
     var initial = (cust.fullName || "?").charAt(0).toUpperCase();
@@ -3009,7 +3078,7 @@
             h("div", { "class": "account-menu__sub" }, "Signed in with the secure account service")
           ])
         ]),
-        h("button", { "class": "account-menu__item", "data-action": "support.open", role: "menuitem" }, "Support"),
+        h("button", { "class": "account-menu__item", "data-action": "support.open", role: "menuitem" }, state.config.navigation && state.config.navigation.support || "Support"),
         h("button", { "class": "account-menu__item", "data-action": "ui.toggleMode", role: "menuitem" }, state.mode === "Dark" ? "Switch to light mode" : "Switch to dark mode"),
         h("div", { "class": "account-menu__divider" }),
         h("button", { "class": "account-menu__item account-menu__item--danger", "data-action": "auth.signOut", role: "menuitem" }, "Sign out")
@@ -3021,15 +3090,26 @@
         { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
         profile.nav.map(function(n) {
           var active = linkActive(n.key);
-          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, n.label);
+          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
         })
       );
       mob.appendChild(h("div", { "class": "mobile-nav__divider" }));
-      mob.appendChild(h("span", { "class": "nav-link", "data-action": "support.open" }, "Support"));
+      mob.appendChild(h("span", { "class": "nav-link", "data-action": "support.open" }, state.config.navigation && state.config.navigation.support || "Support"));
       mob.appendChild(h("span", { "class": "nav-link", "data-action": "auth.signOut" }, "Sign out"));
       nav.appendChild(mob);
     }
     return h("div", { "class": "top-nav-wrap" }, nav);
+  }
+  function navLabel(item) {
+    var configured = state.config.navigation || {};
+    var key = {
+      "orders.list": "primary",
+      services: "services",
+      pricing: "pricing",
+      products: "products",
+      account: "account"
+    }[item.key];
+    return configured[key] || item.label;
   }
 
   // app-templates/customer-portal/runtime/src/components/shell/TopNav.js
@@ -3038,7 +3118,7 @@
     var profile = activeProfile();
     if (gated) {
       return h("div", { "class": "top-nav-wrap" }, h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav", "data-state": "gated" }, [
-        h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, "Aircove")]),
+        h("div", { "class": "top-nav__brand" }, [h("div", { "class": "brand-logo" }), h("span", { "class": "brand-name" }, state.config.brandName || "Aircove")]),
         h("div", { "class": "nav-links" }),
         h("div", { "class": "top-nav__actions" }, [h("div", { "class": "icon-btn", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")])
       ]));
@@ -3051,12 +3131,12 @@
         "data-action": "nav.go",
         "data-id": n.key,
         "data-state": active ? "active" : void 0
-      }, navLabel(n));
+      }, navLabel2(n));
     });
     var actions = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
     ];
-    if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
     if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
     if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
     var activityEnabled = isModuleEnabled("activity");
@@ -3072,7 +3152,7 @@
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
       h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
         h("div", { "class": "brand-logo" }),
-        h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Aircove")
+        h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
       ]),
       h("div", { "class": "nav-links" }, [h("div", { "class": "nav-pill", "data-nav-pill": "true" })].concat(links)),
       h("div", { "class": "top-nav__actions" }, actions)
@@ -3083,7 +3163,7 @@
         { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
         navItems.map(function(n) {
           var active = n.key === state.route || n.key === "orders.list" && state.route === "order.detail" || n.key === "products" && state.route === "checkout" || n.key === "proposals.list" && state.route === "proposal.detail";
-          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
+          return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel2(n));
         })
       ));
     }
@@ -3093,8 +3173,21 @@
     var route = routeRegistry[item.key];
     return !!(route && (route.public || isModuleEnabled(route.module)));
   }
-  function navLabel(item) {
-    return item.key === "care" ? activeVerticalConfig().careNavLabel : item.label;
+  function navLabel2(item) {
+    var configured = state.config.navigation || {};
+    var key = {
+      "orders.list": "primary",
+      calendar: "calendar",
+      activity: "activity",
+      care: "care",
+      "proposals.list": "proposals",
+      services: "services",
+      pricing: "pricing",
+      products: "products",
+      account: "account",
+      support: "support"
+    }[item.key];
+    return configured[key] || (item.key === "care" ? activeVerticalConfig().careNavLabel : item.label);
   }
 
   // app-templates/customer-portal/runtime/src/components/primitives/Toggle.js
@@ -3114,7 +3207,7 @@
       h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
         h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
           h("div", { "class": "brand-logo" }),
-          h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Aircove")
+          h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
         ]),
         h("div", { "class": "top-nav__actions" }, [
           h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
@@ -4669,71 +4762,13 @@
     ]);
   }
 
-  // app-templates/customer-portal/runtime/src/routes/LandingPage.js
-  function Landing() {
-    var v = currentTheme();
-    var profile = activeProfile();
-    var storm = profile.weatherCalendar;
-    var page = h("section", { "class": "page", "data-route": "landing", "data-visual-id": "landing" });
-    var quoteCard = h("div", { "class": "landing-quote", "data-module": "quote-card", "data-visual-id": "quote-card" }, [
-      h("div", { style: "font-weight:700;font-size:17px;margin-bottom:14px" }, storm ? "Protect your property this season" : "Get a quote in 30s"),
-      h("div", { style: "display:flex;flex-direction:column;gap:10px" }, [
-        quoteField("What do you need?", v.svc[0].name),
-        quoteField("When?", storm ? "This season" : "Today"),
-        h("div", { "class": "quote-addr", "data-action": profile.primary.action }, "Your address\u2026"),
-        ActionButton({ variant: "btn--primary", label: storm ? "Get seasonal quote" : "See price & book", action: profile.primary.action, block: true, lg: true, visualId: "landing-quote-cta" }),
-        h("div", { style: "text-align:center;font-size:11.5px;color:var(--ink-3)" }, "No card needed to get a quote")
-      ])
-    ]);
-    page.appendChild(h(
-      "div",
-      { "class": "landing-hero", "data-module": "landing-hero", "data-visual-id": "landing-hero" },
-      h("div", { "class": "landing-hero__inner" }, [
-        h("div", null, [
-          h("span", { "class": "eyebrow landing-hero__badge", "data-bind": "hero.badge" }, v.hero.badge),
-          h("h1", { "class": "landing-hero__title", "data-bind": "hero.title" }, v.hero.title),
-          h("p", { "class": "landing-hero__sub", "data-bind": "hero.sub" }, v.hero.sub),
-          h("div", { style: "display:flex;gap:11px;align-items:center;flex-wrap:wrap" }, [
-            ActionButton({ variant: "btn--onaccent", label: "Sign in to portal", action: "auth.gotoSignin", lg: true, visualId: "hero-signin" }),
-            ActionButton({ variant: "btn--glass-hero", label: storm ? "See plans" : "See pricing", action: "auth.gotoSignin", lg: true, visualId: "hero-pricing" })
-          ]),
-          h("div", { "class": "landing-social" }, [
-            h("div", { "class": "avatar-stack" }, [
-              h("div", { "class": "avatar-stack__a", style: "background:linear-gradient(160deg,#ffd27a,#ff9b6a)" }),
-              h("div", { "class": "avatar-stack__a", style: "background:linear-gradient(160deg,#c7e0ff,#88b4ff)" }),
-              h("div", { "class": "avatar-stack__a", style: "background:linear-gradient(160deg,#b7f5d0,#6fd99a)" })
-            ]),
-            h("div", { style: "font-size:13px;color:rgba(255,255,255,.85)" }, "\u2605 4.9 \u2014 loved by 12k customers")
-          ])
-        ]),
-        quoteCard
-      ])
-    ));
-    var cat = v.svc.slice(0, 3);
-    page.appendChild(h("div", { "class": "landing-services" }, cat.map(function(s, i) {
-      var pal = F.PAL[i % 4];
-      return h("div", { "class": "landing-svc", "data-module": "service-card", "data-visual-id": "landing-service-card", "data-action": profile.primary.action, "data-id": s.name }, [
-        h("div", { "class": "landing-svc__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
-        h("div", { style: "font-weight:700;font-size:16px" }, s.name),
-        h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:4px" }, "From " + s.price)
-      ]);
-    })));
-    return page;
-  }
-  function quoteField(label, value) {
-    return h("div", { "class": "quote-field", "data-action": activeProfile().primary.action }, [
-      label,
-      h("span", { style: "font-weight:700;color:var(--ink)" }, value + " \u25BE")
-    ]);
-  }
+  // app-templates/customer-portal/runtime/src/routes/AuthPage.js
   function pitchRow(dot, bg, text7) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
       h("div", { style: "font-size:14px;color:var(--ink-2)" }, text7)
     ]);
   }
-
-  // app-templates/customer-portal/runtime/src/routes/AuthPage.js
   function Auth() {
     var page = h("section", { "class": "page auth-page", "data-route": state.route, "data-visual-id": state.route });
     var grid = h("div", { "class": "auth-grid" });
@@ -6190,7 +6225,6 @@
     else if (s === "ready-signed-out") card.appendChild(OidcSignedOut());
     else if (s === "redirecting") card.appendChild(OidcProgress("redirecting", "Taking you to secure sign-in\u2026", "This page is leaving for the secure account service. You\u2019ll come back here automatically \u2014 no need to do anything."));
     else if (s === "unavailable") card.appendChild(OidcUnavailable());
-    else if (s === "ready-signed-in") card.appendChild(OidcSignedIn());
     else if (s === "signing-out") card.appendChild(OidcProgress("signing-out", "Signing you out\u2026", "Finishing sign-out with the secure account service. One moment."));
     grid.appendChild(card);
     page.appendChild(grid);
@@ -6228,25 +6262,6 @@
       h("div", { "class": "oidc-actions" }, [
         ActionButton({ variant: "btn--primary", label: "Try again", action: "auth.retrySession", block: true, lg: true, visualId: "oidc-retry" }),
         ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "oidc-back-catalog" })
-      ])
-    ]);
-  }
-  function OidcSignedIn() {
-    var name = state.sessionName || F.customer.firstName;
-    return h("div", { "data-state": "ready-signed-in" }, [
-      h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]),
-      h("div", { "class": "oidc-title" }, "You\u2019re signed in"),
-      h("div", { "class": "oidc-session" }, [
-        h("div", { "class": "oidc-session__ava" }, (name || "?").charAt(0).toUpperCase()),
-        h("div", null, [
-          h("div", { "class": "oidc-session__label" }, "Signed in as"),
-          h("div", { "class": "oidc-session__name", "data-bind": "session.displayName" }, name)
-        ])
-      ]),
-      h("div", { "class": "oidc-sub" }, "You can keep browsing while signed in."),
-      h("div", { "class": "oidc-actions" }, [
-        ActionButton({ variant: "btn--primary", label: "Browse the catalog", action: "nav.landing", block: true, lg: true, visualId: "oidc-browse-catalog" }),
-        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "oidc-signout" })
       ])
     ]);
   }
@@ -8218,10 +8233,16 @@
     ]);
   }
   function resolveRoute(routeId) {
-    var requested = routeRegistry[routeId] ? routeId : null;
-    var activeRoute = requested ? routeRegistry[requested] : null;
     var defaultRoute = reachableDefaultRoute();
-    if (!activeRoute) return { id: defaultRoute, reason: "unknown" };
+    var requested = routeRegistry[routeId] ? routeId : defaultRoute;
+    var activeRoute = routeRegistry[requested];
+    var reason = requested === routeId ? null : "unknown";
+    if (activeRoute && activeRoute.parityOnly && state.config.dataMode === "live") {
+      requested = defaultRoute;
+      activeRoute = routeRegistry[requested];
+      reason = "preview-only";
+    }
+    if (!activeRoute) return { id: "auth.oidc", reason: "invalid-config" };
     if (!isPublic(requested) && !state.session.authenticated) {
       state.session.intendedRoute = requested;
       return { id: "auth.oidc", reason: "unauthorized" };
@@ -8235,7 +8256,7 @@
     if (requested === "care") {
       return { id: "care", reason: careAccessReason() };
     }
-    return { id: requested, reason: null };
+    return { id: requested, reason };
   }
   function reachableDefaultRoute() {
     if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
@@ -8243,11 +8264,12 @@
     var enabledRoute = Object.values(routeRegistry).find(function(route) {
       return !route.public && isModuleEnabled(route.module);
     });
-    return enabledRoute ? enabledRoute.id : "landing";
+    return enabledRoute ? enabledRoute.id : "auth.oidc";
   }
   function isRouteReachable(routeId) {
     var route = routeRegistry[routeId];
-    return !!(route && (route.public || isModuleEnabled(route.module)));
+    if (!route || route.parityOnly && state.config.dataMode === "live") return false;
+    return !!(route.public || isModuleEnabled(route.module));
   }
   function routeFromLocation() {
     if (state.config.routerMode === "memory") return state.route;
@@ -8342,8 +8364,6 @@
         return Calendar();
       case "support":
         return Support();
-      case "landing":
-        return Landing();
       case "auth.phone":
         return Auth();
       case "auth.code":
@@ -8444,7 +8464,7 @@
       go(id);
     },
     "nav.landing": function() {
-      go("landing");
+      return externalOnly("landingUrl");
     },
     "nav.services": function() {
       go("services");
@@ -8662,6 +8682,11 @@
       failCommand("membership.activate");
     },
     "support.open": function() {
+      var url = configuredExternalUrl(state.config, "supportUrl");
+      if (url) {
+        globalThis.location.assign(url);
+        return;
+      }
       if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false });
       go("support");
     },
@@ -8994,6 +9019,15 @@
       return pickTheme(id);
     }
   };
+  function externalOnly(configKey) {
+    var url = configuredExternalUrl(state.config, configKey);
+    if (url) {
+      globalThis.location.assign(url);
+      return true;
+    }
+    failCommand("nav.external." + configKey);
+    return false;
+  }
   function validateSeoLink(el) {
     var href = el && el.getAttribute("href");
     if (!href || !(href.charAt(0) === "#" || /^https?:\/\//i.test(href) || /^tel:/i.test(href))) {
@@ -12493,6 +12527,7 @@
     }).catch(function(error2) {
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
       console.error("[aircove] runtime retry failed", error2);
+      if (continueToIntendedRoute()) return;
       render();
     }).finally(function() {
       liveRetryPromise = null;
@@ -12549,6 +12584,7 @@
     }).catch(function(error2) {
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
       console.error("[aircove] runtime load failed", error2);
+      if (continueToIntendedRoute()) return;
       render();
     });
   });

@@ -20,7 +20,6 @@
   },
   "viewports": [390, 768, 1180, 1440],
   "routes": [
-    { "id": "landing", "path": "/", "implemented": true, "auth": "public", "states": ["ready"] },
     { "id": "seo.landing", "path": "/seo-preview", "implemented": true, "auth": "public", "states": ["ready", "loading", "empty"], "verticals": ["HVAC", "Snow Removal", "Lawn & Garden", "Pool & Spa", "Roofing", "Pest Control", "Health", "Beauty"], "disposition": "Executable portal-shell reference parity route only; never a production public document" },
     { "id": "auth.phone", "path": "/login", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
     { "id": "auth.code", "path": "/login/verify", "implemented": true, "auth": "public", "states": ["ready", "validation-error"] },
@@ -65,7 +64,6 @@
     "activity": ["ready", "empty"],
     "calendar": ["ready", "empty"],
     "support": ["ready", "validation-error"],
-    "landing": ["ready"],
     "auth.phone": ["ready", "validation-error"],
     "auth.code": ["ready", "validation-error"],
     "care": ["ready", "loading", "empty", "error", "disabled", "unauthorized"],

@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "customer-experience.schema.json",
+  "title": "Customer Experience Descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "classification", "experience", "surfaces", "deployment", "content", "evidenceRefs"],
+  "properties": {
+    "$schema": { "const": "../../config/customer-experience.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "classification": { "enum": ["staging-customer-experience", "production-customer-experience"] },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "vertical", "theme", "defaultMode", "language", "direction", "brandName", "allowedNavOrigins", "support"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "vertical": { "$ref": "#/$defs/vertical" },
+        "theme": { "$ref": "#/$defs/vertical" },
+        "defaultMode": { "enum": ["light", "dark"] },
+        "language": { "type": "string", "pattern": "^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$" },
+        "direction": { "enum": ["ltr", "rtl"] },
+        "brandName": { "$ref": "#/$defs/localizedText" },
+        "allowedNavOrigins": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "support": { "$ref": "#/$defs/urlSlot" }
+      }
+    },
+    "surfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["landing", "portal", "login", "twoFactor"],
+      "properties": {
+        "landing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "primaryDestination", "servicesDestination", "pricingDestination", "productsDestination"],
+          "properties": {
+            "url": { "$ref": "#/$defs/urlSlot" },
+            "primaryDestination": { "$ref": "#/$defs/destination" },
+            "servicesDestination": { "$ref": "#/$defs/destination" },
+            "pricingDestination": { "$ref": "#/$defs/destination" },
+            "productsDestination": { "$ref": "#/$defs/destination" }
+          }
+        },
+        "portal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "routerMode", "defaultRoute", "profile", "capability", "capabilities", "anonymousIntent", "registration", "logoutDestination"],
+          "properties": {
+            "url": { "$ref": "#/$defs/urlSlot" },
+            "routerMode": { "enum": ["hash", "history"] },
+            "defaultRoute": { "type": "string", "minLength": 1 },
+            "profile": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            "capability": { "enum": ["current-staging", "target-appointments"] },
+            "capabilities": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["booking", "retail", "planCommerce", "payment", "demoCommands"],
+              "properties": {
+                "booking": { "enum": ["closed", "open"] },
+                "retail": { "enum": ["browse-only", "retail-commerce-open"] },
+                "planCommerce": { "enum": ["closed", "open"] },
+                "payment": { "enum": ["closed", "simulated"] },
+                "demoCommands": { "enum": ["closed", "current-api"] }
+              }
+            },
+            "anonymousIntent": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "storage", "ttlSeconds", "maxItems", "reconciliationMode"],
+              "properties": {
+                "mode": { "enum": ["closed", "selection-only"] },
+                "storage": { "const": "session" },
+                "ttlSeconds": { "type": "integer", "minimum": 60, "maximum": 86400 },
+                "maxItems": { "type": "integer", "minimum": 1, "maximum": 50 },
+                "reconciliationMode": { "const": "authenticated-server" }
+              }
+            },
+            "registration": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["mode", "destination"],
+              "properties": {
+                "mode": { "enum": ["closed", "core-auth"] },
+                "destination": { "$ref": "#/$defs/urlSlot" }
+              }
+            },
+            "logoutDestination": { "$ref": "#/$defs/destination" }
+          }
+        },
+        "login": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consumer", "pageContextSelector"],
+          "properties": {
+            "consumer": { "const": "core-auth" },
+            "pageContextSelector": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["status", "selector", "reason"],
+              "properties": {
+                "status": { "enum": ["unproven", "resolved"] },
+                "selector": { "type": ["string", "null"] },
+                "reason": { "type": ["string", "null"] }
+              }
+            }
+          }
+        },
+        "twoFactor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["consumer"],
+          "properties": {
+            "consumer": { "const": "core-auth" }
+          }
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "organization", "accountTypeCode", "coreApiBase", "accountApiBase", "serviceApiBase", "billApiBase", "pim", "auth"],
+      "properties": {
+        "environment": { "enum": ["staging", "production"] },
+        "organization": { "$ref": "#/$defs/code" },
+        "accountTypeCode": { "$ref": "#/$defs/code" },
+        "coreApiBase": { "$ref": "#/$defs/sameOriginPath" },
+        "accountApiBase": { "$ref": "#/$defs/sameOriginPath" },
+        "serviceApiBase": { "$ref": "#/$defs/sameOriginPath" },
+        "billApiBase": { "$ref": "#/$defs/sameOriginPath" },
+        "pim": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["apiBase", "organization", "enrichmentMode", "pricingProductTypeCodes", "productsProductTypeCodes", "priceTypeCode", "priceAttributeCode", "priceAttributeValues", "currency", "currencyAttributeCode", "currencyAttributeValues", "amountAttributeCode", "amountMinorDivisor"],
+          "properties": {
+            "apiBase": { "$ref": "#/$defs/sameOriginPath" },
+            "organization": { "$ref": "#/$defs/code" },
+            "enrichmentMode": { "enum": ["closed", "current-api"] },
+            "pricingProductTypeCodes": { "$ref": "#/$defs/codeList" },
+            "productsProductTypeCodes": { "$ref": "#/$defs/codeList" },
+            "priceTypeCode": { "$ref": "#/$defs/code" },
+            "priceAttributeCode": { "type": ["string", "null"] },
+            "priceAttributeValues": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+            "currencyAttributeCode": { "$ref": "#/$defs/code" },
+            "currencyAttributeValues": { "$ref": "#/$defs/codeList" },
+            "amountAttributeCode": { "$ref": "#/$defs/code" },
+            "amountMinorDivisor": { "type": ["integer", "null"], "minimum": 1 }
+          }
+        },
+        "auth": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["coreBase", "callbackPath", "returnStorageKey", "logoutReturnStorageKey"],
+          "properties": {
+            "coreBase": { "$ref": "#/$defs/sameOriginPath" },
+            "callbackPath": { "$ref": "#/$defs/sameOriginPath" },
+            "returnStorageKey": { "type": "string", "minLength": 1 },
+            "logoutReturnStorageKey": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["portal", "login", "twoFactor"],
+      "properties": {
+        "portal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["documentTitle", "navigation", "primaryCtaLabel"],
+          "properties": {
+            "documentTitle": { "$ref": "#/$defs/localizedText" },
+            "navigation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["primary", "calendar", "activity", "care", "proposals", "services", "pricing", "products", "account", "support"],
+              "properties": {
+                "primary": { "$ref": "#/$defs/localizedText" },
+                "calendar": { "$ref": "#/$defs/localizedText" },
+                "activity": { "$ref": "#/$defs/localizedText" },
+                "care": { "$ref": "#/$defs/localizedText" },
+                "proposals": { "$ref": "#/$defs/localizedText" },
+                "services": { "$ref": "#/$defs/localizedText" },
+                "pricing": { "$ref": "#/$defs/localizedText" },
+                "products": { "$ref": "#/$defs/localizedText" },
+                "account": { "$ref": "#/$defs/localizedText" },
+                "support": { "$ref": "#/$defs/localizedText" }
+              }
+            },
+            "primaryCtaLabel": { "$ref": "#/$defs/localizedText" }
+          }
+        },
+        "login": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["documentTitle", "cardTitle", "cardSubtitle", "errorTitle", "errorBody", "logoutTitle", "logoutBody", "usernameLabel", "passwordLabel", "forgotPasswordLabel", "showPasswordLabel", "hidePasswordLabel", "submitLabel", "cardNote", "pitchEyebrow", "pitchTitle", "pitchBody"],
+          "properties": {
+            "documentTitle": { "$ref": "#/$defs/localizedText" },
+            "cardTitle": { "$ref": "#/$defs/localizedText" },
+            "cardSubtitle": { "$ref": "#/$defs/localizedText" },
+            "errorTitle": { "$ref": "#/$defs/localizedText" },
+            "errorBody": { "$ref": "#/$defs/localizedText" },
+            "logoutTitle": { "$ref": "#/$defs/localizedText" },
+            "logoutBody": { "$ref": "#/$defs/localizedText" },
+            "usernameLabel": { "$ref": "#/$defs/localizedText" },
+            "passwordLabel": { "$ref": "#/$defs/localizedText" },
+            "forgotPasswordLabel": { "$ref": "#/$defs/localizedText" },
+            "showPasswordLabel": { "$ref": "#/$defs/localizedText" },
+            "hidePasswordLabel": { "$ref": "#/$defs/localizedText" },
+            "submitLabel": { "$ref": "#/$defs/localizedText" },
+            "cardNote": { "$ref": "#/$defs/localizedText" },
+            "pitchEyebrow": { "$ref": "#/$defs/localizedText" },
+            "pitchTitle": { "$ref": "#/$defs/localizedText" },
+            "pitchBody": { "$ref": "#/$defs/localizedText" }
+          }
+        },
+        "twoFactor": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["documentTitle", "title", "subtitle", "setup", "qrAlt", "secretLabel", "secretHint", "notice", "codeLabel", "codeHint", "error", "button", "note", "pitchTitle", "pitchBody"],
+          "properties": {
+            "documentTitle": { "$ref": "#/$defs/localizedText" },
+            "title": { "$ref": "#/$defs/localizedText" },
+            "subtitle": { "$ref": "#/$defs/localizedText" },
+            "setup": { "$ref": "#/$defs/localizedText" },
+            "qrAlt": { "$ref": "#/$defs/localizedText" },
+            "secretLabel": { "$ref": "#/$defs/localizedText" },
+            "secretHint": { "$ref": "#/$defs/localizedText" },
+            "notice": { "$ref": "#/$defs/localizedText" },
+            "codeLabel": { "$ref": "#/$defs/localizedText" },
+            "codeHint": { "$ref": "#/$defs/localizedText" },
+            "error": { "$ref": "#/$defs/localizedText" },
+            "button": { "$ref": "#/$defs/localizedText" },
+            "note": { "$ref": "#/$defs/localizedText" },
+            "pitchTitle": { "$ref": "#/$defs/localizedText" },
+            "pitchBody": { "$ref": "#/$defs/localizedText" }
+          }
+        }
+      }
+    },
+    "evidenceRefs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["landingContent", "portalSource", "loginTemplate", "loginParameters", "twoFactorTemplate", "twoFactorParameters", "twoFactorManifest"],
+      "properties": {
+        "landingContent": { "type": "string", "minLength": 1 },
+        "portalSource": { "type": "string", "minLength": 1 },
+        "loginTemplate": { "type": "string", "minLength": 1 },
+        "loginParameters": { "type": "string", "minLength": 1 },
+        "twoFactorTemplate": { "type": "string", "minLength": 1 },
+        "twoFactorParameters": { "type": "string", "minLength": 1 },
+        "twoFactorManifest": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "vertical": { "enum": ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"] },
+    "localizedText": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en"],
+      "properties": { "en": { "type": "string", "minLength": 1 } }
+    },
+    "urlSlot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "url", "reason"],
+      "properties": {
+        "status": { "enum": ["resolved", "unresolved", "closed"] },
+        "url": { "type": ["string", "null"] },
+        "reason": { "type": ["string", "null"] }
+      }
+    },
+    "destination": {
+      "type": "string",
+      "pattern": "^(?:page:(?:landing|portal)|portal-route:[a-z][a-z0-9.-]*|section:[a-z][a-z0-9-]*|url:https://.+)$"
+    },
+    "sameOriginPath": { "type": "string", "pattern": "^/[A-Za-z0-9._~!$&'()*+,;=:@%/-]*$" },
+    "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+    "codeList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/code" }
+    }
+  }
+}

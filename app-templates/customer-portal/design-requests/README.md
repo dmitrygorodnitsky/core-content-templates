@@ -9,6 +9,13 @@ or data-ownership constraints. Claude Design creates the visual answer outside
 this repository. The user reviews it and imports the accepted package into
 `design-inbox/`; production runtime work then transfers that answer 1:1.
 
+- [`customer-experience-anonymous-intent-auth-resume.md`](customer-experience-anonymous-intent-auth-resume.md)
+  defines the family-level selection → Core Auth → Account gate → authoritative
+  server resume states required before anonymous selection can be activated.
+- [`customer-experience-core-auth-2fa.md`](customer-experience-core-auth-2fa.md)
+  requests the reusable setup/verification and error states required for a
+  CMS-skinned Core Auth 2FA page that remains consistent with login.
+
 ## Calm Harbor Spa
 
 - [`calm-harbor-spa-customer-portal-ia.md`](calm-harbor-spa-customer-portal-ia.md)

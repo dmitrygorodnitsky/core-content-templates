@@ -2,10 +2,10 @@
 // PRESENTATION ONLY. The real flow is authorization-code + PKCE owned by the Core
 // account service: auth.oidcSignIn starts the redirect, the browser leaves this page
 // and returns to the same /login URL. No password input, API key, access token or
-// customer Account id is ever rendered here — the only dynamic values are the session
-// status (state.oidc) and ONE customer-safe display name (data-bind="session.displayName").
+// customer Account id is ever rendered here. A restored signed-in session is consumed
+// by the Account gate and immediately resumes the intended/default private route; it is
+// deliberately not presented as a standalone "you are signed in" portal page.
 import { h } from "../dom.js";
-import { F } from "../../data/fixtures.js";
 import { state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 
@@ -26,7 +26,6 @@ export function AuthOidc() {
   else if (s === "ready-signed-out") card.appendChild(OidcSignedOut());
   else if (s === "redirecting") card.appendChild(OidcProgress("redirecting", "Taking you to secure sign-in\u2026", "This page is leaving for the secure account service. You\u2019ll come back here automatically \u2014 no need to do anything."));
   else if (s === "unavailable") card.appendChild(OidcUnavailable());
-  else if (s === "ready-signed-in") card.appendChild(OidcSignedIn());
   else if (s === "signing-out") card.appendChild(OidcProgress("signing-out", "Signing you out\u2026", "Finishing sign-out with the secure account service. One moment."));
 
   grid.appendChild(card);
@@ -75,28 +74,6 @@ function OidcUnavailable() {
     h("div", { "class": "oidc-actions" }, [
       ActionButton({ variant: "btn--primary", label: "Try again", action: "auth.retrySession", block: true, lg: true, visualId: "oidc-retry" }),
       ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "oidc-back-catalog" })
-    ])
-  ]);
-}
-
-function OidcSignedIn() {
-  /* the ONLY dynamic session value besides status — a single customer-safe
-     display name supplied by the authenticated session */
-  var name = state.sessionName || F.customer.firstName;
-  return h("div", { "data-state": "ready-signed-in" }, [
-    h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]),
-    h("div", { "class": "oidc-title" }, "You\u2019re signed in"),
-    h("div", { "class": "oidc-session" }, [
-      h("div", { "class": "oidc-session__ava" }, (name || "?").charAt(0).toUpperCase()),
-      h("div", null, [
-        h("div", { "class": "oidc-session__label" }, "Signed in as"),
-        h("div", { "class": "oidc-session__name", "data-bind": "session.displayName" }, name)
-      ])
-    ]),
-    h("div", { "class": "oidc-sub" }, "You can keep browsing while signed in."),
-    h("div", { "class": "oidc-actions" }, [
-      ActionButton({ variant: "btn--primary", label: "Browse the catalog", action: "nav.landing", block: true, lg: true, visualId: "oidc-browse-catalog" }),
-      ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "oidc-signout" })
     ])
   ]);
 }

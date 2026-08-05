@@ -1,0 +1,76 @@
+<body>
+<div class="auth-root" data-theme="${THEME@STRING}" data-mode="${MODE@STRING}">
+  <div class="auth-page">
+    <div class="auth-inner">
+      <div class="auth-grid">
+
+        <main class="auth-card">
+
+          <div class="auth-head">
+            <span class="brand-logo brand-logo--lg" aria-hidden="true"></span>
+            <span class="brand-name">${BRAND_NAME@LOCALIZED_STRING_SS}</span>
+          </div>
+
+          <h1 class="auth-title">${CARD_TITLE@LOCALIZED_STRING_SS}</h1>
+          <p class="auth-sub">${CARD_SUBTITLE@LOCALIZED_STRING_SS}</p>
+
+          <div class="auth-msg auth-msg--error" id="auth-error-message" role="alert" style="display:{{ERROR_DISPLAY}}">
+            <div class="auth-msg__inner">
+              <span class="auth-msg__glyph" aria-hidden="true">!</span>
+              <div class="auth-msg__text">
+                <p class="auth-msg__title">${ERROR_TITLE@LOCALIZED_STRING_SS}</p>
+                <p class="auth-msg__body">${ERROR_BODY@LOCALIZED_STRING_SS}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-msg auth-msg--logout" id="auth-logout-message" role="status" style="display:{{LOGOUT_DISPLAY}}">
+            <div class="auth-msg__inner">
+              <span class="auth-msg__glyph" aria-hidden="true">&#10003;</span>
+              <div class="auth-msg__text">
+                <p class="auth-msg__title">${LOGOUT_TITLE@LOCALIZED_STRING_SS}</p>
+                <p class="auth-msg__body">${LOGOUT_BODY@LOCALIZED_STRING_SS}</p>
+              </div>
+            </div>
+          </div>
+
+          <form class="auth-form" method="post" action="{{LOGIN_ACTION}}" data-core-auth-login>
+
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+
+            <div class="field-row">
+              <label class="field-label" for="username">${USERNAME_LABEL@LOCALIZED_STRING_SS}</label>
+              <input class="field" id="username" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required aria-describedby="auth-error-message">
+            </div>
+
+            <div class="field-row">
+              <div class="field-head">
+                <label class="field-label" for="password">${PASSWORD_LABEL@LOCALIZED_STRING_SS}</label>
+                <a class="auth-link" href="{{RESET_PASSWORD_URL}}">${FORGOT_PASSWORD@LOCALIZED_STRING_SS}</a>
+              </div>
+              <div class="field-wrap">
+                <input class="field" id="password" name="password" type="password" autocomplete="current-password" required aria-describedby="auth-error-message">
+                <button class="auth-reveal" type="button" data-password-toggle aria-controls="password" aria-pressed="false" hidden>
+                  <span class="auth-reveal__on">${SHOW_PASSWORD@LOCALIZED_STRING_SS}</span>
+                  <span class="auth-reveal__off">${HIDE_PASSWORD@LOCALIZED_STRING_SS}</span>
+                </button>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit">${LOGIN_BUTTON@LOCALIZED_STRING_SS}</button>
+          </form>
+
+          <p class="auth-note">${CARD_NOTE@LOCALIZED_STRING_SS}</p>
+        </main>
+
+        <section class="auth-pitch">
+          <span class="eyebrow">${PITCH_EYEBROW@LOCALIZED_STRING_SS}</span>
+          <h2 class="auth-pitch__title">${PITCH_TITLE@LOCALIZED_STRING_SS}</h2>
+          <p class="auth-pitch__sub">${PITCH_BODY@LOCALIZED_STRING_SS}</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>

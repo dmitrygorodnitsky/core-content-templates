@@ -75,7 +75,7 @@ the mechanism the whole cascade depends on, and it already functions.
 
 | what | where it lives now | problem |
 | --- | --- | --- |
-| all 17 types | `CALM_HARBOR_SPA_STAGING` | too low — universal definitions are locked inside one tenant and no second tenant can reuse them |
+| all 19 types | `CALM_HARBOR_SPA_STAGING` | too low — universal definitions are locked inside one tenant and no second tenant can reuse them |
 | all 15 workflows | `SYSTEM` | too high — spa lifecycles sit at the platform root, visible to `PNI` and `SNOWLIMITLESS`, which have no use for them |
 
 The two halves of one model ended up at opposite ends of the tree. This is a
@@ -85,7 +85,7 @@ organization, and the two diverged.
 
 ## 4. Placement
 
-### 4.1 Service industries — 14 of 17 types
+### 4.1 Service industries — 17 of 19 types
 
 Every one of these is true of any service business. The `SPA_` prefix describes
 the circumstances in which the type was created, not the entity.
@@ -148,7 +148,7 @@ does not exist yet.
 ### 4.3 Industry — nothing
 
 **No type and no workflow in the current model is spa-specific.** A nail salon
-or a non-clinical massage studio would use all 17 types and all 15 workflows
+or a non-clinical massage studio would use all 19 types and all 15 workflows
 unchanged.
 
 This is the substantive finding of this document. It means the industry level of

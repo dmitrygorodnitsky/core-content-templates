@@ -26,6 +26,7 @@ const parseArgs = () => {
     else if (arg === "--cms-base-url" || arg === "--api-base-url") out.cmsBaseUrl = args[++i];
     else if (arg === "--org") out.org = args[++i];
     else if (arg === "--mode") out.syncMode = args[++i];
+    else if (arg === "--with-content") out.withContent = true;
     else if (arg === "--live") out.mode = "live";
     else if (arg === "--dry-run") out.mode = "dry-run";
     else if (arg === "--help" || arg === "-h") out.help = true;
@@ -38,11 +39,12 @@ const usage = () => `Usage:
   node docs/cms-components/lab-ui/scripts/sync-block-template-parameters.mjs \\
     --template-id <cmsBlockTemplateId> \\
     --template-json docs/cms-components/lab-ui/dist/manual-upload/section-01-header-corporate-reference/template.json \\
-    [--mode merge|replace] [--dry-run | --live] [--base-url https://lsrc.pixelnation.com/core] [--org SYSTEM]
+    [--mode merge|replace] [--with-content] [--dry-run | --live] [--base-url https://lsrc.pixelnation.com/core] [--org SYSTEM]
     [--cms-base-url https://lsrc.pixelnation.com/core-cms]
 
 Note:
   --live requires an explicit --base-url or SERVICEWAND_BASE_URL/LANDING_BASE_URL.
+  --with-content also syncs head/html/javascript/css from --template-json.
 
 Alternative input:
   --parameters-json path/to/parameters.json
@@ -159,6 +161,8 @@ const blockMappings = [
   { name: "parameters" },
 ];
 
+const contentFields = ["head", "html", "javascript", "css"];
+
 const listBlockTemplate = async ({ cmsBaseUrl, headers, templateId, templateCode }) => {
   const filter = templateId
     ? { property: "id", operator: "=", value: templateId }
@@ -183,7 +187,18 @@ const normalizeParameter = (parameter) => {
   return rest;
 };
 
-const parameterSignature = (parameter) => JSON.stringify(normalizeParameter(parameter));
+const canonicalize = (value) => {
+  if (Array.isArray(value)) return value.map(canonicalize);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value)
+      .sort(([left], [right]) => left.localeCompare(right))
+      .map(([key, nested]) => [key, canonicalize(nested)]),
+  );
+};
+
+const parameterSignature = (parameter) =>
+  JSON.stringify(canonicalize(normalizeParameter(parameter)));
 
 const extractTemplateParameterRefs = (template) => {
   const refs = new Map();
@@ -216,8 +231,16 @@ const loadSourceParameters = ({ templateJson, parametersJson }) => {
   return {
     file,
     parameters: parameters.map(normalizeParameter),
+    template: Array.isArray(json) ? null : json,
   };
 };
+
+const sourceContent = (template) =>
+  Object.fromEntries(
+    contentFields
+      .filter((field) => typeof template?.[field] === "string")
+      .map((field) => [field, template[field]]),
+  );
 
 const mergeParameters = ({ existing, incoming, mode }) => {
   if (mode === "replace") return incoming;
@@ -255,9 +278,19 @@ const diffParameters = ({ existing, incoming, next }) => {
   };
 };
 
-const saveParameters = async ({ cmsBaseUrl, headers, template, parameters }) => {
+const saveParameters = async ({ cmsBaseUrl, headers, template, parameters, content }) => {
+  const {
+    parent: _parent,
+    children: _children,
+    slotMarker: _slotMarker,
+    ...writableTemplate
+  } = template;
   const entity = {
-    ...template,
+    ...writableTemplate,
+    ...content,
+    organization: template.organization?.id
+      ? { id: template.organization.id, code: template.organization.code }
+      : template.organization,
     parameters,
   };
   const text = await requestText(`${cmsBaseUrl}/api/block-template/save.json`, {
@@ -307,6 +340,9 @@ const main = async () => {
   const apiKey = envFirst("SERVICEWAND_API_KEY", "LANDING_API_KEY");
   const bearer = envFirst("SERVICEWAND_BEARER", "LANDING_BEARER");
   const source = loadSourceParameters(args);
+  if (args.withContent && !source.template) {
+    throw new Error("--with-content requires --template-json with a full template object.");
+  }
 
   const token = await getAccessToken({ baseUrl, apiKey, bearer });
   const headers = cmsHeaders(token, org);
@@ -324,8 +360,14 @@ const main = async () => {
     incoming: source.parameters,
     mode: args.syncMode,
   });
+  const nextContent = args.withContent ? sourceContent(source.template) : {};
+  const contentChanges = args.withContent
+    ? Object.keys(nextContent).filter(
+        (field) => String(existing[field] || "") !== String(nextContent[field] || ""),
+      )
+    : [];
   const missingRefs = missingTemplateParameterRefs({
-    template: existing,
+    template: { ...existing, ...nextContent },
     parameters: nextParams,
   });
   if (missingRefs.length) {
@@ -349,6 +391,7 @@ const main = async () => {
   console.log(`Target:   ${existing.code} (${existing.id})`);
   console.log(`Source:   ${source.file}`);
   console.log(`Mode:     ${args.syncMode}`);
+  console.log(`Content:  ${args.withContent ? "head/html/javascript/css" : "unchanged"}`);
   console.log(`Existing: ${existingParams.length}`);
   console.log(`Incoming: ${source.parameters.length}`);
   console.log(`Next:     ${nextParams.length}`);
@@ -356,7 +399,15 @@ const main = async () => {
   printList("Added", diff.added);
   printList("Updated", diff.updated);
   printList("Removed", diff.removed);
+  printList("Content fields changed", contentChanges);
   console.log(`Unchanged incoming: ${diff.unchanged.length}`);
+
+  const hasChanges =
+    diff.added.length || diff.updated.length || diff.removed.length || contentChanges.length;
+  if (!hasChanges) {
+    console.log("\nParameters are already in sync. No network write is needed.\n");
+    return;
+  }
 
   if (args.mode !== "live") {
     console.log("\nNo network writes were made. Pass --live to save parameters.\n");
@@ -368,6 +419,7 @@ const main = async () => {
     headers,
     template: existing,
     parameters: nextParams,
+    content: nextContent,
   });
   console.log(`\nSaved BlockTemplate parameters: ${existing.code} -> ${id}\n`);
 };

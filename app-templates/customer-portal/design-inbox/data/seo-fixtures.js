@@ -485,11 +485,11 @@ export const SEO = {
       note: "Prices on this page are live from the public catalog — no account needed to browse"
     },
     /* Calm Harbor media — DELIVERED (wave 12). Files live in
-       customer-portal-design/design-inbox/media/; full spec in MEDIA-SPEC.md.
+       customer-portal-design/media/; full spec in MEDIA-SPEC.md.
        No logos, text, prices, ratings or promo claims inside the bitmaps. */
     media: {
-      hero: { src: "design-inbox/media/spa-massage-1448.webp", alt: "Specialist smoothing a warm towel across a guest's shoulders in a daylit Calm Harbor treatment room", focal: "62% 40%", label: "hero media · design-inbox/media/spa-massage-1448.webp · 1448×1086 (4:3) · focal 62% 40%", bind: "cms.media.hero" },
-      proof: { src: "design-inbox/media/spa-room-1600.webp", alt: "Empty Calm Harbor treatment room with a linen-covered table, stone basin and folded towels by a window", focal: "50% 58%", label: "proof media · design-inbox/media/spa-room-1600.webp · 1600×686 (21:9) · focal 50% 58%", bind: "cms.media.proof" }
+      hero: { src: "media/spa-massage-1448.webp", alt: "Specialist smoothing a warm towel across a guest's shoulders in a daylit Calm Harbor treatment room", focal: "62% 40%", label: "hero media · media/spa-massage-1448.webp · 1448×1086 (4:3) · focal 62% 40%", bind: "cms.media.hero" },
+      proof: { src: "media/spa-room-1600.webp", alt: "Empty Calm Harbor treatment room with a linen-covered table, stone basin and folded towels by a window", focal: "50% 58%", label: "proof media · media/spa-room-1600.webp · 1600×686 (21:9) · focal 50% 58%", bind: "cms.media.proof" }
     },
     trust: {
       rating: null, /* CMS slot — shown only once a verified rating is supplied */

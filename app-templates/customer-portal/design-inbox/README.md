@@ -43,6 +43,9 @@ review. It is **preview-only** — Codex strips any element carrying `data-dev-t
 ```
 customer-portal-design/
   source.html                 entry — 6 <link> stylesheets + <script type="module" src="src/app.js">
+  core-auth-login.html        STATIC entry (wave 18) — core-auth CMS login page, no script, no modules
+  core-auth-2fa.html          STATIC entry (wave 19) — core-auth CMS 2FA page, NO script tag at all
+  core-auth-2fa-preview.html  GENERATED evidence harness for wave 19 — reviewed, never transferred
   styles/
     tokens.css                design tokens: fonts, neutral + 6 vertical themes + dark-mode vars
     base.css                  reset, base type, links, @keyframes
@@ -50,6 +53,9 @@ customer-portal-design/
     components.css            buttons, badges, tabs, cards, panels, states, toast, drawer, dev harness
     routes.css                route/module-specific layouts (orders → auth)
     responsive.css            container-width overrides (.vw-mobile / .vw-tablet / .vw-compact)
+    core-auth-login.css       wave 18 — core-auth login page only (message regions + standalone page);
+                              wave 19 re-uses it as the SHARED standalone-auth layer
+    core-auth-2fa.css         wave 19 — core-auth 2FA page only (setup panel, QR frame, key, notice, code)
   src/
     dom.js                    h(), clear(), svgPath()
     state.js                  state object + pure selectors (currentOrder, money, cartCount, findProduct,
@@ -334,7 +340,7 @@ slots. Nothing else is rendered.
 **Calm Harbor media direction:** hero + proof accept CMS media slots (`cms.media.hero` /
 `cms.media.proof` — src, alt, focal). The `seo-media` slot renders the real image (cover + focal
 point) and falls back to the striped spec slot while the file is missing. Drop accepted files at
-`design-inbox/media/calm-harbor-{hero,proof}.jpg`; full desktop/tablet/mobile crops, focal points, alt
+`media/calm-harbor-{hero,proof}.jpg`; full desktop/tablet/mobile crops, focal points, alt
 text and aspect ratios are in **MEDIA-SPEC.md**. No logos, text, prices or claims inside bitmaps.
 
 Preview evidence: `previews/calm-harbor/` (ready + empty, light + dark, 1440/1180/768/390 — larger
@@ -354,8 +360,8 @@ section CTA remains honest navigation (`auth.gotoSignin`). The public preview na
 `cms.meta.brand` (“Calm Harbor Spa” on Beauty; “Aircove” fallback — same nav composition).
 Evidence: `previews/calm-harbor/pricing-{state}-{width}-{mode}.png` — real viewport pixels: desktop 1440
 (1440×900, upscaled from a scaled-to-fit capture) + mobile 390 (true 390×540), ready/loading/empty ×
-light/dark. Media assets are delivered: `design-inbox/media/spa-massage-1448.webp` (hero) and
-`design-inbox/media/spa-room-1600.webp` (proof) — see MEDIA-SPEC.md.
+light/dark. Media assets are delivered: `media/spa-massage-1448.webp` (hero) and
+`media/spa-room-1600.webp` (proof) — see MEDIA-SPEC.md.
 
 
 ## Wave 13 — Authenticated live-data states (accounts, routes, commands)
@@ -920,3 +926,311 @@ Files touched: `data/fixtures.js` (`spa.stagingOrders[].media`), `src/state.js` 
 (`.spa-order-thumb`), `manifest.json`, `data/scenarios.json`. Evidence:
 `previews/wave17/orders-thumb-{mixed,broken,loading}-{1440,768,390}-{light,dark}.png`.
 
+
+
+## Wave 18 — core-auth CMS login page (static, `core-auth-login.html`)
+
+The page `core-auth` serves when the portal redirects a customer to sign in. The skin comes
+from `core-cms`; the CMS supplies presentation only and never receives the username,
+password, CSRF token, session or authentication cookies. Counterpart to the portal-side
+OIDC request (wave 10): `AuthOidcPage` is the redirect hand-off, **this** is the page it
+redirects to. `AuthPage` (fixture phone + OTP) and `AuthOidcPage` are not visual answers
+for a username and password form and are not reused here.
+
+### The deviation — and it is the point of the request
+
+Everywhere else in this package the DOM is built by `h()` factories from `src/app.js` and
+driven by one delegated action listener. **None of that exists on this page.** The answer
+transfers into a CMS block template, so it is static HTML: no component factory, no ES
+modules, no build step, no router, no state object, no `manifest.json` component entry.
+**The page is fully functional with JavaScript disabled** — submission is a native form
+POST. The visual system carries over unchanged; the delivery shape does not.
+
+### One system, not a second one
+
+Nothing is copied. `core-auth-login.html` **links the accepted stylesheets** in the same
+order `source.html` uses — `tokens.css` → `base.css` → `shell.css` → `components.css` →
+`routes.css` → `core-auth-login.css` — so tokens, the base reset, `.brand-logo`, the
+`.btn` and `.field` primitives, `.eyebrow` and the `auth-page` / `auth-grid` /
+`auth-pitch` / `auth-card` composition stay owned by their existing files and this page
+follows any change to them. There is no second token block and no second dark palette.
+
+`styles/core-auth-login.css` (8th stylesheet) holds **only**: the two message regions, the
+card header/copy, the label row and the optional reveal control, and the standalone-page
+adjustments the `.app-shell` used to provide (full-height `--app-bg`, centering, the
+container-query breakpoints). Responsive is `@container` on `.auth-page` at the accepted
+thresholds (≤900 tablet, ≤560 mobile) because the `.vw-*` classes are set by a
+`ResizeObserver` in `app.js` and **no script runs here**.
+
+**Dropped, because no product action remains behind them:** `auth-phone` and the
+country-code chip, the OTP boxes, resend, the Apple control, `auth-divider`. The
+`auth-pitch` column is kept — at 1440 it carries the anti-phishing context that makes the
+page legible as a hand-off from the portal; the card is first in the DOM, so at 390 the
+form comes first and the pitch follows it.
+
+### Three server-controlled states, one form
+
+| State | Content |
+|---|---|
+| `default` | Username, password, submit, password-reset link. Neither message region occupies layout. |
+| `error` | Assertive region above the fields. The form keeps its layout and stays fully usable; at 390 × 667 the submit action is still above the fold. |
+| `after-logout` | Polite region. A neutral confirmation — it differs from `error` by glyph, title, weight, border and fill, not by color alone. |
+
+Both regions are in the DOM at all times, so every combination is valid, including both
+visible at once.
+
+### Stable transfer hooks
+
+- Exactly one `<form>`, marked `data-core-auth-login`, `method="post"`.
+- Field names `username` / `password` — fixed, never parameters or bindings.
+- `autocomplete="username"` / `autocomplete="current-password"`; hidden CSRF input first.
+- `role="alert"` on `#auth-error-message`, `role="status"` on `#auth-logout-message`.
+- **Six placeholders, verbatim:** `{{LOGIN_ACTION}}` (form action), `{{CSRF_PARAMETER_NAME}}`
+  + `{{CSRF_TOKEN}}` (hidden input), `{{RESET_PASSWORD_URL}}` (reset link),
+  `{{ERROR_DISPLAY}}` + `{{LOGOUT_DISPLAY}}`. State is expressed **only** as
+  `style="display:{{ERROR_DISPLAY}}"` / `style="display:{{LOGOUT_DISPLAY}}"` — no class
+  toggling, no scripted visibility, no `data-state` switch. The shipped CSS contains no
+  visibility rule for the two regions at all.
+- `lang`, `dir`, `data-theme` and `data-mode` are **server-rendered attributes** on
+  `<html>` (ar / he ship in the locale set → `dir="rtl"`; layout mirrors through logical
+  properties only). No script flips them.
+- **Copy slots** — every visible string sits alone in an element carrying
+  `data-copy="<slot>"`: `page.documentTitle`, `brand.name`, `card.title`,
+  `card.subtitle`, `error.title`, `error.body`, `logout.title`, `logout.body`,
+  `field.username.label`, `field.password.label`, `link.resetPassword`,
+  `action.showPassword`, `action.hidePassword`, `action.submit`, `card.note`,
+  `pitch.eyebrow`, `pitch.title`, `pitch.body`.
+
+### Data and security
+
+No `fetch`, no scripted submit, no delegated action listener, no client-side check as the
+only guard (`required` is native constraint validation and works without script; the
+server remains the only real check). The page's own JavaScript is **one inline block that
+reveals the show/hide password control** — deleting it changes nothing functional, and the
+control is `hidden` until the script un-hides it. Nothing third-party: no script, style,
+font, icon set or image from another origin, including for preview (`tokens.css` declares
+the local-first Manrope fallback; the Google Fonts `<link>` in `source.html` is **not**
+used here). No analytics, tag manager, session recorder or error reporter — the DOM
+carries a password field and a live CSRF token. **Dynamic data: none** — no customer name,
+session state, account id or claim; everything variable comes from the six placeholders
+and the copy slots.
+
+### Preview harness
+
+Everything marked `data-dev-toolbar` is preview-only: one `<style>`, four `<i>` anchors,
+the toolbar (reusing the accepted `.dev-toolbar` treatment) and one `<script>`. Remove
+them and the page is the delivered artifact. The three states are previewed with
+**`:target` CSS and no JavaScript** — that is how the JavaScript-disabled captures were
+taken. The harness `<style>` also supplies the hidden default for the two regions, because
+in an un-substituted template `display:{{ERROR_DISPLAY}}` is not a valid declaration and is
+dropped. The mode / dir / vw buttons do use script; they are harness controls, not page
+behavior.
+
+### Evidence
+
+`previews/wave18/` — `login-{state}-{width}-{mode}.png`, 26 files: default / error /
+after-logout at **1440, 1180, 768, 390** in **light and dark**; `login-both-visible-390-light`
+(both regions at once); `login-error-390x667-fold-light` (the fold check);
+`login-error-390-rtl-light` and `login-after-logout-1440-rtl-dark` (RTL — the English
+fixture copy shows the usual bidi punctuation flip; real ar/he strings read correctly);
+`login-js-disabled-error-390-light` and `login-js-disabled-default-1440-light` — **the
+acceptance artifact**, rendered with the enhancement script's only effect removed (the
+reveal control back to `hidden`) and the state driven by `:target` CSS, which is exactly
+the DOM a browser with scripting off produces. The missing *Show* control is the whole
+visible difference. Re-shoot in a real browser with JavaScript disabled before sign-off if
+the acceptance process requires it. Same capture-pane caveat as earlier waves: wide widths
+are scaled-to-fit at their true CSS width (container queries resolve at the real width, so
+the layout is faithful); the live page at true viewport width is authoritative.
+
+### Unresolved / recorded, not resolved by design
+
+1. **Per-field invalid state is out of scope.** The accepted field contract (`aria-invalid`
+   + `aria-describedby` + a `field-error` sibling with `role="alert"`) needs a per-field
+   placeholder this runtime contract does not have — the six placeholders carry no
+   field-level signal. Both inputs point `aria-describedby` at the assertive region, which
+   exposes nothing while hidden and is announced with the field when `core-auth` shows it.
+   `components.css` keeps the `[data-state="invalid"]` / `.field-error` primitives and
+   `core-auth-login.html` carries a commented example at the exact insertion point, so a
+   seventh placeholder later is a markup-only change.
+2. **Two-factor authentication is a separate request** — delivered in wave 19,
+   `core-auth-2fa.html`. See §Wave 19.
+3. The error copy is **non-enumerating** — it never says which of the two values was wrong,
+   matching the package's rule for not-found and forbidden.
+4. The `pitch` copy asserts the portal redirected the customer here. If `core-auth` also
+   serves this page on a direct visit, that sentence needs a second CMS variant.
+5. Stylesheet hrefs are relative, as in `source.html` and `seo-landing.html`: `core-auth`
+   must serve the page and `styles/` from the same directory, or prefix each href with the
+   deploy root so every URL is root-relative and valid on the public host.
+6. If the `core-auth` CSP forbids inline script, move the enhancement block verbatim to a
+   root-relative `login.js` — the page's behavior with it absent is already the tested one.
+
+
+## Wave 19 — core-auth CMS two-factor page (static, `core-auth-2fa.html`)
+
+The page `core-auth` serves after login when the account requires a second factor. Answers
+§Wave 18 unresolved item 2. Same delivery shape as the login page, same visual family, one
+step further into the flow. This brief owns **only** that CMS page: the portal-side
+`auth.oidc` redirect screen (wave 10) is untouched, and no login, OAuth, session or Account
+contract changes.
+
+### Continuity is the deliverable
+
+The composition is the accepted login skin, not a new one: the same `auth-page` /
+`auth-inner` / `auth-grid` centered layout, the same card hierarchy (brand mark + name →
+title → subtitle → one form → note), the same `auth-pitch` column carrying the
+anti-phishing context, the card first in the DOM so the form comes first at 390, the same
+theme and light/dark token packs, the same `.btn` / `.field` primitives, the same 2px accent
+focus outline, the same 16px-minimum mobile field type, and the same no-JavaScript form
+behavior. A customer moving from login to 2FA should not be able to tell that a second
+template rendered.
+
+### One system, not a second one
+
+`core-auth-2fa.html` links, in the order `source.html` uses: `tokens.css` → `base.css` →
+`shell.css` → `components.css` → `routes.css` → **`core-auth-login.css`** →
+`core-auth-2fa.css`.
+
+Linking the login stylesheet is deliberate. It is the **shared standalone-auth layer**: the
+full-height `--app-bg` page, `.auth-inner` centering, the `.auth-grid` columns and ordering,
+`.auth-head` / `.auth-title` / `.auth-sub` / `.auth-note`, the assertive `.auth-msg--error`
+region, the page-wide focus convention and the container-query breakpoints all live there.
+Forking those rules into a second file would create exactly the second system wave 18 was
+careful not to build, and the two pages would drift on the first token change. If the name
+becomes confusing at integration, rename it once (e.g. `core-auth-shell.css`) and update
+both `<link>`s — but do not copy it.
+
+`styles/core-auth-2fa.css` (9th stylesheet) holds **only** what 2FA introduces: the
+enrollment panel, the QR frame, the setup-key block, the already-enrolled notice, the code
+field, and the two shared-region overrides the form's flex gap needs. No animation and no
+transition is declared in it, so reduced-motion behavior is unchanged.
+
+### Four server-controlled states, one form
+
+| State | Runtime | Content |
+|---|---|---|
+| `setup-ready` | `SETUP=block`, `NOTICE=none`, `ERROR=none` | Enrollment explanation, QR image, setup key, code field, verify action. |
+| `setup-error` | `SETUP=block`, `ERROR=block` | Identical enrollment content plus the assertive region below the field. Resubmission goes through the same form; the QR and key are still the substituted runtime values, because nothing in CMS stores, defaults or regenerates them. |
+| `verify-ready` | `SETUP=none`, `NOTICE=block`, `ERROR=none` | Already-enrolled notice, code field, verify action. No QR, no key. |
+| `verify-error` | `SETUP=none`, `NOTICE=block`, `ERROR=block` | Verification context kept, assertive invalid-code message, resubmission. Claims nothing beyond the supplied copy. |
+
+Submitting is a native form navigation. There is no loading state, no disabled state and no
+progressive enhancement of any kind — see "Data and security".
+
+### Stable transfer hooks
+
+- Exactly one `<form>`, marked `data-core-auth-2fa`, `method="post"`.
+- Field name `code` — fixed, never a parameter or a binding. `inputmode="numeric"`,
+  `autocomplete="one-time-code"`, `required`, hidden CSRF input first.
+- Element order is the contract order: hidden CSRF → enrollment block → verify notice →
+  label → input → accessible hint → assertive error → submit. Everything added between
+  them is an inert wrapper or an accessible description.
+- **Eight placeholders, verbatim:** `{{TWO_FACTOR_ACTION}}`, `{{CSRF_PARAMETER_NAME}}`,
+  `{{CSRF_TOKEN}}`, `{{SETUP_DISPLAY}}`, `{{VERIFY_NOTICE_DISPLAY}}`, `{{ERROR_DISPLAY}}`,
+  `{{TWO_FACTOR_QR_CODE}}`, `{{TWO_FACTOR_SECRET}}`. State is expressed **only** as
+  `style="display:{{…}}"` — no class toggling, no `data-state` switch, no scripted
+  visibility, and the shipped CSS contains no visibility rule for the three regions.
+- `{{TWO_FACTOR_OTPAUTH_URI}}` is **not referenced**: no visible control needs it in this
+  brief, and an unused placeholder is one more protected value on the page.
+- `lang`, `dir`, `data-theme`, `data-mode` are server-rendered attributes on `<html>`.
+  Every registered theme works from this one layout; no tenant-specific rule exists.
+- **Localized copy** — 17 `LOCALIZED_STRING_SS` parameters, each alone in its element and
+  each element also carrying `data-copy="<slot>"`. Full inventory with safe example copy:
+  `data/core-auth-2fa-parameters.json`. `AUTH_BRAND_NAME` and `AUTH_PITCH_EYEBROW` are the
+  same parameters login uses; the two pitch sentences are step-specific because login's
+  pitch asserts that a password is entered on that page, which is false here.
+- Scenario / manifest coverage for the four states, plus the validation note:
+  `data/core-auth-2fa.manifest.json`.
+
+### The QR and the key
+
+The QR tile is the one element on the page that does not follow `--surface`: it stays light
+in dark mode, because a scanner needs the quiet zone and full module contrast. 176px at
+desktop, 152px at ≤560, `image-rendering: pixelated` so a small data-URL bitmap keeps square
+modules, `overflow: hidden` so a long `alt` string stays inside the card if the image ever
+fails to decode.
+
+The QR is never the only way to enroll. The setup key sits directly under it at equal
+weight: a labelled, monospaced, letter-spaced block that **wraps** inside the card
+(`overflow-wrap: anywhere`), is selectable with the keyboard, carries `dir="ltr"` so the
+Latin key keeps reading order under an RTL locale, and is read by assistive technology in
+document order straight after its own label. Nothing reveals, groups, formats or copies it —
+each of those is a script handling a protected value.
+
+### Data and security
+
+**The transfer source contains no `<script>` tag at all** and no event attribute: not even
+the login page's one enhancement block. Nothing prevents a second click, because doing so
+would mean script on a page that renders a live CSRF token and a generated secret, and the
+form must stay completely functional without it either way. No `fetch`, no scripted submit,
+no client-side check as the only guard (`required` is native constraint validation; the
+server remains the only real check). No third-party script, style, font, icon set, QR
+generator, telemetry or image — the QR source is the core-auth data URL, so the browser
+never fetches it from an external service. No username, password, access token, OAuth
+state, Account id, role or authentication cookie is visible to or owned by CMS. **Dynamic
+data: none beyond the eight placeholders and the copy parameters.** CMS failure, invalid
+markup, timeout or oversized response is handled by Core Auth's bundled 2FA fallback and is
+outside this page.
+
+### Accessibility
+
+Explicit visible label for the code field; `aria-describedby` naming the hint and the
+assertive region (which exposes nothing while `core-auth` keeps it hidden, and is announced
+with the field when shown); exactly one `role="alert"` region on the page; heading order h1
+(card) → h2 (pitch); **no `autofocus`**, deliberately — focusing the field would move a
+screen reader and a zoomed viewport past the enrollment instructions and the key on a
+first-time setup. 200% zoom lands on the ≤900 container layout (evidence at 720), and the
+card, key and QR all reflow rather than clip.
+
+### Evidence harness
+
+`core-auth-2fa-preview.html` is **generated from** `core-auth-2fa.html` and is never
+transferred: it substitutes the 17 localized parameters with the example copy from the
+parameter inventory, points the QR `src` at a local stand-in, and fills
+`{{TWO_FACTOR_SECRET}}` with a sample key — the three things a reviewer cannot see in an
+un-substituted template. Edit the transfer source, then regenerate. The three display
+placeholders stay un-substituted on purpose: an invalid declaration is dropped, so the
+pure-CSS `:target` harness owns visibility and the four states are previewed **with no
+JavaScript**. `previews/wave19/qr-harness-sample.png` is a synthetic, **non-scannable**
+stand-in generated locally for layout evidence — it encodes nothing, and the transfer source
+never references it.
+
+### Evidence
+
+`previews/wave19/` — `2fa-{state}-{width}-{mode}.png`, 29 files: all four states at **1440,
+1180, 768, 390**, light and dark; `2fa-setup-ready-920-rtl-dark` and
+`2fa-verify-error-390-rtl-light` (RTL — mirrored entirely through logical properties: card
+left, pitch right, brand mark and error glyph on the trailing edge. The English example copy
+shows the usual bidi punctuation flip; real ar/he strings read correctly. RTL is shot at
+widths the capture pane holds natively — 920 rather than 1440 — because an oversized RTL box
+overflows to the left and defeats the fit-scale; the composition at 920 is the same
+two-column desktop layout); `2fa-setup-ready-zoom200-720-light` and
+`2fa-verify-error-zoom200-720-dark` (1440 at 200% zoom). **These are also the
+JavaScript-disabled artifact**: the page has no script, and the four states are driven by
+`:target` CSS through plain anchors, so a browser with scripting off renders exactly this.
+Re-shoot in a real browser with JavaScript disabled before sign-off if the acceptance
+process requires it. Capture caveats, same spirit as earlier waves: each shot sets the true
+CSS width on `.auth-page` and scales the result to fit the capture pane — container queries
+resolve at the real width, so the layout is faithful — and the card's `backdrop-filter` is
+neutralised during capture only, because compositing it under a scale transform ghosts the
+image. The live page at true viewport width is authoritative.
+
+### Unresolved / recorded, not resolved by design
+
+1. **Per-field invalid state** is still out of scope, for the same reason as wave 18: the
+   runtime contract carries no field-level signal. The code input points
+   `aria-describedby` at the shared assertive region.
+2. **The setup key is read as one string** by assistive technology. Grouping it into
+   readable chunks would mean a script transforming a protected value, so the copy carries
+   the guidance instead ("spaces and letter case do not matter"). Revisit only if
+   `core-auth` ever supplies a pre-grouped secret.
+3. **No resend, recovery-code, trust-device, alternate-factor or factor-management
+   affordance exists** — none is in this brief. If one is added later it needs its own
+   action, and a second form would break the one-form contract.
+4. `{{TWO_FACTOR_OTPAUTH_URI}}` has no visible control. Adding an "open in your
+   authenticator app" link later is a markup-only change.
+5. This page is intentionally **outside `manifest.json` and `scenarios.json`** (no factory,
+   no route, no action, no fixture), exactly as the wave-18 login page is. Its coverage
+   document is `data/core-auth-2fa.manifest.json`; the accepted manifest and scenarios files
+   are unchanged by wave 19.
+6. Stylesheet hrefs are relative, as in wave 18: `core-auth` must serve the page and
+   `styles/` from the same directory, or prefix each href with the deploy root.

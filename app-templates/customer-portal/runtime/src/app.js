@@ -173,6 +173,7 @@ export function retryRuntimeLoad() {
     .catch(function (error) {
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
       console.error("[aircove] runtime retry failed", error);
+      if (continueToIntendedRoute()) return;
       render();
     })
     .finally(function () {
@@ -236,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }).catch(function (error) {
     state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
     console.error("[aircove] runtime load failed", error);
+    if (continueToIntendedRoute()) return;
     render();
   });
 });

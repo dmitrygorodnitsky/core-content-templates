@@ -20,7 +20,7 @@ import { ActionButton } from "../primitives/ActionButton.js";
 function spaBrand() {
   return h("div", { "class": "top-nav__brand", "data-action": "nav.go", "data-id": "orders.list" }, [
     h("div", { "class": "brand-logo" }),
-    h("span", { "class": "brand-name", "data-bind": "brand.name" }, "Calm Harbor Spa")
+    h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Calm Harbor Spa")
   ]);
 }
 
@@ -54,14 +54,14 @@ export function SpaTopNav(gated) {
     return h("span", {
       "class": "nav-link" + (n.secondary ? " nav-link--secondary" : "") + (active ? " nav-link--active" : ""),
       "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
-    }, n.label);
+    }, navLabel(n));
   });
 
   /* global CTA: "+ Book" exists ONLY in the open-booking target scenario;
      otherwise the honest catalog navigation. Never a fake booking control. */
   var cta = open
-    ? ActionButton({ variant: "btn--primary", label: "+ Book", action: "booking.open", visualId: "primary-cta" })
-    : ActionButton({ variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "primary-cta" });
+    ? ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || "+ Book", action: "booking.open", visualId: "primary-cta" })
+    : ActionButton({ variant: "btn--ghost", label: state.config.primaryCtaLabel || "Browse services", action: "nav.go", id: "services", visualId: "primary-cta" });
   cta.classList.add("spa-cta");
   if (!open) cta.classList.add("spa-cta--browse");
 
@@ -103,7 +103,7 @@ export function SpaTopNav(gated) {
           h("div", { "class": "account-menu__sub" }, "Signed in with the secure account service")
         ])
       ]),
-      h("button", { "class": "account-menu__item", "data-action": "support.open", role: "menuitem" }, "Support"),
+      h("button", { "class": "account-menu__item", "data-action": "support.open", role: "menuitem" }, (state.config.navigation && state.config.navigation.support) || "Support"),
       h("button", { "class": "account-menu__item", "data-action": "ui.toggleMode", role: "menuitem" }, state.mode === "Dark" ? "Switch to light mode" : "Switch to dark mode"),
       h("div", { "class": "account-menu__divider" }),
       h("button", { "class": "account-menu__item account-menu__item--danger", "data-action": "auth.signOut", role: "menuitem" }, "Sign out")
@@ -115,14 +115,26 @@ export function SpaTopNav(gated) {
     var mob = h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
       profile.nav.map(function (n) {
         var active = linkActive(n.key);
-        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, n.label);
+        return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
       })
     );
     mob.appendChild(h("div", { "class": "mobile-nav__divider" }));
-    mob.appendChild(h("span", { "class": "nav-link", "data-action": "support.open" }, "Support"));
+    mob.appendChild(h("span", { "class": "nav-link", "data-action": "support.open" }, (state.config.navigation && state.config.navigation.support) || "Support"));
     mob.appendChild(h("span", { "class": "nav-link", "data-action": "auth.signOut" }, "Sign out"));
     nav.appendChild(mob);
   }
 
   return h("div", { "class": "top-nav-wrap" }, nav);
+}
+
+function navLabel(item) {
+  var configured = state.config.navigation || {};
+  var key = {
+    "orders.list": "primary",
+    services: "services",
+    pricing: "pricing",
+    products: "products",
+    account: "account",
+  }[item.key];
+  return configured[key] || item.label;
 }

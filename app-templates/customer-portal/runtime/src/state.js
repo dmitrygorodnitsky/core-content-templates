@@ -531,7 +531,7 @@ export function customerPortalGateActive() {
 }
 
 export function isModuleEnabled(moduleId) {
-  if (!moduleId || moduleId === "auth" || moduleId === "landing" || moduleId === "seo-parity") return true;
+  if (!moduleId || moduleId === "auth" || moduleId === "seo-parity") return true;
   return state.config.enabledModules.includes(moduleId);
 }
 

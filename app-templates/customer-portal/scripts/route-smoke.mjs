@@ -5,7 +5,6 @@ import path from "node:path";
 import process from "node:process";
 
 const defaultRoutes = [
-  "landing",
   "seo.landing",
   "auth.phone",
   "auth.code",

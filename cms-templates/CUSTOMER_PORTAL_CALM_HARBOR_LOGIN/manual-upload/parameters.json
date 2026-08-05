@@ -1,0 +1,258 @@
+[
+  {
+    "code": "THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Palette",
+        "DESCRIPTION": "hvac | snow | lawn | pool | roofing | pest | health | beauty"
+      }
+    },
+    "value": "hvac"
+  },
+  {
+    "code": "MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Mode",
+        "DESCRIPTION": "light | dark"
+      }
+    },
+    "value": "light"
+  },
+  {
+    "code": "TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Document title",
+        "DESCRIPTION": "Browser tab title for the sign-in page."
+      }
+    },
+    "value": {
+      "en": "Sign in — Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Brand name",
+        "DESCRIPTION": "Brand shown beside the mark at the top of the card."
+      }
+    },
+    "value": {
+      "en": "Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "CARD_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card title",
+        "DESCRIPTION": "Heading of the sign-in card."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  },
+  {
+    "code": "CARD_SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card subtitle",
+        "DESCRIPTION": "One line under the heading telling the customer what to do."
+      }
+    },
+    "value": {
+      "en": "Enter your username and password to continue."
+    }
+  },
+  {
+    "code": "ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Error title",
+        "DESCRIPTION": "Heading of the assertive region shown when the previous attempt failed. Never names which field was wrong."
+      }
+    },
+    "value": {
+      "en": "We couldn’t sign you in"
+    }
+  },
+  {
+    "code": "ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Error body",
+        "DESCRIPTION": "Body of the failed-attempt message."
+      }
+    },
+    "value": {
+      "en": "Check your username and password, then try again."
+    }
+  },
+  {
+    "code": "LOGOUT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Logout title",
+        "DESCRIPTION": "Heading of the polite region shown after a normal sign-out."
+      }
+    },
+    "value": {
+      "en": "You’ve been signed out"
+    }
+  },
+  {
+    "code": "LOGOUT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Logout body",
+        "DESCRIPTION": "Body of the signed-out confirmation."
+      }
+    },
+    "value": {
+      "en": "Your session has ended. Sign in again to continue."
+    }
+  },
+  {
+    "code": "USERNAME_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Username label",
+        "DESCRIPTION": "Label of the username field. The field name itself is fixed and is not a parameter."
+      }
+    },
+    "value": {
+      "en": "Username"
+    }
+  },
+  {
+    "code": "PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Password label",
+        "DESCRIPTION": "Label of the password field. The field name itself is fixed and is not a parameter."
+      }
+    },
+    "value": {
+      "en": "Password"
+    }
+  },
+  {
+    "code": "FORGOT_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Password reset link",
+        "DESCRIPTION": "Text of the password-reset link. Its URL comes from core-auth at request time."
+      }
+    },
+    "value": {
+      "en": "Forgot your password?"
+    }
+  },
+  {
+    "code": "SHOW_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Show password",
+        "DESCRIPTION": "Label of the reveal control while the password is hidden. Enhancement only — absent without JavaScript."
+      }
+    },
+    "value": {
+      "en": "Show"
+    }
+  },
+  {
+    "code": "HIDE_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Hide password",
+        "DESCRIPTION": "Label of the reveal control while the password is visible."
+      }
+    },
+    "value": {
+      "en": "Hide"
+    }
+  },
+  {
+    "code": "LOGIN_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Submit button",
+        "DESCRIPTION": "Label of the submit button."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  },
+  {
+    "code": "CARD_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Card note",
+        "DESCRIPTION": "Anti-phishing note under the form."
+      }
+    },
+    "value": {
+      "en": "We will never ask for your password by email, message or phone."
+    }
+  },
+  {
+    "code": "PITCH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pitch eyebrow",
+        "DESCRIPTION": "Small chip above the explanatory column."
+      }
+    },
+    "value": {
+      "en": "Customer account"
+    }
+  },
+  {
+    "code": "PITCH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pitch title",
+        "DESCRIPTION": "Heading of the explanatory column, hidden below 900px until after the form."
+      }
+    },
+    "value": {
+      "en": "You’re signing in on the account service."
+    }
+  },
+  {
+    "code": "PITCH_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Pitch body",
+        "DESCRIPTION": "Body of the explanatory column: why the customer landed here and where they go next."
+      }
+    },
+    "value": {
+      "en": "The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started."
+    }
+  }
+]

@@ -1,11 +1,11 @@
 {
   "product": "Aircove Customer Portal",
   "version": "runtime-wave9-s6-cms-packaging",
-  "format": "no-build ES modules: source.html + 7 stylesheets + 95 src JavaScript modules + 8 non-src runtime JavaScript modules",
+  "format": "no-build ES modules: source.html + 7 stylesheets + 99 src JavaScript modules + 13 non-src runtime JavaScript modules",
   "fileInventory": {
     "stylesheets": 7,
-    "srcJavaScript": 95,
-    "runtimeJavaScript": 108
+    "srcJavaScript": 99,
+    "runtimeJavaScript": 112
   },
   "runtime": "production transfer target. Business logic, API, auth, permissions, persistence are owned by Codex runtime stages.",
   "entry": "runtime/source.html",
@@ -145,7 +145,6 @@
     "note": "Calendar renders StormCalendar only when the business vertical supports weather and the effective profile is stormOps; visual config.theme never changes this decision. Health and Beauty have no weather fixture and never fall back to Snow content. Care labels come from the business vertical registry."
   },
   "routeRegistry": [
-    { "id": "landing", "path": "/", "module": "landing", "auth": "public", "status": "done" },
     { "id": "seo.landing", "path": "/seo-preview", "module": "seo-parity", "auth": "public", "status": "done", "disposition": "Executable portal-shell reference parity route only", "productionOwner": "cms/seo-public-root-template.html strict authored public document contract" },
     { "id": "auth.oidc", "path": "/login", "module": "auth", "auth": "public", "status": "done" },
     { "id": "auth.phone", "path": "/login/phone-reference", "module": "auth", "auth": "public", "status": "reference" },

@@ -165,7 +165,6 @@ async function executeStateProbes(browser, baseUrl, implementedStates) {
     });
   }
 
-  await ready("landing");
   await ready("auth.phone", '[data-route="auth.phone"] [data-state="auth-phone"]');
   await record("auth.phone:validation-error", "auth.phone.invalid-submit", "production-action-and-dom", async () => {
     const result = await page.evaluate(() => {

@@ -624,7 +624,19 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 95, runtimeJavaScript: 108 }, "Wave 17 + live CMS data boundary runtime file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 99, runtimeJavaScript: 112 }, "Wave 17 + customer experience auth-resume runtime file inventory");
+
+  const [actionsSource, configSource, routerSource, oidcPageSource] = await Promise.all([
+    fs.readFile(path.join(root, "src/actions.js"), "utf8"),
+    fs.readFile(path.join(root, "src/config.js"), "utf8"),
+    fs.readFile(path.join(root, "src/router.js"), "utf8"),
+    fs.readFile(path.join(root, "src/routes/AuthOidcPage.js"), "utf8"),
+  ]);
+  assert.equal(manifest.routeRegistry.some((route) => route.id === "landing"), false, "the portal manifest must not declare an embedded landing route");
+  assert.doesNotMatch(configSource, /\n\s*landing:\s*\{\s*id:\s*"landing"/, "the portal registry must not declare an embedded landing route");
+  assert.doesNotMatch(routerSource, /routes\/LandingPage|case\s+"landing"/, "the portal router must not import or render the retired landing page");
+  assert.doesNotMatch(actionsSource, /go\("landing"\)/, "portal back-to-landing actions must use the configured external landing URL");
+  assert.doesNotMatch(oidcPageSource, /Browse the catalog|OidcSignedIn/, "successful OIDC restoration must resume the portal instead of rendering a signed-in success page");
 
   const stateGrammar = manifest.dataAttributes["data-state"];
   for (const stateName of ["ready", "loading", "empty", "error", "fallback", "disabled", "unauthorized", "validation-error", "pending-action", "success-toast", "drawer-open", "mobile-navigation-open", "active"]) {

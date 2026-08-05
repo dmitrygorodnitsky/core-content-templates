@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     core-auth CMS login page — Wave 18 — DELIVERED STATIC MARKUP
+
+     This file is the transfer artifact. It is plain HTML plus the accepted
+     stylesheets: no component factory, no ES modules, no build step, no h()
+     calls, no router, no state object, no delegated action listener. The page
+     is fully functional with JavaScript disabled — submission is a native form
+     POST to {{LOGIN_ACTION}}.
+
+     Stylesheets are LINKED, never copied: tokens, the base reset, .brand-logo,
+     the .btn and .field primitives, .eyebrow and the auth-page / auth-grid /
+     auth-pitch / auth-card composition all come from the accepted files, in the
+     same order source.html uses. styles/core-auth-login.css adds only what this
+     page needs. core-auth serves the page and styles/ from the same directory;
+     if the deploy layout differs, prefix each href with the deploy root so every
+     URL is root-relative and valid on the public host.
+
+     lang and dir on <html> are SERVER-rendered by core-auth (ar / he ship in the
+     locale set → dir="rtl"). data-theme and data-mode are the accepted
+     declarative theme hooks and are server-rendered here too — no script flips
+     them, and there is no second dark palette on this page.
+
+     Runtime placeholders — core-auth substitutes these per request, nothing else
+     produces or consumes them:
+       {{LOGIN_ACTION}}          form action
+       {{CSRF_PARAMETER_NAME}}   hidden input name
+       {{CSRF_TOKEN}}            hidden input value
+       {{RESET_PASSWORD_URL}}    password-reset link href
+       {{ERROR_DISPLAY}}         block|none on the assertive region
+       {{LOGOUT_DISPLAY}}        block|none on the polite region
+
+     Copy slots: every visible string carries data-copy="<slot>", one string per
+     element, replaced by a localized CMS parameter on transfer.
+
+     Everything marked data-dev-toolbar is the PREVIEW HARNESS — strip it on
+     integration; the page is unaffected.
+     ============================================================ -->
+<html lang="en" dir="ltr" data-theme="hvac" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title data-copy="page.documentTitle">Sign in — Aircove</title>
+  <link rel="icon" href="data:,">
+
+  <!-- No third-party origin is referenced anywhere on this page or in anything
+       it links: no script, style, font, icon set or image, and no analytics, tag
+       manager, session recorder or error reporter — the DOM carries a password
+       field and a live CSRF token. tokens.css declares the local-first Manrope
+       fallback; the Google Fonts <link> used by source.html is NOT used here. -->
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/shell.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/routes.css">
+  <link rel="stylesheet" href="styles/core-auth-login.css">
+
+  <!-- PREVIEW ONLY: state harness. Pure CSS (:target) — it works with JavaScript
+       disabled, which is how the three server states are captured. In the
+       delivered page the inline display placeholders are the only visibility
+       mechanism; here they are un-substituted, so this block supplies the
+       default (hidden) and the :target overrides. -->
+  <style data-dev-toolbar>
+    [data-auth-msg] { display: none; }
+    #pv-error:target  ~ .auth-page [data-auth-msg="error"],
+    #pv-both:target   ~ .auth-page [data-auth-msg="error"]  { display: block; }
+    #pv-logout:target ~ .auth-page [data-auth-msg="logout"],
+    #pv-both:target   ~ .auth-page [data-auth-msg="logout"] { display: block; }
+
+    .pv-anchor { display: block; height: 0; }
+    .dev-toolbar a {
+      background: rgba(255,255,255,.08); color: #eef2f8; border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px; padding: 5px 8px; font: 500 11.5px var(--font); cursor: pointer;
+      text-decoration: none;
+    }
+    .dev-toolbar a:hover { background: rgba(255,255,255,.16); color: #fff; }
+    body[data-pv-frame] { background: #10141e; }
+    body[data-pv-frame] .auth-page { margin-inline: auto; box-shadow: 0 0 0 1px rgba(255,255,255,.14); }
+  </style>
+</head>
+<body>
+
+  <!-- PREVIEW ONLY: :target anchors for the three server states. -->
+  <i class="pv-anchor" id="pv-default" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-error" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-logout" data-dev-toolbar></i>
+  <i class="pv-anchor" id="pv-both" data-dev-toolbar></i>
+
+  <div class="auth-page" data-route="auth.login" data-visual-id="core-auth-login">
+    <div class="auth-inner">
+      <div class="auth-grid">
+
+        <!-- The form column comes first in the DOM: at <=900 it renders above the
+             pitch, so at 390 the form is what the customer meets. -->
+        <main class="auth-card" data-module="core-auth-login-card">
+
+          <div class="auth-head">
+            <span class="brand-logo brand-logo--lg" aria-hidden="true"></span>
+            <span class="brand-name" data-copy="brand.name">Aircove</span>
+          </div>
+
+          <h1 class="auth-title" data-copy="card.title">Sign in</h1>
+          <p class="auth-sub" data-copy="card.subtitle">Enter your username and password to continue.</p>
+
+          <!-- ASSERTIVE region — the previous attempt failed. Visible only when
+               core-auth substitutes block into the inline display. Non-enumerating:
+               it never says which of the two values was wrong. -->
+          <div class="auth-msg auth-msg--error"
+               id="auth-error-message"
+               data-auth-msg="error"
+               data-module="auth-message-error"
+               role="alert"
+               style="display:{{ERROR_DISPLAY}}">
+            <div class="auth-msg__inner">
+              <span class="auth-msg__glyph" aria-hidden="true">!</span>
+              <div class="auth-msg__text">
+                <p class="auth-msg__title" data-copy="error.title">We couldn’t sign you in</p>
+                <p class="auth-msg__body" data-copy="error.body">Check your username and password, then try again.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- POLITE region — the session ended normally. A neutral confirmation:
+               different glyph, title, weight, border and fill from the assertive
+               region, so it reads differently without relying on color. -->
+          <div class="auth-msg auth-msg--logout"
+               id="auth-logout-message"
+               data-auth-msg="logout"
+               data-module="auth-message-logout"
+               role="status"
+               style="display:{{LOGOUT_DISPLAY}}">
+            <div class="auth-msg__inner">
+              <span class="auth-msg__glyph" aria-hidden="true">✓</span>
+              <div class="auth-msg__text">
+                <p class="auth-msg__title" data-copy="logout.title">You’ve been signed out</p>
+                <p class="auth-msg__body" data-copy="logout.body">Your session has ended. Sign in again to continue.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- The only <form> on the page. Native POST; no fetch, no scripted
+               submit. Field names username / password are fixed. -->
+          <form class="auth-form" method="post" action="{{LOGIN_ACTION}}" data-core-auth-login>
+
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+
+            <div class="field-row">
+              <label class="field-label" for="username" data-copy="field.username.label">Username</label>
+              <!-- aria-describedby points at the assertive region: while it is
+                   hidden it exposes nothing, and when core-auth shows it the
+                   failure is announced with the field. A per-field invalid
+                   treatment (aria-invalid + a field-error sibling) needs a
+                   placeholder this runtime contract does not have yet — see
+                   README §Wave 18, contract notes:
+                   <div class="field-error" id="username-error" role="alert">…</div> -->
+              <input class="field"
+                     id="username"
+                     name="username"
+                     type="text"
+                     autocomplete="username"
+                     autocapitalize="none"
+                     autocorrect="off"
+                     spellcheck="false"
+                     required
+                     aria-describedby="auth-error-message">
+            </div>
+
+            <div class="field-row">
+              <div class="field-head">
+                <label class="field-label" for="password" data-copy="field.password.label">Password</label>
+                <!-- plain link to a runtime-supplied URL — not an action, not a route -->
+                <a class="auth-link" href="{{RESET_PASSWORD_URL}}" data-copy="link.resetPassword">Forgot your password?</a>
+              </div>
+              <div class="field-wrap">
+                <input class="field"
+                       id="password"
+                       name="password"
+                       type="password"
+                       autocomplete="current-password"
+                       required
+                       aria-describedby="auth-error-message">
+                <!-- Enhancement only. Hidden until the page's own script reveals it;
+                     with JavaScript disabled it never appears and nothing is lost. -->
+                <button class="auth-reveal"
+                        type="button"
+                        data-password-toggle
+                        aria-controls="password"
+                        aria-pressed="false"
+                        hidden>
+                  <span class="auth-reveal__on" data-copy="action.showPassword">Show</span>
+                  <span class="auth-reveal__off" data-copy="action.hidePassword">Hide</span>
+                </button>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit">Sign in</button>
+          </form>
+
+          <p class="auth-note" data-copy="card.note">We will never ask for your password by email, message or phone.</p>
+        </main>
+
+        <section class="auth-pitch">
+          <span class="eyebrow" data-copy="pitch.eyebrow">Customer account</span>
+          <h2 class="auth-pitch__title" data-copy="pitch.title">You’re signing in on the account service.</h2>
+          <p class="auth-pitch__sub" data-copy="pitch.body">The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- PREVIEW ONLY — state / mode / direction / width harness, reusing the
+       accepted .dev-toolbar treatment from components.css. The four state links
+       are plain anchors and need no JavaScript. Strip every data-dev-toolbar
+       element on integration. -->
+  <div class="dev-toolbar" data-dev-toolbar>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">state</span>
+      <a href="#pv-default">default</a>
+      <a href="#pv-error">error</a>
+      <a href="#pv-logout">after-logout</a>
+      <a href="#pv-both">both</a>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">mode</span>
+      <button type="button" data-pv-mode="light">light</button>
+      <button type="button" data-pv-mode="dark">dark</button>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">dir</span>
+      <button type="button" data-pv-dir="ltr">ltr</button>
+      <button type="button" data-pv-dir="rtl">rtl</button>
+    </span>
+    <span class="dev-toolbar__group">
+      <span class="dev-toolbar__label">vw</span>
+      <button type="button" data-pv-w="390">390</button>
+      <button type="button" data-pv-w="768">768</button>
+      <button type="button" data-pv-w="1180">1180</button>
+      <button type="button" data-pv-w="1440">1440</button>
+      <button type="button" data-pv-w="">full</button>
+    </span>
+  </div>
+
+  <!-- PREVIEW ONLY harness script. Not part of the page contract. -->
+  <script data-dev-toolbar>
+    (function () {
+      var root = document.documentElement, page = document.querySelector(".auth-page");
+      document.querySelectorAll("[data-pv-mode]").forEach(function (b) {
+        b.addEventListener("click", function () { root.setAttribute("data-mode", b.getAttribute("data-pv-mode")); });
+      });
+      document.querySelectorAll("[data-pv-dir]").forEach(function (b) {
+        b.addEventListener("click", function () { root.setAttribute("dir", b.getAttribute("data-pv-dir")); });
+      });
+      document.querySelectorAll("[data-pv-w]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          var v = b.getAttribute("data-pv-w");
+          if (v) { page.style.width = v + "px"; document.body.setAttribute("data-pv-frame", v); }
+          else { page.style.width = ""; document.body.removeAttribute("data-pv-frame"); }
+        });
+      });
+    })();
+  </script>
+
+  <!-- The page's OWN script — progressive enhancement only. It reveals the
+       show/hide password control and toggles the input type. Nothing else on
+       this page depends on it: no submission, no validation, no visibility of
+       the message regions, no state. Delete it and the page keeps working
+       exactly as it does with JavaScript disabled. (If the core-auth CSP
+       forbids inline script, move this block verbatim to a root-relative
+       login.js and reference it with src.) -->
+  <script>
+    (function () {
+      var input = document.getElementById("password");
+      var toggle = document.querySelector("[data-password-toggle]");
+      if (!input || !toggle) return;
+      toggle.hidden = false;
+      toggle.addEventListener("click", function () {
+        var shown = toggle.getAttribute("aria-pressed") === "true";
+        toggle.setAttribute("aria-pressed", shown ? "false" : "true");
+        input.type = shown ? "password" : "text";
+        input.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

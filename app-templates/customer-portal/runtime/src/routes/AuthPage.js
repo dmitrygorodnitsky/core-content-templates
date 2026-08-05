@@ -4,7 +4,13 @@ import { state } from "../state.js";
 import { validateCode, validatePhone } from "../actions.js";
 import { render } from "../app.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
-import { pitchRow } from "./LandingPage.js";
+
+function pitchRow(dot, bg, text) {
+  return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
+    h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
+    h("div", { style: "font-size:14px;color:var(--ink-2)" }, text)
+  ]);
+}
 
 export function Auth() {
   var page = h("section", { "class": "page auth-page", "data-route": state.route, "data-visual-id": state.route });

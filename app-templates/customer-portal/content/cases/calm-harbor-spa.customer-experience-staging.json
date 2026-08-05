@@ -1,0 +1,241 @@
+{
+  "$schema": "../../config/customer-experience.schema.json",
+  "schemaVersion": 1,
+  "classification": "staging-customer-experience",
+  "experience": {
+    "id": "calm-harbor-spa-staging",
+    "vertical": "beauty",
+    "theme": "beauty",
+    "defaultMode": "light",
+    "language": "en",
+    "direction": "ltr",
+    "brandName": {
+      "en": "Calm Harbor Spa"
+    },
+    "allowedNavOrigins": [
+      "https://dev-1.servicewand.com"
+    ],
+    "support": {
+      "status": "closed",
+      "url": null,
+      "reason": "Support remains unopened by product decision."
+    }
+  },
+  "surfaces": {
+    "landing": {
+      "url": {
+        "status": "unresolved",
+        "url": null,
+        "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+      },
+      "primaryDestination": "page:portal",
+      "servicesDestination": "portal-route:services",
+      "pricingDestination": "portal-route:pricing",
+      "productsDestination": "portal-route:products"
+    },
+    "portal": {
+      "url": {
+        "status": "unresolved",
+        "url": null,
+        "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+      },
+      "routerMode": "hash",
+      "defaultRoute": "orders.list",
+      "profile": "appointments-commerce",
+      "capability": "target-appointments",
+    "capabilities": {
+      "booking": "open",
+      "retail": "retail-commerce-open",
+      "planCommerce": "open",
+      "payment": "simulated",
+      "demoCommands": "current-api"
+    },
+    "anonymousIntent": {
+      "mode": "closed",
+      "storage": "session",
+      "ttlSeconds": 1800,
+      "maxItems": 10,
+      "reconciliationMode": "authenticated-server"
+    },
+    "registration": {
+      "mode": "closed",
+      "destination": {
+        "status": "closed",
+        "url": null,
+        "reason": "Core Auth registration and customer Account provisioning are not proven in the repository evidence."
+      }
+    },
+    "logoutDestination": "portal-route:auth.oidc"
+    },
+    "login": {
+      "consumer": "core-auth",
+      "pageContextSelector": {
+        "status": "unproven",
+        "selector": null,
+        "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+      }
+    },
+    "twoFactor": {
+      "consumer": "core-auth"
+    }
+  },
+  "deployment": {
+    "environment": "staging",
+    "organization": "CALM_HARBOR_SPA_STAGING",
+    "accountTypeCode": "SPA_CUSTOMER",
+    "coreApiBase": "/core",
+    "accountApiBase": "/core-acct",
+    "serviceApiBase": "/core-svc",
+    "billApiBase": "/core-bill",
+    "pim": {
+      "apiBase": "/core-pim/api",
+      "organization": "CALM_HARBOR_SPA_STAGING",
+      "enrichmentMode": "current-api",
+      "pricingProductTypeCodes": [
+        "SPA_SERVICE",
+        "SPA_MEMBERSHIP",
+        "SPA_PACKAGE"
+      ],
+      "productsProductTypeCodes": [
+        "SPA_RETAIL"
+      ],
+      "priceTypeCode": "PRICE_CURRENCY",
+      "priceAttributeCode": null,
+      "priceAttributeValues": [],
+      "currency": "USD",
+      "currencyAttributeCode": "CURRENCY",
+      "currencyAttributeValues": [
+        "USD"
+      ],
+      "amountAttributeCode": "UNIT_PRICE",
+      "amountMinorDivisor": null
+    },
+    "auth": {
+      "coreBase": "/core",
+      "callbackPath": "/core/oauth2-callback.html",
+      "returnStorageKey": "oidc-return-url",
+      "logoutReturnStorageKey": "oidc-logout-return-url"
+    }
+  },
+  "content": {
+    "portal": {
+      "documentTitle": {
+        "en": "Calm Harbor Spa | Customer Portal"
+      },
+      "navigation": {
+        "primary": {
+          "en": "Appointments"
+        },
+        "calendar": {
+          "en": "Calendar"
+        },
+        "activity": {
+          "en": "Activity"
+        },
+        "care": {
+          "en": "My routine"
+        },
+        "proposals": {
+          "en": "Proposals"
+        },
+        "services": {
+          "en": "Services & prices"
+        },
+        "pricing": {
+          "en": "Pricing"
+        },
+        "products": {
+          "en": "Shop"
+        },
+        "account": {
+          "en": "Account"
+        },
+        "support": {
+          "en": "Support"
+        }
+      },
+      "primaryCtaLabel": {
+        "en": "+ Book"
+      }
+    },
+    "login": {
+      "documentTitle": {
+        "en": "Sign in — Calm Harbor Spa"
+      },
+      "cardTitle": {
+        "en": "Sign in"
+      },
+      "cardSubtitle": {
+        "en": "Enter your username and password to continue."
+      },
+      "errorTitle": {
+        "en": "We couldn’t sign you in"
+      },
+      "errorBody": {
+        "en": "Check your username and password, then try again."
+      },
+      "logoutTitle": {
+        "en": "You’ve been signed out"
+      },
+      "logoutBody": {
+        "en": "Your session has ended. Sign in again to continue."
+      },
+      "usernameLabel": {
+        "en": "Username"
+      },
+      "passwordLabel": {
+        "en": "Password"
+      },
+      "forgotPasswordLabel": {
+        "en": "Forgot your password?"
+      },
+      "showPasswordLabel": {
+        "en": "Show"
+      },
+      "hidePasswordLabel": {
+        "en": "Hide"
+      },
+      "submitLabel": {
+        "en": "Sign in"
+      },
+      "cardNote": {
+        "en": "We will never ask for your password by email, message or phone."
+      },
+      "pitchEyebrow": {
+        "en": "Customer account"
+      },
+      "pitchTitle": {
+        "en": "You’re signing in on the account service."
+      },
+      "pitchBody": {
+        "en": "The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started."
+      }
+    },
+    "twoFactor": {
+      "documentTitle": { "en": "Two-step verification — Calm Harbor Spa" },
+      "title": { "en": "Two-step verification" },
+      "subtitle": { "en": "Enter the code from your authenticator app to finish signing in." },
+      "setup": { "en": "Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows." },
+      "qrAlt": { "en": "Setup code for your authenticator app. If you cannot scan it, use the setup key below." },
+      "secretLabel": { "en": "Setup key" },
+      "secretHint": { "en": "Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter." },
+      "notice": { "en": "Your authenticator app is already set up. Open it to get your current code." },
+      "codeLabel": { "en": "Verification code" },
+      "codeHint": { "en": "Six digits, from your authenticator app." },
+      "error": { "en": "That code did not work. Open your authenticator app for a new code and try again." },
+      "button": { "en": "Verify" },
+      "note": { "en": "Codes are generated on your device. We will never ask you for one by email, message or phone." },
+      "pitchTitle": { "en": "One more step before you’re in." },
+      "pitchBody": { "en": "This second step runs on the account service, not in the portal. Once your code is confirmed, you’ll be taken straight back to where you started." }
+    }
+  },
+  "evidenceRefs": {
+    "landingContent": "app-templates/customer-portal/content/cases/calm-harbor-spa.public-authored.json",
+    "portalSource": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-portal-staging.json",
+    "loginTemplate": "cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/block_template_config.json",
+    "loginParameters": "cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/manual-upload/parameters.json",
+    "twoFactorTemplate": "app-templates/customer-portal/design-inbox/core-auth-2fa.html",
+    "twoFactorParameters": "app-templates/customer-portal/design-inbox/data/core-auth-2fa-parameters.json",
+    "twoFactorManifest": "app-templates/customer-portal/design-inbox/data/core-auth-2fa.manifest.json"
+  }
+}

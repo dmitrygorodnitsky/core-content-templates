@@ -7,13 +7,13 @@ import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
 import { createCoreSpaDemoAdapter } from "./adapters/core-spa-demo-adapter.js";
 import { startCoreOidcSignIn, startCoreOidcSignOut } from "./adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "./adapters/core-user-profile-adapter.js";
-import { normalizeVertical, verticalProfiles } from "./config.js";
+import { configuredExternalUrl, normalizeVertical, verticalProfiles } from "./config.js";
 import { resolveRoute, writeRouteToLocation } from "./router.js";
 import { selectSeoService, toggleSeoFaq } from "./seo-actions.js";
 
 export var ACTIONS = {
   "nav.go":            function (id) { go(id); },
-  "nav.landing":       function ()   { go("landing"); },
+  "nav.landing":       function ()   { return externalOnly("landingUrl"); },
   "nav.services":      function ()   { go("services"); },
   "nav.pricing":       function ()   { go("pricing"); },
   "nav.products":      function ()   { go("products"); },
@@ -72,7 +72,7 @@ export var ACTIONS = {
   "weather.confirm":   function (id) { runCommand("weather.confirm", id, function () { confirmWeather(id, "confirmed"); }); },
   "weather.decline":   function (id) { runCommand("weather.decline", id, function () { confirmWeather(id, "declined"); }); },
   "membership.activate": function () { failCommand("membership.activate"); },
-  "support.open":      function ()   { if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false }); go("support"); },
+  "support.open":      function ()   { var url = configuredExternalUrl(state.config, "supportUrl"); if (url) { globalThis.location.assign(url); return; } if (isSpa()) return setState({ spaSupport: true, accountMenu: false, mobileNav: false }); go("support"); },
   "support.sendMessage": function () { runCommand("support.sendMessage", null, sendChat); },
   "support.quickReply": function (id) { runCommand("support.quickReply", id, function () { pushChat(id); }); },
   "support.helpTopic": function (id) { go("support"); runCommand("support.helpTopic", id, function () { pushChat(id); }); },
@@ -170,6 +170,16 @@ export var ACTIONS = {
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav, accountMenu: false }); },
   "theme.pick":        function (id) { return pickTheme(id); }
 };
+
+function externalOnly(configKey) {
+  var url = configuredExternalUrl(state.config, configKey);
+  if (url) {
+    globalThis.location.assign(url);
+    return true;
+  }
+  failCommand("nav.external." + configKey);
+  return false;
+}
 
 function validateSeoLink(el) {
   var href = el && el.getAttribute("href");

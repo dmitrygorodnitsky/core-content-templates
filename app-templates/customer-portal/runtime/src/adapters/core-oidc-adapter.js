@@ -1,3 +1,5 @@
+import { routePath } from "../config.js";
+
 var manager = null;
 
 export function createCoreOidcAdapter() {
@@ -57,16 +59,19 @@ export async function loadCoreOidcSession(config) {
 
 export function startCoreOidcSignIn(config) {
   if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
-  var returnUrl = new URL(globalThis.location.href);
-  returnUrl.hash = "#/orders";
+  var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
   globalThis.sessionStorage.setItem(config.authReturnStorageKey || "oidc-return-url", returnUrl.href);
   return manager.signinRedirect();
 }
 
 export function startCoreOidcSignOut(config) {
   if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-out is not ready"));
-  var returnUrl = new URL(globalThis.location.href);
-  returnUrl.hash = "#/login";
+  var configured = config && config.logoutReturnUrl;
+  var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+  if (!configured) returnUrl.hash = "#/login";
+  if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+    return Promise.reject(contractError("oidc-logout-return-invalid", "Configured sign-out return URL is not allowlisted"));
+  }
   globalThis.sessionStorage.setItem(config.authLogoutReturnStorageKey || "oidc-logout-return-url", returnUrl.href);
   return manager.signoutRedirect();
 }
@@ -75,6 +80,22 @@ function sameOriginUrl(value, label) {
   var url = new URL(value, globalThis.location.origin);
   if (url.origin !== globalThis.location.origin) throw contractError("cross-origin-service", label + " must be same-origin");
   return url.href;
+}
+
+function portalRouteUrl(config, routeId) {
+  var configured = config && config.portalUrl;
+  var returnUrl = configured ? new URL(configured) : new URL(globalThis.location.href);
+  if (configured && (returnUrl.protocol !== "https:" || !(config.allowedNavOrigins || []).includes(returnUrl.origin))) {
+    throw contractError("oidc-return-invalid", "Configured portal return URL is not allowlisted");
+  }
+  var route = routePath(routeId);
+  if (config.routerMode === "history") {
+    if (!returnUrl.pathname.endsWith("/")) throw contractError("oidc-return-invalid", "History-mode portal URL must end with a slash");
+    returnUrl.pathname += route.replace(/^\//, "");
+    return returnUrl;
+  }
+  returnUrl.hash = "#" + route;
+  return returnUrl;
 }
 
 function contractError(code, message) { var error = new Error(message); error.code = code; return error; }

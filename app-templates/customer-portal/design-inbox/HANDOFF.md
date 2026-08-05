@@ -146,7 +146,7 @@ verticals render byte-identically.
   unchanged.
 - **`seo-media`** CMS media slots on hero + proof (`cms.media.hero/proof`: src, alt, focal). Renders the
   real public image (cover + focal point); missing file → striped spec slot. DELIVERED (wave 12):
-  `design-inbox/media/spa-massage-1448.webp` (hero, 1448×1086) and `design-inbox/media/spa-room-1600.webp`
+  `media/spa-massage-1448.webp` (hero, 1448×1086) and `media/spa-room-1600.webp`
   (proof, 1600×686) — crops / focal / alt / ratios in **MEDIA-SPEC.md**. No logos/text/prices/claims inside bitmaps.
 - New optional per-vertical fixture slots: `meta.brand` (footer/proof fall back to "Aircove"), `hero.note`,
   `services{eyebrow,title,sub}`, `pricing.cta`, `finalCta{sub,primary,secondary}`, `media{hero,proof}`,
@@ -229,3 +229,55 @@ README §Wave 15 for the full contract. Key facts for continuation:
 - **CSS**: additive Wave 15 section at the end of `routes.css` + `responsive.css` (no accepted
   rule modified). manifest wave-15; scenarios wave 15 (descriptionWave15 + new route entries).
 
+
+
+## Wave 18 — core-auth CMS login page — done
+Static sign-in page served by `core-auth` with a `core-cms` skin. See README §Wave 18 for the
+full contract. Key facts for continuation:
+- **Files**: `core-auth-login.html` (static entry, next to `source.html` / `seo-landing.html`)
+  + `styles/core-auth-login.css` (8th stylesheet, page-specific only) + `previews/wave18/`.
+- **No duplication**: the page LINKS `tokens.css` → `base.css` → `shell.css` → `components.css`
+  → `routes.css` → `core-auth-login.css`, same order as `source.html`. Tokens, `.btn`, `.field*`,
+  `.brand-logo`, `.eyebrow` and the `auth-*` composition stay owned by their existing files —
+  do not fork them for this page.
+- **Deliberate deviations from the package ground rules** (this page only, required by the
+  request): no ES modules, no `h()`, no `ACTIONS`, no build step; responsive is `@container`
+  on `.auth-page` instead of the `.vw-*` classes (no script runs to set them); dark mode is
+  the server-rendered `data-mode` attribute only.
+- **Runtime contract**: one `<form data-core-auth-login>`, fields `username` / `password`,
+  hidden CSRF input, and six verbatim placeholders — `{{LOGIN_ACTION}}`,
+  `{{CSRF_PARAMETER_NAME}}`, `{{CSRF_TOKEN}}`, `{{RESET_PASSWORD_URL}}`, `{{ERROR_DISPLAY}}`,
+  `{{LOGOUT_DISPLAY}}`. State is ONLY the two inline `display` values. Do not add a class
+  toggle, a `data-state` switch or scripted visibility.
+- **Copy slots**: `data-copy="<slot>"`, one visible string per element (18 slots).
+- **JS**: one inline enhancement block (show/hide password). Deleting it must stay a no-op —
+  the JavaScript-disabled render is the acceptance artifact.
+- **Harness**: `data-dev-toolbar` only; the three states preview through `:target` CSS with no
+  script, so the JS-disabled captures can be taken from the same file.
+
+## Wave 19 — core-auth CMS two-factor page — done
+Static 2FA page served by `core-auth` after login requires a second factor. Answers the wave-18
+open item. See README §Wave 19 for the full contract. Key facts for continuation:
+- **Files**: `core-auth-2fa.html` (transfer source) + `core-auth-2fa-preview.html` (GENERATED
+  evidence harness — never transfer it, regenerate it from the source) +
+  `styles/core-auth-2fa.css` (9th stylesheet) + `data/core-auth-2fa-parameters.json` (17
+  localized parameters with safe example copy) + `data/core-auth-2fa.manifest.json` (four-state
+  scenario/manifest coverage + validation note) + `previews/wave19/` (29 PNGs + one synthetic
+  QR stand-in).
+- **No duplication**: the page LINKS `tokens.css` → `base.css` → `shell.css` → `components.css`
+  → `routes.css` → **`core-auth-login.css`** → `core-auth-2fa.css`. `core-auth-login.css` is
+  treated as the SHARED standalone-auth layer (page/centering/head/title/sub/note, the assertive
+  region, the focus convention, the container breakpoints) — do not fork it. The 9th sheet holds
+  only the enrollment panel, QR frame, setup key, notice and code field.
+- **Runtime contract**: one `<form data-core-auth-2fa>`, field `code`, hidden CSRF input, and
+  eight verbatim placeholders — `{{TWO_FACTOR_ACTION}}`, `{{CSRF_PARAMETER_NAME}}`,
+  `{{CSRF_TOKEN}}`, `{{SETUP_DISPLAY}}`, `{{VERIFY_NOTICE_DISPLAY}}`, `{{ERROR_DISPLAY}}`,
+  `{{TWO_FACTOR_QR_CODE}}`, `{{TWO_FACTOR_SECRET}}`. `{{TWO_FACTOR_OTPAUTH_URI}}` is
+  deliberately unreferenced. State is ONLY the three inline `display` values.
+- **Zero JavaScript**: the transfer source has no `<script>` tag and no event attribute at all —
+  not even login's show/hide enhancement. Do not add one; the page renders a live CSRF token and
+  a generated secret.
+- **States**: `setup-ready` / `setup-error` / `verify-ready` / `verify-error`. setup-error must
+  keep the runtime QR and key untouched — CMS never stores, defaults or regenerates them.
+- **Unchanged**: `manifest.json`, `scenarios.json`, `core-auth-login.html`, every accepted
+  stylesheet. Wave 19 adds files only.

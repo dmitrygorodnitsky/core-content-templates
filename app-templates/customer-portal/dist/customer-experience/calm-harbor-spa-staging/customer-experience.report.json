@@ -1,0 +1,1105 @@
+{
+  "schemaVersion": 1,
+  "mode": "report-only",
+  "writesPerformed": false,
+  "publishable": false,
+  "experience": {
+    "id": "calm-harbor-spa-staging",
+    "classification": "staging-customer-experience",
+    "environment": "staging",
+    "vertical": "beauty",
+    "theme": "beauty"
+  },
+  "templates": {
+    "landing": {
+      "code": "CUSTOMER_EXPERIENCE_LANDING",
+      "parameterCount": 18
+    },
+    "portal": {
+      "code": "CUSTOMER_EXPERIENCE_PORTAL",
+      "parameterCount": 55
+    },
+    "login": {
+      "code": "CUSTOMER_EXPERIENCE_LOGIN",
+      "parameterCount": 25
+    },
+    "twoFactor": {
+      "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
+      "parameterCount": 24
+    }
+  },
+  "profile": {
+    "intent": "appointments-commerce",
+    "runtimeProfile": "spaTarget",
+    "enabledModules": [
+      "appointments",
+      "orders",
+      "services",
+      "pricing",
+      "products",
+      "account",
+      "cart",
+      "checkout",
+      "purchases",
+      "plan",
+      "profile"
+    ],
+    "navigationRoutes": [
+      "orders.list",
+      "services",
+      "products",
+      "account"
+    ]
+  },
+  "navigation": {
+    "landingUrl": null,
+    "portalUrl": null,
+    "primaryDestination": null,
+    "servicesDestination": null,
+    "pricingDestination": null,
+    "productsDestination": null,
+    "supportUrl": null,
+    "registrationUrl": null,
+    "logoutDestination": null
+  },
+  "parameterMaps": {
+    "landing": [
+      {
+        "code": "CX_CONTRACT_VERSION",
+        "type": "STRING",
+        "value": "1",
+        "source": "contract.version"
+      },
+      {
+        "code": "CX_EXPERIENCE_ID",
+        "type": "STRING",
+        "value": "calm-harbor-spa-staging",
+        "source": "experience.id"
+      },
+      {
+        "code": "CX_VERTICAL",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.vertical"
+      },
+      {
+        "code": "CX_THEME",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.theme"
+      },
+      {
+        "code": "CX_DEFAULT_MODE",
+        "type": "STRING",
+        "value": "light",
+        "source": "experience.defaultMode"
+      },
+      {
+        "code": "CX_BRAND_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa"
+        },
+        "source": "experience.brandName"
+      },
+      {
+        "code": "CX_ALLOWED_NAV_ORIGINS",
+        "type": "STRING",
+        "value": "https://dev-1.servicewand.com",
+        "source": "experience.allowedNavOrigins"
+      },
+      {
+        "code": "LANDING_META_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Day spa rituals in Austin, Texas | Calm Harbor Spa"
+        },
+        "source": "landing.metaTitle"
+      },
+      {
+        "code": "LANDING_META_DESCRIPTION",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A quieter kind of day spa in Austin: restorative massage, skin rituals, and unhurried time to reset."
+        },
+        "source": "landing.metaDescription"
+      },
+      {
+        "code": "LANDING_CANONICAL_URL",
+        "type": "STRING",
+        "value": "https://calmharborspa.com/beauty/austin",
+        "source": "landing.canonicalUrl"
+      },
+      {
+        "code": "LANDING_HERO_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Central Austin, Clarksville, Tarrytown, and West Lake Hills"
+        },
+        "source": "landing.heroEyebrow"
+      },
+      {
+        "code": "LANDING_HERO_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "A softer pace in Austin, Texas"
+        },
+        "source": "landing.heroTitle"
+      },
+      {
+        "code": "LANDING_HERO_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Restorative rituals for the days when your calendar has taken more than it gave."
+        },
+        "source": "landing.heroBody"
+      },
+      {
+        "code": "LANDING_HERO_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Choose a ritual, then settle into an unhurried visit."
+        },
+        "source": "landing.heroNote"
+      },
+      {
+        "code": "LANDING_FINAL_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Make room for your reset"
+        },
+        "source": "landing.finalTitle"
+      },
+      {
+        "code": "LANDING_FINAL_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Choose a ritual for a quieter day in Austin, Texas."
+        },
+        "source": "landing.finalBody"
+      },
+      {
+        "code": "LANDING_PRIMARY_CTA_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Choose a ritual"
+        },
+        "source": "landing.primaryCtaLabel"
+      },
+      {
+        "code": "LANDING_SECONDARY_CTA_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Explore rituals"
+        },
+        "source": "landing.secondaryCtaLabel"
+      }
+    ],
+    "portal": [
+      {
+        "code": "CX_CONTRACT_VERSION",
+        "type": "STRING",
+        "value": "1",
+        "source": "contract.version"
+      },
+      {
+        "code": "CX_EXPERIENCE_ID",
+        "type": "STRING",
+        "value": "calm-harbor-spa-staging",
+        "source": "experience.id"
+      },
+      {
+        "code": "CX_VERTICAL",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.vertical"
+      },
+      {
+        "code": "CX_THEME",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.theme"
+      },
+      {
+        "code": "CX_DEFAULT_MODE",
+        "type": "STRING",
+        "value": "light",
+        "source": "experience.defaultMode"
+      },
+      {
+        "code": "CX_BRAND_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa"
+        },
+        "source": "experience.brandName"
+      },
+      {
+        "code": "CX_ALLOWED_NAV_ORIGINS",
+        "type": "STRING",
+        "value": "https://dev-1.servicewand.com",
+        "source": "experience.allowedNavOrigins"
+      },
+      {
+        "code": "PORTAL_DOCUMENT_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa | Customer Portal"
+        },
+        "source": "portal.documentTitle"
+      },
+      {
+        "code": "PORTAL_PROFILE",
+        "type": "STRING",
+        "value": "spaTarget",
+        "source": "portal.runtimeProfile"
+      },
+      {
+        "code": "PORTAL_CAPABILITY",
+        "type": "STRING",
+        "value": "target-appointments",
+        "source": "portal.capability"
+      },
+      {
+        "code": "PORTAL_ENABLED_MODULES",
+        "type": "STRING",
+        "value": "appointments,orders,services,pricing,products,account,cart,checkout,purchases,plan,profile",
+        "source": "portal.enabledModules"
+      },
+      {
+        "code": "PORTAL_DEFAULT_ROUTE_ID",
+        "type": "STRING",
+        "value": "orders.list",
+        "source": "portal.defaultRoute"
+      },
+      {
+        "code": "PORTAL_ROUTER_MODE",
+        "type": "STRING",
+        "value": "hash",
+        "source": "portal.routerMode"
+      },
+      {
+        "code": "PORTAL_AUTH_MODE",
+        "type": "STRING",
+        "value": "required",
+        "source": "portal.authMode"
+      },
+      {
+        "code": "PORTAL_DATA_MODE",
+        "type": "STRING",
+        "value": "live",
+        "source": "portal.dataMode"
+      },
+      {
+        "code": "PORTAL_ERROR_MODE",
+        "type": "STRING",
+        "value": "error",
+        "source": "portal.errorMode"
+      },
+      {
+        "code": "PORTAL_BOOKING_MODE",
+        "type": "STRING",
+        "value": "open",
+        "source": "portal.bookingMode"
+      },
+      {
+        "code": "PORTAL_RETAIL_MODE",
+        "type": "STRING",
+        "value": "retail-commerce-open",
+        "source": "portal.retailMode"
+      },
+      {
+        "code": "PORTAL_PLAN_COMMERCE_MODE",
+        "type": "STRING",
+        "value": "open",
+        "source": "portal.planCommerceMode"
+      },
+      {
+        "code": "PORTAL_PAYMENT_MODE",
+        "type": "STRING",
+        "value": "simulated",
+        "source": "portal.paymentMode"
+      },
+      {
+        "code": "PORTAL_DEMO_COMMANDS_MODE",
+        "type": "STRING",
+        "value": "current-api",
+        "source": "portal.demoCommandsMode"
+      },
+      {
+        "code": "PORTAL_ANONYMOUS_INTENT_MODE",
+        "type": "STRING",
+        "value": "closed",
+        "source": "portal.anonymousIntentMode"
+      },
+      {
+        "code": "PORTAL_ANONYMOUS_INTENT_TTL_SECONDS",
+        "type": "STRING",
+        "value": "1800",
+        "source": "portal.anonymousIntentTtlSeconds"
+      },
+      {
+        "code": "PORTAL_ANONYMOUS_INTENT_MAX_ITEMS",
+        "type": "STRING",
+        "value": "10",
+        "source": "portal.anonymousIntentMaxItems"
+      },
+      {
+        "code": "PORTAL_ANONYMOUS_INTENT_RECONCILIATION_MODE",
+        "type": "STRING",
+        "value": "authenticated-server",
+        "source": "portal.anonymousIntentReconciliationMode"
+      },
+      {
+        "code": "PORTAL_REGISTRATION_MODE",
+        "type": "STRING",
+        "value": "closed",
+        "source": "portal.registrationMode"
+      },
+      {
+        "code": "PORTAL_ORGANIZATION",
+        "type": "STRING",
+        "value": "CALM_HARBOR_SPA_STAGING",
+        "source": "portal.organization"
+      },
+      {
+        "code": "PORTAL_ACCOUNT_TYPE_CODE",
+        "type": "STRING",
+        "value": "SPA_CUSTOMER",
+        "source": "portal.accountTypeCode"
+      },
+      {
+        "code": "PORTAL_CORE_API_BASE",
+        "type": "STRING",
+        "value": "/core",
+        "source": "portal.coreApiBase"
+      },
+      {
+        "code": "PORTAL_ACCOUNT_API_BASE",
+        "type": "STRING",
+        "value": "/core-acct",
+        "source": "portal.accountApiBase"
+      },
+      {
+        "code": "PORTAL_SERVICE_API_BASE",
+        "type": "STRING",
+        "value": "/core-svc",
+        "source": "portal.serviceApiBase"
+      },
+      {
+        "code": "PORTAL_BILL_API_BASE",
+        "type": "STRING",
+        "value": "/core-bill",
+        "source": "portal.billApiBase"
+      },
+      {
+        "code": "PORTAL_PIM_API_BASE",
+        "type": "STRING",
+        "value": "/core-pim/api",
+        "source": "portal.pimApiBase"
+      },
+      {
+        "code": "PORTAL_PIM_ORGANIZATION",
+        "type": "STRING",
+        "value": "CALM_HARBOR_SPA_STAGING",
+        "source": "portal.pimOrganization"
+      },
+      {
+        "code": "PORTAL_PIM_ENRICHMENT_MODE",
+        "type": "STRING",
+        "value": "current-api",
+        "source": "portal.pimEnrichmentMode"
+      },
+      {
+        "code": "PORTAL_PIM_PRICING_PRODUCT_TYPE_CODES",
+        "type": "STRING",
+        "value": "SPA_SERVICE,SPA_MEMBERSHIP,SPA_PACKAGE",
+        "source": "portal.pimPricingProductTypeCodes"
+      },
+      {
+        "code": "PORTAL_PIM_PRODUCTS_PRODUCT_TYPE_CODES",
+        "type": "STRING",
+        "value": "SPA_RETAIL",
+        "source": "portal.pimProductsProductTypeCodes"
+      },
+      {
+        "code": "PORTAL_PIM_PRICE_TYPE_CODE",
+        "type": "STRING",
+        "value": "PRICE_CURRENCY",
+        "source": "portal.pimPriceTypeCode"
+      },
+      {
+        "code": "PORTAL_PIM_CURRENCY",
+        "type": "STRING",
+        "value": "USD",
+        "source": "portal.pimCurrency"
+      },
+      {
+        "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "CURRENCY",
+        "source": "portal.pimCurrencyAttributeCode"
+      },
+      {
+        "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_VALUES",
+        "type": "STRING",
+        "value": "USD",
+        "source": "portal.pimCurrencyAttributeValues"
+      },
+      {
+        "code": "PORTAL_PIM_AMOUNT_ATTRIBUTE_CODE",
+        "type": "STRING",
+        "value": "UNIT_PRICE",
+        "source": "portal.pimAmountAttributeCode"
+      },
+      {
+        "code": "PORTAL_AUTH_CORE_BASE",
+        "type": "STRING",
+        "value": "/core",
+        "source": "portal.authCoreBase"
+      },
+      {
+        "code": "PORTAL_AUTH_CALLBACK_PATH",
+        "type": "STRING",
+        "value": "/core/oauth2-callback.html",
+        "source": "portal.authCallbackPath"
+      },
+      {
+        "code": "PORTAL_NAV_PRIMARY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Appointments"
+        },
+        "source": "portal.navigation.primary"
+      },
+      {
+        "code": "PORTAL_NAV_CALENDAR_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calendar"
+        },
+        "source": "portal.navigation.calendar"
+      },
+      {
+        "code": "PORTAL_NAV_ACTIVITY_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Activity"
+        },
+        "source": "portal.navigation.activity"
+      },
+      {
+        "code": "PORTAL_NAV_CARE_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "My routine"
+        },
+        "source": "portal.navigation.care"
+      },
+      {
+        "code": "PORTAL_NAV_PROPOSALS_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Proposals"
+        },
+        "source": "portal.navigation.proposals"
+      },
+      {
+        "code": "PORTAL_NAV_SERVICES_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Services & prices"
+        },
+        "source": "portal.navigation.services"
+      },
+      {
+        "code": "PORTAL_NAV_PRICING_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Pricing"
+        },
+        "source": "portal.navigation.pricing"
+      },
+      {
+        "code": "PORTAL_NAV_PRODUCTS_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Shop"
+        },
+        "source": "portal.navigation.products"
+      },
+      {
+        "code": "PORTAL_NAV_ACCOUNT_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Account"
+        },
+        "source": "portal.navigation.account"
+      },
+      {
+        "code": "PORTAL_NAV_SUPPORT_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Support"
+        },
+        "source": "portal.navigation.support"
+      },
+      {
+        "code": "PORTAL_PRIMARY_CTA_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "+ Book"
+        },
+        "source": "portal.primaryCtaLabel"
+      }
+    ],
+    "login": [
+      {
+        "code": "CX_CONTRACT_VERSION",
+        "type": "STRING",
+        "value": "1",
+        "source": "contract.version"
+      },
+      {
+        "code": "CX_EXPERIENCE_ID",
+        "type": "STRING",
+        "value": "calm-harbor-spa-staging",
+        "source": "experience.id"
+      },
+      {
+        "code": "CX_VERTICAL",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.vertical"
+      },
+      {
+        "code": "CX_THEME",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.theme"
+      },
+      {
+        "code": "CX_DEFAULT_MODE",
+        "type": "STRING",
+        "value": "light",
+        "source": "experience.defaultMode"
+      },
+      {
+        "code": "CX_LANGUAGE",
+        "type": "STRING",
+        "value": "en",
+        "source": "experience.language"
+      },
+      {
+        "code": "CX_DIRECTION",
+        "type": "STRING",
+        "value": "ltr",
+        "source": "experience.direction"
+      },
+      {
+        "code": "CX_BRAND_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa"
+        },
+        "source": "experience.brandName"
+      },
+      {
+        "code": "LOGIN_DOCUMENT_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sign in — Calm Harbor Spa"
+        },
+        "source": "login.documentTitle"
+      },
+      {
+        "code": "LOGIN_CARD_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sign in"
+        },
+        "source": "login.cardTitle"
+      },
+      {
+        "code": "LOGIN_CARD_SUBTITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Enter your username and password to continue."
+        },
+        "source": "login.cardSubtitle"
+      },
+      {
+        "code": "LOGIN_ERROR_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "We couldn’t sign you in"
+        },
+        "source": "login.errorTitle"
+      },
+      {
+        "code": "LOGIN_ERROR_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Check your username and password, then try again."
+        },
+        "source": "login.errorBody"
+      },
+      {
+        "code": "LOGIN_LOGOUT_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "You’ve been signed out"
+        },
+        "source": "login.logoutTitle"
+      },
+      {
+        "code": "LOGIN_LOGOUT_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Your session has ended. Sign in again to continue."
+        },
+        "source": "login.logoutBody"
+      },
+      {
+        "code": "LOGIN_USERNAME_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Username"
+        },
+        "source": "login.usernameLabel"
+      },
+      {
+        "code": "LOGIN_PASSWORD_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Password"
+        },
+        "source": "login.passwordLabel"
+      },
+      {
+        "code": "LOGIN_FORGOT_PASSWORD_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Forgot your password?"
+        },
+        "source": "login.forgotPasswordLabel"
+      },
+      {
+        "code": "LOGIN_SHOW_PASSWORD_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Show"
+        },
+        "source": "login.showPasswordLabel"
+      },
+      {
+        "code": "LOGIN_HIDE_PASSWORD_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Hide"
+        },
+        "source": "login.hidePasswordLabel"
+      },
+      {
+        "code": "LOGIN_SUBMIT_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Sign in"
+        },
+        "source": "login.submitLabel"
+      },
+      {
+        "code": "LOGIN_CARD_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "We will never ask for your password by email, message or phone."
+        },
+        "source": "login.cardNote"
+      },
+      {
+        "code": "LOGIN_PITCH_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Customer account"
+        },
+        "source": "login.pitchEyebrow"
+      },
+      {
+        "code": "LOGIN_PITCH_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "You’re signing in on the account service."
+        },
+        "source": "login.pitchTitle"
+      },
+      {
+        "code": "LOGIN_PITCH_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started."
+        },
+        "source": "login.pitchBody"
+      }
+    ],
+    "twoFactor": [
+      {
+        "code": "CX_CONTRACT_VERSION",
+        "type": "STRING",
+        "value": "1",
+        "source": "contract.version"
+      },
+      {
+        "code": "CX_EXPERIENCE_ID",
+        "type": "STRING",
+        "value": "calm-harbor-spa-staging",
+        "source": "experience.id"
+      },
+      {
+        "code": "CX_VERTICAL",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.vertical"
+      },
+      {
+        "code": "CX_THEME",
+        "type": "STRING",
+        "value": "beauty",
+        "source": "experience.theme"
+      },
+      {
+        "code": "CX_DEFAULT_MODE",
+        "type": "STRING",
+        "value": "light",
+        "source": "experience.defaultMode"
+      },
+      {
+        "code": "CX_LANGUAGE",
+        "type": "STRING",
+        "value": "en",
+        "source": "experience.language"
+      },
+      {
+        "code": "CX_DIRECTION",
+        "type": "STRING",
+        "value": "ltr",
+        "source": "experience.direction"
+      },
+      {
+        "code": "CX_BRAND_NAME",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Calm Harbor Spa"
+        },
+        "source": "experience.brandName"
+      },
+      {
+        "code": "LOGIN_PITCH_EYEBROW",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Customer account"
+        },
+        "source": "login.pitchEyebrow"
+      },
+      {
+        "code": "TWO_FACTOR_DOCUMENT_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Two-step verification — Calm Harbor Spa"
+        },
+        "source": "twoFactor.documentTitle"
+      },
+      {
+        "code": "TWO_FACTOR_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Two-step verification"
+        },
+        "source": "twoFactor.title"
+      },
+      {
+        "code": "TWO_FACTOR_SUBTITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Enter the code from your authenticator app to finish signing in."
+        },
+        "source": "twoFactor.subtitle"
+      },
+      {
+        "code": "TWO_FACTOR_SETUP",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows."
+        },
+        "source": "twoFactor.setup"
+      },
+      {
+        "code": "TWO_FACTOR_QR_ALT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Setup code for your authenticator app. If you cannot scan it, use the setup key below."
+        },
+        "source": "twoFactor.qrAlt"
+      },
+      {
+        "code": "TWO_FACTOR_SECRET_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Setup key"
+        },
+        "source": "twoFactor.secretLabel"
+      },
+      {
+        "code": "TWO_FACTOR_SECRET_HINT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter."
+        },
+        "source": "twoFactor.secretHint"
+      },
+      {
+        "code": "TWO_FACTOR_NOTICE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Your authenticator app is already set up. Open it to get your current code."
+        },
+        "source": "twoFactor.notice"
+      },
+      {
+        "code": "TWO_FACTOR_CODE_LABEL",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Verification code"
+        },
+        "source": "twoFactor.codeLabel"
+      },
+      {
+        "code": "TWO_FACTOR_CODE_HINT",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Six digits, from your authenticator app."
+        },
+        "source": "twoFactor.codeHint"
+      },
+      {
+        "code": "TWO_FACTOR_ERROR",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "That code did not work. Open your authenticator app for a new code and try again."
+        },
+        "source": "twoFactor.error"
+      },
+      {
+        "code": "TWO_FACTOR_BUTTON",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Verify"
+        },
+        "source": "twoFactor.button"
+      },
+      {
+        "code": "TWO_FACTOR_NOTE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "Codes are generated on your device. We will never ask you for one by email, message or phone."
+        },
+        "source": "twoFactor.note"
+      },
+      {
+        "code": "TWO_FACTOR_PITCH_TITLE",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "One more step before you’re in."
+        },
+        "source": "twoFactor.pitchTitle"
+      },
+      {
+        "code": "TWO_FACTOR_PITCH_BODY",
+        "type": "LOCALIZED_STRING_SS",
+        "value": {
+          "en": "This second step runs on the account service, not in the portal. Once your code is confirmed, you’ll be taken straight back to where you started."
+        },
+        "source": "twoFactor.pitchBody"
+      }
+    ]
+  },
+  "deferredParameters": [
+    {
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "CX_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "CX_PORTAL_URL",
+      "source": "resolved.portalUrl",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "source": "resolved.portalUrl",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "NAV_LANDING_URL",
+      "source": "resolved.landingUrl",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_URL",
+      "source": "resolved.primaryDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "source": "resolved.servicesDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRICING_URL",
+      "source": "resolved.pricingDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "source": "resolved.productsDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "surface": "portal",
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "source": "resolved.logoutDestination",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    }
+  ],
+  "blockers": [
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "CX_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LANDING_URL",
+      "reason": "The deployed landing PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_SERVICES_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRICING_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "landing",
+      "code": "NAV_PORTAL_PRODUCTS_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "parameter-unresolved",
+      "surface": "portal",
+      "code": "NAV_LOGOUT_RETURN_URL",
+      "reason": "The deployed authenticated portal PageContext URL is not recorded in the repository checkpoint."
+    },
+    {
+      "id": "login-page-context-selector-unproven",
+      "surface": "login",
+      "code": null,
+      "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+    }
+  ],
+  "findings": [
+    {
+      "severity": "warning",
+      "id": "login-theme-drift",
+      "current": "hvac",
+      "intended": "beauty",
+      "detail": "The current Calm Harbor login defaults to a different palette than the shared experience theme."
+    },
+    {
+      "severity": "info",
+      "id": "tenant-specific-login-template",
+      "current": "CUSTOMER_PORTAL_CALM_HARBOR_LOGIN",
+      "intended": "CUSTOMER_EXPERIENCE_LOGIN",
+      "detail": "Expected during report-only migration; no consumer switch was performed."
+    },
+    {
+      "severity": "info",
+      "id": "tenant-specific-portal-template",
+      "current": "CUSTOMER_PORTAL_CALM_HARBOR_STAGING",
+      "intended": "CUSTOMER_EXPERIENCE_PORTAL",
+      "detail": "Expected during report-only migration; no CMS output was changed."
+    }
+  ],
+  "checks": [
+    {
+      "id": "descriptor-schema",
+      "status": "pass",
+      "detail": "draft 2020-12 schema validation passed"
+    },
+    {
+      "id": "registry",
+      "status": "pass",
+      "detail": "114 unique parameter definitions"
+    },
+    {
+      "id": "descriptor-semantics",
+      "status": "pass",
+      "detail": "capability, route, URL, and live/staging rules passed"
+    },
+    {
+      "id": "shared-parameter-equality",
+      "status": "pass",
+      "detail": "13 shared values agree across consumers"
+    },
+    {
+      "id": "filesystem-writes",
+      "status": "pass",
+      "detail": "report builder has no output/write path"
+    }
+  ]
+}

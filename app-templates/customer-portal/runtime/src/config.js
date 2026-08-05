@@ -94,7 +94,6 @@ export const verticalProfiles = {
 };
 
 export const routeRegistry = {
-  landing: { id: "landing", path: "/", module: "landing", public: true },
   "seo.landing": { id: "seo.landing", path: "/seo-preview", module: "seo-parity", public: true, parityOnly: true },
   "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
   "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
@@ -183,6 +182,27 @@ export function readPortalConfig(root) {
   var caseId = dataMode === "fixture" && caseFixtureFor(dataset.portalCase) ? dataset.portalCase : "";
   if (caseId && vertical !== "beauty") caseId = "";
   return {
+    experienceId: dataset.portalExperienceId || "local-preview",
+    brandName: dataset.portalBrandName || verticalConfig.displayName,
+    landingUrl: safeConfiguredUrl(dataset.portalLandingUrl),
+    portalUrl: safeConfiguredUrl(dataset.portalUrl),
+    supportUrl: safeConfiguredUrl(dataset.portalSupportUrl),
+    logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
+    registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
+    allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+    navigation: {
+      primary: dataset.portalNavPrimaryLabel || "",
+      calendar: dataset.portalNavCalendarLabel || "",
+      activity: dataset.portalNavActivityLabel || "",
+      care: dataset.portalNavCareLabel || "",
+      proposals: dataset.portalNavProposalsLabel || "",
+      services: dataset.portalNavServicesLabel || "",
+      pricing: dataset.portalNavPricingLabel || "",
+      products: dataset.portalNavProductsLabel || "",
+      account: dataset.portalNavAccountLabel || "",
+      support: dataset.portalNavSupportLabel || "",
+    },
+    primaryCtaLabel: dataset.portalPrimaryCtaLabel || "",
     vertical: vertical,
     theme: theme,
     profile: profile,
@@ -191,6 +211,11 @@ export function readPortalConfig(root) {
     retail: allowed(dataset.portalRetail, ["browse-only", "retail-commerce-open"], "browse-only"),
     planCommerce: allowed(dataset.portalPlanCommerce, ["closed", "open"], "closed"),
     demoCommands: allowed(dataset.portalDemoCommands, ["closed", "current-api"], "closed"),
+    anonymousIntentMode: allowed(dataset.portalAnonymousIntentMode, ["closed", "selection-only"], "closed"),
+    anonymousIntentTtlSeconds: boundedInteger(dataset.portalAnonymousIntentTtlSeconds, 1800, 60, 86400),
+    anonymousIntentMaxItems: boundedInteger(dataset.portalAnonymousIntentMaxItems, 10, 1, 50),
+    anonymousIntentReconciliationMode: allowed(dataset.portalAnonymousIntentReconciliation, ["authenticated-server"], "authenticated-server"),
+    registrationMode: allowed(dataset.portalRegistrationMode, ["closed", "core-auth"], "closed"),
     organization: dataset.portalOrganization || dataset.portalPimOrganization || "SERVICEWAND",
     coreApiBase: dataset.portalCoreApiBase || "/core",
     accountApiBase: dataset.portalAccountApiBase || "/core-acct",
@@ -237,6 +262,26 @@ export function readPortalConfig(root) {
   };
 }
 
+export function configuredExternalUrl(config, key) {
+  var value = config && config[key];
+  if (!value) return "";
+  var parsed;
+  try { parsed = new URL(value, globalThis.location && globalThis.location.href); } catch (_) { return ""; }
+  if (parsed.protocol !== "https:") return "";
+  var allowedOrigins = config.allowedNavOrigins || [];
+  return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+}
+
+function safeConfiguredUrl(value) {
+  if (!value) return "";
+  try {
+    var parsed = new URL(value);
+    return parsed.protocol === "https:" ? parsed.href : "";
+  } catch (_) {
+    return "";
+  }
+}
+
 export function routePath(routeId, params) {
   var route = routeRegistry[routeId];
   if (!route) return "/";
@@ -275,6 +320,11 @@ function splitList(value) {
 function positiveNumber(value, fallback) {
   var parsed = Number(value);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function boundedInteger(value, fallback, minimum, maximum) {
+  var parsed = Number(value);
+  return Number.isInteger(parsed) && parsed >= minimum && parsed <= maximum ? parsed : fallback;
 }
 
 function escapeRegExp(value) {

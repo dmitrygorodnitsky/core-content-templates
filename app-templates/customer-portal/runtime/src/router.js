@@ -15,7 +15,6 @@ import { Profile } from "./routes/ProfilePage.js";
 import { Activity } from "./routes/ActivityPage.js";
 import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
-import { Landing } from "./routes/LandingPage.js";
 import { Auth } from "./routes/AuthPage.js";
 import { Care } from "./routes/CarePage.js";
 import { SeoLanding } from "./routes/SeoLandingPage.js";
@@ -45,11 +44,21 @@ export function ComingSoon(routeId, wave) {
 }
 
 export function resolveRoute(routeId) {
-  var requested = routeRegistry[routeId] ? routeId : null;
-  var activeRoute = requested ? routeRegistry[requested] : null;
   var defaultRoute = reachableDefaultRoute();
+  var requested = routeRegistry[routeId] ? routeId : defaultRoute;
+  var activeRoute = routeRegistry[requested];
+  var reason = requested === routeId ? null : "unknown";
 
-  if (!activeRoute) return { id: defaultRoute, reason: "unknown" };
+  /* The SEO parity route remains executable in the local reference harness,
+     but it is not a customer-portal screen and must never be reachable from a
+     live portal template. The real landing is a separate CMS document. */
+  if (activeRoute && activeRoute.parityOnly && state.config.dataMode === "live") {
+    requested = defaultRoute;
+    activeRoute = routeRegistry[requested];
+    reason = "preview-only";
+  }
+
+  if (!activeRoute) return { id: "auth.oidc", reason: "invalid-config" };
 
   if (!isPublic(requested) && !state.session.authenticated) {
     state.session.intendedRoute = requested;
@@ -68,7 +77,7 @@ export function resolveRoute(routeId) {
     return { id: "care", reason: careAccessReason() };
   }
 
-  return { id: requested, reason: null };
+  return { id: requested, reason: reason };
 }
 
 function reachableDefaultRoute() {
@@ -78,12 +87,13 @@ function reachableDefaultRoute() {
   var enabledRoute = Object.values(routeRegistry).find(function (route) {
     return !route.public && isModuleEnabled(route.module);
   });
-  return enabledRoute ? enabledRoute.id : "landing";
+  return enabledRoute ? enabledRoute.id : "auth.oidc";
 }
 
 function isRouteReachable(routeId) {
   var route = routeRegistry[routeId];
-  return !!(route && (route.public || isModuleEnabled(route.module)));
+  if (!route || (route.parityOnly && state.config.dataMode === "live")) return false;
+  return !!(route.public || isModuleEnabled(route.module));
 }
 
 export function routeFromLocation() {
@@ -164,7 +174,6 @@ export function renderRoute() {
     case "activity":    return Activity();
     case "calendar":    return Calendar();
     case "support":     return Support();
-    case "landing":     return Landing();
     case "auth.phone":  return Auth();
     case "auth.code":   return Auth();
     case "auth.oidc":   return AuthOidc();

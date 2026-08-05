@@ -1,0 +1,300 @@
+[
+  {
+    "code": "CX_CONTRACT_VERSION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx contract version",
+        "DESCRIPTION": "Customer experience descriptor value: contract.version."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_EXPERIENCE_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx experience id",
+        "DESCRIPTION": "Customer experience descriptor value: experience.id."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_VERTICAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx vertical",
+        "DESCRIPTION": "Customer experience descriptor value: experience.vertical."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx theme",
+        "DESCRIPTION": "Customer experience descriptor value: experience.theme."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DEFAULT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx default mode",
+        "DESCRIPTION": "Customer experience descriptor value: experience.defaultMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_LANGUAGE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx language",
+        "DESCRIPTION": "Customer experience descriptor value: experience.language."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DIRECTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx direction",
+        "DESCRIPTION": "Customer experience descriptor value: experience.direction."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cx brand name",
+        "DESCRIPTION": "Customer experience descriptor value: experience.brandName."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "LOGIN_PITCH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Login pitch eyebrow",
+        "DESCRIPTION": "Customer experience descriptor value: login.pitchEyebrow."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_DOCUMENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor document title",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.documentTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor title",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.title."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor subtitle",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.subtitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_SETUP",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor setup",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.setup."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_QR_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor qr alt",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.qrAlt."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_SECRET_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor secret label",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.secretLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_SECRET_HINT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor secret hint",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.secretHint."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_NOTICE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor notice",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.notice."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_CODE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor code label",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.codeLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_CODE_HINT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor code hint",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.codeHint."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor error",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.error."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor button",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.button."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor note",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.note."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_PITCH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor pitch title",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.pitchTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "TWO_FACTOR_PITCH_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Two factor pitch body",
+        "DESCRIPTION": "Customer experience descriptor value: twoFactor.pitchBody."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  }
+]

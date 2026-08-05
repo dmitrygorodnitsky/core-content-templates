@@ -47,6 +47,8 @@ try {
   assert.match(template.javascript, /order-scope-mismatch/);
   assert.match(template.javascript, /tenant-demo-unscoped/);
   assert.match(template.javascript, /checkout\.confirm/);
+  assert.doesNotMatch(template.javascript, /Get a quote in 30s/, "the authenticated portal bundle must not contain the retired internal landing screen");
+  assert.doesNotMatch(template.javascript, /Browse the catalog/, "the authenticated portal bundle must not contain the retired signed-in success screen");
   assert.doesNotMatch(template.javascript, /^\s*import\s/m);
   for (const [field, value] of Object.entries({ head: template.head, html: template.html, css: template.css, javascript: template.javascript })) {
     assert.doesNotMatch(value, /\$\{|@\{|!\{|<%|%>|@(param|import|template|if|for|while|switch|else)\b/, field + " must not contain JTE parser openers or directives");
@@ -97,6 +99,12 @@ try {
       type: { code: "SPA_SERVICE_ORDER", nls: { en: { NAME: "Spa service order" } } },
       states: [{ id: 9, code: "OPEN", nls: { en: { NAME: "Open" } } }],
     }] });
+    if (url.pathname === "/core-bill/api/order-item/list.json") return json(response, { resultSize: 1, result: [{
+      id: 21, amount: 145, itemCount: 1, order: { id: 2 }, attributes: {},
+      type: { id: 31, code: "SPA_ITEM_SERVICE", nls: { en: { NAME: "Service" } } },
+      itemPrice: { id: 41, code: "CHS_GROUNDING_MASSAGE_PRICE", nls: { en: { NAME: "Grounding massage" } } },
+    }] });
+    if (url.pathname === "/core-bill/api/shipment/list.json") return json(response, { resultSize: 0, result: [] });
     if (url.pathname === "/core-bill/api/order/save.json") return json(response, [3]);
     if (url.pathname === "/core-bill/api/order/get.json") return json(response, {
       id: 3, optimistic: 0, grandTotal: 48, totalCharges: 48, totalTaxes: 0, notes: "CP_DEMO_TEST",
@@ -114,12 +122,16 @@ try {
   const page = await browser.newPage({ viewport: { width: 1180, height: 900 } });
   const url = `http://127.0.0.1:${address.port}/preview.html#/orders`;
   await page.goto(url, { waitUntil: "networkidle" });
-  await page.waitForFunction(() => window.AircovePortal && window.AircovePortal.state.account === "ready");
+  await page.waitForFunction(() => window.AircovePortal
+    && window.AircovePortal.state.account === "ready"
+    && window.AircovePortal.state.moduleData.orders
+    && window.AircovePortal.state.moduleData.orders.state === "ready");
   await page.evaluate(() => {
     window.AircovePortal.state.capability = "current-staging";
+    window.AircovePortal.state.view = "ready";
     window.AircovePortal.go("orders.list");
   });
-  await page.waitForSelector('[data-route="orders.list"][data-state="ready"]');
+  await page.waitForSelector('[data-route="orders.list"][data-state="ready"][data-capability="current-staging"]');
   assert.equal(await page.locator('[data-module="spa-order-row"]').count(), 1);
   assert.match(await page.locator('[data-module="spa-order-row"]').innerText(), /Spa service order[\s\S]*Reference 2[\s\S]*SPA_SERVICE_ORDER[\s\S]*OPEN[\s\S]*\$145\.00[\s\S]*USD/);
   assert.doesNotMatch(await page.locator("body").innerText(), /501|CHS_STG_ELENA_RIOS|browser-test-token/);
@@ -136,6 +148,18 @@ try {
   ]);
   assert.equal(orders.headers["x-organization-code"], "CALM_HARBOR_SPA_STAGING");
   assert.deepEqual(orders.body.filters, [{ type: "INTEGER", operator: "=", property: "account.id", value: "501" }]);
+
+  await page.goto(`http://127.0.0.1:${address.port}/preview.html#/`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal
+    && window.AircovePortal.state.account === "ready"
+    && window.AircovePortal.state.route === "orders.list");
+  assert.equal(await page.locator('[data-route="landing"]').count(), 0, "portal root normalizes to the configured private default, never an embedded landing");
+
+  await page.goto(`http://127.0.0.1:${address.port}/preview.html#/seo-preview`, { waitUntil: "networkidle" });
+  await page.waitForFunction(() => window.AircovePortal
+    && window.AircovePortal.state.account === "ready"
+    && window.AircovePortal.state.route === "orders.list");
+  assert.equal(await page.locator('[data-route="seo.landing"]').count(), 0, "the reference-only SEO route is unreachable in a live portal template");
 
   await page.goto(`http://127.0.0.1:${address.port}/preview.html?direct-login=1#/login`, { waitUntil: "networkidle" });
   await page.waitForFunction(() => window.AircovePortal

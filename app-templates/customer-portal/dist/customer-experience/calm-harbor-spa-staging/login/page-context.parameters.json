@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "kind": "customer-experience-page-context-parameter-map",
+  "experienceId": "calm-harbor-spa-staging",
+  "surface": "login",
+  "templateCode": "CUSTOMER_EXPERIENCE_LOGIN",
+  "publishable": false,
+  "selector": {
+    "status": "unproven",
+    "selector": null,
+    "reason": "Core Auth tenant-specific PageContext selection by a trusted organization, host, client registration, or route is not yet proven."
+  },
+  "parameters": [
+    {
+      "code": "CX_CONTRACT_VERSION",
+      "type": "STRING",
+      "value": "1",
+      "source": "contract.version"
+    },
+    {
+      "code": "CX_EXPERIENCE_ID",
+      "type": "STRING",
+      "value": "calm-harbor-spa-staging",
+      "source": "experience.id"
+    },
+    {
+      "code": "CX_VERTICAL",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.vertical"
+    },
+    {
+      "code": "CX_THEME",
+      "type": "STRING",
+      "value": "beauty",
+      "source": "experience.theme"
+    },
+    {
+      "code": "CX_DEFAULT_MODE",
+      "type": "STRING",
+      "value": "light",
+      "source": "experience.defaultMode"
+    },
+    {
+      "code": "CX_LANGUAGE",
+      "type": "STRING",
+      "value": "en",
+      "source": "experience.language"
+    },
+    {
+      "code": "CX_DIRECTION",
+      "type": "STRING",
+      "value": "ltr",
+      "source": "experience.direction"
+    },
+    {
+      "code": "CX_BRAND_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Calm Harbor Spa"
+      },
+      "source": "experience.brandName"
+    },
+    {
+      "code": "LOGIN_DOCUMENT_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Sign in — Calm Harbor Spa"
+      },
+      "source": "login.documentTitle"
+    },
+    {
+      "code": "LOGIN_CARD_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Sign in"
+      },
+      "source": "login.cardTitle"
+    },
+    {
+      "code": "LOGIN_CARD_SUBTITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Enter your username and password to continue."
+      },
+      "source": "login.cardSubtitle"
+    },
+    {
+      "code": "LOGIN_ERROR_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "We couldn’t sign you in"
+      },
+      "source": "login.errorTitle"
+    },
+    {
+      "code": "LOGIN_ERROR_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Check your username and password, then try again."
+      },
+      "source": "login.errorBody"
+    },
+    {
+      "code": "LOGIN_LOGOUT_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "You’ve been signed out"
+      },
+      "source": "login.logoutTitle"
+    },
+    {
+      "code": "LOGIN_LOGOUT_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Your session has ended. Sign in again to continue."
+      },
+      "source": "login.logoutBody"
+    },
+    {
+      "code": "LOGIN_USERNAME_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Username"
+      },
+      "source": "login.usernameLabel"
+    },
+    {
+      "code": "LOGIN_PASSWORD_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Password"
+      },
+      "source": "login.passwordLabel"
+    },
+    {
+      "code": "LOGIN_FORGOT_PASSWORD_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Forgot your password?"
+      },
+      "source": "login.forgotPasswordLabel"
+    },
+    {
+      "code": "LOGIN_SHOW_PASSWORD_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Show"
+      },
+      "source": "login.showPasswordLabel"
+    },
+    {
+      "code": "LOGIN_HIDE_PASSWORD_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Hide"
+      },
+      "source": "login.hidePasswordLabel"
+    },
+    {
+      "code": "LOGIN_SUBMIT_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Sign in"
+      },
+      "source": "login.submitLabel"
+    },
+    {
+      "code": "LOGIN_CARD_NOTE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "We will never ask for your password by email, message or phone."
+      },
+      "source": "login.cardNote"
+    },
+    {
+      "code": "LOGIN_PITCH_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "Customer account"
+      },
+      "source": "login.pitchEyebrow"
+    },
+    {
+      "code": "LOGIN_PITCH_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "You’re signing in on the account service."
+      },
+      "source": "login.pitchTitle"
+    },
+    {
+      "code": "LOGIN_PITCH_BODY",
+      "type": "LOCALIZED_STRING_SS",
+      "value": {
+        "en": "The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started."
+      },
+      "source": "login.pitchBody"
+    }
+  ],
+  "deferredParameters": []
+}

@@ -1,0 +1,743 @@
+[
+  {
+    "code": "CX_CONTRACT_VERSION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx contract version",
+        "DESCRIPTION": "Customer experience descriptor value: contract.version."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_EXPERIENCE_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx experience id",
+        "DESCRIPTION": "Customer experience descriptor value: experience.id."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_VERTICAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx vertical",
+        "DESCRIPTION": "Customer experience descriptor value: experience.vertical."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx theme",
+        "DESCRIPTION": "Customer experience descriptor value: experience.theme."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_DEFAULT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx default mode",
+        "DESCRIPTION": "Customer experience descriptor value: experience.defaultMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Cx brand name",
+        "DESCRIPTION": "Customer experience descriptor value: experience.brandName."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "CX_LANDING_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx landing url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.landingUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx portal url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.portalUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_SUPPORT_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx support url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.supportUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "CX_ALLOWED_NAV_ORIGINS",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx allowed nav origins",
+        "DESCRIPTION": "Customer experience descriptor value: experience.allowedNavOrigins."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_LANDING_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav landing url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.landingUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_SUPPORT_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav support url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.supportUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_LOGOUT_RETURN_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav logout return url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.logoutDestination."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "NAV_REGISTRATION_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Nav registration url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.registrationUrl."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_DOCUMENT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal document title",
+        "DESCRIPTION": "Customer experience descriptor value: portal.documentTitle."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_PROFILE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal profile",
+        "DESCRIPTION": "Customer experience descriptor value: portal.runtimeProfile."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_CAPABILITY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal capability",
+        "DESCRIPTION": "Customer experience descriptor value: portal.capability."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ENABLED_MODULES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal enabled modules",
+        "DESCRIPTION": "Customer experience descriptor value: portal.enabledModules."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_DEFAULT_ROUTE_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal default route id",
+        "DESCRIPTION": "Customer experience descriptor value: portal.defaultRoute."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ROUTER_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal router mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.routerMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_AUTH_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal auth mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.authMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_DATA_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal data mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.dataMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ERROR_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal error mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.errorMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_BOOKING_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal booking mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.bookingMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_RETAIL_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal retail mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.retailMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PLAN_COMMERCE_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal plan commerce mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.planCommerceMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PAYMENT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal payment mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.paymentMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_DEMO_COMMANDS_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal demo commands mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.demoCommandsMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ANONYMOUS_INTENT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal anonymous intent mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.anonymousIntentMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ANONYMOUS_INTENT_TTL_SECONDS",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal anonymous intent ttl seconds",
+        "DESCRIPTION": "Customer experience descriptor value: portal.anonymousIntentTtlSeconds."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ANONYMOUS_INTENT_MAX_ITEMS",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal anonymous intent max items",
+        "DESCRIPTION": "Customer experience descriptor value: portal.anonymousIntentMaxItems."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ANONYMOUS_INTENT_RECONCILIATION_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal anonymous intent reconciliation mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.anonymousIntentReconciliationMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_REGISTRATION_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal registration mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.registrationMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal organization",
+        "DESCRIPTION": "Customer experience descriptor value: portal.organization."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ACCOUNT_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal account type code",
+        "DESCRIPTION": "Customer experience descriptor value: portal.accountTypeCode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_CORE_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal core api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.coreApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_ACCOUNT_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal account api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.accountApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_SERVICE_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal service api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.serviceApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_BILL_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal bill api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.billApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim organization",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimOrganization."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_ENRICHMENT_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim enrichment mode",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimEnrichmentMode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_PRICING_PRODUCT_TYPE_CODES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim pricing product type codes",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimPricingProductTypeCodes."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_PRODUCTS_PRODUCT_TYPE_CODES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim products product type codes",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimProductsProductTypeCodes."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_PRICE_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim price type code",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimPriceTypeCode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_PRICE_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim price attribute code",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimPriceAttributeCode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_PRICE_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim price attribute values",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimPriceAttributeValues."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_CURRENCY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim currency",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimCurrency."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim currency attribute code",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimCurrencyAttributeCode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_CURRENCY_ATTRIBUTE_VALUES",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim currency attribute values",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimCurrencyAttributeValues."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_AMOUNT_ATTRIBUTE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim amount attribute code",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimAmountAttributeCode."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_PIM_AMOUNT_MINOR_DIVISOR",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal pim amount minor divisor",
+        "DESCRIPTION": "Customer experience descriptor value: portal.pimAmountMinorDivisor."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_AUTH_CORE_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal auth core base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.authCoreBase."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_AUTH_CALLBACK_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal auth callback path",
+        "DESCRIPTION": "Customer experience descriptor value: portal.authCallbackPath."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "PORTAL_NAV_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav primary label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.primary."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_CALENDAR_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav calendar label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.calendar."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_ACTIVITY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav activity label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.activity."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_CARE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav care label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.care."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_PROPOSALS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav proposals label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.proposals."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_SERVICES_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav services label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.services."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_PRICING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav pricing label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.pricing."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_PRODUCTS_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav products label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.products."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_ACCOUNT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav account label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.account."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_NAV_SUPPORT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal nav support label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.navigation.support."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "PORTAL_PRIMARY_CTA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Portal primary cta label",
+        "DESCRIPTION": "Customer experience descriptor value: portal.primaryCtaLabel."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  }
+]

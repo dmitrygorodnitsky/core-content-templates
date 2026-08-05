@@ -1,0 +1,313 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Two-step verification — Calm Harbor Spa</title>
+<link rel="icon" href="data:,">
+<style>
+/* tokens — design-inbox/styles/tokens.css (:root rescoped to .auth-root) */
+@font-face { font-family: "ManropeFallback"; src: local("Manrope"); }
+.auth-root { --font: "Manrope", system-ui, -apple-system, sans-serif; --font-mono: ui-monospace, "SF Mono", Menlo, monospace; --ink: #1d1d1f; --ink-2: #56607a; --ink-3: #9aa0ad; --surface: #ffffff; --surface-2:#f5f5f7; --base: #eef1f6; --glass: 255,255,255; --hair: 0,0,0; --glass-border: rgba(255,255,255,.70); --glass-blur: blur(24px) saturate(180%); --shadow-card: 0 8px 28px rgba(13,38,76,.10), inset 0 1px 0 rgba(255,255,255,.70); --shadow-float: 0 12px 40px rgba(13,38,76,.16), inset 0 1px 0 rgba(255,255,255,.80); --radius-pill: 999px; --radius-card: 22px; --radius-lg: 24px; --radius-md: 14px; --radius-sm: 11px; --ok: #1f8a44; --ok-bg: rgba(52,199,89,.16); --warn: #b5670a; --warn-bg: rgba(255,159,10,.16); --danger: #c0392b; --danger-bg: rgba(255,59,48,.12); --info: #0e8fc4; --info-bg: rgba(14,143,196,.16); --accent: #0a5ae6; --accent-2: #2a7bff; --accent-3: #3a90ff; --accent-rgb:10,90,230; --bg-1: #cfe0ff; --bg-2: #d2f4ec; --bg-3: #e7dcff; --app-bg: radial-gradient(120% 90% at 0% 0%, var(--bg-1) 0%, transparent 50%), radial-gradient(110% 90% at 100% 0%, var(--bg-2) 0%, transparent 44%), radial-gradient(120% 120% at 90% 100%, var(--bg-3) 0%, transparent 50%), var(--base); }
+.auth-root[data-theme="snow"] { --accent:#0e8fc4; --accent-2:#27a6dd; --accent-3:#46b6e6; --accent-rgb:14,143,196; --bg-1:#cfe9f6; --bg-2:#d4eef4; --bg-3:#dee9f7; }
+.auth-root[data-theme="lawn"] { --accent:#2f9e44; --accent-2:#3fb657; --accent-3:#5fce74; --accent-rgb:47,158,68; --bg-1:#d8f0d6; --bg-2:#e4f4d8; --bg-3:#ebf3df; }
+.auth-root[data-theme="pool"] { --accent:#0d9488; --accent-2:#15b3a4; --accent-3:#34ccbd; --accent-rgb:13,148,136; --bg-1:#cfeeea; --bg-2:#d6f1ec; --bg-3:#ddeff2; }
+.auth-root[data-theme="roofing"] { --accent:#4f46e5; --accent-2:#6d63f5; --accent-3:#8b82ff; --accent-rgb:79,70,229; --bg-1:#dcdaf8; --bg-2:#e6e2fb; --bg-3:#efe6fb; }
+.auth-root[data-theme="pest"] { --accent:#7c3aed; --accent-2:#9554f5; --accent-3:#ad74ff; --accent-rgb:124,58,237; --bg-1:#e7dcfb; --bg-2:#efe2fb; --bg-3:#f2e1f6; }
+.auth-root[data-theme="health"] { --accent:#0b7285; --accent-2:#0f8ba0; --accent-3:#22a5bb; --accent-rgb:11,114,133; --bg-1:#cfe8ee; --bg-2:#d9eef0; --bg-3:#e2ecf6; }
+.auth-root[data-theme="beauty"] { --accent:#d6336c; --accent-2:#e64980; --accent-3:#f06595; --accent-rgb:214,51,108; --bg-1:#fbd9e5; --bg-2:#fde2ec; --bg-3:#f7e3f5; }
+.auth-root[data-mode="dark"] { --ink:#eef2f8; --ink-2:#aab6c8; --ink-3:#7f8aa0; --surface:#1b2230; --surface-2:#151b29; --base:#0d1320; --glass:38,46,64; --hair:255,255,255; --glass-border: rgba(255,255,255,.14); --shadow-card: 0 8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); --shadow-float: 0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08); --app-bg: radial-gradient(120% 90% at 0% 0%, rgba(var(--accent-rgb),.24) 0%, transparent 48%), radial-gradient(110% 90% at 100% 0%, rgba(var(--accent-rgb),.14) 0%, transparent 46%), radial-gradient(120% 120% at 90% 100%, rgba(var(--accent-rgb),.18) 0%, transparent 52%), var(--base); }
+
+/* base — design-inbox/styles/base.css, scoped */
+.auth-root *, .auth-root *::before, .auth-root *::after { box-sizing: border-box; }
+html, body { margin: 0; }
+.auth-root { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.auth-root a { color: var(--accent); text-decoration: none; }
+.auth-root a:hover { color: var(--accent-2); }
+.auth-root button { font-family: inherit; }
+
+/* brand — design-inbox/styles/shell.css */
+.brand-logo { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(160deg, var(--accent-3), var(--accent)); display: grid; place-items: center; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); flex-shrink: 0; }
+.brand-logo::after { content: ""; width: 11px; height: 11px; background: var(--surface); border-radius: 3px; transform: rotate(45deg); }
+.brand-logo--lg { width: 46px; height: 46px; border-radius: 13px; box-shadow: 0 4px 12px rgba(var(--accent-rgb),.3); }
+.brand-logo--lg::after { width: 16px; height: 16px; border-radius: 4px; }
+.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; white-space: nowrap; }
+
+/* primitives — design-inbox/styles/components.css */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: var(--radius-pill); cursor: pointer; font-weight: 600; font-size: 13px; padding: 9px 16px; white-space: nowrap; transition: transform .08s, filter .15s; }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; pointer-events: none; }
+.btn--primary { background: linear-gradient(180deg, var(--accent-2), var(--accent)); color: #fff; box-shadow: 0 4px 12px rgba(var(--accent-rgb), .35), inset 0 1px 0 rgba(255,255,255,.4); }
+.btn--primary:hover { filter: brightness(1.05); }
+.btn--block { display: flex; width: 100%; }
+.btn--lg { padding: 11px 20px; font-weight: 700; }
+.field-row { display: flex; flex-direction: column; gap: 6px; }
+.field-label { font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .02em; }
+.field { width: 100%; padding: 11px 13px; border-radius: 12px; font: inherit; font-size: 14px; color: var(--ink); background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); outline: none; }
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+.field[data-state="invalid"] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255, 69, 58, .1); }
+.field-error { font-size: 12px; color: var(--danger); }
+
+/* composition — design-inbox/styles/routes.css */
+.eyebrow { display: inline-block; background: rgba(var(--accent-rgb),.10); color: var(--accent); border-radius: var(--radius-pill); padding: 6px 14px; font-weight: 600; font-size: 12.5px; }
+.auth-page { min-height: 78vh; }
+.auth-grid { display: grid; grid-template-columns: 1fr 420px; gap: 40px; align-items: center; padding-top: 12px; }
+.auth-pitch { padding: 0 10px; }
+.auth-pitch__title { margin: 0; font-weight: 800; font-size: 42px; line-height: 1.08; letter-spacing: -.03em; }
+.auth-pitch .eyebrow { margin-bottom: 18px; }
+.auth-pitch__sub { margin: 16px 0 26px; font-size: 16px; line-height: 1.55; color: var(--ink-2); max-width: 400px; }
+.auth-card { position: relative; background: rgba(var(--glass),.62); backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%); border: 1px solid rgba(255,255,255,.85); border-radius: 28px; box-shadow: 0 24px 64px rgba(8,24,60,.22); padding: 30px; }
+
+/* page — design-inbox/styles/core-auth-login.css */
+.auth-page { min-height: 100vh; min-height: 100dvh; background: var(--app-bg); background-attachment: fixed; display: flex; align-items: flex-start; }
+.auth-inner { margin-block: auto; width: 100%; max-width: 1120px; margin-inline: auto; padding: 40px 22px 56px; }
+.auth-grid { grid-template-columns: minmax(0, 1fr) 440px; gap: 48px; padding-top: 0; }
+.auth-pitch { order: 1; min-width: 0; }
+.auth-card { order: 2; min-width: 0; border-color: var(--glass-border); }
+.auth-pitch__title { text-wrap: pretty; }
+.auth-pitch__sub { margin-bottom: 0; max-width: 420px; text-wrap: pretty; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.auth-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.auth-title { margin: 0; font-weight: 800; font-size: 24px; letter-spacing: -.02em; }
+.auth-sub { margin: 6px 0 20px; font-size: 14px; line-height: 1.55; color: var(--ink-2); text-wrap: pretty; }
+.auth-note { margin: 18px 0 0; text-align: center; font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+.auth-msg { border-radius: 18px; padding: 13px 15px; margin-bottom: 16px; }
+.auth-msg__inner { display: flex; align-items: flex-start; gap: 12px; }
+.auth-msg__glyph { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; font-weight: 800; font-size: 15px; line-height: 1; flex-shrink: 0; }
+.auth-msg__text { min-width: 0; }
+.auth-msg__title { margin: 0; font-size: 14px; letter-spacing: -.01em; }
+.auth-msg__body { margin: 3px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); text-wrap: pretty; }
+.auth-msg--error { background: var(--danger-bg); border: 1px solid rgba(255,59,48,.28); }
+.auth-msg--error .auth-msg__glyph { background: rgba(255,59,48,.20); color: var(--danger); }
+.auth-msg--error .auth-msg__title { font-weight: 800; color: var(--danger); }
+.auth-root[data-mode="dark"] .auth-msg--error .auth-msg__title, .auth-root[data-mode="dark"] .auth-msg--error .auth-msg__glyph { color: #ff8b80; }
+.auth-msg--logout { background: rgba(var(--glass),.55); border: 1px solid rgba(var(--hair),.10); }
+.auth-msg--logout .auth-msg__glyph { background: transparent; border: 1.5px solid rgba(var(--hair),.20); color: var(--ink-2); font-size: 13px; }
+.auth-msg--logout .auth-msg__title { font-weight: 650; color: var(--ink); }
+.auth-form { display: flex; flex-direction: column; gap: 16px; }
+.field-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; }
+.field-head .field-label { flex-shrink: 0; }
+.auth-link { font-size: 12px; font-weight: 700; letter-spacing: .01em; white-space: nowrap; }
+.field-wrap { position: relative; display: flex; }
+.field-wrap .field { padding-inline-end: 74px; }
+.auth-reveal { position: absolute; inset-block: 4px; inset-inline-end: 5px; min-width: 58px; padding-inline: 10px; border: 0; border-radius: 9px; background: rgba(var(--hair),.05); color: var(--ink-2); font-size: 12px; font-weight: 700; cursor: pointer; }
+.auth-reveal:hover { background: rgba(var(--hair),.09); color: var(--ink); }
+.auth-reveal[hidden] { display: none; }
+.auth-reveal[aria-pressed="false"] .auth-reveal__off, .auth-reveal[aria-pressed="true"] .auth-reveal__on { display: none; }
+.auth-submit { margin-top: 4px; padding: 14px 20px; font-size: 15px; }
+@media (max-width: 900px) { .auth-inner { padding: 28px 20px 44px; max-width: 560px; } .auth-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; } .auth-card { order: 1; } .auth-pitch { order: 2; padding-inline: 4px; } .auth-pitch__title { font-size: 24px; letter-spacing: -.02em; } .auth-pitch__sub { font-size: 14px; margin-top: 10px; max-width: none; } .auth-pitch .eyebrow { margin-bottom: 12px; } }
+@media (max-width: 560px) { .auth-inner { padding: 16px 14px 36px; } .auth-card { padding: 20px 18px; border-radius: 24px; } .auth-head { gap: 11px; margin-bottom: 14px; } .auth-head .brand-logo--lg { width: 38px; height: 38px; border-radius: 11px; } .auth-head .brand-logo--lg::after { width: 13px; height: 13px; } .auth-title { font-size: 21px; } .auth-sub { font-size: 13.5px; margin-bottom: 16px; } .auth-msg { padding: 11px 13px; margin-bottom: 13px; border-radius: 16px; } .auth-msg__inner { gap: 10px; } .auth-msg__glyph { width: 26px; height: 26px; border-radius: 8px; } .auth-form { gap: 13px; } .auth-form .field { font-size: 16px; padding: 13px 14px; } .auth-submit { padding: 15px 20px; } .auth-note { margin-top: 14px; } }
+
+/* Wave 19 AUTH_2FA additions */
+.tfa-setup {
+  border-radius: 18px;
+  padding: 15px 15px 16px;
+  background: rgba(var(--hair), .028);
+  border: 1px solid rgba(var(--hair), .07);
+}
+
+.tfa-setup__inner { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+.tfa-setup__text {
+  margin: 0;
+  align-self: stretch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+
+.tfa-qr {
+  width: 176px;
+  height: 176px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .10);
+  box-shadow: 0 2px 10px rgba(13, 38, 76, .10);
+}
+
+.tfa-qr__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  
+  font-size: 11px;
+  line-height: 1.4;
+  color: #56607a;
+}
+
+
+.tfa-secret { align-self: stretch; display: flex; flex-direction: column; gap: 6px; }
+
+.tfa-secret__label { font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2); }
+
+.tfa-secret__code {
+  display: block;
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: rgba(var(--glass), .72);
+  border: 1px solid var(--glass-border);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: .08em;
+  color: var(--ink);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.tfa-secret__hint { font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+
+
+.tfa-notice {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(var(--glass), .55);
+  border: 1px solid rgba(var(--hair), .10);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+
+.tfa-code {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-indent: .22em;
+  text-align: center;
+  padding: 13px;
+}
+
+.tfa-code__hint { font-size: 12px; line-height: 1.5; color: var(--ink-3); text-wrap: pretty; }
+
+
+.auth-form .auth-msg { margin-bottom: 0; }
+
+.auth-form .auth-msg__title { font-weight: 700; font-size: 13.5px; line-height: 1.5; text-wrap: pretty; }
+
+
+@media (max-width: 560px) {
+  .tfa-setup { padding: 13px 13px 14px; border-radius: 16px; }
+  .tfa-setup__inner { gap: 12px; }
+  .tfa-setup__text { font-size: 13px; }
+  .tfa-qr { width: 152px; height: 152px; padding: 8px; border-radius: 14px; }
+  .tfa-secret__code { font-size: 13.5px; padding: 10px 12px; }
+  .tfa-notice { padding: 11px 13px; font-size: 13px; }
+  
+  .auth-form .tfa-code { font-size: 17px; padding: 14px 13px; }
+}
+</style><style></style></head><body>
+<div class="auth-root" lang="en" dir="ltr" data-theme="beauty" data-mode="light">
+<div class="auth-page" data-route="auth.2fa" data-visual-id="core-auth-2fa">
+    <div class="auth-inner">
+      <div class="auth-grid">
+
+        
+        <main class="auth-card" data-module="core-auth-2fa-card">
+
+          <div class="auth-head">
+            <span class="brand-logo brand-logo--lg" aria-hidden="true"></span>
+            <span class="brand-name" data-copy="brand.name">Calm Harbor Spa</span>
+          </div>
+
+          <h1 class="auth-title" data-copy="card.title">Two-step verification</h1>
+          <p class="auth-sub" data-copy="card.subtitle">Enter the code from your authenticator app to finish signing in.</p>
+
+          
+          <form class="auth-form" method="post" action="{{TWO_FACTOR_ACTION}}" data-core-auth-2fa>
+
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+
+            
+            <div class="tfa-setup"
+                 id="tfa-setup"
+                 data-2fa-region="setup"
+                 data-module="core-auth-2fa-setup"
+                 style="display:{{SETUP_DISPLAY}}">
+              <div class="tfa-setup__inner">
+                <p class="tfa-setup__text" data-copy="setup.body">Set up your authenticator app. Scan this code with the app you use for verification codes, then enter the code it shows.</p>
+
+                
+                <span class="tfa-qr">
+                  <img class="tfa-qr__img"
+                       src="{{TWO_FACTOR_QR_CODE}}"
+                       alt="Setup code for your authenticator app. If you cannot scan it, use the setup key below."
+                       width="176"
+                       height="176">
+                </span>
+
+                
+                <span class="tfa-secret">
+                  <span class="tfa-secret__label" data-copy="setup.secretLabel">Setup key</span>
+                  <code class="tfa-secret__code" dir="ltr">{{TWO_FACTOR_SECRET}}</code>
+                  <span class="tfa-secret__hint" data-copy="setup.secretHint">Cannot scan? Enter this key in your authenticator app instead. Spaces and letter case do not matter.</span>
+                </span>
+              </div>
+            </div>
+
+            
+            <p class="tfa-notice"
+               id="tfa-notice"
+               data-2fa-region="notice"
+               data-module="core-auth-2fa-notice"
+               data-copy="verify.notice"
+               style="display:{{VERIFY_NOTICE_DISPLAY}}">Your authenticator app is already set up. Open it to get your current code.</p>
+
+            <div class="field-row">
+              <label class="field-label" for="code" data-copy="field.code.label">Verification code</label>
+              
+              <input class="field tfa-code"
+                     id="code"
+                     name="code"
+                     type="text"
+                     inputmode="numeric"
+                     autocomplete="one-time-code"
+                     autocapitalize="none"
+                     autocorrect="off"
+                     spellcheck="false"
+                     dir="ltr"
+                     required
+                     aria-describedby="tfa-code-hint tfa-error">
+              <span class="tfa-code__hint" id="tfa-code-hint" data-copy="field.code.hint">Six digits, from your authenticator app.</span>
+            </div>
+
+            
+            <div class="auth-msg auth-msg--error"
+                 id="tfa-error"
+                 data-2fa-region="error"
+                 data-module="core-auth-2fa-error"
+                 role="alert"
+                 style="display:{{ERROR_DISPLAY}}">
+              <div class="auth-msg__inner">
+                <span class="auth-msg__glyph" aria-hidden="true">!</span>
+                <p class="auth-msg__title" data-copy="error.body">That code did not work. Open your authenticator app for a new code and try again.</p>
+              </div>
+            </div>
+
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit">Verify</button>
+          </form>
+
+          <p class="auth-note" data-copy="card.note">Codes are generated on your device. We will never ask you for one by email, message or phone.</p>
+        </main>
+
+        <section class="auth-pitch">
+          <span class="eyebrow" data-copy="pitch.eyebrow">Customer account</span>
+          <h2 class="auth-pitch__title" data-copy="pitch.title">One more step before you’re in.</h2>
+          <p class="auth-pitch__sub" data-copy="pitch.body">This second step runs on the account service, not in the portal. Once your code is confirmed, you’ll be taken straight back to where you started.</p>
+        </section>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>
