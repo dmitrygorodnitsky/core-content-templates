@@ -19,6 +19,9 @@
 /app-templates/customer-portal/DATA-OWNERSHIP.md @dmitrygorodnitsky
 /app-templates/customer-portal/HANDOFF.md @dmitrygorodnitsky
 
+# Landing-page source, tooling, and generated output
+/app-templates/landing-page/ @dmitrygorodnitsky
+
 # Independently deployable CMS packages and shared tooling/docs
 /cms-templates/ @dmitrygorodnitsky
 /scripts/ @dmitrygorodnitsky

@@ -18,9 +18,14 @@
 - `app-templates/customer-portal/design-inbox/**` is immutable and user-owned.
 - `app-templates/customer-portal/dist/**` is generated; update it only through
   the owning exporter or compiler.
+- `app-templates/landing-page/**` owns the landing block catalog, compiler,
+  content inputs, operator scripts, and generated CMS families. Follow its
+  scoped `AGENTS.md`; never edit its `dist/**` by hand.
 - `tmp/**` is local scratch space and must not become a source of truth.
 - Do not move stable CLI entrypoints under
   `app-templates/customer-portal/scripts/**` without a compatibility plan.
+- `docs/cms-components/lab-ui/scripts/**` is a compatibility facade only; new
+  landing behavior belongs under `app-templates/landing-page/scripts/**`.
 
 ## Change Evidence
 
