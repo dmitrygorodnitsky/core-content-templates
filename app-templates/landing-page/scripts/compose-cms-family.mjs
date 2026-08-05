@@ -150,6 +150,88 @@ const parameter = (code, type, value, locale, meta = {}) => {
 };
 
 const placeholder = (code, type) => `\${${code}@${cmsType(type)}}`;
+const untypedPlaceholder = (code) => `\${${code}}`;
+
+const rootRuntimeJavascript = () => `document.addEventListener('DOMContentLoaded', function () {
+  if (document.body) {
+    document.body.setAttribute('dir', document.documentElement.getAttribute('dir') || 'ltr');
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const FALLBACK_LOCALES = [
+    'en', 'zh', 'es', 'de', 'fr', 'ja', 'pt', 'ru', 'it', 'nl', 'pl', 'tr',
+    'ar', 'ko', 'uk', 'cs', 'el', 'da', 'sv', 'nb', 'vi', 'fa', 'he', 'hi',
+    'ms', 'et', 'sl', 'kk', 'th', 'id', 'ro', 'hu', 'fi', 'bg', 'hr', 'sk',
+    'lt', 'lv'
+  ];
+
+  let supported = FALLBACK_LOCALES.slice();
+
+  function getPathLocale(pathname) {
+    const seg = pathname.split('/')[1];
+    return supported.includes(seg) ? seg : null;
+  }
+
+  function stripLocale(pathname) {
+    const parts = pathname.split('/');
+    if (supported.includes(parts[1])) parts.splice(1, 1);
+    return parts.join('/') || '/';
+  }
+
+  function addLocale(pathname, loc) {
+    if (!loc) return pathname;
+    const clean = stripLocale(pathname);
+    return '/' + loc + (clean === '/' ? '' : clean);
+  }
+
+  function rewriteLinks() {
+    const locale = getPathLocale(window.location.pathname);
+
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      if (a.closest('.locale-selector')) return;
+
+      const href = a.getAttribute('href');
+      if (!href || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+      if (href === '#') {
+        a.addEventListener('click', e => e.preventDefault());
+        a.setAttribute('aria-disabled', 'true');
+        a.setAttribute('tabindex', '-1');
+        return;
+      }
+
+      if (href.startsWith('#')) return;
+
+      let url;
+      try {
+        url = new URL(href, window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+
+      if (locale) {
+        url.pathname = addLocale(url.pathname, locale);
+        a.setAttribute('href', url.pathname + url.search + url.hash);
+      }
+    });
+  }
+
+  fetch('/core/api/language/active.json', {
+    method: 'POST',
+    headers: { 'accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify([{ name: 'code2' }])
+  })
+    .then(res => (res.ok ? res.json() : null))
+    .then(langs => {
+      if (Array.isArray(langs) && langs.length) {
+        supported = langs.map(l => (l.code2 || '').toLowerCase()).filter(Boolean);
+      }
+    })
+    .catch(() => { /* остаётся FALLBACK_LOCALES */ })
+    .finally(rewriteLinks);
+});`;
 
 const parseImageSize = (value) => {
   const match = String(value || "").match(/(\d+)\s*(?:×|x|X)\s*(\d+)/);
@@ -485,12 +567,7 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
     readFileSync(join(labRoot, "blocks", "00-tokens", "composition.css"), "utf8"),
   ].join("\n");
 
-  const javascript = [
-    "(() => {",
-    "  if (window.__LAB_UI_BLOCK_COMPOSER_INIT__) return;",
-    "  window.__LAB_UI_BLOCK_COMPOSER_INIT__ = true;",
-    "})();",
-  ].join("\n");
+  const javascript = rootRuntimeJavascript();
 
   const children = sections.map((section, index) => {
     const block = catalog.byId.get(section.block);
@@ -536,6 +613,36 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
       name: "SEO LD Schema",
       description: "Localized JSON-LD structured data object rendered in the root head as application/ld+json.",
     }),
+    parameter("FAVICON_IMG", "IMAGE", "", locale, {
+      code: "favicon_img",
+      name: "Favicon Image",
+      description: "Default favicon image asset rendered by the root template.",
+    }),
+    parameter("FAVICON_IMG_NAME", "STRING", "", locale, {
+      code: "favicon_img_name",
+      name: "Favicon Image Name",
+      description: "Default favicon image file name rendered by the root template.",
+    }),
+    parameter("FAVICON_LIGHT_IMG", "IMAGE", "", locale, {
+      code: "favicon_light_img",
+      name: "Light Favicon Image",
+      description: "Optional light color-scheme favicon image asset reserved by the production root template.",
+    }),
+    parameter("FAVICON_LIGHT_IMG_NAME", "STRING", "", locale, {
+      code: "favicon_light_img_name",
+      name: "Light Favicon Image Name",
+      description: "Optional light color-scheme favicon image file name reserved by the production root template.",
+    }),
+    parameter("FAVICON_DARK_IMG", "IMAGE", "", locale, {
+      code: "favicon_dark_img",
+      name: "Dark Favicon Image",
+      description: "Optional dark color-scheme favicon image asset reserved by the production root template.",
+    }),
+    parameter("FAVICON_DARK_IMG_NAME", "STRING", "", locale, {
+      code: "favicon_dark_img_name",
+      name: "Dark Favicon Image Name",
+      description: "Optional dark color-scheme favicon image file name reserved by the production root template.",
+    }),
   ];
   const parameters = [...rootParams, ...collectParameters(children)];
   const appliedContentCodes = applyContentValues(parameters, contentPack, rootCode, locale);
@@ -548,11 +655,24 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
     children: children.map((child) => ({ code: child.code, nls: child.nls })),
     head: `<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${placeholder("ROOT_META_TITLE", "LOCALIZED_STRING_SS")}</title>
-<meta name="description" content="${placeholder("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS")}">
+<title>${untypedPlaceholder("ROOT_META_TITLE")}</title>
+<meta name="description" content="${untypedPlaceholder("ROOT_META_DESCRIPTION")}">
 <script type="application/ld+json">
   ${placeholder("SEO_LD_SCHEMA", "LOCALIZED_JSON_OBJECT")}
-</script>${headAssets.length ? `\n${headAssets.map(renderHeadAsset).join("\n")}` : ""}`,
+</script>${headAssets.length ? `\n${headAssets.map(renderHeadAsset).join("\n")}` : ""}
+<link rel="icon" href="/core/image/${placeholder("FAVICON_IMG", "IMAGE")}/get/${untypedPlaceholder("FAVICON_IMG_NAME")}" sizes="any" />
+<!-- <link
+  rel="icon"
+  href="/core/image/${placeholder("FAVICON_LIGHT_IMG", "IMAGE")}/get/${untypedPlaceholder("FAVICON_LIGHT_IMG_NAME")}"
+  media="(prefers-color-scheme: light)"
+  type="image/svg+xml"
+>
+<link
+  rel="icon"
+  href="/core/image/${placeholder("FAVICON_DARK_IMG", "IMAGE")}/get/${untypedPlaceholder("FAVICON_DARK_IMG_NAME")}"
+  media="(prefers-color-scheme: dark)"
+  type="image/svg+xml"
+> -->`,
     html: `<div id="root" data-cms-family="${escapeHtml(rootCode)}">
   ${slotMarker(SLOT_MARKERS.rootSections)}
 </div>`,

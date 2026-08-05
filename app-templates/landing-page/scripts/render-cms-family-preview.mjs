@@ -64,6 +64,7 @@ const renderPlaceholders = (html, values, locale) =>
       const value = valueToString(values[code], locale);
       return type.includes("JSON") ? value : renderSafeInline(value);
     })
+    .replace(/\$\{([A-Z0-9_]+)\}/g, (_, code) => renderSafeInline(valueToString(values[code], locale)))
     .replace(/\bsrc="\/core\/image\/\/get\/[^"]*"/g, 'src=""')
     .replace(/\bsrc="\/core\/image\/[^"]+\/get\/"/g, 'src=""');
 

@@ -86,6 +86,7 @@ try {
   const composition = await readJson(first, "composition.resolved.json");
   const preview = await fs.readFile(path.join(first, "preview.html"), "utf8");
   const templates = [payload.root, ...(payload.children || [])];
+  const rootParameters = new Map(payload.root.parameters.map((parameter) => [parameter.code, parameter.type]));
 
   assert.equal(payload.schemaVersion, 1);
   assert.equal(payload.root.code, "FIELD_SERVICE_LANDING");
@@ -94,11 +95,28 @@ try {
   assert.equal(payload.children.every((template) => template.code.startsWith("FIELD_SERVICE_LANDING_")), true);
   assert.deepEqual(manifest.templateCodes, expectedCodes);
   assert.equal(payload.children.length, 14);
+  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 809);
   assert.equal(composition.appliedContentCodes.length, 260);
   assert.equal(composition.contentSource, "content/field-service-operations/parameter-values.json");
   assert.equal((await listFiles(path.join(first, "children"))).filter((file) => file.endsWith("template.json")).length, 14);
-  assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+@[A-Z0-9_]+\}/, "preview must resolve every CMS marker");
+  assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+(?:@[A-Z0-9_]+)?\}/, "preview must resolve every CMS marker");
   assert.doesNotMatch(JSON.stringify(payload), /\{\{[A-Za-z0-9_-]+\}\}/, "payload must resolve every block marker");
+  assert.match(payload.root.head, /<title>\$\{ROOT_META_TITLE\}<\/title>/);
+  assert.match(payload.root.head, /content="\$\{ROOT_META_DESCRIPTION\}"/);
+  assert.match(payload.root.head, /flag-icons\.min\.css/);
+  assert.match(payload.root.head, /\/core\/image\/\$\{FAVICON_IMG@IMAGE\}\/get\/\$\{FAVICON_IMG_NAME\}/);
+  assert.match(payload.root.head, /FAVICON_LIGHT_IMG@IMAGE/);
+  assert.match(payload.root.head, /FAVICON_DARK_IMG@IMAGE/);
+  assert.equal(rootParameters.get("FAVICON_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_IMG_NAME"), "STRING");
+  assert.equal(rootParameters.get("FAVICON_LIGHT_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_LIGHT_IMG_NAME"), "STRING");
+  assert.equal(rootParameters.get("FAVICON_DARK_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_DARK_IMG_NAME"), "STRING");
+  assert.match(payload.root.javascript, /document\.body\.setAttribute\('dir'/);
+  assert.match(payload.root.javascript, /const FALLBACK_LOCALES = \[/);
+  assert.match(payload.root.javascript, /fetch\('\/core\/api\/language\/active\.json'/);
+  assert.match(payload.root.javascript, /\.finally\(rewriteLinks\)/);
   await assertNoLocalPaths(first);
   assert.deepEqual(await treeHashes(first), await treeHashes(second), "repeat exports must be byte-for-byte deterministic");
 

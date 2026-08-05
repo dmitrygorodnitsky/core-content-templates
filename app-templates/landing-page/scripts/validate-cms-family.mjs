@@ -46,6 +46,9 @@ const collectPlaceholders = (template) => {
     for (const match of text.matchAll(/\$\{([A-Z0-9_]+)@([A-Z0-9_]+)\}/g)) {
       found.push({ code: match[1], type: match[2], field, template: template.code });
     }
+    for (const match of text.matchAll(/\$\{([A-Z0-9_]+)\}/g)) {
+      found.push({ code: match[1], type: null, field, template: template.code });
+    }
   }
   return found;
 };
@@ -112,10 +115,10 @@ const main = () => {
   for (const code of duplicateCodes) fail(`duplicate parameter code ${code}`);
 
   const placeholders = allTemplates.flatMap(collectPlaceholders);
-  const usedKeys = new Set(placeholders.map((item) => `${item.code}@${item.type}`));
+  const usedKeys = new Set(placeholders.map((item) => `${item.code}@${item.type || declared.get(item.code)}`));
   for (const item of placeholders) {
     if (!declared.has(item.code)) fail(`${item.template}.${item.field}: missing parameter declaration ${item.code}@${item.type}`);
-    if (declared.get(item.code) !== item.type) {
+    if (item.type && declared.get(item.code) !== item.type) {
       fail(`${item.template}.${item.field}: parameter ${item.code} type mismatch, placeholder ${item.type}, declared ${declared.get(item.code)}`);
     }
   }

@@ -43,6 +43,72 @@
     }
   },
   {
+    "code": "FAVICON_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image",
+        "DESCRIPTION": "Default favicon image asset rendered by the root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Favicon Image Name",
+        "DESCRIPTION": "Default favicon image file name rendered by the root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image",
+        "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_LIGHT_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Light Favicon Image Name",
+        "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_DARK_IMG",
+    "type": "IMAGE",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image",
+        "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FAVICON_DARK_IMG_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Dark Favicon Image Name",
+        "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_HREF",
     "type": "STRING",
     "nls": {

@@ -105,8 +105,8 @@ Root owns:
 
 Root `head` includes SEO parameters:
 
-- `${ROOT_META_TITLE@LOCALIZED_STRING_SS}`
-- `${ROOT_META_DESCRIPTION@LOCALIZED_STRING_SS}`
+- `${ROOT_META_TITLE}`
+- `${ROOT_META_DESCRIPTION}`
 - `${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}` rendered inside:
 
 ```html
@@ -114,6 +114,16 @@ Root `head` includes SEO parameters:
   ${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}
 </script>
 ```
+
+The production root contract also declares `FAVICON_IMG`,
+`FAVICON_IMG_NAME`, `FAVICON_LIGHT_IMG`, `FAVICON_LIGHT_IMG_NAME`,
+`FAVICON_DARK_IMG`, and `FAVICON_DARK_IMG_NAME`. Light/dark favicon links stay
+commented until the production runtime enables them.
+
+Root JavaScript mirrors the production locale runtime: it propagates document
+direction to `body`, discovers active locale codes with a fixed fallback list,
+rewrites same-origin links to preserve the path locale, and disables `#`
+placeholder links. Child block JavaScript remains independently owned.
 
 Child templates own:
 
