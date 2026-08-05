@@ -6,7 +6,7 @@ The previous dynamic pricing wave added a shared runtime and fixtures for SaaS, 
 Current state:
 - `pricing.credits-meter/block.js` only mirrors `pricing:billing`.
 - `pricing.credits-meter/block.html` contains static allowance rows and token pack cards.
-- `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json` contains routing-token products from the live `SERVICEWAND_SAAS_ROUTING_TOKENS` contract.
+- `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json` contains routing-token products from the live `SERVICEWAND_SAAS_ROUTING_TOKENS` contract.
 - `window.LabPricing` already normalizes plans/groups and can load fixtures.
 
 ## Slice 1 — Credits Adapter
@@ -15,10 +15,10 @@ Intent:
 Render `pricing.credits-meter` dynamically from normalized routing-token data.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js`
-- `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js`
+- `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.html`
 - Tiny generic shared runtime helper only if strictly necessary:
-  - `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
+  - `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`
 
 Exact task:
 - Keep the existing billing listener.
@@ -38,7 +38,7 @@ What not to do:
 - Do not remove the static allowance/pack markup unless dynamic rendering has an equivalent fallback-safe replacement.
 
 Validation:
-- `node --check docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js`
+- `node --check app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js`
 - Browser/DOM proof that dynamic mode renders routing token packs from `routes.json`.
 
 Completion signal:
@@ -50,7 +50,7 @@ Intent:
 Expose dynamic token pricing configuration in CMS metadata.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json`
 
 Exact task:
 - Add parameters aligned with plans/matrix where useful:
@@ -80,7 +80,7 @@ What not to do:
 - Avoid broad JSON reformat churn beyond what is necessary.
 
 Validation:
-- `jq empty docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json`
+- `jq empty app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json`
 
 Completion signal:
 - Editors can configure token pricing source without code edits.
@@ -91,8 +91,8 @@ Intent:
 Make credits-meter dynamic behavior testable without live API access.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/harness.html`
-- `docs/cms-components/lab-ui/14-pricing/_combined-preview.html` only if required to include runtime before credits script or exercise dynamic credits safely.
+- `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/harness.html`
+- `app-templates/landing-page/blocks/14-pricing/_combined-preview.html` only if required to include runtime before credits script or exercise dynamic credits safely.
 
 Exact task:
 - Load `../_shared/pricing-runtime.js` before `block.js` in credits harness.
@@ -111,7 +111,7 @@ What not to do:
 - Do not break existing combined preview.
 
 Validation:
-- Open via static server from `docs/cms-components/lab-ui/`.
+- Open via static server from `app-templates/landing-page/`.
 - Verify dynamic mode has `data-pricing-state="dynamic"` and token pack content from routes fixture.
 - Verify fallback mode keeps static content.
 - Verify error mode records error and keeps static content.

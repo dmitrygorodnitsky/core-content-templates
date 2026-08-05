@@ -351,7 +351,7 @@ Authenticated portal upload:
 
 ```bash
 SERVICEWAND_API_KEY=... \
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+node app-templates/landing-page/scripts/upload-cms-family.mjs \
   --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-staging \
   --base-url https://dev-1.servicewand.com/core \
   --org SYSTEM \

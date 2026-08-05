@@ -285,11 +285,11 @@ Exact task:
 - Add live adapters module-by-module.
 - Start with pricing/products using the proven Core PIM pattern.
 - Use these baseline source paths for the PIM pattern:
-  - `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/sites.json`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.dynamic-servicewand/**`
+  - `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/sites.json`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.dynamic-servicewand/**`
 - Then connect orders.
 - Then connect proposals and proposal commands.
 - Then connect profile/payment/address and support/activity as endpoints become

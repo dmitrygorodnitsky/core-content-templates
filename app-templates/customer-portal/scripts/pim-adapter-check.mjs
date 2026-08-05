@@ -5,7 +5,7 @@ import path from "node:path";
 import { corePimAdapter } from "../runtime/src/adapters/core-pim-adapter.js";
 import { normalizePricing, normalizeProducts } from "../runtime/src/normalizers/index.js";
 
-const fixturePath = path.resolve("docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json");
+const fixturePath = path.resolve("app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json");
 
 globalThis.window = {
   fetch: globalThis.fetch.bind(globalThis),

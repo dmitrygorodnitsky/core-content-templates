@@ -98,7 +98,7 @@ node app-templates/customer-portal/scripts/calm-harbor-wave15-runtime-check.mjs
 node app-templates/customer-portal/scripts/s7-route-state-check.mjs
 node app-templates/customer-portal/scripts/export-calm-harbor-portal-manual.mjs
 node app-templates/customer-portal/scripts/calm-harbor-customer-portal-manual-check.mjs
-node docs/cms-components/lab-ui/scripts/upload-cms-family.mjs \
+node app-templates/landing-page/scripts/upload-cms-family.mjs \
   --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-staging \
   --base-url https://dev-1.servicewand.com/core \
   --org SYSTEM \

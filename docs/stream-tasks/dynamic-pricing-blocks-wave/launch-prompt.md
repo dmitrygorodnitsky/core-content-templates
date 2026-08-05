@@ -11,7 +11,7 @@ Source of truth:
 - `slices.md` for execution decomposition and validation matrix.
 
 ## Constraints
-- Stay inside `docs/cms-components/lab-ui/14-pricing/` plus this package path unless a tiny shared lab-ui support file is objectively required.
+- Stay inside `app-templates/landing-page/blocks/14-pricing/` plus this package path unless a tiny shared lab-ui support file is objectively required.
 - Preserve existing static markup/parameters as fallback/editor preview.
 - Do not introduce package manager, bundler, framework, or unrelated repo restructure.
 - Do not copy the live inline script into each block. Implement one shared normalized runtime and adapters.

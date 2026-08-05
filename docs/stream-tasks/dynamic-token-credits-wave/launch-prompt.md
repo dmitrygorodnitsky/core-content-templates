@@ -11,9 +11,9 @@ Source of truth:
 - `slices.md` for implementation slices and validation matrix.
 
 ## Constraints
-- Primary implementation scope is `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/**`.
-- Reuse `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`; edit it only for tiny generic helpers that benefit adapters generally.
-- Reuse `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`.
+- Primary implementation scope is `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/**`.
+- Reuse `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`; edit it only for tiny generic helpers that benefit adapters generally.
+- Reuse `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json`.
 - Preserve static credits/tokens markup as fallback and editor preview.
 - Do not change unrelated lab-ui blocks except `_combined-preview.html` if needed for billing-sync validation.
 - Do not introduce a package manager, bundler, or framework.
@@ -36,10 +36,10 @@ Use `$execution-operator` semantics:
 
 ## Validation
 Run and record:
-- `jq empty docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json`
-- `node --check docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js`
-- `node --check docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js` if edited.
-- Browser/DOM harness checks from a local static server under `docs/cms-components/lab-ui/`:
+- `jq empty app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json`
+- `node --check app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js`
+- `node --check app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js` if edited.
+- Browser/DOM harness checks from a local static server under `app-templates/landing-page/`:
   - default dynamic credits harness renders routes fixture token products;
   - `?mode=fallback` keeps static content;
   - `?mode=error` falls back and records error;

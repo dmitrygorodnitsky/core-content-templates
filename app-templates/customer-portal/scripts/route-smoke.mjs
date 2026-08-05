@@ -39,7 +39,7 @@ for (let i = 2; i < process.argv.length; i += 1) {
 const root = path.resolve(args.get("root") || "app-templates/customer-portal/runtime");
 const entry = "/" + (args.get("entry") || "source.html").replace(/^\/+/, "");
 const routes = args.get("routes") ? args.get("routes").split(",").map((route) => route.trim()).filter(Boolean) : defaultRoutes;
-const pimFixturePath = path.resolve("docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json");
+const pimFixturePath = path.resolve("app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json");
 const allowDevToolbar = args.get("allow-dev-toolbar") === "true";
 const playwrightNodeModules = process.env.PLAYWRIGHT_NODE_MODULES;
 const requireFrom = playwrightNodeModules

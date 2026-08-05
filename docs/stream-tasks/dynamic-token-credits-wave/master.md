@@ -11,7 +11,7 @@ In scope:
 - Add opt-in dynamic config to `pricing.credits-meter`.
 - Use `SERVICEWAND_SAAS_ROUTING_TOKENS` with `PER_UNIT` / `UNIT_PRICE` to populate token pack economics from Core PIM data.
 - Preserve the current static allowance and pack markup as CMS fallback/editor preview.
-- Use existing fixture `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json` for offline harness validation.
+- Use existing fixture `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json` for offline harness validation.
 - Keep cross-block `pricing:billing` synchronization working.
 - Update `pricing.credits-meter/block.json` notes/parameters for dynamic token pricing.
 - Add package closeout artifacts.
@@ -58,8 +58,8 @@ Out of scope:
 - Created: 2026-06-15
 - Package path: `docs/stream-tasks/dynamic-token-credits-wave/`
 - Depends on uncommitted prior wave changes under:
-  - `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`
+  - `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json`
 - Commit hashes:
   - implementation: `26ffc1f` (`Make lab pricing blocks dynamic`)
   - package-orchestration: `26ffc1f`
@@ -71,20 +71,20 @@ Out of scope:
 ## Closeout Evidence
 - Date: 2026-06-15
 - Changed implementation files:
-  - `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.html`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/harness.html`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.html`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/harness.html`
 - Changed package files:
   - `docs/stream-tasks/dynamic-token-credits-wave/master.md`
   - `docs/stream-tasks/dynamic-token-credits-wave/audits/A1.md`
   - `docs/stream-tasks/dynamic-token-credits-wave/evidence/closeout.md`
 - Validation:
-  - `jq empty docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json` — passed
-  - `node --check docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js` — passed
+  - `jq empty app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json` — passed
+  - `node --check app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js` — passed
   - Chrome DOM harness at `http://127.0.0.1:8765/14-pricing/pricing.credits-meter/harness.html` — passed dynamic, fallback, error, and billing-sync checks
   - Chrome DOM combined preview at `http://127.0.0.1:8765/14-pricing/_combined-preview.html` — passed billing toggle sync from plans to matrix and credits
-- Prod compile command: not found. Repo scan found no root `package.json`, Dockerfile, CI workflow, Makefile, justfile, or task runner; only `docs/cms-components/lab-ui/scripts/build-landing.mjs` exists.
+- Prod compile command: not found. Repo scan found no root `package.json`, Dockerfile, CI workflow, Makefile, justfile, or task runner; only `app-templates/landing-page/scripts/build-landing.mjs` exists.
 - Residual risks:
   - Live Core PIM endpoint behavior was not exercised; validation used the offline `routes.json` fixture required by the package.
   - CMS/page integrations must load `_shared/pricing-runtime.js` before `pricing.credits-meter/block.js` when dynamic pricing is enabled.

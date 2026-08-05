@@ -4,19 +4,19 @@ Date: 2026-06-15
 Result: complete
 
 ## Changed Files
-- `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
-- `docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json`
-- `docs/cms-components/lab-ui/14-pricing/_fixtures/sites.json`
-- `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.html`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.js`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.json`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/harness.html`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.html`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.css`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.js`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.json`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/harness.html`
+- `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`
+- `app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json`
+- `app-templates/landing-page/blocks/14-pricing/_fixtures/sites.json`
+- `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.js`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/harness.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.css`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.js`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/harness.html`
 - `docs/stream-tasks/dynamic-pricing-blocks-wave/master.md`
 - `docs/stream-tasks/dynamic-pricing-blocks-wave/audits/A1.md`
 - `docs/stream-tasks/dynamic-pricing-blocks-wave/evidence/closeout.md`
@@ -32,26 +32,26 @@ Result: complete
 
 ## Commands Run
 ```sh
-jq empty docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.json docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.json docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json docs/cms-components/lab-ui/14-pricing/_fixtures/sites.json docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json
+jq empty app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.json app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.json app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json app-templates/landing-page/blocks/14-pricing/_fixtures/sites.json app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json
 ```
 Result: passed.
 
 ```sh
-node --check docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js && node --check docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.js && node --check docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.js
+node --check app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js && node --check app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.js && node --check app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.js
 ```
 Result: passed.
 
 ```sh
 node - <<'NODE'
 const fs = require('fs');
-const runtime = require('./docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js');
+const runtime = require('./app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js');
 const configs = [
   ['saas', 'SERVICEWAND_SAAS', 'RECURRENT', 'INTERVAL', '1 month'],
   ['sites', 'SERVICEWAND_SAAS_EXT', 'RECURRENT', 'INTERVAL', '1 month'],
   ['routes', 'SERVICEWAND_SAAS_ROUTING_TOKENS', 'PER_UNIT', 'UNIT_PRICE', '3,4,4.5,5']
 ];
 for (const [name, productTypeCode, priceTypeCode, priceAttributeCode, priceAttributeValues] of configs) {
-  const data = JSON.parse(fs.readFileSync(`docs/cms-components/lab-ui/14-pricing/_fixtures/${name}.json`, 'utf8'));
+  const data = JSON.parse(fs.readFileSync(`app-templates/landing-page/blocks/14-pricing/_fixtures/${name}.json`, 'utf8'));
   const normalized = runtime.normalize(data, { locale: 'en', productTypeCode, priceTypeCode, priceAttributeCode, priceAttributeValues, currency: 'CAD', productSortAttributeCode: 'SORT_ORDER_PRIORITY' });
   console.log(name, normalized.plans.map((plan) => plan.name).join(' > '), `groups=${normalized.groups.length}`);
   if (!normalized.plans.length) throw new Error(`${name} has no plans`);
@@ -69,7 +69,7 @@ routes Foundation Routing Expansion > Growth Routing Expansion > Professional Ro
 ```sh
 python3 -m http.server 4174
 ```
-Result: served harnesses from `docs/cms-components/lab-ui/` for Browser validation at `http://127.0.0.1:4174/`.
+Result: served harnesses from `app-templates/landing-page/` for Browser validation at `http://127.0.0.1:4174/`.
 
 ## Browser Proof
 - `14-pricing/pricing.plans-flex/harness.html`: `data-pricing-state="dynamic"`, 4 visible cards, names `Foundation`, `Growth`, `Professional`, `Enterprise`, amounts `99.99`, `449`, `1,099`, `Contact us`; shared token CSS loaded.

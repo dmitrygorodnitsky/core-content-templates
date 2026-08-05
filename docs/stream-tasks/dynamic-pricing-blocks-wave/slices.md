@@ -21,8 +21,8 @@ Intent:
 Create the reusable pricing data layer that all dynamic pricing blocks consume.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/`
-- New shared JS files under a clear shared path such as `docs/cms-components/lab-ui/14-pricing/_shared/`
+- `app-templates/landing-page/blocks/14-pricing/`
+- New shared JS files under a clear shared path such as `app-templates/landing-page/blocks/14-pricing/_shared/`
 - Harness support files needed to load the shared runtime.
 
 Exact task:
@@ -49,10 +49,10 @@ Intent:
 Make plan cards populate dynamically from normalized `plans`.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.html`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.js`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.json`
-- `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/harness.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.js`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/harness.html`
 - Shared runtime integration references needed by this block.
 
 Exact task:
@@ -83,10 +83,10 @@ Intent:
 Make the comparison matrix rebuild from normalized feature groups and plan values.
 
 Owned paths:
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.html`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.js`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.json`
-- `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/harness.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.html`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.js`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.json`
+- `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/harness.html`
 - Shared runtime integration references needed by this block.
 
 Exact task:
@@ -119,8 +119,8 @@ Intent:
 Make validation reproducible without relying on the live API.
 
 Owned paths:
-- New fixture files under `docs/cms-components/lab-ui/14-pricing/_fixtures/`
-- Pricing harness files under `docs/cms-components/lab-ui/14-pricing/**/harness.html`
+- New fixture files under `app-templates/landing-page/blocks/14-pricing/_fixtures/`
+- Pricing harness files under `app-templates/landing-page/blocks/14-pricing/**/harness.html`
 - Combined preview if needed.
 
 Exact task:
@@ -150,7 +150,7 @@ Intent:
 Expose dynamic pricing controls to CMS editors while keeping static fields as fallback.
 
 Owned paths:
-- Affected `block.json` files under `docs/cms-components/lab-ui/14-pricing/`
+- Affected `block.json` files under `app-templates/landing-page/blocks/14-pricing/`
 - Optional README/notes adjacent to pricing blocks if helpful.
 
 Exact task:

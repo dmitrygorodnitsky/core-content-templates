@@ -16,14 +16,14 @@
 
 ## Validation Commands
 ```bash
-jq empty docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.json
-node --check docs/cms-components/lab-ui/14-pricing/pricing.credits-meter/block.js
+jq empty app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.json
+node --check app-templates/landing-page/blocks/14-pricing/pricing.credits-meter/block.js
 python3 -m http.server 8765
 ```
 
 ## DOM Harness Evidence
 Server root:
-`docs/cms-components/lab-ui/`
+`app-templates/landing-page/`
 
 Harness URL:
 `http://127.0.0.1:8765/14-pricing/pricing.credits-meter/harness.html`
@@ -48,7 +48,7 @@ Combined preview check passed:
 - Credits remained static in combined preview because that page does not opt into dynamic credits.
 
 ## Prod Compile
-No production compile command was found. The repository scan found no root `package.json`, Dockerfile, CI workflow, Makefile, justfile, or task runner. The only build-like artifact found was `docs/cms-components/lab-ui/scripts/build-landing.mjs`, which is a standalone generator script rather than a package-level compile command.
+No production compile command was found. The repository scan found no root `package.json`, Dockerfile, CI workflow, Makefile, justfile, or task runner. The only build-like artifact found was `app-templates/landing-page/scripts/build-landing.mjs`, which is a standalone generator script rather than a package-level compile command.
 
 ## Residual Risks
 - Live API validation was not performed; the required offline `routes.json` fixture path was validated.

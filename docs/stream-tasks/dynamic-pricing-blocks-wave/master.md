@@ -17,7 +17,7 @@ In scope:
 
 Out of scope:
 - Rebuilding the visual design of pricing blocks.
-- Changing unrelated lab-ui blocks outside `docs/cms-components/lab-ui/14-pricing/`.
+- Changing unrelated lab-ui blocks outside `app-templates/landing-page/blocks/14-pricing/`.
 - Adding a framework/build system to this repository.
 - Changing Core PIM API behavior.
 - Implementing checkout or CRM purchase flow beyond preserving configurable CTA URLs/labels.
@@ -46,7 +46,7 @@ Out of scope:
 | closeout | operator | done | all implementation zones | final validation evidence recorded | ledger updated, `audits/A1.md` and `evidence/closeout.md` exist |
 
 ## Definition of Done
-- A shared dynamic pricing runtime exists under `docs/cms-components/lab-ui/14-pricing/` or a clearly named shared lab-ui pricing path.
+- A shared dynamic pricing runtime exists under `app-templates/landing-page/blocks/14-pricing/` or a clearly named shared lab-ui pricing path.
 - `pricing.plans-flex` can populate plan slots from Core PIM pricing data while preserving current static fallback.
 - `pricing.matrix-collapsible` can rebuild its table and mobile accordion from normalized feature groups and plan values.
 - Dynamic config parameters are present in the relevant `block.json` files and represented in harness HTML.
@@ -67,19 +67,19 @@ Out of scope:
 - Completed: 2026-06-15
 - Execution owner: local operator. No subagent tool was available in this session, so bounded zones were executed locally with the same ownership boundaries.
 - Changed implementation files:
-  - `docs/cms-components/lab-ui/14-pricing/_shared/pricing-runtime.js`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/saas.json`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/sites.json`
-  - `docs/cms-components/lab-ui/14-pricing/_fixtures/routes.json`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.html`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.js`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/block.json`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.plans-flex/harness.html`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.html`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.css`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.js`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/block.json`
-  - `docs/cms-components/lab-ui/14-pricing/pricing.matrix-collapsible/harness.html`
+  - `app-templates/landing-page/blocks/14-pricing/_shared/pricing-runtime.js`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/saas.json`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/sites.json`
+  - `app-templates/landing-page/blocks/14-pricing/_fixtures/routes.json`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.html`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.js`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/block.json`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.plans-flex/harness.html`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.html`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.css`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.js`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/block.json`
+  - `app-templates/landing-page/blocks/14-pricing/pricing.matrix-collapsible/harness.html`
 - Closeout artifacts:
   - `docs/stream-tasks/dynamic-pricing-blocks-wave/audits/A1.md`
   - `docs/stream-tasks/dynamic-pricing-blocks-wave/evidence/closeout.md`
@@ -87,7 +87,7 @@ Out of scope:
   - JSON: `jq empty` passed for edited block JSON and fixture JSON.
   - JS: `node --check` passed for shared runtime and edited block adapters.
   - Normalization: Node proof passed for SaaS, Sites, and Routes fixtures.
-  - Browser harness: local static server at `http://127.0.0.1:4174/` from `docs/cms-components/lab-ui/` verified dynamic plans, dynamic matrix desktop, dynamic matrix mobile accordion, fallback disabled, failed fixture fallback, token CSS loading, and combined-preview billing sync.
+  - Browser harness: local static server at `http://127.0.0.1:4174/` from `app-templates/landing-page/` verified dynamic plans, dynamic matrix desktop, dynamic matrix mobile accordion, fallback disabled, failed fixture fallback, token CSS loading, and combined-preview billing sync.
   - Prod compile: no `package.json`, Dockerfile, or CI YAML was found in this repository, so no prod compile command was available.
 - Commit hashes:
   - implementation: `26ffc1f` (`Make lab pricing blocks dynamic`)
