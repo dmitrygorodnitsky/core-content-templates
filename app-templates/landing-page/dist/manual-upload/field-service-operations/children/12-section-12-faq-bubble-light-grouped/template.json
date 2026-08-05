@@ -1,0 +1,825 @@
+{
+  "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED",
+  "nls": {
+    "en": {
+      "NAME": "FAQ · bubble light grouped"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "FIELD_SERVICE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"composition-section composition-section--faq-bubble-light-grouped\" data-composition-block=\"faq.bubble-light-grouped\">\n<!-- lab-ui block · faq.bubble-light-grouped\n     FAQ section grouped into 4 categories x 7 questions each (28 slots).\n     Bubble-style rounded cards; first item in each group ships open.\n     Multiple-open behavior. Empty groups + empty questions auto-hide via block.js.\n-->\n<section class=\"faq\" id=\"faq\" data-block=\"faq.bubble-light-grouped\">\n  <div class=\"container\">\n    <header class=\"faq-top\">\n      <p class=\"eyebrow\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW@LOCALIZED_STRING_SS}</p>\n      <h2 class=\"faq-title\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_TITLE@LOCALIZED_STRING_SS}</h2>\n    </header>\n\n    <div class=\"faq-groups\">\n      <article class=\"faq-group\" data-faq-group=\"01\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.01</span>\n          <div class=\"faq-group-title\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE@LOCALIZED_STRING_SS}</div>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"01-01\" open>\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-02\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-03\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-04\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-05\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-06\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"01-07\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"02\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.02</span>\n          <div class=\"faq-group-title\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE@LOCALIZED_STRING_SS}</div>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"02-01\" open>\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-02\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-03\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-04\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-05\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-06\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"02-07\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"03\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.03</span>\n          <div class=\"faq-group-title\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE@LOCALIZED_STRING_SS}</div>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"03-01\" open>\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-02\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-03\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-04\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-05\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-06\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"03-07\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n\n      <article class=\"faq-group\" data-faq-group=\"04\">\n        <header class=\"faq-group-head\">\n          <span class=\"faq-group-num\">G.04</span>\n          <div class=\"faq-group-title\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE@LOCALIZED_STRING_SS}</div>\n        </header>\n        <div class=\"faq-group-body\">\n          <details class=\"faq-item is-open\" data-faq-slot=\"04-01\" open>\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-02\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-03\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-04\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-05\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-06\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_A@LOCALIZED_STRING_SS}</div>\n          </details>\n          <details class=\"faq-item\" data-faq-slot=\"04-07\">\n            <summary class=\"faq-q\"><h3 class=\"faq-q-text\"><span class=\"faq-q-label\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_Q@LOCALIZED_STRING_SS}</span><span class=\"faq-q-toggle\" aria-hidden=\"true\"><svg width=\"11\" height=\"11\" viewBox=\"0 0 11 11\" fill=\"none\"><path d=\"M5.5 1v9M1 5.5h9\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/></svg></span></h3></summary>\n            <div class=\"faq-a\">${SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_A@LOCALIZED_STRING_SS}</div>\n          </details>\n        </div>\n      </article>\n    </div>\n  </div>\n</section>\n\n</section>",
+  "css": "/* generated child CSS: blocks/08-faq/faq.bubble-light-grouped/block.css */\n/* lab-ui block · faq.bubble-light-grouped\n   Depends: 00-tokens/tokens.css. Light theme.\n   Uses native <details> so works without JS; block.js only handles slot hiding + toggle icon sync. */\n\n.faq {\n  background: var(--color-bg);\n  color: var(--color-text);\n  font-family: var(--font-family);\n}\n.faq .container {\n  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);\n  margin-inline: auto;\n  padding-inline: var(--container-padding-x);\n}\n\n.faq-top {\n  max-width: 56rem;\n  margin: 0 auto clamp(2rem, 4vw, 3.5rem);\n  text-align: center;\n}\n.faq-top .eyebrow {\n  font-family: var(--font-mono);\n  font-size: var(--type-eyebrow-size);\n  text-transform: uppercase;\n  letter-spacing: var(--type-eyebrow-tracking);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  background-clip: text;\n  -webkit-background-clip: text;\n  color: transparent;\n  margin: 0 0 14px;\n}\n.faq-title {\n  margin: 0;\n  font-weight: var(--type-h2-weight);\n  font-size: var(--type-h2-size);\n  line-height: var(--type-h2-leading);\n  letter-spacing: var(--type-h2-tracking);\n  color: var(--color-heading);\n}\n\n/* ─── Groups ───────────────────────────────────────────────── */\n.faq-groups {\n  display: grid;\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  gap: 28px 32px;\n}\n\n.faq-group {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.faq-group-head {\n  display: flex;\n  align-items: baseline;\n  gap: 10px;\n  padding-bottom: 6px;\n  border-bottom: 1px solid rgba(0, 0, 0, 0.06);\n}\n.faq-group-num {\n  font-family: var(--font-mono);\n  font-size: 0.6875rem;\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n  color: var(--color-gray-blue);\n}\n.faq-group-title {\n  margin: 0;\n  font-size: 1.0625rem;\n  font-weight: 600;\n  letter-spacing: -0.01em;\n  color: var(--color-heading);\n}\n\n.faq-group-body {\n  display: flex;\n  flex-direction: column;\n  gap: 10px;\n}\n\n/* ─── Items ────────────────────────────────────────────────── */\n.faq-item {\n  border: 1px solid rgba(0, 0, 0, 0.08);\n  border-radius: 18px;\n  background: var(--color-bg);\n  overflow: hidden;\n  transition: border-color 0.2s ease, box-shadow 0.2s ease;\n}\n.faq-item[open] {\n  border-color: rgba(0, 0, 0, 0.16);\n  box-shadow: 0 6px 18px -12px rgba(0, 0, 0, 0.18);\n}\n\n.faq-q {\n  display: block;\n  padding: 14px 18px;\n  cursor: pointer;\n  list-style: none;\n  color: var(--color-heading);\n  font-size: 0.9375rem;\n  font-weight: 500;\n  letter-spacing: -0.01em;\n  user-select: none;\n}\n.faq-q::-webkit-details-marker { display: none; }\n.faq-q:hover .faq-q-text { color: var(--color-text-accent, #56422D); }\n.faq-q:focus-visible {\n  outline: 2px solid var(--cta-accent);\n  outline-offset: -2px;\n  border-radius: 18px;\n}\n\n.faq-q-text {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  gap: 12px;\n  align-items: center;\n  margin: 0;\n  font: inherit;\n  color: inherit;\n}\n\n.faq-q-toggle {\n  width: 26px;\n  height: 26px;\n  border-radius: 999px;\n  display: inline-grid;\n  place-items: center;\n  background: rgba(0, 0, 0, 0.04);\n  color: var(--color-heading);\n  transition: transform 0.25s ease, background 0.2s ease, color 0.2s ease;\n}\n.faq-item[open] .faq-q-toggle {\n  transform: rotate(45deg);\n  background: var(--cta-secondary-fill, linear-gradient(90deg, #56422D 0%, #494938 100%));\n  color: var(--cta-secondary-color, var(--color-white));\n}\n\n.faq-a {\n  padding: 0 18px 16px;\n  color: var(--color-text);\n  font-size: 0.9375rem;\n  line-height: 1.55;\n}\n\n@media (max-width: 860px) {\n  .faq-groups { grid-template-columns: 1fr; gap: 24px; }\n}\n",
+  "javascript": "/* generated child JS: blocks/08-faq/faq.bubble-light-grouped/block.js */\n// lab-ui block · faq.bubble-light-grouped\n// Hides empty FAQ items (q empty / unfilled handlebars). Hides whole groups\n// whose title is empty or that have no visible items left.\n//\n// Toggle behavior is native <details>; we add `is-open` mirror class so CSS\n// not relying on `[open]` still works.\n\n(() => {\n  const ready = (fn) => {\n    if (document.readyState === \"loading\") {\n      document.addEventListener(\"DOMContentLoaded\", fn, { once: true });\n    } else fn();\n  };\n\n  const isPlaceholder = (s) =>\n    !s || /^\\{\\{[a-z0-9_]+\\}\\}$/i.test(s);\n\n  ready(() => {\n    document\n      .querySelectorAll('[data-block=\"faq.bubble-light-grouped\"]')\n      .forEach((section) => {\n        section.querySelectorAll(\".faq-group\").forEach((group) => {\n          // Hide empty items\n          group.querySelectorAll(\".faq-item\").forEach((item) => {\n            const q = item.querySelector(\".faq-q-text\")?.textContent?.trim();\n            if (isPlaceholder(q)) {\n              item.hidden = true;\n            }\n            item.addEventListener(\"toggle\", () => {\n              item.classList.toggle(\"is-open\", item.open);\n            });\n            // Sync initial state\n            item.classList.toggle(\"is-open\", item.open);\n          });\n\n          // Hide group with no visible items or empty title\n          const groupTitle = group\n            .querySelector(\".faq-group-title\")\n            ?.textContent?.trim();\n          const visibleItems = group.querySelectorAll(\n            \".faq-item:not([hidden])\"\n          ).length;\n          if (isPlaceholder(groupTitle) || visibleItems === 0) {\n            group.hidden = true;\n          }\n        });\n      });\n  });\n})();\n",
+  "parameters": [
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Eyebrow",
+          "DESCRIPTION": "Text value for the Eyebrow field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Lorem Ipsum duis."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Title",
+          "DESCRIPTION": "Text value for the Title field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Frequently Asked Questions About Field Service Software"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_01_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 01 Title",
+          "DESCRIPTION": "Text value for the Group 01 Title field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service basics"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 01 Q",
+          "DESCRIPTION": "Text value for the Slot 01 01 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is field service software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 01 A",
+          "DESCRIPTION": "Text value for the Slot 01 01 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service software helps businesses manage work performed outside the office. It connects scheduling, dispatching, work orders, mobile technicians, customer information, routing, invoicing, payments, reporting, and job status updates in one operational system. For growing service businesses, it replaces disconnected spreadsheets, phone calls, paper forms, and manual coordination with a more structured workflow."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 02 Q",
+          "DESCRIPTION": "Text value for the Slot 01 02 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What does field service management software do?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 02 A",
+          "DESCRIPTION": "Text value for the Slot 01 02 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service management software coordinates the complete service lifecycle. It supports service requests, scheduling, assigning technicians, dispatching crews, tracking work orders, managing customer history, collecting field updates, creating invoices, and reporting on performance. Advanced platforms can also support routing, automation, inventory, asset tracking, customer communication, and integrations with CRM, ERP, accounting, and payment systems."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 03 Q",
+          "DESCRIPTION": "Text value for the Slot 01 03 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What are the three key elements of field service management?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 03 A",
+          "DESCRIPTION": "Text value for the Slot 01 03 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "The three core elements of field service management are workforce coordination, job execution, and operational visibility. Workforce coordination includes scheduling, dispatching, routing, and technician assignment. Job execution includes mobile work orders, forms, notes, photos, customer communication, and job completion. Operational visibility includes reporting, dashboards, KPIs, billing visibility, service quality tracking, and performance management."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 04 Q",
+          "DESCRIPTION": "Text value for the Slot 01 04 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What makes good field service software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 04 A",
+          "DESCRIPTION": "Text value for the Slot 01 04 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "A strong platform balances operational depth with ease of use for field teams. It should include real-time scheduling, dispatching, a reliable field service app, work order management, customer history, automated communication, invoicing, payments, reporting, integrations, and scalability. The best systems help improve technician adoption, reduce manual work, increase first-time fix rates, and give managers better visibility across the operation."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 05 Q",
+          "DESCRIPTION": "Text value for the Slot 01 05 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is the best field service software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 05 A",
+          "DESCRIPTION": "Text value for the Slot 01 05 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "The best field service software depends on the size, complexity, and operating model of the business. A small team may only need scheduling, invoicing, and basic customer management. A growing or complex service business usually needs dispatching, routing, mobile workflows, work order management, billing visibility, reporting, integrations, automation, and configurable workflows. ServiceWand is designed for businesses that need more than a simple scheduling app."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 06 Q",
+          "DESCRIPTION": "Text value for the Slot 01 06 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is the best field service management software for small business?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_06_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 06 A",
+          "DESCRIPTION": "Text value for the Slot 01 06 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "The best field service management software for small business should be easy for office staff and technicians to adopt while still supporting growth. Look for scheduling, dispatching, a mobile app, customer history, estimates, invoices, payments, reporting, and automation. If the business plans to grow into multiple crews, service areas, or locations, choose a platform that can scale without forcing a migration later."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 07 Q",
+          "DESCRIPTION": "Text value for the Slot 01 07 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Is free field service software enough for a growing service business?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_01_07_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 01 07 A",
+          "DESCRIPTION": "Text value for the Slot 01 07 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Free field service software can be useful for very small teams that need basic scheduling or simple task tracking. However, free tools often become limiting when the business needs dispatching, mobile workflows, customer history, invoicing, payments, reporting, integrations, permissions, automation, or multi- team coordination. Growing businesses should compare free field service management software against the cost of missed jobs, admin time, billing delays, and disconnected data."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_02_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 02 Title",
+          "DESCRIPTION": "Text value for the Group 02 Title field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Platform fit"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 01 Q",
+          "DESCRIPTION": "Text value for the Slot 02 01 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is an FSM platform?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 01 A",
+          "DESCRIPTION": "Text value for the Slot 02 01 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "An FSM platform is a field service management platform that helps coordinate service operations across office teams, field workers, customers, jobs, assets, billing, and reporting. Basic FSM software may focus on work orders and scheduling. A more advanced FSM platform connects operational workflows, mobile execution, customer management, automation, integrations, and business visibility in one environment."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 02 Q",
+          "DESCRIPTION": "Text value for the Slot 02 02 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is the difference between FSM and CRM?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 02 A",
+          "DESCRIPTION": "Text value for the Slot 02 02 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "CRM software manages customer relationships, sales activity, contact records, communication history, and customer data. FSM software manages field service execution, including scheduling, dispatching, routing, work orders, technicians, job status updates, invoicing, and operational reporting. A field service CRM connects both sides by making customer history, job records, notes, communication, and service activity available inside the field service workflow."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 03 Q",
+          "DESCRIPTION": "Text value for the Slot 02 03 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is the difference between CMMS and FSM?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 03 A",
+          "DESCRIPTION": "Text value for the Slot 02 03 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "CMMS software focuses on maintenance management, preventive maintenance, equipment records, facility assets, and maintenance tasks. FSM software focuses on delivering service work in the field, including scheduling, dispatching, technicians, routes, customers, work orders, invoices, and service operations. Asset-heavy service businesses may need features from both categories, especially when equipment history, inventory, and field technician coordination are all important."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 04 Q",
+          "DESCRIPTION": "Text value for the Slot 02 04 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What features should field service management software include?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 04 A",
+          "DESCRIPTION": "Text value for the Slot 02 04 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service management software should include scheduling, dispatching, work order management, mobile access, customer management, invoicing, payments, reporting, automation, GPS or route visibility, inventory or asset tracking, and integrations. For more complex operations, it should also support configurable workflows, role-based access, recurring work, service agreements, field documentation, customer communication, and operational dashboards."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 05 Q",
+          "DESCRIPTION": "Text value for the Slot 02 05 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is field service dispatch software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 05 A",
+          "DESCRIPTION": "Text value for the Slot 02 05 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service dispatch software helps assign the right technician, crew, vehicle, or resource to the right job. It supports real-time dispatching, schedule changes, job status updates, route visibility, technician availability, skill matching, emergency requests, and communication between office teams and field workers. Strong dispatch software helps reduce manual coordination and improve response times."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 06 Q",
+          "DESCRIPTION": "Text value for the Slot 02 06 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How does field service scheduling software help service businesses?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_06_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 06 A",
+          "DESCRIPTION": "Text value for the Slot 02 06 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service scheduling software helps service businesses plan appointments, assign technicians, manage recurring work, avoid scheduling conflicts, and respond quickly to changes. It gives office teams better visibility into technician availability, routes, job status, and workload. For field teams, scheduling software helps keep the day organized and reduces confusion about where to go next."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 07 Q",
+          "DESCRIPTION": "Text value for the Slot 02 07 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is technician scheduling software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_02_07_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 02 07 A",
+          "DESCRIPTION": "Text value for the Slot 02 07 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Technician scheduling software helps service businesses assign work to technicians based on availability, location, skills, job priority, and route context. For growing teams, technician scheduling software should connect to dispatching, customer records, work orders, mobile updates, and reporting so schedules are not managed separately from the rest of the operation."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_03_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 03 Title",
+          "DESCRIPTION": "Text value for the Group 03 Title field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Mobile operations"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 01 Q",
+          "DESCRIPTION": "Text value for the Slot 03 01 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is a field service app?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 01 A",
+          "DESCRIPTION": "Text value for the Slot 03 01 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "A field service app gives technicians and mobile teams access to the information they need from the field. This can include schedules, job details, work orders, route information, customer history, forms, checklists, photos, notes, signatures, time tracking, invoices, and payment collection. A strong field service app keeps the office and field connected in real time."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 02 Q",
+          "DESCRIPTION": "Text value for the Slot 03 02 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is a field service management application?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 02 A",
+          "DESCRIPTION": "Text value for the Slot 03 02 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "A field service management application is software used to coordinate service work, technicians, customers, schedules, dispatching, billing, and reporting. Some businesses use this term when comparing field service application software, field management apps, or a field management application. The most important question is whether the system supports the full operational workflow, not just one task."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 03 Q",
+          "DESCRIPTION": "Text value for the Slot 03 03 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is mobile field service software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 03 A",
+          "DESCRIPTION": "Text value for the Slot 03 03 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Mobile field service software connects office staff and technicians through real- time mobile workflows. It helps field teams view job details, update work orders, track job progress, access customer information, capture photos, complete forms, collect signatures, communicate with customers, and send status updates from the field. It is the field execution layer of a modern service operation."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 04 Q",
+          "DESCRIPTION": "Text value for the Slot 03 04 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is mobile field management software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 04 A",
+          "DESCRIPTION": "Text value for the Slot 03 04 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Mobile field management software helps businesses coordinate field-based teams through mobile access, GPS tracking, work order updates, route visibility, technician communication, field documentation, and operational reporting. It is especially useful for companies that manage multiple crews, service territories, emergency jobs, or mobile workers who need real-time information away from the office."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 05 Q",
+          "DESCRIPTION": "Text value for the Slot 03 05 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is field workforce management software?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 05 A",
+          "DESCRIPTION": "Text value for the Slot 03 05 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field workforce management software helps businesses coordinate mobile employees, crews, technicians, schedules, routes, job assignments, status updates, and operational performance. It is useful for companies that need visibility into distributed teams and field-based work. ServiceWand supports this need by connecting workforce coordination with dispatching, routing, job tracking, customer workflows, billing, and reporting."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 06 Q",
+          "DESCRIPTION": "Text value for the Slot 03 06 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How does GPS tracking and routing help field service operations?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_06_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 06 A",
+          "DESCRIPTION": "Text value for the Slot 03 06 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "GPS tracking and routing help service businesses see where technicians or crews are, optimize travel time, respond to urgent jobs, and keep customers informed. When connected to scheduling and dispatching workflows, route visibility can reduce delays, improve technician utilization, support emergency dispatching, and give managers better operational visibility throughout the day."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 07 Q",
+          "DESCRIPTION": "Text value for the Slot 03 07 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How does field service software improve customer communication?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_03_07_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 03 07 A",
+          "DESCRIPTION": "Text value for the Slot 03 07 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service software improves customer communication by connecting appointment reminders, arrival updates, technician status, job notes, estimates, invoices, and follow-up messages in one workflow. Automated SMS or email updates can reduce missed appointments and give customers a clearer view of when service will happen and what comes next."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_GROUP_04_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Group 04 Title",
+          "DESCRIPTION": "Text value for the Group 04 Title field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Business operations"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 01 Q",
+          "DESCRIPTION": "Text value for the Slot 04 01 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How does field service software improve first-time fix rates?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_01_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 01 A",
+          "DESCRIPTION": "Text value for the Slot 04 01 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service software can improve first-time fix rates by giving technicians access to job details, service history, customer notes, photos, forms, asset records, inventory information, and required parts before they arrive. Better scheduling, dispatching, and resource visibility also help match the right technician to the right job with the right information."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 02 Q",
+          "DESCRIPTION": "Text value for the Slot 04 02 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Should field service software integrate with CRM, ERP, or accounting tools?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_02_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 02 A",
+          "DESCRIPTION": "Text value for the Slot 04 02 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Yes. Integrations help reduce duplicate data entry and keep customer, operational, and financial data connected. Field service software may need to integrate with CRM, ERP, accounting, payment, communication, mapping, and reporting systems. For growing service businesses, integration and extensibility are important because field operations rarely happen inside one isolated tool."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 03 Q",
+          "DESCRIPTION": "Text value for the Slot 04 03 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Can field service software support multiple industries?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_03_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 03 A",
+          "DESCRIPTION": "Text value for the Slot 04 03 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Yes. Many field service industries share the same operational foundation: scheduling, dispatching, routing, mobile work, customer management, billing, reporting, and workforce coordination. ServiceWand is designed to support different operational models across industries such as snow removal, HVAC, lawn care, plumbing, electrical, cleaning, property maintenance, landscaping, appliance repair, telecom field operations, and facility services."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 04 Q",
+          "DESCRIPTION": "Text value for the Slot 04 04 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How does AI help field service management?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_04_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 04 A",
+          "DESCRIPTION": "Text value for the Slot 04 04 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "AI can support field service management by helping teams automate repetitive workflows, prioritize work, support scheduling decisions, improve routing, analyze operational data, and reduce manual coordination. In ServiceWand, AI is positioned as an operational layer that helps people coordinate work more effectively, not as a replacement for dispatchers, technicians, or managers."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 05 Q",
+          "DESCRIPTION": "Text value for the Slot 04 05 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "How much does field service management software cost?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_05_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 05 A",
+          "DESCRIPTION": "Text value for the Slot 04 05 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service management software pricing varies by user count, features, business size, and operational complexity. Entry-level tools may charge per user per month, while advanced platforms with automation, integrations, reporting, and multi-team workflows may cost more. Service businesses should evaluate cost against admin time saved, fewer missed jobs, faster billing, better customer communication, and improved operational visibility."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 06 Q",
+          "DESCRIPTION": "Text value for the Slot 04 06 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What are field service software solutions?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_06_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 06 A",
+          "DESCRIPTION": "Text value for the Slot 04 06 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "Field service software solutions are tools or platforms that help service businesses manage work performed in the field. Some solutions focus on one area, such as scheduling, dispatching, invoicing, or mobile access. Broader platforms like ServiceWand connect multiple operational workflows, including customer management, work orders, routing, billing, reporting, integrations, mobile teams, and automation."
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_Q",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 07 Q",
+          "DESCRIPTION": "Text value for the Slot 04 07 Q field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "What is the difference between a field service program and a field service platform?"
+      }
+    },
+    {
+      "code": "SECTION_12_FAQ_BUBBLE_LIGHT_GROUPED_SLOT_04_07_A",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Slot 04 07 A",
+          "DESCRIPTION": "Text value for the Slot 04 07 A field in FAQ · bubble light grouped."
+        }
+      },
+      "value": {
+        "en": "A field service program may refer to a basic tool, app, or software setup used to manage field work. A field service platform is usually broader. It connects scheduling, dispatching, mobile teams, customer workflows, billing, reporting, integrations, and automation. ServiceWand is positioned as a platform because it supports connected operations rather than one isolated task."
+      }
+    }
+  ]
+}
