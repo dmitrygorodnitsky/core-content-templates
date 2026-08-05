@@ -83,11 +83,22 @@ try {
   await assertNoLocalPaths(first);
   assert.deepEqual(await treeHashes(first), await treeHashes(second), "repeat exports must be byte-for-byte deterministic");
 
-  execFileSync(process.execPath, [path.join(scriptsDir, "upload-cms-family.mjs"), "--out", first, "--dry-run"], {
+  const uploadPreview = execFileSync(process.execPath, [
+    path.resolve(landingRoot, "../../docs/cms-components/lab-ui/scripts/upload-cms-family.mjs"),
+    "--out", first,
+    "--base-url", "https://dev-1.servicewand.com/core",
+    "--org", "SYSTEM",
+    "--dry-run",
+  ], {
     cwd: path.resolve(landingRoot, "../.."),
-    stdio: "ignore",
+    encoding: "utf8",
   });
-  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 260 content values, deterministic export, dry-run payload ready`);
+  assert.match(uploadPreview, /root:\s+FIELD_SERVICE_LANDING/);
+  assert.match(uploadPreview, /template count:\s+15/);
+  assert.match(uploadPreview, /CMS base: https:\/\/dev-1\.servicewand\.com\/core-cms/);
+  assert.match(uploadPreview, /Org:\s+SYSTEM/);
+  assert.match(uploadPreview, /No network writes were made/);
+  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 260 content values, deterministic export, dev-1 dry-run payload ready`);
 } finally {
   await fs.rm(first, { recursive: true, force: true });
   await fs.rm(second, { recursive: true, force: true });

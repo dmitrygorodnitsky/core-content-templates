@@ -125,7 +125,30 @@ The exporter writes `dist/manual-upload/field-service-operations`, validates
 the CMS family contract, renders `preview.html`, and emits
 `cms-family.payload.json`. The check rebuilds twice and requires byte-for-byte
 determinism, the expected template order, resolved CMS markers, portable paths,
-and an offline dry-run-ready payload.
+and a `dev-1`/`SYSTEM` offline dry-run-ready payload through the legacy CLI
+facade.
+
+The complete operator flow mirrors Calm Harbor while retaining the stronger
+update guard for the existing Field Service family:
+
+```bash
+node app-templates/landing-page/scripts/export-field-service-landing-manual.mjs
+node app-templates/landing-page/scripts/field-service-landing-manual-check.mjs
+
+SERVICEWAND_API_KEY="$SERVICEWAND_API_KEY" \
+node app-templates/landing-page/scripts/upload-cms-family.mjs \
+  --out app-templates/landing-page/dist/manual-upload/field-service-operations \
+  --base-url https://dev-1.servicewand.com/core \
+  --org SYSTEM \
+  --require-existing \
+  --expected-root-id "$FIELD_SERVICE_ROOT_ID" \
+  --dry-run
+```
+
+The compatibility path `docs/cms-components/lab-ui/scripts/upload-cms-family.mjs`
+may be substituted for the canonical uploader above. Review the resolved IDs
+for all 15 templates, then use the identical command with `--live` only after
+explicit approval. An empty `SERVICEWAND_API_KEY` is not a valid live upload.
 
 ## CMS Parameter Contract
 

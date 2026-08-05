@@ -63,6 +63,27 @@ hand.
 - Upload is intentionally separate and must start with \`--dry-run\`.
 - Parent links, root includes, enabled templates, and PageContext are not
   changed by the flat uploader.
+
+## Operator flow
+
+From the repository root:
+
+\`\`\`bash
+node app-templates/landing-page/scripts/export-field-service-landing-manual.mjs
+node app-templates/landing-page/scripts/field-service-landing-manual-check.mjs
+
+SERVICEWAND_API_KEY="$SERVICEWAND_API_KEY" \\
+node app-templates/landing-page/scripts/upload-cms-family.mjs \\
+  --out app-templates/landing-page/dist/manual-upload/field-service-operations \\
+  --base-url https://dev-1.servicewand.com/core \\
+  --org SYSTEM \\
+  --require-existing \\
+  --expected-root-id "$FIELD_SERVICE_ROOT_ID" \\
+  --dry-run
+\`\`\`
+
+Review all 15 resolved codes and IDs. Only after explicit approval, repeat the
+same command with \`--live\` instead of \`--dry-run\`.
 `;
 
 export async function exportFieldServiceLandingManual(options = {}) {
