@@ -1,5 +1,20 @@
 # Customer Portal Agent Rules
 
+## Responsibility Map
+
+- `experience/**`: canonical family schema, registry, contracts, and tenant
+  descriptors.
+- `runtime/**`: production portal behavior and presentation transferred from
+  accepted design.
+- `cms/**`, `assets/**`, `public/**`: authored CMS/public surface input.
+- `scripts/**`: stable CLI entrypoints for build, export, and validation.
+- `dist/**`: generated output; never hand-edit.
+- `content/**`, root Markdown, and `design-requests/**`: product/domain evidence
+  and design-gap requests.
+
+Repository-wide zone boundaries are documented in
+`../../docs/repository-zones/zone-catalog.md`.
+
 ## Visual Source Of Truth
 
 `design-inbox/` is immutable, designer-owned executable input. Its accepted

@@ -82,6 +82,10 @@ compared with `c9879ae`. It is not the production delivery mechanism for SEO.
 The canonical public URL is authored by CMS and served as a normal public
 document.
 
+The authenticated portal does not contain a second public landing/home page.
+Unauthenticated entry comes from the separately deployed landing or Core Auth;
+the portal resumes at its configured authenticated route.
+
 ## Ownership And Runtime Boundaries
 
 ```text
@@ -227,7 +231,6 @@ replace the contract with a preview-only static detail path.
 
 | route id | accepted path | auth | module | production disposition |
 | --- | --- | --- | --- | --- |
-| `landing` | `/` | public | landing | Portal/public pre-auth page |
 | `seo.landing` | CMS `canonicalPath`, e.g. `/hvac/{locality-slug}` | public | SEO parity | Parity route only; separate public CMS document owns production URL |
 | `auth.phone` | `/login` | public | auth | Portal route |
 | `auth.code` | `/login/verify` | public | auth | Portal route |

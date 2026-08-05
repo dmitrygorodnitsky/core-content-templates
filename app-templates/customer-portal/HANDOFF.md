@@ -32,31 +32,14 @@ one-customer demonstration.
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
 
-The worktree is intentionally dirty. Do not reset, restore, delete, or fold in
-unrelated changes. In particular, `design-inbox/**` is user/designer-owned and
-immutable to Codex even though it currently contains modified, deleted, and
-untracked files.
+The pre-cleanup implementation state, including the accepted Wave 18/19 auth
+assets and customer-experience compiler, is preserved in commit `f9beaff`.
+Do not reset or rewrite that checkpoint when changing the repository layout.
+`design-inbox/**` remains user/designer-owned and immutable to Codex.
 
-Dirty paths at handoff time:
-
-```text
-M  app-templates/customer-portal/content/cases/ORGANIZATION-CASCADE-AND-ENTITY-PLACEMENT.md
-M  app-templates/customer-portal/content/cases/SPA-VERTICAL-CORE-MODEL.md
-M  app-templates/customer-portal/design-inbox/HANDOFF.md
-M  app-templates/customer-portal/design-inbox/MEDIA-SPEC.md
-M  app-templates/customer-portal/design-inbox/README.md
-M  app-templates/customer-portal/design-inbox/data/seo-fixtures.js
-D  app-templates/customer-portal/design-inbox/media/calm-harbor-hero.png
-D  app-templates/customer-portal/design-inbox/media/calm-harbor-proof.png
-M  docs/cms-components/lab-ui/scripts/sync-block-template-parameters.mjs
-?? app-templates/customer-portal/design-inbox/core-auth-login.html
-?? app-templates/customer-portal/design-inbox/previews/wave18/
-?? app-templates/customer-portal/design-inbox/styles/core-auth-login.css
-?? cms-templates/CUSTOMER_PORTAL_CALM_HARBOR_LOGIN/
-?? docs/cms-components/lab-ui/design-requests/
-```
-
-This `HANDOFF.md` is also untracked until committed.
+Canonical family configuration now lives under `experience/**`; generated
+packages remain under `dist/**`, and stable CLI entrypoints remain under
+`scripts/**`.
 
 ## Authority map
 
@@ -275,10 +258,10 @@ uploaded or switched any existing Calm Harbor PageContext or CMS consumer.
 
 Primary sources:
 
-- `config/customer-experience.schema.json`;
-- `config/customer-experience.parameters.json`;
-- `content/cases/CUSTOMER-EXPERIENCE-PARAMETER-CONTRACT.md`;
-- `content/cases/ANONYMOUS-INTENT-AUTH-RESUME-CONTRACT.md`;
+- `experience/config/customer-experience.schema.json`;
+- `experience/config/customer-experience.parameters.json`;
+- `experience/contracts/CUSTOMER-EXPERIENCE-PARAMETER-CONTRACT.md`;
+- `experience/contracts/ANONYMOUS-INTENT-AUTH-RESUME-CONTRACT.md`;
 - `scripts/create-customer-experience.mjs`.
 
 The descriptor now includes anonymous-intent and registration modes. Calm

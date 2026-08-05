@@ -16,7 +16,7 @@ on JavaScript.
 Transferred 1:1 from the accepted design package —
 `app-templates/customer-portal/design-inbox/core-auth-login.html` and
 `styles/core-auth-login.css` (Wave 18), against the brief in
-`docs/cms-components/lab-ui/design-requests/core-auth-cms-login.md`.
+`app-templates/customer-portal/design-requests/core-auth-cms-login.md`.
 
 CSS is extracted verbatim from the accepted stylesheets and inlined into `head`:
 tokens, the base reset, `.brand-logo`, the `.btn` and `.field` primitives,

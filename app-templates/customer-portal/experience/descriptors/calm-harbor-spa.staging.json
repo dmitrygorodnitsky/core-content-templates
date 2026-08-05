@@ -1,5 +1,5 @@
 {
-  "$schema": "../../config/customer-experience.schema.json",
+  "$schema": "../config/customer-experience.schema.json",
   "schemaVersion": 1,
   "classification": "staging-customer-experience",
   "experience": {

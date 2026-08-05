@@ -3,7 +3,7 @@
   "kind": "customer-experience-local-build",
   "uploadPerformed": false,
   "experienceId": "calm-harbor-spa-staging",
-  "descriptor": "app-templates/customer-portal/content/cases/calm-harbor-spa.customer-experience-staging.json",
+  "descriptor": "app-templates/customer-portal/experience/descriptors/calm-harbor-spa.staging.json",
   "publishable": false,
   "blockers": [
     {

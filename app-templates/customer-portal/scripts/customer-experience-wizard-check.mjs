@@ -6,9 +6,9 @@ import {
 } from "./create-customer-experience.mjs";
 
 const [base, schema, registry] = await Promise.all([
-  read("../content/cases/calm-harbor-spa.customer-experience-staging.json"),
-  read("../config/customer-experience.schema.json"),
-  read("../config/customer-experience.parameters.json"),
+  read("../experience/descriptors/calm-harbor-spa.staging.json"),
+  read("../experience/config/customer-experience.schema.json"),
+  read("../experience/config/customer-experience.parameters.json"),
 ]);
 const answers = {
   id: "northwind-hvac-staging",

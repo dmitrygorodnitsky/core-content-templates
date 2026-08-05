@@ -1,0 +1,35 @@
+# Keep specific rules above broader ones. The repository currently has one
+# known GitHub owner; zone comments preserve the intended boundaries as the
+# team grows.
+
+# Immutable accepted design input
+/app-templates/customer-portal/design-inbox/ @dmitrygorodnitsky
+
+# Customer-experience family and portal implementation
+/app-templates/customer-portal/experience/ @dmitrygorodnitsky
+/app-templates/customer-portal/runtime/ @dmitrygorodnitsky
+/app-templates/customer-portal/cms/ @dmitrygorodnitsky
+/app-templates/customer-portal/scripts/ @dmitrygorodnitsky
+/app-templates/customer-portal/dist/ @dmitrygorodnitsky
+/app-templates/customer-portal/content/ @dmitrygorodnitsky
+/app-templates/customer-portal/design-requests/ @dmitrygorodnitsky
+/app-templates/customer-portal/AGENTS.md @dmitrygorodnitsky
+/app-templates/customer-portal/README.md @dmitrygorodnitsky
+/app-templates/customer-portal/ARCHITECTURE.md @dmitrygorodnitsky
+/app-templates/customer-portal/DATA-OWNERSHIP.md @dmitrygorodnitsky
+/app-templates/customer-portal/HANDOFF.md @dmitrygorodnitsky
+
+# Independently deployable CMS packages and shared tooling/docs
+/cms-templates/ @dmitrygorodnitsky
+/scripts/ @dmitrygorodnitsky
+/js/ @dmitrygorodnitsky
+/test/ @dmitrygorodnitsky
+/docs/ @dmitrygorodnitsky
+/.github/ @dmitrygorodnitsky
+/.claude/ @dmitrygorodnitsky
+/.vscode/ @dmitrygorodnitsky
+/.gitignore @dmitrygorodnitsky
+/LICENSE @dmitrygorodnitsky
+/AGENTS.md @dmitrygorodnitsky
+
+* @dmitrygorodnitsky

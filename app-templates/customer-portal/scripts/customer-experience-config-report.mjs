@@ -8,9 +8,9 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const portalRoot = path.resolve(scriptsDir, "..");
 const repositoryRoot = path.resolve(portalRoot, "../..");
 
-export const DEFAULT_EXPERIENCE_PATH = path.join(portalRoot, "content/cases/calm-harbor-spa.customer-experience-staging.json");
-export const DEFAULT_SCHEMA_PATH = path.join(portalRoot, "config/customer-experience.schema.json");
-export const DEFAULT_REGISTRY_PATH = path.join(portalRoot, "config/customer-experience.parameters.json");
+export const DEFAULT_EXPERIENCE_PATH = path.join(portalRoot, "experience/descriptors/calm-harbor-spa.staging.json");
+export const DEFAULT_SCHEMA_PATH = path.join(portalRoot, "experience/config/customer-experience.schema.json");
+export const DEFAULT_REGISTRY_PATH = path.join(portalRoot, "experience/config/customer-experience.parameters.json");
 
 const SURFACES = ["landing", "portal", "login", "twoFactor"];
 const VERTICALS = ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"];

@@ -15,6 +15,9 @@ this repository. The user reviews it and imports the accepted package into
 - [`customer-experience-core-auth-2fa.md`](customer-experience-core-auth-2fa.md)
   requests the reusable setup/verification and error states required for a
   CMS-skinned Core Auth 2FA page that remains consistent with login.
+- [`core-auth-cms-login.md`](core-auth-cms-login.md) defines the static,
+  JavaScript-optional Core Auth username/password page and its runtime
+  placeholder contract.
 
 ## Calm Harbor Spa
 

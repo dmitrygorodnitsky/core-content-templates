@@ -14,7 +14,7 @@ import {
 
 const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const portalRoot = path.resolve(scriptsDir, "..");
-const defaultOutputDir = path.join(portalRoot, "content/cases");
+const defaultOutputDir = path.join(portalRoot, "experience/descriptors");
 const profileDefaults = {
   hvac: "on-demand-commerce",
   snow: "storm-operations",

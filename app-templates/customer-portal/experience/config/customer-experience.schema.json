@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["$schema", "schemaVersion", "classification", "experience", "surfaces", "deployment", "content", "evidenceRefs"],
   "properties": {
-    "$schema": { "const": "../../config/customer-experience.schema.json" },
+    "$schema": { "const": "../config/customer-experience.schema.json" },
     "schemaVersion": { "const": 1 },
     "classification": { "enum": ["staging-customer-experience", "production-customer-experience"] },
     "experience": {

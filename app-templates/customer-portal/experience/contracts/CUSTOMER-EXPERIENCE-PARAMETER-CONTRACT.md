@@ -7,10 +7,10 @@ anonymous-flow UI activation is authorized by this document.
 
 Report-only implementation:
 
-- `config/customer-experience.schema.json` — descriptor shape;
-- `config/customer-experience.parameters.json` — generic template codes,
+- `experience/config/customer-experience.schema.json` — descriptor shape;
+- `experience/config/customer-experience.parameters.json` — generic template codes,
   profiles, routes, and parameter registry;
-- `content/cases/calm-harbor-spa.customer-experience-staging.json` — current
+- `experience/descriptors/calm-harbor-spa.staging.json` — current
   staging descriptor with unresolved deployment URLs recorded explicitly;
 - `scripts/customer-experience-config-report.mjs` — read-only compiler/report;
 - `scripts/customer-experience-config-check.mjs` — positive and adversarial
@@ -508,7 +508,7 @@ The first local compiler slice is implemented:
 ```bash
 node app-templates/customer-portal/scripts/build-calm-harbor-target-runtime.mjs
 node app-templates/customer-portal/scripts/build-customer-experience.mjs \
-  --descriptor app-templates/customer-portal/content/cases/calm-harbor-spa.customer-experience-staging.json
+  --descriptor app-templates/customer-portal/experience/descriptors/calm-harbor-spa.staging.json
 node app-templates/customer-portal/scripts/customer-experience-build-check.mjs
 ```
 
