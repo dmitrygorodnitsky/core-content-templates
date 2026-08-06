@@ -320,6 +320,27 @@ If the diff is correct, repeat the same production command with `--live`.
 Use `--template-code` instead of `--template-id` only when the code is unique in
 the target organization.
 
+For an individual Field Service family member, its generated `template.json`
+can be used directly without `--with-content`; head/html/javascript/css remain
+the values currently stored in production:
+
+```bash
+SERVICEWAND_API_KEY=<prod-token> \
+node app-templates/landing-page/scripts/sync-block-template-parameters.mjs \
+  --template-code FIELD_SERVICE_LANDING_HERO \
+  --template-json app-templates/landing-page/dist/manual-upload/field-service-operations/children/02-field-service-landing-hero/template.json \
+  --base-url https://servicewand.com/core \
+  --org SYSTEM \
+  --mode merge \
+  --dry-run
+```
+
+`merge` is the production-safe default: it adds or updates the selected
+template's parameter definitions while retaining existing parameters absent
+from the package. When an incoming IMAGE or other value is empty, a non-empty
+production value is retained. Use `replace` only when the generated parameter
+array must become the exact complete set, including removals.
+
 ## Locked Decisions
 
 - Default theme is light. `blocks/00-tokens/dark.overlay.css` is parked reference for

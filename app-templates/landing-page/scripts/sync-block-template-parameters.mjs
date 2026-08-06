@@ -149,7 +149,7 @@ const blockMappings = [
   { name: "id" },
   { name: "code" },
   { name: "nls" },
-  { name: "organization", type: "identifier", mappings: [{ name: "id" }, { name: "code" }, { name: "name" }] },
+  { name: "organization", type: "identifier", key: "id" },
   { name: "templateLanguage" },
   { name: "advanced" },
   { name: "head" },
@@ -166,7 +166,7 @@ const contentFields = ["head", "html", "javascript", "css"];
 const listBlockTemplate = async ({ cmsBaseUrl, headers, templateId, templateCode }) => {
   const filter = templateId
     ? { property: "id", operator: "=", value: templateId }
-    : { property: "code", operator: "=", value: templateCode };
+    : { property: "code", operator: "=", type: "STRING", value: templateCode };
   const response = await requestJson(`${cmsBaseUrl}/api/block-template/list.json`, {
     method: "POST",
     headers,
@@ -185,6 +185,33 @@ const listBlockTemplate = async ({ cmsBaseUrl, headers, templateId, templateCode
 const normalizeParameter = (parameter) => {
   const { options: _options, ...rest } = parameter || {};
   return rest;
+};
+
+const isEmptyParameterValue = (value) => {
+  if (value === "" || value == null) return true;
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const values = Object.values(value);
+  return !values.length || values.every((entry) => entry === "" || entry == null);
+};
+
+const isCmsEmptyValue = (value) =>
+  value === null
+  || value === undefined
+  || value === ""
+  || (typeof value === "object" && Object.keys(value).length === 0);
+
+const removeCmsEmptyValues = (value) => {
+  if (Array.isArray(value)) {
+    return value.map(removeCmsEmptyValues).filter((item) => !isCmsEmptyValue(item));
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .map(([key, item]) => [key, removeCmsEmptyValues(item)])
+        .filter(([, item]) => !isCmsEmptyValue(item)),
+    );
+  }
+  return value;
 };
 
 const canonicalize = (value) => {
@@ -247,13 +274,21 @@ const mergeParameters = ({ existing, incoming, mode }) => {
   if (mode !== "merge") throw new Error(`Unknown --mode: ${mode}. Use merge or replace.`);
 
   const byCode = new Map((existing || []).map((parameter) => [parameter.code, normalizeParameter(parameter)]));
-  for (const parameter of incoming) byCode.set(parameter.code, normalizeParameter(parameter));
+  for (const parameter of incoming) {
+    const next = normalizeParameter(parameter);
+    const current = byCode.get(next.code);
+    if (current && isEmptyParameterValue(next.value) && !isEmptyParameterValue(current.value)) {
+      next.value = current.value;
+    }
+    byCode.set(next.code, next);
+  }
   return [...byCode.values()];
 };
 
 const diffParameters = ({ existing, incoming, next }) => {
   const existingByCode = new Map((existing || []).map((parameter) => [parameter.code, normalizeParameter(parameter)]));
   const incomingByCode = new Map((incoming || []).map((parameter) => [parameter.code, normalizeParameter(parameter)]));
+  const nextByCode = new Map((next || []).map((parameter) => [parameter.code, normalizeParameter(parameter)]));
   const nextCodes = new Set((next || []).map((parameter) => parameter.code));
   const added = [];
   const updated = [];
@@ -263,7 +298,7 @@ const diffParameters = ({ existing, incoming, next }) => {
   for (const parameter of incomingByCode.values()) {
     const current = existingByCode.get(parameter.code);
     if (!current) added.push(parameter.code);
-    else if (parameterSignature(current) !== parameterSignature(parameter)) updated.push(parameter.code);
+    else if (parameterSignature(current) !== parameterSignature(nextByCode.get(parameter.code))) updated.push(parameter.code);
     else unchanged.push(parameter.code);
   }
   for (const parameter of existingByCode.values()) {
@@ -289,14 +324,15 @@ const saveParameters = async ({ cmsBaseUrl, headers, template, parameters, conte
     ...writableTemplate,
     ...content,
     organization: template.organization?.id
-      ? { id: template.organization.id, code: template.organization.code }
+      ? { id: template.organization.id }
       : template.organization,
     parameters,
   };
+  const wireEntity = removeCmsEmptyValues(entity);
   const text = await requestText(`${cmsBaseUrl}/api/block-template/save.json`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ entities: [entity], mappings: blockMappings }),
+    body: JSON.stringify({ entities: [wireEntity], mappings: blockMappings }),
   });
   try {
     const parsed = JSON.parse(text);
