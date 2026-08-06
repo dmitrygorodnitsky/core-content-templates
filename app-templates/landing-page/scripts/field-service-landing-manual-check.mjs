@@ -103,6 +103,8 @@ try {
   assert.doesNotMatch(JSON.stringify(payload), /\{\{[A-Za-z0-9_-]+\}\}/, "payload must resolve every block marker");
   assert.match(payload.root.head, /<title>\$\{ROOT_META_TITLE\}<\/title>/);
   assert.match(payload.root.head, /content="\$\{ROOT_META_DESCRIPTION\}"/);
+  assert.equal(rootParameters.get("ROOT_META_TITLE"), "STRING");
+  assert.equal(rootParameters.get("ROOT_META_DESCRIPTION"), "STRING");
   assert.match(payload.root.head, /flag-icons\.min\.css/);
   assert.match(payload.root.head, /\/core\/image\/\$\{FAVICON_IMG@IMAGE\}\/get\/\$\{FAVICON_IMG_NAME\}/);
   assert.match(payload.root.head, /FAVICON_LIGHT_IMG@IMAGE/);

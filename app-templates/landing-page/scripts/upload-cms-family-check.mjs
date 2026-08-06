@@ -16,6 +16,7 @@ const childId = "22222222-2222-4222-8222-222222222222";
 const organizationId = 42;
 let missingCode = null;
 let saveRequests = 0;
+let untypedCodeFilters = 0;
 const savedEntities = [];
 
 await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
@@ -70,7 +71,9 @@ const server = http.createServer(async (request, response) => {
   }
   if (request.url === "/core-cms/api/block-template/list.json") {
     const body = JSON.parse(await readBody(request));
-    const code = body.filters?.find((filter) => filter.property === "code")?.value;
+    const codeFilter = body.filters?.find((filter) => filter.property === "code");
+    if (codeFilter?.type !== "STRING") untypedCodeFilters += 1;
+    const code = codeFilter?.value;
     if (code === missingCode) return send(response, 200, { result: [] });
     const id = code === "FIELD_SERVICE_LANDING" ? rootId : childId;
     return send(response, 200, { result: [{ id, code }] });
@@ -100,6 +103,7 @@ try {
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING -> ${rootId}`));
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING_HEADER -> ${childId}`));
   assert.match(success.stdout, new RegExp(`Organization: SYSTEM -> ${organizationId}`));
+  assert.equal(untypedCodeFilters, 0, "code lookups use the STRING filter type expected by core-ui");
 
   await assert.rejects(
     execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", "33333333-3333-4333-8333-333333333333"], { env }),
@@ -128,7 +132,21 @@ try {
   assert.equal(Object.hasOwn(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG"), "value"), false, "null IMAGE values are omitted like core-ui");
   assert.equal(Object.hasOwn(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG_NAME"), "value"), false, "blank STRING values are omitted like core-ui");
   assert.deepEqual(savedRoot.organization, { id: organizationId }, "save payload uses the organization identifier shape emitted by core-ui");
-  console.log("upload-cms-family-check ok: IDs and organization resolved, root pin enforced, missing template rejected, relationships stripped, empty values omitted like core-ui");
+
+  await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
+    schemaVersion: 1,
+    root: {
+      code: "INVALID_PARAMETER_CONTRACT",
+      head: "<title>${ROOT_META_TITLE}</title>",
+      parameters: [{ code: "ROOT_META_TITLE", type: "LOCALIZED_STRING_SS", value: { en: "Title" } }],
+    },
+    children: [],
+  }));
+  await assert.rejects(
+    execFileAsync(process.execPath, [path.join(scriptsDir, "upload-cms-family.mjs"), "--out", outDir, "--dry-run"], { env }),
+    /ROOT_META_TITLE marker is STRING, parameter is LOCALIZED_STRING_SS/,
+  );
+  console.log("upload-cms-family-check ok: IDs and organization resolved, typed lookups used, parameter contracts checked, relationships stripped, empty values omitted like core-ui");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });

@@ -599,12 +599,12 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
   }
 
   const rootParams = [
-    parameter("ROOT_META_TITLE", "LOCALIZED_STRING_SS", lorem(8, 0), locale, {
+    parameter("ROOT_META_TITLE", "STRING", lorem(8, 0), locale, {
       code: "meta_title",
       name: "Meta Title",
       description: "SEO title for the generated landing page.",
     }),
-    parameter("ROOT_META_DESCRIPTION", "LOCALIZED_STRING_SS", lorem(24, 3), locale, {
+    parameter("ROOT_META_DESCRIPTION", "STRING", lorem(24, 3), locale, {
       code: "meta_description",
       name: "Meta Description",
       description: "SEO meta description for the generated landing page.",

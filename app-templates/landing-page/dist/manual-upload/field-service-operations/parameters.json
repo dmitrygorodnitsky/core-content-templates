@@ -1,29 +1,25 @@
 [
   {
     "code": "ROOT_META_TITLE",
-    "type": "LOCALIZED_STRING_SS",
+    "type": "STRING",
     "nls": {
       "en": {
         "NAME": "Meta Title",
         "DESCRIPTION": "SEO title for the generated landing page."
       }
     },
-    "value": {
-      "en": "Field Service Software for Intelligent Field Operations | ServiceWand"
-    }
+    "value": "Field Service Software for Intelligent Field Operations | ServiceWand"
   },
   {
     "code": "ROOT_META_DESCRIPTION",
-    "type": "LOCALIZED_STRING_SS",
+    "type": "STRING",
     "nls": {
       "en": {
         "NAME": "Meta Description",
         "DESCRIPTION": "SEO meta description for the generated landing page."
       }
     },
-    "value": {
-      "en": "ServiceWand is cloud-based field service software for scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, and AI-assisted field operations."
-    }
+    "value": "ServiceWand is cloud-based field service software for scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, and AI-assisted field operations."
   },
   {
     "code": "SEO_LD_SCHEMA",

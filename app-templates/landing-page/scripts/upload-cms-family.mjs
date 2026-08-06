@@ -162,7 +162,7 @@ const listByCode = async ({ cmsBaseUrl, headers, code }) => {
     method: "POST",
     headers,
     body: JSON.stringify({
-      filters: [{ property: "code", operator: "=", value: code }],
+      filters: [{ property: "code", operator: "=", type: "STRING", value: code }],
       mappings: blockMappings,
       offset: 0,
       pageSize: 10,
@@ -201,6 +201,32 @@ const templatesFromPayload = (payload) => {
     .filter((code, index, codes) => !code || codes.indexOf(code) !== index);
   if (duplicateCodes.length) throw new Error(`Template codes must be unique: ${[...new Set(duplicateCodes)].join(", ")}`);
   return templates;
+};
+
+const TEMPLATE_PARAMETER_RE = /\$\{([A-Z][A-Z0-9_]*)(?:>([A-Z][A-Z0-9_]*))?(?:@([A-Z][A-Z0-9_]*)(?::[^}]*)?)?\}/g;
+
+const validateTemplateParameterTypes = (templates) => {
+  const errors = [];
+  for (const template of templates) {
+    const typesByCode = new Map((template.parameters || []).map((parameter) => [parameter.code, parameter.type]));
+    const source = [template.head, template.html, template.javascript, template.css].join("\n");
+    for (const match of source.matchAll(TEMPLATE_PARAMETER_RE)) {
+      const [, code, parentCode, markerType] = match;
+      const parameterType = typesByCode.get(code);
+      if (!parameterType) {
+        errors.push(`${template.code}: ${code} is referenced but not declared`);
+        continue;
+      }
+      if (parentCode && !markerType) continue;
+      const expectedType = markerType || "STRING";
+      if (parameterType !== expectedType) {
+        errors.push(`${template.code}: ${code} marker is ${expectedType}, parameter is ${parameterType}`);
+      }
+    }
+  }
+  if (errors.length) {
+    throw new Error(`Template parameter contract mismatch:\n${[...new Set(errors)].map((error) => `  - ${error}`).join("\n")}`);
+  }
 };
 
 const parameterCount = (templates) => templates.reduce((sum, template) => sum + (template.parameters?.length || 0), 0);
@@ -405,6 +431,7 @@ export const main = async () => {
     bearer: envFirst("SERVICEWAND_BEARER", "LANDING_BEARER"),
   };
   const templates = templatesFromPayload(readPayload(outAbs));
+  validateTemplateParameterTypes(templates);
 
   const needsResolvedPlan = args.mode === "live" || args.requireExisting || args.expectedRootId;
   if (!needsResolvedPlan) {

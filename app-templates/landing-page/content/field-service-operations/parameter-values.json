@@ -1092,12 +1092,8 @@
   ],
   "unmappedSourceSections": [],
   "valuesByParamCode": {
-    "ROOT_META_TITLE": {
-      "en": "Field Service Software for Intelligent Field Operations | ServiceWand"
-    },
-    "ROOT_META_DESCRIPTION": {
-      "en": "ServiceWand is cloud-based field service software for scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, and AI-assisted field operations."
-    },
+    "ROOT_META_TITLE": "Field Service Software for Intelligent Field Operations | ServiceWand",
+    "ROOT_META_DESCRIPTION": "ServiceWand is cloud-based field service software for scheduling, dispatching, routing, mobile teams, customer workflows, billing, reporting, and AI-assisted field operations.",
     "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_ARIA_LABEL": {
       "en": "ServiceWand"
     },
