@@ -109,6 +109,7 @@ function main() {
   rmSync(manualRoot, { recursive: true, force: true });
   rmSync(stagingRoot, { recursive: true, force: true });
   mkdirSync(manualRoot, { recursive: true });
+  const independentTemplates = [];
 
   try {
     for (const definition of definitions) {
@@ -116,6 +117,7 @@ function main() {
       const source = readJson(join(definition.build, "children", definition.child, "template.json"));
       if (source.code !== definition.code) throw new Error(`Expected ${definition.code}, found ${source.code}`);
       const independent = { ...source, parent: null, children: [] };
+      independentTemplates.push(independent);
       const out = join(manualRoot, definition.key);
       splitTemplate(out, independent);
       writeText(join(out, "preview.html"), previewDocument(definition, independent, commonCss));
@@ -123,6 +125,11 @@ function main() {
   } finally {
     rmSync(stagingRoot, { recursive: true, force: true });
   }
+
+  writeJson(join(manualRoot, "cms-family.payload.json"), {
+    root: independentTemplates[0],
+    children: independentTemplates.slice(1),
+  });
 
   writeText(join(manualRoot, "css.common.css"), commonCss);
   writeText(join(manualRoot, "README.md"), `# Manual upload: ServiceWand blog
@@ -133,6 +140,8 @@ This package contains exactly two independent CMS BlockTemplates:
 - \`post/template.json\` → \`SERVICEWAND_BLOG_POST\`
 
 Both templates have \`parent: null\` and an empty \`children\` list. Uploading them does not attach them to a root template and does not change root children or PageContext.
+
+\`cms-family.payload.json\` is a flat uploader envelope containing both independent templates. Its \`root\` and \`children\` keys are transport fields only; the uploader strips all relationship fields before saving.
 
 The page root should provide the standard lab-ui tokens and composition CSS. A review copy is included as \`css.common.css\`; it is embedded only in the local preview files, not duplicated in the CMS templates.
 

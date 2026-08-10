@@ -7,6 +7,8 @@ This package contains exactly two independent CMS BlockTemplates:
 
 Both templates have `parent: null` and an empty `children` list. Uploading them does not attach them to a root template and does not change root children or PageContext.
 
+`cms-family.payload.json` is a flat uploader envelope containing both independent templates. Its `root` and `children` keys are transport fields only; the uploader strips all relationship fields before saving.
+
 The page root should provide the standard lab-ui tokens and composition CSS. A review copy is included as `css.common.css`; it is embedded only in the local preview files, not duplicated in the CMS templates.
 
 Backend contract:

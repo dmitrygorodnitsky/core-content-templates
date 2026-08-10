@@ -42,7 +42,9 @@ assert.equal(digest(), firstDigest, "manual export must be deterministic");
 
 const index = readTemplate("index");
 const post = readTemplate("post");
+const payload = JSON.parse(readFileSync(join(manualRoot, "cms-family.payload.json"), "utf8"));
 assert.deepEqual([index.code, post.code], ["SERVICEWAND_BLOG_INDEX", "SERVICEWAND_BLOG_POST"]);
+assert.deepEqual([payload.root.code, ...payload.children.map((template) => template.code)], [index.code, post.code]);
 for (const template of [index, post]) {
   assert.equal(template.parent, null, `${template.code} must not change a root parent`);
   assert.deepEqual(template.children, [], `${template.code} must not change root children`);
