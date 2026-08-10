@@ -62,6 +62,7 @@ assert.equal(
 );
 assert.match(post.html, /SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT@BLOG_POST_CONTENT_SS/);
 assert.match(post.javascript, /currentPermalink/);
+assert.match(post.javascript, /serverRenderedTitle/);
 assert.match(index.javascript, /localeFromPath/);
 
 console.log(`blog-templates-manual-check ok: ${firstDigest.slice(0, 12)}`);

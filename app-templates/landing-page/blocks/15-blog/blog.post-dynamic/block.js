@@ -8,6 +8,11 @@
     return node;
   }
 
+  function serverRenderedTitle(root) {
+    var heading = root.querySelector("[data-blog-document] h1");
+    return heading ? String(heading.textContent || "").trim() : "";
+  }
+
   function setMeta(name, value) {
     if (!value) return;
     var selector = name === "description" ? 'meta[name="description"]' : 'meta[property="' + name + '"]';
@@ -99,6 +104,9 @@
     var config = window.LabBlog.configFrom(root);
     var indexLink = root.querySelector("[data-blog-index-link]");
     if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);
+    var title = root.querySelector("[data-blog-current-title]");
+    var fallbackTitle = serverRenderedTitle(root);
+    if (title && fallbackTitle) title.textContent = fallbackTitle;
     var current = root.getAttribute("data-blog-current-permalink") || window.LabBlog.currentPermalink(config);
     window.LabBlog.loadPosts(config).then(function (posts) {
       var post = posts.find(function (candidate) { return candidate.permalink === current; });
