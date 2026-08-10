@@ -1,4 +1,4 @@
-/* generated local JS: 14-pricing/_shared/pricing-runtime.js */
+/* generated local JS: blocks/14-pricing/_shared/pricing-runtime.js */
 // lab-ui pricing shared runtime
 // Loads Core PIM price-comparison data once per request signature and exposes
 // normalized plans/groups for plain DOM block adapters.
@@ -148,7 +148,6 @@
     const row = group.primary;
     const productWrapper = (row && row.product) || {};
     const product = productWrapper.product || productWrapper;
-    const nls = localized(product.nls, config.locale);
     const monthlyPrice = normalizePeriodPrice(pickPeriodRow(group.rows, 1, config) || row, config);
     const annualPrice = normalizePeriodPrice(
       pickPeriodRow(group.rows, config.annualPeriodCount, config),
@@ -160,8 +159,18 @@
     return {
       index,
       code: safeText(product.code || "plan-" + (index + 1)),
-      name: dynamicText(text(nls.NAME, product.code, "Plan"), config),
-      description: dynamicText(text(nls.DESCRIPTION, "", ""), config),
+      name: dynamicText(localizedField(
+        product.nls,
+        "NAME",
+        config.locale,
+        localizedScalar(product.name, config.locale, product.code || "Plan")
+      ), config),
+      description: dynamicText(localizedField(
+        product.nls,
+        "DESCRIPTION",
+        config.locale,
+        localizedScalar(product.description, config.locale)
+      ), config),
       kicker: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.kicker, config),
       badge: productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.badge, config),
       cardState: normalizeCardState(productAttributeText(row, PLAN_MARKETING_ATTRIBUTES.cardState, config)),
@@ -272,14 +281,14 @@
     const price = row && row.price;
     const direct = valueFor(price, { code: config.priceAttributeCode });
     if (!direct) return "";
-    return localizedScalar(direct.nls, config.locale) || localizedScalar(direct.value, config.locale);
+    return localizedField(direct.nls, "NAME", config.locale, localizedScalar(direct.value, config.locale));
   }
 
   function priceUnitLabel(row, config) {
     const price = row && row.price;
     const direct = valueFor(price, { code: config.pricePeriodUnitAttributeCode });
     if (!direct) return "";
-    return localizedScalar(direct.nls, config.locale) || localizedScalar(direct.value, config.locale);
+    return localizedField(direct.nls, "NAME", config.locale, localizedScalar(direct.value, config.locale));
   }
 
   function pricePeriodLabel(row, config) {
@@ -338,13 +347,27 @@
             if (order.visible === false) continue;
             const attr = attrs[order.attributeCode];
             if (!attr || !hasAnyValue(rows, order.typeId, order.attributeCode)) continue;
-            const nls = localized(attr.nls, config.locale);
             attributes.push({
               typeId: order.typeId,
               code: order.attributeCode,
-              label: dynamicText(text(nls.NAME, order.attributeCode, order.attributeCode), config),
-              description: dynamicText(nls.DESCRIPTION || "", config),
-              placeholder: dynamicText(nls.PLACEHOLDER || "", config),
+              label: dynamicText(localizedField(
+                attr.nls,
+                "NAME",
+                config.locale,
+                localizedScalar(attr.name, config.locale, order.attributeCode)
+              ), config),
+              description: dynamicText(localizedField(
+                attr.nls,
+                "DESCRIPTION",
+                config.locale,
+                localizedScalar(attr.description, config.locale)
+              ), config),
+              placeholder: dynamicText(localizedField(
+                attr.nls,
+                "PLACEHOLDER",
+                config.locale,
+                localizedScalar(attr.placeholder, config.locale)
+              ), config),
               values: plans.map((plan) => normalizeValue(valueFor(plan.row && plan.row.product, {
                 typeId: order.typeId,
                 code: order.attributeCode,
@@ -381,7 +404,7 @@
   }
 
   function normalizeValue(raw, config) {
-    if (raw == null || raw.value == null || raw.value === "") {
+    if (raw == null) {
       return { state: "empty", text: "" };
     }
     if (raw.value === true || raw.value === "true") {
@@ -391,8 +414,9 @@
       return { state: "no", text: "" };
     }
 
-    const nls = localized(raw.nls, config.locale);
-    const value = text(nls.NAME, raw.value, raw.value);
+    const fallback = localizedScalar(raw.value, config.locale);
+    const value = localizedField(raw.nls, "NAME", config.locale, fallback);
+    if (value == null || value === "") return { state: "empty", text: "" };
     return { state: "text", text: dynamicText(value, config) };
   }
 
@@ -444,9 +468,9 @@
 
   function productAttributeRawText(row, code, config) {
     const raw = productAttribute(row, code);
-    if (!raw || raw.value == null || raw.value === "") return "";
-    const nlsText = localizedScalar(raw.nls, config.locale);
-    return safeText(nlsText || localizedScalar(raw.value, config.locale));
+    if (!raw) return "";
+    const fallback = localizedScalar(raw.value, config.locale);
+    return safeText(localizedField(raw.nls, "NAME", config.locale, fallback));
   }
 
   function productAttributeFirstText(row, codes, config) {
@@ -516,30 +540,83 @@
 
   function groupLabel(typeInfo, groupCode, locale) {
     const group = (typeInfo.attributeGroups || []).find((item) => item.code === groupCode);
-    const nls = localized(group && group.nls, locale);
-    return text(nls.NAME, groupCode, groupCode);
+    return localizedField(
+      group && group.nls,
+      "NAME",
+      locale,
+      localizedScalar(group && group.name, locale, groupCode)
+    );
   }
 
   function localized(nls, locale) {
     if (!nls) return {};
-    if (nls.NAME || nls.DESCRIPTION) return nls;
-    return nls[locale] || nls.en || Object.values(nls)[0] || {};
+    if (typeof nls !== "object") return nls;
+    if (hasLocalizedFields(nls)) return nls;
+    return localeValue(nls, locale)
+      || nls.default
+      || nls.DEFAULT
+      || nls.defaultValue
+      || {};
   }
 
-  function localizedScalar(value, locale) {
-    if (value == null || value === "") return "";
+  function localizedField(value, field, locale, fallback) {
+    if (value == null || value === "") return localizedScalar(fallback, locale);
     if (typeof value !== "object") return value;
 
+    const entry = localized(value, locale);
+    if (entry == null || entry === "") return localizedScalar(fallback, locale);
+    if (typeof entry !== "object") return entry;
+
+    const fieldValue = entry[field]
+      ?? entry[field.toLowerCase()]
+      ?? entry[field[0] + field.slice(1).toLowerCase()];
+    return localizedScalar(fieldValue, locale, fallback);
+  }
+
+  function localizedScalar(value, locale, fallback) {
+    if (value == null || value === "") {
+      return fallback == null || fallback === value ? "" : localizedScalar(fallback, locale);
+    }
+    if (typeof value !== "object") return value;
+
+    const localizedValue = localeValue(value, locale);
+    if (localizedValue != null && localizedValue !== value) {
+      return localizedScalar(localizedValue, locale, fallback);
+    }
+
     const direct = value.NAME ?? value.name ?? value.LABEL ?? value.label ?? value.VALUE ?? value.value ?? value.text;
-    if (direct != null && direct !== value) return localizedScalar(direct, locale);
+    if (direct != null && direct !== value) return localizedScalar(direct, locale, fallback);
 
-    const localizedValue = value[locale] ?? value.en;
-    if (localizedValue != null && localizedValue !== value) return localizedScalar(localizedValue, locale);
+    const defaultValue = value.default ?? value.DEFAULT ?? value.defaultValue ?? value.fallback;
+    if (defaultValue != null && defaultValue !== value) {
+      return localizedScalar(defaultValue, locale, fallback);
+    }
 
-    const first = Object.values(value).find((item) => item != null && item !== "");
-    if (first != null && first !== value) return localizedScalar(first, locale);
+    return fallback == null || fallback === value ? "" : localizedScalar(fallback, locale);
+  }
 
-    return "";
+  function hasLocalizedFields(value) {
+    return ["NAME", "name", "DESCRIPTION", "description", "PLACEHOLDER", "placeholder"]
+      .some((key) => Object.prototype.hasOwnProperty.call(value, key));
+  }
+
+  function localeValue(value, locale) {
+    if (!value || typeof value !== "object") return undefined;
+    const normalized = normalizeLocale(locale);
+    const language = normalized.split("-")[0];
+    const keys = Object.keys(value);
+    const exactKey = keys.find((key) => normalizeLocaleKey(key) === normalized.toLowerCase());
+    if (exactKey) return value[exactKey];
+    const languageKey = keys.find((key) => normalizeLocaleKey(key) === language.toLowerCase());
+    return languageKey ? value[languageKey] : undefined;
+  }
+
+  function normalizeLocaleKey(value) {
+    return String(value || "").trim().replace(/_/g, "-").toLowerCase();
+  }
+
+  function resolveText(value, locale, fallback) {
+    return safeText(localizedScalar(value, locale, fallback));
   }
 
   function safeText(value) {
@@ -614,10 +691,6 @@
     return value === true || value === "true" || value === "1" || value === "yes";
   }
 
-  function text(value, fallback, empty) {
-    return value == null || value === "" ? (fallback == null ? empty : fallback) : value;
-  }
-
   const api = {
     ready,
     parseConfig,
@@ -626,6 +699,7 @@
     load,
     normalize,
     featureList,
+    resolveText,
     safeText,
     MAX_INTEGER_PRICE,
   };
@@ -635,7 +709,7 @@
 })(typeof window !== "undefined" ? window : globalThis);
 
 
-/* generated child JS: 14-pricing/pricing.plans-flex/block.js */
+/* generated child JS: blocks/14-pricing/pricing.plans-flex/block.js */
 // lab-ui block · pricing.plans-flex
 // Local billing toggle + cross-block sync via a document-level
 // CustomEvent. Any block listening for `pricing:billing` updates
@@ -866,7 +940,7 @@
 })();
 
 
-/* generated child JS: 14-pricing/pricing.addons/block.js */
+/* generated child JS: blocks/14-pricing/pricing.addons/block.js */
 // lab-ui block · pricing.addons
 // Optional add-ons collapse. When data-collapsable="true", the header
 // becomes a teaser band (summary + toggle) and data-collapsed controls
@@ -1292,7 +1366,7 @@
 })();
 
 
-/* generated child JS: 14-pricing/pricing.matrix-collapsible/block.js */
+/* generated child JS: blocks/14-pricing/pricing.matrix-collapsible/block.js */
 // lab-ui block · pricing.matrix-collapsible
 // Listens for the cross-block `pricing:billing` CustomEvent and
 // mirrors the period on the section root so any downstream rule
