@@ -93,7 +93,8 @@
     {
       "code": "slot_01_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_01_image_url",
@@ -148,7 +149,8 @@
     {
       "code": "slot_02_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_02_image_url",
@@ -203,7 +205,8 @@
     {
       "code": "slot_03_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_03_image_url",
@@ -258,7 +261,8 @@
     {
       "code": "slot_04_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_04_image_url",
@@ -313,7 +317,8 @@
     {
       "code": "slot_05_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_05_image_url",
@@ -368,7 +373,8 @@
     {
       "code": "slot_06_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_06_image_url",
@@ -423,7 +429,8 @@
     {
       "code": "slot_07_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_07_image_url",
@@ -478,7 +485,8 @@
     {
       "code": "slot_08_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_08_image_url",
@@ -533,7 +541,8 @@
     {
       "code": "slot_09_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_09_image_url",
@@ -588,7 +597,8 @@
     {
       "code": "slot_10_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_10_image_url",
@@ -643,7 +653,8 @@
     {
       "code": "slot_11_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_11_image_url",
@@ -698,7 +709,8 @@
     {
       "code": "slot_12_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_12_image_url",
@@ -753,7 +765,8 @@
     {
       "code": "slot_13_photo",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet."
+      "default": " ",
+      "preserve_default": true
     },
     {
       "code": "slot_13_image_url",
@@ -794,391 +807,6 @@
       "default": "Join waitlist",
       "name": "Slot 13 CTA Label",
       "description": "Editable waitlist CTA label shown in industry card slot 13."
-    },
-    {
-      "code": "slot_14_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_14_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_14_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_14_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 14 Image",
-      "description": "Optional image for industry card slot 14. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_14_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 14.",
-      "name": "Slot 14 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 14."
-    },
-    {
-      "code": "slot_14_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 14 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 14 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_14_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_14_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 14 Status Label",
-      "description": "Editable status label shown in industry card slot 14."
-    },
-    {
-      "code": "slot_14_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 14 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 14."
-    },
-    {
-      "code": "slot_15_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_15_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_15_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_15_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 15 Image",
-      "description": "Optional image for industry card slot 15. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_15_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 15.",
-      "name": "Slot 15 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 15."
-    },
-    {
-      "code": "slot_15_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 15 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 15 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_15_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_15_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 15 Status Label",
-      "description": "Editable status label shown in industry card slot 15."
-    },
-    {
-      "code": "slot_15_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 15 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 15."
-    },
-    {
-      "code": "slot_16_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_16_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_16_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_16_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 16 Image",
-      "description": "Optional image for industry card slot 16. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_16_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 16.",
-      "name": "Slot 16 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 16."
-    },
-    {
-      "code": "slot_16_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 16 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 16 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_16_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_16_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 16 Status Label",
-      "description": "Editable status label shown in industry card slot 16."
-    },
-    {
-      "code": "slot_16_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 16 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 16."
-    },
-    {
-      "code": "slot_17_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_17_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_17_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_17_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 17 Image",
-      "description": "Optional image for industry card slot 17. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_17_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 17.",
-      "name": "Slot 17 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 17."
-    },
-    {
-      "code": "slot_17_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 17 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 17 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_17_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_17_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 17 Status Label",
-      "description": "Editable status label shown in industry card slot 17."
-    },
-    {
-      "code": "slot_17_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 17 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 17."
-    },
-    {
-      "code": "slot_18_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_18_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_18_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_18_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 18 Image",
-      "description": "Optional image for industry card slot 18. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_18_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 18.",
-      "name": "Slot 18 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 18."
-    },
-    {
-      "code": "slot_18_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 18 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 18 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_18_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_18_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 18 Status Label",
-      "description": "Editable status label shown in industry card slot 18."
-    },
-    {
-      "code": "slot_18_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 18 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 18."
-    },
-    {
-      "code": "slot_19_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_19_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_19_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_19_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 19 Image",
-      "description": "Optional image for industry card slot 19. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_19_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 19.",
-      "name": "Slot 19 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 19."
-    },
-    {
-      "code": "slot_19_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 19 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 19 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_19_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_19_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 19 Status Label",
-      "description": "Editable status label shown in industry card slot 19."
-    },
-    {
-      "code": "slot_19_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 19 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 19."
-    },
-    {
-      "code": "slot_20_title",
-      "type": "LOCALIZED_STRING_SS",
-      "default": ""
-    },
-    {
-      "code": "slot_20_desc",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_20_photo",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor"
-    },
-    {
-      "code": "slot_20_image_url",
-      "type": "IMAGE",
-      "default": "",
-      "name": "Slot 20 Image",
-      "description": "Optional image for industry card slot 20. Leave empty to show the striped placeholder."
-    },
-    {
-      "code": "slot_20_image_alt",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem Ipsum industry image 20.",
-      "name": "Slot 20 Image Alt Text",
-      "description": "Alternative text for the image in industry card slot 20."
-    },
-    {
-      "code": "slot_20_image_name",
-      "type": "STRING",
-      "default": "",
-      "name": "Slot 20 Photo Image Name",
-      "description": "CMS image file name/path segment for the Slot 20 Photo image. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-    },
-    {
-      "code": "slot_20_href",
-      "type": "URL",
-      "default": "#"
-    },
-    {
-      "code": "slot_20_status_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Coming soon",
-      "name": "Slot 20 Status Label",
-      "description": "Editable status label shown in industry card slot 20."
-    },
-    {
-      "code": "slot_20_cta_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Join waitlist",
-      "name": "Slot 20 CTA Label",
-      "description": "Editable waitlist CTA label shown in industry card slot 20."
     }
   ],
   "preview": {
@@ -1362,97 +990,6 @@
       "fit": "cover",
       "required": false,
       "name_param": "slot_13_image_name"
-    },
-    {
-      "id": "slot-14-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(14) .vertical-photo img",
-      "src_param": "slot_14_image_url",
-      "alt_param": "slot_14_image_alt",
-      "fallback_label_param": "slot_14_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_14_image_name"
-    },
-    {
-      "id": "slot-15-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(15) .vertical-photo img",
-      "src_param": "slot_15_image_url",
-      "alt_param": "slot_15_image_alt",
-      "fallback_label_param": "slot_15_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_15_image_name"
-    },
-    {
-      "id": "slot-16-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(16) .vertical-photo img",
-      "src_param": "slot_16_image_url",
-      "alt_param": "slot_16_image_alt",
-      "fallback_label_param": "slot_16_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_16_image_name"
-    },
-    {
-      "id": "slot-17-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(17) .vertical-photo img",
-      "src_param": "slot_17_image_url",
-      "alt_param": "slot_17_image_alt",
-      "fallback_label_param": "slot_17_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_17_image_name"
-    },
-    {
-      "id": "slot-18-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(18) .vertical-photo img",
-      "src_param": "slot_18_image_url",
-      "alt_param": "slot_18_image_alt",
-      "fallback_label_param": "slot_18_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_18_image_name"
-    },
-    {
-      "id": "slot-19-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(19) .vertical-photo img",
-      "src_param": "slot_19_image_url",
-      "alt_param": "slot_19_image_alt",
-      "fallback_label_param": "slot_19_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_19_image_name"
-    },
-    {
-      "id": "slot-20-photo",
-      "selector": "[data-block=\"verticals.glyph-grid-20-slots\"] .vertical-card:nth-of-type(20) .vertical-photo img",
-      "src_param": "slot_20_image_url",
-      "alt_param": "slot_20_image_alt",
-      "fallback_label_param": "slot_20_photo",
-      "fallback_size": "640 × 400",
-      "recommended_size": "1280 × 800",
-      "aspect_ratio": "16:10",
-      "fit": "cover",
-      "required": false,
-      "name_param": "slot_20_image_name"
     }
   ]
 }

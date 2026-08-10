@@ -4687,7 +4687,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation."
+      "en": " "
     }
   },
   {
@@ -4787,7 +4787,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute irure."
+      "en": " "
     }
   },
   {
@@ -4887,7 +4887,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
+      "en": " "
     }
   },
   {
@@ -4987,7 +4987,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
+      "en": " "
     }
   },
   {
@@ -5087,7 +5087,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
+      "en": " "
     }
   },
   {
@@ -5187,7 +5187,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
+      "en": " "
     }
   },
   {
@@ -5287,7 +5287,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
+      "en": " "
     }
   },
   {
@@ -5387,7 +5387,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
+      "en": " "
     }
   },
   {
@@ -5487,7 +5487,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
+      "en": " "
     }
   },
   {
@@ -5587,7 +5587,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis."
+      "en": " "
     }
   },
   {
@@ -5687,7 +5687,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem."
+      "en": " "
     }
   },
   {
@@ -5787,7 +5787,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor."
+      "en": " "
     }
   },
   {
@@ -5887,7 +5887,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam."
+      "en": " "
     }
   },
   {
@@ -5951,706 +5951,6 @@
     },
     "value": {
       "en": "Lorem Ipsum fugiat."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Image",
-        "DESCRIPTION": "Optional image for industry card slot 14. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 14."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum tempor incididunt ut labore."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Title",
-        "DESCRIPTION": "Text value for the Slot 14 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Desc",
-        "DESCRIPTION": "Text value for the Slot 14 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum dolor."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 14."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum velit."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Href",
-        "DESCRIPTION": "URL target for the Slot 14 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 14."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum sed."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Image",
-        "DESCRIPTION": "Optional image for industry card slot 15. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 15."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum veniam quis nostrud exercitation."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Title",
-        "DESCRIPTION": "Text value for the Slot 15 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Desc",
-        "DESCRIPTION": "Text value for the Slot 15 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 15."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consectetur."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Href",
-        "DESCRIPTION": "URL target for the Slot 15 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 15."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum enim."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Image",
-        "DESCRIPTION": "Optional image for industry card slot 16. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 16."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum consequat duis aute irure."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Title",
-        "DESCRIPTION": "Text value for the Slot 16 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Desc",
-        "DESCRIPTION": "Text value for the Slot 16 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 16."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum dolore."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Href",
-        "DESCRIPTION": "URL target for the Slot 16 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 16."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ex."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Image",
-        "DESCRIPTION": "Optional image for industry card slot 17. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 17."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum pariatur lorem ipsum dolor."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Title",
-        "DESCRIPTION": "Text value for the Slot 17 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Desc",
-        "DESCRIPTION": "Text value for the Slot 17 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo consequat duis aute."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 17."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum laboris."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Href",
-        "DESCRIPTION": "URL target for the Slot 17 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 17."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum cillum."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Image",
-        "DESCRIPTION": "Optional image for industry card slot 18. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 18."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip ex ea commodo."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Title",
-        "DESCRIPTION": "Text value for the Slot 18 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Desc",
-        "DESCRIPTION": "Text value for the Slot 18 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur lorem ipsum."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 18."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum voluptate."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Href",
-        "DESCRIPTION": "URL target for the Slot 18 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 18."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum elit."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Image",
-        "DESCRIPTION": "Optional image for industry card slot 19. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 19."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum minim veniam quis nostrud."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Title",
-        "DESCRIPTION": "Text value for the Slot 19 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Desc",
-        "DESCRIPTION": "Text value for the Slot 19 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 19."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum amet."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Href",
-        "DESCRIPTION": "URL target for the Slot 19 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 19."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliqua."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_URL",
-    "type": "IMAGE",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Image",
-        "DESCRIPTION": "Optional image for industry card slot 20. Leave empty to show the striped placeholder."
-      }
-    },
-    "value": null
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_ALT",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Image Alt Text",
-        "DESCRIPTION": "Alternative text for the image in industry card slot 20."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum commodo consequat duis aute."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_PHOTO",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Photo",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum velit esse cillum fugiat nulla pariatur lorem ipsum dolor sit amet consectetur adipiscing elit sed do."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_TITLE",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Title",
-        "DESCRIPTION": "Text value for the Slot 20 Title field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": ""
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_DESC",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Desc",
-        "DESCRIPTION": "Text value for the Slot 20 Desc field in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_STATUS_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Status Label",
-        "DESCRIPTION": "Editable status label shown in industry card slot 20."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum et."
-    }
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_HREF",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Href",
-        "DESCRIPTION": "URL target for the Slot 20 Href link in Verticals grid · photo-card catalog."
-      }
-    },
-    "value": "#"
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_CTA_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 CTA Label",
-        "DESCRIPTION": "Editable waitlist CTA label shown in industry card slot 20."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum aliquip."
     }
   },
   {
@@ -6792,83 +6092,6 @@
       "en": {
         "NAME": "Slot 13 Image Image Name",
         "DESCRIPTION": "CMS image file name/path segment for the Slot 13 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_14_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 14 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 14 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_15_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 15 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 15 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_16_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 16 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 16 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_17_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 17 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 17 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_18_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 18 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 18 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_19_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 19 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 19 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
-      }
-    },
-    "value": ""
-  },
-  {
-    "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_20_IMAGE_NAME",
-    "type": "STRING",
-    "nls": {
-      "en": {
-        "NAME": "Slot 20 Image Image Name",
-        "DESCRIPTION": "CMS image file name/path segment for the Slot 20 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
     "value": ""

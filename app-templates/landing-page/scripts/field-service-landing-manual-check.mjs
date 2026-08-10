@@ -87,6 +87,7 @@ try {
   const preview = await fs.readFile(path.join(first, "preview.html"), "utf8");
   const templates = [payload.root, ...(payload.children || [])];
   const rootParameters = new Map(payload.root.parameters.map((parameter) => [parameter.code, parameter.type]));
+  const supportedIndustries = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES");
 
   assert.equal(payload.schemaVersion, 1);
   assert.equal(payload.root.code, "FIELD_SERVICE_LANDING");
@@ -95,8 +96,8 @@ try {
   assert.equal(payload.children.every((template) => template.code.startsWith("FIELD_SERVICE_LANDING_")), true);
   assert.deepEqual(manifest.templateCodes, expectedCodes);
   assert.equal(payload.children.length, 14);
-  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 809);
-  assert.equal(composition.appliedContentCodes.length, 260);
+  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 746);
+  assert.equal(composition.appliedContentCodes.length, 253);
   assert.equal(composition.contentSource, "content/field-service-operations/parameter-values.json");
   assert.equal((await listFiles(path.join(first, "children"))).filter((file) => file.endsWith("template.json")).length, 14);
   assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+(?:@[A-Z0-9_]+)?\}/, "preview must resolve every CMS marker");
@@ -115,6 +116,14 @@ try {
   assert.equal(rootParameters.get("FAVICON_LIGHT_IMG_NAME"), "STRING");
   assert.equal(rootParameters.get("FAVICON_DARK_IMG"), "IMAGE");
   assert.equal(rootParameters.get("FAVICON_DARK_IMG_NAME"), "STRING");
+  assert.ok(supportedIndustries, "supported-industries template must exist");
+  const industriesEyebrow = supportedIndustries.parameters.find((parameter) => parameter.code.endsWith("_EYEBROW"));
+  const industryHints = supportedIndustries.parameters.filter((parameter) => parameter.code.match(/_SLOT_(?:0[1-9]|1[0-3])_PHOTO$/));
+  assert.equal(industriesEyebrow?.type, "LOCALIZED_STRING_SS");
+  assert.equal(industryHints.length, 13);
+  for (const hint of industryHints) assert.deepEqual(hint.value, { en: " " }, `${hint.code} must default to one space`);
+  assert.doesNotMatch(supportedIndustries.html, /Spare slots/);
+  assert.equal(supportedIndustries.parameters.some((parameter) => parameter.code.match(/_SLOT_(?:14|15|16|17|18|19|20)_/)), false);
   assert.match(payload.root.javascript, /document\.body\.setAttribute\('dir'/);
   assert.match(payload.root.javascript, /const FALLBACK_LOCALES = \[/);
   assert.match(payload.root.javascript, /fetch\('\/core\/api\/language\/active\.json'/);
@@ -144,7 +153,7 @@ try {
   assert.match(uploadPreview, /CMS base: https:\/\/dev-1\.servicewand\.com\/core-cms/);
   assert.match(uploadPreview, /Org:\s+SYSTEM/);
   assert.match(uploadPreview, /No network writes were made/);
-  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 260 content values, deterministic export, dev-1 dry-run payload ready`);
+  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 253 content values, deterministic export, dev-1 dry-run payload ready`);
 } finally {
   await fs.rm(first, { recursive: true, force: true });
   await fs.rm(second, { recursive: true, force: true });
