@@ -54,6 +54,15 @@ const templates = {
   },
 };
 
+const inactiveHeader = {
+  id: "99999999-9999-4999-8999-999999999999",
+  code: "HEADER",
+  parameters: [
+    { code: "HEADER_LOGO_ARIA_LABEL", type: "LOCALIZED_STRING_SS", value: { en: "Wrong revision" } },
+  ],
+  children: [],
+};
+
 const pageContext = {
   id: 42,
   url: "/source-page",
@@ -113,7 +122,9 @@ const server = http.createServer(async (request, response) => {
     const filter = body.filters?.find((item) => item.property === "code");
     assert.equal(filter?.type, "STRING");
     assert.ok(body.mappings.some((mapping) => mapping.name === "children"));
-    return send(response, 200, { result: templates[filter.value] ? [templates[filter.value]] : [] });
+    const result = templates[filter.value] ? [templates[filter.value]] : [];
+    if (filter.value === "HEADER") result.unshift(inactiveHeader);
+    return send(response, 200, { result });
   }
   if (request.url?.includes("/save.json")) {
     saveRequests += 1;
@@ -184,6 +195,7 @@ try {
     en: "Page logo",
     fr: "Logo de la page",
   });
+  assert.equal(snapshot.templates.header.rootTemplateId, ids.header, "must select the HEADER enabled on the page");
   assert.equal(snapshot.templates.header.valueSources.logo_aria_label, "pageContext");
   assert.equal(snapshot.templates.header.values.demo_request_label, "", "explicit page clear must be retained");
   assert.equal(snapshot.templates.header.valueSources.demo_request_label, "pageContext");

@@ -24,6 +24,10 @@ BlockTemplate defaults. Override the codes with `--header-code` and
 `--footer-code` if that page uses a different chrome family. It has no `--live`
 mode and does not call any save endpoint.
 
+Production can contain several templates with the same code. In that case the
+downloader selects the exact UUID present in the page's `enabledTemplates`
+instead of taking an arbitrary global match.
+
 The snapshot stores both the effective CMS values per source template and their
 mapping to authored block-local codes, so it can be reused by future
 compositions even when generated parameter prefixes differ. A page override has

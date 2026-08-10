@@ -248,7 +248,7 @@ const childrenMapping = (depth) => ({
   ],
 });
 
-const listTemplateTreeByCode = async ({ cmsBaseUrl, headers, code }) => {
+const listTemplateTreeByCode = async ({ cmsBaseUrl, headers, code, enabledTemplateIds }) => {
   const response = await requestJson(`${cmsBaseUrl}/api/block-template/list.json`, {
     method: "POST",
     headers,
@@ -260,9 +260,22 @@ const listTemplateTreeByCode = async ({ cmsBaseUrl, headers, code }) => {
     }),
   });
   const matches = (response?.result || []).filter((template) => template.code === code);
-  if (matches.length > 1) throw new Error(`Template code is ambiguous: ${code} matched ${matches.length} records.`);
-  if (!matches[0]?.id) throw new Error(`Production BlockTemplate was not found by code: ${code}`);
-  return matches[0];
+  if (!matches.length) throw new Error(`Production BlockTemplate was not found by code: ${code}`);
+  const enabled = new Set(enabledTemplateIds || []);
+  const pageMatches = matches.filter((template) => enabled.has(template.id));
+  if (pageMatches.length === 1) return pageMatches[0];
+  const candidateIds = matches.map((template) => template.id).filter(Boolean).sort().join(", ");
+  if (pageMatches.length > 1) {
+    throw new Error(
+      `Template code is ambiguous inside this PageContext: ${code} matched ${pageMatches.length} enabled records ` +
+      `(${pageMatches.map((template) => template.id).sort().join(", ")}).`,
+    );
+  }
+  if (matches.length === 1) return matches[0];
+  throw new Error(
+    `Template code ${code} matched ${matches.length} records, but none is enabled on this PageContext. ` +
+    `Candidates: ${candidateIds}`,
+  );
 };
 
 const flattenTemplateTree = (root) => {
@@ -453,10 +466,20 @@ const main = async () => {
   const pageContextId = requestedPageUrl
     ? await resolvePageContextId({ cmsBaseUrl, headers, pageUrl: requestedPageUrl })
     : Number(args.pageContextId);
-  const [pageContext, header, footer] = await Promise.all([
-    getPageContext({ cmsBaseUrl, headers, id: pageContextId }),
-    listTemplateTreeByCode({ cmsBaseUrl, headers, code: headerCode }),
-    listTemplateTreeByCode({ cmsBaseUrl, headers, code: footerCode }),
+  const pageContext = await getPageContext({ cmsBaseUrl, headers, id: pageContextId });
+  const [header, footer] = await Promise.all([
+    listTemplateTreeByCode({
+      cmsBaseUrl,
+      headers,
+      code: headerCode,
+      enabledTemplateIds: pageContext.enabledTemplates,
+    }),
+    listTemplateTreeByCode({
+      cmsBaseUrl,
+      headers,
+      code: footerCode,
+      enabledTemplateIds: pageContext.enabledTemplates,
+    }),
   ]);
 
   const roots = { header, footer };
