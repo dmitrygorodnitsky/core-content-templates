@@ -78,7 +78,6 @@
       "selector": "[data-photo-slot] img",
       "src_param": "photo_url",
       "alt_param": "photo_alt",
-      "fallback_label_param": "placeholder_label",
       "fallback_size_param": "placeholder_size",
       "recommended_size": "1000 × 1200",
       "aspect_ratio": "5:6",
@@ -219,12 +218,8 @@
     {
       "code": "placeholder_size",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lor"
-    },
-    {
-      "code": "placeholder_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet."
+      "default": "1000 × 1200",
+      "preserve_default": true
     },
     {
       "code": "chip_stat_value",

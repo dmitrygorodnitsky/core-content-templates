@@ -2324,20 +2324,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum eiusmod tempor incididunt ut."
-    }
-  },
-  {
-    "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PLACEHOLDER_LABEL",
-    "type": "LOCALIZED_STRING_SS",
-    "nls": {
-      "en": {
-        "NAME": "Placeholder Label",
-        "DESCRIPTION": "Fallback placeholder label shown when the related image is not set in Hero · composite photo (vertical-landing)."
-      }
-    },
-    "value": {
-      "en": "Lorem Ipsum magna."
+      "en": "1000 × 1200"
     }
   },
   {
@@ -2350,7 +2337,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nostrud exercitation ullamco laboris."
+      "en": "Lorem Ipsum magna aliqua enim ad."
     }
   },
   {
@@ -2363,7 +2350,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum ea."
+      "en": "Lorem Ipsum nostrud."
     }
   },
   {
@@ -2387,7 +2374,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum lorem ipsum dolor sit."
+      "en": "Lorem Ipsum voluptate velit esse cillum."
     }
   },
   {
@@ -2400,7 +2387,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum elit."
+      "en": "Lorem Ipsum lorem."
     }
   },
   {
@@ -2413,7 +2400,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum labore et dolore magna."
+      "en": "Lorem Ipsum elit sed do eiusmod."
     }
   },
   {
@@ -2437,7 +2424,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum nisi aliquip ex ea."
+      "en": "Lorem Ipsum minim veniam quis nostrud."
     }
   },
   {
@@ -2450,7 +2437,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum aute."
+      "en": "Lorem Ipsum nisi."
     }
   },
   {
@@ -2463,7 +2450,7 @@
       }
     },
     "value": {
-      "en": "Lorem Ipsum fugiat nulla pariatur lorem."
+      "en": "Lorem Ipsum aute irure reprehenderit voluptate."
     }
   },
   {
