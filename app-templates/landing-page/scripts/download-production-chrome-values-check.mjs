@@ -12,6 +12,7 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const landingRoot = path.resolve(scriptsDir, "..");
 const scratch = await fs.mkdtemp(path.join(landingRoot, "dist/.production-chrome-values-check-"));
 const output = path.join(scratch, "parameter-values.json");
+const offlineOutput = path.join(scratch, "parameter-values.offline.json");
 const pageDumpOutput = path.join(scratch, "page-context.json");
 let pageListRequests = 0;
 let pageGetRequests = 0;
@@ -28,7 +29,7 @@ const ids = {
 const templates = {
   HEADER: {
     id: ids.header,
-    code: "HEADER",
+    code: "PRODUCTION_PAGE_HEADER",
     parameters: [
       { code: "HEADER_LOGO_ARIA_LABEL", type: "LOCALIZED_STRING_SS", value: { en: "Template logo" } },
       { code: "HEADER_DEMO_REQUEST_LABEL", type: "LOCALIZED_STRING_SS", value: { en: "Request Demo" } },
@@ -45,7 +46,7 @@ const templates = {
   },
   FOOTER: {
     id: ids.footer,
-    code: "FOOTER",
+    code: "PRODUCTION_PAGE_FOOTER",
     parameters: [
       { code: "FOOTER_TAGLINE", type: "LOCALIZED_STRING_SS", value: { en: "Template tagline" } },
       { code: "FOOTER_ADDRESS", type: "LOCALIZED_STRING_SS", value: { en: "Template address" } },
@@ -70,6 +71,7 @@ const pageContext = {
     [ids.header]: {
       HEADER_LOGO_ARIA_LABEL: { en: "Page logo", fr: "Logo de la page" },
       HEADER_DEMO_REQUEST_LABEL: "",
+      HEADER_REMOVED_PARAMETER: "stale nested override",
     },
     [ids.footer]: {
       FOOTER_TAGLINE: { en: "Page tagline" },
@@ -174,6 +176,28 @@ try {
   assert.equal(templateListRequests, 0);
   assert.equal(saveRequests, 0);
 
+  const countsBeforeOffline = {
+    pageListRequests,
+    pageGetRequests,
+    templateListRequests,
+    saveRequests,
+  };
+  const offlineResult = await execFileAsync(process.execPath, [
+    path.join(scriptsDir, "download-production-chrome-values.mjs"),
+    "--from-page-dump", pageDumpOutput,
+    "--allow-non-production",
+    "--out", offlineOutput,
+  ]);
+  assert.match(offlineResult.stdout, /effective production page chrome values/);
+  assert.deepEqual(
+    { pageListRequests, pageGetRequests, templateListRequests, saveRequests },
+    countsBeforeOffline,
+    "offline dump processing must not access CMS",
+  );
+  const offlineSnapshot = JSON.parse(await fs.readFile(offlineOutput, "utf8"));
+  assert.equal(offlineSnapshot.templates.header.rootTemplateCode, "PRODUCTION_PAGE_HEADER");
+  assert.deepEqual(offlineSnapshot.templates.footer.values.tagline, { en: "Page tagline" });
+
   const result = await execFileAsync(process.execPath, [
     path.join(scriptsDir, "download-production-chrome-values.mjs"),
     "--page-url", "https://servicewand.com/source-page",
@@ -205,7 +229,9 @@ try {
     en: "Page logo",
     fr: "Logo de la page",
   });
-  assert.equal(snapshot.templates.header.rootTemplateId, ids.header, "must select the HEADER enabled on the page");
+  assert.equal(snapshot.templates.header.rootTemplateId, ids.header, "must select the family HEADER from the page tree");
+  assert.equal(snapshot.templates.header.rootTemplateCode, "PRODUCTION_PAGE_HEADER");
+  assert.equal(snapshot.templates.footer.rootTemplateCode, "PRODUCTION_PAGE_FOOTER");
   assert.equal(snapshot.templates.header.valueSources.logo_aria_label, "pageContext");
   assert.equal(snapshot.templates.header.values.demo_request_label, "", "explicit page clear must be retained");
   assert.equal(snapshot.templates.header.valueSources.demo_request_label, "pageContext");
@@ -217,7 +243,10 @@ try {
   assert.deepEqual(snapshot.templates.footer.values.address, { en: "Template address" });
   assert.equal(snapshot.templates.footer.valueSources.address, "templateDefault");
   assert.equal(snapshot.templates.footer.sourceTemplates[0].enabledOnPage, true);
-  assert.deepEqual(snapshot.unresolvedPageValueKeys, ["REMOVED_PARAMETER"]);
+  assert.deepEqual(snapshot.unresolvedPageValueKeys, [
+    `${ids.header}.HEADER_REMOVED_PARAMETER`,
+    "REMOVED_PARAMETER",
+  ]);
   assert.equal(Object.hasOwn(snapshot, "downloadedAt"), false, "snapshot must remain deterministic");
 
   await execFileAsync(process.execPath, [

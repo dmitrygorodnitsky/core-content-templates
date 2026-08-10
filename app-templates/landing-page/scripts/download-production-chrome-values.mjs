@@ -19,8 +19,6 @@ const scriptsDir = dirname(fileURLToPath(import.meta.url));
 const landingRoot = resolve(scriptsDir, "..");
 const DEFAULT_CORE_BASE_URL = "https://servicewand.com/core";
 const DEFAULT_ORG = "SYSTEM";
-const DEFAULT_HEADER_CODE = "HEADER";
-const DEFAULT_FOOTER_CODE = "FOOTER";
 const DEFAULT_OUTPUT = join(
   landingRoot,
   "content",
@@ -49,6 +47,7 @@ const parseArgs = () => {
     const arg = args[index];
     if (arg === "--page-url") out.pageUrl = args[++index];
     else if (arg === "--page-context-id") out.pageContextId = args[++index];
+    else if (arg === "--from-page-dump") out.fromPageDump = args[++index];
     else if (arg === "--dump-page") out.dumpPage = args[++index];
     else if (arg === "--header-code") out.headerCode = args[++index];
     else if (arg === "--footer-code") out.footerCode = args[++index];
@@ -74,10 +73,11 @@ const usage = () => `Usage:
 Page selector (exactly one is required):
   --page-url <path>          Exact PageContext URL, for example / or /industries/field-service.
   --page-context-id <id>    Numeric PageContext id from Core CMS.
+  --from-page-dump <file>   Process a previously downloaded --dump-page file without CMS access.
 
 Defaults:
-  --header-code ${DEFAULT_HEADER_CODE}
-  --footer-code ${DEFAULT_FOOTER_CODE}
+  --header-code auto (first <PAGE_ROOT_CODE>_HEADER, then a unique *_HEADER)
+  --footer-code auto (first <PAGE_ROOT_CODE>_FOOTER, then a unique *_FOOTER)
   --out app-templates/landing-page/content/servicewand-production-chrome/parameter-values.json
 
 Options:
@@ -251,15 +251,27 @@ const getPageContext = async ({ cmsBaseUrl, headers, id }) => {
   return page;
 };
 
-const resolveTemplateFromPageTree = ({ pageRoot, code, enabledTemplateIds }) => {
+const resolveTemplateFromPageTree = ({ pageRoot, code, kind, enabledTemplateIds }) => {
   if (!pageRoot?.id) throw new Error("PageContext does not contain its attached root template tree.");
-  const matches = flattenTemplateTree(pageRoot).filter((template) => template.code === code);
+  const tree = flattenTemplateTree(pageRoot);
+  const suffix = `_${kind.toUpperCase()}`;
+  const expectedCode = `${pageRoot.code}${suffix}`;
+  const matches = code
+    ? tree.filter((template) => template.code === code)
+    : (() => {
+        const familyMatches = tree.filter((template) => template.code === expectedCode);
+        return familyMatches.length
+          ? familyMatches
+          : tree.filter((template) => template.code === kind.toUpperCase() || template.code?.endsWith(suffix));
+      })();
+  const requestedCode = code || `${expectedCode} / *${suffix}`;
   if (!matches.length) {
-    const availableCodes = [...new Set(flattenTemplateTree(pageRoot).map((template) => template.code).filter(Boolean))]
+    const availableCodes = [...new Set(tree.map((template) => template.code).filter(Boolean))]
       .sort()
       .join(", ");
     throw new Error(
-      `Template code ${code} is not attached to this PageContext. Attached codes: ${availableCodes || "<none>"}`,
+      `Template code ${requestedCode} is not attached to this PageContext. ` +
+      `Attached codes: ${availableCodes || "<none>"}`,
     );
   }
   const enabled = new Set(enabledTemplateIds || []);
@@ -267,13 +279,14 @@ const resolveTemplateFromPageTree = ({ pageRoot, code, enabledTemplateIds }) => 
   if (pageMatches.length === 1) return pageMatches[0];
   if (pageMatches.length > 1) {
     throw new Error(
-      `Template code is ambiguous inside the attached page tree: ${code} matched ${pageMatches.length} enabled records ` +
+      `Template code is ambiguous inside the attached page tree: ${requestedCode} matched ` +
+      `${pageMatches.length} enabled records ` +
       `(${pageMatches.map((template) => template.id).sort().join(", ")}).`,
     );
   }
   if (matches.length === 1) return matches[0];
   throw new Error(
-    `Template code ${code} occurs ${matches.length} times inside the attached page tree and none is explicitly enabled. ` +
+    `Template code ${requestedCode} occurs ${matches.length} times inside the attached page tree and none is explicitly enabled. ` +
     `Candidates: ${matches.map((template) => template.id).filter(Boolean).sort().join(", ")}`,
   );
 };
@@ -296,18 +309,30 @@ const sortedObject = (entries) => Object.fromEntries(
 const pageValueIndex = (values, templates) => {
   const source = values && typeof values === "object" && !Array.isArray(values) ? values : {};
   const parameterOwners = new Map();
+  const parameterCodesByTemplate = new Map();
   for (const template of templates) {
+    const templateCodes = new Set();
     for (const parameter of template.parameters || []) {
       const owners = parameterOwners.get(parameter.code) || [];
       owners.push(template.id);
       parameterOwners.set(parameter.code, owners);
+      templateCodes.add(parameter.code);
     }
+    parameterCodesByTemplate.set(template.id, templateCodes);
   }
 
   const legacy = new Map();
   const unresolvedKeys = [];
   for (const [key, value] of Object.entries(source)) {
-    if (UUID_RE.test(key) && value && typeof value === "object" && !Array.isArray(value)) continue;
+    if (UUID_RE.test(key) && value && typeof value === "object" && !Array.isArray(value)) {
+      const knownCodes = parameterCodesByTemplate.get(key);
+      if (knownCodes) {
+        for (const parameterCode of Object.keys(value)) {
+          if (!knownCodes.has(parameterCode)) unresolvedKeys.push(`${key}.${parameterCode}`);
+        }
+      }
+      continue;
+    }
     const owners = parameterOwners.get(key) || [];
     if (owners.length === 1) legacy.set(`${owners[0]}.${key}`, value);
     else unresolvedKeys.push(key);
@@ -438,35 +463,52 @@ const main = async () => {
     console.log(usage());
     return;
   }
-  if (Boolean(args.pageUrl) === Boolean(args.pageContextId)) {
-    throw new Error("Specify exactly one page selector: --page-url or --page-context-id.");
+  const sourceSelectors = [args.pageUrl, args.pageContextId, args.fromPageDump].filter(Boolean);
+  if (sourceSelectors.length !== 1) {
+    throw new Error("Specify exactly one page selector: --page-url, --page-context-id, or --from-page-dump.");
   }
   if (args.pageContextId !== undefined && !/^\d+$/.test(String(args.pageContextId))) {
     throw new Error("--page-context-id must be a numeric Core CMS PageContext id.");
   }
 
+  if (args.fromPageDump && args.dumpPage) {
+    throw new Error("--from-page-dump and --dump-page cannot be used together.");
+  }
+  const savedDump = args.fromPageDump ? readJson(resolve(args.fromPageDump)) : undefined;
+  if (savedDump && (!savedDump.pageContext || savedDump.source?.readOnly !== true)) {
+    throw new Error("--from-page-dump must point to a read-only PageContext dump created by this script.");
+  }
+
   const baseUrl = (
-    args.baseUrl || envFirst("SERVICEWAND_BASE_URL", "LANDING_BASE_URL") || DEFAULT_CORE_BASE_URL
+    args.baseUrl || envFirst("SERVICEWAND_BASE_URL", "LANDING_BASE_URL") ||
+    savedDump?.source?.baseUrl || DEFAULT_CORE_BASE_URL
   ).replace(/\/+$/, "");
   const cmsBaseUrl = (
-    args.cmsBaseUrl || envFirst("SERVICEWAND_CMS_BASE_URL", "LANDING_CMS_BASE_URL") || cmsServiceUrl(baseUrl)
+    args.cmsBaseUrl || envFirst("SERVICEWAND_CMS_BASE_URL", "LANDING_CMS_BASE_URL") ||
+    savedDump?.source?.cmsBaseUrl || cmsServiceUrl(baseUrl)
   ).replace(/\/+$/, "");
-  const org = args.org || envFirst("SERVICEWAND_ORG", "LANDING_ORG") || DEFAULT_ORG;
-  const headerCode = args.headerCode || DEFAULT_HEADER_CODE;
-  const footerCode = args.footerCode || DEFAULT_FOOTER_CODE;
+  const org = args.org || envFirst("SERVICEWAND_ORG", "LANDING_ORG") ||
+    savedDump?.source?.organization || DEFAULT_ORG;
+  const headerCode = args.headerCode;
+  const footerCode = args.footerCode;
   assertProductionSource({ baseUrl, cmsBaseUrl, allowNonProduction: args.allowNonProduction });
 
-  const token = await getAccessToken({
-    baseUrl,
-    apiKey: envFirst("SERVICEWAND_API_KEY", "LANDING_API_KEY"),
-    bearer: envFirst("SERVICEWAND_BEARER", "LANDING_BEARER"),
-  });
-  const headers = cmsHeaders(token, org);
-  const requestedPageUrl = args.pageUrl ? normalizePageUrl(args.pageUrl) : undefined;
-  const pageContextId = requestedPageUrl
-    ? await resolvePageContextId({ cmsBaseUrl, headers, pageUrl: requestedPageUrl })
-    : Number(args.pageContextId);
-  const pageContext = await getPageContext({ cmsBaseUrl, headers, id: pageContextId });
+  let pageContext;
+  if (savedDump) {
+    pageContext = savedDump.pageContext;
+  } else {
+    const token = await getAccessToken({
+      baseUrl,
+      apiKey: envFirst("SERVICEWAND_API_KEY", "LANDING_API_KEY"),
+      bearer: envFirst("SERVICEWAND_BEARER", "LANDING_BEARER"),
+    });
+    const headers = cmsHeaders(token, org);
+    const requestedPageUrl = args.pageUrl ? normalizePageUrl(args.pageUrl) : undefined;
+    const pageContextId = requestedPageUrl
+      ? await resolvePageContextId({ cmsBaseUrl, headers, pageUrl: requestedPageUrl })
+      : Number(args.pageContextId);
+    pageContext = await getPageContext({ cmsBaseUrl, headers, id: pageContextId });
+  }
   if (args.dumpPage) {
     const dump = {
       $schema: "lab-ui/production-page-context-dump@1",
@@ -490,11 +532,13 @@ const main = async () => {
   const header = resolveTemplateFromPageTree({
     pageRoot: pageContext.template,
     code: headerCode,
+    kind: "header",
     enabledTemplateIds: pageContext.enabledTemplates,
   });
   const footer = resolveTemplateFromPageTree({
     pageRoot: pageContext.template,
     code: footerCode,
+    kind: "footer",
     enabledTemplateIds: pageContext.enabledTemplates,
   });
 
