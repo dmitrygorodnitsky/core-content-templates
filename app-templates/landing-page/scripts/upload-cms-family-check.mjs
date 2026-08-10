@@ -74,7 +74,7 @@ const server = http.createServer(async (request, response) => {
     const codeFilter = body.filters?.find((filter) => filter.property === "code");
     if (codeFilter?.type !== "STRING") untypedCodeFilters += 1;
     const code = codeFilter?.value;
-    if (code === missingCode) return send(response, 200, { result: [] });
+    if (missingCode === "*" || code === missingCode) return send(response, 200, { result: [] });
     const id = code === "FIELD_SERVICE_LANDING" ? rootId : childId;
     return send(response, 200, { result: [{ id, code }] });
   }
@@ -104,6 +104,20 @@ try {
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING_HEADER -> ${childId}`));
   assert.match(success.stdout, new RegExp(`Organization: SYSTEM -> ${organizationId}`));
   assert.equal(untypedCodeFilters, 0, "code lookups use the STRING filter type expected by core-ui");
+
+  const createOnlyArgs = baseArgs
+    .filter((arg) => arg !== "--require-existing")
+    .concat("--require-missing");
+  await assert.rejects(
+    execFileAsync(process.execPath, createOnlyArgs, { env }),
+    /Create-only upload refused because template codes already exist/,
+  );
+  missingCode = "*";
+  const createOnly = await execFileAsync(process.execPath, createOnlyArgs, { env });
+  assert.match(createOnly.stdout, /would create: FIELD_SERVICE_LANDING -> \(new\)/);
+  assert.match(createOnly.stdout, /would create: FIELD_SERVICE_LANDING_HEADER -> \(new\)/);
+  assert.equal(saveRequests, 0, "create-only dry-run must make no save requests");
+  missingCode = null;
 
   await assert.rejects(
     execFileAsync(process.execPath, [...baseArgs, "--expected-root-id", "33333333-3333-4333-8333-333333333333"], { env }),

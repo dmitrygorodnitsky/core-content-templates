@@ -27,6 +27,7 @@ const parseArgs = () => {
     else if (arg === "--live") out.mode = "live";
     else if (arg === "--dry-run") out.mode = "dry-run";
     else if (arg === "--require-existing") out.requireExisting = true;
+    else if (arg === "--require-missing") out.requireMissing = true;
     else if (arg === "--expected-root-id") out.expectedRootId = args[++index];
     else if (arg === "--help" || arg === "-h") out.help = true;
     else throw new Error(`Unknown argument: ${arg}`);
@@ -38,7 +39,7 @@ const usage = () => `Usage:
   node app-templates/landing-page/scripts/upload-cms-family.mjs \\
     --out app-templates/landing-page/dist/<slug> \\
     [--dry-run | --live] [--base-url https://lsrc.pixelnation.com/core] [--org SYSTEM] \
-    [--require-existing] [--expected-root-id <uuid>]
+    [--require-existing | --require-missing] [--expected-root-id <uuid>]
 
 The uploader creates or updates each BlockTemplate by code. It never manages
 template parents, root include markup, enabled templates, or PageContext.
@@ -47,6 +48,10 @@ With --require-existing, every template code is resolved before any write and
 the command fails if one is missing. --expected-root-id additionally confirms
 the existing root BlockTemplate UUID. In dry-run mode these flags perform
 authenticated reads only and print the resolved codes and IDs.
+
+With --require-missing, every template code is resolved before any write and
+the command fails if one already exists. Use it for create-only uploads with new
+suffixed codes.
 
 Env credentials:
   SERVICEWAND_API_KEY or LANDING_API_KEY
@@ -364,8 +369,12 @@ const resolvePlan = async (env, templates) => {
 
 const verifyPlan = (plan, options) => {
   const missing = plan.rows.filter((row) => !row.existing?.id).map((row) => row.template.code);
+  const existing = plan.rows.filter((row) => row.existing?.id).map((row) => row.template.code);
   if (options.requireExisting && missing.length) {
     throw new Error(`Required existing templates were not found: ${missing.join(", ")}`);
+  }
+  if (options.requireMissing && existing.length) {
+    throw new Error(`Create-only upload refused because template codes already exist: ${existing.join(", ")}`);
   }
   if (options.expectedRootId) {
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(options.expectedRootId)) {
@@ -418,6 +427,12 @@ export const main = async () => {
     console.log(usage());
     process.exit(args.help ? 0 : 1);
   }
+  if (args.requireExisting && args.requireMissing) {
+    fail("--require-existing and --require-missing are mutually exclusive.");
+  }
+  if (args.expectedRootId && args.requireMissing) {
+    fail("--expected-root-id cannot be combined with --require-missing.");
+  }
 
   const outAbs = resolve(args.out);
   if (!existsSync(outAbs)) fail(`Out dir not found: ${args.out}`);
@@ -433,7 +448,7 @@ export const main = async () => {
   const templates = templatesFromPayload(readPayload(outAbs));
   validateTemplateParameterTypes(templates);
 
-  const needsResolvedPlan = args.mode === "live" || args.requireExisting || args.expectedRootId;
+  const needsResolvedPlan = args.mode === "live" || args.requireExisting || args.requireMissing || args.expectedRootId;
   if (!needsResolvedPlan) {
     printDryRun(env, templates);
     return;
