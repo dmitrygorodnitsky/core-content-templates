@@ -27,8 +27,14 @@ await fs.writeFile(parametersFile, JSON.stringify([
   {
     code: "HERO_IMAGE",
     type: "IMAGE",
-    value: null,
+    value: "77084eeb-daa5-47ee-8dd7-fad0fbbd0806",
     nls: { en: { NAME: "Hero image" } },
+  },
+  {
+    code: "HERO_IMAGE_NAME",
+    type: "STRING",
+    value: "/",
+    nls: { en: { NAME: "Hero image name" } },
   },
 ]));
 
@@ -40,7 +46,7 @@ const existingTemplate = {
   templateLanguage: "JTE",
   advanced: false,
   head: "<meta charset=\"utf-8\">",
-  html: "<h1>${HERO_TITLE@LOCALIZED_STRING_SS}</h1><img src=\"/core/image/${HERO_IMAGE@IMAGE}/get\">",
+  html: "<h1>${HERO_TITLE@LOCALIZED_STRING_SS}</h1><img src=\"/core/image/${HERO_IMAGE@IMAGE}/get/${HERO_IMAGE_NAME@STRING}\">",
   javascript: "document.body.dataset.ready = 'true';",
   css: ".hero { display: block; }",
   optimistic: 7,
@@ -57,6 +63,12 @@ const existingTemplate = {
       type: "IMAGE",
       value: existingImageId,
       nls: { en: { NAME: "Hero image" } },
+    },
+    {
+      code: "HERO_IMAGE_NAME",
+      type: "STRING",
+      value: "real-image.webp",
+      nls: { en: { NAME: "Hero image name" } },
     },
   ],
 };
@@ -111,7 +123,7 @@ try {
   const dryRun = await execFileAsync(process.execPath, [...args, "--dry-run"], { env });
   assert.match(dryRun.stdout, /Content:\s+unchanged/);
   assert.match(dryRun.stdout, /Updated: 1\s+- HERO_TITLE/);
-  assert.match(dryRun.stdout, /Unchanged incoming: 1/);
+  assert.match(dryRun.stdout, /Unchanged incoming: 2/);
   assert.equal(saveRequests, 0, "dry-run must not save");
 
   await execFileAsync(process.execPath, [...args, "--live"], { env });
@@ -124,7 +136,8 @@ try {
   assert.deepEqual(savedEntity.organization, { id: 42 });
   assert.equal(savedEntity.parameters.find((parameter) => parameter.code === "HERO_TITLE").value.en, "New title");
   assert.equal(savedEntity.parameters.find((parameter) => parameter.code === "HERO_IMAGE").value, existingImageId);
-  console.log("sync-block-template-parameters-check ok: content preserved, typed lookup used, existing media value retained");
+  assert.equal(savedEntity.parameters.find((parameter) => parameter.code === "HERO_IMAGE_NAME").value, "real-image.webp");
+  console.log("sync-block-template-parameters-check ok: content preserved, typed lookup used, existing media id/name retained over sentinel defaults");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(scratchDir, { recursive: true, force: true });

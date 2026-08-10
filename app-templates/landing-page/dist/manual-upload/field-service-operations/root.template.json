@@ -174,7 +174,7 @@
           "DESCRIPTION": "Default favicon image asset rendered by the root template."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "FAVICON_IMG_NAME",
@@ -185,7 +185,7 @@
           "DESCRIPTION": "Default favicon image file name rendered by the root template."
         }
       },
-      "value": ""
+      "value": "SW_emblem_g.svg"
     },
     {
       "code": "FAVICON_LIGHT_IMG",
@@ -196,7 +196,7 @@
           "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "FAVICON_LIGHT_IMG_NAME",
@@ -207,7 +207,7 @@
           "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
         }
       },
-      "value": ""
+      "value": "SW_emblem_g.svg"
     },
     {
       "code": "FAVICON_DARK_IMG",
@@ -218,7 +218,7 @@
           "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "FAVICON_DARK_IMG_NAME",
@@ -229,7 +229,7 @@
           "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
         }
       },
-      "value": ""
+      "value": "SW_emblem_g.svg"
     }
   ]
 }

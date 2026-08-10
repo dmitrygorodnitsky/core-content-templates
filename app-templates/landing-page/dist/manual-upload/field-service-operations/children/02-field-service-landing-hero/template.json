@@ -24,7 +24,7 @@
           "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
@@ -239,7 +239,7 @@
           "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
@@ -289,7 +289,7 @@
           "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
         }
       },
-      "value": null
+      "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
@@ -339,7 +339,7 @@
           "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
         }
       },
-      "value": ""
+      "value": "/"
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
@@ -350,7 +350,7 @@
           "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
         }
       },
-      "value": ""
+      "value": "/"
     },
     {
       "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
@@ -361,7 +361,7 @@
           "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
         }
       },
-      "value": ""
+      "value": "/"
     }
   ]
 }

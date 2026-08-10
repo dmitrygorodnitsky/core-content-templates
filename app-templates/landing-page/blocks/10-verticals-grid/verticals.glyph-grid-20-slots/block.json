@@ -3,12 +3,12 @@
   "id": "verticals.glyph-grid-20-slots",
   "category": "10-verticals-grid",
   "title": "Verticals grid · photo-card catalog",
-  "description": "Signature industry catalog. 20 CMS-addressable slots in a responsive photo-card grid. Thirteen cards are visible by default; seven spare slots are hidden until an admin fills the title. Each visible card uses the same media placeholder/photo slot, title, description, URL href, editable status label, and editable CTA label.",
+  "description": "Signature industry catalog. Thirteen CMS-addressable cards in a responsive photo-card grid. Each card uses the same media placeholder/photo slot, title, description, URL href, editable status label, and editable CTA label.",
   "canonical": true,
   "theme": "light",
   "source": {
     "primary": "repo-owned normalized CardCatalog block",
-    "extensibility_pattern": "20 numbered slots with [hidden] spare cards",
+    "extensibility_pattern": "13 numbered CMS-addressable cards",
     "decision": "PM lock 2026-05-25 — verticals grid uses Lorem ipsum photo-card catalog pattern, not small SVG glyph cards"
   },
   "depends_on": {
@@ -814,7 +814,6 @@
     "1440": "preview-1440.png"
   },
   "notes": [
-    "Empty-title slots are hidden via [hidden] + block.js (covers the case where the slot ships with the {{handlebar}} unfilled).",
     "Media slots are real optional image slots. When a slot image URL is empty, the neutral striped placeholder with dimension + photo hint remains visible.",
     "Grid renders 4 columns on wide desktop, 3 columns below 1180px, 2 below 880px, and 1 below 560px.",
     "All visible cards share one visual and CMS parameter pattern; slot 1 is not visually special.",

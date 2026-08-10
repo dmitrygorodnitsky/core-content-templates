@@ -12,6 +12,8 @@ import { resolve } from "node:path";
 
 const DEFAULT_CORE_BASE_URL = "https://lsrc.pixelnation.com/core";
 const DEFAULT_ORG = "SYSTEM";
+const CMS_IMAGE_SENTINEL_ID = "77084eeb-daa5-47ee-8dd7-fad0fbbd0806";
+const CMS_IMAGE_SENTINEL_NAME = "/";
 
 const parseArgs = () => {
   const args = process.argv.slice(2);
@@ -194,6 +196,10 @@ const isEmptyParameterValue = (value) => {
   return !values.length || values.every((entry) => entry === "" || entry == null);
 };
 
+const isImageSentinelParameter = (parameter) =>
+  parameter?.value === CMS_IMAGE_SENTINEL_ID
+  || parameter?.value === CMS_IMAGE_SENTINEL_NAME;
+
 const isCmsEmptyValue = (value) =>
   value === null
   || value === undefined
@@ -277,7 +283,12 @@ const mergeParameters = ({ existing, incoming, mode }) => {
   for (const parameter of incoming) {
     const next = normalizeParameter(parameter);
     const current = byCode.get(next.code);
-    if (current && isEmptyParameterValue(next.value) && !isEmptyParameterValue(current.value)) {
+    if (
+      current
+      && (isEmptyParameterValue(next.value) || isImageSentinelParameter(next))
+      && !isEmptyParameterValue(current.value)
+      && !isImageSentinelParameter(current)
+    ) {
       next.value = current.value;
     }
     byCode.set(next.code, next);

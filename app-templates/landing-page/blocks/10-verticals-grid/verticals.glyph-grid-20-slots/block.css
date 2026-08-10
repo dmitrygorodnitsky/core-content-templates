@@ -1,6 +1,6 @@
 /* lab-ui block · verticals.glyph-grid-20-slots
    Depends: 00-tokens/tokens.css. Light theme.
-   20-slot industry card catalog. 13 filled + 7 hidden by default. */
+   13-card CMS-addressable industry catalog. */
 
 .verticals {
   background: var(--color-bg);

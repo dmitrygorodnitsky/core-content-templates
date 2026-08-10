@@ -47,7 +47,7 @@
         "DESCRIPTION": "Default favicon image asset rendered by the root template."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "FAVICON_IMG_NAME",
@@ -58,7 +58,7 @@
         "DESCRIPTION": "Default favicon image file name rendered by the root template."
       }
     },
-    "value": ""
+    "value": "SW_emblem_g.svg"
   },
   {
     "code": "FAVICON_LIGHT_IMG",
@@ -69,7 +69,7 @@
         "DESCRIPTION": "Optional light color-scheme favicon image asset reserved by the production root template."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "FAVICON_LIGHT_IMG_NAME",
@@ -80,7 +80,7 @@
         "DESCRIPTION": "Optional light color-scheme favicon image file name reserved by the production root template."
       }
     },
-    "value": ""
+    "value": "SW_emblem_g.svg"
   },
   {
     "code": "FAVICON_DARK_IMG",
@@ -91,7 +91,7 @@
         "DESCRIPTION": "Optional dark color-scheme favicon image asset reserved by the production root template."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "FAVICON_DARK_IMG_NAME",
@@ -102,7 +102,7 @@
         "DESCRIPTION": "Optional dark color-scheme favicon image file name reserved by the production root template."
       }
     },
-    "value": ""
+    "value": "SW_emblem_g.svg"
   },
   {
     "code": "SECTION_01_HEADER_CORPORATE_REFERENCE_LOGO_HREF",
@@ -2149,7 +2149,7 @@
         "DESCRIPTION": "Imported from HEADER_MENU in CMS template 3eab232f-9567-4535-a1bf-c59ab746da58."
       }
     },
-    "value": null
+    "value": "eafe1edc-102e-4133-bd96-146d40346efa"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PHOTO_URL",
@@ -2160,7 +2160,7 @@
         "DESCRIPTION": "Image source for the Photo URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_EYEBROW_ROOT",
@@ -2375,7 +2375,7 @@
         "DESCRIPTION": "Image source for the Person 1 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_ALT",
@@ -2425,7 +2425,7 @@
         "DESCRIPTION": "Image source for the Person 2 Avatar URL field in Hero · composite photo (vertical-landing). Leave empty to show the built-in placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_ALT",
@@ -2475,7 +2475,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Photo image in Hero · composite photo (vertical-landing). Required image size: 1000 × 1200. Required aspect ratio: 5:6."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_1_AVATAR_NAME",
@@ -2486,7 +2486,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Person 1 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_02_HERO_COMPOSITE_PHOTO_PERSON_2_AVATAR_NAME",
@@ -2497,7 +2497,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Person 2 Avatar image in Hero · composite photo (vertical-landing). Required image size: 160 × 160. Required aspect ratio: 1:1."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_03_SECTION_H2_NARRATIVE_ONLY_EYEBROW",
@@ -3873,7 +3873,7 @@
         "DESCRIPTION": "Optional product or assistant screenshot shown in the AI side-panel media slot. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_07_SIGNATURE_AI_SHELL_MEDIA_ALT",
@@ -4118,7 +4118,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Ai Media image in Signature · AI-shell (stream + side panel + capability cards). Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_08_SECTION_STAGES_LIST_EYEBROW",
@@ -4662,7 +4662,7 @@
         "DESCRIPTION": "Optional image for industry card slot 1. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_01_IMAGE_ALT",
@@ -4762,7 +4762,7 @@
         "DESCRIPTION": "Optional image for industry card slot 2. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_ALT",
@@ -4862,7 +4862,7 @@
         "DESCRIPTION": "Optional image for industry card slot 3. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_ALT",
@@ -4962,7 +4962,7 @@
         "DESCRIPTION": "Optional image for industry card slot 4. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_ALT",
@@ -5062,7 +5062,7 @@
         "DESCRIPTION": "Optional image for industry card slot 5. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_ALT",
@@ -5162,7 +5162,7 @@
         "DESCRIPTION": "Optional image for industry card slot 6. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_ALT",
@@ -5262,7 +5262,7 @@
         "DESCRIPTION": "Optional image for industry card slot 7. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_ALT",
@@ -5362,7 +5362,7 @@
         "DESCRIPTION": "Optional image for industry card slot 8. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_ALT",
@@ -5462,7 +5462,7 @@
         "DESCRIPTION": "Optional image for industry card slot 9. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_ALT",
@@ -5562,7 +5562,7 @@
         "DESCRIPTION": "Optional image for industry card slot 10. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_ALT",
@@ -5662,7 +5662,7 @@
         "DESCRIPTION": "Optional image for industry card slot 11. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_ALT",
@@ -5762,7 +5762,7 @@
         "DESCRIPTION": "Optional image for industry card slot 12. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_ALT",
@@ -5862,7 +5862,7 @@
         "DESCRIPTION": "Optional image for industry card slot 13. Leave empty to show the striped placeholder."
       }
     },
-    "value": null
+    "value": "77084eeb-daa5-47ee-8dd7-fad0fbbd0806"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_ALT",
@@ -5962,7 +5962,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 01 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_02_IMAGE_NAME",
@@ -5973,7 +5973,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 02 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_03_IMAGE_NAME",
@@ -5984,7 +5984,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 03 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_04_IMAGE_NAME",
@@ -5995,7 +5995,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 04 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_05_IMAGE_NAME",
@@ -6006,7 +6006,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 05 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_06_IMAGE_NAME",
@@ -6017,7 +6017,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 06 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_07_IMAGE_NAME",
@@ -6028,7 +6028,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 07 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_08_IMAGE_NAME",
@@ -6039,7 +6039,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 08 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_09_IMAGE_NAME",
@@ -6050,7 +6050,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 09 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_10_IMAGE_NAME",
@@ -6061,7 +6061,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 10 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_11_IMAGE_NAME",
@@ -6072,7 +6072,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 11 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_12_IMAGE_NAME",
@@ -6083,7 +6083,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 12 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "SECTION_09_VERTICALS_GLYPH_GRID_20_SLOTS_SLOT_13_IMAGE_NAME",
@@ -6094,7 +6094,7 @@
         "DESCRIPTION": "CMS image file name/path segment for the Slot 13 Photo image in Verticals grid · photo-card catalog. Required image size: 1280 × 800. Required aspect ratio: 16:10."
       }
     },
-    "value": ""
+    "value": "/"
   },
   {
     "code": "COMPARE_EYEBROW",

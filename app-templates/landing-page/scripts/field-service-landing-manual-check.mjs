@@ -97,7 +97,7 @@ try {
   assert.deepEqual(manifest.templateCodes, expectedCodes);
   assert.equal(payload.children.length, 14);
   assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 746);
-  assert.equal(composition.appliedContentCodes.length, 253);
+  assert.equal(composition.appliedContentCodes.length, 294);
   assert.equal(composition.contentSource, "content/field-service-operations/parameter-values.json");
   assert.equal((await listFiles(path.join(first, "children"))).filter((file) => file.endsWith("template.json")).length, 14);
   assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+(?:@[A-Z0-9_]+)?\}/, "preview must resolve every CMS marker");
@@ -130,8 +130,10 @@ try {
   assert.match(payload.root.javascript, /\.finally\(rewriteLinks\)/);
   for (const template of templates) {
     for (const parameter of template.parameters) {
+      assert.notEqual(parameter.value, null, `${template.code}.${parameter.code} must have a backend-safe default`);
+      assert.notEqual(parameter.value, "", `${template.code}.${parameter.code} must have a backend-safe default`);
       if (parameter.type === "IMAGE") {
-        assert.equal(parameter.value === null || (typeof parameter.value === "string" && parameter.value.length > 0), true, `${parameter.code} IMAGE value must be null or non-empty`);
+        assert.match(parameter.value, /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i, `${parameter.code} IMAGE value must be a UUID`);
       }
     }
   }
@@ -153,7 +155,7 @@ try {
   assert.match(uploadPreview, /CMS base: https:\/\/dev-1\.servicewand\.com\/core-cms/);
   assert.match(uploadPreview, /Org:\s+SYSTEM/);
   assert.match(uploadPreview, /No network writes were made/);
-  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 253 content values, deterministic export, dev-1 dry-run payload ready`);
+  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 294 content values, backend-safe defaults, deterministic export, dev-1 dry-run payload ready`);
 } finally {
   await fs.rm(first, { recursive: true, force: true });
   await fs.rm(second, { recursive: true, force: true });
