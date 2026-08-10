@@ -1,24 +1,31 @@
 # ServiceWand production chrome values
 
-`parameter-values.json` is a generated, versioned snapshot of the values on the
-production standard header and footer BlockTemplates. It is intentionally not
-created with placeholder data.
+`parameter-values.json` is a generated, versioned snapshot of the effective
+standard header and footer values on one production page. It is intentionally
+not created from template defaults alone or from placeholder data.
 
 Refresh it from the repository root:
 
 ```bash
 SERVICEWAND_API_KEY="..." \
 node app-templates/landing-page/scripts/download-production-chrome-values.mjs \
+  --page-url /the-production-page \
   --base-url https://servicewand.com/core \
   --org SYSTEM
 ```
 
-The downloader is CMS read-only. It authenticates, resolves
-`FIELD_SERVICE_LANDING_HEADER` and `FIELD_SERVICE_LANDING_FOOTER` by exact code,
-and performs only BlockTemplate list requests. It has no `--live` mode and does
-not call any save endpoint.
+Use `--page-context-id <id>` instead of `--page-url` when the URL is ambiguous.
+Exactly one page selector is required. Full production URLs are accepted and
+normalized to their path and query.
 
-The snapshot stores values by authored block-local code so it can be reused by
-future compositions even when their generated CMS parameter prefixes differ.
-Empty and null production values are omitted; localized values and production
-image identifiers are retained.
+The downloader is CMS read-only. It reads the selected `PageContext`, resolves
+`HEADER` and `FOOTER` by exact code, and overlays saved page values over their
+BlockTemplate defaults. Override the codes with `--header-code` and
+`--footer-code` if that page uses a different chrome family. It has no `--live`
+mode and does not call any save endpoint.
+
+The snapshot stores both the effective CMS values per source template and their
+mapping to authored block-local codes, so it can be reused by future
+compositions even when generated parameter prefixes differ. A page override has
+precedence over a template default. An explicitly saved empty or null override
+is retained because it represents the actual page state.
