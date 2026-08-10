@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ServiceWand Blog Index">
+<title>ServiceWand Blog Index</title>
+<style>/* ============================================================
+   lab-ui · canonical tokens · light theme
+   ----------------------------------------------------------------
+   Source-of-truth design tokens for the the platform block catalog.
+   Extracted from source tokens (example.com light theme) +
+   additive --font-mono from v5 (JetBrains Mono).
+   ============================================================ */
+
+:root {
+  /* ─── Palette (raw brand colors) ─────────────────────────── */
+  --color-black:        #1B1D25;
+  --color-white:        #FFFFFF;
+  --color-gray:         #BEC5D3;
+  --color-gray-second:  #5C6474;
+  --color-gray-blue:    #97A2B8;
+  --color-gray-light:   #D9D9D9;
+
+  --color-cyan:         #6BEAF9;
+  --color-blue:         #4F95FF;
+  --color-red:          #FF6C56;
+  --color-green:        #7DDE8E;
+  --color-orange:       #FFA72C;
+  --color-magenta:      #EF5CFF;
+
+  --color-black-bg:           #17171B;
+  --color-gray-bg:            #F9F9F9;
+  --color-light-card-bg:      #F7F7F74D;
+  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);
+
+  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);
+  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);
+  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);
+
+  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */
+  --gradient-cta-ring:
+    linear-gradient(250deg,
+      rgba(107, 237, 249, 0)   4.98%,
+      #6bedf9                 37.35%,
+      #ffa72c                 72.51%,
+      rgba(239, 92, 255, 0)   96.41%);
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  --font-family:        "Vela Sans", sans-serif;
+  --font-mono:          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale */
+  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);
+  --type-h1-weight:     500;
+  --type-h1-tracking:   -0.025em;
+  --type-h1-leading:    1.04;
+
+  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);
+  --type-h2-weight:     600;
+  --type-h2-tracking:   -0.022em;
+  --type-h2-leading:    1.15;
+
+  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);
+  --type-h3-weight:     600;
+  --type-h3-tracking:   -0.015em;
+  --type-h3-leading:    1.25;
+
+  --type-h4-size:       1.125rem;
+  --type-h4-weight:     600;
+  --type-h4-tracking:   -0.01em;
+
+  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);
+  --type-lead-weight:   400;
+  --type-lead-leading:  1.5;
+
+  --type-body-size:     1rem;
+  --type-body-leading:  1.55;
+
+  --type-eyebrow-size:  0.8125rem;
+  --type-eyebrow-tracking: 0.12em;
+
+  /* ─── Layout ─────────────────────────────────────────────── */
+  --container-width:     105rem;
+  --container-padding-x: 1.875rem;
+  --header-height:       4.6875rem;
+
+  /* Backdrop blur — header chrome */
+  --backdrop-blur-header:    1.25rem;
+  --backdrop-blur-table:     2.5rem;
+  --backdrop-blur-ecosystem: 5rem;
+
+  /* ─── Radii ──────────────────────────────────────────────── */
+  --radius-pill:    6.25rem;
+  --radius-card:    1.25rem;
+  --radius-card-sm: 0.9375rem;
+
+  /* ─── Motion ─────────────────────────────────────────────── */
+  --transition-duration: 0.4s;
+  --transition-fast:     0.2s;
+  --transition-base:     var(--transition-duration);
+  --transition-slow:     0.6s;
+
+  /* ─── Elevation scale ────────────────────────────────────── */
+  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);
+  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);
+  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);
+  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */
+  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */
+  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */
+
+  /* ─── Status palette (yes / partial / no / live) ─────────── */
+  --color-status-yes:     #76D98F;
+  --color-status-partial: #D7D9DC;
+  --color-status-no:      #FF6B6B;
+  --color-status-live:    #16A34A;
+
+  /* ─── Surfaces · backdrop blur ───────────────────────────── */
+  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */
+
+  /* ─── Text accent (warm brown) ─────────────────────────────
+     Pulled out so the first stop of --cta-secondary-fill is not
+     re-used as a raw text color across blocks. */
+  --color-text-accent:   #56422D;
+
+  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */
+  --color-bg:           var(--color-white);
+  --color-bg-invert:    var(--color-black-bg);
+  --color-text:         var(--color-gray-second);
+  --color-heading:      var(--color-black);
+  --color-link:         var(--color-black);
+  --color-link-hover:   var(--color-gray-second);
+
+  --header-bg:          var(--color-light-card-bg);
+  --card-bg:            var(--color-gray-bg);
+  --card-border:        var(--color-light-gray-stroke);
+  --locale-selector-bg: var(--color-gray-bg);
+
+  --button-primary-bg:        transparent;
+  --button-primary-color:     var(--color-black);
+
+  --button-secondary-bg:      transparent;
+  --button-secondary-color:   var(--color-black);
+  --button-secondary-border:  var(--color-black);
+
+  --button-burger-button-bg:  var(--color-black);
+
+  --input-bg:           var(--color-light-card-bg);
+
+  /* ─── CTA · theme accent system ────────────────────────────
+     --cta-accent is the page-wide interactive accent. It tints:
+       · hover-rise glow (effect.hover-rise)
+       · primary CTA outer hover glow (box-shadow)
+       · secondary CTA always-on halo
+       · italic accent word in hero titles
+     --cta-secondary-fill is the filled background of secondary CTAs.
+     Theme overrides go through [data-theme="..."] below. */
+  --cta-accent:          var(--color-cyan);
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border:rgba(255, 255, 255, 0.18);
+}
+
+/* ─── Theme overlays ───────────────────────────────────────────
+   Set on <body data-theme="..."> or any wrapper. Cascades into
+   every CTA, hover-rise effect, and accent text inside the scope.
+   Names are color families, not industries — pick whichever fits. */
+
+[data-theme="cyan"] {
+  /* Default cyan — kept explicit so authors see the slot exists. */
+  --cta-accent:          #6BEAF9;
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+}
+
+[data-theme="green"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);
+}
+
+[data-theme="orange"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);
+}
+
+[data-theme="red"] {
+  --cta-accent:          #FF6C56;
+  --cta-accent-soft:     rgba(255, 108, 86, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);
+}
+
+[data-theme="forest"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);
+}
+
+[data-theme="blue"] {
+  --cta-accent:          #4F95FF;
+  --cta-accent-soft:     rgba(79, 149, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);
+}
+
+[data-theme="amber"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);
+}
+
+[data-theme="magenta"] {
+  --cta-accent:          #EF5CFF;
+  --cta-accent-soft:     rgba(239, 92, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);
+}
+
+/* ─── A11y · reduced motion ────────────────────────────────────
+   Honour user's OS-level motion preference across every block. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* generated preview/CMS composition glue */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  position: relative;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+:root {
+  --composition-section-y: clamp(4rem, 7vw, 6.5rem);
+  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Default vertical rhythm for every composed section.
+   Blocks must NOT declare padding-block on their root class;
+   the composer owns inter-section spacing.
+
+   For section-wide decorative backgrounds (ambient tints, full-width
+   surface colors): blocks declare the bg on the wrapper class
+   `.composition-section--<block-id-slug>` so the fill extends through
+   the composer-managed padding-block. The inner block class then owns
+   content layout only. See hero.operational-diagram and
+   mobile.4-card-glyph for canonical examples. */
+.composition-section {
+  position: relative;
+  padding-block: var(--composition-section-y);
+}
+
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
+
+/* Closing accent sections are tighter at the top, with full rhythm
+   at the bottom so the footer gets visual room. */
+.composition-section--decorative-callout-band,
+.composition-section--decorative-final-cta {
+  padding-block: var(--composition-section-y-compact) var(--composition-section-y);
+}
+/* ─── Wrappers ───────────────────────────────────────────────
+   Global wrapper primitive used by composer-injected markup AND
+   by block-internal layouts that opt into `.container`. Block
+   stylesheets may still redeclare `.<block> .container { … }`
+   with the same calc — those are no-op duplicates but harmless. */
+.container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+/* Narrow modifier for accent strips (callout, narrative). */
+.container--narrow {
+  max-width: calc(1100px + var(--container-padding-x) * 2);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+@media (max-width: 640px) {
+  :root {
+    --composition-section-y: 3.5rem;
+    --composition-section-y-compact: 2.5rem;
+  }
+}
+
+/* generated child CSS: blocks/15-blog/blog.index-dynamic/block.css */
+.blog-index {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(7rem, 11vw, 11rem) 0 clamp(5rem, 9vw, 9rem);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at 82% 8%, rgba(107, 234, 249, 0.2), transparent 30rem),
+    var(--color-bg);
+}
+
+.blog-index::before {
+  content: "";
+  position: absolute;
+  width: 28rem;
+  aspect-ratio: 1;
+  left: -17rem;
+  top: 20rem;
+  border: 1px solid rgba(92, 100, 116, 0.13);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.blog-index__container { position: relative; }
+.blog-index__hero { max-width: 79rem; }
+.blog-index__eyebrow,
+.blog-card__category {
+  color: var(--color-text-accent, #2499a8);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.blog-index__title {
+  max-width: 68rem;
+  margin: 1rem 0 0;
+  font-size: clamp(3rem, 7vw, 7.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.blog-index__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(17rem, 0.75fr);
+  gap: clamp(2rem, 8vw, 9rem);
+  margin-top: clamp(3rem, 7vw, 6rem);
+  padding-top: 2rem;
+  border-top: 1px solid rgba(92, 100, 116, 0.2);
+}
+
+.blog-index__intro h2,
+.blog-index__intro h3 { margin: 0; color: var(--color-heading); }
+.blog-index__intro h2 { font-size: clamp(1.8rem, 3.5vw, 3.6rem); line-height: 1.05; }
+.blog-index__intro h3 { font-size: clamp(1.3rem, 2vw, 2rem); line-height: 1.15; }
+.blog-index__intro p { max-width: 47rem; margin: 1rem 0 0; font-size: clamp(1rem, 1.4vw, 1.2rem); line-height: 1.65; }
+
+.blog-index__status { margin: 4rem 0 0; color: var(--color-gray-blue); }
+.blog-index__featured { margin-top: clamp(4rem, 8vw, 8rem); }
+.blog-featured__link {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
+  min-height: 34rem;
+  overflow: hidden;
+  border: 1px solid rgba(92, 100, 116, 0.16);
+  border-radius: clamp(1.5rem, 3vw, 3.25rem);
+  background: color-mix(in srgb, var(--color-gray-bg) 92%, transparent);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: 0 1.5rem 5rem rgba(23, 23, 27, 0.06);
+}
+
+.blog-card__media { position: relative; display: block; overflow: hidden; background: linear-gradient(135deg, #17171b 0%, #273240 55%, #6beaf9 170%); }
+.blog-card__media::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(107, 234, 249, 0.4), transparent 35%); }
+.blog-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; }
+.blog-featured__link:hover img,
+.blog-card__link:hover img { transform: scale(1.035); }
+.blog-featured__body { display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem, 5vw, 5rem); }
+.blog-card__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; color: var(--color-gray-blue); font-size: 0.85rem; }
+.blog-card__date::before,
+.blog-card__read-time::before { content: ""; display: inline-block; width: 0.22rem; aspect-ratio: 1; margin: 0 0.65rem 0.2rem 0; border-radius: 50%; background: currentColor; }
+.blog-featured__title { margin: 1.4rem 0 0; color: var(--color-heading); font-size: clamp(2.2rem, 4vw, 4.4rem); line-height: 0.98; letter-spacing: -0.045em; }
+.blog-featured__summary { margin: 1.4rem 0 0; font-size: 1.1rem; line-height: 1.6; }
+.blog-featured__author { margin-top: 1.5rem; color: var(--color-heading); font-size: 0.9rem; font-weight: 600; }
+.blog-card__read { display: inline-flex; align-items: center; gap: 0.7rem; align-self: flex-start; margin-top: 2rem; color: var(--color-heading); font-weight: 650; }
+.blog-card__read::after { content: "→"; color: var(--color-text-accent, #2499a8); transition: transform 180ms ease; }
+a:hover .blog-card__read::after { transform: translateX(0.3rem); }
+
+.blog-index__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.25rem; }
+.blog-card { min-width: 0; }
+.blog-card__link { display: flex; min-height: 100%; flex-direction: column; overflow: hidden; border: 1px solid rgba(92, 100, 116, 0.15); border-radius: 2rem; background: var(--color-gray-bg); color: inherit; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
+.blog-card__link:hover { transform: translateY(-0.35rem); box-shadow: 0 1.25rem 3.5rem rgba(23, 23, 27, 0.08); }
+.blog-card__media--card { aspect-ratio: 16 / 10; }
+.blog-card__body { display: flex; flex: 1; flex-direction: column; padding: 1.6rem; }
+.blog-card__title { margin: 1rem 0 0; color: var(--color-heading); font-size: clamp(1.45rem, 2vw, 2rem); line-height: 1.12; letter-spacing: -0.03em; }
+.blog-card__summary { margin: 1rem 0 0; line-height: 1.55; }
+.blog-card__body .blog-card__read { margin-top: auto; padding-top: 1.75rem; }
+.blog-index__actions { display: flex; justify-content: center; margin-top: 3rem; }
+.blog-index__more { position: relative; min-width: 13rem; padding: 1rem 1.75rem; border: 1px solid rgba(92, 100, 116, 0.35); border-radius: 999px; background: transparent; color: var(--color-heading); cursor: pointer; font: inherit; font-weight: 650; }
+.blog-index__more:hover { border-color: var(--color-text-accent, #2499a8); }
+
+@media (max-width: 64rem) {
+  .blog-featured__link { grid-template-columns: 1fr; min-height: 0; }
+  .blog-card__media--featured { min-height: 25rem; }
+  .blog-index__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 48rem) {
+  .blog-index { padding-top: 6rem; }
+  .blog-index__intro { grid-template-columns: 1fr; gap: 2.5rem; }
+  .blog-index__grid { grid-template-columns: 1fr; }
+  .blog-card__media--featured { min-height: 16rem; }
+  .blog-featured__body { padding: 1.5rem; }
+  .blog-featured__link,
+  .blog-card__link { border-radius: 1.4rem; }
+}
+</style>
+</head>
+<body>
+<section class="composition-section composition-section--blog-index-dynamic" data-composition-block="blog.index-dynamic">
+<section class="blog-index" data-block="blog.index-dynamic" data-blog-index
+  data-blog-api-base="/core-cms"
+  data-blog-organization="SERVICEWAND"
+  data-blog-category-id="1"
+  data-blog-page-size="6"
+  data-blog-max-results="1000"
+  data-blog-base-path="/blog"
+  data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"
+  data-blog-read-label="Read article"
+  data-blog-empty-label="No articles are available yet."
+  data-blog-error-label="Articles could not be loaded.">
+  <div class="container blog-index__container">
+    <header class="blog-index__hero">
+      <p class="blog-index__eyebrow">ServiceWand insights</p>
+      <h1 class="blog-index__title">Ideas for field service teams that are ready to grow</h1>
+      <div class="blog-index__intro">
+        <div>
+          <h2>Build a clearer, faster field operation</h2>
+          <p>Practical guidance for dispatch, routing, service delivery, customer experience, and the systems that connect them.</p>
+        </div>
+        <div>
+          <h3>From the field to the back office</h3>
+          <p>Use these articles to turn operational lessons into repeatable workflows and better customer outcomes.</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-index__status" data-blog-status role="status" aria-live="polite">Loading articles…</div>
+    <article class="blog-index__featured" data-blog-featured hidden></article>
+    <div class="blog-index__grid" data-blog-grid aria-label="Latest blog articles"></div>
+    <div class="blog-index__actions">
+      <button class="blog-index__more" type="button" data-blog-more hidden>Load more articles</button>
+    </div>
+  </div>
+</section>
+
+</section>
+<script>/* generated local JS: blocks/15-blog/_shared/blog-runtime.js */
+(function (global) {
+  "use strict";
+
+  var KNOWN_LOCALES = [
+    "en", "zh", "es", "de", "fr", "ja", "pt", "ru", "it", "nl", "pl", "tr",
+    "ar", "ko", "uk", "cs", "el", "da", "sv", "nb", "vi", "fa", "he", "hi",
+    "ms", "et", "sl", "kk", "th", "id", "ro", "hu", "fi", "bg", "hr", "sk",
+    "lt", "lv"
+  ];
+
+  function normalizeLocale(value) {
+    return String(value || "").trim().toLowerCase().replace("_", "-").split("-")[0];
+  }
+
+  function localeFromPath(pathname) {
+    var first = String(pathname || "").split("/").filter(Boolean)[0] || "";
+    first = normalizeLocale(first);
+    return KNOWN_LOCALES.indexOf(first) >= 0 ? first : "";
+  }
+
+  function getLocale() {
+    var pathLocale = localeFromPath(global.location && global.location.pathname);
+    var shared = global.__swLocale;
+    var sharedLocale = shared && typeof shared.getEffectiveLocale === "function"
+      ? shared.getEffectiveLocale()
+      : "";
+    return pathLocale || normalizeLocale(sharedLocale) ||
+      normalizeLocale(document.documentElement.lang) || "en";
+  }
+
+  function localizedText(value, locale, defaultValue) {
+    if (typeof value === "string" || typeof value === "number") {
+      var direct = String(value).trim();
+      return direct || String(defaultValue || "").trim();
+    }
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      return String(defaultValue || "").trim();
+    }
+    var current = normalizeLocale(locale);
+    var candidates = [current, String(locale || ""), "default", "en"];
+    for (var i = 0; i < candidates.length; i += 1) {
+      var candidate = value[candidates[i]];
+      if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+    }
+    var keys = Object.keys(value);
+    for (var j = 0; j < keys.length; j += 1) {
+      var fallback = value[keys[j]];
+      if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+    }
+    return String(defaultValue || "").trim();
+  }
+
+  function firstText(source, keys, locale) {
+    for (var i = 0; i < keys.length; i += 1) {
+      var text = localizedText(source && source[keys[i]], locale, "");
+      if (text) return text;
+    }
+    return "";
+  }
+
+  function safePath(value) {
+    var path = String(value || "").trim().replace(/^\/+|\/+$/g, "");
+    return path && !path.includes(":") && !path.includes("..") ? path : "";
+  }
+
+  function normalizePost(post, locale) {
+    post = post && typeof post === "object" ? post : {};
+    var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
+    var title = firstText(metadata, ["TITLE", "title", "META_TITLE", "metaTitle"], locale) ||
+      firstText(post, ["title", "name"], locale);
+    var permalink = safePath(post.permalink || post.slug);
+    if (!title || !permalink) return null;
+
+    var summary = localizedText(post.summary, locale, "") ||
+      firstText(metadata, ["SUMMARY", "summary", "META_DESCRIPTION", "metaDescription", "DESCRIPTION"], locale);
+    var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
+      String(post.publishedAt || post.publishDate || post.created || "");
+    var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      firstText(post, ["imageUrl", "coverUrl"], locale);
+    var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
+    return {
+      id: String(post.id || ""),
+      permalink: permalink,
+      title: title,
+      summary: summary,
+      category: firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale),
+      author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      publishedAt: publishedAt,
+      readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
+      imageUrl: imageUrl,
+      imageAlt: imageAlt,
+      metadata: metadata,
+      raw: post
+    };
+  }
+
+  function parsePositive(value, fallback) {
+    var number = Number(value);
+    return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
+  }
+
+  function configFrom(root) {
+    var data = root.dataset || {};
+    return {
+      apiBase: String(data.blogApiBase || "/core-cms").replace(/\/+$/, ""),
+      organization: String(data.blogOrganization || "SERVICEWAND").trim(),
+      categoryId: String(data.blogCategoryId || "").trim(),
+      pageSize: parsePositive(data.blogPageSize, 12),
+      maxResults: parsePositive(data.blogMaxResults, 1000),
+      basePath: "/" + (safePath(data.blogBasePath) || "blog"),
+      fixtureUrl: String(data.blogFixtureUrl || "").trim(),
+      locale: getLocale()
+    };
+  }
+
+  function requestPage(config, offset) {
+    if (config.fixtureUrl) {
+      return fetch(config.fixtureUrl, { headers: { Accept: "application/json" } }).then(checkResponse);
+    }
+    var filters = [];
+    if (config.categoryId) {
+      filters.push({
+        property: "categories.id",
+        clazz: "java.lang.Integer",
+        operator: "=",
+        value: config.categoryId
+      });
+    }
+    var url = config.apiBase + "/public/" + encodeURIComponent(config.organization) +
+      "/blog-post/list.json?locale=" + encodeURIComponent(config.locale);
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        first: offset,
+        offset: offset,
+        pageSize: config.pageSize,
+        filters: filters,
+        sorting: [{ field: "permalink", direction: "DESC" }]
+      })
+    }).then(checkResponse);
+  }
+
+  function checkResponse(response) {
+    if (!response.ok) throw new Error("Blog request failed: " + response.status);
+    return response.json();
+  }
+
+  function loadPosts(config) {
+    var collected = [];
+    function next(offset) {
+      return requestPage(config, offset).then(function (data) {
+        var result = Array.isArray(data) ? data : (Array.isArray(data.result) ? data.result : []);
+        var normalized = result.map(function (post) {
+          return normalizePost(post, config.locale);
+        }).filter(Boolean);
+        collected = collected.concat(normalized);
+        var total = Number(data.resultSize || data.total || result.length);
+        var done = config.fixtureUrl || result.length === 0 || collected.length >= total ||
+          collected.length >= config.maxResults;
+        return done ? collected.slice(0, config.maxResults) : next(offset + result.length);
+      });
+    }
+    if (!config.organization && !config.fixtureUrl) return Promise.reject(new Error("Blog organization is required"));
+    return next(0);
+  }
+
+  function buildIndexUrl(config) {
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.basePath;
+  }
+
+  function buildPostUrl(post, config) {
+    return buildIndexUrl(config) + "/" + post.permalink;
+  }
+
+  function currentPermalink(config) {
+    var parts = String(global.location && global.location.pathname || "").split("/").filter(Boolean);
+    if (parts.length && KNOWN_LOCALES.indexOf(normalizeLocale(parts[0])) >= 0) parts.shift();
+    var base = config.basePath.split("/").filter(Boolean);
+    for (var i = 0; i <= parts.length - base.length; i += 1) {
+      if (base.every(function (part, offset) { return parts[i + offset] === part; })) {
+        return parts.slice(i + base.length).map(decodeURIComponent).join("/");
+      }
+    }
+    var legacyIndex = parts.indexOf("blog.html");
+    return legacyIndex >= 0 ? parts.slice(legacyIndex + 1).map(decodeURIComponent).join("/") : "";
+  }
+
+  function formatDate(value, locale) {
+    if (!value) return "";
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    try {
+      return new Intl.DateTimeFormat(locale || "en", { year: "numeric", month: "long", day: "numeric" }).format(date);
+    } catch (error) {
+      return String(value);
+    }
+  }
+
+  global.LabBlog = {
+    buildIndexUrl: buildIndexUrl,
+    buildPostUrl: buildPostUrl,
+    configFrom: configFrom,
+    currentPermalink: currentPermalink,
+    formatDate: formatDate,
+    getLocale: getLocale,
+    loadPosts: loadPosts,
+    localizedText: localizedText,
+    normalizePost: normalizePost
+  };
+})(window);
+
+
+/* generated child JS: blocks/15-blog/blog.index-dynamic/block.js */
+(function () {
+  "use strict";
+
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function appendMeta(target, post, config) {
+    var meta = element("div", "blog-card__meta");
+    if (post.category) meta.appendChild(element("span", "blog-card__category", post.category));
+    var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
+    if (date) {
+      var time = element("time", "blog-card__date", date);
+      if (post.publishedAt) time.dateTime = post.publishedAt;
+      meta.appendChild(time);
+    }
+    if (post.readTime) meta.appendChild(element("span", "blog-card__read-time", post.readTime));
+    target.appendChild(meta);
+  }
+
+  function imageFor(post, modifier) {
+    var media = element("span", "blog-card__media " + modifier);
+    if (post.imageUrl) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = post.imageAlt || post.title;
+      image.loading = "lazy";
+      image.decoding = "async";
+      media.appendChild(image);
+    } else {
+      media.setAttribute("aria-hidden", "true");
+    }
+    return media;
+  }
+
+  function cardFor(post, config, readLabel) {
+    var card = element("article", "blog-card");
+    var link = element("a", "blog-card__link");
+    link.href = window.LabBlog.buildPostUrl(post, config);
+    link.appendChild(imageFor(post, "blog-card__media--card"));
+    var body = element("span", "blog-card__body");
+    appendMeta(body, post, config);
+    body.appendChild(element("h2", "blog-card__title", post.title));
+    if (post.summary) body.appendChild(element("p", "blog-card__summary", post.summary));
+    body.appendChild(element("span", "blog-card__read", readLabel));
+    link.appendChild(body);
+    card.appendChild(link);
+    return card;
+  }
+
+  function featuredFor(post, config, readLabel) {
+    var link = element("a", "blog-featured__link");
+    link.href = window.LabBlog.buildPostUrl(post, config);
+    link.appendChild(imageFor(post, "blog-card__media--featured"));
+    var body = element("span", "blog-featured__body");
+    appendMeta(body, post, config);
+    body.appendChild(element("h2", "blog-featured__title", post.title));
+    if (post.summary) body.appendChild(element("p", "blog-featured__summary", post.summary));
+    if (post.author) body.appendChild(element("span", "blog-featured__author", post.author));
+    body.appendChild(element("span", "blog-card__read", readLabel));
+    link.appendChild(body);
+    return link;
+  }
+
+  function init(root) {
+    if (!window.LabBlog) return;
+    var config = window.LabBlog.configFrom(root);
+    var status = root.querySelector("[data-blog-status]");
+    var featured = root.querySelector("[data-blog-featured]");
+    var grid = root.querySelector("[data-blog-grid]");
+    var more = root.querySelector("[data-blog-more]");
+    var readLabel = root.getAttribute("data-blog-read-label") || "Read article";
+    var emptyLabel = root.getAttribute("data-blog-empty-label") || "No articles are available yet.";
+    var errorLabel = root.getAttribute("data-blog-error-label") || "Articles could not be loaded.";
+
+    window.LabBlog.loadPosts(config).then(function (posts) {
+      status.hidden = true;
+      if (!posts.length) {
+        status.hidden = false;
+        status.textContent = emptyLabel;
+        return;
+      }
+      featured.appendChild(featuredFor(posts[0], config, readLabel));
+      featured.hidden = false;
+      var remaining = posts.slice(1);
+      var visible = 0;
+      function reveal() {
+        var next = remaining.slice(visible, visible + config.pageSize);
+        next.forEach(function (post) { grid.appendChild(cardFor(post, config, readLabel)); });
+        visible += next.length;
+        more.hidden = visible >= remaining.length;
+      }
+      more.addEventListener("click", reveal);
+      reveal();
+    }).catch(function (error) {
+      status.textContent = errorLabel;
+      status.hidden = false;
+      console.error(error);
+    });
+  }
+
+  function ready() {
+    document.querySelectorAll("[data-blog-index]").forEach(function (root) {
+      init(root);
+    });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
+  else ready();
+})();
+</script>
+</body>
+</html>

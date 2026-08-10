@@ -1,0 +1,57 @@
+{
+  "result": [
+    {
+      "id": "fixture-routing",
+      "permalink": "field-service-routing-guide",
+      "summary": "A practical guide to route planning, dispatch visibility, and reliable arrival windows for growing field teams.",
+      "metadata": {
+        "TITLE": "A practical guide to field service routing",
+        "META_DESCRIPTION": "Learn how field service teams improve route planning and dispatch visibility without adding operational overhead.",
+        "CATEGORY_NAME": "Field operations",
+        "PUBLISHED_AT": "2026-07-28",
+        "AUTHOR_NAME": "ServiceWand Editorial Team",
+        "READING_TIME": "7 min read"
+      }
+    },
+    {
+      "id": "fixture-proof",
+      "permalink": "service-proof-customer-trust",
+      "summary": "How structured service proof turns completed work into fewer disputes, clearer invoicing, and stronger customer trust.",
+      "metadata": {
+        "TITLE": "Why service proof matters after every job",
+        "META_DESCRIPTION": "See how field teams use photos, notes, signatures, and timestamps to create trustworthy service records.",
+        "CATEGORY_NAME": "Customer experience",
+        "PUBLISHED_AT": "2026-07-21",
+        "AUTHOR_NAME": "ServiceWand Editorial Team",
+        "READING_TIME": "6 min read"
+      }
+    },
+    {
+      "id": "fixture-automation",
+      "permalink": "field-service-automation-first-workflows",
+      "summary": "Start with repeatable operational decisions and introduce automation where it removes delay instead of adding complexity.",
+      "metadata": {
+        "TITLE": "Where to start with field service automation",
+        "META_DESCRIPTION": "A framework for choosing field service workflows that benefit most from practical automation.",
+        "CATEGORY_NAME": "Automation",
+        "PUBLISHED_AT": "2026-07-14",
+        "AUTHOR_NAME": "ServiceWand Editorial Team",
+        "READING_TIME": "8 min read"
+      }
+    },
+    {
+      "id": "fixture-metrics",
+      "permalink": "field-service-metrics-operations-leaders",
+      "summary": "The operational metrics that help leaders spot capacity problems, protect margins, and improve service consistency.",
+      "metadata": {
+        "TITLE": "Field service metrics operations leaders should track",
+        "META_DESCRIPTION": "Use a focused set of field service metrics to improve capacity, margins, and customer outcomes.",
+        "CATEGORY_NAME": "Reporting",
+        "PUBLISHED_AT": "2026-07-07",
+        "AUTHOR_NAME": "ServiceWand Editorial Team",
+        "READING_TIME": "9 min read"
+      }
+    }
+  ],
+  "resultSize": 4
+}

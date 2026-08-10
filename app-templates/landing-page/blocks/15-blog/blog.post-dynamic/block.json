@@ -1,0 +1,36 @@
+{
+  "$schema": "lab-ui/block@1",
+  "id": "blog.post-dynamic",
+  "category": "15-blog",
+  "title": "Blog · backend post",
+  "description": "Server-rendered blog article body using BLOG_POST_CONTENT_SS, enriched with localized metadata, canonical/schema updates, and related posts from Core CMS.",
+  "canonical": true,
+  "theme": "light",
+  "source": {
+    "primary": "cms-templates/BLOG_POST_JTE/block_template_config.json",
+    "adapted_from": "Existing BLOG_POST_CONTENT_SS renderer and public blog-post list endpoint.",
+    "decision": "The article body remains server-rendered for crawlability; the shared runtime adds metadata and related navigation without replacing article content.",
+    "localScripts": ["blocks/15-blog/_shared/blog-runtime.js"]
+  },
+  "depends_on": {
+    "tokens": ["--color-bg", "--color-text", "--color-heading", "--color-gray-bg", "--color-gray-blue", "--color-text-accent", "--font-family", "--font-mono", "--container-width", "--container-padding-x"]
+  },
+  "params": [
+    { "code": "blog_api_base", "type": "STRING", "default": "/core-cms", "name": "Blog · API Base", "description": "Core CMS base path used for the public blog-post endpoint.", "preserve_default": true },
+    { "code": "blog_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Blog · Organization", "description": "Organization code used in the public Core CMS request.", "preserve_default": true },
+    { "code": "blog_category_id", "type": "INTEGER", "default": "1", "name": "Blog · Category ID", "description": "Backend category ID used when resolving the current and related posts.", "preserve_default": true },
+    { "code": "blog_page_size", "type": "INTEGER", "default": "100", "name": "Blog · API Page Size", "description": "Number of backend posts requested per page.", "preserve_default": true },
+    { "code": "blog_max_results", "type": "INTEGER", "default": "1000", "name": "Blog · Maximum Results", "description": "Safety limit for posts loaded from Core CMS.", "preserve_default": true },
+    { "code": "blog_base_path", "type": "STRING", "default": "/blog", "name": "Blog · Public Base Path", "description": "Public localized route used by the blog index and post links.", "preserve_default": true },
+    { "code": "blog_fixture_url", "type": "STRING", "default": "", "name": "Blog · Fixture URL", "description": "Local preview-only JSON URL. Keep empty in CMS production.", "preserve_default": true },
+    { "code": "blog_post_content", "type": "BLOG_POST_CONTENT_SS", "default": "5", "name": "Blog Post · Backend Content", "description": "Server-side Core CMS blog post renderer. Keep its configured backend binding instead of pasting article HTML into a string field.", "preserve_default": true },
+    { "code": "related_limit", "type": "INTEGER", "default": "3", "name": "Blog Post · Related Limit", "description": "Maximum number of related article cards.", "preserve_default": true },
+    { "code": "breadcrumb_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Blog breadcrumb", "name": "Blog Post · Breadcrumb Aria Label", "description": "Accessible label for article navigation.", "preserve_default": true },
+    { "code": "blog_label", "type": "LOCALIZED_STRING_SS", "default": "Blog", "name": "Blog Post · Blog Link Label", "description": "Link label returning to the blog index.", "preserve_default": true },
+    { "code": "article_label", "type": "LOCALIZED_STRING_SS", "default": "Article", "name": "Blog Post · Article Fallback Label", "description": "Temporary breadcrumb label before article metadata resolves.", "preserve_default": true },
+    { "code": "related_eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Keep reading", "name": "Blog Post · Related Eyebrow", "description": "Label above related articles.", "preserve_default": true },
+    { "code": "related_title", "type": "LOCALIZED_STRING_SS", "default": "More field service insights", "name": "Blog Post · Related H2", "description": "Related articles heading.", "preserve_default": true },
+    { "code": "related_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Related blog articles", "name": "Blog Post · Related Aria Label", "description": "Accessible label for related article cards.", "preserve_default": true },
+    { "code": "read_article_label", "type": "LOCALIZED_STRING_SS", "default": "Read article", "name": "Blog Post · Read Article Label", "description": "Related card action label.", "preserve_default": true }
+  ]
+}

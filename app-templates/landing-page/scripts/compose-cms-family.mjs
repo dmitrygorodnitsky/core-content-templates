@@ -577,7 +577,9 @@ export const buildFamily = (spec, catalog, contentPack = null) => {
   const children = sections.map((section, index) => {
     const block = catalog.byId.get(section.block);
     const assetBlocks = collectAssetBlocks([section.block], catalog);
-    const legacyCode = `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(section.block).slice(0, 42)}`;
+    const legacyCode = section.parameterPrefix
+      ? codeSlug(section.parameterPrefix)
+      : `SECTION_${String(index + 1).padStart(2, "0")}_${codeSlug(section.block).slice(0, 42)}`;
     const code = section.code ? codeSlug(section.code) : childCodeForSection(block, index);
     return renderBlockTemplate({
       block,

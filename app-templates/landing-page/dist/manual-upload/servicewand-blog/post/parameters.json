@@ -1,0 +1,192 @@
+[
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · API Base",
+        "DESCRIPTION": "Core CMS base path used for the public blog-post endpoint."
+      }
+    },
+    "value": "/core-cms"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_ORGANIZATION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Organization",
+        "DESCRIPTION": "Organization code used in the public Core CMS request."
+      }
+    },
+    "value": "SERVICEWAND"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_CATEGORY_ID",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Category ID",
+        "DESCRIPTION": "Backend category ID used when resolving the current and related posts."
+      }
+    },
+    "value": "1"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_PAGE_SIZE",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · API Page Size",
+        "DESCRIPTION": "Number of backend posts requested per page."
+      }
+    },
+    "value": "100"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_MAX_RESULTS",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Maximum Results",
+        "DESCRIPTION": "Safety limit for posts loaded from Core CMS."
+      }
+    },
+    "value": "1000"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_BASE_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Public Base Path",
+        "DESCRIPTION": "Public localized route used by the blog index and post links."
+      }
+    },
+    "value": "/blog"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_FIXTURE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Fixture URL",
+        "DESCRIPTION": "Local preview-only JSON URL. Keep empty in CMS production."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_READ_ARTICLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Read Article Label",
+        "DESCRIPTION": "Related card action label."
+      }
+    },
+    "value": {
+      "en": "Read article"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_RELATED_LIMIT",
+    "type": "INTEGER",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Limit",
+        "DESCRIPTION": "Maximum number of related article cards."
+      }
+    },
+    "value": "3"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BREADCRUMB_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Breadcrumb Aria Label",
+        "DESCRIPTION": "Accessible label for article navigation."
+      }
+    },
+    "value": {
+      "en": "Blog breadcrumb"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Blog Link Label",
+        "DESCRIPTION": "Link label returning to the blog index."
+      }
+    },
+    "value": {
+      "en": "Blog"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_ARTICLE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Article Fallback Label",
+        "DESCRIPTION": "Temporary breadcrumb label before article metadata resolves."
+      }
+    },
+    "value": {
+      "en": "Article"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT",
+    "type": "BLOG_POST_CONTENT_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Backend Content",
+        "DESCRIPTION": "Server-side Core CMS blog post renderer. Keep its configured backend binding instead of pasting article HTML into a string field."
+      }
+    },
+    "value": "5"
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_RELATED_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Eyebrow",
+        "DESCRIPTION": "Label above related articles."
+      }
+    },
+    "value": {
+      "en": "Keep reading"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_RELATED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related H2",
+        "DESCRIPTION": "Related articles heading."
+      }
+    },
+    "value": {
+      "en": "More field service insights"
+    }
+  },
+  {
+    "code": "SERVICEWAND_BLOG_POST_RELATED_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Related Aria Label",
+        "DESCRIPTION": "Accessible label for related article cards."
+      }
+    },
+    "value": {
+      "en": "Related blog articles"
+    }
+  }
+]

@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ServiceWand Blog Post">
+<title>ServiceWand Blog Post</title>
+<style>/* ============================================================
+   lab-ui · canonical tokens · light theme
+   ----------------------------------------------------------------
+   Source-of-truth design tokens for the the platform block catalog.
+   Extracted from source tokens (example.com light theme) +
+   additive --font-mono from v5 (JetBrains Mono).
+   ============================================================ */
+
+:root {
+  /* ─── Palette (raw brand colors) ─────────────────────────── */
+  --color-black:        #1B1D25;
+  --color-white:        #FFFFFF;
+  --color-gray:         #BEC5D3;
+  --color-gray-second:  #5C6474;
+  --color-gray-blue:    #97A2B8;
+  --color-gray-light:   #D9D9D9;
+
+  --color-cyan:         #6BEAF9;
+  --color-blue:         #4F95FF;
+  --color-red:          #FF6C56;
+  --color-green:        #7DDE8E;
+  --color-orange:       #FFA72C;
+  --color-magenta:      #EF5CFF;
+
+  --color-black-bg:           #17171B;
+  --color-gray-bg:            #F9F9F9;
+  --color-light-card-bg:      #F7F7F74D;
+  --color-header-footer-bg:   rgba(77, 79, 104, 0.20);
+
+  --color-dark-card-bg:       linear-gradient(180deg, #20232D 0%, #2C2D3C 100%);
+  --color-light-gray-stroke:  linear-gradient(179.96deg, #E0E8F4 0.03%, #D1D6DD 102.68%);
+  --color-dark-gray-stroke:   linear-gradient(180deg, #454F6B 0%, #2F2F40 100%);
+
+  /* ─── Brand CTA rainbow gradient (locked: v5 direction + stops) */
+  --gradient-cta-ring:
+    linear-gradient(250deg,
+      rgba(107, 237, 249, 0)   4.98%,
+      #6bedf9                 37.35%,
+      #ffa72c                 72.51%,
+      rgba(239, 92, 255, 0)   96.41%);
+
+  /* ─── Typography ─────────────────────────────────────────── */
+  --font-family:        "Vela Sans", sans-serif;
+  --font-mono:          "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale */
+  --type-h1-size:       clamp(2.25rem, 5.2vw, 5rem);
+  --type-h1-weight:     500;
+  --type-h1-tracking:   -0.025em;
+  --type-h1-leading:    1.04;
+
+  --type-h2-size:       clamp(1.75rem, 3.4vw, 3.125rem);
+  --type-h2-weight:     600;
+  --type-h2-tracking:   -0.022em;
+  --type-h2-leading:    1.15;
+
+  --type-h3-size:       clamp(1.125rem, 1.6vw, 1.5625rem);
+  --type-h3-weight:     600;
+  --type-h3-tracking:   -0.015em;
+  --type-h3-leading:    1.25;
+
+  --type-h4-size:       1.125rem;
+  --type-h4-weight:     600;
+  --type-h4-tracking:   -0.01em;
+
+  --type-lead-size:     clamp(1rem, 1.25vw, 1.25rem);
+  --type-lead-weight:   400;
+  --type-lead-leading:  1.5;
+
+  --type-body-size:     1rem;
+  --type-body-leading:  1.55;
+
+  --type-eyebrow-size:  0.8125rem;
+  --type-eyebrow-tracking: 0.12em;
+
+  /* ─── Layout ─────────────────────────────────────────────── */
+  --container-width:     105rem;
+  --container-padding-x: 1.875rem;
+  --header-height:       4.6875rem;
+
+  /* Backdrop blur — header chrome */
+  --backdrop-blur-header:    1.25rem;
+  --backdrop-blur-table:     2.5rem;
+  --backdrop-blur-ecosystem: 5rem;
+
+  /* ─── Radii ──────────────────────────────────────────────── */
+  --radius-pill:    6.25rem;
+  --radius-card:    1.25rem;
+  --radius-card-sm: 0.9375rem;
+
+  /* ─── Motion ─────────────────────────────────────────────── */
+  --transition-duration: 0.4s;
+  --transition-fast:     0.2s;
+  --transition-base:     var(--transition-duration);
+  --transition-slow:     0.6s;
+
+  /* ─── Elevation scale ────────────────────────────────────── */
+  --shadow-1: 0 6px 16px -10px rgba(0, 0, 0, 0.18);
+  --shadow-2: 0 14px 28px -22px rgba(0, 0, 0, 0.25);
+  --shadow-3: 0 20px 48px -30px rgba(15, 17, 22, 0.28);
+  --shadow-4: 0 24px 60px -26px rgba(27, 29, 37, 0.34);
+  --shadow-glow: 0 0 32px -4px var(--cta-accent);          /* buttons + cards */
+  --shadow-glow-soft: 0 0 18px -6px var(--cta-accent);      /* nav links, breadcrumb, locale chip */
+  --shadow-glow-tight: 0 0 8px var(--cta-accent);           /* status / live dots */
+
+  /* ─── Status palette (yes / partial / no / live) ─────────── */
+  --color-status-yes:     #76D98F;
+  --color-status-partial: #D7D9DC;
+  --color-status-no:      #FF6B6B;
+  --color-status-live:    #16A34A;
+
+  /* ─── Surfaces · backdrop blur ───────────────────────────── */
+  --backdrop-blur-panel: 1.125rem;  /* 18px — nav panel, table SW column */
+
+  /* ─── Text accent (warm brown) ─────────────────────────────
+     Pulled out so the first stop of --cta-secondary-fill is not
+     re-used as a raw text color across blocks. */
+  --color-text-accent:   #56422D;
+
+  /* ─── Semantic tokens · LIGHT theme (canonical default) ──── */
+  --color-bg:           var(--color-white);
+  --color-bg-invert:    var(--color-black-bg);
+  --color-text:         var(--color-gray-second);
+  --color-heading:      var(--color-black);
+  --color-link:         var(--color-black);
+  --color-link-hover:   var(--color-gray-second);
+
+  --header-bg:          var(--color-light-card-bg);
+  --card-bg:            var(--color-gray-bg);
+  --card-border:        var(--color-light-gray-stroke);
+  --locale-selector-bg: var(--color-gray-bg);
+
+  --button-primary-bg:        transparent;
+  --button-primary-color:     var(--color-black);
+
+  --button-secondary-bg:      transparent;
+  --button-secondary-color:   var(--color-black);
+  --button-secondary-border:  var(--color-black);
+
+  --button-burger-button-bg:  var(--color-black);
+
+  --input-bg:           var(--color-light-card-bg);
+
+  /* ─── CTA · theme accent system ────────────────────────────
+     --cta-accent is the page-wide interactive accent. It tints:
+       · hover-rise glow (effect.hover-rise)
+       · primary CTA outer hover glow (box-shadow)
+       · secondary CTA always-on halo
+       · italic accent word in hero titles
+     --cta-secondary-fill is the filled background of secondary CTAs.
+     Theme overrides go through [data-theme="..."] below. */
+  --cta-accent:          var(--color-cyan);
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+  --cta-secondary-color: var(--color-white);
+  --cta-secondary-border:rgba(255, 255, 255, 0.18);
+}
+
+/* ─── Theme overlays ───────────────────────────────────────────
+   Set on <body data-theme="..."> or any wrapper. Cascades into
+   every CTA, hover-rise effect, and accent text inside the scope.
+   Names are color families, not industries — pick whichever fits. */
+
+[data-theme="cyan"] {
+  /* Default cyan — kept explicit so authors see the slot exists. */
+  --cta-accent:          #6BEAF9;
+  --cta-accent-soft:     rgba(107, 234, 249, 0.30);
+  --cta-secondary-fill:  linear-gradient(90deg, #56422D 0%, #494938 100%);
+}
+
+[data-theme="green"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E4D2F 0%, #2D5A3D 100%);
+}
+
+[data-theme="orange"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A3D1E 0%, #6B4A28 100%);
+}
+
+[data-theme="red"] {
+  --cta-accent:          #FF6C56;
+  --cta-accent-soft:     rgba(255, 108, 86, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #5A2D28 0%, #6B3A35 100%);
+}
+
+[data-theme="forest"] {
+  --cta-accent:          #7DDE8E;
+  --cta-accent-soft:     rgba(125, 222, 142, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #234728 0%, #345937 100%);
+}
+
+[data-theme="blue"] {
+  --cta-accent:          #4F95FF;
+  --cta-accent-soft:     rgba(79, 149, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #1E3850 0%, #2C4A66 100%);
+}
+
+[data-theme="amber"] {
+  --cta-accent:          #FFA72C;
+  --cta-accent-soft:     rgba(255, 167, 44, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #4D3D1E 0%, #5C4A28 100%);
+}
+
+[data-theme="magenta"] {
+  --cta-accent:          #EF5CFF;
+  --cta-accent-soft:     rgba(239, 92, 255, 0.28);
+  --cta-secondary-fill:  linear-gradient(90deg, #3A2858 0%, #4B3370 100%);
+}
+
+/* ─── A11y · reduced motion ────────────────────────────────────
+   Honour user's OS-level motion preference across every block. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* generated preview/CMS composition glue */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  position: relative;
+  min-width: 320px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+:root {
+  --composition-section-y: clamp(4rem, 7vw, 6.5rem);
+  --composition-section-y-compact: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Default vertical rhythm for every composed section.
+   Blocks must NOT declare padding-block on their root class;
+   the composer owns inter-section spacing.
+
+   For section-wide decorative backgrounds (ambient tints, full-width
+   surface colors): blocks declare the bg on the wrapper class
+   `.composition-section--<block-id-slug>` so the fill extends through
+   the composer-managed padding-block. The inner block class then owns
+   content layout only. See hero.operational-diagram and
+   mobile.4-card-glyph for canonical examples. */
+.composition-section {
+  position: relative;
+  padding-block: var(--composition-section-y);
+}
+
+/* No edge-zero overrides: the hero needs padding-block-start so its
+   content clears the sticky header (and the absolute-positioned
+   breadcrumb chip that hangs from it), and the last section needs
+   padding-block-end so it breathes above the footer. The default
+   padding-block above gives both naturally. */
+
+/* Closing accent sections are tighter at the top, with full rhythm
+   at the bottom so the footer gets visual room. */
+.composition-section--decorative-callout-band,
+.composition-section--decorative-final-cta {
+  padding-block: var(--composition-section-y-compact) var(--composition-section-y);
+}
+/* ─── Wrappers ───────────────────────────────────────────────
+   Global wrapper primitive used by composer-injected markup AND
+   by block-internal layouts that opt into `.container`. Block
+   stylesheets may still redeclare `.<block> .container { … }`
+   with the same calc — those are no-op duplicates but harmless. */
+.container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+/* Narrow modifier for accent strips (callout, narrative). */
+.container--narrow {
+  max-width: calc(1100px + var(--container-padding-x) * 2);
+}
+a {
+  color: inherit;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+@media (max-width: 640px) {
+  :root {
+    --composition-section-y: 3.5rem;
+    --composition-section-y-compact: 2.5rem;
+  }
+}
+
+/* generated child CSS: blocks/15-blog/blog.post-dynamic/block.css */
+.blog-post-page {
+  padding: clamp(6rem, 9vw, 9rem) 0 clamp(5rem, 9vw, 9rem);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(107, 234, 249, 0.14), transparent 28rem),
+    var(--color-bg);
+}
+
+.blog-post-page__container { max-width: 87rem; }
+.blog-post-page__breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; color: var(--color-gray-blue); font-size: 0.9rem; }
+.blog-post-page__breadcrumb a { color: var(--color-heading); text-decoration: none; }
+.blog-post-page__breadcrumb a:hover { color: var(--color-text-accent, #2499a8); }
+.blog-post-page__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem 1.1rem; margin: 2rem 0 0; color: var(--color-gray-blue); font-size: 0.88rem; }
+.blog-post-page__meta-item + .blog-post-page__meta-item::before { content: ""; display: inline-block; width: 0.22rem; aspect-ratio: 1; margin: 0 1.1rem 0.2rem 0; border-radius: 50%; background: currentColor; }
+.blog-post-page__hero { overflow: hidden; margin: 2.5rem 0 0; aspect-ratio: 16 / 8; border-radius: clamp(1.5rem, 3vw, 3rem); background: var(--color-gray-bg); }
+.blog-post-page__hero img { width: 100%; height: 100%; object-fit: cover; }
+
+.blog-post-page__document { width: min(100%, 52rem); margin: clamp(3rem, 7vw, 6.5rem) auto 0; font-size: clamp(1rem, 1.25vw, 1.18rem); line-height: 1.75; }
+.blog-post-page__document .blog-post > .summary { margin: 0 0 2.5rem; padding: 0 0 2rem; border-bottom: 1px solid rgba(92, 100, 116, 0.2); color: var(--color-gray-blue); font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.55; }
+.blog-post-page__document h1 { margin: 0 0 2rem; color: var(--color-heading); font-size: clamp(2.8rem, 6vw, 6rem); font-weight: 600; line-height: 0.98; letter-spacing: -0.055em; }
+.blog-post-page__document h2 { margin: 4rem 0 1rem; color: var(--color-heading); font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.06; letter-spacing: -0.04em; }
+.blog-post-page__document h3 { margin: 2.75rem 0 0.8rem; color: var(--color-heading); font-size: clamp(1.45rem, 2.6vw, 2.2rem); line-height: 1.15; letter-spacing: -0.025em; }
+.blog-post-page__document p,
+.blog-post-page__document ul,
+.blog-post-page__document ol,
+.blog-post-page__document blockquote { margin: 0 0 1.4rem; }
+.blog-post-page__document ul,
+.blog-post-page__document ol { padding-left: 1.5rem; }
+.blog-post-page__document li + li { margin-top: 0.55rem; }
+.blog-post-page__document a { color: var(--color-text-accent, #168c9b); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
+.blog-post-page__document blockquote { margin-inline: -3rem; padding: 2rem 3rem; border-left: 0.25rem solid var(--color-text-accent, #2499a8); border-radius: 0 1.5rem 1.5rem 0; background: var(--color-gray-bg); color: var(--color-heading); font-size: 1.25em; line-height: 1.5; }
+.blog-post-page__document img { width: calc(100% + 12rem); max-width: none; margin: 3rem -6rem; border-radius: 2rem; }
+.blog-post-page__document:empty { display: none; }
+
+.blog-post-page__related { margin-top: clamp(5rem, 10vw, 10rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid rgba(92, 100, 116, 0.18); }
+.blog-post-page__related-head p { margin: 0; color: var(--color-text-accent, #2499a8); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+.blog-post-page__related-head h2 { margin: 0.8rem 0 0; color: var(--color-heading); font-size: clamp(2.2rem, 4.5vw, 4.5rem); line-height: 1; letter-spacing: -0.045em; }
+.blog-post-page__related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
+.blog-related-card__link { display: flex; min-height: 100%; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(92, 100, 116, 0.15); border-radius: 2rem; background: var(--color-gray-bg); color: inherit; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
+.blog-related-card__link:hover { transform: translateY(-0.3rem); box-shadow: 0 1.25rem 3.5rem rgba(23, 23, 27, 0.08); }
+.blog-related-card__category { color: var(--color-text-accent, #2499a8); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.blog-related-card__title { margin: 1rem 0 0; color: var(--color-heading); font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.12; }
+.blog-related-card__summary { margin: 1rem 0 0; line-height: 1.55; }
+.blog-related-card__read { margin-top: auto; padding-top: 2rem; color: var(--color-heading); font-weight: 650; }
+.blog-related-card__read::after { content: " →"; color: var(--color-text-accent, #2499a8); }
+
+@media (max-width: 64rem) {
+  .blog-post-page__related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blog-post-page__document img { width: calc(100% + 4rem); margin-inline: -2rem; }
+}
+
+@media (max-width: 48rem) {
+  .blog-post-page { padding-top: 5.5rem; }
+  .blog-post-page__related-grid { grid-template-columns: 1fr; }
+  .blog-post-page__document img { width: 100%; margin: 2rem 0; border-radius: 1.3rem; }
+  .blog-post-page__document blockquote { margin-inline: 0; padding: 1.5rem; }
+  .blog-related-card__link { border-radius: 1.4rem; }
+}
+</style>
+</head>
+<body>
+<section class="composition-section composition-section--blog-post-dynamic" data-composition-block="blog.post-dynamic">
+<section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post data-blog-current-permalink="field-service-routing-guide"
+  data-blog-api-base="/core-cms"
+  data-blog-organization="SERVICEWAND"
+  data-blog-category-id="1"
+  data-blog-page-size="100"
+  data-blog-max-results="1000"
+  data-blog-base-path="/blog"
+  data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"
+  data-blog-read-label="Read article"
+  data-blog-related-limit="3">
+  <div class="container blog-post-page__container">
+    <nav class="blog-post-page__breadcrumb" aria-label="Blog breadcrumb">
+      <a href="/blog" data-blog-index-link>Blog</a>
+      <span aria-hidden="true">/</span>
+      <span data-blog-current-title>Article</span>
+    </nav>
+
+    <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+    <div class="blog-post-page__hero" data-blog-current-image hidden></div>
+
+    <article class="blog-post-page__document" data-blog-document>
+      <div class="blog-post">
+  <h1>A practical guide to field service routing</h1>
+  <p class="summary">Reliable routes start with clear operational inputs—not with a map full of pins.</p>
+  <div class="content">
+    <p>Field service routing connects demand, technician capacity, travel time, and customer commitments. When those inputs live in separate tools, dispatchers spend the day reconciling them by hand.</p>
+    <h2>Start with the decisions your dispatcher makes</h2>
+    <p>Document the decisions that repeat every day: who is qualified, what the arrival window allows, and which work can move without breaking a promise.</p>
+    <h3>Make constraints visible</h3>
+    <p>A useful route is one the team can execute. Skills, equipment, job duration, and geographic boundaries all need to be explicit.</p>
+    <h2>Measure the route after the work is done</h2>
+    <p>Compare planned and actual travel, arrival, service, and completion times.</p>
+  </div>
+</div>
+    </article>
+
+    <aside class="blog-post-page__related" data-blog-related-section hidden>
+      <div class="blog-post-page__related-head">
+        <p>Keep reading</p>
+        <h2>More field service insights</h2>
+      </div>
+      <div class="blog-post-page__related-grid" data-blog-related aria-label="Related blog articles"></div>
+    </aside>
+  </div>
+  <script type="application/ld+json" data-blog-article-schema>{}</script>
+</section>
+
+</section>
+<script>/* generated local JS: blocks/15-blog/_shared/blog-runtime.js */
+(function (global) {
+  "use strict";
+
+  var KNOWN_LOCALES = [
+    "en", "zh", "es", "de", "fr", "ja", "pt", "ru", "it", "nl", "pl", "tr",
+    "ar", "ko", "uk", "cs", "el", "da", "sv", "nb", "vi", "fa", "he", "hi",
+    "ms", "et", "sl", "kk", "th", "id", "ro", "hu", "fi", "bg", "hr", "sk",
+    "lt", "lv"
+  ];
+
+  function normalizeLocale(value) {
+    return String(value || "").trim().toLowerCase().replace("_", "-").split("-")[0];
+  }
+
+  function localeFromPath(pathname) {
+    var first = String(pathname || "").split("/").filter(Boolean)[0] || "";
+    first = normalizeLocale(first);
+    return KNOWN_LOCALES.indexOf(first) >= 0 ? first : "";
+  }
+
+  function getLocale() {
+    var pathLocale = localeFromPath(global.location && global.location.pathname);
+    var shared = global.__swLocale;
+    var sharedLocale = shared && typeof shared.getEffectiveLocale === "function"
+      ? shared.getEffectiveLocale()
+      : "";
+    return pathLocale || normalizeLocale(sharedLocale) ||
+      normalizeLocale(document.documentElement.lang) || "en";
+  }
+
+  function localizedText(value, locale, defaultValue) {
+    if (typeof value === "string" || typeof value === "number") {
+      var direct = String(value).trim();
+      return direct || String(defaultValue || "").trim();
+    }
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      return String(defaultValue || "").trim();
+    }
+    var current = normalizeLocale(locale);
+    var candidates = [current, String(locale || ""), "default", "en"];
+    for (var i = 0; i < candidates.length; i += 1) {
+      var candidate = value[candidates[i]];
+      if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+    }
+    var keys = Object.keys(value);
+    for (var j = 0; j < keys.length; j += 1) {
+      var fallback = value[keys[j]];
+      if (typeof fallback === "string" && fallback.trim()) return fallback.trim();
+    }
+    return String(defaultValue || "").trim();
+  }
+
+  function firstText(source, keys, locale) {
+    for (var i = 0; i < keys.length; i += 1) {
+      var text = localizedText(source && source[keys[i]], locale, "");
+      if (text) return text;
+    }
+    return "";
+  }
+
+  function safePath(value) {
+    var path = String(value || "").trim().replace(/^\/+|\/+$/g, "");
+    return path && !path.includes(":") && !path.includes("..") ? path : "";
+  }
+
+  function normalizePost(post, locale) {
+    post = post && typeof post === "object" ? post : {};
+    var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
+    var title = firstText(metadata, ["TITLE", "title", "META_TITLE", "metaTitle"], locale) ||
+      firstText(post, ["title", "name"], locale);
+    var permalink = safePath(post.permalink || post.slug);
+    if (!title || !permalink) return null;
+
+    var summary = localizedText(post.summary, locale, "") ||
+      firstText(metadata, ["SUMMARY", "summary", "META_DESCRIPTION", "metaDescription", "DESCRIPTION"], locale);
+    var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
+      String(post.publishedAt || post.publishDate || post.created || "");
+    var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      firstText(post, ["imageUrl", "coverUrl"], locale);
+    var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
+    return {
+      id: String(post.id || ""),
+      permalink: permalink,
+      title: title,
+      summary: summary,
+      category: firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale),
+      author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      publishedAt: publishedAt,
+      readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
+      imageUrl: imageUrl,
+      imageAlt: imageAlt,
+      metadata: metadata,
+      raw: post
+    };
+  }
+
+  function parsePositive(value, fallback) {
+    var number = Number(value);
+    return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
+  }
+
+  function configFrom(root) {
+    var data = root.dataset || {};
+    return {
+      apiBase: String(data.blogApiBase || "/core-cms").replace(/\/+$/, ""),
+      organization: String(data.blogOrganization || "SERVICEWAND").trim(),
+      categoryId: String(data.blogCategoryId || "").trim(),
+      pageSize: parsePositive(data.blogPageSize, 12),
+      maxResults: parsePositive(data.blogMaxResults, 1000),
+      basePath: "/" + (safePath(data.blogBasePath) || "blog"),
+      fixtureUrl: String(data.blogFixtureUrl || "").trim(),
+      locale: getLocale()
+    };
+  }
+
+  function requestPage(config, offset) {
+    if (config.fixtureUrl) {
+      return fetch(config.fixtureUrl, { headers: { Accept: "application/json" } }).then(checkResponse);
+    }
+    var filters = [];
+    if (config.categoryId) {
+      filters.push({
+        property: "categories.id",
+        clazz: "java.lang.Integer",
+        operator: "=",
+        value: config.categoryId
+      });
+    }
+    var url = config.apiBase + "/public/" + encodeURIComponent(config.organization) +
+      "/blog-post/list.json?locale=" + encodeURIComponent(config.locale);
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        first: offset,
+        offset: offset,
+        pageSize: config.pageSize,
+        filters: filters,
+        sorting: [{ field: "permalink", direction: "DESC" }]
+      })
+    }).then(checkResponse);
+  }
+
+  function checkResponse(response) {
+    if (!response.ok) throw new Error("Blog request failed: " + response.status);
+    return response.json();
+  }
+
+  function loadPosts(config) {
+    var collected = [];
+    function next(offset) {
+      return requestPage(config, offset).then(function (data) {
+        var result = Array.isArray(data) ? data : (Array.isArray(data.result) ? data.result : []);
+        var normalized = result.map(function (post) {
+          return normalizePost(post, config.locale);
+        }).filter(Boolean);
+        collected = collected.concat(normalized);
+        var total = Number(data.resultSize || data.total || result.length);
+        var done = config.fixtureUrl || result.length === 0 || collected.length >= total ||
+          collected.length >= config.maxResults;
+        return done ? collected.slice(0, config.maxResults) : next(offset + result.length);
+      });
+    }
+    if (!config.organization && !config.fixtureUrl) return Promise.reject(new Error("Blog organization is required"));
+    return next(0);
+  }
+
+  function buildIndexUrl(config) {
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.basePath;
+  }
+
+  function buildPostUrl(post, config) {
+    return buildIndexUrl(config) + "/" + post.permalink;
+  }
+
+  function currentPermalink(config) {
+    var parts = String(global.location && global.location.pathname || "").split("/").filter(Boolean);
+    if (parts.length && KNOWN_LOCALES.indexOf(normalizeLocale(parts[0])) >= 0) parts.shift();
+    var base = config.basePath.split("/").filter(Boolean);
+    for (var i = 0; i <= parts.length - base.length; i += 1) {
+      if (base.every(function (part, offset) { return parts[i + offset] === part; })) {
+        return parts.slice(i + base.length).map(decodeURIComponent).join("/");
+      }
+    }
+    var legacyIndex = parts.indexOf("blog.html");
+    return legacyIndex >= 0 ? parts.slice(legacyIndex + 1).map(decodeURIComponent).join("/") : "";
+  }
+
+  function formatDate(value, locale) {
+    if (!value) return "";
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return String(value);
+    try {
+      return new Intl.DateTimeFormat(locale || "en", { year: "numeric", month: "long", day: "numeric" }).format(date);
+    } catch (error) {
+      return String(value);
+    }
+  }
+
+  global.LabBlog = {
+    buildIndexUrl: buildIndexUrl,
+    buildPostUrl: buildPostUrl,
+    configFrom: configFrom,
+    currentPermalink: currentPermalink,
+    formatDate: formatDate,
+    getLocale: getLocale,
+    loadPosts: loadPosts,
+    localizedText: localizedText,
+    normalizePost: normalizePost
+  };
+})(window);
+
+
+/* generated child JS: blocks/15-blog/blog.post-dynamic/block.js */
+(function () {
+  "use strict";
+
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function setMeta(name, value) {
+    if (!value) return;
+    var selector = name === "description" ? 'meta[name="description"]' : 'meta[property="' + name + '"]';
+    var node = document.head.querySelector(selector);
+    if (!node) {
+      node = document.createElement("meta");
+      if (name === "description") node.name = name;
+      else node.setAttribute("property", name);
+      document.head.appendChild(node);
+    }
+    node.content = value;
+  }
+
+  function setCanonical(url) {
+    var canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = url;
+  }
+
+  function applySeo(root, post) {
+    document.title = post.title;
+    setMeta("description", post.summary);
+    setMeta("og:title", post.title);
+    setMeta("og:description", post.summary);
+    if (post.imageUrl) setMeta("og:image", post.imageUrl);
+    setCanonical(window.location.href.split("?")[0].split("#")[0]);
+    var schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.summary || undefined,
+      datePublished: post.publishedAt || undefined,
+      author: post.author ? { "@type": "Organization", name: post.author } : undefined,
+      image: post.imageUrl || undefined,
+      mainEntityOfPage: window.location.href.split("#")[0]
+    };
+    Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
+    var node = root.querySelector("[data-blog-article-schema]");
+    if (node) node.textContent = JSON.stringify(schema);
+  }
+
+  function renderCurrent(root, post, config) {
+    var title = root.querySelector("[data-blog-current-title]");
+    if (title) title.textContent = post.title;
+    var meta = root.querySelector("[data-blog-current-meta]");
+    var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
+    [post.category, date, post.readTime, post.author].filter(Boolean).forEach(function (value) {
+      meta.appendChild(element("span", "blog-post-page__meta-item", value));
+    });
+    meta.hidden = meta.children.length === 0;
+    var hero = root.querySelector("[data-blog-current-image]");
+    if (post.imageUrl) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = post.imageAlt || post.title;
+      image.decoding = "async";
+      hero.appendChild(image);
+      hero.hidden = false;
+    }
+    applySeo(root, post);
+  }
+
+  function renderRelated(root, posts, current, config) {
+    var limit = Math.max(1, Number(root.getAttribute("data-blog-related-limit") || 3));
+    var readLabel = root.getAttribute("data-blog-read-label") || "Read article";
+    var list = posts.filter(function (post) { return post.permalink !== current; }).slice(0, limit);
+    if (!list.length) return;
+    var grid = root.querySelector("[data-blog-related]");
+    list.forEach(function (post) {
+      var article = element("article", "blog-related-card");
+      var link = element("a", "blog-related-card__link");
+      link.href = window.LabBlog.buildPostUrl(post, config);
+      if (post.category) link.appendChild(element("span", "blog-related-card__category", post.category));
+      link.appendChild(element("h3", "blog-related-card__title", post.title));
+      if (post.summary) link.appendChild(element("p", "blog-related-card__summary", post.summary));
+      link.appendChild(element("span", "blog-related-card__read", readLabel));
+      article.appendChild(link);
+      grid.appendChild(article);
+    });
+    root.querySelector("[data-blog-related-section]").hidden = false;
+  }
+
+  function init(root) {
+    if (!window.LabBlog) return;
+    var config = window.LabBlog.configFrom(root);
+    var indexLink = root.querySelector("[data-blog-index-link]");
+    if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);
+    var current = root.getAttribute("data-blog-current-permalink") || window.LabBlog.currentPermalink(config);
+    window.LabBlog.loadPosts(config).then(function (posts) {
+      var post = posts.find(function (candidate) { return candidate.permalink === current; });
+      if (post) renderCurrent(root, post, config);
+      renderRelated(root, posts, current, config);
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
+
+  function ready() {
+    document.querySelectorAll("[data-blog-post]").forEach(init);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", ready);
+  else ready();
+})();
+</script>
+</body>
+</html>

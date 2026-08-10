@@ -73,6 +73,11 @@
       "id": "14-pricing",
       "label": "14 · Pricing",
       "count": 6
+    },
+    {
+      "id": "15-blog",
+      "label": "15 · Blog",
+      "count": 2
     }
   ],
   "blocks": [
@@ -982,6 +987,34 @@
         "390": "preview-390.png",
         "1440": "preview-1440.png"
       },
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "blog.index-dynamic",
+      "category": "15-blog",
+      "path": "blocks/15-blog/blog.index-dynamic",
+      "title": "Blog · dynamic index",
+      "description": "SEO-oriented blog index with CMS-authored H1/H2/H3 introduction and backend-driven article cards from the public Core CMS blog endpoint.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "cms-templates/BLOG_POST_JTE/block_template_config.json",
+      "preview": {},
+      "previewVariants": [],
+      "background": null,
+      "hasJs": true
+    },
+    {
+      "id": "blog.post-dynamic",
+      "category": "15-blog",
+      "path": "blocks/15-blog/blog.post-dynamic",
+      "title": "Blog · backend post",
+      "description": "Server-rendered blog article body using BLOG_POST_CONTENT_SS, enriched with localized metadata, canonical/schema updates, and related posts from Core CMS.",
+      "canonical": true,
+      "theme": "light",
+      "sourceLabel": "cms-templates/BLOG_POST_JTE/block_template_config.json",
+      "preview": {},
       "previewVariants": [],
       "background": null,
       "hasJs": true
