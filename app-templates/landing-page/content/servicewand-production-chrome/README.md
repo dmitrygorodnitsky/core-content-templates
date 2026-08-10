@@ -18,15 +18,26 @@ Use `--page-context-id <id>` instead of `--page-url` when the URL is ambiguous.
 Exactly one page selector is required. Full production URLs are accepted and
 normalized to their path and query.
 
-The downloader is CMS read-only. It reads the selected `PageContext`, resolves
-`HEADER` and `FOOTER` by exact code, and overlays saved page values over their
-BlockTemplate defaults. Override the codes with `--header-code` and
-`--footer-code` if that page uses a different chrome family. It has no `--live`
-mode and does not call any save endpoint.
+The downloader is CMS read-only. It reads the selected `PageContext`, finds
+`HEADER` and `FOOTER` inside the root template tree attached to that page, and
+overlays saved page values over their BlockTemplate defaults. Override the codes
+with `--header-code` and `--footer-code` if that page uses a different chrome
+family. It has no `--live` mode and does not call any save endpoint.
 
-Production can contain several templates with the same code. In that case the
-downloader selects the exact UUID present in the page's `enabledTemplates`
-instead of taking an arbitrary global match.
+Production can contain several templates with the same code. Global duplicates
+are irrelevant because the downloader follows the selected PageContext's own
+template tree instead of performing a global code lookup.
+
+For diagnosis, download the complete PageContext and its attached template tree
+without attempting chrome mapping:
+
+```bash
+node app-templates/landing-page/scripts/download-production-chrome-values.mjs \
+  --page-context-id 77 \
+  --base-url https://servicewand.com/core \
+  --org SYSTEM \
+  --dump-page tmp/production-page-context-77.json
+```
 
 The snapshot stores both the effective CMS values per source template and their
 mapping to authored block-local codes, so it can be reused by future

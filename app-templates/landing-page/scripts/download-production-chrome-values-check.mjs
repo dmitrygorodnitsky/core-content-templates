@@ -12,6 +12,7 @@ const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
 const landingRoot = path.resolve(scriptsDir, "..");
 const scratch = await fs.mkdtemp(path.join(landingRoot, "dist/.production-chrome-values-check-"));
 const output = path.join(scratch, "parameter-values.json");
+const pageDumpOutput = path.join(scratch, "page-context.json");
 let pageListRequests = 0;
 let pageGetRequests = 0;
 let templateListRequests = 0;
@@ -54,20 +55,16 @@ const templates = {
   },
 };
 
-const inactiveHeader = {
-  id: "99999999-9999-4999-8999-999999999999",
-  code: "HEADER",
-  parameters: [
-    { code: "HEADER_LOGO_ARIA_LABEL", type: "LOCALIZED_STRING_SS", value: { en: "Wrong revision" } },
-  ],
-  children: [],
-};
-
 const pageContext = {
   id: 42,
   url: "/source-page",
   site: "servicewand.com",
-  template: { id: ids.pageRoot, code: "PRODUCTION_PAGE" },
+  template: {
+    id: ids.pageRoot,
+    code: "PRODUCTION_PAGE",
+    parameters: [],
+    children: [templates.HEADER, templates.FOOTER],
+  },
   enabledTemplates: [ids.header, ids.headerMenu, ids.footer],
   values: {
     [ids.header]: {
@@ -114,17 +111,13 @@ const server = http.createServer(async (request, response) => {
     const mappings = JSON.parse(await readBody(request));
     assert.ok(mappings.some((mapping) => mapping.name === "values"));
     assert.ok(mappings.some((mapping) => mapping.name === "enabledTemplates"));
+    const templateMapping = mappings.find((mapping) => mapping.name === "template");
+    assert.ok(templateMapping?.mappings?.some((mapping) => mapping.name === "children"));
     return send(response, 200, pageContext);
   }
   if (request.url === "/core-cms/api/block-template/list.json") {
     templateListRequests += 1;
-    const body = JSON.parse(await readBody(request));
-    const filter = body.filters?.find((item) => item.property === "code");
-    assert.equal(filter?.type, "STRING");
-    assert.ok(body.mappings.some((mapping) => mapping.name === "children"));
-    const result = templates[filter.value] ? [templates[filter.value]] : [];
-    if (filter.value === "HEADER") result.unshift(inactiveHeader);
-    return send(response, 200, { result });
+    return send(response, 500, { error: "template list must not be used; resolve from PageContext tree" });
   }
   if (request.url?.includes("/save.json")) {
     saveRequests += 1;
@@ -164,6 +157,23 @@ try {
   );
   assert.equal(pageListRequests, 0, "argument and source guards must fail before CMS reads");
 
+  const dumpResult = await execFileAsync(process.execPath, [
+    path.join(scriptsDir, "download-production-chrome-values.mjs"),
+    "--page-context-id", "42",
+    "--base-url", baseUrl,
+    "--allow-non-production",
+    "--dump-page", pageDumpOutput,
+  ], {
+    env: { ...process.env, SERVICEWAND_API_KEY: "check-key", SERVICEWAND_BEARER: "" },
+  });
+  assert.match(dumpResult.stdout, /complete production PageContext/);
+  assert.match(dumpResult.stdout, /Attached templates: 4/);
+  const pageDump = JSON.parse(await fs.readFile(pageDumpOutput, "utf8"));
+  assert.equal(pageDump.$schema, "lab-ui/production-page-context-dump@1");
+  assert.equal(pageDump.pageContext.template.children[0].id, ids.header);
+  assert.equal(templateListRequests, 0);
+  assert.equal(saveRequests, 0);
+
   const result = await execFileAsync(process.execPath, [
     path.join(scriptsDir, "download-production-chrome-values.mjs"),
     "--page-url", "https://servicewand.com/source-page",
@@ -178,8 +188,8 @@ try {
   assert.match(result.stdout, /PageContext: 42 \/source-page/);
   assert.match(result.stdout, /CMS writes: 0/);
   assert.equal(pageListRequests, 1);
-  assert.equal(pageGetRequests, 1);
-  assert.equal(templateListRequests, 2);
+  assert.equal(pageGetRequests, 2);
+  assert.equal(templateListRequests, 0);
   assert.equal(saveRequests, 0);
 
   const snapshot = JSON.parse(await fs.readFile(output, "utf8"));
@@ -220,8 +230,8 @@ try {
     env: { ...process.env, SERVICEWAND_API_KEY: "check-key", SERVICEWAND_BEARER: "" },
   });
   assert.equal(pageListRequests, 1, "id selector must not perform PageContext list lookup");
-  assert.equal(pageGetRequests, 2);
-  assert.equal(templateListRequests, 4);
+  assert.equal(pageGetRequests, 3);
+  assert.equal(templateListRequests, 0);
   assert.equal(saveRequests, 0);
   console.log("download-production-chrome-values-check ok: effective PageContext values, explicit clears, zero CMS writes");
 } finally {

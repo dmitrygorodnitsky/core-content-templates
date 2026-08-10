@@ -49,6 +49,7 @@ const parseArgs = () => {
     const arg = args[index];
     if (arg === "--page-url") out.pageUrl = args[++index];
     else if (arg === "--page-context-id") out.pageContextId = args[++index];
+    else if (arg === "--dump-page") out.dumpPage = args[++index];
     else if (arg === "--header-code") out.headerCode = args[++index];
     else if (arg === "--footer-code") out.footerCode = args[++index];
     else if (arg === "--out") out.out = args[++index];
@@ -80,14 +81,16 @@ Defaults:
   --out app-templates/landing-page/content/servicewand-production-chrome/parameter-values.json
 
 Options:
+  --dump-page <file>      Save the complete PageContext and attached template tree, then exit.
   --stdout                Print JSON instead of writing the snapshot.
   --cms-base-url <url>    Override the derived Core CMS URL.
   --allow-non-production  Required when the source host is not servicewand.com.
 
 The snapshot contains effective page values: saved PageContext overrides take
-precedence over BlockTemplate defaults. The command performs only PageContext
-get/list and BlockTemplate list requests. It has no --live mode and never calls
-a save endpoint.
+precedence over BlockTemplate defaults. The attached template tree is read from
+the PageContext itself, so duplicate global template codes are irrelevant. The
+command performs only PageContext get/list requests. It has no --live mode and
+never calls a save endpoint.
 
 Env credentials:
   SERVICEWAND_API_KEY or LANDING_API_KEY
@@ -188,6 +191,17 @@ const normalizePageUrl = (value) => {
   return input.startsWith("/") ? input : `/${input}`;
 };
 
+const templateFields = [{ name: "id" }, { name: "code" }, { name: "parameters" }];
+
+const childrenMapping = (depth) => ({
+  name: "children",
+  type: "collection",
+  mappings: [
+    ...templateFields,
+    ...(depth > 1 ? [childrenMapping(depth - 1)] : []),
+  ],
+});
+
 const pageContextMappings = [
   { name: "id" },
   { name: "url" },
@@ -197,7 +211,7 @@ const pageContextMappings = [
   {
     name: "template",
     type: "identifier",
-    mappings: [{ name: "id" }, { name: "code" }],
+    mappings: [...templateFields, childrenMapping(8)],
   },
 ];
 
@@ -237,44 +251,30 @@ const getPageContext = async ({ cmsBaseUrl, headers, id }) => {
   return page;
 };
 
-const templateFields = [{ name: "id" }, { name: "code" }, { name: "parameters" }];
-
-const childrenMapping = (depth) => ({
-  name: "children",
-  type: "collection",
-  mappings: [
-    ...templateFields,
-    ...(depth > 1 ? [childrenMapping(depth - 1)] : []),
-  ],
-});
-
-const listTemplateTreeByCode = async ({ cmsBaseUrl, headers, code, enabledTemplateIds }) => {
-  const response = await requestJson(`${cmsBaseUrl}/api/block-template/list.json`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({
-      filters: [{ property: "code", operator: "=", type: "STRING", value: code }],
-      mappings: [...templateFields, childrenMapping(8)],
-      offset: 0,
-      pageSize: 10,
-    }),
-  });
-  const matches = (response?.result || []).filter((template) => template.code === code);
-  if (!matches.length) throw new Error(`Production BlockTemplate was not found by code: ${code}`);
+const resolveTemplateFromPageTree = ({ pageRoot, code, enabledTemplateIds }) => {
+  if (!pageRoot?.id) throw new Error("PageContext does not contain its attached root template tree.");
+  const matches = flattenTemplateTree(pageRoot).filter((template) => template.code === code);
+  if (!matches.length) {
+    const availableCodes = [...new Set(flattenTemplateTree(pageRoot).map((template) => template.code).filter(Boolean))]
+      .sort()
+      .join(", ");
+    throw new Error(
+      `Template code ${code} is not attached to this PageContext. Attached codes: ${availableCodes || "<none>"}`,
+    );
+  }
   const enabled = new Set(enabledTemplateIds || []);
   const pageMatches = matches.filter((template) => enabled.has(template.id));
   if (pageMatches.length === 1) return pageMatches[0];
-  const candidateIds = matches.map((template) => template.id).filter(Boolean).sort().join(", ");
   if (pageMatches.length > 1) {
     throw new Error(
-      `Template code is ambiguous inside this PageContext: ${code} matched ${pageMatches.length} enabled records ` +
+      `Template code is ambiguous inside the attached page tree: ${code} matched ${pageMatches.length} enabled records ` +
       `(${pageMatches.map((template) => template.id).sort().join(", ")}).`,
     );
   }
   if (matches.length === 1) return matches[0];
   throw new Error(
-    `Template code ${code} matched ${matches.length} records, but none is enabled on this PageContext. ` +
-    `Candidates: ${candidateIds}`,
+    `Template code ${code} occurs ${matches.length} times inside the attached page tree and none is explicitly enabled. ` +
+    `Candidates: ${matches.map((template) => template.id).filter(Boolean).sort().join(", ")}`,
   );
 };
 
@@ -467,20 +467,36 @@ const main = async () => {
     ? await resolvePageContextId({ cmsBaseUrl, headers, pageUrl: requestedPageUrl })
     : Number(args.pageContextId);
   const pageContext = await getPageContext({ cmsBaseUrl, headers, id: pageContextId });
-  const [header, footer] = await Promise.all([
-    listTemplateTreeByCode({
-      cmsBaseUrl,
-      headers,
-      code: headerCode,
-      enabledTemplateIds: pageContext.enabledTemplates,
-    }),
-    listTemplateTreeByCode({
-      cmsBaseUrl,
-      headers,
-      code: footerCode,
-      enabledTemplateIds: pageContext.enabledTemplates,
-    }),
-  ]);
+  if (args.dumpPage) {
+    const dump = {
+      $schema: "lab-ui/production-page-context-dump@1",
+      source: {
+        environment: "production",
+        baseUrl,
+        cmsBaseUrl,
+        organization: org,
+        readOnly: true,
+      },
+      pageContext,
+    };
+    const output = writeJsonAtomic(args.dumpPage, dump);
+    console.log("Downloaded complete production PageContext (CMS READ ONLY).");
+    console.log(`PageContext: ${pageContext.id} ${pageContext.url || "<no url>"}`);
+    console.log(`Attached templates: ${pageContext.template ? flattenTemplateTree(pageContext.template).length : 0}`);
+    console.log(`Output: ${output}`);
+    console.log("CMS writes: 0");
+    return;
+  }
+  const header = resolveTemplateFromPageTree({
+    pageRoot: pageContext.template,
+    code: headerCode,
+    enabledTemplateIds: pageContext.enabledTemplates,
+  });
+  const footer = resolveTemplateFromPageTree({
+    pageRoot: pageContext.template,
+    code: footerCode,
+    enabledTemplateIds: pageContext.enabledTemplates,
+  });
 
   const roots = { header, footer };
   const valueIndex = pageValueIndex(
