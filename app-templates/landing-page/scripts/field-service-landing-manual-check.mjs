@@ -88,6 +88,7 @@ try {
   const templates = [payload.root, ...(payload.children || [])];
   const rootParameters = new Map(payload.root.parameters.map((parameter) => [parameter.code, parameter.type]));
   const hero = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_HERO");
+  const aiAutomation = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_AI_AUTOMATION");
   const supportedIndustries = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES");
 
   assert.equal(payload.schemaVersion, 1);
@@ -97,7 +98,7 @@ try {
   assert.equal(payload.children.every((template) => template.code.startsWith("FIELD_SERVICE_LANDING_")), true);
   assert.deepEqual(manifest.templateCodes, expectedCodes);
   assert.equal(payload.children.length, 14);
-  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 745);
+  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 744);
   assert.equal(composition.appliedContentCodes.length, 294);
   assert.equal(composition.contentSource, "content/field-service-operations/parameter-values.json");
   assert.equal((await listFiles(path.join(first, "children"))).filter((file) => file.endsWith("template.json")).length, 14);
@@ -122,6 +123,11 @@ try {
   assert.deepEqual(heroPlaceholderSize?.value, { en: "1000 × 1200" });
   assert.equal(hero.parameters.some((parameter) => parameter.code.endsWith("_PLACEHOLDER_LABEL")), false);
   assert.doesNotMatch(hero.html, /PLACEHOLDER_LABEL/);
+  assert.ok(aiAutomation, "AI automation template must exist");
+  const aiPlaceholderSize = aiAutomation.parameters.find((parameter) => parameter.code.endsWith("_MEDIA_PLACEHOLDER_SIZE"));
+  assert.deepEqual(aiPlaceholderSize?.value, { en: "1280 × 800" });
+  assert.equal(aiAutomation.parameters.some((parameter) => parameter.code.endsWith("_MEDIA_PLACEHOLDER_LABEL")), false);
+  assert.doesNotMatch(aiAutomation.html, /MEDIA_PLACEHOLDER_LABEL/);
   assert.ok(supportedIndustries, "supported-industries template must exist");
   const industriesEyebrow = supportedIndustries.parameters.find((parameter) => parameter.code.endsWith("_EYEBROW"));
   const industryHints = supportedIndustries.parameters.filter((parameter) => parameter.code.match(/_SLOT_(?:0[1-9]|1[0-3])_PHOTO$/));

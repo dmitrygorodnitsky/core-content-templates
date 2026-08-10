@@ -68,7 +68,6 @@
       "selector": "[data-ai-media-slot] img",
       "src_param": "media_url",
       "alt_param": "media_alt",
-      "fallback_label_param": "media_placeholder_label",
       "fallback_size_param": "media_placeholder_size",
       "recommended_size": "1280 × 800",
       "aspect_ratio": "16:10",
@@ -211,12 +210,8 @@
     {
       "code": "media_placeholder_size",
       "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem"
-    },
-    {
-      "code": "media_placeholder_label",
-      "type": "LOCALIZED_STRING_SS",
-      "default": "Lorem ipsum dolor sit amet, consectetur."
+      "default": "1280 × 800",
+      "preserve_default": true
     },
     {
       "code": "media_url",
