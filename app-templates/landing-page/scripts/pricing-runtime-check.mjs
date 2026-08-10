@@ -28,8 +28,10 @@ const data = {
       product: {
         product: {
           code: "PLAN_DEFAULT",
-          name: "Default plan",
-          nls: { en: { NAME: "English plan" } },
+          nls: {
+            en: { NAME: "English plan", DESCRIPTION: "English description" },
+            fr: { DESCRIPTION: "Description française" },
+          },
         },
         attributes: {
           1: {
@@ -47,6 +49,16 @@ const data = {
         },
       },
       price: { display: { amount: 10, currency: "CAD", intervalLabel: "1 Month" } },
+    },
+    {
+      product: {
+        product: {
+          code: "PLAN_WITHOUT_NAME",
+          nls: { fr: { DESCRIPTION: "Aucun nom disponible" } },
+        },
+        attributes: {},
+      },
+      price: { display: { amount: 20, currency: "CAD", intervalLabel: "1 Month" } },
     },
   ],
   productTypes: {
@@ -78,7 +90,11 @@ const result = pricing.normalize(data, {
   annualPeriodCount: 12,
 });
 
-assert.equal(result.plans[0].name, "Default plan");
+assert.equal(result.plans[0].name, "English plan");
+assert.notEqual(result.plans[0].name, result.plans[0].code);
+assert.equal(result.plans[0].description, "Description française");
+assert.equal(result.plans[1].name, "");
+assert.notEqual(result.plans[1].name, result.plans[1].code);
 assert.deepEqual(
   result.groups[0].attributes.map((attribute) => attribute.values[0].text),
   ["Plain attribute", "Valeur française", "Attribut traduit", "Default attribute"],

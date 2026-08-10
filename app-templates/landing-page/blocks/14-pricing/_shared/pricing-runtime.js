@@ -162,7 +162,7 @@
         product.nls,
         "NAME",
         config.locale,
-        localizedScalar(product.name, config.locale, product.code || "Plan")
+        localizedScalar(product.name, config.locale)
       ), config),
       description: dynamicText(localizedField(
         product.nls,
@@ -563,13 +563,63 @@
     if (typeof value !== "object") return value;
 
     const entry = localized(value, locale);
-    if (entry == null || entry === "") return localizedScalar(fallback, locale);
-    if (typeof entry !== "object") return entry;
+    const fallbackValue = localizedScalar(fallback, locale);
+    if (entry != null && entry !== "" && typeof entry !== "object") return entry;
 
-    const fieldValue = entry[field]
+    const currentValue = localizedScalar(fieldValue(entry, field), locale, fallbackValue);
+    if (currentValue != null && currentValue !== "") return currentValue;
+    return defaultLocalizedField(value, field);
+  }
+
+  function fieldValue(entry, field) {
+    if (!entry || typeof entry !== "object") return undefined;
+    return entry[field]
       ?? entry[field.toLowerCase()]
       ?? entry[field[0] + field.slice(1).toLowerCase()];
-    return localizedScalar(fieldValue, locale, fallback);
+  }
+
+  function defaultLocalizedField(value, field) {
+    if (!value || typeof value !== "object") return "";
+
+    const direct = defaultScalar(fieldValue(value, field));
+    if (direct !== "") return direct;
+
+    const keys = Object.keys(value);
+    const preferredEntries = ["default", "DEFAULT", "defaultValue", "en"]
+      .map((key) => keys.find((candidate) => normalizeLocaleKey(candidate) === normalizeLocaleKey(key)))
+      .filter(Boolean)
+      .map((key) => value[key]);
+    const entries = [...preferredEntries, ...Object.values(value)];
+    for (const entry of entries) {
+      const candidate = defaultScalar(fieldValue(entry, field));
+      if (candidate !== "") return candidate;
+    }
+    return "";
+  }
+
+  function defaultScalar(value) {
+    if (value == null || value === "") return "";
+    if (typeof value !== "object") return value;
+
+    const direct = value.NAME ?? value.name ?? value.LABEL ?? value.label ?? value.VALUE ?? value.value ?? value.text;
+    if (direct != null && direct !== value) return defaultScalar(direct);
+
+    const explicit = value.default ?? value.DEFAULT ?? value.defaultValue ?? value.fallback;
+    if (explicit != null && explicit !== value) return defaultScalar(explicit);
+
+    const keys = Object.keys(value);
+    const englishKey = keys.find((key) => normalizeLocaleKey(key) === "en");
+    if (englishKey) {
+      const english = defaultScalar(value[englishKey]);
+      if (english !== "") return english;
+    }
+
+    for (const candidate of Object.values(value)) {
+      if (candidate === value) continue;
+      const resolved = defaultScalar(candidate);
+      if (resolved !== "") return resolved;
+    }
+    return "";
   }
 
   function localizedScalar(value, locale, fallback) {
