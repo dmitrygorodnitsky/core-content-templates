@@ -262,7 +262,6 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
           <span class="pf-kicker"></span>
           <span class="pf-badge"></span>
         </div>
-        <h2 class="pf-name"></h2>
         <p class="pf-subtitle"></p>
         <div class="pf-price" aria-label="">
           <span class="pf-currency"></span>

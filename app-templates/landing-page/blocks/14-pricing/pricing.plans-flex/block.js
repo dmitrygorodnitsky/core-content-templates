@@ -44,6 +44,22 @@
     if (node) node.setAttribute("href", value || "#");
   };
 
+  const setPlanName = (card, value) => {
+    const name = String(value || "").trim();
+    let node = card.querySelector(".pf-name");
+    if (!name) {
+      if (node) node.remove();
+      return;
+    }
+    if (!node) {
+      node = document.createElement("h2");
+      node.className = "pf-name";
+      const subtitle = card.querySelector(".pf-subtitle");
+      card.insertBefore(node, subtitle || null);
+    }
+    node.textContent = name;
+  };
+
   const fallbackLabel = (section, key, fallback) => (
     section.dataset[key] || fallback || ""
   );
@@ -133,7 +149,7 @@
       }
       setText(card, ".pf-kicker", plan.kicker);
       setText(card, ".pf-badge", plan.badge);
-      setText(card, ".pf-name", plan.name);
+      setPlanName(card, plan.name);
       setText(card, ".pf-subtitle", plan.description);
       setText(card, ".pf-currency", plan.currency);
       setText(card, "[data-price-monthly]", amountText(section, plan, "monthly"));

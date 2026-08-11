@@ -114,7 +114,10 @@ const plansRuntime = readFileSync(
 );
 assert.match(dynamicHtml, /<template data-plan-card-template>/);
 assert.doesNotMatch(dynamicHtml, /<article[^>]+data-plan-slot=/);
+assert.doesNotMatch(dynamicHtml, /class="pf-name"/);
 assert.match(plansRuntime, /inertTemplate\.content/);
 assert.match(plansRuntime, /grid\.querySelectorAll\("\[data-plan-slot\]"\)/);
+assert.match(plansRuntime, /document\.createElement\("h2"\)/);
+assert.match(plansRuntime, /setPlanName\(card, plan\.name\)/);
 
 console.log("pricing-runtime-check ok");
