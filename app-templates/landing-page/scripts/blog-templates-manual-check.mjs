@@ -56,6 +56,12 @@ for (const template of [index, post]) {
 assert.match(index.html, /<h1[\s>]/);
 assert.match(index.html, /<h2[\s>]/);
 assert.match(index.html, /<h3[\s>]/);
+assert.match(index.html, /^<section class="blog-index"/);
+assert.match(post.html, /^<section class="blog-post-page"/);
+assert.doesNotMatch(index.html, /composition-section/);
+assert.doesNotMatch(post.html, /composition-section/);
+assert.doesNotMatch(index.html, /<section[^>]*>\s*<section/i);
+assert.doesNotMatch(post.html, /<section[^>]*>\s*<section/i);
 assert.ok(index.parameters.every((parameter) => parameter.code.startsWith("SERVICEWAND_BLOG_INDEX_")));
 assert.ok(post.parameters.every((parameter) => parameter.code.startsWith("SERVICEWAND_BLOG_POST_")));
 assert.equal(
