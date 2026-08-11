@@ -256,7 +256,8 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
         <span class="pf-skel pf-skel--line"></span>
         <span class="pf-skel pf-skel--line pf-skel--short"></span>
       </article>
-      <article class="pf-card" data-plan-slot="01" data-plan-visible="hide" data-nosnippet>
+      <template data-plan-card-template>
+      <article class="pf-card" data-plan-visible="hide" data-nosnippet>
         <div class="pf-card-head">
           <span class="pf-kicker"></span>
           <span class="pf-badge"></span>
@@ -280,6 +281,7 @@ const html = `<section class="pd-servicewand" data-block="pricing.dynamic-servic
         <ul class="pf-features" aria-label="{{plans_pricing_feature_list_label}}"></ul>
         <p class="pf-disclaimer"></p>
       </article>
+      </template>
     </div>
   </div>
 </section>

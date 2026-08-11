@@ -867,8 +867,14 @@
     const grid = section.querySelector(".pf-grid");
     if (!grid) return;
 
-    const templates = Array.from(grid.querySelectorAll("[data-plan-slot]"))
-      .map((card) => card.cloneNode(true));
+    const inertTemplate = grid.querySelector("template[data-plan-card-template]");
+    const inertCard = inertTemplate && inertTemplate.content
+      ? inertTemplate.content.querySelector(".pf-card")
+      : null;
+    const templates = inertCard
+      ? [inertCard.cloneNode(true)]
+      : Array.from(grid.querySelectorAll("[data-plan-slot]"))
+        .map((card) => card.cloneNode(true));
     if (!templates.length) return;
 
     const featuresByPlan = new Map(plans.map((plan) => [

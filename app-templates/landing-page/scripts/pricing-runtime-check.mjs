@@ -1,8 +1,12 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 const pricing = require("../blocks/14-pricing/_shared/pricing-runtime.js");
+const scriptsDir = dirname(fileURLToPath(import.meta.url));
 
 assert.equal(pricing.resolveText("Plain text", "fr", "Default text"), "Plain text");
 assert.equal(
@@ -99,5 +103,18 @@ assert.deepEqual(
   result.groups[0].attributes.map((attribute) => attribute.values[0].text),
   ["Plain attribute", "Valeur française", "Attribut traduit", "Default attribute"],
 );
+
+const dynamicHtml = readFileSync(
+  join(scriptsDir, "../blocks/14-pricing/pricing.dynamic-servicewand/block.html"),
+  "utf8",
+);
+const plansRuntime = readFileSync(
+  join(scriptsDir, "../blocks/14-pricing/pricing.plans-flex/block.js"),
+  "utf8",
+);
+assert.match(dynamicHtml, /<template data-plan-card-template>/);
+assert.doesNotMatch(dynamicHtml, /<article[^>]+data-plan-slot=/);
+assert.match(plansRuntime, /inertTemplate\.content/);
+assert.match(plansRuntime, /grid\.querySelectorAll\("\[data-plan-slot\]"\)/);
 
 console.log("pricing-runtime-check ok");

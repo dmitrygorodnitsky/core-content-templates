@@ -1846,7 +1846,8 @@ select {
         <span class="pf-skel pf-skel--line"></span>
         <span class="pf-skel pf-skel--line pf-skel--short"></span>
       </article>
-      <article class="pf-card" data-plan-slot="01" data-plan-visible="hide" data-nosnippet>
+      <template data-plan-card-template>
+      <article class="pf-card" data-plan-visible="hide" data-nosnippet>
         <div class="pf-card-head">
           <span class="pf-kicker"></span>
           <span class="pf-badge"></span>
@@ -1870,6 +1871,7 @@ select {
         <ul class="pf-features" aria-label="[object Object]"></ul>
         <p class="pf-disclaimer"></p>
       </article>
+      </template>
     </div>
   </div>
 </section>
@@ -2815,8 +2817,14 @@ select {
     const grid = section.querySelector(".pf-grid");
     if (!grid) return;
 
-    const templates = Array.from(grid.querySelectorAll("[data-plan-slot]"))
-      .map((card) => card.cloneNode(true));
+    const inertTemplate = grid.querySelector("template[data-plan-card-template]");
+    const inertCard = inertTemplate && inertTemplate.content
+      ? inertTemplate.content.querySelector(".pf-card")
+      : null;
+    const templates = inertCard
+      ? [inertCard.cloneNode(true)]
+      : Array.from(grid.querySelectorAll("[data-plan-slot]"))
+        .map((card) => card.cloneNode(true));
     if (!templates.length) return;
 
     const featuresByPlan = new Map(plans.map((plan) => [
