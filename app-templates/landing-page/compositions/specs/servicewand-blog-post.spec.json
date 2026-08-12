@@ -2,7 +2,7 @@
   "$schema": "lab-ui/landing-spec@1",
   "code": "SERVICEWAND_BLOG_POST_PAGE",
   "name": "ServiceWand Blog Post Page",
-  "url": "/blog/{permalink}",
+  "url": "/blog",
   "locale": "en",
   "topic": "blog-post",
   "theme": "light",
@@ -11,7 +11,7 @@
   "sourceReference": {
     "kind": "core-cms-blog-contract",
     "path": "cms-templates/BLOG_POST_JTE/block_template_config.json",
-    "note": "Article content is rendered server-side through BLOG_POST_CONTENT_SS; client runtime only enriches metadata and related navigation."
+    "note": "The PageContext is registered at /blog. Core CMS resolves the complete remaining path as a possibly multi-segment BlogPost permalink and exposes the selected post as POST; POST@BLOG_POST_CONTENT_SS renders its localized body server-side."
   },
   "sections": [
     {
@@ -53,7 +53,6 @@
         "blog_max_results": "1000",
         "blog_base_path": "/blog",
         "blog_fixture_url": "",
-        "blog_post_content": "5",
         "related_limit": "3"
       }
     },

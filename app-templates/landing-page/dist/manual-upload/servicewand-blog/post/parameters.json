@@ -140,17 +140,6 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT",
-    "type": "BLOG_POST_CONTENT_SS",
-    "nls": {
-      "en": {
-        "NAME": "Blog Post · Backend Content",
-        "DESCRIPTION": "Server-side Core CMS blog post renderer. Keep its configured backend binding instead of pasting article HTML into a string field."
-      }
-    },
-    "value": "5"
-  },
-  {
     "code": "SERVICEWAND_BLOG_POST_RELATED_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

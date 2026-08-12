@@ -14,7 +14,9 @@ The page root should provide the standard lab-ui tokens and composition CSS. A r
 Backend contract:
 
 - list: `POST /core-cms/public/{organization}/blog-post/list.json?locale={locale}`
-- article body: `SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT` with type `BLOG_POST_CONTENT_SS`
+- PageContext URL: `/blog`
+- article body: `${POST@BLOG_POST_CONTENT_SS}`; `POST` is a server-provided runtime value and is intentionally not a BlockTemplate parameter
+- every path segment after `/blog` is the BlogPost permalink, including multi-segment values such as `news/my-post`
 - localized routes such as `/fr/blog/{permalink}` are preserved when article links are built
 - missing display titles are omitted; an internal code, slug, or permalink is never shown as a title
 

@@ -64,11 +64,13 @@ assert.doesNotMatch(index.html, /<section[^>]*>\s*<section/i);
 assert.doesNotMatch(post.html, /<section[^>]*>\s*<section/i);
 assert.ok(index.parameters.every((parameter) => parameter.code.startsWith("SERVICEWAND_BLOG_INDEX_")));
 assert.ok(post.parameters.every((parameter) => parameter.code.startsWith("SERVICEWAND_BLOG_POST_")));
-assert.equal(
-  post.parameters.find((parameter) => parameter.code === "SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT")?.type,
-  "BLOG_POST_CONTENT_SS"
-);
-assert.match(post.html, /SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT@BLOG_POST_CONTENT_SS/);
+assert.equal(post.parameters.some((parameter) => parameter.type === "BLOG_POST_CONTENT_SS"), false);
+assert.equal(post.parameters.some((parameter) => parameter.code.endsWith("BLOG_POST_CONTENT")), false);
+assert.equal(post.html.match(/\$\{POST@BLOG_POST_CONTENT_SS\}/g)?.length, 1);
+assert.doesNotMatch(post.html, /SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT/);
+const postPreview = readFileSync(join(manualRoot, "post", "preview.html"), "utf8");
+assert.doesNotMatch(postPreview, /\$\{POST@BLOG_POST_CONTENT_SS\}/);
+assert.match(postPreview, /<h1>A practical guide to field service routing<\/h1>/);
 assert.match(post.javascript, /currentPermalink/);
 assert.match(post.javascript, /serverRenderedTitle/);
 assert.match(index.javascript, /localeFromPath/);

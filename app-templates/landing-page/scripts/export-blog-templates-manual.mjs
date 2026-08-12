@@ -73,13 +73,11 @@ function previewArticle() {
 }
 
 function previewDocument(definition, template, commonCss) {
-  let html = renderDefaults(template.html, template.parameters);
+  let sourceHtml = template.html;
   if (definition.key === "post") {
-    html = html.replace(
-      /(<article class="blog-post-page__document" data-blog-document>\s*)5(\s*<\/article>)/,
-      `$1${previewArticle()}$2`
-    );
+    sourceHtml = sourceHtml.replace("${POST@BLOG_POST_CONTENT_SS}", previewArticle());
   }
+  let html = renderDefaults(sourceHtml, template.parameters);
   html = html.replace('data-blog-fixture-url=""', 'data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"');
   if (definition.key === "post") {
     html = html.replace("data-blog-post\n", 'data-blog-post data-blog-current-permalink="field-service-routing-guide"\n');
@@ -148,7 +146,9 @@ The page root should provide the standard lab-ui tokens and composition CSS. A r
 Backend contract:
 
 - list: \`POST /core-cms/public/{organization}/blog-post/list.json?locale={locale}\`
-- article body: \`SERVICEWAND_BLOG_POST_BLOG_POST_CONTENT\` with type \`BLOG_POST_CONTENT_SS\`
+- PageContext URL: \`/blog\`
+- article body: \`\${POST@BLOG_POST_CONTENT_SS}\`; \`POST\` is a server-provided runtime value and is intentionally not a BlockTemplate parameter
+- every path segment after \`/blog\` is the BlogPost permalink, including multi-segment values such as \`news/my-post\`
 - localized routes such as \`/fr/blog/{permalink}\` are preserved when article links are built
 - missing display titles are omitted; an internal code, slug, or permalink is never shown as a title
 
