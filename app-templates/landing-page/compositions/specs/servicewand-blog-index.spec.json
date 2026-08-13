@@ -1,6 +1,6 @@
 {
   "$schema": "lab-ui/landing-spec@1",
-  "code": "SERVICEWAND_BLOG_INDEX_PAGE",
+  "code": "FIELD_SERVICE_BLOG_INDEX_PAGE",
   "name": "ServiceWand Blog Index Page",
   "url": "/blog",
   "locale": "en",
@@ -42,8 +42,8 @@
     },
     {
       "block": "blog.index-dynamic",
-      "code": "SERVICEWAND_BLOG_INDEX",
-      "parameterPrefix": "SERVICEWAND_BLOG_INDEX",
+      "code": "FIELD_SERVICE_BLOG_INDEX",
+      "parameterPrefix": "FIELD_SERVICE_BLOG_INDEX",
       "name": "ServiceWand Blog | Index",
       "values": {
         "blog_api_base": "/core-cms",

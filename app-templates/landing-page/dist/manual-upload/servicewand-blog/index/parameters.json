@@ -1,6 +1,6 @@
 [
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_API_BASE",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_API_BASE",
     "type": "STRING",
     "nls": {
       "en": {
@@ -11,7 +11,7 @@
     "value": "/core-cms"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_ORGANIZATION",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_ORGANIZATION",
     "type": "STRING",
     "nls": {
       "en": {
@@ -22,7 +22,7 @@
     "value": "SERVICEWAND"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_CATEGORY_ID",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_CATEGORY_ID",
     "type": "INTEGER",
     "nls": {
       "en": {
@@ -33,7 +33,7 @@
     "value": "1"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_PAGE_SIZE",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_PAGE_SIZE",
     "type": "INTEGER",
     "nls": {
       "en": {
@@ -44,7 +44,7 @@
     "value": "6"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_MAX_RESULTS",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_MAX_RESULTS",
     "type": "INTEGER",
     "nls": {
       "en": {
@@ -55,7 +55,7 @@
     "value": "1000"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_BASE_PATH",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_BASE_PATH",
     "type": "STRING",
     "nls": {
       "en": {
@@ -66,7 +66,7 @@
     "value": "/blog"
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_BLOG_FIXTURE_URL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_FIXTURE_URL",
     "type": "STRING",
     "nls": {
       "en": {
@@ -77,7 +77,7 @@
     "value": ""
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_READ_ARTICLE_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_READ_ARTICLE_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -90,7 +90,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_EMPTY_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_EMPTY_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -103,7 +103,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_ERROR_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_ERROR_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -116,7 +116,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_EYEBROW",
+    "code": "FIELD_SERVICE_BLOG_INDEX_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -129,7 +129,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_TITLE",
+    "code": "FIELD_SERVICE_BLOG_INDEX_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -142,7 +142,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_INTRO_HEADING",
+    "code": "FIELD_SERVICE_BLOG_INDEX_INTRO_HEADING",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -155,7 +155,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_INTRO_BODY",
+    "code": "FIELD_SERVICE_BLOG_INDEX_INTRO_BODY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -168,7 +168,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_SECONDARY_HEADING",
+    "code": "FIELD_SERVICE_BLOG_INDEX_SECONDARY_HEADING",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -181,7 +181,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_SECONDARY_BODY",
+    "code": "FIELD_SERVICE_BLOG_INDEX_SECONDARY_BODY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -194,7 +194,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_LOADING_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_LOADING_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -207,7 +207,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_GRID_ARIA_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_GRID_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
@@ -220,7 +220,7 @@
     }
   },
   {
-    "code": "SERVICEWAND_BLOG_INDEX_LOAD_MORE_LABEL",
+    "code": "FIELD_SERVICE_BLOG_INDEX_LOAD_MORE_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {

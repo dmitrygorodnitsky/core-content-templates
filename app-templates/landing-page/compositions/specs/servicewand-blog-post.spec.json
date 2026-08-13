@@ -1,6 +1,6 @@
 {
   "$schema": "lab-ui/landing-spec@1",
-  "code": "SERVICEWAND_BLOG_POST_PAGE",
+  "code": "FIELD_SERVICE_BLOG_POST_PAGE",
   "name": "ServiceWand Blog Post Page",
   "url": "/blog",
   "locale": "en",
@@ -42,8 +42,8 @@
     },
     {
       "block": "blog.post-dynamic",
-      "code": "SERVICEWAND_BLOG_POST",
-      "parameterPrefix": "SERVICEWAND_BLOG_POST",
+      "code": "FIELD_SERVICE_BLOG_POST",
+      "parameterPrefix": "FIELD_SERVICE_BLOG_POST",
       "name": "ServiceWand Blog | Post",
       "values": {
         "blog_api_base": "/core-cms",

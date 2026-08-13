@@ -2,8 +2,8 @@
 
 This package contains exactly two independent CMS BlockTemplates:
 
-- `index/template.json` → `SERVICEWAND_BLOG_INDEX`
-- `post/template.json` → `SERVICEWAND_BLOG_POST`
+- `index/template.json` → `FIELD_SERVICE_BLOG_INDEX`
+- `post/template.json` → `FIELD_SERVICE_BLOG_POST`
 
 Both templates have `parent: null` and an empty `children` list. Uploading them does not attach them to a root template and does not change root children or PageContext.
 

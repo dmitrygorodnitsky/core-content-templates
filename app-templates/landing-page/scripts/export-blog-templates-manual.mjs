@@ -11,18 +11,18 @@ const stagingRoot = join(labRoot, "dist", ".blog-export-staging");
 const definitions = [
   {
     key: "index",
-    code: "SERVICEWAND_BLOG_INDEX",
+    code: "FIELD_SERVICE_BLOG_INDEX",
     spec: join(labRoot, "compositions", "specs", "servicewand-blog-index.spec.json"),
     build: join(stagingRoot, "index"),
-    child: "02-servicewand-blog-index",
+    child: "02-field-service-blog-index",
     previewTitle: "ServiceWand Blog Index",
   },
   {
     key: "post",
-    code: "SERVICEWAND_BLOG_POST",
+    code: "FIELD_SERVICE_BLOG_POST",
     spec: join(labRoot, "compositions", "specs", "servicewand-blog-post.spec.json"),
     build: join(stagingRoot, "post"),
-    child: "02-servicewand-blog-post",
+    child: "02-field-service-blog-post",
     previewTitle: "ServiceWand Blog Post",
   },
 ];
@@ -134,8 +134,8 @@ function main() {
 
 This package contains exactly two independent CMS BlockTemplates:
 
-- \`index/template.json\` → \`SERVICEWAND_BLOG_INDEX\`
-- \`post/template.json\` → \`SERVICEWAND_BLOG_POST\`
+- \`index/template.json\` → \`FIELD_SERVICE_BLOG_INDEX\`
+- \`post/template.json\` → \`FIELD_SERVICE_BLOG_POST\`
 
 Both templates have \`parent: null\` and an empty \`children\` list. Uploading them does not attach them to a root template and does not change root children or PageContext.
 
