@@ -209,6 +209,9 @@ const templatesFromPayload = (payload) => {
 };
 
 const TEMPLATE_PARAMETER_RE = /\$\{([A-Z][A-Z0-9_]*)(?:>([A-Z][A-Z0-9_]*))?(?:@([A-Z][A-Z0-9_]*)(?::[^}]*)?)?\}/g;
+const SERVER_RUNTIME_PARAMETER_TYPES = new Map([
+  ["POST", "BLOG_POST_CONTENT_SS"],
+]);
 
 const validateTemplateParameterTypes = (templates) => {
   const errors = [];
@@ -219,6 +222,7 @@ const validateTemplateParameterTypes = (templates) => {
       const [, code, parentCode, markerType] = match;
       const parameterType = typesByCode.get(code);
       if (!parameterType) {
+        if (markerType && SERVER_RUNTIME_PARAMETER_TYPES.get(code) === markerType) continue;
         errors.push(`${template.code}: ${code} is referenced but not declared`);
         continue;
       }

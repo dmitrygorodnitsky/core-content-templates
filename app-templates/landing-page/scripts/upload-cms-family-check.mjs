@@ -38,6 +38,7 @@ await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify(
   },
   children: [{
     code: "FIELD_SERVICE_LANDING_HEADER",
+    html: "<article>${POST@BLOG_POST_CONTENT_SS}</article>",
     parameters: [],
     parent: { code: "FIELD_SERVICE_LANDING" },
     slotMarker: "MUST_NOT_BE_SAVED",
@@ -159,6 +160,20 @@ try {
   await assert.rejects(
     execFileAsync(process.execPath, [path.join(scriptsDir, "upload-cms-family.mjs"), "--out", outDir, "--dry-run"], { env }),
     /ROOT_META_TITLE marker is STRING, parameter is LOCALIZED_STRING_SS/,
+  );
+
+  await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
+    schemaVersion: 1,
+    root: {
+      code: "INVALID_SERVER_RUNTIME_PARAMETER",
+      html: "<article>${POST@STRING}</article>",
+      parameters: [],
+    },
+    children: [],
+  }));
+  await assert.rejects(
+    execFileAsync(process.execPath, [path.join(scriptsDir, "upload-cms-family.mjs"), "--out", outDir, "--dry-run"], { env }),
+    /POST is referenced but not declared/,
   );
   console.log("upload-cms-family-check ok: IDs and organization resolved, typed lookups used, parameter contracts checked, relationships stripped, empty values omitted like core-ui");
 } finally {
