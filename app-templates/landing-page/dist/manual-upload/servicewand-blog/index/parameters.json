@@ -27,10 +27,10 @@
     "nls": {
       "en": {
         "NAME": "Blog · Category ID",
-        "DESCRIPTION": "Optional backend blog category ID. Leave empty to show every category."
+        "DESCRIPTION": "Backend blog category ID. Use 0 to show every category."
       }
     },
-    "value": ""
+    "value": "0"
   },
   {
     "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_PAGE_SIZE",

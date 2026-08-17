@@ -18,7 +18,7 @@
   "params": [
     { "code": "blog_api_base", "type": "STRING", "default": "/core-cms", "name": "Blog · API Base", "description": "Core CMS base path used for the public blog-post endpoint.", "preserve_default": true },
     { "code": "blog_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Blog · Organization", "description": "Organization code used in the public Core CMS request.", "preserve_default": true },
-    { "code": "blog_category_id", "type": "INTEGER", "default": "", "name": "Blog · Category ID", "description": "Optional backend blog category ID. Leave empty to show every category.", "preserve_default": true },
+    { "code": "blog_category_id", "type": "INTEGER", "default": "0", "name": "Blog · Category ID", "description": "Backend blog category ID. Use 0 to show every category.", "preserve_default": true },
     { "code": "blog_page_size", "type": "INTEGER", "default": "6", "name": "Blog · Visible Page Size", "description": "Number of cards revealed per page after the featured article.", "preserve_default": true },
     { "code": "blog_max_results", "type": "INTEGER", "default": "1000", "name": "Blog · Maximum Results", "description": "Safety limit for articles loaded from Core CMS.", "preserve_default": true },
     { "code": "blog_base_path", "type": "STRING", "default": "/blog", "name": "Blog · Index Path", "description": "Public localized route used by the blog index.", "preserve_default": true },

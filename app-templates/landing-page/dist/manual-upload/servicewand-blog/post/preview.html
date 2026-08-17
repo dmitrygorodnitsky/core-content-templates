@@ -377,7 +377,7 @@ select {
 <section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post data-blog-current-permalink="field-service-routing-guide"
   data-blog-api-base="/core-cms"
   data-blog-organization="SERVICEWAND"
-  data-blog-category-id=""
+  data-blog-category-id="0"
   data-blog-page-size="100"
   data-blog-max-results="1000"
   data-blog-base-path="/blog"
@@ -529,6 +529,11 @@ select {
     return !url || url === "#" ? "" : url;
   }
 
+  function optionalPositiveId(value) {
+    var id = String(value || "").trim();
+    return Number(id) > 0 ? id : "";
+  }
+
   function localizedApiBase(config) {
     var base = String(config.apiBase || "").replace(/\/+$/, "");
     if (!base.startsWith("/") || base.startsWith("//")) return base;
@@ -542,7 +547,7 @@ select {
     return {
       apiBase: String(data.blogApiBase || "/core-cms").replace(/\/+$/, ""),
       organization: String(data.blogOrganization || "SERVICEWAND").trim(),
-      categoryId: String(data.blogCategoryId || "").trim(),
+      categoryId: optionalPositiveId(data.blogCategoryId),
       pageSize: parsePositive(data.blogPageSize, 12),
       maxResults: parsePositive(data.blogMaxResults, 1000),
       basePath: "/" + (safePath(data.blogBasePath) || "blog"),

@@ -48,7 +48,7 @@
       "values": {
         "blog_api_base": "/core-cms",
         "blog_organization": "SERVICEWAND",
-        "blog_category_id": "",
+        "blog_category_id": "0",
         "blog_page_size": "100",
         "blog_max_results": "1000",
         "blog_base_path": "/blog",

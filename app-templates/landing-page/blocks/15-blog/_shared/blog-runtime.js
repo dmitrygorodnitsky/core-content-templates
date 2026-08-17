@@ -104,6 +104,11 @@
     return !url || url === "#" ? "" : url;
   }
 
+  function optionalPositiveId(value) {
+    var id = String(value || "").trim();
+    return Number(id) > 0 ? id : "";
+  }
+
   function localizedApiBase(config) {
     var base = String(config.apiBase || "").replace(/\/+$/, "");
     if (!base.startsWith("/") || base.startsWith("//")) return base;
@@ -117,7 +122,7 @@
     return {
       apiBase: String(data.blogApiBase || "/core-cms").replace(/\/+$/, ""),
       organization: String(data.blogOrganization || "SERVICEWAND").trim(),
-      categoryId: String(data.blogCategoryId || "").trim(),
+      categoryId: optionalPositiveId(data.blogCategoryId),
       pageSize: parsePositive(data.blogPageSize, 12),
       maxResults: parsePositive(data.blogMaxResults, 1000),
       basePath: "/" + (safePath(data.blogBasePath) || "blog"),
