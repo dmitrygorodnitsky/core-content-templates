@@ -140,6 +140,7 @@
       "/blog-post/list.json";
     return fetch(url, {
       method: "POST",
+      credentials: "omit",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         first: offset,
