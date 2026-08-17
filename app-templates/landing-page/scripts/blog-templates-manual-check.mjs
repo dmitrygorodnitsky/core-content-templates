@@ -80,6 +80,8 @@ assert.match(index.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_INDEX_BLOG
 assert.match(post.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING\}"/);
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
+assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "");
+assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "");
 assert.match(index.javascript, /localeFromPath/);
 assert.match(index.javascript, /localizedApiBase/);
 assert.match(index.javascript, /encodeURIComponent\(normalizeLocale\(config\.locale\) \|\| "en"\)/);

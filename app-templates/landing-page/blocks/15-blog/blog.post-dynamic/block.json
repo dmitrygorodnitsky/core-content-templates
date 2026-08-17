@@ -18,7 +18,7 @@
   "params": [
     { "code": "blog_api_base", "type": "STRING", "default": "/core-cms", "name": "Blog · API Base", "description": "Core CMS base path used for the public blog-post endpoint.", "preserve_default": true },
     { "code": "blog_organization", "type": "STRING", "default": "SERVICEWAND", "name": "Blog · Organization", "description": "Organization code used in the public Core CMS request.", "preserve_default": true },
-    { "code": "blog_category_id", "type": "INTEGER", "default": "1", "name": "Blog · Category ID", "description": "Backend category ID used when resolving the current and related posts.", "preserve_default": true },
+    { "code": "blog_category_id", "type": "INTEGER", "default": "", "name": "Blog · Category ID", "description": "Optional backend category ID used for related posts. Leave empty to use every category.", "preserve_default": true },
     { "code": "blog_page_size", "type": "INTEGER", "default": "100", "name": "Blog · API Page Size", "description": "Number of backend posts requested per page.", "preserve_default": true },
     { "code": "blog_max_results", "type": "INTEGER", "default": "1000", "name": "Blog · Maximum Results", "description": "Safety limit for posts loaded from Core CMS.", "preserve_default": true },
     { "code": "blog_base_path", "type": "STRING", "default": "/blog", "name": "Blog · Index Path", "description": "Public localized route used by the blog index and breadcrumb link.", "preserve_default": true },

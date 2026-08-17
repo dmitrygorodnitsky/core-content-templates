@@ -41,10 +41,10 @@
       "nls": {
         "en": {
           "NAME": "Blog · Category ID",
-          "DESCRIPTION": "Backend category ID used when resolving the current and related posts."
+          "DESCRIPTION": "Optional backend category ID used for related posts. Leave empty to use every category."
         }
       },
-      "value": "1"
+      "value": ""
     },
     {
       "code": "FIELD_SERVICE_BLOG_POST_BLOG_PAGE_SIZE",
