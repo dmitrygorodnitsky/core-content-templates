@@ -82,6 +82,8 @@ assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "");
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "");
+assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_FIXTURE_URL"))?.value, "#");
+assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_FIXTURE_URL"))?.value, "#");
 assert.match(index.javascript, /localeFromPath/);
 assert.match(index.javascript, /localizedApiBase/);
 assert.match(index.javascript, /credentials:\s*"omit"/);

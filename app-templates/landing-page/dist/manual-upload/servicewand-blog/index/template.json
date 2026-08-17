@@ -96,10 +96,10 @@
       "nls": {
         "en": {
           "NAME": "Blog · Fixture URL",
-          "DESCRIPTION": "Local preview-only JSON URL. Keep empty in CMS production."
+          "DESCRIPTION": "Local preview-only JSON URL. Use # in CMS to disable fixture loading."
         }
       },
-      "value": ""
+      "value": "#"
     },
     {
       "code": "FIELD_SERVICE_BLOG_INDEX_READ_ARTICLE_LABEL",

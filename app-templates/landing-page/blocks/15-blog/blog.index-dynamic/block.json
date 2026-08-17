@@ -23,7 +23,7 @@
     { "code": "blog_max_results", "type": "INTEGER", "default": "1000", "name": "Blog · Maximum Results", "description": "Safety limit for articles loaded from Core CMS.", "preserve_default": true },
     { "code": "blog_base_path", "type": "STRING", "default": "/blog", "name": "Blog · Index Path", "description": "Public localized route used by the blog index.", "preserve_default": true },
     { "code": "blog_post_path", "type": "STRING", "default": "/post", "name": "Blog · Post Path", "description": "Public localized route prefix used when building article links.", "preserve_default": true },
-    { "code": "blog_fixture_url", "type": "STRING", "default": "", "name": "Blog · Fixture URL", "description": "Local preview-only JSON URL. Keep empty in CMS production.", "preserve_default": true },
+    { "code": "blog_fixture_url", "type": "STRING", "default": "#", "name": "Blog · Fixture URL", "description": "Local preview-only JSON URL. Use # in CMS to disable fixture loading.", "preserve_default": true },
     { "code": "eyebrow", "type": "LOCALIZED_STRING_SS", "default": "ServiceWand insights", "name": "Blog Index · Eyebrow", "description": "Short label above the page heading.", "preserve_default": true },
     { "code": "title", "type": "LOCALIZED_STRING_SS", "default": "Ideas for field service teams that are ready to grow", "name": "Blog Index · H1", "description": "Primary blog index heading.", "preserve_default": true },
     { "code": "intro_heading", "type": "LOCALIZED_STRING_SS", "default": "Build a clearer, faster field operation", "name": "Blog Index · Intro H2", "description": "First SEO introduction heading.", "preserve_default": true },
