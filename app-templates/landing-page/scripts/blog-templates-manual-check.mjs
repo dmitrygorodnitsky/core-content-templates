@@ -80,5 +80,7 @@ assert.match(post.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_POST_BLOG_P
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.match(index.javascript, /localeFromPath/);
+assert.match(index.javascript, /localizedApiBase/);
+assert.match(index.javascript, /encodeURIComponent\(normalizeLocale\(config\.locale\) \|\| "en"\)/);
 
 console.log(`blog-templates-manual-check ok: ${firstDigest.slice(0, 12)}`);

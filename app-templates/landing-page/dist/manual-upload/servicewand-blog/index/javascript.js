@@ -100,6 +100,14 @@
     return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
   }
 
+  function localizedApiBase(config) {
+    var base = String(config.apiBase || "").replace(/\/+$/, "");
+    if (!base.startsWith("/") || base.startsWith("//")) return base;
+    var first = base.split("/").filter(Boolean)[0] || "";
+    if (KNOWN_LOCALES.indexOf(normalizeLocale(first)) >= 0) return base;
+    return "/" + encodeURIComponent(normalizeLocale(config.locale) || "en") + base;
+  }
+
   function configFrom(root) {
     var data = root.dataset || {};
     return {
@@ -128,7 +136,7 @@
         value: config.categoryId
       });
     }
-    var url = config.apiBase + "/public/" + encodeURIComponent(config.organization) +
+    var url = localizedApiBase(config) + "/public/" + encodeURIComponent(config.organization) +
       "/blog-post/list.json?locale=" + encodeURIComponent(config.locale);
     return fetch(url, {
       method: "POST",
