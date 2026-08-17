@@ -555,14 +555,41 @@
     return heading ? String(heading.textContent || "").trim() : "";
   }
 
-  function setMeta(name, value) {
+  function documentPost(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    if (!documentRoot) return null;
+    var heading = documentRoot.querySelector("h1");
+    var summary = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
+    var image = documentRoot.querySelector("img");
+    var title = heading ? String(heading.textContent || "").trim() : "";
+    if (!title) return null;
+    return {
+      title: title,
+      summary: summary ? String(summary.textContent || "").trim() : "",
+      imageUrl: image ? image.currentSrc || image.src : "",
+      imageAlt: image ? String(image.alt || "").trim() : "",
+      publishedAt: "",
+      author: ""
+    };
+  }
+
+  function setNamedMeta(name, value) {
     if (!value) return;
-    var selector = name === "description" ? 'meta[name="description"]' : 'meta[property="' + name + '"]';
-    var node = document.head.querySelector(selector);
+    var node = document.head.querySelector('meta[name="' + name + '"]');
     if (!node) {
       node = document.createElement("meta");
-      if (name === "description") node.name = name;
-      else node.setAttribute("property", name);
+      node.name = name;
+      document.head.appendChild(node);
+    }
+    node.content = value;
+  }
+
+  function setPropertyMeta(property, value) {
+    if (!value) return;
+    var node = document.head.querySelector('meta[property="' + property + '"]');
+    if (!node) {
+      node = document.createElement("meta");
+      node.setAttribute("property", property);
       document.head.appendChild(node);
     }
     node.content = value;
@@ -579,12 +606,20 @@
   }
 
   function applySeo(root, post) {
+    if (!post || !post.title) return;
+    var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
     document.title = post.title;
-    setMeta("description", post.summary);
-    setMeta("og:title", post.title);
-    setMeta("og:description", post.summary);
-    if (post.imageUrl) setMeta("og:image", post.imageUrl);
-    setCanonical(window.location.href.split("?")[0].split("#")[0]);
+    setNamedMeta("description", post.summary);
+    setPropertyMeta("og:type", "article");
+    setPropertyMeta("og:title", post.title);
+    setPropertyMeta("og:description", post.summary);
+    setPropertyMeta("og:url", canonicalUrl);
+    if (post.imageUrl) setPropertyMeta("og:image", post.imageUrl);
+    setNamedMeta("twitter:card", post.imageUrl ? "summary_large_image" : "summary");
+    setNamedMeta("twitter:title", post.title);
+    setNamedMeta("twitter:description", post.summary);
+    if (post.imageUrl) setNamedMeta("twitter:image", post.imageUrl);
+    setCanonical(canonicalUrl);
     var schema = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -593,7 +628,8 @@
       datePublished: post.publishedAt || undefined,
       author: post.author ? { "@type": "Organization", name: post.author } : undefined,
       image: post.imageUrl || undefined,
-      mainEntityOfPage: window.location.href.split("#")[0]
+      mainEntityOfPage: canonicalUrl,
+      url: canonicalUrl
     };
     Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
     var node = root.querySelector("[data-blog-article-schema]");
@@ -642,8 +678,20 @@
   }
 
   function init(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    try {
+      renderServerMarkdown(root);
+      var initialPost = documentPost(root);
+      if (initialPost) applySeo(root, initialPost);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (documentRoot) {
+        documentRoot.setAttribute("data-blog-render-state", "ready");
+        documentRoot.removeAttribute("aria-busy");
+      }
+    }
     if (!window.LabBlog) return;
-    renderServerMarkdown(root);
     var config = window.LabBlog.configFrom(root);
     var indexLink = root.querySelector("[data-blog-index-link]");
     if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);

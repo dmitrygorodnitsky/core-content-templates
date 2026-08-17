@@ -328,6 +328,8 @@ select {
 .blog-post-page__hero img { width: 100%; height: 100%; object-fit: cover; }
 
 .blog-post-page__document { width: min(100%, 52rem); margin: clamp(3rem, 7vw, 6.5rem) auto 0; font-size: clamp(1rem, 1.25vw, 1.18rem); line-height: 1.75; }
+.blog-post-page__document[data-blog-render-state="pending"] { visibility: hidden; }
+.blog-post-page__document[data-blog-render-state="ready"] { visibility: visible; }
 .blog-post-page__document .blog-post > .summary { margin: 0 0 2.5rem; padding: 0 0 2rem; border-bottom: 1px solid rgba(92, 100, 116, 0.2); color: var(--color-gray-blue); font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.55; }
 .blog-post-page__document h1 { margin: 0 0 2rem; color: var(--color-heading); font-size: clamp(2.8rem, 6vw, 6rem); font-weight: 600; line-height: 0.98; letter-spacing: -0.055em; }
 .blog-post-page__document h2 { margin: 4rem 0 1rem; color: var(--color-heading); font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.06; letter-spacing: -0.04em; }
@@ -395,7 +397,7 @@ select {
     <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
     <div class="blog-post-page__hero" data-blog-current-image hidden></div>
 
-    <article class="blog-post-page__document" data-blog-document>
+    <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">
       <div class="blog-post">
   <h1>A practical guide to field service routing</h1>
   <p class="summary">Reliable routes start with clear operational inputs—not with a map full of pins.</p>
@@ -979,14 +981,41 @@ select {
     return heading ? String(heading.textContent || "").trim() : "";
   }
 
-  function setMeta(name, value) {
+  function documentPost(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    if (!documentRoot) return null;
+    var heading = documentRoot.querySelector("h1");
+    var summary = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
+    var image = documentRoot.querySelector("img");
+    var title = heading ? String(heading.textContent || "").trim() : "";
+    if (!title) return null;
+    return {
+      title: title,
+      summary: summary ? String(summary.textContent || "").trim() : "",
+      imageUrl: image ? image.currentSrc || image.src : "",
+      imageAlt: image ? String(image.alt || "").trim() : "",
+      publishedAt: "",
+      author: ""
+    };
+  }
+
+  function setNamedMeta(name, value) {
     if (!value) return;
-    var selector = name === "description" ? 'meta[name="description"]' : 'meta[property="' + name + '"]';
-    var node = document.head.querySelector(selector);
+    var node = document.head.querySelector('meta[name="' + name + '"]');
     if (!node) {
       node = document.createElement("meta");
-      if (name === "description") node.name = name;
-      else node.setAttribute("property", name);
+      node.name = name;
+      document.head.appendChild(node);
+    }
+    node.content = value;
+  }
+
+  function setPropertyMeta(property, value) {
+    if (!value) return;
+    var node = document.head.querySelector('meta[property="' + property + '"]');
+    if (!node) {
+      node = document.createElement("meta");
+      node.setAttribute("property", property);
       document.head.appendChild(node);
     }
     node.content = value;
@@ -1003,12 +1032,20 @@ select {
   }
 
   function applySeo(root, post) {
+    if (!post || !post.title) return;
+    var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
     document.title = post.title;
-    setMeta("description", post.summary);
-    setMeta("og:title", post.title);
-    setMeta("og:description", post.summary);
-    if (post.imageUrl) setMeta("og:image", post.imageUrl);
-    setCanonical(window.location.href.split("?")[0].split("#")[0]);
+    setNamedMeta("description", post.summary);
+    setPropertyMeta("og:type", "article");
+    setPropertyMeta("og:title", post.title);
+    setPropertyMeta("og:description", post.summary);
+    setPropertyMeta("og:url", canonicalUrl);
+    if (post.imageUrl) setPropertyMeta("og:image", post.imageUrl);
+    setNamedMeta("twitter:card", post.imageUrl ? "summary_large_image" : "summary");
+    setNamedMeta("twitter:title", post.title);
+    setNamedMeta("twitter:description", post.summary);
+    if (post.imageUrl) setNamedMeta("twitter:image", post.imageUrl);
+    setCanonical(canonicalUrl);
     var schema = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -1017,7 +1054,8 @@ select {
       datePublished: post.publishedAt || undefined,
       author: post.author ? { "@type": "Organization", name: post.author } : undefined,
       image: post.imageUrl || undefined,
-      mainEntityOfPage: window.location.href.split("#")[0]
+      mainEntityOfPage: canonicalUrl,
+      url: canonicalUrl
     };
     Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
     var node = root.querySelector("[data-blog-article-schema]");
@@ -1066,8 +1104,20 @@ select {
   }
 
   function init(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    try {
+      renderServerMarkdown(root);
+      var initialPost = documentPost(root);
+      if (initialPost) applySeo(root, initialPost);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      if (documentRoot) {
+        documentRoot.setAttribute("data-blog-render-state", "ready");
+        documentRoot.removeAttribute("aria-busy");
+      }
+    }
     if (!window.LabBlog) return;
-    renderServerMarkdown(root);
     var config = window.LabBlog.configFrom(root);
     var indexLink = root.querySelector("[data-blog-index-link]");
     if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);
