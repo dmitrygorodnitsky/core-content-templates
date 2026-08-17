@@ -1067,7 +1067,7 @@ select {
     if (title) title.textContent = post.title;
     var meta = root.querySelector("[data-blog-current-meta]");
     var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
-    [post.category, date, post.readTime, post.author].filter(Boolean).forEach(function (value) {
+    [date, post.readTime, post.author].filter(Boolean).forEach(function (value) {
       meta.appendChild(element("span", "blog-post-page__meta-item", value));
     });
     meta.hidden = meta.children.length === 0;
