@@ -85,6 +85,7 @@ assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_C
 assert.match(index.javascript, /localeFromPath/);
 assert.match(index.javascript, /localizedApiBase/);
 assert.match(index.javascript, /credentials:\s*"omit"/);
+assert.match(index.javascript, /url === "#" \? "" : url/);
 assert.match(index.javascript, /encodeURIComponent\(normalizeLocale\(config\.locale\) \|\| "en"\)/);
 
 console.log(`blog-templates-manual-check ok: ${firstDigest.slice(0, 12)}`);

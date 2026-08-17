@@ -99,6 +99,11 @@
     return Number.isFinite(number) && number > 0 ? Math.floor(number) : fallback;
   }
 
+  function optionalFixtureUrl(value) {
+    var url = String(value || "").trim();
+    return !url || url === "#" ? "" : url;
+  }
+
   function localizedApiBase(config) {
     var base = String(config.apiBase || "").replace(/\/+$/, "");
     if (!base.startsWith("/") || base.startsWith("//")) return base;
@@ -117,7 +122,7 @@
       maxResults: parsePositive(data.blogMaxResults, 1000),
       basePath: "/" + (safePath(data.blogBasePath) || "blog"),
       postPath: "/" + (safePath(data.blogPostPath) || safePath(data.blogBasePath) || "post"),
-      fixtureUrl: String(data.blogFixtureUrl || "").trim(),
+      fixtureUrl: optionalFixtureUrl(data.blogFixtureUrl),
       locale: getLocale()
     };
   }
