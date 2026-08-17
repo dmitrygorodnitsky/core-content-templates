@@ -31,6 +31,9 @@
 .blog-post-page__document a { color: var(--color-text-accent, #168c9b); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
 .blog-post-page__document blockquote { margin-inline: -3rem; padding: 2rem 3rem; border-left: 0.25rem solid var(--color-text-accent, #2499a8); border-radius: 0 1.5rem 1.5rem 0; background: var(--color-gray-bg); color: var(--color-heading); font-size: 1.25em; line-height: 1.5; }
 .blog-post-page__document img { width: calc(100% + 12rem); max-width: none; margin: 3rem -6rem; border-radius: 2rem; }
+.blog-post-page__document hr { height: 1px; margin: 3rem 0; border: 0; background: rgba(92, 100, 116, 0.2); }
+.blog-post-page__document :not(pre) > code { padding: 0.15em 0.4em; border-radius: 0.35em; background: var(--color-gray-bg); font-family: var(--font-mono); font-size: 0.9em; }
+.blog-post-page__document pre { overflow-x: auto; margin: 2rem 0; padding: 1.4rem 1.6rem; border-radius: 1rem; background: var(--color-gray-bg); font-family: var(--font-mono); font-size: 0.9em; line-height: 1.55; white-space: pre; }
 .blog-post-page__document:empty { display: none; }
 
 .blog-post-page__related { margin-top: clamp(5rem, 10vw, 10rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid rgba(92, 100, 116, 0.18); }

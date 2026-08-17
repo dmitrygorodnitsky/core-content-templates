@@ -2,7 +2,7 @@
   "$schema": "lab-ui/landing-spec@1",
   "code": "FIELD_SERVICE_BLOG_POST_PAGE",
   "name": "ServiceWand Blog Post Page",
-  "url": "/blog",
+  "url": "/post",
   "locale": "en",
   "topic": "blog-post",
   "theme": "light",
@@ -11,7 +11,7 @@
   "sourceReference": {
     "kind": "core-cms-blog-contract",
     "path": "cms-templates/BLOG_POST_JTE/block_template_config.json",
-    "note": "The PageContext is registered at /blog. Core CMS resolves the complete remaining path as a possibly multi-segment BlogPost permalink and exposes the selected post as POST; POST@BLOG_POST_CONTENT_SS renders its localized body server-side."
+    "note": "The PageContext is registered at /post. Core CMS resolves the complete remaining path as a possibly multi-segment BlogPost permalink and exposes the selected post as POST; POST@BLOG_POST_CONTENT_SS renders its localized body server-side. Markdown content currently arrives as pre/code and is converted to semantic DOM by the client runtime."
   },
   "sections": [
     {
@@ -52,6 +52,7 @@
         "blog_page_size": "100",
         "blog_max_results": "1000",
         "blog_base_path": "/blog",
+        "blog_post_path": "/post",
         "blog_fixture_url": "",
         "related_limit": "3"
       }

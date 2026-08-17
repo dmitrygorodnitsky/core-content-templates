@@ -59,11 +59,22 @@
     "type": "STRING",
     "nls": {
       "en": {
-        "NAME": "Blog · Public Base Path",
-        "DESCRIPTION": "Public localized route used when building article links."
+        "NAME": "Blog · Index Path",
+        "DESCRIPTION": "Public localized route used by the blog index."
       }
     },
     "value": "/blog"
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_POST_PATH",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Blog · Post Path",
+        "DESCRIPTION": "Public localized route prefix used when building article links."
+      }
+    },
+    "value": "/post"
   },
   {
     "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_FIXTURE_URL",

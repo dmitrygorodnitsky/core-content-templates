@@ -52,6 +52,7 @@
         "blog_page_size": "6",
         "blog_max_results": "1000",
         "blog_base_path": "/blog",
+        "blog_post_path": "/post",
         "blog_fixture_url": ""
       }
     },

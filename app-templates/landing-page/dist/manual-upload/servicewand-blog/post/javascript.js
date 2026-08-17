@@ -109,6 +109,7 @@
       pageSize: parsePositive(data.blogPageSize, 12),
       maxResults: parsePositive(data.blogMaxResults, 1000),
       basePath: "/" + (safePath(data.blogBasePath) || "blog"),
+      postPath: "/" + (safePath(data.blogPostPath) || safePath(data.blogBasePath) || "post"),
       fixtureUrl: String(data.blogFixtureUrl || "").trim(),
       locale: getLocale()
     };
@@ -173,13 +174,15 @@
   }
 
   function buildPostUrl(post, config) {
-    return buildIndexUrl(config) + "/" + post.permalink;
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.postPath + "/" + post.permalink;
   }
 
   function currentPermalink(config) {
     var parts = String(global.location && global.location.pathname || "").split("/").filter(Boolean);
     if (parts.length && KNOWN_LOCALES.indexOf(normalizeLocale(parts[0])) >= 0) parts.shift();
-    var base = config.basePath.split("/").filter(Boolean);
+    var base = config.postPath.split("/").filter(Boolean);
     for (var i = 0; i <= parts.length - base.length; i += 1) {
       if (base.every(function (part, offset) { return parts[i + offset] === part; })) {
         return parts.slice(i + base.length).map(decodeURIComponent).join("/");
@@ -223,6 +226,238 @@
     if (className) node.className = className;
     if (text) node.textContent = text;
     return node;
+  }
+
+  function safeUrl(value, image) {
+    var source = String(value || "").trim();
+    if (!source || /^javascript:/i.test(source) || /^data:/i.test(source)) return "";
+    try {
+      var url = new URL(source, window.location.href);
+      if (["http:", "https:"].indexOf(url.protocol) >= 0) return source;
+      if (!image && ["mailto:", "tel:"].indexOf(url.protocol) >= 0) return source;
+    } catch (error) {
+      return "";
+    }
+    return "";
+  }
+
+  function appendInlineMarkdown(target, source) {
+    var remaining = String(source || "");
+    var match;
+    while (remaining) {
+      match = remaining.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
+      if (match) {
+        var imageUrl = safeUrl(match[2], true);
+        if (imageUrl) {
+          var image = document.createElement("img");
+          image.src = imageUrl;
+          image.alt = match[1];
+          image.loading = "lazy";
+          image.decoding = "async";
+          if (match[3]) image.title = match[3];
+          target.appendChild(image);
+        } else {
+          target.appendChild(document.createTextNode(match[1]));
+        }
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
+      if (match) {
+        var linkUrl = safeUrl(match[2], false);
+        if (linkUrl) {
+          var link = document.createElement("a");
+          link.href = linkUrl;
+          if (match[3]) link.title = match[3];
+          appendInlineMarkdown(link, match[1]);
+          target.appendChild(link);
+        } else {
+          target.appendChild(document.createTextNode(match[1]));
+        }
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^`([^`]+)`/);
+      if (match) {
+        target.appendChild(element("code", "", match[1]));
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^(?:\*\*|__)(.+?)(?:\*\*|__)/);
+      if (match) {
+        var strong = document.createElement("strong");
+        appendInlineMarkdown(strong, match[1]);
+        target.appendChild(strong);
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^(?:\*|_)([^*_]+?)(?:\*|_)/);
+      if (match) {
+        var emphasis = document.createElement("em");
+        appendInlineMarkdown(emphasis, match[1]);
+        target.appendChild(emphasis);
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^<((?:https?:\/\/|mailto:)[^>]+)>/i);
+      if (match) {
+        var autoUrl = safeUrl(match[1], false);
+        var autoLink = document.createElement("a");
+        autoLink.href = autoUrl;
+        autoLink.textContent = match[1];
+        target.appendChild(autoLink);
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      match = remaining.match(/^\\([\\`*_[\]{}()#+\-.!>])/);
+      if (match) {
+        target.appendChild(document.createTextNode(match[1]));
+        remaining = remaining.slice(match[0].length);
+        continue;
+      }
+      target.appendChild(document.createTextNode(remaining.charAt(0)));
+      remaining = remaining.slice(1);
+    }
+  }
+
+  function markdownFragment(source) {
+    var fragment = document.createDocumentFragment();
+    var lines = String(source || "").replace(/\r\n?/g, "\n").split("\n");
+    var paragraph = [];
+    var list = null;
+    var quote = [];
+    var code = null;
+    var codeLanguage = "";
+
+    function appendTextBlock(tag, values) {
+      if (!values.length) return;
+      var node = document.createElement(tag);
+      appendInlineMarkdown(node, values.join(" ").trim());
+      fragment.appendChild(node);
+      values.length = 0;
+    }
+
+    function flushParagraph() {
+      appendTextBlock("p", paragraph);
+    }
+
+    function flushQuote() {
+      appendTextBlock("blockquote", quote);
+    }
+
+    function closeList() {
+      list = null;
+    }
+
+    lines.forEach(function (line) {
+      var match;
+      if (code) {
+        if (/^\s*```\s*$/.test(line)) {
+          var pre = document.createElement("pre");
+          var codeNode = document.createElement("code");
+          codeNode.textContent = code.join("\n");
+          if (codeLanguage) codeNode.className = "language-" + codeLanguage;
+          pre.appendChild(codeNode);
+          fragment.appendChild(pre);
+          code = null;
+          codeLanguage = "";
+        } else {
+          code.push(line);
+        }
+        return;
+      }
+
+      match = line.match(/^\s*```([A-Za-z0-9_-]*)\s*$/);
+      if (match) {
+        flushParagraph();
+        flushQuote();
+        closeList();
+        code = [];
+        codeLanguage = match[1];
+        return;
+      }
+      if (!line.trim()) {
+        flushParagraph();
+        flushQuote();
+        closeList();
+        return;
+      }
+      match = line.match(/^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
+      if (match) {
+        flushParagraph();
+        flushQuote();
+        closeList();
+        var heading = document.createElement("h" + match[1].length);
+        appendInlineMarkdown(heading, match[2]);
+        fragment.appendChild(heading);
+        return;
+      }
+      if (/^\s{0,3}(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
+        flushParagraph();
+        flushQuote();
+        closeList();
+        fragment.appendChild(document.createElement("hr"));
+        return;
+      }
+      match = line.match(/^\s*>\s?(.*)$/);
+      if (match) {
+        flushParagraph();
+        closeList();
+        quote.push(match[1]);
+        return;
+      }
+      match = line.match(/^\s*[-+*]\s+(.+)$/);
+      if (match) {
+        flushParagraph();
+        flushQuote();
+        if (!list || list.tagName !== "UL") {
+          list = document.createElement("ul");
+          fragment.appendChild(list);
+        }
+        var unorderedItem = document.createElement("li");
+        appendInlineMarkdown(unorderedItem, match[1]);
+        list.appendChild(unorderedItem);
+        return;
+      }
+      match = line.match(/^\s*\d+[.)]\s+(.+)$/);
+      if (match) {
+        flushParagraph();
+        flushQuote();
+        if (!list || list.tagName !== "OL") {
+          list = document.createElement("ol");
+          fragment.appendChild(list);
+        }
+        var orderedItem = document.createElement("li");
+        appendInlineMarkdown(orderedItem, match[1]);
+        list.appendChild(orderedItem);
+        return;
+      }
+      flushQuote();
+      closeList();
+      paragraph.push(line.trim());
+    });
+
+    if (code) paragraph.push("```" + codeLanguage, code.join("\n"));
+    flushParagraph();
+    flushQuote();
+    return fragment;
+  }
+
+  function renderServerMarkdown(root) {
+    var documentRoot = root.querySelector("[data-blog-document]");
+    if (!documentRoot) return;
+    documentRoot.querySelectorAll(".blog-post > .content").forEach(function (content) {
+      var pre = content.querySelector(":scope > pre");
+      if (!pre) return;
+      var meaningfulSiblings = Array.from(content.children).filter(function (child) {
+        return child !== pre && String(child.textContent || "").trim();
+      });
+      if (meaningfulSiblings.length) return;
+      var source = String((pre.querySelector("code") || pre).textContent || "").trim();
+      if (!source) return;
+      content.replaceChildren(markdownFragment(source));
+      content.setAttribute("data-blog-markdown-rendered", "true");
+    });
   }
 
   function serverRenderedTitle(root) {
@@ -318,6 +553,7 @@
 
   function init(root) {
     if (!window.LabBlog) return;
+    renderServerMarkdown(root);
     var config = window.LabBlog.configFrom(root);
     var indexLink = root.querySelector("[data-blog-index-link]");
     if (indexLink) indexLink.href = window.LabBlog.buildIndexUrl(config);

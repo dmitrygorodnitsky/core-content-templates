@@ -109,6 +109,7 @@
       pageSize: parsePositive(data.blogPageSize, 12),
       maxResults: parsePositive(data.blogMaxResults, 1000),
       basePath: "/" + (safePath(data.blogBasePath) || "blog"),
+      postPath: "/" + (safePath(data.blogPostPath) || safePath(data.blogBasePath) || "post"),
       fixtureUrl: String(data.blogFixtureUrl || "").trim(),
       locale: getLocale()
     };
@@ -173,13 +174,15 @@
   }
 
   function buildPostUrl(post, config) {
-    return buildIndexUrl(config) + "/" + post.permalink;
+    var locale = config.locale || "";
+    var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
+    return prefix + config.postPath + "/" + post.permalink;
   }
 
   function currentPermalink(config) {
     var parts = String(global.location && global.location.pathname || "").split("/").filter(Boolean);
     if (parts.length && KNOWN_LOCALES.indexOf(normalizeLocale(parts[0])) >= 0) parts.shift();
-    var base = config.basePath.split("/").filter(Boolean);
+    var base = config.postPath.split("/").filter(Boolean);
     for (var i = 0; i <= parts.length - base.length; i += 1) {
       if (base.every(function (part, offset) { return parts[i + offset] === part; })) {
         return parts.slice(i + base.length).map(decodeURIComponent).join("/");

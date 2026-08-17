@@ -14,10 +14,11 @@ The page root should provide the standard lab-ui tokens and composition CSS. A r
 Backend contract:
 
 - list: `POST /core-cms/public/{organization}/blog-post/list.json?locale={locale}`
-- PageContext URL: `/blog`
+- PageContext URLs: `/blog` for the index and `/post` for individual articles
 - article body: `${POST@BLOG_POST_CONTENT_SS}`; `POST` is a server-provided runtime value and is intentionally not a BlockTemplate parameter
-- every path segment after `/blog` is the BlogPost permalink, including multi-segment values such as `news/my-post`
-- localized routes such as `/fr/blog/{permalink}` are preserved when article links are built
+- every path segment after `/post` is the BlogPost permalink, including multi-segment values such as `news/my-post`
+- localized routes such as `/fr/post/{permalink}` are preserved when article links are built
+- until Core CMS renders Markdown semantically, a client fallback converts its `pre > code` wrapper into headings, paragraphs, lists, links, quotes, and code blocks
 - missing display titles are omitted; an internal code, slug, or permalink is never shown as a title
 
 The fixture URL parameter must remain empty in CMS production. It exists only for deterministic local previews.

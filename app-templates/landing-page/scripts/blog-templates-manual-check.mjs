@@ -73,6 +73,12 @@ assert.doesNotMatch(postPreview, /\$\{POST@BLOG_POST_CONTENT_SS\}/);
 assert.match(postPreview, /<h1>A practical guide to field service routing<\/h1>/);
 assert.match(post.javascript, /currentPermalink/);
 assert.match(post.javascript, /serverRenderedTitle/);
+assert.match(post.javascript, /renderServerMarkdown/);
+assert.match(post.javascript, /markdownFragment/);
+assert.match(index.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_INDEX_BLOG_POST_PATH@STRING\}"/);
+assert.match(post.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING\}"/);
+assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
+assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.match(index.javascript, /localeFromPath/);
 
 console.log(`blog-templates-manual-check ok: ${firstDigest.slice(0, 12)}`);
