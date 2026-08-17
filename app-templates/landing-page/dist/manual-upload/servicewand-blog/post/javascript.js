@@ -137,7 +137,7 @@
       });
     }
     var url = localizedApiBase(config) + "/public/" + encodeURIComponent(config.organization) +
-      "/blog-post/list.json?locale=" + encodeURIComponent(config.locale);
+      "/blog-post/list.json";
     return fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },

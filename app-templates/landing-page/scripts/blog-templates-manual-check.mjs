@@ -48,7 +48,8 @@ assert.deepEqual([payload.root.code, ...payload.children.map((template) => templ
 for (const template of [index, post]) {
   assert.equal(template.parent, null, `${template.code} must not change a root parent`);
   assert.deepEqual(template.children, [], `${template.code} must not change root children`);
-  assert.match(template.javascript, /blog-post\/list\.json\?locale=/);
+  assert.match(template.javascript, /blog-post\/list\.json/);
+  assert.doesNotMatch(template.javascript, /blog-post\/list\.json\?locale=/);
   assert.doesNotMatch(template.javascript, /Untitled post|post\.slug \|\| post\.permalink/);
   assert.doesNotMatch(JSON.stringify(template), /Lorem Ipsum/i);
 }

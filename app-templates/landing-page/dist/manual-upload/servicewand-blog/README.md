@@ -13,7 +13,7 @@ The page root should provide the standard lab-ui tokens and composition CSS. A r
 
 Backend contract:
 
-- list: `POST /core-cms/public/{organization}/blog-post/list.json?locale={locale}`
+- list: `POST /{locale}/core-cms/public/{organization}/blog-post/list.json`; locale must stay in the path because adding `?locale=` triggers a redirect that changes POST to GET
 - PageContext URLs: `/blog` for the index and `/post` for individual articles
 - article body: `${POST@BLOG_POST_CONTENT_SS}`; `POST` is a server-provided runtime value and is intentionally not a BlockTemplate parameter
 - every path segment after `/post` is the BlogPost permalink, including multi-segment values such as `news/my-post`
