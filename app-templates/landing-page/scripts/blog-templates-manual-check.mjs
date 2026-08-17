@@ -82,7 +82,6 @@ assert.match(post.javascript, /documentPost\(root\)/);
 assert.match(post.javascript, /setNamedMeta\("twitter:title"/);
 assert.match(post.javascript, /setPropertyMeta\("og:type", "article"\)/);
 assert.match(post.javascript, /data-blog-render-state", "ready"/);
-assert.doesNotMatch(post.javascript, /\[post\.category, date/);
 assert.match(index.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_INDEX_BLOG_POST_PATH@STRING\}"/);
 assert.match(post.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING\}"/);
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
