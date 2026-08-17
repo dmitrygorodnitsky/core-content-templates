@@ -494,7 +494,7 @@ select {
     var title = firstText(metadata, ["TITLE", "title", "META_TITLE", "metaTitle"], locale) ||
       firstText(post, ["title", "name"], locale);
     var permalink = safePath(post.permalink || post.slug);
-    if (!title || !permalink) return null;
+    if (!permalink) return null;
 
     var summary = localizedText(post.summary, locale, "") ||
       firstText(metadata, ["SUMMARY", "summary", "META_DESCRIPTION", "metaDescription", "DESCRIPTION"], locale);
@@ -503,12 +503,20 @@ select {
     var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
       firstText(post, ["imageUrl", "coverUrl"], locale);
     var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
+    var category = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
+    if (!category && Array.isArray(post.categories)) {
+      for (var i = 0; i < post.categories.length && !category; i += 1) {
+        var categoryNls = post.categories[i] && post.categories[i].nls;
+        var localizedCategory = categoryNls && (categoryNls[normalizeLocale(locale)] || categoryNls.en);
+        category = firstText(localizedCategory, ["NAME", "name"], locale);
+      }
+    }
     return {
       id: String(post.id || ""),
       permalink: permalink,
       title: title,
       summary: summary,
-      category: firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale),
+      category: category,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
       publishedAt: publishedAt,
       readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
@@ -591,6 +599,67 @@ select {
     return response.json();
   }
 
+  function detailsFromMarkdown(source) {
+    var lines = String(source || "").replace(/\r/g, "").split("\n");
+    var title = "";
+    var summary = "";
+    for (var i = 0; i < lines.length; i += 1) {
+      var line = lines[i].trim();
+      if (!title) {
+        var heading = line.match(/^#\s+(.+)$/);
+        if (heading) title = heading[1].trim();
+        continue;
+      }
+      if (!line || /^(?:#{1,6}\s|[-*+]\s|>\s|```)/.test(line)) continue;
+      summary = line;
+      break;
+    }
+    return { title: title, summary: summary };
+  }
+
+  function detailsFromPostHtml(html) {
+    var parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
+    var documentRoot = parsed.querySelector("[data-blog-document]") || parsed.querySelector(".blog-post");
+    if (!documentRoot) return { title: "", summary: "" };
+    var titleNode = documentRoot.querySelector("h1");
+    var summaryNode = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
+    var details = {
+      title: titleNode ? titleNode.textContent.trim() : "",
+      summary: summaryNode ? summaryNode.textContent.trim() : ""
+    };
+    if (!details.title) {
+      var markdownNode = documentRoot.querySelector("pre code");
+      if (markdownNode) details = detailsFromMarkdown(markdownNode.textContent);
+    }
+    return details;
+  }
+
+  function hydratePost(post, config) {
+    if (post.title && post.summary) return Promise.resolve(post);
+    return fetch(buildPostUrl(post, config), {
+      credentials: "omit",
+      headers: { Accept: "text/html" }
+    }).then(function (response) {
+      if (!response.ok) throw new Error("Blog post request failed: " + response.status);
+      return response.text();
+    }).then(function (html) {
+      var details = detailsFromPostHtml(html);
+      post.title = post.title || details.title;
+      post.summary = post.summary || details.summary;
+      return post;
+    }).catch(function () {
+      return post;
+    });
+  }
+
+  function hydratePosts(posts, config) {
+    return Promise.all(posts.map(function (post) {
+      return hydratePost(post, config);
+    })).then(function (hydrated) {
+      return hydrated.filter(function (post) { return Boolean(post.title); });
+    });
+  }
+
   function loadPosts(config) {
     var collected = [];
     function next(offset) {
@@ -603,7 +672,9 @@ select {
         var total = Number(data.resultSize || data.total || result.length);
         var done = config.fixtureUrl || result.length === 0 || collected.length >= total ||
           collected.length >= config.maxResults;
-        return done ? collected.slice(0, config.maxResults) : next(offset + result.length);
+        return done
+          ? hydratePosts(collected.slice(0, config.maxResults), config)
+          : next(offset + result.length);
       });
     }
     if (!config.organization && !config.fixtureUrl) return Promise.reject(new Error("Blog organization is required"));

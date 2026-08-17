@@ -89,6 +89,9 @@ assert.match(index.javascript, /localizedApiBase/);
 assert.match(index.javascript, /credentials:\s*"omit"/);
 assert.match(index.javascript, /url === "#" \? "" : url/);
 assert.match(index.javascript, /Number\(id\) > 0 \? id : ""/);
+assert.match(index.javascript, /new DOMParser\(\)\.parseFromString/);
+assert.match(index.javascript, /documentRoot\.querySelector\("pre code"\)/);
+assert.match(index.javascript, /fetch\(buildPostUrl\(post, config\)/);
 assert.match(index.javascript, /encodeURIComponent\(normalizeLocale\(config\.locale\) \|\| "en"\)/);
 
 console.log(`blog-templates-manual-check ok: ${firstDigest.slice(0, 12)}`);
