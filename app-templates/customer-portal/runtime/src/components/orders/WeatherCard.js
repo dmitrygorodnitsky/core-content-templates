@@ -1,15 +1,14 @@
 // customer-portal/runtime/src/components/orders/WeatherCard.js — production transfer module.
-import { F } from "../../../data/fixtures.js";
 import { h } from "../../dom.js";
-import { state } from "../../state.js";
+import { currentFixture, currentTheme, state } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { TrackingCard } from "./TrackingCard.js";
 import { kv } from "../../routes/OrderDetailPage.js";
 
 export function WeatherBanner(order) {
-  var v = F.themes[state.theme];
-  var loc = (F.addresses.find(function (a) { return a.id === order.locationId; }) || {}).label || "";
+  var v = currentTheme();
+  var loc = (currentFixture().addresses.find(function (a) { return a.id === order.locationId; }) || {}).label || "";
   return h("div", { "class": "alert-banner alert-banner--info", "data-module": "alert-banner", "data-visual-id": "weather-banner", "data-state": "pending-action" }, [
     h("div", { "class": "alert-banner__icon wt-pulse", style: "background:rgba(14,143,196,.16)" }, v.wt.icon),
     h("div", { "class": "alert-banner__body", "data-action": "order.open", "data-id": order.id, style: "cursor:pointer" }, [
@@ -29,7 +28,7 @@ export function WeatherBanner(order) {
 export function WeatherDetail(o) {
   var wt = o.wt, els = [];
   els.push(h("div", { "class": "weather-card__head" }, [
-    h("div", { "class": "weather-card__icon" + (wt.status === "pending" ? " wt-pulse" : "") }, F.themes[state.theme].wt.icon),
+    h("div", { "class": "weather-card__icon" + (wt.status === "pending" ? " wt-pulse" : "") }, currentTheme().wt.icon),
     h("div", { "class": "panel__title", style: "flex:1" }, "Weather Trigger"),
     StatusBadge({
       variant: wt.status === "pending" ? "status-badge--warn" : wt.status === "declined" ? "status-badge--danger" : "status-badge--ok",

@@ -594,6 +594,32 @@ export function currentFixture() {
 
 export function currentTheme() { return currentFixture().theme; }
 
+export function currentStormCalendar() {
+  var fixture = caseFixtureFor(state.config.caseId);
+  return (fixture && fixture.stormCalendar) || F.stormCalendar(state.theme);
+}
+
+function caseProposals() {
+  var fixture = caseFixtureFor(state.config.caseId);
+  return (fixture && fixture.proposals) || null;
+}
+
+export function currentProposal() {
+  var proposals = caseProposals();
+  return (proposals && proposals.proposal) || F.proposal;
+}
+
+export function proposalStatusMeta() {
+  var proposals = caseProposals();
+  return (proposals && proposals.statusMeta) || F.pstatus;
+}
+
+export function proposalPlanName(id) {
+  var proposals = caseProposals();
+  var names = proposals && proposals.planNames;
+  return (names && names[id]) || F.planName(id);
+}
+
 export function proposalSites() { return (state.moduleData.proposals && state.moduleData.proposals.sites) || state.psites; }
 
 export function activeVerticalConfig() { return verticalProfiles[state.config.vertical] || verticalProfiles.hvac; }
@@ -809,6 +835,9 @@ export function applyPortalConfig(config) {
   state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
   state.addrId = fixture ? fixture.addresses[0].id : "home";
   state.payId = fixture ? fixture.cards[0].id : "visa";
+  state.psites = fixture && fixture.proposals
+    ? cloneCaseValue(fixture.proposals.sites)
+    : F.proposalSites.map(function (site) { return Object.assign({}, site); });
   state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
   state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";
@@ -882,7 +911,7 @@ export function currentSite() { return proposalSites().find(function (p) { retur
 
 export function computeSite(site) {
   var cs = 0, ds = 0, total = 0;
-  var names = F.themes[state.theme].prop.surfaces;
+  var names = currentTheme().prop.surfaces;
   var rows = F.surfaceDefs.map(function (d, i) {
     var a = site.areas[i];
     var c = Math.round(a * d.clear), de = Math.round(a * d.deice);

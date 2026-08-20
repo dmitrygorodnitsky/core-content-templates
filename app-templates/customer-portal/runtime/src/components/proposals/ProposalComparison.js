@@ -1,12 +1,12 @@
 // customer-portal/runtime/src/components/proposals/ProposalComparison.js — production transfer module.
 import { F } from "../../../data/fixtures.js";
 import { clear, h } from "../../dom.js";
-import { state } from "../../state.js";
+import { currentTheme } from "../../state.js";
 import { Pricing } from "../../routes/PricingPage.js";
 import { noteBox } from "../../routes/ProposalDetailPage.js";
 
 export function ProposalComparison(site, c) {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var seasonStr = "$" + (Math.round(c.unlim / 25) * 25).toLocaleString();
   var monthlyStr = "$" + c.monthly.toLocaleString();
   var lockStr = "$" + c.seasonLock.toLocaleString();

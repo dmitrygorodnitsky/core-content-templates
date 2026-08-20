@@ -3,6 +3,7 @@ const softAccent = "rgba(63,125,106,.14)";
 
 export const calmHarborSpaFixture = Object.freeze({
   id: "calm-harbor-spa",
+  vertical: "beauty",
   organization: { name: "Calm Harbor Spa", locality: "Austin, Texas", mode: "fixture" },
   theme: {
     slug: "beauty",

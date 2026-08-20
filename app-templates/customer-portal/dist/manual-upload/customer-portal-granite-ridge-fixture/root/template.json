@@ -1,0 +1,12 @@
+{
+ "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
+ "nls": {
+  "en": {
+   "NAME": "Granite Ridge Snow Removal | Customer Portal"
+  }
+ },
+ "templateLanguage": "HTML",
+ "parent": null,
+ "children": [],
+ "parameters": []
+}

@@ -16,11 +16,12 @@ export function Checkout() {
     h("div", { "class": "section-head__sub" }, "Review your items, delivery and payment.")
   ]));
 
+  var emptyCopy = theme.checkout || {};
   if (state.cartItems.length === 0 || state.view === "empty") {
     page.appendChild(h("div", { "class": "empty-cart", "data-module": "empty-state", "data-state": "empty", "data-visual-id": "empty-cart" }, [
       h("div", { "class": "empty-cart__glyph" }, "\ud83d\uded2"),
-      h("div", { style: "font-weight:700;font-size:18px" }, "Your cart is empty"),
-      h("div", { style: "font-size:14px;color:var(--ink-2);margin:6px 0 20px" }, "Browse Calm Harbor ritual products and add them to your order."),
+      h("div", { style: "font-weight:700;font-size:18px" }, emptyCopy.emptyCart || "Your cart is empty"),
+      h("div", { style: "font-size:14px;color:var(--ink-2);margin:6px 0 20px" }, emptyCopy.emptyCartDescription || "Browse Calm Harbor ritual products and add them to your order."),
       ActionButton({ variant: "btn--primary", label: "Browse products", action: "nav.go", id: "products", lg: true, visualId: "browse-products" })
     ]));
     return page;

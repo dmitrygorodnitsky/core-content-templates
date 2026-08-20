@@ -42,6 +42,33 @@ Start with `experience/README.md` when creating or changing a family instance.
 Use `ARCHITECTURE.md` for runtime behavior and `DATA-OWNERSHIP.md` for live-data
 boundaries.
 
+## Fixture Demonstration Tenants
+
+A fixture tenant is a complete demonstration organization that the runtime
+selects through `data-portal-case` while `data-portal-data-mode="fixture"`. It
+opens no backend contract and is never a customer, tenant, or source-system
+selector. Each one owns a case file under `runtime/data/cases/`, registers in
+`runtime/data/case-fixtures.js`, and declares the `vertical` it belongs to; the
+runtime refuses a case whose vertical does not match the configured one.
+
+| case | vertical | profile | local preview | deterministic check |
+| --- | --- | --- | --- | --- |
+| `calm-harbor-spa` | `beauty` | `spaTarget` | `runtime/calm-harbor-spa-target.html` | `scripts/calm-harbor-fixture-check.mjs` |
+| `granite-ridge-snow` | `snow` | `stormRetail` | `runtime/granite-ridge-snow.html` | `scripts/granite-ridge-fixture-check.mjs` |
+
+Serve `runtime/` over HTTP to open a preview; the runtime is native ES modules
+and does not load from `file://`.
+
+To package a fixture tenant for CMS:
+
+```bash
+node app-templates/customer-portal/scripts/build-fixture-portal-runtime.mjs --case=granite-ridge-snow --output=app-templates/customer-portal/runtime/manual/granite-ridge-fixture-runtime.js
+```
+
+```bash
+node app-templates/customer-portal/scripts/export-fixture-portal-manual.mjs --input=app-templates/customer-portal/content/cases/granite-ridge-snow.customer-portal-fixture.json --runtime=app-templates/customer-portal/runtime/manual/granite-ridge-fixture-runtime.js --output=app-templates/customer-portal/dist/manual-upload/customer-portal-granite-ridge-fixture
+```
+
 ## Focused Checks
 
 ```bash
@@ -51,4 +78,6 @@ node app-templates/customer-portal/scripts/customer-experience-build-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-login-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-2fa-check.mjs
 node app-templates/customer-portal/scripts/config-behavior-check.mjs
+node app-templates/customer-portal/scripts/calm-harbor-fixture-check.mjs
+node app-templates/customer-portal/scripts/granite-ridge-fixture-check.mjs
 ```

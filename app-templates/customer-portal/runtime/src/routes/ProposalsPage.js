@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/routes/ProposalsPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { state } from "../state.js";
+import { currentProposal, proposalStatusMeta, state } from "../state.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ProposalCard } from "../components/proposals/ProposalCard.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
@@ -15,6 +14,8 @@ export function proposalRollup() {
 /* ProposalCard (portfolio site row) */
 
 export function ProposalsList() {
+  var proposal = currentProposal();
+  var statusMeta = proposalStatusMeta();
   var r = proposalRollup();
   var decided = r.approved + r.revision + r.declined;
   var open = r.unseen + r.viewed;
@@ -22,8 +23,8 @@ export function ProposalsList() {
 
   page.appendChild(h("div", { "class": "proposals-head" }, [
     h("div", { style: "flex:1" }, [
-      h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + F.proposal.id),
-      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \u00b7 sent " + F.proposal.sent + " \u00b7 valid until " + F.proposal.validUntil)
+      h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + proposal.id),
+      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \u00b7 sent " + proposal.sent + " \u00b7 valid until " + proposal.validUntil)
     ]),
     h("span", { "class": "proposals-head__pill" }, decided + " of " + state.psites.length + " decided")
   ]));
@@ -35,11 +36,11 @@ export function ProposalsList() {
 
   /* portfolio map */
   var canvas = h("div", { "class": "portfolio-map__canvas" }, [
-    h("span", { "class": "portfolio-map__label" }, "portfolio map \u00b7 Port Coquitlam \u00b7 Coquitlam"),
+    h("span", { "class": "portfolio-map__label" }, proposal.mapLabel || "portfolio map \u00b7 Port Coquitlam \u00b7 Coquitlam"),
     h("div", { "class": "portfolio-map__river" })
   ]);
   state.psites.forEach(function (p) {
-    var st = F.pstatus[p.status];
+    var st = statusMeta[p.status];
     canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + p.x + "%;top:" + p.y + "%" }, [
       h("div", { "class": "map-pin-diamond", style: "background:" + st.dot }),
       h("div", { "class": "map-pin-label" }, p.addr)

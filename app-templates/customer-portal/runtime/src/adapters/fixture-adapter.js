@@ -13,7 +13,11 @@ export const fixtureAdapter = {
       case "orders":
         return { orders: context.state.orders, statusMeta: fixture ? fixture.statusMeta || F.statusMeta : F.statusMeta, technician: fixture ? fixture.technician : F.technician, addresses: fixture ? fixture.addresses : F.addresses };
       case "proposals":
-        return { proposal: F.proposal, sites: context.state.psites, statusMeta: F.pstatus };
+        return {
+          proposal: fixture && fixture.proposals ? fixture.proposals.proposal : F.proposal,
+          sites: context.state.psites,
+          statusMeta: fixture && fixture.proposals && fixture.proposals.statusMeta ? fixture.proposals.statusMeta : F.pstatus,
+        };
       case "services":
         return { services: theme.svc };
       case "pricing":
@@ -23,7 +27,7 @@ export const fixtureAdapter = {
       case "checkout":
         return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
       case "calendar":
-        return { orders: context.state.orders, stormCalendar: F.stormCalendar(themeName) };
+        return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
       case "activity":
         return { groups: fixture ? fixture.activity : F.buildFeed(theme), tabs: fixture ? fixture.feedTabs : F.feedTabs };
       case "profile":

@@ -1,0 +1,123 @@
+import assert from "node:assert/strict";
+
+globalThis.window = globalThis;
+
+const runtimeRoot = new URL("../runtime/", import.meta.url);
+const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
+const { portalProfiles, readPortalConfig } = await import(new URL("src/config.js", runtimeRoot));
+const { fixtureAdapter } = await import(new URL("src/adapters/fixture-adapter.js", runtimeRoot));
+const { createCareFixtureAdapter } = await import(new URL("src/adapters/care-fixture-adapter.js", runtimeRoot));
+const { normalizeCare } = await import(new URL("src/normalizers/care.js", runtimeRoot));
+const {
+  applyPortalConfig,
+  computeSite,
+  currentFixture,
+  currentProposal,
+  currentStormCalendar,
+  currentTheme,
+  proposalPlanName,
+  proposalSites,
+  proposalStatusMeta,
+  state,
+} = await import(new URL("src/state.js", runtimeRoot));
+
+function root(dataset) { return { dataset }; }
+
+const config = readPortalConfig(root({
+  portalVertical: "snow",
+  portalProfile: "stormRetail",
+  portalTheme: "snow",
+  portalDataMode: "fixture",
+  portalAuthMode: "fixture",
+  portalCase: "granite-ridge-snow",
+  portalBrandName: "Granite Ridge",
+}));
+
+assert.equal(config.caseId, "granite-ridge-snow");
+assert.equal(config.vertical, "snow");
+assert.equal(config.profile, "stormRetail");
+applyPortalConfig(config);
+
+const profileDefinition = portalProfiles.stormRetail;
+assert.equal(profileDefinition.weatherCalendar, true, "snow retail keeps the weather-operational calendar");
+assert.equal(profileDefinition.nav.length, portalProfiles.stormOps.nav.length, "nav must not grow past the accepted stormOps item count");
+assert.ok(profileDefinition.modules.includes("pricing") && profileDefinition.modules.includes("products"));
+assert.ok(!profileDefinition.nav.some((item) => item.key === "pricing"), "pricing stays reachable through the accepted Manage plan action, not an eighth nav item");
+
+assert.equal(currentFixture().organization.name, "Granite Ridge Snow Removal");
+assert.equal(currentTheme().plan.name, "Winter Plan");
+assert.equal(currentTheme().wt.trigger, "Snowfall ≥ 2 cm forecast overnight");
+assert.equal(state.orders.length, 6);
+assert.equal(state.orders.filter((order) => order.wt && order.wt.status === "pending").length, 1);
+assert.equal(state.orders.filter((order) => order.status === "completed").length, 3);
+
+const context = { config, state };
+const services = fixtureAdapter.load("services", context);
+const pricing = fixtureAdapter.load("pricing", context);
+const products = fixtureAdapter.load("products", context);
+const orders = fixtureAdapter.load("orders", context);
+const calendar = fixtureAdapter.load("calendar", context);
+const proposals = fixtureAdapter.load("proposals", context);
+const profile = fixtureAdapter.load("profile", context);
+const checkout = fixtureAdapter.load("checkout", context);
+const support = fixtureAdapter.load("support", context);
+const activity = fixtureAdapter.load("activity", context);
+
+assert.deepEqual(services.services.map((service) => service.id), graniteRidgeSnowFixture.theme.svc.map((service) => service.id));
+assert.equal(pricing.plan.plusMonthlyPrice, "$268");
+assert.equal(products.products.length, 7);
+assert.equal(orders.orders[0].id, "#GR-3182");
+assert.equal(orders.technician.name, "Marcus Hale");
+assert.equal(profile.customer.fullName, "Dana Whitlock");
+assert.equal(checkout.addresses.find((address) => address.id === "tabor").city, "Golden, CO 80401");
+assert.equal(support.customer.firstName, "Dana");
+assert.equal(activity.groups[0].items[0].act, "weather");
+
+assert.equal(calendar.stormCalendar, graniteRidgeSnowFixture.stormCalendar, "the calendar module must serve the tenant storm calendar");
+assert.equal(calendar.stormCalendar.days.filter((day) => day.today).length, 1);
+assert.equal(calendar.stormCalendar.days.find((day) => day.today).events[0].tech, "Marcus H.");
+assert.equal(currentStormCalendar().accessNotes[2].value, "Do not service Yarrow Ridge");
+
+assert.equal(proposals.proposal.id, "GR-2049");
+assert.equal(currentProposal().mapLabel, "portfolio map · Lakewood · Golden · Arvada · Littleton");
+assert.equal(proposalSites().length, 4);
+assert.deepEqual(proposalSites().map((site) => site.status), ["approved", "revision", "declined", "unseen"]);
+assert.equal(proposalStatusMeta().approved.badge, "status-badge--ok");
+assert.equal(proposalPlanName("898"), "Seasonal Unlimited");
+assert.equal(proposals.statusMeta, graniteRidgeSnowFixture.proposals.statusMeta);
+
+const foothill = computeSite(proposalSites()[0]);
+assert.equal(foothill.rows.length, 5);
+assert.deepEqual(foothill.rows.map((row) => row.name), graniteRidgeSnowFixture.theme.prop.surfaces);
+assert.equal(foothill.total, 5460);
+assert.ok(foothill.monthly > 0 && foothill.seasonLock > 0);
+
+const careRaw = await createCareFixtureAdapter().load("care", context);
+const care = normalizeCare(careRaw);
+assert.equal(care.kind, "seasonLog");
+assert.equal(care.navLabel, "Season log");
+assert.equal(care.content.events.length, 5);
+assert.equal(care.content.events.filter((event) => !event.sla).length, 1);
+assert.equal(care.content.sla.pct, 95);
+assert.equal(care.content.docs.length, 3);
+const orderIds = new Set(state.orders.map((order) => order.id));
+for (const event of care.content.events) {
+  assert.ok(!event.orderId || orderIds.has(event.orderId), "season log rows must reference a real tenant order");
+}
+
+const copy = currentTheme().copy;
+assert.ok(copy.servicesSub && !/ritual/i.test(copy.servicesSub), "snow services copy must not inherit the spa wording");
+assert.equal(copy.servicesSteps.length, 3);
+assert.equal(copy.payAsYouGo.name, "Pay per storm");
+assert.equal(currentFixture().support.intro.startsWith("Reach the Granite Ridge storm desk"), true);
+
+const liveConfig = readPortalConfig(root({ portalVertical: "snow", portalDataMode: "live", portalCase: "granite-ridge-snow" }));
+assert.equal(liveConfig.caseId, "", "live mode must not select a fixture case");
+const wrongVerticalConfig = readPortalConfig(root({ portalVertical: "beauty", portalDataMode: "fixture", portalCase: "granite-ridge-snow" }));
+assert.equal(wrongVerticalConfig.caseId, "", "a snow fixture case must not cross verticals");
+const spaCrossConfig = readPortalConfig(root({ portalVertical: "snow", portalDataMode: "fixture", portalCase: "calm-harbor-spa" }));
+assert.equal(spaCrossConfig.caseId, "", "a beauty fixture case must not load under snow");
+
+applyPortalConfig(config);
+
+console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across storm home, calendar, season log, contracts, services, pricing, shop, orders, support, and activity");

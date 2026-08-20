@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/components/storm/StormHome.js — production transfer module.
-import { F } from "../../../data/fixtures.js";
 import { h } from "../../dom.js";
-import { state } from "../../state.js";
+import { currentFixture, currentStormCalendar, currentTheme, state } from "../../state.js";
 import { go } from "../../actions.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { ErrorState } from "../primitives/ErrorState.js";
@@ -11,7 +10,7 @@ import { OrderCard } from "../orders/OrderCard.js";
 import { stormAct, stormChip } from "./StormCalendar.js";
 
 export function StormHome() {
-  var cal = F.stormCalendar(state.theme);
+  var cal = currentStormCalendar();
   var today = cal.days.find(function (d) { return d.today; }) || cal.days[0];
   var todayIdx = cal.days.indexOf(today);
   var upcoming = cal.days.slice(todayIdx + 1);
@@ -19,7 +18,7 @@ export function StormHome() {
   var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "storm-home" });
 
   page.appendChild(PageHeader({
-    title: F.customer.greeting,
+    title: currentFixture().customer.greeting,
     sub: today.weather.state === "watch" ? "Weather watch tonight \u00b7 " + (accessDay ? "1 visit needs your OK" : "crew on the way") : "Your service plan is on track"
   }));
 
@@ -86,12 +85,12 @@ export function StormHome() {
   /* right rail: season/contract status + access notes */
   right.appendChild(h("div", { "class": "card card--pad season-card", "data-module": "season-status", "data-visual-id": "season-status" }, [
     h("div", { style: "display:flex;align-items:center;gap:9px;margin-bottom:14px" }, [
-      h("div", { "class": "card__title", style: "flex:1" }, F.themes[state.theme].plan.name),
+      h("div", { "class": "card__title", style: "flex:1" }, currentTheme().plan.name),
       h("span", { "class": "status-badge status-badge--ok" }, "Active")
     ]),
     seasonRow("Visits this season", "8"),
     seasonRow("Auto-dispatch", "weather trigger"),
-    seasonRow("Saved this season", F.customer.stats.savings, "var(--ok)"),
+    seasonRow("Saved this season", currentFixture().customer.stats.savings, "var(--ok)"),
     h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Manage plan", action: "profile.managePlan", block: true, visualId: "home-manage-plan" }))
   ]));
 

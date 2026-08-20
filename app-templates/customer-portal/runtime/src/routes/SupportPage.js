@@ -4,10 +4,11 @@ import { currentFixture, state } from "../state.js";
 
 export function Support() {
   var fixture = currentFixture();
+  var support = fixture.support;
   var page = h("section", { "class": "page", "data-route": "support", "data-visual-id": "support" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "How can we help, " + fixture.customer.firstName + "?"),
-    h("div", { "class": "section-head__sub" }, "Chat with the Calm Harbor team about your appointment, products or account.")
+    h("div", { "class": "section-head__sub" }, support.intro || "Chat with the " + support.label + " team about your appointment, products or account.")
   ]));
 
   var grid = h("div", { "class": "support-grid" });
@@ -86,10 +87,10 @@ export function Support() {
     h("div", { "class": "chat-header" }, [
       h("div", { "class": "chat-avatar" }, [h("div", { "class": "chat-avatar__img" }), h("span", { "class": "online-dot" })]),
       h("div", { style: "flex:1" }, [
-        h("div", { style: "font-weight:700;font-size:15px" }, "Nina \u00b7 Calm Harbor"),
+        h("div", { style: "font-weight:700;font-size:15px" }, currentFixture().support.agentName + " \u00b7 " + currentFixture().support.label),
         h("div", { style: "font-size:12.5px;color:var(--ok)" }, "Online now")
       ]),
-      h("div", { "class": "chat-ticket" }, "Ticket #SP-104")
+      h("div", { "class": "chat-ticket" }, "Ticket #" + currentFixture().support.ticket)
     ]),
     thread, quick, composer
   ]);

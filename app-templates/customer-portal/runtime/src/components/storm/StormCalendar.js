@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/components/storm/StormCalendar.js — production transfer module.
-import { F } from "../../../data/fixtures.js";
 import { clear, h } from "../../dom.js";
-import { state } from "../../state.js";
+import { currentStormCalendar, state } from "../../state.js";
 import { Calendar } from "../../routes/CalendarPage.js";
 
 export function stormChip(status) {
@@ -18,7 +17,7 @@ export function stormChip(status) {
 var stormWeatherLabel = { served: "Storm served", clear: "Clear", watch: "Storm watch", expected: "Weather expected" };
 
 export function StormCalendar() {
-  var cal = F.stormCalendar(state.theme);
+  var cal = currentStormCalendar();
   var page = h("section", { "class": "page page--narrow", "data-route": "calendar", "data-visual-id": "storm-calendar" });
   page.appendChild(h("div", { "class": "section-head" }, [
     h("div", { "class": "section-head__title" }, "Calendar"),

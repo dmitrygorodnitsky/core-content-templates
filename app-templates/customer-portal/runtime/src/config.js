@@ -1,4 +1,4 @@
-import { caseFixtureFor } from "../data/case-fixtures.js";
+import { caseVerticalFor } from "../data/case-fixtures.js";
 
 export const portalProfiles = {
   onDemand: {
@@ -51,6 +51,23 @@ export const portalProfiles = {
     weatherCalendar: false,
     showCart: true,
     drawerTitle: "Book an appointment",
+  },
+  stormRetail: {
+    id: "stormRetail",
+    nav: [
+      { key: "orders.list", label: "Home" },
+      { key: "calendar", label: "Calendar" },
+      { key: "care" },
+      { key: "proposals.list", label: "Contracts" },
+      { key: "services", label: "Services" },
+      { key: "products", label: "Shop" },
+      { key: "support", label: "Support" },
+    ],
+    primary: { label: "Request service", action: "service.request" },
+    modules: ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+    weatherCalendar: true,
+    showCart: true,
+    drawerTitle: "Request service",
   },
   spaStaging: {
     id: "spaStaging",
@@ -179,8 +196,7 @@ export function readPortalConfig(root) {
   var enabledModules = splitList(dataset.portalEnabledModules);
   var profile = resolveProfile(vertical, dataset.portalProfile);
   var dataMode = allowed(dataset.portalDataMode, ["fixture", "live"], "fixture");
-  var caseId = dataMode === "fixture" && caseFixtureFor(dataset.portalCase) ? dataset.portalCase : "";
-  if (caseId && vertical !== "beauty") caseId = "";
+  var caseId = dataMode === "fixture" && caseVerticalFor(dataset.portalCase) === vertical ? dataset.portalCase : "";
   return {
     experienceId: dataset.portalExperienceId || "local-preview",
     brandName: dataset.portalBrandName || verticalConfig.displayName,

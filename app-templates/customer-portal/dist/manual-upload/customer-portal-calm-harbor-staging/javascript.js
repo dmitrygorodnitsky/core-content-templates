@@ -156,6 +156,9 @@
   function caseFixtureFor() {
     return null;
   }
+  function caseVerticalFor() {
+    return null;
+  }
   function cloneCaseValue(value) {
     if (value === void 0 || value === null) return value;
     return JSON.parse(JSON.stringify(value));
@@ -758,6 +761,23 @@
       showCart: true,
       drawerTitle: "Book an appointment"
     },
+    stormRetail: {
+      id: "stormRetail",
+      nav: [
+        { key: "orders.list", label: "Home" },
+        { key: "calendar", label: "Calendar" },
+        { key: "care" },
+        { key: "proposals.list", label: "Contracts" },
+        { key: "services", label: "Services" },
+        { key: "products", label: "Shop" },
+        { key: "support", label: "Support" }
+      ],
+      primary: { label: "Request service", action: "service.request" },
+      modules: ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+      weatherCalendar: true,
+      showCart: true,
+      drawerTitle: "Request service"
+    },
     spaStaging: {
       id: "spaStaging",
       nav: [
@@ -873,8 +893,7 @@
     var enabledModules = splitList(dataset.portalEnabledModules);
     var profile = resolveProfile(vertical2, dataset.portalProfile);
     var dataMode = allowed(dataset.portalDataMode, ["fixture", "live"], "fixture");
-    var caseId = dataMode === "fixture" && caseFixtureFor(dataset.portalCase) ? dataset.portalCase : "";
-    if (caseId && vertical2 !== "beauty") caseId = "";
+    var caseId = dataMode === "fixture" && caseVerticalFor(dataset.portalCase) === vertical2 ? dataset.portalCase : "";
     return {
       experienceId: dataset.portalExperienceId || "local-preview",
       brandName: dataset.portalBrandName || verticalConfig.displayName,
@@ -1648,6 +1667,27 @@
   function currentTheme() {
     return currentFixture().theme;
   }
+  function currentStormCalendar() {
+    var fixture = caseFixtureFor(state.config.caseId);
+    return fixture && fixture.stormCalendar || F.stormCalendar(state.theme);
+  }
+  function caseProposals() {
+    var fixture = caseFixtureFor(state.config.caseId);
+    return fixture && fixture.proposals || null;
+  }
+  function currentProposal() {
+    var proposals = caseProposals();
+    return proposals && proposals.proposal || F.proposal;
+  }
+  function proposalStatusMeta() {
+    var proposals = caseProposals();
+    return proposals && proposals.statusMeta || F.pstatus;
+  }
+  function proposalPlanName(id) {
+    var proposals = caseProposals();
+    var names = proposals && proposals.planNames;
+    return names && names[id] || F.planName(id);
+  }
   function proposalSites() {
     return state.moduleData.proposals && state.moduleData.proposals.sites || state.psites;
   }
@@ -1845,6 +1885,9 @@
     state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
     state.addrId = fixture ? fixture.addresses[0].id : "home";
     state.payId = fixture ? fixture.cards[0].id : "visa";
+    state.psites = fixture && fixture.proposals ? cloneCaseValue(fixture.proposals.sites) : F.proposalSites.map(function(site) {
+      return Object.assign({}, site);
+    });
     state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
     state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
     state.filter = "all";
@@ -1921,7 +1964,7 @@
   }
   function computeSite(site) {
     var cs = 0, ds = 0, total = 0;
-    var names = F.themes[state.theme].prop.surfaces;
+    var names = currentTheme().prop.surfaces;
     var rows = F.surfaceDefs.map(function(d, i) {
       var a = site.areas[i];
       var c = Math.round(a * d.clear), de = Math.round(a * d.deice);
@@ -4571,8 +4614,8 @@
 
   // app-templates/customer-portal/runtime/src/components/orders/WeatherCard.js
   function WeatherBanner(order) {
-    var v = F.themes[state.theme];
-    var loc = (F.addresses.find(function(a) {
+    var v = currentTheme();
+    var loc = (currentFixture().addresses.find(function(a) {
       return a.id === order.locationId;
     }) || {}).label || "";
     return h("div", { "class": "alert-banner alert-banner--info", "data-module": "alert-banner", "data-visual-id": "weather-banner", "data-state": "pending-action" }, [
@@ -4591,7 +4634,7 @@
   function WeatherDetail(o) {
     var wt = o.wt, els = [];
     els.push(h("div", { "class": "weather-card__head" }, [
-      h("div", { "class": "weather-card__icon" + (wt.status === "pending" ? " wt-pulse" : "") }, F.themes[state.theme].wt.icon),
+      h("div", { "class": "weather-card__icon" + (wt.status === "pending" ? " wt-pulse" : "") }, currentTheme().wt.icon),
       h("div", { "class": "panel__title", style: "flex:1" }, "Weather Trigger"),
       StatusBadge({
         variant: wt.status === "pending" ? "status-badge--warn" : wt.status === "declined" ? "status-badge--danger" : "status-badge--ok",
@@ -4638,7 +4681,9 @@
 
   // app-templates/customer-portal/runtime/src/components/proposals/ProposalBanner.js
   function ProposalBanner(pendingCount) {
-    var v = F.themes[state.theme];
+    var v = currentTheme();
+    var proposal = currentProposal();
+    var siteCount = proposalSites().length;
     return h("div", {
       "class": "alert-banner alert-banner--glass",
       "data-module": "alert-banner",
@@ -4648,10 +4693,10 @@
       h("div", { "class": "brand-logo brand-logo--lg" }),
       h("div", { "class": "alert-banner__body" }, [
         h("div", { "class": "alert-banner__title" }, [
-          h("span", { "data-bind": "proposal.id" }, "Proposal #" + F.proposal.id + " is ready"),
+          h("span", { "data-bind": "proposal.id" }, "Proposal #" + proposal.id + " is ready"),
           StatusBadge({ variant: "status-badge--warn", label: pendingCount + " awaiting you", bind: "proposal.pendingCount" })
         ]),
-        h("div", { "class": "alert-banner__desc" }, v.prop.svc + " across 4 properties \xB7 choose a plan per site \xB7 valid until " + F.proposal.validUntil)
+        h("div", { "class": "alert-banner__desc" }, v.prop.svc + " across " + siteCount + " properties \xB7 choose a plan per site \xB7 valid until " + proposal.validUntil)
       ]),
       h("div", { "class": "btn btn--primary btn--lg" }, "Review proposal \u203A")
     ]);
@@ -4748,7 +4793,7 @@
     return h("span", { "class": "status-badge " + m[0], "data-module": "status-badge", "data-bind": "event.status", "data-state": status }, m[1]);
   }
   function StormCalendar() {
-    var cal = F.stormCalendar(state.theme);
+    var cal = currentStormCalendar();
     var page = h("section", { "class": "page page--narrow", "data-route": "calendar", "data-visual-id": "storm-calendar" });
     page.appendChild(h("div", { "class": "section-head" }, [
       h("div", { "class": "section-head__title" }, "Calendar"),
@@ -4824,7 +4869,7 @@
 
   // app-templates/customer-portal/runtime/src/components/storm/StormHome.js
   function StormHome() {
-    var cal = F.stormCalendar(state.theme);
+    var cal = currentStormCalendar();
     var today = cal.days.find(function(d) {
       return d.today;
     }) || cal.days[0];
@@ -4835,7 +4880,7 @@
     });
     var page = h("section", { "class": "page", "data-route": "orders.list", "data-visual-id": "storm-home" });
     page.appendChild(PageHeader({
-      title: F.customer.greeting,
+      title: currentFixture().customer.greeting,
       sub: today.weather.state === "watch" ? "Weather watch tonight \xB7 " + (accessDay ? "1 visit needs your OK" : "crew on the way") : "Your service plan is on track"
     }));
     if (state.view === "error") {
@@ -4903,12 +4948,12 @@
     left.appendChild(history);
     right.appendChild(h("div", { "class": "card card--pad season-card", "data-module": "season-status", "data-visual-id": "season-status" }, [
       h("div", { style: "display:flex;align-items:center;gap:9px;margin-bottom:14px" }, [
-        h("div", { "class": "card__title", style: "flex:1" }, F.themes[state.theme].plan.name),
+        h("div", { "class": "card__title", style: "flex:1" }, currentTheme().plan.name),
         h("span", { "class": "status-badge status-badge--ok" }, "Active")
       ]),
       seasonRow("Visits this season", "8"),
       seasonRow("Auto-dispatch", "weather trigger"),
-      seasonRow("Saved this season", F.customer.stats.savings, "var(--ok)"),
+      seasonRow("Saved this season", currentFixture().customer.stats.savings, "var(--ok)"),
       h("div", { style: "margin-top:14px" }, ActionButton({ variant: "btn--ghost", label: "Manage plan", action: "profile.managePlan", block: true, visualId: "home-manage-plan" }))
     ]));
     var access = h("div", { "class": "card card--pad", "data-module": "access-notes", "data-visual-id": "home-access-notes" }, [
@@ -4944,7 +4989,7 @@
       page.appendChild(ErrorState({}));
       return page;
     }
-    var pending = state.config.caseId ? 0 : F.proposalSites.filter(function(p) {
+    var pending = proposalSites().filter(function(p) {
       return p.status === "unseen" || p.status === "viewed";
     }).length;
     if (state.view === "ready") {
@@ -5039,10 +5084,11 @@
   // app-templates/customer-portal/runtime/src/routes/ServicesPage.js
   function Services() {
     var v = currentTheme();
+    var copy = v.copy || {};
     var page = h("section", { "class": "page", "data-route": "services", "data-visual-id": "services" });
     page.appendChild(h("div", { "class": "section-head" }, [
       h("div", { "class": "section-head__title" }, "Our services"),
-      h("div", { "class": "section-head__sub" }, "Choose a ritual, review the details, and manage every visit in one place.")
+      h("div", { "class": "section-head__sub" }, copy.servicesSub || "Choose a ritual, review the details, and manage every visit in one place.")
     ]));
     if (state.view === "loading") {
       var g = h("div", { "class": "services-grid" });
@@ -5053,7 +5099,7 @@
     page.appendChild(h("div", { "class": "services-grid", "data-module": "service-list" }, v.svc.map(function(s, i2) {
       return ServiceCatalogCard(s, i2);
     })));
-    var steps = [
+    var steps = copy.servicesSteps || [
       { n: "1", t: "Choose your ritual", d: "Review the service that fits your day" },
       { n: "2", t: "Confirm your visit", d: "Your appointment appears in the portal" },
       { n: "3", t: "Keep your routine", d: "Return to notes and aftercare after the visit" }
@@ -5073,6 +5119,7 @@
   // app-templates/customer-portal/runtime/src/routes/PricingPage.js
   function Pricing() {
     var v = currentTheme();
+    var payg = v.copy && v.copy.payAsYouGo || {};
     var pricing = state.moduleData.pricing || {};
     var livePlans = pricing.source === "core-pim" ? pricing.plans : null;
     var page = h("section", { "class": "page", "data-route": "pricing", "data-visual-id": "pricing" });
@@ -5095,14 +5142,14 @@
       });
     }) : [
       PricingCard({
-        name: "Pay as you go",
-        price: "Per ritual",
-        tag: "Current total is shown before confirmation",
+        name: payg.name || "Pay as you go",
+        price: payg.price || "Per ritual",
+        tag: payg.tag || "Current total is shown before confirmation",
         current: true,
-        features: ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"]
+        features: payg.features || ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"]
       }),
       PricingCard({ name: v.plan.name, price: v.plan.monthlyPrice || "$9", tag: v.plan.tag, featured: true, features: v.plan.features }),
-      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: "For a deeper ritual rhythm", features: v.plan.plusFeatures })
+      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: v.plan.plusTag || "For a deeper ritual rhythm", features: v.plan.plusFeatures })
     ];
     page.appendChild(h("div", { "class": "pricing-grid", "data-bind": livePlans ? "pim.plans" : "plan.cards" }, cards));
     var rates = h("div", { "class": "rates-card", "data-module": "rates-list", "data-visual-id": "per-visit-rates" }, [
@@ -5248,11 +5295,12 @@
       h("div", { "class": "section-head__title" }, "Checkout"),
       h("div", { "class": "section-head__sub" }, "Review your items, delivery and payment.")
     ]));
+    var emptyCopy = theme.checkout || {};
     if (state.cartItems.length === 0 || state.view === "empty") {
       page.appendChild(h("div", { "class": "empty-cart", "data-module": "empty-state", "data-state": "empty", "data-visual-id": "empty-cart" }, [
         h("div", { "class": "empty-cart__glyph" }, "\u{1F6D2}"),
-        h("div", { style: "font-weight:700;font-size:18px" }, "Your cart is empty"),
-        h("div", { style: "font-size:14px;color:var(--ink-2);margin:6px 0 20px" }, "Browse Calm Harbor ritual products and add them to your order."),
+        h("div", { style: "font-weight:700;font-size:18px" }, emptyCopy.emptyCart || "Your cart is empty"),
+        h("div", { style: "font-size:14px;color:var(--ink-2);margin:6px 0 20px" }, emptyCopy.emptyCartDescription || "Browse Calm Harbor ritual products and add them to your order."),
         ActionButton({ variant: "btn--primary", label: "Browse products", action: "nav.go", id: "products", lg: true, visualId: "browse-products" })
       ]));
       return page;
@@ -5296,8 +5344,8 @@
   // app-templates/customer-portal/runtime/src/components/proposals/ProposalCard.js
   function ProposalCard(site) {
     var c = computeSite(site);
-    var st = F.pstatus[site.status];
-    var sub = site.city.split(",")[0] + " \xB7 " + c.total.toLocaleString() + " sq ft \xB7 " + (site.status === "approved" ? "chose " + F.planName(site.selected) : "3 plans offered");
+    var st = proposalStatusMeta()[site.status];
+    var sub = site.city.split(",")[0] + " \xB7 " + c.total.toLocaleString() + " sq ft \xB7 " + (site.status === "approved" ? "chose " + proposalPlanName(site.selected) : "3 plans offered");
     var fromPrice = site.status === "declined" ? null : "$" + c.monthly.toLocaleString();
     return h("div", { "class": "proposal-card", "data-module": "proposal-card", "data-visual-id": "proposal-card", "data-action": "proposal.open", "data-id": site.id, "data-state": site.status }, [
       h("div", { "class": "proposal-card__diamond", style: "background:" + st.dot }),
@@ -5409,7 +5457,7 @@
     var prefs = [
       { key: "receipts", title: "Email receipts", desc: "Invoice & payment confirmations" },
       { key: "sms", title: "SMS appointment updates", desc: "Appointment reminders and arrival alerts" },
-      { key: "marketing", title: "Offers & tips", desc: "Wellness rituals, products and seasonal offers" }
+      { key: "marketing", title: "Offers & tips", desc: (currentTheme().copy || {}).marketingPref || "Wellness rituals, products and seasonal offers" }
     ];
     var prefPanel = h("div", { "class": "list-panel", "data-module": "preferences" }, [h("div", { "class": "list-panel__title", style: "margin-bottom:16px" }, "Notifications")]);
     prefs.forEach(function(p) {
@@ -5483,10 +5531,11 @@
   // app-templates/customer-portal/runtime/src/routes/SupportPage.js
   function Support() {
     var fixture = currentFixture();
+    var support = fixture.support;
     var page = h("section", { "class": "page", "data-route": "support", "data-visual-id": "support" });
     page.appendChild(h("div", { "class": "section-head" }, [
       h("div", { "class": "section-head__title" }, "How can we help, " + fixture.customer.firstName + "?"),
-      h("div", { "class": "section-head__sub" }, "Chat with the Calm Harbor team about your appointment, products or account.")
+      h("div", { "class": "section-head__sub" }, support.intro || "Chat with the " + support.label + " team about your appointment, products or account.")
     ]));
     var grid = h("div", { "class": "support-grid" });
     var rail = h("div", { "class": "help-rail" });
@@ -5564,10 +5613,10 @@
       h("div", { "class": "chat-header" }, [
         h("div", { "class": "chat-avatar" }, [h("div", { "class": "chat-avatar__img" }), h("span", { "class": "online-dot" })]),
         h("div", { style: "flex:1" }, [
-          h("div", { style: "font-weight:700;font-size:15px" }, "Nina \xB7 Calm Harbor"),
+          h("div", { style: "font-weight:700;font-size:15px" }, currentFixture().support.agentName + " \xB7 " + currentFixture().support.label),
           h("div", { style: "font-size:12.5px;color:var(--ok)" }, "Online now")
         ]),
-        h("div", { "class": "chat-ticket" }, "Ticket #SP-104")
+        h("div", { "class": "chat-ticket" }, "Ticket #" + currentFixture().support.ticket)
       ]),
       thread,
       quick,
@@ -5604,10 +5653,10 @@
     return map;
   }
   function ProposalDetail() {
-    var v = F.themes[state.theme];
+    var v = currentTheme();
     var p = currentSite();
     var c = computeSite(p);
-    var st = F.pstatus[p.status];
+    var st = proposalStatusMeta()[p.status];
     var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
     page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
     page.appendChild(h("div", { "class": "proposal-detail-head" }, [
@@ -5675,7 +5724,7 @@
     });
     var decided = p.status === "approved" || p.status === "revision" || p.status === "declined";
     if (decided) {
-      var note = p.status === "approved" ? "You approved " + F.planName(p.selected) + " \u2014 a live order was created." : p.status === "revision" ? "Revision requested \u2014 our team will re-quote all three options." : "You declined this proposal.";
+      var note = p.status === "approved" ? "You approved " + proposalPlanName(p.selected) + " \u2014 a live order was created." : p.status === "revision" ? "Revision requested \u2014 our team will re-quote all three options." : "You declined this proposal.";
       page.appendChild(h("div", { "class": "proposal-decided" }, [
         h("div", { "class": "proposal-decided__icon" }, "i"),
         h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note + " You can still change your decision below.")
@@ -5683,7 +5732,7 @@
     }
     var selId = p.selected || "898";
     page.appendChild(h("div", { "class": "proposal-actions" }, [
-      ActionButton({ variant: "btn--primary", label: "Approve " + F.planName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
+      ActionButton({ variant: "btn--primary", label: "Approve " + proposalPlanName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
       ActionButton({ variant: "btn--ghost", label: "Request revision", action: "proposal.requestRevision", lg: true, visualId: "proposal-revise" }),
       ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline" })
     ]));
@@ -5692,7 +5741,7 @@
 
   // app-templates/customer-portal/runtime/src/components/proposals/ProposalComparison.js
   function ProposalComparison(site, c) {
-    var v = F.themes[state.theme];
+    var v = currentTheme();
     var seasonStr = "$" + (Math.round(c.unlim / 25) * 25).toLocaleString();
     var monthlyStr = "$" + c.monthly.toLocaleString();
     var lockStr = "$" + c.seasonLock.toLocaleString();
@@ -5744,14 +5793,16 @@
     return r;
   }
   function ProposalsList() {
+    var proposal = currentProposal();
+    var statusMeta = proposalStatusMeta();
     var r = proposalRollup();
     var decided = r.approved + r.revision + r.declined;
     var open = r.unseen + r.viewed;
     var page = h("section", { "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "proposals-list" });
     page.appendChild(h("div", { "class": "proposals-head" }, [
       h("div", { style: "flex:1" }, [
-        h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + F.proposal.id),
-        h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \xB7 sent " + F.proposal.sent + " \xB7 valid until " + F.proposal.validUntil)
+        h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + proposal.id),
+        h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \xB7 sent " + proposal.sent + " \xB7 valid until " + proposal.validUntil)
       ]),
       h("span", { "class": "proposals-head__pill" }, decided + " of " + state.psites.length + " decided")
     ]));
@@ -5760,11 +5811,11 @@
       return page;
     }
     var canvas = h("div", { "class": "portfolio-map__canvas" }, [
-      h("span", { "class": "portfolio-map__label" }, "portfolio map \xB7 Port Coquitlam \xB7 Coquitlam"),
+      h("span", { "class": "portfolio-map__label" }, proposal.mapLabel || "portfolio map \xB7 Port Coquitlam \xB7 Coquitlam"),
       h("div", { "class": "portfolio-map__river" })
     ]);
     state.psites.forEach(function(p) {
-      var st = F.pstatus[p.status];
+      var st = statusMeta[p.status];
       canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + p.x + "%;top:" + p.y + "%" }, [
         h("div", { "class": "map-pin-diamond", style: "background:" + st.dot }),
         h("div", { "class": "map-pin-label" }, p.addr)
@@ -11514,7 +11565,11 @@
         case "orders":
           return { orders: context.state.orders, statusMeta: fixture ? fixture.statusMeta || F.statusMeta : F.statusMeta, technician: fixture ? fixture.technician : F.technician, addresses: fixture ? fixture.addresses : F.addresses };
         case "proposals":
-          return { proposal: F.proposal, sites: context.state.psites, statusMeta: F.pstatus };
+          return {
+            proposal: fixture && fixture.proposals ? fixture.proposals.proposal : F.proposal,
+            sites: context.state.psites,
+            statusMeta: fixture && fixture.proposals && fixture.proposals.statusMeta ? fixture.proposals.statusMeta : F.pstatus
+          };
         case "services":
           return { services: theme.svc };
         case "pricing":
@@ -11524,7 +11579,7 @@
         case "checkout":
           return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
         case "calendar":
-          return { orders: context.state.orders, stormCalendar: F.stormCalendar(themeName) };
+          return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
         case "activity":
           return { groups: fixture ? fixture.activity : F.buildFeed(theme), tabs: fixture ? fixture.feedTabs : F.feedTabs };
         case "profile":

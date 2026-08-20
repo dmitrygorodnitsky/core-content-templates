@@ -1,0 +1,48 @@
+{
+ "schemaVersion": 1,
+ "uploadPerformed": false,
+ "mode": "fixture-demonstration",
+ "launchState": "demonstration-only",
+ "input": "app-templates/customer-portal/content/cases/granite-ridge-snow.customer-portal-fixture.json",
+ "template": {
+  "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
+  "templateLanguage": "HTML",
+  "parameters": [],
+  "sha256": {
+   "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
+   "html": "ab2f7eddd0046bc6e2208ba0ca5b7d2928470a2a01e0f103d0cb0b3f44feebe7",
+   "css": "7d4c43f93e4b962fb64b73c21827f38770253f56b1f564a753d0c2888b3e4199",
+   "javascript": "b3b6169f02f46ed776367c64eeaa7c52903ba783fcc27f2cbc2bc72dee37c9cb"
+  }
+ },
+ "runtime": {
+  "delivery": "inline-template-javascript",
+  "sameOriginRequired": false,
+  "dataMode": "fixture",
+  "authMode": "fixture",
+  "case": "granite-ridge-snow",
+  "openedModules": [
+   "orders",
+   "calendar",
+   "activity",
+   "proposals",
+   "care",
+   "services",
+   "pricing",
+   "products",
+   "checkout",
+   "profile",
+   "support"
+  ],
+  "openedLiveContracts": []
+ },
+ "constraints": [
+  "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",
+  "The package must stay in fixture data mode. portal_case selects a demonstration organization only while portal_data_mode is fixture, and the runtime ignores it in live mode.",
+  "Authentication is not wired. The portal boots straight into the authenticated shell; it is a demonstration surface, not a customer-scoped product.",
+  "Checkout, cart, weather-trigger confirmation, access confirmation, contract approval, and support replies are local fixture transitions. None of them is a business result and none creates a record anywhere.",
+  "The nav brand is shortened to Granite Ridge because the accepted top-nav has no overflow treatment for a long brand. See design-requests/storm-portal-top-nav-brand-and-mobile-overflow.md; the shell still overflows horizontally at 375 and 390.",
+  "Pricing is reachable from the accepted Manage plan action on the storm home rail rather than from an eighth nav item, to stay inside the accepted nav item count.",
+  "Opening any live contract requires replacing this package: a real session, a customer-scoped Account resolution, and per-module adapters that fail closed."
+ ]
+}

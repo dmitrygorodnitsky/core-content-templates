@@ -22,6 +22,14 @@ this repository. The user reviews it and imports the accepted package into
   requests the still-missing pending, bootstrap-failure, and retry presentation
   for opening that CMS login page directly instead of through an OIDC request.
 
+## Shell
+
+- [`storm-portal-top-nav-brand-and-mobile-overflow.md`](storm-portal-top-nav-brand-and-mobile-overflow.md)
+  requests the missing overflow treatment for `top-nav` when a tenant brand name
+  or primary CTA is longer than the accepted mobile budget, with the measured
+  overflow per configuration. It affects the accepted `stormOps` profile as well
+  as the new `stormRetail` one.
+
 ## Calm Harbor Spa
 
 - [`calm-harbor-spa-customer-portal-ia.md`](calm-harbor-spa-customer-portal-ia.md)

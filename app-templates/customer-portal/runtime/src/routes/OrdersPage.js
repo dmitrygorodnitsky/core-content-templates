@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/routes/OrdersPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { activeProfile, currentFixture, currentTheme, filteredOrders, state, tabItems } from "../state.js";
+import { activeProfile, currentFixture, currentTheme, filteredOrders, proposalSites, state, tabItems } from "../state.js";
 import { Tabs } from "../components/primitives/Tabs.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
@@ -27,7 +26,7 @@ export function Cabinet() {
   if (state.view === "error") { page.appendChild(ErrorState({})); return page; }
 
   /* banners */
-  var pending = state.config.caseId ? 0 : F.proposalSites.filter(function (p) { return p.status === "unseen" || p.status === "viewed"; }).length;
+  var pending = proposalSites().filter(function (p) { return p.status === "unseen" || p.status === "viewed"; }).length;
   if (state.view === "ready") {
     if (!state.config.caseId) page.appendChild(ProposalBanner(pending));
     var wt = state.orders.find(function (o) { return o.wt && o.wt.status === "pending"; });

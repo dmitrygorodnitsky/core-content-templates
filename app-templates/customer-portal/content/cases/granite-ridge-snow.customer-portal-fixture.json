@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Manual CMS package demonstrating the Granite Ridge snow-removal customer portal on repository-owned fixtures, with no backend contract opened",
+  "template": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
+    "title": "Granite Ridge Snow Removal | Customer Portal"
+  },
+  "runtime": {
+    "vertical": "snow",
+    "theme": "snow",
+    "profile": "stormRetail",
+    "routerMode": "hash",
+    "defaultRoute": "orders.list",
+    "enabledModules": [
+      "orders",
+      "calendar",
+      "activity",
+      "proposals",
+      "care",
+      "services",
+      "pricing",
+      "products",
+      "checkout",
+      "profile",
+      "support"
+    ],
+    "authMode": "fixture",
+    "dataMode": "fixture",
+    "errorMode": "error",
+    "case": "granite-ridge-snow"
+  },
+  "shell": {
+    "experienceId": "granite-ridge-snow-fixture",
+    "brandName": "Granite Ridge",
+    "defaultMode": "light",
+    "primaryCtaLabel": "Request service",
+    "navigation": {
+      "primary": "Home",
+      "calendar": "Calendar",
+      "care": "Season log",
+      "proposals": "Contracts",
+      "services": "Services",
+      "products": "Shop",
+      "support": "Support"
+    }
+  },
+  "constraints": [
+    "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",
+    "The package must stay in fixture data mode. portal_case selects a demonstration organization only while portal_data_mode is fixture, and the runtime ignores it in live mode.",
+    "Authentication is not wired. The portal boots straight into the authenticated shell; it is a demonstration surface, not a customer-scoped product.",
+    "Checkout, cart, weather-trigger confirmation, access confirmation, contract approval, and support replies are local fixture transitions. None of them is a business result and none creates a record anywhere.",
+    "The nav brand is shortened to Granite Ridge because the accepted top-nav has no overflow treatment for a long brand. See design-requests/storm-portal-top-nav-brand-and-mobile-overflow.md; the shell still overflows horizontally at 375 and 390.",
+    "Pricing is reachable from the accepted Manage plan action on the storm home rail rather than from an eighth nav item, to stay inside the accepted nav item count.",
+    "Opening any live contract requires replacing this package: a real session, a customer-scoped Account resolution, and per-module adapters that fail closed."
+  ]
+}

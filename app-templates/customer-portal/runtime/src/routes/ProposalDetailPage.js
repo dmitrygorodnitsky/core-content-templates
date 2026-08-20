@@ -1,7 +1,6 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
-import { F } from "../../data/fixtures.js";
 import { h } from "../dom.js";
-import { computeSite, currentSite, state } from "../state.js";
+import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, state } from "../state.js";
 import { go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
@@ -36,10 +35,10 @@ export function beamMap() {
 }
 
 export function ProposalDetail() {
-  var v = F.themes[state.theme];
+  var v = currentTheme();
   var p = currentSite();
   var c = computeSite(p);
-  var st = F.pstatus[p.status];
+  var st = proposalStatusMeta()[p.status];
   var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
 
   page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
@@ -114,7 +113,7 @@ export function ProposalDetail() {
   /* decided note */
   var decided = p.status === "approved" || p.status === "revision" || p.status === "declined";
   if (decided) {
-    var note = p.status === "approved" ? "You approved " + F.planName(p.selected) + " \u2014 a live order was created."
+    var note = p.status === "approved" ? "You approved " + proposalPlanName(p.selected) + " \u2014 a live order was created."
       : p.status === "revision" ? "Revision requested \u2014 our team will re-quote all three options."
       : "You declined this proposal.";
     page.appendChild(h("div", { "class": "proposal-decided" }, [
@@ -126,7 +125,7 @@ export function ProposalDetail() {
   /* actions */
   var selId = p.selected || "898";
   page.appendChild(h("div", { "class": "proposal-actions" }, [
-    ActionButton({ variant: "btn--primary", label: "Approve " + F.planName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
+    ActionButton({ variant: "btn--primary", label: "Approve " + proposalPlanName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
     ActionButton({ variant: "btn--ghost", label: "Request revision", action: "proposal.requestRevision", lg: true, visualId: "proposal-revise" }),
     ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline" })
   ]));

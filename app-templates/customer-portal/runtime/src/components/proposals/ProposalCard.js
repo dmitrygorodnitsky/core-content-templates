@@ -1,14 +1,13 @@
 // customer-portal/runtime/src/components/proposals/ProposalCard.js — production transfer module.
-import { F } from "../../../data/fixtures.js";
 import { h } from "../../dom.js";
-import { computeSite, state } from "../../state.js";
+import { computeSite, proposalPlanName, proposalStatusMeta } from "../../state.js";
 import { StatusBadge } from "../primitives/StatusBadge.js";
 
 export function ProposalCard(site) {
   var c = computeSite(site);
-  var st = F.pstatus[site.status];
+  var st = proposalStatusMeta()[site.status];
   var sub = site.city.split(",")[0] + " \u00b7 " + c.total.toLocaleString() + " sq ft \u00b7 " +
-    (site.status === "approved" ? "chose " + F.planName(site.selected) : "3 plans offered");
+    (site.status === "approved" ? "chose " + proposalPlanName(site.selected) : "3 plans offered");
   var fromPrice = site.status === "declined" ? null : "$" + c.monthly.toLocaleString();
   return h("div", { "class": "proposal-card", "data-module": "proposal-card", "data-visual-id": "proposal-card", "data-action": "proposal.open", "data-id": site.id, "data-state": site.status }, [
     h("div", { "class": "proposal-card__diamond", style: "background:" + st.dot }),

@@ -106,7 +106,7 @@ export function Profile() {
   var prefs = [
     { key: "receipts", title: "Email receipts", desc: "Invoice & payment confirmations" },
     { key: "sms", title: "SMS appointment updates", desc: "Appointment reminders and arrival alerts" },
-    { key: "marketing", title: "Offers & tips", desc: "Wellness rituals, products and seasonal offers" }
+    { key: "marketing", title: "Offers & tips", desc: (currentTheme().copy || {}).marketingPref || "Wellness rituals, products and seasonal offers" }
   ];
   var prefPanel = h("div", { "class": "list-panel", "data-module": "preferences" }, [h("div", { "class": "list-panel__title", style: "margin-bottom:16px" }, "Notifications")]);
   prefs.forEach(function (p) {

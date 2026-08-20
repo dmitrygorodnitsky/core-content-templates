@@ -6,6 +6,7 @@ import { PricingCard } from "../components/commerce/PricingCard.js";
 
 export function Pricing() {
   var v = currentTheme();
+  var payg = (v.copy && v.copy.payAsYouGo) || {};
   var pricing = state.moduleData.pricing || {};
   var livePlans = pricing.source === "core-pim" ? pricing.plans : null;
   var page = h("section", { "class": "page", "data-route": "pricing", "data-visual-id": "pricing" });
@@ -29,10 +30,10 @@ export function Pricing() {
       });
     })
     : [
-      PricingCard({ name: "Pay as you go", price: "Per ritual", tag: "Current total is shown before confirmation", current: true,
-        features: ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"] }),
+      PricingCard({ name: payg.name || "Pay as you go", price: payg.price || "Per ritual", tag: payg.tag || "Current total is shown before confirmation", current: true,
+        features: payg.features || ["Choose an individual ritual", "Keep appointments in one portal", "Review aftercare after your visit"] }),
       PricingCard({ name: v.plan.name, price: v.plan.monthlyPrice || "$9", tag: v.plan.tag, featured: true, features: v.plan.features }),
-      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: "For a deeper ritual rhythm", features: v.plan.plusFeatures })
+      PricingCard({ name: v.plan.plusName, price: v.plan.plusMonthlyPrice || "$19", tag: v.plan.plusTag || "For a deeper ritual rhythm", features: v.plan.plusFeatures })
     ];
   page.appendChild(h("div", { "class": "pricing-grid", "data-bind": livePlans ? "pim.plans" : "plan.cards" }, cards));
   var rates = h("div", { "class": "rates-card", "data-module": "rates-list", "data-visual-id": "per-visit-rates" }, [
