@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaCartEnvelope, spaCurrentApiDemoOpen, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSellInfo, state } from "./state.js";
+import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
 import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
 import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
@@ -41,19 +41,25 @@ export var ACTIONS = {
     if (isSpa()) return spaApptCancel(id);
     return runCommand("order.cancel", id, function () { cancelOrder(id); });
   },
-  "order.reschedule":  function (id) { if (spaFlowCapable()) return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); openDrawer("booking"); },
+  "order.reschedule":  function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "reschedule", rescheduleOf: id }); openDrawer("booking"); },
   "order.downloadInvoice": function () { failCommand("order.downloadInvoice"); },
-  "order.bookAgain":   function (id) { if (spaFlowCapable()) return openSpaFlow({ entry: "book-again", fromAppt: id }); openDrawer("booking"); },
+  "order.bookAgain":   function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "book-again", fromAppt: id }); openDrawer("booking"); },
   "order.filter":      function (id) { setState({ filter: id }); },
   "compliance.unlock": function ()   { toast("Compliance Reports is a Pro add-on \u2014 ask your account manager"); },
-  "booking.open":      function (id) { if (spaFlowCapable()) return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" }); openDrawer("booking"); },
-  "booking.close":     function ()   { state.spaFlow = null; state.spaBookAck = false; closeDrawer(); },
-  "booking.selectService": function (id) { var flow = state.spaFlow; if (!flow) return; flow.serviceCode = id; flow.specialistRef = null; flow.slotRef = null; flow.held = false; spaFlowAfterService(flow); render(); },
-  "booking.selectSpecialist": function (id) { var flow = state.spaFlow; if (!flow) return; flow.specialistRef = id === "any" ? null : id; flow.step = "slots"; render(); },
-  "booking.selectSlot": function (id) { var flow = state.spaFlow; if (!flow) return; if (String(id).indexOf("day:") === 0) { flow.dayKey = String(id).slice(4); flow.slotRef = null; } else { flow.slotRef = id; var day = F.spaBooking.days.find(function (item) { return (item.slots || []).some(function (slot) { return slot.ref === id; }); }); if (day) flow.dayKey = day.key; } render(); },
+  "booking.open":      function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" }); openDrawer("booking"); },
+  "booking.close":     function ()   { state.spaFlow = null; state.spaBookAck = false; state.spaNote = ""; closeDrawer(); },
+  "booking.selectService": function (id) { var flow = state.spaFlow; if (!flow) return; flow.serviceCode = id; flow.specialistRef = null; flow.slotRef = null; flow.visitMode = null; flow.locationRef = null; flow.addOns = []; flow.held = false; spaFlowAfterService(flow); render(); },
+  "booking.selectVisitMode": function (id) { var flow = state.spaFlow; if (!flow) return; flow.visitMode = id; flow.locationRef = null; spaInvalidateAfterOptions(flow, "visit-mode"); render(); },
+  "booking.selectLocation": function (id) { var flow = state.spaFlow; if (!flow) return; flow.locationRef = id; spaInvalidateAfterOptions(flow, "location"); render(); },
+  "booking.reloadLocations": function () { return spaReloadLocations(); },
+  "booking.toggleAddon": function (id) { return spaToggleAddon(id); },
+  "booking.changeNotes": function (value) { state.spaNote = String(value || ""); },
+  "booking.next": function () { return spaFlowNext(); },
+  "booking.selectSpecialist": function (id) { var flow = state.spaFlow; if (!flow) return; flow.specialistRef = id === "any" ? null : id; flow.slotRef = null; flow.held = false; var booking = spaBookingModel(flow.serviceCode, flow.specialistRef); flow.dayKey = (booking.days[0] || {}).key || null; flow.step = "slots"; render(); },
+  "booking.selectSlot": function (id) { var flow = state.spaFlow; if (!flow) return; if (String(id).indexOf("day:") === 0) { flow.dayKey = String(id).slice(4); flow.slotRef = null; } else { flow.slotRef = id; var day = spaBookingModel().days.find(function (item) { return (item.slots || []).some(function (slot) { return slot.ref === id; }); }); if (day) flow.dayKey = day.key; } render(); },
   "booking.hold":      function (id) { return spaHoldSlot(id); },
-  "booking.retry":     function (id) { var flow = state.spaFlow; if (!flow) return; if (id === "hold") { clearSpaCommand("booking.hold:" + flow.slotRef); return spaHoldSlot(flow.slotRef); } clearSpaCommand("booking.confirm:" + F.spaBooking.ref); return spaBookingConfirm(); },
-  "booking.back":      function () { var flow = state.spaFlow; if (!flow) return; if (flow.step === "review") { flow.held = false; flow.step = "slots"; } else if (flow.step === "slots") { flow.step = (F.spaBooking.eligibleSpecialists[flow.serviceCode] || []).length ? "specialist" : "context"; } else { flow.step = "context"; } render(); },
+  "booking.retry":     function (id) { var flow = state.spaFlow; if (!flow) return; if (id === "hold") { clearSpaCommand("booking.hold:" + flow.slotRef); return spaHoldSlot(flow.slotRef); } clearSpaCommand("booking.confirm:" + spaBookingModel().ref); return spaBookingConfirm(); },
+  "booking.back":      function () { return spaFlowBack(); },
   "booking.ackPolicy": function () { setState({ spaBookAck: !state.spaBookAck }); },
   "booking.confirm":   function ()   { if (isSpa()) return spaBookingConfirm(); closeDrawer(); failCommand("booking.confirm"); },
   "appointment.open": function (id) { state.spaCurrentAppointment = id; state.view = "ready"; go("appointment.detail"); },
@@ -118,7 +124,7 @@ export var ACTIONS = {
   "purchase.cancelRequest": function (id) { return runSpaCommand("purchase.cancelRequest:" + id, function () { state.spaCancelReqs = Object.assign({}, state.spaCancelReqs, { [id]: "accepted-for-review" }); }); },
   "purchase.returnRequest": function (id) { return runSpaCommand("purchase.returnRequest:" + id, function () { state.spaReturns = Object.assign({}, state.spaReturns, { [id]: "accepted-for-review" }); }); },
   "purchase.buyAgain":     function (id) { return spaBuyAgain(id); },
-  "plan.bookWithCredit":   function (id) { if (spaFlowCapable()) return openSpaFlow({ entry: "credit", planRef: id }); openDrawer("booking"); },
+  "plan.bookWithCredit":   function (id) { if (isSpa() && state.capability === "target-appointments") return openSpaFlow({ entry: "credit", planRef: id }); openDrawer("booking"); },
   "plan.purchase":         function (id) { if (!spaPlanSellOpen() || state.spaOfferDemo !== "sellable") return false; state.spaPlanOffer = id; return spaCheckoutStart("plan"); },
   "plan.cancelRenewal":    function (id) { return runSpaCommand("plan.cancelRenewal:" + id, function () { state.spaPlanCancelled = Object.assign({}, state.spaPlanCancelled, { [id]: true }); }); },
   "shop.pickVariant":      function (id) { var parts = String(id || "").split("|"); state.spaVariantPick = Object.assign({}, state.spaVariantPick, { [parts[0]]: parts[1] }); render(); },
@@ -264,6 +270,7 @@ export function runSpaCommand(key, onReadback, options) {
       state.drawer = null;
       state.spaFlow = null;
       state.spaBookAck = false;
+      state.spaNote = "";
       state.account = "session-expired";
       render();
       return;
@@ -302,6 +309,7 @@ function runLiveSpaCommand(key, operation, onReadback, options) {
       state.drawer = null;
       state.spaFlow = null;
       state.spaBookAck = false;
+      state.spaNote = "";
       state.account = "session-expired";
     }
     console.error("[aircove] live SPA command failed", key, error);
@@ -587,17 +595,37 @@ function spaCheckoutRef() {
 function spaBookingConfirm() {
   if (state.capability !== "target-appointments" || state.spaBooking !== "open" || state.spaHold !== "held") return false;
   var flow = state.spaFlow;
-  var key = flow ? "booking.confirm:" + F.spaBooking.ref : "booking.confirm:booking";
+  var booking = spaBookingModel();
+  var key = flow ? "booking.confirm:" + booking.ref : "booking.confirm:booking";
   if (flow && (!flow.held || !state.spaBookAck || (flow.entry === "credit" && state.spaCredit !== "ok"))) return false;
+  if (flow && (state.spaAddonSrc === "removed" || state.spaAddonSrc === "repriced")) return false;
+  var note = spaNoteState();
+  if (flow && note.enabled && note.invalid) return false;
   if (flow && spaCurrentApiDemoOpen()) {
-    var service = state.config.dataMode === "live"
-      ? (state.moduleData.pricing && state.moduleData.pricing.rates || []).find(function (item) { return item.code === flow.serviceCode; })
-      : F.spa.pim.services.find(function (item) { return item.code === flow.serviceCode; });
+    var service = spaCatalogServices().find(function (item) { return item.code === flow.serviceCode; });
+    var slot = spaSelectedSlot();
+    if (!service || !slot) return false;
+    var options = spaBookingOpts();
+    var quote = spaBookingQuote(options);
+    var visitMode = spaVisitMode(options);
+    var location = spaSelectedLocation(options);
+    var addOns = spaSelectedAddOns(options);
+    if (options.capabilities.addOns && !quote) return false;
+    var resourceIds = Array.from(new Set((slot.resourceIds || []).concat(location && location.backendResourceId || []).filter(Boolean)));
     var input = {
-      requestRef: F.spaBooking.ref + "-" + (flow.slotRef || "slot") + "-" + (flow.serviceCode || "service"),
+      requestRef: booking.ref + "-" + (flow.slotRef || "slot") + "-" + (flow.serviceCode || "service"),
       serviceName: service && service.name || "Spa appointment",
-      start: spaSlotIso(flow.slotRef),
-      durationMinutes: 60,
+      start: slot.startIso,
+      durationMinutes: quote && quote.durationMinutes || service.durationMinutes,
+      serviceProductId: service.backendProductId,
+      resourceIds: resourceIds,
+      specialistAccountId: slot.specialistAccountId,
+      visitMode: visitMode && visitMode.code || null,
+      locationResourceId: location && location.backendResourceId || null,
+      locationLabel: location && location.label || slot.locationName || null,
+      addOnRefs: addOns.map(function (addon) { return addon.ref; }),
+      customerNote: spaNoteState(options).value || null,
+      bookingOptionsVersion: options.selectionVersion,
     };
     var command = flow.entry === "reschedule" && flow.rescheduleOf
       ? spaLiveAdapter().rescheduleAppointment.bind(null, flow.rescheduleOf, input, spaLiveContext())
@@ -607,10 +635,13 @@ function spaBookingConfirm() {
         return reloadRuntimeModule("appointments").then(function () { return appointment; });
       });
     }, function (appointment) {
+      var requested = appointment && appointment.customerStatus === "Requested";
       state.spaResult = {
         kind: "appointment",
-        headline: flow.entry === "reschedule" ? "Booking updated" : "Booking confirmed",
-        sub: "The appointment was recorded in Core. No payment was taken.",
+        headline: requested ? "Request sent" : flow.entry === "reschedule" ? "Booking updated" : "Booking confirmed",
+        sub: requested
+          ? "Your appointment request was recorded in Core and is waiting for the studio to confirm it. No payment was taken."
+          : "The appointment was recorded in Core. No payment was taken.",
         appointment: { ref: appointment.ref, service: appointment.service, start: appointment.start },
       };
       if (flow.entry === "reschedule" && flow.rescheduleOf) {
@@ -620,9 +651,10 @@ function spaBookingConfirm() {
       state.drawer = null;
       state.spaFlow = null;
       state.spaBookAck = false;
+      state.spaNote = "";
       state.route = "checkout";
       writeRouteToLocation("checkout");
-    }, { toast: flow.entry === "reschedule" ? "Appointment moved — confirmed by Core" : "Appointment booked — confirmed by Core" });
+    }, { toast: flow.entry === "reschedule" ? "Appointment update recorded in Core" : "Booking request recorded in Core" });
   }
   return runSpaCommand(key, function () {
     state.spaResult = flow ? spaFlowResult() : F.spaCommerce.confirmations[state.spaBookResult] || F.spaCommerce.confirmations["appointment-only"];
@@ -632,6 +664,7 @@ function spaBookingConfirm() {
     state.drawer = null;
     state.spaFlow = null;
     state.spaBookAck = false;
+    state.spaNote = "";
     state.route = "checkout";
     writeRouteToLocation("checkout");
   }, { ms: 900 });
@@ -643,47 +676,40 @@ function clearSpaCommand(key) {
   delete state.commands[key];
 }
 
-// The booking flow reads its days, slots and specialists from `F.spaBooking`,
-// and the release build swaps `fixtures.js` for `live-fixtures.js`, whose
-// `spaBooking.days` is an empty frozen array. There is no live availability
-// source — `state.spaSlots` is a hardcoded "ready" — so in a live build the
-// flow has no data at all and `days[0].key` threw a TypeError on every Book
-// click.
-//
-// Fail closed rather than crash: without a day source the flow does not open.
-// Wiring booking to a real availability contract is W3, and the honest "we
-// cannot show you availability" treatment is requested in
-// design-requests/calm-harbor-appointment-status-and-slot-availability-states.md.
-// Do not improvise one here.
-function spaBookingDays() {
-  var booking = F.spaBooking;
+function spaBookingDays(serviceCode, specialistRef) {
+  var booking = spaBookingModel(serviceCode, specialistRef);
   var days = booking && booking.days;
   return Array.isArray(days) ? days : [];
 }
 
 function spaFlowCapable() {
-  return isSpa()
-    && state.capability === "target-appointments"
-    && state.spaBooking === "open"
-    && spaBookingDays().length > 0;
+  return spaBookingOpen();
 }
 
 function openSpaFlow(config) {
   if (!spaFlowCapable()) return false;
-  clearSpaCommand("booking.confirm:" + F.spaBooking.ref);
+  var initialBooking = spaBookingModel(config.serviceCode || null, null);
+  clearSpaCommand("booking.confirm:" + initialBooking.ref);
   Object.keys(state.commands).forEach(function (key) {
-    if (key.indexOf("booking.hold:") === 0) clearSpaCommand(key);
+    if (key.indexOf("booking.hold:") === 0 || key.indexOf("booking.toggleAddon:") === 0) clearSpaCommand(key);
   });
   var flow = {
     entry: config.entry,
+    // A flow can open only after spaBookingOpen() proves at least one eligible
+    // Resource/service relationship. Never skip the service context to disguise
+    // missing booking configuration as an empty calendar.
     step: "context",
     serviceCode: config.serviceCode || null,
     planRef: config.planRef || null,
     specialistRef: null,
-    dayKey: spaBookingDays()[0].key,
+    dayKey: (initialBooking.days[0] || {}).key || null,
     slotRef: null,
     rescheduleOf: config.rescheduleOf || null,
     held: false,
+    visitMode: null,
+    locationRef: null,
+    addOns: [],
+    reloadedBy: null,
   };
   if (config.entry === "reschedule" && config.rescheduleOf) state.spaCurrentAppointment = config.rescheduleOf;
   if (config.fromAppt) {
@@ -691,19 +717,24 @@ function openSpaFlow(config) {
     var source = state.config.dataMode === "live" ? currentAppointment() : F.spaCommerce.appointmentDetails[config.fromAppt];
     if (source) flow.serviceCode = state.config.dataMode === "live"
       ? ((state.moduleData.pricing && state.moduleData.pricing.rates || []).find(function (item) { return item.name === source.service; }) || {}).code || null
-      : F.spaBooking.serviceForTitle[source.service] || null;
+      : spaBookingModel().serviceForTitle[source.service] || null;
   }
   if (config.entry === "reschedule" && flow.rescheduleOf) {
     var appointment = state.config.dataMode === "live" ? currentAppointment() : F.spaCommerce.appointmentDetails[flow.rescheduleOf];
     if (appointment) flow.serviceCode = state.config.dataMode === "live"
       ? ((state.moduleData.pricing && state.moduleData.pricing.rates || []).find(function (item) { return item.name === appointment.service; }) || {}).code || null
-      : F.spaBooking.serviceForTitle[appointment.service] || null;
+      : spaBookingModel().serviceForTitle[appointment.service] || null;
     flow.step = "slots";
   }
   if (config.entry === "credit") flow.serviceCode = "svc-spa-03";
   state.spaFlow = flow;
+  var flowBooking = spaBookingModel(flow.serviceCode, flow.specialistRef);
+  flow.dayKey = (flowBooking.days[0] || {}).key || null;
   state.spaBookAck = false;
   state.spaHold = "held";
+  state.spaNote = "";
+  spaSeedOptionDefaults(flow);
+  if (flow.step === "slots" && spaOptionsStepOn()) flow.step = "options";
   state.drawer = "booking";
   state.mobileNav = false;
   state.accountMenu = false;
@@ -712,12 +743,105 @@ function openSpaFlow(config) {
 }
 
 function spaFlowAfterService(flow) {
-  flow.step = (F.spaBooking.eligibleSpecialists[flow.serviceCode] || []).length ? "specialist" : "slots";
+  var booking = spaBookingModel(flow.serviceCode, null);
+  flow.dayKey = (booking.days[0] || {}).key || null;
+  flow.slotRef = null;
+  spaSeedOptionDefaults(flow);
+  if (spaOptionsStepOn()) { flow.step = "options"; return; }
+  flow.step = (booking.eligibleSpecialists[flow.serviceCode] || []).length ? "specialist" : "slots";
+}
+
+function spaSeedOptionDefaults(flow) {
+  var options = spaBookingOpts();
+  flow.addOns = options.addOns.filter(function (addon) { return addon.selected && (addon.allowedActions || []).indexOf("toggle") !== -1; }).map(function (addon) { return addon.ref; });
+  if (options.visitModes.length === 1) flow.visitMode = options.visitModes[0].code;
+  var locations = options.locations || [];
+  if (locations.length === 1 && (!flow.visitMode || !locations[0].visitModes || locations[0].visitModes.indexOf(flow.visitMode) !== -1)) flow.locationRef = locations[0].ref;
+}
+
+function spaInvalidateAfterOptions(flow, cause) {
+  var hadSelection = !!(flow.slotRef || flow.held);
+  flow.specialistRef = null;
+  flow.slotRef = null;
+  flow.held = false;
+  flow.reloadedBy = hadSelection ? cause || null : null;
+  Object.keys(state.commands).forEach(function (key) { if (key.indexOf("booking.hold:") === 0) clearSpaCommand(key); });
+  clearSpaCommand("booking.confirm:" + spaBookingModel().ref);
+  state.spaHold = "held";
+  state.spaBookAck = false;
+  if (flow.step === "slots" || flow.step === "review") flow.step = "slots";
+}
+
+var spaOptionsTimer;
+
+function spaReloadLocations() {
+  if (state.config.dataMode === "live") return false;
+  clearTimeout(spaOptionsTimer);
+  setState({ spaLocSrc: "loading" });
+  spaOptionsTimer = setTimeout(function () { setState({ spaLocSrc: "ready" }); }, 900);
+  return true;
+}
+
+function spaReloadAddons() {
+  if (state.config.dataMode === "live") return false;
+  var flow = state.spaFlow;
+  if (flow && state.spaAddonSrc === "removed") flow.addOns = (flow.addOns || []).slice(1);
+  clearTimeout(spaOptionsTimer);
+  setState({ spaAddonSrc: "loading" });
+  spaOptionsTimer = setTimeout(function () { setState({ spaAddonSrc: "ready" }); toast("Extras reloaded \u2014 current amounts shown"); }, 900);
+  return true;
+}
+
+function spaToggleAddon(addonRef) {
+  var flow = state.spaFlow;
+  var options = spaBookingOpts();
+  var addon = options.addOns.find(function (item) { return item.ref === addonRef; });
+  if (!flow || !addon || (addon.allowedActions || []).indexOf("toggle") === -1) return false;
+  if (state.config.dataMode === "live") {
+    var liveSelected = (flow.addOns || []).slice();
+    var liveIndex = liveSelected.indexOf(addonRef);
+    if (liveIndex === -1) liveSelected.push(addonRef); else liveSelected.splice(liveIndex, 1);
+    flow.addOns = liveSelected;
+    spaInvalidateAfterOptions(flow, "add-on");
+    render();
+    return true;
+  }
+  return runSpaCommand("booking.toggleAddon:" + addonRef, function () {
+    var selected = (flow.addOns || []).slice();
+    var index = selected.indexOf(addonRef);
+    if (index === -1) selected.push(addonRef); else selected.splice(index, 1);
+    flow.addOns = selected;
+    spaInvalidateAfterOptions(flow, "add-on");
+  }, { ms: 520 });
+}
+
+function spaFlowNext() {
+  var flow = state.spaFlow;
+  if (!flow || (flow.step === "options" && !spaOptionsComplete())) return false;
+  var steps = spaFlowSteps(flow);
+  var index = steps.findIndex(function (step) { return step.k === flow.step; });
+  if (index === -1 || index === steps.length - 1) return false;
+  var next = steps[index + 1].k;
+  if (next === "review" && !flow.held) next = "slots";
+  flow.step = next;
+  render();
+  return true;
+}
+
+function spaFlowBack() {
+  var flow = state.spaFlow;
+  if (!flow) return false;
+  var steps = spaFlowSteps(flow);
+  var index = steps.findIndex(function (step) { return step.k === flow.step; });
+  if (flow.step === "review") flow.held = false;
+  flow.step = index > 0 ? steps[index - 1].k : steps[0].k;
+  render();
+  return true;
 }
 
 function spaHoldSlot(slotRef) {
   var flow = state.spaFlow;
-  if (!flow || !slotRef || state.spaSlots !== "ready") return false;
+  if (!flow || !slotRef || spaBookingSlotState() !== "ready") return false;
   flow.slotRef = slotRef;
   if (spaCurrentApiDemoOpen()) {
     flow.held = true;
@@ -736,16 +860,22 @@ function spaHoldSlot(slotRef) {
 function spaSlotLabel() {
   var flow = state.spaFlow;
   if (!flow) return "";
-  for (var index = 0; index < F.spaBooking.days.length; index += 1) {
-    var day = F.spaBooking.days[index];
+  var days = spaBookingModel().days;
+  for (var index = 0; index < days.length; index += 1) {
+    var day = days[index];
     var slot = (day.slots || []).find(function (item) { return item.ref === flow.slotRef; });
     if (slot) return day.label + " · " + slot.label;
   }
   var fallback = spaBookingDays().find(function (item) { return item.key === flow.dayKey; }) || spaBookingDays()[0];
-  return fallback.label;
+  return fallback ? fallback.label : "";
 }
 
 function spaSlotIso(slotRef) {
+  if (state.config.dataMode === "live") {
+    var slot = spaSelectedSlot();
+    if (!slot || slot.ref !== slotRef) throw new Error("Selected appointment time is invalid");
+    return slot.startIso;
+  }
   var match = String(slotRef || "").match(/^sl-(\d{2})(\d{2})-(\d{1,4})$/);
   if (!match) throw new Error("Selected appointment time is invalid");
   var month = Number(match[1]);
@@ -845,6 +975,7 @@ function retrySpaOrRuntime(id) {
   if (id === "cart-quote") { state.spaCartDemo = "as-added"; spaSetLines(spaLines()); render(); return true; }
   if (id === "checkout-quote") { setState({ spaCheckoutDemo: "ready" }); return true; }
   if (id === "booking-hold") { setState({ spaHold: "held" }); return true; }
+  if (id === "booking-addons") return spaReloadAddons();
   if (id === "slots") { setState({ spaSlots: "ready" }); return true; }
   if (id === "plan-offers") { setState({ spaOfferDemo: "sellable" }); return true; }
   if (id === "plan-credit") { setState({ spaCredit: "ok" }); return true; }
@@ -1025,6 +1156,7 @@ export function go(route) {
     state.drawer = null;
     state.spaFlow = null;
     state.spaBookAck = false;
+    state.spaNote = "";
   }
   writeRouteToLocation(resolved.id);
   render();
@@ -1221,6 +1353,7 @@ export function pickTheme(name) {
   state.drawer = null;
   state.spaFlow = null;
   state.spaBookAck = false;
+  state.spaNote = "";
   state.spaCurrentAppointment = null;
   state.spaPlanOffer = null;
   state.spaRescheduled = {};

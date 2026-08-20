@@ -22,7 +22,7 @@ export function Pricing() {
         suffix: plan.interval ? "/" + plan.interval.replace(/^1\s+/i, "").toLowerCase() : "",
         tag: plan.description || plan.cta,
         featured: index === 1,
-        features: plan.description ? [plan.description] : [plan.code],
+        features: plan.description ? [plan.description] : ["Published catalog offer"],
         action: plan.allowedActions && plan.allowedActions.includes("support.open") ? "support.open" : "cart.addItem",
         actionId: plan.name,
         ctaLabel: plan.cta || "Choose plan"
@@ -44,7 +44,7 @@ export function Pricing() {
       h("div", { "class": "rate-row__icon", style: "background:" + pal[1] }, h("i", { style: "background:" + pal[0] })),
       h("div", { style: "flex:1" }, [
         h("div", { style: "font-weight:600;font-size:14px", "data-bind": "service.name" }, s.name),
-        h("div", { style: "font-size:12px;color:var(--ink-2)" }, s.tagline || s.description || s.code)
+        h("div", { style: "font-size:12px;color:var(--ink-2)" }, s.tagline || s.description || "Published catalog item")
       ]),
       h("div", { style: "font-weight:700;font-size:15px", "data-bind": "service.price" }, s.price === "Quote" ? "Quote" : s.price)
     ]));

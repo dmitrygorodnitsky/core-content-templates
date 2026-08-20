@@ -172,3 +172,31 @@
 
 .vw-mobile .contact-form { grid-template-columns: 1fr; }
 
+/* Wave 20 — booking options at 390: a five-step rail wraps instead of
+   shrinking its hit targets, and the add-on amount sits under the name.
+   The drawer is viewport-fixed (outside .app-shell), so app.js mirrors the
+   container class onto it; the width below restates what a real 390 viewport
+   gives the sheet (width: min(440px, 92vw)) so previewed drawer evidence
+   matches the device. */
+.drawer.vw-mobile { width: 359px; }
+
+/* inside the narrow sheet an inline failure stacks its retry under the message
+   instead of squeezing both into one row (drawer-scoped — route-level failures
+   keep their accepted treatment) */
+.drawer.vw-mobile .inline-fail { flex-wrap: wrap; }
+
+.drawer.vw-mobile .inline-fail .btn { flex: 0 0 100%; margin-left: 33px; }
+
+.vw-mobile .bk-steps { gap: 5px; }
+
+.vw-mobile .bk-step { font-size: 11px; padding: 4px 9px 4px 4px; }
+
+.vw-mobile .bk-addon { flex-wrap: wrap; }
+
+.vw-mobile .bk-addon .bk-addon__meta {
+  flex-direction: row; align-items: baseline; gap: 8px;
+  flex-basis: 100%; padding-left: 31px; margin-top: 2px;
+}
+
+.vw-mobile .bk-note-field__head { flex-wrap: wrap; }
+

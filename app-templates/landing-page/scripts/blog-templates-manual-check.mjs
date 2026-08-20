@@ -63,8 +63,25 @@ assert.doesNotMatch(index.html, /composition-section/);
 assert.doesNotMatch(post.html, /composition-section/);
 assert.doesNotMatch(index.html, /<section[^>]*>\s*<section/i);
 assert.doesNotMatch(post.html, /<section[^>]*>\s*<section/i);
+const SEO_METADATA_CODES = ["META_TITLE", "META_DESCRIPTION", "HERO_IMAGE_URL"];
 assert.ok(index.parameters.every((parameter) => parameter.code.startsWith("FIELD_SERVICE_BLOG_INDEX_")));
-assert.ok(post.parameters.every((parameter) => parameter.code.startsWith("FIELD_SERVICE_BLOG_POST_")));
+assert.deepEqual(
+  post.parameters
+    .filter((parameter) => !parameter.code.startsWith("FIELD_SERVICE_BLOG_POST_"))
+    .map((parameter) => parameter.code)
+    .sort(),
+  [...SEO_METADATA_CODES].sort(),
+);
+for (const code of SEO_METADATA_CODES) {
+  const parameter = post.parameters.find((entry) => entry.code === code);
+  assert.equal(parameter.type, "STRING");
+  assert.equal(parameter.value, "");
+  assert.match(post.head, new RegExp(`\\$\\{${code}\\}`));
+  assert.doesNotMatch(post.head, new RegExp(`\\$\\{${code}@`));
+}
+assert.doesNotMatch(post.head, /<title|name="description"/);
+assert.match(post.javascript, /if \(isPlaceholderValue\(document\.title\)\) document\.title = post\.title;/);
+assert.match(post.javascript, /if \(node && !isPlaceholderValue\(node\.getAttribute\("content"\)\)\) return;/);
 assert.equal(post.parameters.some((parameter) => parameter.type === "BLOG_POST_CONTENT_SS"), false);
 assert.equal(post.parameters.some((parameter) => parameter.code.endsWith("BLOG_POST_CONTENT")), false);
 assert.equal(post.html.match(/\$\{POST@BLOG_POST_CONTENT_SS\}/g)?.length, 1);
@@ -74,8 +91,8 @@ assert.doesNotMatch(postPreview, /\$\{POST@BLOG_POST_CONTENT_SS\}/);
 assert.match(postPreview, /<h1>A practical guide to field service routing<\/h1>/);
 assert.match(post.javascript, /currentPermalink/);
 assert.match(post.javascript, /serverRenderedTitle/);
-assert.match(post.javascript, /renderServerMarkdown/);
-assert.match(post.javascript, /markdownFragment/);
+assert.doesNotMatch(post.javascript, /renderServerMarkdown|markdownFragment|appendInlineMarkdown/);
+assert.doesNotMatch(post.javascript, /replaceChildren/);
 assert.match(post.html, /data-blog-render-state="pending"/);
 assert.match(post.css, /data-blog-render-state="pending"/);
 assert.match(post.javascript, /documentPost\(root\)/);
@@ -86,7 +103,8 @@ assert.match(index.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_INDEX_BLOG
 assert.match(post.html, /data-blog-post-path="\$\{FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING\}"/);
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_POST_PATH"))?.value, "/post");
-assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "0");
+assert.equal(index.parameters.some((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID")), false);
+assert.doesNotMatch(index.html, /data-blog-category-id/);
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_CATEGORY_ID"))?.value, "0");
 assert.equal(index.parameters.find((parameter) => parameter.code.endsWith("BLOG_FIXTURE_URL"))?.value, "#");
 assert.equal(post.parameters.find((parameter) => parameter.code.endsWith("BLOG_FIXTURE_URL"))?.value, "#");

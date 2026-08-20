@@ -37,6 +37,7 @@
     "organization": "CALM_HARBOR_SPA_STAGING",
     "coreApiBase": "/core",
     "serviceApiBase": "/core-svc",
+    "resourceApiBase": "/core-rm",
     "accountApiBase": "/core-acct",
     "billApiBase": "/core-bill",
     "accountTypeCode": "SPA_CUSTOMER"

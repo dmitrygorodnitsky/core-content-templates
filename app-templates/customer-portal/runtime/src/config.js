@@ -221,6 +221,7 @@ export function readPortalConfig(root) {
     accountApiBase: dataset.portalAccountApiBase || "/core-acct",
     billApiBase: dataset.portalBillApiBase || "/core-bill",
     serviceApiBase: dataset.portalServiceApiBase || "/core-svc",
+    resourceApiBase: dataset.portalResourceApiBase || "/core-rm",
     accountTypeCode: dataset.portalAccountTypeCode || "SPA_CUSTOMER",
     authCoreBase: dataset.portalAuthCoreBase || "/core",
     authCallbackPath: dataset.portalAuthCallbackPath || "/core/oauth2-callback.html",

@@ -624,7 +624,7 @@ async function validateStaticContracts() {
   const runtimeJs = await countFiles(root, (name) => name.endsWith(".js"));
   const stylesheets = await countFiles(path.join(root, "styles"), (name) => name.endsWith(".css"));
   assert.deepEqual(manifest.fileInventory, { stylesheets, srcJavaScript: srcJs, runtimeJavaScript: runtimeJs }, "manifest file inventory");
-  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 99, runtimeJavaScript: 112 }, "Wave 17 + customer experience auth-resume runtime file inventory");
+  assert.deepEqual(manifest.fileInventory, { stylesheets: 7, srcJavaScript: 100, runtimeJavaScript: 113 }, "Wave 20 + Core availability runtime file inventory");
 
   const [actionsSource, configSource, routerSource, oidcPageSource] = await Promise.all([
     fs.readFile(path.join(root, "src/actions.js"), "utf8"),

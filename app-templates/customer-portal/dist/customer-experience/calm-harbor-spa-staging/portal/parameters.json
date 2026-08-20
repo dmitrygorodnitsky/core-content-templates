@@ -422,6 +422,17 @@
     "value": ""
   },
   {
+    "code": "PORTAL_RESOURCE_API_BASE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Portal resource api base",
+        "DESCRIPTION": "Customer experience descriptor value: portal.resourceApiBase."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "PORTAL_BILL_API_BASE",
     "type": "STRING",
     "nls": {

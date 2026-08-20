@@ -86,6 +86,15 @@ The authenticated portal does not contain a second public landing/home page.
 Unauthenticated entry comes from the separately deployed landing or Core Auth;
 the portal resumes at its configured authenticated route.
 
+For the current direct-session compatibility flow, an unauthenticated portal
+may send the browser to its tenant CMS login document. Because that raw CMS
+document does not receive Core Auth runtime substitutions, its generated login
+runtime obtains a same-origin CSRF token from `/oauth2/login`, submits exactly
+one credential request at a time, and returns only to the descriptor-owned
+same-origin portal URL. CSRF tokens, credentials, and session results remain
+runtime-only and never become CMS parameters. Core Auth-rendered login requests
+keep the native placeholder-driven form path.
+
 ## Ownership And Runtime Boundaries
 
 ```text
@@ -144,6 +153,7 @@ The stable root section emitted by `cms/root-template.html` is:
   data-portal-core-api-base="{{portal_core_api_base}}"
   data-portal-account-api-base="{{portal_account_api_base}}"
   data-portal-bill-api-base="{{portal_bill_api_base}}"
+  data-portal-resource-api-base="{{portal_resource_api_base}}"
   data-portal-account-type-code="{{portal_account_type_code}}"
   data-portal-vertical="{{portal_vertical}}"
   data-portal-profile="{{portal_profile}}"

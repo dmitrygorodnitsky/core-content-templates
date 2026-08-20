@@ -125,6 +125,7 @@ function validateSource(source) {
     || source.account.organization !== "CALM_HARBOR_SPA_STAGING"
     || source.account.coreApiBase !== "/core"
     || source.account.serviceApiBase !== "/core-svc"
+    || source.account.resourceApiBase !== "/core-rm"
     || source.account.accountApiBase !== "/core-acct"
     || source.account.billApiBase !== "/core-bill"
     || source.account.accountTypeCode !== "SPA_CUSTOMER")) {
@@ -196,6 +197,7 @@ function templateFor(source, css, javascript) {
     "data-portal-organization": source.account.organization,
     "data-portal-core-api-base": source.account.coreApiBase,
     "data-portal-service-api-base": source.account.serviceApiBase,
+    "data-portal-resource-api-base": source.account.resourceApiBase,
     "data-portal-account-api-base": source.account.accountApiBase,
     "data-portal-bill-api-base": source.account.billApiBase,
     "data-portal-account-type-code": source.account.accountTypeCode,

@@ -87,8 +87,7 @@ export function SpaCatalog() {
           h("b", { "data-bind": "pim.services[].displayPrice" }, s.displayPrice),
           s.interval ? h("span", { "data-bind": "pim.services[].interval" }, "/ " + s.interval) : null
         ]),
-        h("div", { "class": "spa-svc-card__foot" }, [
-          h("span", { "class": "code-chip", style: "margin-left:0", "data-bind": "pim.services[].code" }, s.code),
+        h("div", { "class": "spa-svc-card__foot", style: "justify-content:flex-end" }, [
           open
             ? ActionButton({ variant: "btn--primary", label: "Book", action: "booking.open", id: s.code, visualId: "spa-svc-book" })
             : h("span", { "class": "link-action", "data-action": "nav.go", "data-id": "pricing" }, "See in the price list \u203a")

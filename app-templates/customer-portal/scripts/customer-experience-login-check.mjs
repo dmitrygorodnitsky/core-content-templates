@@ -23,16 +23,25 @@ try {
   const build = await buildCustomerExperience({ inputs, outputDir: checkRoot });
   const template = build.templates.login;
   assert.equal(template.code, "CUSTOMER_EXPERIENCE_LOGIN");
-  assert.equal(template.parameters.length, 25);
+  assert.equal(template.parameters.length, 26);
   assert.equal(template.css, "", "login styles are self-contained in the CMS head");
-  assert.match(template.javascript, /data-password-toggle/, "only the accepted password reveal enhancement is emitted");
+  assert.match(template.javascript, /data-password-toggle/, "the accepted password reveal enhancement is emitted");
+  assert.match(template.javascript, /fetch\(actionPath/, "direct-session login bootstraps and submits against the same-origin backend form");
+  assert.match(template.javascript, /credentials: 'same-origin'/, "direct-session auth requests stay same-origin");
+  assert.match(template.javascript, /successUrl\.origin !== window\.location\.origin/, "direct-session return rejects another origin");
+  assert.equal(/localStorage|sessionStorage|console\./.test(template.javascript), false, "credentials and tokens are neither persisted nor logged");
   assert.equal(/data-dev-toolbar|<script\b|<!--[\s\S]*?-->/.test(template.html), false, "preview harness, script tags, and comments stay out of CMS markup");
   assert.equal(/<link[^>]+stylesheet|https?:\/\//i.test(template.head + template.html), false, "login is self-contained and third-party free");
   assert.equal((template.html.match(/<form\b/gi) || []).length, 1);
   assert.equal((template.html.match(/data-core-auth-login\b/gi) || []).length, 1);
   assert.match(template.html, /<form[^>]+method="post"[^>]+action="\{\{LOGIN_ACTION\}\}"[^>]+data-core-auth-login/);
+  assert.match(template.html, /data-login-success-url="\$\{CX_PORTAL_URL@STRING\}"/, "direct-session success returns to the configured customer portal");
   assert.match(template.html, /name="username"[^>]+autocomplete="username"/);
   assert.match(template.html, /name="password"[^>]+autocomplete="current-password"/);
+  assert.match(template.html, /style="display:none;display:\{\{ERROR_DISPLAY\}\}"/, "raw CMS login hides the unresolved error state");
+  assert.match(template.html, /style="display:none;display:\{\{LOGOUT_DISPLAY\}\}"/, "raw CMS login hides the unresolved logout state");
+  assert.match(template.html.replace("{{ERROR_DISPLAY}}", "block"), /style="display:none;display:block"/, "Core Auth can still show the error state");
+  assert.match(template.html.replace("{{LOGOUT_DISPLAY}}", "block"), /style="display:none;display:block"/, "Core Auth can still show the logout state");
   for (const placeholder of LOGIN_RUNTIME_PLACEHOLDERS) assert.equal(count(template.html, "{{" + placeholder + "}}"), 1, placeholder + " survives exactly once");
   for (const parameter of template.parameters) assert.equal(protectedCodes.has(parameter.code), false, parameter.code + " must not own runtime auth data");
 
@@ -46,7 +55,7 @@ try {
   assert.equal(sha256(await fs.readFile(sourcePath)), sourceHash, "accepted login HTML remains immutable");
   const currentStyleHashes = await Promise.all(AUTH_LOGIN_STYLE_NAMES.map(async (name) => sha256(await fs.readFile(path.join(portalRoot, "design-inbox/styles", name)))));
   assert.deepEqual(currentStyleHashes, styleHashes, "accepted login styles remain immutable");
-  console.log("customer-experience-login-check ok: Wave 18 compiles directly into generic LOGIN; 25 safe parameters, 6 runtime placeholders, one native form, no tenant package or generated-input dependency");
+  console.log("customer-experience-login-check ok: Wave 18 compiles into generic LOGIN with fail-closed raw CMS states and direct-session CSRF bootstrap; 26 safe parameters, 6 runtime placeholders, one guarded form");
 } finally {
   await fs.rm(checkRoot, { recursive: true, force: true });
 }

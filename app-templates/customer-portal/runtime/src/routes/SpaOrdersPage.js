@@ -78,8 +78,7 @@ export function SpaOrders() {
         h("div", { "class": "spa-order-row__body" }, [
           h("div", { "class": "order-card__name", "data-bind": "order.typeLabel" }, o.typeLabel),
           h("div", { "class": "order-card__meta" }, [
-            h("span", { "data-bind": "order.reference" }, "Reference " + o.ref),
-            h("span", { "class": "code-chip", "data-bind": "order.typeCode" }, o.typeCode)
+            h("span", { "data-bind": "order.reference" }, "Reference " + o.ref)
           ])
         ]),
         StatusBadge({ variant: "status-badge--unmapped", label: o.status, bind: "order.rawStatus", state: "unmapped" }),
@@ -103,8 +102,7 @@ function liveOrder(order) {
     : "—";
   return {
     ref: String(order.id),
-    typeLabel: order.type && order.type.label || order.type && order.type.code || "Order",
-    typeCode: order.type && order.type.code || "ORDER",
+    typeLabel: order.type && order.type.label || "Order",
     status: order.statusCode || "UNMAPPED",
     total: total,
     currency: currency,

@@ -22,17 +22,6 @@
     "value": "SERVICEWAND"
   },
   {
-    "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_CATEGORY_ID",
-    "type": "INTEGER",
-    "nls": {
-      "en": {
-        "NAME": "Blog · Category ID",
-        "DESCRIPTION": "Backend blog category ID. Use 0 to show every category."
-      }
-    },
-    "value": "0"
-  },
-  {
     "code": "FIELD_SERVICE_BLOG_INDEX_BLOG_PAGE_SIZE",
     "type": "INTEGER",
     "nls": {
@@ -127,6 +116,19 @@
     }
   },
   {
+    "code": "FIELD_SERVICE_BLOG_INDEX_FILTER_ALL_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Filter All Label",
+        "DESCRIPTION": "Category filter chip that shows every article."
+      }
+    },
+    "value": {
+      "en": "All topics"
+    }
+  },
+  {
     "code": "FIELD_SERVICE_BLOG_INDEX_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -215,6 +217,19 @@
     },
     "value": {
       "en": "Loading articles…"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_INDEX_FILTERS_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Index · Filters Aria Label",
+        "DESCRIPTION": "Accessible label for the category filter group."
+      }
+    },
+    "value": {
+      "en": "Filter articles by topic"
     }
   },
   {

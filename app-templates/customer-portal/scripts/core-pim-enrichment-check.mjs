@@ -6,10 +6,15 @@ const requests = [];
 globalThis.window = {
   fetch: async (url, options) => {
     requests.push({ url: String(url), options });
-    if (String(url).includes("/public/")) return response({ prices: [
-      pimPrice(5, "CHS_BODY_001", "Harbor body oil", 42),
-      pimPrice(7, "CHS_BODY_002", "Restorative body cream", 36),
-    ] });
+    if (String(url).includes("/public/")) {
+      const productTypeCode = JSON.parse(options?.body || "{}").productTypeCode;
+      return response({ prices: productTypeCode === "SPA_SERVICE" ? [
+        pimServicePrice(1, "CHS_GROUNDING_MASSAGE", "Grounding massage", 145),
+      ] : [
+        pimPrice(5, "CHS_BODY_001", "Harbor body oil", 42),
+        pimPrice(7, "CHS_BODY_002", "Restorative body cream", 36),
+      ] });
+    }
     if (String(url).endsWith("/api/product-model/list.json")) return response({ result: [{
       id: 11,
       code: "CHS_MODEL_TIDELINE_BODY",
@@ -52,6 +57,7 @@ const normalized = normalizeProducts(raw);
 assert.equal(normalized.items.length, 2);
 assert.match(normalized.items[0].ref, /^product-[a-z0-9]+$/);
 assert.doesNotMatch(normalized.items[0].ref, /CHS_BODY|\b5\b/);
+assert.equal(normalized.items[0].displayTag, "Botanical blend");
 assert.deepEqual(normalized.items[0].media, [], "current API exposes no approved media URL, so the gallery remains honestly empty");
 assert.deepEqual(normalized.items[0].variantFacts, [
   { label: "Format", value: "Body oil" },
@@ -70,6 +76,17 @@ assert.doesNotMatch(normalized.items[0].modelRef, /11|CHS_MODEL/);
 assert.equal(normalized.items[0].reviews.length, 1);
 assert.deepEqual(normalized.enrichment, { models: "ready", reviews: "ready", inventory: "ready" });
 assert.equal(normalized.items[0].sellability, "unknown", "an empty inventory read leaves stock unknown, never in stock");
+
+const services = await corePimAdapter.load("services", {
+  config: {
+    pimApiBase: "/core-pim/api",
+    pimOrganization: "CALM_HARBOR_SPA_STAGING",
+    pimPricingProductTypeCodes: ["SPA_SERVICE"],
+    pimCurrency: "USD",
+  },
+});
+assert.equal(services.pimPlans[0].attributes[1].DURATION_MIN.value, 75, "live wrapper attributes must reach booking eligibility");
+assert.match(services.pimPlans[0].attributes[1].BOOKING_OPTIONS.value, /durationMinutes/, "booking options must survive public catalog normalization");
 
 const privateRequests = requests.filter((request) => request.url.includes("/api/product-"));
 assert.equal(privateRequests.length, 2);
@@ -104,11 +121,28 @@ function response(json, status = 200) {
 function pimPrice(id, code, name, amount) {
   return {
     price: { display: { amount, currency: "USD", intervalLabel: "ONE_TIME" } },
-    product: { product: { id, code, nls: { en: { NAME: name } }, attributes: { 8: {
+    // Match the live Core response: identity/NLS are nested, while type and
+    // typed attributes belong to the outer product wrapper.
+    product: { product: { id, code, nls: { en: { NAME: name } } }, attributes: { 8: {
+      DISPLAY_TAG: { value: "Botanical blend" },
       FORMAT: { value: "Body oil" },
       VOLUME_ML: { value: 100 },
       SCENT_PROFILE: { value: "Cedar leaf and soft citrus" },
-    } } }, type: { code: "SPA_RETAIL" } },
+    } }, type: { code: "SPA_RETAIL" } },
+  };
+}
+
+function pimServicePrice(id, code, name, amount) {
+  return {
+    price: { display: { amount, currency: "USD", intervalLabel: "ONE_TIME" } },
+    product: {
+      product: { id, code, nls: { en: { NAME: name } } },
+      type: { id: 1, code: "SPA_SERVICE" },
+      attributes: { 1: {
+        DURATION_MIN: { value: 75 },
+        BOOKING_OPTIONS: { value: JSON.stringify({ schemaVersion: 1, quotes: { "": { displayTotal: "$145.00", durationMinutes: 75 } } }) },
+      } },
+    },
   };
 }
 

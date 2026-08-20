@@ -124,7 +124,7 @@
     "deployment": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["environment", "organization", "accountTypeCode", "coreApiBase", "accountApiBase", "serviceApiBase", "billApiBase", "pim", "auth"],
+      "required": ["environment", "organization", "accountTypeCode", "coreApiBase", "accountApiBase", "serviceApiBase", "resourceApiBase", "billApiBase", "pim", "auth"],
       "properties": {
         "environment": { "enum": ["staging", "production"] },
         "organization": { "$ref": "#/$defs/code" },
@@ -132,6 +132,7 @@
         "coreApiBase": { "$ref": "#/$defs/sameOriginPath" },
         "accountApiBase": { "$ref": "#/$defs/sameOriginPath" },
         "serviceApiBase": { "$ref": "#/$defs/sameOriginPath" },
+        "resourceApiBase": { "$ref": "#/$defs/sameOriginPath" },
         "billApiBase": { "$ref": "#/$defs/sameOriginPath" },
         "pim": {
           "type": "object",

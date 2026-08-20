@@ -31,6 +31,12 @@
     { "code": "related_eyebrow", "type": "LOCALIZED_STRING_SS", "default": "Keep reading", "name": "Blog Post · Related Eyebrow", "description": "Label above related articles.", "preserve_default": true },
     { "code": "related_title", "type": "LOCALIZED_STRING_SS", "default": "More field service insights", "name": "Blog Post · Related H2", "description": "Related articles heading.", "preserve_default": true },
     { "code": "related_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Related blog articles", "name": "Blog Post · Related Aria Label", "description": "Accessible label for related article cards.", "preserve_default": true },
-    { "code": "read_article_label", "type": "LOCALIZED_STRING_SS", "default": "Read article", "name": "Blog Post · Read Article Label", "description": "Related card action label.", "preserve_default": true }
+    { "code": "read_article_label", "type": "LOCALIZED_STRING_SS", "default": "Read article", "name": "Blog Post · Read Article Label", "description": "Related card action label.", "preserve_default": true },
+    { "code": "share_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Share this article", "name": "Blog Post · Share Aria Label", "description": "Accessible label for the share button group.", "preserve_default": true },
+    { "code": "copy_link_label", "type": "LOCALIZED_STRING_SS", "default": "Copy link", "name": "Blog Post · Copy Link Label", "description": "Accessible label of the copy-link share button.", "preserve_default": true },
+    { "code": "link_copied_label", "type": "LOCALIZED_STRING_SS", "default": "Link copied", "name": "Blog Post · Link Copied Label", "description": "Confirmation announced after the article link is copied.", "preserve_default": true },
+    { "code": "meta_title", "type": "STRING", "default": "", "shared": true, "name": "Meta Title", "description": "Server-rendered social title. Core CMS replaces it with the BlogPost metadata key META_TITLE while an article is rendered.", "preserve_default": true },
+    { "code": "meta_description", "type": "STRING", "default": "", "shared": true, "name": "Meta Description", "description": "Server-rendered social description. Core CMS replaces it with the BlogPost metadata key META_DESCRIPTION while an article is rendered.", "preserve_default": true },
+    { "code": "hero_image_url", "type": "STRING", "default": "", "shared": true, "name": "Hero Image URL", "description": "Server-rendered social image. Core CMS replaces it with the BlogPost metadata key HERO_IMAGE_URL while an article is rendered.", "preserve_default": true }
   ]
 }

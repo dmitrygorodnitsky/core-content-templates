@@ -64,6 +64,16 @@
     return path && !path.includes(":") && !path.includes("..") ? path : "";
   }
 
+  function heroImageUrlOf(post) {
+    var hero = post.heroImage;
+    if (!hero) return "";
+    if (typeof hero === "string") return hero.trim();
+    if (typeof hero === "object" && hero.id) {
+      return "/core/image/" + encodeURIComponent(String(hero.id)) + "/get";
+    }
+    return "";
+  }
+
   function normalizePost(post, locale) {
     post = post && typeof post === "object" ? post : {};
     var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
@@ -77,6 +87,7 @@
     var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
       String(post.publishedAt || post.publishDate || post.created || "");
     var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      heroImageUrlOf(post) ||
       firstText(post, ["imageUrl", "coverUrl"], locale);
     var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
     var category = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
@@ -94,6 +105,7 @@
       summary: summary,
       category: category,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl", "AUTHOR_PHOTO_URL"], locale),
       publishedAt: publishedAt,
       readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
       imageUrl: imageUrl,
@@ -196,7 +208,7 @@
   function detailsFromPostHtml(html) {
     var parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
     var documentRoot = parsed.querySelector("[data-blog-document]") || parsed.querySelector(".blog-post");
-    if (!documentRoot) return { title: "", summary: "" };
+    if (!documentRoot) return { title: "", summary: "", imageUrl: "", imageAlt: "" };
     var titleNode = documentRoot.querySelector("h1");
     var summaryNode = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
     var details = {
@@ -207,11 +219,14 @@
       var markdownNode = documentRoot.querySelector("pre code");
       if (markdownNode) details = detailsFromMarkdown(markdownNode.textContent);
     }
+    var imageNode = documentRoot.querySelector("img");
+    details.imageUrl = imageNode ? String(imageNode.getAttribute("src") || "").trim() : "";
+    details.imageAlt = imageNode ? String(imageNode.getAttribute("alt") || "").trim() : "";
     return details;
   }
 
   function hydratePost(post, config) {
-    if (post.title && post.summary) return Promise.resolve(post);
+    if (post.title && post.summary && post.imageUrl) return Promise.resolve(post);
     return fetch(buildPostUrl(post, config), {
       credentials: "omit",
       headers: { Accept: "text/html" }
@@ -222,6 +237,11 @@
       var details = detailsFromPostHtml(html);
       post.title = post.title || details.title;
       post.summary = post.summary || details.summary;
+      if (!post.imageUrl && details.imageUrl) {
+        post.imageUrl = details.imageUrl;
+        post.imageAlt = post.imageAlt || details.imageAlt || post.title;
+        post.imageFromContent = true;
+      }
       return post;
     }).catch(function () {
       return post;
@@ -318,17 +338,21 @@
     return node;
   }
 
-  function appendMeta(target, post, config) {
-    var meta = element("div", "blog-card__meta");
+  function metaFor(post, config) {
+    var meta = element("span", "blog-card__meta");
     if (post.category) meta.appendChild(element("span", "blog-card__category", post.category));
     var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
-    if (date) {
-      var time = element("time", "blog-card__date", date);
-      if (post.publishedAt) time.dateTime = post.publishedAt;
-      meta.appendChild(time);
+    if (date || post.readTime) {
+      var line = element("span", "blog-card__meta-line");
+      if (date) {
+        var time = element("time", "blog-card__date", date);
+        if (post.publishedAt) time.dateTime = post.publishedAt;
+        line.appendChild(time);
+      }
+      if (post.readTime) line.appendChild(element("span", "blog-card__read-time", post.readTime));
+      meta.appendChild(line);
     }
-    if (post.readTime) meta.appendChild(element("span", "blog-card__read-time", post.readTime));
-    target.appendChild(meta);
+    return meta;
   }
 
   function imageFor(post, modifier) {
@@ -352,7 +376,7 @@
     link.href = window.LabBlog.buildPostUrl(post, config);
     link.appendChild(imageFor(post, "blog-card__media--card"));
     var body = element("span", "blog-card__body");
-    appendMeta(body, post, config);
+    body.appendChild(metaFor(post, config));
     body.appendChild(element("h2", "blog-card__title", post.title));
     if (post.summary) body.appendChild(element("p", "blog-card__summary", post.summary));
     body.appendChild(element("span", "blog-card__read", readLabel));
@@ -366,13 +390,55 @@
     link.href = window.LabBlog.buildPostUrl(post, config);
     link.appendChild(imageFor(post, "blog-card__media--featured"));
     var body = element("span", "blog-featured__body");
-    appendMeta(body, post, config);
+    body.appendChild(metaFor(post, config));
     body.appendChild(element("h2", "blog-featured__title", post.title));
     if (post.summary) body.appendChild(element("p", "blog-featured__summary", post.summary));
     if (post.author) body.appendChild(element("span", "blog-featured__author", post.author));
     body.appendChild(element("span", "blog-card__read", readLabel));
     link.appendChild(body);
     return link;
+  }
+
+  function categoriesOf(posts) {
+    var categories = [];
+    posts.forEach(function (post) {
+      if (post.category && categories.indexOf(post.category) < 0) categories.push(post.category);
+    });
+    return categories;
+  }
+
+  function renderChips(root, state, onChange) {
+    var host = root.querySelector("[data-blog-filters]");
+    if (!host) return;
+    var categories = categoriesOf(state.posts);
+    if (categories.length < 2) {
+      host.hidden = true;
+      return;
+    }
+    var allLabel = root.getAttribute("data-blog-filter-all-label") || "All topics";
+    host.textContent = "";
+    var allChip = element("button", "blog-index__filter", allLabel);
+    allChip.type = "button";
+    allChip.setAttribute("aria-pressed", String(!state.selected.length));
+    allChip.addEventListener("click", function () {
+      if (!state.selected.length) return;
+      state.selected = [];
+      onChange();
+    });
+    host.appendChild(allChip);
+    categories.forEach(function (category) {
+      var chip = element("button", "blog-index__filter", category);
+      chip.type = "button";
+      chip.setAttribute("aria-pressed", String(state.selected.indexOf(category) >= 0));
+      chip.addEventListener("click", function () {
+        var at = state.selected.indexOf(category);
+        if (at >= 0) state.selected.splice(at, 1);
+        else state.selected.push(category);
+        onChange();
+      });
+      host.appendChild(chip);
+    });
+    host.hidden = false;
   }
 
   function init(root) {
@@ -385,26 +451,57 @@
     var readLabel = root.getAttribute("data-blog-read-label") || "Read article";
     var emptyLabel = root.getAttribute("data-blog-empty-label") || "No articles are available yet.";
     var errorLabel = root.getAttribute("data-blog-error-label") || "Articles could not be loaded.";
+    var state = { posts: [], selected: [], visible: 0 };
 
-    window.LabBlog.loadPosts(config).then(function (posts) {
-      status.hidden = true;
+    function isFiltered() {
+      return Boolean(state.selected.length);
+    }
+
+    function visiblePosts() {
+      if (!state.selected.length) return state.posts;
+      return state.posts.filter(function (post) {
+        return state.selected.indexOf(post.category) >= 0;
+      });
+    }
+
+    function reveal(posts) {
+      var remaining = isFiltered() ? posts : posts.slice(1);
+      var next = remaining.slice(state.visible, state.visible + config.pageSize);
+      next.forEach(function (post) { grid.appendChild(cardFor(post, config, readLabel)); });
+      state.visible += next.length;
+      more.hidden = state.visible >= remaining.length;
+    }
+
+    function renderList() {
+      var posts = visiblePosts();
+      featured.textContent = "";
+      grid.textContent = "";
+      state.visible = 0;
+      featured.hidden = true;
       if (!posts.length) {
-        status.hidden = false;
+        more.hidden = true;
         status.textContent = emptyLabel;
+        status.hidden = false;
         return;
       }
-      featured.appendChild(featuredFor(posts[0], config, readLabel));
-      featured.hidden = false;
-      var remaining = posts.slice(1);
-      var visible = 0;
-      function reveal() {
-        var next = remaining.slice(visible, visible + config.pageSize);
-        next.forEach(function (post) { grid.appendChild(cardFor(post, config, readLabel)); });
-        visible += next.length;
-        more.hidden = visible >= remaining.length;
+      status.hidden = true;
+      if (!isFiltered()) {
+        featured.appendChild(featuredFor(posts[0], config, readLabel));
+        featured.hidden = false;
       }
-      more.addEventListener("click", reveal);
-      reveal();
+      reveal(posts);
+    }
+
+    function rerender() {
+      renderChips(root, state, rerender);
+      renderList();
+    }
+
+    more.addEventListener("click", function () { reveal(visiblePosts()); });
+
+    window.LabBlog.loadPosts(config).then(function (posts) {
+      state.posts = posts;
+      rerender();
     }).catch(function (error) {
       status.textContent = errorLabel;
       status.hidden = false;

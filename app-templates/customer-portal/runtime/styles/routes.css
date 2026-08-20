@@ -1792,3 +1792,34 @@
 .offer-benefits li::before { content: "\2713"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
 
 .offer-card[data-state="unavailable"] .offer-card__price { color: var(--ink-3); }
+
+/* Wave 20 — capability-driven booking options. */
+.bk-group { margin-bottom: 20px; }
+.bk-group:last-of-type { margin-bottom: 0; }
+.bk-opt--fixed { cursor: default; background: rgba(var(--glass), .26); }
+.bk-opt--fixed:hover { border-color: var(--glass-border); }
+.bk-tag { flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 3px 8px; }
+.bk-tag--req { display: inline-block; margin-top: 6px; color: var(--accent); white-space: nowrap; border-color: rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .07); }
+.bk-addon { align-items: flex-start; gap: 11px; }
+.bk-addon__body { flex: 1; min-width: 0; text-align: left; }
+.bk-addon__name { font-weight: 650; font-size: 13.5px; line-height: 1.35; overflow-wrap: anywhere; }
+.bk-addon__desc { font-size: 12px; color: var(--ink-3); line-height: 1.45; margin-top: 2px; }
+.bk-addon__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+.bk-addon__dur { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+.bk-addon[data-state="pending"] { opacity: .72; }
+.bk-check { width: 20px; height: 20px; border-radius: 7px; flex-shrink: 0; margin-top: 1px; border: 1.5px solid var(--ink-3); background: rgba(var(--glass), .5); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.bk-check--on { background: var(--accent); border-color: var(--accent); }
+.bk-changed { font-size: 12.5px; line-height: 1.5; color: var(--ink-2); margin-bottom: 12px; border: 1px solid rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .06); border-radius: 12px; padding: 10px 13px; }
+.bk-note-field { margin-top: 14px; border-top: 1px solid var(--glass-border); padding-top: 13px; display: flex; flex-direction: column; gap: 6px; }
+.bk-note-field__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.bk-note-field__head .field-label { white-space: nowrap; }
+.bk-note-field__input { min-height: 74px; resize: vertical; line-height: 1.45; }
+.bk-counter { font-size: 11.5px; font-weight: 650; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.bk-counter--over { color: var(--danger); }
+.bk-note-field__sent { font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3); }
+.bk-note-field[data-state="invalid"] .bk-note-field__sent { color: var(--danger); }
+.bk-review-addons { display: flex; flex-direction: column; gap: 5px; }
+.bk-review-addon { display: flex; gap: 10px; align-items: baseline; }
+.bk-review-addon__name { flex: 1; min-width: 0; color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+.bk-review-addon__amt { flex-shrink: 0; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+.drawer--open-static, .scrim--static { animation: none; }

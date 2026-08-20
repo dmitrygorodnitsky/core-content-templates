@@ -1,7 +1,8 @@
 # Spa Vertical — Core Type and Flow Model
 
-Status: implemented and applied on `dev-1` for `CALM_HARBOR_SPA_STAGING`.
-Last updated: 2026-07-26.
+Status: deployed baseline plus a local, not-yet-applied booking-request extension
+for `CALM_HARBOR_SPA_STAGING`.
+Last updated: 2026-08-05.
 
 This is the tenant-side contract for the beauty/spa vertical: which Core types
 exist, what each field means, which workflows govern them, and which record
@@ -43,12 +44,20 @@ user. A specialist is an Account, not a User.
 
 | type | workflow | attributes |
 | --- | --- | --- |
-| `SPA_SERVICE` | `SPA_PRODUCT_LIFECYCLE` | `DURATION_MIN` Long opt, `FOCUS` String opt |
-| `SPA_RETAIL` | `SPA_PRODUCT_LIFECYCLE` | `COLLECTION` String opt, `FORMAT` String opt, `VOLUME_ML` Long opt, `SCENT_PROFILE` String opt |
+| `SPA_SERVICE` | `SPA_PRODUCT_LIFECYCLE` | `DURATION_MIN` Long opt, `FOCUS` String opt, `BOOKING_OPTIONS` String opt (versioned JSON) |
+| `SPA_RETAIL` | `SPA_PRODUCT_LIFECYCLE` | `DISPLAY_TAG` String opt, `COLLECTION` String opt, `FORMAT` String opt, `VOLUME_ML` Long opt, `SCENT_PROFILE` String opt |
 | `SPA_MEMBERSHIP` | `SPA_PRODUCT_LIFECYCLE` | — |
 | `SPA_PACKAGE` | `SPA_PRODUCT_LIFECYCLE` | — |
 | `SPA_CUSTOMER_REVIEW` | `SPA_PRODUCT_REVIEW_LIFECYCLE` | `REVIEW_KEY` String req unique, `RATING` Long req, `TITLE` String opt, `BODY` String req, `AUTHOR_NAME` String req, `VERIFIED` Boolean req |
 | `SPA_STOCK` | `SPA_INVENTORY_LIFECYCLE` | `RECORD_CODE` String opt |
+
+A `ProductReview` is backed by its native `orderItem` relation. The deterministic
+seed creates Elena's completed purchase lines first, then publishes one review
+per matching OrderItem; `VERIFIED=true` is never seeded without that purchase.
+
+`DISPLAY_TAG` is optional customer-facing marketing copy such as `Low-scent` or
+`Travel size`. Portal and landing cards render the tag only when it is present;
+the internal Product `code` is never a display fallback.
 
 **Prices use the SYSTEM price-type family — this vertical defines no price type
 of its own.** One-time prices (services, retail, packages) are `PER_UNIT`;
@@ -65,7 +74,7 @@ no longer reads it, so it is safe to remove by hand through the UI.
 | `SPA_CARE_PLAN` | `SPA_CARE_PLAN_LIFECYCLE` | `CUSTOMER_ACCOUNT` Account opt, `CUSTOMER_USER` User opt |
 | `SPA_PLAN_ENROLLMENT` | `SPA_PLAN_ENROLLMENT_LIFECYCLE` | `CUSTOMER_ACCOUNT` Account req, `CUSTOMER_USER` User req, `PLAN_PRODUCT` Product req, `SOURCE_ORDER` Order req, `CREDITS_TOTAL` Integer req, `CREDITS_USED` Integer req, `VALID_UNTIL` LocalDate opt |
 | `SPA_CARE_TASK` | `SPA_TASK_LIFECYCLE` | `CUSTOMER_ACCOUNT` Account opt, `CUSTOMER_USER` User opt |
-| `SPA_VISIT` | `SPA_APPOINTMENT_LIFECYCLE` | `CUSTOMER_ACCOUNT` Account opt, `CUSTOMER_USER` User opt, `SPECIALIST_ACCOUNT` Account opt, `SERVICE_PRODUCT` Product opt |
+| `SPA_VISIT` | `SPA_APPOINTMENT_LIFECYCLE` | `CUSTOMER_ACCOUNT` Account opt, `CUSTOMER_USER` User opt, `SPECIALIST_ACCOUNT` Account opt, `SERVICE_PRODUCT` Product opt, `RESOURCES` Resource[] opt, `SOURCE_ORDER` Order opt, `SOURCE_ORDER_ITEM` OrderItem opt, `REQUEST_REF` String opt unique, `BOOKING_ORIGIN` String opt (`CUSTOMER_PORTAL`\|`OPERATOR`), `VISIT_MODE` String opt, `LOCATION_RESOURCE` Resource opt, `LOCATION_LABEL` String opt snapshot, `ADD_ON_REFS` String[] opt, `CUSTOMER_NOTE` String opt, `BOOKING_OPTIONS_VERSION` String opt |
 
 Both project types are Core `Project`s distinguished only by their type code:
 `SPA_CARE_PLAN` is the customer's container that visits' tasks hang off,
@@ -76,13 +85,26 @@ that rows created before they were introduced stay valid. Every writer must set
 them: an appointment without `CUSTOMER_ACCOUNT` is invisible to its own customer
 (§4).
 
+`SPA_SERVICE.BOOKING_OPTIONS` is a staging bridge over the existing generic
+attribute API. Schema version 1 supplies visit modes, Resource codes, add-on
+choices, note limits, and display-ready quote variants. The portal validates
+it and fails closed when it is absent or malformed. The chosen values are
+copied to `SPA_VISIT` and must survive Appointment readback; the component never
+falls back to the designer fixture in live mode.
+
 ### core-rm
 
 | type | workflow | attributes |
 | --- | --- | --- |
 | `SPA_STUDIO` | `SPA_RESOURCE_LIFECYCLE` | — |
+| `SPA_SERVICE_PROVIDER` | `SPA_RESOURCE_LIFECYCLE` | `SPECIALIST_ACCOUNT` Account req unique, `SERVICE_PRODUCTS` Product[] req, `AVAILABILITY_TIMEZONE` String req, `WEEKLY_AVAILABILITY` String req, `SLOT_INTERVAL_MINUTES` Integer req, `BUFFER_MINUTES` Integer req, `LOCATION_RESOURCE` Resource req, `BOOKING_ENABLED` Boolean req |
 
-The physical location. Referenced by `SPA_FULFILLMENT.PICKUP_LOCATION`.
+`SPA_STUDIO` is the physical location, referenced by
+`SPA_FULFILLMENT.PICKUP_LOCATION`. `SPA_SERVICE_PROVIDER` is a bookable service
+resource. Its weekly availability is a versioned JSON value in the provider's
+timezone; `SERVICE_PRODUCTS` limits which catalog services it can perform. The
+portal may derive candidate slots from this configured schedule, but a slot is
+not confirmed until the appointment workflow reaches `SCHEDULED`.
 
 ### core-bill
 
@@ -113,7 +135,7 @@ exists with four legacy rows on staging; nothing new may use it.
 | `SPA_CARE_PLAN_LIFECYCLE` | Project | DRAFT | DRAFT, ACTIVE | DRAFT→ACTIVE |
 | `SPA_PLAN_ENROLLMENT_LIFECYCLE` | Project | ACTIVE | ACTIVE, EXHAUSTED, EXPIRED, CANCELLED | ACTIVE→EXHAUSTED, ACTIVE→EXPIRED, ACTIVE→CANCELLED |
 | `SPA_TASK_LIFECYCLE` | Task | OPEN | OPEN, DONE | OPEN→DONE |
-| `SPA_APPOINTMENT_LIFECYCLE` | Appointment | SCHEDULED | SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, NO_SHOW | SCHEDULED→IN_PROGRESS, IN_PROGRESS→COMPLETED, SCHEDULED→CANCELLED, SCHEDULED→NO_SHOW |
+| `SPA_APPOINTMENT_LIFECYCLE` | Appointment | REQUESTED | REQUESTED, SCHEDULED, IN_PROGRESS, COMPLETED, REJECTED, CANCELLED, NO_SHOW | REQUESTED→SCHEDULED, REQUESTED→REJECTED, REQUESTED→CANCELLED, SCHEDULED→IN_PROGRESS, IN_PROGRESS→COMPLETED, SCHEDULED→CANCELLED, SCHEDULED→NO_SHOW |
 | `SPA_ORDER_LIFECYCLE` | Order | OPEN | OPEN, IN_PROGRESS, COMPLETED, CANCELLED, RETURN_REQUESTED, RETURNED | OPEN→IN_PROGRESS, IN_PROGRESS→COMPLETED, OPEN→CANCELLED, COMPLETED→RETURN_REQUESTED, RETURN_REQUESTED→RETURNED |
 | `SPA_ORDER_ITEM_LIFECYCLE` | OrderItem | OPEN | OPEN, FULFILLED, CANCELLED, RETURNED | OPEN→FULFILLED, OPEN→CANCELLED, FULFILLED→RETURNED |
 | `SPA_FULFILLMENT_LIFECYCLE` | Shipment | PENDING | PENDING, READY, COLLECTED, CANCELLED | PENDING→READY, READY→COLLECTED, PENDING→CANCELLED |
@@ -236,9 +258,12 @@ through the UI.
 catalog:   Product (SPA_SERVICE|RETAIL|MEMBERSHIP|PACKAGE) -> ProductPrice (PER_UNIT | PER_UNIT_RECURRENT)
                                                            -> Inventory (SPA_STOCK)   [retail only]
 
-booking:   customer session -> SPA_CUSTOMER Account
+booking:   Resource (SPA_SERVICE_PROVIDER) -> SERVICE_PRODUCTS + WEEKLY_AVAILABILITY
+
+           customer session -> SPA_CUSTOMER Account
                             -> Task (SPA_CARE_TASK) under the customer's SPA_CARE_PLAN
-                            -> Appointment (SPA_VISIT) referencing that task
+                            -> Appointment (SPA_VISIT, REQUESTED)
+                               -> REQUESTED-SCHEDULED event -> SCHEDULED
 
 purchase:  Cart -> Order (SPA_ORDER)
                 -> OrderItem (SPA_ITEM_*) per line, one per purchased thing
@@ -254,8 +279,26 @@ produced, and any **plan** it enrolled.
 Rules that follow from the model:
 
 - **An appointment must belong to a task, and a task must belong to a project.**
-  Core rejects both otherwise. Each booked visit creates its own task under the
-  customer's care plan; visits never share a task.
+  Core rejects both otherwise. The preferred writer creates a visit task under
+  the customer's care plan. The staging customer path may reuse an existing
+  `SPA_CARE_TASK` from that same, ownership-checked plan when generic Task
+  creation returns the known opaque 500; it never borrows a task from another
+  plan.
+- **A portal save creates a request, not necessarily a confirmed booking.** The writer sets
+  the chosen `SERVICE_PRODUCT`, provider/location `RESOURCES`, `start`, `end`,
+  `REQUEST_REF`, and `BOOKING_ORIGIN=CUSTOMER_PORTAL`. It attempts
+  `REQUESTED-SCHEDULED` and reports a confirmed booking only after reading the
+  appointment back in `SCHEDULED`. The event endpoint may return an empty 2xx
+  body; success is therefore its HTTP status plus the following Appointment
+  readback, never JSON from the command response. While the known workflow
+  dispatcher outage returns 5xx, or a successful command still reads back
+  `REQUESTED`, that authoritative row is shown as a pending studio request —
+  never as confirmed and never as if nothing was saved.
+- **Candidate slots are derived, not persisted.** The portal combines the
+  provider's weekly availability, service duration and buffer with existing
+  non-terminal appointments for that provider. Today the workflow transition
+  is the authoritative status boundary, but it does not yet atomically detect
+  an overlapping appointment or reserve a slot.
 - **A package's remaining balance is `CREDITS_TOTAL - CREDITS_USED`**, derived on
   read and never stored twice.
 - **A membership has no visit balance.** It is a `Subscription`; showing it a
@@ -275,20 +318,36 @@ not of this vertical.
 | `Shipment` has **no order relation** | the link lives in the `SOURCE_ORDER` attribute |
 | `Shipment` never receives an **initial workflow state**, and `send-event` on a stateless shipment 500s | fulfillment status is carried by the `FULFILLMENT_STATUS` attribute |
 | `Task.project` must be **mapped as well as set** — a save whose mappings omit it NPEs | include every reference you write in the mappings |
+| `Appointment.code` and `Task.code` are `varchar(64)` | compact the long booking/slot/service identity with a deterministic hash suffix; reserve five characters for the derived `_TASK` code |
 | `subscription.payment_method_id`, `account_payment_method.provider` and `.provider_pm_id` are **NOT NULL** | a membership needs the OFFLINE payment method described in §3 |
 | relation mappings need the `{key, mappings, name, type:"identifier"}` shape | a bare `{name}` returns the whole nested graph |
 | `subscription` cadence lives under `cadence.{period,unit}`, which list projections do not return | read the interval from the price, not the subscription |
+| provider availability is stored as versioned JSON in `WEEKLY_AVAILABILITY` | validate `schemaVersion`, timezone and intervals before generating candidate slots; an unreadable schedule means booking is unavailable, never "always open" |
+| an empty/disabled provider list or no `SERVICE_PRODUCTS` match | close booking entry points as unavailable; only a valid provider relationship that yields zero candidate slots may render the booking drawer's empty-times state |
 
 ## 6. Open Against the Backend
 
 - **Workflow event dispatch returns an opaque 500 tenant-wide** (see
   `docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/evidence/S5.md`
   §4). Every state transition is blocked; saves are unaffected.
+- **The staging customer role has broad Task/Appointment create rights.** They
+  exist only so the single-customer demo can write the `SPA_CARE_TASK` and
+  `SPA_VISIT` records required by Core. The generic APIs do not enforce
+  customer row scope, so the grants must not be copied to production; a
+  customer-scoped booking command must replace them.
 - **No row-level authorization.** A customer-role session reads every entity in
   the tenant and `delete` is not pre-authorized. Accepted as a residual for the
   single-client demo; nothing here may be described as customer isolation.
-- **core-pim `ProductReview` save is broken** — reviews are excluded from the
-  seed via `--skip-reviews`.
-- **No booking slots, holds, checkout quote, cancel/return request, or plan
+- **The booking-request contract is implemented locally and not yet applied.**
+  The source defines provider schedules and a `REQUESTED` appointment lifecycle;
+  the portal now derives candidate slots and uses the request/confirm sequence.
+  The tenant has not been migrated, the portal package has not been uploaded,
+  and event dispatch must be repaired before the live path can confirm a visit.
+- **No atomic slot hold or overlap validator exists.** Candidate slots can be
+  derived with the generic Resource and Appointment APIs, and
+  `REQUESTED-SCHEDULED` is the intended backend participation point. A future
+  backend RuleSet/function must reject overlaps atomically; until then this is a
+  conditionally working demo contract, not a concurrency-safe scheduler.
+- **No dedicated availability, checkout quote, cancel/return request, or plan
   balance endpoints exist.** The vertical models what it can with the generic
   entity APIs; see the program evidence for what each wave accepted.

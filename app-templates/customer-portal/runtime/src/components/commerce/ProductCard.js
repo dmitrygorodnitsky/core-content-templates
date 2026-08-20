@@ -5,10 +5,11 @@ import { ActionButton } from "../primitives/ActionButton.js";
 
 export function ProductCard(p, catIndex) {
   var tint = F.TINTS[catIndex % 4];
+  var displayTag = p.displayTag || p.tag || "";
   return h("div", { "class": "product-card", "data-module": "product-card", "data-visual-id": "product-card" }, [
     h("div", { "class": "product-card__art", style: "background:" + tint[1] },
       h("div", { "class": "product-card__thumb" }, h("i", { style: "background:" + tint[0] }))),
-    h("span", { "class": "product-tag", "data-bind": "product.tag" }, p.tag || p.code || "Catalog"),
+    displayTag ? h("span", { "class": "product-tag", "data-bind": "product.displayTag" }, displayTag) : null,
     h("div", { "class": "product-card__name", "data-bind": "product.name" }, p.name),
     h("div", { "class": "product-card__blurb", "data-bind": "product.blurb" }, p.blurb || p.description || p.cta),
     h("div", { "class": "product-card__foot" }, [

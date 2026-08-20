@@ -23,7 +23,7 @@ try {
   assert.ok(payload.root.parameters.some(function (parameter) { return parameter.code === "ROOT_FAQ_JSON_LD" && parameter.type === "LOCALIZED_JSON_OBJECT"; }));
   const portalUrl = payload.root.parameters.find(function (parameter) { return parameter.code === "ROOT_NAV_PORTAL_URL"; });
   assert.equal(portalUrl.type, "STRING");
-  assert.equal(portalUrl.value, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/");
+  assert.equal(portalUrl.value, "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal");
   assert.match(payload.root.html, /data-nav-portal-url="\$\{ROOT_NAV_PORTAL_URL@STRING\}"/);
   assert.match(payload.root.javascript, /name === "auth\.gotoSignin"[\s\S]*window\.location\.assign\(root\.dataset\.navPortalUrl\)/);
   assert.equal(payload.children.length, 13);
@@ -61,7 +61,7 @@ try {
   assert.deepEqual((await fs.readdir(path.join(outputDir, "assets"))).sort(), ["spa-massage-1448.webp", "spa-room-1600.webp"]);
   assert.equal(manifest.assets.length, 2);
   assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+@[A-Z_]+\}/, "preview must resolve every CMS parameter");
-  assert.match(preview, /data-nav-portal-url="https:\/\/dev-1\.servicewand\.com\/calm-harbor-spa-customer-portal\/"/);
+  assert.match(preview, /data-nav-portal-url="https:\/\/dev-1\.servicewand\.com\/calm-harbor-spa-customer-portal"/);
   assert.match(preview, /"@type":"FAQPage"/);
   await assert.rejects(
     exportCalmHarborLandingBlocksManual({ outputDir: path.join(outputDir, "unsafe-navigation"), portalUrl: "https://attacker.invalid/portal/" }),

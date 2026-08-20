@@ -18,6 +18,9 @@ this repository. The user reviews it and imports the accepted package into
 - [`core-auth-cms-login.md`](core-auth-cms-login.md) defines the static,
   JavaScript-optional Core Auth username/password page and its runtime
   placeholder contract.
+- [`core-auth-direct-session-bootstrap.md`](core-auth-direct-session-bootstrap.md)
+  requests the still-missing pending, bootstrap-failure, and retry presentation
+  for opening that CMS login page directly instead of through an OIDC request.
 
 ## Calm Harbor Spa
 
@@ -56,6 +59,10 @@ that wave's `evidence/punch-list.md` for the finding ids.
 - [`calm-harbor-appointment-status-and-slot-availability-states.md`](calm-harbor-appointment-status-and-slot-availability-states.md)
   covers `In progress`, the unreachable booking states, the specialist step, and
   the honest treatment for "we cannot show you availability".
+- [`calm-harbor-booking-location-notes-and-add-ons.md`](calm-harbor-booking-location-notes-and-add-ons.md)
+  requests the capability-driven booking extensions for visit location, an
+  optional customer note, and server-eligible add-ons without changing the
+  existing service/specialist/time/review truth contract.
 
 ### From the commerce commands wave
 

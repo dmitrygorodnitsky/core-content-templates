@@ -281,3 +281,39 @@ open item. See README §Wave 19 for the full contract. Key facts for continuatio
   keep the runtime QR and key untouched — CMS never stores, defaults or regenerates them.
 - **Unchanged**: `manifest.json`, `scenarios.json`, `core-auth-login.html`, every accepted
   stylesheet. Wave 19 adds files only.
+
+
+## Wave 20 — Calm Harbor booking options (visit mode/location, add-ons, note) — done
+Capability-driven extension of the accepted booking drawer. See README §Wave 20 for the full
+contract. Key facts for continuation:
+- **Files changed**: `data/fixtures.js` (+`spaBookingOptions`, +`spaBookingQuote`),
+  `src/state.js` (wave-20 state + pure selectors `spaBookingOpts`, `spaVisitMode`,
+  `spaEligibleLocations`, `spaSelectedLocation`, `spaSelectedAddOns`, `spaBookingQuote`,
+  `spaAddonChange`, `spaNoteState`, `spaOptionsStepOn`, `spaOptionsComplete`, `spaFlowSteps`),
+  `src/actions.js` (5 new actions + `booking.next` + options engine: `spaSeedOptionDefaults`,
+  `spaInvalidateAfterOptions`, `spaReloadLocations`, `spaReloadAddons`, `spaFlowNext`,
+  `spaFlowBack`), `src/components/spa/SpaBookingFlow.js` (options step, rail, review facts, note),
+  `src/app.js` (dev selects + `applyResponsive` mirrors the container class onto the drawer),
+  `styles/routes.css` + `styles/responsive.css` (additive wave-20 blocks), `manifest.json`
+  (wave-20), `data/scenarios.json` (wave 20), `previews/wave20/` (35 PNGs).
+- **Capability rule**: `bookingOptions.capabilities` decides whether a section AND its step exist.
+  The Options step is derived, never hard-coded: `spaFlowSteps()` builds the rail and
+  `booking.next` / `booking.back` walk it, so Options and Specialist may be absent or present in
+  any combination without an empty step.
+- **Source states are separate from the payload**: `state.spaLocSrc` /
+  `state.spaAddonSrc` (loading | empty | error | unavailable | ineligible | no-address | removed |
+  repriced) — none of them ever falls back to a fixture success or renders as an empty choice.
+  `booking.reloadLocations` exists only where retry can change the result.
+- **Invalidation**: `spaInvalidateAfterOptions` clears specialist + slot + hold + policy ack and
+  returns to Time with `f.reloadedBy` driving the honest notice. Changing ONLY the note must never
+  call it.
+- **Blocking confirm**: removed/repriced add-ons (until `ui.retry booking-addons`) and an over-long
+  note. Both are also enforced in `spaBookingConfirm`, not just in the disabled attribute.
+- **Note privacy**: `state.spaNote` is memory-only. Do not persist it (no localStorage, analytics,
+  logs or URL), and keep it across a failed confirm — it is cleared only by the authoritative
+  readback or `booking.close`.
+- **Money**: the review renders `spaBookingQuote` display strings verbatim; the demo recalculation
+  lives in `fixtures.js` (stand-in for the real quote, like `spaServerCart`). Never compute an
+  amount in a component.
+- **Unchanged**: every other route, the shell, the simulated checkout, the confirmation surface and
+  all accepted CSS rules.

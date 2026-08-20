@@ -108,6 +108,19 @@ export var state = {
   spaProfile: null,                // server-confirmed profile readback override: {phone,email,prefs} | null(=fixture)
   spaProfileDraft: null,           // in-progress edit buffer | null (null = not editing)
   spaProfileErrors: null,          // per-field validation: {phone?,email?} | null (conflict is read from the profile.save command phase)
+  /* wave 20 — booking options: visit mode / location, add-ons, customer note.
+     `spaOptScenario` is the SERVER capability payload for the selected
+     service/profile (deployment + source config, never a user control);
+     `spaLocSrc` / `spaAddonSrc` are SOURCE states that never fall back to a
+     fixture success or to an empty choice; `spaNoteCap` is the server's notes
+     capability (a sensitive profile disables it entirely). `spaNote` is
+     TRANSIENT browser state — never persisted to storage, analytics, logs or a
+     URL, and cleared on explicit close or authoritative readback. */
+  spaOptScenario: "fixed-studio", // fixed-studio | mode-choice | addons | all
+  spaLocSrc: "ready",             // ready | loading | empty | error | unavailable | ineligible | no-address
+  spaAddonSrc: "ready",           // ready | loading | error | unavailable | ineligible | removed | repriced
+  spaNoteCap: "enabled",          // enabled | disabled (sensitive profile — capability off, section + review row omitted)
+  spaNote: "",                    // transient customer note (in-memory only)
   seoCta: {},        // CTA lifecycle per action id: idle|pending|success|error (seo.landing)
   seoCtaForce: null, // dev-toolbar override: null | "pending" | "success" | "error"
   seoFaqOpen: null,  // open FAQ item index on seo.landing
@@ -197,6 +210,162 @@ export function spaPlans() {
     if (state.spaPlanCancelled[r]) return Object.assign({}, p, { status: "Cancelled", note: "Renewal cancelled — your benefits continue to the end of the paid period.", allowedActions: [] });
     return p;
   });
+}
+
+/* =========================================================
+   Wave 20 — booking OPTIONS selectors (visit mode / location, add-ons,
+   note). Pure resolution of the SERVER read model + its source states.
+   Nothing here computes a price, duration, compatibility or eligibility,
+   and no absent source is ever presented as an empty choice.
+   ========================================================= */
+
+/* the resolved bookingOptions read model for the open flow */
+export function spaBookingOpts() {
+  var S = F.spaBookingOptions;
+  var sc = S.scenarios[state.spaOptScenario] || S.scenarios["fixed-studio"];
+  var f = state.spaFlow;
+  var caps = Object.assign({}, sc.capabilities);
+  if (state.spaNoteCap === "disabled") caps.notes = false;
+  /* a reschedule changes the identified visit's time and place — add-ons are
+     not part of that contract (recorded assumption, not a silent omission) */
+  if (f && f.entry === "reschedule") caps.addOns = false;
+  var addOns = (sc.addOns || []).map(function (a) { return Object.assign({}, a); });
+  var affected = f && f.addOns && f.addOns.length ? f.addOns[0] : null;
+  if (state.spaAddonSrc === "removed" && affected) addOns = addOns.filter(function (a) { return a.ref !== affected; });
+  if (state.spaAddonSrc === "repriced" && affected) addOns = addOns.map(function (a) { return a.ref === affected ? Object.assign({}, a, { displayPrice: "$22.00" }) : a; });
+  if (state.spaAddonSrc === "ineligible") addOns = addOns.map(function (a) { return Object.assign({}, a, { allowedActions: [] }); });
+  var notes = Object.assign({}, sc.notes, { enabled: !!caps.notes, value: state.spaNote });
+  return { capabilities: caps, visitModes: sc.visitModes || [], locations: sc.locations || [], addOns: addOns, notes: notes, selectionVersion: sc.selectionVersion, copy: S.sourceCopy };
+}
+
+/* the visit mode in play: the customer's choice, or the single returned mode
+   (fixed context — the customer is never asked to select it) */
+export function spaVisitMode(o) {
+  o = o || spaBookingOpts();
+  var f = state.spaFlow;
+  var byCode = function (c) { return o.visitModes.find(function (m) { return m.code === c; }) || null; };
+  if (f && f.visitMode) return byCode(f.visitMode);
+  if (!o.capabilities.visitMode || o.visitModes.length === 1) return o.visitModes[0] || null;
+  return null;
+}
+
+/* places the source returned for the mode in play. loading/error/unavailable
+   return [] — the caller renders the SOURCE STATE, never an empty list. */
+export function spaEligibleLocations(o) {
+  o = o || spaBookingOpts();
+  var m = spaVisitMode(o);
+  if (!m) return [];
+  if (state.spaLocSrc === "loading" || state.spaLocSrc === "error" || state.spaLocSrc === "unavailable" || state.spaLocSrc === "empty") return [];
+  var list = o.locations.filter(function (l) { return l.visitModeCode === m.code; });
+  if (state.spaLocSrc === "no-address") list = list.filter(function (l) { return l.kind !== "SAVED_PLACE"; });
+  return list;
+}
+
+/* the place in play: the customer's choice, the single eligible one (fixed
+   context), or null — never an assumed studio */
+export function spaSelectedLocation(o) {
+  o = o || spaBookingOpts();
+  var list = spaEligibleLocations(o);
+  var f = state.spaFlow;
+  if (f && f.locationRef && state.spaLocSrc !== "ineligible") {
+    var hit = list.find(function (l) { return l.ref === f.locationRef; });
+    if (hit) return hit;
+  }
+  if (list.length === 1) return list[0];
+  return null;
+}
+
+/* selected add-ons = the customer's refs INTERSECTED with what the source
+   still returns (a dropped add-on can never reach the review) */
+export function spaSelectedAddOns(o) {
+  o = o || spaBookingOpts();
+  var f = state.spaFlow;
+  var picked = (f && f.addOns) || [];
+  return o.addOns.filter(function (a) { return picked.indexOf(a.ref) !== -1 || (a.required && a.selected && !(a.allowedActions || []).length); });
+}
+
+/* the SERVER quote for the current selection (demo stand-in in fixtures.js) */
+export function spaBookingQuote(o) {
+  o = o || spaBookingOpts();
+  var f = state.spaFlow;
+  if (!f) return null;
+  var refs = spaSelectedAddOns(o).map(function (a) { return a.ref; });
+  var over = null;
+  if (state.spaAddonSrc === "repriced" && f.addOns && f.addOns.length) {
+    over = {}; over[f.addOns[0]] = { cents: 2200, displayPrice: "$22.00" };
+  }
+  return F.spaBookingQuote(f.serviceCode, refs, state.spaOptScenario, over);
+}
+
+/* add-on change the customer MUST review before confirming */
+export function spaAddonChange(o) {
+  o = o || spaBookingOpts();
+  if (!o.capabilities.addOns) return null;
+  if (state.spaAddonSrc === "removed") return { kind: "removed", copy: o.copy.addOnRemoved };
+  if (state.spaAddonSrc === "repriced") return { kind: "repriced", copy: o.copy.addOnRepriced };
+  return null;
+}
+
+/* note field state — the maximum is SERVER-provided, never a UI guess */
+export function spaNoteState(o) {
+  o = o || spaBookingOpts();
+  var max = o.notes.maxLength || 0;
+  var v = state.spaNote || "";
+  return { enabled: !!o.notes.enabled, value: v, max: max, len: v.length, remaining: max - v.length,
+           near: max > 0 && v.length >= max - 30 && v.length <= max, invalid: max > 0 && v.length > max,
+           helperText: o.notes.helperText,
+           errorCopy: (o.copy.noteTooLong || "").replace("{max}", String(max)) };
+}
+
+/* does an Options step exist? ONLY when a supported capability has something
+   real to show — a choice to make or a source state to resolve. Never empty. */
+export function spaOptionsStepOn(o) {
+  o = o || spaBookingOpts();
+  var c = o.capabilities;
+  if (c.visitMode && o.visitModes.length > 1) return true;
+  if (c.location) {
+    if (state.spaLocSrc !== "ready") return true;
+    if (spaEligibleLocations(o).length > 1) return true;
+  }
+  if (c.addOns) {
+    if (state.spaAddonSrc !== "ready") return true;
+    if (o.addOns.length) return true;
+  }
+  return false;
+}
+
+/* every required selection the source asked for is answered */
+export function spaOptionsComplete(o) {
+  o = o || spaBookingOpts();
+  var c = o.capabilities, f = state.spaFlow;
+  if (!f) return false;
+  if (c.visitMode && o.visitModes.length > 1 && !f.visitMode) return false;
+  var m = spaVisitMode(o);
+  if (c.location && m && m.locationRequired) {
+    if (state.spaLocSrc === "unavailable") return true; /* the studio assigns it — shown before confirming */
+    if (state.spaLocSrc !== "ready") return false;
+    if (!spaSelectedLocation(o)) return false;
+  }
+  if (c.addOns && state.spaAddonSrc === "ready") {
+    var unmet = o.addOns.filter(function (a) { return a.required && (a.allowedActions || []).indexOf("toggle") !== -1 && (f.addOns || []).indexOf(a.ref) === -1; });
+    if (unmet.length) return false;
+  }
+  return true;
+}
+
+/* the step rail — coherent with Options and Specialist absent or present in
+   any combination; an empty step is never rendered */
+export function spaFlowSteps(f) {
+  f = f || state.spaFlow;
+  if (!f) return [];
+  var o = spaBookingOpts();
+  var steps = [];
+  if (f.entry !== "reschedule") steps.push({ k: "context", l: "Service" });
+  if (spaOptionsStepOn(o)) steps.push({ k: "options", l: "Options" });
+  if (f.entry !== "reschedule" && (F.spaBooking.eligibleSpecialists[f.serviceCode] || []).length) steps.push({ k: "specialist", l: "Specialist" });
+  steps.push({ k: "slots", l: f.entry === "reschedule" ? "New time" : "Time" });
+  steps.push({ k: "review", l: "Review" });
+  return steps;
 }
 
 /* wave 13 — customer-safe route display label (used by session-expired to show

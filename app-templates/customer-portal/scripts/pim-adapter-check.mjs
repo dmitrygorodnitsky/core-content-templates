@@ -194,7 +194,7 @@ function inventoryRow(id, productId, productCode, count) {
 function pimPrice(id, code, name, amount) {
   return {
     price: { display: { amount, currency: "USD", intervalLabel: "ONE_TIME" } },
-    product: { product: { id, code, nls: { en: { NAME: name } }, attributes: {} }, type: { code: "SPA_RETAIL" } },
+    product: { product: { id, code, nls: { en: { NAME: name } } }, attributes: {}, type: { code: "SPA_RETAIL" } },
   };
 }
 

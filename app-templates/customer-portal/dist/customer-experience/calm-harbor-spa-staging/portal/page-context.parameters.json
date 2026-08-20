@@ -48,13 +48,13 @@
     {
       "code": "CX_LANDING_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa",
       "source": "resolved.landingUrl"
     },
     {
       "code": "CX_PORTAL_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal",
       "source": "resolved.portalUrl"
     },
     {
@@ -66,13 +66,13 @@
     {
       "code": "NAV_LANDING_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa",
       "source": "resolved.landingUrl"
     },
     {
       "code": "NAV_LOGOUT_RETURN_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/login",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal#/login",
       "source": "resolved.logoutDestination"
     },
     {
@@ -220,6 +220,12 @@
       "type": "STRING",
       "value": "/core-svc",
       "source": "portal.serviceApiBase"
+    },
+    {
+      "code": "PORTAL_RESOURCE_API_BASE",
+      "type": "STRING",
+      "value": "/core-rm",
+      "source": "portal.resourceApiBase"
     },
     {
       "code": "PORTAL_BILL_API_BASE",

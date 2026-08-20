@@ -87,7 +87,7 @@
     { "code": "CX_DIRECTION", "type": "STRING", "consumers": ["login", "twoFactor"], "source": "experience.direction", "required": true, "allowedValues": ["ltr", "rtl"] },
     { "code": "CX_BRAND_NAME", "type": "LOCALIZED_STRING_SS", "consumers": ["landing", "portal", "login", "twoFactor"], "source": "experience.brandName", "required": true },
     { "code": "CX_LANDING_URL", "type": "STRING", "consumers": ["landing", "portal"], "source": "resolved.landingUrl", "required": true, "deferredUntilResolved": true },
-    { "code": "CX_PORTAL_URL", "type": "STRING", "consumers": ["landing", "portal"], "source": "resolved.portalUrl", "required": true, "deferredUntilResolved": true },
+    { "code": "CX_PORTAL_URL", "type": "STRING", "consumers": ["landing", "portal", "login"], "source": "resolved.portalUrl", "required": true, "deferredUntilResolved": true },
     { "code": "CX_SUPPORT_URL", "type": "STRING", "consumers": ["landing", "portal"], "source": "resolved.supportUrl", "required": false },
     { "code": "CX_ALLOWED_NAV_ORIGINS", "type": "STRING", "consumers": ["landing", "portal"], "source": "experience.allowedNavOrigins", "required": true, "serialization": "csv" },
 
@@ -136,6 +136,7 @@
     { "code": "PORTAL_CORE_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.coreApiBase", "required": true },
     { "code": "PORTAL_ACCOUNT_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.accountApiBase", "required": true },
     { "code": "PORTAL_SERVICE_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.serviceApiBase", "required": true },
+    { "code": "PORTAL_RESOURCE_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.resourceApiBase", "required": true },
     { "code": "PORTAL_BILL_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.billApiBase", "required": true },
     { "code": "PORTAL_PIM_API_BASE", "type": "STRING", "consumers": ["portal"], "source": "portal.pimApiBase", "required": true },
     { "code": "PORTAL_PIM_ORGANIZATION", "type": "STRING", "consumers": ["portal"], "source": "portal.pimOrganization", "required": true },

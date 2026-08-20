@@ -110,6 +110,15 @@ hold/idempotency, and authoritative readback. Do not claim a server hold when
 none exists. The one-user staging demo may demonstrate current API commands;
 that does not close the scoped backend requirement.
 
+Wave 20 is now activated for the bounded staging flow through generic Core
+attributes. `SPA_SERVICE.BOOKING_OPTIONS` carries a schema-versioned booking
+options/quote read model; provider/studio Resources remain the authority for
+slots and the selected location. Confirmation and rescheduling write
+`VISIT_MODE`, `LOCATION_RESOURCE`, `LOCATION_LABEL`, `ADD_ON_REFS`,
+`CUSTOMER_NOTE`, and `BOOKING_OPTIONS_VERSION` to `SPA_VISIT` and require those
+values in authoritative readback. This is not a server quote or slot hold: the
+UI continues to label payment and hold behavior as simulated/current-API demo.
+
 ### Payment
 
 Payment stays `SIMULATED`. Checkout may create a real staging Order and related
@@ -203,12 +212,35 @@ Do not use or delete the older experimental template ids
    `RESET_PASSWORD_URL`, `ERROR_DISPLAY`, and `LOGOUT_DISPLAY`.
 7. For manual paste, use either complete `head.html` with its style block or the
    split `head.no-style.html` plus `css.css`; never paste the CSS twice.
+8. A direct CMS read does not substitute the Core Auth display placeholders.
+   Generated login markup therefore emits
+   `display:none;display:{{ERROR_DISPLAY}}` and the equivalent logout rule:
+   the unresolved CMS source fails closed, while Core Auth's later `block|none`
+   substitution remains authoritative.
+9. The direct CMS compatibility path retrieves the current `_csrf` value from
+   same-origin `/oauth2/login`, uses a drop-while-running scripted submit, and
+   returns successful session login to a same-origin `returnUrl` query value or
+   descriptor-owned `CX_PORTAL_URL`. Cross-origin and login-loop returns are
+   rejected. If Core Auth has already substituted all placeholders, the
+   accepted native POST remains active and the compatibility bootstrap does
+   nothing. Bootstrap unavailable/retry presentation is still open in
+   `design-requests/core-auth-direct-session-bootstrap.md`.
+10. The deployed historical template id still belongs to the legacy 20-code
+    parameter contract (`TITLE`, `BRAND_NAME`, `CARD_TITLE`, and peers). Do not
+    sync the 26-code generic `dist/customer-experience/.../login/template.json`
+    directly into that id: its PageContext has no `LOGIN_*`/`CX_*` values and
+    renders blank copy. Use `export-calm-harbor-login-manual.mjs`; it preserves
+    the legacy codes, adds the direct-session bootstrap, and rejects JTE markers
+    in executable fields. Sync that package with `--mode replace` and
+    `--with-content`.
 
 Current local build and transfer checks:
 
 ```bash
 node app-templates/customer-portal/scripts/build-customer-experience.mjs
 node app-templates/customer-portal/scripts/customer-experience-login-check.mjs
+node app-templates/customer-portal/scripts/customer-experience-direct-login-check.mjs
+node app-templates/customer-portal/scripts/export-calm-harbor-login-manual.mjs
 node app-templates/customer-portal/scripts/customer-experience-login-visual-check.mjs
 ```
 
@@ -283,8 +315,8 @@ presentation is filed in
 The staging descriptor now reserves these canonical PageContext routes:
 
 ```text
-landing: https://dev-1.servicewand.com/calm-harbor-spa/
-portal:  https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/
+landing: https://dev-1.servicewand.com/calm-harbor-spa
+portal:  https://dev-1.servicewand.com/calm-harbor-spa-customer-portal
 ```
 
 They are `planned`, not `resolved`: anonymous probes returned HTTP 404 on

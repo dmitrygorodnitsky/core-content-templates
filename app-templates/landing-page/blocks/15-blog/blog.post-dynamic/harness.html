@@ -10,10 +10,13 @@
   <link rel="stylesheet" href="./block.css">
 </head>
 <body>
-  <section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post data-blog-api-base="/core-cms" data-blog-organization="SERVICEWAND" data-blog-category-id="1" data-blog-page-size="100" data-blog-max-results="1000" data-blog-base-path="/blog" data-blog-fixture-url="../_fixtures/posts.en.json" data-blog-read-label="Read article" data-blog-related-limit="3" data-blog-current-permalink="field-service-routing-guide">
+  <section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post data-blog-api-base="/core-cms" data-blog-organization="SERVICEWAND" data-blog-category-id="1" data-blog-page-size="100" data-blog-max-results="1000" data-blog-base-path="/blog" data-blog-fixture-url="../_fixtures/posts.en.json" data-blog-read-label="Read article" data-blog-related-limit="3" data-blog-copy-link-label="Copy link" data-blog-link-copied-label="Link copied" data-blog-current-permalink="field-service-routing-guide">
     <div class="container blog-post-page__container">
       <nav class="blog-post-page__breadcrumb" aria-label="Blog breadcrumb"><a href="/blog" data-blog-index-link>Blog</a><span aria-hidden="true">/</span><span data-blog-current-title>Article</span></nav>
-      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__byline-row">
+        <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+        <div class="blog-post-page__share" data-blog-share role="group" aria-label="Share this article" hidden></div>
+      </div>
       <div class="blog-post-page__hero" data-blog-current-image hidden></div>
       <article class="blog-post-page__document" data-blog-document>
         <div class="blog-post">
@@ -26,6 +29,36 @@
             <h3>Make constraints visible</h3>
             <p>A useful route is one the team can execute. Skills, equipment, job duration, and geographic boundaries all need to be explicit.</p>
             <blockquote>Routing quality improves when operational truth is available before the schedule is published.</blockquote>
+            <h3>Route checklist</h3>
+            <ol>
+              <li>Confirm technician skills and territories</li>
+              <li>Lock arrival windows
+                <ul>
+                  <li>Morning slots first</li>
+                  <li>Keep one buffer stop</li>
+                </ul>
+              </li>
+              <li>Publish the schedule to the field app</li>
+            </ol>
+            <h4>Quick reference</h4>
+            <table>
+              <thead><tr><th>Metric</th><th>Target</th><th>Alert level</th></tr></thead>
+              <tbody>
+                <tr><td>On-time arrival</td><td>≥ 92%</td><td>&lt; 85%</td></tr>
+                <tr><td>Travel share of shift</td><td>≤ 25%</td><td>&gt; 35%</td></tr>
+              </tbody>
+            </table>
+            <p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to find any job, and remember that <mark>published promises</mark> are the ones <strong>dispatch must protect</strong>.</p>
+            <figure>
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360'%3E%3Crect width='800' height='360' fill='%23DCE9EE'/%3E%3Cpath d='M60 280 L260 170 L420 240 L700 90' stroke='%238FB4C4' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 300 L300 210 L470 280 L740 140' stroke='%23FFFFFF' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" alt="Planned versus actual route timeline">
+              <figcaption>Planned versus actual arrival windows across one shift.</figcaption>
+            </figure>
+            <dl>
+              <dt>Anti-icing</dt>
+              <dd>Preventive treatment applied before snowfall bonds to pavement.</dd>
+              <dt>De-icing</dt>
+              <dd>Reactive treatment that breaks an existing snow and ice bond.</dd>
+            </dl>
             <h2>Measure the route after the work is done</h2>
             <p>Compare planned and actual travel, arrival, service, and completion times. The difference reveals where estimates or workflows need attention.</p>
           </div>

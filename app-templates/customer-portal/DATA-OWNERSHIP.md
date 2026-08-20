@@ -66,7 +66,7 @@ data. `Not opened` means no live contract may be inferred from the UI.
 | Authentication and Core User session | Core OIDC plus `/core/api/user/basic-info.json` | `auth`, private-route guards | OIDC opened; basic-info source-traced | Cannot author identity, token, User id, or role | Activate the source-traced session bootstrap in the full portal runtime. |
 | Customer Account scope | Core Account `Account.user` plus customer Account type | shell and private adapters | adapter implemented, live-proven, and activated in the Calm Harbor manual staging root | Cannot author Account id or scope | Preserve the verified organization, exactly-one-Account checks, and stale-session invalidation. Generic multi-vertical runtime wiring remains pending. |
 | Orders: order, status, totals and safe type/currency fields | Core Bill `Order.account` | `orders.list` | Account-scoped list implemented, live-proven, and activated in the Calm Harbor manual staging root | None | Keep every list request bound to the resolved Account; trace deployed negative RBAC before production. Detail and writes remain unopened. |
-| Appointments and service calendar: visits, windows, slot availability | Scheduling backend | `calendar`, booking drawer | fixture; live not opened | May author labels only | Customer-scoped read contract; booking/reschedule requires availability hold, idempotency, and returned appointment state. |
+| Appointments and service calendar: visits, windows, slot availability | Core Appointment + Resource APIs | `calendar`, booking drawer | staging current-API demo: Resource-derived slots and Appointment request/confirm write; production not opened | May author labels only | Generic reads are tenant-scoped and narrowed client-side. Booking is single-flight/idempotent and succeeds only after `REQUESTED-SCHEDULED` readback, but no atomic overlap check or temporary hold exists. |
 | Activity and notifications | Event/notification backend | `activity` | fixture; live not opened | May author empty-state copy only | Customer-scoped event feed, pagination/cursor, read acknowledgement semantics. |
 | Proposals: sites, line items, choices, approval/revision/decline | Proposal/CRM backend | `proposals.list`, `proposal.detail` | fixture; live not opened | None | Versioned proposal read model; write commands with optimistic-concurrency/version check and returned proposal state. |
 | Pricing: plan, price, currency, price interval | Core PIM | `pricing` | opened live on dev-1 same-origin | May select PIM query configuration; never author a live price | `POST /core-pim/public/{organization}/catalog/price-comparison.json` is proven for Calm Harbor Spa. Validate normalized rows and retain loading, empty, and error states. |
@@ -204,6 +204,13 @@ package. It adds the live-proven read-only Orders list to the same Core OIDC and
 public PIM rails. Its inline runtime derives Account scope from the signed-in
 User, invalidates in-flight private reads on sign-out/session refresh, and has no
 CMS parameter or URL input for User, Account, or Order ownership.
+
+For the staging booking flow, `SPA_SERVICE.BOOKING_OPTIONS` is live Product
+configuration, `SPA_SERVICE_PROVIDER`/`SPA_STUDIO` Resources own availability
+and place identity, and `SPA_VISIT` owns the selected visit mode, Resource,
+add-on refs, optional customer note, and options version. No CMS field or
+fixture may supply those values in live mode. Add-on totals are display-ready
+quote variants from the Product attribute; they are not payment confirmation.
 
 ## Landing-First Composition
 

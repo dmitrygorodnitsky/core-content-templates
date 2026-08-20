@@ -34,15 +34,15 @@
     },
     "portal": {
       "code": "CUSTOMER_EXPERIENCE_PORTAL",
-      "parameterCount": 65,
-      "pageContextParameterCount": 59,
-      "sha256": "d0e539cb1860b09c8ece483c9a09e5ae82c8da37080c8ac0632c6bb0492ba324"
+      "parameterCount": 66,
+      "pageContextParameterCount": 60,
+      "sha256": "aef675f98443a03499c7d1e7272b1279afa8042317e38c632d39119e508f0975"
     },
     "login": {
       "code": "CUSTOMER_EXPERIENCE_LOGIN",
-      "parameterCount": 25,
-      "pageContextParameterCount": 25,
-      "sha256": "3e059fcf48de8a92dea3ebdd54a94864aa733dcf2a60513912b24063fa790fa7"
+      "parameterCount": 26,
+      "pageContextParameterCount": 26,
+      "sha256": "69bb6f48e648542b4ffd219aad70844dd2762454496b5864e0176e195eff239a"
     },
     "twoFactor": {
       "code": "CUSTOMER_EXPERIENCE_AUTH_2FA",
@@ -67,6 +67,6 @@
   },
   "runtime": {
     "source": "app-templates/customer-portal/runtime/manual/calm-harbor-target-runtime.js",
-    "sha256": "860607d8c89c4f1eae579447e1779fe3b890cfe5e77bf25042e81fe91757928f"
+    "sha256": "cc82a1af39a52ff53aebca4af19a9516a1dd64555539207c35653800be9b7db0"
   }
 }

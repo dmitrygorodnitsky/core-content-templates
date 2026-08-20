@@ -36,6 +36,7 @@ try {
   assert.match(template.html, /data-portal-organization="CALM_HARBOR_SPA_STAGING"/);
   assert.match(template.html, /data-portal-account-api-base="\/core-acct"/);
   assert.match(template.html, /data-portal-service-api-base="\/core-svc"/);
+  assert.match(template.html, /data-portal-resource-api-base="\/core-rm"/);
   assert.match(template.html, /data-portal-bill-api-base="\/core-bill"/);
   assert.match(template.html, /data-portal-account-type-code="SPA_CUSTOMER"/);
   assert.doesNotMatch(template.html, /account-id|user-id|access-token/i);
@@ -47,6 +48,13 @@ try {
   assert.match(template.javascript, /order-scope-mismatch/);
   assert.match(template.javascript, /tenant-demo-unscoped/);
   assert.match(template.javascript, /checkout\.confirm/);
+  assert.match(template.javascript, /booking\.selectVisitMode/);
+  assert.match(template.javascript, /booking\.toggleAddon/);
+  assert.match(template.javascript, /function stepOptions/);
+  assert.match(template.javascript, /data-visual-id[^\n]+booking-note/);
+  assert.match(template.javascript, /capabilities: \{ visitMode: false, location: false, addOns: false, notes: false \}/, "live CMS runtime must fail closed for unsupported booking options");
+  assert.match(template.css, /\.drawer--open-static, \.scrim--static/);
+  assert.doesNotMatch(template.javascript, /Warm basalt stone|Home · place on file/, "fixture booking choices must not ship in the live CMS runtime");
   assert.doesNotMatch(template.javascript, /Get a quote in 30s/, "the authenticated portal bundle must not contain the retired internal landing screen");
   assert.doesNotMatch(template.javascript, /Browse the catalog/, "the authenticated portal bundle must not contain the retired signed-in success screen");
   assert.doesNotMatch(template.javascript, /^\s*import\s/m);

@@ -1,6 +1,6 @@
 {
   "product": "Aircove Customer Portal",
-  "version": "wave-17 (modular / customer-portal-design)",
+  "version": "wave-20 (modular / customer-portal-design)",
   "format": "no-build ES modules: source.html + styles/*.css (6) + src/**/*.js (~47) + data/",
   "runtime": "presentation-only. Business logic, API, auth, permissions, persistence are owned by Codex.",
   "entry": "customer-portal-design/source.html",
@@ -1991,17 +1991,20 @@
     {
       "id": "booking-flow",
       "factory": "SpaBookingFlow (components/spa/SpaBookingFlow.js)",
-      "props": ["state.spaFlow (entry, step, serviceCode, planRef, specialistRef, dayKey, slotRef, rescheduleOf, held)", "F.spaBooking (server read model)"],
+      "props": ["state.spaFlow (entry, step, serviceCode, planRef, specialistRef, dayKey, slotRef, rescheduleOf, held, visitMode, locationRef, addOns[], reloadedBy)", "F.spaBooking (server read model)", "F.spaBookingOptions (wave 20 — bookingOptions capability payload)", "F.spaBookingQuote (wave 20 — server quote stand-in)"],
       "wave": 16,
-      "states": ["context", "specialist (ONLY when the server returns specialists)", "slots (ready|loading|empty|error)", "review (held|slot-expired|repriced)"],
+      "waveExtended": 20,
+      "states": ["context", "options (wave 20 — ONLY when a supported capability returns something)", "specialist (ONLY when the server returns specialists)", "slots (ready|loading|empty|error)", "review (held|slot-expired|repriced|removed|repriced-addon)"],
       "note": "ONE flow for every supported entry: service Book (booking.open + service code), empty Appointments, past Book again (appointment.bookAgain), active package Book with a credit (plan.bookWithCredit), upcoming Reschedule (appointment.reschedule). Steps: context → optional specialist → eligible date/slot selection → expiring SERVER slot hold (booking.hold — display-ready expiry label, NEVER a local countdown; expiry/reprice are server events) → review with server display total, policy ack (booking.ackPolicy) and the explicit simulation treatment. Confirm (booking.confirm) is entity-scoped; the result is the authoritative readback (Appointment only or Appointment+Order); a reschedule releases the original visit ONLY in that readback. Plan-credit state (ok|unavailable|exhausted|changed) gates the flow verbatim — nothing about balance or eligibility is calculated in presentation.",
       "status": "done"
     },
     {
       "id": "booking-steps",
-      "factory": "inline in SpaBookingFlow",
-      "props": ["flow step list (specialist appears only when returned)"],
+      "factory": "inline in SpaBookingFlow (spaFlowSteps in state.js)",
+      "props": ["flow step list (Options and Specialist appear only when the source returns something for them)"],
       "wave": 16,
+      "waveExtended": 20,
+      "note": "Wave 20: the rail is derived from spaFlowSteps() — Service · Options? · Specialist? · Time · Review, with the reschedule variant Options? · New time · Review. An empty step is never rendered; data-step-count carries the rendered length and each chip carries data-step. At 390 a five-step rail wraps to two lines rather than shrinking its hit targets.",
       "status": "done"
     },
     {
@@ -2027,6 +2030,50 @@
       "wave": 16,
       "states": ["ready", "loading", "empty", "error"],
       "note": "Day chips + slot buttons (booking.selectSlot, data-slot-ref / data-day-key). loading/empty/error come from the slot source — no time is ever invented; error retries via ui.retry slots.",
+      "status": "done"
+    },
+    {
+      "id": "visit-mode-options",
+      "factory": "visitModeGroup (inline in SpaBookingFlow — options step)",
+      "props": ["bookingOptions.capabilities.visitMode", "bookingOptions.visitModes[] {code, label, locationRequired}"],
+      "wave": 20,
+      "states": ["ready (2+ allowed choices)", "fixed (exactly one returned mode — context, never a question)"],
+      "note": "data-visual-id=booking-visit-mode. Opaque mode codes on data-visit-mode; booking.selectVisitMode carries the code. With one returned mode the row is non-interactive context ('Set by the studio') and the customer is never asked to select it. Changing the mode clears the place and INVALIDATES the downstream specialist/slot selection.",
+      "status": "done"
+    },
+    {
+      "id": "location-options",
+      "factory": "locationGroup (inline in SpaBookingFlow — options step)",
+      "props": ["bookingOptions.capabilities.location", "bookingOptions.locations[] {ref, label, kind, visitModeCode}", "state.spaLocSrc (source state)"],
+      "wave": 20,
+      "states": ["ready (2+ eligible)", "ready-single (fixed context)", "loading", "empty", "error", "unavailable", "ineligible", "no-address"],
+      "note": "data-visual-id=booking-locations (+ booking-locations-empty / -unavailable / -no-place). Opaque refs on data-location-ref; booking.selectLocation carries the ref. Labels are LEAST DATA — a nickname or a redacted summary supplied by the server; NO free-form address capture exists in this flow and no address line is ever rendered. booking.reloadLocations is rendered ONLY where a retry can change the result (error / ineligible) — never for empty or unavailable. unavailable = the studio assigns the place and the review says so; empty = nothing can be booked (honest support path). Changing the place invalidates the downstream specialist/slot selection and returns to Time.",
+      "status": "done"
+    },
+    {
+      "id": "addon-options",
+      "factory": "addonGroup (inline in SpaBookingFlow — options step)",
+      "props": ["bookingOptions.capabilities.addOns", "bookingOptions.addOns[] {ref, name, description, required, selected, displayPrice, durationNote, allowedActions}", "state.spaAddonSrc (source state)"],
+      "wave": 20,
+      "states": ["ready", "loading", "error", "unavailable", "ineligible", "removed", "repriced", "row: pending"],
+      "note": "data-visual-id=booking-addons. Opaque refs on data-addon-ref; booking.toggleAddon is an ENTITY-SCOPED command (booking.toggleAddon:<ref>) so one pending add-on never freezes the others. required/optional is marked by the SOURCE; a required add-on the source does not allow toggling renders as non-interactive context ('Added by the studio'). displayPrice and durationNote render VERBATIM and are omitted when the source supplies none — compatibility, price, duration, tax and inventory are never inferred. none returned = the section AND the step do not exist. removed / repriced BLOCK confirmation until an explicit reload (ui.retry booking-addons).",
+      "status": "done"
+    },
+    {
+      "id": "booking-notes",
+      "factory": "noteField (inline in SpaBookingFlow — review step)",
+      "props": ["bookingOptions.notes {enabled, value, maxLength, helperText}", "state.spaNote (TRANSIENT browser state)"],
+      "wave": 20,
+      "states": ["empty", "filled", "near-limit", "invalid"],
+      "note": "data-visual-id=booking-note. A real <label for> (never placeholder-only labelling), a live counter against the SERVER-provided maximum, an accessible inline explanation (role=alert + aria-invalid + aria-describedby) when the value is too long, and the 'Sent to the studio with your request' marker. booking.changeNotes is an input-event hook that does NOT re-render (focus preserved) and never discards a held slot. The value is transient: memory only — never localStorage, analytics, logs or a URL parameter — preserved across a failed confirm and released by the authoritative readback or an explicit close. A sensitive profile (notes.enabled=false) omits the field AND the review marker entirely; nothing in the copy solicits symptoms, diagnoses, payment data or access codes.",
+      "status": "done"
+    },
+    {
+      "id": "booking-review-addons",
+      "factory": "inline in SpaBookingFlow (review step)",
+      "props": ["selected add-ons \u2229 the set the source still returns", "server display amounts when supplied"],
+      "wave": 20,
+      "note": "data-visual-id=booking-review-addons. Only selected add-ons the source STILL returns can appear — a dropped add-on can never reach the review. Amounts are the server's display strings; the Subtotal / Total rows come from the server quote (bookingReview.displaySubtotal / displayTotal) and are never computed in presentation.",
       "status": "done"
     },
     {
@@ -2212,14 +2259,20 @@
     "auth.verifyCode",
     "booking.ackPolicy",
     "booking.back",
+    "booking.changeNotes",
     "booking.close",
     "booking.confirm",
     "booking.hold",
+    "booking.next",
     "booking.open",
+    "booking.reloadLocations",
     "booking.retry",
     "booking.selectService",
+    "booking.selectLocation",
     "booking.selectSlot",
     "booking.selectSpecialist",
+    "booking.selectVisitMode",
+    "booking.toggleAddon",
     "calendar.next",
     "calendar.open",
     "calendar.prev",

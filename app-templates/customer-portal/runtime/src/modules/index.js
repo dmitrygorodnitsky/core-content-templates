@@ -221,7 +221,11 @@ const appointmentsModule = {
     if (error && error.code === "session-expired") context.state.account = "session-expired";
   },
   failureEnvelope(context, error) {
-    return { state: error && error.code === "customer-forbidden" ? "unauthorized" : "error", items: [], next: null, upcoming: [], past: [], byRef: {} };
+    return {
+      state: error && error.code === "customer-forbidden" ? "unauthorized" : "error",
+      items: [], next: null, upcoming: [], past: [], byRef: {},
+      availability: { state: "error", reasonCode: error && error.code || "appointments-load-failed", providers: [], busy: [] },
+    };
   },
 };
 

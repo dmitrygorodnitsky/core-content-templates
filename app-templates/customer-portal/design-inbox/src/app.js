@@ -1,8 +1,8 @@
 // customer-portal-design/src/app.js — presentation runtime (auto-split from app.js). No business logic.
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
-import { activeProfile, cmdPhase, currentOrder, isPublic, isSpa, state } from "./state.js";
-import { ACTIONS, bindActions, go, openOrder, pickTheme, setState, toast } from "./actions.js";
+import { activeProfile, cmdPhase, currentOrder, isPublic, isSpa, spaBookingOpts, spaOptionsStepOn, state } from "./state.js";
+import { ACTIONS, bindActions, go, openOrder, pickTheme, setState, spaInvalidateAfterOptions, spaSeedOptionDefaults, toast } from "./actions.js";
 import { renderRoute } from "./router.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { InlineFailure } from "./components/primitives/RouteStates.js";
@@ -211,6 +211,39 @@ export function DevToolbar() {
       /* wave 16 — booking-flow review scenarios (only while the flow is open) */
       if (state.spaFlow) {
         spaGroups.push(group("slots", mkSel(["ready", "loading", "empty", "error"], state.spaSlots, function (v) { setState({ spaSlots: v }); })));
+        /* wave 20 — the bookingOptions capability payload + each source state.
+           Switching the payload re-seeds only what the source itself returned. */
+        spaGroups.push(group("opts", mkSel(["fixed-studio", "mode-choice", "addons", "all"], state.spaOptScenario, function (v) {
+          state.spaOptScenario = v; state.spaLocSrc = "ready"; state.spaAddonSrc = "ready";
+          var f = state.spaFlow;
+          if (f) {
+            f.visitMode = null; f.locationRef = null; f.addOns = [];
+            spaSeedOptionDefaults(f);
+            spaInvalidateAfterOptions(f, null);
+            f.step = spaOptionsStepOn() ? "options" : (f.entry === "reschedule" ? "slots" : "context");
+          }
+          setState({});
+        })));
+        var o20 = spaBookingOpts();
+        if (o20.capabilities.location) spaGroups.push(group("loc", mkSel(["ready", "loading", "empty", "error", "unavailable", "ineligible", "no-address"], state.spaLocSrc, function (v) { setState({ spaLocSrc: v }); })));
+        if (o20.capabilities.addOns) spaGroups.push(group("addon", mkSel(["ready", "loading", "error", "unavailable", "ineligible", "removed", "repriced"], state.spaAddonSrc, function (v) {
+          var f = state.spaFlow;
+          if ((v === "removed" || v === "repriced") && f && !(f.addOns || []).length) {
+            /* the removed/repriced review states need an extra already selected */
+            var first = o20.addOns.find(function (a) { return (a.allowedActions || []).indexOf("toggle") !== -1; });
+            if (first) f.addOns = [first.ref];
+          }
+          setState({ spaAddonSrc: v });
+        })));
+        var nMax = (o20.notes && o20.notes.maxLength) || 200;
+        var nVal = state.spaNoteCap === "disabled" ? "disabled"
+          : (state.spaNote || "").length > nMax ? "invalid"
+          : (state.spaNote || "").length >= nMax - 30 ? "near-limit" : "empty";
+        spaGroups.push(group("note", mkSel(["empty", "near-limit", "invalid", "disabled"], nVal, function (v) {
+          var S = F.spaBookingOptions.noteSamples;
+          if (v === "disabled") { setState({ spaNoteCap: "disabled", spaNote: "" }); return; }
+          setState({ spaNoteCap: "enabled", spaNote: v === "empty" ? "" : (S[v] || "") });
+        })));
         if (state.spaFlow.entry === "credit") spaGroups.push(group("credit", mkSel(["ok", "unavailable", "exhausted", "changed"], state.spaCredit, function (v) { setState({ spaCredit: v }); })));
       }
     } else if (state.route === "orders.list") {
@@ -247,12 +280,21 @@ export function DevToolbar() {
    Root render
    ========================================================= */
 var mount, shell, resizeObs;
+var drawerScroll = 0; /* wave 20 — preserved drawer scroll across re-renders */
 
 export function render() {
   /* theming: declarative attributes only */
   var root = document.documentElement;
   root.setAttribute("data-theme", F.themes[state.theme].slug);
   root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
+
+  /* wave 20 fix — the drawer is rebuilt on every render, so its entrance
+     animation replayed and its scroll jumped to the top on EVERY action, which
+     read as "the drawer re-opened". Remember whether it was already open (and
+     where it was scrolled) and re-mount it silently. */
+  var openEl = mount.querySelector(".drawer");
+  var drawerWasOpen = !!openEl;
+  if (openEl) drawerScroll = openEl.scrollTop;
 
   clear(mount);
 
@@ -266,7 +308,21 @@ export function render() {
   frame.appendChild(shell);
   mount.appendChild(h("div", { "class": "viewport-host" }, frame));
 
-  if (state.drawer === "booking") mount.appendChild(BookingDrawer());
+  if (state.drawer === "booking") {
+    mount.appendChild(BookingDrawer());
+    var dr = mount.querySelector(".drawer");
+    if (drawerWasOpen) {
+      /* already open: no re-entrance, no scroll reset */
+      dr.classList.add("drawer--open-static");
+      var scr = mount.querySelector(".scrim");
+      if (scr) scr.classList.add("scrim--static");
+      dr.scrollTop = drawerScroll;
+    } else {
+      drawerScroll = 0;
+    }
+  } else {
+    drawerScroll = 0;
+  }
   if (state.toast) mount.appendChild(h("div", { "class": "toast", "data-module": "toast", "data-visual-id": "toast" }, [h("span", { "class": "toast__dot" }), state.toast]));
 
   mount.appendChild(DevToolbar());
@@ -308,10 +364,20 @@ function applyResponsive() {
   if (resizeObs) resizeObs.disconnect();
   var target = shell;
   var apply = function (w) {
-    target.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
-    if (w <= 560) target.classList.add("vw-mobile");
-    else if (w <= 900) target.classList.add("vw-tablet");
-    if (w <= 1040) target.classList.add("vw-compact"); /* nav-links -> hamburger */
+    /* wave 20 — the booking drawer is viewport-fixed, so it lives OUTSIDE
+       .app-shell and the container classes never reached its content (the
+       wave-16 .bk-slots / .bk-compare overrides included). Mirror the class
+       onto the drawer so the drawer renders the same treatment a real phone /
+       tablet viewport gives it. */
+    var nodes = [target];
+    var dr = mount.querySelector(".drawer");
+    if (dr) nodes.push(dr);
+    nodes.forEach(function (n) {
+      n.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
+      if (w <= 560) n.classList.add("vw-mobile");
+      else if (w <= 900) n.classList.add("vw-tablet");
+      if (w <= 1040) n.classList.add("vw-compact"); /* nav-links -> hamburger */
+    });
   };
   apply(shell.getBoundingClientRect().width);
   resizeObs = new ResizeObserver(function (ents) { apply(ents[0].contentRect.width); });

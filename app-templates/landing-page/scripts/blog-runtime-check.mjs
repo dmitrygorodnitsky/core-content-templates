@@ -35,12 +35,30 @@ const localized = blog.normalizePost({
 }, "fr");
 assert.equal(localized.title, "Routing guide");
 
-assert.equal(blog.normalizePost({ code: "INTERNAL_CODE", permalink: "internal-code" }, "fr"), null);
-const config = { locale: "fr", basePath: "/blog" };
+assert.equal(
+  blog.normalizePost({ permalink: "p", heroImage: { id: "abc-123" } }, "en").imageUrl,
+  "/core/image/abc-123/get",
+);
+assert.equal(
+  blog.normalizePost({ permalink: "p", heroImage: "https://cdn.example.com/hero.png" }, "en").imageUrl,
+  "https://cdn.example.com/hero.png",
+);
+assert.equal(
+  blog.normalizePost({ permalink: "p", heroImage: { id: "x" }, metadata: { HERO_IMAGE_URL: "/явный.png" } }, "en").imageUrl,
+  "/явный.png",
+);
+
+const hydratable = blog.normalizePost({ code: "INTERNAL_CODE", permalink: "internal-code" }, "fr");
+assert.equal(hydratable.title, "");
+assert.equal(hydratable.permalink, "internal-code");
+assert.match(source, /return Boolean\(post\.title\);/);
+assert.equal(blog.normalizePost({ code: "INTERNAL_CODE" }, "fr"), null);
+const config = { locale: "fr", basePath: "/blog", postPath: "/post" };
 assert.equal(blog.buildIndexUrl(config), "/fr/blog");
-assert.equal(blog.buildPostUrl({ permalink: "routing-guide" }, config), "/fr/blog/routing-guide");
+assert.equal(blog.buildPostUrl({ permalink: "routing-guide" }, config), "/fr/post/routing-guide");
 assert.equal(blog.currentPermalink(config), "");
-assert.equal(runtime("/fr/blog/routing-guide").currentPermalink(config), "routing-guide");
+assert.equal(runtime("/fr/post/routing-guide").currentPermalink(config), "routing-guide");
+assert.equal(runtime("/fr/post/news/my-post").currentPermalink(config), "news/my-post");
 assert.equal(runtime("/pages/SERVICEWAND/blog.html/routing-guide").currentPermalink(config), "routing-guide");
 
 console.log("blog-runtime-check ok");

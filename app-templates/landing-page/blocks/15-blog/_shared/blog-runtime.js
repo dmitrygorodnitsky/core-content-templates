@@ -63,6 +63,16 @@
     return path && !path.includes(":") && !path.includes("..") ? path : "";
   }
 
+  function heroImageUrlOf(post) {
+    var hero = post.heroImage;
+    if (!hero) return "";
+    if (typeof hero === "string") return hero.trim();
+    if (typeof hero === "object" && hero.id) {
+      return "/core/image/" + encodeURIComponent(String(hero.id)) + "/get";
+    }
+    return "";
+  }
+
   function normalizePost(post, locale) {
     post = post && typeof post === "object" ? post : {};
     var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
@@ -76,6 +86,7 @@
     var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
       String(post.publishedAt || post.publishDate || post.created || "");
     var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      heroImageUrlOf(post) ||
       firstText(post, ["imageUrl", "coverUrl"], locale);
     var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
     var category = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
@@ -93,6 +104,7 @@
       summary: summary,
       category: category,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl", "AUTHOR_PHOTO_URL"], locale),
       publishedAt: publishedAt,
       readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
       imageUrl: imageUrl,
@@ -195,7 +207,7 @@
   function detailsFromPostHtml(html) {
     var parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
     var documentRoot = parsed.querySelector("[data-blog-document]") || parsed.querySelector(".blog-post");
-    if (!documentRoot) return { title: "", summary: "" };
+    if (!documentRoot) return { title: "", summary: "", imageUrl: "", imageAlt: "" };
     var titleNode = documentRoot.querySelector("h1");
     var summaryNode = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
     var details = {
@@ -206,11 +218,14 @@
       var markdownNode = documentRoot.querySelector("pre code");
       if (markdownNode) details = detailsFromMarkdown(markdownNode.textContent);
     }
+    var imageNode = documentRoot.querySelector("img");
+    details.imageUrl = imageNode ? String(imageNode.getAttribute("src") || "").trim() : "";
+    details.imageAlt = imageNode ? String(imageNode.getAttribute("alt") || "").trim() : "";
     return details;
   }
 
   function hydratePost(post, config) {
-    if (post.title && post.summary) return Promise.resolve(post);
+    if (post.title && post.summary && post.imageUrl) return Promise.resolve(post);
     return fetch(buildPostUrl(post, config), {
       credentials: "omit",
       headers: { Accept: "text/html" }
@@ -221,6 +236,11 @@
       var details = detailsFromPostHtml(html);
       post.title = post.title || details.title;
       post.summary = post.summary || details.summary;
+      if (!post.imageUrl && details.imageUrl) {
+        post.imageUrl = details.imageUrl;
+        post.imageAlt = post.imageAlt || details.imageAlt || post.title;
+        post.imageFromContent = true;
+      }
       return post;
     }).catch(function () {
       return post;

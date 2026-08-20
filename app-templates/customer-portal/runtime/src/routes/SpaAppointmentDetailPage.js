@@ -17,11 +17,12 @@ import { PageHeader } from "../components/shell/PageHeader.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ConflictBanner, InlineFailure, NotFoundState, routeStateBody, skel } from "../components/primitives/RouteStates.js";
+import { spaVisitModeClass, spaVisitModeLabel } from "../normalizers/spa-visit-mode.js";
 
 function modeChip(mode) {
-  return h("span", { "class": "visit-mode visit-mode--" + mode, "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
+  return h("span", { "class": "visit-mode visit-mode--" + spaVisitModeClass(mode), "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
     h("i", { "class": "visit-mode__dot" }),
-    F.spa.modeLabels[mode]
+    spaVisitModeLabel(mode, F.spa.modeLabels)
   ]);
 }
 
@@ -87,7 +88,7 @@ export function SpaAppointmentDetail() {
 
   var details = h("div", { "class": "appt-details", "data-visual-id": "visit-details" });
   details.appendChild(detailRow("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
-    h("b", null, F.spa.modeLabels[a.visitMode]),
+    h("b", null, spaVisitModeLabel(a.visitMode, F.spa.modeLabels)),
     a.location ? " \u00b7 " + a.location : h("span", { style: "color:var(--ink-3)" }, " \u00b7 location details not provided yet")
   ])));
   details.appendChild(detailRow("With", a.specialist

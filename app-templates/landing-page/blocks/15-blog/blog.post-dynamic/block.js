@@ -8,238 +8,6 @@
     return node;
   }
 
-  function safeUrl(value, image) {
-    var source = String(value || "").trim();
-    if (!source || /^javascript:/i.test(source) || /^data:/i.test(source)) return "";
-    try {
-      var url = new URL(source, window.location.href);
-      if (["http:", "https:"].indexOf(url.protocol) >= 0) return source;
-      if (!image && ["mailto:", "tel:"].indexOf(url.protocol) >= 0) return source;
-    } catch (error) {
-      return "";
-    }
-    return "";
-  }
-
-  function appendInlineMarkdown(target, source) {
-    var remaining = String(source || "");
-    var match;
-    while (remaining) {
-      match = remaining.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
-      if (match) {
-        var imageUrl = safeUrl(match[2], true);
-        if (imageUrl) {
-          var image = document.createElement("img");
-          image.src = imageUrl;
-          image.alt = match[1];
-          image.loading = "lazy";
-          image.decoding = "async";
-          if (match[3]) image.title = match[3];
-          target.appendChild(image);
-        } else {
-          target.appendChild(document.createTextNode(match[1]));
-        }
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
-      if (match) {
-        var linkUrl = safeUrl(match[2], false);
-        if (linkUrl) {
-          var link = document.createElement("a");
-          link.href = linkUrl;
-          if (match[3]) link.title = match[3];
-          appendInlineMarkdown(link, match[1]);
-          target.appendChild(link);
-        } else {
-          target.appendChild(document.createTextNode(match[1]));
-        }
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^`([^`]+)`/);
-      if (match) {
-        target.appendChild(element("code", "", match[1]));
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^(?:\*\*|__)(.+?)(?:\*\*|__)/);
-      if (match) {
-        var strong = document.createElement("strong");
-        appendInlineMarkdown(strong, match[1]);
-        target.appendChild(strong);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^(?:\*|_)([^*_]+?)(?:\*|_)/);
-      if (match) {
-        var emphasis = document.createElement("em");
-        appendInlineMarkdown(emphasis, match[1]);
-        target.appendChild(emphasis);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^<((?:https?:\/\/|mailto:)[^>]+)>/i);
-      if (match) {
-        var autoUrl = safeUrl(match[1], false);
-        var autoLink = document.createElement("a");
-        autoLink.href = autoUrl;
-        autoLink.textContent = match[1];
-        target.appendChild(autoLink);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^\\([\\`*_[\]{}()#+\-.!>])/);
-      if (match) {
-        target.appendChild(document.createTextNode(match[1]));
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      target.appendChild(document.createTextNode(remaining.charAt(0)));
-      remaining = remaining.slice(1);
-    }
-  }
-
-  function markdownFragment(source) {
-    var fragment = document.createDocumentFragment();
-    var lines = String(source || "").replace(/\r\n?/g, "\n").split("\n");
-    var paragraph = [];
-    var list = null;
-    var quote = [];
-    var code = null;
-    var codeLanguage = "";
-
-    function appendTextBlock(tag, values) {
-      if (!values.length) return;
-      var node = document.createElement(tag);
-      appendInlineMarkdown(node, values.join(" ").trim());
-      fragment.appendChild(node);
-      values.length = 0;
-    }
-
-    function flushParagraph() {
-      appendTextBlock("p", paragraph);
-    }
-
-    function flushQuote() {
-      appendTextBlock("blockquote", quote);
-    }
-
-    function closeList() {
-      list = null;
-    }
-
-    lines.forEach(function (line) {
-      var match;
-      if (code) {
-        if (/^\s*```\s*$/.test(line)) {
-          var pre = document.createElement("pre");
-          var codeNode = document.createElement("code");
-          codeNode.textContent = code.join("\n");
-          if (codeLanguage) codeNode.className = "language-" + codeLanguage;
-          pre.appendChild(codeNode);
-          fragment.appendChild(pre);
-          code = null;
-          codeLanguage = "";
-        } else {
-          code.push(line);
-        }
-        return;
-      }
-
-      match = line.match(/^\s*```([A-Za-z0-9_-]*)\s*$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        code = [];
-        codeLanguage = match[1];
-        return;
-      }
-      if (!line.trim()) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        return;
-      }
-      match = line.match(/^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        var heading = document.createElement("h" + match[1].length);
-        appendInlineMarkdown(heading, match[2]);
-        fragment.appendChild(heading);
-        return;
-      }
-      if (/^\s{0,3}(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        fragment.appendChild(document.createElement("hr"));
-        return;
-      }
-      match = line.match(/^\s*>\s?(.*)$/);
-      if (match) {
-        flushParagraph();
-        closeList();
-        quote.push(match[1]);
-        return;
-      }
-      match = line.match(/^\s*[-+*]\s+(.+)$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        if (!list || list.tagName !== "UL") {
-          list = document.createElement("ul");
-          fragment.appendChild(list);
-        }
-        var unorderedItem = document.createElement("li");
-        appendInlineMarkdown(unorderedItem, match[1]);
-        list.appendChild(unorderedItem);
-        return;
-      }
-      match = line.match(/^\s*\d+[.)]\s+(.+)$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        if (!list || list.tagName !== "OL") {
-          list = document.createElement("ol");
-          fragment.appendChild(list);
-        }
-        var orderedItem = document.createElement("li");
-        appendInlineMarkdown(orderedItem, match[1]);
-        list.appendChild(orderedItem);
-        return;
-      }
-      flushQuote();
-      closeList();
-      paragraph.push(line.trim());
-    });
-
-    if (code) paragraph.push("```" + codeLanguage, code.join("\n"));
-    flushParagraph();
-    flushQuote();
-    return fragment;
-  }
-
-  function renderServerMarkdown(root) {
-    var documentRoot = root.querySelector("[data-blog-document]");
-    if (!documentRoot) return;
-    documentRoot.querySelectorAll(".blog-post > .content").forEach(function (content) {
-      var pre = content.querySelector(":scope > pre");
-      if (!pre) return;
-      var meaningfulSiblings = Array.from(content.children).filter(function (child) {
-        return child !== pre && String(child.textContent || "").trim();
-      });
-      if (meaningfulSiblings.length) return;
-      var source = String((pre.querySelector("code") || pre).textContent || "").trim();
-      if (!source) return;
-      content.replaceChildren(markdownFragment(source));
-      content.setAttribute("data-blog-markdown-rendered", "true");
-    });
-  }
-
   function serverRenderedTitle(root) {
     var heading = root.querySelector("[data-blog-document] h1");
     return heading ? String(heading.textContent || "").trim() : "";
@@ -263,26 +31,29 @@
     };
   }
 
-  function setNamedMeta(name, value) {
+  function isPlaceholderValue(value) {
+    var text = String(value || "").trim();
+    return !text || text === "#" || /^\$\{[A-Z0-9_]+\}$/.test(text);
+  }
+
+  function setMeta(selector, attribute, key, value) {
     if (!value) return;
-    var node = document.head.querySelector('meta[name="' + name + '"]');
+    var node = document.head.querySelector(selector);
+    if (node && !isPlaceholderValue(node.getAttribute("content"))) return;
     if (!node) {
       node = document.createElement("meta");
-      node.name = name;
+      node.setAttribute(attribute, key);
       document.head.appendChild(node);
     }
-    node.content = value;
+    node.setAttribute("content", value);
+  }
+
+  function setNamedMeta(name, value) {
+    setMeta('meta[name="' + name + '"]', "name", name, value);
   }
 
   function setPropertyMeta(property, value) {
-    if (!value) return;
-    var node = document.head.querySelector('meta[property="' + property + '"]');
-    if (!node) {
-      node = document.createElement("meta");
-      node.setAttribute("property", property);
-      document.head.appendChild(node);
-    }
-    node.content = value;
+    setMeta('meta[property="' + property + '"]', "property", property, value);
   }
 
   function setCanonical(url) {
@@ -298,7 +69,7 @@
   function applySeo(root, post) {
     if (!post || !post.title) return;
     var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
-    document.title = post.title;
+    if (isPlaceholderValue(document.title)) document.title = post.title;
     setNamedMeta("description", post.summary);
     setPropertyMeta("og:type", "article");
     setPropertyMeta("og:title", post.title);
@@ -326,17 +97,54 @@
     if (node) node.textContent = JSON.stringify(schema);
   }
 
+  function initialsOf(name) {
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "";
+    var first = parts[0].charAt(0);
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (first + last).toUpperCase();
+  }
+
+  function avatarFor(post) {
+    var avatar = element("span", "blog-post-page__avatar");
+    avatar.setAttribute("aria-hidden", "true");
+    if (post.authorAvatarUrl) {
+      var image = document.createElement("img");
+      image.src = post.authorAvatarUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      avatar.appendChild(image);
+      return avatar;
+    }
+    var initials = initialsOf(post.author);
+    if (!initials) return null;
+    avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+    return avatar;
+  }
+
   function renderCurrent(root, post, config) {
     var title = root.querySelector("[data-blog-current-title]");
     if (title) title.textContent = post.title;
     var meta = root.querySelector("[data-blog-current-meta]");
+    var track = element("span", "blog-post-page__meta-track");
     var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
-    [post.category, date, post.readTime, post.author].filter(Boolean).forEach(function (value) {
-      meta.appendChild(element("span", "blog-post-page__meta-item", value));
+    [post.category, date, post.readTime].filter(Boolean).forEach(function (value) {
+      track.appendChild(element("span", "blog-post-page__meta-item", value));
     });
+    if (post.author) {
+      var avatar = avatarFor(post);
+      if (avatar) meta.appendChild(avatar);
+      var text = element("span", "blog-post-page__byline-text");
+      text.appendChild(element("span", "blog-post-page__author", post.author));
+      if (track.children.length) text.appendChild(track);
+      meta.appendChild(text);
+    } else if (track.children.length) {
+      meta.appendChild(track);
+    }
     meta.hidden = meta.children.length === 0;
     var hero = root.querySelector("[data-blog-current-image]");
-    if (post.imageUrl) {
+    if (post.imageUrl && !post.imageFromContent) {
       var image = document.createElement("img");
       image.src = post.imageUrl;
       image.alt = post.imageAlt || post.title;
@@ -345,6 +153,119 @@
       hero.hidden = false;
     }
     applySeo(root, post);
+  }
+
+  var SHARE_ICONS = {
+    x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117Z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.11 20.45H3.56V9h3.55ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+  };
+
+  function canonicalUrl() {
+    return window.location.href.split("?")[0].split("#")[0];
+  }
+
+  function copyTextFallback(value) {
+    return new Promise(function (resolve, reject) {
+      var area = document.createElement("textarea");
+      area.value = value;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        if (document.execCommand("copy")) resolve();
+        else reject(new Error("Copy command was rejected"));
+      } catch (error) {
+        reject(error);
+      } finally {
+        area.remove();
+      }
+    });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(value).catch(function () {
+        return copyTextFallback(value);
+      });
+    }
+    return copyTextFallback(value);
+  }
+
+  function shareLink(network, icon, href) {
+    var link = document.createElement("a");
+    link.className = "blog-post-page__share-button";
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", network);
+    link.title = network;
+    link.innerHTML = icon;
+    return link;
+  }
+
+  function renderShare(root) {
+    var host = root.querySelector("[data-blog-share]");
+    if (!host) return;
+    var url = canonicalUrl();
+    var title = serverRenderedTitle(root) || document.title;
+    var encodedUrl = encodeURIComponent(url);
+    host.appendChild(shareLink("X", SHARE_ICONS.x,
+      "https://x.com/intent/post?url=" + encodedUrl + (title ? "&text=" + encodeURIComponent(title) : "")));
+    host.appendChild(shareLink("Facebook", SHARE_ICONS.facebook,
+      "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl));
+    host.appendChild(shareLink("LinkedIn", SHARE_ICONS.linkedin,
+      "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl));
+    var copyLabel = root.getAttribute("data-blog-copy-link-label") || "Copy link";
+    var copiedLabel = root.getAttribute("data-blog-link-copied-label") || "Link copied";
+    var copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "blog-post-page__share-button";
+    copy.setAttribute("aria-label", copyLabel);
+    copy.title = copyLabel;
+    copy.innerHTML = SHARE_ICONS.link;
+    var feedback = element("span", "blog-post-page__share-feedback", copiedLabel);
+    feedback.setAttribute("role", "status");
+    feedback.hidden = true;
+    var timer = null;
+    copy.addEventListener("click", function () {
+      copyText(canonicalUrl()).then(function () {
+        copy.innerHTML = SHARE_ICONS.check;
+        copy.classList.add("is-copied");
+        feedback.hidden = false;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () {
+          copy.innerHTML = SHARE_ICONS.link;
+          copy.classList.remove("is-copied");
+          feedback.hidden = true;
+          timer = null;
+        }, 2000);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    });
+    host.appendChild(copy);
+    host.appendChild(feedback);
+    host.hidden = false;
+  }
+
+  function relatedMediaFor(post) {
+    var media = element("span", "blog-related-card__media");
+    if (post.imageUrl) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      media.appendChild(image);
+    } else {
+      media.setAttribute("aria-hidden", "true");
+    }
+    return media;
   }
 
   function renderRelated(root, posts, current, config) {
@@ -357,10 +278,13 @@
       var article = element("article", "blog-related-card");
       var link = element("a", "blog-related-card__link");
       link.href = window.LabBlog.buildPostUrl(post, config);
-      if (post.category) link.appendChild(element("span", "blog-related-card__category", post.category));
-      link.appendChild(element("h3", "blog-related-card__title", post.title));
-      if (post.summary) link.appendChild(element("p", "blog-related-card__summary", post.summary));
-      link.appendChild(element("span", "blog-related-card__read", readLabel));
+      link.appendChild(relatedMediaFor(post));
+      var body = element("span", "blog-related-card__body");
+      if (post.category) body.appendChild(element("span", "blog-related-card__category", post.category));
+      body.appendChild(element("h3", "blog-related-card__title", post.title));
+      if (post.summary) body.appendChild(element("p", "blog-related-card__summary", post.summary));
+      body.appendChild(element("span", "blog-related-card__read", readLabel));
+      link.appendChild(body);
       article.appendChild(link);
       grid.appendChild(article);
     });
@@ -370,7 +294,6 @@
   function init(root) {
     var documentRoot = root.querySelector("[data-blog-document]");
     try {
-      renderServerMarkdown(root);
       var initialPost = documentPost(root);
       if (initialPost) applySeo(root, initialPost);
     } catch (error) {
@@ -380,6 +303,11 @@
         documentRoot.setAttribute("data-blog-render-state", "ready");
         documentRoot.removeAttribute("aria-busy");
       }
+    }
+    try {
+      renderShare(root);
+    } catch (error) {
+      console.error(error);
     }
     if (!window.LabBlog) return;
     var config = window.LabBlog.configFrom(root);

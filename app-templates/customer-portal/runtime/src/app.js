@@ -52,7 +52,7 @@ export function BookingDrawer() {
         msg: phase === "conflict" ? "That time window just changed — pick again before confirming." : "Your booking wasn’t confirmed — nothing is scheduled yet.",
         retryAction: "booking.confirm", retryLabel: phase === "conflict" ? "Re-check & confirm" : "Try again",
       }) : null,
-      ActionButton({ variant: "btn--primary", label: spaBridge ? "Book — no charge" : "Confirm booking", action: "booking.confirm", block: true, lg: true, visualId: "confirm-booking", disabled: holdBlocked, pending: phase === "pending", pendingLabel: "Confirming…" })
+      ActionButton({ variant: "btn--primary", label: spaBridge ? "Send booking request — no charge" : "Confirm booking", action: "booking.confirm", block: true, lg: true, visualId: "confirm-booking", disabled: holdBlocked, pending: phase === "pending", pendingLabel: "Sending…" })
     ])
   ]);
 }
@@ -61,6 +61,7 @@ export function BookingDrawer() {
    Root render
    ========================================================= */
 var mount, shell, resizeObs, runtime, liveRetryPromise, careTransitionPromise;
+var drawerScroll = 0;
 
 function loadGrantedCareTransition() {
   var envelope = state.moduleData.care;
@@ -90,6 +91,10 @@ export function render() {
   root.setAttribute("data-theme", state.config.theme);
   root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
 
+  var openDrawer = mount.querySelector(".drawer");
+  var drawerWasOpen = !!openDrawer;
+  if (openDrawer) drawerScroll = openDrawer.scrollTop;
+
   clear(mount);
   if (runtime && state.config.dataMode !== "live") runtime.loadAll();
   if (runtime) runtime.syncPreflight("care");
@@ -101,7 +106,16 @@ export function render() {
   shell = AppShell(content);
   mount.appendChild(shell);
 
-  if (state.drawer === "booking") mount.appendChild(BookingDrawer());
+  if (state.drawer === "booking") {
+    mount.appendChild(BookingDrawer());
+    var drawer = mount.querySelector(".drawer");
+    if (drawerWasOpen && drawer) {
+      drawer.classList.add("drawer--open-static");
+      var scrim = mount.querySelector(".scrim");
+      if (scrim) scrim.classList.add("scrim--static");
+      drawer.scrollTop = drawerScroll;
+    } else drawerScroll = 0;
+  } else drawerScroll = 0;
   if (state.toast) mount.appendChild(h("div", { "class": "toast", "data-module": "toast", "data-visual-id": "toast" }, [h("span", { "class": "toast__dot" }), state.toast]));
 
   applyResponsive();
@@ -141,10 +155,15 @@ function applyResponsive() {
   if (resizeObs) resizeObs.disconnect();
   var target = shell;
   var apply = function (w) {
-    target.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
-    if (w <= 560) target.classList.add("vw-mobile");
-    else if (w <= 900) target.classList.add("vw-tablet");
-    if (w <= 1040) target.classList.add("vw-compact"); /* nav-links -> hamburger */
+    var nodes = [target];
+    var drawer = mount.querySelector(".drawer");
+    if (drawer) nodes.push(drawer);
+    nodes.forEach(function (node) {
+      node.classList.remove("vw-mobile", "vw-tablet", "vw-compact");
+      if (w <= 560) node.classList.add("vw-mobile");
+      else if (w <= 900) node.classList.add("vw-tablet");
+      if (w <= 1040) node.classList.add("vw-compact");
+    });
   };
   apply(shell.getBoundingClientRect().width);
   resizeObs = new ResizeObserver(function (ents) { apply(ents[0].contentRect.width); });

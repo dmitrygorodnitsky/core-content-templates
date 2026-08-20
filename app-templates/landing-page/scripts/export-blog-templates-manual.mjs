@@ -66,6 +66,37 @@ function previewArticle() {
     <p>Document the decisions that repeat every day: who is qualified, what the arrival window allows, and which work can move without breaking a promise.</p>
     <h3>Make constraints visible</h3>
     <p>A useful route is one the team can execute. Skills, equipment, job duration, and geographic boundaries all need to be explicit.</p>
+    <blockquote>Routing quality improves when operational truth is available before the schedule is published.</blockquote>
+    <h3>Route checklist</h3>
+    <ol>
+      <li>Confirm technician skills and territories</li>
+      <li>Lock arrival windows
+        <ul>
+          <li>Morning slots first</li>
+          <li>Keep one buffer stop</li>
+        </ul>
+      </li>
+      <li>Publish the schedule to the field app</li>
+    </ol>
+    <h4>Quick reference</h4>
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th><th>Alert level</th></tr></thead>
+      <tbody>
+        <tr><td>On-time arrival</td><td>≥ 92%</td><td>&lt; 85%</td></tr>
+        <tr><td>Travel share of shift</td><td>≤ 25%</td><td>&gt; 35%</td></tr>
+      </tbody>
+    </table>
+    <p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to find any job, and remember that <mark>published promises</mark> are the ones <strong>dispatch must protect</strong>.</p>
+    <figure>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360'%3E%3Crect width='800' height='360' fill='%23DCE9EE'/%3E%3Cpath d='M60 280 L260 170 L420 240 L700 90' stroke='%238FB4C4' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 300 L300 210 L470 280 L740 140' stroke='%23FFFFFF' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" alt="Planned versus actual route timeline">
+      <figcaption>Planned versus actual arrival windows across one shift.</figcaption>
+    </figure>
+    <dl>
+      <dt>Anti-icing</dt>
+      <dd>Preventive treatment applied before snowfall bonds to pavement.</dd>
+      <dt>De-icing</dt>
+      <dd>Reactive treatment that breaks an existing snow and ice bond.</dd>
+    </dl>
     <h2>Measure the route after the work is done</h2>
     <p>Compare planned and actual travel, arrival, service, and completion times.</p>
   </div>
@@ -78,11 +109,12 @@ function previewDocument(definition, template, commonCss) {
     sourceHtml = sourceHtml.replace("${POST@BLOG_POST_CONTENT_SS}", previewArticle());
   }
   let html = renderDefaults(sourceHtml, template.parameters);
-  html = html.replace('data-blog-fixture-url=""', 'data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"');
+  html = html.replace('data-blog-fixture-url="#"', 'data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"');
   if (definition.key === "post") {
     html = html.replace("data-blog-post\n", 'data-blog-post data-blog-current-permalink="field-service-routing-guide"\n');
   }
   const js = renderDefaults(template.javascript, template.parameters);
+  const head = renderDefaults(template.head, template.parameters);
   return `<!doctype html>
 <html lang="en" data-theme="light">
 <head>
@@ -90,7 +122,7 @@ function previewDocument(definition, template, commonCss) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="${definition.previewTitle}">
 <title>${definition.previewTitle}</title>
-<style>${commonCss}\n${template.css || ""}</style>
+${head}<style>${commonCss}\n${template.css || ""}</style>
 </head>
 <body>
 ${html}
@@ -150,7 +182,11 @@ Backend contract:
 - article body: \`\${POST@BLOG_POST_CONTENT_SS}\`; \`POST\` is a server-provided runtime value and is intentionally not a BlockTemplate parameter
 - every path segment after \`/post\` is the BlogPost permalink, including multi-segment values such as \`news/my-post\`
 - localized routes such as \`/fr/post/{permalink}\` are preserved when article links are built
-- until Core CMS renders Markdown semantically, a client fallback converts its \`pre > code\` wrapper into headings, paragraphs, lists, links, quotes, and code blocks
+- the article body is rendered by Core CMS and displayed exactly as served; the template only applies typography styles and never transforms the server DOM
+- the post template head declares \`META_TITLE\`, \`META_DESCRIPTION\`, and \`HERO_IMAGE_URL\` as bare uppercase STRING parameters with untyped \`\${CODE}\` placeholders, so Core CMS substitutes the matching \`BlogPost.metadata\` keys while an article renders; prefixed codes never match and must not be used for this bridge
+- the head intentionally omits \`<title>\` and \`<meta name="description">\`: the root template owns both, and duplicating them in an included child head yields two competing tags
+- client SEO only fills tags the server left empty or placeholder-valued, so a server-substituted metadata value always wins
+- card and SEO images resolve in order: metadata \`HERO_IMAGE_URL\`, the \`heroImage\` field of the list payload (entity id or URL), then the first image of the server-rendered article fetched during hydration; a hydrated content image is never duplicated as the post-page hero banner
 - missing display titles are omitted; an internal code, slug, or permalink is never shown as a title
 
 The fixture URL parameter must remain empty in CMS production. It exists only for deterministic local previews.

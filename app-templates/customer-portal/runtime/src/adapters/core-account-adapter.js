@@ -95,7 +95,7 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
     account: {
       id: Number(account.id),
       code: text(account.code),
-      displayName: localizedName(account.nls) || text(account.code),
+      displayName: localizedName(account.nls) || "Customer account",
       optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
       typeCode: accountTypeCode,
     },

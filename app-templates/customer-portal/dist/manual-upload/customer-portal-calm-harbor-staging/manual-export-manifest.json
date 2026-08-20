@@ -10,9 +10,9 @@
     "parameters": [],
     "sha256": {
       "head": "4c4081e5bbc919b52bc35e86c1b9e17ee59ce5fd127ef83e836a6ad498fe3d1a",
-      "html": "f3e3721c1786ca77eb63bdfda976e285b6b6290d7fac80821cddbea2b213b89f",
-      "css": "cc89de6ca2e887aed27e1ba3a35d1ccb3bf1910f592927cd3f21d584f3e672de",
-      "javascript": "860607d8c89c4f1eae579447e1779fe3b890cfe5e77bf25042e81fe91757928f"
+      "html": "a0f2fed64fa1d0e423bf121c1dd06163b3ed765ca37b08fa3ed94bcc18d7b912",
+      "css": "7d4c43f93e4b962fb64b73c21827f38770253f56b1f564a753d0c2888b3e4199",
+      "javascript": "a8dfe207d535b3720d1267f4b04705426d4ad75a9cd1127cf8ea647c674bec0e"
     }
   },
   "runtime": {
@@ -61,6 +61,7 @@
       "organization": "CALM_HARBOR_SPA_STAGING",
       "coreApiBase": "/core",
       "serviceApiBase": "/core-svc",
+      "resourceApiBase": "/core-rm",
       "accountApiBase": "/core-acct",
       "billApiBase": "/core-bill",
       "accountTypeCode": "SPA_CUSTOMER"

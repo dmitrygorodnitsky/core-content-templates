@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="./block.css">
 </head>
 <body>
-  <section class="blog-index" data-block="blog.index-dynamic" data-blog-index data-blog-api-base="/core-cms" data-blog-organization="SERVICEWAND" data-blog-category-id="1" data-blog-page-size="3" data-blog-max-results="1000" data-blog-base-path="/blog" data-blog-fixture-url="../_fixtures/posts.en.json" data-blog-read-label="Read article" data-blog-empty-label="No articles are available yet." data-blog-error-label="Articles could not be loaded.">
+  <section class="blog-index" data-block="blog.index-dynamic" data-blog-index data-blog-api-base="/core-cms" data-blog-organization="SERVICEWAND" data-blog-page-size="3" data-blog-max-results="1000" data-blog-base-path="/blog" data-blog-fixture-url="../_fixtures/posts.en.json" data-blog-read-label="Read article" data-blog-empty-label="No articles are available yet." data-blog-error-label="Articles could not be loaded." data-blog-filter-all-label="All topics">
     <div class="container blog-index__container">
       <header class="blog-index__hero">
         <p class="blog-index__eyebrow">ServiceWand insights</p>
@@ -20,6 +20,7 @@
         </div>
       </header>
       <div class="blog-index__status" data-blog-status role="status" aria-live="polite">Loading articles…</div>
+      <div class="blog-index__filters" data-blog-filters role="group" aria-label="Filter articles by topic" hidden></div>
       <article class="blog-index__featured" data-blog-featured hidden></article>
       <div class="blog-index__grid" data-blog-grid aria-label="Latest blog articles"></div>
       <div class="blog-index__actions"><button class="blog-index__more" type="button" data-blog-more hidden>Load more articles</button></div>

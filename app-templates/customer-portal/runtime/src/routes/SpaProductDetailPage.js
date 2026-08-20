@@ -117,7 +117,10 @@ function buyRegion(product) {
   var open = spaRetailOpen();
   var root = h("div", { "class": "pd-buy" });
   if (!open) {
-    root.appendChild(h("div", { "class": "pd-price" }, [h("b", { "data-bind": "product.displayPrice" }, product.displayPrice), h("span", { "class": "code-chip", "data-bind": "pim.products[].code" }, product.code)]));
+    root.appendChild(h("div", { "class": "pd-price" }, [
+      h("b", { "data-bind": "product.displayPrice" }, product.displayPrice),
+      product.displayTag ? h("span", { "class": "code-chip", "data-bind": "product.displayTag" }, product.displayTag) : null,
+    ]));
     root.appendChild(h("div", { "class": "pd-buy__note", "data-state": "browse-only" }, "This is a browse-only catalogue — there’s no cart or checkout here. Nothing on this page starts a purchase."));
     return root;
   }
@@ -131,7 +134,7 @@ function buyRegion(product) {
   root.appendChild(h("div", { "class": "pd-price" }, [
     h("b", { "data-bind": "retail.displayPrice" }, displayPrice),
     retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
-    h("span", { "class": "code-chip", "data-bind": "pim.products[].code" }, product.code),
+    product.displayTag ? h("span", { "class": "code-chip", "data-bind": "product.displayTag" }, product.displayTag) : null,
   ]));
   if (retail.state === "out-of-stock") root.appendChild(h("div", { "class": "shop-chip shop-chip--stock", "data-bind": "retail.state" }, "Out of stock"));
   else if (retail.state === "unavailable") root.appendChild(h("div", { "class": "shop-chip", "data-bind": "retail.state" }, retail.note || "Not sold online"));

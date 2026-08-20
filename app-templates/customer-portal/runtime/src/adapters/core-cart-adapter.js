@@ -240,7 +240,7 @@ function normalizeLine(row, cartCurrency, api, codes) {
     productTypeCode: text(catalogRow && catalogRow.productTypeCode),
     qty: finiteNumber(row && row.count, 0),
     ref: LINE_REF_PREFIX + priceId,
-    title: text(catalogRow && (catalogRow.name || catalogRow.title)) || productCode || "Item",
+    title: text(catalogRow && (catalogRow.name || catalogRow.title)) || "Item",
     unitAmount: unitAmount,
     variant: null,
   };
@@ -253,8 +253,9 @@ function normalizeLine(row, cartCurrency, api, codes) {
    other identical request with a 401 (see master.md §Backend Corrections), so
    reading the product type from it at checkout time would fail about half of
    all orders. The public catalog is stable and the portal has it already.
-   An unmatched product falls back to its code and to no type — checkout then
-   refuses the line by name rather than guessing what it is. */
+   An unmatched product keeps its code only as an internal join key and falls
+   back to a neutral customer label. Checkout still refuses a line whose type
+   cannot be proven rather than guessing what it is. */
 function catalogEntry(api, productCode, productId) {
   var items = api.catalog;
   for (var index = 0; index < items.length; index += 1) {

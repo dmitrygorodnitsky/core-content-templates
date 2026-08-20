@@ -1234,3 +1234,173 @@ image. The live page at true viewport width is authoritative.
    are unchanged by wave 19.
 6. Stylesheet hrefs are relative, as in wave 18: `core-auth` must serve the page and
    `styles/` from the same directory, or prefix each href with the deploy root.
+
+
+## Wave 20 — Calm Harbor booking options (visit mode & location, add-ons, customer note)
+
+Capability-driven extension of the ACCEPTED booking drawer (`data-visual-id="booking-drawer"` /
+`data-module="booking-flow"`) on `orders.list`, `services`, `pricing`, `appointment.detail` and
+`plan`. Drawer geometry, typography, tokens, light/dark behaviour, stable hooks and the
+close/back interaction are unchanged; every addition is a source-returned capability. Presentation
+only — no API, permission, mapping, persistence or successful save is authorized, and the runtime
+invents no choice, price, duration, address or confirmation.
+
+### 1. Capability-driven flow, and the step that may not exist
+
+`bookingOptions.capabilities` decides what exists at all:
+
+| capability | true | false |
+|---|---|---|
+| `visitMode` | 2+ modes → a choice; exactly 1 → **fixed context** ("Set by the studio"), never a question | no mode control; the review still shows the mode the source returned |
+| `location` | eligible places for the mode in play, or the group's own source state | no place control |
+| `addOns` | eligible list (required/optional marked by the source) | section absent |
+| `notes` | the optional note field on Review | field AND review marker absent (sensitive profile) |
+
+Requested order: **Service → Options → Specialist → Time → Review (+ note) → policy + confirm**.
+The rail comes from one selector (`spaFlowSteps`) so **Options and Specialist may be absent or
+present in any combination and an empty step is never rendered**: Service · Options? · Specialist? ·
+Time · Review, and for a reschedule Options? · New time · Review. `data-step-count` carries the
+rendered length; each chip carries `data-step`. At 390 a five-step rail wraps to two lines instead
+of shrinking its hit targets.
+
+The Options step exists only when a supported capability has something real to show — a choice to
+make, or a source state to resolve. One fixed studio + no add-ons therefore renders the accepted
+wave-16 three-step flow byte-for-byte in behaviour.
+
+### 2. Visit mode and location
+
+- `booking.selectVisitMode` carries an **opaque mode code** (`data-visit-mode`);
+  `booking.selectLocation` carries an **opaque location ref** (`data-location-ref`).
+- Location labels are **least data** — a server-supplied nickname or redacted summary
+  ("Home · place on file ending 04"). **No free-form address capture exists** and no address line is
+  ever rendered; the studio-side option list is equally source-returned.
+- Source states are distinct and never fall back to an empty choice:
+  `loading` (skeletons) · `error` (retry) · `empty` (nothing can be booked, honest support path,
+  **no retry** — retry cannot change it) · `unavailable` (choosing a place isn't connected; the
+  studio assigns it and the **review says so**, no retry) · `ineligible` (the previous pick was
+  cleared, retry offered) · **no place on file for at-home visits** (honest block + support path,
+  never an address form).
+- `booking.reloadLocations` is rendered **only where a retry can change the result** (error,
+  ineligible).
+- Progressive disclosure: with a real mode choice the place group appears after the mode is chosen.
+
+### 3. Add-ons
+
+- `booking.toggleAddon` carries an **opaque add-on ref** and runs as an **entity-scoped command**
+  (`booking.toggleAddon:<ref>`) — one pending add-on never freezes the others, and the group says so.
+- `required` / optional is **marked by the source**; a required add-on the source does not allow
+  toggling renders as non-interactive context ("Added by the studio"). `displayPrice` and
+  `durationNote` render **verbatim** and are simply omitted when the source supplies none — no
+  "free", no inferred duration, no tax, no inventory, no compatibility.
+- **None returned → the section and the step do not exist.** Source states: `loading`, `error`
+  (reload), `unavailable` (honest notice), `ineligible` (no longer selectable, with the server's copy).
+- **A removed or repriced add-on blocks confirmation** until an explicit reload
+  (`ui.retry booking-addons`): the review shows the server's copy, the dropped add-on never appears
+  among the review facts, and confirm stays disabled with the reason stated.
+
+### 4. Customer note
+
+- A real `<label for>` (never placeholder-only labelling), a live counter against the
+  **server-provided** maximum, `near-limit` at 30 characters out, and an over-long value blocked with
+  an accessible inline explanation (`role="alert"` + `aria-invalid` + `aria-describedby`).
+- `booking.changeNotes` is an input-event hook that does **not** re-render (focus preserved) and
+  **never discards a held slot** — only service / mode / place / add-on changes invalidate downstream.
+- The note is **transient browser state**: memory only, never localStorage, analytics, logs or a URL
+  parameter. It survives a failed or pending confirm and is released by the authoritative readback or
+  an explicit close.
+- Marked in the review as "Sent to the studio with your request". For a sensitive profile the
+  capability is off and the field is absent; no copy solicits symptoms, diagnoses, payment data or
+  access codes.
+
+### 5. Invalidation and review truth
+
+Changing service, visit mode, place or any add-on **invalidates the downstream specialist and slot
+selection**, clears the hold and the policy acknowledgement, and returns the customer to **Time** with
+an honest notice (`booking-options-changed`): "the earlier time was released … nothing is booked".
+Eligibility, specialists, times and the total are re-answered by the source.
+
+`booking-review` now shows only selected / source-returned facts:
+
+- visit mode + least-data place — **the assumed salon location is gone** (the old
+  `spaBooking.reviewLocation` composition); when the source returned neither, the row does not exist,
+  and a reschedule keeps the identified visit's own mode/place until the customer changes it;
+- `With` renders the chosen specialist, "No preference — first available" **only** when the selection
+  explicitly allows no preference, the reschedule's own specialist ("unchanged"), or nothing at all;
+- selected add-ons + their server display amounts (`booking-review-addons`);
+- the optional note, visibly marked as information sent with the request;
+- `displaySubtotal` / `displayTotal` **exactly as returned** by the quote — presentation computes no
+  amount (the demo recalculation lives in `fixtures.js` as `spaBookingQuote`, a stand-in for the real
+  quote response, exactly as `spaServerCart` stands in for the cart).
+
+Confirm still carries the opaque refs and the note value, success remains the authoritative
+Appointment readback, and the payment mode stays `SIMULATED`.
+
+### 6. Data shape (`data/fixtures.js` → `spaBookingOptions`)
+
+`capabilities`, `visitModes[{code,label,locationRequired}]`,
+`locations[{ref,label,kind,visitModeCode}]`,
+`addOns[{ref,name,description,required,selected,displayPrice,durationNote,allowedActions}]`,
+`notes{enabled,value,maxLength,helperText}`, `selectionVersion`; plus `sourceCopy` (the server's
+own copy for every source state, rendered verbatim) and four reviewable payloads:
+`fixed-studio` · `mode-choice` · `addons` · `all`. Unknown optional fields are omitted; an empty
+array means the source answered with no options; an absent source is a source STATE, never an empty
+choice. Opaque refs: `vm-*` (modes), `loc-*` (places), `add-*` (add-ons) — stable non-sequential
+handles, never raw Core ids. `demoAmounts` and `noteSamples` are demo-server / harness values and
+are never rendered as customer-facing facts.
+
+### 7. Reused / changed / new
+
+- **Reused unchanged:** the drawer shell and its close/back interaction, `bk-opt` / `bk-opts`,
+  `bk-section-label`, `bk-days` / `bk-slots`, `specialist-options`, `appt-details` review rows,
+  `policy-ack`, `action-button`, `inline-failure`, the loading-skeleton helper, the wave-13 command
+  engine, the `field` / `field-label` / `field-error` primitives and the Beauty tokens.
+- **New modules:** `visit-mode-options`, `location-options`, `addon-options`, `booking-notes`,
+  `booking-review-addons` (+ visual ids `booking-visit-mode`, `booking-locations`,
+  `booking-addons`, `booking-note`, `booking-options-changed`).
+- **New actions:** `booking.selectVisitMode`, `booking.selectLocation`, `booking.reloadLocations`,
+  `booking.toggleAddon`, `booking.changeNotes`, plus `booking.next` (step-forward, the counterpart of
+  the accepted `booking.back`); `ui.retry` gains the id `booking-addons`.
+- **Changed:** `SpaBookingFlow` (options step, rail from `spaFlowSteps`, review facts, note field),
+  `state.js` (wave-20 fields + pure selectors), `actions.js` (options engine + invalidation),
+  `app.js` dev toolbar (`opts` / `loc` / `addon` / `note` selects) and **`applyResponsive`**: the
+  drawer is viewport-fixed, so it sat OUTSIDE `.app-shell` and the container classes never reached
+  its content — the class is now mirrored onto the drawer, which also activates the accepted wave-16
+  `.vw-mobile .bk-slots` / `.bk-compare` overrides. Additive CSS only (a wave-20 block at the end of
+  `routes.css` + `responsive.css`); no accepted rule was modified.
+
+### 8. Evidence
+
+`previews/wave20/` — `{scope}-{state}-{width}-{mode}.png` at **390 / 768 / 1180 / 1440** in light and
+dark: `review-fixed-studio-{390,1440}-light` (no Options step, source-returned place),
+`options-mode-choice-{390,768}-light` + `-1440-dark` (studio/at-home + redacted places),
+`options-addons-{390,1180}-light` + `-768-dark` (long names, mixed amounts, one required),
+`options-addon-pending-390-light`, `options-addons-{loading,unavailable,ineligible}-390-light`,
+`options-addons-error-768-light`, `rail-options-specialist-390-{light,dark}` (five-step rail),
+`locations-{loading,error,empty,no-place}-390-light`, `locations-unavailable-768-light`,
+`locations-ineligible-1180-light`, `review-addon-removed-390-light`,
+`review-addon-repriced-768-light`, `review-note-{empty,near-limit,invalid,disabled}-390-light`,
+`review-all-{390,1440}-light` + `review-all-768-dark`, `review-addons-1180-light`,
+`reschedule-options-390-light`, `reschedule-time-cleared-{390,1180}-light`,
+`reschedule-review-390-light`.
+
+Capture caveats, same spirit as earlier waves: the drawer is fixed to the browser viewport, so wide
+presets show the 440 px sheet over a scaled/clipped shell (the live page at true viewport width is
+authoritative), and the review shots that reach past the fold were taken by shifting the sheet up so
+its full content is visible in one frame — the live drawer scrolls.
+
+### 9. Unresolved product assumptions (recorded, not resolved by design)
+
+1. **Which capabilities a real service returns** — visit mode, place choice, add-ons and notes are all
+   modelled as independent server capabilities; the four fixture payloads stand in for the contract.
+2. **Whether a reschedule may change add-ons** is unconfirmed, so the reschedule flow renders visit
+   mode / place only. Whether a plan-credit booking may add paid extras is equally unproven — add-ons
+   are capability-off for both entries rather than guessed.
+3. **The saved-place label policy** (nickname vs redacted summary, and who may see it) and any
+   address-write contract remain product/backend decisions; the flow displays labels only.
+4. **The add-on change vocabulary** ("removed by the studio", "the amount changed") is backend-owned
+   copy — the fixture strings stand in and are rendered verbatim.
+5. **The notes maximum, helper text and per-profile disablement** are server capabilities; 200 and the
+   fixture helper copy stand in. Whether the studio ever echoes the stored note back to the customer
+   after confirmation is out of scope here.
+6. **Duration effects** (`durationNote`) are display-only; the real availability recalculation after an
+   add-on changes duration is owned by the slot source.

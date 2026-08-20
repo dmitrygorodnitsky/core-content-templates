@@ -8,7 +8,9 @@
   data-blog-post-path="${FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING}"
   data-blog-fixture-url="${FIELD_SERVICE_BLOG_POST_BLOG_FIXTURE_URL@STRING}"
   data-blog-read-label="${FIELD_SERVICE_BLOG_POST_READ_ARTICLE_LABEL@LOCALIZED_STRING_SS}"
-  data-blog-related-limit="${FIELD_SERVICE_BLOG_POST_RELATED_LIMIT@INTEGER}">
+  data-blog-related-limit="${FIELD_SERVICE_BLOG_POST_RELATED_LIMIT@INTEGER}"
+  data-blog-copy-link-label="${FIELD_SERVICE_BLOG_POST_COPY_LINK_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-link-copied-label="${FIELD_SERVICE_BLOG_POST_LINK_COPIED_LABEL@LOCALIZED_STRING_SS}">
   <div class="container blog-post-page__container">
     <nav class="blog-post-page__breadcrumb" aria-label="${FIELD_SERVICE_BLOG_POST_BREADCRUMB_ARIA_LABEL@LOCALIZED_STRING_SS}">
       <a href="${FIELD_SERVICE_BLOG_POST_BLOG_BASE_PATH@STRING}" data-blog-index-link>${FIELD_SERVICE_BLOG_POST_BLOG_LABEL@LOCALIZED_STRING_SS}</a>
@@ -16,7 +18,10 @@
       <span data-blog-current-title>${FIELD_SERVICE_BLOG_POST_ARTICLE_LABEL@LOCALIZED_STRING_SS}</span>
     </nav>
 
-    <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+    <div class="blog-post-page__byline-row">
+      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__share" data-blog-share role="group" aria-label="${FIELD_SERVICE_BLOG_POST_SHARE_ARIA_LABEL@LOCALIZED_STRING_SS}" hidden></div>
+    </div>
     <div class="blog-post-page__hero" data-blog-current-image hidden></div>
 
     <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">

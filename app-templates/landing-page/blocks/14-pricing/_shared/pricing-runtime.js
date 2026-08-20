@@ -163,7 +163,7 @@
         "NAME",
         config.locale,
         localizedScalar(product.name, config.locale)
-      ), config),
+      ) || "Published plan", config),
       description: dynamicText(localizedField(
         product.nls,
         "DESCRIPTION",

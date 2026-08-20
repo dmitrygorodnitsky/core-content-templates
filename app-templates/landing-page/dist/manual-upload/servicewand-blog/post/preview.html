@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="ServiceWand Blog Post">
 <title>ServiceWand Blog Post</title>
+<meta property="og:type" content="article">
+<meta property="og:title" content="${META_TITLE}">
+<meta property="og:description" content="${META_DESCRIPTION}">
+<meta property="og:image" content="${HERO_IMAGE_URL}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${META_TITLE}">
+<meta name="twitter:description" content="${META_DESCRIPTION}">
+<meta name="twitter:image" content="${HERO_IMAGE_URL}">
 <style>/* ============================================================
    lab-ui · canonical tokens · light theme
    ----------------------------------------------------------------
@@ -311,67 +319,596 @@ select {
 
 /* generated child CSS: blocks/15-blog/blog.post-dynamic/block.css */
 .blog-post-page {
-  padding: clamp(6rem, 9vw, 9rem) 0 clamp(5rem, 9vw, 9rem);
-  color: var(--color-text);
-  background:
-    radial-gradient(circle at 90% 0%, rgba(107, 234, 249, 0.14), transparent 28rem),
-    var(--color-bg);
+  padding: clamp(6rem, 9vw, 8.5rem) 0 clamp(4.5rem, 8vw, 7rem);
+  color: var(--color-text, #5C6474);
+  background: var(--color-bg, #FFFFFF);
 }
 
-.blog-post-page__container { max-width: 87rem; }
-.blog-post-page__breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem; color: var(--color-gray-blue); font-size: 0.9rem; }
-.blog-post-page__breadcrumb a { color: var(--color-heading); text-decoration: none; }
-.blog-post-page__breadcrumb a:hover { color: var(--color-text-accent, #2499a8); }
-.blog-post-page__meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.7rem 1.1rem; margin: 2rem 0 0; color: var(--color-gray-blue); font-size: 0.88rem; }
-.blog-post-page__meta-item + .blog-post-page__meta-item::before { content: ""; display: inline-block; width: 0.22rem; aspect-ratio: 1; margin: 0 1.1rem 0.2rem 0; border-radius: 50%; background: currentColor; }
-.blog-post-page__hero { overflow: hidden; margin: 2.5rem 0 0; aspect-ratio: 16 / 8; border-radius: clamp(1.5rem, 3vw, 3rem); background: var(--color-gray-bg); }
-.blog-post-page__hero img { width: 100%; height: 100%; object-fit: cover; }
+.blog-post-page__breadcrumb,
+.blog-post-page__byline-row,
+.blog-post-page__document {
+  width: min(100%, 48rem);
+  margin-inline: auto;
+}
 
-.blog-post-page__document { width: min(100%, 52rem); margin: clamp(3rem, 7vw, 6.5rem) auto 0; font-size: clamp(1rem, 1.25vw, 1.18rem); line-height: 1.75; }
+.blog-post-page__byline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.blog-post-page__breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.9rem;
+}
+
+.blog-post-page__breadcrumb a {
+  color: var(--color-heading, #1B1D25);
+  text-decoration: none;
+}
+
+.blog-post-page__breadcrumb a:hover { color: var(--color-text-accent, #2499a8); }
+
+.blog-post-page__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88rem;
+}
+
+.blog-post-page__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.75rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--color-gray-bg, #F9F9F9);
+  background:
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 12%, var(--color-gray-bg, #F9F9F9)), color-mix(in srgb, var(--color-gray-blue, #97A2B8) 32%, var(--color-gray-bg, #F9F9F9)));
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__avatar-initials {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.blog-post-page__byline-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.blog-post-page__author {
+  color: var(--color-heading, #1B1D25);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.blog-post-page__share {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.blog-post-page__share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-heading, #1B1D25);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+  transition: border-color var(--transition-fast, 0.2s) ease, background-color var(--transition-fast, 0.2s) ease, color var(--transition-fast, 0.2s) ease;
+}
+
+.blog-post-page__share-button svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.blog-post-page__share-button:hover {
+  border-color: var(--color-heading, #1B1D25);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__share-button:focus-visible {
+  outline: 2px solid var(--color-heading, #1B1D25);
+  outline-offset: 2px;
+}
+
+.blog-post-page__share-button.is-copied {
+  border-color: var(--color-status-live, #16A34A);
+  color: var(--color-status-live, #16A34A);
+}
+
+.blog-post-page__share-feedback {
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.85rem;
+}
+
+.blog-post-page__meta-track {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem 0;
+  margin-left: -1.62rem;
+}
+
+.blog-post-page__meta-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.blog-post-page__meta-item::before {
+  content: "";
+  flex: none;
+  width: 0.22rem;
+  aspect-ratio: 1;
+  margin: 0 0.7rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.blog-post-page__hero {
+  overflow: hidden;
+  width: min(100%, 56rem);
+  margin: clamp(1.75rem, 3vw, 2.5rem) auto 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__document {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: 1.75;
+}
+
 .blog-post-page__document[data-blog-render-state="pending"] { visibility: hidden; }
 .blog-post-page__document[data-blog-render-state="ready"] { visibility: visible; }
-.blog-post-page__document .blog-post > .summary { margin: 0 0 2.5rem; padding: 0 0 2rem; border-bottom: 1px solid rgba(92, 100, 116, 0.2); color: var(--color-gray-blue); font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.55; }
-.blog-post-page__document h1 { margin: 0 0 2rem; color: var(--color-heading); font-size: clamp(2.8rem, 6vw, 6rem); font-weight: 600; line-height: 0.98; letter-spacing: -0.055em; }
-.blog-post-page__document h2 { margin: 4rem 0 1rem; color: var(--color-heading); font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1.06; letter-spacing: -0.04em; }
-.blog-post-page__document h3 { margin: 2.75rem 0 0.8rem; color: var(--color-heading); font-size: clamp(1.45rem, 2.6vw, 2.2rem); line-height: 1.15; letter-spacing: -0.025em; }
+
+.blog-post-page__document h1 {
+  margin: 0 0 1.5rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(2.2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.blog-post-page__document .blog-post > .summary {
+  margin: 0 0 2.25rem;
+  padding: 0 0 1.75rem;
+  border-bottom: 1px solid rgba(151, 162, 184, 0.35);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  color: var(--color-text, #5C6474);
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.6;
+}
+
+.blog-post-page__document h2 {
+  margin: 2.75rem 0 0.9rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.55rem, 2.4vw, 2.05rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+}
+
+.blog-post-page__document h3 {
+  margin: 2.25rem 0 0.7rem;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+}
+
+.blog-post-page__document h4,
+.blog-post-page__document h5,
+.blog-post-page__document h6 {
+  margin: 1.9rem 0 0.6rem;
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.blog-post-page__document h4 { font-size: 1.125rem; }
+.blog-post-page__document h5 { font-size: 1rem; }
+
+.blog-post-page__document h6 {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blog-post-page__document .blog-post > .content > :first-child { margin-top: 0; }
+
 .blog-post-page__document p,
 .blog-post-page__document ul,
 .blog-post-page__document ol,
-.blog-post-page__document blockquote { margin: 0 0 1.4rem; }
+.blog-post-page__document dl,
+.blog-post-page__document blockquote { margin: 0 0 1.3rem; }
+
 .blog-post-page__document ul,
-.blog-post-page__document ol { padding-left: 1.5rem; }
-.blog-post-page__document li + li { margin-top: 0.55rem; }
-.blog-post-page__document a { color: var(--color-text-accent, #168c9b); text-decoration-thickness: 0.08em; text-underline-offset: 0.18em; }
-.blog-post-page__document blockquote { margin-inline: -3rem; padding: 2rem 3rem; border-left: 0.25rem solid var(--color-text-accent, #2499a8); border-radius: 0 1.5rem 1.5rem 0; background: var(--color-gray-bg); color: var(--color-heading); font-size: 1.25em; line-height: 1.5; }
-.blog-post-page__document img { width: calc(100% + 12rem); max-width: none; margin: 3rem -6rem; border-radius: 2rem; }
-.blog-post-page__document hr { height: 1px; margin: 3rem 0; border: 0; background: rgba(92, 100, 116, 0.2); }
-.blog-post-page__document :not(pre) > code { padding: 0.15em 0.4em; border-radius: 0.35em; background: var(--color-gray-bg); font-family: var(--font-mono); font-size: 0.9em; }
-.blog-post-page__document pre { overflow-x: auto; margin: 2rem 0; padding: 1.4rem 1.6rem; border-radius: 1rem; background: var(--color-gray-bg); font-family: var(--font-mono); font-size: 0.9em; line-height: 1.55; white-space: pre; }
+.blog-post-page__document ol { padding-left: 1.6rem; }
+
+.blog-post-page__document ul { list-style: disc; }
+.blog-post-page__document ol { list-style: decimal; }
+.blog-post-page__document ul ul,
+.blog-post-page__document ol ul { list-style: circle; }
+
+.blog-post-page__document li::marker {
+  color: var(--color-text-accent, #2499a8);
+  font-weight: 600;
+}
+
+.blog-post-page__document li + li { margin-top: 0.5rem; }
+
+.blog-post-page__document li > ul,
+.blog-post-page__document li > ol {
+  margin: 0.5rem 0 0;
+}
+
+.blog-post-page__document li > p { margin-bottom: 0.5rem; }
+
+.blog-post-page__document dt {
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+}
+
+.blog-post-page__document dd {
+  margin: 0.25rem 0 0.9rem 1.25rem;
+}
+
+.blog-post-page__document strong { color: var(--color-heading, #1B1D25); }
+
+.blog-post-page__document mark {
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  background: rgba(151, 162, 184, 0.22);
+  background: color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent);
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__document kbd {
+  padding: 0.12em 0.45em;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-bottom-width: 2px;
+  border-radius: 0.35em;
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.85em;
+}
+
+.blog-post-page__document small { font-size: 0.85em; }
+
+.blog-post-page__document table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+.blog-post-page__document th,
+.blog-post-page__document td {
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-post-page__document th {
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-weight: 600;
+}
+
+.blog-post-page__document caption {
+  margin-bottom: 0.6rem;
+  caption-side: top;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88em;
+  text-align: left;
+}
+
+.blog-post-page__document a {
+  color: var(--color-text-accent, #168c9b);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.blog-post-page__document blockquote {
+  padding: 1.4rem 1.75rem;
+  border-left: 0.2rem solid var(--color-text-accent, #2499a8);
+  border-radius: 0 var(--radius-card-sm, 0.9375rem) var(--radius-card-sm, 0.9375rem) 0;
+  background: var(--color-gray-bg, #F9F9F9);
+  color: var(--color-heading, #1B1D25);
+  font-size: 1.1em;
+  line-height: 1.55;
+}
+
+.blog-post-page__document blockquote p { margin: 0; }
+.blog-post-page__document blockquote p + p { margin-top: 0.8rem; }
+
+.blog-post-page__document blockquote cite,
+.blog-post-page__document blockquote footer {
+  display: block;
+  margin-top: 0.8rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.85em;
+  font-style: normal;
+}
+
+.blog-post-page__document img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+}
+
+.blog-post-page__document p > img { margin: 2rem auto; }
+
+.blog-post-page__document figure {
+  margin: 2rem 0;
+}
+
+.blog-post-page__document figure img,
+.blog-post-page__document figure video,
+.blog-post-page__document figure iframe { margin: 0; }
+
+.blog-post-page__document figcaption {
+  margin-top: 0.75rem;
+  color: var(--color-gray-blue, #97A2B8);
+  font-size: 0.88em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.blog-post-page__document video {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2rem 0;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+  background: var(--color-black-bg, #17171B);
+}
+
+.blog-post-page__document iframe {
+  display: block;
+  max-width: 100%;
+  margin: 2rem auto;
+  border: 0;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+}
+
+.blog-post-page__document audio {
+  display: block;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.blog-post-page__document hr {
+  height: 1px;
+  margin: 2.75rem 0;
+  border: 0;
+  background: rgba(151, 162, 184, 0.35);
+  background: color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+}
+
+.blog-post-page__document :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  background: var(--color-gray-bg, #F9F9F9);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.9em;
+}
+
+.blog-post-page__document pre {
+  overflow-x: auto;
+  margin: 2rem 0;
+  padding: 1.4rem 1.6rem;
+  border-radius: var(--radius-card-sm, 0.9375rem);
+  background: var(--color-gray-bg, #F9F9F9);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.9em;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .blog-post-page__document:empty { display: none; }
 
-.blog-post-page__related { margin-top: clamp(5rem, 10vw, 10rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid rgba(92, 100, 116, 0.18); }
-.blog-post-page__related-head p { margin: 0; color: var(--color-text-accent, #2499a8); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
-.blog-post-page__related-head h2 { margin: 0.8rem 0 0; color: var(--color-heading); font-size: clamp(2.2rem, 4.5vw, 4.5rem); line-height: 1; letter-spacing: -0.045em; }
-.blog-post-page__related-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; margin-top: 2.5rem; }
-.blog-related-card__link { display: flex; min-height: 100%; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.4rem); border: 1px solid rgba(92, 100, 116, 0.15); border-radius: 2rem; background: var(--color-gray-bg); color: inherit; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease; }
-.blog-related-card__link:hover { transform: translateY(-0.3rem); box-shadow: 0 1.25rem 3.5rem rgba(23, 23, 27, 0.08); }
-.blog-related-card__category { color: var(--color-text-accent, #2499a8); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
-.blog-related-card__title { margin: 1rem 0 0; color: var(--color-heading); font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.12; }
-.blog-related-card__summary { margin: 1rem 0 0; line-height: 1.55; }
-.blog-related-card__read { margin-top: auto; padding-top: 2rem; color: var(--color-heading); font-weight: 650; }
-.blog-related-card__read::after { content: " →"; color: var(--color-text-accent, #2499a8); }
+.blog-post-page__related {
+  margin-top: clamp(4rem, 8vw, 6.5rem);
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  border-top: 1px solid rgba(151, 162, 184, 0.35);
+  border-top: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+}
+
+.blog-post-page__related-head p {
+  margin: 0;
+  color: var(--color-text-accent, #2499a8);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: var(--type-eyebrow-size, 0.8125rem);
+  font-weight: 700;
+  letter-spacing: var(--type-eyebrow-tracking, 0.12em);
+  text-transform: uppercase;
+}
+
+.blog-post-page__related-head h2 {
+  margin: 0.7rem 0 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.blog-post-page__related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.blog-related-card { min-width: 0; }
+
+.blog-related-card__link {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-bg, #FFFFFF);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-1, 0 6px 16px -10px rgba(0, 0, 0, 0.18));
+  transition: transform var(--transition-fast, 0.2s) ease, box-shadow var(--transition-fast, 0.2s) ease;
+}
+
+.blog-related-card__link:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: var(--shadow-3, 0 20px 48px -30px rgba(15, 17, 22, 0.28));
+}
+
+.blog-related-card__link:focus-visible {
+  outline: 2px solid var(--color-heading, #1B1D25);
+  outline-offset: 2px;
+}
+
+.blog-related-card__media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--color-gray-bg, #F9F9F9);
+  background:
+    radial-gradient(circle at 80% 16%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 58%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 10%, var(--color-gray-bg, #F9F9F9)) 12%, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 34%, var(--color-gray-bg, #F9F9F9)) 100%);
+}
+
+.blog-related-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-base, 0.4s) ease;
+}
+
+.blog-related-card__link:hover .blog-related-card__media img { transform: scale(1.03); }
+
+.blog-related-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.blog-related-card__category {
+  color: var(--color-text-accent, #2499a8);
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.blog-related-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.85rem 0 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-related-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.7rem 0 0;
+  font-size: 0.96rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.blog-related-card__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: var(--color-heading, #1B1D25);
+  font-weight: 650;
+}
+
+.blog-related-card__read::after {
+  content: "→";
+  color: var(--color-text-accent, #2499a8);
+  transition: transform var(--transition-fast, 0.2s) ease;
+}
+
+.blog-related-card__link:hover .blog-related-card__read::after { transform: translateX(0.3rem); }
 
 @media (max-width: 64rem) {
   .blog-post-page__related-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .blog-post-page__document img { width: calc(100% + 4rem); margin-inline: -2rem; }
 }
 
 @media (max-width: 48rem) {
   .blog-post-page { padding-top: 5.5rem; }
-  .blog-post-page__related-grid { grid-template-columns: 1fr; }
-  .blog-post-page__document img { width: 100%; margin: 2rem 0; border-radius: 1.3rem; }
-  .blog-post-page__document blockquote { margin-inline: 0; padding: 1.5rem; }
-  .blog-related-card__link { border-radius: 1.4rem; }
+  .blog-post-page__related-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+  .blog-post-page__document blockquote { padding: 1.2rem 1.4rem; }
 }
 </style>
 </head>
@@ -384,9 +921,11 @@ select {
   data-blog-max-results="1000"
   data-blog-base-path="/blog"
   data-blog-post-path="/post"
-  data-blog-fixture-url="#"
+  data-blog-fixture-url="../../../../blocks/15-blog/_fixtures/posts.en.json"
   data-blog-read-label="Read article"
-  data-blog-related-limit="3">
+  data-blog-related-limit="3"
+  data-blog-copy-link-label="Copy link"
+  data-blog-link-copied-label="Link copied">
   <div class="container blog-post-page__container">
     <nav class="blog-post-page__breadcrumb" aria-label="Blog breadcrumb">
       <a href="/blog" data-blog-index-link>Blog</a>
@@ -394,7 +933,10 @@ select {
       <span data-blog-current-title>Article</span>
     </nav>
 
-    <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+    <div class="blog-post-page__byline-row">
+      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__share" data-blog-share role="group" aria-label="Share this article" hidden></div>
+    </div>
     <div class="blog-post-page__hero" data-blog-current-image hidden></div>
 
     <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">
@@ -407,6 +949,37 @@ select {
     <p>Document the decisions that repeat every day: who is qualified, what the arrival window allows, and which work can move without breaking a promise.</p>
     <h3>Make constraints visible</h3>
     <p>A useful route is one the team can execute. Skills, equipment, job duration, and geographic boundaries all need to be explicit.</p>
+    <blockquote>Routing quality improves when operational truth is available before the schedule is published.</blockquote>
+    <h3>Route checklist</h3>
+    <ol>
+      <li>Confirm technician skills and territories</li>
+      <li>Lock arrival windows
+        <ul>
+          <li>Morning slots first</li>
+          <li>Keep one buffer stop</li>
+        </ul>
+      </li>
+      <li>Publish the schedule to the field app</li>
+    </ol>
+    <h4>Quick reference</h4>
+    <table>
+      <thead><tr><th>Metric</th><th>Target</th><th>Alert level</th></tr></thead>
+      <tbody>
+        <tr><td>On-time arrival</td><td>≥ 92%</td><td>&lt; 85%</td></tr>
+        <tr><td>Travel share of shift</td><td>≤ 25%</td><td>&gt; 35%</td></tr>
+      </tbody>
+    </table>
+    <p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to find any job, and remember that <mark>published promises</mark> are the ones <strong>dispatch must protect</strong>.</p>
+    <figure>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360'%3E%3Crect width='800' height='360' fill='%23DCE9EE'/%3E%3Cpath d='M60 280 L260 170 L420 240 L700 90' stroke='%238FB4C4' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 300 L300 210 L470 280 L740 140' stroke='%23FFFFFF' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" alt="Planned versus actual route timeline">
+      <figcaption>Planned versus actual arrival windows across one shift.</figcaption>
+    </figure>
+    <dl>
+      <dt>Anti-icing</dt>
+      <dd>Preventive treatment applied before snowfall bonds to pavement.</dd>
+      <dt>De-icing</dt>
+      <dd>Reactive treatment that breaks an existing snow and ice bond.</dd>
+    </dl>
     <h2>Measure the route after the work is done</h2>
     <p>Compare planned and actual travel, arrival, service, and completion times.</p>
   </div>
@@ -490,6 +1063,16 @@ select {
     return path && !path.includes(":") && !path.includes("..") ? path : "";
   }
 
+  function heroImageUrlOf(post) {
+    var hero = post.heroImage;
+    if (!hero) return "";
+    if (typeof hero === "string") return hero.trim();
+    if (typeof hero === "object" && hero.id) {
+      return "/core/image/" + encodeURIComponent(String(hero.id)) + "/get";
+    }
+    return "";
+  }
+
   function normalizePost(post, locale) {
     post = post && typeof post === "object" ? post : {};
     var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
@@ -503,6 +1086,7 @@ select {
     var publishedAt = firstText(metadata, ["PUBLISHED_AT", "publishedAt", "PUBLISH_DATE", "publishDate", "DATE"], locale) ||
       String(post.publishedAt || post.publishDate || post.created || "");
     var imageUrl = firstText(metadata, ["HERO_IMAGE_URL", "heroImageUrl", "IMAGE_URL", "imageUrl", "COVER_URL", "coverUrl"], locale) ||
+      heroImageUrlOf(post) ||
       firstText(post, ["imageUrl", "coverUrl"], locale);
     var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
     var category = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
@@ -520,6 +1104,7 @@ select {
       summary: summary,
       category: category,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
+      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl", "AUTHOR_PHOTO_URL"], locale),
       publishedAt: publishedAt,
       readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
       imageUrl: imageUrl,
@@ -622,7 +1207,7 @@ select {
   function detailsFromPostHtml(html) {
     var parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
     var documentRoot = parsed.querySelector("[data-blog-document]") || parsed.querySelector(".blog-post");
-    if (!documentRoot) return { title: "", summary: "" };
+    if (!documentRoot) return { title: "", summary: "", imageUrl: "", imageAlt: "" };
     var titleNode = documentRoot.querySelector("h1");
     var summaryNode = documentRoot.querySelector("h1 ~ p") || documentRoot.querySelector("p");
     var details = {
@@ -633,11 +1218,14 @@ select {
       var markdownNode = documentRoot.querySelector("pre code");
       if (markdownNode) details = detailsFromMarkdown(markdownNode.textContent);
     }
+    var imageNode = documentRoot.querySelector("img");
+    details.imageUrl = imageNode ? String(imageNode.getAttribute("src") || "").trim() : "";
+    details.imageAlt = imageNode ? String(imageNode.getAttribute("alt") || "").trim() : "";
     return details;
   }
 
   function hydratePost(post, config) {
-    if (post.title && post.summary) return Promise.resolve(post);
+    if (post.title && post.summary && post.imageUrl) return Promise.resolve(post);
     return fetch(buildPostUrl(post, config), {
       credentials: "omit",
       headers: { Accept: "text/html" }
@@ -648,6 +1236,11 @@ select {
       var details = detailsFromPostHtml(html);
       post.title = post.title || details.title;
       post.summary = post.summary || details.summary;
+      if (!post.imageUrl && details.imageUrl) {
+        post.imageUrl = details.imageUrl;
+        post.imageAlt = post.imageAlt || details.imageAlt || post.title;
+        post.imageFromContent = true;
+      }
       return post;
     }).catch(function () {
       return post;
@@ -744,238 +1337,6 @@ select {
     return node;
   }
 
-  function safeUrl(value, image) {
-    var source = String(value || "").trim();
-    if (!source || /^javascript:/i.test(source) || /^data:/i.test(source)) return "";
-    try {
-      var url = new URL(source, window.location.href);
-      if (["http:", "https:"].indexOf(url.protocol) >= 0) return source;
-      if (!image && ["mailto:", "tel:"].indexOf(url.protocol) >= 0) return source;
-    } catch (error) {
-      return "";
-    }
-    return "";
-  }
-
-  function appendInlineMarkdown(target, source) {
-    var remaining = String(source || "");
-    var match;
-    while (remaining) {
-      match = remaining.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
-      if (match) {
-        var imageUrl = safeUrl(match[2], true);
-        if (imageUrl) {
-          var image = document.createElement("img");
-          image.src = imageUrl;
-          image.alt = match[1];
-          image.loading = "lazy";
-          image.decoding = "async";
-          if (match[3]) image.title = match[3];
-          target.appendChild(image);
-        } else {
-          target.appendChild(document.createTextNode(match[1]));
-        }
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^\[([^\]]+)\]\(([^)\s]+)(?:\s+["']([^"']*)["'])?\)/);
-      if (match) {
-        var linkUrl = safeUrl(match[2], false);
-        if (linkUrl) {
-          var link = document.createElement("a");
-          link.href = linkUrl;
-          if (match[3]) link.title = match[3];
-          appendInlineMarkdown(link, match[1]);
-          target.appendChild(link);
-        } else {
-          target.appendChild(document.createTextNode(match[1]));
-        }
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^`([^`]+)`/);
-      if (match) {
-        target.appendChild(element("code", "", match[1]));
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^(?:\*\*|__)(.+?)(?:\*\*|__)/);
-      if (match) {
-        var strong = document.createElement("strong");
-        appendInlineMarkdown(strong, match[1]);
-        target.appendChild(strong);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^(?:\*|_)([^*_]+?)(?:\*|_)/);
-      if (match) {
-        var emphasis = document.createElement("em");
-        appendInlineMarkdown(emphasis, match[1]);
-        target.appendChild(emphasis);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^<((?:https?:\/\/|mailto:)[^>]+)>/i);
-      if (match) {
-        var autoUrl = safeUrl(match[1], false);
-        var autoLink = document.createElement("a");
-        autoLink.href = autoUrl;
-        autoLink.textContent = match[1];
-        target.appendChild(autoLink);
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      match = remaining.match(/^\\([\\`*_[\]{}()#+\-.!>])/);
-      if (match) {
-        target.appendChild(document.createTextNode(match[1]));
-        remaining = remaining.slice(match[0].length);
-        continue;
-      }
-      target.appendChild(document.createTextNode(remaining.charAt(0)));
-      remaining = remaining.slice(1);
-    }
-  }
-
-  function markdownFragment(source) {
-    var fragment = document.createDocumentFragment();
-    var lines = String(source || "").replace(/\r\n?/g, "\n").split("\n");
-    var paragraph = [];
-    var list = null;
-    var quote = [];
-    var code = null;
-    var codeLanguage = "";
-
-    function appendTextBlock(tag, values) {
-      if (!values.length) return;
-      var node = document.createElement(tag);
-      appendInlineMarkdown(node, values.join(" ").trim());
-      fragment.appendChild(node);
-      values.length = 0;
-    }
-
-    function flushParagraph() {
-      appendTextBlock("p", paragraph);
-    }
-
-    function flushQuote() {
-      appendTextBlock("blockquote", quote);
-    }
-
-    function closeList() {
-      list = null;
-    }
-
-    lines.forEach(function (line) {
-      var match;
-      if (code) {
-        if (/^\s*```\s*$/.test(line)) {
-          var pre = document.createElement("pre");
-          var codeNode = document.createElement("code");
-          codeNode.textContent = code.join("\n");
-          if (codeLanguage) codeNode.className = "language-" + codeLanguage;
-          pre.appendChild(codeNode);
-          fragment.appendChild(pre);
-          code = null;
-          codeLanguage = "";
-        } else {
-          code.push(line);
-        }
-        return;
-      }
-
-      match = line.match(/^\s*```([A-Za-z0-9_-]*)\s*$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        code = [];
-        codeLanguage = match[1];
-        return;
-      }
-      if (!line.trim()) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        return;
-      }
-      match = line.match(/^\s{0,3}(#{1,6})\s+(.+?)\s*#*\s*$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        var heading = document.createElement("h" + match[1].length);
-        appendInlineMarkdown(heading, match[2]);
-        fragment.appendChild(heading);
-        return;
-      }
-      if (/^\s{0,3}(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
-        flushParagraph();
-        flushQuote();
-        closeList();
-        fragment.appendChild(document.createElement("hr"));
-        return;
-      }
-      match = line.match(/^\s*>\s?(.*)$/);
-      if (match) {
-        flushParagraph();
-        closeList();
-        quote.push(match[1]);
-        return;
-      }
-      match = line.match(/^\s*[-+*]\s+(.+)$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        if (!list || list.tagName !== "UL") {
-          list = document.createElement("ul");
-          fragment.appendChild(list);
-        }
-        var unorderedItem = document.createElement("li");
-        appendInlineMarkdown(unorderedItem, match[1]);
-        list.appendChild(unorderedItem);
-        return;
-      }
-      match = line.match(/^\s*\d+[.)]\s+(.+)$/);
-      if (match) {
-        flushParagraph();
-        flushQuote();
-        if (!list || list.tagName !== "OL") {
-          list = document.createElement("ol");
-          fragment.appendChild(list);
-        }
-        var orderedItem = document.createElement("li");
-        appendInlineMarkdown(orderedItem, match[1]);
-        list.appendChild(orderedItem);
-        return;
-      }
-      flushQuote();
-      closeList();
-      paragraph.push(line.trim());
-    });
-
-    if (code) paragraph.push("```" + codeLanguage, code.join("\n"));
-    flushParagraph();
-    flushQuote();
-    return fragment;
-  }
-
-  function renderServerMarkdown(root) {
-    var documentRoot = root.querySelector("[data-blog-document]");
-    if (!documentRoot) return;
-    documentRoot.querySelectorAll(".blog-post > .content").forEach(function (content) {
-      var pre = content.querySelector(":scope > pre");
-      if (!pre) return;
-      var meaningfulSiblings = Array.from(content.children).filter(function (child) {
-        return child !== pre && String(child.textContent || "").trim();
-      });
-      if (meaningfulSiblings.length) return;
-      var source = String((pre.querySelector("code") || pre).textContent || "").trim();
-      if (!source) return;
-      content.replaceChildren(markdownFragment(source));
-      content.setAttribute("data-blog-markdown-rendered", "true");
-    });
-  }
-
   function serverRenderedTitle(root) {
     var heading = root.querySelector("[data-blog-document] h1");
     return heading ? String(heading.textContent || "").trim() : "";
@@ -999,26 +1360,29 @@ select {
     };
   }
 
-  function setNamedMeta(name, value) {
+  function isPlaceholderValue(value) {
+    var text = String(value || "").trim();
+    return !text || text === "#" || /^\$\{[A-Z0-9_]+\}$/.test(text);
+  }
+
+  function setMeta(selector, attribute, key, value) {
     if (!value) return;
-    var node = document.head.querySelector('meta[name="' + name + '"]');
+    var node = document.head.querySelector(selector);
+    if (node && !isPlaceholderValue(node.getAttribute("content"))) return;
     if (!node) {
       node = document.createElement("meta");
-      node.name = name;
+      node.setAttribute(attribute, key);
       document.head.appendChild(node);
     }
-    node.content = value;
+    node.setAttribute("content", value);
+  }
+
+  function setNamedMeta(name, value) {
+    setMeta('meta[name="' + name + '"]', "name", name, value);
   }
 
   function setPropertyMeta(property, value) {
-    if (!value) return;
-    var node = document.head.querySelector('meta[property="' + property + '"]');
-    if (!node) {
-      node = document.createElement("meta");
-      node.setAttribute("property", property);
-      document.head.appendChild(node);
-    }
-    node.content = value;
+    setMeta('meta[property="' + property + '"]', "property", property, value);
   }
 
   function setCanonical(url) {
@@ -1034,7 +1398,7 @@ select {
   function applySeo(root, post) {
     if (!post || !post.title) return;
     var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
-    document.title = post.title;
+    if (isPlaceholderValue(document.title)) document.title = post.title;
     setNamedMeta("description", post.summary);
     setPropertyMeta("og:type", "article");
     setPropertyMeta("og:title", post.title);
@@ -1062,17 +1426,54 @@ select {
     if (node) node.textContent = JSON.stringify(schema);
   }
 
+  function initialsOf(name) {
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "";
+    var first = parts[0].charAt(0);
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (first + last).toUpperCase();
+  }
+
+  function avatarFor(post) {
+    var avatar = element("span", "blog-post-page__avatar");
+    avatar.setAttribute("aria-hidden", "true");
+    if (post.authorAvatarUrl) {
+      var image = document.createElement("img");
+      image.src = post.authorAvatarUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      avatar.appendChild(image);
+      return avatar;
+    }
+    var initials = initialsOf(post.author);
+    if (!initials) return null;
+    avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+    return avatar;
+  }
+
   function renderCurrent(root, post, config) {
     var title = root.querySelector("[data-blog-current-title]");
     if (title) title.textContent = post.title;
     var meta = root.querySelector("[data-blog-current-meta]");
+    var track = element("span", "blog-post-page__meta-track");
     var date = window.LabBlog.formatDate(post.publishedAt, config.locale);
-    [post.category, date, post.readTime, post.author].filter(Boolean).forEach(function (value) {
-      meta.appendChild(element("span", "blog-post-page__meta-item", value));
+    [post.category, date, post.readTime].filter(Boolean).forEach(function (value) {
+      track.appendChild(element("span", "blog-post-page__meta-item", value));
     });
+    if (post.author) {
+      var avatar = avatarFor(post);
+      if (avatar) meta.appendChild(avatar);
+      var text = element("span", "blog-post-page__byline-text");
+      text.appendChild(element("span", "blog-post-page__author", post.author));
+      if (track.children.length) text.appendChild(track);
+      meta.appendChild(text);
+    } else if (track.children.length) {
+      meta.appendChild(track);
+    }
     meta.hidden = meta.children.length === 0;
     var hero = root.querySelector("[data-blog-current-image]");
-    if (post.imageUrl) {
+    if (post.imageUrl && !post.imageFromContent) {
       var image = document.createElement("img");
       image.src = post.imageUrl;
       image.alt = post.imageAlt || post.title;
@@ -1081,6 +1482,119 @@ select {
       hero.hidden = false;
     }
     applySeo(root, post);
+  }
+
+  var SHARE_ICONS = {
+    x: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117Z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.78-3.91 1.09 0 2.24.2 2.24.2v2.47h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94Z"/></svg>',
+    linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.11 20.45H3.56V9h3.55ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/></svg>',
+    link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>'
+  };
+
+  function canonicalUrl() {
+    return window.location.href.split("?")[0].split("#")[0];
+  }
+
+  function copyTextFallback(value) {
+    return new Promise(function (resolve, reject) {
+      var area = document.createElement("textarea");
+      area.value = value;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        if (document.execCommand("copy")) resolve();
+        else reject(new Error("Copy command was rejected"));
+      } catch (error) {
+        reject(error);
+      } finally {
+        area.remove();
+      }
+    });
+  }
+
+  function copyText(value) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(value).catch(function () {
+        return copyTextFallback(value);
+      });
+    }
+    return copyTextFallback(value);
+  }
+
+  function shareLink(network, icon, href) {
+    var link = document.createElement("a");
+    link.className = "blog-post-page__share-button";
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("aria-label", network);
+    link.title = network;
+    link.innerHTML = icon;
+    return link;
+  }
+
+  function renderShare(root) {
+    var host = root.querySelector("[data-blog-share]");
+    if (!host) return;
+    var url = canonicalUrl();
+    var title = serverRenderedTitle(root) || document.title;
+    var encodedUrl = encodeURIComponent(url);
+    host.appendChild(shareLink("X", SHARE_ICONS.x,
+      "https://x.com/intent/post?url=" + encodedUrl + (title ? "&text=" + encodeURIComponent(title) : "")));
+    host.appendChild(shareLink("Facebook", SHARE_ICONS.facebook,
+      "https://www.facebook.com/sharer/sharer.php?u=" + encodedUrl));
+    host.appendChild(shareLink("LinkedIn", SHARE_ICONS.linkedin,
+      "https://www.linkedin.com/sharing/share-offsite/?url=" + encodedUrl));
+    var copyLabel = root.getAttribute("data-blog-copy-link-label") || "Copy link";
+    var copiedLabel = root.getAttribute("data-blog-link-copied-label") || "Link copied";
+    var copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "blog-post-page__share-button";
+    copy.setAttribute("aria-label", copyLabel);
+    copy.title = copyLabel;
+    copy.innerHTML = SHARE_ICONS.link;
+    var feedback = element("span", "blog-post-page__share-feedback", copiedLabel);
+    feedback.setAttribute("role", "status");
+    feedback.hidden = true;
+    var timer = null;
+    copy.addEventListener("click", function () {
+      copyText(canonicalUrl()).then(function () {
+        copy.innerHTML = SHARE_ICONS.check;
+        copy.classList.add("is-copied");
+        feedback.hidden = false;
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(function () {
+          copy.innerHTML = SHARE_ICONS.link;
+          copy.classList.remove("is-copied");
+          feedback.hidden = true;
+          timer = null;
+        }, 2000);
+      }).catch(function (error) {
+        console.error(error);
+      });
+    });
+    host.appendChild(copy);
+    host.appendChild(feedback);
+    host.hidden = false;
+  }
+
+  function relatedMediaFor(post) {
+    var media = element("span", "blog-related-card__media");
+    if (post.imageUrl) {
+      var image = document.createElement("img");
+      image.src = post.imageUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      media.appendChild(image);
+    } else {
+      media.setAttribute("aria-hidden", "true");
+    }
+    return media;
   }
 
   function renderRelated(root, posts, current, config) {
@@ -1093,10 +1607,13 @@ select {
       var article = element("article", "blog-related-card");
       var link = element("a", "blog-related-card__link");
       link.href = window.LabBlog.buildPostUrl(post, config);
-      if (post.category) link.appendChild(element("span", "blog-related-card__category", post.category));
-      link.appendChild(element("h3", "blog-related-card__title", post.title));
-      if (post.summary) link.appendChild(element("p", "blog-related-card__summary", post.summary));
-      link.appendChild(element("span", "blog-related-card__read", readLabel));
+      link.appendChild(relatedMediaFor(post));
+      var body = element("span", "blog-related-card__body");
+      if (post.category) body.appendChild(element("span", "blog-related-card__category", post.category));
+      body.appendChild(element("h3", "blog-related-card__title", post.title));
+      if (post.summary) body.appendChild(element("p", "blog-related-card__summary", post.summary));
+      body.appendChild(element("span", "blog-related-card__read", readLabel));
+      link.appendChild(body);
       article.appendChild(link);
       grid.appendChild(article);
     });
@@ -1106,7 +1623,6 @@ select {
   function init(root) {
     var documentRoot = root.querySelector("[data-blog-document]");
     try {
-      renderServerMarkdown(root);
       var initialPost = documentPost(root);
       if (initialPost) applySeo(root, initialPost);
     } catch (error) {
@@ -1116,6 +1632,11 @@ select {
         documentRoot.setAttribute("data-blog-render-state", "ready");
         documentRoot.removeAttribute("aria-busy");
       }
+    }
+    try {
+      renderShare(root);
+    } catch (error) {
+      console.error(error);
     }
     if (!window.LabBlog) return;
     var config = window.LabBlog.configFrom(root);

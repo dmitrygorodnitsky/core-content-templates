@@ -1,5 +1,38 @@
 [
   {
+    "code": "META_TITLE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Title",
+        "DESCRIPTION": "Server-rendered social title. Core CMS replaces it with the BlogPost metadata key META_TITLE while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "META_DESCRIPTION",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Meta Description",
+        "DESCRIPTION": "Server-rendered social description. Core CMS replaces it with the BlogPost metadata key META_DESCRIPTION while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "HERO_IMAGE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Hero Image URL",
+        "DESCRIPTION": "Server-rendered social image. Core CMS replaces it with the BlogPost metadata key HERO_IMAGE_URL while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "FIELD_SERVICE_BLOG_POST_BLOG_API_BASE",
     "type": "STRING",
     "nls": {
@@ -112,6 +145,32 @@
     "value": "3"
   },
   {
+    "code": "FIELD_SERVICE_BLOG_POST_COPY_LINK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Copy Link Label",
+        "DESCRIPTION": "Accessible label of the copy-link share button."
+      }
+    },
+    "value": {
+      "en": "Copy link"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_LINK_COPIED_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Link Copied Label",
+        "DESCRIPTION": "Confirmation announced after the article link is copied."
+      }
+    },
+    "value": {
+      "en": "Link copied"
+    }
+  },
+  {
     "code": "FIELD_SERVICE_BLOG_POST_BREADCRUMB_ARIA_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -148,6 +207,19 @@
     },
     "value": {
       "en": "Article"
+    }
+  },
+  {
+    "code": "FIELD_SERVICE_BLOG_POST_SHARE_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Share Aria Label",
+        "DESCRIPTION": "Accessible label for the share button group."
+      }
+    },
+    "value": {
+      "en": "Share this article"
     }
   },
   {

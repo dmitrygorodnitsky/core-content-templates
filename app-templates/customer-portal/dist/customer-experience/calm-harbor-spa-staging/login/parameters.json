@@ -90,6 +90,17 @@
     }
   },
   {
+    "code": "CX_PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Cx portal url",
+        "DESCRIPTION": "Customer experience descriptor value: resolved.portalUrl."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "LOGIN_DOCUMENT_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

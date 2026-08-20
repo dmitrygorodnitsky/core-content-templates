@@ -782,6 +782,114 @@
     }
   };
 
+  /* Wave 20 — fixture-only stand-in for the server booking-options payload.
+     Production live mode never reads this object; unsupported capabilities
+     stay absent until Core exposes them. */
+  var spaBookingOptions = {
+    demoAmounts: {
+      services: { "svc-spa-01": 4500, "svc-spa-02": 6500, "svc-spa-03": 8500 },
+      addOns: { "add-2f9c": 1800, "add-77b1": 1200, "add-51de": 0, "add-0c34": 0, "add-6ba8": 2400 }
+    },
+    sourceCopy: {
+      locationsError: "Places didn’t load — nothing is shown so nothing is guessed. Try again.",
+      locationsEmpty: "No place is open for this visit right now. Nothing was reserved — our team can find one for you.",
+      locationsUnavailable: "Choosing a place isn’t connected yet. Your visit will be confirmed with the place the studio assigns — you’ll see it before you confirm.",
+      locationIneligible: "The place you picked isn’t available with your current choices — it was cleared. Pick one of the places below.",
+      noSavedPlace: "We don’t have a place on file for at-home visits, so this option can’t be completed here. The studio can add one with you — nothing was saved or sent.",
+      addOnsError: "Extras didn’t load — nothing is shown so nothing is guessed. Try again.",
+      addOnsUnavailable: "Extras aren’t connected yet for this treatment. Nothing is added — you can ask at the studio.",
+      addOnsIneligible: "These extras aren’t eligible for the treatment and time you picked, so they can’t be selected.",
+      addOnRemoved: "The studio removed an extra that is no longer available for this visit. Review the visit below before you confirm.",
+      addOnRepriced: "The amount for one of your extras changed. Review the visit below before you confirm.",
+      addOnPendingNote: "Extras are checked with the studio one at a time — the rest stay available while one is checked.",
+      optionsChangedSlot: "Your choices changed, so the earlier time was released and new times were loaded. Nothing is booked.",
+      noteTooLong: "Your note is longer than the studio can accept. Please shorten it to {max} characters or fewer.",
+      noteSentWith: "Sent to the studio with your request"
+    },
+    noteSamples: {
+      "near-limit": "I’d like a quiet, slow-paced session if that’s possible. I’ll arrive about ten minutes early and I’m bringing my sister, who will wait in the lounge while I’m in. Thank you so much.",
+      invalid: "I’d like a quiet, slow-paced session if that’s possible. I’ll arrive about ten minutes early and I’m bringing my sister, who will wait in the lounge while I’m in. Last time the room felt a little cool, so an extra blanket would be lovely."
+    },
+    scenarios: {
+      "fixed-studio": {
+        selectionVersion: "o-4b18",
+        capabilities: { visitMode: false, location: false, addOns: false, notes: true },
+        visitModes: [{ code: "vm-studio", label: "At Calm Harbor", locationRequired: false }],
+        locations: [{ ref: "loc-9f21", label: "Harbor Front studio", kind: "STUDIO", visitModeCode: "vm-studio" }],
+        addOns: [],
+        notes: { enabled: true, value: "", maxLength: 200, helperText: "Optional — anything that helps the studio prepare your visit. Please don’t include payment details or access codes." }
+      },
+      "mode-choice": {
+        selectionVersion: "o-77e2",
+        capabilities: { visitMode: true, location: true, addOns: false, notes: true },
+        visitModes: [
+          { code: "vm-studio", label: "At Calm Harbor", locationRequired: true },
+          { code: "vm-home", label: "At your place", locationRequired: true }
+        ],
+        locations: [
+          { ref: "loc-9f21", label: "Harbor Front studio", kind: "STUDIO", visitModeCode: "vm-studio" },
+          { ref: "loc-4c07", label: "Mill Quarter studio", kind: "STUDIO", visitModeCode: "vm-studio" },
+          { ref: "loc-a83d", label: "Home · place on file ending 04", kind: "SAVED_PLACE", visitModeCode: "vm-home" },
+          { ref: "loc-b17e", label: "Work · place on file ending 18", kind: "SAVED_PLACE", visitModeCode: "vm-home" }
+        ],
+        addOns: [],
+        notes: { enabled: true, value: "", maxLength: 200, helperText: "Optional — anything that helps the studio prepare your visit. Please don’t include payment details or access codes." }
+      },
+      addons: {
+        selectionVersion: "o-91ca",
+        capabilities: { visitMode: false, location: false, addOns: true, notes: true },
+        visitModes: [{ code: "vm-studio", label: "At Calm Harbor", locationRequired: false }],
+        locations: [{ ref: "loc-9f21", label: "Harbor Front studio", kind: "STUDIO", visitModeCode: "vm-studio" }],
+        addOns: [
+          { ref: "add-0c34", name: "Studio hygiene & fresh-linen preparation", description: "Part of every visit at Calm Harbor", required: true, selected: true, displayPrice: "Included", durationNote: null, allowedActions: [] },
+          { ref: "add-2f9c", name: "Warm basalt stone shoulder, neck and scalp finishing ritual", description: "Added to the end of your treatment", required: false, selected: false, displayPrice: "$18.00", durationNote: "+15 min", allowedActions: ["toggle"] },
+          { ref: "add-77b1", name: "Hydrating collagen eye mask", description: null, required: false, selected: false, displayPrice: "$12.00", durationNote: null, allowedActions: ["toggle"] },
+          { ref: "add-51de", name: "Aromatherapy oil chosen with your specialist", description: "Chosen together at the start of the visit", required: false, selected: false, displayPrice: null, durationNote: "+5 min", allowedActions: ["toggle"] }
+        ],
+        notes: { enabled: true, value: "", maxLength: 200, helperText: "Optional — anything that helps the studio prepare your visit. Please don’t include payment details or access codes." }
+      },
+      all: {
+        selectionVersion: "o-2d55",
+        capabilities: { visitMode: true, location: true, addOns: true, notes: true },
+        visitModes: [
+          { code: "vm-studio", label: "At Calm Harbor", locationRequired: true },
+          { code: "vm-home", label: "At your place", locationRequired: true }
+        ],
+        locations: [
+          { ref: "loc-9f21", label: "Harbor Front studio", kind: "STUDIO", visitModeCode: "vm-studio" },
+          { ref: "loc-4c07", label: "Mill Quarter studio", kind: "STUDIO", visitModeCode: "vm-studio" },
+          { ref: "loc-a83d", label: "Home · place on file ending 04", kind: "SAVED_PLACE", visitModeCode: "vm-home" }
+        ],
+        addOns: [
+          { ref: "add-2f9c", name: "Warm basalt stone shoulder, neck and scalp finishing ritual", description: "Added to the end of your treatment", required: false, selected: false, displayPrice: "$18.00", durationNote: "+15 min", allowedActions: ["toggle"] },
+          { ref: "add-6ba8", name: "Extended 90-minute session", description: "More time with your specialist", required: false, selected: false, displayPrice: "$24.00", durationNote: "+30 min", allowedActions: ["toggle"] },
+          { ref: "add-77b1", name: "Hydrating collagen eye mask", description: null, required: false, selected: false, displayPrice: "$12.00", durationNote: null, allowedActions: ["toggle"] }
+        ],
+        notes: { enabled: true, value: "", maxLength: 200, helperText: "Optional — anything that helps the studio prepare your visit. Please don’t include payment details or access codes." }
+      }
+    }
+  };
+
+  function spaBookingQuote(serviceCode, addonRefs, scenarioKey, priceOverrides) {
+    var sc = spaBookingOptions.scenarios[scenarioKey] || spaBookingOptions.scenarios["fixed-studio"];
+    var amt = spaBookingOptions.demoAmounts;
+    var fmt = function (c) { return "$" + (c / 100).toFixed(2); };
+    var sum = amt.services[serviceCode] || 0;
+    var lines = [];
+    (sc.addOns || []).forEach(function (addon) {
+      if ((addonRefs || []).indexOf(addon.ref) === -1) return;
+      var override = priceOverrides && priceOverrides[addon.ref];
+      sum += override ? override.cents : (amt.addOns[addon.ref] || 0);
+      lines.push({ ref: addon.ref, name: addon.name, displayAmount: override ? override.displayPrice : addon.displayPrice });
+    });
+    return {
+      version: sc.selectionVersion,
+      addOns: lines,
+      displaySubtotal: lines.length && sum !== (amt.services[serviceCode] || 0) ? fmt(amt.services[serviceCode] || 0) : null,
+      displayTotal: fmt(sum)
+    };
+  }
+
   /* ============================================================
      WAVE 16 — Calm Harbor Profile read model (scoped API).
      LEAST DATA by design: phone, email and the explicitly approved
@@ -840,6 +948,8 @@
     spaCommerce: spaCommerce,
     spaServerCart: spaServerCart,
     spaBooking: spaBooking,
+    spaBookingOptions: spaBookingOptions,
+    spaBookingQuote: spaBookingQuote,
     spaProfileSrv: spaProfileSrv,
     addresses: addresses,
     cards: cards,

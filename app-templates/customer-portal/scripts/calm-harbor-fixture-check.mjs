@@ -8,7 +8,7 @@ const { readPortalConfig } = await import(new URL("src/config.js", runtimeRoot))
 const { fixtureAdapter } = await import(new URL("src/adapters/fixture-adapter.js", runtimeRoot));
 const { createCareFixtureAdapter } = await import(new URL("src/adapters/care-fixture-adapter.js", runtimeRoot));
 const { normalizeCare } = await import(new URL("src/normalizers/care.js", runtimeRoot));
-const { applyPortalConfig, currentFixture, currentTheme, findProduct, state } = await import(new URL("src/state.js", runtimeRoot));
+const { applyPortalConfig, currentFixture, currentTheme, findProduct, spaBookingOpts, spaFlowSteps, spaOptionsStepOn, state } = await import(new URL("src/state.js", runtimeRoot));
 
 function root(dataset) { return { dataset }; }
 
@@ -59,8 +59,19 @@ assert.equal(care.content.tasks.length, 3);
 assert.deepEqual(care.allowedActions, ["care.selectSpecialist", "care.completeTask"]);
 assert.deepEqual(care.content.productRecs.items.map((product) => product.sku), ["CHS-BODY-001", "CHS-SKIN-001", "CHS-SKIN-002"]);
 
+state.spaFlow = { entry: "service", step: "context", serviceCode: "svc-spa-02", specialistRef: null, visitMode: null, locationRef: null, addOns: [] };
+state.spaOptScenario = "fixed-studio";
+assert.equal(spaOptionsStepOn(), false, "fixed source context must not create an empty Options step");
+state.spaOptScenario = "all";
+assert.equal(spaOptionsStepOn(), true);
+assert.deepEqual(spaFlowSteps().map((step) => step.k), ["context", "options", "specialist", "slots", "review"]);
+assert.equal(spaBookingOpts().notes.maxLength, 200);
+state.spaFlow = null;
+
 const liveConfig = readPortalConfig(root({ portalVertical: "beauty", portalDataMode: "live", portalCase: "calm-harbor-spa" }));
 assert.equal(liveConfig.caseId, "", "live mode must not select a fixture case");
+applyPortalConfig(liveConfig);
+assert.deepEqual(spaBookingOpts().capabilities, { visitMode: false, location: false, addOns: false, notes: false }, "live booking options must fail closed until Core returns capabilities");
 const wrongVerticalConfig = readPortalConfig(root({ portalVertical: "hvac", portalDataMode: "fixture", portalCase: "calm-harbor-spa" }));
 assert.equal(wrongVerticalConfig.caseId, "", "a beauty fixture case must not cross verticals");
 

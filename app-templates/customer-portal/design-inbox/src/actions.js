@@ -1,6 +1,6 @@
 // customer-portal-design/src/actions.js — presentation runtime (auto-split from app.js). No business logic.
 import { F } from "../data/fixtures.js";
-import { cmdPhase, currentContact, currentPurchase, findProduct, isSpa, spaPlanSellOpen, spaProfileValues, spaRetailOpen, state } from "./state.js";
+import { cmdPhase, currentContact, currentPurchase, findProduct, isSpa, spaBookingOpts, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanSellOpen, spaProfileValues, spaRetailOpen, state } from "./state.js";
 import { render } from "./app.js";
 import { StatusBadge } from "./components/primitives/StatusBadge.js";
 
@@ -74,18 +74,59 @@ export var ACTIONS = {
   "seo.service.select": function (id) { openDrawer("booking"); toast((id || "Service") + " — booking flow"); },
   "seo.faq.toggle":    function (id) { setState({ seoFaqOpen: state.seoFaqOpen === Number(id) ? null : Number(id) }); },
   "booking.open":      function (id) { if (spaFlowCapable()) { openSpaFlow(id ? { entry: "service", serviceCode: id } : { entry: "empty" }); return; } openDrawer("booking"); },
-  "booking.close":     function ()   { state.spaFlow = null; state.spaBookAck = false; closeDrawer(); }, /* wave 13: closing is not confirming */
+  "booking.close":     function ()   { state.spaFlow = null; state.spaBookAck = false; state.spaNote = ""; closeDrawer(); }, /* wave 13: closing is not confirming. wave 20: an explicit close discards the transient note */
   /* ============ wave 16 — booking flow steps (spa target) ============
      Every step renders SERVER-returned options only; the hold and the
      confirmation are entity-scoped commands whose success renders ONLY
      from the (demo) authoritative readback. */
-  "booking.selectService": function (id) { var f = state.spaFlow; if (!f) return; f.serviceCode = id; f.specialistRef = null; f.slotRef = null; f.held = false; spaFlowAfterService(f); render(); },
+  "booking.selectService": function (id) { var f = state.spaFlow; if (!f) return; f.serviceCode = id; f.specialistRef = null; f.slotRef = null; f.held = false; f.addOns = []; f.visitMode = null; f.locationRef = null; spaFlowAfterService(f); render(); },
   "booking.selectSpecialist": function (id) { var f = state.spaFlow; if (!f) return; f.specialistRef = id === "any" ? null : id; f.step = "slots"; render(); },
   "booking.selectSlot": function (id) { var f = state.spaFlow; if (!f) return; if (String(id).indexOf("day:") === 0) { f.dayKey = String(id).slice(4); f.slotRef = null; } else { f.slotRef = id; var d = F.spaBooking.days.find(function (dd) { return (dd.slots || []).some(function (s) { return s.ref === id; }); }); if (d) f.dayKey = d.key; } render(); },
   "booking.hold":      function (id) { spaHoldSlot(id); },
   "booking.retry":     function (id) { var f = state.spaFlow; if (!f) return; if (id === "hold") { clearCommand("booking.hold:" + f.slotRef); spaHoldSlot(f.slotRef); } else { clearCommand("booking.confirm:" + F.spaBooking.ref); spaBookingConfirm(); } },
-  "booking.back":      function ()   { var f = state.spaFlow; if (!f) return; if (f.step === "review") { f.held = false; f.step = "slots"; } else if (f.step === "slots") { f.step = (F.spaBooking.eligibleSpecialists[f.serviceCode] || []).length ? "specialist" : "context"; } else { f.step = "context"; } render(); },
+  "booking.back":      function ()   { spaFlowBack(); },
   "booking.ackPolicy": function ()   { setState({ spaBookAck: !state.spaBookAck }); },
+  /* ============ wave 20 — visit mode / location, add-ons, customer note ============
+     Every choice carries an OPAQUE server code/ref. Changing the visit mode,
+     the place or any add-on INVALIDATES the downstream specialist/slot
+     selection and reloads eligibility (the server owns the new specialists,
+     times and total). Changing only the note never discards a held slot. */
+  "booking.selectVisitMode": function (id) {
+    var f = state.spaFlow; if (!f || !id || f.visitMode === id) return;
+    f.visitMode = id; f.locationRef = null;
+    if (state.spaLocSrc === "ineligible") state.spaLocSrc = "ready"; /* the ineligible pick was cleared with the mode */
+    spaInvalidateAfterOptions(f, "visit mode");
+    render();
+  },
+  "booking.selectLocation": function (id) {
+    var f = state.spaFlow; if (!f || !id || f.locationRef === id) return;
+    f.locationRef = id;
+    if (state.spaLocSrc === "ineligible") state.spaLocSrc = "ready";
+    spaInvalidateAfterOptions(f, "place");
+    render();
+  },
+  /* rendered ONLY where a retry can change the result (error / ineligible) */
+  "booking.reloadLocations": function () { spaReloadLocations(); },
+  /* entity-scoped command: one add-on being checked never freezes the others */
+  "booking.toggleAddon": function (id) {
+    var f = state.spaFlow; if (!f || !id) return;
+    var o = spaBookingOpts();
+    var a = o.addOns.find(function (x) { return x.ref === id; });
+    if (!a || (a.allowedActions || []).indexOf("toggle") === -1) return;
+    runCommand("booking.toggleAddon:" + id, { ms: 700, onReadback: function () {
+      var cur = (f.addOns || []).slice();
+      var at = cur.indexOf(id);
+      if (at === -1) cur.push(id); else cur.splice(at, 1);
+      f.addOns = cur;
+      spaInvalidateAfterOptions(f, "extras");
+      render();
+    } });
+  },
+  /* the note is TRANSIENT browser state: held in memory only until the
+     authoritative readback or an explicit close. No re-render — the field keeps
+     focus and updates its own counter (see SpaBookingFlow). */
+  "booking.changeNotes": function (id) { state.spaNote = id == null ? "" : String(id); },
+  "booking.next":      function ()   { spaFlowNext(); },
   "booking.confirm":   function ()   { if (isSpa() && state.capability === "target-appointments") { spaBookingConfirm(); return; } runCommand("booking.confirm:booking", { onReadback: function () { closeDrawer(); toast("Booking confirmed \u2014 it\u2019s on your calendar"); } }); },
   /* ============ wave 16 — appointment detail (customer-owned) ============ */
   "appointment.open":  function (id) { state.spaCurrentAppointment = id; state.view = "ready"; go("appointment.detail"); },
@@ -265,6 +306,10 @@ export var ACTIONS = {
     if (id === "plan-credit") { setState({ spaCredit: "ok" }); toast("Plan balance reloaded"); return; }
     /* wave 17 — reviews are a region-scoped enrichment: retry reloads only that region */
     if (id === "product-reviews") { setState({ spaReviews: "ready" }); toast("Reviews reloaded"); return; }
+    /* wave 20 — booking options: an explicit reload of the add-on eligibility is
+       the ONLY way past a removed / repriced add-on. The reload replaces the
+       stale add-on set with a freshly returned one — never a local fix-up. */
+    if (id === "booking-addons") { spaReloadAddons(); return; }
     if (id && state.commands[id]) { clearCommand(id); render(); return; }
     setState({ view: "ready" });
   },
@@ -484,13 +529,18 @@ export function spaBookingConfirm() {
   if (f) {
     if (!f.held || !state.spaBookAck) return;
     if (f.entry === "credit" && state.spaCredit !== "ok") return;
+    /* wave 20 — an unreviewed add-on change or an over-long note blocks confirm */
+    if (state.spaAddonSrc === "removed" || state.spaAddonSrc === "repriced") return;
+    var nz = spaNoteState();
+    if (nz.enabled && nz.invalid) return;
     runCommand("booking.confirm:" + F.spaBooking.ref, { ms: 1300, onReadback: function () {
       state.spaResult = spaFlowResult();
       if (f.entry === "reschedule" && f.rescheduleOf) {
         state.spaRescheduled = Object.assign({}, state.spaRescheduled);
         state.spaRescheduled[f.rescheduleOf] = { start: spaSlotLabel() };
       }
-      state.drawer = null; state.spaFlow = null; state.spaBookAck = false; state.route = "checkout"; render();
+      /* the note lived in memory only — the authoritative readback releases it */
+      state.drawer = null; state.spaFlow = null; state.spaBookAck = false; state.spaNote = ""; state.route = "checkout"; render();
     } });
     return;
   }
@@ -510,9 +560,11 @@ export function spaFlowCapable() { return isSpa() && state.capability === "targe
 
 export function openSpaFlow(cfg) {
   clearCommand("booking.confirm:" + F.spaBooking.ref);
-  Object.keys(state.commands).forEach(function (k) { if (k.indexOf("booking.hold:") === 0) clearCommand(k); });
+  Object.keys(state.commands).forEach(function (k) { if (k.indexOf("booking.hold:") === 0 || k.indexOf("booking.toggleAddon:") === 0) clearCommand(k); });
   var f = { entry: cfg.entry, step: "context", serviceCode: cfg.serviceCode || null, planRef: cfg.planRef || null,
-            specialistRef: null, dayKey: F.spaBooking.days[0].key, slotRef: null, rescheduleOf: cfg.rescheduleOf || null, held: false };
+            specialistRef: null, dayKey: F.spaBooking.days[0].key, slotRef: null, rescheduleOf: cfg.rescheduleOf || null, held: false,
+            /* wave 20 — option selections, all opaque server refs/codes */
+            visitMode: null, locationRef: null, addOns: [], reloadedBy: null };
   if (cfg.fromAppt) { var a = F.spaCommerce.appointmentDetails[cfg.fromAppt]; if (a) f.serviceCode = F.spaBooking.serviceForTitle[a.service] || null; }
   if (cfg.entry === "reschedule" && f.rescheduleOf) {
     var r = F.spaCommerce.appointmentDetails[f.rescheduleOf];
@@ -520,12 +572,88 @@ export function openSpaFlow(cfg) {
     f.step = "slots"; /* a reschedule changes the TIME of the identified visit — service/specialist context is fixed */
   }
   if (cfg.entry === "credit") f.serviceCode = "svc-spa-03"; /* the package's service — server-provided context */
-  state.spaFlow = f; state.spaBookAck = false; state.spaHold = "held";
+  state.spaFlow = f; state.spaBookAck = false; state.spaHold = "held"; state.spaNote = "";
+  /* wave 20 — seed ONLY what the source itself returned as selected */
+  spaSeedOptionDefaults(f);
+  if (f.step === "slots" && spaOptionsStepOn()) f.step = "options"; /* reschedule with a place choice starts there */
   state.drawer = "booking"; state.mobileNav = false; state.accountMenu = false;
   render();
 }
 
+/* =========================================================
+   Wave 20 — booking options engine (DEMO ONLY).
+   The server owns capabilities, eligibility, prices and duration; these
+   helpers only carry the customer's opaque selections and invalidate what
+   the change makes stale. Nothing here computes an amount or a duration.
+   ========================================================= */
+
+/* the source's OWN preselection (e.g. a required add-on the studio includes,
+   or a single returned mode) — never a UI-invented default */
+export function spaSeedOptionDefaults(f) {
+  var o = spaBookingOpts();
+  f.addOns = o.addOns.filter(function (a) { return a.selected && (a.allowedActions || []).indexOf("toggle") !== -1; }).map(function (a) { return a.ref; });
+  if (!o.capabilities.visitMode && o.visitModes.length === 1) f.visitMode = o.visitModes[0].code;
+  if (o.capabilities.visitMode && o.visitModes.length === 1) f.visitMode = o.visitModes[0].code; /* one allowed mode = fixed context, not a question */
+}
+
+/* changing service / visit mode / place / add-on invalidates the downstream
+   specialist + slot selection: the server re-answers who and when */
+export function spaInvalidateAfterOptions(f, cause) {
+  /* the notice is only true when there WAS a selection to release */
+  var had = !!(f.slotRef || f.held);
+  f.specialistRef = null;
+  f.slotRef = null;
+  f.held = false;
+  f.reloadedBy = had ? (cause || null) : null;
+  Object.keys(state.commands).forEach(function (k) { if (k.indexOf("booking.hold:") === 0) clearCommand(k); });
+  clearCommand("booking.confirm:" + F.spaBooking.ref);
+  state.spaHold = "held";      /* nothing is held any more — a new hold must be taken */
+  state.spaBookAck = false;    /* the acknowledgement belonged to the previous selection */
+  if (f.step === "slots" || f.step === "review") f.step = "slots"; /* back to Time — the released slot is never silently kept */
+}
+
+var spaOptTimer;
+
+export function spaReloadLocations() {
+  clearTimeout(spaOptTimer);
+  setState({ spaLocSrc: "loading" });
+  spaOptTimer = setTimeout(function () { setState({ spaLocSrc: "ready" }); }, 900);
+}
+
+export function spaReloadAddons() {
+  var f = state.spaFlow;
+  if (f && state.spaAddonSrc === "removed") f.addOns = (f.addOns || []).slice(1); /* the dropped add-on is gone from the fresh set */
+  clearTimeout(spaOptTimer);
+  setState({ spaAddonSrc: "loading" });
+  spaOptTimer = setTimeout(function () { setState({ spaAddonSrc: "ready" }); toast("Extras reloaded \u2014 current amounts shown"); }, 900);
+}
+
+/* step navigation over the rail actually rendered (Options / Specialist may be
+   absent in any combination) */
+export function spaFlowNext() {
+  var f = state.spaFlow; if (!f) return;
+  if (f.step === "options" && !spaOptionsComplete()) return;
+  var steps = spaFlowSteps(f);
+  var i = steps.findIndex(function (s) { return s.k === f.step; });
+  if (i === -1 || i === steps.length - 1) return;
+  var nextKey = steps[i + 1].k;
+  if (nextKey === "review" && !f.held) nextKey = "slots"; /* review is reachable only from a held slot */
+  f.step = nextKey;
+  render();
+}
+
+export function spaFlowBack() {
+  var f = state.spaFlow; if (!f) return;
+  var steps = spaFlowSteps(f);
+  var i = steps.findIndex(function (s) { return s.k === f.step; });
+  if (f.step === "review") f.held = false;
+  f.step = i > 0 ? steps[i - 1].k : steps[0].k;
+  render();
+}
+
 export function spaFlowAfterService(f) {
+  spaSeedOptionDefaults(f);
+  if (spaOptionsStepOn()) { f.step = "options"; return; }
   f.step = (F.spaBooking.eligibleSpecialists[f.serviceCode] || []).length ? "specialist" : "slots";
 }
 
@@ -534,7 +662,7 @@ export function spaHoldSlot(slotRef) {
   if (!f || !slotRef) return;
   f.slotRef = slotRef;
   runCommand("booking.hold:" + slotRef, { ms: 900, onReadback: function () {
-    f.held = true; f.step = "review"; state.spaHold = "held"; render();
+    f.held = true; f.step = "review"; f.reloadedBy = null; state.spaHold = "held"; render();
   } });
 }
 

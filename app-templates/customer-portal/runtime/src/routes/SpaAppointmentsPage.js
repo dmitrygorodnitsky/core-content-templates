@@ -18,11 +18,12 @@ import { PageHeader } from "../components/shell/PageHeader.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { InlineFailure, routeStateBody, skel } from "../components/primitives/RouteStates.js";
+import { spaVisitModeClass, spaVisitModeLabel } from "../normalizers/spa-visit-mode.js";
 
 function modeChip(mode) {
-  return h("span", { "class": "visit-mode visit-mode--" + mode, "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
+  return h("span", { "class": "visit-mode visit-mode--" + spaVisitModeClass(mode), "data-module": "visit-mode", "data-bind": "appointment.visitMode" }, [
     h("i", { "class": "visit-mode__dot" }),
-    F.spa.modeLabels[mode]
+    spaVisitModeLabel(mode, F.spa.modeLabels)
   ]);
 }
 
@@ -34,7 +35,7 @@ function statusBadge(label) {
    customer-owned detail route (appointment.open, opaque data-appointment-ref) */
 function apptRow(a, opts) {
   opts = opts || {};
-  var meta = [a.time, a.specialist, F.spa.modeLabels[a.mode]].filter(Boolean).join(" \u00b7 ");
+  var meta = [a.time, a.specialist, spaVisitModeLabel(a.mode, F.spa.modeLabels)].filter(Boolean).join(" \u00b7 ");
   var row = h("div", { "class": "appt-row appt-row--link", "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-appointment-id": a.id, "data-appointment-ref": a.id, "data-action": "appointment.open", "data-id": a.id, role: "link", tabindex: "0" }, [
     h("div", { "class": "log-date" }, a.date),
     h("div", { "class": "appt-row__body" }, [
@@ -81,7 +82,7 @@ export function SpaAppointments() {
   var page = h("section", { "class": "page", "data-route": "orders.list", "data-state": view, "data-visual-id": "spa-appointments", "data-capability": "target-appointments", "data-booking": open ? "open" : "closed", "data-screen-label": "Appointments (target)" });
 
   var sub = next
-    ? (cancelled ? "Your " + next.date + " visit was cancelled." : "Your next visit \u2014 " + next.date + ", " + F.spa.modeLabels[next.mode].toLowerCase() + ".")
+    ? (cancelled ? "Your " + next.date + " visit was cancelled." : "Your next visit \u2014 " + next.date + ", " + spaVisitModeLabel(next.mode, F.spa.modeLabels).toLowerCase() + ".")
     : "You have no upcoming visits.";
   page.appendChild(PageHeader({ title: spaCustomer().greeting, sub: sub }));
 
@@ -145,7 +146,7 @@ export function SpaAppointments() {
       h("div", { "class": "appt-details__row" }, [
         h("div", { "class": "appt-details__label" }, "Where"),
         h("div", { "class": "appt-details__val", "data-bind": "appointment.visitMode,appointment.location" }, [
-          h("b", null, F.spa.modeLabels[next.mode]),
+          h("b", null, spaVisitModeLabel(next.mode, F.spa.modeLabels)),
           next.location ? " \u00b7 " + next.location : h("span", { style: "color:var(--ink-3)" }, " \u00b7 location details not provided yet")
         ])
       ]),

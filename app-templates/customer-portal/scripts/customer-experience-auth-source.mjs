@@ -63,7 +63,7 @@ export function compileAcceptedLoginSource(source, stylesByName) {
   const productionDocument = stripLoginPreviewHarness(source);
   const scriptMatches = [...productionDocument.matchAll(/<script(?![^>]*data-dev-toolbar)[^>]*>([\s\S]*?)<\/script>/gi)];
   requireContract(scriptMatches.length === 1, "Accepted login must contain exactly one production enhancement script");
-  const javascript = scriptMatches[0][1].trim();
+  const javascript = [scriptMatches[0][1].trim(), directSessionLoginBootstrapJavascript()].join("\n\n");
   const withoutScripts = productionDocument.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
   const bodyMatch = withoutScripts.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
   requireContract(Boolean(bodyMatch), "Accepted login source has no body");
@@ -72,6 +72,8 @@ export function compileAcceptedLoginSource(source, stylesByName) {
     if (slot === "page.documentTitle") continue;
     body = replaceCopySlot(body, slot, parameterRef(code));
   }
+  body = addRawCmsDisplayFallback(body, ["ERROR_DISPLAY", "LOGOUT_DISPLAY"]);
+  body = addDirectSessionLoginHooks(body);
   requireContract(!/data-dev-toolbar/.test(body), "Login preview harness leaked into CMS body");
   requireContract(!/<script\b/i.test(body), "Login script must be emitted through the CMS javascript field");
 
@@ -151,6 +153,193 @@ function replaceCopySlot(body, slot, replacement) {
   });
   requireContract(count === 1, "Login copy slot must occur exactly once: " + slot);
   return result;
+}
+
+function addRawCmsDisplayFallback(body, placeholders) {
+  let result = body;
+  for (const placeholder of placeholders) {
+    const marker = 'style="display:{{' + placeholder + '}}"';
+    requireContract(countOccurrences(result, marker) === 1, "Login display-state contract drifted for " + placeholder);
+    // A direct CMS read leaves the placeholder unresolved. In that case the
+    // second declaration is invalid and the safe hidden default remains. Once
+    // Core Auth substitutes block|none, the later declaration wins normally.
+    result = result.replace(marker, 'style="display:none;display:{{' + placeholder + '}}"');
+  }
+  return result;
+}
+
+function addDirectSessionLoginHooks(body) {
+  const replacements = [
+    ['data-core-auth-login>', 'data-core-auth-login data-login-success-url="${CX_PORTAL_URL@STRING}">'],
+    ['<input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">', '<input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}" data-login-csrf>'],
+    ['<a class="auth-link" href="{{RESET_PASSWORD_URL}}"', '<a class="auth-link" href="{{RESET_PASSWORD_URL}}" data-login-reset'],
+    ['type="submit" data-copy="action.submit"', 'type="submit" data-copy="action.submit" data-login-submit'],
+  ];
+  let result = body;
+  for (const [marker, replacement] of replacements) {
+    requireContract(countOccurrences(result, marker) === 1, "Login direct-session hook contract drifted: " + marker);
+    result = result.replace(marker, replacement);
+  }
+  return result;
+}
+
+function directSessionLoginBootstrapJavascript() {
+  return [
+    "(function () {",
+    "  var form = document.querySelector('[data-core-auth-login]');",
+    "  if (!form) return;",
+    "  var submit = form.querySelector('[data-login-submit]');",
+    "  var csrf = form.querySelector('[data-login-csrf]');",
+    "  var username = form.querySelector('input[name=\"username\"]');",
+    "  var password = form.querySelector('input[name=\"password\"]');",
+    "  var reset = document.querySelector('[data-login-reset]');",
+    "  var error = document.getElementById('auth-error-message');",
+    "  var logout = document.getElementById('auth-logout-message');",
+    "  if (!submit || !csrf || !username || !password) return;",
+    "",
+    "  var actionPath = '/oauth2/login';",
+    "  var resetPath = '/oauth2/forgot-password';",
+    "  var rawAction = form.getAttribute('action') || '';",
+    "  var rawCsrfName = csrf.getAttribute('name') || '';",
+    "  var rawCsrfValue = csrf.getAttribute('value') || '';",
+    "  var directMode = rawAction.indexOf('{{') !== -1 || rawCsrfName.indexOf('{{') !== -1 || rawCsrfValue.indexOf('{{') !== -1;",
+    "  if (!directMode) {",
+    "    submit.disabled = false;",
+    "    form.removeAttribute('aria-busy');",
+    "    return;",
+    "  }",
+    "",
+    "  var successUrl;",
+    "  try {",
+    "    var requestUrl = new URL(window.location.href);",
+    "    var successTarget = (requestUrl.searchParams.get('returnUrl') || form.getAttribute('data-login-success-url') || '').trim();",
+    "    if (!successTarget) throw new Error('Login return is unavailable');",
+    "    successUrl = new URL(successTarget, window.location.origin);",
+    "    if (successUrl.origin !== window.location.origin) throw new Error('Cross-origin login return is forbidden');",
+    "    if (successUrl.pathname === actionPath || successUrl.pathname === requestUrl.pathname) throw new Error('Login return loop is forbidden');",
+    "  } catch (failure) {",
+    "    submit.disabled = true;",
+    "    form.setAttribute('data-login-bootstrap-state', 'error');",
+    "    return;",
+    "  }",
+    "",
+    "  var ready = false;",
+    "  var submitting = false;",
+    "  var bootstrapPromise = null;",
+    "  if (reset) reset.setAttribute('href', resetPath);",
+    "",
+    "  function setPending(pending) {",
+    "    submit.disabled = pending;",
+    "    if (pending) form.setAttribute('aria-busy', 'true');",
+    "    else form.removeAttribute('aria-busy');",
+    "  }",
+    "",
+    "  function loginParts(html) {",
+    "    var parsed = new DOMParser().parseFromString(html, 'text/html');",
+    "    var sourceForm = parsed.querySelector('form[action=\"/oauth2/login\"]');",
+    "    var sourceCsrf = sourceForm && sourceForm.querySelector('input[name=\"_csrf\"]');",
+    "    var token = sourceCsrf && sourceCsrf.getAttribute('value');",
+    "    if (!token || token.length > 2048) throw new Error('Login CSRF token is unavailable');",
+    "    return { name: '_csrf', token: token };",
+    "  }",
+    "",
+    "  function applyLoginParts(parts) {",
+    "    csrf.setAttribute('name', parts.name);",
+    "    csrf.setAttribute('value', parts.token);",
+    "    form.setAttribute('action', actionPath);",
+    "  }",
+    "",
+    "  function bootstrap() {",
+    "    if (bootstrapPromise) return bootstrapPromise;",
+    "    ready = false;",
+    "    setPending(true);",
+    "    form.setAttribute('data-login-bootstrap-state', 'pending');",
+    "    bootstrapPromise = fetch(actionPath, {",
+    "      method: 'GET',",
+    "      credentials: 'same-origin',",
+    "      cache: 'no-store',",
+    "      headers: { Accept: 'text/html' }",
+    "    }).then(function (response) {",
+    "      if (!response.ok) throw new Error('Login bootstrap failed');",
+    "      var finalUrl = new URL(response.url, window.location.origin);",
+    "      if (finalUrl.pathname !== actionPath) {",
+    "        window.location.assign(successUrl.href);",
+    "        return null;",
+    "      }",
+    "      return response.text();",
+    "    }).then(function (html) {",
+    "      if (html === null) return;",
+    "      applyLoginParts(loginParts(html));",
+    "      ready = true;",
+    "      form.setAttribute('data-login-bootstrap-state', 'ready');",
+    "      setPending(false);",
+    "    }).catch(function () {",
+    "      bootstrapPromise = null;",
+    "      ready = false;",
+    "      form.setAttribute('data-login-bootstrap-state', 'error');",
+    "      setPending(true);",
+    "    });",
+    "    return bootstrapPromise;",
+    "  }",
+    "",
+    "  function completeFailure(html) {",
+    "    try { applyLoginParts(loginParts(html)); } catch (ignored) { bootstrapPromise = null; bootstrap(); return; }",
+    "    submitting = false;",
+    "    ready = true;",
+    "    form.setAttribute('data-login-bootstrap-state', 'ready');",
+    "    if (error) error.style.display = 'block';",
+    "    if (logout) logout.style.display = 'none';",
+    "    setPending(false);",
+    "    password.focus();",
+    "  }",
+    "",
+    "  form.addEventListener('submit', function (event) {",
+    "    event.preventDefault();",
+    "    if (!ready || submitting) {",
+    "      if (!ready) bootstrap();",
+    "      return;",
+    "    }",
+    "    submitting = true;",
+    "    ready = false;",
+    "    setPending(true);",
+    "    if (error) error.style.display = 'none';",
+    "",
+    "    var body = new URLSearchParams();",
+    "    body.set('username', username.value);",
+    "    body.set('password', password.value);",
+    "    body.set(csrf.getAttribute('name'), csrf.getAttribute('value'));",
+    "    fetch(actionPath, {",
+    "      method: 'POST',",
+    "      credentials: 'same-origin',",
+    "      redirect: 'follow',",
+    "      headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'text/html' },",
+    "      body: body.toString()",
+    "    }).then(function (response) {",
+    "      return response.text().then(function (html) { return { response: response, html: html }; });",
+    "    }).then(function (result) {",
+    "      var finalUrl = new URL(result.response.url, window.location.origin);",
+    "      if (finalUrl.pathname === actionPath && finalUrl.searchParams.has('error')) {",
+    "        completeFailure(result.html);",
+    "        return;",
+    "      }",
+    "      if (finalUrl.pathname === actionPath) {",
+    "        submitting = false;",
+    "        bootstrapPromise = null;",
+    "        bootstrap();",
+    "        return;",
+    "      }",
+    "      if (finalUrl.pathname === '/oauth2' || finalUrl.pathname === '/oauth2/') window.location.assign(successUrl.href);",
+    "      else window.location.assign(finalUrl.href);",
+    "    }).catch(function () {",
+    "      submitting = false;",
+    "      bootstrapPromise = null;",
+    "      bootstrap();",
+    "    });",
+    "  });",
+    "",
+    "  bootstrap();",
+    "})();",
+  ].join("\n");
 }
 
 function stripPreviewCommentsAndStyles(value) {

@@ -55,6 +55,6 @@
   "rootCode": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING",
   "assetPath": "/assets/customer-portal/calm-harbor-landing-staging",
   "navigation": {
-    "portalUrl": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/"
+    "portalUrl": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal"
   }
 }

@@ -1778,3 +1778,96 @@
 
 .pd-region-state[data-state="error"] .pd-region-state__title { color: var(--danger); }
 
+/* ============================================================
+   WAVE 20 — booking options: visit mode / location, add-ons, note.
+   Additive only: composes the accepted .bk-* option vocabulary, the
+   .field/.field-label/.field-error primitives and the appt-details rows.
+   No accepted rule is modified.
+   ============================================================ */
+
+/* one source-owned group inside the Options step */
+.bk-group { margin-bottom: 20px; }
+
+.bk-group:last-of-type { margin-bottom: 0; }
+
+/* a server-returned option with no choice to make: context, not a control */
+.bk-opt--fixed { cursor: default; background: rgba(var(--glass), .26); }
+
+.bk-opt--fixed:hover { border-color: var(--glass-border); }
+
+.bk-tag {
+  flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-3); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 3px 8px;
+}
+
+.bk-tag--req {
+  display: inline-block; margin-top: 6px; color: var(--accent); white-space: nowrap;
+  border-color: rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .07);
+}
+
+/* add-on rows — a square check, a wrapping name, and the server's own
+   amount / duration note (never computed here) */
+.bk-addon { align-items: flex-start; gap: 11px; }
+
+.bk-addon__body { flex: 1; min-width: 0; text-align: left; }
+
+.bk-addon__name { font-weight: 650; font-size: 13.5px; line-height: 1.35; overflow-wrap: anywhere; }
+
+.bk-addon__desc { font-size: 12px; color: var(--ink-3); line-height: 1.45; margin-top: 2px; }
+
+.bk-addon__meta { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+
+.bk-addon__dur { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+
+.bk-addon[data-state="pending"] { opacity: .72; }
+
+.bk-check {
+  width: 20px; height: 20px; border-radius: 7px; flex-shrink: 0; margin-top: 1px;
+  border: 1.5px solid var(--ink-3); background: rgba(var(--glass), .5); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;
+}
+
+.bk-check--on { background: var(--accent); border-color: var(--accent); }
+
+/* an option change released the held time — said plainly, never silent */
+.bk-changed {
+  font-size: 12.5px; line-height: 1.5; color: var(--ink-2); margin-bottom: 12px;
+  border: 1px solid rgba(var(--accent-rgb), .4); background: rgba(var(--accent-rgb), .06);
+  border-radius: 12px; padding: 10px 13px;
+}
+
+/* the optional customer note (review step) */
+.bk-note-field {
+  margin-top: 14px; border-top: 1px solid var(--glass-border); padding-top: 13px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.bk-note-field__head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+
+.bk-note-field__head .field-label { white-space: nowrap; }
+
+.bk-note-field__input { min-height: 74px; resize: vertical; line-height: 1.45; }
+
+.bk-counter { font-size: 11.5px; font-weight: 650; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.bk-counter--over { color: var(--danger); }
+
+.bk-note-field__sent {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-3);
+}
+
+.bk-note-field[data-state="invalid"] .bk-note-field__sent { color: var(--danger); }
+
+/* selected add-ons inside the review facts */
+.bk-review-addons { display: flex; flex-direction: column; gap: 5px; }
+
+.bk-review-addon { display: flex; gap: 10px; align-items: baseline; }
+
+.bk-review-addon__name { flex: 1; min-width: 0; color: var(--ink); font-weight: 600; overflow-wrap: anywhere; }
+
+.bk-review-addon__amt { flex-shrink: 0; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* An ALREADY-OPEN drawer must not replay its entrance on every re-render
+   (app.js marks the re-mount): the sheet stays put and keeps its scroll. */
+.drawer--open-static, .scrim--static { animation: none; }
+

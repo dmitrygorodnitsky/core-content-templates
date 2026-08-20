@@ -452,7 +452,7 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
                data-auth-msg="error"
                data-module="auth-message-error"
                role="alert"
-               style="display:{{ERROR_DISPLAY}}">
+               style="display:none;display:{{ERROR_DISPLAY}}">
             <div class="auth-msg__inner">
               <span class="auth-msg__glyph" aria-hidden="true">!</span>
               <div class="auth-msg__text">
@@ -468,7 +468,7 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
                data-auth-msg="logout"
                data-module="auth-message-logout"
                role="status"
-               style="display:{{LOGOUT_DISPLAY}}">
+               style="display:none;display:{{LOGOUT_DISPLAY}}">
             <div class="auth-msg__inner">
               <span class="auth-msg__glyph" aria-hidden="true">✓</span>
               <div class="auth-msg__text">
@@ -479,9 +479,9 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
           </div>
 
 
-          <form class="auth-form" method="post" action="{{LOGIN_ACTION}}" data-core-auth-login>
+          <form class="auth-form" method="post" action="{{LOGIN_ACTION}}" data-core-auth-login data-login-success-url="https://dev-1.servicewand.com/calm-harbor-spa-customer-portal">
 
-            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}">
+            <input type="hidden" name="{{CSRF_PARAMETER_NAME}}" value="{{CSRF_TOKEN}}" data-login-csrf>
 
             <div class="field-row">
               <label class="field-label" for="username" data-copy="field.username.label">Username</label>
@@ -502,7 +502,7 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
               <div class="field-head">
                 <label class="field-label" for="password" data-copy="field.password.label">Password</label>
 
-                <a class="auth-link" href="{{RESET_PASSWORD_URL}}" data-copy="link.resetPassword">Forgot your password?</a>
+                <a class="auth-link" href="{{RESET_PASSWORD_URL}}" data-login-reset data-copy="link.resetPassword">Forgot your password?</a>
               </div>
               <div class="field-wrap">
                 <input class="field"
@@ -525,7 +525,7 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
               </div>
             </div>
 
-            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit">Sign in</button>
+            <button class="btn btn--primary btn--lg btn--block auth-submit" type="submit" data-copy="action.submit" data-login-submit>Sign in</button>
           </form>
 
           <p class="auth-note" data-copy="card.note">We will never ask for your password by email, message or phone.</p>
@@ -552,4 +552,159 @@ input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
         input.type = shown ? "password" : "text";
         input.focus();
       });
-    })();</script></html>
+    })();
+
+(function () {
+  var form = document.querySelector('[data-core-auth-login]');
+  if (!form) return;
+  var submit = form.querySelector('[data-login-submit]');
+  var csrf = form.querySelector('[data-login-csrf]');
+  var username = form.querySelector('input[name="username"]');
+  var password = form.querySelector('input[name="password"]');
+  var reset = document.querySelector('[data-login-reset]');
+  var error = document.getElementById('auth-error-message');
+  var logout = document.getElementById('auth-logout-message');
+  if (!submit || !csrf || !username || !password) return;
+
+  var actionPath = '/oauth2/login';
+  var resetPath = '/oauth2/forgot-password';
+  var rawAction = form.getAttribute('action') || '';
+  var rawCsrfName = csrf.getAttribute('name') || '';
+  var rawCsrfValue = csrf.getAttribute('value') || '';
+  var directMode = rawAction.indexOf('{{') !== -1 || rawCsrfName.indexOf('{{') !== -1 || rawCsrfValue.indexOf('{{') !== -1;
+  if (!directMode) {
+    submit.disabled = false;
+    form.removeAttribute('aria-busy');
+    return;
+  }
+
+  var successUrl;
+  try {
+    var requestUrl = new URL(window.location.href);
+    var successTarget = (requestUrl.searchParams.get('returnUrl') || form.getAttribute('data-login-success-url') || '').trim();
+    if (!successTarget) throw new Error('Login return is unavailable');
+    successUrl = new URL(successTarget, window.location.origin);
+    if (successUrl.origin !== window.location.origin) throw new Error('Cross-origin login return is forbidden');
+    if (successUrl.pathname === actionPath || successUrl.pathname === requestUrl.pathname) throw new Error('Login return loop is forbidden');
+  } catch (failure) {
+    submit.disabled = true;
+    form.setAttribute('data-login-bootstrap-state', 'error');
+    return;
+  }
+
+  var ready = false;
+  var submitting = false;
+  var bootstrapPromise = null;
+  if (reset) reset.setAttribute('href', resetPath);
+
+  function setPending(pending) {
+    submit.disabled = pending;
+    if (pending) form.setAttribute('aria-busy', 'true');
+    else form.removeAttribute('aria-busy');
+  }
+
+  function loginParts(html) {
+    var parsed = new DOMParser().parseFromString(html, 'text/html');
+    var sourceForm = parsed.querySelector('form[action="/oauth2/login"]');
+    var sourceCsrf = sourceForm && sourceForm.querySelector('input[name="_csrf"]');
+    var token = sourceCsrf && sourceCsrf.getAttribute('value');
+    if (!token || token.length > 2048) throw new Error('Login CSRF token is unavailable');
+    return { name: '_csrf', token: token };
+  }
+
+  function applyLoginParts(parts) {
+    csrf.setAttribute('name', parts.name);
+    csrf.setAttribute('value', parts.token);
+    form.setAttribute('action', actionPath);
+  }
+
+  function bootstrap() {
+    if (bootstrapPromise) return bootstrapPromise;
+    ready = false;
+    setPending(true);
+    form.setAttribute('data-login-bootstrap-state', 'pending');
+    bootstrapPromise = fetch(actionPath, {
+      method: 'GET',
+      credentials: 'same-origin',
+      cache: 'no-store',
+      headers: { Accept: 'text/html' }
+    }).then(function (response) {
+      if (!response.ok) throw new Error('Login bootstrap failed');
+      var finalUrl = new URL(response.url, window.location.origin);
+      if (finalUrl.pathname !== actionPath) {
+        window.location.assign(successUrl.href);
+        return null;
+      }
+      return response.text();
+    }).then(function (html) {
+      if (html === null) return;
+      applyLoginParts(loginParts(html));
+      ready = true;
+      form.setAttribute('data-login-bootstrap-state', 'ready');
+      setPending(false);
+    }).catch(function () {
+      bootstrapPromise = null;
+      ready = false;
+      form.setAttribute('data-login-bootstrap-state', 'error');
+      setPending(true);
+    });
+    return bootstrapPromise;
+  }
+
+  function completeFailure(html) {
+    try { applyLoginParts(loginParts(html)); } catch (ignored) { bootstrapPromise = null; bootstrap(); return; }
+    submitting = false;
+    ready = true;
+    form.setAttribute('data-login-bootstrap-state', 'ready');
+    if (error) error.style.display = 'block';
+    if (logout) logout.style.display = 'none';
+    setPending(false);
+    password.focus();
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (!ready || submitting) {
+      if (!ready) bootstrap();
+      return;
+    }
+    submitting = true;
+    ready = false;
+    setPending(true);
+    if (error) error.style.display = 'none';
+
+    var body = new URLSearchParams();
+    body.set('username', username.value);
+    body.set('password', password.value);
+    body.set(csrf.getAttribute('name'), csrf.getAttribute('value'));
+    fetch(actionPath, {
+      method: 'POST',
+      credentials: 'same-origin',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', Accept: 'text/html' },
+      body: body.toString()
+    }).then(function (response) {
+      return response.text().then(function (html) { return { response: response, html: html }; });
+    }).then(function (result) {
+      var finalUrl = new URL(result.response.url, window.location.origin);
+      if (finalUrl.pathname === actionPath && finalUrl.searchParams.has('error')) {
+        completeFailure(result.html);
+        return;
+      }
+      if (finalUrl.pathname === actionPath) {
+        submitting = false;
+        bootstrapPromise = null;
+        bootstrap();
+        return;
+      }
+      if (finalUrl.pathname === '/oauth2' || finalUrl.pathname === '/oauth2/') window.location.assign(successUrl.href);
+      else window.location.assign(finalUrl.href);
+    }).catch(function () {
+      submitting = false;
+      bootstrapPromise = null;
+      bootstrap();
+    });
+  });
+
+  bootstrap();
+})();</script></html>

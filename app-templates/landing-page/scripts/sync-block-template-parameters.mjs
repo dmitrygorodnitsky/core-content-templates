@@ -246,11 +246,13 @@ const extractTemplateParameterRefs = (template) => {
   return refs;
 };
 
+const SERVER_PROVIDED_PLACEHOLDER_TYPES = new Set(["BLOG_POST_CONTENT_SS"]);
+
 const missingTemplateParameterRefs = ({ template, parameters }) => {
   const refs = extractTemplateParameterRefs(template);
   const codes = new Set((parameters || []).map((parameter) => parameter.code));
   return [...refs.entries()]
-    .filter(([code]) => !codes.has(code))
+    .filter(([code, type]) => !codes.has(code) && !SERVER_PROVIDED_PLACEHOLDER_TYPES.has(type))
     .map(([code, type]) => `${code}@${type}`)
     .sort();
 };

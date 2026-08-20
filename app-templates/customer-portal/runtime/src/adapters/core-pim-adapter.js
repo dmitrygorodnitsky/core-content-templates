@@ -245,7 +245,7 @@ function normalizeModels(rows, productCodes) {
     return {
       ref: opaqueRef("product-model", row.code),
       code: String(row.code || ""),
-      name: nls.NAME || String(row.code || "Collection"),
+      name: nls.NAME || "Collection",
       description: stripHtml(nls.DESCRIPTION || ""),
       productCodes: codes,
       variantAttributes: variantAttributes,
@@ -384,13 +384,13 @@ function normalizePimRows(data, config) {
       id: product.code || "pim-" + index,
       code: product.code || "pim-" + index,
       // The Core ids behind this catalog row. `id`/`code` above are the
-      // customer-facing product code; adding to the server cart needs the real
+      // internal product code; adding to the server cart needs the real
       // Product and ProductPrice ids, and reaching into `row` for them from a
       // route or a command is exactly the brittleness this avoids.
       backendProductId: Number.isInteger(Number(product.id)) ? Number(product.id) : null,
       backendPriceId: Number.isInteger(Number(row.price && row.price.price && row.price.price.id))
         ? Number(row.price.price.id) : null,
-      name: nls.NAME || product.code || "Plan",
+      name: nls.NAME || "Published item",
       description: stripHtml(nls.DESCRIPTION || ""),
       price: customPrice ? "Custom" : formatCurrency(amount, currency),
       priceNum: customPrice ? 0 : amount,
@@ -398,12 +398,17 @@ function normalizePimRows(data, config) {
       interval: formatInterval(interval),
       cta: customPrice ? "Contact us" : config.pimCta || "Choose plan",
       attributes: product.attributes || {},
+      displayTag: textValue(productAttribute(product.attributes, "DISPLAY_TAG")),
       variantFacts: variantFacts(product.attributes),
       productTypeCode: product.type && product.type.code || row.productTypeCode || row.__productTypeCode || "",
       allowedActions: customPrice ? ["support.open"] : ["cart.addItem"],
       row: row,
     };
   });
+}
+
+function textValue(value) {
+  return value === undefined || value === null ? "" : String(value).trim();
 }
 
 function variantFacts(attributes) {
@@ -470,7 +475,16 @@ function formatInterval(value) {
 
 function productFromRow(row) {
   var wrapper = (row && row.product) || {};
-  return wrapper.product || wrapper;
+  var product = wrapper.product || wrapper;
+  // Core's live price-comparison response keeps identity/NLS on
+  // `row.product.product`, but type and typed attributes on the surrounding
+  // `row.product` wrapper.  Returning only the inner object silently discarded
+  // DISPLAY_TAG and every variant fact even though the API had supplied them.
+  if (product === wrapper) return product;
+  return Object.assign({}, product, {
+    attributes: wrapper.attributes || product.attributes || {},
+    type: wrapper.type || product.type || null,
+  });
 }
 
 function localized(nls, locale) {

@@ -5,11 +5,15 @@
 // explicit demo residual until the backend exposes the customer-portal scope
 // endpoints; it must not be presented as a production authorization boundary.
 
+import { normalizeCoreAvailability } from "../normalizers/spa-availability.js";
+
 const REF_PREFIX = "appt-core-";
 const DEMO_CODE_PREFIX = "CP_DEMO_";
 const APPOINTMENT_TYPE = "SPA_VISIT";
 const CARE_TASK_TYPE = "SPA_CARE_TASK";
 const ORDER_TYPE = "SPA_ORDER";
+const RESOURCE_TYPE = "SPA_SERVICE_PROVIDER";
+const LOCATION_TYPE = "SPA_STUDIO";
 
 const REF_MAPPINGS = [{ name: "id" }, { name: "code" }, { name: "nls" }];
 const APPOINTMENT_MAPPINGS = [
@@ -43,6 +47,14 @@ const ORDER_MAPPINGS = [
   { key: "id", mappings: REF_MAPPINGS, name: "workflow", type: "identifier" },
 ];
 
+const RESOURCE_MAPPINGS = [
+  { name: "attributes" },
+  { name: "code" },
+  { name: "id" },
+  { name: "nls" },
+  { key: "id", mappings: REF_MAPPINGS, name: "type", type: "identifier" },
+];
+
 const flights = new Map();
 
 export function createCoreSpaDemoAdapter(options = {}) {
@@ -69,6 +81,7 @@ export function createCoreSpaDemoAdapter(options = {}) {
 }
 
 const CANCEL_EVENT = "SCHEDULED-CANCELLED";
+const CONFIRM_EVENT = "REQUESTED-SCHEDULED";
 
 /**
  * Cancels a visit through its workflow event and proves it from the readback.
@@ -94,7 +107,7 @@ export function cancelCoreAppointment(ref, context, fetchImpl = globalThis.fetch
       throw contractError("appointment-not-cancellable", "This appointment cannot be cancelled in its current state");
     }
 
-    await requestJson(fetchImpl, api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
+    await requestCommand(fetchImpl, api.serviceBase + "/api/appointment/" + id + "/send-event.json?event=" + CANCEL_EVENT,
       requestOptions(api, {}));
 
     var readback = normalizeAppointment(
@@ -126,10 +139,39 @@ export async function loadCoreAppointments(context, fetchImpl = globalThis.fetch
     : [];
   var items = scoped.map(normalizeAppointment);
   var now = Number.isFinite(Number(api.config.now)) ? Number(api.config.now) : Date.now();
-  var upcoming = items.filter(function (item) { return item.startEpoch >= now && item.customerStatus !== "Cancelled"; });
-  var past = items.filter(function (item) { return item.startEpoch < now || item.customerStatus === "Completed" || item.customerStatus === "Cancelled"; }).reverse();
+  var terminalStatuses = new Set(["Completed", "Cancelled", "Rejected"]);
+  var upcoming = items.filter(function (item) { return item.startEpoch >= now && !terminalStatuses.has(item.customerStatus); });
+  var past = items.filter(function (item) { return item.startEpoch < now || terminalStatuses.has(item.customerStatus); }).reverse();
   var byRef = {};
   items.forEach(function (item) { byRef[item.ref] = item; });
+  var availability;
+  try {
+    var resourceResults = await Promise.all([RESOURCE_TYPE, LOCATION_TYPE].map(function (typeCode) {
+      return requestJson(fetchImpl, api.resourceBase + "/api/resource/list.json", requestOptions(api, {
+        filters: [{ type: "STRING", operator: "=", property: "type.code", value: typeCode }],
+        mappings: RESOURCE_MAPPINGS,
+        offset: 0,
+        pageSize: positiveInteger(api.config.resourcesPageSize) || 100,
+        sorting: [{ field: "code", direction: "ASC" }],
+      }));
+    }));
+    var providerResponse = resourceResults[0];
+    var locationResponse = resourceResults[1];
+    availability = normalizeCoreAvailability(providerResponse && providerResponse.result, rows, {
+      now: now,
+      horizonDays: api.config.bookingHorizonDays,
+      maxVisibleDays: api.config.bookingVisibleDays,
+      locationRows: locationResponse && locationResponse.result,
+    });
+  } catch (error) {
+    if (error && error.code === "session-expired") throw error;
+    availability = {
+      state: "error",
+      reasonCode: error && error.code || "availability-load-failed",
+      providers: [],
+      busy: [],
+    };
+  }
   return {
     state: items.length ? "ready" : "empty",
     // Named to stay honest: the narrowing is done by this client, not by Core.
@@ -141,18 +183,28 @@ export async function loadCoreAppointments(context, fetchImpl = globalThis.fetch
     upcoming: upcoming.slice(1),
     past: past,
     byRef: byRef,
+    availability: availability,
   };
 }
 
 export function createCoreAppointment(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
-  var key = "appointment:create:" + idempotencyPart(input && input.requestRef || input && input.slotRef || "booking");
+  var key = "appointment:create:"
+    + customerFlightPart(context) + ":"
+    + idempotencyPart(input && input.requestRef || input && input.slotRef || "booking");
   return singleFlight(key, async function () {
     var api = requestContext(context, explicitOrigin);
-    var code = DEMO_CODE_PREFIX + "APPT_" + idempotencyPart(input && input.requestRef || input && input.slotRef || Date.now());
+    var accountId = positiveInteger(api.customer && api.customer.id);
+    if (!accountId) throw contractError("customer-account-required", "Resolved customer Account is required before booking");
+    var requestRef = accountId + "_" + idempotencyPart(input && input.requestRef || input && input.slotRef || Date.now());
+    // appointment.code is varchar(64), and the task code appends `_TASK`.
+    // Keep the Appointment at 59 chars maximum so both records fit. Long
+    // selection identities retain a deterministic hash suffix rather than
+    // being naively truncated into collisions.
+    var code = boundedEntityCode(DEMO_CODE_PREFIX + "APPT_", requestRef, 59);
     var existing = await listOne(fetchImpl, api.serviceBase + "/api/appointment/list.json", api, [
       { type: "STRING", operator: "=", property: "code", value: code },
     ], APPOINTMENT_MAPPINGS);
-    if (existing) return normalizeAppointment(existing);
+    if (existing) return confirmRequestedAppointment(existing, api, fetchImpl, accountId, input);
 
     var resolved = await Promise.all([
       resolveTypeWithWorkflow(fetchImpl, api, api.serviceBase, "appointment-type", APPOINTMENT_TYPE, "appointment-type-missing"),
@@ -169,6 +221,13 @@ export function createCoreAppointment(input, context, fetchImpl = globalThis.fet
     var durationMinutes = positiveInteger(input && input.durationMinutes) || 60;
     var end = new Date(Date.parse(start) + durationMinutes * 60000).toISOString();
     var serviceName = text(input && input.serviceName) || "Spa appointment";
+    var serviceProductId = positiveInteger(input && input.serviceProductId);
+    if (!serviceProductId) throw contractError("service-product-required", "A Core Product is required before booking");
+    var resourceIds = Array.from(new Set((Array.isArray(input && input.resourceIds) ? input.resourceIds : [])
+      .map(positiveInteger).filter(Boolean)));
+    if (!resourceIds.length) throw contractError("appointment-resources-required", "A bookable Resource is required before booking");
+    var specialistAccountId = positiveInteger(input && input.specialistAccountId);
+    if (!specialistAccountId) throw contractError("specialist-account-required", "A specialist Account is required before booking");
 
     // appointment.task_id is NOT NULL in core-svc, so each visit gets its own
     // task rather than borrowing another appointment's.
@@ -182,7 +241,17 @@ export function createCoreAppointment(input, context, fetchImpl = globalThis.fet
 
     var entity = {
       attributes: customerAttributes(api, visitType, {
-        SERVICE_PRODUCT: positiveInteger(input && input.serviceProductId) || null,
+        ADD_ON_REFS: textList(input && input.addOnRefs),
+        BOOKING_ORIGIN: "CUSTOMER_PORTAL",
+        BOOKING_OPTIONS_VERSION: text(input && input.bookingOptionsVersion) || null,
+        CUSTOMER_NOTE: text(input && input.customerNote) || null,
+        LOCATION_LABEL: text(input && input.locationLabel) || null,
+        LOCATION_RESOURCE: positiveInteger(input && input.locationResourceId),
+        REQUEST_REF: requestRef,
+        RESOURCES: resourceIds,
+        SERVICE_PRODUCT: serviceProductId,
+        SPECIALIST_ACCOUNT: specialistAccountId,
+        VISIT_MODE: text(input && input.visitMode) || null,
       }),
       code: code,
       end: end,
@@ -198,8 +267,59 @@ export function createCoreAppointment(input, context, fetchImpl = globalThis.fet
     }));
     var id = positiveInteger(Array.isArray(savedIds) && savedIds[0]);
     if (!id) throw contractError("invalid-save-response", "Core Appointment save did not return an id");
-    return normalizeAppointment(await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS));
+    var requested = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
+    return confirmRequestedAppointment(requested, api, fetchImpl, accountId, input);
   });
+}
+
+function customerFlightPart(context) {
+  var state = context && context.state || {};
+  var session = context && context.session || state.session || {};
+  var customer = context && context.account || state.customerAccount || session.account || {};
+  return positiveInteger(customer.id) || "unresolved";
+}
+
+async function confirmRequestedAppointment(row, api, fetchImpl, accountId, input) {
+  if (!row || !positiveInteger(row.id)) throw contractError("appointment-not-found", "Core Appointment was not found after booking");
+  if (customerAttributeId(row, "CUSTOMER_ACCOUNT") !== accountId) {
+    throw contractError("appointment-forbidden", "Booking idempotency resolved another customer's appointment");
+  }
+  var before = normalizeAppointment(row);
+  assertBookingSelection(row, input);
+  if (before.customerStatus === "Confirmed") return before;
+  if (before.customerStatus !== "Requested") {
+    throw contractError("appointment-request-unavailable", "Core did not keep the booking in a confirmable request state");
+  }
+  try {
+    await requestCommand(
+      fetchImpl,
+      api.serviceBase + "/api/appointment/" + before.backendId + "/send-event.json?event=" + CONFIRM_EVENT,
+      requestOptions(api, {}),
+    );
+  } catch (error) {
+    // Staging's generic workflow-event dispatcher currently returns an opaque
+    // 5xx tenant-wide, including for an administrator. The Appointment save is
+    // still authoritative and has already been read back in REQUESTED. Keep
+    // that honest result instead of telling the customer nothing was recorded.
+    // Authorization/conflict/client failures still fail normally: only the
+    // proven backend-dispatch outage degrades to a pending studio request.
+    if (error && error.code === "core-request-failed" && Number(error.status) >= 500) {
+      return Object.assign({}, before, { confirmationMode: "studio-request" });
+    }
+    throw error;
+  }
+  var confirmed = normalizeAppointment(
+    await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + before.backendId, api, APPOINTMENT_MAPPINGS),
+  );
+  if (confirmed.customerStatus === "Requested") {
+    assertNormalizedBookingSelection(confirmed, input);
+    return Object.assign({}, confirmed, { confirmationMode: "studio-request" });
+  }
+  if (confirmed.customerStatus !== "Confirmed") {
+    throw contractError("appointment-confirm-unconfirmed", "Core did not report the appointment as scheduled");
+  }
+  assertNormalizedBookingSelection(confirmed, input);
+  return Object.assign({}, confirmed, { confirmationMode: "confirmed" });
 }
 
 export function rescheduleCoreAppointment(ref, input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
@@ -211,9 +331,20 @@ export function rescheduleCoreAppointment(ref, input, context, fetchImpl = globa
     var start = validIso(input && input.start);
     var currentStart = Date.parse(current.start);
     var currentEnd = Date.parse(current.end);
-    var duration = Number.isFinite(currentEnd - currentStart) && currentEnd > currentStart ? currentEnd - currentStart : 60 * 60000;
+    var currentDuration = Number.isFinite(currentEnd - currentStart) && currentEnd > currentStart ? currentEnd - currentStart : 60 * 60000;
+    var duration = (positiveInteger(input && input.durationMinutes) || Math.round(currentDuration / 60000)) * 60000;
     var entity = {
-      attributes: current.attributes || {},
+      attributes: mergeAppointmentAttributes(current.attributes, current.type, {
+        ADD_ON_REFS: textList(input && input.addOnRefs),
+        BOOKING_OPTIONS_VERSION: text(input && input.bookingOptionsVersion) || null,
+        CUSTOMER_NOTE: text(input && input.customerNote) || null,
+        LOCATION_LABEL: text(input && input.locationLabel) || null,
+        LOCATION_RESOURCE: positiveInteger(input && input.locationResourceId),
+        RESOURCES: Array.from(new Set((Array.isArray(input && input.resourceIds) ? input.resourceIds : []).map(positiveInteger).filter(Boolean))),
+        SERVICE_PRODUCT: positiveInteger(input && input.serviceProductId),
+        SPECIALIST_ACCOUNT: positiveInteger(input && input.specialistAccountId),
+        VISIT_MODE: text(input && input.visitMode) || null,
+      }),
       code: text(current.code),
       end: new Date(Date.parse(start) + duration).toISOString(),
       id: id,
@@ -229,7 +360,9 @@ export function rescheduleCoreAppointment(ref, input, context, fetchImpl = globa
     await requestJson(fetchImpl, api.serviceBase + "/api/appointment/save.json", requestOptions(api, {
       entities: [entity], mappings: APPOINTMENT_MAPPINGS,
     }));
-    return normalizeAppointment(await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS));
+    var readback = await getEntity(fetchImpl, api.serviceBase + "/api/appointment/get.json?id=" + id, api, APPOINTMENT_MAPPINGS);
+    assertBookingSelection(readback, input);
+    return normalizeAppointment(readback);
   });
 }
 
@@ -478,6 +611,19 @@ async function ensureVisitTask(fetchImpl, api, options) {
     { type: "STRING", operator: "=", property: "code", value: options.code },
   ], TASK_MAPPINGS);
   if (existing) return positiveInteger(existing.id);
+  // Task is a mandatory Appointment relation in Core, but the current generic
+  // customer path can return an opaque 500 when it tries to create one. The
+  // customer's care plan is already ownership-checked above, so an existing
+  // SPA_CARE_TASK under that exact plan is a safe staging bridge: it cannot be
+  // borrowed from another customer's plan and it avoids making Task creation
+  // a prerequisite for recording the Appointment request.
+  var careTasks = await listMany(fetchImpl, api.serviceBase + "/api/task/list.json", api, [
+    { type: "STRING", operator: "=", property: "type.code", value: CARE_TASK_TYPE },
+  ], TASK_MAPPINGS);
+  var reusable = careTasks.find(function (row) {
+    return positiveInteger(row && row.project && row.project.id) === positiveInteger(options.carePlan && options.carePlan.id);
+  });
+  if (reusable && positiveInteger(reusable.id)) return positiveInteger(reusable.id);
   var savedIds = await requestJson(fetchImpl, api.serviceBase + "/api/task/save.json", requestOptions(api, {
     entities: [{
       attributes: customerAttributes(api, options.taskType),
@@ -555,6 +701,61 @@ function customerAttributes(api, typeRef, extra) {
   return attributes;
 }
 
+function mergeAppointmentAttributes(attributes, typeRef, extra) {
+  var result = Object.assign({}, attributes || {});
+  var typeId = typeRef && typeRef.id;
+  if (typeId == null) return result;
+  var group = Object.assign({}, result[String(typeId)] || {});
+  Object.keys(extra || {}).forEach(function (key) {
+    if (extra[key] == null) delete group[key];
+    else group[key] = { value: extra[key] };
+  });
+  result[String(typeId)] = group;
+  return result;
+}
+
+function appointmentAttributeValue(row, code) {
+  var typeId = row && row.type && row.type.id;
+  var group = row && row.attributes && typeId != null ? row.attributes[String(typeId)] : null;
+  var entry = group && group[code];
+  return entry && Object.prototype.hasOwnProperty.call(entry, "value") ? entry.value : null;
+}
+
+function assertBookingSelection(row, input) {
+  if (!input) return;
+  var expected = {
+    addOnRefs: textList(input.addOnRefs),
+    bookingOptionsVersion: text(input.bookingOptionsVersion),
+    customerNote: text(input.customerNote),
+    locationLabel: text(input.locationLabel),
+    locationResourceId: positiveInteger(input.locationResourceId),
+    visitMode: text(input.visitMode),
+  };
+  var observed = {
+    addOnRefs: textList(appointmentAttributeValue(row, "ADD_ON_REFS")),
+    bookingOptionsVersion: text(appointmentAttributeValue(row, "BOOKING_OPTIONS_VERSION")),
+    customerNote: text(appointmentAttributeValue(row, "CUSTOMER_NOTE")),
+    locationLabel: text(appointmentAttributeValue(row, "LOCATION_LABEL")),
+    locationResourceId: positiveInteger(appointmentAttributeValue(row, "LOCATION_RESOURCE")),
+    visitMode: text(appointmentAttributeValue(row, "VISIT_MODE")),
+  };
+  if (JSON.stringify(expected) !== JSON.stringify(observed)) {
+    throw contractError("booking-selection-readback-mismatch", "Core Appointment did not retain the selected booking options");
+  }
+}
+
+function assertNormalizedBookingSelection(appointment, input) {
+  if (!input) return;
+  var expectedRefs = textList(input.addOnRefs);
+  if (appointment.visitMode !== text(input.visitMode)
+    || appointment.location !== text(input.locationLabel)
+    || appointment.bookingOptionsVersion !== text(input.bookingOptionsVersion)
+    || appointment.customerNote !== text(input.customerNote)
+    || JSON.stringify(appointment.addOnRefs) !== JSON.stringify(expectedRefs)) {
+    throw contractError("booking-selection-readback-mismatch", "Confirmed Appointment did not retain the selected booking options");
+  }
+}
+
 function getEntity(fetchImpl, url, api, mappings) {
   return requestJson(fetchImpl, url, requestOptions(api, mappings));
 }
@@ -577,6 +778,7 @@ function requestContext(context, explicitOrigin) {
     customer: customer,
     customerUserId: positiveInteger(session.userId || state.session && state.session.userId) || null,
     organization: organization,
+    resourceBase: sameOriginBase(config.resourceApiBase || "/core-rm", origin, "Core Resource API base"),
     serviceBase: sameOriginBase(config.serviceApiBase || "/core-svc", origin, "Core Service API base"),
   };
 }
@@ -596,6 +798,21 @@ function requestOptions(api, body) {
 }
 
 async function requestJson(fetchImpl, url, options) {
+  var response = await requestResponse(fetchImpl, url, options);
+  try { return await response.json(); }
+  catch (_) { throw contractError("invalid-response", "Core response was not valid JSON"); }
+}
+
+// Workflow command endpoints are successful by HTTP status and commonly
+// return an empty body. Their business effect is always proven by the entity
+// readback that follows, so attempting JSON parsing here can only turn a valid
+// 2xx into a false client-side failure.
+async function requestCommand(fetchImpl, url, options) {
+  await requestResponse(fetchImpl, url, options);
+  return true;
+}
+
+async function requestResponse(fetchImpl, url, options) {
   var response = await fetchImpl(url, options);
   if (!response || typeof response.ok !== "boolean") throw contractError("invalid-response", "Core request returned an invalid response");
   if (!response.ok) {
@@ -603,12 +820,27 @@ async function requestJson(fetchImpl, url, options) {
       : response.status === 403 ? "customer-forbidden"
         : response.status === 409 || response.status === 412 ? "conflict"
           : "core-request-failed";
-    var error = contractError(code, "Core request failed with HTTP " + response.status);
+    var detail = await failureDetail(response);
+    var error = contractError(code, "Core request failed with HTTP " + response.status + (detail ? " — " + detail : ""));
     error.status = response.status;
+    if (detail) error.serverDetail = detail;
     throw error;
   }
-  try { return await response.json(); }
-  catch (_) { throw contractError("invalid-response", "Core response was not valid JSON"); }
+  return response;
+}
+
+async function failureDetail(response) {
+  try {
+    var raw = "";
+    if (response && typeof response.clone === "function") raw = await response.clone().text();
+    else if (response && typeof response.json === "function") raw = JSON.stringify(await response.json());
+    raw = text(raw).replace(/\s+/g, " ").slice(0, 500);
+    if (!raw || raw === "{}") return "";
+    try {
+      var parsed = JSON.parse(raw);
+      return text(parsed && (parsed.message || parsed.error || parsed.detail)) || raw;
+    } catch (_) { return raw; }
+  } catch (_) { return ""; }
 }
 
 function normalizeAppointment(row) {
@@ -629,7 +861,7 @@ function normalizeAppointment(row) {
     backendId: id,
     optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
     code: text(row.code),
-    service: localizedName(row.nls) || text(row.code) || "Spa appointment",
+    service: localizedName(row.nls) || "Spa appointment",
     startIso: start,
     endIso: end,
     startEpoch: Date.parse(start),
@@ -637,9 +869,13 @@ function normalizeAppointment(row) {
     date: formatDate(start),
     time: formatTime(start),
     specialist: "",
-    mode: "salon",
-    visitMode: "salon",
-    location: "Harbor Front studio",
+    mode: text(appointmentAttributeValue(row, "VISIT_MODE")) || "salon",
+    visitMode: text(appointmentAttributeValue(row, "VISIT_MODE")) || "salon",
+    location: text(appointmentAttributeValue(row, "LOCATION_LABEL")),
+    locationResourceId: positiveInteger(appointmentAttributeValue(row, "LOCATION_RESOURCE")),
+    addOnRefs: textList(appointmentAttributeValue(row, "ADD_ON_REFS")),
+    customerNote: text(appointmentAttributeValue(row, "CUSTOMER_NOTE")),
+    bookingOptionsVersion: text(appointmentAttributeValue(row, "BOOKING_OPTIONS_VERSION")),
     price: null,
     displayPrice: null,
     reference: REF_PREFIX + id,
@@ -674,8 +910,11 @@ function normalizeOrder(row, accountId) {
 function appointmentStatus(states) {
   if (states.includes("COMPLETED")) return "Completed";
   if (states.includes("CANCELLED")) return "Cancelled";
+  if (states.includes("REJECTED")) return "Rejected";
   if (states.includes("IN_PROGRESS")) return "In progress";
-  return "Confirmed";
+  if (states.includes("SCHEDULED")) return "Confirmed";
+  if (states.includes("REQUESTED")) return "Requested";
+  return "Unknown";
 }
 
 function appointmentId(ref) {
@@ -693,6 +932,8 @@ function singleFlight(key, operation) {
   return promise;
 }
 
+export function resetCoreSpaDemoFlightsForTest() { flights.clear(); }
+
 function sameOriginBase(value, origin, label) {
   if (!origin) throw contractError("origin-required", label + " requires a browser origin");
   var target = new URL(String(value || ""), origin);
@@ -701,14 +942,35 @@ function sameOriginBase(value, origin, label) {
 }
 
 function browserOrigin() { return globalThis.location && globalThis.location.origin || ""; }
-function positiveInteger(value) { var number = Number(value); return Number.isInteger(number) && number > 0 ? number : null; }
+function positiveInteger(value) {
+  var candidate = value && typeof value === "object" && !Array.isArray(value) ? value.id : value;
+  var number = Number(candidate);
+  return Number.isInteger(number) && number > 0 ? number : null;
+}
 function finiteNumber(value, fallback) { var number = Number(value); return Number.isFinite(number) ? number : fallback; }
 function text(value) { return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim(); }
+function textList(value) { return (Array.isArray(value) ? value : value == null || value === "" ? [] : [value]).map(text).filter(Boolean).sort(); }
 function localizedName(value) { if (!value || typeof value !== "object") return ""; var localized = value.en || value["en-US"] || Object.values(value)[0] || {}; return text(localized && (localized.NAME || localized.name)); }
 function requiredRef(value, label) { var id = value && positiveInteger(value.id); if (!id) throw contractError("template-reference-missing", label + " is missing"); return { id: id }; }
 function optionalRef(value) { var id = value && positiveInteger(value.id); return id ? { id: id } : null; }
 function validIso(value) { var date = new Date(value); if (!Number.isFinite(date.getTime())) throw contractError("invalid-date", "Appointment date is invalid"); return date.toISOString(); }
-function idempotencyPart(value) { var clean = text(value).toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, ""); return (clean || "REQUEST").slice(0, 72); }
+function idempotencyPart(value, maxLength) {
+  var clean = text(value).toUpperCase().replace(/[^A-Z0-9]+/g, "_").replace(/^_+|_+$/g, "") || "REQUEST";
+  var limit = positiveInteger(maxLength) || 32;
+  if (clean.length <= limit) return clean;
+  var suffix = "_" + stableCodeHash(clean);
+  return clean.slice(0, Math.max(1, limit - suffix.length)) + suffix;
+}
+function boundedEntityCode(prefix, value, maxLength) {
+  var room = Math.max(10, Number(maxLength) - String(prefix).length);
+  return String(prefix) + idempotencyPart(value, room);
+}
+function stableCodeHash(value) {
+  var hash = 2166136261;
+  var input = String(value || "");
+  for (var index = 0; index < input.length; index += 1) hash = Math.imul(hash ^ input.charCodeAt(index), 16777619);
+  return (hash >>> 0).toString(36).toUpperCase().padStart(7, "0");
+}
 function formatDate(value) { return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/Chicago" }).format(new Date(value)); }
 function formatTime(value) { return new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" }).format(new Date(value)); }
 function formatDateTime(value) { return new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/Chicago" }).format(new Date(value)); }
@@ -717,6 +979,10 @@ function contractError(code, message) { var error = new Error(message); error.co
 export const coreSpaDemoContract = Object.freeze({
   appointmentMappings: APPOINTMENT_MAPPINGS,
   appointmentTypeCode: APPOINTMENT_TYPE,
+  confirmEvent: CONFIRM_EVENT,
+  locationTypeCode: LOCATION_TYPE,
   orderMappings: ORDER_MAPPINGS,
+  resourceMappings: RESOURCE_MAPPINGS,
+  resourceTypeCode: RESOURCE_TYPE,
   scopeMode: "tenant-demo-unscoped",
 });

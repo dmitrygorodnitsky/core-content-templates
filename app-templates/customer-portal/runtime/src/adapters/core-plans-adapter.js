@@ -144,7 +144,7 @@ function normalizeEnrollment(row) {
     remainingUses: remaining,
     sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
     status: status,
-    title: localizedName(row.nls) || text(row.code) || "Package",
+    title: localizedName(row.nls) || "Package",
     totalUses: total,
   };
 }

@@ -122,7 +122,7 @@ codes everywhere they are consumed.
 | `CX_DIRECTION` | `STRING` with options | yes for Core Auth | `ltr` or `rtl`; shared by login and 2FA. |
 | `CX_BRAND_NAME` | `LOCALIZED_STRING_SS` | yes | Visible brand name shared by landing, portal, login, and 2FA. |
 | `CX_LANDING_URL` | `STRING` | yes | Canonical public landing entry. |
-| `CX_PORTAL_URL` | `STRING` | yes | Authenticated portal document entry, without a tenant-editable internal route. |
+| `CX_PORTAL_URL` | `STRING` | yes | Authenticated portal document entry and the same-origin success destination for direct-session login, without a tenant-editable internal route. |
 | `CX_SUPPORT_URL` | `STRING` | no | Approved support destination. Empty means unavailable; it never invents support. |
 | `CX_ALLOWED_NAV_ORIGINS` | `STRING` | yes | Comma-separated allowlist used to validate generated cross-document destinations. |
 
@@ -190,6 +190,7 @@ These values select only runtime behavior that the code already supports.
 | `PORTAL_CORE_API_BASE` | same-origin path | Usually `/core`. |
 | `PORTAL_ACCOUNT_API_BASE` | same-origin path | Usually `/core-acct`. |
 | `PORTAL_SERVICE_API_BASE` | same-origin path | Usually `/core-svc`. |
+| `PORTAL_RESOURCE_API_BASE` | same-origin path | Usually `/core-rm`; owns bookable Resource availability. |
 | `PORTAL_BILL_API_BASE` | same-origin path | Usually `/core-bill`. |
 | `PORTAL_PIM_API_BASE` | same-origin path | Usually `/core-pim/api`. |
 | `PORTAL_PIM_ORGANIZATION` | organization code | Public/catalog selector, not customer scope. |
@@ -224,6 +225,16 @@ The following must never be CMS parameters or descriptor defaults:
 The six Core Auth placeholders remain request-owned and are not CMS parameters:
 `LOGIN_ACTION`, `CSRF_PARAMETER_NAME`, `CSRF_TOKEN`, `RESET_PASSWORD_URL`,
 `ERROR_DISPLAY`, and `LOGOUT_DISPLAY`.
+
+When the CMS login URL is opened directly and those placeholders remain raw,
+the generated compatibility runtime fails closed, retrieves the current
+same-origin `_csrf` value from `/oauth2/login`, submits credentials once to that
+endpoint, refreshes the token after a credential failure, and returns to the
+same-origin `returnUrl` query value or descriptor-owned `CX_PORTAL_URL` after
+success. Cross-origin and login-loop returns are rejected. The token is kept
+only in the page DOM; it is never a descriptor or CMS value. A Core
+Auth-rendered page with resolved placeholders retains its native form behavior
+and does not run the bootstrap.
 
 ## Navigation contract
 
@@ -335,6 +346,7 @@ The repository source should be a schema-validated document resembling:
     "coreApiBase": "/core",
     "accountApiBase": "/core-acct",
     "serviceApiBase": "/core-svc",
+    "resourceApiBase": "/core-rm",
     "billApiBase": "/core-bill",
     "pimApiBase": "/core-pim/api",
     "authCallbackPath": "/core/oauth2-callback.html"
@@ -430,8 +442,9 @@ The generated family is acceptable only when automated checks prove:
 9. CMS parameter values contain no credential, customer/session identity, or
    private entity data;
 10. a repeated build is deterministic and a repeated CMS sync is a no-op;
-11. anonymous landing -> portal -> Core Auth -> intended portal route and
-    logout return are proven end-to-end for the selected PageContexts.
+11. the selected authentication entry — OIDC/Core Auth rendering or direct CMS
+    session bootstrap — and its intended portal/logout returns are proven
+    end-to-end for the selected PageContexts.
 12. anonymous selection resume is single-flight, server-idempotent, Account-
     gated, and preserves its capsule for retry after failed reconciliation.
 
@@ -536,9 +549,9 @@ render another tenant's defaults.
 
 The compiler performs no CMS upload and no consumer/PageContext switch.
 `--require-resolved` refuses output unless all URL and login-selector gates are
-closed. Calm Harbor now reserves `https://dev-1.servicewand.com/calm-harbor-spa/`
+closed. Calm Harbor now reserves `https://dev-1.servicewand.com/calm-harbor-spa`
 for the landing and
-`https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/` for the portal.
+`https://dev-1.servicewand.com/calm-harbor-spa-customer-portal` for the portal.
 Both remain `planned` because anonymous probes returned HTTP 404 on 2026-08-05;
 the trusted Core Auth PageContext selector is also still unproven.
 

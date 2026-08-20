@@ -97,7 +97,7 @@ const result = pricing.normalize(data, {
 assert.equal(result.plans[0].name, "English plan");
 assert.notEqual(result.plans[0].name, result.plans[0].code);
 assert.equal(result.plans[0].description, "Description française");
-assert.equal(result.plans[1].name, "");
+assert.equal(result.plans[1].name, "Published plan");
 assert.notEqual(result.plans[1].name, result.plans[1].code);
 assert.deepEqual(
   result.groups[0].attributes.map((attribute) => attribute.values[0].text),

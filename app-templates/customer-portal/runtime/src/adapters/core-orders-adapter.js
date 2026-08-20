@@ -413,7 +413,7 @@ function purchaseKind(lines) {
 
 function lineTitle(line) {
   var product = line.itemPrice && line.itemPrice.product;
-  return localizedName(product && product.nls) || text(product && product.code) || text(line.notes) || "Item";
+  return localizedName(product && product.nls) || text(line.notes) || "Item";
 }
 
 /**

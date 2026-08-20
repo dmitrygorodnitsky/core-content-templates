@@ -48,13 +48,13 @@
     {
       "code": "CX_LANDING_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa",
       "source": "resolved.landingUrl"
     },
     {
       "code": "CX_PORTAL_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal",
       "source": "resolved.portalUrl"
     },
     {
@@ -66,25 +66,25 @@
     {
       "code": "NAV_PORTAL_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal",
       "source": "resolved.primaryDestination"
     },
     {
       "code": "NAV_PORTAL_SERVICES_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/services",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal#/services",
       "source": "resolved.servicesDestination"
     },
     {
       "code": "NAV_PORTAL_PRICING_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/pricing",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal#/pricing",
       "source": "resolved.pricingDestination"
     },
     {
       "code": "NAV_PORTAL_PRODUCTS_URL",
       "type": "STRING",
-      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal/#/products",
+      "value": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal#/products",
       "source": "resolved.productsDestination"
     },
     {

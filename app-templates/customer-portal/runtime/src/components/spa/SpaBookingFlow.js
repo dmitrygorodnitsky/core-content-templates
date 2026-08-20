@@ -13,7 +13,8 @@
 // (ok | unavailable | exhausted | changed) gates the flow verbatim.
 import { h } from "../../dom.js";
 import { F } from "../../../data/fixtures.js";
-import { cmdPhase, currentAppointment, spaCatalogServices, spaCurrentApiDemoOpen, state } from "../../state.js";
+import { ACTIONS } from "../../actions.js";
+import { cmdPhase, currentAppointment, spaAddonChange, spaBookingModel, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCatalogServices, spaCurrentApiDemoOpen, spaEligibleLocations, spaFlowSteps, spaNoteState, spaOptionsComplete, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaVisitMode, state } from "../../state.js";
 import { ActionButton } from "../primitives/ActionButton.js";
 import { InlineFailure, skel } from "../primitives/RouteStates.js";
 import { SimulationBadge } from "./CommerceBits.js";
@@ -23,12 +24,14 @@ function svcByCode(code) { return spaCatalogServices().find(function (s) { retur
 // actions.js. Returning null here keeps every caller on its absent-data path
 // instead of dereferencing undefined.
 function dayByKey(key) {
-  var days = (F.spaBooking && Array.isArray(F.spaBooking.days)) ? F.spaBooking.days : [];
+  var booking = spaBookingModel();
+  var days = (booking && Array.isArray(booking.days)) ? booking.days : [];
   return days.find(function (d) { return d.key === key; }) || days[0] || null;
 }
 function slotLabel(f) {
-  for (var i = 0; i < F.spaBooking.days.length; i++) {
-    var d = F.spaBooking.days[i];
+  var days = spaBookingModel().days || [];
+  for (var i = 0; i < days.length; i++) {
+    var d = days[i];
     var s = (d.slots || []).find(function (x) { return x.ref === f.slotRef; });
     if (s) return d.label + " \u00b7 " + s.label;
   }
@@ -44,14 +47,11 @@ export function flowTitle(f) {
 
 /* step rail — specialist appears ONLY when the server returned specialists */
 function stepsBar(f) {
-  var hasSpec = !!(f.serviceCode && (F.spaBooking.eligibleSpecialists[f.serviceCode] || []).length);
-  var steps = f.entry === "reschedule"
-    ? [{ k: "slots", l: "New time" }, { k: "review", l: "Review" }]
-    : [{ k: "context", l: "Service" }].concat(hasSpec ? [{ k: "specialist", l: "Specialist" }] : []).concat([{ k: "slots", l: "Time" }, { k: "review", l: "Review" }]);
+  var steps = spaFlowSteps(f);
   var idx = steps.findIndex(function (s) { return s.k === f.step; });
   if (idx === -1) idx = 0;
-  return h("div", { "class": "bk-steps", "data-module": "booking-steps", "data-visual-id": "booking-steps" }, steps.map(function (s, i) {
-    return h("span", { "class": "bk-step" + (i === idx ? " bk-step--on" : i < idx ? " bk-step--done" : "") }, [
+  return h("div", { "class": "bk-steps", "data-module": "booking-steps", "data-visual-id": "booking-steps", "data-step-count": String(steps.length) }, steps.map(function (s, i) {
+    return h("span", { "class": "bk-step" + (i === idx ? " bk-step--on" : i < idx ? " bk-step--done" : ""), "data-step": s.k, "data-state": i === idx ? "active" : undefined }, [
       h("i", null, i < idx ? "\u2713" : String(i + 1)), s.l
     ]);
   }));
@@ -78,7 +78,7 @@ function creditCard(blockingOnly) {
       h("span", { "class": "kind-chip kind-chip--package" }, "Package"),
       h("b", { style: "font-size:13.5px", "data-bind": "plan.title" }, "Six-visit facial series")
     ]),
-    h("div", { style: "font-size:12.5px;line-height:1.5;color:var(--ink-2);margin-top:6px", "data-bind": "booking.creditNote" }, F.spaBooking.creditNotes[cs])
+    h("div", { style: "font-size:12.5px;line-height:1.5;color:var(--ink-2);margin-top:6px", "data-bind": "booking.creditNote" }, spaBookingModel().creditNotes[cs])
   ]);
   if (cs === "changed") wrap.appendChild(h("div", { style: "margin-top:8px" }, ActionButton({ variant: "btn--ghost", label: "Reload balance", action: "ui.retry", id: "plan-credit", visualId: "credit-reload" })));
   if (cs === "exhausted") wrap.appendChild(h("div", { style: "margin-top:8px;font-size:12px" }, h("span", { "class": "link-action", "data-action": "account.openPlan" }, "Open My plan \u203a")));
@@ -89,6 +89,7 @@ function creditCard(blockingOnly) {
 
 /* ---- step: context (service / plan-credit) ---- */
 function stepContext(f) {
+  var booking = spaBookingModel();
   var parts = [];
   if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
   var credit = creditCard(false);
@@ -112,7 +113,7 @@ function stepContext(f) {
   } else {
     parts.push(h("div", { "class": "bk-section-label" }, "Choose a treatment"));
     var list = h("div", { "class": "bk-opts", "data-module": "booking-context", "data-visual-id": "booking-service-list" });
-    (spaCurrentApiDemoOpen() ? spaCatalogServices().map(function (service) { return service.code; }) : F.spaBooking.eligibleServices).forEach(function (code) {
+    booking.eligibleServices.forEach(function (code) {
       var s = svcByCode(code);
       if (!s) return;
       list.appendChild(h("button", { "class": "bk-opt" + (f.serviceCode === code ? " bk-opt--on" : ""), "data-action": "booking.selectService", "data-id": code, "data-product-code": code, "data-state": f.serviceCode === code ? "active" : undefined }, [
@@ -130,12 +131,134 @@ function stepContext(f) {
   return parts;
 }
 
+function srcBlock(cfg) {
+  var wrap = h("div", { "class": "bk-empty", "data-state": cfg.state, "data-visual-id": cfg.visualId }, [
+    h("div", { style: "font-weight:700;font-size:13.5px" }, cfg.title),
+    h("div", { style: "font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:4px", "data-bind": cfg.bind }, cfg.copy)
+  ]);
+  if (cfg.support) wrap.appendChild(h("div", { style: "margin-top:8px;font-size:12px" }, h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203a")));
+  return wrap;
+}
+
+function visitModeGroup(f, o) {
+  if (!o.capabilities.visitMode || !o.visitModes.length) return null;
+  var modes = o.visitModes;
+  var group = h("div", { "class": "bk-group", "data-module": "visit-mode-options", "data-visual-id": "booking-visit-mode", "data-state": modes.length > 1 ? "ready" : "fixed" });
+  group.appendChild(h("div", { "class": "bk-section-label" }, modes.length > 1 ? "How would you like your visit?" : "Your visit"));
+  if (modes.length === 1) {
+    group.appendChild(h("div", { "class": "bk-opt bk-opt--fixed", "data-visit-mode": modes[0].code }, [
+      h("div", { style: "flex:1;min-width:0" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.visitModes[].label" }, modes[0].label)),
+      h("span", { "class": "bk-tag" }, "Set by the studio")
+    ]));
+    return group;
+  }
+  var list = h("div", { "class": "bk-opts" });
+  var cur = spaVisitMode(o);
+  modes.forEach(function (m) {
+    var on = !!(cur && cur.code === m.code);
+    list.appendChild(h("button", { "class": "bk-opt" + (on ? " bk-opt--on" : ""), "data-action": "booking.selectVisitMode", "data-id": m.code, "data-visit-mode": m.code, "data-state": on ? "active" : undefined, role: "radio", "aria-checked": on ? "true" : "false" }, [
+      h("i", { "class": "bk-opt__dot" }),
+      h("div", { style: "flex:1;min-width:0;text-align:left" }, [
+        h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.visitModes[].label" }, m.label),
+        m.locationRequired ? h("div", { style: "font-size:12px;color:var(--ink-3)" }, "You\u2019ll choose the place next") : null
+      ])
+    ]));
+  });
+  group.appendChild(list);
+  return group;
+}
+
+function locationGroup(f, o) {
+  if (!o.capabilities.location) return null;
+  var mode = spaVisitMode(o);
+  if (o.capabilities.visitMode && o.visitModes.length > 1 && !mode) return null;
+  var src = state.spaLocSrc;
+  var group = h("div", { "class": "bk-group", "data-module": "location-options", "data-visual-id": "booking-locations", "data-state": src });
+  group.appendChild(h("div", { "class": "bk-section-label" }, "Where should we see you?"));
+  if (src === "loading") {
+    group.setAttribute("aria-busy", "true");
+    group.appendChild(h("div", null, [skel("height:52px;border-radius:14px"), skel("height:52px;border-radius:14px;margin-top:9px")]));
+    return group;
+  }
+  if (src === "error") { group.appendChild(InlineFailure({ msg: o.copy.locationsError, retryAction: "booking.reloadLocations", retryLabel: "Reload places" })); return group; }
+  if (src === "unavailable") { group.appendChild(srcBlock({ state: "unavailable", visualId: "booking-locations-unavailable", title: "The studio will confirm the place", copy: o.copy.locationsUnavailable, bind: "bookingOptions.locations" })); return group; }
+  if (src === "empty") { group.appendChild(srcBlock({ state: "empty", visualId: "booking-locations-empty", title: "No place is open for this visit", copy: o.copy.locationsEmpty, bind: "bookingOptions.locations", support: true })); return group; }
+  var locations = spaEligibleLocations(o);
+  if (!locations.length) { group.appendChild(srcBlock({ state: "empty", visualId: "booking-locations-no-place", title: "No place on file for at-home visits", copy: o.copy.noSavedPlace, bind: "bookingOptions.locations", support: true })); return group; }
+  if (src === "ineligible") group.appendChild(InlineFailure({ msg: o.copy.locationIneligible, retryAction: "booking.reloadLocations", retryLabel: "Reload places" }));
+  if (locations.length === 1 && src !== "ineligible") {
+    group.appendChild(h("div", { "class": "bk-opt bk-opt--fixed", "data-location-ref": locations[0].ref }, [h("div", { style: "flex:1;min-width:0" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.locations[].label" }, locations[0].label)), h("span", { "class": "bk-tag" }, "Only place available")]));
+    return group;
+  }
+  var picked = spaSelectedLocation(o);
+  var opts = h("div", { "class": "bk-opts" });
+  locations.forEach(function (loc) {
+    var on = !!(picked && picked.ref === loc.ref);
+    opts.appendChild(h("button", { "class": "bk-opt" + (on ? " bk-opt--on" : ""), "data-action": "booking.selectLocation", "data-id": loc.ref, "data-location-ref": loc.ref, "data-state": on ? "active" : undefined, role: "radio", "aria-checked": on ? "true" : "false" }, [h("i", { "class": "bk-opt__dot" }), h("div", { style: "flex:1;min-width:0;text-align:left" }, h("div", { style: "font-weight:650;font-size:13.5px", "data-bind": "bookingOptions.locations[].label" }, loc.label))]));
+  });
+  group.appendChild(opts);
+  group.appendChild(h("div", { "class": "bk-note" }, "Places come from your account \u2014 only the short label is shown here."));
+  return group;
+}
+
+function addonGroup(f, o) {
+  if (!o.capabilities.addOns) return null;
+  var src = state.spaAddonSrc;
+  var group = h("div", { "class": "bk-group", "data-module": "addon-options", "data-visual-id": "booking-addons", "data-state": src });
+  group.appendChild(h("div", { "class": "bk-section-label" }, "Add to your visit"));
+  if (src === "loading") { group.setAttribute("aria-busy", "true"); group.appendChild(h("div", null, [skel("height:58px;border-radius:14px"), skel("height:58px;border-radius:14px;margin-top:9px")])); return group; }
+  if (src === "error") { group.appendChild(InlineFailure({ msg: o.copy.addOnsError, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" })); return group; }
+  if (src === "unavailable") { group.appendChild(srcBlock({ state: "unavailable", visualId: "booking-addons-unavailable", title: "Extras aren\u2019t connected yet", copy: o.copy.addOnsUnavailable, bind: "bookingOptions.addOns" })); return group; }
+  if (!o.addOns.length) return null;
+  if (src === "ineligible") group.appendChild(h("div", { "class": "bk-note", "data-bind": "bookingOptions.addOns", style: "margin:0 0 10px" }, o.copy.addOnsIneligible));
+  var change = spaAddonChange(o);
+  if (change) group.appendChild(InlineFailure({ msg: change.copy, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" }));
+  var selected = f.addOns || [];
+  var list = h("div", { "class": "bk-opts" });
+  o.addOns.forEach(function (addon) {
+    var togglable = (addon.allowedActions || []).indexOf("toggle") !== -1;
+    var on = selected.indexOf(addon.ref) !== -1 || (addon.required && addon.selected && !togglable);
+    var phase = cmdPhase("booking.toggleAddon:" + addon.ref);
+    var meta = h("div", { "class": "bk-addon__meta" }, [addon.displayPrice ? h("b", { style: "font-size:13px", "data-bind": "bookingOptions.addOns[].displayPrice" }, addon.displayPrice) : null, addon.durationNote ? h("span", { "class": "bk-addon__dur", "data-bind": "bookingOptions.addOns[].durationNote" }, addon.durationNote) : null]);
+    var body = h("div", { "class": "bk-addon__body" }, [h("div", { "class": "bk-addon__name", "data-bind": "bookingOptions.addOns[].name" }, addon.name), addon.description ? h("div", { "class": "bk-addon__desc", "data-bind": "bookingOptions.addOns[].description" }, addon.description) : null, addon.required ? h("span", { "class": "bk-tag bk-tag--req" }, togglable ? "Required" : "Added by the studio") : null]);
+    var box = h("span", { "class": "bk-check" + (on ? " bk-check--on" : "") }, on ? "\u2713" : "");
+    if (!togglable) { list.appendChild(h("div", { "class": "bk-opt bk-addon bk-opt--fixed", "data-addon-ref": addon.ref, "data-state": "fixed" }, [box, body, meta])); return; }
+    list.appendChild(h("button", { "class": "bk-opt bk-addon" + (on ? " bk-opt--on" : ""), "data-action": "booking.toggleAddon", "data-id": addon.ref, "data-addon-ref": addon.ref, "data-state": phase !== "idle" ? phase : (on ? "active" : undefined), role: "checkbox", "aria-checked": on ? "true" : "false", "aria-busy": phase === "pending" ? "true" : undefined, disabled: phase === "pending" ? true : undefined }, [box, body, phase === "pending" ? h("span", { "class": "btn-spinner" }) : meta]));
+  });
+  group.appendChild(list);
+  group.appendChild(h("div", { "class": "bk-note" }, Object.keys(state.commands).some(function (key) { return key.indexOf("booking.toggleAddon:") === 0 && state.commands[key] === "pending"; }) ? o.copy.addOnPendingNote : "Amounts and added time come from the studio \u2014 the total is shown before you confirm."));
+  return group;
+}
+
+function stepOptions(f) {
+  var o = spaBookingOpts();
+  var parts = [];
+  if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
+  [visitModeGroup(f, o), locationGroup(f, o), addonGroup(f, o)].forEach(function (group) { if (group) parts.push(group); });
+  var steps = spaFlowSteps(f);
+  var index = steps.findIndex(function (step) { return step.k === "options"; });
+  var next = steps[index + 1] || { k: "slots" };
+  var ready = spaOptionsComplete(o);
+  parts.push(h("div", { style: "margin-top:16px" }, ActionButton({ variant: "btn--primary", label: next.k === "specialist" ? "Choose a specialist" : "Choose a time", action: "booking.next", block: true, disabled: !ready, visualId: "bk-options-continue" })));
+  if (!ready) {
+    var why = "Choose how you\u2019d like your visit to continue";
+    var mode = spaVisitMode(o);
+    if (mode && o.capabilities.location && !spaSelectedLocation(o)) why = "Pick a place to continue";
+    if (state.spaLocSrc === "loading") why = "Loading the places you can choose\u2026";
+    if (state.spaLocSrc === "error" || state.spaLocSrc === "empty") why = "Nothing can be booked until places load \u2014 nothing was reserved";
+    parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, why));
+  }
+  parts.push(backLink());
+  return parts;
+}
+
 /* ---- step: specialist (ONLY when the server returned any) ---- */
 function stepSpecialist(f) {
-  var refs = F.spaBooking.eligibleSpecialists[f.serviceCode] || [];
+  var booking = spaBookingModel();
+  var refs = booking.eligibleSpecialists[f.serviceCode] || [];
   var list = h("div", { "class": "bk-opts", "data-module": "specialist-options", "data-visual-id": "specialist-options" });
   refs.forEach(function (ref) {
-    var sp = F.spaBooking.specialists[ref];
+    var sp = booking.specialists[ref];
     list.appendChild(h("button", { "class": "bk-opt" + (f.specialistRef === ref ? " bk-opt--on" : ""), "data-action": "booking.selectSpecialist", "data-id": ref, "data-specialist-ref": ref }, [
       h("i", { "class": "bk-opt__dot" }),
       h("div", { style: "flex:1;min-width:0;text-align:left" }, [
@@ -160,31 +283,33 @@ function stepSpecialist(f) {
 function stepSlots(f) {
   var parts = [];
   if (f.entry === "reschedule") parts.push(rescheduleCurrent(f));
+  if (f.reloadedBy) parts.push(h("div", { "class": "bk-changed", "data-visual-id": "booking-options-changed", "data-state": "changed", role: "status", "data-bind": "bookingOptions.selectionVersion" }, spaBookingOpts().copy.optionsChangedSlot));
   parts.push(h("div", { "class": "bk-section-label" }, f.entry === "reschedule" ? "Pick a new time" : "Pick a time"));
 
   /* slot source lifecycle — nothing is guessed while it loads or fails */
-  if (state.spaSlots === "loading") {
+  var slotState = spaBookingSlotState();
+  if (slotState === "loading") {
     var sk = h("div", { "data-state": "loading", "aria-busy": "true" }, [skel("height:34px;border-radius:10px"), skel("height:120px;border-radius:14px;margin-top:10px")]);
     parts.push(sk);
     return parts;
   }
-  if (state.spaSlots === "error") {
+  if (slotState === "error") {
     parts.push(InlineFailure({ msg: "Available times didn\u2019t load \u2014 nothing is shown so nothing is guessed. Try again.", retryAction: "ui.retry", retryId: "slots", retryLabel: "Reload times" }));
-    parts.push(backLink());
+    if (hasPrev(f)) parts.push(backLink());
     return parts;
   }
-  if (state.spaSlots === "empty") {
+  if (slotState === "empty") {
     parts.push(h("div", { "class": "bk-empty", "data-state": "empty" }, [
       h("div", { style: "font-weight:700;font-size:14px" }, "No times are open right now"),
       h("div", { style: "font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:4px" }, "The studio opens new times regularly \u2014 check back soon, or our team can find one for you."),
       h("div", { style: "margin-top:8px" }, h("span", { "class": "link-action", "data-action": "support.open" }, "Contact support \u203a"))
     ]));
-    parts.push(backLink());
+    if (hasPrev(f)) parts.push(backLink());
     return parts;
   }
 
   var days = h("div", { "class": "bk-days", "data-module": "slot-days", "data-visual-id": "slot-days" });
-  F.spaBooking.days.forEach(function (d) {
+  spaBookingModel().days.forEach(function (d) {
     days.appendChild(h("button", { "class": "bk-day" + (d.key === f.dayKey ? " bk-day--on" : ""), "data-action": "booking.selectSlot", "data-id": "day:" + d.key, "data-day-key": d.key }, d.label));
   });
   parts.push(days);
@@ -207,21 +332,59 @@ function stepSlots(f) {
   parts.push(h("div", { "class": "bk-note" }, spaCurrentApiDemoOpen()
     ? "This demo API has no availability hold. The time is only selected in this browser until Core confirms the appointment."
     : "Holding keeps the time briefly while you review \u2014 nothing is booked yet."));
-  if (f.entry !== "reschedule") parts.push(backLink());
+  if (hasPrev(f)) parts.push(backLink());
   return parts;
+}
+
+function noteField(confirmableOtherwise) {
+  var note = spaNoteState();
+  if (!note.enabled) return null;
+  var stateName = note.invalid ? "invalid" : note.near ? "near-limit" : note.len ? "filled" : "empty";
+  var wrap = h("div", { "class": "bk-note-field", "data-module": "booking-notes", "data-visual-id": "booking-note", "data-state": stateName });
+  var input = h("textarea", { "class": "field bk-note-field__input", id: "bk-note-input", rows: "3", "data-action": "booking.changeNotes", "data-bind": "bookingOptions.notes.value", "aria-describedby": "bk-note-help bk-note-err", "aria-invalid": note.invalid ? "true" : "false", "data-state": note.invalid ? "invalid" : undefined }, note.value);
+  var counter = h("span", { "class": "bk-counter" + (note.invalid ? " bk-counter--over" : ""), "data-bind": "bookingOptions.notes.maxLength" }, note.len + "/" + note.max);
+  var error = h("div", { "class": "field-error", id: "bk-note-err", role: "alert" }, note.invalid ? note.errorCopy : "");
+  if (!note.invalid) error.hidden = true;
+  input.addEventListener("input", function () {
+    ACTIONS["booking.changeNotes"](input.value);
+    var length = input.value.length;
+    var over = length > note.max;
+    counter.textContent = length + "/" + note.max;
+    counter.classList.toggle("bk-counter--over", over);
+    input.setAttribute("aria-invalid", over ? "true" : "false");
+    if (over) { input.setAttribute("data-state", "invalid"); error.textContent = note.errorCopy; error.hidden = false; }
+    else { input.removeAttribute("data-state"); error.hidden = true; error.textContent = ""; }
+    wrap.setAttribute("data-state", over ? "invalid" : (length >= note.max - 30 ? "near-limit" : (length ? "filled" : "empty")));
+    var button = document.querySelector('[data-visual-id="confirm-booking"]');
+    if (button) { if (over || !confirmableOtherwise) button.setAttribute("disabled", ""); else button.removeAttribute("disabled"); }
+  });
+  wrap.appendChild(h("div", { "class": "bk-note-field__head" }, [h("label", { "class": "field-label", "for": "bk-note-input" }, "Note for the studio"), counter]));
+  wrap.appendChild(input);
+  wrap.appendChild(error);
+  wrap.appendChild(h("div", { "class": "bk-note", id: "bk-note-help", "data-bind": "bookingOptions.notes.helperText" }, note.helperText));
+  wrap.appendChild(h("div", { "class": "bk-note-field__sent", "data-bind": "bookingOptions.notes" }, spaBookingOpts().copy.noteSentWith));
+  return wrap;
 }
 
 /* ---- step: review (server totals, policy ack, SIMULATED treatment) ---- */
 function stepReview(f) {
   var parts = [];
+  var booking = spaBookingModel();
+  var options = spaBookingOpts();
   var svc = svcByCode(f.serviceCode);
   var picked = slotLabel(f);
-  var sp = f.specialistRef ? F.spaBooking.specialists[f.specialistRef] : null;
-  var confirmKey = "booking.confirm:" + F.spaBooking.ref;
+  var selectedSlot = spaSelectedSlot();
+  var sp = f.specialistRef ? booking.specialists[f.specialistRef] : null;
+  var specialistsOffered = (booking.eligibleSpecialists[f.serviceCode] || []).length > 0;
+  var confirmKey = "booking.confirm:" + booking.ref;
   var phase = cmdPhase(confirmKey);
   var holdOk = state.spaHold === "held";
   var creditBlocked = f.entry === "credit" && state.spaCredit !== "ok";
   var origin = f.rescheduleOf ? currentAppointment() : null;
+  var addonChange = spaAddonChange(options);
+  var note = spaNoteState(options);
+  var quote = spaBookingQuote(options);
+  var selectedAddOns = spaSelectedAddOns(options);
 
   if (f.entry === "reschedule" && origin) {
     parts.push(h("div", { "class": "bk-compare", "data-module": "reschedule-compare", "data-visual-id": "reschedule-compare", "data-appointment-ref": origin.ref }, [
@@ -239,36 +402,61 @@ function stepReview(f) {
     ]));
   }
 
-  var review = h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": holdOk ? "held" : state.spaHold });
+  var review = h("div", { "class": "booking-review", "data-module": "booking-review", "data-visual-id": "booking-review", "data-payment-mode": "SIMULATED", "data-state": addonChange ? addonChange.kind : (holdOk ? "held" : state.spaHold), "data-selection-version": options.selectionVersion });
 
   /* the hold is a SERVER fact: a display-ready expiry label, never a local countdown */
-  if (holdOk) review.appendChild(h("div", { "class": "booking-review__hold", "data-module": "booking-hold", "data-visual-id": "booking-hold", "data-hold-ref": spaCurrentApiDemoOpen() ? undefined : F.spaBooking.hold.ref, "data-bind": "booking.hold.untilLabel" }, spaCurrentApiDemoOpen()
+  if (holdOk) review.appendChild(h("div", { "class": "booking-review__hold", "data-module": "booking-hold", "data-visual-id": "booking-hold", "data-hold-ref": spaCurrentApiDemoOpen() ? undefined : booking.hold.ref, "data-bind": "booking.hold.untilLabel" }, spaCurrentApiDemoOpen()
     ? [h("b", null, "Current API demo"), " \u00b7 Core will validate the save when you confirm; no slot hold exists yet."]
-    : [h("b", null, F.spaBooking.hold.untilLabel), " \u00b7 " + F.spaBooking.hold.note]));
+    : [h("b", null, booking.hold.untilLabel), " \u00b7 " + booking.hold.note]));
   if (state.spaHold === "slot-expired") review.appendChild(InlineFailure({ msg: "Your held time expired \u2014 nothing was booked" + (f.entry === "reschedule" ? " and your original visit is unchanged" : "") + ". Pick a new time to continue.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Find a new time" }));
   if (state.spaHold === "repriced") review.appendChild(InlineFailure({ msg: "The price for this time changed while you were reviewing \u2014 reload and check it before confirming.", retryAction: "ui.retry", retryId: "booking-hold", retryLabel: "Reload & review" }));
+  if (addonChange) review.appendChild(InlineFailure({ msg: addonChange.copy, retryAction: "ui.retry", retryId: "booking-addons", retryLabel: "Reload extras" }));
 
   var det = h("div", { "class": "appt-details", style: "margin-top:10px" });
   var row = function (l, v) { return h("div", { "class": "appt-details__row" }, [h("div", { "class": "appt-details__label" }, l), h("div", { "class": "appt-details__val" }, v)]); };
   det.appendChild(row("Visit", h("b", { "data-bind": "booking.service" }, svc ? svc.name : "\u2014")));
   det.appendChild(row("When", h("span", null, [h("b", null, picked || "\u2014"), h("span", { style: "color:var(--ink-3)" }, " \u00b7 local time")])));
-  det.appendChild(row("With", sp ? h("b", { "data-bind": "booking.specialist" }, sp.name) : h("span", { style: "color:var(--ink-3)" }, "First available specialist")));
-  det.appendChild(row("Where", h("span", null, origin
-    ? [h("b", null, F.spa.modeLabels[origin.visitMode]), origin.location ? " \u00b7 " + origin.location : null]
-    : [h("b", null, F.spa.modeLabels.salon), " \u00b7 " + F.spaBooking.reviewLocation])));
-  det.appendChild(row("Price", f.entry === "credit"
-    ? h("span", { "data-bind": "booking.creditNote" }, [h("b", null, "1 visit credit"), " \u00b7 no charge for this visit"])
-    : h("b", { "data-bind": "booking.displayTotal" }, F.spaBooking.displayTotals[f.serviceCode] || (svc && svc.displayPrice) || "\u2014")));
+  if (sp) det.appendChild(row("With", h("b", { "data-bind": "booking.specialist" }, sp.name)));
+  else if (f.entry === "reschedule" && origin && origin.specialist) det.appendChild(row("With", h("span", null, [h("b", { "data-bind": "appointment.specialist" }, origin.specialist), h("span", { style: "color:var(--ink-3)" }, " \u00b7 unchanged")])));
+  else if (specialistsOffered && f.entry !== "reschedule") det.appendChild(row("With", h("span", { style: "color:var(--ink-3)", "data-bind": "booking.specialist" }, "No preference \u2014 first available")));
+
+  var mode = spaVisitMode(options);
+  var location = spaSelectedLocation(options);
+  var whereBits = [];
+  if (mode) whereBits.push(h("b", { "data-bind": "bookingOptions.visitModes[].label" }, mode.label));
+  if (location) whereBits.push(h("span", { "data-bind": "bookingOptions.locations[].label" }, (whereBits.length ? " \u00b7 " : "") + location.label));
+  if (!whereBits.length && origin) {
+    if (origin.visitMode && F.spa.modeLabels[origin.visitMode]) whereBits.push(h("b", { "data-bind": "appointment.visitMode" }, F.spa.modeLabels[origin.visitMode]));
+    if (origin.location) whereBits.push(h("span", { "data-bind": "appointment.location" }, (whereBits.length ? " \u00b7 " : "") + origin.location));
+  }
+  if (!whereBits.length && selectedSlot && selectedSlot.locationName) whereBits.push(h("span", { "data-bind": "booking.slot.locationName" }, selectedSlot.locationName));
+  if (options.capabilities.location && state.spaLocSrc === "unavailable") whereBits.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);line-height:1.45;margin-top:3px", "data-bind": "bookingOptions.locations" }, options.copy.locationsUnavailable));
+  if (whereBits.length) det.appendChild(row("Where", h("span", null, whereBits)));
+
+  if (selectedAddOns.length) {
+    var addonList = h("div", { "class": "bk-review-addons", "data-module": "booking-review-addons", "data-visual-id": "booking-review-addons" });
+    selectedAddOns.forEach(function (addon) { addonList.appendChild(h("div", { "class": "bk-review-addon", "data-addon-ref": addon.ref }, [h("span", { "class": "bk-review-addon__name", "data-bind": "bookingOptions.addOns[].name" }, addon.name), addon.displayPrice ? h("span", { "class": "bk-review-addon__amt", "data-bind": "bookingOptions.addOns[].displayPrice" }, addon.displayPrice) : null])); });
+    det.appendChild(row(selectedAddOns.length > 1 ? "Extras" : "Extra", addonList));
+  }
+  if (f.entry === "credit") det.appendChild(row("Price", h("span", { "data-bind": "booking.creditNote" }, [h("b", null, "1 visit credit"), " \u00b7 no charge for this visit"])));
+  else if (quote && quote.displaySubtotal) {
+    det.appendChild(row("Subtotal", h("span", { "data-bind": "booking.displaySubtotal" }, quote.displaySubtotal)));
+    det.appendChild(row("Total", h("b", { "data-bind": "booking.displayTotal" }, quote.displayTotal)));
+  } else det.appendChild(row("Price", h("b", { "data-bind": "booking.displayTotal" }, (quote && quote.displayTotal) || booking.displayTotals[f.serviceCode] || (svc && svc.displayPrice) || "\u2014")));
   review.appendChild(det);
 
   var creditBlock = creditCard(true);
   if (creditBlock) review.appendChild(creditBlock);
 
+  var confirmable = holdOk && state.spaBookAck && !creditBlocked && !addonChange && phase !== "conflict";
+  var noteBlock = noteField(confirmable);
+  if (noteBlock) review.appendChild(noteBlock);
+
   /* server-owned policy copy + explicit acknowledgement */
-  review.appendChild(h("div", { "class": "bk-note", "data-bind": "booking.policyNote", style: "margin-top:10px" }, F.spaBooking.policyNote));
+  review.appendChild(h("div", { "class": "bk-note", "data-bind": "booking.policyNote", style: "margin-top:10px" }, booking.policyNote));
   review.appendChild(h("label", { "class": "co-policy", "data-module": "policy-ack", "data-visual-id": "booking-policy-ack", "data-state": state.spaBookAck ? "acked" : "required" }, [
     h("button", { "class": "co-policy__box" + (state.spaBookAck ? " co-policy__box--on" : ""), "data-action": "booking.ackPolicy", role: "checkbox", "aria-checked": state.spaBookAck ? "true" : "false" }, state.spaBookAck ? "\u2713" : ""),
-    h("span", { "data-bind": "booking.policy" }, F.spaBooking.policy)
+    h("span", { "data-bind": "booking.policy" }, booking.policy)
   ]));
 
   review.appendChild(SimulationBadge(true));
@@ -276,7 +464,7 @@ function stepReview(f) {
   parts.push(review);
 
   if (phase === "failed") parts.push(InlineFailure({
-    msg: f.entry === "reschedule" ? "Your visit wasn\u2019t moved \u2014 it\u2019s still booked at the original time." : "Your booking wasn\u2019t confirmed \u2014 nothing is scheduled yet.",
+    msg: f.entry === "reschedule" ? "Your visit wasn\u2019t moved \u2014 it\u2019s still booked at the original time." : "Your booking wasn\u2019t confirmed \u2014 nothing is scheduled yet." + (note.enabled && note.len ? " Your note is kept here." : ""),
     retryAction: "booking.retry", retryId: "confirm", retryLabel: "Try again"
   }));
   if (phase === "conflict") parts.push(InlineFailure({
@@ -285,12 +473,13 @@ function stepReview(f) {
   }));
 
   parts.push(h("div", { style: "margin-top:14px" }, ActionButton({
-    variant: "btn--primary", label: f.entry === "reschedule" ? "Confirm new time \u2014 no charge" : "Book \u2014 no charge",
-    action: "booking.confirm", id: F.spaBooking.ref, block: true, lg: true, visualId: "confirm-booking",
+    variant: "btn--primary", label: f.entry === "reschedule" ? "Request new time \u2014 no charge" : "Send booking request \u2014 no charge",
+    action: "booking.confirm", id: booking.ref, block: true, lg: true, visualId: "confirm-booking",
     pending: phase === "pending", pendingLabel: "Confirming\u2026",
-    disabled: !holdOk || !state.spaBookAck || creditBlocked || phase === "conflict"
+    disabled: !confirmable || (note.enabled && note.invalid)
   })));
-  if (holdOk && !state.spaBookAck && phase === "idle") parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Tick the policy box above to confirm"));
+  if (holdOk && !state.spaBookAck && phase === "idle" && !addonChange) parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Tick the policy box above to confirm"));
+  if (addonChange) parts.push(h("div", { style: "font-size:11.5px;color:var(--ink-3);margin-top:7px;text-align:center" }, "Reload the extras above to review the change before confirming"));
   parts.push(backLink("\u2039 Back to times"));
   return parts;
 }
@@ -299,12 +488,19 @@ function backLink(label) {
   return h("div", { style: "margin-top:12px" }, h("span", { "class": "link-action", "data-action": "booking.back" }, label || "\u2039 Back"));
 }
 
+function hasPrev(f) {
+  var steps = spaFlowSteps(f);
+  return steps.findIndex(function (step) { return step.k === f.step; }) > 0;
+}
+
 /* drawer body — one flow, four steps */
 export function SpaBookingFlow() {
   var f = state.spaFlow;
-  var body = h("div", { "class": "bk-flow", "data-module": "booking-flow", "data-visual-id": "booking-flow", "data-booking-ref": F.spaBooking.ref, "data-payment-mode": "SIMULATED", "data-state": f.step, "data-entry": f.entry });
+  var options = spaBookingOpts();
+  var body = h("div", { "class": "bk-flow", "data-module": "booking-flow", "data-visual-id": "booking-flow", "data-booking-ref": spaBookingModel().ref, "data-payment-mode": "SIMULATED", "data-state": f.step, "data-entry": f.entry, "data-selection-version": options.selectionVersion });
   body.appendChild(stepsBar(f));
   var parts = f.step === "context" ? stepContext(f)
+    : f.step === "options" ? stepOptions(f)
     : f.step === "specialist" ? stepSpecialist(f)
     : f.step === "slots" ? stepSlots(f)
     : stepReview(f);

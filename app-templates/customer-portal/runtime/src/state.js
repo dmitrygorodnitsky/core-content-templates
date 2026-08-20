@@ -2,6 +2,8 @@
 import { F } from "../data/fixtures.js";
 import { SPA_PRODUCT_CATALOG } from "../data/spa-product-catalog.js";
 import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
+import { deriveCoreBookingModel } from "./normalizers/spa-availability.js";
+import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions } from "./normalizers/spa-booking-options.js";
 import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 
 export var state = {
@@ -111,6 +113,11 @@ export var state = {
   spaCurrentAppointment: null,
   spaFlow: null,
   spaBookAck: false,
+  spaOptScenario: "fixed-studio",
+  spaLocSrc: "ready",
+  spaAddonSrc: "ready",
+  spaNoteCap: "enabled",
+  spaNote: "",
   spaSlots: "ready",
   spaCredit: "ok",
   spaPlanCommerce: "closed",
@@ -226,7 +233,7 @@ export function productDetailByCode(code) {
     return fixtureProduct ? {
       ref: opaqueRef("product", code), code: code, name: fixtureProduct.name,
       displayPrice: fixtureProduct.price, description: fixtureProduct.description || fixtureProduct.blurb || "",
-      collection: null, variantFacts: [], media: [],
+      collection: null, displayTag: fixtureProduct.displayTag || fixtureProduct.tag || "", variantFacts: [], media: [],
     } : null;
   }
   var product = productItems().find(function (item) { return item.code === code; });
@@ -239,6 +246,7 @@ export function productDetailByCode(code) {
     displayPrice: product.price,
     description: product.description || "",
     collection: model ? { ref: model.ref, name: model.name } : null,
+    displayTag: product.displayTag || "",
     variantFacts: product.variantFacts || [],
     media: product.media || [],
   };
@@ -289,14 +297,250 @@ export function spaCatalogServices() {
   if (state.config.dataMode !== "live") return F.spa.pim.services;
   var source = state.moduleData.pricing && state.moduleData.pricing.rates || state.moduleData.services && state.moduleData.services.items || [];
   return source.filter(function (item) { return !item.productTypeCode || item.productTypeCode === "SPA_SERVICE"; }).map(function (item) {
+    var durationMinutes = positiveCatalogInteger(spaCatalogAttribute(item.attributes, "DURATION_MIN"));
+    if (!durationMinutes) {
+      var bookingOptions = normalizeLiveBookingOptions(item, { providers: [] });
+      var baseQuote = liveBookingQuote(bookingOptions, []);
+      durationMinutes = positiveCatalogInteger(baseQuote && baseQuote.durationMinutes);
+    }
     return {
       code: item.code,
       name: item.name,
       shortDescription: item.description || "Published spa service",
       displayPrice: item.price,
       interval: isOneTimeInterval(item.interval) ? "" : (item.interval || ""),
+      backendProductId: item.backendProductId || null,
+      durationMinutes: durationMinutes,
+      attributes: item.attributes || {},
     };
   });
+}
+
+function liveBookingAvailability() {
+  var appointments = state.moduleData.appointments || {};
+  return appointments.availability || {
+    state: state.moduleStatus.appointments === "error" ? "error" : "loading",
+    providers: [],
+  };
+}
+
+function liveBookingOptionsFor(serviceCode) {
+  var service = spaCatalogServices().find(function (item) { return item.code === serviceCode; });
+  return service ? normalizeLiveBookingOptions(service, liveBookingAvailability()) : emptyLiveBookingOptions();
+}
+
+export function spaBookingModel(serviceCode, specialistRef) {
+  if (state.config.dataMode !== "live") return F.spaBooking;
+  var flow = state.spaFlow || {};
+  var selectedCode = serviceCode === undefined ? flow.serviceCode : serviceCode;
+  var services = spaCatalogServices();
+  var options = liveBookingOptionsFor(selectedCode);
+  var quote = liveBookingQuote(options, selectedCode === flow.serviceCode ? flow.addOns : []);
+  if (quote && quote.durationMinutes) services = services.map(function (service) {
+    return service.code === selectedCode ? Object.assign({}, service, { durationMinutes: quote.durationMinutes }) : service;
+  });
+  return deriveCoreBookingModel(liveBookingAvailability(), services, {
+    serviceCode: selectedCode,
+    specialistRef: specialistRef === undefined ? flow.specialistRef : specialistRef,
+  });
+}
+
+export function spaBookingSlotState() {
+  return state.config.dataMode === "live" ? spaBookingModel().state : state.spaSlots;
+}
+
+export function spaSelectedSlot() {
+  var flow = state.spaFlow;
+  if (!flow || !flow.slotRef) return null;
+  var days = spaBookingModel().days || [];
+  for (var index = 0; index < days.length; index += 1) {
+    var slot = (days[index].slots || []).find(function (item) { return item.ref === flow.slotRef; });
+    if (slot) return slot;
+  }
+  return null;
+}
+
+/* Wave 20 booking options. Fixture mode exposes the accepted designer
+   scenarios. The current live Core contract exposes no mode, add-on or note
+   capability, so those sections remain absent instead of borrowing fixtures. */
+export function spaBookingOpts() {
+  if (state.config.dataMode === "live") {
+    var live = liveBookingOptionsFor(state.spaFlow && state.spaFlow.serviceCode);
+    live.notes = Object.assign({}, live.notes, { value: state.spaNote });
+    return live;
+  }
+  var source = F.spaBookingOptions;
+  var scenario = source.scenarios[state.spaOptScenario] || source.scenarios["fixed-studio"];
+  var flow = state.spaFlow;
+  var capabilities = Object.assign({}, scenario.capabilities);
+  if (state.spaNoteCap === "disabled") capabilities.notes = false;
+  if (flow && flow.entry === "reschedule") capabilities.addOns = false;
+  var addOns = (scenario.addOns || []).map(function (addon) { return Object.assign({}, addon); });
+  var affected = flow && flow.addOns && flow.addOns.length ? flow.addOns[0] : null;
+  if (state.spaAddonSrc === "removed" && affected) addOns = addOns.filter(function (addon) { return addon.ref !== affected; });
+  if (state.spaAddonSrc === "repriced" && affected) addOns = addOns.map(function (addon) { return addon.ref === affected ? Object.assign({}, addon, { displayPrice: "$22.00" }) : addon; });
+  if (state.spaAddonSrc === "ineligible") addOns = addOns.map(function (addon) { return Object.assign({}, addon, { allowedActions: [] }); });
+  return {
+    capabilities: capabilities,
+    visitModes: scenario.visitModes || [],
+    locations: scenario.locations || [],
+    addOns: addOns,
+    notes: Object.assign({}, scenario.notes, { enabled: !!capabilities.notes, value: state.spaNote }),
+    selectionVersion: scenario.selectionVersion,
+    copy: source.sourceCopy,
+  };
+}
+
+export function spaVisitMode(options) {
+  options = options || spaBookingOpts();
+  var flow = state.spaFlow;
+  var byCode = function (code) { return options.visitModes.find(function (mode) { return mode.code === code; }) || null; };
+  if (flow && flow.visitMode) return byCode(flow.visitMode);
+  if (!options.capabilities.visitMode || options.visitModes.length === 1) return options.visitModes[0] || null;
+  return null;
+}
+
+export function spaEligibleLocations(options) {
+  options = options || spaBookingOpts();
+  var mode = spaVisitMode(options);
+  if (!mode) return [];
+  if (["loading", "error", "unavailable", "empty"].includes(state.spaLocSrc)) return [];
+  var list = options.locations.filter(function (location) { return location.visitModeCode === mode.code; });
+  if (state.spaLocSrc === "no-address") list = list.filter(function (location) { return location.kind !== "SAVED_PLACE"; });
+  return list;
+}
+
+export function spaSelectedLocation(options) {
+  options = options || spaBookingOpts();
+  var list = spaEligibleLocations(options);
+  var flow = state.spaFlow;
+  if (flow && flow.locationRef && state.spaLocSrc !== "ineligible") {
+    var selected = list.find(function (location) { return location.ref === flow.locationRef; });
+    if (selected) return selected;
+  }
+  return list.length === 1 ? list[0] : null;
+}
+
+export function spaSelectedAddOns(options) {
+  options = options || spaBookingOpts();
+  var flow = state.spaFlow;
+  var selected = flow && flow.addOns || [];
+  return options.addOns.filter(function (addon) {
+    return selected.indexOf(addon.ref) !== -1 || (addon.required && addon.selected && !(addon.allowedActions || []).length);
+  });
+}
+
+export function spaBookingQuote(options) {
+  options = options || spaBookingOpts();
+  var flow = state.spaFlow;
+  if (!flow) return null;
+  if (state.config.dataMode === "live") {
+    var selected = spaSelectedAddOns(options).map(function (addon) { return addon.ref; });
+    var liveQuote = liveBookingQuote(options, selected);
+    if (liveQuote) return liveQuote;
+    if (selected.length) return null;
+    return {
+      version: options.selectionVersion,
+      addOns: [],
+      displaySubtotal: null,
+      displayTotal: spaBookingModel().displayTotals[flow.serviceCode] || "",
+      durationMinutes: (spaCatalogServices().find(function (service) { return service.code === flow.serviceCode; }) || {}).durationMinutes || null,
+    };
+  }
+  var refs = spaSelectedAddOns(options).map(function (addon) { return addon.ref; });
+  var overrides = null;
+  if (state.spaAddonSrc === "repriced" && flow.addOns && flow.addOns.length) {
+    overrides = {};
+    overrides[flow.addOns[0]] = { cents: 2200, displayPrice: "$22.00" };
+  }
+  return F.spaBookingQuote(flow.serviceCode, refs, state.spaOptScenario, overrides);
+}
+
+export function spaAddonChange(options) {
+  options = options || spaBookingOpts();
+  if (!options.capabilities.addOns) return null;
+  if (state.spaAddonSrc === "removed") return { kind: "removed", copy: options.copy.addOnRemoved };
+  if (state.spaAddonSrc === "repriced") return { kind: "repriced", copy: options.copy.addOnRepriced };
+  return null;
+}
+
+export function spaNoteState(options) {
+  options = options || spaBookingOpts();
+  var max = options.notes.maxLength || 0;
+  var value = state.spaNote || "";
+  return {
+    enabled: !!options.notes.enabled,
+    value: value,
+    max: max,
+    len: value.length,
+    remaining: max - value.length,
+    near: max > 0 && value.length >= max - 30 && value.length <= max,
+    invalid: max > 0 && value.length > max,
+    helperText: options.notes.helperText,
+    errorCopy: (options.copy.noteTooLong || "").replace("{max}", String(max)),
+  };
+}
+
+export function spaOptionsStepOn(options) {
+  options = options || spaBookingOpts();
+  var capabilities = options.capabilities;
+  if (capabilities.visitMode && options.visitModes.length > 1) return true;
+  if (capabilities.location) {
+    if (state.spaLocSrc !== "ready") return true;
+    if (spaEligibleLocations(options).length > 1) return true;
+  }
+  if (capabilities.addOns) {
+    if (state.spaAddonSrc !== "ready") return true;
+    if (options.addOns.length) return true;
+  }
+  return false;
+}
+
+export function spaOptionsComplete(options) {
+  options = options || spaBookingOpts();
+  var capabilities = options.capabilities;
+  var flow = state.spaFlow;
+  if (!flow) return false;
+  if (capabilities.visitMode && options.visitModes.length > 1 && !flow.visitMode) return false;
+  var mode = spaVisitMode(options);
+  if (capabilities.location && mode && mode.locationRequired) {
+    if (state.spaLocSrc === "unavailable") return true;
+    if (state.spaLocSrc !== "ready" || !spaSelectedLocation(options)) return false;
+  }
+  if (capabilities.addOns && state.spaAddonSrc === "ready") {
+    var unmet = options.addOns.filter(function (addon) {
+      return addon.required && (addon.allowedActions || []).indexOf("toggle") !== -1 && (flow.addOns || []).indexOf(addon.ref) === -1;
+    });
+    if (unmet.length) return false;
+    if (!spaBookingQuote(options)) return false;
+  }
+  return true;
+}
+
+export function spaFlowSteps(flow) {
+  flow = flow || state.spaFlow;
+  if (!flow) return [];
+  var steps = [];
+  if (flow.entry !== "reschedule") steps.push({ k: "context", l: "Service" });
+  if (spaOptionsStepOn()) steps.push({ k: "options", l: "Options" });
+  if (flow.entry !== "reschedule" && (spaBookingModel().eligibleSpecialists[flow.serviceCode] || []).length) steps.push({ k: "specialist", l: "Specialist" });
+  steps.push({ k: "slots", l: flow.entry === "reschedule" ? "New time" : "Time" });
+  steps.push({ k: "review", l: "Review" });
+  return steps;
+}
+
+function spaCatalogAttribute(attributes, code) {
+  if (!attributes || typeof attributes !== "object") return null;
+  for (var group of Object.values(attributes)) {
+    var entry = group && group[code];
+    if (entry && Object.prototype.hasOwnProperty.call(entry, "value")) return entry.value;
+  }
+  return null;
+}
+
+function positiveCatalogInteger(value) {
+  var number = Number(value);
+  return Number.isInteger(number) && number > 0 ? number : null;
 }
 
 // The adapter formats a one-time price as "One time"; these comparisons used to
@@ -367,7 +611,14 @@ export function spaCapability() {
 }
 
 export function spaBookingOpen() {
-  return isSpa() && spaCapability() === "target-appointments" && state.spaBooking === "open";
+  if (!isSpa() || spaCapability() !== "target-appointments" || state.spaBooking !== "open") return false;
+  if (state.config.dataMode !== "live") return true;
+  var booking = spaBookingModel();
+  // `empty` with eligible services is a real no-slots result and may open the
+  // accepted empty-slots drawer. Loading/error/unavailable, or no eligible
+  // Resource-to-service relationship, must use the accepted closed-booking UI.
+  return (booking.state === "ready" || booking.state === "empty")
+    && booking.eligibleServices.length > 0;
 }
 
 export function spaCurrentApiDemoOpen() {
@@ -588,6 +839,11 @@ export function applyPortalConfig(config) {
   state.spaCurrentAppointment = null;
   state.spaFlow = null;
   state.spaBookAck = false;
+  state.spaOptScenario = "fixed-studio";
+  state.spaLocSrc = "ready";
+  state.spaAddonSrc = "ready";
+  state.spaNoteCap = "enabled";
+  state.spaNote = "";
   state.spaSlots = "ready";
   state.spaCredit = "ok";
   state.spaOfferDemo = "sellable";

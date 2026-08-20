@@ -267,6 +267,7 @@ const loadCatalog = () => {
       dir,
       json: readJson(join(dir, "block.json")),
       html: readFileSync(join(dir, "block.html"), "utf8"),
+      head: existsSync(join(dir, "head.html")) ? readFileSync(join(dir, "head.html"), "utf8") : "",
       css: existsSync(join(dir, "block.css")) ? readFileSync(join(dir, "block.css"), "utf8") : "",
       js: existsSync(join(dir, "block.js")) ? readFileSync(join(dir, "block.js"), "utf8") : "",
     });
@@ -395,7 +396,11 @@ const isComparisonBlock = (block) =>
   block.id === "comparison.three-col-with-mobile-cards" ||
   block.id === "comparison.two-col-seo-matrix";
 
+const isSharedParam = (param) => Boolean(param && param.shared);
+
 const paramCodeForLocal = ({ block, code, legacyCode, localCode }) => {
+  const param = (block?.json?.params || []).find((entry) => entry.code === localCode);
+  if (isSharedParam(param)) return { paramCode: codeSlug(localCode) };
   if (isComparisonBlock(block)) {
     const paramCode = comparisonParamCode(localCode);
     return { paramCode };
@@ -447,12 +452,13 @@ const renderBlockTemplate = ({ block, code, name, legacyCode = code, parentCode,
       }));
       used.add(paramCode);
     }
-    return placeholder(paramCode, param.type);
+    return isSharedParam(param) ? untypedPlaceholder(paramCode) : placeholder(paramCode, param.type);
   };
 
   const renderLocalPlaceholders = (source) =>
     String(source || "").replace(/\{\{([A-Za-z0-9_-]+)\}\}/g, (_, localCode) => renderLocalPlaceholder(localCode));
 
+  const renderedHead = renderLocalPlaceholders(block.head);
   let renderedHtml = renderLocalPlaceholders(block.html);
   for (const slot of block.json.image_slots || []) {
     if (!slot.src_param || !slot.alt_param) continue;
@@ -507,7 +513,7 @@ const renderBlockTemplate = ({ block, code, name, legacyCode = code, parentCode,
     templateLanguage: "JTE",
     parent: parentCode ? { code: parentCode } : null,
     children: [],
-    head: "",
+    head: renderedHead,
     html: wrapCompositionSection(block, wrapBlockHtml(block, renderedHtml)),
     css: renderLocalPlaceholders(css),
     javascript: renderLocalPlaceholders(javascript),

@@ -46,7 +46,7 @@ const existingTemplate = {
   templateLanguage: "JTE",
   advanced: false,
   head: "<meta charset=\"utf-8\">",
-  html: "<h1>${HERO_TITLE@LOCALIZED_STRING_SS}</h1><img src=\"/core/image/${HERO_IMAGE@IMAGE}/get/${HERO_IMAGE_NAME@STRING}\">",
+  html: "<h1>${HERO_TITLE@LOCALIZED_STRING_SS}</h1><img src=\"/core/image/${HERO_IMAGE@IMAGE}/get/${HERO_IMAGE_NAME@STRING}\"><article>${POST@BLOG_POST_CONTENT_SS}</article>",
   javascript: "document.body.dataset.ready = 'true';",
   css: ".hero { display: block; }",
   optimistic: 7,

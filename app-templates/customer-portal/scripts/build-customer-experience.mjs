@@ -191,6 +191,7 @@ function portalTemplate(inputs, report, css, javascript) {
     "data-portal-core-api-base": ["PORTAL_CORE_API_BASE", "STRING"],
     "data-portal-account-api-base": ["PORTAL_ACCOUNT_API_BASE", "STRING"],
     "data-portal-service-api-base": ["PORTAL_SERVICE_API_BASE", "STRING"],
+    "data-portal-resource-api-base": ["PORTAL_RESOURCE_API_BASE", "STRING"],
     "data-portal-bill-api-base": ["PORTAL_BILL_API_BASE", "STRING"],
     "data-portal-pim-api-base": ["PORTAL_PIM_API_BASE", "STRING"],
     "data-portal-pim-organization": ["PORTAL_PIM_ORGANIZATION", "STRING"],

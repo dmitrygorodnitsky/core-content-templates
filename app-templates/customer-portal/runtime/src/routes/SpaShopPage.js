@@ -61,7 +61,7 @@ function productCard(code, open) {
   body.appendChild(h("div", { "class": "spa-shop-card__price" }, [
     h("b", { "data-bind": open ? "retail.displayPrice" : "pim.products[].displayPrice" }, displayPrice),
     open && retail.state === "price-changed" ? h("span", { "class": "shop-chip shop-chip--price", "data-bind": "retail.priceNote" }, "Price updated") : null,
-    h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].code" }, code),
+    product.displayTag ? h("span", { "class": "code-chip", style: "margin-left:auto", "data-bind": "pim.products[].displayTag" }, product.displayTag) : null,
   ]));
 
   if (open && !muted) {
