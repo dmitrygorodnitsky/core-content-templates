@@ -149,7 +149,21 @@ export async function upsertPortalForm(options) {
   if (options.requireExisting) uploaderArgs.push("--require-existing");
   if (options.requireMissing) uploaderArgs.push("--require-missing");
   uploaderArgs.push(options.mode === "live" ? "--live" : "--dry-run");
-  await run(process.execPath, uploaderArgs, "upload-cms-family");
+  try {
+    await run(process.execPath, uploaderArgs, "upload-cms-family");
+  } catch (error) {
+    if (options.requireMissing) {
+      console.error("");
+      console.error("A template with this code already exists in the target CMS, and it was not created by this package.");
+      console.error("Resolve its id with an authenticated read before deciding to take it over:");
+      console.error("");
+      console.error("  node " + path.relative(repoRoot, process.argv[1]) + " --base-url " + (options.baseUrl || "<base>") + " --org " + options.org + " --require-existing");
+      console.error("");
+      console.error("If that id is ours to update, repeat the upload with --expected-root-id <uuid> --live and without --require-missing.");
+      console.error("If it belongs to someone else, change the template code instead of overwriting their work.");
+    }
+    throw error;
+  }
 
   return { templateCode: manifest.template.code, mode: options.mode, package: target.package };
 }
