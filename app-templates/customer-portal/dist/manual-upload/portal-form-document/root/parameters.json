@@ -5,7 +5,7 @@
     "nls": {
       "en": {
         "NAME": "FORM API BASE URL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Absolute https origin of the Core deployment, for example https://dev-1.servicewand.com. Any other scheme is discarded and the form reports that it could not load."
       }
     },
     "value": ""
@@ -16,7 +16,7 @@
     "nls": {
       "en": {
         "NAME": "FORM TYPE CODE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Published Core form type code, for example GET_QUOTE_. The document renders whatever that type declares."
       }
     },
     "value": ""
@@ -27,7 +27,7 @@
     "nls": {
       "en": {
         "NAME": "FORM ORGANIZATION ID",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Numeric organization id the submission belongs to. While it is empty the submit button stays disabled and nothing can be posted."
       }
     },
     "value": ""
@@ -38,7 +38,7 @@
     "nls": {
       "en": {
         "NAME": "FORM LOCALE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Locale segment used when reading the schema and when picking labels out of each nls bag."
       }
     },
     "value": "en"
@@ -49,7 +49,7 @@
     "nls": {
       "en": {
         "NAME": "FORM THEME",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Vertical palette. One of: hvac, snow, lawn, pool, roofing, pest, health, beauty. Any other value falls back to snow."
       }
     },
     "value": "snow"
@@ -60,7 +60,7 @@
     "nls": {
       "en": {
         "NAME": "FORM MODE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Colour mode. One of: light, dark. Any other value falls back to light."
       }
     },
     "value": "light"
@@ -71,7 +71,7 @@
     "nls": {
       "en": {
         "NAME": "TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -84,7 +84,7 @@
     "nls": {
       "en": {
         "NAME": "SUBTITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -97,7 +97,7 @@
     "nls": {
       "en": {
         "NAME": "NOTE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -110,7 +110,7 @@
     "nls": {
       "en": {
         "NAME": "SUBMIT LABEL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -123,7 +123,7 @@
     "nls": {
       "en": {
         "NAME": "SUBMITTING LABEL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -136,7 +136,7 @@
     "nls": {
       "en": {
         "NAME": "NEXT LABEL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -149,7 +149,7 @@
     "nls": {
       "en": {
         "NAME": "BACK LABEL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -162,7 +162,7 @@
     "nls": {
       "en": {
         "NAME": "RETRY LABEL",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -175,7 +175,7 @@
     "nls": {
       "en": {
         "NAME": "STEP FALLBACK",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -188,7 +188,7 @@
     "nls": {
       "en": {
         "NAME": "SELECT PLACEHOLDER",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -201,7 +201,7 @@
     "nls": {
       "en": {
         "NAME": "REQUIRED ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -214,7 +214,7 @@
     "nls": {
       "en": {
         "NAME": "FORMAT ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -227,7 +227,7 @@
     "nls": {
       "en": {
         "NAME": "INCOMPLETE ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -240,7 +240,7 @@
     "nls": {
       "en": {
         "NAME": "EMAIL ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -253,7 +253,7 @@
     "nls": {
       "en": {
         "NAME": "URL ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -266,7 +266,7 @@
     "nls": {
       "en": {
         "NAME": "NUMBER ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -279,7 +279,7 @@
     "nls": {
       "en": {
         "NAME": "MIN ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -292,7 +292,7 @@
     "nls": {
       "en": {
         "NAME": "MAX ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -305,7 +305,7 @@
     "nls": {
       "en": {
         "NAME": "MIN LENGTH ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -318,7 +318,7 @@
     "nls": {
       "en": {
         "NAME": "MAX LENGTH ERROR",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -331,7 +331,7 @@
     "nls": {
       "en": {
         "NAME": "SCHEMA ERROR TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -344,7 +344,7 @@
     "nls": {
       "en": {
         "NAME": "SCHEMA ERROR BODY",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -357,7 +357,7 @@
     "nls": {
       "en": {
         "NAME": "EMPTY TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -370,7 +370,7 @@
     "nls": {
       "en": {
         "NAME": "EMPTY BODY",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -383,7 +383,7 @@
     "nls": {
       "en": {
         "NAME": "SUCCESS TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -396,7 +396,7 @@
     "nls": {
       "en": {
         "NAME": "SUCCESS BODY",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -409,7 +409,7 @@
     "nls": {
       "en": {
         "NAME": "SUBMIT ERROR TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -422,7 +422,7 @@
     "nls": {
       "en": {
         "NAME": "SUBMIT ERROR BODY",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -435,7 +435,7 @@
     "nls": {
       "en": {
         "NAME": "BLOCKED TITLE",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {
@@ -448,7 +448,7 @@
     "nls": {
       "en": {
         "NAME": "BLOCKED BODY",
-        "DESCRIPTION": "Portal form document value."
+        "DESCRIPTION": "Portal form document copy."
       }
     },
     "value": {

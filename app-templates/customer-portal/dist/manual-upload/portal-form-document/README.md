@@ -38,5 +38,6 @@ POST {apiBase}/core-cms/api/form/submit.json
 - uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.
 - Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.
 - Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.
+- FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.
 
 `preview.html` renders the document against the committed `GET_QUOTE_` snapshot, so it opens without a network.

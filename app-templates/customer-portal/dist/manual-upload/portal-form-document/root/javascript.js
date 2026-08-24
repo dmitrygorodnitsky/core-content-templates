@@ -757,6 +757,9 @@
 (function () {
   "use strict";
   var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
+  var MODES = ["light","dark"];
+  function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
   function attribute(root, name) { return String(root.getAttribute(name) || "").trim(); }
   function safeBase(value) {
@@ -776,8 +779,8 @@
     if (!root || typeof window.PortalForm !== "function") return;
     var mount = root.querySelector("[data-portal-form-mount]");
     if (!mount) return;
-    var theme = attribute(root, "data-form-theme") || "snow";
-    var mode = attribute(root, "data-form-mode") || "light";
+    var theme = oneOf(attribute(root, "data-form-theme").toLowerCase(), THEMES, "snow");
+    var mode = oneOf(attribute(root, "data-form-mode").toLowerCase(), MODES, "light");
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.mode = mode;
     var organizationId = Number(attribute(root, "data-form-organization-id"));

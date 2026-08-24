@@ -59,13 +59,16 @@ const COPY_KEYS = {
   BLOCKED_TITLE: "blockedTitle", BLOCKED_BODY: "blockedBody",
 };
 
+const THEMES = ["hvac", "snow", "lawn", "pool", "roofing", "pest", "health", "beauty"];
+const MODES = ["light", "dark"];
+
 const DEPLOYMENT = [
-  ["FORM_API_BASE_URL", ""],
-  ["FORM_TYPE_CODE", ""],
-  ["FORM_ORGANIZATION_ID", ""],
-  ["FORM_LOCALE", "en"],
-  ["FORM_THEME", "snow"],
-  ["FORM_MODE", "light"],
+  ["FORM_API_BASE_URL", "", "Absolute https origin of the Core deployment, for example https://dev-1.servicewand.com. Any other scheme is discarded and the form reports that it could not load."],
+  ["FORM_TYPE_CODE", "", "Published Core form type code, for example GET_QUOTE_. The document renders whatever that type declares."],
+  ["FORM_ORGANIZATION_ID", "", "Numeric organization id the submission belongs to. While it is empty the submit button stays disabled and nothing can be posted."],
+  ["FORM_LOCALE", "en", "Locale segment used when reading the schema and when picking labels out of each nls bag."],
+  ["FORM_THEME", "snow", "Vertical palette. One of: " + THEMES.join(", ") + ". Any other value falls back to snow."],
+  ["FORM_MODE", "light", "Colour mode. One of: " + MODES.join(", ") + ". Any other value falls back to light."],
 ];
 
 export async function exportPortalFormManual(options = {}) {
@@ -99,7 +102,7 @@ export async function exportPortalFormManual(options = {}) {
 }
 
 function templateFor(css, renderer) {
-  const parameters = DEPLOYMENT.map(function (entry) { return field(entry[0], entry[1], "STRING"); })
+  const parameters = DEPLOYMENT.map(function (entry) { return field(entry[0], entry[1], "STRING", entry[2]); })
     .concat(COPY.map(function (entry) { return field(entry[0], entry[1]); }));
 
   const attributes = {
@@ -139,6 +142,9 @@ function bootScript() {
   return `(function () {
   "use strict";
   var COPY_KEYS = ${JSON.stringify(COPY_KEYS)};
+  var THEMES = ${JSON.stringify(THEMES)};
+  var MODES = ${JSON.stringify(MODES)};
+  function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
   function attribute(root, name) { return String(root.getAttribute(name) || "").trim(); }
   function safeBase(value) {
@@ -158,8 +164,8 @@ function bootScript() {
     if (!root || typeof window.PortalForm !== "function") return;
     var mount = root.querySelector("[data-portal-form-mount]");
     if (!mount) return;
-    var theme = attribute(root, "data-form-theme") || "snow";
-    var mode = attribute(root, "data-form-mode") || "light";
+    var theme = oneOf(attribute(root, "data-form-theme").toLowerCase(), THEMES, "snow");
+    var mode = oneOf(attribute(root, "data-form-mode").toLowerCase(), MODES, "light");
     document.documentElement.dataset.theme = theme;
     document.documentElement.dataset.mode = mode;
     var organizationId = Number(attribute(root, "data-form-organization-id"));
@@ -234,6 +240,8 @@ function manifestFor(template) {
       styles: "app-templates/customer-portal/runtime/forms/portal-form.css",
       kinds: ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox"],
     },
+    themes: THEMES,
+    modes: MODES,
     api: {
       schema: "GET {apiBase}/{locale}/core-cms/api/form-type/{FORM_TYPE_CODE}/get.json",
       submit: "POST {apiBase}/core-cms/api/form/submit.json",
@@ -246,6 +254,7 @@ function manifestFor(template) {
       "uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.",
       "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
       "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
+      "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
     ],
   };
 }
@@ -349,8 +358,13 @@ async function replaceDirectory(outputDir, tempDir) {
 async function writeText(file, value) { await fs.writeFile(file, String(value).replace(/\n*$/, "\n"), "utf8"); }
 async function writeJson(file, value) { await writeText(file, JSON.stringify(value, null, 2)); }
 function sha256(value) { return crypto.createHash("sha256").update(value, "utf8").digest("hex"); }
-function field(code, value, type = "LOCALIZED_STRING_SS") {
-  return { code, type, nls: { en: { NAME: code.replaceAll("_", " "), DESCRIPTION: "Portal form document value." } }, value: type.startsWith("LOCALIZED") ? { en: value } : value };
+function field(code, value, type = "LOCALIZED_STRING_SS", description) {
+  return {
+    code,
+    type,
+    nls: { en: { NAME: code.replaceAll("_", " "), DESCRIPTION: description || "Portal form document copy." } },
+    value: type.startsWith("LOCALIZED") ? { en: value } : value,
+  };
 }
 function ref(code, type = "LOCALIZED_STRING_SS") { return "$" + "{" + code + "@" + type + "}"; }
 function attrs(map) {

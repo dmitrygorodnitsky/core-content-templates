@@ -169,4 +169,35 @@ for (const token of ["--accent", "--ink", "--surface", "--hair", "--radius-md", 
 assert.doesNotMatch(css, /#[0-9a-f]{6}(?![0-9a-f])/i, "no raw hex colour may bypass the theme tokens");
 assert.doesNotMatch(css, /\.df-/, "the portal renderer must not depend on the corporate form stylesheet");
 
-console.log("portal-form-check ok: 16 field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming");
+const { exportPortalFormManual } = await import("./export-portal-form-manual.mjs");
+const documentDir = path.join(root, "dist/manual-upload/.portal-form-document-check");
+try {
+  const { template, manifest } = await exportPortalFormManual({ outputDir: documentDir });
+  const parameters = new Map(template.parameters.map((parameter) => [parameter.code, parameter]));
+
+  for (const code of ["FORM_API_BASE_URL", "FORM_TYPE_CODE", "FORM_ORGANIZATION_ID"]) {
+    assert.equal(parameters.get(code).value, "", code + " must ship empty so an unconfigured document cannot post");
+  }
+  assert.equal(parameters.get("FORM_THEME").value, "snow");
+  assert.equal(parameters.get("FORM_MODE").value, "light");
+  for (const theme of manifest.themes) {
+    assert.ok(parameters.get("FORM_THEME").nls.en.DESCRIPTION.includes(theme), "the theme parameter must list " + theme);
+  }
+  assert.deepEqual(plain(manifest.modes), ["light", "dark"]);
+  assert.match(template.javascript, /function oneOf\(value, allowed, fallback\)/, "an unknown theme or mode must fall back rather than reach data-theme");
+  assert.match(template.javascript, /oneOf\(attribute\(root, "data-form-theme"\)\.toLowerCase\(\), THEMES, "snow"\)/);
+  assert.match(template.javascript, /oneOf\(attribute\(root, "data-form-mode"\)\.toLowerCase\(\), MODES, "light"\)/);
+  assert.match(template.javascript, /url\.protocol === "https:"/, "the document must reject a non-https api base");
+
+  const tokens = await fs.readFile(path.join(root, "runtime/styles/tokens.css"), "utf8");
+  for (const theme of manifest.themes.filter((value) => value !== "hvac")) {
+    assert.ok(tokens.includes('data-theme="' + theme + '"'), "tokens.css must define the " + theme + " palette");
+  }
+
+  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 6);
+  assert.ok(template.parameters.every((parameter) => parameter.nls.en.DESCRIPTION.trim().length > 0), "every parameter needs a description in CMS");
+} finally {
+  await fs.rm(documentDir, { recursive: true, force: true });
+}
+
+console.log("portal-form-check ok: 16 field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode");
