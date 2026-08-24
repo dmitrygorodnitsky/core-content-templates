@@ -98,12 +98,51 @@ node app-templates/customer-portal/scripts/export-granite-ridge-landing-blocks-m
 
 ```bash
 node app-templates/customer-portal/scripts/granite-ridge-landing-manual-check.mjs
+node app-templates/customer-portal/scripts/portal-form-check.mjs
 ```
 
 The generated family lives in
 `dist/manual-upload/customer-portal-granite-ridge-landing` and uploads with the
 same flat uploader as every other family; composing the children into
 `ROOT_NAV` and `ROOT_SECTIONS` stays manual.
+
+## Universal Form Document
+
+`runtime/forms/portal-form.js` renders whatever a published Core form type
+declares, in the portal design language and under the eight vertical themes. It
+covers sixteen field kinds — text, textarea, password, email, tel, url, colour,
+date, number, slider, boolean, select, multiselect, radio, checklist and
+combobox — plus multi-step groups, input masks, per-field validation, and the
+loading, empty, error, blocked, submitting, success and submit-error states.
+
+The contract it reads:
+
+```text
+GET  {apiBase}/{locale}/core-cms/api/form-type/{FORM_TYPE_CODE}/get.json
+POST {apiBase}/core-cms/api/form/submit.json
+```
+
+Both requests are anonymous. `uiBehavior` is honoured only as a declarative
+`applyBehavior` mapping of value to step; server-supplied JavaScript is never
+executed, unlike the shared `js/dynamic-form.js` reference client.
+
+Two published schemas are committed under `content/form-types/` and drive the
+preview and the check without a network: the live `GET_QUOTE_` snapshot and a
+`PORTAL_FORM_KITCHEN_SINK` fixture that exercises every kind.
+
+```bash
+node app-templates/customer-portal/scripts/portal-form-check.mjs
+```
+
+```bash
+node app-templates/customer-portal/scripts/export-portal-form-manual.mjs
+```
+
+Serve `runtime/portal-form.html` to preview either schema against any theme,
+mode and forced state. The generated standalone document lives in
+`dist/manual-upload/portal-form-document`; its `FORM_API_BASE_URL` must be an
+absolute https origin and its `FORM_ORGANIZATION_ID` a positive number, or the
+submit button stays disabled.
 
 ## Focused Checks
 

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "kind": "portal-form-document",
+  "template": {
+    "code": "PORTAL_FORM_DOCUMENT",
+    "templateLanguage": "JTE",
+    "parameterCount": 36,
+    "sha256": {
+      "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
+      "html": "bef4a05b9c26e29ae203d135c427c99290c318e4b836f5acc7737cdcc11f3f14",
+      "css": "9f260b6f27cc2e4f93ee698117785de33b77a429098928e38f206520208599e2",
+      "javascript": "9dd2c5c46401ee8ae714869fc611dcb75ec0559c48e8b1f71694339a974dcbba"
+    }
+  },
+  "renderer": {
+    "source": "app-templates/customer-portal/runtime/forms/portal-form.js",
+    "styles": "app-templates/customer-portal/runtime/forms/portal-form.css",
+    "kinds": [
+      "text",
+      "textarea",
+      "password",
+      "email",
+      "tel",
+      "url",
+      "color",
+      "date",
+      "number",
+      "slider",
+      "boolean",
+      "select",
+      "multiselect",
+      "radio",
+      "checklist",
+      "combobox"
+    ]
+  },
+  "api": {
+    "schema": "GET {apiBase}/{locale}/core-cms/api/form-type/{FORM_TYPE_CODE}/get.json",
+    "submit": "POST {apiBase}/core-cms/api/form/submit.json",
+    "credentials": "omit"
+  },
+  "constraints": [
+    "The document renders whatever the published form type declares. It contains no field list of its own.",
+    "FORM_API_BASE_URL must be an absolute https origin. Any other scheme is discarded and the form reports that it could not load.",
+    "FORM_ORGANIZATION_ID must be a positive number. Until it is set the submit button stays disabled, so an unconfigured document cannot post.",
+    "uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.",
+    "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
+    "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking."
+  ]
+}

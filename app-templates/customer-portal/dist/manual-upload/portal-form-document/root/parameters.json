@@ -1,0 +1,458 @@
+[
+  {
+    "code": "FORM_API_BASE_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM API BASE URL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_TYPE_CODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM TYPE CODE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_ORGANIZATION_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM ORGANIZATION ID",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "FORM_LOCALE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM LOCALE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": "en"
+  },
+  {
+    "code": "FORM_THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM THEME",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": "snow"
+  },
+  {
+    "code": "FORM_MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM MODE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": "light"
+  },
+  {
+    "code": "TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Get your free quote"
+    }
+  },
+  {
+    "code": "SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBTITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Tell us about the property and we will come back with a seasonal number."
+    }
+  },
+  {
+    "code": "NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NOTE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUBMIT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT LABEL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Send request"
+    }
+  },
+  {
+    "code": "SUBMITTING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMITTING LABEL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Sending…"
+    }
+  },
+  {
+    "code": "NEXT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NEXT LABEL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Continue"
+    }
+  },
+  {
+    "code": "BACK_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BACK LABEL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Back"
+    }
+  },
+  {
+    "code": "RETRY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETRY LABEL",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Try again"
+    }
+  },
+  {
+    "code": "STEP_FALLBACK",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "STEP FALLBACK",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Step {n}"
+    }
+  },
+  {
+    "code": "SELECT_PLACEHOLDER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SELECT PLACEHOLDER",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Choose one"
+    }
+  },
+  {
+    "code": "REQUIRED_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "REQUIRED ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "This field is required."
+    }
+  },
+  {
+    "code": "FORMAT_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "FORMAT ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "That format is not accepted."
+    }
+  },
+  {
+    "code": "INCOMPLETE_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "INCOMPLETE ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Finish filling this field."
+    }
+  },
+  {
+    "code": "EMAIL_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMAIL ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Enter a valid email address."
+    }
+  },
+  {
+    "code": "URL_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "URL ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Enter a full https address."
+    }
+  },
+  {
+    "code": "NUMBER_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "NUMBER ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Enter a number."
+    }
+  },
+  {
+    "code": "MIN_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MIN ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Minimum is {n}."
+    }
+  },
+  {
+    "code": "MAX_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MAX ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Maximum is {n}."
+    }
+  },
+  {
+    "code": "MIN_LENGTH_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MIN LENGTH ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "At least {n} characters."
+    }
+  },
+  {
+    "code": "MAX_LENGTH_ERROR",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MAX LENGTH ERROR",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "At most {n} characters."
+    }
+  },
+  {
+    "code": "SCHEMA_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SCHEMA ERROR TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "The form could not be loaded"
+    }
+  },
+  {
+    "code": "SCHEMA_ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SCHEMA ERROR BODY",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "We could not reach the form service. Nothing was sent."
+    }
+  },
+  {
+    "code": "EMPTY_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "This form has no fields"
+    }
+  },
+  {
+    "code": "EMPTY_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMPTY BODY",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "The published form type contains no visible attributes."
+    }
+  },
+  {
+    "code": "SUCCESS_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Request received"
+    }
+  },
+  {
+    "code": "SUCCESS_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS BODY",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Thanks — we have your details and will be in touch."
+    }
+  },
+  {
+    "code": "SUBMIT_ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT ERROR TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "The request was not sent"
+    }
+  },
+  {
+    "code": "SUBMIT_ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUBMIT ERROR BODY",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Something went wrong on the way. Your answers are still here — try again."
+    }
+  },
+  {
+    "code": "BLOCKED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BLOCKED TITLE",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "Sending is not configured"
+    }
+  },
+  {
+    "code": "BLOCKED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BLOCKED BODY",
+        "DESCRIPTION": "Portal form document value."
+      }
+    },
+    "value": {
+      "en": "This form has no organization id yet, so it cannot submit."
+    }
+  }
+]

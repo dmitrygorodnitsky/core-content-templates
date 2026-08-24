@@ -11,6 +11,7 @@ and operator commands.
 | `build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs` | Compile and package a fixture-only demonstration portal for one registered case |
 | `upsert-*-portal.mjs` | One operator entrypoint per tenant: build, export, check, then create-or-update the BlockTemplate by code |
 | `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
+| `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
@@ -53,6 +54,17 @@ root as its parent, that every declared parameter is referenced and every
 referenced parameter is declared, that no block calls a backend or names a Core
 service or a deployment host, that the three portal destinations ship empty and
 fail closed, and that the runtime URL guard accepts only absolute https.
+
+`portal-form-check.mjs` loads `runtime/forms/portal-form.js` in an isolated
+`vm` context and asserts the whole field contract without a browser: the Java
+class to field-type mapping, every `inputFormat` token including masks that
+contain spaces, mask application and completeness, `attributeOrder` winning over
+`attributeGroups`, inherited attributes keeping their parent type id,
+`visible:false` being skipped while ungrouped attributes still render, locale
+fallback, and that all sixteen renderable kinds appear in the committed
+fixture. It also refuses a renderer that gains `new Function`, `eval` or
+`innerHTML`, and a stylesheet that hardcodes a colour instead of using a portal
+token.
 
 `customer-experience-login-check.mjs` and
 `customer-experience-2fa-check.mjs` protect the accepted Core Auth transfer
