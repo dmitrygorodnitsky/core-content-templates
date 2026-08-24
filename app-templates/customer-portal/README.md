@@ -84,6 +84,27 @@ The upsert resolves `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` by code and creates
 it if absent, otherwise updates that same id. It never writes template parents,
 include markup, enabled templates, or PageContext records; those stay manual.
 
+### Public landing
+
+The snow tenant also owns a public landing CMS family: one root plus 12
+independently editable section blocks, all CMS-authored, with no backend call
+and no PIM contract. Portal destinations are three root parameters that ship
+empty; a CTA whose parameter is unset renders unavailable rather than emitting a
+dead link.
+
+```bash
+node app-templates/customer-portal/scripts/export-granite-ridge-landing-blocks-manual.mjs
+```
+
+```bash
+node app-templates/customer-portal/scripts/granite-ridge-landing-manual-check.mjs
+```
+
+The generated family lives in
+`dist/manual-upload/customer-portal-granite-ridge-landing` and uploads with the
+same flat uploader as every other family; composing the children into
+`ROOT_NAV` and `ROOT_SECTIONS` stays manual.
+
 ## Focused Checks
 
 ```bash
@@ -96,4 +117,5 @@ node app-templates/customer-portal/scripts/config-behavior-check.mjs
 node app-templates/customer-portal/scripts/calm-harbor-fixture-check.mjs
 node app-templates/customer-portal/scripts/granite-ridge-fixture-check.mjs
 node app-templates/customer-portal/scripts/granite-ridge-portal-manual-check.mjs
+node app-templates/customer-portal/scripts/granite-ridge-landing-manual-check.mjs
 ```

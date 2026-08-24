@@ -30,6 +30,13 @@ this repository. The user reviews it and imports the accepted package into
   overflow per configuration. It affects the accepted `stormOps` profile as well
   as the new `stormRetail` one.
 
+## Granite Ridge Snow Removal
+
+- [`granite-ridge-landing-media.md`](granite-ridge-landing-media.md) is an asset
+  request, not a design request: the accepted `seoMedia` composition already
+  covers both the delivered-image and the striped no-data states, so the landing
+  only needs the two public bitmaps.
+
 ## Calm Harbor Spa
 
 - [`calm-harbor-spa-customer-portal-ia.md`](calm-harbor-spa-customer-portal-ia.md)

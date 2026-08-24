@@ -1,0 +1,54 @@
+[
+  {
+    "code": "GRS_LANDING_11_FINAL_CTA_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Set your trigger before the first front"
+    }
+  },
+  {
+    "code": "GRS_LANDING_11_FINAL_CTA_SUB",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUB",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Tell us the property and the surfaces. Dispatch is automatic from the first storm that meets your threshold."
+    }
+  },
+  {
+    "code": "GRS_LANDING_11_FINAL_CTA_PRIMARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PRIMARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Request seasonal quote"
+    }
+  },
+  {
+    "code": "GRS_LANDING_11_FINAL_CTA_SECONDARY_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SECONDARY LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Sign in to your portal"
+    }
+  }
+]

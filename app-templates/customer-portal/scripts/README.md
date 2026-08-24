@@ -10,6 +10,7 @@ and operator commands.
 | `export-*`, `generate-*`, `build-calm-harbor-target-runtime.mjs` | Generate owned runtime/CMS artifacts |
 | `build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs` | Compile and package a fixture-only demonstration portal for one registered case |
 | `upsert-*-portal.mjs` | One operator entrypoint per tenant: build, export, check, then create-or-update the BlockTemplate by code |
+| `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
@@ -45,6 +46,13 @@ directory and asserts the fixture invariants: a JTE-safe parameter-free root, no
 service base, no OIDC contract, no tenant organization, a noindex head, and an
 exporter that still refuses live data mode, an escape from `dist/manual-upload/`,
 and products without checkout.
+
+`granite-ridge-landing-manual-check.mjs` guards the snow landing family. It
+re-exports into a throwaway directory and asserts that every child records the
+root as its parent, that every declared parameter is referenced and every
+referenced parameter is declared, that no block calls a backend or names a Core
+service or a deployment host, that the three portal destinations ship empty and
+fail closed, and that the runtime URL guard accepts only absolute https.
 
 `customer-experience-login-check.mjs` and
 `customer-experience-2fa-check.mjs` protect the accepted Core Auth transfer

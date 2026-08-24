@@ -1,0 +1,154 @@
+[
+  {
+    "code": "GRS_LANDING_06_PROOF_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Why Granite Ridge Snow Removal"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Compliance-grade storm response"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_MEDIA_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA URL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_MEDIA_ALT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA ALT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Granite Ridge plow clearing a commercial lot at dawn"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_MEDIA_FOCAL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA FOCAL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": "50% 50%"
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_MEDIA_SLOT_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "MEDIA SLOT LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "proof photo · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_1_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Weather trigger"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_1_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Your contract sets the snowfall threshold — dispatch is automatic, no phone calls at 5 am."
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_2_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "SLA response window"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_2_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Every storm response is timed against the contracted window and logged, met or missed."
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_3_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Slip-and-fall compliance"
+    }
+  },
+  {
+    "code": "GRS_LANDING_06_PROOF_ITEM_3_DESC",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 DESC",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "GPS + photo + materials log per visit, exportable as a season compliance report."
+    }
+  }
+]

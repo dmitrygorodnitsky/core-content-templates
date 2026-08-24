@@ -1,0 +1,175 @@
+{
+  "code": "GRS_LANDING_07_PRICING",
+  "nls": {
+    "en": {
+      "NAME": "Granite Ridge Snow Removal | Pricing"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_FIXTURE"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-sec\" id=\"seo-pricing\" data-module=\"seo-pricing\" data-visual-id=\"seo-pricing\" data-state=\"ready\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${GRS_LANDING_07_PRICING_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${GRS_LANDING_07_PRICING_TITLE@LOCALIZED_STRING_SS}</h2><p class=\"seo-sec__sub\">${GRS_LANDING_07_PRICING_SUB@LOCALIZED_STRING_SS}</p></div><div class=\"seo-price\"><div class=\"seo-price__row\" data-module=\"seo-pricing-row\" data-visual-id=\"seo-pricing-row\" data-bind=\"cms.pricing.rows[0]\"><span class=\"seo-price__name\">${GRS_LANDING_07_PRICING_ROW_1_NAME@LOCALIZED_STRING_SS}</span><span class=\"seo-price__val\"><b>${GRS_LANDING_07_PRICING_ROW_1_VALUE@LOCALIZED_STRING_SS}</b><span class=\"seo-price__unit\">${GRS_LANDING_07_PRICING_ROW_1_UNIT@LOCALIZED_STRING_SS}</span></span></div><div class=\"seo-price__row\" data-module=\"seo-pricing-row\" data-visual-id=\"seo-pricing-row\" data-bind=\"cms.pricing.rows[1]\"><span class=\"seo-price__name\">${GRS_LANDING_07_PRICING_ROW_2_NAME@LOCALIZED_STRING_SS}</span><span class=\"seo-price__val\"><b>${GRS_LANDING_07_PRICING_ROW_2_VALUE@LOCALIZED_STRING_SS}</b><span class=\"seo-price__unit\">${GRS_LANDING_07_PRICING_ROW_2_UNIT@LOCALIZED_STRING_SS}</span></span></div><div class=\"seo-price__row\" data-module=\"seo-pricing-row\" data-visual-id=\"seo-pricing-row\" data-bind=\"cms.pricing.rows[2]\"><span class=\"seo-price__name\">${GRS_LANDING_07_PRICING_ROW_3_NAME@LOCALIZED_STRING_SS}</span><span class=\"seo-price__val seo-price__val--quote\">${GRS_LANDING_07_PRICING_ROW_3_VALUE@LOCALIZED_STRING_SS}</span></div></div><div class=\"seo-price__cta\"><button class=\"btn btn--primary seo-cta\" data-module=\"seo-cta\" data-visual-id=\"seo-pricing-cta\" data-action=\"portal.request\" data-state=\"idle\" data-bind=\"cms.pricing.cta\" aria-live=\"polite\">${GRS_LANDING_07_PRICING_CTA_LABEL@LOCALIZED_STRING_SS}</button></div></section>",
+  "css": "/* ---------- 6 · pricing ---------- */\n.seo-price { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }\n.seo-price__row {\n  display: flex; justify-content: space-between; align-items: baseline; gap: 20px;\n  background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07);\n  border-radius: var(--radius-md); padding: 13px 18px;\n}\n.seo-price__name { font-weight: 700; font-size: 14px; }\n.seo-price__val b { font-size: 15px; }\n.seo-price__unit { color: var(--ink-3); font-size: 12px; }\n.seo-price__val--quote { font-size: 12.5px; color: var(--ink-2); font-style: italic; text-align: right; }\n.seo-price__cta { margin-top: 16px; }",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "GRS_LANDING_07_PRICING_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "EYEBROW",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Pricing"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "TITLE",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "What to expect"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_SUB",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "SUB",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Seasonal contracts are quoted from measured surface area; per-storm pricing from the CMS."
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_CTA_LABEL",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "CTA LABEL",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Request a seasonal quote"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_1_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 1 NAME",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Lot & drive clearing"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_1_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 1 VALUE",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "from $185"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_1_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 1 UNIT",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": " / storm"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_2_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 2 NAME",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Walkway de-icing"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_2_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 2 VALUE",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "from $74"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_2_UNIT",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 2 UNIT",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": " / application"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_3_NAME",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 3 NAME",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Seasonal contract visit"
+      }
+    },
+    {
+      "code": "GRS_LANDING_07_PRICING_ROW_3_VALUE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "ROW 3 VALUE",
+          "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+        }
+      },
+      "value": {
+        "en": "Quoted from measured area and trigger level"
+      }
+    }
+  ]
+}
