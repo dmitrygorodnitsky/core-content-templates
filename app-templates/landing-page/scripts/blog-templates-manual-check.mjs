@@ -63,7 +63,11 @@ assert.doesNotMatch(index.html, /composition-section/);
 assert.doesNotMatch(post.html, /composition-section/);
 assert.doesNotMatch(index.html, /<section[^>]*>\s*<section/i);
 assert.doesNotMatch(post.html, /<section[^>]*>\s*<section/i);
-const SEO_METADATA_CODES = ["META_TITLE", "META_DESCRIPTION", "HERO_IMAGE_URL"];
+const SEO_METADATA_CODES = [
+  "META_TITLE", "META_DESCRIPTION", "HERO_IMAGE_URL", "SEO_LD_SCHEMA",
+  "AUTHOR_NAME", "AUTHOR_AVATAR", "AUTHOR_BIO",
+];
+const SEO_HEAD_LOCALIZED_CODES = ["META_TITLE", "META_DESCRIPTION"];
 assert.ok(index.parameters.every((parameter) => parameter.code.startsWith("FIELD_SERVICE_BLOG_INDEX_")));
 assert.deepEqual(
   post.parameters
@@ -72,16 +76,45 @@ assert.deepEqual(
     .sort(),
   [...SEO_METADATA_CODES].sort(),
 );
-for (const code of SEO_METADATA_CODES) {
+for (const code of SEO_HEAD_LOCALIZED_CODES) {
   const parameter = post.parameters.find((entry) => entry.code === code);
-  assert.equal(parameter.type, "STRING");
-  assert.equal(parameter.value, "");
-  assert.match(post.head, new RegExp(`\\$\\{${code}\\}`));
-  assert.doesNotMatch(post.head, new RegExp(`\\$\\{${code}@`));
+  assert.equal(parameter.type, "LOCALIZED_STRING_SS");
+  assert.deepEqual(parameter.value, { en: "" });
+  assert.match(post.head, new RegExp(`\\$\\{${code}@LOCALIZED_STRING_SS\\}`));
 }
+const heroParameter = post.parameters.find((entry) => entry.code === "HERO_IMAGE_URL");
+assert.equal(heroParameter.type, "STRING");
+assert.equal(heroParameter.value, "");
+assert.match(post.head, /\$\{HERO_IMAGE_URL\}/);
+assert.doesNotMatch(post.head, /\$\{HERO_IMAGE_URL@/);
+const authorBioParameter = post.parameters.find((entry) => entry.code === "AUTHOR_BIO");
+assert.equal(authorBioParameter.type, "LOCALIZED_STRING_SS");
+assert.deepEqual(authorBioParameter.value, { en: "" });
+assert.match(post.html, /data-blog-author-bio>\$\{AUTHOR_BIO@LOCALIZED_STRING_SS\}</);
+const authorNameParameter = post.parameters.find((entry) => entry.code === "AUTHOR_NAME");
+assert.equal(authorNameParameter.type, "STRING");
+assert.equal(authorNameParameter.value, "");
+assert.match(post.html, /data-blog-author-name>\$\{AUTHOR_NAME\}</);
+const authorAvatarParameter = post.parameters.find((entry) => entry.code === "AUTHOR_AVATAR");
+assert.equal(authorAvatarParameter.type, "STRING");
+assert.equal(authorAvatarParameter.value, "");
+assert.match(post.html, /data-blog-author-avatar="\$\{AUTHOR_AVATAR\}"/);
+assert.doesNotMatch(post.html, /<img[^>]*\$\{AUTHOR_AVATAR/);
+assert.match(post.javascript, /renderAuthorCard\(root, post\)/);
+assert.match(post.javascript, /"@type": "Person"/);
+const schemaParameter = post.parameters.find((entry) => entry.code === "SEO_LD_SCHEMA");
+assert.equal(schemaParameter.type, "LOCALIZED_JSON_OBJECT");
+assert.deepEqual(schemaParameter.value, { en: {} });
+assert.match(
+  post.html,
+  /<script type="application\/ld\+json" data-blog-article-schema>\$\{SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT\}<\/script>/,
+);
+assert.doesNotMatch(post.head, /ld\+json/);
+assert.equal(post.html.match(/ld\+json/g).length, 1);
+assert.match(post.javascript, /if \(node && \(clientWritten\.schema \|\| isPlaceholderSchema\(node\.textContent\)\)\)/);
 assert.doesNotMatch(post.head, /<title|name="description"/);
-assert.match(post.javascript, /if \(isPlaceholderValue\(document\.title\)\) document\.title = post\.title;/);
-assert.match(post.javascript, /if \(node && !isPlaceholderValue\(node\.getAttribute\("content"\)\)\) return;/);
+assert.match(post.javascript, /if \(clientWritten\.title \|\| isPlaceholderValue\(document\.title\)\)/);
+assert.match(post.javascript, /if \(node && !clientWritten\[selector\] && !isPlaceholderValue\(node\.getAttribute\("content"\)\)\) return;/);
 assert.equal(post.parameters.some((parameter) => parameter.type === "BLOG_POST_CONTENT_SS"), false);
 assert.equal(post.parameters.some((parameter) => parameter.code.endsWith("BLOG_POST_CONTENT")), false);
 assert.equal(post.html.match(/\$\{POST@BLOG_POST_CONTENT_SS\}/g)?.length, 1);

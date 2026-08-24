@@ -1,25 +1,29 @@
 [
   {
     "code": "META_TITLE",
-    "type": "STRING",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "Meta Title",
         "DESCRIPTION": "Server-rendered social title. Core CMS replaces it with the BlogPost metadata key META_TITLE while an article is rendered."
       }
     },
-    "value": ""
+    "value": {
+      "en": ""
+    }
   },
   {
     "code": "META_DESCRIPTION",
-    "type": "STRING",
+    "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
         "NAME": "Meta Description",
         "DESCRIPTION": "Server-rendered social description. Core CMS replaces it with the BlogPost metadata key META_DESCRIPTION while an article is rendered."
       }
     },
-    "value": ""
+    "value": {
+      "en": ""
+    }
   },
   {
     "code": "HERO_IMAGE_URL",
@@ -223,6 +227,41 @@
     }
   },
   {
+    "code": "AUTHOR_AVATAR",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Author Avatar",
+        "DESCRIPTION": "Server-rendered author avatar URL. Core CMS replaces it with the BlogPost metadata key AUTHOR_AVATAR while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "AUTHOR_NAME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "Author Name",
+        "DESCRIPTION": "Server-rendered author name. Core CMS replaces it with the BlogPost metadata key AUTHOR_NAME while an article is rendered."
+      }
+    },
+    "value": ""
+  },
+  {
+    "code": "AUTHOR_BIO",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Author Bio",
+        "DESCRIPTION": "Server-rendered author biography. Core CMS replaces it with the BlogPost metadata key AUTHOR_BIO while an article is rendered."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
     "code": "FIELD_SERVICE_BLOG_POST_RELATED_EYEBROW",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -259,6 +298,19 @@
     },
     "value": {
       "en": "Related blog articles"
+    }
+  },
+  {
+    "code": "SEO_LD_SCHEMA",
+    "type": "LOCALIZED_JSON_OBJECT",
+    "nls": {
+      "en": {
+        "NAME": "SEO LD Schema",
+        "DESCRIPTION": "Server-rendered schema.org JSON-LD. Core CMS replaces it with the BlogPost metadata key SEO_LD_SCHEMA while an article is rendered."
+      }
+    },
+    "value": {
+      "en": {}
     }
   }
 ]

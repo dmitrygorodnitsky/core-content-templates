@@ -452,7 +452,8 @@ const renderBlockTemplate = ({ block, code, name, legacyCode = code, parentCode,
       }));
       used.add(paramCode);
     }
-    return isSharedParam(param) ? untypedPlaceholder(paramCode) : placeholder(paramCode, param.type);
+    if (isSharedParam(param) && cmsType(param.type) === "STRING") return untypedPlaceholder(paramCode);
+    return placeholder(paramCode, param.type);
   };
 
   const renderLocalPlaceholders = (source) =>

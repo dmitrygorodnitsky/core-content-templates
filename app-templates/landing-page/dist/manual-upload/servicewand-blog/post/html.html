@@ -28,6 +28,14 @@
       ${POST@BLOG_POST_CONTENT_SS}
     </article>
 
+    <aside class="blog-post-page__author-card" data-blog-author hidden>
+      <span class="blog-post-page__author-card-avatar" data-blog-author-avatar="${AUTHOR_AVATAR}" aria-hidden="true"></span>
+      <div class="blog-post-page__author-card-text">
+        <p class="blog-post-page__author-card-name" data-blog-author-name>${AUTHOR_NAME}</p>
+        <p class="blog-post-page__author-card-bio" data-blog-author-bio>${AUTHOR_BIO@LOCALIZED_STRING_SS}</p>
+      </div>
+    </aside>
+
     <aside class="blog-post-page__related" data-blog-related-section hidden>
       <div class="blog-post-page__related-head">
         <p>${FIELD_SERVICE_BLOG_POST_RELATED_EYEBROW@LOCALIZED_STRING_SS}</p>
@@ -36,5 +44,5 @@
       <div class="blog-post-page__related-grid" data-blog-related aria-label="${FIELD_SERVICE_BLOG_POST_RELATED_ARIA_LABEL@LOCALIZED_STRING_SS}"></div>
     </aside>
   </div>
-  <script type="application/ld+json" data-blog-article-schema>{}</script>
+  <script type="application/ld+json" data-blog-article-schema>${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}</script>
 </section>

@@ -6,12 +6,12 @@
 <meta name="description" content="ServiceWand Blog Post">
 <title>ServiceWand Blog Post</title>
 <meta property="og:type" content="article">
-<meta property="og:title" content="${META_TITLE}">
-<meta property="og:description" content="${META_DESCRIPTION}">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
 <meta property="og:image" content="${HERO_IMAGE_URL}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${META_TITLE}">
-<meta name="twitter:description" content="${META_DESCRIPTION}">
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="">
 <meta name="twitter:image" content="${HERO_IMAGE_URL}">
 <style>/* ============================================================
    lab-ui · canonical tokens · light theme
@@ -764,6 +764,60 @@ select {
 
 .blog-post-page__document:empty { display: none; }
 
+.blog-post-page__author-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.15rem;
+  width: min(100%, 48rem);
+  margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+  padding: clamp(1.4rem, 3vw, 1.9rem);
+  border: 1px solid rgba(151, 162, 184, 0.35);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 35%, transparent);
+  border-radius: var(--radius-card, 1.25rem);
+  background: var(--color-gray-bg, #F9F9F9);
+}
+
+.blog-post-page__author-card-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, var(--cta-accent, #6BEAF9) 26%, transparent), transparent 60%),
+    linear-gradient(150deg, color-mix(in srgb, var(--color-gray-blue, #97A2B8) 12%, var(--color-bg, #FFFFFF)), color-mix(in srgb, var(--color-gray-blue, #97A2B8) 32%, var(--color-bg, #FFFFFF)));
+  color: var(--color-heading, #1B1D25);
+}
+
+.blog-post-page__author-card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-post-page__author-card-text { min-width: 0; }
+
+.blog-post-page__author-card-name {
+  margin: 0;
+  color: var(--color-heading, #1B1D25);
+  font-size: 1.05rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.blog-post-page__author-card-name:empty { display: none; }
+
+.blog-post-page__author-card-bio {
+  margin: 0.45rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.blog-post-page__author-card-bio:empty { display: none; }
+
 .blog-post-page__related {
   margin-top: clamp(4rem, 8vw, 6.5rem);
   padding-top: clamp(2.5rem, 5vw, 3.5rem);
@@ -986,6 +1040,14 @@ select {
 </div>
     </article>
 
+    <aside class="blog-post-page__author-card" data-blog-author hidden>
+      <span class="blog-post-page__author-card-avatar" data-blog-author-avatar="${AUTHOR_AVATAR}" aria-hidden="true"></span>
+      <div class="blog-post-page__author-card-text">
+        <p class="blog-post-page__author-card-name" data-blog-author-name>${AUTHOR_NAME}</p>
+        <p class="blog-post-page__author-card-bio" data-blog-author-bio></p>
+      </div>
+    </aside>
+
     <aside class="blog-post-page__related" data-blog-related-section hidden>
       <div class="blog-post-page__related-head">
         <p>Keep reading</p>
@@ -1104,7 +1166,8 @@ select {
       summary: summary,
       category: category,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
-      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl", "AUTHOR_PHOTO_URL"], locale),
+      authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR", "authorAvatar", "AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl"], locale),
+      authorBio: firstText(metadata, ["AUTHOR_BIO", "authorBio"], locale),
       publishedAt: publishedAt,
       readTime: firstText(metadata, ["READING_TIME", "readingTime", "READ_TIME", "readTime"], locale),
       imageUrl: imageUrl,
@@ -1362,19 +1425,27 @@ select {
 
   function isPlaceholderValue(value) {
     var text = String(value || "").trim();
-    return !text || text === "#" || /^\$\{[A-Z0-9_]+\}$/.test(text);
+    return !text || text === "#" || /^\$\{[A-Z0-9_]+(@[A-Z0-9_]+)?\}$/.test(text);
   }
+
+  function isPlaceholderSchema(value) {
+    var text = String(value || "").trim();
+    return isPlaceholderValue(text) || text === "{}";
+  }
+
+  var clientWritten = {};
 
   function setMeta(selector, attribute, key, value) {
     if (!value) return;
     var node = document.head.querySelector(selector);
-    if (node && !isPlaceholderValue(node.getAttribute("content"))) return;
+    if (node && !clientWritten[selector] && !isPlaceholderValue(node.getAttribute("content"))) return;
     if (!node) {
       node = document.createElement("meta");
       node.setAttribute(attribute, key);
       document.head.appendChild(node);
     }
     node.setAttribute("content", value);
+    clientWritten[selector] = true;
   }
 
   function setNamedMeta(name, value) {
@@ -1398,7 +1469,10 @@ select {
   function applySeo(root, post) {
     if (!post || !post.title) return;
     var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
-    if (isPlaceholderValue(document.title)) document.title = post.title;
+    if (clientWritten.title || isPlaceholderValue(document.title)) {
+      document.title = post.title;
+      clientWritten.title = true;
+    }
     setNamedMeta("description", post.summary);
     setPropertyMeta("og:type", "article");
     setPropertyMeta("og:title", post.title);
@@ -1416,14 +1490,19 @@ select {
       headline: post.title,
       description: post.summary || undefined,
       datePublished: post.publishedAt || undefined,
-      author: post.author ? { "@type": "Organization", name: post.author } : undefined,
+      author: post.author
+        ? { "@type": "Person", name: post.author, image: post.authorAvatarUrl || undefined }
+        : undefined,
       image: post.imageUrl || undefined,
       mainEntityOfPage: canonicalUrl,
       url: canonicalUrl
     };
     Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
     var node = root.querySelector("[data-blog-article-schema]");
-    if (node) node.textContent = JSON.stringify(schema);
+    if (node && (clientWritten.schema || isPlaceholderSchema(node.textContent))) {
+      node.textContent = JSON.stringify(schema);
+      clientWritten.schema = true;
+    }
   }
 
   function initialsOf(name) {
@@ -1450,6 +1529,42 @@ select {
     if (!initials) return null;
     avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
     return avatar;
+  }
+
+  function fillAuthorText(node, value) {
+    if (!node) return "";
+    var current = String(node.textContent || "").trim();
+    if (!isPlaceholderValue(current)) return current;
+    node.textContent = value || "";
+    return String(value || "").trim();
+  }
+
+  function renderAuthorCard(root, post) {
+    var card = root.querySelector("[data-blog-author]");
+    if (!card) return;
+    var name = fillAuthorText(card.querySelector("[data-blog-author-name]"), post && post.author);
+    var bio = fillAuthorText(card.querySelector("[data-blog-author-bio]"), post && post.authorBio);
+    if (!name && !bio) {
+      card.hidden = true;
+      return;
+    }
+    var avatar = card.querySelector("[data-blog-author-avatar]");
+    if (avatar && !avatar.firstChild) {
+      var source = avatar.getAttribute("data-blog-author-avatar");
+      if (isPlaceholderValue(source)) source = post && post.authorAvatarUrl;
+      if (source) {
+        var image = document.createElement("img");
+        image.src = source;
+        image.alt = "";
+        image.loading = "lazy";
+        image.decoding = "async";
+        avatar.appendChild(image);
+      } else {
+        var initials = initialsOf(name);
+        if (initials) avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+      }
+    }
+    card.hidden = false;
   }
 
   function renderCurrent(root, post, config) {
@@ -1481,6 +1596,7 @@ select {
       hero.appendChild(image);
       hero.hidden = false;
     }
+    renderAuthorCard(root, post);
     applySeo(root, post);
   }
 
@@ -1632,6 +1748,11 @@ select {
         documentRoot.setAttribute("data-blog-render-state", "ready");
         documentRoot.removeAttribute("aria-busy");
       }
+    }
+    try {
+      renderAuthorCard(root, null);
+    } catch (error) {
+      console.error(error);
     }
     try {
       renderShare(root);

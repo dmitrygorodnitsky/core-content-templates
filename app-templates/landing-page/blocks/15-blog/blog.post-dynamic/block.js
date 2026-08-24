@@ -33,19 +33,27 @@
 
   function isPlaceholderValue(value) {
     var text = String(value || "").trim();
-    return !text || text === "#" || /^\$\{[A-Z0-9_]+\}$/.test(text);
+    return !text || text === "#" || /^\$\{[A-Z0-9_]+(@[A-Z0-9_]+)?\}$/.test(text);
   }
+
+  function isPlaceholderSchema(value) {
+    var text = String(value || "").trim();
+    return isPlaceholderValue(text) || text === "{}";
+  }
+
+  var clientWritten = {};
 
   function setMeta(selector, attribute, key, value) {
     if (!value) return;
     var node = document.head.querySelector(selector);
-    if (node && !isPlaceholderValue(node.getAttribute("content"))) return;
+    if (node && !clientWritten[selector] && !isPlaceholderValue(node.getAttribute("content"))) return;
     if (!node) {
       node = document.createElement("meta");
       node.setAttribute(attribute, key);
       document.head.appendChild(node);
     }
     node.setAttribute("content", value);
+    clientWritten[selector] = true;
   }
 
   function setNamedMeta(name, value) {
@@ -69,7 +77,10 @@
   function applySeo(root, post) {
     if (!post || !post.title) return;
     var canonicalUrl = window.location.href.split("?")[0].split("#")[0];
-    if (isPlaceholderValue(document.title)) document.title = post.title;
+    if (clientWritten.title || isPlaceholderValue(document.title)) {
+      document.title = post.title;
+      clientWritten.title = true;
+    }
     setNamedMeta("description", post.summary);
     setPropertyMeta("og:type", "article");
     setPropertyMeta("og:title", post.title);
@@ -87,14 +98,19 @@
       headline: post.title,
       description: post.summary || undefined,
       datePublished: post.publishedAt || undefined,
-      author: post.author ? { "@type": "Organization", name: post.author } : undefined,
+      author: post.author
+        ? { "@type": "Person", name: post.author, image: post.authorAvatarUrl || undefined }
+        : undefined,
       image: post.imageUrl || undefined,
       mainEntityOfPage: canonicalUrl,
       url: canonicalUrl
     };
     Object.keys(schema).forEach(function (key) { if (schema[key] === undefined) delete schema[key]; });
     var node = root.querySelector("[data-blog-article-schema]");
-    if (node) node.textContent = JSON.stringify(schema);
+    if (node && (clientWritten.schema || isPlaceholderSchema(node.textContent))) {
+      node.textContent = JSON.stringify(schema);
+      clientWritten.schema = true;
+    }
   }
 
   function initialsOf(name) {
@@ -121,6 +137,42 @@
     if (!initials) return null;
     avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
     return avatar;
+  }
+
+  function fillAuthorText(node, value) {
+    if (!node) return "";
+    var current = String(node.textContent || "").trim();
+    if (!isPlaceholderValue(current)) return current;
+    node.textContent = value || "";
+    return String(value || "").trim();
+  }
+
+  function renderAuthorCard(root, post) {
+    var card = root.querySelector("[data-blog-author]");
+    if (!card) return;
+    var name = fillAuthorText(card.querySelector("[data-blog-author-name]"), post && post.author);
+    var bio = fillAuthorText(card.querySelector("[data-blog-author-bio]"), post && post.authorBio);
+    if (!name && !bio) {
+      card.hidden = true;
+      return;
+    }
+    var avatar = card.querySelector("[data-blog-author-avatar]");
+    if (avatar && !avatar.firstChild) {
+      var source = avatar.getAttribute("data-blog-author-avatar");
+      if (isPlaceholderValue(source)) source = post && post.authorAvatarUrl;
+      if (source) {
+        var image = document.createElement("img");
+        image.src = source;
+        image.alt = "";
+        image.loading = "lazy";
+        image.decoding = "async";
+        avatar.appendChild(image);
+      } else {
+        var initials = initialsOf(name);
+        if (initials) avatar.appendChild(element("span", "blog-post-page__avatar-initials", initials));
+      }
+    }
+    card.hidden = false;
   }
 
   function renderCurrent(root, post, config) {
@@ -152,6 +204,7 @@
       hero.appendChild(image);
       hero.hidden = false;
     }
+    renderAuthorCard(root, post);
     applySeo(root, post);
   }
 
@@ -303,6 +356,11 @@
         documentRoot.setAttribute("data-blog-render-state", "ready");
         documentRoot.removeAttribute("aria-busy");
       }
+    }
+    try {
+      renderAuthorCard(root, null);
+    } catch (error) {
+      console.error(error);
     }
     try {
       renderShare(root);
