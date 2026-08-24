@@ -9,7 +9,7 @@ and operator commands.
 | `customer-experience-*`, `create-customer-experience.mjs`, `build-customer-experience.mjs` | Configure, compile, and validate the four-surface family |
 | `export-*`, `generate-*`, `build-calm-harbor-target-runtime.mjs` | Generate owned runtime/CMS artifacts |
 | `build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs` | Compile and package a fixture-only demonstration portal for one registered case |
-| `upsert-*-portal.mjs` | One operator entrypoint per tenant: build, export, check, then create-or-update the BlockTemplate by code |
+| `upsert-*.mjs` | One operator entrypoint per deliverable: build, export, check, then create-or-update the BlockTemplate by code |
 | `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
 | `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
@@ -54,6 +54,12 @@ root as its parent, that every declared parameter is referenced and every
 referenced parameter is declared, that no block calls a backend or names a Core
 service or a deployment host, that the three portal destinations ship empty and
 fail closed, and that the runtime URL guard accepts only absolute https.
+
+`upsert-portal-form.mjs` chains regenerate, check and upsert for the form
+document and is dry-run by default. Beyond the shared staleness gate it refuses
+to upload a package whose `FORM_API_BASE_URL`, `FORM_TYPE_CODE` or
+`FORM_ORGANIZATION_ID` carries a value: a deployment target belongs in CMS, not
+baked into the uploaded template.
 
 `portal-form-check.mjs` loads `runtime/forms/portal-form.js` in an isolated
 `vm` context and asserts the whole field contract without a browser: the Java

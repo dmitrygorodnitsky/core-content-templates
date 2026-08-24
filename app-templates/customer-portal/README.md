@@ -138,6 +138,21 @@ node app-templates/customer-portal/scripts/portal-form-check.mjs
 node app-templates/customer-portal/scripts/export-portal-form-manual.mjs
 ```
 
+Upload it with the same flat uploader as every other family, dry-run first:
+
+```bash
+node app-templates/customer-portal/scripts/upsert-portal-form.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM
+```
+
+```bash
+SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-portal-form.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --require-missing --live
+```
+
+Use `--require-missing` for the first upload so it refuses if the code already
+exists, and drop it for later updates. The upsert resolves
+`PORTAL_FORM_DOCUMENT` by code and never writes template parents, include
+markup, enabled templates, or PageContext records.
+
 Serve `runtime/portal-form.html` to preview either schema against any theme,
 mode and forced state. The generated standalone document lives in
 `dist/manual-upload/portal-form-document`; its `FORM_API_BASE_URL` must be an
