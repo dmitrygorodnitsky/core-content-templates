@@ -69,6 +69,21 @@ node app-templates/customer-portal/scripts/build-fixture-portal-runtime.mjs --ca
 node app-templates/customer-portal/scripts/export-fixture-portal-manual.mjs --input=app-templates/customer-portal/content/cases/granite-ridge-snow.customer-portal-fixture.json --runtime=app-templates/customer-portal/runtime/manual/granite-ridge-fixture-runtime.js --output=app-templates/customer-portal/dist/manual-upload/customer-portal-granite-ridge-fixture
 ```
 
+To build, package, check and upsert the snow tenant in one command, dry-run
+first:
+
+```bash
+node app-templates/customer-portal/scripts/upsert-granite-ridge-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM
+```
+
+```bash
+SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --live
+```
+
+The upsert resolves `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` by code and creates
+it if absent, otherwise updates that same id. It never writes template parents,
+include markup, enabled templates, or PageContext records; those stay manual.
+
 ## Focused Checks
 
 ```bash
@@ -80,4 +95,5 @@ node app-templates/customer-portal/scripts/customer-experience-2fa-check.mjs
 node app-templates/customer-portal/scripts/config-behavior-check.mjs
 node app-templates/customer-portal/scripts/calm-harbor-fixture-check.mjs
 node app-templates/customer-portal/scripts/granite-ridge-fixture-check.mjs
+node app-templates/customer-portal/scripts/granite-ridge-portal-manual-check.mjs
 ```

@@ -9,6 +9,7 @@ and operator commands.
 | `customer-experience-*`, `create-customer-experience.mjs`, `build-customer-experience.mjs` | Configure, compile, and validate the four-surface family |
 | `export-*`, `generate-*`, `build-calm-harbor-target-runtime.mjs` | Generate owned runtime/CMS artifacts |
 | `build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs` | Compile and package a fixture-only demonstration portal for one registered case |
+| `upsert-*-portal.mjs` | One operator entrypoint per tenant: build, export, check, then create-or-update the BlockTemplate by code |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
@@ -30,6 +31,20 @@ does not contain its case. `export-fixture-portal-manual.mjs` refuses any
 source that leaves fixture mode, claims an authentication contract, carries an
 `account`/`pim`/`auth` block, enables a module its profile does not own, or
 enables products without checkout.
+
+`upsert-granite-ridge-portal.mjs` chains the four steps for the snow tenant and
+is dry-run by default. `--live` refuses to run without an explicit `--base-url`,
+and `--skip-build` verifies the package on disk still matches the sha256 digests
+in its own manifest, so a hand-edited package is refused rather than uploaded.
+The upsert itself is delegated to `../../landing-page/scripts/upload-cms-family.mjs`,
+which resolves the template by code and never writes template parents, include
+markup, enabled templates, or PageContext records.
+
+`granite-ridge-portal-manual-check.mjs` re-exports the package into a throwaway
+directory and asserts the fixture invariants: a JTE-safe parameter-free root, no
+service base, no OIDC contract, no tenant organization, a noindex head, and an
+exporter that still refuses live data mode, an escape from `dist/manual-upload/`,
+and products without checkout.
 
 `customer-experience-login-check.mjs` and
 `customer-experience-2fa-check.mjs` protect the accepted Core Auth transfer

@@ -6,7 +6,7 @@
  "input": "app-templates/customer-portal/content/cases/granite-ridge-snow.customer-portal-fixture.json",
  "template": {
   "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
-  "templateLanguage": "HTML",
+  "templateLanguage": "JTE",
   "parameters": [],
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",

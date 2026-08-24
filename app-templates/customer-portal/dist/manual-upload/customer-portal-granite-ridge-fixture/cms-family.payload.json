@@ -7,7 +7,7 @@
     "NAME": "Granite Ridge Snow Removal | Customer Portal"
    }
   },
-  "templateLanguage": "HTML",
+  "templateLanguage": "JTE",
   "parent": null,
   "children": [],
   "head": "<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Granite Ridge Snow Removal | Customer Portal</title>\n<meta name=\"robots\" content=\"noindex,nofollow\">\n<link rel=\"icon\" href=\"data:,\">\n<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap\" rel=\"stylesheet\">",

@@ -24,6 +24,7 @@ export async function exportFixturePortalManual(options = {}) {
   assertFixtureBundle(javascript, source.runtime.case);
   const css = await readStyles();
   const template = templateFor(source, css, javascript);
+  assertJteSafeTemplate(template);
   const manifest = manifestFor(sourcePath, source, template);
   const preview = previewFor(source, template);
 
@@ -113,7 +114,7 @@ function templateFor(source, css, javascript) {
   return {
     code: source.template.code,
     nls: { en: { NAME: source.template.title } },
-    templateLanguage: "HTML",
+    templateLanguage: "JTE",
     parent: null,
     children: [],
     head: '<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>'
@@ -124,6 +125,38 @@ function templateFor(source, css, javascript) {
     javascript,
     parameters: [],
   };
+}
+
+export function assertJteSafeTemplate(template) {
+  if (template.templateLanguage !== "JTE") throw new Error("A fixture portal template must be JTE, the only language proven against this CMS");
+  if (template.parameters.length) throw new Error("A fixture portal root must stay parameter-free; every value it reads is a data-portal-* attribute");
+  const markers = [
+    { token: "${", label: "JTE expression/parameter opener" },
+    { token: "@{", label: "JTE code opener" },
+    { token: "!{", label: "JTE unsafe-content opener" },
+    { token: "<%", label: "server-template code opener" },
+    { token: "%>", label: "server-template code closer" },
+  ];
+  const directive = /@(param|import|template|if|for|while|switch|else)\b/g;
+  for (const [field, value] of Object.entries({ head: template.head, html: template.html, css: template.css, javascript: template.javascript })) {
+    for (const marker of markers) {
+      const index = value.indexOf(marker.token);
+      if (index !== -1) {
+        const line = value.slice(0, index).split("\n").length;
+        throw new Error("Refusing to export JTE-unsafe " + field + ": " + marker.label + " " + JSON.stringify(marker.token) + " at line " + line);
+      }
+    }
+    directive.lastIndex = 0;
+    const match = directive.exec(value);
+    directive.lastIndex = 0;
+    if (match) throw new Error("Refusing to export JTE-unsafe " + field + ": JTE directive " + JSON.stringify(match[0]));
+    if (value.includes("\u0000")) throw new Error("Field " + field + " contains a NUL byte");
+  }
+  try {
+    Function(template.javascript);
+  } catch (error) {
+    throw new Error("CMS javascript is not syntactically valid after the JTE safety pass: " + error.message);
+  }
 }
 
 async function readStyles() {
