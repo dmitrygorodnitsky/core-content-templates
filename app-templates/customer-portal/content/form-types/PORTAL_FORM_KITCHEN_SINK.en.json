@@ -496,6 +496,22 @@
     }
    },
    "options": []
+  },
+  {
+   "code": "SITE_ADDRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Property address",
+     "PLACEHOLDER": "Start typing the address"
+    }
+   },
+   "options": [],
+   "inputFormat": "address country:us,ca"
   }
  ],
  "attributeOrder": [
@@ -503,6 +519,10 @@
    "TEXTS": [
     {
      "attributeCode": "PLAIN_TEXT",
+     "visible": true
+    },
+    {
+     "attributeCode": "SITE_ADDRESS",
      "visible": true
     },
     {

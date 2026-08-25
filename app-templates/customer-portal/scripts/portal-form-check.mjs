@@ -46,6 +46,9 @@ const combined = parseTokens("re:^[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d$ mask:A9A 9A9; pl
 assert.equal(combined.mask, "A9A 9A9");
 assert.equal(combined.re, "^[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d$");
 assert.equal(combined.placeholder, "K1A 0B1");
+assert.equal(parseTokens("address").address, true);
+assert.deepEqual(plain(parseTokens("address country:us,ca").country), ["us", "ca"]);
+assert.equal(parseTokens("address").country, null, "country restriction stays optional");
 assert.equal(parseTokens("").mask, null);
 assert.equal(parseTokens(undefined).placeholder, null);
 
@@ -73,11 +76,11 @@ assert.deepEqual(kinds, {
   CREW_SIZE: "number", BUDGET: "slider", SITE_COUNT: "number",
   PROPERTY_TYPE: "select", TRIGGER: "radio", SURFACES: "multiselect", EXTRAS: "checklist",
   REFERRAL: "combobox", ACCOUNT_MANAGER: "select", ACCEPT_TERMS: "boolean",
-  LOADING_DOCKS: "boolean",
+  LOADING_DOCKS: "boolean", SITE_ADDRESS: "address",
 }, "the fixture must exercise every renderable kind");
 
 const covered = new Set(Object.values(kinds));
-for (const kind of ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox"]) {
+for (const kind of ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox", "address"]) {
   assert.ok(covered.has(kind), "kind " + kind + " is not covered by the fixture");
 }
 
@@ -189,15 +192,23 @@ try {
   assert.match(template.javascript, /oneOf\(attribute\(root, "data-form-mode"\)\.toLowerCase\(\), MODES, "light"\)/);
   assert.match(template.javascript, /url\.protocol === "https:"/, "the document must reject a non-https api base");
 
+  assert.equal(parameters.get("FORM_MAPS_API_KEY").value, "", "the maps key must ship empty");
+  assert.match(parameters.get("FORM_MAPS_API_KEY").nls.en.DESCRIPTION, /restrict it by HTTP referrer/i, "the key parameter must warn that it is public");
+  assert.match(template.javascript, /mapsApiKey: attribute\(root, "data-form-maps-api-key"\)/);
+  assert.match(template.javascript, /if \(!apiKey\) return Promise\.reject/, "no key must mean no Google script at all");
+  assert.equal((template.javascript.match(/maps\.googleapis\.com/g) || []).length, 1, "the maps script has exactly one origin and it is only reached through the loader");
+  assert.match(template.javascript, /places\.AutocompleteSuggestion/, "the new Places data API is the primary path");
+  assert.match(template.javascript, /places\.Autocomplete \?/, "the legacy widget stays as a fallback for older projects");
+
   const tokens = await fs.readFile(path.join(root, "runtime/styles/tokens.css"), "utf8");
   for (const theme of manifest.themes.filter((value) => value !== "hvac")) {
     assert.ok(tokens.includes('data-theme="' + theme + '"'), "tokens.css must define the " + theme + " palette");
   }
 
-  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 6);
+  assert.equal(template.parameters.filter((parameter) => parameter.code.startsWith("FORM_")).length, 7);
   assert.ok(template.parameters.every((parameter) => parameter.nls.en.DESCRIPTION.trim().length > 0), "every parameter needs a description in CMS");
 } finally {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: 16 field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode");
+console.log("portal-form-check ok: 17 field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key");

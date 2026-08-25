@@ -69,6 +69,7 @@ const DEPLOYMENT = [
   ["FORM_LOCALE", "en", "Locale segment used when reading the schema and when picking labels out of each nls bag."],
   ["FORM_THEME", "snow", "Vertical palette. One of: " + THEMES.join(", ") + ". Any other value falls back to snow."],
   ["FORM_MODE", "light", "Colour mode. One of: " + MODES.join(", ") + ". Any other value falls back to light."],
+  ["FORM_MAPS_API_KEY", "", "Google Maps browser key, used only by fields whose Input format declares address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."],
 ];
 
 export async function exportPortalFormManual(options = {}) {
@@ -113,6 +114,7 @@ function templateFor(css, renderer) {
     "data-form-locale": ref("FORM_LOCALE", "STRING"),
     "data-form-theme": ref("FORM_THEME", "STRING"),
     "data-form-mode": ref("FORM_MODE", "STRING"),
+    "data-form-maps-api-key": ref("FORM_MAPS_API_KEY", "STRING"),
   };
   Object.keys(COPY_KEYS).forEach(function (code) {
     attributes["data-copy-" + COPY_KEYS[code].replace(/[A-Z]/g, function (character) { return "-" + character.toLowerCase(); })] = ref(code);
@@ -174,6 +176,7 @@ function bootScript() {
       formTypeCode: attribute(root, "data-form-type-code"),
       organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,
       locale: attribute(root, "data-form-locale") || "en",
+      mapsApiKey: attribute(root, "data-form-maps-api-key"),
       copy: copyFrom(root),
     }).mount(mount);
   });
@@ -238,7 +241,7 @@ function manifestFor(template) {
     renderer: {
       source: "app-templates/customer-portal/runtime/forms/portal-form.js",
       styles: "app-templates/customer-portal/runtime/forms/portal-form.css",
-      kinds: ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox"],
+      kinds: ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox", "address"],
     },
     themes: THEMES,
     modes: MODES,
@@ -254,6 +257,7 @@ function manifestFor(template) {
       "uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.",
       "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
       "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
+      "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
       "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
     ],
   };

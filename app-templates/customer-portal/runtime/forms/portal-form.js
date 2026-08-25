@@ -44,8 +44,10 @@
     var tokens = {
       password: false, textarea: false, expanded: false, slider: false,
       tel: false, url: false, email: false, color: false, date: false,
+      address: false,
       rows: null, cols: null, min: null, max: null, step: null,
       minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
+      country: null,
     };
     if (!inputFormat) return tokens;
     var rest = String(inputFormat);
@@ -61,12 +63,18 @@
     }
     rest.split(/[\s;]+/).filter(Boolean).forEach(function (token) {
       if (token === "password" || token === "textarea" || token === "expanded" || token === "slider"
-        || token === "tel" || token === "url" || token === "email" || token === "color" || token === "date") {
+        || token === "tel" || token === "url" || token === "email" || token === "color" || token === "date"
+        || token === "address") {
         tokens[token] = true;
         return;
       }
       var pair = token.match(/^(rows|cols|min|max|step|minLength|maxLength):(.+)$/);
       if (pair) { tokens[pair[1]] = Number(pair[2]); return; }
+      var region = token.match(/^country:([A-Za-z,]+)$/);
+      if (region) {
+        tokens.country = region[1].split(",").map(function (code) { return code.trim().toLowerCase(); }).filter(Boolean);
+        return;
+      }
       if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
     });
     return tokens;
@@ -93,6 +101,7 @@
     if (type === "boolean") return "boolean";
     if (type === "number") return tokens.slider ? "slider" : "number";
     if (type === "entity") return "select";
+    if (tokens.address) return "address";
     if (tokens.textarea) return "textarea";
     if (tokens.password) return "password";
     if (tokens.email) return "email";
@@ -217,6 +226,36 @@
       return MASK_CLASSES[mask.charAt(position)];
     }).length;
     return filled >= slots;
+  }
+
+  function debounce(fn, wait) {
+    var timer = null;
+    return function () {
+      var args = arguments;
+      var self = this;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(self, args); }, wait);
+    };
+  }
+
+  var mapsPromise = null;
+
+  function loadMaps(apiKey) {
+    if (mapsPromise) return mapsPromise;
+    if (!apiKey) return Promise.reject(new Error("no-key"));
+    mapsPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
+        + "&libraries=places,marker&loading=async&v=weekly";
+      script.addEventListener("error", function () { reject(new Error("maps-script-failed")); });
+      script.addEventListener("load", function () {
+        if (global.google && global.google.maps) resolve(global.google.maps);
+        else reject(new Error("maps-unavailable"));
+      });
+      document.head.appendChild(script);
+    });
+    return mapsPromise;
   }
 
   function PortalForm(config) {
@@ -703,6 +742,8 @@
       return comboWrap;
     }
 
+    if (field.kind === "address") return this.addressControl(field, id, value);
+
     var nativeType = field.kind === "number" ? "number"
       : field.kind === "password" ? "password"
       : field.kind === "email" ? "email"
@@ -743,6 +784,143 @@
       self.setValue(field, input.value);
     });
     return input;
+  };
+
+  PortalForm.prototype.addressControl = function (field, id, value) {
+    var self = this;
+    var wrap = el("div", "pf-address");
+    var input = el("input", "pf-input", {
+      type: "text", id: id, name: field.code, placeholder: field.placeholder,
+      autocomplete: "street-address", "aria-describedby": id + "-error",
+    });
+    input.value = value != null ? value : "";
+    input.addEventListener("input", function () { self.setValue(field, input.value); });
+    wrap.appendChild(input);
+
+    var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
+    wrap.appendChild(canvas);
+
+    if (!this.cfg.mapsApiKey) return wrap;
+
+    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
+      self.upgradeAddress(field, wrap, input, canvas, maps);
+    }).catch(function () {
+      canvas.dataset.state = "idle";
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps) {
+    var self = this;
+    var map = null;
+    var marker = null;
+
+    function show(location, label) {
+      if (!location) return;
+      canvas.dataset.state = "ready";
+      canvas.removeAttribute("aria-hidden");
+      if (!map) {
+        map = new maps.Map(canvas, {
+          center: location, zoom: 16, disableDefaultUI: true, zoomControl: true,
+          mapId: self.cfg.mapsMapId || undefined,
+        });
+      } else {
+        map.setCenter(location);
+      }
+      if (marker && marker.setMap) marker.setMap(null);
+      marker = new maps.Marker({ map: map, position: location, title: label || "" });
+    }
+
+    function geocode(query) {
+      if (!query || !maps.Geocoder) return;
+      new maps.Geocoder().geocode({ address: query }, function (results, status) {
+        if (status !== "OK" || !results || !results.length) return;
+        var best = results[0];
+        show(best.geometry.location, best.formatted_address);
+      });
+    }
+
+    function pick(formatted, location) {
+      if (formatted) {
+        input.value = formatted;
+        self.setValue(field, formatted);
+      }
+      if (location) show(location, formatted);
+      else if (formatted) geocode(formatted);
+    }
+
+    var list = el("ul", "pf-address__list", { role: "listbox", hidden: true });
+    wrap.insertBefore(list, canvas);
+
+    function closeList() { list.replaceChildren(); list.hidden = true; }
+
+    function offerSuggestions(items) {
+      list.replaceChildren();
+      if (!items.length) { list.hidden = true; return; }
+      items.slice(0, 5).forEach(function (item) {
+        var option = el("li", "pf-address__option", { role: "option", tabindex: "0" });
+        option.textContent = item.label;
+        var accept = function () { closeList(); item.accept(); };
+        option.addEventListener("click", accept);
+        option.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); accept(); }
+        });
+        list.appendChild(option);
+      });
+      list.hidden = false;
+    }
+
+    var places = maps.places || {};
+    var mode = places.AutocompleteSuggestion ? "data-api" : places.Autocomplete ? "legacy" : "geocode";
+    wrap.dataset.autocomplete = mode;
+
+    if (mode === "data-api") {
+      var token = places.AutocompleteSessionToken ? new places.AutocompleteSessionToken() : undefined;
+      var query = function () {
+        var value = input.value.trim();
+        if (value.length < 3) { closeList(); return; }
+        places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+          input: value,
+          sessionToken: token,
+          includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
+          includedRegionCodes: field.tokens.country || undefined,
+        }).then(function (response) {
+          var suggestions = (response && response.suggestions) || [];
+          offerSuggestions(suggestions.map(function (suggestion) {
+            var prediction = suggestion.placePrediction;
+            return {
+              label: prediction && prediction.text ? String(prediction.text) : "",
+              accept: function () {
+                var place = prediction.toPlace();
+                place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
+                  pick(place.formattedAddress, place.location);
+                }).catch(function () { pick(prediction.text ? String(prediction.text) : "", null); });
+              },
+            };
+          }).filter(function (item) { return item.label; }));
+        }).catch(function () { closeList(); });
+      };
+      input.addEventListener("input", debounce(query, 250));
+      input.addEventListener("blur", function () { setTimeout(closeList, 150); });
+    } else if (mode === "legacy") {
+      try {
+        var autocomplete = new places.Autocomplete(input, {
+          fields: ["formatted_address", "geometry"],
+          types: ["address"],
+          componentRestrictions: field.tokens.country ? { country: field.tokens.country } : undefined,
+        });
+        autocomplete.addListener("place_changed", function () {
+          var place = autocomplete.getPlace();
+          if (!place) return;
+          pick(place.formatted_address, place.geometry && place.geometry.location);
+        });
+      } catch (_) {
+        wrap.dataset.autocomplete = "geocode";
+      }
+    }
+
+    input.addEventListener("blur", function () { if (input.value.trim()) geocode(input.value.trim()); });
+    if (input.value.trim()) geocode(input.value.trim());
   };
 
   global.PortalForm = PortalForm;

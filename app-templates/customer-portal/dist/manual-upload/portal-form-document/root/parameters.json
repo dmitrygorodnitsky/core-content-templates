@@ -66,6 +66,17 @@
     "value": "light"
   },
   {
+    "code": "FORM_MAPS_API_KEY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "FORM MAPS API KEY",
+        "DESCRIPTION": "Google Maps browser key, used only by fields whose Input format declares address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

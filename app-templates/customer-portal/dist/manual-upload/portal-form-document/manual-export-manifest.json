@@ -5,12 +5,12 @@
   "template": {
     "code": "PORTAL_FORM_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 36,
+    "parameterCount": 37,
     "sha256": {
       "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
-      "html": "bef4a05b9c26e29ae203d135c427c99290c318e4b836f5acc7737cdcc11f3f14",
-      "css": "9f260b6f27cc2e4f93ee698117785de33b77a429098928e38f206520208599e2",
-      "javascript": "4b8a2798c053ffd1a973e6e7baee0870ba4101d3e9435c7da9be5b4432ccb26c"
+      "html": "abd9543f2535085c99c3b7a529555f7561ac0e671cb63b76647d7ba1f6d16b32",
+      "css": "198071bb9073561ec5b98464847e77a2c227ced34bc1e326db0ec22085cf32b4",
+      "javascript": "6ec25681444bea251a2faec3b50c5d5be61e06969b83835a10d926b4e6e65f05"
     }
   },
   "renderer": {
@@ -32,7 +32,8 @@
       "multiselect",
       "radio",
       "checklist",
-      "combobox"
+      "combobox",
+      "address"
     ]
   },
   "themes": [
@@ -61,6 +62,7 @@
     "uiBehavior is honoured only as a declarative applyBehavior mapping of value to step. Server-supplied JavaScript is never executed.",
     "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
     "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
+    "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
     "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette."
   ]
 }

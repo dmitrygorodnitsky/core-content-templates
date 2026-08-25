@@ -110,10 +110,17 @@ same flat uploader as every other family; composing the children into
 
 `runtime/forms/portal-form.js` renders whatever a published Core form type
 declares, in the portal design language and under the eight vertical themes. It
-covers sixteen field kinds — text, textarea, password, email, tel, url, colour,
-date, number, slider, boolean, select, multiselect, radio, checklist and
-combobox — plus multi-step groups, input masks, per-field validation, and the
+covers seventeen field kinds — text, textarea, password, email, tel, url, colour,
+date, number, slider, boolean, select, multiselect, radio, checklist, combobox
+and address — plus multi-step groups, input masks, per-field validation, and the
 loading, empty, error, blocked, submitting, success and submit-error states.
+
+An attribute whose Input format declares `address` becomes an address field with
+Google suggestions and a map preview. It needs `FORM_MAPS_API_KEY`, a Google
+browser key that is public by design and must be restricted by HTTP referrer and
+API list. While that parameter is empty no Google script is loaded at all and the
+field stays a plain text input that still submits. Only the formatted address
+string is stored; coordinates are not persisted.
 
 The contract it reads:
 
