@@ -29,7 +29,7 @@ export function TopNav(gated) {
   ];
   if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
   if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\ud83d\udcc5"));
-  if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart" }, ["\ud83d\uded2", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
+  if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\ud83d\uded2", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
   var activityEnabled = isModuleEnabled("activity");
   actions.push(h("div", {
     "class": "icon-btn icon-btn--optional",
@@ -55,7 +55,10 @@ export function TopNav(gated) {
       navItems.map(function (n) {
         var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
         return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
-      })
+      }).concat(isModuleEnabled("profile") ? [
+        h("div", { "class": "mobile-nav__divider" }),
+        h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel({ key: "profile", label: "Profile" })),
+      ] : [])
     ));
   }
   return h("div", { "class": "top-nav-wrap" }, nav);

@@ -192,3 +192,19 @@
 .vw-mobile .ov-pin__name { display: none; }
 
 .vw-mobile .ov-tick__at { font-size: 9px; }
+
+.vw-mobile .top-nav { gap: 10px; }
+
+.vw-mobile .top-nav__actions { gap: 6px; }
+
+.vw-mobile .top-nav__actions .avatar { display: none; }
+
+.vw-mobile .top-nav__actions [data-action="cart.open"][data-state="empty"] { display: none; }
+
+.vw-mobile .brand-logo { display: none; }
+
+.vw-mobile .top-nav__brand { gap: 7px; }
+
+.vw-mobile .brand-name { font-size: 15.5px; }
+
+.vw-mobile .top-nav__actions .btn--primary { flex: none; font-size: 13.5px; padding: 9px 14px; }

@@ -11,8 +11,8 @@
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
    "html": "1e66fdb9ae912363e685e105784338a6d0a5e077fbb17a2a449ba0fe7ed5056d",
-   "css": "366bebf1c14d7052346cc5d1659fcd68739def2c9316578b08a610cd089a693d",
-   "javascript": "caa96a89aa63dbb2c661bc001f86a5f8d317f2786d6cf7778a9c45888afdef10"
+   "css": "775e91ff1d6da8175f1bd451831a2902e98cbf574a8dd3bb8a19df064cfabf71",
+   "javascript": "1fbe3a971ddf321dd25fe7787cff56af8fe6f4b42f1d5d403c3f76649c7ee575"
   }
  },
  "runtime": {

@@ -50,8 +50,34 @@ Configuration only, no visual change:
   reaches Pricing from the accepted `Manage plan` action on the storm home rail
   rather than from an eighth nav item.
 
-That keeps desktop correct. It does not fix mobile: at `375` the shell still
-overflows horizontally by 114 px.
+That keeps desktop correct. Mobile is now held by an interim rule set in
+`styles/responsive.css`, adopted after the PM reported a broken header on a
+phone:
+
+- `.brand-name` truncates with an ellipsis at every width instead of pushing the
+  row out of the pill; `.top-nav__brand` may shrink;
+- at `vw-mobile` the avatar is hidden and Profile moves into `mobile-nav` below
+  a divider;
+- at `vw-mobile` the cart is hidden only while it is empty, so the sole route to
+  checkout survives;
+- at `vw-mobile` the placeholder `brand-logo` yields its width to the name, and
+  the brand and primary CTA drop one type step.
+
+Measured after the change, container width in brackets:
+
+| configuration | container | nav overflow | brand shown |
+| --- | --- | --- | --- |
+| `stormRetail`, brand `Granite Ridge`, empty cart | 375 | 0 px | full |
+| `stormRetail`, brand `Granite Ridge`, cart with 1 item | 375 | 0 px | 79/100 px |
+| `stormRetail`, brand `Granite Ridge` | 561 | 0 px | 80/110 px |
+| `stormRetail`, brand `Granite Ridge` | 1440 | 0 px | full |
+| spa target, brand `Calm Harbor Spa` | 375 | 0 px | full |
+| any brand up to 38 characters | 375 | 0 px | truncated |
+
+What the interim rules do not settle: between `561` and `1040` the brand is
+truncated to about 73 % while three `icon-btn--optional` controls keep their
+full width, and there is still no affordance when `nav-links` clips. Items 2 and
+3 below remain open.
 
 ## What is needed
 

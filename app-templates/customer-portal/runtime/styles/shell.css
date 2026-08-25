@@ -42,7 +42,7 @@
   box-shadow: 0 8px 26px rgba(13,38,76,.10), inset 0 1px 0 rgba(255,255,255,.75);
 }
 
-.top-nav__brand { display: flex; align-items: center; gap: 9px; cursor: pointer; flex-shrink: 0; }
+.top-nav__brand { display: flex; align-items: center; gap: 9px; cursor: pointer; flex: 0 1 auto; min-width: 0; }
 
 .brand-logo {
   width: 30px; height: 30px; border-radius: 9px;
@@ -61,7 +61,7 @@
 
 .brand-logo--lg::after { width: 16px; height: 16px; border-radius: 4px; }
 
-.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; white-space: nowrap; }
+.brand-name { font-weight: 700; font-size: 17px; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 
 .nav-links { display: flex; gap: 2px; margin-left: 6px; min-width: 0; overflow: hidden; position: relative; }
 
