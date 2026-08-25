@@ -2557,6 +2557,165 @@ button { font-family: inherit; }
 .bk-review-addon__amt { flex-shrink: 0; font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
 .drawer--open-static, .scrim--static { animation: none; }
 
+/* ============================================================
+   Overview — property map, weather timeline and account widgets
+   ============================================================ */
+
+.ov-map { padding: 16px; margin-bottom: 16px; position: relative; }
+
+.ov-map__head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+
+.ov-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-left: auto; font-size: 11.5px; color: var(--ink-3); }
+
+.ov-legend__item { display: inline-flex; align-items: center; gap: 5px; }
+
+.ov-legend__item i { width: 9px; height: 9px; border-radius: 3px; display: block; }
+
+.ov-legend__item[data-weather="clear"] i { background: #9fb6c9; }
+.ov-legend__item[data-weather="snow"] i { background: #7fb2e8; }
+.ov-legend__item[data-weather="freezing"] i { background: #9b7fe8; }
+.ov-legend__item[data-weather="storm"] i { background: #e8894f; }
+
+.ov-map__canvas {
+  position: relative; height: 300px; border-radius: var(--radius-lg); overflow: hidden;
+  background: repeating-linear-gradient(45deg, #e6edf2, #e6edf2 16px, #dfe8ef 16px, #dfe8ef 32px);
+}
+
+:root[data-mode="dark"] .ov-map__canvas {
+  background: repeating-linear-gradient(45deg, #1a2331, #1a2331 16px, #1f2a3a 16px, #1f2a3a 32px);
+}
+
+.ov-map__overlay { position: absolute; inset: 0; pointer-events: none; transition: background .25s ease; }
+
+.ov-map__overlay[data-weather="clear"] { background: linear-gradient(160deg, rgba(159,182,201,.10), transparent 70%); }
+.ov-map__overlay[data-weather="snow"] { background: linear-gradient(160deg, rgba(127,178,232,.34), rgba(127,178,232,.12) 70%); }
+.ov-map__overlay[data-weather="freezing"] { background: linear-gradient(160deg, rgba(155,127,232,.32), rgba(155,127,232,.12) 70%); }
+.ov-map__overlay[data-weather="storm"] { background: linear-gradient(160deg, rgba(232,137,79,.34), rgba(232,137,79,.12) 70%); }
+
+.ov-map__road { position: absolute; left: -5%; right: -5%; top: 56%; height: 22px; background: rgba(255,255,255,.5); transform: rotate(-4deg); }
+
+:root[data-mode="dark"] .ov-map__road { background: rgba(255,255,255,.08); }
+
+.ov-map__label { position: absolute; top: 12px; left: 14px; font: 11px var(--font-mono); color: var(--ink-3); letter-spacing: .04em; }
+
+.ov-pin {
+  position: absolute; transform: translate(-50%, -100%); display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px 5px 6px; border-radius: var(--radius-pill); border: 1px solid var(--glass-border);
+  background: var(--surface); box-shadow: 0 6px 18px rgba(13,38,76,.18); cursor: pointer;
+  font: inherit; font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap;
+}
+
+.ov-pin i { width: 10px; height: 10px; border-radius: 50%; display: block; flex: none; }
+
+.ov-pin--monitoring i { background: #6f8a9e; }
+.ov-pin--scheduled i { background: var(--accent); }
+.ov-pin--enroute i { background: #ff8a3d; }
+.ov-pin--issue i { background: var(--danger); }
+
+.ov-pin--on { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.ov-timeline { margin-top: 14px; }
+
+.ov-timeline__track { display: flex; gap: 4px; }
+
+.ov-tick {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 7px 2px 5px; border: 0; background: transparent; cursor: pointer; border-radius: 10px;
+  font: inherit; font-size: 10.5px; color: var(--ink-3);
+}
+
+.ov-tick i { width: 100%; height: 6px; border-radius: 3px; display: block; }
+
+.ov-tick[data-weather="clear"] i { background: #9fb6c9; }
+.ov-tick[data-weather="snow"] i { background: #7fb2e8; }
+.ov-tick[data-weather="freezing"] i { background: #9b7fe8; }
+.ov-tick[data-weather="storm"] i { background: #e8894f; }
+
+.ov-tick--on { background: rgba(var(--accent-rgb), .12); color: var(--ink); font-weight: 700; }
+
+.ov-tick--now .ov-tick__at { font-weight: 800; color: var(--accent); }
+
+.ov-timeline__read { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+.ov-timeline__temp { font-weight: 800; font-size: 16px; }
+
+.ov-timeline__label { font-weight: 650; font-size: 13.5px; }
+
+.ov-timeline__note { font-size: 12.5px; color: var(--ink-2); }
+
+.ov-tip {
+  position: absolute; right: 16px; bottom: 16px; width: min(340px, calc(100% - 32px)); z-index: 4;
+  padding: 14px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border);
+  background: var(--surface); box-shadow: 0 20px 48px rgba(13,38,76,.24);
+}
+
+.ov-tip__head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+
+.ov-tip__name { font-weight: 750; font-size: 15px; }
+
+.ov-tip__addr { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+
+.ov-tip__close { border: 0; background: transparent; cursor: pointer; color: var(--ink-3); font-size: 14px; padding: 2px 4px; }
+
+.ov-tip__status { display: flex; gap: 9px; padding: 10px; border-radius: var(--radius-md); background: rgba(var(--glass), .6); margin-bottom: 10px; }
+
+.ov-tip__status i { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex: none; }
+
+.ov-tip__status--monitoring i { background: #6f8a9e; }
+.ov-tip__status--scheduled i { background: var(--accent); }
+.ov-tip__status--enroute i { background: #ff8a3d; }
+.ov-tip__status--issue i { background: var(--danger); }
+
+.ov-tip__status-label { font-weight: 700; font-size: 13px; }
+
+.ov-tip__status-copy { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; margin-top: 2px; }
+
+.ov-tip__row { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; padding: 4px 0; }
+
+.ov-tip__row-label { color: var(--ink-3); }
+
+.ov-tip__row-value { font-weight: 600; text-align: right; }
+
+.ov-tip__actions { display: flex; gap: 8px; margin-top: 12px; }
+
+.ov-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+
+.ov-card { display: flex; flex-direction: column; gap: 10px; }
+
+.ov-card__head { display: flex; align-items: center; gap: 10px; }
+
+.ov-card__head .card__title { flex: 1; }
+
+.ov-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--hair); }
+
+.ov-card > .ov-row:first-of-type { border-top: 0; padding-top: 0; }
+
+.ov-row__title { font-weight: 650; font-size: 13.5px; }
+
+.ov-row__meta { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+
+.ov-row[data-state="overdue"] .ov-row__meta { color: var(--danger); }
+
+.ov-contract { padding: 10px 0; border-top: 1px solid var(--hair); }
+
+.ov-card > .ov-contract:first-of-type { border-top: 0; padding-top: 0; }
+
+.ov-contract__plan { font-weight: 700; font-size: 13.5px; margin-top: 3px; }
+
+.ov-contract__desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; margin-top: 4px; }
+
+.ov-upcoming__count { font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
+
+.ov-upcoming__when { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.5; }
+
+.ov-more { padding-top: 8px; }
+
+.ov-empty { padding: 6px 0; }
+
+.ov-empty__title { font-weight: 700; font-size: 14px; }
+
+.ov-empty__desc { font-size: 12.5px; color: var(--ink-2); margin: 3px 0 8px; }
+
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
 
@@ -2741,6 +2900,17 @@ button { font-family: inherit; }
 .vw-mobile .bk-addon { flex-wrap: wrap; }
 .vw-mobile .bk-addon .bk-addon__meta { flex-direction: row; align-items: baseline; gap: 8px; flex-basis: 100%; padding-left: 31px; margin-top: 2px; }
 .vw-mobile .bk-note-field__head { flex-wrap: wrap; }
+
+/* Overview — single column and a shorter map on narrow containers */
+.vw-tablet .ov-grid, .vw-mobile .ov-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .ov-map__canvas { height: 240px; }
+
+.vw-mobile .ov-tip { position: static; width: auto; margin-top: 12px; box-shadow: none; }
+
+.vw-mobile .ov-pin__name { display: none; }
+
+.vw-mobile .ov-tick__at { font-size: 9px; }
 
 /* manual portal source: runtime/styles/seo.css */
 /* seo.css — public SEO landing sections (route: seo.landing)

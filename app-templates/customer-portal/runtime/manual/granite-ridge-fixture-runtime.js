@@ -638,8 +638,8 @@
       { label: "Invoices & payments", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", q: "I have a billing question" },
       { label: "Report an issue after service", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I want to report an issue" }
     ];
-    function chatReply(text9) {
-      var t = (text9 || "").toLowerCase();
+    function chatReply(text10) {
+      var t = (text10 || "").toLowerCase();
       if (/(where|track|technician|daniel|coming|arriv)/.test(t)) return "Daniel is about 14 minutes away \u2014 3 stops out. You can watch his live location in the Orders tab.";
       if (/(reschedul|move|change.*(time|date|visit)|cancel)/.test(t)) return "Sure \u2014 which visit would you like to move? You can also reschedule straight from the order details.";
       if (/(bill|invoice|charge|pay|refund|price)/.test(t)) return "Your last invoice #SV-2381 was $480, paid Jan 12. Want me to email you a copy?";
@@ -1807,6 +1807,95 @@
         { id: "doc-grs-coi-2026", name: "Certificate of insurance 2025\u201326", meta: "PDF \xB7 valid through Jun 2026" }
       ]
     },
+    overview: {
+      weather: {
+        nowIndex: 3,
+        legend: [
+          { key: "clear", label: "Clear" },
+          { key: "snow", label: "Snow" },
+          { key: "freezing", label: "Freezing rain" },
+          { key: "storm", label: "Storm warning" }
+        ],
+        timeline: [
+          { at: "12 AM", temp: "\u22122\xB0C", kind: "clear", label: "Clear", note: "" },
+          { at: "3 AM", temp: "\u22123\xB0C", kind: "clear", label: "Clear", note: "" },
+          { at: "6 AM", temp: "\u22124\xB0C", kind: "snow", label: "Light snow", note: "Below the 2 cm trigger" },
+          { at: "Now", temp: "\u22126\xB0C", kind: "storm", label: "Storm watch", note: "Service likely tonight" },
+          { at: "9 PM", temp: "\u22128\xB0C", kind: "snow", label: "Snowfall 3 cm", note: "Trigger met \xB7 2 visits expected" },
+          { at: "12 AM", temp: "\u22129\xB0C", kind: "freezing", label: "Freezing rain", note: "De-icing expected at Tabor Street" },
+          { at: "6 AM", temp: "\u22125\xB0C", kind: "clear", label: "Clearing", note: "Crews finish routes" }
+        ]
+      },
+      properties: [
+        {
+          id: "prop-foothill",
+          name: "Foothill Court",
+          address: "4820 Foothill Court, Lakewood, CO 80215",
+          x: 26,
+          y: 34,
+          appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
+          ticket: null,
+          lastService: { service: "Roof snow & ice dam", when: "Jan 12" }
+        },
+        {
+          id: "prop-tabor",
+          name: "Tabor Street",
+          address: "1190 Tabor Street, Golden, CO 80401",
+          x: 52,
+          y: 24,
+          appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch" },
+          ticket: null,
+          lastService: { service: "Lot & drive clearing", when: "Jan 5" }
+        },
+        {
+          id: "prop-yarrow",
+          name: "Yarrow Ridge",
+          address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
+          x: 72,
+          y: 46,
+          appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 30" },
+          ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
+          lastService: { service: "Refreeze re-treat", when: "Dec 19" }
+        },
+        {
+          id: "prop-cinnamon",
+          name: "Cinnamon Bear Way",
+          address: "870 Cinnamon Bear Way, Littleton, CO 80127",
+          x: 44,
+          y: 68,
+          appointment: null,
+          ticket: null,
+          lastService: { service: "Lot & drive clearing", when: "Dec 28" }
+        }
+      ],
+      invoices: {
+        outstanding: [
+          { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
+          { number: "INV-4498", amount: "$640", due: "Sep 14", state: "SENT" },
+          { number: "INV-4502", amount: "$1,120", due: "Sep 28", state: "SENT" },
+          { number: "INV-4510", amount: "$310", due: "Oct 5", state: "SENT" }
+        ],
+        lastPaid: { number: "INV-4460", amount: "$920", paid: "Aug 2" }
+      },
+      contracts: [
+        {
+          number: "1234",
+          plan: "Seasonal Unlimited Coverage",
+          description: "Predictable budget, full-season protection. Unlimited de-icing at \u22640\xB0C and clearing at 2 cm. GPS logs and photos after every visit."
+        },
+        {
+          number: "1241",
+          plan: "Walkway & Entry Care",
+          description: "Entries, stair treads and private sidewalks kept passable through the season, with a pet-safe blend on request."
+        }
+      ],
+      support: [
+        { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today" },
+        { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago" },
+        { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago" },
+        { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday" }
+      ]
+    },
     stormCalendar: {
       contract: { rule: "Auto-dispatch by weather trigger", note: "Cleared within the 90-minute contracted window" },
       accessNotes: [
@@ -2476,7 +2565,7 @@
     stormRetail: {
       id: "stormRetail",
       nav: [
-        { key: "orders.list", label: "Home" },
+        { key: "overview", label: "Home" },
         { key: "calendar", label: "Calendar" },
         { key: "care" },
         { key: "proposals.list", label: "Contracts" },
@@ -2485,7 +2574,7 @@
         { key: "support", label: "Support" }
       ],
       primary: { label: "Request service", action: "service.request" },
-      modules: ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+      modules: ["overview", "orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
       weatherCalendar: true,
       showCart: true,
       drawerTitle: "Request service"
@@ -2534,6 +2623,7 @@
     "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
     "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
     "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
+    overview: { id: "overview", path: "/overview", module: "overview" },
     "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
     "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
     "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },
@@ -2785,6 +2875,8 @@
       return Object.assign({}, p);
     }),
     // proposal sites (mutable)
+    ovProperty: null,
+    ovWeatherIndex: null,
     currentSiteId: "s2",
     // open proposal site
     profileFilter: "all",
@@ -3062,11 +3154,11 @@
     }).join(" ");
   }
   function opaqueRef3(prefix, value) {
-    var text9 = String(value || prefix);
+    var text10 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text9.length; index += 1) {
-      var code = text9.charCodeAt(index);
+    for (var index = 0; index < text10.length; index += 1) {
+      var code = text10.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -3597,6 +3689,8 @@
     state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
     state.addrId = fixture ? fixture.addresses[0].id : "home";
     state.payId = fixture ? fixture.cards[0].id : "visa";
+    state.ovProperty = null;
+    state.ovWeatherIndex = null;
     state.psites = fixture && fixture.proposals ? cloneCaseValue(fixture.proposals.sites) : F.proposalSites.map(function(site) {
       return Object.assign({}, site);
     });
@@ -7053,6 +7147,279 @@
     return page;
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/overview.js
+  var OVERVIEW_STATUS = {
+    issue: {
+      label: "Issue Opened",
+      copy: "Your request is being reviewed. We\u2019ll get back to you shortly."
+    },
+    enroute: {
+      label: "En Route",
+      copy: "Our team is on the way to this property."
+    },
+    scheduled: {
+      label: "Scheduled",
+      copy: "Service is scheduled for this property."
+    },
+    monitoring: {
+      label: "Active Monitoring",
+      copy: "We\u2019re monitoring conditions and will dispatch service when needed."
+    }
+  };
+  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED"];
+  function propertyStatus(property) {
+    var ticket = property && property.ticket;
+    if (ticket && OPEN_TICKET_STATES.indexOf(ticket.state) !== -1) return "issue";
+    var appointment = property && property.appointment;
+    if (appointment && appointment.state === "IN_PROGRESS") return "enroute";
+    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+    return "monitoring";
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  function overviewModel() {
+    var fixture = currentFixture();
+    return fixture && fixture.overview || null;
+  }
+  function Overview() {
+    var model = overviewModel();
+    var page = h("section", { "class": "page", "data-route": "overview", "data-visual-id": "overview" });
+    var customer = currentFixture().customer;
+    page.appendChild(PageHeader({
+      title: customer.greeting,
+      sub: customer.subline
+    }));
+    if (!model) {
+      page.appendChild(EmptyState({
+        glyph: "\u25CC",
+        title: "Nothing to show yet",
+        desc: "This portal has no overview data configured."
+      }));
+      return page;
+    }
+    page.appendChild(MapPanel(model));
+    var grid = h("div", { "class": "ov-grid" });
+    grid.appendChild(UpcomingWidget(model));
+    grid.appendChild(InvoicesWidget(model));
+    grid.appendChild(ContractsWidget(model));
+    grid.appendChild(SupportWidget(model));
+    page.appendChild(grid);
+    return page;
+  }
+  function MapPanel(model) {
+    var weather = model.weather;
+    var index = state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex;
+    var frame = weather.timeline[index] || weather.timeline[weather.nowIndex];
+    var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind });
+    canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
+    canvas.appendChild(h("div", { "class": "ov-map__road" }));
+    canvas.appendChild(text7("span", "ov-map__label", "property map \xB7 " + frame.label + " \xB7 " + frame.temp));
+    model.properties.forEach(function(property) {
+      var status = propertyStatus(property);
+      var selected = state.ovProperty === property.id;
+      var pin = h("button", {
+        "class": "ov-pin ov-pin--" + status + (selected ? " ov-pin--on" : ""),
+        style: "left:" + property.x + "%;top:" + property.y + "%",
+        "data-action": "overview.selectProperty",
+        "data-id": property.id,
+        "data-module": "property-pin",
+        "data-visual-id": "property-pin",
+        "data-state": status,
+        "aria-label": property.name + " \u2014 " + OVERVIEW_STATUS[status].label,
+        "aria-pressed": selected ? "true" : "false"
+      }, [h("i"), text7("span", "ov-pin__name", property.name)]);
+      canvas.appendChild(pin);
+    });
+    var panel = h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
+      h("div", { "class": "ov-map__head" }, [
+        text7("div", "card__title", "Your properties"),
+        h("div", { "class": "ov-legend" }, weather.legend.map(function(item) {
+          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text7("span", "", item.label)]);
+        }))
+      ]),
+      canvas,
+      WeatherTimeline(weather, index)
+    ]);
+    var selectedProperty = model.properties.find(function(property) {
+      return property.id === state.ovProperty;
+    });
+    if (selectedProperty) panel.appendChild(PropertyTooltip(selectedProperty));
+    return panel;
+  }
+  function WeatherTimeline(weather, index) {
+    var frame = weather.timeline[index];
+    var wrap = h("div", { "class": "ov-timeline", "data-module": "weather-timeline", "data-visual-id": "weather-timeline" });
+    var track = h("div", { "class": "ov-timeline__track" });
+    weather.timeline.forEach(function(item, position) {
+      track.appendChild(h("button", {
+        "class": "ov-tick" + (position === index ? " ov-tick--on" : "") + (position === weather.nowIndex ? " ov-tick--now" : ""),
+        "data-action": "overview.scrubWeather",
+        "data-id": String(position),
+        "data-weather": item.kind,
+        "aria-label": item.at + " \u2014 " + item.label,
+        "aria-pressed": position === index ? "true" : "false"
+      }, [h("i"), text7("span", "ov-tick__at", item.at)]));
+    });
+    wrap.appendChild(track);
+    wrap.appendChild(h("div", { "class": "ov-timeline__read" }, [
+      text7("span", "ov-timeline__temp", frame.temp),
+      text7("span", "ov-timeline__label", frame.label),
+      frame.note ? text7("span", "ov-timeline__note", frame.note) : null
+    ]));
+    return wrap;
+  }
+  function PropertyTooltip(property) {
+    var status = propertyStatus(property);
+    var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
+    var rows = [];
+    if (active) {
+      rows.push(detailRow("Active Service", active.service + " \xB7 " + active.when));
+    } else if (property.lastService) {
+      rows.push(detailRow("Last Service", property.lastService.service + " \xB7 " + property.lastService.when));
+    }
+    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, role: "dialog", "aria-label": property.name }, [
+      h("div", { "class": "ov-tip__head" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text7("div", "ov-tip__name", property.name),
+          text7("div", "ov-tip__addr", property.address)
+        ]),
+        h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
+      ]),
+      h("div", { "class": "ov-tip__status ov-tip__status--" + status }, [
+        h("i"),
+        h("div", null, [
+          text7("div", "ov-tip__status-label", OVERVIEW_STATUS[status].label),
+          text7("div", "ov-tip__status-copy", OVERVIEW_STATUS[status].copy)
+        ])
+      ]),
+      h("div", { "class": "ov-tip__rows" }, rows),
+      h("div", { "class": "ov-tip__actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Property Details", action: "overview.openProperty", id: property.id, visualId: "property-details" }),
+        ActionButton({ variant: "btn--ghost", label: "Go to Properties", action: "overview.openProperties", visualId: "go-to-properties" })
+      ])
+    ]);
+  }
+  function UpcomingWidget(model) {
+    var scheduled = model.properties.filter(function(property) {
+      return property.appointment && property.appointment.state === "SCHEDULED";
+    });
+    var card = widget("upcoming-services", "Upcoming services", "Appointments", "overview.openAppointments");
+    if (!scheduled.length) {
+      card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
+      return card;
+    }
+    card.appendChild(h("div", { "class": "ov-upcoming" }, [
+      text7("div", "ov-upcoming__count", String(scheduled.length) + (scheduled.length === 1 ? " scheduled appointment" : " scheduled appointments")),
+      text7("div", "ov-upcoming__when", scheduled.map(function(property) {
+        return property.appointment.when + " \xB7 " + property.name;
+      }).join(" \u2014 "))
+    ]));
+    return card;
+  }
+  function InvoicesWidget(model) {
+    var invoices = model.invoices;
+    var outstanding = invoices.outstanding || [];
+    var card = widget("invoices", "Invoices", "Invoices", "overview.openInvoices");
+    if (!outstanding.length) {
+      if (!invoices.lastPaid) {
+        card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
+        return card;
+      }
+      card.appendChild(invoiceRow({
+        number: invoices.lastPaid.number,
+        amount: invoices.lastPaid.amount,
+        meta: "paid " + invoices.lastPaid.paid,
+        state: "PAID"
+      }));
+      return card;
+    }
+    outstanding.slice(0, 3).forEach(function(invoice) {
+      card.appendChild(invoiceRow({
+        number: invoice.number,
+        amount: invoice.amount,
+        meta: invoice.state === "OVERDUE" ? "overdue since " + invoice.due : "due " + invoice.due,
+        state: invoice.state
+      }));
+    });
+    if (outstanding.length > 3) card.appendChild(moreLine(outstanding.length - 3, "more outstanding", "overview.openInvoices"));
+    return card;
+  }
+  function invoiceRow(invoice) {
+    return h("div", { "class": "ov-row", "data-module": "invoice-row", "data-visual-id": "invoice-row", "data-state": invoice.state.toLowerCase() }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text7("div", "ov-row__title", "Invoice " + invoice.number),
+        text7("div", "ov-row__meta", invoice.amount + " " + invoice.meta)
+      ]),
+      invoice.state === "OVERDUE" ? text7("span", "status-badge status-badge--danger", "Overdue") : null,
+      h("div", { "class": "link-action", "data-action": "overview.openInvoice", "data-id": invoice.number }, "View invoice \u203A")
+    ]);
+  }
+  function ContractsWidget(model) {
+    var contracts = model.contracts || [];
+    var card = widget("active-contracts", "Active contracts", "Contracts", "overview.openContracts");
+    if (!contracts.length) {
+      card.appendChild(emptyLine("No active contracts", "A contract appears here once a quote is approved."));
+      return card;
+    }
+    contracts.slice(0, 3).forEach(function(contract) {
+      card.appendChild(h("div", { "class": "ov-contract", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
+        text7("div", "ov-row__title", "Contract #" + contract.number),
+        text7("div", "ov-contract__plan", contract.plan),
+        text7("div", "ov-contract__desc", contract.description)
+      ]));
+    });
+    if (contracts.length > 3) card.appendChild(moreLine(contracts.length - 3, "more contracts", "overview.openContracts"));
+    return card;
+  }
+  function SupportWidget(model) {
+    var requests = model.support || [];
+    var card = widget("support-requests", "Support requests", "Support", "overview.openSupport");
+    if (!requests.length) {
+      card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
+        text7("div", "ov-empty__title", "No open requests"),
+        text7("div", "ov-empty__desc", "Everything looks good. Need help?"),
+        h("div", { "class": "link-action", "data-action": "overview.newRequest" }, "Submit a request \u203A")
+      ]));
+      return card;
+    }
+    requests.slice(0, 2).forEach(function(request) {
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text7("div", "ov-row__title", request.title),
+          text7("div", "ov-row__meta", request.status + " \xB7 " + request.when)
+        ])
+      ]));
+    });
+    if (requests.length > 2) card.appendChild(moreLine(requests.length - 2, "more open requests", "overview.openSupport"));
+    return card;
+  }
+  function widget(id, title, linkLabel, action) {
+    return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
+      h("div", { "class": "ov-card__head" }, [
+        text7("div", "card__title", title),
+        h("div", { "class": "link-action", "data-action": action }, linkLabel + " \u203A")
+      ])
+    ]);
+  }
+  function moreLine(count, label, action) {
+    return h("div", { "class": "link-action ov-more", "data-action": action }, String(count) + " " + label + " \u203A");
+  }
+  function emptyLine(title, desc) {
+    return h("div", { "class": "ov-empty", "data-state": "empty" }, [
+      text7("div", "ov-empty__title", title),
+      text7("div", "ov-empty__desc", desc)
+    ]);
+  }
+  function detailRow(label, value) {
+    return h("div", { "class": "ov-tip__row" }, [
+      text7("span", "ov-tip__row-label", label),
+      text7("span", "ov-tip__row-value", value)
+    ]);
+  }
+  function text7(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
   // app-templates/customer-portal/runtime/src/components/proposals/ProposalCard.js
   function ProposalCard(site) {
     var c = computeSite(site);
@@ -7555,10 +7922,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text9) {
+  function pitchRow(dot, bg, text10) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text9)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text10)
     ]);
   }
   function Auth() {
@@ -9525,8 +9892,8 @@
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text9) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text9]);
+  function oidcStep(n, text10) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text10]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -9956,7 +10323,7 @@
       spaVisitModeLabel(mode, F.spa.modeLabels)
     ]);
   }
-  function detailRow(label, val) {
+  function detailRow2(label, val) {
     return h("div", { "class": "appt-details__row" }, [
       h("div", { "class": "appt-details__label" }, label),
       h("div", { "class": "appt-details__val" }, val)
@@ -10011,12 +10378,12 @@
       ])
     ]);
     var details = h("div", { "class": "appt-details", "data-visual-id": "visit-details" });
-    details.appendChild(detailRow("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
+    details.appendChild(detailRow2("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
       h("b", null, spaVisitModeLabel(a.visitMode, F.spa.modeLabels)),
       a.location ? " \xB7 " + a.location : h("span", { style: "color:var(--ink-3)" }, " \xB7 location details not provided yet")
     ])));
-    details.appendChild(detailRow("With", a.specialist ? h("b", { "data-bind": "appointment.specialist" }, a.specialist) : h("span", { style: "color:var(--ink-3)", "data-bind": "appointment.specialist" }, "No specialist assigned yet")));
-    if (a.displayPrice) details.appendChild(detailRow("Price", h("span", { "data-bind": "appointment.displayPrice" }, [h("b", null, a.displayPrice), " \xB7 as booked"])));
+    details.appendChild(detailRow2("With", a.specialist ? h("b", { "data-bind": "appointment.specialist" }, a.specialist) : h("span", { style: "color:var(--ink-3)", "data-bind": "appointment.specialist" }, "No specialist assigned yet")));
+    if (a.displayPrice) details.appendChild(detailRow2("Price", h("span", { "data-bind": "appointment.displayPrice" }, [h("b", null, a.displayPrice), " \xB7 as booked"])));
     hero.appendChild(h("div", { style: "font-size:12px;font-weight:650;color:var(--ink-3);margin-top:14px;letter-spacing:.04em;text-transform:uppercase" }, "Visit details"));
     hero.appendChild(details);
     hero.appendChild(h("div", { "class": "appt-hero__ref", "data-bind": "appointment.reference" }, [
@@ -11588,7 +11955,7 @@
       raw = window.location.pathname + window.location.search;
     } else {
       raw = window.location.hash.replace(/^#/, "");
-      if (!raw) return state.route;
+      if (!raw) return state.config.defaultRoute || state.route;
       if (raw.charAt(0) !== "/") {
         var routeId = raw.split("?", 1)[0];
         setRouteQuery(routeId, raw);
@@ -11636,6 +12003,8 @@
     if (resolved.id !== state.route) state.route = resolved.id;
     if (state.view === "fallback") return RouteFallback("fallback");
     switch (resolved.id) {
+      case "overview":
+        return Overview();
       case "orders.list":
         return isSpa() ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
       case "order.detail":
@@ -12311,6 +12680,42 @@
     },
     "profile.managePlan": function() {
       go("pricing");
+    },
+    "overview.selectProperty": function(id) {
+      state.ovProperty = state.ovProperty === id ? null : id;
+      render();
+    },
+    "overview.closeProperty": function() {
+      state.ovProperty = null;
+      render();
+    },
+    "overview.scrubWeather": function(id) {
+      state.ovWeatherIndex = Number(id);
+      render();
+    },
+    "overview.openProperty": function() {
+      go("proposals.list");
+    },
+    "overview.openProperties": function() {
+      go("proposals.list");
+    },
+    "overview.openAppointments": function() {
+      go("orders.list");
+    },
+    "overview.openInvoices": function() {
+      go("activity");
+    },
+    "overview.openInvoice": function() {
+      go("activity");
+    },
+    "overview.openContracts": function() {
+      go("proposals.list");
+    },
+    "overview.openSupport": function() {
+      go("support");
+    },
+    "overview.newRequest": function() {
+      go("support");
     },
     "auth.signOut": function() {
       if (state.config.dataMode === "live") {
@@ -13464,9 +13869,9 @@
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text9) {
-    if (!text9 || !text9.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text9.trim() }]);
+  function pushChat(text10) {
+    if (!text10 || !text10.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text10.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -13793,6 +14198,8 @@
           return { feature: theme.feat, categories: theme.cats, products: theme.products };
         case "checkout":
           return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
+        case "overview":
+          return { overview: fixture ? fixture.overview || null : null };
         case "calendar":
           return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
         case "activity":
@@ -14071,11 +14478,11 @@
     return null;
   }
   function opaqueRef4(prefix, value) {
-    var text9 = String(value || prefix);
+    var text10 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text9.length; index += 1) {
-      var code = text9.charCodeAt(index);
+    for (var index = 0; index < text10.length; index += 1) {
+      var code = text10.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -14332,12 +14739,12 @@
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text7(session.accessToken || session.access_token);
+    var accessToken = text8(session.accessToken || session.access_token);
     if (!accessToken) throw contractError5("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin4();
     var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text7(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text8(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -14348,7 +14755,7 @@
     var userId = positiveInteger7(basicInfo.authenticatedUserId || basicInfo.id);
     if (!userId) throw contractError5("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text7(config.accountTypeCode || "SPA_CUSTOMER");
+    var accountTypeCode = text8(config.accountTypeCode || "SPA_CUSTOMER");
     var accountReply = await requestJson5(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
@@ -14383,11 +14790,11 @@
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text7(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text8(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text7(account.code),
+        code: text8(account.code),
         displayName: localizedName4(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
@@ -14395,11 +14802,11 @@
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text7(configuredCode);
+    var configured = text8(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text7(item && item.code);
+      return text8(item && item.code);
     }).filter(Boolean) : [];
-    var current = text7(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text8(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
     if (!selected) throw contractError5("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
@@ -14438,9 +14845,9 @@
   function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text7(localized2 && (localized2.NAME || localized2.name));
+    return text8(localized2 && (localized2.NAME || localized2.name));
   }
-  function text7(value) {
+  function text8(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function contractError5(code, message) {
@@ -14623,7 +15030,7 @@
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text8(row.code);
+      byId[String(row.id)] = text9(row.code);
     });
     return byId;
   }
@@ -14691,13 +15098,13 @@
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text8(session.accessToken || session.access_token);
+    var accessToken = text9(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
-    var organization = text8(config.organization);
+    var organization = text9(config.organization);
     if (!organization) throw contractError6("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     return {
-      authorization: text8(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text9(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase6(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
       config,
@@ -14744,7 +15151,7 @@
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text8(states[index] && states[index].code);
+      var code = text9(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
@@ -14771,13 +15178,13 @@
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text8(entry.NAME);
+      var name = entry && text9(entry.NAME);
       if (name) return name;
     }
     return "";
   }
   function sameOriginBase6(base, origin, label) {
-    var value = text8(base);
+    var value = text9(base);
     if (!value) throw contractError6("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
       if (value.indexOf(origin) !== 0) throw contractError6("cross-origin-base", label + " must stay same-origin");
@@ -14796,7 +15203,7 @@
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text8(value) {
+  function text9(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
   function contractError6(code, message) {
@@ -15325,6 +15732,9 @@
     cart: cartModule,
     checkout: checkoutModule,
     plan: planModule,
+    overview: module("overview", function(raw) {
+      return raw;
+    }),
     calendar: module("calendar", normalizeCalendar),
     activity: module("activity", normalizeActivity),
     profile: profileModule,

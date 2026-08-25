@@ -317,6 +317,7 @@ export const modules = {
   cart: cartModule,
   checkout: checkoutModule,
   plan: planModule,
+  overview: module("overview", function (raw) { return raw; }),
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,

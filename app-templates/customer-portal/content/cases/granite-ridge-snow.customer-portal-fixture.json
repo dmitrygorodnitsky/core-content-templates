@@ -10,8 +10,9 @@
     "theme": "snow",
     "profile": "stormRetail",
     "routerMode": "hash",
-    "defaultRoute": "orders.list",
+    "defaultRoute": "overview",
     "enabledModules": [
+      "overview",
       "orders",
       "calendar",
       "activity",

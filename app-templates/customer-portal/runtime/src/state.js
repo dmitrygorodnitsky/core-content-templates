@@ -26,6 +26,8 @@ export var state = {
   payId: "visa",     // selected payment method
   prodCat: "all",    // product category filter
   psites: F.proposalSites.map(function (p) { return Object.assign({}, p); }), // proposal sites (mutable)
+  ovProperty: null,
+  ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
   profileFilter: "all",  // profile order-history tab
   feedFilter: "all",     // activity feed tab
@@ -835,6 +837,8 @@ export function applyPortalConfig(config) {
   state.orders = fixture ? cloneCaseValue(fixture.orders) : F.ordersFor(verticalConfig.displayName);
   state.addrId = fixture ? fixture.addresses[0].id : "home";
   state.payId = fixture ? fixture.cards[0].id : "visa";
+  state.ovProperty = null;
+  state.ovWeatherIndex = null;
   state.psites = fixture && fixture.proposals
     ? cloneCaseValue(fixture.proposals.sites)
     : F.proposalSites.map(function (site) { return Object.assign({}, site); });

@@ -20,8 +20,11 @@ const {
   proposalStatusMeta,
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
+const { propertyStatus } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 
 function root(dataset) { return { dataset }; }
+
+const plainValue = (value) => JSON.parse(JSON.stringify(value));
 
 const config = readPortalConfig(root({
   portalVertical: "snow",
@@ -92,6 +95,29 @@ assert.deepEqual(foothill.rows.map((row) => row.name), graniteRidgeSnowFixture.t
 assert.equal(foothill.total, 5460);
 assert.ok(foothill.monthly > 0 && foothill.seasonLock > 0);
 
+const overview = fixtureAdapter.load("overview", context).overview;
+assert.ok(overview, "the snow tenant must carry overview data");
+assert.equal(overview.properties.length, 4);
+assert.deepEqual(
+  plainValue(overview.properties.map((property) => propertyStatus(property))),
+  ["enroute", "scheduled", "issue", "monitoring"],
+  "every derived property status must be exercised by the fixture",
+);
+const yarrow = overview.properties.find((property) => property.id === "prop-yarrow");
+assert.equal(yarrow.appointment.state, "SCHEDULED");
+assert.equal(propertyStatus(yarrow), "issue", "an open ticket outranks a scheduled appointment");
+assert.equal(overview.invoices.outstanding.length, 4, "more than three outstanding invoices proves the overflow line");
+assert.equal(overview.invoices.outstanding.filter((invoice) => invoice.state === "OVERDUE").length, 1);
+assert.ok(overview.invoices.lastPaid, "a last paid invoice backs the no-outstanding state");
+assert.equal(overview.support.length, 4, "more than two requests proves the overflow line");
+assert.equal(overview.weather.timeline.length, 7);
+assert.ok(overview.weather.timeline[overview.weather.nowIndex], "nowIndex must point at a real frame");
+assert.deepEqual(
+  plainValue([...new Set(overview.weather.timeline.map((frame) => frame.kind))].sort()),
+  ["clear", "freezing", "snow", "storm"],
+  "the timeline must exercise every weather kind in the legend",
+);
+
 const careRaw = await createCareFixtureAdapter().load("care", context);
 const care = normalizeCare(careRaw);
 assert.equal(care.kind, "seasonLog");
@@ -120,4 +146,4 @@ assert.equal(spaCrossConfig.caseId, "", "a beauty fixture case must not load und
 
 applyPortalConfig(config);
 
-console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across storm home, calendar, season log, contracts, services, pricing, shop, orders, support, and activity");
+console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across overview, storm home, calendar, season log, contracts, services, pricing, shop, orders, support, and activity");

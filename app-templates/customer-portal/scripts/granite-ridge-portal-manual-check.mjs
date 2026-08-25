@@ -33,8 +33,8 @@ try {
   assert.match(html, /data-portal-vertical="snow"/);
   assert.match(html, /data-portal-profile="stormRetail"/);
   assert.match(html, /data-portal-theme="snow"/);
-  assert.match(html, /data-portal-default-route="orders\.list"/);
-  assert.match(html, /data-portal-enabled-modules="orders,calendar,activity,proposals,care,services,pricing,products,checkout,profile,support"/);
+  assert.match(html, /data-portal-default-route="overview"/);
+  assert.match(html, /data-portal-enabled-modules="overview,orders,calendar,activity,proposals,care,services,pricing,products,checkout,profile,support"/);
   assert.match(html, /data-portal-brand-name="Granite Ridge"/);
   assert.match(html, /data-portal-nav-care-label="Season log"/);
   assert.match(html, /data-portal-nav-proposals-label="Contracts"/);

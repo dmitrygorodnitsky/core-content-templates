@@ -9,6 +9,7 @@ import { Services } from "./routes/ServicesPage.js";
 import { Pricing } from "./routes/PricingPage.js";
 import { Products } from "./routes/ProductsPage.js";
 import { Checkout } from "./routes/CheckoutPage.js";
+import { Overview } from "./routes/OverviewPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { Profile } from "./routes/ProfilePage.js";
@@ -103,7 +104,7 @@ export function routeFromLocation() {
     raw = window.location.pathname + window.location.search;
   } else {
     raw = window.location.hash.replace(/^#/, "");
-    if (!raw) return state.route;
+    if (!raw) return state.config.defaultRoute || state.route;
     if (raw.charAt(0) !== "/") {
       var routeId = raw.split("?", 1)[0];
       setRouteQuery(routeId, raw);
@@ -155,6 +156,7 @@ export function renderRoute() {
   if (state.view === "fallback") return RouteFallback("fallback");
 
   switch (resolved.id) {
+    case "overview":    return Overview();
     case "orders.list": return isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
     case "order.detail": return OrderDetail();
     case "appointment.detail": return isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");

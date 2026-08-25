@@ -176,6 +176,81 @@ export const graniteRidgeSnowFixture = Object.freeze({
       { id: "doc-grs-coi-2026", name: "Certificate of insurance 2025–26", meta: "PDF · valid through Jun 2026" },
     ],
   },
+  overview: {
+    weather: {
+      nowIndex: 3,
+      legend: [
+        { key: "clear", label: "Clear" },
+        { key: "snow", label: "Snow" },
+        { key: "freezing", label: "Freezing rain" },
+        { key: "storm", label: "Storm warning" },
+      ],
+      timeline: [
+        { at: "12 AM", temp: "−2°C", kind: "clear", label: "Clear", note: "" },
+        { at: "3 AM", temp: "−3°C", kind: "clear", label: "Clear", note: "" },
+        { at: "6 AM", temp: "−4°C", kind: "snow", label: "Light snow", note: "Below the 2 cm trigger" },
+        { at: "Now", temp: "−6°C", kind: "storm", label: "Storm watch", note: "Service likely tonight" },
+        { at: "9 PM", temp: "−8°C", kind: "snow", label: "Snowfall 3 cm", note: "Trigger met · 2 visits expected" },
+        { at: "12 AM", temp: "−9°C", kind: "freezing", label: "Freezing rain", note: "De-icing expected at Tabor Street" },
+        { at: "6 AM", temp: "−5°C", kind: "clear", label: "Clearing", note: "Crews finish routes" },
+      ],
+    },
+    properties: [
+      {
+        id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
+        x: 26, y: 34,
+        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
+        ticket: null,
+        lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
+      },
+      {
+        id: "prop-tabor", name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
+        x: 52, y: 24,
+        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch" },
+        ticket: null,
+        lastService: { service: "Lot & drive clearing", when: "Jan 5" },
+      },
+      {
+        id: "prop-yarrow", name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
+        x: 72, y: 46,
+        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 30" },
+        ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
+        lastService: { service: "Refreeze re-treat", when: "Dec 19" },
+      },
+      {
+        id: "prop-cinnamon", name: "Cinnamon Bear Way", address: "870 Cinnamon Bear Way, Littleton, CO 80127",
+        x: 44, y: 68,
+        appointment: null,
+        ticket: null,
+        lastService: { service: "Lot & drive clearing", when: "Dec 28" },
+      },
+    ],
+    invoices: {
+      outstanding: [
+        { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
+        { number: "INV-4498", amount: "$640", due: "Sep 14", state: "SENT" },
+        { number: "INV-4502", amount: "$1,120", due: "Sep 28", state: "SENT" },
+        { number: "INV-4510", amount: "$310", due: "Oct 5", state: "SENT" },
+      ],
+      lastPaid: { number: "INV-4460", amount: "$920", paid: "Aug 2" },
+    },
+    contracts: [
+      {
+        number: "1234", plan: "Seasonal Unlimited Coverage",
+        description: "Predictable budget, full-season protection. Unlimited de-icing at ≤0°C and clearing at 2 cm. GPS logs and photos after every visit.",
+      },
+      {
+        number: "1241", plan: "Walkway & Entry Care",
+        description: "Entries, stair treads and private sidewalks kept passable through the season, with a pet-safe blend on request.",
+      },
+    ],
+    support: [
+      { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today" },
+      { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago" },
+      { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago" },
+      { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday" },
+    ],
+  },
   stormCalendar: {
     contract: { rule: "Auto-dispatch by weather trigger", note: "Cleared within the 90-minute contracted window" },
     accessNotes: [

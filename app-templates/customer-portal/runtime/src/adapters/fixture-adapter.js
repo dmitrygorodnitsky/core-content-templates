@@ -26,6 +26,8 @@ export const fixtureAdapter = {
         return { feature: theme.feat, categories: theme.cats, products: theme.products };
       case "checkout":
         return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
+      case "overview":
+        return { overview: fixture ? fixture.overview || null : null };
       case "calendar":
         return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
       case "activity":

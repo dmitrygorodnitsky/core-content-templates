@@ -155,6 +155,17 @@ export var ACTIONS = {
     render(); toast("Profile reloaded — showing the details on file");
   },
   "profile.managePlan": function ()  { go("pricing"); },
+  "overview.selectProperty": function (id) { state.ovProperty = state.ovProperty === id ? null : id; render(); },
+  "overview.closeProperty": function () { state.ovProperty = null; render(); },
+  "overview.scrubWeather": function (id) { state.ovWeatherIndex = Number(id); render(); },
+  "overview.openProperty": function ()   { go("proposals.list"); },
+  "overview.openProperties": function () { go("proposals.list"); },
+  "overview.openAppointments": function () { go("orders.list"); },
+  "overview.openInvoices": function ()   { go("activity"); },
+  "overview.openInvoice": function ()    { go("activity"); },
+  "overview.openContracts": function ()  { go("proposals.list"); },
+  "overview.openSupport": function ()    { go("support"); },
+  "overview.newRequest": function ()     { go("support"); },
   "auth.signOut":      function ()   {
     if (state.config.dataMode === "live") {
       state.oidc = "signing-out";

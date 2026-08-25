@@ -55,7 +55,7 @@ export const portalProfiles = {
   stormRetail: {
     id: "stormRetail",
     nav: [
-      { key: "orders.list", label: "Home" },
+      { key: "overview", label: "Home" },
       { key: "calendar", label: "Calendar" },
       { key: "care" },
       { key: "proposals.list", label: "Contracts" },
@@ -64,7 +64,7 @@ export const portalProfiles = {
       { key: "support", label: "Support" },
     ],
     primary: { label: "Request service", action: "service.request" },
-    modules: ["orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+    modules: ["overview", "orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
     weatherCalendar: true,
     showCart: true,
     drawerTitle: "Request service",
@@ -115,6 +115,7 @@ export const routeRegistry = {
   "auth.oidc": { id: "auth.oidc", path: "/login", module: "auth", public: true },
   "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
   "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
+  overview: { id: "overview", path: "/overview", module: "overview" },
   "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
   "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
   "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },

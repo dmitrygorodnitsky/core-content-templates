@@ -10,9 +10,9 @@
   "parameters": [],
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
-   "html": "ab2f7eddd0046bc6e2208ba0ca5b7d2928470a2a01e0f103d0cb0b3f44feebe7",
-   "css": "7d4c43f93e4b962fb64b73c21827f38770253f56b1f564a753d0c2888b3e4199",
-   "javascript": "b3b6169f02f46ed776367c64eeaa7c52903ba783fcc27f2cbc2bc72dee37c9cb"
+   "html": "1e66fdb9ae912363e685e105784338a6d0a5e077fbb17a2a449ba0fe7ed5056d",
+   "css": "5115e0895ed0e11afceabe1e402fd065ce49b501f2743f0b52b2796cca4aeac7",
+   "javascript": "d485609c2400c9f80aa9d720cbeae70694b3f9a5eb3b96699e4a06426ebaa0a7"
   }
  },
  "runtime": {
@@ -22,6 +22,7 @@
   "authMode": "fixture",
   "case": "granite-ridge-snow",
   "openedModules": [
+   "overview",
    "orders",
    "calendar",
    "activity",

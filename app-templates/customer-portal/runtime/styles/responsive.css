@@ -181,3 +181,14 @@
 .vw-mobile .bk-addon { flex-wrap: wrap; }
 .vw-mobile .bk-addon .bk-addon__meta { flex-direction: row; align-items: baseline; gap: 8px; flex-basis: 100%; padding-left: 31px; margin-top: 2px; }
 .vw-mobile .bk-note-field__head { flex-wrap: wrap; }
+
+/* Overview — single column and a shorter map on narrow containers */
+.vw-tablet .ov-grid, .vw-mobile .ov-grid { grid-template-columns: 1fr; }
+
+.vw-mobile .ov-map__canvas { height: 240px; }
+
+.vw-mobile .ov-tip { position: static; width: auto; margin-top: 12px; box-shadow: none; }
+
+.vw-mobile .ov-pin__name { display: none; }
+
+.vw-mobile .ov-tick__at { font-size: 9px; }
