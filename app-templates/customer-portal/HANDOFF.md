@@ -1,9 +1,10 @@
-# Calm Harbor Customer Portal — cross-session handoff
+# Customer Portal — cross-session handoff
 
-Updated: 2026-08-05
+Updated: 2026-08-25
 
-This is the canonical resume checkpoint for the Calm Harbor customer portal,
-its public landing, and the Core Auth CMS login skin. Read this file and
+This is the canonical resume checkpoint for the customer portal work: the Calm
+Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
+and the Core Auth CMS login skin. Read this file and
 `AGENTS.md` before changing anything. Do not treat the designer handoff under
 `design-inbox/HANDOFF.md` as production authority outside presentation.
 
@@ -27,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `249b15c122392b4eaa5219c5e39568dba7fcafaf`
+- HEAD when this checkpoint was written: `b57e581`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -395,6 +396,85 @@ Public landing upload uses the same uploader with:
 ```text
 --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-landing-staging
 ```
+
+## Granite Ridge snow tenant
+
+A fixtures-only demonstration tenant. Nothing behind it is live; it opens no
+backend contract.
+
+| surface | source | preview | check |
+| --- | --- | --- | --- |
+| portal | `runtime/data/cases/granite-ridge-snow.js`, profile `stormRetail` | `runtime/granite-ridge-snow.html` | `scripts/granite-ridge-fixture-check.mjs` |
+| portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `scripts/granite-ridge-portal-manual-check.mjs` |
+| landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `scripts/granite-ridge-landing-manual-check.mjs` |
+
+A case fixture declares its `vertical` and the runtime refuses one that does not
+match the configured vertical. The old beauty-only guard is gone.
+
+The `overview` route is a mockup of the customer's Overview brief, built on
+fixtures so the shape can be argued about before any contract exists. Property
+status is derived in `runtime/src/normalizers/overview.js`, not stored, with the
+priority: open ticket, then `IN_PROGRESS`, then `SCHEDULED`, then monitoring.
+That order is a choice; the brief did not specify it and the conditions overlap.
+
+## Universal form document
+
+`runtime/forms/portal-form.js` renders any published Core form type in the
+portal design language. Contract, read from dev-1 and snapshotted under
+`content/form-types/`:
+
+```text
+GET  {apiBase}/{locale}/core-cms/api/form-type/{CODE}/get.json
+POST {apiBase}/core-cms/api/form/submit.json
+```
+
+The locale is a path segment: `?locale=en` answers 302 and moves it into the
+path. Both requests are anonymous. `uiBehavior` is honoured only as a
+declarative `applyBehavior` value-to-step mapping; the shared
+`js/dynamic-form.js` reference client executes server JavaScript through
+`new Function`, and this renderer never does.
+
+## Open threads for the next session
+
+1. `PORTAL_FORM_DOCUMENT` already exists in the dev CMS and was **not** created
+   by this package. `--require-missing` refused the first upload. Resolve its id
+   with `scripts/upsert-portal-form.mjs --require-existing` and decide whether to
+   take it over with `--expected-root-id` or to change the template code. Do not
+   overwrite it blindly.
+2. The numeric organization id for `SNOWLIMITLESS` is still unknown. Until
+   `FORM_ORGANIZATION_ID` is set in CMS the form's submit button stays disabled.
+   No code path resolves an organization code to an id.
+3. The published `GET_QUOTE_` form type is unfinished, and the renderer shows it
+   faithfully rather than papering over it: every attribute is `required: false`
+   while `RISK_FACTORS` carries an asterisk in its label; that same attribute is
+   `multiselect: false` while its label says select all that apply; no attribute
+   declares an `inputFormat`, so there are no masks, no typed inputs and no
+   textarea; `SELECT_YOUR_PROPERTY_TYPE` has `DESCRIPTION` of `"<p></p>"`; group
+   names and the form title are English only while fields and options carry eight
+   locales; the first group name reads "so we can can confirm".
+4. The Overview brief has unresolved ambiguities: status priority when a ticket
+   and an appointment overlap, which appointment wins when several exist, the
+   Last/Active Service format, two tooltip buttons pointing at one destination,
+   `SENT` and `OVERDUE` being visually identical, sort order for the three shown
+   invoices, the support-request limit, and whether Upcoming Services is
+   today-only. It also needs six contracts that do not exist anywhere in this
+   repository: Property as a Resource type, Invoice workflow, Contract, Quote
+   with Order Items, Support Ticket Lifecycle, and snow Appointment states.
+5. Google Maps: `mapApiKey` and `mapApiUrl` come from
+   `/core/api/user/basic-info.json`, which answers **401 anonymously**. The
+   public form therefore takes the key as `FORM_MAPS_API_KEY`, a browser key that
+   must be referrer-restricted. The authenticated portal can read Core's key, so
+   a real map on the Overview screen is not blocked the way the form was.
+   core-ui uses Geocoder plus a draggable marker, not Places autocomplete, and
+   stores `geoLocation` latitude, longitude and elevation.
+6. Two gaps against `js/dynamic-form.js` worth closing: preset values are
+   supported by the renderer but not exposed as a CMS parameter, and the success
+   screen offers no way to submit another response.
+
+`config-behavior-check`, `care-runtime-check`, `route-smoke`,
+`s7-regression-check` and `s6-cms-export-check` fail on a machine without
+`playwright`. That is an environment gap, not a regression; verify against a
+clean checkout before treating any of them as broken.
 
 ## Open backend/product work
 
