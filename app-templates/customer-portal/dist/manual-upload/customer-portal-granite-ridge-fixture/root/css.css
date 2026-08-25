@@ -2563,7 +2563,7 @@ button { font-family: inherit; }
 
 .ov-map { padding: 16px; margin-bottom: 16px; position: relative; }
 
-.ov-map__head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.ov-map__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
 
 .ov-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-left: auto; font-size: 11.5px; color: var(--ink-3); }
 
@@ -2682,9 +2682,28 @@ button { font-family: inherit; }
 
 .ov-card { display: flex; flex-direction: column; gap: 10px; }
 
-.ov-card__head { display: flex; align-items: center; gap: 10px; }
+.ov-card__head { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
 
-.ov-card__head .card__title { flex: 1; }
+.ov-card__title {
+  flex: 1; margin: 0; font-size: 17px; font-weight: 780; letter-spacing: -.018em; color: var(--ink);
+}
+
+.ov-card__icon {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 34px; height: 34px; border-radius: 11px; color: var(--accent);
+  background: rgba(var(--accent-rgb), .13);
+}
+
+.ov-icon { width: 19px; height: 19px; display: block; }
+
+.ov-lead { display: flex; align-items: baseline; gap: 8px; padding: 2px 0 6px; }
+
+.ov-lead__value {
+  font-size: 34px; font-weight: 820; letter-spacing: -.035em; line-height: 1;
+  color: var(--ink); font-variant-numeric: tabular-nums;
+}
+
+.ov-lead__label { font-size: 13px; color: var(--ink-2); font-weight: 600; }
 
 .ov-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--hair); }
 
@@ -2700,13 +2719,10 @@ button { font-family: inherit; }
 
 .ov-card > .ov-contract:first-of-type { border-top: 0; padding-top: 0; }
 
-.ov-contract__plan { font-weight: 700; font-size: 13.5px; margin-top: 3px; }
+.ov-contract__plan { font-weight: 750; font-size: 15px; letter-spacing: -.012em; margin-top: 3px; }
 
 .ov-contract__desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; margin-top: 4px; }
 
-.ov-upcoming__count { font-weight: 800; font-size: 22px; letter-spacing: -.02em; }
-
-.ov-upcoming__when { font-size: 12.5px; color: var(--ink-2); margin-top: 4px; line-height: 1.5; }
 
 .ov-more { padding-top: 8px; }
 
@@ -2715,6 +2731,23 @@ button { font-family: inherit; }
 .ov-empty__title { font-weight: 700; font-size: 14px; }
 
 .ov-empty__desc { font-size: 12.5px; color: var(--ink-2); margin: 3px 0 8px; }
+
+.ov-card { gap: 8px; }
+
+.ov-card .ov-row:first-of-type,
+.ov-card .ov-contract:first-of-type { border-top: 1px solid var(--hair); padding-top: 10px; }
+
+.ov-lead + .ov-row,
+.ov-lead + .ov-contract { border-top: 1px solid var(--hair); }
+
+[data-route="overview"] .page-header { margin-bottom: 22px; }
+
+[data-route="overview"] .page-header__title { font-size: 38px; letter-spacing: -.035em; }
+
+[data-route="overview"] .page-header__sub { font-size: 15.5px; margin-top: 6px; }
+
+.vw-mobile [data-route="overview"] .page-header__title,
+.vw-tablet [data-route="overview"] .page-header__title { font-size: 29px; }
 
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */

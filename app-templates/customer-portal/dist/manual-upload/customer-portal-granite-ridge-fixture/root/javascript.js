@@ -7177,6 +7177,29 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  var ICONS = {
+    map: "M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11Z M12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+    calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
+    invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
+    contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
+    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4"
+  };
+  function icon(name, className) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    if (className) svg.setAttribute("class", className);
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", ICONS[name] || "");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.6");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+    return svg;
+  }
   function overviewModel() {
     var fixture = currentFixture();
     return fixture && fixture.overview || null;
@@ -7232,7 +7255,8 @@
     });
     var panel = h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
-        text7("div", "card__title", "Your properties"),
+        h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
+        text7("h2", "ov-card__title", "Your properties"),
         h("div", { "class": "ov-legend" }, weather.legend.map(function(item) {
           return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text7("span", "", item.label)]);
         }))
@@ -7303,23 +7327,26 @@
     var scheduled = model.properties.filter(function(property) {
       return property.appointment && property.appointment.state === "SCHEDULED";
     });
-    var card = widget("upcoming-services", "Upcoming services", "Appointments", "overview.openAppointments");
+    var card = widget("upcoming-services", "Upcoming services", "Appointments", "overview.openAppointments", "calendar");
     if (!scheduled.length) {
       card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
       return card;
     }
-    card.appendChild(h("div", { "class": "ov-upcoming" }, [
-      text7("div", "ov-upcoming__count", String(scheduled.length) + (scheduled.length === 1 ? " scheduled appointment" : " scheduled appointments")),
-      text7("div", "ov-upcoming__when", scheduled.map(function(property) {
-        return property.appointment.when + " \xB7 " + property.name;
-      }).join(" \u2014 "))
-    ]));
+    card.appendChild(lead(String(scheduled.length), scheduled.length === 1 ? "scheduled appointment" : "scheduled appointments"));
+    scheduled.forEach(function(property) {
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "upcoming-row" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text7("div", "ov-row__title", property.appointment.service),
+          text7("div", "ov-row__meta", property.appointment.when + " \xB7 " + property.name)
+        ])
+      ]));
+    });
     return card;
   }
   function InvoicesWidget(model) {
     var invoices = model.invoices;
     var outstanding = invoices.outstanding || [];
-    var card = widget("invoices", "Invoices", "Invoices", "overview.openInvoices");
+    var card = widget("invoices", "Invoices", "Invoices", "overview.openInvoices", "invoice");
     if (!outstanding.length) {
       if (!invoices.lastPaid) {
         card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
@@ -7333,6 +7360,7 @@
       }));
       return card;
     }
+    card.appendChild(lead(totalOf(outstanding), outstanding.length === 1 ? "outstanding" : "across " + outstanding.length + " invoices"));
     outstanding.slice(0, 3).forEach(function(invoice) {
       card.appendChild(invoiceRow({
         number: invoice.number,
@@ -7356,11 +7384,12 @@
   }
   function ContractsWidget(model) {
     var contracts = model.contracts || [];
-    var card = widget("active-contracts", "Active contracts", "Contracts", "overview.openContracts");
+    var card = widget("active-contracts", "Active contracts", "Contracts", "overview.openContracts", "contract");
     if (!contracts.length) {
       card.appendChild(emptyLine("No active contracts", "A contract appears here once a quote is approved."));
       return card;
     }
+    card.appendChild(lead(String(contracts.length), contracts.length === 1 ? "active contract" : "active contracts"));
     contracts.slice(0, 3).forEach(function(contract) {
       card.appendChild(h("div", { "class": "ov-contract", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
         text7("div", "ov-row__title", "Contract #" + contract.number),
@@ -7373,7 +7402,7 @@
   }
   function SupportWidget(model) {
     var requests = model.support || [];
-    var card = widget("support-requests", "Support requests", "Support", "overview.openSupport");
+    var card = widget("support-requests", "Support requests", "Support", "overview.openSupport", "support");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
         text7("div", "ov-empty__title", "No open requests"),
@@ -7382,6 +7411,7 @@
       ]));
       return card;
     }
+    card.appendChild(lead(String(requests.length), requests.length === 1 ? "open request" : "open requests"));
     requests.slice(0, 2).forEach(function(request) {
       card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row" }, [
         h("div", { style: "flex:1;min-width:0" }, [
@@ -7393,13 +7423,26 @@
     if (requests.length > 2) card.appendChild(moreLine(requests.length - 2, "more open requests", "overview.openSupport"));
     return card;
   }
-  function widget(id, title, linkLabel, action) {
+  function widget(id, title, linkLabel, action, iconName) {
     return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
       h("div", { "class": "ov-card__head" }, [
-        text7("div", "card__title", title),
+        h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
+        text7("h2", "ov-card__title", title),
         h("div", { "class": "link-action", "data-action": action }, linkLabel + " \u203A")
       ])
     ]);
+  }
+  function lead(value, label) {
+    return h("div", { "class": "ov-lead" }, [
+      text7("span", "ov-lead__value", value),
+      text7("span", "ov-lead__label", label)
+    ]);
+  }
+  function totalOf(invoices) {
+    var sum = invoices.reduce(function(running, invoice) {
+      return running + Number(String(invoice.amount).replace(/[^0-9.]/g, "")) || running;
+    }, 0);
+    return "$" + sum.toLocaleString("en-US");
   }
   function moreLine(count, label, action) {
     return h("div", { "class": "link-action ov-more", "data-action": action }, String(count) + " " + label + " \u203A");
@@ -9680,10 +9723,10 @@
       }))
     }));
   }
-  function referenceTrustFact(icon, label, source, slot, key) {
+  function referenceTrustFact(icon2, label, source, slot, key) {
     source = object(source, "reference.trust." + key);
     return {
-      icon,
+      icon: icon2,
       label: string(label, "reference.trust." + key + ".label"),
       value: source.value === null ? null : string(source.value, "reference.trust." + key + ".value"),
       count: source.count == null ? null : string(source.count, "reference.trust." + key + ".count"),
