@@ -43,3 +43,34 @@ export function clampFrameIndex(timeline, index) {
   if (index > total - 1) return total - 1;
   return index;
 }
+
+export function serviceDayCount(properties, frame) {
+  if (!properties || !frame || !frame.date) return 0;
+  return properties.filter(function (property) {
+    return property.appointment && property.appointment.date === frame.date;
+  }).length;
+}
+
+export function invoiceBuckets(invoices) {
+  var outstanding = (invoices && invoices.outstanding) || [];
+  var paid = (invoices && invoices.paidThisMonth) || [];
+  var overdue = outstanding.filter(function (invoice) { return invoice.state === "OVERDUE"; });
+  var thisMonth = outstanding.filter(function (invoice) { return invoice.state === "DUE_THIS_MONTH"; });
+  return {
+    overdue: bucket(overdue),
+    outstanding: bucket(outstanding),
+    dueThisMonth: bucket(thisMonth),
+    paidThisMonth: bucket(paid),
+  };
+}
+
+function bucket(rows) {
+  return {
+    count: rows.length,
+    amount: rows.reduce(function (running, invoice) { return running + (Number(invoice.amount) || 0); }, 0),
+  };
+}
+
+export function money(amount) {
+  return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}

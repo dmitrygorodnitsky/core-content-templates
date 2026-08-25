@@ -1660,9 +1660,19 @@
     ["Saulsbury Bend", "Wheat Ridge, CO 80033", "west", 8, 54],
     ["Union Ridge", "Lakewood, CO 80228", "west", 40, 56]
   ];
+  var MONITORED_VISITS = {
+    "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "5:40 AM", date: "Jan 16" } },
+    "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "6:15 AM", date: "Jan 16" } },
+    "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", time: "7:05 AM", date: "Jan 16" } },
+    "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "7:50 AM", date: "Jan 16" } },
+    "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", time: "6:30 AM", date: "Jan 17" } },
+    "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", time: "8:10 AM", date: "Jan 17" } },
+    "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", date: "Jan 18" } },
+    "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed \xB7 auto-dispatch", time: "6:00 AM", date: "Jan 21" } }
+  };
   function monitoredProperties() {
     return MONITORED_SITES.map(function(site, index) {
-      return {
+      return Object.assign({
         id: "prop-monitored-" + (index + 1),
         name: site[0],
         address: index * 37 + 210 + " " + site[0] + ", " + site[1],
@@ -1672,7 +1682,7 @@
         appointment: null,
         ticket: null,
         lastService: { service: index % 3 === 0 ? "Walkway de-icing" : "Lot & drive clearing", when: "Jan " + (2 + index % 11) }
-      };
+      }, MONITORED_VISITS[site[0]] || {});
     });
   }
   var graniteRidgeSnowFixture = Object.freeze({
@@ -1970,7 +1980,7 @@
           x: 26,
           y: 34,
           zone: "central",
-          appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
+          appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", date: "Jan 15", crew: "Marcus H." },
           ticket: null,
           lastService: { service: "Roof snow & ice dam", when: "Jan 12" }
         },
@@ -2010,12 +2020,26 @@
       ].concat(monitoredProperties()),
       invoices: {
         outstanding: [
-          { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
-          { number: "INV-4498", amount: "$640", due: "Sep 14", state: "SENT" },
-          { number: "INV-4502", amount: "$1,120", due: "Sep 28", state: "SENT" },
-          { number: "INV-4510", amount: "$310", due: "Oct 5", state: "SENT" }
+          { number: "INV-4402", amount: 6240, due: "Oct 31", state: "OVERDUE" },
+          { number: "INV-4417", amount: 4880, due: "Nov 14", state: "OVERDUE" },
+          { number: "INV-4433", amount: 3960, due: "Nov 28", state: "OVERDUE" },
+          { number: "INV-4448", amount: 3410, due: "Dec 12", state: "OVERDUE" },
+          { number: "INV-4459", amount: 2740, due: "Dec 19", state: "OVERDUE" },
+          { number: "INV-4471", amount: 2180, due: "Dec 31", state: "OVERDUE" },
+          { number: "INV-4486", amount: 1440, due: "Jan 9", state: "OVERDUE" },
+          { number: "INV-4498", amount: 2650, due: "Jan 20", state: "DUE_THIS_MONTH" },
+          { number: "INV-4502", amount: 1710, due: "Jan 24", state: "DUE_THIS_MONTH" },
+          { number: "INV-4507", amount: 840, due: "Jan 30", state: "DUE_THIS_MONTH" },
+          { number: "INV-4511", amount: 1290, due: "Feb 14", state: "DUE_LATER" },
+          { number: "INV-4514", amount: 810, due: "Feb 28", state: "DUE_LATER" }
         ],
-        lastPaid: { number: "INV-4460", amount: "$920", paid: "Aug 2" }
+        paidThisMonth: [
+          { number: "INV-4489", amount: 1920, paid: "Jan 12" },
+          { number: "INV-4483", amount: 1340, paid: "Jan 9" },
+          { number: "INV-4477", amount: 1150, paid: "Jan 7" },
+          { number: "INV-4468", amount: 880, paid: "Jan 4" },
+          { number: "INV-4461", amount: 560, paid: "Jan 2" }
+        ]
       },
       contracts: [
         {
@@ -7337,6 +7361,39 @@
     if (index > total - 1) return total - 1;
     return index;
   }
+  function serviceDayCount(properties, frame) {
+    if (!properties || !frame || !frame.date) return 0;
+    return properties.filter(function(property) {
+      return property.appointment && property.appointment.date === frame.date;
+    }).length;
+  }
+  function invoiceBuckets(invoices) {
+    var outstanding = invoices && invoices.outstanding || [];
+    var paid = invoices && invoices.paidThisMonth || [];
+    var overdue = outstanding.filter(function(invoice) {
+      return invoice.state === "OVERDUE";
+    });
+    var thisMonth = outstanding.filter(function(invoice) {
+      return invoice.state === "DUE_THIS_MONTH";
+    });
+    return {
+      overdue: bucket(overdue),
+      outstanding: bucket(outstanding),
+      dueThisMonth: bucket(thisMonth),
+      paidThisMonth: bucket(paid)
+    };
+  }
+  function bucket(rows) {
+    return {
+      count: rows.length,
+      amount: rows.reduce(function(running, invoice) {
+        return running + (Number(invoice.amount) || 0);
+      }, 0)
+    };
+  }
+  function money2(amount) {
+    return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
 
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
   var ICONS = {
@@ -7345,6 +7402,7 @@
     invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
     contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
     support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
+    alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
     pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
     snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
     live: "M12 11.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z M8.6 8.6a4.8 4.8 0 0 0 0 6.8 M15.4 8.6a4.8 4.8 0 0 1 0 6.8 M6 6a8 8 0 0 0 0 12 M18 6a8 8 0 0 1 0 12"
@@ -7388,9 +7446,9 @@
     var frame = weather.timeline[index];
     page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex)]));
     page.appendChild(MapPanel(model, frame, index));
+    page.appendChild(InvoicesWidget(model));
     var grid = h("div", { "class": "ov-grid" });
     grid.appendChild(UpcomingWidget(model));
-    grid.appendChild(InvoicesWidget(model));
     grid.appendChild(ContractsWidget(model));
     grid.appendChild(SupportWidget(model));
     page.appendChild(grid);
@@ -7451,23 +7509,29 @@
         }))
       ]),
       h("div", { "class": "ov-map__stage" }, [canvas, pins]),
-      DayTimeline(weather, index)
+      DayTimeline(weather, index, model.properties)
     ]);
   }
-  function DayTimeline(weather, index) {
+  function DayTimeline(weather, index, properties) {
     var last = weather.timeline.length - 1;
     var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function(item, position) {
+      var visits = serviceDayCount(properties, item);
       return h("button", {
-        "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : ""),
+        "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : "") + (visits ? " ov-day--service" : ""),
         "data-action": "overview.scrubWeather",
         "data-id": String(position),
         "data-weather": item.kind,
-        "aria-label": item.day + " " + item.date + " \u2014 " + item.label,
+        "data-service": visits ? String(visits) : void 0,
+        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : " \u2014 no visit"),
         "aria-pressed": position === index ? "true" : "false"
       }, [
         text7("span", "ov-day__name", item.day),
         text7("span", "ov-day__date", item.date),
-        h("i")
+        h("i"),
+        h("span", { "class": "ov-day__svc" }, visits ? [
+          text7("b", "", String(visits)),
+          text7("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
+        ] : [])
       ]);
     }));
     return h("div", { "class": "ov-timeline", "data-module": "weather-timeline", "data-visual-id": "weather-timeline" }, [
@@ -7536,44 +7600,47 @@
     return card;
   }
   function InvoicesWidget(model) {
-    var invoices = model.invoices;
-    var outstanding = invoices.outstanding || [];
-    var card = widget("invoices", "Invoices", "invoice");
-    if (!outstanding.length) {
-      if (!invoices.lastPaid) {
-        card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
-        return card;
-      }
-      card.appendChild(invoiceRow({
-        number: invoices.lastPaid.number,
-        amount: invoices.lastPaid.amount,
-        meta: "paid " + invoices.lastPaid.paid,
-        state: "PAID"
-      }));
+    var buckets = invoiceBuckets(model.invoices);
+    var overdue = buckets.overdue;
+    var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
+      h("div", { "class": "ov-card__head" }, [
+        h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
+        text7("h2", "ov-card__title", "Invoices"),
+        h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
+      ])
+    ]);
+    if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
+      card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
       return card;
     }
-    card.appendChild(lead(totalOf(outstanding), outstanding.length === 1 ? "outstanding" : "across " + outstanding.length + " invoices"));
-    outstanding.slice(0, 3).forEach(function(invoice) {
-      card.appendChild(invoiceRow({
-        number: invoice.number,
-        amount: invoice.amount,
-        meta: invoice.state === "OVERDUE" ? "\xB7 overdue since " + invoice.due : "\xB7 due " + invoice.due,
-        state: invoice.state
-      }));
-    });
-    card.appendChild(outstanding.length > 3 ? moreLine(outstanding.length - 3, "more outstanding", "overview.openInvoices") : moreLine(null, "View all invoices", "overview.openInvoices"));
+    if (overdue.count) card.appendChild(OverdueAlert(overdue));
+    card.appendChild(h("div", { "class": "ov-bill__stats" }, [
+      billStat("Total outstanding", money2(buckets.outstanding.amount), buckets.outstanding.count, ""),
+      billStat("Due this month", money2(buckets.dueThisMonth.amount), buckets.dueThisMonth.count, ""),
+      billStat("Paid this month", money2(buckets.paidThisMonth.amount), buckets.paidThisMonth.count, "ov-bill__stat-value--ok")
+    ]));
+    card.appendChild(moreLine(null, "View all invoices", "overview.openInvoices"));
     return card;
   }
-  function invoiceRow(invoice) {
-    return h("div", { "class": "ov-row", "data-module": "invoice-row", "data-visual-id": "invoice-row", "data-state": invoice.state.toLowerCase() }, [
-      h("div", { style: "flex:1;min-width:0" }, [
-        h("div", { "class": "ov-row__line" }, [
-          text7("span", "ov-row__title", invoice.number),
-          invoice.state === "OVERDUE" ? text7("span", "status-badge status-badge--danger", "Overdue") : null
-        ]),
-        text7("div", "ov-row__meta", invoice.amount + " " + invoice.meta)
+  function OverdueAlert(overdue) {
+    return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
+      h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
+      h("div", { "class": "ov-alarm__read" }, [
+        text7("div", "ov-alarm__eyebrow", "Overdue amount"),
+        text7("div", "ov-alarm__amount", money2(overdue.amount)),
+        text7("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+        text7("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
       ]),
-      chevron("overview.openInvoice", invoice.number, "Open invoice " + invoice.number)
+      h("div", { "class": "ov-alarm__act" }, [
+        ActionButton({ variant: "btn--danger", label: "View overdue invoices \u2192", action: "overview.openInvoices", visualId: "view-overdue-invoices" })
+      ])
+    ]);
+  }
+  function billStat(label, value, count, valueClass) {
+    return h("div", { "class": "ov-bill__stat" }, [
+      text7("div", "ov-bill__stat-label", label),
+      text7("div", "ov-bill__stat-value " + valueClass, value),
+      text7("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
     ]);
   }
   function ContractsWidget(model) {
@@ -7653,12 +7720,6 @@
   }
   function chevron(action, id, label) {
     return h("button", { "class": "ov-chev", "data-action": action, "data-id": id, "aria-label": label }, "\u203A");
-  }
-  function totalOf(invoices) {
-    var sum = invoices.reduce(function(running, invoice) {
-      return running + Number(String(invoice.amount).replace(/[^0-9.]/g, "")) || running;
-    }, 0);
-    return "$" + sum.toLocaleString("en-US");
   }
   function moreLine(count, label, action) {
     return h("div", { "class": "link-action ov-more", "data-action": action }, (count == null ? label : String(count) + " " + label) + " \u203A");
@@ -10273,10 +10334,10 @@
   function purchaseStatusBadge(label) {
     return StatusBadge({ variant: F.spaCommerce.purchases.statusBadges[label] || "status-badge--scheduled", label, bind: "purchase.customerStatus" });
   }
-  function MoneyRows(money2) {
-    var rows = [["Subtotal", money2.subtotal, "money.subtotal"]];
-    if (money2.discount) rows.push(["Discount", money2.discount, "money.discount"]);
-    rows.push(["Tax", money2.tax, "money.tax"]);
+  function MoneyRows(money3) {
+    var rows = [["Subtotal", money3.subtotal, "money.subtotal"]];
+    if (money3.discount) rows.push(["Discount", money3.discount, "money.discount"]);
+    rows.push(["Tax", money3.tax, "money.tax"]);
     var wrap = h("div", { "class": "money-rows", "data-module": "commercial-totals", "data-visual-id": "commercial-totals" });
     rows.forEach(function(r) {
       if (r[1] == null) return;
@@ -10284,7 +10345,7 @@
     });
     wrap.appendChild(h("div", { "class": "money-rows__row money-rows__row--total" }, [
       h("span", null, "Total"),
-      h("span", { "data-bind": "money.total" }, money2.total + (money2.currency ? " " + money2.currency : ""))
+      h("span", { "data-bind": "money.total" }, money3.total + (money3.currency ? " " + money3.currency : ""))
     ]));
     return wrap;
   }

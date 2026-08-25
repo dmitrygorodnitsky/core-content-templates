@@ -2008,6 +2008,16 @@
 
 .ov-day i { width: 26px; height: 3px; border-radius: 2px; display: block; margin-top: 5px; }
 
+.ov-day__svc {
+  display: flex; align-items: center; justify-content: center;
+  height: 20px; margin-top: 5px; padding: 0 8px; border-radius: var(--radius-pill);
+  font-size: 11.5px; font-weight: 650; color: transparent; white-space: nowrap;
+}
+
+.ov-day--service .ov-day__svc { background: rgba(var(--accent-rgb), .12); color: var(--accent); }
+
+.ov-day__svc b { font-weight: 800; }
+
 .ov-day[data-weather="clear"] i { background: var(--wx-clear); }
 .ov-day[data-weather="snow"] i { background: var(--wx-snow); }
 .ov-day[data-weather="freezing"] i { background: var(--wx-freezing); }
@@ -2054,7 +2064,7 @@
 
 .ov-tip__link { margin-top: 11px; }
 
-.ov-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.ov-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 
 .ov-card { display: flex; flex-direction: column; gap: 8px; }
 
@@ -2148,6 +2158,81 @@
 .ov-empty__title { font-weight: 700; font-size: 14px; }
 
 .ov-empty__desc { font-size: 12.5px; color: var(--ink-2); margin: 3px 0 8px; }
+
+.ov-bill { margin-bottom: 16px; }
+
+.ov-bill--alarm {
+  border-color: rgba(192,57,43,.42);
+  box-shadow: 0 0 0 1px rgba(192,57,43,.16), 0 10px 30px rgba(192,57,43,.10);
+  background: linear-gradient(180deg, rgba(255,59,48,.05), rgba(255,59,48,.02));
+}
+
+.ov-bill--alarm .ov-card__icon { background: var(--danger-bg); color: var(--danger); }
+
+.ov-bill__all { margin-left: auto; font-size: 12.5px; white-space: nowrap; }
+
+.ov-alarm {
+  --alarm-ink: var(--danger);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 18px;
+  padding: 18px 44px 18px 20px; border-radius: var(--radius-lg);
+  border: 1.5px solid rgba(192,57,43,.38); background: var(--danger-bg);
+}
+
+:root[data-mode="dark"] .ov-alarm { --alarm-ink: #ff8f80; border-color: rgba(255,143,128,.42); }
+
+.ov-alarm::after {
+  content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 26px;
+  background: repeating-linear-gradient(45deg, rgba(192,57,43,.30) 0 6px, transparent 6px 13px); opacity: .9;
+  pointer-events: none;
+}
+
+.ov-alarm__mark { flex: none; color: var(--alarm-ink); line-height: 0; }
+
+.ov-alarm__glyph { width: 42px; height: 42px; display: block; }
+
+.ov-alarm__glyph path { fill: var(--alarm-ink); stroke: var(--surface); stroke-width: 1.4; }
+
+.ov-alarm__read { flex: 1; min-width: 0; }
+
+.ov-alarm__eyebrow {
+  font-size: 12px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--alarm-ink);
+}
+
+.ov-alarm__amount {
+  font-size: 38px; font-weight: 850; letter-spacing: -.035em; line-height: 1.05;
+  color: var(--alarm-ink); margin-top: 2px;
+}
+
+.ov-alarm__count { font-size: 15px; font-weight: 700; color: var(--alarm-ink); margin-top: 3px; }
+
+.ov-alarm__warn { font-size: 13px; color: var(--alarm-ink); opacity: .9; margin-top: 8px; }
+
+.ov-alarm__act { flex: none; }
+
+.ov-alarm .btn--danger {
+  background: var(--danger); border-color: transparent; color: #fff; font-weight: 700;
+  box-shadow: 0 6px 18px rgba(192,57,43,.32);
+}
+
+.ov-alarm .btn--danger:hover { filter: brightness(1.06); }
+
+.ov-bill__stats {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 14px; border-top: 1px solid var(--hair);
+}
+
+.ov-bill__stat { padding: 14px 18px; }
+
+.ov-bill__stat + .ov-bill__stat { border-left: 1px solid var(--hair); }
+
+.ov-bill__stat-label { font-size: 12.5px; color: var(--ink-2); font-weight: 600; }
+
+.ov-bill__stat-value { font-size: 24px; font-weight: 800; letter-spacing: -.03em; margin-top: 4px; }
+
+.ov-bill__stat-value--ok { color: var(--ok); }
+
+.ov-bill__stat-count { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
 
 .ov-banner { display: flex; align-items: center; gap: 14px; margin-top: 16px; }
 

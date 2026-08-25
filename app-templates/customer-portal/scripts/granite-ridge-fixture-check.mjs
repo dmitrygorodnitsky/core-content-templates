@@ -20,7 +20,7 @@ const {
   proposalStatusMeta,
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
-const { clampFrameIndex, propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
+const { clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 
 function root(dataset) { return { dataset }; }
 
@@ -111,9 +111,22 @@ const yarrow = overview.properties.find((property) => property.id === "prop-yarr
 assert.equal(yarrow.appointment.state, "SCHEDULED");
 assert.equal(propertyStatus(yarrow), "issue", "an open ticket outranks a scheduled appointment");
 assert.ok(overview.banner && overview.banner.title && overview.banner.copy && overview.banner.action);
-assert.equal(overview.invoices.outstanding.length, 4, "more than three outstanding invoices proves the overflow line");
-assert.equal(overview.invoices.outstanding.filter((invoice) => invoice.state === "OVERDUE").length, 1);
-assert.ok(overview.invoices.lastPaid, "a last paid invoice backs the no-outstanding state");
+const buckets = invoiceBuckets(overview.invoices);
+assert.equal(buckets.outstanding.count, 12);
+assert.equal(buckets.overdue.count, 7, "the overdue block is the point of the widget and must be exercised");
+assert.ok(buckets.paidThisMonth.count, "the paid-this-month column needs its own rows");
+assert.equal(
+  buckets.overdue.amount + buckets.dueThisMonth.amount
+    + overview.invoices.outstanding.filter((invoice) => invoice.state === "DUE_LATER").reduce((running, invoice) => running + invoice.amount, 0),
+  buckets.outstanding.amount,
+  "every outstanding invoice must fall into exactly one bucket",
+);
+assert.equal(money(buckets.overdue.amount), "$24,850.00");
+assert.equal(money(buckets.outstanding.amount), "$32,150.00");
+for (const invoice of overview.invoices.outstanding) {
+  assert.equal(typeof invoice.amount, "number", "amounts are summed, so they cannot be pre-formatted strings");
+  assert.ok(["OVERDUE", "DUE_THIS_MONTH", "DUE_LATER"].includes(invoice.state), `unknown invoice state ${invoice.state}`);
+}
 assert.equal(overview.support.length, 4, "more than two requests proves the overflow line");
 assert.equal(overview.weather.timeline.length, 7, "the timeline spans a week of days, not a day of hours");
 assert.ok(overview.weather.timeline[overview.weather.nowIndex], "nowIndex must point at a real frame");
@@ -146,6 +159,16 @@ assert.equal(
 );
 assert.equal(clampFrameIndex(overview.weather.timeline, 99), 6);
 assert.equal(clampFrameIndex(overview.weather.timeline, -3), 0);
+const serviceDays = overview.weather.timeline.map((item) => serviceDayCount(overview.properties, item));
+assert.deepEqual(plainValue(serviceDays), [1, 5, 2, 2, 0, 0, 1], "the timeline must mark the days a visit actually happens");
+assert.ok(serviceDays.some((count) => count === 0), "a day without service must stay unmarked");
+for (const property of overview.properties) {
+  if (!property.appointment) continue;
+  assert.ok(
+    overview.weather.timeline.some((item) => item.date === property.appointment.date),
+    `${property.name} is booked for ${property.appointment.date}, which no timeline day names`,
+  );
+}
 
 const careRaw = await createCareFixtureAdapter().load("care", context);
 const care = normalizeCare(careRaw);

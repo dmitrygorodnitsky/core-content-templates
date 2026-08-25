@@ -185,6 +185,31 @@
 /* Overview — single column and a shorter map on narrow containers */
 .vw-compact .ov-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
+.vw-compact .ov-alarm { flex-wrap: wrap; }
+
+.vw-mobile .ov-alarm { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; }
+
+.vw-mobile .ov-alarm__act { width: 100%; }
+
+.vw-mobile .ov-alarm__act .btn { width: 100%; justify-content: center; }
+
+.vw-mobile .ov-alarm__amount { font-size: 32px; }
+
+.vw-mobile .ov-bill__stats { grid-template-columns: 1fr; }
+
+.vw-mobile .ov-bill__stat { padding: 12px 0; }
+
+.vw-mobile .ov-bill__stat + .ov-bill__stat { border-left: 0; border-top: 1px solid var(--hair); }
+
+.vw-mobile .ov-day__svc { height: 17px; padding: 0 5px; font-size: 10.5px; }
+
+.vw-tablet .ov-day__svc-word,
+.vw-mobile .ov-day__svc-word { display: none; }
+
+.vw-mobile .ov-alarm { padding-right: 16px; }
+
+.vw-mobile .ov-alarm::after { display: none; }
+
 .vw-mobile .ov-grid { grid-template-columns: 1fr; }
 
 .vw-compact .ov-head { flex-direction: column; gap: 14px; }

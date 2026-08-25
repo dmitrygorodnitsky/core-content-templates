@@ -30,9 +30,20 @@ const MONITORED_SITES = [
   ["Union Ridge", "Lakewood, CO 80228", "west", 40, 56],
 ];
 
+const MONITORED_VISITS = {
+  "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "5:40 AM", date: "Jan 16" } },
+  "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "6:15 AM", date: "Jan 16" } },
+  "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "7:05 AM", date: "Jan 16" } },
+  "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "7:50 AM", date: "Jan 16" } },
+  "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "6:30 AM", date: "Jan 17" } },
+  "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "8:10 AM", date: "Jan 17" } },
+  "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", date: "Jan 18" } },
+  "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed · auto-dispatch", time: "6:00 AM", date: "Jan 21" } },
+};
+
 function monitoredProperties() {
   return MONITORED_SITES.map(function (site, index) {
-    return {
+    return Object.assign({
       id: "prop-monitored-" + (index + 1),
       name: site[0],
       address: (index * 37 + 210) + " " + site[0] + ", " + site[1],
@@ -40,7 +51,7 @@ function monitoredProperties() {
       appointment: null,
       ticket: null,
       lastService: { service: index % 3 === 0 ? "Walkway de-icing" : "Lot & drive clearing", when: "Jan " + (2 + (index % 11)) },
-    };
+    }, MONITORED_VISITS[site[0]] || {});
   });
 }
 
@@ -307,7 +318,7 @@ export const graniteRidgeSnowFixture = Object.freeze({
       {
         id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
         x: 26, y: 34, zone: "central",
-        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
+        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", date: "Jan 15", crew: "Marcus H." },
         ticket: null,
         lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
       },
@@ -335,12 +346,26 @@ export const graniteRidgeSnowFixture = Object.freeze({
     ].concat(monitoredProperties()),
     invoices: {
       outstanding: [
-        { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
-        { number: "INV-4498", amount: "$640", due: "Sep 14", state: "SENT" },
-        { number: "INV-4502", amount: "$1,120", due: "Sep 28", state: "SENT" },
-        { number: "INV-4510", amount: "$310", due: "Oct 5", state: "SENT" },
+        { number: "INV-4402", amount: 6240, due: "Oct 31", state: "OVERDUE" },
+        { number: "INV-4417", amount: 4880, due: "Nov 14", state: "OVERDUE" },
+        { number: "INV-4433", amount: 3960, due: "Nov 28", state: "OVERDUE" },
+        { number: "INV-4448", amount: 3410, due: "Dec 12", state: "OVERDUE" },
+        { number: "INV-4459", amount: 2740, due: "Dec 19", state: "OVERDUE" },
+        { number: "INV-4471", amount: 2180, due: "Dec 31", state: "OVERDUE" },
+        { number: "INV-4486", amount: 1440, due: "Jan 9", state: "OVERDUE" },
+        { number: "INV-4498", amount: 2650, due: "Jan 20", state: "DUE_THIS_MONTH" },
+        { number: "INV-4502", amount: 1710, due: "Jan 24", state: "DUE_THIS_MONTH" },
+        { number: "INV-4507", amount: 840, due: "Jan 30", state: "DUE_THIS_MONTH" },
+        { number: "INV-4511", amount: 1290, due: "Feb 14", state: "DUE_LATER" },
+        { number: "INV-4514", amount: 810, due: "Feb 28", state: "DUE_LATER" },
       ],
-      lastPaid: { number: "INV-4460", amount: "$920", paid: "Aug 2" },
+      paidThisMonth: [
+        { number: "INV-4489", amount: 1920, paid: "Jan 12" },
+        { number: "INV-4483", amount: 1340, paid: "Jan 9" },
+        { number: "INV-4477", amount: 1150, paid: "Jan 7" },
+        { number: "INV-4468", amount: 880, paid: "Jan 4" },
+        { number: "INV-4461", amount: 560, paid: "Jan 2" },
+      ],
     },
     contracts: [
       {

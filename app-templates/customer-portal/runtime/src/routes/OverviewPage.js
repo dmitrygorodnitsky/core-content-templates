@@ -3,7 +3,7 @@ import { currentFixture, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
-import { OVERVIEW_STATUS as STATUS, clampFrameIndex, propertyStatus, propertyWeather } from "../normalizers/overview.js";
+import { OVERVIEW_STATUS as STATUS, clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } from "../normalizers/overview.js";
 
 var ICONS = {
   map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
@@ -11,6 +11,7 @@ var ICONS = {
   invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
   contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
   support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
+  alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
   pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
   snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
   live: "M12 11.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z M8.6 8.6a4.8 4.8 0 0 0 0 6.8 M15.4 8.6a4.8 4.8 0 0 1 0 6.8 M6 6a8 8 0 0 0 0 12 M18 6a8 8 0 0 1 0 12",
@@ -60,10 +61,10 @@ export function Overview() {
 
   page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex)]));
   page.appendChild(MapPanel(model, frame, index));
+  page.appendChild(InvoicesWidget(model));
 
   var grid = h("div", { "class": "ov-grid" });
   grid.appendChild(UpcomingWidget(model));
-  grid.appendChild(InvoicesWidget(model));
   grid.appendChild(ContractsWidget(model));
   grid.appendChild(SupportWidget(model));
   page.appendChild(grid);
@@ -125,22 +126,28 @@ function MapPanel(model, frame, index) {
       })),
     ]),
     h("div", { "class": "ov-map__stage" }, [canvas, pins]),
-    DayTimeline(weather, index),
+    DayTimeline(weather, index, model.properties),
   ]);
 }
 
-function DayTimeline(weather, index) {
+function DayTimeline(weather, index, properties) {
   var last = weather.timeline.length - 1;
   var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function (item, position) {
+    var visits = serviceDayCount(properties, item);
     return h("button", {
-      "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : ""),
+      "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : "") + (visits ? " ov-day--service" : ""),
       "data-action": "overview.scrubWeather", "data-id": String(position),
-      "data-weather": item.kind, "aria-label": item.day + " " + item.date + " — " + item.label,
+      "data-weather": item.kind, "data-service": visits ? String(visits) : undefined,
+      "aria-label": item.day + " " + item.date + " — " + item.label + (visits ? " — " + visits + (visits === 1 ? " visit" : " visits") : " — no visit"),
       "aria-pressed": position === index ? "true" : "false",
     }, [
       text("span", "ov-day__name", item.day),
       text("span", "ov-day__date", item.date),
       h("i"),
+      h("span", { "class": "ov-day__svc" }, visits ? [
+        text("b", "", String(visits)),
+        text("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits"),
+      ] : []),
     ]);
   }));
 
@@ -220,49 +227,53 @@ function UpcomingWidget(model) {
 }
 
 function InvoicesWidget(model) {
-  var invoices = model.invoices;
-  var outstanding = invoices.outstanding || [];
-  var card = widget("invoices", "Invoices", "invoice");
+  var buckets = invoiceBuckets(model.invoices);
+  var overdue = buckets.overdue;
+  var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
+    h("div", { "class": "ov-card__head" }, [
+      h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
+      text("h2", "ov-card__title", "Invoices"),
+      h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all ›"),
+    ]),
+  ]);
 
-  if (!outstanding.length) {
-    if (!invoices.lastPaid) {
-      card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
-      return card;
-    }
-    card.appendChild(invoiceRow({
-      number: invoices.lastPaid.number,
-      amount: invoices.lastPaid.amount,
-      meta: "paid " + invoices.lastPaid.paid,
-      state: "PAID",
-    }));
+  if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
+    card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
     return card;
   }
 
-  card.appendChild(lead(totalOf(outstanding), outstanding.length === 1 ? "outstanding" : "across " + outstanding.length + " invoices"));
-  outstanding.slice(0, 3).forEach(function (invoice) {
-    card.appendChild(invoiceRow({
-      number: invoice.number,
-      amount: invoice.amount,
-      meta: invoice.state === "OVERDUE" ? "· overdue since " + invoice.due : "· due " + invoice.due,
-      state: invoice.state,
-    }));
-  });
-  card.appendChild(outstanding.length > 3
-    ? moreLine(outstanding.length - 3, "more outstanding", "overview.openInvoices")
-    : moreLine(null, "View all invoices", "overview.openInvoices"));
+  if (overdue.count) card.appendChild(OverdueAlert(overdue));
+
+  card.appendChild(h("div", { "class": "ov-bill__stats" }, [
+    billStat("Total outstanding", money(buckets.outstanding.amount), buckets.outstanding.count, ""),
+    billStat("Due this month", money(buckets.dueThisMonth.amount), buckets.dueThisMonth.count, ""),
+    billStat("Paid this month", money(buckets.paidThisMonth.amount), buckets.paidThisMonth.count, "ov-bill__stat-value--ok"),
+  ]));
+
+  card.appendChild(moreLine(null, "View all invoices", "overview.openInvoices"));
   return card;
 }
 
-function invoiceRow(invoice) {
-  return h("div", { "class": "ov-row", "data-module": "invoice-row", "data-visual-id": "invoice-row", "data-state": invoice.state.toLowerCase() }, [
-    h("div", { style: "flex:1;min-width:0" }, [
-      h("div", { "class": "ov-row__line" }, [
-        text("span", "ov-row__title", invoice.number),
-        invoice.state === "OVERDUE" ? text("span", "status-badge status-badge--danger", "Overdue") : null,
-      ]),
-      text("div", "ov-row__meta", invoice.amount + " " + invoice.meta),
+function OverdueAlert(overdue) {
+  return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
+    h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
+    h("div", { "class": "ov-alarm__read" }, [
+      text("div", "ov-alarm__eyebrow", "Overdue amount"),
+      text("div", "ov-alarm__amount", money(overdue.amount)),
+      text("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+      text("div", "ov-alarm__warn", "Please make a payment to avoid service interruption."),
     ]),
-    chevron("overview.openInvoice", invoice.number, "Open invoice " + invoice.number),
+    h("div", { "class": "ov-alarm__act" }, [
+      ActionButton({ variant: "btn--danger", label: "View overdue invoices →", action: "overview.openInvoices", visualId: "view-overdue-invoices" }),
+    ]),
+  ]);
+}
+
+function billStat(label, value, count, valueClass) {
+  return h("div", { "class": "ov-bill__stat" }, [
+    text("div", "ov-bill__stat-label", label),
+    text("div", "ov-bill__stat-value " + valueClass, value),
+    text("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices")),
   ]);
 }
 
@@ -350,13 +361,6 @@ function lead(value, label, meta) {
 
 function chevron(action, id, label) {
   return h("button", { "class": "ov-chev", "data-action": action, "data-id": id, "aria-label": label }, "›");
-}
-
-function totalOf(invoices) {
-  var sum = invoices.reduce(function (running, invoice) {
-    return running + Number(String(invoice.amount).replace(/[^0-9.]/g, "")) || running;
-  }, 0);
-  return "$" + sum.toLocaleString("en-US");
 }
 
 function moreLine(count, label, action) {

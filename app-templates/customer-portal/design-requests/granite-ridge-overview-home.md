@@ -36,10 +36,35 @@ None of the following exists in Core today. Each is a separate ask.
 | `overview.properties[].x` / `.y` | position on the map, in percent | placeholder for real coordinates; the map is a drawn surface, not a map provider |
 | `overview.properties[].appointment` | `state`, `service`, `when`, and for scheduled visits `time` and `date` | `IN_PROGRESS` renders the En Route ring |
 | `overview.properties[].ticket` | open ticket, if any | an open ticket outranks the zone forecast and paints the pin red |
-| `overview.invoices` | `outstanding[]` and `lastPaid` | amounts are pre-formatted strings today |
+| `overview.invoices.outstanding[]` | `number`, `amount` (number), `due`, `state` | `state` is `OVERDUE`, `DUE_THIS_MONTH` or `DUE_LATER`; the portal sums and formats, so amounts cannot arrive pre-formatted |
+| `overview.invoices.paidThisMonth[]` | invoices settled in the current billing month | its own bucket, not part of outstanding |
 | `overview.contracts[]` | `number`, `plan` | the description is not shown on this screen |
 | `overview.support[]` | `title`, `status`, `when`, `tone` | `tone` drives the dot and the status colour |
 | `overview.banner` | `title`, `copy`, `action` | tenant copy, not a shared string in the route |
+
+## Overdue is the loudest thing on the page
+
+Asked for by the operators: customers in this business let invoices run, and the
+debt has to nag. The Invoices widget is therefore full width, sits directly
+under the map ahead of everything else, and carries two reds — a red card edge
+around a red-filled alert block with the overdue total at 38px, the invoice
+count, a payment warning and a solid red action.
+
+The widget lists no individual invoices. Three columns carry the whole picture
+— total outstanding, due this month, paid this month — and every figure is
+summed from the invoice rows rather than authored, so the columns cannot drift
+apart. With no overdue invoice the alert block and both reds disappear and the
+card is calm.
+
+## The timeline says which days a visit happens
+
+A weather forecast alone does not tell a customer when someone will actually
+turn up. Each day in the timeline now carries the number of visits booked for
+that date, derived from the properties' appointments, and a day with no visit
+stays deliberately blank.
+
+The timeline stays attached to the map rather than becoming a fifth widget,
+because selecting a day is what repaints the map.
 
 ## What the legend means
 
