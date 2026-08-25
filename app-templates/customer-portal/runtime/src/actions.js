@@ -161,6 +161,7 @@ export var ACTIONS = {
   "overview.openProperty": function ()   { go("proposals.list"); },
   "overview.openProperties": function () { go("proposals.list"); },
   "overview.openAppointments": function () { go("orders.list"); },
+  "overview.openCalendar": function ()   { go("calendar"); },
   "overview.openInvoices": function ()   { go("activity"); },
   "overview.openInvoice": function ()    { go("activity"); },
   "overview.openContracts": function ()  { go("proposals.list"); },

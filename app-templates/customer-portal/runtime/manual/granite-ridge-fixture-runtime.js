@@ -1638,6 +1638,43 @@
   var softWarn = "rgba(255,159,10,.16)";
   var violet = "#7a52e0";
   var softViolet = "rgba(122,82,224,.16)";
+  var MONITORED_SITES = [
+    ["Alkire Street", "Arvada, CO 80005", "north", 13, 24],
+    ["Braun Court", "Golden, CO 80401", "north", 24, 20],
+    ["Coal Creek Lane", "Louisville, CO 80027", "north", 34, 9],
+    ["Dover Way", "Wheat Ridge, CO 80033", "north", 46, 14],
+    ["Eldridge Circle", "Golden, CO 80401", "north", 61, 11],
+    ["Flatiron Parkway", "Broomfield, CO 80021", "north", 79, 16],
+    ["Garrison Green", "Lakewood, CO 80226", "central", 15, 40],
+    ["Holland Street", "Arvada, CO 80005", "central", 33, 44],
+    ["Independence Way", "Lakewood, CO 80228", "central", 58, 38],
+    ["Jellison Place", "Wheat Ridge, CO 80033", "central", 66, 30],
+    ["Kipling Crossing", "Lakewood, CO 80215", "central", 85, 42],
+    ["Lamar Terrace", "Lakewood, CO 80214", "central", 92, 33],
+    ["Marshall Row", "Littleton, CO 80123", "south", 18, 62],
+    ["Newland Yard", "Littleton, CO 80128", "south", 30, 74],
+    ["Owens Court", "Ken Caryl, CO 80127", "south", 55, 80],
+    ["Pierce Landing", "Littleton, CO 80123", "south", 68, 66],
+    ["Quail Ridge", "Ken Caryl, CO 80127", "south", 80, 72],
+    ["Robb Street", "Morrison, CO 80465", "south", 90, 60],
+    ["Saulsbury Bend", "Wheat Ridge, CO 80033", "west", 8, 54],
+    ["Union Ridge", "Lakewood, CO 80228", "west", 40, 56]
+  ];
+  function monitoredProperties() {
+    return MONITORED_SITES.map(function(site, index) {
+      return {
+        id: "prop-monitored-" + (index + 1),
+        name: site[0],
+        address: index * 37 + 210 + " " + site[0] + ", " + site[1],
+        x: site[3],
+        y: site[4],
+        zone: site[2],
+        appointment: null,
+        ticket: null,
+        lastService: { service: index % 3 === 0 ? "Walkway de-icing" : "Lot & drive clearing", when: "Jan " + (2 + index % 11) }
+      };
+    });
+  }
   var graniteRidgeSnowFixture = Object.freeze({
     id: "granite-ridge-snow",
     vertical: "snow",
@@ -1728,7 +1765,7 @@
     customer: {
       firstName: "Dana",
       greeting: "Good morning, Dana",
-      subline: "Storm watch tonight \xB7 3 properties under contract",
+      subline: "Storm watch tonight \xB7 24 properties under contract",
       fullName: "Dana Whitlock",
       phone: "+1 (303) 555-0164",
       email: "dana.whitlock@example.test",
@@ -1809,21 +1846,120 @@
     },
     overview: {
       weather: {
-        nowIndex: 3,
+        nowIndex: 0,
         legend: [
           { key: "clear", label: "Clear" },
           { key: "snow", label: "Snow" },
           { key: "freezing", label: "Freezing rain" },
-          { key: "storm", label: "Storm warning" }
+          { key: "storm", label: "Storm warning" },
+          { key: "issue", label: "Issue opened" }
         ],
         timeline: [
-          { at: "12 AM", temp: "\u22122\xB0C", kind: "clear", label: "Clear", note: "" },
-          { at: "3 AM", temp: "\u22123\xB0C", kind: "clear", label: "Clear", note: "" },
-          { at: "6 AM", temp: "\u22124\xB0C", kind: "snow", label: "Light snow", note: "Below the 2 cm trigger" },
-          { at: "Now", temp: "\u22126\xB0C", kind: "storm", label: "Storm watch", note: "Service likely tonight" },
-          { at: "9 PM", temp: "\u22128\xB0C", kind: "snow", label: "Snowfall 3 cm", note: "Trigger met \xB7 2 visits expected" },
-          { at: "12 AM", temp: "\u22129\xB0C", kind: "freezing", label: "Freezing rain", note: "De-icing expected at Tabor Street" },
-          { at: "6 AM", temp: "\u22125\xB0C", kind: "clear", label: "Clearing", note: "Crews finish routes" }
+          {
+            day: "Today",
+            date: "Jan 15",
+            kind: "storm",
+            temp: "\u22126\xB0C",
+            label: "Storm watch",
+            note: "Service likely tonight",
+            stats: [
+              { label: "Precipitation", value: "70%" },
+              { label: "Wind", value: "18 km/h NW" },
+              { label: "Feels like", value: "\u221210\xB0C" },
+              { label: "Humidity", value: "80%" }
+            ],
+            zones: { north: "storm", central: "storm", south: "snow", west: "clear" }
+          },
+          {
+            day: "Fri",
+            date: "Jan 16",
+            kind: "snow",
+            temp: "\u22128\xB0C",
+            label: "Snowfall 3 cm",
+            note: "Trigger met \xB7 crews dispatch overnight",
+            stats: [
+              { label: "Precipitation", value: "90%" },
+              { label: "Wind", value: "24 km/h NW" },
+              { label: "Feels like", value: "\u221214\xB0C" },
+              { label: "Humidity", value: "86%" }
+            ],
+            zones: { north: "snow", central: "snow", south: "snow", west: "snow" }
+          },
+          {
+            day: "Sat",
+            date: "Jan 17",
+            kind: "freezing",
+            temp: "\u22129\xB0C",
+            label: "Freezing rain",
+            note: "De-icing expected across the north lots",
+            stats: [
+              { label: "Precipitation", value: "60%" },
+              { label: "Wind", value: "12 km/h N" },
+              { label: "Feels like", value: "\u221215\xB0C" },
+              { label: "Humidity", value: "91%" }
+            ],
+            zones: { north: "freezing", central: "freezing", south: "snow", west: "snow" }
+          },
+          {
+            day: "Sun",
+            date: "Jan 18",
+            kind: "snow",
+            temp: "\u22123\xB0C",
+            label: "Light snow",
+            note: "Weather trigger possible after midnight",
+            stats: [
+              { label: "Precipitation", value: "45%" },
+              { label: "Wind", value: "9 km/h W" },
+              { label: "Feels like", value: "\u22127\xB0C" },
+              { label: "Humidity", value: "74%" }
+            ],
+            zones: { north: "snow", central: "clear", south: "snow", west: "clear" }
+          },
+          {
+            day: "Mon",
+            date: "Jan 19",
+            kind: "clear",
+            temp: "\u22121\xB0C",
+            label: "Clearing",
+            note: "Crews finish outstanding routes",
+            stats: [
+              { label: "Precipitation", value: "10%" },
+              { label: "Wind", value: "7 km/h SW" },
+              { label: "Feels like", value: "\u22124\xB0C" },
+              { label: "Humidity", value: "58%" }
+            ],
+            zones: { north: "clear", central: "clear", south: "clear", west: "clear" }
+          },
+          {
+            day: "Tue",
+            date: "Jan 20",
+            kind: "clear",
+            temp: "1\xB0C",
+            label: "Clear",
+            note: "Below the service trigger all day",
+            stats: [
+              { label: "Precipitation", value: "5%" },
+              { label: "Wind", value: "6 km/h S" },
+              { label: "Feels like", value: "\u22121\xB0C" },
+              { label: "Humidity", value: "49%" }
+            ],
+            zones: { north: "clear", central: "clear", south: "clear", west: "clear" }
+          },
+          {
+            day: "Wed",
+            date: "Jan 21",
+            kind: "snow",
+            temp: "\u22124\xB0C",
+            label: "Snow returning",
+            note: "Next storm window opens in the evening",
+            stats: [
+              { label: "Precipitation", value: "55%" },
+              { label: "Wind", value: "15 km/h NW" },
+              { label: "Feels like", value: "\u22129\xB0C" },
+              { label: "Humidity", value: "77%" }
+            ],
+            zones: { north: "snow", central: "snow", south: "clear", west: "snow" }
+          }
         ]
       },
       properties: [
@@ -1833,6 +1969,7 @@
           address: "4820 Foothill Court, Lakewood, CO 80215",
           x: 26,
           y: 34,
+          zone: "central",
           appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
           ticket: null,
           lastService: { service: "Roof snow & ice dam", when: "Jan 12" }
@@ -1843,7 +1980,8 @@
           address: "1190 Tabor Street, Golden, CO 80401",
           x: 52,
           y: 24,
-          appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch" },
+          zone: "north",
+          appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", time: "9:00 AM", date: "Jan 16" },
           ticket: null,
           lastService: { service: "Lot & drive clearing", when: "Jan 5" }
         },
@@ -1853,7 +1991,8 @@
           address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
           x: 72,
           y: 46,
-          appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 30" },
+          zone: "north",
+          appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 18", time: "11:30 AM", date: "Jan 18" },
           ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
           lastService: { service: "Refreeze re-treat", when: "Dec 19" }
         },
@@ -1863,11 +2002,12 @@
           address: "870 Cinnamon Bear Way, Littleton, CO 80127",
           x: 44,
           y: 68,
+          zone: "south",
           appointment: null,
           ticket: null,
           lastService: { service: "Lot & drive clearing", when: "Dec 28" }
         }
-      ],
+      ].concat(monitoredProperties()),
       invoices: {
         outstanding: [
           { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
@@ -1890,11 +2030,16 @@
         }
       ],
       support: [
-        { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today" },
-        { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago" },
-        { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago" },
-        { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday" }
-      ]
+        { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today", tone: "warn" },
+        { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago", tone: "info" },
+        { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago", tone: "warn" },
+        { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday", tone: "danger" }
+      ],
+      banner: {
+        title: "We're monitoring the storm",
+        copy: "Our team is watching conditions closely and will dispatch as needed.",
+        action: "Contact us"
+      }
     },
     stormCalendar: {
       contract: { rule: "Auto-dispatch by weather trigger", note: "Cleared within the 90-minute contracted window" },
@@ -1914,11 +2059,11 @@
         { date: "Today", dateSub: "Jan 15", today: true, weather: { state: "watch", label: "Storm watch \u2014 service likely tonight", temp: "\u22126\xB0C" }, events: [
           { type: "Lot & drive clearing", status: "onroute", time: "ETA 5:40 AM", tech: "Marcus H." }
         ] },
-        { date: "Thu", dateSub: "Jan 16", needsAccess: true, weather: { state: "expected", label: "Snowfall \u2265 2 cm forecast overnight", temp: "\u22128\xB0C" }, events: [
+        { date: "Fri", dateSub: "Jan 16", needsAccess: true, weather: { state: "expected", label: "Snowfall \u2265 2 cm forecast overnight", temp: "\u22128\xB0C" }, events: [
           { type: "Lot & drive clearing", status: "scheduled", trigger: true },
           { type: "Walkway de-icing", status: "scheduled", trigger: true }
         ] },
-        { date: "Sat", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "\u22123\xB0C" }, events: [
+        { date: "Sun", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "\u22123\xB0C" }, events: [
           { type: "Walkway de-icing", status: "delayed", note: "Rescheduled from Fri \u2014 crew capacity" }
         ] }
       ]
@@ -7178,14 +7323,31 @@
     if (appointment && appointment.state === "SCHEDULED") return "scheduled";
     return "monitoring";
   }
+  function propertyWeather(property, frame) {
+    if (propertyStatus(property) === "issue") return "issue";
+    var zones = frame && frame.zones || null;
+    var zone = property && property.zone;
+    if (zones && zone && zones[zone]) return zones[zone];
+    return frame && frame.kind || "clear";
+  }
+  function clampFrameIndex(timeline, index) {
+    var total = timeline && timeline.length || 0;
+    if (!total) return 0;
+    if (index < 0) return 0;
+    if (index > total - 1) return total - 1;
+    return index;
+  }
 
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
   var ICONS = {
-    map: "M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11Z M12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z",
+    map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
     calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
     invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
     contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
-    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4"
+    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
+    pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
+    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
+    live: "M12 11.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z M8.6 8.6a4.8 4.8 0 0 0 0 6.8 M15.4 8.6a4.8 4.8 0 0 1 0 6.8 M6 6a8 8 0 0 0 0 12 M18 6a8 8 0 0 1 0 12"
   };
   function icon(name, className) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -7211,11 +7373,9 @@
     var model = overviewModel();
     var page = h("section", { "class": "page", "data-route": "overview", "data-visual-id": "overview" });
     var customer = currentFixture().customer;
-    page.appendChild(PageHeader({
-      title: customer.greeting,
-      sub: customer.subline
-    }));
+    var header = PageHeader({ title: customer.greeting, sub: customer.subline });
     if (!model) {
+      page.appendChild(header);
       page.appendChild(EmptyState({
         glyph: "\u25CC",
         title: "Nothing to show yet",
@@ -7223,40 +7383,66 @@
       }));
       return page;
     }
-    page.appendChild(MapPanel(model));
+    var weather = model.weather;
+    var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
+    var frame = weather.timeline[index];
+    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex)]));
+    page.appendChild(MapPanel(model, frame, index));
     var grid = h("div", { "class": "ov-grid" });
     grid.appendChild(UpcomingWidget(model));
     grid.appendChild(InvoicesWidget(model));
     grid.appendChild(ContractsWidget(model));
     grid.appendChild(SupportWidget(model));
     page.appendChild(grid);
+    if (model.banner) page.appendChild(Banner(model.banner));
     return page;
   }
-  function MapPanel(model) {
+  function WeatherPanel(frame, isNow) {
+    var stats = frame.stats || [];
+    return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
+      h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
+      h("div", { "class": "ov-wx__read" }, [
+        text7("div", "ov-wx__temp", frame.temp),
+        text7("div", "ov-wx__label", frame.label),
+        text7("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " \xB7 " + frame.note)
+      ]),
+      stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
+        return h("div", { "class": "ov-wx__stat" }, [
+          text7("span", "ov-wx__stat-label", stat.label),
+          text7("span", "ov-wx__stat-value", stat.value)
+        ]);
+      })) : null
+    ]);
+  }
+  function MapPanel(model, frame, index) {
     var weather = model.weather;
-    var index = state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex;
-    var frame = weather.timeline[index] || weather.timeline[weather.nowIndex];
     var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind });
     canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
     canvas.appendChild(h("div", { "class": "ov-map__road" }));
-    canvas.appendChild(text7("span", "ov-map__label", "property map \xB7 " + frame.label + " \xB7 " + frame.temp));
+    canvas.appendChild(h("div", { "class": "ov-map__chip" }, [icon("live", "ov-map__chip-glyph"), text7("span", "", "Real-time conditions")]));
+    var pins = h("div", { "class": "ov-map__pins" });
     model.properties.forEach(function(property) {
       var status = propertyStatus(property);
+      var kind = propertyWeather(property, frame);
       var selected = state.ovProperty === property.id;
-      var pin = h("button", {
-        "class": "ov-pin ov-pin--" + status + (selected ? " ov-pin--on" : ""),
+      pins.appendChild(h("button", {
+        "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
         style: "left:" + property.x + "%;top:" + property.y + "%",
         "data-action": "overview.selectProperty",
         "data-id": property.id,
         "data-module": "property-pin",
         "data-visual-id": "property-pin",
         "data-state": status,
+        "data-weather": kind,
         "aria-label": property.name + " \u2014 " + OVERVIEW_STATUS[status].label,
         "aria-pressed": selected ? "true" : "false"
-      }, [h("i"), text7("span", "ov-pin__name", property.name)]);
-      canvas.appendChild(pin);
+      }, [icon("pin", "ov-pin__glyph")]));
     });
-    var panel = h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
+    var selectedProperty = model.properties.find(function(property) {
+      return property.id === state.ovProperty;
+    });
+    if (selectedProperty) pins.appendChild(PropertyTooltip(selectedProperty, frame));
+    return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
         text7("h2", "ov-card__title", "Your properties"),
@@ -7264,47 +7450,50 @@
           return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text7("span", "", item.label)]);
         }))
       ]),
-      canvas,
-      WeatherTimeline(weather, index)
+      h("div", { "class": "ov-map__stage" }, [canvas, pins]),
+      DayTimeline(weather, index)
     ]);
-    var selectedProperty = model.properties.find(function(property) {
-      return property.id === state.ovProperty;
-    });
-    if (selectedProperty) panel.appendChild(PropertyTooltip(selectedProperty));
-    return panel;
   }
-  function WeatherTimeline(weather, index) {
-    var frame = weather.timeline[index];
-    var wrap = h("div", { "class": "ov-timeline", "data-module": "weather-timeline", "data-visual-id": "weather-timeline" });
-    var track = h("div", { "class": "ov-timeline__track" });
-    weather.timeline.forEach(function(item, position) {
-      track.appendChild(h("button", {
-        "class": "ov-tick" + (position === index ? " ov-tick--on" : "") + (position === weather.nowIndex ? " ov-tick--now" : ""),
+  function DayTimeline(weather, index) {
+    var last = weather.timeline.length - 1;
+    var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function(item, position) {
+      return h("button", {
+        "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : ""),
         "data-action": "overview.scrubWeather",
         "data-id": String(position),
         "data-weather": item.kind,
-        "aria-label": item.at + " \u2014 " + item.label,
+        "aria-label": item.day + " " + item.date + " \u2014 " + item.label,
         "aria-pressed": position === index ? "true" : "false"
-      }, [h("i"), text7("span", "ov-tick__at", item.at)]));
-    });
-    wrap.appendChild(track);
-    wrap.appendChild(h("div", { "class": "ov-timeline__read" }, [
-      text7("span", "ov-timeline__temp", frame.temp),
-      text7("span", "ov-timeline__label", frame.label),
-      frame.note ? text7("span", "ov-timeline__note", frame.note) : null
-    ]));
-    return wrap;
+      }, [
+        text7("span", "ov-day__name", item.day),
+        text7("span", "ov-day__date", item.date),
+        h("i")
+      ]);
+    }));
+    return h("div", { "class": "ov-timeline", "data-module": "weather-timeline", "data-visual-id": "weather-timeline" }, [
+      stepButton("\u2039", "Previous day", index - 1, index === 0),
+      track,
+      stepButton("\u203A", "Next day", index + 1, index === last)
+    ]);
   }
-  function PropertyTooltip(property) {
+  function stepButton(glyph, label, target, disabled) {
+    return h("button", {
+      "class": "ov-step",
+      "data-action": disabled ? void 0 : "overview.scrubWeather",
+      "data-id": String(target),
+      "aria-label": label,
+      disabled: disabled ? "disabled" : void 0
+    }, glyph);
+  }
+  function PropertyTooltip(property, frame) {
     var status = propertyStatus(property);
     var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
-    var rows = [];
-    if (active) {
-      rows.push(detailRow("Active Service", active.service + " \xB7 " + active.when));
-    } else if (property.lastService) {
-      rows.push(detailRow("Last Service", property.lastService.service + " \xB7 " + property.lastService.when));
-    }
-    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, role: "dialog", "aria-label": property.name }, [
+    var next = property.appointment && property.appointment.state === "SCHEDULED" ? property.appointment : null;
+    var line = active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
+    var above = property.y > 55;
+    var top = above ? "calc(" + property.y + "% - 194px)" : "calc(" + property.y + "% + 12px)";
+    var place = "left:clamp(0px, calc(" + property.x + "% - 144px), calc(100% - 288px));top:clamp(8px, " + top + ", calc(100% - 168px))";
+    return h("div", { "class": "ov-tip", style: place, "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, "data-place": above ? "above" : "below", role: "dialog", "aria-label": property.name }, [
       h("div", { "class": "ov-tip__head" }, [
         h("div", { style: "flex:1;min-width:0" }, [
           text7("div", "ov-tip__name", property.name),
@@ -7312,44 +7501,44 @@
         ]),
         h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
       ]),
-      h("div", { "class": "ov-tip__status ov-tip__status--" + status }, [
-        h("i"),
-        h("div", null, [
-          text7("div", "ov-tip__status-label", OVERVIEW_STATUS[status].label),
-          text7("div", "ov-tip__status-copy", OVERVIEW_STATUS[status].copy)
-        ])
+      h("div", { "class": "ov-tip__tags" }, [
+        text7("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label),
+        text7("span", "ov-tip__tag ov-tip__tag--wx", frame.day + " \xB7 " + frame.temp)
       ]),
-      h("div", { "class": "ov-tip__rows" }, rows),
-      h("div", { "class": "ov-tip__actions" }, [
-        ActionButton({ variant: "btn--primary", label: "Property Details", action: "overview.openProperty", id: property.id, visualId: "property-details" }),
-        ActionButton({ variant: "btn--ghost", label: "Go to Properties", action: "overview.openProperties", visualId: "go-to-properties" })
-      ])
+      line ? text7("div", "ov-tip__line", line) : null,
+      h("div", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
     ]);
   }
   function UpcomingWidget(model) {
     var scheduled = model.properties.filter(function(property) {
       return property.appointment && property.appointment.state === "SCHEDULED";
     });
-    var card = widget("upcoming-services", "Upcoming services", "Appointments", "overview.openAppointments", "calendar");
+    var card = widget("upcoming-services", "Upcoming services", "calendar");
     if (!scheduled.length) {
       card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
       return card;
     }
-    card.appendChild(lead(String(scheduled.length), scheduled.length === 1 ? "scheduled appointment" : "scheduled appointments"));
-    scheduled.forEach(function(property) {
-      card.appendChild(h("div", { "class": "ov-row", "data-module": "upcoming-row" }, [
+    card.appendChild(lead(String(scheduled.length), scheduled.length === 1 ? "scheduled appointment" : "scheduled appointments", scheduled[0].appointment.when));
+    scheduled.slice(0, 3).forEach(function(property) {
+      var appointment = property.appointment;
+      card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
+        appointment.time ? text7("span", "ov-slot__time", appointment.time) : null,
+        h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
         h("div", { style: "flex:1;min-width:0" }, [
-          text7("div", "ov-row__title", property.appointment.service),
-          text7("div", "ov-row__meta", property.appointment.when + " \xB7 " + property.name)
+          text7("div", "ov-row__title", property.name),
+          text7("div", "ov-row__meta", (appointment.date ? appointment.date + " \xB7 " : "") + appointment.service)
         ])
       ]));
     });
+    card.appendChild(h("div", { "class": "ov-foot" }, [
+      ActionButton({ variant: "btn--ghost", label: "View full calendar", action: "overview.openCalendar", visualId: "view-full-calendar" })
+    ]));
     return card;
   }
   function InvoicesWidget(model) {
     var invoices = model.invoices;
     var outstanding = invoices.outstanding || [];
-    var card = widget("invoices", "Invoices", "Invoices", "overview.openInvoices", "invoice");
+    var card = widget("invoices", "Invoices", "invoice");
     if (!outstanding.length) {
       if (!invoices.lastPaid) {
         card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
@@ -7368,44 +7557,48 @@
       card.appendChild(invoiceRow({
         number: invoice.number,
         amount: invoice.amount,
-        meta: invoice.state === "OVERDUE" ? "overdue since " + invoice.due : "due " + invoice.due,
+        meta: invoice.state === "OVERDUE" ? "\xB7 overdue since " + invoice.due : "\xB7 due " + invoice.due,
         state: invoice.state
       }));
     });
-    if (outstanding.length > 3) card.appendChild(moreLine(outstanding.length - 3, "more outstanding", "overview.openInvoices"));
+    card.appendChild(outstanding.length > 3 ? moreLine(outstanding.length - 3, "more outstanding", "overview.openInvoices") : moreLine(null, "View all invoices", "overview.openInvoices"));
     return card;
   }
   function invoiceRow(invoice) {
     return h("div", { "class": "ov-row", "data-module": "invoice-row", "data-visual-id": "invoice-row", "data-state": invoice.state.toLowerCase() }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text7("div", "ov-row__title", "Invoice " + invoice.number),
+        h("div", { "class": "ov-row__line" }, [
+          text7("span", "ov-row__title", invoice.number),
+          invoice.state === "OVERDUE" ? text7("span", "status-badge status-badge--danger", "Overdue") : null
+        ]),
         text7("div", "ov-row__meta", invoice.amount + " " + invoice.meta)
       ]),
-      invoice.state === "OVERDUE" ? text7("span", "status-badge status-badge--danger", "Overdue") : null,
-      h("div", { "class": "link-action", "data-action": "overview.openInvoice", "data-id": invoice.number }, "View invoice \u203A")
+      chevron("overview.openInvoice", invoice.number, "Open invoice " + invoice.number)
     ]);
   }
   function ContractsWidget(model) {
     var contracts = model.contracts || [];
-    var card = widget("active-contracts", "Active contracts", "Contracts", "overview.openContracts", "contract");
+    var card = widget("active-contracts", "Active contracts", "contract");
     if (!contracts.length) {
       card.appendChild(emptyLine("No active contracts", "A contract appears here once a quote is approved."));
       return card;
     }
     card.appendChild(lead(String(contracts.length), contracts.length === 1 ? "active contract" : "active contracts"));
     contracts.slice(0, 3).forEach(function(contract) {
-      card.appendChild(h("div", { "class": "ov-contract", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
-        text7("div", "ov-row__title", "Contract #" + contract.number),
-        text7("div", "ov-contract__plan", contract.plan),
-        text7("div", "ov-contract__desc", contract.description)
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text7("div", "ov-row__title", "Contract #" + contract.number),
+          text7("div", "ov-row__meta", contract.plan)
+        ]),
+        text7("span", "status-badge status-badge--ok", "Active")
       ]));
     });
-    if (contracts.length > 3) card.appendChild(moreLine(contracts.length - 3, "more contracts", "overview.openContracts"));
+    card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
     return card;
   }
   function SupportWidget(model) {
     var requests = model.support || [];
-    var card = widget("support-requests", "Support requests", "Support", "overview.openSupport", "support");
+    var card = widget("support-requests", "Support requests", "support");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
         text7("div", "ov-empty__title", "No open requests"),
@@ -7415,31 +7608,51 @@
       return card;
     }
     card.appendChild(lead(String(requests.length), requests.length === 1 ? "open request" : "open requests"));
-    requests.slice(0, 2).forEach(function(request) {
-      card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row" }, [
+    requests.slice(0, 2).forEach(function(request, position) {
+      card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row", "data-tone": request.tone || "info" }, [
+        h("i", { "class": "ov-dot" }),
         h("div", { style: "flex:1;min-width:0" }, [
           text7("div", "ov-row__title", request.title),
-          text7("div", "ov-row__meta", request.status + " \xB7 " + request.when)
-        ])
+          h("div", { "class": "ov-row__meta" }, [
+            text7("span", "ov-row__status", request.status),
+            text7("span", "", " \xB7 " + request.when)
+          ])
+        ]),
+        chevron("overview.openSupport", String(position), "Open " + request.title)
       ]));
     });
-    if (requests.length > 2) card.appendChild(moreLine(requests.length - 2, "more open requests", "overview.openSupport"));
+    card.appendChild(requests.length > 2 ? moreLine(requests.length - 2, "more open requests", "overview.openSupport") : moreLine(null, "View all requests", "overview.openSupport"));
     return card;
   }
-  function widget(id, title, linkLabel, action, iconName) {
+  function Banner(banner) {
+    return h("div", { "class": "card card--pad ov-banner", "data-module": "storm-banner", "data-visual-id": "storm-banner" }, [
+      h("span", { "class": "ov-banner__mark" }, [icon("snowflake", "ov-icon")]),
+      h("div", { style: "flex:1;min-width:0" }, [
+        text7("div", "ov-banner__title", banner.title),
+        text7("div", "ov-banner__copy", banner.copy)
+      ]),
+      ActionButton({ variant: "btn--ghost", label: banner.action, action: "overview.newRequest", visualId: "storm-banner-cta" })
+    ]);
+  }
+  function widget(id, title, iconName) {
     return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
-        text7("h2", "ov-card__title", title),
-        h("div", { "class": "link-action", "data-action": action }, linkLabel + " \u203A")
+        text7("h2", "ov-card__title", title)
       ])
     ]);
   }
-  function lead(value, label) {
+  function lead(value, label, meta) {
     return h("div", { "class": "ov-lead" }, [
-      text7("span", "ov-lead__value", value),
-      text7("span", "ov-lead__label", label)
+      h("div", { "class": "ov-lead__main" }, [
+        text7("span", "ov-lead__value", value),
+        text7("span", "ov-lead__label", label)
+      ]),
+      meta ? text7("div", "ov-lead__meta", meta) : null
     ]);
+  }
+  function chevron(action, id, label) {
+    return h("button", { "class": "ov-chev", "data-action": action, "data-id": id, "aria-label": label }, "\u203A");
   }
   function totalOf(invoices) {
     var sum = invoices.reduce(function(running, invoice) {
@@ -7448,18 +7661,12 @@
     return "$" + sum.toLocaleString("en-US");
   }
   function moreLine(count, label, action) {
-    return h("div", { "class": "link-action ov-more", "data-action": action }, String(count) + " " + label + " \u203A");
+    return h("div", { "class": "link-action ov-more", "data-action": action }, (count == null ? label : String(count) + " " + label) + " \u203A");
   }
   function emptyLine(title, desc) {
     return h("div", { "class": "ov-empty", "data-state": "empty" }, [
       text7("div", "ov-empty__title", title),
       text7("div", "ov-empty__desc", desc)
-    ]);
-  }
-  function detailRow(label, value) {
-    return h("div", { "class": "ov-tip__row" }, [
-      text7("span", "ov-tip__row-label", label),
-      text7("span", "ov-tip__row-value", value)
     ]);
   }
   function text7(tag, className, value) {
@@ -10369,7 +10576,7 @@
       spaVisitModeLabel(mode, F.spa.modeLabels)
     ]);
   }
-  function detailRow2(label, val) {
+  function detailRow(label, val) {
     return h("div", { "class": "appt-details__row" }, [
       h("div", { "class": "appt-details__label" }, label),
       h("div", { "class": "appt-details__val" }, val)
@@ -10424,12 +10631,12 @@
       ])
     ]);
     var details = h("div", { "class": "appt-details", "data-visual-id": "visit-details" });
-    details.appendChild(detailRow2("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
+    details.appendChild(detailRow("Where", h("span", { "data-bind": "appointment.visitMode,appointment.location" }, [
       h("b", null, spaVisitModeLabel(a.visitMode, F.spa.modeLabels)),
       a.location ? " \xB7 " + a.location : h("span", { style: "color:var(--ink-3)" }, " \xB7 location details not provided yet")
     ])));
-    details.appendChild(detailRow2("With", a.specialist ? h("b", { "data-bind": "appointment.specialist" }, a.specialist) : h("span", { style: "color:var(--ink-3)", "data-bind": "appointment.specialist" }, "No specialist assigned yet")));
-    if (a.displayPrice) details.appendChild(detailRow2("Price", h("span", { "data-bind": "appointment.displayPrice" }, [h("b", null, a.displayPrice), " \xB7 as booked"])));
+    details.appendChild(detailRow("With", a.specialist ? h("b", { "data-bind": "appointment.specialist" }, a.specialist) : h("span", { style: "color:var(--ink-3)", "data-bind": "appointment.specialist" }, "No specialist assigned yet")));
+    if (a.displayPrice) details.appendChild(detailRow("Price", h("span", { "data-bind": "appointment.displayPrice" }, [h("b", null, a.displayPrice), " \xB7 as booked"])));
     hero.appendChild(h("div", { style: "font-size:12px;font-weight:650;color:var(--ink-3);margin-top:14px;letter-spacing:.04em;text-transform:uppercase" }, "Visit details"));
     hero.appendChild(details);
     hero.appendChild(h("div", { "class": "appt-hero__ref", "data-bind": "appointment.reference" }, [
@@ -12747,6 +12954,9 @@
     },
     "overview.openAppointments": function() {
       go("orders.list");
+    },
+    "overview.openCalendar": function() {
+      go("calendar");
     },
     "overview.openInvoices": function() {
       go("activity");

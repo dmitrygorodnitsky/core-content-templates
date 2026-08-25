@@ -27,3 +27,19 @@ export function propertyStatus(property) {
   if (appointment && appointment.state === "SCHEDULED") return "scheduled";
   return "monitoring";
 }
+
+export function propertyWeather(property, frame) {
+  if (propertyStatus(property) === "issue") return "issue";
+  var zones = (frame && frame.zones) || null;
+  var zone = property && property.zone;
+  if (zones && zone && zones[zone]) return zones[zone];
+  return (frame && frame.kind) || "clear";
+}
+
+export function clampFrameIndex(timeline, index) {
+  var total = (timeline && timeline.length) || 0;
+  if (!total) return 0;
+  if (index < 0) return 0;
+  if (index > total - 1) return total - 1;
+  return index;
+}

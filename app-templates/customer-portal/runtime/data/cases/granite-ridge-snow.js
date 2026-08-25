@@ -7,6 +7,43 @@ const softWarn = "rgba(255,159,10,.16)";
 const violet = "#7a52e0";
 const softViolet = "rgba(122,82,224,.16)";
 
+const MONITORED_SITES = [
+  ["Alkire Street", "Arvada, CO 80005", "north", 13, 24],
+  ["Braun Court", "Golden, CO 80401", "north", 24, 20],
+  ["Coal Creek Lane", "Louisville, CO 80027", "north", 34, 9],
+  ["Dover Way", "Wheat Ridge, CO 80033", "north", 46, 14],
+  ["Eldridge Circle", "Golden, CO 80401", "north", 61, 11],
+  ["Flatiron Parkway", "Broomfield, CO 80021", "north", 79, 16],
+  ["Garrison Green", "Lakewood, CO 80226", "central", 15, 40],
+  ["Holland Street", "Arvada, CO 80005", "central", 33, 44],
+  ["Independence Way", "Lakewood, CO 80228", "central", 58, 38],
+  ["Jellison Place", "Wheat Ridge, CO 80033", "central", 66, 30],
+  ["Kipling Crossing", "Lakewood, CO 80215", "central", 85, 42],
+  ["Lamar Terrace", "Lakewood, CO 80214", "central", 92, 33],
+  ["Marshall Row", "Littleton, CO 80123", "south", 18, 62],
+  ["Newland Yard", "Littleton, CO 80128", "south", 30, 74],
+  ["Owens Court", "Ken Caryl, CO 80127", "south", 55, 80],
+  ["Pierce Landing", "Littleton, CO 80123", "south", 68, 66],
+  ["Quail Ridge", "Ken Caryl, CO 80127", "south", 80, 72],
+  ["Robb Street", "Morrison, CO 80465", "south", 90, 60],
+  ["Saulsbury Bend", "Wheat Ridge, CO 80033", "west", 8, 54],
+  ["Union Ridge", "Lakewood, CO 80228", "west", 40, 56],
+];
+
+function monitoredProperties() {
+  return MONITORED_SITES.map(function (site, index) {
+    return {
+      id: "prop-monitored-" + (index + 1),
+      name: site[0],
+      address: (index * 37 + 210) + " " + site[0] + ", " + site[1],
+      x: site[3], y: site[4], zone: site[2],
+      appointment: null,
+      ticket: null,
+      lastService: { service: index % 3 === 0 ? "Walkway de-icing" : "Lot & drive clearing", when: "Jan " + (2 + (index % 11)) },
+    };
+  });
+}
+
 export const graniteRidgeSnowFixture = Object.freeze({
   id: "granite-ridge-snow",
   vertical: "snow",
@@ -97,7 +134,7 @@ export const graniteRidgeSnowFixture = Object.freeze({
   customer: {
     firstName: "Dana",
     greeting: "Good morning, Dana",
-    subline: "Storm watch tonight · 3 properties under contract",
+    subline: "Storm watch tonight · 24 properties under contract",
     fullName: "Dana Whitlock",
     phone: "+1 (303) 555-0164",
     email: "dana.whitlock@example.test",
@@ -178,53 +215,124 @@ export const graniteRidgeSnowFixture = Object.freeze({
   },
   overview: {
     weather: {
-      nowIndex: 3,
+      nowIndex: 0,
       legend: [
         { key: "clear", label: "Clear" },
         { key: "snow", label: "Snow" },
         { key: "freezing", label: "Freezing rain" },
         { key: "storm", label: "Storm warning" },
+        { key: "issue", label: "Issue opened" },
       ],
       timeline: [
-        { at: "12 AM", temp: "−2°C", kind: "clear", label: "Clear", note: "" },
-        { at: "3 AM", temp: "−3°C", kind: "clear", label: "Clear", note: "" },
-        { at: "6 AM", temp: "−4°C", kind: "snow", label: "Light snow", note: "Below the 2 cm trigger" },
-        { at: "Now", temp: "−6°C", kind: "storm", label: "Storm watch", note: "Service likely tonight" },
-        { at: "9 PM", temp: "−8°C", kind: "snow", label: "Snowfall 3 cm", note: "Trigger met · 2 visits expected" },
-        { at: "12 AM", temp: "−9°C", kind: "freezing", label: "Freezing rain", note: "De-icing expected at Tabor Street" },
-        { at: "6 AM", temp: "−5°C", kind: "clear", label: "Clearing", note: "Crews finish routes" },
+        {
+          day: "Today", date: "Jan 15", kind: "storm", temp: "−6°C",
+          label: "Storm watch", note: "Service likely tonight",
+          stats: [
+            { label: "Precipitation", value: "70%" },
+            { label: "Wind", value: "18 km/h NW" },
+            { label: "Feels like", value: "−10°C" },
+            { label: "Humidity", value: "80%" },
+          ],
+          zones: { north: "storm", central: "storm", south: "snow", west: "clear" },
+        },
+        {
+          day: "Fri", date: "Jan 16", kind: "snow", temp: "−8°C",
+          label: "Snowfall 3 cm", note: "Trigger met · crews dispatch overnight",
+          stats: [
+            { label: "Precipitation", value: "90%" },
+            { label: "Wind", value: "24 km/h NW" },
+            { label: "Feels like", value: "−14°C" },
+            { label: "Humidity", value: "86%" },
+          ],
+          zones: { north: "snow", central: "snow", south: "snow", west: "snow" },
+        },
+        {
+          day: "Sat", date: "Jan 17", kind: "freezing", temp: "−9°C",
+          label: "Freezing rain", note: "De-icing expected across the north lots",
+          stats: [
+            { label: "Precipitation", value: "60%" },
+            { label: "Wind", value: "12 km/h N" },
+            { label: "Feels like", value: "−15°C" },
+            { label: "Humidity", value: "91%" },
+          ],
+          zones: { north: "freezing", central: "freezing", south: "snow", west: "snow" },
+        },
+        {
+          day: "Sun", date: "Jan 18", kind: "snow", temp: "−3°C",
+          label: "Light snow", note: "Weather trigger possible after midnight",
+          stats: [
+            { label: "Precipitation", value: "45%" },
+            { label: "Wind", value: "9 km/h W" },
+            { label: "Feels like", value: "−7°C" },
+            { label: "Humidity", value: "74%" },
+          ],
+          zones: { north: "snow", central: "clear", south: "snow", west: "clear" },
+        },
+        {
+          day: "Mon", date: "Jan 19", kind: "clear", temp: "−1°C",
+          label: "Clearing", note: "Crews finish outstanding routes",
+          stats: [
+            { label: "Precipitation", value: "10%" },
+            { label: "Wind", value: "7 km/h SW" },
+            { label: "Feels like", value: "−4°C" },
+            { label: "Humidity", value: "58%" },
+          ],
+          zones: { north: "clear", central: "clear", south: "clear", west: "clear" },
+        },
+        {
+          day: "Tue", date: "Jan 20", kind: "clear", temp: "1°C",
+          label: "Clear", note: "Below the service trigger all day",
+          stats: [
+            { label: "Precipitation", value: "5%" },
+            { label: "Wind", value: "6 km/h S" },
+            { label: "Feels like", value: "−1°C" },
+            { label: "Humidity", value: "49%" },
+          ],
+          zones: { north: "clear", central: "clear", south: "clear", west: "clear" },
+        },
+        {
+          day: "Wed", date: "Jan 21", kind: "snow", temp: "−4°C",
+          label: "Snow returning", note: "Next storm window opens in the evening",
+          stats: [
+            { label: "Precipitation", value: "55%" },
+            { label: "Wind", value: "15 km/h NW" },
+            { label: "Feels like", value: "−9°C" },
+            { label: "Humidity", value: "77%" },
+          ],
+          zones: { north: "snow", central: "snow", south: "clear", west: "snow" },
+        },
       ],
     },
     properties: [
       {
         id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
-        x: 26, y: 34,
+        x: 26, y: 34, zone: "central",
         appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", crew: "Marcus H." },
         ticket: null,
         lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
       },
       {
         id: "prop-tabor", name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
-        x: 52, y: 24,
-        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch" },
+        x: 52, y: 24, zone: "north",
+        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "9:00 AM", date: "Jan 16" },
         ticket: null,
         lastService: { service: "Lot & drive clearing", when: "Jan 5" },
       },
       {
         id: "prop-yarrow", name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
-        x: 72, y: 46,
-        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 30" },
+        x: 72, y: 46, zone: "north",
+        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 18", time: "11:30 AM", date: "Jan 18" },
         ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
         lastService: { service: "Refreeze re-treat", when: "Dec 19" },
       },
       {
         id: "prop-cinnamon", name: "Cinnamon Bear Way", address: "870 Cinnamon Bear Way, Littleton, CO 80127",
-        x: 44, y: 68,
+        x: 44, y: 68, zone: "south",
         appointment: null,
         ticket: null,
         lastService: { service: "Lot & drive clearing", when: "Dec 28" },
       },
-    ],
+    ].concat(monitoredProperties()),
     invoices: {
       outstanding: [
         { number: "INV-4471", amount: "$1,840", due: "Aug 31", state: "OVERDUE" },
@@ -245,11 +353,16 @@ export const graniteRidgeSnowFixture = Object.freeze({
       },
     ],
     support: [
-      { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today" },
-      { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago" },
-      { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago" },
-      { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday" },
+      { title: "Snow not cleared near entrance", status: "In Review", when: "Opened today", tone: "warn" },
+      { title: "Salting needed in parking area", status: "Scheduled", when: "Updated 1h ago", tone: "info" },
+      { title: "Gate code changed for the north lot", status: "In Review", when: "Updated 3h ago", tone: "warn" },
+      { title: "Invoice question on INV-4471", status: "Escalated", when: "Opened yesterday", tone: "danger" },
     ],
+    banner: {
+      title: "We're monitoring the storm",
+      copy: "Our team is watching conditions closely and will dispatch as needed.",
+      action: "Contact us",
+    },
   },
   stormCalendar: {
     contract: { rule: "Auto-dispatch by weather trigger", note: "Cleared within the 90-minute contracted window" },
@@ -269,11 +382,11 @@ export const graniteRidgeSnowFixture = Object.freeze({
       { date: "Today", dateSub: "Jan 15", today: true, weather: { state: "watch", label: "Storm watch — service likely tonight", temp: "−6°C" }, events: [
         { type: "Lot & drive clearing", status: "onroute", time: "ETA 5:40 AM", tech: "Marcus H." },
       ] },
-      { date: "Thu", dateSub: "Jan 16", needsAccess: true, weather: { state: "expected", label: "Snowfall ≥ 2 cm forecast overnight", temp: "−8°C" }, events: [
+      { date: "Fri", dateSub: "Jan 16", needsAccess: true, weather: { state: "expected", label: "Snowfall ≥ 2 cm forecast overnight", temp: "−8°C" }, events: [
         { type: "Lot & drive clearing", status: "scheduled", trigger: true },
         { type: "Walkway de-icing", status: "scheduled", trigger: true },
       ] },
-      { date: "Sat", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "−3°C" }, events: [
+      { date: "Sun", dateSub: "Jan 18", weather: { state: "expected", label: "Weather trigger possible", temp: "−3°C" }, events: [
         { type: "Walkway de-icing", status: "delayed", note: "Rescheduled from Fri — crew capacity" },
       ] },
     ],

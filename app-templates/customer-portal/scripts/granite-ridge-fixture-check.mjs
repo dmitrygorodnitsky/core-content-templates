@@ -20,7 +20,7 @@ const {
   proposalStatusMeta,
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
-const { propertyStatus } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
+const { clampFrameIndex, propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 
 function root(dataset) { return { dataset }; }
 
@@ -97,26 +97,55 @@ assert.ok(foothill.monthly > 0 && foothill.seasonLock > 0);
 
 const overview = fixtureAdapter.load("overview", context).overview;
 assert.ok(overview, "the snow tenant must carry overview data");
-assert.equal(overview.properties.length, 4);
+assert.equal(overview.properties.length, 24, "the map is only worth designing at portfolio density");
 assert.deepEqual(
-  plainValue(overview.properties.map((property) => propertyStatus(property))),
+  plainValue(overview.properties.slice(0, 4).map((property) => propertyStatus(property))),
   ["enroute", "scheduled", "issue", "monitoring"],
   "every derived property status must be exercised by the fixture",
+);
+assert.deepEqual(
+  plainValue([...new Set(overview.properties.map((property) => propertyStatus(property)))].sort()),
+  ["enroute", "issue", "monitoring", "scheduled"],
 );
 const yarrow = overview.properties.find((property) => property.id === "prop-yarrow");
 assert.equal(yarrow.appointment.state, "SCHEDULED");
 assert.equal(propertyStatus(yarrow), "issue", "an open ticket outranks a scheduled appointment");
+assert.ok(overview.banner && overview.banner.title && overview.banner.copy && overview.banner.action);
 assert.equal(overview.invoices.outstanding.length, 4, "more than three outstanding invoices proves the overflow line");
 assert.equal(overview.invoices.outstanding.filter((invoice) => invoice.state === "OVERDUE").length, 1);
 assert.ok(overview.invoices.lastPaid, "a last paid invoice backs the no-outstanding state");
 assert.equal(overview.support.length, 4, "more than two requests proves the overflow line");
-assert.equal(overview.weather.timeline.length, 7);
+assert.equal(overview.weather.timeline.length, 7, "the timeline spans a week of days, not a day of hours");
 assert.ok(overview.weather.timeline[overview.weather.nowIndex], "nowIndex must point at a real frame");
 assert.deepEqual(
   plainValue([...new Set(overview.weather.timeline.map((frame) => frame.kind))].sort()),
   ["clear", "freezing", "snow", "storm"],
   "the timeline must exercise every weather kind in the legend",
 );
+assert.equal(overview.weather.timeline[0].day, "Today");
+for (const frame of overview.weather.timeline) {
+  assert.ok(frame.day && frame.date, "every frame names a day and a date");
+  assert.equal(frame.at, undefined, "hourly frames must not survive alongside the day timeline");
+  assert.equal(frame.stats.length, 4, "the header panel reads four measures per day");
+  assert.ok(frame.zones && Object.keys(frame.zones).length, "pins take their colour from the zone forecast");
+}
+const zones = new Set(overview.properties.map((property) => property.zone));
+for (const frame of overview.weather.timeline) {
+  for (const zone of zones) assert.ok(frame.zones[zone], `frame ${frame.date} must forecast zone ${zone}`);
+}
+assert.deepEqual(
+  plainValue(overview.weather.legend.map((item) => item.key)),
+  ["clear", "snow", "freezing", "storm", "issue"],
+  "the legend must name every colour a pin can take",
+);
+const stormFrame = overview.weather.timeline[0];
+assert.equal(propertyWeather(yarrow, stormFrame), "issue", "an open ticket outranks the zone forecast on the map");
+assert.equal(
+  propertyWeather(overview.properties.find((property) => property.id === "prop-cinnamon"), stormFrame),
+  stormFrame.zones.south,
+);
+assert.equal(clampFrameIndex(overview.weather.timeline, 99), 6);
+assert.equal(clampFrameIndex(overview.weather.timeline, -3), 0);
 
 const careRaw = await createCareFixtureAdapter().load("care", context);
 const care = normalizeCare(careRaw);
