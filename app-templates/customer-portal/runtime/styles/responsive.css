@@ -220,7 +220,7 @@
 
 .vw-mobile .ov-wx__stats { padding-left: 0; border-left: 0; width: 100%; }
 
-.vw-mobile .ov-map__canvas { height: 260px; }
+.vw-mobile .ov-map__canvas[data-surface="drawn"] { height: 260px; }
 
 .vw-mobile .ov-map__pins .ov-tip { position: absolute; left: 8px !important; right: 8px; width: auto; top: auto !important; bottom: 8px; transform: none !important; }
 

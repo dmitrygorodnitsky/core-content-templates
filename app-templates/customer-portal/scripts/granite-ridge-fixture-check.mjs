@@ -21,6 +21,7 @@ const {
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
 const { clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
+const { projectPoint, withinFrame } = await import(new URL("src/normalizers/map-image.js", runtimeRoot));
 
 function root(dataset) { return { dataset }; }
 
@@ -175,6 +176,19 @@ assert.ok(
   overview.weather.zoneCentroids && Object.keys(overview.weather.zoneCentroids).length,
   "every zone needs a centroid before a forecast can be asked for it",
 );
+
+const geo = overview.map;
+assert.ok(geo && geo.center && geo.size && Number.isFinite(geo.zoom), "the map needs a frame before a pin can be placed on it");
+for (const property of overview.properties) {
+  assert.ok(Number.isFinite(property.lat) && Number.isFinite(property.lon), `${property.name} has no coordinate`);
+  assert.equal(property.x, undefined, "a pin is placed by projecting its coordinate, not by an authored percentage");
+  assert.ok(
+    withinFrame(projectPoint(property.lat, property.lon, geo)),
+    `${property.name} falls outside the map frame, so its pin would be invisible`,
+  );
+}
+const centre = projectPoint(geo.center.lat, geo.center.lon, geo);
+assert.ok(Math.abs(centre.x - 50) < 0.01 && Math.abs(centre.y - 50) < 0.01);
 for (const zone of zones) {
   const point = overview.weather.zoneCentroids[zone];
   assert.ok(point && Number.isFinite(point.lat) && Number.isFinite(point.lon), `zone ${zone} has no forecastable point`);

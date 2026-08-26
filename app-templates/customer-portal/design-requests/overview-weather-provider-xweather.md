@@ -113,9 +113,21 @@ say it "requires an active Xweather Weather API and Maps subscription", while
 the Raster Maps guide points free developer accounts at the same product.
 Raster tiles are the safe assumption for a demo.
 
-Xweather does not publish per-product access multipliers. One figure surfaced
-outside the pricing pages — a five-minute unlimited MapsGL session costing 150
-accesses — and it needs confirming with their sales before anyone sizes this.
+Xweather does not publish per-product access multipliers, but **the API reports
+them per response**. Every map answer carries `x-cost-tokens`, `x-cost-tiles`
+and `x-cost-layer-count`, and the arithmetic is simply tiles × layers:
+
+| request | tiles | layers | tokens |
+| --- | --- | --- | --- |
+| one 256×256 tile, 2 layers | 1 | 2 | 2 |
+| 700×360 static image, 3 layers | 6 | 3 | 18 |
+| 1040×560 static image, 6 layers | 10 | 6 | 60 |
+
+So the map this screen ships — 1040×560 across six base layers — costs 60
+accesses a view, against four for the forecasts. On the free tier that is about
+250 views a month, and it is the map, not the data, that sets the budget.
+Dropping to three base layers halves it. This answers the question below that
+was going to be put to their sales team.
 
 What is already decided in our favour: the map takes its pin colours from
 `timeline[].zones`, one forecast per service zone, not one per property. At the
@@ -131,11 +143,13 @@ Still unpriced and worth pinning down before committing:
 
 ## What we do not have yet
 
-- **Coordinates.** Properties carry `x`/`y` percentages for the drawn map.
-  Forecasts are per lat/lon. The addresses need geocoding — and the cheapest
-  moment to do that is at capture: the form's `PROPERTY_ADDRESS` field already
+- ~~Coordinates.~~ Done. Every property now carries a real `lat`/`lon`,
+  geocoded from its postal code through Xweather's own `/places/postalcodes`
+  endpoint, and its pin is placed by projecting that coordinate onto the map
+  image rather than by an authored percentage. In production the cheapest
+  moment to geocode is at capture: the form's `PROPERTY_ADDRESS` field already
   runs Google Places autocomplete, which returns a lat/lng with the selected
-  place. Storing it then avoids a geocoding pass later.
+  place.
 - **Zone definitions.** `north` / `central` / `south` / `west` are fixture
   labels. A real zone needs a centroid to forecast against, and a rule for
   assigning a property to one.
@@ -146,16 +160,25 @@ Still unpriced and worth pinning down before committing:
   serves this to the portal should cache per zone per day, or the access pool
   pays for every page view.
 
+## What the base map looks like
+
+Xweather's own basemap is deliberately thin — highways, county lines, city
+labels, no street grid and no terrain. It is built as a backdrop for weather
+imagery, not as a street map, and it reads that way. Good enough to show a
+service area; not comparable to Google or Mapbox for a customer picking out
+their own driveway.
+
+The weather raster layers are opaque, not translucent: `temperatures` covers
+the basemap completely. Overlaying weather on a legible map needs the
+`:opacity` layer modifier, or MapsGL, or a third-party basemap underneath.
+
 ## Questions for Xweather
 
-1. Per-product access multipliers — data call, raster tile, MapsGL session.
-   This is the one number that decides whether a tiled map is affordable: at
-   10–20 tiles per view, a per-tile charge caps the free tier near a thousand
-   page views.
-2. Whether MapsGL runs on a free developer key, or only on a paid plan.
-3. Whether `/roadweather` covers residential and private-lot addresses or only
+1. Whether MapsGL runs on a free developer key, or only on a paid plan. Raster
+   tiles and static images do — measured, see the token table above.
+2. Whether `/roadweather` covers residential and private-lot addresses or only
    the mapped road network, in the Denver Front Range specifically.
-4. Whether `/roadweather/analytics` is inside the standard subscription.
-5. Whether a browser-namespaced key can be restricted to specific endpoints, or
+3. Whether `/roadweather/analytics` is inside the standard subscription.
+4. Whether a browser-namespaced key can be restricted to specific endpoints, or
    whether any key that draws maps can also drain the data quota.
-6. Cache and redistribution terms for the tiles.
+5. Cache and redistribution terms for the tiles.

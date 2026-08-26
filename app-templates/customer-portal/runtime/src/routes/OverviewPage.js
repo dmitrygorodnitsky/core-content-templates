@@ -4,6 +4,7 @@ import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { OVERVIEW_STATUS as STATUS, appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } from "../normalizers/overview.js";
+import { mapImageUrl, mapOpened, projectPoint } from "../normalizers/map-image.js";
 
 var ICONS = {
   map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
@@ -102,9 +103,18 @@ function WeatherPanel(frame, isNow) {
 
 function MapPanel(model, frame, index) {
   var weather = model.weather;
-  var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind });
+  var geo = mapOpened(model.map, state.config) ? model.map : null;
+  var imageUrl = geo ? mapImageUrl(geo, state.config) : "";
+  var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind, "data-surface": imageUrl ? "map" : "drawn" });
+  if (imageUrl) {
+    canvas.appendChild(h("img", {
+      "class": "ov-map__image", src: imageUrl, alt: "", "aria-hidden": "true",
+      width: String(geo.size.width), height: String(geo.size.height), loading: "eager", decoding: "async",
+    }));
+  } else {
+    canvas.appendChild(h("div", { "class": "ov-map__road" }));
+  }
   canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
-  canvas.appendChild(h("div", { "class": "ov-map__road" }));
   canvas.appendChild(h("div", { "class": "ov-map__chip", "data-source": weather.source || "fixture" }, [
     icon("live", "ov-map__chip-glyph"),
     text("span", "", weather.source === "xweather" ? "Live conditions · Xweather" : "Sample conditions"),
@@ -115,9 +125,11 @@ function MapPanel(model, frame, index) {
     var status = propertyStatus(property);
     var kind = propertyWeather(property, frame);
     var selected = state.ovProperty === property.id;
+    var at = pinPlacement(property, geo);
+    if (!at) return;
     pins.appendChild(h("button", {
       "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-      style: "left:" + property.x + "%;top:" + property.y + "%",
+      style: "left:" + at.x + "%;top:" + at.y + "%",
       "data-action": "overview.selectProperty", "data-id": property.id,
       "data-module": "property-pin", "data-visual-id": "property-pin",
       "data-state": status, "data-weather": kind,
@@ -127,7 +139,10 @@ function MapPanel(model, frame, index) {
   });
 
   var selectedProperty = model.properties.find(function (property) { return property.id === state.ovProperty; });
-  if (selectedProperty) pins.appendChild(PropertyTooltip(selectedProperty, frame));
+  if (selectedProperty) {
+    var anchor = pinPlacement(selectedProperty, geo);
+    if (anchor) pins.appendChild(PropertyTooltip(selectedProperty, frame, anchor));
+  }
 
   return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
     h("div", { "class": "ov-map__head" }, [
@@ -180,7 +195,12 @@ function stepButton(glyph, label, target, disabled) {
   }, glyph);
 }
 
-function PropertyTooltip(property, frame) {
+function pinPlacement(property, geo) {
+  if (!geo) return { x: property.x, y: property.y };
+  return projectPoint(property.lat, property.lon, geo);
+}
+
+function PropertyTooltip(property, frame, at) {
   var status = propertyStatus(property);
   var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
   var next = property.appointment && property.appointment.state === "SCHEDULED" ? property.appointment : null;
@@ -189,9 +209,9 @@ function PropertyTooltip(property, frame) {
     : property.lastService ? "Last service · " + property.lastService.service + " · " + property.lastService.when
     : "";
 
-  var above = property.y > 55;
-  var top = above ? "calc(" + property.y + "% - 194px)" : "calc(" + property.y + "% + 12px)";
-  var place = "left:clamp(0px, calc(" + property.x + "% - 144px), calc(100% - 288px));"
+  var above = at.y > 55;
+  var top = above ? "calc(" + at.y + "% - 194px)" : "calc(" + at.y + "% + 12px)";
+  var place = "left:clamp(0px, calc(" + at.x + "% - 144px), calc(100% - 288px));"
     + "top:clamp(8px, " + top + ", calc(100% - 168px))";
 
   return h("div", { "class": "ov-tip", style: place, "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, "data-place": above ? "above" : "below", role: "dialog", "aria-label": property.name }, [

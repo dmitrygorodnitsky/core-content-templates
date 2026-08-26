@@ -2649,6 +2649,13 @@ button { font-family: inherit; }
 
 .ov-map__pins > * { pointer-events: auto; }
 
+.ov-map__canvas[data-surface="map"] {
+  height: auto; aspect-ratio: 1040 / 560;
+  background: var(--surface);
+}
+
+.ov-map__image { display: block; width: 100%; height: 100%; object-fit: cover; }
+
 .ov-map__canvas {
   position: relative; height: 380px; border-radius: var(--radius-lg); overflow: hidden;
   background:
@@ -3214,7 +3221,7 @@ button { font-family: inherit; }
 
 .vw-mobile .ov-wx__stats { padding-left: 0; border-left: 0; width: 100%; }
 
-.vw-mobile .ov-map__canvas { height: 260px; }
+.vw-mobile .ov-map__canvas[data-surface="drawn"] { height: 260px; }
 
 .vw-mobile .ov-map__pins .ov-tip { position: absolute; left: 8px !important; right: 8px; width: auto; top: auto !important; bottom: 8px; transform: none !important; }
 
@@ -5219,26 +5226,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var violet = "#7a52e0";
   var softViolet = "rgba(122,82,224,.16)";
   var MONITORED_SITES = [
-    ["Alkire Street", "Arvada, CO 80005", "north", 13, 24],
-    ["Braun Court", "Golden, CO 80401", "north", 24, 20],
-    ["Coal Creek Lane", "Louisville, CO 80027", "north", 34, 9],
-    ["Dover Way", "Wheat Ridge, CO 80033", "north", 46, 14],
-    ["Eldridge Circle", "Golden, CO 80401", "north", 61, 11],
-    ["Flatiron Parkway", "Broomfield, CO 80021", "north", 79, 16],
-    ["Garrison Green", "Lakewood, CO 80226", "central", 15, 40],
-    ["Holland Street", "Arvada, CO 80005", "central", 33, 44],
-    ["Independence Way", "Lakewood, CO 80228", "central", 58, 38],
-    ["Jellison Place", "Wheat Ridge, CO 80033", "central", 66, 30],
-    ["Kipling Crossing", "Lakewood, CO 80215", "central", 85, 42],
-    ["Lamar Terrace", "Lakewood, CO 80214", "central", 92, 33],
-    ["Marshall Row", "Littleton, CO 80123", "south", 18, 62],
-    ["Newland Yard", "Littleton, CO 80128", "south", 30, 74],
-    ["Owens Court", "Ken Caryl, CO 80127", "south", 55, 80],
-    ["Pierce Landing", "Littleton, CO 80123", "south", 68, 66],
-    ["Quail Ridge", "Ken Caryl, CO 80127", "south", 80, 72],
-    ["Robb Street", "Morrison, CO 80465", "south", 90, 60],
-    ["Saulsbury Bend", "Wheat Ridge, CO 80033", "west", 8, 54],
-    ["Union Ridge", "Lakewood, CO 80228", "west", 40, 56]
+    ["Alkire Street", "Arvada, CO 80004", "north", 39.82445, -105.13698],
+    ["Braun Court", "Golden, CO 80401", "west", 39.71911, -105.22827],
+    ["Coal Creek Lane", "Arvada, CO 80003", "north", 39.82994, -105.04903],
+    ["Dover Way", "Wheat Ridge, CO 80033", "north", 39.77594, -105.11421],
+    ["Eldridge Circle", "Golden, CO 80401", "west", 39.71521, -105.23147],
+    ["Flatiron Parkway", "Arvada, CO 80002", "north", 39.79588, -105.0863],
+    ["Garrison Green", "Lakewood, CO 80215", "central", 39.74506, -105.12045],
+    ["Holland Street", "Lakewood, CO 80214", "central", 39.74449, -105.06442],
+    ["Independence Way", "Lakewood, CO 80228", "west", 39.69538, -105.14948],
+    ["Jellison Place", "Wheat Ridge, CO 80033", "north", 39.76814, -105.08381],
+    ["Kipling Crossing", "Lakewood, CO 80215", "central", 39.73986, -105.11245],
+    ["Lamar Terrace", "Denver, CO 80212", "north", 39.76599, -105.04791],
+    ["Marshall Row", "Lakewood, CO 80232", "south", 39.68228, -105.07064],
+    ["Newland Yard", "Lakewood, CO 80227", "south", 39.65744, -105.10738],
+    ["Owens Court", "Denver, CO 80235", "south", 39.63555, -105.08189],
+    ["Pierce Landing", "Lakewood, CO 80226", "central", 39.70188, -105.05427],
+    ["Quail Ridge", "Lakewood, CO 80227", "south", 39.67824, -105.11058],
+    ["Robb Street", "Morrison, CO 80465", "west", 39.62278, -105.22989],
+    ["Saulsbury Bend", "Denver, CO 80212", "north", 39.78159, -105.04311],
+    ["Union Ridge", "Lakewood, CO 80228", "west", 39.70578, -105.17348]
   ];
   var MONITORED_VISITS = {
     "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "5:40 AM", dayIndex: 1 } },
@@ -5256,8 +5263,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         id: "prop-monitored-" + (index + 1),
         name: site[0],
         address: index * 37 + 210 + " " + site[0] + ", " + site[1],
-        x: site[3],
-        y: site[4],
+        lat: site[3],
+        lon: site[4],
         zone: site[2],
         appointment: null,
         ticket: null,
@@ -5435,6 +5442,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]
     },
     overview: {
+      map: {
+        center: { lat: 39.7264, lon: -105.1397 },
+        zoom: 11,
+        size: { width: 1040, height: 560 },
+        layers: ["flat", "water", "roads", "interstates", "cities", "admin"]
+      },
       weather: {
         nowIndex: 0,
         zoneCentroids: {
@@ -5563,8 +5576,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           id: "prop-foothill",
           name: "Foothill Court",
           address: "4820 Foothill Court, Lakewood, CO 80215",
-          x: 26,
-          y: 34,
+          lat: 39.73336,
+          lon: -105.12205,
           zone: "central",
           appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, crew: "Marcus H." },
           ticket: null,
@@ -5574,8 +5587,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           id: "prop-tabor",
           name: "Tabor Street",
           address: "1190 Tabor Street, Golden, CO 80401",
-          x: 52,
-          y: 24,
+          lat: 39.72431,
+          lon: -105.23627,
           zone: "north",
           appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", time: "9:00 AM", dayIndex: 1 },
           ticket: null,
@@ -5585,8 +5598,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           id: "prop-yarrow",
           name: "Yarrow Ridge",
           address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
-          x: 72,
-          y: 46,
+          lat: 39.80498,
+          lon: -105.0911,
           zone: "north",
           appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", time: "11:30 AM", dayIndex: 3 },
           ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
@@ -5595,9 +5608,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         {
           id: "prop-cinnamon",
           name: "Cinnamon Bear Way",
-          address: "870 Cinnamon Bear Way, Littleton, CO 80127",
-          x: 44,
-          y: 68,
+          address: "870 Cinnamon Bear Way, Lakewood, CO 80227",
+          lat: 39.67564,
+          lon: -105.08018,
           zone: "south",
           appointment: null,
           ticket: null,
@@ -10989,6 +11002,44 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/map-image.js
+  var HOST = "https://maps.api.xweather.com";
+  var TILE = 256;
+  function mapOpened(map, config) {
+    return !!(map && map.center && map.size && config && config.weatherClientId && config.weatherClientSecret);
+  }
+  function mapImageUrl(map, config) {
+    if (!mapOpened(map, config)) return "";
+    var layers = (map.layers || []).filter(function(layer) {
+      return /^[a-z0-9-]+$/.test(layer);
+    });
+    if (!layers.length) return "";
+    return HOST + "/" + encodeURIComponent(config.weatherClientId + "_" + config.weatherClientSecret) + "/" + layers.join(",") + "/" + map.size.width + "x" + map.size.height + "/" + map.center.lat + "," + map.center.lon + "," + map.zoom + "/current.png";
+  }
+  function projectPoint(lat, lon, map) {
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || !map || !map.center) return null;
+    var world = TILE * Math.pow(2, map.zoom);
+    var dx = worldX(lon, world) - worldX(map.center.lon, world);
+    var dy = worldY(lat, world) - worldY(map.center.lat, world);
+    return {
+      x: (dx + map.size.width / 2) / map.size.width * 100,
+      y: (dy + map.size.height / 2) / map.size.height * 100
+    };
+  }
+  function worldX(lon, world) {
+    return (lon + 180) / 360 * world;
+  }
+  function worldY(lat, world) {
+    var radians = clampLatitude(lat) * Math.PI / 180;
+    var merc = Math.log(Math.tan(radians) + 1 / Math.cos(radians));
+    return (1 - merc / Math.PI) / 2 * world;
+  }
+  function clampLatitude(lat) {
+    if (lat > 85.05112878) return 85.05112878;
+    if (lat < -85.05112878) return -85.05112878;
+    return lat;
+  }
+
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
   var ICONS = {
     map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
@@ -11076,9 +11127,24 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function MapPanel(model, frame, index) {
     var weather = model.weather;
-    var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind });
+    var geo = mapOpened(model.map, state.config) ? model.map : null;
+    var imageUrl = geo ? mapImageUrl(geo, state.config) : "";
+    var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind, "data-surface": imageUrl ? "map" : "drawn" });
+    if (imageUrl) {
+      canvas.appendChild(h("img", {
+        "class": "ov-map__image",
+        src: imageUrl,
+        alt: "",
+        "aria-hidden": "true",
+        width: String(geo.size.width),
+        height: String(geo.size.height),
+        loading: "eager",
+        decoding: "async"
+      }));
+    } else {
+      canvas.appendChild(h("div", { "class": "ov-map__road" }));
+    }
     canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
-    canvas.appendChild(h("div", { "class": "ov-map__road" }));
     canvas.appendChild(h("div", { "class": "ov-map__chip", "data-source": weather.source || "fixture" }, [
       icon("live", "ov-map__chip-glyph"),
       text7("span", "", weather.source === "xweather" ? "Live conditions \xB7 Xweather" : "Sample conditions")
@@ -11088,9 +11154,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var status = propertyStatus(property);
       var kind = propertyWeather(property, frame);
       var selected = state.ovProperty === property.id;
+      var at = pinPlacement(property, geo);
+      if (!at) return;
       pins.appendChild(h("button", {
         "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-        style: "left:" + property.x + "%;top:" + property.y + "%",
+        style: "left:" + at.x + "%;top:" + at.y + "%",
         "data-action": "overview.selectProperty",
         "data-id": property.id,
         "data-module": "property-pin",
@@ -11104,7 +11172,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var selectedProperty = model.properties.find(function(property) {
       return property.id === state.ovProperty;
     });
-    if (selectedProperty) pins.appendChild(PropertyTooltip(selectedProperty, frame));
+    if (selectedProperty) {
+      var anchor = pinPlacement(selectedProperty, geo);
+      if (anchor) pins.appendChild(PropertyTooltip(selectedProperty, frame, anchor));
+    }
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
@@ -11154,14 +11225,18 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       disabled: disabled ? "disabled" : void 0
     }, glyph);
   }
-  function PropertyTooltip(property, frame) {
+  function pinPlacement(property, geo) {
+    if (!geo) return { x: property.x, y: property.y };
+    return projectPoint(property.lat, property.lon, geo);
+  }
+  function PropertyTooltip(property, frame, at) {
     var status = propertyStatus(property);
     var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
     var next = property.appointment && property.appointment.state === "SCHEDULED" ? property.appointment : null;
     var line = active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
-    var above = property.y > 55;
-    var top = above ? "calc(" + property.y + "% - 194px)" : "calc(" + property.y + "% + 12px)";
-    var place = "left:clamp(0px, calc(" + property.x + "% - 144px), calc(100% - 288px));top:clamp(8px, " + top + ", calc(100% - 168px))";
+    var above = at.y > 55;
+    var top = above ? "calc(" + at.y + "% - 194px)" : "calc(" + at.y + "% + 12px)";
+    var place = "left:clamp(0px, calc(" + at.x + "% - 144px), calc(100% - 288px));top:clamp(8px, " + top + ", calc(100% - 168px))";
     return h("div", { "class": "ov-tip", style: place, "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, "data-place": above ? "above" : "below", role: "dialog", "aria-label": property.name }, [
       h("div", { "class": "ov-tip__head" }, [
         h("div", { style: "flex:1;min-width:0" }, [
@@ -18099,7 +18174,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
 
   // app-templates/customer-portal/runtime/src/adapters/xweather-adapter.js
-  var HOST = "https://data.api.xweather.com";
+  var HOST2 = "https://data.api.xweather.com";
   function createXweatherAdapter(options2) {
     var clientId = options2 && options2.clientId || "";
     var clientSecret = options2 && options2.clientSecret || "";
@@ -18111,7 +18186,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       dailyForecast: function(lat, lon, days) {
         if (!this.opened()) return Promise.reject(new Error("Xweather adapter is not opened"));
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return Promise.reject(new Error("A forecast needs a finite coordinate"));
-        var url = HOST + "/forecasts/" + encodeURIComponent(lat + "," + lon) + "?filter=day&limit=" + encodeURIComponent(String(days)) + "&client_id=" + encodeURIComponent(clientId) + "&client_secret=" + encodeURIComponent(clientSecret);
+        var url = HOST2 + "/forecasts/" + encodeURIComponent(lat + "," + lon) + "?filter=day&limit=" + encodeURIComponent(String(days)) + "&client_id=" + encodeURIComponent(clientId) + "&client_secret=" + encodeURIComponent(clientSecret);
         return fetchImpl(url, { credentials: "omit", mode: "cors" }).then(function(response) {
           if (!response.ok) throw new Error("Xweather HTTP " + response.status);
           return response.json();
