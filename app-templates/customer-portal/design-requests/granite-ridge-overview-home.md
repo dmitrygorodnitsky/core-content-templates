@@ -83,6 +83,8 @@ state is in the tooltip. Without that split the map would need nine colours.
    contracts list.
 3. The map is a drawn surface. If this becomes a real map, the pin, the
    tooltip placement and the zone overlay all become the provider's problem and
-   this screen's CSS for them goes away.
+   this screen's CSS for them goes away. Xweather is the provider under
+   evaluation — see overview-weather-provider-xweather.md for what its API
+   supplies against the table above, and what it does not.
 4. On mobile the `Real-time conditions` chip can sit over a pin, because the
    map keeps its full pin set at 375.
