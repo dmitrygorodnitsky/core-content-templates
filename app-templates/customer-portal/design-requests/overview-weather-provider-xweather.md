@@ -91,9 +91,27 @@ Two conditions on that:
 ## Cost, and why the zone design matters
 
 Billing is a single pool of "accesses" covering both data calls and map imagery.
-The free Developer tier is 15,000 accesses a month with no card and no expiry,
-which is enough for a dev tenant. The paid entry point is €300/month for
-1,000,000 accesses, with overage above that.
+The free Developer tier is 15,000 accesses a month with no card and no expiry.
+The paid entry point is €300/month for 1,000,000 accesses, with overage above
+that.
+
+The free tier is **not** restricted by endpoint. Xweather states it carries
+"full access to every endpoint" — all 65, including road weather, lightning,
+hail, the observations archive and climate normals — and Raster Maps needs no
+separate Maps subscription. What the free tier limits is volume, and two other
+things:
+
+- **Webhooks are excluded.** "Webhooks are a premium feature and require a
+  separate subscription not included in our standard Xweather plans." So a
+  demo key polls; it cannot be pushed to. That matters for auto-dispatch, not
+  for this screen.
+- **Overage is US/Canada only.** Elsewhere the limit is raised by contacting
+  sales, not by adding a card.
+
+Whether MapsGL specifically works on a free key is unconfirmed: its own docs
+say it "requires an active Xweather Weather API and Maps subscription", while
+the Raster Maps guide points free developer accounts at the same product.
+Raster tiles are the safe assumption for a demo.
 
 Xweather does not publish per-product access multipliers. One figure surfaced
 outside the pricing pages — a five-minute unlimited MapsGL session costing 150
@@ -131,9 +149,13 @@ Still unpriced and worth pinning down before committing:
 ## Questions for Xweather
 
 1. Per-product access multipliers — data call, raster tile, MapsGL session.
-2. Whether `/roadweather` covers residential and private-lot addresses or only
+   This is the one number that decides whether a tiled map is affordable: at
+   10–20 tiles per view, a per-tile charge caps the free tier near a thousand
+   page views.
+2. Whether MapsGL runs on a free developer key, or only on a paid plan.
+3. Whether `/roadweather` covers residential and private-lot addresses or only
    the mapped road network, in the Denver Front Range specifically.
-3. Whether `/roadweather/analytics` is inside the standard subscription.
-4. Whether a browser-namespaced key can be restricted to specific endpoints, or
+4. Whether `/roadweather/analytics` is inside the standard subscription.
+5. Whether a browser-namespaced key can be restricted to specific endpoints, or
    whether any key that draws maps can also drain the data quota.
-5. Cache and redistribution terms for the tiles.
+6. Cache and redistribution terms for the tiles.
