@@ -31,14 +31,14 @@ const MONITORED_SITES = [
 ];
 
 const MONITORED_VISITS = {
-  "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "5:40 AM", date: "Jan 16" } },
-  "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "6:15 AM", date: "Jan 16" } },
-  "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "7:05 AM", date: "Jan 16" } },
-  "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "7:50 AM", date: "Jan 16" } },
-  "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "6:30 AM", date: "Jan 17" } },
-  "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "8:10 AM", date: "Jan 17" } },
-  "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", date: "Jan 18" } },
-  "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed · auto-dispatch", time: "6:00 AM", date: "Jan 21" } },
+  "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "5:40 AM", dayIndex: 1 } },
+  "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "6:15 AM", dayIndex: 1 } },
+  "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "7:05 AM", dayIndex: 1 } },
+  "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "7:50 AM", dayIndex: 1 } },
+  "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "6:30 AM", dayIndex: 2 } },
+  "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "8:10 AM", dayIndex: 2 } },
+  "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", dayIndex: 3 } },
+  "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed · auto-dispatch", time: "6:00 AM", dayIndex: 6 } },
 };
 
 function monitoredProperties() {
@@ -227,6 +227,12 @@ export const graniteRidgeSnowFixture = Object.freeze({
   overview: {
     weather: {
       nowIndex: 0,
+      zoneCentroids: {
+        north: { lat: 39.83, lon: -105.12 },
+        central: { lat: 39.72, lon: -105.09 },
+        south: { lat: 39.57, lon: -105.06 },
+        west: { lat: 39.66, lon: -105.22 },
+      },
       legend: [
         { key: "clear", label: "Clear" },
         { key: "snow", label: "Snow" },
@@ -318,21 +324,21 @@ export const graniteRidgeSnowFixture = Object.freeze({
       {
         id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
         x: 26, y: 34, zone: "central",
-        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", date: "Jan 15", crew: "Marcus H." },
+        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, crew: "Marcus H." },
         ticket: null,
         lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
       },
       {
         id: "prop-tabor", name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
         x: 52, y: 24, zone: "north",
-        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "9:00 AM", date: "Jan 16" },
+        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "9:00 AM", dayIndex: 1 },
         ticket: null,
         lastService: { service: "Lot & drive clearing", when: "Jan 5" },
       },
       {
         id: "prop-yarrow", name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
         x: 72, y: 46, zone: "north",
-        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Jan 18", time: "11:30 AM", date: "Jan 18" },
+        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", time: "11:30 AM", dayIndex: 3 },
         ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
         lastService: { service: "Refreeze re-treat", when: "Dec 19" },
       },

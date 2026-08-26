@@ -28,7 +28,12 @@
     "authMode": "fixture",
     "dataMode": "fixture",
     "errorMode": "error",
-    "case": "granite-ridge-snow"
+    "case": "granite-ridge-snow",
+    "weather": {
+      "provider": "xweather",
+      "clientId": "zWwBFpZuMEfMsx774O0U1",
+      "clientSecret": "s0U6ebUfk3AuyM02J5Kvy4cCo9yZ5FPP6BDm5PwJ"
+    }
   },
   "shell": {
     "experienceId": "granite-ridge-snow-fixture",

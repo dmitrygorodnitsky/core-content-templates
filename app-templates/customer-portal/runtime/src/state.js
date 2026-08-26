@@ -59,6 +59,8 @@ export var state = {
   seoCtaStates: {},
   moduleStatus: {},
   moduleData: {},
+  liveWeather: null,
+  liveWeatherState: "off",
   pending: {},
   commandErrors: {},
   config: {

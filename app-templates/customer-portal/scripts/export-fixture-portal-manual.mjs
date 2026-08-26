@@ -110,6 +110,8 @@ function templateFor(source, css, javascript) {
     "data-portal-nav-pricing-label": navigation.pricing || "",
     "data-portal-nav-products-label": navigation.products || "",
     "data-portal-nav-support-label": navigation.support || "",
+    "data-portal-weather-client-id": (runtime.weather && runtime.weather.clientId) || "",
+    "data-portal-weather-client-secret": (runtime.weather && runtime.weather.clientSecret) || "",
   };
   return {
     code: source.template.code,

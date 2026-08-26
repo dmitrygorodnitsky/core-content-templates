@@ -244,6 +244,8 @@ export function readPortalConfig(root) {
     authCallbackPath: dataset.portalAuthCallbackPath || "/core/oauth2-callback.html",
     authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
     authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
+    weatherClientId: dataset.portalWeatherClientId || "",
+    weatherClientSecret: dataset.portalWeatherClientSecret || "",
     routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
     authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
     defaultRoute: routeRegistry[dataset.portalDefaultRoute] ? dataset.portalDefaultRoute : verticalConfig.defaultRoute,

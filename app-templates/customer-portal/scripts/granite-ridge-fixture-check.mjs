@@ -159,15 +159,25 @@ assert.equal(
 );
 assert.equal(clampFrameIndex(overview.weather.timeline, 99), 6);
 assert.equal(clampFrameIndex(overview.weather.timeline, -3), 0);
-const serviceDays = overview.weather.timeline.map((item) => serviceDayCount(overview.properties, item));
+const serviceDays = overview.weather.timeline.map((_, index) => serviceDayCount(overview.properties, index));
 assert.deepEqual(plainValue(serviceDays), [1, 5, 2, 2, 0, 0, 1], "the timeline must mark the days a visit actually happens");
 assert.ok(serviceDays.some((count) => count === 0), "a day without service must stay unmarked");
 for (const property of overview.properties) {
   if (!property.appointment) continue;
+  const index = property.appointment.dayIndex;
   assert.ok(
-    overview.weather.timeline.some((item) => item.date === property.appointment.date),
-    `${property.name} is booked for ${property.appointment.date}, which no timeline day names`,
+    Number.isInteger(index) && overview.weather.timeline[index],
+    `${property.name} is booked for day ${index}, which the timeline does not have`,
   );
+  assert.equal(property.appointment.date, undefined, "a booked day is an index, so a live timeline can re-date it");
+}
+assert.ok(
+  overview.weather.zoneCentroids && Object.keys(overview.weather.zoneCentroids).length,
+  "every zone needs a centroid before a forecast can be asked for it",
+);
+for (const zone of zones) {
+  const point = overview.weather.zoneCentroids[zone];
+  assert.ok(point && Number.isFinite(point.lat) && Number.isFinite(point.lon), `zone ${zone} has no forecastable point`);
 }
 
 const careRaw = await createCareFixtureAdapter().load("care", context);

@@ -3,7 +3,7 @@ import { currentFixture, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
-import { OVERVIEW_STATUS as STATUS, clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } from "../normalizers/overview.js";
+import { OVERVIEW_STATUS as STATUS, appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } from "../normalizers/overview.js";
 
 var ICONS = {
   map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
@@ -36,14 +36,16 @@ function icon(name, className) {
 
 export function overviewModel() {
   var fixture = currentFixture();
-  return (fixture && fixture.overview) || null;
+  var overview = (fixture && fixture.overview) || null;
+  if (!overview || !state.liveWeather) return overview;
+  return Object.assign({}, overview, { weather: state.liveWeather });
 }
 
 export function Overview() {
   var model = overviewModel();
   var page = h("section", { "class": "page", "data-route": "overview", "data-visual-id": "overview" });
   var customer = currentFixture().customer;
-  var header = PageHeader({ title: customer.greeting, sub: customer.subline });
+  var header = PageHeader({ title: customer.greeting, sub: subline(model, customer) });
 
   if (!model) {
     page.appendChild(header);
@@ -64,13 +66,20 @@ export function Overview() {
   page.appendChild(InvoicesWidget(model));
 
   var grid = h("div", { "class": "ov-grid" });
-  grid.appendChild(UpcomingWidget(model));
+  grid.appendChild(UpcomingWidget(model, weather.timeline));
   grid.appendChild(ContractsWidget(model));
   grid.appendChild(SupportWidget(model));
   page.appendChild(grid);
 
   if (model.banner) page.appendChild(Banner(model.banner));
   return page;
+}
+
+function subline(model, customer) {
+  if (!model || !state.liveWeather) return customer.subline;
+  var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
+  var count = model.properties.length;
+  return frame.label + " · " + count + (count === 1 ? " property under contract" : " properties under contract");
 }
 
 function WeatherPanel(frame, isNow) {
@@ -96,7 +105,10 @@ function MapPanel(model, frame, index) {
   var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind });
   canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
   canvas.appendChild(h("div", { "class": "ov-map__road" }));
-  canvas.appendChild(h("div", { "class": "ov-map__chip" }, [icon("live", "ov-map__chip-glyph"), text("span", "", "Real-time conditions")]));
+  canvas.appendChild(h("div", { "class": "ov-map__chip", "data-source": weather.source || "fixture" }, [
+    icon("live", "ov-map__chip-glyph"),
+    text("span", "", weather.source === "xweather" ? "Live conditions · Xweather" : "Sample conditions"),
+  ]));
 
   var pins = h("div", { "class": "ov-map__pins" });
   model.properties.forEach(function (property) {
@@ -133,7 +145,7 @@ function MapPanel(model, frame, index) {
 function DayTimeline(weather, index, properties) {
   var last = weather.timeline.length - 1;
   var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function (item, position) {
-    var visits = serviceDayCount(properties, item);
+    var visits = serviceDayCount(properties, position);
     return h("button", {
       "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : "") + (visits ? " ov-day--service" : ""),
       "data-action": "overview.scrubWeather", "data-id": String(position),
@@ -199,7 +211,7 @@ function PropertyTooltip(property, frame) {
   ]);
 }
 
-function UpcomingWidget(model) {
+function UpcomingWidget(model, timeline) {
   var scheduled = model.properties.filter(function (property) {
     return property.appointment && property.appointment.state === "SCHEDULED";
   });
@@ -216,7 +228,7 @@ function UpcomingWidget(model) {
       h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
       h("div", { style: "flex:1;min-width:0" }, [
         text("div", "ov-row__title", property.name),
-        text("div", "ov-row__meta", (appointment.date ? appointment.date + " · " : "") + appointment.service),
+        text("div", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service)),
       ]),
     ]));
   });
@@ -357,6 +369,10 @@ function lead(value, label, meta) {
     ]),
     meta ? text("div", "ov-lead__meta", meta) : null,
   ]);
+}
+
+function metaOf(day, service) {
+  return day ? day + " · " + service : service;
 }
 
 function chevron(action, id, label) {

@@ -2,7 +2,8 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, cmdPhase, currentTheme, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
+import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
+import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
@@ -250,6 +251,10 @@ document.addEventListener("DOMContentLoaded", function () {
   var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);
+  var fixture = currentFixture();
+  loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function (live) {
+    if (live) render();
+  });
   loaded.then(function () {
     if (continueToIntendedRoute()) return;
     render();

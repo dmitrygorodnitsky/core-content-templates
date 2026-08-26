@@ -44,11 +44,16 @@ export function clampFrameIndex(timeline, index) {
   return index;
 }
 
-export function serviceDayCount(properties, frame) {
-  if (!properties || !frame || !frame.date) return 0;
+export function serviceDayCount(properties, dayIndex) {
+  if (!properties || !Number.isFinite(dayIndex)) return 0;
   return properties.filter(function (property) {
-    return property.appointment && property.appointment.date === frame.date;
+    return property.appointment && property.appointment.dayIndex === dayIndex;
   }).length;
+}
+
+export function appointmentDay(appointment, timeline) {
+  var frame = appointment && Number.isFinite(appointment.dayIndex) && timeline && timeline[appointment.dayIndex];
+  return frame ? frame.day + " " + frame.date : "";
 }
 
 export function invoiceBuckets(invoices) {
