@@ -4,7 +4,7 @@ import path from "node:path";
 
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
-const { buildTimeline, periodKind, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
+const { buildTimeline, periodKind, periodNote, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
 
 const ok = (periods) => ({ ok: true, json: async () => ({ success: true, response: [{ periods }] }) });
 
@@ -89,6 +89,9 @@ assert.equal(timeline[0].day, "Today", "the first frame is always today, whateve
 assert.notEqual(timeline[1].day, "Today");
 assert.equal(timeline[0].kind, "storm", "the headline kind is the worst zone, not the first one");
 assert.deepEqual(timeline[0].zones, { north: "storm", south: "clear" });
+assert.match(timeline[0].note, /3\.1 cm/, "the note must describe the same zone the headline kind came from");
+assert.equal(timeline[1].kind, "clear");
+assert.match(timeline[1].note, /Below the service trigger/);
 assert.equal(timeline[0].stats.length, 4);
 assert.deepEqual(timeline[0].stats.map((stat) => stat.label), ["Precipitation", "Wind", "Feels like", "Humidity"]);
 assert.equal(timeline[0].stats[1].value, "18 km/h NW");
@@ -102,5 +105,14 @@ const shortZone = buildTimeline({
 assert.equal(shortZone[1].zones.south, "freezing", "a zone that returns fewer periods falls back to the lead zone, never to undefined");
 
 await assert.rejects(async () => buildTimeline({ north: [] }, ["north"]), /no periods/);
+
+const coldStorm = period({ weatherPrimaryCoded: "S::S", snowCM: 0, minFeelslikeC: -11 });
+assert.equal(periodKind(coldStorm), "storm", "deep cold alone makes a snow day a storm day");
+assert.match(periodNote(coldStorm), /refreeze risk/, "a note must explain the same reason the kind was raised for");
+assert.match(periodNote(period({ weatherPrimaryCoded: "S::T", pop: 55, minFeelslikeC: 14 })), /Storm risk 55%/);
+assert.match(periodNote(period({ weatherPrimaryCoded: "S::T", pop: 55, minFeelslikeC: -11 })), /refreeze risk/, "for a plough crew the cold outranks the thunder");
+assert.match(periodNote(period({ weatherPrimaryCoded: "S::S", snowCM: 4, minFeelslikeC: 1 })), /4 cm forecast · trigger met/);
+assert.match(periodNote(period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFeelslikeC: 1 })), /below the 2 cm trigger/);
+assert.match(periodNote(period({ weatherPrimaryCoded: "::ZR", snowCM: 9 })), /de-icing expected/, "freezing rain outranks an accumulation note");
 
 console.log("live-weather-check ok: closed without a key, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, and a fixture fallback on every failure");

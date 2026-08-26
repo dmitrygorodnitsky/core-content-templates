@@ -14589,12 +14589,16 @@
     ];
   }
   function periodNote(period) {
-    var snow = num(period && period.snowCM);
-    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast \xB7 trigger met";
-    if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast \xB7 below the 2 cm trigger";
     var kind = periodKind(period);
     if (kind === "freezing") return "Freezing precipitation \xB7 de-icing expected";
-    if (kind === "storm") return "Storm risk " + statValue(period.pop, "%") + " \xB7 crews on standby";
+    var snow = num(period && period.snowCM);
+    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast \xB7 trigger met";
+    if (kind === "storm") {
+      var feels = num(period && period.minFeelslikeC);
+      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight";
+      return "Storm risk " + statValue(period && period.pop, "%") + " \xB7 crews on standby";
+    }
+    if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast \xB7 below the 2 cm trigger";
     return "Below the service trigger";
   }
   function buildTimeline(zonePeriods, zoneOrder) {
@@ -14603,30 +14607,34 @@
     return lead2.map(function(period, index) {
       var date = periodDate(period);
       var zones = {};
+      var candidates = [];
       zoneOrder.forEach(function(zone) {
         var periods = zonePeriods[zone];
-        var match = Array.isArray(periods) && periods[index];
-        zones[zone] = periodKind(match || period);
+        var match = Array.isArray(periods) && periods[index] || period;
+        zones[zone] = periodKind(match);
+        candidates.push(match);
       });
+      var headline = worstPeriod(candidates);
       return {
         day: frameDay(date, index),
         date: frameDate(date),
-        kind: worstKind(zoneOrder.map(function(zone) {
-          return zones[zone];
-        })),
-        temp: periodTemp(period),
-        label: String(period.weather || "").split(",")[0] || "Forecast",
-        note: periodNote(period),
-        stats: periodStats(period),
+        kind: periodKind(headline),
+        temp: periodTemp(headline),
+        label: String(headline.weather || "").split(",")[0] || "Forecast",
+        note: periodNote(headline),
+        stats: periodStats(headline),
         zones
       };
     });
   }
   var SEVERITY = { clear: 0, snow: 1, freezing: 2, storm: 3 };
-  function worstKind(kinds) {
-    return kinds.reduce(function(running, kind) {
-      return SEVERITY[kind] > SEVERITY[running] ? kind : running;
-    }, "clear");
+  function worstPeriod(periods) {
+    return periods.reduce(function(running, period) {
+      var severity = SEVERITY[periodKind(period)];
+      var runningSeverity = SEVERITY[periodKind(running)];
+      if (severity !== runningSeverity) return severity > runningSeverity ? period : running;
+      return (num(period.snowCM) || 0) > (num(running.snowCM) || 0) ? period : running;
+    });
   }
   function periodDate(period) {
     var seconds = num(period && period.timestamp);
