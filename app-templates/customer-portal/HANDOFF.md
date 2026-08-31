@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-08-25
+Updated: 2026-08-31
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `b57e581`
+- HEAD when this checkpoint was written: `27612ac`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -397,25 +397,106 @@ Public landing upload uses the same uploader with:
 --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-landing-staging
 ```
 
+Granite Ridge has one entrypoint that chains rebuild, repackage, four checks and
+the upsert by template code. Dry-run is the default; `--require-existing`
+refuses to create a duplicate if the code is not already in the target
+organization:
+
+```bash
+SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --require-existing --live
+```
+
+The whole deterministic suite for the snow tenant and the form:
+
+```bash
+node app-templates/customer-portal/scripts/granite-ridge-fixture-check.mjs
+node app-templates/customer-portal/scripts/appointments-check.mjs
+node app-templates/customer-portal/scripts/live-weather-check.mjs
+node app-templates/customer-portal/scripts/granite-ridge-portal-manual-check.mjs
+node app-templates/customer-portal/scripts/granite-ridge-landing-manual-check.mjs
+node app-templates/customer-portal/scripts/portal-form-check.mjs
+node app-templates/customer-portal/scripts/calm-harbor-fixture-check.mjs
+node app-templates/customer-portal/scripts/customer-experience-config-check.mjs
+node app-templates/customer-portal/scripts/cms-schema-validation.mjs
+```
+
 ## Granite Ridge snow tenant
 
-A fixtures-only demonstration tenant. Nothing behind it is live; it opens no
-backend contract.
+The tenant the next session takes live. Everything on screen is fixture data
+**except the weather and the map image**, which call Xweather from the browser.
 
 | surface | source | preview | check |
 | --- | --- | --- | --- |
 | portal | `runtime/data/cases/granite-ridge-snow.js`, profile `stormRetail` | `runtime/granite-ridge-snow.html` | `scripts/granite-ridge-fixture-check.mjs` |
+| appointments, property, visit | same fixture | same entry | `scripts/appointments-check.mjs` |
+| weather and map | `runtime/src/adapters/xweather-adapter.js` | same entry | `scripts/live-weather-check.mjs` |
 | portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `scripts/granite-ridge-portal-manual-check.mjs` |
 | landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `scripts/granite-ridge-landing-manual-check.mjs` |
 
-A case fixture declares its `vertical` and the runtime refuses one that does not
-match the configured vertical. The old beauty-only guard is gone.
+Routes in the `stormRetail` profile: `overview`, `appointments`,
+`visit.detail` (`/visits/:id`), `property.detail` (`/properties/:id`),
+`calendar`, `care`, `proposals.list`, `proposals.detail`, `support`,
+`activity`, `profile`, `pricing`. Shop, Services, checkout and the cart are
+retired — every service is ordered through the quote form, and the primary
+button leaves for `PORTAL_REQUEST_FORM_URL`.
 
-The `overview` route is a mockup of the customer's Overview brief, built on
-fixtures so the shape can be argued about before any contract exists. Property
-status is derived in `runtime/src/normalizers/overview.js`, not stored, with the
-priority: open ticket, then `IN_PROGRESS`, then `SCHEDULED`, then monitoring.
-That order is a choice; the brief did not specify it and the conditions overlap.
+### What is already live
+
+`runtime/src/live-weather.js` fetches one daily forecast per service zone from
+Xweather and replaces `overview.weather` when a key is configured. The map is a
+raster image from the same account, and pins are placed by projecting each
+property's real `lat`/`lon` onto it. Every failure — no key, a half key, HTTP
+401, and Xweather's habit of answering a rejected key with HTTP 200 and
+`success:false` — falls back to the fixture without a visible error.
+
+Credentials travel as `data-portal-weather-client-id` / `-secret`. They are
+public by design and origin-scoped; the demo key in the repo is disposable and
+its namespace should be restricted to whatever host serves the portal.
+
+### The shape a live backend has to fill
+
+Each screen already declares its contract, and the design requests carry the
+field-by-field tables:
+
+- `design-requests/granite-ridge-overview-home.md` — weather frames, zone
+  forecast, properties, invoices with three states, contracts, support, banner.
+- `design-requests/granite-ridge-appointments-timeline.md` — resource, planned
+  and actual windows, appointment states, day index.
+- `design-requests/overview-weather-provider-xweather.md` — what Xweather
+  answers, what it costs, and what it does not answer.
+
+None of these entities exist in Core today. The six that block everything else
+are Property as a Resource type, Contract, Quote with Order Items, Invoice
+workflow, Support Ticket lifecycle, and snow Appointment states.
+
+### Seams to wire against, and traps already paid for
+
+The adapter/normalizer split is the seam: `runtime/src/adapters/*` do IO,
+`runtime/src/normalizers/*` shape, components never see a raw payload. A live
+module is registered in `runtime/src/modules/index.js` and picks its adapter by
+`context.config.dataMode`.
+
+Five things that already cost time here and will again:
+
+1. **`Number(null)` is `0`.** It bit three times — a missing temperature
+   rendered as `0°C`, an "all dates" filter became day zero, and a missing
+   window sorted first. Guard before coercing.
+2. **Appointments are pinned to `dayIndex`, not a date string.** Matching on
+   `"Jan 16"` worked only while the timeline was also fixture data; against a
+   live window every visit silently vanished.
+3. **Module ids are global.** The spa already owns `appointments`, so the storm
+   table registers as `appointmentsTimeline` and its detail lives at
+   `/visits/:id` rather than `/appointments/:id`.
+4. **`data-portal-enabled-modules` on the entry overrides the profile.** A new
+   route whose module is missing there silently falls back to the default route
+   with no error. It caught us twice.
+5. **The lab server on 8765 caches ES modules.** An edit can look unapplied.
+   A no-cache server on 8766 is what this session used.
+
+The fixture root is no longer parameter-free: it may declare codes on the
+`DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
+each must be referenced and every reference declared, and a `${` that is not a
+well-formed marker is still refused.
 
 ## Universal form document
 
@@ -436,15 +517,20 @@ declarative `applyBehavior` value-to-step mapping; the shared
 
 ## Open threads for the next session
 
-1. `PORTAL_FORM_DOCUMENT` already exists in the dev CMS and was **not** created
+1. **The portal's primary button points at a guess.**
+   `PORTAL_REQUEST_FORM_URL` defaults to
+   `https://dev-1.servicewand.com/snow-removal--request-quote`, which is where
+   `PORTAL_FORM_DOCUMENT` might be published. Set the real address in CMS; no
+   rebuild needed.
+2. `PORTAL_FORM_DOCUMENT` already exists in the dev CMS and was **not** created
    by this package. `--require-missing` refused the first upload. Resolve its id
    with `scripts/upsert-portal-form.mjs --require-existing` and decide whether to
    take it over with `--expected-root-id` or to change the template code. Do not
    overwrite it blindly.
-2. The numeric organization id for `SNOWLIMITLESS` is still unknown. Until
+3. The numeric organization id for `SNOWLIMITLESS` is still unknown. Until
    `FORM_ORGANIZATION_ID` is set in CMS the form's submit button stays disabled.
    No code path resolves an organization code to an id.
-3. The published `GET_QUOTE_` form type is unfinished, and the renderer shows it
+4. The published `GET_QUOTE_` form type is unfinished, and the renderer shows it
    faithfully rather than papering over it: every attribute is `required: false`
    while `RISK_FACTORS` carries an asterisk in its label; that same attribute is
    `multiselect: false` while its label says select all that apply; no attribute
@@ -452,24 +538,27 @@ declarative `applyBehavior` value-to-step mapping; the shared
    textarea; `SELECT_YOUR_PROPERTY_TYPE` has `DESCRIPTION` of `"<p></p>"`; group
    names and the form title are English only while fields and options carry eight
    locales; the first group name reads "so we can can confirm".
-4. The Overview brief has unresolved ambiguities: status priority when a ticket
-   and an appointment overlap, which appointment wins when several exist, the
-   Last/Active Service format, two tooltip buttons pointing at one destination,
-   `SENT` and `OVERDUE` being visually identical, sort order for the three shown
-   invoices, the support-request limit, and whether Upcoming Services is
-   today-only. It also needs six contracts that do not exist anywhere in this
-   repository: Property as a Resource type, Invoice workflow, Contract, Quote
-   with Order Items, Support Ticket Lifecycle, and snow Appointment states.
-5. Google Maps: `mapApiKey` and `mapApiUrl` come from
-   `/core/api/user/basic-info.json`, which answers **401 anonymously**. The
-   public form therefore takes the key as `FORM_MAPS_API_KEY`, a browser key that
-   must be referrer-restricted. The authenticated portal can read Core's key, so
-   a real map on the Overview screen is not blocked the way the form was.
-   core-ui uses Geocoder plus a draggable marker, not Places autocomplete, and
-   stores `geoLocation` latitude, longitude and elevation.
-6. Two gaps against `js/dynamic-form.js` worth closing: preset values are
+5. **Xweather questions still open with the vendor**: whether MapsGL runs on a
+   free developer key; whether `/roadweather` covers private lots and
+   residential streets in the Front Range, since that endpoint — not the general
+   forecast — is what a dispatch trigger should read; whether
+   `/roadweather/analytics` is inside the standard subscription; and the cache
+   and redistribution terms for tiles. Per-product access cost is answered: map
+   responses report it in `x-cost-tokens`, and it is tiles × layers.
+6. **Weather belongs in Core, not the browser, once there is a backend.** A
+   seven-day forecast per zone is identical for every customer in that zone, so
+   one cached read serves all of them; the dispatch trigger is server-side
+   anyway; and evidence for billing must be stored at the time of the event, not
+   re-fetched. The browser path shipped here is stage one and the payload shape
+   does not change on the way to Core.
+7. Two gaps against `js/dynamic-form.js` worth closing: preset values are
    supported by the renderer but not exposed as a CMS parameter, and the success
    screen offers no way to submit another response.
+8. Smaller, recorded in the design requests: the top nav in the reference mockup
+   carries different items and a different primary label; both detail pages read
+   the fixture directly and answer an unknown id with an empty state rather than
+   a 404; on mobile the map's live-conditions chip can sit over a pin; and the
+   button label ships as `Request a quote` where the brief said "request form".
 
 `config-behavior-check`, `care-runtime-check`, `route-smoke`,
 `s7-regression-check` and `s6-cms-export-check` fail on a machine without
@@ -494,18 +583,25 @@ clean checkout before treating any of them as broken.
 
 ## Exact next action
 
-Before opening new product work, verify the new login template end-to-end:
+The next phase is wiring Granite Ridge to real data. Do not start by writing an
+adapter — start by finding out what exists:
 
-1. confirm the anonymous PageContext used by Core Auth resolves to template id
-   `17c450d7-963e-4837-891a-15d01fb35c80` and is `excludeFromSeo`;
-2. fetch the CMS login URL anonymously and confirm the six Core Auth
-   placeholders remain unsubstituted there;
-3. exercise portal redirect → Core Auth login → portal return, plus logout and
-   failed-login states, without exposing credentials in logs;
-4. if successful, ask the user for commit scope, because the worktree contains
-   both this login work and unrelated/user-owned dirty changes.
+1. Enumerate what Core actually answers today for this tenant: resource types,
+   entity types, and whether anything resembling Property, Contract, Invoice,
+   Appointment or Support Ticket is published. Record the real endpoint and
+   payload for each, the way `content/form-types/` snapshots the form contract.
+2. Pick the one entity with a real endpoint and wire that single module end to
+   end — adapter, normalizer, live check — leaving every other module on
+   fixtures. The `dataMode` switch already supports a partially live portal.
+3. Only then decide whether weather moves behind Core, using the shape in
+   `design-requests/overview-weather-provider-xweather.md`.
 
-Resume prompt for a new task:
+Ask the user before opening any live contract. Nothing in this tenant has ever
+called a ServiceWand backend, and the packaged template asserts that it does
+not — `granite-ridge-portal-manual-check` refuses a service base, an auth
+contract or live data mode in the fixture package.
+
+Resume prompt for a new session:
 
 ```text
 Read app-templates/customer-portal/HANDOFF.md and AGENTS.md, verify the recorded
