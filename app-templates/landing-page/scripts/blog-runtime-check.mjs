@@ -48,6 +48,28 @@ assert.equal(
   "/явный.png",
 );
 
+const taxonomyPost = blog.normalizePost({
+  permalink: "p",
+  categories: [{ id: 3, name: "Automation", description: "", slug: "automation" }],
+  tags: [{ id: 11, name: "Routing", description: "", slug: "routing" }],
+}, "en");
+assert.deepEqual(taxonomyPost.categories.map((entry) => entry.name), ["Automation"]);
+assert.deepEqual(taxonomyPost.tags.map((entry) => entry.slug), ["routing"]);
+assert.equal(taxonomyPost.category, "Automation");
+
+const legacyPost = blog.normalizePost({
+  permalink: "p",
+  categories: [{ id: 2, nls: { en: { NAME: "Snow Removal" } } }],
+}, "en");
+assert.equal(legacyPost.category, "Snow Removal");
+assert.equal(legacyPost.tags.length, 0);
+
+const localizedTaxonomy = blog.normalizePost({
+  permalink: "p",
+  categories: [{ id: 4, name: { en: "Reporting", fr: "Rapports" }, slug: "reporting" }],
+}, "fr");
+assert.equal(localizedTaxonomy.category, "Rapports");
+
 const hydratable = blog.normalizePost({ code: "INTERNAL_CODE", permalink: "internal-code" }, "fr");
 assert.equal(hydratable.title, "");
 assert.equal(hydratable.permalink, "internal-code");

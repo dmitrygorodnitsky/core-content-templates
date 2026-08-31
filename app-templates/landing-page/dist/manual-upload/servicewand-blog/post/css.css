@@ -445,6 +445,24 @@
 
 .blog-post-page__document:empty { display: none; }
 
+.blog-post-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: min(100%, 48rem);
+  margin: clamp(2.25rem, 4vw, 3rem) auto 0;
+}
+
+.blog-post-page__tag {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(151, 162, 184, 0.45);
+  border: 1px solid color-mix(in srgb, var(--color-gray-blue, #97A2B8) 45%, transparent);
+  border-radius: var(--radius-pill, 6.25rem);
+  color: var(--color-text, #5C6474);
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
 .blog-post-page__author-card {
   display: flex;
   align-items: flex-start;

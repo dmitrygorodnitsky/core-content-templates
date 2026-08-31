@@ -32,6 +32,7 @@
     { "code": "related_title", "type": "LOCALIZED_STRING_SS", "default": "More field service insights", "name": "Blog Post · Related H2", "description": "Related articles heading.", "preserve_default": true },
     { "code": "related_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Related blog articles", "name": "Blog Post · Related Aria Label", "description": "Accessible label for related article cards.", "preserve_default": true },
     { "code": "read_article_label", "type": "LOCALIZED_STRING_SS", "default": "Read article", "name": "Blog Post · Read Article Label", "description": "Related card action label.", "preserve_default": true },
+    { "code": "tags_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Article tags", "name": "Blog Post · Tags Aria Label", "description": "Accessible label for the article tag list.", "preserve_default": true },
     { "code": "share_aria_label", "type": "LOCALIZED_STRING_SS", "default": "Share this article", "name": "Blog Post · Share Aria Label", "description": "Accessible label for the share button group.", "preserve_default": true },
     { "code": "copy_link_label", "type": "LOCALIZED_STRING_SS", "default": "Copy link", "name": "Blog Post · Copy Link Label", "description": "Accessible label of the copy-link share button.", "preserve_default": true },
     { "code": "link_copied_label", "type": "LOCALIZED_STRING_SS", "default": "Link copied", "name": "Blog Post · Link Copied Label", "description": "Confirmation announced after the article link is copied.", "preserve_default": true },

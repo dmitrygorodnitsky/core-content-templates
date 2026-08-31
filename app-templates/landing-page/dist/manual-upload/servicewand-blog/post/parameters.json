@@ -227,6 +227,19 @@
     }
   },
   {
+    "code": "FIELD_SERVICE_BLOG_POST_TAGS_ARIA_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "Blog Post · Tags Aria Label",
+        "DESCRIPTION": "Accessible label for the article tag list."
+      }
+    },
+    "value": {
+      "en": "Article tags"
+    }
+  },
+  {
     "code": "AUTHOR_AVATAR",
     "type": "STRING",
     "nls": {

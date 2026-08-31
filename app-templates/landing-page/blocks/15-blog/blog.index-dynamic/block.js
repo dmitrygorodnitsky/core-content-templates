@@ -69,12 +69,19 @@
     return link;
   }
 
+  function categoryNames(post) {
+    if (!post.categories || !post.categories.length) return post.category ? [post.category] : [];
+    return post.categories.map(function (entry) { return entry.name; });
+  }
+
   function categoriesOf(posts) {
     var categories = [];
     posts.forEach(function (post) {
-      if (post.category && categories.indexOf(post.category) < 0) categories.push(post.category);
+      categoryNames(post).forEach(function (name) {
+        if (name && categories.indexOf(name) < 0) categories.push(name);
+      });
     });
-    return categories;
+    return categories.sort();
   }
 
   function renderChips(root, state, onChange) {
@@ -130,7 +137,9 @@
     function visiblePosts() {
       if (!state.selected.length) return state.posts;
       return state.posts.filter(function (post) {
-        return state.selected.indexOf(post.category) >= 0;
+        return categoryNames(post).some(function (name) {
+          return state.selected.indexOf(name) >= 0;
+        });
       });
     }
 

@@ -190,6 +190,9 @@ Backend contract:
 - the root template also declares \`SEO_LD_SCHEMA\` in its own head, so the same post schema renders twice unless the operator clears one of the two slots
 - the head intentionally omits \`<title>\` and \`<meta name="description">\`: the root template owns both, and duplicating them in an included child head yields two competing tags
 - client SEO only fills tags the server left empty or placeholder-valued, so a server-substituted metadata value always wins
+- taxonomy: posts carry \`categories\` and \`tags\` as \`{id, name, description, slug}\`; the legacy \`{id, nls:{<locale>:{NAME}}}\` shape is still accepted, and \`name\`/\`description\` may be a plain string or a language map
+- \`GET /{locale}/core-cms/public/{organization}/blog-post/{categories|tags}.json\` lists enabled taxonomy; the locale must stay in the path because \`?locale=\` redirects
+- a post is public only while it is enabled and every one of its categories is enabled; disabled tags are omitted from responses but do not hide the post
 - card and SEO images resolve in order: metadata \`HERO_IMAGE_URL\`, the \`heroImage\` field of the list payload (entity id or URL), then the first image of the server-rendered article fetched during hydration; a hydrated content image is never duplicated as the post-page hero banner
 - missing display titles are omitted; an internal code, slug, or permalink is never shown as a title
 

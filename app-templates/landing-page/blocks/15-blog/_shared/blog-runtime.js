@@ -73,6 +73,29 @@
     return "";
   }
 
+  function taxonomyEntry(entry, locale) {
+    if (!entry || typeof entry !== "object") return null;
+    var name = localizedText(entry.name, locale, "");
+    if (!name && entry.nls) {
+      var nls = entry.nls[normalizeLocale(locale)] || entry.nls.en || entry.nls.default;
+      name = firstText(nls, ["NAME", "name"], locale);
+    }
+    if (!name) return null;
+    return {
+      id: String(entry.id || ""),
+      name: name,
+      slug: String(entry.slug || ""),
+      description: localizedText(entry.description, locale, "")
+    };
+  }
+
+  function taxonomyOf(list, locale) {
+    if (!Array.isArray(list)) return [];
+    return list.map(function (entry) {
+      return taxonomyEntry(entry, locale);
+    }).filter(Boolean);
+  }
+
   function normalizePost(post, locale) {
     post = post && typeof post === "object" ? post : {};
     var metadata = post.metadata && typeof post.metadata === "object" ? post.metadata : {};
@@ -89,20 +112,21 @@
       heroImageUrlOf(post) ||
       firstText(post, ["imageUrl", "coverUrl"], locale);
     var imageAlt = firstText(metadata, ["HERO_IMAGE_ALT", "heroImageAlt", "IMAGE_ALT", "imageAlt"], locale) || title;
-    var category = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
-    if (!category && Array.isArray(post.categories)) {
-      for (var i = 0; i < post.categories.length && !category; i += 1) {
-        var categoryNls = post.categories[i] && post.categories[i].nls;
-        var localizedCategory = categoryNls && (categoryNls[normalizeLocale(locale)] || categoryNls.en);
-        category = firstText(localizedCategory, ["NAME", "name"], locale);
-      }
+    var categories = taxonomyOf(post.categories, locale);
+    var tags = taxonomyOf(post.tags, locale);
+    var metadataCategory = firstText(metadata, ["CATEGORY_NAME", "categoryName", "CATEGORY"], locale);
+    if (metadataCategory && !categories.some(function (entry) { return entry.name === metadataCategory; })) {
+      categories = [{ id: "", name: metadataCategory, slug: "" }].concat(categories);
     }
+    var category = categories.length ? categories[0].name : "";
     return {
       id: String(post.id || ""),
       permalink: permalink,
       title: title,
       summary: summary,
       category: category,
+      categories: categories,
+      tags: tags,
       author: firstText(metadata, ["AUTHOR_NAME", "authorName", "AUTHOR"], locale),
       authorAvatarUrl: firstText(metadata, ["AUTHOR_AVATAR", "authorAvatar", "AUTHOR_AVATAR_URL", "authorAvatarUrl", "AUTHOR_IMAGE_URL", "authorImageUrl"], locale),
       authorBio: firstText(metadata, ["AUTHOR_BIO", "authorBio"], locale),
@@ -277,6 +301,18 @@
     return next(0);
   }
 
+  function loadTaxonomy(config, kind) {
+    if (config.fixtureUrl) return Promise.resolve([]);
+    var url = localizedApiBase(config) + "/public/" + encodeURIComponent(config.organization) +
+      "/blog-post/" + kind + ".json";
+    return fetch(url, { credentials: "omit", headers: { Accept: "application/json" } })
+      .then(checkResponse)
+      .then(function (data) {
+        return taxonomyOf(Array.isArray(data) ? data : [], config.locale);
+      })
+      .catch(function () { return []; });
+  }
+
   function buildIndexUrl(config) {
     var locale = config.locale || "";
     var prefix = localeFromPath(global.location && global.location.pathname) ? "/" + locale : "";
@@ -321,6 +357,7 @@
     formatDate: formatDate,
     getLocale: getLocale,
     loadPosts: loadPosts,
+    loadTaxonomy: loadTaxonomy,
     localizedText: localizedText,
     normalizePost: normalizePost
   };

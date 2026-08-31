@@ -175,6 +175,28 @@
     card.hidden = false;
   }
 
+  function renderTags(root, post) {
+    var host = root.querySelector("[data-blog-tags]");
+    if (!host || !post.tags || !post.tags.length) return;
+    host.textContent = "";
+    post.tags.forEach(function (tag) {
+      host.appendChild(element("span", "blog-post-page__tag", tag.name));
+    });
+    host.hidden = false;
+  }
+
+  function relevanceOf(post, current) {
+    var ids = function (list) {
+      return (list || []).map(function (entry) { return entry.id || entry.name; });
+    };
+    var currentTags = ids(current.tags);
+    var currentCategories = ids(current.categories);
+    var shared = function (list, reference) {
+      return ids(list).filter(function (value) { return reference.indexOf(value) >= 0; }).length;
+    };
+    return shared(post.tags, currentTags) * 2 + shared(post.categories, currentCategories);
+  }
+
   function renderCurrent(root, post, config) {
     var title = root.querySelector("[data-blog-current-title]");
     if (title) title.textContent = post.title;
@@ -204,6 +226,7 @@
       hero.appendChild(image);
       hero.hidden = false;
     }
+    renderTags(root, post);
     renderAuthorCard(root, post);
     applySeo(root, post);
   }
@@ -324,7 +347,16 @@
   function renderRelated(root, posts, current, config) {
     var limit = Math.max(1, Number(root.getAttribute("data-blog-related-limit") || 3));
     var readLabel = root.getAttribute("data-blog-read-label") || "Read article";
-    var list = posts.filter(function (post) { return post.permalink !== current; }).slice(0, limit);
+    var currentPost = posts.find(function (post) { return post.permalink === current; });
+    var candidates = posts.filter(function (post) { return post.permalink !== current; });
+    if (currentPost) {
+      candidates = candidates.map(function (post, index) {
+        return { post: post, score: relevanceOf(post, currentPost), index: index };
+      }).sort(function (left, right) {
+        return right.score - left.score || left.index - right.index;
+      }).map(function (entry) { return entry.post; });
+    }
+    var list = candidates.slice(0, limit);
     if (!list.length) return;
     var grid = root.querySelector("[data-blog-related]");
     list.forEach(function (post) {

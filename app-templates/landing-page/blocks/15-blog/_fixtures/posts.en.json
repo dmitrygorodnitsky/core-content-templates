@@ -7,7 +7,6 @@
       "metadata": {
         "TITLE": "A practical guide to field service routing",
         "META_DESCRIPTION": "Learn how field service teams improve route planning and dispatch visibility without adding operational overhead.",
-        "CATEGORY_NAME": "Field operations",
         "PUBLISHED_AT": "2026-07-28",
         "AUTHOR_NAME": "ServiceWand Editorial Team",
         "READING_TIME": "7 min read",
@@ -15,7 +14,29 @@
         "HERO_IMAGE_ALT": "Stylized route line connecting service stops",
         "AUTHOR_BIO": "Field operations editor at ServiceWand. Writes about dispatch, routing, and the systems that keep promises to customers.",
         "AUTHOR_AVATAR": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23AFC5CF'/%3E%3Ccircle cx='48' cy='38' r='16' fill='%23FFFFFF' opacity='0.9'/%3E%3Cpath d='M16 88c4-18 16-26 32-26s28 8 32 26z' fill='%23FFFFFF' opacity='0.9'/%3E%3C/svg%3E"
-      }
+      },
+      "categories": [
+        {
+          "id": 1,
+          "name": "Field operations",
+          "description": "",
+          "slug": "field-operations"
+        }
+      ],
+      "tags": [
+        {
+          "id": 11,
+          "name": "Routing",
+          "description": "",
+          "slug": "routing"
+        },
+        {
+          "id": 12,
+          "name": "Dispatch",
+          "description": "",
+          "slug": "dispatch"
+        }
+      ]
     },
     {
       "id": "fixture-proof",
@@ -24,11 +45,26 @@
       "metadata": {
         "TITLE": "Why service proof matters after every job",
         "META_DESCRIPTION": "See how field teams use photos, notes, signatures, and timestamps to create trustworthy service records.",
-        "CATEGORY_NAME": "Customer experience",
         "PUBLISHED_AT": "2026-07-21",
         "AUTHOR_NAME": "ServiceWand Editorial Team",
         "READING_TIME": "6 min read"
-      }
+      },
+      "categories": [
+        {
+          "id": 2,
+          "name": "Customer experience",
+          "description": "",
+          "slug": "customer-experience"
+        }
+      ],
+      "tags": [
+        {
+          "id": 13,
+          "name": "Service proof",
+          "description": "",
+          "slug": "service-proof"
+        }
+      ]
     },
     {
       "id": "fixture-automation",
@@ -37,13 +73,34 @@
       "metadata": {
         "TITLE": "Where to start with field service automation",
         "META_DESCRIPTION": "A framework for choosing field service workflows that benefit most from practical automation.",
-        "CATEGORY_NAME": "Automation",
         "PUBLISHED_AT": "2026-07-14",
         "AUTHOR_NAME": "ServiceWand Editorial Team",
         "READING_TIME": "8 min read",
         "HERO_IMAGE_URL": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23EDE7DC'/%3E%3Cstop offset='1' stop-color='%23C0AB8E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='500' fill='url(%23g)'/%3E%3Crect x='120' y='140' width='160' height='160' rx='24' fill='%23FFFFFF' opacity='0.75'/%3E%3Crect x='330' y='190' width='160' height='160' rx='24' fill='%23FFFFFF' opacity='0.55'/%3E%3Crect x='540' y='240' width='160' height='160' rx='24' fill='%23FFFFFF' opacity='0.4'/%3E%3C/svg%3E",
         "HERO_IMAGE_ALT": "Stylized workflow steps fading into automation"
-      }
+      },
+      "categories": [
+        {
+          "id": 3,
+          "name": "Automation",
+          "description": "",
+          "slug": "automation"
+        },
+        {
+          "id": 1,
+          "name": "Field operations",
+          "description": "",
+          "slug": "field-operations"
+        }
+      ],
+      "tags": [
+        {
+          "id": 11,
+          "name": "Routing",
+          "description": "",
+          "slug": "routing"
+        }
+      ]
     },
     {
       "id": "fixture-metrics",
@@ -52,11 +109,19 @@
       "metadata": {
         "TITLE": "Field service metrics operations leaders should track",
         "META_DESCRIPTION": "Use a focused set of field service metrics to improve capacity, margins, and customer outcomes.",
-        "CATEGORY_NAME": "Reporting",
         "PUBLISHED_AT": "2026-07-07",
         "AUTHOR_NAME": "ServiceWand Editorial Team",
         "READING_TIME": "9 min read"
-      }
+      },
+      "categories": [
+        {
+          "id": 4,
+          "name": "Reporting",
+          "description": "",
+          "slug": "reporting"
+        }
+      ],
+      "tags": []
     }
   ],
   "resultSize": 4
