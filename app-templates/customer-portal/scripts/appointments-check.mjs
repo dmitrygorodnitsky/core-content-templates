@@ -80,6 +80,33 @@ assert.equal(storm.primary.action, "service.requestForm");
 assert.equal(routeRegistry.appointments.module, "appointmentsTimeline",
   "the spa already owns the module id 'appointments'");
 
+const contracts = new Set(overview.contracts.map((contract) => contract.number));
+for (const property of overview.properties) {
+  assert.ok(property.contract, `${property.name} belongs to no contract, so its property page has nothing to link to`);
+  assert.ok(contracts.has(property.contract), `${property.name} points at contract ${property.contract}, which does not exist`);
+}
+const quoteSiteIds = new Set(graniteRidgeSnowFixture.proposals.sites.map((site) => site.id));
+for (const property of overview.properties.filter((item) => item.quoteSiteId)) {
+  assert.ok(quoteSiteIds.has(property.quoteSiteId), `${property.name} points at quote site ${property.quoteSiteId}, which does not exist`);
+}
+assert.equal(
+  overview.properties.filter((item) => item.quoteSiteId).length,
+  quoteSiteIds.size,
+  "every quoted site must be reachable from exactly one property page",
+);
+
+assert.equal(routeRegistry["property.detail"].module, "properties");
+assert.equal(routeRegistry["visit.detail"].module, "appointmentsTimeline");
+assert.equal(routeRegistry["visit.detail"].path, "/visits/:id",
+  "the spa already answers /appointments/:id, so the storm visit takes its own path");
+assert.notEqual(routeRegistry["visit.detail"].path, routeRegistry["appointment.detail"].path);
+assert.ok(storm.modules.includes("properties"), "a property link that lands on the default route is worse than no link");
+
+for (const row of rows) {
+  const property = overview.properties.find((item) => item.id === row.id);
+  assert.ok(property, `row ${row.id} does not resolve back to a property, so both its links would dead-end`);
+}
+
 const formUrl = (value) => readPortalConfig({ dataset: { portalVertical: "snow", portalRequestFormUrl: value } }).requestFormUrl;
 assert.equal(formUrl("https://dev-1.servicewand.com/form"), "https://dev-1.servicewand.com/form");
 assert.equal(formUrl("http://dev-1.servicewand.com/form"), "", "plain http is discarded rather than opened");
@@ -89,4 +116,4 @@ assert.equal(formUrl(""), "");
 assert.equal(formUrl(undefined), "");
 
 console.log("appointments-check ok: " + rows.length + " rows across " + resourceNames(rows).length
-  + " resources, resource sort stable by time, date filter clears to the whole week, Shop, Services, checkout and the cart gone from stormRetail, and a form address that only opens over https");
+  + " resources, resource sort stable by time, date filter clears to the whole week, Shop, Services, checkout and the cart gone from stormRetail, a form address that only opens over https, and every row linking to a property and a visit that exist");

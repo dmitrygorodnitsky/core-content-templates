@@ -11,6 +11,8 @@ import { Products } from "./routes/ProductsPage.js";
 import { Checkout } from "./routes/CheckoutPage.js";
 import { Overview } from "./routes/OverviewPage.js";
 import { Appointments as AppointmentsTimeline } from "./routes/AppointmentsPage.js";
+import { VisitDetail } from "./routes/VisitDetailPage.js";
+import { PropertyDetail } from "./routes/PropertyDetailPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { Profile } from "./routes/ProfilePage.js";
@@ -159,6 +161,8 @@ export function renderRoute() {
   switch (resolved.id) {
     case "overview":    return Overview();
     case "appointments": return AppointmentsTimeline();
+    case "visit.detail": return VisitDetail();
+    case "property.detail": return PropertyDetail();
     case "orders.list": return isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
     case "order.detail": return OrderDetail();
     case "appointment.detail": return isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");
@@ -210,6 +214,8 @@ function careAccessReason() {
 function applyRouteParams(match) {
   if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
   if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+  if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+  if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
   if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
   if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
   if (match.id === "product.detail" && match.params.id) state.spaCurrentProduct = match.params.id;
@@ -221,6 +227,8 @@ function paramsForRoute(routeId) {
     return { id: state.currentOrderId };
   }
   if (routeId === "proposal.detail") return { id: state.currentSiteId };
+  if (routeId === "visit.detail") return { id: state.visitId };
+  if (routeId === "property.detail") return { id: state.propertyId };
   if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
   if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
   if (routeId === "product.detail") return { id: state.spaCurrentProduct };
@@ -234,6 +242,7 @@ function queryFrom(value) {
 
 function routeFamily(routeId) {
   if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
+  if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
   if (routeId === "proposals.list" || routeId === "proposal.detail") return "proposals";
   if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
   if (routeId === "products" || routeId === "product.detail") return "products";

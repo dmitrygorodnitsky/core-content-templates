@@ -33,7 +33,7 @@ try {
   assert.match(html, /data-portal-profile="stormRetail"/);
   assert.match(html, /data-portal-theme="snow"/);
   assert.match(html, /data-portal-default-route="overview"/);
-  assert.match(html, /data-portal-enabled-modules="overview,appointmentsTimeline,orders,calendar,activity,proposals,care,pricing,profile,support"/);
+  assert.match(html, /data-portal-enabled-modules="overview,appointmentsTimeline,properties,orders,calendar,activity,proposals,care,pricing,profile,support"/);
   assert.doesNotMatch(html, /data-portal-nav-products-label|data-portal-nav-services-label/, "Shop and Services are retired for this tenant");
   assert.match(html, /data-portal-nav-appointments-label="Appointments"/);
   assert.match(html, /data-portal-primary-cta-label="Request a quote"/);

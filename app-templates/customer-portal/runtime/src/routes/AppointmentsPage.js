@@ -106,12 +106,18 @@ function Table(rows, direction) {
         row.day ? text("div", "appt__sub", row.day) : null,
       ]),
       h("td", null, [
-        text("div", "appt__name", row.name),
-        text("div", "appt__sub", row.address),
+        h("button", { "class": "appt__link", "data-action": "appointments.openProperty", "data-id": row.id,
+          "aria-label": "Open " + row.name }, [
+          text("span", "appt__name", row.name),
+          text("span", "appt__sub", row.address),
+        ]),
       ]),
       h("td", null, [
-        text("span", "status-badge status-badge--" + meta.tone, meta.label),
-        text("div", "appt__sub", row.service),
+        h("button", { "class": "appt__link", "data-action": "appointments.openVisit", "data-id": row.id,
+          "aria-label": "Open the " + row.service + " visit at " + row.name }, [
+          text("span", "status-badge status-badge--" + meta.tone, meta.label),
+          text("span", "appt__sub", row.service),
+        ]),
       ]),
       h("td", { "class": "appt__time" }, row.est || "—"),
       h("td", { "class": "appt__time" }, row.actual || "—"),

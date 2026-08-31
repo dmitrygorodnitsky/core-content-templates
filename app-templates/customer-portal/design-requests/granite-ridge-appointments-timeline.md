@@ -20,6 +20,27 @@ real window, and a visit that has started but not finished shows an open end
 (`5:38 AM – …`). Without at least one of each the columns look redundant, so
 the fixture carries three completed visits, one in progress and ten scheduled.
 
+## Where the two links go
+
+The address opens the property, the state and service open the visit, and the
+map tooltip's *Go to Property* finally lands somewhere — it used to drop the
+customer on the contracts list.
+
+`property.detail` at `/properties/:id` answers "what is this place": the
+contract it belongs to and that contract's plan, its service zone, the quoted
+lot size and per-visit price when the address is one of the four on the
+current quote, any open request, the current or next visit, and the last one.
+
+`visit.detail` at `/visits/:id` answers "what happened here": resource, state,
+property, address, and the estimated against the actual window.
+
+Two structural notes. Properties now carry `contract`, which they did not —
+the map, the quote sites and the contracts were three lists that never
+referenced each other. And the visit page lives at `/visits/:id`, not
+`/appointments/:id`, because the spa already answers that path with its own
+appointment detail; sharing it would make the match order decide which page a
+customer gets.
+
 ## Days are indices, not dates
 
 Appointments carry `dayIndex` into the weather timeline, not a date string.
@@ -87,5 +108,6 @@ JTE renders as its own literal marker rather than as an empty string.
    reference mockup said "Request Free Quote" — a button labelled after the
    document rather than the outcome reads oddly. It is one attribute,
    `data-portal-primary-cta-label`, if the brief meant it literally.
-3. The table has no row action. Clicking a row could open the visit, but
-   `appointment.detail` is a spa route today and there is no storm equivalent.
+3. Both detail pages read the fixture directly. A real one would fetch a
+   property and a visit by id, and would have to answer for an id that no
+   longer exists — today that renders an empty state rather than a 404.

@@ -3074,6 +3074,64 @@ button { font-family: inherit; }
 
 .appt__count { font-size: 12.5px; color: var(--ink-3); margin-top: 12px; }
 
+.appt__link {
+  display: block; width: 100%; padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+
+.appt__link .appt__name,
+.appt__link .appt__sub { display: block; }
+
+.appt__link:hover .appt__name { color: var(--accent); }
+
+.appt__link:hover .status-badge { filter: brightness(.96); }
+
+.ov-slot__link {
+  display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+
+.ov-slot__link .ov-row__title,
+.ov-slot__link .ov-row__meta { display: block; }
+
+.ov-slot__link:hover .ov-row__title { color: var(--accent); }
+
+.prop-head { display: flex; align-items: flex-start; gap: 14px; margin: 6px 0 18px; }
+
+.prop-head__title { font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin: 0; }
+
+.prop-head__addr { font-size: 14px; color: var(--ink-2); margin-top: 5px; }
+
+.prop-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; margin-bottom: 16px; }
+
+.prop-fact__label { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); }
+
+.prop-fact__value { font-size: 14.5px; font-weight: 650; margin-top: 4px; }
+
+.prop-section__title { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+
+.prop-ticket { margin-bottom: 16px; }
+
+.prop-ticket__title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+
+.prop-visit {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--hair);
+  background: rgba(var(--glass), .5); cursor: pointer;
+}
+
+.prop-visit:hover { background: rgba(var(--glass), .9); }
+
+.prop-visit__title { font-weight: 700; font-size: 14.5px; }
+
+.prop-visit__meta { font-size: 13px; color: var(--ink-2); margin-top: 3px; }
+
+.prop-visit__caret { color: var(--ink-3); font-size: 17px; }
+
+.prop-last { margin-top: 14px; }
+
+.prop-visits__foot { margin-top: 14px; }
+
 /* manual portal source: runtime/styles/responsive.css */
 /* responsive.css — container-width (.vw-mobile / .vw-tablet / .vw-compact) overrides */
 
@@ -3335,6 +3393,10 @@ button { font-family: inherit; }
 .vw-mobile .appt__table { font-size: 12.5px; min-width: 780px; }
 
 .vw-mobile .appt-chip { padding: 7px 11px; font-size: 12.5px; }
+
+.vw-mobile .prop-facts { grid-template-columns: 1fr; }
+
+.vw-mobile .prop-head__title { font-size: 24px; }
 
 /* manual portal source: runtime/styles/seo.css */
 /* seo.css — public SEO landing sections (route: seo.landing)
@@ -3652,7 +3714,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   data-portal-default-mode="light"
   data-portal-router-mode="hash"
   data-portal-default-route="overview"
-  data-portal-enabled-modules="overview,appointmentsTimeline,orders,calendar,activity,proposals,care,pricing,profile,support"
+  data-portal-enabled-modules="overview,appointmentsTimeline,properties,orders,calendar,activity,proposals,care,pricing,profile,support"
   data-portal-auth-mode="fixture"
   data-portal-error-mode="error"
   data-portal-data-mode="fixture"
@@ -4308,8 +4370,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       { label: "Invoices & payments", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", q: "I have a billing question" },
       { label: "Report an issue after service", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I want to report an issue" }
     ];
-    function chatReply(text11) {
-      var t = (text11 || "").toLowerCase();
+    function chatReply(text13) {
+      var t = (text13 || "").toLowerCase();
       if (/(where|track|technician|daniel|coming|arriv)/.test(t)) return "Daniel is about 14 minutes away \u2014 3 stops out. You can watch his live location in the Orders tab.";
       if (/(reschedul|move|change.*(time|date|visit)|cancel)/.test(t)) return "Sure \u2014 which visit would you like to move? You can also reschedule straight from the order details.";
       if (/(bill|invoice|charge|pay|refund|price)/.test(t)) return "Your last invoice #SV-2381 was $480, paid Jan 12. Want me to email you a copy?";
@@ -5352,6 +5414,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         lat: site[3],
         lon: site[4],
         zone: site[2],
+        contract: index % 3 === 0 ? "1241" : "1234",
         appointment: null,
         ticket: null,
         lastService: { service: index % 3 === 0 ? "Walkway de-icing" : "Lot & drive clearing", when: "Jan " + (2 + index % 11) }
@@ -5665,6 +5728,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           lat: 39.73336,
           lon: -105.12205,
           zone: "central",
+          contract: "1234",
+          quoteSiteId: "gr-foothill",
           appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, resource: "Marcus H.", est: { start: "5:30 AM", end: "6:20 AM" }, actual: { start: "5:38 AM", end: "" } },
           ticket: null,
           lastService: { service: "Roof snow & ice dam", when: "Jan 12" }
@@ -5676,6 +5741,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           lat: 39.72431,
           lon: -105.23627,
           zone: "north",
+          contract: "1234",
+          quoteSiteId: "gr-tabor",
           appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "9:00 AM", end: "9:40 AM" }, actual: null },
           ticket: null,
           lastService: { service: "Lot & drive clearing", when: "Jan 5" }
@@ -5687,6 +5754,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           lat: 39.80498,
           lon: -105.0911,
           zone: "north",
+          contract: "1241",
+          quoteSiteId: "gr-yarrow",
           appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", dayIndex: 3, resource: "Kyle B.", est: { start: "11:30 AM", end: "12:45 PM" }, actual: null },
           ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
           lastService: { service: "Refreeze re-treat", when: "Dec 19" }
@@ -5698,6 +5767,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           lat: 39.67564,
           lon: -105.08018,
           zone: "south",
+          contract: "1241",
+          quoteSiteId: "gr-cinnamon",
           appointment: null,
           ticket: null,
           lastService: { service: "Lot & drive clearing", when: "Dec 28" }
@@ -6427,7 +6498,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         { key: "support", label: "Support" }
       ],
       primary: { label: "Request a quote", action: "service.requestForm" },
-      modules: ["overview", "appointmentsTimeline", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
+      modules: ["overview", "appointmentsTimeline", "properties", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
       weatherCalendar: true,
       showCart: false,
       drawerTitle: "Request service"
@@ -6478,6 +6549,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
     overview: { id: "overview", path: "/overview", module: "overview" },
     appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
+    "visit.detail": { id: "visit.detail", path: "/visits/:id", module: "appointmentsTimeline", param: "id" },
+    "property.detail": { id: "property.detail", path: "/properties/:id", module: "properties", param: "id" },
     "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
     "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
     "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },
@@ -6771,6 +6844,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     moduleStatus: {},
     moduleData: {},
     apptDay: null,
+    visitId: null,
+    propertyId: null,
     apptSort: "asc",
     liveWeather: null,
     liveWeatherState: "off",
@@ -7016,11 +7091,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }).join(" ");
   }
   function opaqueRef3(prefix, value) {
-    var text11 = String(value || prefix);
+    var text13 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text11.length; index += 1) {
-      var code = text11.charCodeAt(index);
+    for (var index = 0; index < text13.length; index += 1) {
+      var code = text13.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -11362,9 +11437,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
         appointment.time ? text7("span", "ov-slot__time", appointment.time) : null,
         h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
-        h("div", { style: "flex:1;min-width:0" }, [
-          text7("div", "ov-row__title", property.name),
-          text7("div", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
+        h("button", {
+          "class": "ov-slot__link",
+          "data-action": "appointments.openVisit",
+          "data-id": property.id,
+          "aria-label": "Open the " + appointment.service + " visit at " + property.name
+        }, [
+          text7("span", "ov-row__title", property.name),
+          text7("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
         ])
       ]));
     });
@@ -11679,12 +11759,26 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           row.day ? text8("div", "appt__sub", row.day) : null
         ]),
         h("td", null, [
-          text8("div", "appt__name", row.name),
-          text8("div", "appt__sub", row.address)
+          h("button", {
+            "class": "appt__link",
+            "data-action": "appointments.openProperty",
+            "data-id": row.id,
+            "aria-label": "Open " + row.name
+          }, [
+            text8("span", "appt__name", row.name),
+            text8("span", "appt__sub", row.address)
+          ])
         ]),
         h("td", null, [
-          text8("span", "status-badge status-badge--" + meta.tone, meta.label),
-          text8("div", "appt__sub", row.service)
+          h("button", {
+            "class": "appt__link",
+            "data-action": "appointments.openVisit",
+            "data-id": row.id,
+            "aria-label": "Open the " + row.service + " visit at " + row.name
+          }, [
+            text8("span", "status-badge status-badge--" + meta.tone, meta.label),
+            text8("span", "appt__sub", row.service)
+          ])
         ]),
         h("td", { "class": "appt__time" }, row.est || "\u2014"),
         h("td", { "class": "appt__time" }, row.actual || "\u2014")
@@ -11695,6 +11789,163 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
   }
   function text8(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/VisitDetailPage.js
+  function currentVisit() {
+    var model = currentOverview();
+    var timeline = model && model.weather && model.weather.timeline || [];
+    var rows = appointmentRows(model && model.properties, timeline);
+    return rows.find(function(row) {
+      return row.id === state.visitId;
+    }) || null;
+  }
+  function VisitDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "visit.detail", "data-visual-id": "visit-detail" });
+    var visit = currentVisit();
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
+    if (!visit) {
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Visit not found", desc: "This visit is no longer on the schedule." }));
+      return page;
+    }
+    var meta = stateMeta(visit.state);
+    page.appendChild(h("div", { "class": "prop-head", "data-state": visit.state.toLowerCase() }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text9("h1", "prop-head__title", visit.service),
+        text9("div", "prop-head__addr", visit.day)
+      ]),
+      text9("span", "status-badge status-badge--" + meta.tone, meta.label)
+    ]));
+    page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "visit-facts", "data-visual-id": "visit-facts" }, [
+      fact("Resource", visit.resource),
+      fact("Property", visit.name, "appointments.openProperty", visit.id),
+      fact("Address", visit.address),
+      fact("Estimated", visit.est || "\u2014"),
+      fact("Actual", visit.actual || "Not started")
+    ]));
+    return page;
+  }
+  function fact(label, value, action, id) {
+    return h("div", { "class": "prop-fact" }, [
+      text9("div", "prop-fact__label", label),
+      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text9("div", "prop-fact__value", value)
+    ]);
+  }
+  function text9(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/PropertyDetailPage.js
+  function currentProperty() {
+    var model = currentOverview();
+    var properties = model && model.properties || [];
+    return properties.find(function(property) {
+      return property.id === state.propertyId;
+    }) || null;
+  }
+  function PropertyDetail() {
+    var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+    var property = currentProperty();
+    if (!property) {
+      page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Property not found", desc: "This address is not on your contract." }));
+      return page;
+    }
+    var status = propertyStatus(property);
+    var contract = contractFor(property);
+    var quote = quoteSiteFor(property);
+    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
+    page.appendChild(h("div", { "class": "prop-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text10("h1", "prop-head__title", property.name),
+        text10("div", "prop-head__addr", property.address)
+      ]),
+      text10("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label)
+    ]));
+    page.appendChild(h(
+      "div",
+      { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
+      facts(property, contract, quote).map(function(item) {
+        return h("div", { "class": "prop-fact" }, [
+          text10("div", "prop-fact__label", item.label),
+          item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text10("div", "prop-fact__value", item.value)
+        ]);
+      })
+    ));
+    if (property.ticket) {
+      page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
+        text10("div", "prop-section__title", "Open request"),
+        text10("div", "prop-ticket__title", property.ticket.title),
+        h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
+      ]));
+    }
+    page.appendChild(VisitCard(property));
+    return page;
+  }
+  function VisitCard(property) {
+    var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
+      text10("div", "prop-section__title", "Service")
+    ]);
+    if (property.appointment) {
+      var meta = stateMeta(property.appointment.state);
+      card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text10("div", "prop-visit__title", property.appointment.service),
+          text10("div", "prop-visit__meta", property.appointment.when)
+        ]),
+        text10("span", "status-badge status-badge--" + meta.tone, meta.label),
+        text10("span", "prop-visit__caret", "\u203A")
+      ]));
+    } else {
+      card.appendChild(text10("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
+    }
+    if (property.lastService) {
+      card.appendChild(h("div", { "class": "prop-last" }, [
+        text10("div", "prop-fact__label", "Last service"),
+        text10("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
+      ]));
+    }
+    card.appendChild(h("div", { "class": "prop-visits__foot" }, [
+      ActionButton({ variant: "btn--ghost", label: "See the whole week", action: "nav.go", id: "appointments", visualId: "property-week" })
+    ]));
+    return card;
+  }
+  function facts(property, contract, quote) {
+    var rows = [
+      { label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 },
+      { label: "Service zone", value: zoneLabel(property.zone) }
+    ];
+    if (quote) {
+      rows.push({ label: "Lot", value: quote.lot + " sq ft" });
+      rows.push({ label: "Quoted", value: "$" + quote.selected + " per visit" });
+    }
+    return rows;
+  }
+  function contractFor(property) {
+    var model = currentOverview();
+    var contracts = model && model.contracts || [];
+    return contracts.find(function(contract) {
+      return contract.number === property.contract;
+    }) || null;
+  }
+  function quoteSiteFor(property) {
+    if (!property.quoteSiteId) return null;
+    var fixture = currentFixture();
+    var sites = fixture && fixture.proposals && fixture.proposals.sites || [];
+    return sites.find(function(site) {
+      return site.id === property.quoteSiteId;
+    }) || null;
+  }
+  function zoneLabel(zone) {
+    return String(zone || "").replace(/^./, function(letter) {
+      return letter.toUpperCase();
+    });
+  }
+  function statusTone(status) {
+    return { issue: "danger", enroute: "progress", scheduled: "info", monitoring: "scheduled" }[status] || "scheduled";
+  }
+  function text10(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -12200,10 +12451,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text11) {
+  function pitchRow(dot, bg, text13) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text11)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text13)
     ]);
   }
   function Auth() {
@@ -13791,10 +14042,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (new Set(faq.map(function(item) {
       return item.id;
     })).size !== faq.length) throw new Error("content.faq ids must be unique");
-    var trust = array2(own(content, "trust", "content"), "content.trust", 0).map(function(fact2, index) {
+    var trust = array2(own(content, "trust", "content"), "content.trust", 0).map(function(fact3, index) {
       var path = "content.trust[" + index + "]";
-      fact2 = object(fact2, path);
-      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own(fact2, "label", path), tags, path + ".label"), value: merge(own(fact2, "value", path), tags, path + ".value"), count: optionalMerge(own(fact2, "count", path), tags, path + ".count"), slot: null };
+      fact3 = object(fact3, path);
+      return { key: "trust-" + index, icon: ["\u2605", "\u2696", "\u2714", "\u2B1A", "\u23F1"][index % 5], label: merge(own(fact3, "label", path), tags, path + ".label"), value: merge(own(fact3, "value", path), tags, path + ".value"), count: optionalMerge(own(fact3, "count", path), tags, path + ".count"), slot: null };
     });
     var reviews = array2(own(content, "reviews", "content"), "content.reviews", 0).map(function(review, index) {
       var path = "content.reviews[" + index + "]";
@@ -13900,10 +14151,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         services: rawVertical.svc.slice(0, 6).map(function(service) {
           return { id: service.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""), name: service.name, benefit: service.tagline, priceFrom: service.price, destination: null };
         }),
-        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact2) {
-          return fact2 && fact2.value;
-        }).map(function(fact2) {
-          return { label: fact2.label || "Rating", value: fact2.value, count: fact2.count || null };
+        trust: [rawSeo.trust.rating, rawSeo.trust.licence, rawSeo.trust.insurance, rawSeo.trust.guarantee, rawSeo.trust.response].filter(function(fact3) {
+          return fact3 && fact3.value;
+        }).map(function(fact3) {
+          return { label: fact3.label || "Rating", value: fact3.value, count: fact3.count || null };
         }),
         how: rawSeo.how.map(function(item) {
           return { title: item.title, description: item.desc };
@@ -14036,9 +14287,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function SeoTrustStrip(model, view) {
     if (view.dataState === "loading") return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="loading">' + Array(5).fill('<div class="seo-trust__item">' + skel("40%") + skel("70%") + "</div>").join("") + "</section>";
     if (view.dataState === "empty" || !model.trust.length) return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="empty"><div class="seo-trust__fallback" data-state="no-data">Trust claims (rating, licence, insurance) appear here once supplied in the CMS &mdash; nothing is shown unverified.</div></section>';
-    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact2) {
-      var value = fact2.value ? fact2.key === "rating" ? "<b>" + esc(fact2.value) + "</b> &middot; " + esc(fact2.count || "") : esc(fact2.value) : slotChip(fact2.slot || fact2.label.toLowerCase());
-      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact2.key) + '"><span class="seo-trust__icon">' + esc(fact2.icon) + '</span><div><div class="seo-trust__label">' + esc(fact2.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
+    return '<section class="seo-trust" data-module="seo-trust-strip" data-visual-id="seo-trust-strip" data-state="ready">' + model.trust.map(function(fact3) {
+      var value = fact3.value ? fact3.key === "rating" ? "<b>" + esc(fact3.value) + "</b> &middot; " + esc(fact3.count || "") : esc(fact3.value) : slotChip(fact3.slot || fact3.label.toLowerCase());
+      return '<div class="seo-trust__item" data-bind="cms.trust.' + attr(fact3.key) + '"><span class="seo-trust__icon">' + esc(fact3.icon) + '</span><div><div class="seo-trust__label">' + esc(fact3.label) + '</div><div class="seo-trust__value">' + value + "</div></div></div>";
     }).join("") + "</section>";
   }
   function serviceControl(service, view) {
@@ -14170,8 +14421,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text11) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text11]);
+  function oidcStep(n, text13) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text13]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -15048,9 +15299,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("div", { "class": "co-confirm__sub", "data-bind": "result.sub" }, res.sub),
       SimulationBadge(true)
     ]);
-    var facts = h("div", { "class": "appt-details", style: "margin-top:14px;text-align:left" });
+    var facts2 = h("div", { "class": "appt-details", style: "margin-top:14px;text-align:left" });
     if (res.purchase) {
-      facts.appendChild(h("div", { "class": "appt-details__row" }, [
+      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
         h("div", { "class": "appt-details__label" }, "Purchase"),
         h("div", { "class": "appt-details__val" }, [
           h("b", { "data-bind": "result.purchase.reference" }, res.purchase.reference),
@@ -15060,7 +15311,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]));
     }
     if (res.appointment) {
-      facts.appendChild(h("div", { "class": "appt-details__row" }, [
+      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
         h("div", { "class": "appt-details__label" }, "Visit"),
         h("div", { "class": "appt-details__val" }, [
           h("b", { "data-bind": "result.appointment.service" }, res.appointment.service),
@@ -15070,7 +15321,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]));
     }
     if (res.plan) {
-      facts.appendChild(h("div", { "class": "appt-details__row" }, [
+      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
         h("div", { "class": "appt-details__label" }, "Plan"),
         h("div", { "class": "appt-details__val" }, [
           h("b", { "data-bind": "result.plan.title" }, res.plan.title),
@@ -15080,12 +15331,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]));
     }
     if (res.fulfillment) {
-      facts.appendChild(h("div", { "class": "appt-details__row" }, [
+      facts2.appendChild(h("div", { "class": "appt-details__row" }, [
         h("div", { "class": "appt-details__label" }, "Pickup"),
         h("div", { "class": "appt-details__val", "data-bind": "result.fulfillment" }, res.fulfillment)
       ]));
     }
-    card.appendChild(facts);
+    card.appendChild(facts2);
     card.appendChild(h("div", { "class": "appt-hero__actions", style: "justify-content:center" }, [
       ActionButton({ variant: "btn--primary", label: "All purchases", action: "account.openPurchases", visualId: "confirm-purchases" }),
       ActionButton({ variant: "btn--ghost", label: "Back to appointments", action: "nav.go", id: "orders.list", visualId: "confirm-home" })
@@ -15330,11 +15581,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("div", { "class": "plan-card__title", "data-bind": "plan.title" }, p.title),
       usageMeter(p)
     ]);
-    var facts = h("div", { "class": "appt-details" });
-    if (p.renewsAt) facts.appendChild(factRow("Renews", p.renewsAt, "plan.renewsAt"));
-    if (p.expiresAt) facts.appendChild(factRow(p.status === "Cancelled" ? "Ends" : "Expires", p.expiresAt, "plan.expiresAt"));
-    if (p.displayRecurringPrice) facts.appendChild(factRow("Price", p.displayRecurringPrice, "plan.displayRecurringPrice"));
-    if (facts.childNodes.length) card.appendChild(facts);
+    var facts2 = h("div", { "class": "appt-details" });
+    if (p.renewsAt) facts2.appendChild(factRow("Renews", p.renewsAt, "plan.renewsAt"));
+    if (p.expiresAt) facts2.appendChild(factRow(p.status === "Cancelled" ? "Ends" : "Expires", p.expiresAt, "plan.expiresAt"));
+    if (p.displayRecurringPrice) facts2.appendChild(factRow("Price", p.displayRecurringPrice, "plan.displayRecurringPrice"));
+    if (facts2.childNodes.length) card.appendChild(facts2);
     if (p.attention) card.appendChild(h("div", { "class": "purch-row__attention", "data-bind": "plan.attention", role: "note", style: "margin-top:10px" }, p.attention));
     if (p.note) card.appendChild(h("div", { "class": "purch-ful__note", style: "margin-top:10px" }, p.note));
     var actions = h("div", { "class": "appt-hero__actions" });
@@ -15846,8 +16097,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         detail && detail.collection && spaModelsReady() ? h("div", { "class": "spa-shop-card__collection", "data-product-model-ref": detail.collection.ref, "data-bind": "product.collection.name" }, detail.collection.name) : null,
         h("div", { "class": "spa-shop-card__name", "data-bind": "pim.products[].name" }, product.name),
         h("div", { "class": "spa-shop-card__blurb", "data-bind": "pim.products[].shortDescription" }, product.blurb || product.description || "Published retail product"),
-        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact2) {
-          return h("span", { "class": "fact-chip" }, fact2.value);
+        detail && detail.variantFacts && detail.variantFacts.length ? h("div", { "class": "spa-shop-card__facts", "data-bind": "product.variantFacts[]" }, detail.variantFacts.map(function(fact3) {
+          return h("span", { "class": "fact-chip" }, fact3.value);
         })) : null
       ])
     ]));
@@ -16163,11 +16414,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("p", { "class": "pd-desc", "data-bind": "product.description" }, product.description)
     ]);
     if (product.variantFacts && product.variantFacts.length) {
-      var facts = h("dl", { "class": "pd-facts", "data-visual-id": "product-facts" });
-      product.variantFacts.forEach(function(fact2) {
-        facts.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact2.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact2.value)]));
+      var facts2 = h("dl", { "class": "pd-facts", "data-visual-id": "product-facts" });
+      product.variantFacts.forEach(function(fact3) {
+        facts2.appendChild(h("div", { "class": "pd-facts__row" }, [h("dt", { "class": "pd-facts__label" }, fact3.label), h("dd", { "class": "pd-facts__val", "data-bind": "product.variantFacts[]" }, fact3.value)]));
       });
-      info.appendChild(facts);
+      info.appendChild(facts2);
     }
     info.appendChild(buyRegion(product));
     page.appendChild(h("div", { "class": "card card--pad pd-hero" }, h("div", { "class": "pd-grid" }, [gallery(product), info])));
@@ -16285,6 +16536,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         return Overview();
       case "appointments":
         return Appointments();
+      case "visit.detail":
+        return VisitDetail();
+      case "property.detail":
+        return PropertyDetail();
       case "orders.list":
         return isSpa() ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
       case "order.detail":
@@ -16358,6 +16613,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function applyRouteParams(match) {
     if (match.id === "order.detail" && match.params.id) state.currentOrderId = match.params.id;
     if (match.id === "proposal.detail" && match.params.id) state.currentSiteId = match.params.id;
+    if (match.id === "visit.detail" && match.params.id) state.visitId = match.params.id;
+    if (match.id === "property.detail" && match.params.id) state.propertyId = match.params.id;
     if (match.id === "purchase.detail" && match.params.id) state.spaCurrentPurchase = match.params.id;
     if (match.id === "appointment.detail" && match.params.id) state.spaCurrentAppointment = match.params.id;
     if (match.id === "product.detail" && match.params.id) state.spaCurrentProduct = match.params.id;
@@ -16368,6 +16625,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return { id: state.currentOrderId };
     }
     if (routeId === "proposal.detail") return { id: state.currentSiteId };
+    if (routeId === "visit.detail") return { id: state.visitId };
+    if (routeId === "property.detail") return { id: state.propertyId };
     if (routeId === "purchase.detail") return { id: state.spaCurrentPurchase };
     if (routeId === "appointment.detail") return { id: state.spaCurrentAppointment };
     if (routeId === "product.detail") return { id: state.spaCurrentProduct };
@@ -16379,6 +16638,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function routeFamily(routeId) {
     if (routeId === "orders.list" || routeId === "order.detail" || routeId === "appointment.detail") return "appointments";
+    if (routeId === "appointments" || routeId === "visit.detail" || routeId === "property.detail") return "appointments-timeline";
     if (routeId === "proposals.list" || routeId === "proposal.detail") return "proposals";
     if (routeId === "purchases.list" || routeId === "purchase.detail") return "purchases";
     if (routeId === "products" || routeId === "product.detail") return "products";
@@ -16976,11 +17236,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       state.ovWeatherIndex = Number(id);
       render();
     },
-    "overview.openProperty": function() {
-      go("proposals.list");
+    "overview.openProperty": function(id) {
+      if (id) state.propertyId = id;
+      go("property.detail");
     },
     "overview.openProperties": function() {
-      go("proposals.list");
+      go("appointments");
     },
     "overview.openAppointments": function() {
       go("appointments");
@@ -16989,6 +17250,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       var day = Number(id);
       state.apptDay = id === null || id === "" || id === void 0 || !Number.isInteger(day) ? null : day;
       render();
+    },
+    "appointments.openVisit": function(id) {
+      state.visitId = id;
+      go("visit.detail");
+    },
+    "appointments.openProperty": function(id) {
+      state.propertyId = id;
+      go("property.detail");
     },
     "appointments.sortResource": function() {
       state.apptSort = state.apptSort === "desc" ? "asc" : "desc";
@@ -18173,9 +18442,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text11) {
-    if (!text11 || !text11.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text11.trim() }]);
+  function pushChat(text13) {
+    if (!text13 || !text13.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text13.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -18693,6 +18962,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
           return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
         case "overview":
         case "appointmentsTimeline":
+        case "properties":
           return { overview: fixture ? fixture.overview || null : null };
         case "calendar":
           return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
@@ -18972,11 +19242,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
   function opaqueRef4(prefix, value) {
-    var text11 = String(value || prefix);
+    var text13 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text11.length; index += 1) {
-      var code = text11.charCodeAt(index);
+    for (var index = 0; index < text13.length; index += 1) {
+      var code = text13.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -19079,12 +19349,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function variantFacts(attributes) {
     return [
-      fact("Format", productAttribute2(attributes, "FORMAT")),
-      fact("Size", volumeLabel(productAttribute2(attributes, "VOLUME_ML"))),
-      fact("Scent", productAttribute2(attributes, "SCENT_PROFILE"))
+      fact2("Format", productAttribute2(attributes, "FORMAT")),
+      fact2("Size", volumeLabel(productAttribute2(attributes, "VOLUME_ML"))),
+      fact2("Scent", productAttribute2(attributes, "SCENT_PROFILE"))
     ].filter(Boolean);
   }
-  function fact(label, value) {
+  function fact2(label, value) {
     if (value === void 0 || value === null || value === "") return null;
     return { label, value: String(value) };
   }
@@ -19233,12 +19503,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text9(session.accessToken || session.access_token);
+    var accessToken = text11(session.accessToken || session.access_token);
     if (!accessToken) throw contractError5("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin4();
     var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text9(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text11(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -19249,7 +19519,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var userId = positiveInteger7(basicInfo.authenticatedUserId || basicInfo.id);
     if (!userId) throw contractError5("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text9(config.accountTypeCode || "SPA_CUSTOMER");
+    var accountTypeCode = text11(config.accountTypeCode || "SPA_CUSTOMER");
     var accountReply = await requestJson5(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
@@ -19284,11 +19554,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text9(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text11(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text9(account.code),
+        code: text11(account.code),
         displayName: localizedName4(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
@@ -19296,11 +19566,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text9(configuredCode);
+    var configured = text11(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text9(item && item.code);
+      return text11(item && item.code);
     }).filter(Boolean) : [];
-    var current = text9(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text11(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
     if (!selected) throw contractError5("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
@@ -19339,9 +19609,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text9(localized2 && (localized2.NAME || localized2.name));
+    return text11(localized2 && (localized2.NAME || localized2.name));
   }
-  function text9(value) {
+  function text11(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function contractError5(code, message) {
@@ -19524,7 +19794,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text10(row.code);
+      byId[String(row.id)] = text12(row.code);
     });
     return byId;
   }
@@ -19592,13 +19862,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text10(session.accessToken || session.access_token);
+    var accessToken = text12(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
-    var organization = text10(config.organization);
+    var organization = text12(config.organization);
     if (!organization) throw contractError6("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     return {
-      authorization: text10(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text12(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase6(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
       config,
@@ -19645,7 +19915,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text10(states[index] && states[index].code);
+      var code = text12(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
@@ -19672,13 +19942,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text10(entry.NAME);
+      var name = entry && text12(entry.NAME);
       if (name) return name;
     }
     return "";
   }
   function sameOriginBase6(base, origin, label) {
-    var value = text10(base);
+    var value = text12(base);
     if (!value) throw contractError6("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
       if (value.indexOf(origin) !== 0) throw contractError6("cross-origin-base", label + " must stay same-origin");
@@ -19697,7 +19967,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text10(value) {
+  function text12(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
   function contractError6(code, message) {
@@ -20230,6 +20500,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return raw;
     }),
     appointmentsTimeline: module("appointmentsTimeline", function(raw) {
+      return raw;
+    }),
+    properties: module("properties", function(raw) {
       return raw;
     }),
     calendar: module("calendar", normalizeCalendar),

@@ -60,6 +60,8 @@ export var state = {
   moduleStatus: {},
   moduleData: {},
   apptDay: null,
+  visitId: null,
+  propertyId: null,
   apptSort: "asc",
   liveWeather: null,
   liveWeatherState: "off",

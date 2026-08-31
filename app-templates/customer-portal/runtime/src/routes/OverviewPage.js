@@ -243,9 +243,10 @@ function UpcomingWidget(model, timeline) {
     card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
       appointment.time ? text("span", "ov-slot__time", appointment.time) : null,
       h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
-      h("div", { style: "flex:1;min-width:0" }, [
-        text("div", "ov-row__title", property.name),
-        text("div", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service)),
+      h("button", { "class": "ov-slot__link", "data-action": "appointments.openVisit", "data-id": property.id,
+        "aria-label": "Open the " + appointment.service + " visit at " + property.name }, [
+        text("span", "ov-row__title", property.name),
+        text("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service)),
       ]),
     ]));
   });

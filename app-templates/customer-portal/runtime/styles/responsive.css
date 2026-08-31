@@ -258,3 +258,7 @@
 .vw-mobile .appt__table { font-size: 12.5px; min-width: 780px; }
 
 .vw-mobile .appt-chip { padding: 7px 11px; font-size: 12.5px; }
+
+.vw-mobile .prop-facts { grid-template-columns: 1fr; }
+
+.vw-mobile .prop-head__title { font-size: 24px; }

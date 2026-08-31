@@ -2328,3 +2328,61 @@
 .appt__empty { padding: 22px 18px; }
 
 .appt__count { font-size: 12.5px; color: var(--ink-3); margin-top: 12px; }
+
+.appt__link {
+  display: block; width: 100%; padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+
+.appt__link .appt__name,
+.appt__link .appt__sub { display: block; }
+
+.appt__link:hover .appt__name { color: var(--accent); }
+
+.appt__link:hover .status-badge { filter: brightness(.96); }
+
+.ov-slot__link {
+  display: block; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+
+.ov-slot__link .ov-row__title,
+.ov-slot__link .ov-row__meta { display: block; }
+
+.ov-slot__link:hover .ov-row__title { color: var(--accent); }
+
+.prop-head { display: flex; align-items: flex-start; gap: 14px; margin: 6px 0 18px; }
+
+.prop-head__title { font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin: 0; }
+
+.prop-head__addr { font-size: 14px; color: var(--ink-2); margin-top: 5px; }
+
+.prop-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 22px; margin-bottom: 16px; }
+
+.prop-fact__label { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); }
+
+.prop-fact__value { font-size: 14.5px; font-weight: 650; margin-top: 4px; }
+
+.prop-section__title { font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+
+.prop-ticket { margin-bottom: 16px; }
+
+.prop-ticket__title { font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+
+.prop-visit {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--hair);
+  background: rgba(var(--glass), .5); cursor: pointer;
+}
+
+.prop-visit:hover { background: rgba(var(--glass), .9); }
+
+.prop-visit__title { font-weight: 700; font-size: 14.5px; }
+
+.prop-visit__meta { font-size: 13px; color: var(--ink-2); margin-top: 3px; }
+
+.prop-visit__caret { color: var(--ink-3); font-size: 17px; }
+
+.prop-last { margin-top: 14px; }
+
+.prop-visits__foot { margin-top: 14px; }
