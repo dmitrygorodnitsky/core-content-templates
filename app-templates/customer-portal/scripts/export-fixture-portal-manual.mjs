@@ -102,6 +102,7 @@ function templateFor(source, css, javascript) {
     "data-portal-case": runtime.case,
     "data-portal-primary-cta-label": shell.primaryCtaLabel || "",
     "data-portal-nav-primary-label": navigation.primary || "",
+    "data-portal-nav-appointments-label": navigation.appointments || "",
     "data-portal-nav-calendar-label": navigation.calendar || "",
     "data-portal-nav-activity-label": navigation.activity || "",
     "data-portal-nav-care-label": navigation.care || "",
@@ -110,6 +111,8 @@ function templateFor(source, css, javascript) {
     "data-portal-nav-pricing-label": navigation.pricing || "",
     "data-portal-nav-products-label": navigation.products || "",
     "data-portal-nav-support-label": navigation.support || "",
+    "data-portal-request-form-url": shell.requestFormUrl || "",
+    "data-portal-allowed-nav-origins": (shell.allowedNavOrigins || []).join(","),
     "data-portal-weather-client-id": (runtime.weather && runtime.weather.clientId) || "",
     "data-portal-weather-client-secret": (runtime.weather && runtime.weather.clientSecret) || "",
   };

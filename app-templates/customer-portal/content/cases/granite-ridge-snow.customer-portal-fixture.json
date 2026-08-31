@@ -13,15 +13,13 @@
     "defaultRoute": "overview",
     "enabledModules": [
       "overview",
+      "appointmentsTimeline",
       "orders",
       "calendar",
       "activity",
       "proposals",
       "care",
-      "services",
       "pricing",
-      "products",
-      "checkout",
       "profile",
       "support"
     ],
@@ -39,16 +37,19 @@
     "experienceId": "granite-ridge-snow-fixture",
     "brandName": "Granite Ridge",
     "defaultMode": "light",
-    "primaryCtaLabel": "Request service",
+    "primaryCtaLabel": "Request a quote",
     "navigation": {
       "primary": "Home",
+      "appointments": "Appointments",
       "calendar": "Calendar",
       "care": "Season log",
       "proposals": "Contracts",
-      "services": "Services",
-      "products": "Shop",
       "support": "Support"
-    }
+    },
+    "requestFormUrl": "https://dev-1.servicewand.com/snow-removal--request-quote",
+    "allowedNavOrigins": [
+      "https://dev-1.servicewand.com"
+    ]
   },
   "constraints": [
     "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",

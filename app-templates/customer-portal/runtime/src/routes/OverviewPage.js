@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { currentFixture, state } from "../state.js";
+import { currentFixture, currentOverview, state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
@@ -36,10 +36,7 @@ function icon(name, className) {
 }
 
 export function overviewModel() {
-  var fixture = currentFixture();
-  var overview = (fixture && fixture.overview) || null;
-  if (!overview || !state.liveWeather) return overview;
-  return Object.assign({}, overview, { weather: state.liveWeather });
+  return currentOverview();
 }
 
 export function Overview() {

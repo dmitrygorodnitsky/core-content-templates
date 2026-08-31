@@ -59,6 +59,8 @@ export var state = {
   seoCtaStates: {},
   moduleStatus: {},
   moduleData: {},
+  apptDay: null,
+  apptSort: "asc",
   liveWeather: null,
   liveWeatherState: "off",
   pending: {},
@@ -576,6 +578,13 @@ export function spaPlanOffers() {
       allowedActions: ["purchase"],
     };
   });
+}
+
+export function currentOverview() {
+  var fixture = currentFixture();
+  var overview = (fixture && fixture.overview) || null;
+  if (!overview || !state.liveWeather) return overview;
+  return Object.assign({}, overview, { weather: state.liveWeather });
 }
 
 export function currentFixture() {

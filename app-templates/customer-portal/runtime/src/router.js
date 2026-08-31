@@ -10,6 +10,7 @@ import { Pricing } from "./routes/PricingPage.js";
 import { Products } from "./routes/ProductsPage.js";
 import { Checkout } from "./routes/CheckoutPage.js";
 import { Overview } from "./routes/OverviewPage.js";
+import { Appointments as AppointmentsTimeline } from "./routes/AppointmentsPage.js";
 import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { Profile } from "./routes/ProfilePage.js";
@@ -157,6 +158,7 @@ export function renderRoute() {
 
   switch (resolved.id) {
     case "overview":    return Overview();
+    case "appointments": return AppointmentsTimeline();
     case "orders.list": return isSpa() ? (spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders()) : Cabinet();
     case "order.detail": return OrderDetail();
     case "appointment.detail": return isSpa() && spaCapability() === "target-appointments" ? SpaAppointmentDetail() : ComingSoon("appointment.detail", "a later wave");

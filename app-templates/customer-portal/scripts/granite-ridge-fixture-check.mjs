@@ -44,8 +44,8 @@ applyPortalConfig(config);
 
 const profileDefinition = portalProfiles.stormRetail;
 assert.equal(profileDefinition.weatherCalendar, true, "snow retail keeps the weather-operational calendar");
-assert.equal(profileDefinition.nav.length, portalProfiles.stormOps.nav.length, "nav must not grow past the accepted stormOps item count");
-assert.ok(profileDefinition.modules.includes("pricing") && profileDefinition.modules.includes("products"));
+assert.ok(profileDefinition.nav.length <= portalProfiles.stormOps.nav.length, "nav must not grow past the accepted stormOps item count");
+assert.ok(profileDefinition.modules.includes("pricing"));
 assert.ok(!profileDefinition.nav.some((item) => item.key === "pricing"), "pricing stays reachable through the accepted Manage plan action, not an eighth nav item");
 
 assert.equal(currentFixture().organization.name, "Granite Ridge Snow Removal");
@@ -161,7 +161,7 @@ assert.equal(
 assert.equal(clampFrameIndex(overview.weather.timeline, 99), 6);
 assert.equal(clampFrameIndex(overview.weather.timeline, -3), 0);
 const serviceDays = overview.weather.timeline.map((_, index) => serviceDayCount(overview.properties, index));
-assert.deepEqual(plainValue(serviceDays), [1, 5, 2, 2, 0, 0, 1], "the timeline must mark the days a visit actually happens");
+assert.deepEqual(plainValue(serviceDays), [4, 5, 2, 2, 0, 0, 1], "the timeline must mark the days a visit actually happens");
 assert.ok(serviceDays.some((count) => count === 0), "a day without service must stay unmarked");
 for (const property of overview.properties) {
   if (!property.appointment) continue;

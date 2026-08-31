@@ -318,6 +318,7 @@ export const modules = {
   checkout: checkoutModule,
   plan: planModule,
   overview: module("overview", function (raw) { return raw; }),
+  appointmentsTimeline: module("appointmentsTimeline", function (raw) { return raw; }),
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,

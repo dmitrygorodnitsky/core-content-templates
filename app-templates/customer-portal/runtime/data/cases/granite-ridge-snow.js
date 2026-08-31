@@ -31,14 +31,17 @@ const MONITORED_SITES = [
 ];
 
 const MONITORED_VISITS = {
-  "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "5:40 AM", dayIndex: 1 } },
-  "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "6:15 AM", dayIndex: 1 } },
-  "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "7:05 AM", dayIndex: 1 } },
-  "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", time: "7:50 AM", dayIndex: 1 } },
-  "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "6:30 AM", dayIndex: 2 } },
-  "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", time: "8:10 AM", dayIndex: 2 } },
-  "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", dayIndex: 3 } },
-  "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed · auto-dispatch", time: "6:00 AM", dayIndex: 6 } },
+  "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Team 4 · Plow", est: { start: "5:40 AM", end: "6:35 AM" }, actual: null } },
+  "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Team 4 · Plow", est: { start: "6:50 AM", end: "7:45 AM" }, actual: null } },
+  "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "7:05 AM", end: "7:35 AM" }, actual: null } },
+  "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Marcus H.", est: { start: "7:50 AM", end: "8:40 AM" }, actual: null } },
+  "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", dayIndex: 2, resource: "Priya N.", est: { start: "6:30 AM", end: "7:00 AM" }, actual: null } },
+  "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat · auto-dispatch", dayIndex: 2, resource: "Kyle B.", est: { start: "8:10 AM", end: "8:45 AM" }, actual: null } },
+  "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", dayIndex: 3, resource: "Team 4 · Plow", est: { start: "10:00 AM", end: "11:15 AM" }, actual: null } },
+  "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed · auto-dispatch", dayIndex: 6, resource: "Marcus H.", est: { start: "6:00 AM", end: "6:55 AM" }, actual: null } },
+  "Dover Way": { appointment: { state: "COMPLETED", service: "Lot & drive clearing", when: "Completed 4:52 AM", dayIndex: 0, resource: "Team 4 · Plow", est: { start: "4:00 AM", end: "4:50 AM" }, actual: { start: "4:03 AM", end: "4:52 AM" } } },
+  "Kipling Crossing": { appointment: { state: "COMPLETED", service: "Walkway de-icing", when: "Completed 5:14 AM", dayIndex: 0, resource: "Priya N.", est: { start: "4:30 AM", end: "5:05 AM" }, actual: { start: "4:29 AM", end: "5:14 AM" } } },
+  "Lamar Terrace": { appointment: { state: "COMPLETED", service: "Refreeze re-treat", when: "Completed 6:07 AM", dayIndex: 0, resource: "Kyle B.", est: { start: "5:15 AM", end: "5:50 AM" }, actual: { start: "5:41 AM", end: "6:07 AM" } } },
 };
 
 function monitoredProperties() {
@@ -330,21 +333,21 @@ export const graniteRidgeSnowFixture = Object.freeze({
       {
         id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
         lat: 39.73336, lon: -105.12205, zone: "central",
-        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, crew: "Marcus H." },
+        appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, resource: "Marcus H.", est: { start: "5:30 AM", end: "6:20 AM" }, actual: { start: "5:38 AM", end: "" } },
         ticket: null,
         lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
       },
       {
         id: "prop-tabor", name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
         lat: 39.72431, lon: -105.23627, zone: "north",
-        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", time: "9:00 AM", dayIndex: 1 },
+        appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "9:00 AM", end: "9:40 AM" }, actual: null },
         ticket: null,
         lastService: { service: "Lot & drive clearing", when: "Jan 5" },
       },
       {
         id: "prop-yarrow", name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
         lat: 39.80498, lon: -105.0911, zone: "north",
-        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", time: "11:30 AM", dayIndex: 3 },
+        appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", dayIndex: 3, resource: "Kyle B.", est: { start: "11:30 AM", end: "12:45 PM" }, actual: null },
         ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
         lastService: { service: "Refreeze re-treat", when: "Dec 19" },
       },

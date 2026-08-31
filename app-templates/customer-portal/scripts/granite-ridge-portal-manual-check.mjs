@@ -34,11 +34,15 @@ try {
   assert.match(html, /data-portal-profile="stormRetail"/);
   assert.match(html, /data-portal-theme="snow"/);
   assert.match(html, /data-portal-default-route="overview"/);
-  assert.match(html, /data-portal-enabled-modules="overview,orders,calendar,activity,proposals,care,services,pricing,products,checkout,profile,support"/);
+  assert.match(html, /data-portal-enabled-modules="overview,appointmentsTimeline,orders,calendar,activity,proposals,care,pricing,profile,support"/);
+  assert.doesNotMatch(html, /data-portal-nav-products-label|data-portal-nav-services-label/, "Shop and Services are retired for this tenant");
+  assert.match(html, /data-portal-nav-appointments-label="Appointments"/);
+  assert.match(html, /data-portal-primary-cta-label="Request a quote"/);
+  assert.match(html, /data-portal-request-form-url="https:\/\//, "the primary action leaves for the quote form over https");
+  assert.match(html, /data-portal-allowed-nav-origins="https:\/\//, "an external destination is refused unless its origin is allow-listed");
   assert.match(html, /data-portal-brand-name="Granite Ridge"/);
   assert.match(html, /data-portal-nav-care-label="Season log"/);
   assert.match(html, /data-portal-nav-proposals-label="Contracts"/);
-  assert.match(html, /data-portal-nav-products-label="Shop"/);
 
   assert.doesNotMatch(html, /data-portal-(core|account|bill|service|resource|pim)-api-base/, "a fixture package must not carry a service base");
   assert.doesNotMatch(html, /data-portal-auth-(core-base|callback-path)/, "a fixture package must not carry an OIDC contract");
@@ -89,15 +93,22 @@ try {
     "a fixture package must refuse live data mode",
   );
 
-  const productsWithoutCheckout = JSON.parse(await fs.readFile(inputPath, "utf8"));
-  productsWithoutCheckout.runtime.enabledModules = productsWithoutCheckout.runtime.enabledModules.filter((id) => id !== "checkout");
-  const productsInput = path.join(outputDir, "products-source.json");
-  await fs.writeFile(productsInput, JSON.stringify(productsWithoutCheckout));
+  const retiredShop = JSON.parse(await fs.readFile(inputPath, "utf8"));
+  retiredShop.runtime.enabledModules = retiredShop.runtime.enabledModules.concat(["products"]);
+  const retiredShopInput = path.join(outputDir, "products-source.json");
+  await fs.writeFile(retiredShopInput, JSON.stringify(retiredShop));
   await assert.rejects(
-    exportFixturePortalManual({ inputPath: productsInput, runtimePath, outputDir }),
-    /products without checkout/,
-    "products without checkout would render add-to-cart actions that cannot complete",
+    exportFixturePortalManual({ inputPath: retiredShopInput, runtimePath, outputDir }),
+    /Module products is not part of profile stormRetail/,
+    "Shop is retired for this tenant, so re-enabling it must be refused rather than shipped half-wired",
   );
+
+  const withoutTimeline = JSON.parse(await fs.readFile(inputPath, "utf8"));
+  withoutTimeline.runtime.enabledModules = withoutTimeline.runtime.enabledModules.filter((id) => id !== "appointmentsTimeline");
+  const withoutTimelineInput = path.join(outputDir, "no-timeline-source.json");
+  await fs.writeFile(withoutTimelineInput, JSON.stringify(withoutTimeline));
+  const packaged = await exportFixturePortalManual({ inputPath: withoutTimelineInput, runtimePath, outputDir });
+  assert.ok(packaged, "dropping the timeline module is allowed; the nav item simply disappears");
 
   console.log("granite-ridge-portal-manual-check ok: JTE-safe parameter-free fixture root, no service base, no auth contract, no live contract opened");
 } finally {

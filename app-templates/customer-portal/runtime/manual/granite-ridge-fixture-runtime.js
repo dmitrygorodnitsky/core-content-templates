@@ -638,8 +638,8 @@
       { label: "Invoices & payments", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", q: "I have a billing question" },
       { label: "Report an issue after service", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I want to report an issue" }
     ];
-    function chatReply(text10) {
-      var t = (text10 || "").toLowerCase();
+    function chatReply(text11) {
+      var t = (text11 || "").toLowerCase();
       if (/(where|track|technician|daniel|coming|arriv)/.test(t)) return "Daniel is about 14 minutes away \u2014 3 stops out. You can watch his live location in the Orders tab.";
       if (/(reschedul|move|change.*(time|date|visit)|cancel)/.test(t)) return "Sure \u2014 which visit would you like to move? You can also reschedule straight from the order details.";
       if (/(bill|invoice|charge|pay|refund|price)/.test(t)) return "Your last invoice #SV-2381 was $480, paid Jan 12. Want me to email you a copy?";
@@ -1661,14 +1661,17 @@
     ["Union Ridge", "Lakewood, CO 80228", "west", 39.70578, -105.17348]
   ];
   var MONITORED_VISITS = {
-    "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "5:40 AM", dayIndex: 1 } },
-    "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "6:15 AM", dayIndex: 1 } },
-    "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", time: "7:05 AM", dayIndex: 1 } },
-    "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", time: "7:50 AM", dayIndex: 1 } },
-    "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", time: "6:30 AM", dayIndex: 2 } },
-    "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", time: "8:10 AM", dayIndex: 2 } },
-    "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", time: "10:00 AM", dayIndex: 3 } },
-    "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed \xB7 auto-dispatch", time: "6:00 AM", dayIndex: 6 } }
+    "Alkire Street": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Team 4 \xB7 Plow", est: { start: "5:40 AM", end: "6:35 AM" }, actual: null } },
+    "Coal Creek Lane": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Team 4 \xB7 Plow", est: { start: "6:50 AM", end: "7:45 AM" }, actual: null } },
+    "Garrison Green": { appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "7:05 AM", end: "7:35 AM" }, actual: null } },
+    "Marshall Row": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Marcus H.", est: { start: "7:50 AM", end: "8:40 AM" }, actual: null } },
+    "Pierce Landing": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", dayIndex: 2, resource: "Priya N.", est: { start: "6:30 AM", end: "7:00 AM" }, actual: null } },
+    "Holland Street": { appointment: { state: "SCHEDULED", service: "Refreeze re-treat", when: "Sat \xB7 auto-dispatch", dayIndex: 2, resource: "Kyle B.", est: { start: "8:10 AM", end: "8:45 AM" }, actual: null } },
+    "Union Ridge": { appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "Sun", dayIndex: 3, resource: "Team 4 \xB7 Plow", est: { start: "10:00 AM", end: "11:15 AM" }, actual: null } },
+    "Quail Ridge": { appointment: { state: "SCHEDULED", service: "Lot & drive clearing", when: "Wed \xB7 auto-dispatch", dayIndex: 6, resource: "Marcus H.", est: { start: "6:00 AM", end: "6:55 AM" }, actual: null } },
+    "Dover Way": { appointment: { state: "COMPLETED", service: "Lot & drive clearing", when: "Completed 4:52 AM", dayIndex: 0, resource: "Team 4 \xB7 Plow", est: { start: "4:00 AM", end: "4:50 AM" }, actual: { start: "4:03 AM", end: "4:52 AM" } } },
+    "Kipling Crossing": { appointment: { state: "COMPLETED", service: "Walkway de-icing", when: "Completed 5:14 AM", dayIndex: 0, resource: "Priya N.", est: { start: "4:30 AM", end: "5:05 AM" }, actual: { start: "4:29 AM", end: "5:14 AM" } } },
+    "Lamar Terrace": { appointment: { state: "COMPLETED", service: "Refreeze re-treat", when: "Completed 6:07 AM", dayIndex: 0, resource: "Kyle B.", est: { start: "5:15 AM", end: "5:50 AM" }, actual: { start: "5:41 AM", end: "6:07 AM" } } }
   };
   function monitoredProperties() {
     return MONITORED_SITES.map(function(site, index) {
@@ -1992,7 +1995,7 @@
           lat: 39.73336,
           lon: -105.12205,
           zone: "central",
-          appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, crew: "Marcus H." },
+          appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, resource: "Marcus H.", est: { start: "5:30 AM", end: "6:20 AM" }, actual: { start: "5:38 AM", end: "" } },
           ticket: null,
           lastService: { service: "Roof snow & ice dam", when: "Jan 12" }
         },
@@ -2003,7 +2006,7 @@
           lat: 39.72431,
           lon: -105.23627,
           zone: "north",
-          appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", time: "9:00 AM", dayIndex: 1 },
+          appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow \xB7 auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "9:00 AM", end: "9:40 AM" }, actual: null },
           ticket: null,
           lastService: { service: "Lot & drive clearing", when: "Jan 5" }
         },
@@ -2014,7 +2017,7 @@
           lat: 39.80498,
           lon: -105.0911,
           zone: "north",
-          appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", time: "11:30 AM", dayIndex: 3 },
+          appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", dayIndex: 3, resource: "Kyle B.", est: { start: "11:30 AM", end: "12:45 PM" }, actual: null },
           ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
           lastService: { service: "Refreeze re-treat", when: "Dec 19" }
         },
@@ -2149,7 +2152,7 @@
   // app-templates/customer-portal/runtime/src/normalizers/spa-availability.js
   var DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   var BUSY_STATES = /* @__PURE__ */ new Set(["REQUESTED", "SCHEDULED", "IN_PROGRESS"]);
-  function normalizeCoreAvailability(providerRows, appointmentRows, options2 = {}) {
+  function normalizeCoreAvailability(providerRows, appointmentRows2, options2 = {}) {
     var locations = new Map((Array.isArray(options2.locationRows) ? options2.locationRows : []).map(normalizeLocation).filter(Boolean).map(function(location) {
       return [location.id, location];
     }));
@@ -2160,7 +2163,7 @@
     }).sort(function(left, right) {
       return left.ref.localeCompare(right.ref);
     });
-    var busy = (Array.isArray(appointmentRows) ? appointmentRows : []).map(normalizeBusyAppointment).filter(Boolean);
+    var busy = (Array.isArray(appointmentRows2) ? appointmentRows2 : []).map(normalizeBusyAppointment).filter(Boolean);
     return {
       // An authoritative empty Resource result means that online booking is not
       // configured. It is not the same fact as a configured provider having no
@@ -2747,17 +2750,16 @@
       id: "stormRetail",
       nav: [
         { key: "overview", label: "Home" },
+        { key: "appointments", label: "Appointments" },
         { key: "calendar", label: "Calendar" },
         { key: "care" },
         { key: "proposals.list", label: "Contracts" },
-        { key: "services", label: "Services" },
-        { key: "products", label: "Shop" },
         { key: "support", label: "Support" }
       ],
-      primary: { label: "Request service", action: "service.request" },
-      modules: ["overview", "orders", "calendar", "activity", "proposals", "care", "services", "pricing", "products", "checkout", "profile", "support"],
+      primary: { label: "Request a quote", action: "service.requestForm" },
+      modules: ["overview", "appointmentsTimeline", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
       weatherCalendar: true,
-      showCart: true,
+      showCart: false,
       drawerTitle: "Request service"
     },
     spaStaging: {
@@ -2805,6 +2807,7 @@
     "auth.phone": { id: "auth.phone", path: "/login/phone-reference", module: "auth", public: true },
     "auth.code": { id: "auth.code", path: "/login/verify", module: "auth", public: true },
     overview: { id: "overview", path: "/overview", module: "overview" },
+    appointments: { id: "appointments", path: "/appointments", module: "appointmentsTimeline" },
     "orders.list": { id: "orders.list", path: "/orders", module: "orders" },
     "order.detail": { id: "order.detail", path: "/orders/:id", module: "orders", param: "id" },
     "appointment.detail": { id: "appointment.detail", path: "/appointments/:id", module: "appointments", param: "id" },
@@ -2888,6 +2891,7 @@
       allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
       navigation: {
         primary: dataset.portalNavPrimaryLabel || "",
+        appointments: dataset.portalNavAppointmentsLabel || "",
         calendar: dataset.portalNavCalendarLabel || "",
         activity: dataset.portalNavActivityLabel || "",
         care: dataset.portalNavCareLabel || "",
@@ -2923,6 +2927,7 @@
       authCallbackPath: dataset.portalAuthCallbackPath || "/core/oauth2-callback.html",
       authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
       authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
+      requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
       weatherClientId: dataset.portalWeatherClientId || "",
       weatherClientSecret: dataset.portalWeatherClientSecret || "",
       routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
@@ -3095,6 +3100,8 @@
     seoCtaStates: {},
     moduleStatus: {},
     moduleData: {},
+    apptDay: null,
+    apptSort: "asc",
     liveWeather: null,
     liveWeatherState: "off",
     pending: {},
@@ -3339,11 +3346,11 @@
     }).join(" ");
   }
   function opaqueRef3(prefix, value) {
-    var text10 = String(value || prefix);
+    var text11 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text10.length; index += 1) {
-      var code = text10.charCodeAt(index);
+    for (var index = 0; index < text11.length; index += 1) {
+      var code = text11.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -3635,6 +3642,12 @@
         allowedActions: ["purchase"]
       };
     });
+  }
+  function currentOverview() {
+    var fixture = currentFixture();
+    var overview = fixture && fixture.overview || null;
+    if (!overview || !state.liveWeather) return overview;
+    return Object.assign({}, overview, { weather: state.liveWeather });
   }
   function currentFixture() {
     var fixture = caseFixtureFor(state.config.caseId);
@@ -6198,7 +6211,7 @@
     var actions = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
     ];
-    if (isModuleEnabled("services")) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (profile.primary) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
     if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
     if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
     var activityEnabled = isModuleEnabled("activity");
@@ -6242,6 +6255,7 @@
     var configured = state.config.navigation || {};
     var key = {
       "orders.list": "primary",
+      appointments: "appointments",
       calendar: "calendar",
       activity: "activity",
       care: "care",
@@ -7482,10 +7496,7 @@
     return svg;
   }
   function overviewModel() {
-    var fixture = currentFixture();
-    var overview = fixture && fixture.overview || null;
-    if (!overview || !state.liveWeather) return overview;
-    return Object.assign({}, overview, { weather: state.liveWeather });
+    return currentOverview();
   }
   function Overview() {
     var model = overviewModel();
@@ -7827,6 +7838,193 @@
     ]);
   }
   function text7(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/appointments.js
+  var APPOINTMENT_STATE = {
+    COMPLETED: { label: "Completed", tone: "ok" },
+    IN_PROGRESS: { label: "In progress", tone: "progress" },
+    EN_ROUTE: { label: "En route", tone: "warn" },
+    SCHEDULED: { label: "Scheduled", tone: "info" },
+    CANCELLED: { label: "Cancelled", tone: "scheduled" }
+  };
+  function appointmentRows(properties, timeline) {
+    var rows = [];
+    (properties || []).forEach(function(property) {
+      var appointment = property.appointment;
+      if (!appointment) return;
+      var frame = timeline && timeline[appointment.dayIndex];
+      rows.push({
+        id: property.id,
+        resource: appointment.resource || "Unassigned",
+        name: property.name,
+        address: property.address,
+        service: appointment.service,
+        state: appointment.state,
+        dayIndex: appointment.dayIndex,
+        day: frame ? frame.day + " " + frame.date : "",
+        est: window_(appointment.est),
+        actual: window_(appointment.actual),
+        minutes: minutesOf(appointment.est)
+      });
+    });
+    return rows;
+  }
+  function stateMeta(state2) {
+    return APPOINTMENT_STATE[state2] || { label: state2 || "Unknown", tone: "scheduled" };
+  }
+  function resourceNames(rows) {
+    var seen = {};
+    var names = [];
+    rows.forEach(function(row) {
+      if (seen[row.resource]) return;
+      seen[row.resource] = true;
+      names.push(row.resource);
+    });
+    return names.sort(function(a, b) {
+      return a.localeCompare(b);
+    });
+  }
+  function filterRows(rows, dayIndex) {
+    if (dayIndex === null || dayIndex === void 0 || dayIndex === "") return rows.slice();
+    var wanted = Number(dayIndex);
+    return rows.filter(function(row) {
+      return row.dayIndex === wanted;
+    });
+  }
+  function sortRows(rows, direction) {
+    var factor = direction === "desc" ? -1 : 1;
+    return rows.slice().sort(function(a, b) {
+      var byResource = a.resource.localeCompare(b.resource) * factor;
+      if (byResource) return byResource;
+      if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+      if (a.minutes !== b.minutes) return a.minutes - b.minutes;
+      return a.name.localeCompare(b.name);
+    });
+  }
+  function window_(range) {
+    if (!range || !range.start) return "";
+    return range.end ? range.start + " \u2013 " + range.end : range.start + " \u2013 \u2026";
+  }
+  function minutesOf(range) {
+    if (!range || !range.start) return Number.MAX_SAFE_INTEGER;
+    return clockMinutes(range.start);
+  }
+  function clockMinutes(clock) {
+    var match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(clock).trim());
+    if (!match) return Number.MAX_SAFE_INTEGER;
+    var hour = Number(match[1]) % 12;
+    if (/PM/i.test(match[3])) hour += 12;
+    return hour * 60 + Number(match[2]);
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AppointmentsPage.js
+  var COLUMNS = [
+    { key: "resource", label: "Resource", sortable: true },
+    { key: "address", label: "Address" },
+    { key: "state", label: "Appointment state" },
+    { key: "est", label: "Est time" },
+    { key: "actual", label: "Actual time" }
+  ];
+  function Appointments() {
+    var page = h("section", { "class": "page", "data-route": "appointments", "data-visual-id": "appointments" });
+    var model = currentOverview();
+    var timeline = model && model.weather && model.weather.timeline || [];
+    var all = appointmentRows(model && model.properties, timeline);
+    page.appendChild(PageHeader({
+      title: "Appointments timeline",
+      sub: subline2(all, timeline)
+    }));
+    if (!all.length) {
+      page.appendChild(EmptyState({
+        glyph: "\u25CC",
+        title: "No appointments yet",
+        desc: "Visits appear here once a storm trigger dispatches a crew."
+      }));
+      return page;
+    }
+    var day = state.apptDay;
+    var direction = state.apptSort === "desc" ? "desc" : "asc";
+    var rows = sortRows(filterRows(all, day), direction);
+    page.appendChild(Filters(all, timeline, day));
+    var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
+    if (!rows.length) {
+      card.appendChild(h("div", { "class": "appt__empty" }, [
+        text8("div", "ov-empty__title", "No visits on this day"),
+        text8("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
+        h("div", { "class": "link-action", "data-action": "appointments.filterDay", "data-id": "" }, "Show all dates \u203A")
+      ]));
+      page.appendChild(card);
+      return page;
+    }
+    card.appendChild(Table(rows, direction));
+    page.appendChild(card);
+    page.appendChild(text8("div", "appt__count", rows.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows.length) + " of " + all.length + " appointments"));
+    return page;
+  }
+  function subline2(rows, timeline) {
+    var span = timeline.length ? timeline[0].date + " \u2013 " + timeline[timeline.length - 1].date : "";
+    var resources = resourceNames(rows).length;
+    return span ? span + " \xB7 " + resources + (resources === 1 ? " resource" : " resources") : resources + (resources === 1 ? " resource" : " resources");
+  }
+  function Filters(rows, timeline, day) {
+    var chips = [dayChip("All dates", "", day === null || day === void 0 || day === "")];
+    timeline.forEach(function(frame, index) {
+      var count = rows.filter(function(row) {
+        return row.dayIndex === index;
+      }).length;
+      if (!count) return;
+      chips.push(dayChip(frame.day + " " + frame.date, String(index), String(day) === String(index), count));
+    });
+    return h("div", { "class": "appt-filters", "data-module": "appointment-filters", "data-visual-id": "appointment-filters" }, [
+      text8("span", "appt-filters__label", "Date"),
+      h("div", { "class": "appt-filters__chips", role: "group", "aria-label": "Filter appointments by date" }, chips)
+    ]);
+  }
+  function dayChip(label, id, active, count) {
+    return h("button", {
+      "class": "appt-chip" + (active ? " appt-chip--on" : ""),
+      "data-action": "appointments.filterDay",
+      "data-id": id,
+      "aria-pressed": active ? "true" : "false"
+    }, count ? [text8("span", "", label), text8("span", "appt-chip__count", String(count))] : [text8("span", "", label)]);
+  }
+  function Table(rows, direction) {
+    var head2 = h("tr", null, COLUMNS.map(function(column) {
+      if (!column.sortable) return h("th", { scope: "col" }, column.label);
+      return h("th", { scope: "col", "aria-sort": direction === "desc" ? "descending" : "ascending" }, [
+        h("button", {
+          "class": "appt__sort",
+          "data-action": "appointments.sortResource",
+          "aria-label": "Sort by resource, currently " + (direction === "desc" ? "descending" : "ascending")
+        }, [text8("span", "", column.label), text8("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
+      ]);
+    }));
+    var body = h("tbody", null, rows.map(function(row) {
+      var meta = stateMeta(row.state);
+      return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
+        h("td", null, [
+          text8("div", "appt__resource", row.resource),
+          row.day ? text8("div", "appt__sub", row.day) : null
+        ]),
+        h("td", null, [
+          text8("div", "appt__name", row.name),
+          text8("div", "appt__sub", row.address)
+        ]),
+        h("td", null, [
+          text8("span", "status-badge status-badge--" + meta.tone, meta.label),
+          text8("div", "appt__sub", row.service)
+        ]),
+        h("td", { "class": "appt__time" }, row.est || "\u2014"),
+        h("td", { "class": "appt__time" }, row.actual || "\u2014")
+      ]);
+    }));
+    return h("div", { "class": "appt__scroll" }, [
+      h("table", { "class": "appt__table" }, [h("thead", null, [head2]), body])
+    ]);
+  }
+  function text8(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -8332,10 +8530,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text10) {
+  function pitchRow(dot, bg, text11) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text10)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text11)
     ]);
   }
   function Auth() {
@@ -10302,8 +10500,8 @@
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text10) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text10]);
+  function oidcStep(n, text11) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text11]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -12415,6 +12613,8 @@
     switch (resolved.id) {
       case "overview":
         return Overview();
+      case "appointments":
+        return Appointments();
       case "orders.list":
         return isSpa() ? spaCapability() === "target-appointments" ? SpaAppointments() : SpaOrders() : Cabinet();
       case "order.detail":
@@ -12875,6 +13075,9 @@
     "service.request": function() {
       openDrawer("booking");
     },
+    "service.requestForm": function() {
+      return externalOnly("requestFormUrl");
+    },
     "service.requestExtra": function(id) {
       runCommand("service.requestExtra", id, function() {
         requestExtraService(id);
@@ -13110,7 +13313,16 @@
       go("proposals.list");
     },
     "overview.openAppointments": function() {
-      go("orders.list");
+      go("appointments");
+    },
+    "appointments.filterDay": function(id) {
+      var day = Number(id);
+      state.apptDay = id === null || id === "" || id === void 0 || !Number.isInteger(day) ? null : day;
+      render();
+    },
+    "appointments.sortResource": function() {
+      state.apptSort = state.apptSort === "desc" ? "asc" : "desc";
+      render();
     },
     "overview.openCalendar": function() {
       go("calendar");
@@ -14282,9 +14494,9 @@
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text10) {
-    if (!text10 || !text10.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text10.trim() }]);
+  function pushChat(text11) {
+    if (!text11 || !text11.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text11.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -14801,6 +15013,7 @@
         case "checkout":
           return { cartItems: context.state.cartItems, addresses: fixture ? fixture.addresses : F.addresses, cards: fixture ? fixture.cards : F.cards };
         case "overview":
+        case "appointmentsTimeline":
           return { overview: fixture ? fixture.overview || null : null };
         case "calendar":
           return { orders: context.state.orders, stormCalendar: fixture && fixture.stormCalendar ? fixture.stormCalendar : F.stormCalendar(themeName) };
@@ -15080,11 +15293,11 @@
     return null;
   }
   function opaqueRef4(prefix, value) {
-    var text10 = String(value || prefix);
+    var text11 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text10.length; index += 1) {
-      var code = text10.charCodeAt(index);
+    for (var index = 0; index < text11.length; index += 1) {
+      var code = text11.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -15341,12 +15554,12 @@
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text8(session.accessToken || session.access_token);
+    var accessToken = text9(session.accessToken || session.access_token);
     if (!accessToken) throw contractError5("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin4();
     var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text8(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text9(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -15357,7 +15570,7 @@
     var userId = positiveInteger7(basicInfo.authenticatedUserId || basicInfo.id);
     if (!userId) throw contractError5("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text8(config.accountTypeCode || "SPA_CUSTOMER");
+    var accountTypeCode = text9(config.accountTypeCode || "SPA_CUSTOMER");
     var accountReply = await requestJson5(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
@@ -15392,11 +15605,11 @@
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text8(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text9(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text8(account.code),
+        code: text9(account.code),
         displayName: localizedName4(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
@@ -15404,11 +15617,11 @@
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text8(configuredCode);
+    var configured = text9(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text8(item && item.code);
+      return text9(item && item.code);
     }).filter(Boolean) : [];
-    var current = text8(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text9(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
     if (!selected) throw contractError5("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
@@ -15447,9 +15660,9 @@
   function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text8(localized2 && (localized2.NAME || localized2.name));
+    return text9(localized2 && (localized2.NAME || localized2.name));
   }
-  function text8(value) {
+  function text9(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function contractError5(code, message) {
@@ -15632,7 +15845,7 @@
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text9(row.code);
+      byId[String(row.id)] = text10(row.code);
     });
     return byId;
   }
@@ -15700,13 +15913,13 @@
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text9(session.accessToken || session.access_token);
+    var accessToken = text10(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
-    var organization = text9(config.organization);
+    var organization = text10(config.organization);
     if (!organization) throw contractError6("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     return {
-      authorization: text9(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text10(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase6(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
       config,
@@ -15753,7 +15966,7 @@
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text9(states[index] && states[index].code);
+      var code = text10(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
@@ -15780,13 +15993,13 @@
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text9(entry.NAME);
+      var name = entry && text10(entry.NAME);
       if (name) return name;
     }
     return "";
   }
   function sameOriginBase6(base, origin, label) {
-    var value = text9(base);
+    var value = text10(base);
     if (!value) throw contractError6("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
       if (value.indexOf(origin) !== 0) throw contractError6("cross-origin-base", label + " must stay same-origin");
@@ -15805,7 +16018,7 @@
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text9(value) {
+  function text10(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
   function contractError6(code, message) {
@@ -16335,6 +16548,9 @@
     checkout: checkoutModule,
     plan: planModule,
     overview: module("overview", function(raw) {
+      return raw;
+    }),
+    appointmentsTimeline: module("appointmentsTimeline", function(raw) {
       return raw;
     }),
     calendar: module("calendar", normalizeCalendar),

@@ -10,9 +10,9 @@
   "parameters": [],
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
-   "html": "7689e6b5d74957dc0a97828ffd2f55db0aa22269728d4bcd4926be6d50e7e060",
-   "css": "f5b322fd22d7a83fd559b7471551e49965fffe54eebe5a23d64a46e7a61c4cf8",
-   "javascript": "d9ed863031471b7c12542c60fbd427a3b87ee69cab774449021b8acf6bf6f2d8"
+   "html": "d3f5424c56edbc87a57359ce570d6b27c987a81813f77c1e21bbf8bfcf4b04d5",
+   "css": "2925faf6545c519622ed2e38bdff631927fc0b91b8c2c75ce4b71b6d5a263bdf",
+   "javascript": "3a84c61cf82892a298dbbc01d88fcba873f6a6de622daa1b470ad236951f1b09"
   }
  },
  "runtime": {
@@ -23,15 +23,13 @@
   "case": "granite-ridge-snow",
   "openedModules": [
    "overview",
+   "appointmentsTimeline",
    "orders",
    "calendar",
    "activity",
    "proposals",
    "care",
-   "services",
    "pricing",
-   "products",
-   "checkout",
    "profile",
    "support"
   ],
