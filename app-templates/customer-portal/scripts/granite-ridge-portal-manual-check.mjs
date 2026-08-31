@@ -22,7 +22,6 @@ try {
 
   assert.equal(template.code, "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE");
   assert.equal(template.templateLanguage, "JTE", "JTE is the only template language proven against this CMS");
-  assert.deepEqual(template.parameters, [], "the fixture root reads data-portal-* attributes, never CMS parameters");
   assert.equal(familyPayload.schemaVersion, 1);
   assert.equal(familyPayload.root.code, template.code);
   assert.deepEqual(familyPayload.children, []);
@@ -38,8 +37,11 @@ try {
   assert.doesNotMatch(html, /data-portal-nav-products-label|data-portal-nav-services-label/, "Shop and Services are retired for this tenant");
   assert.match(html, /data-portal-nav-appointments-label="Appointments"/);
   assert.match(html, /data-portal-primary-cta-label="Request a quote"/);
-  assert.match(html, /data-portal-request-form-url="https:\/\//, "the primary action leaves for the quote form over https");
-  assert.match(html, /data-portal-allowed-nav-origins="https:\/\//, "an external destination is refused unless its origin is allow-listed");
+  assert.match(html, /data-portal-request-form-url="\$\{PORTAL_REQUEST_FORM_URL@STRING\}"/, "the form address is operator-owned, so it is a CMS parameter rather than a baked value");
+  assert.deepEqual(template.parameters.map((item) => item.code), ["PORTAL_REQUEST_FORM_URL"]);
+  assert.equal(template.parameters[0].type, "STRING");
+  assert.match(template.parameters[0].value, /^https:\/\//, "the shipped default must itself be a valid https address");
+  assert.match(template.parameters[0].nls.en.DESCRIPTION, /https/, "the description has to tell the operator what a valid value looks like");
   assert.match(html, /data-portal-brand-name="Granite Ridge"/);
   assert.match(html, /data-portal-nav-care-label="Season log"/);
   assert.match(html, /data-portal-nav-proposals-label="Contracts"/);
@@ -65,10 +67,13 @@ try {
   assert.doesNotMatch(javascript, /cdnjs\.cloudflare\.com|oidc-client-ts/, "the fixture runtime must not pull an external authentication library");
   assert.doesNotMatch(javascript, /dev-1\.servicewand\.com|lsrc\.pixelnation\.com/, "the fixture runtime must not hardcode a deployment host");
   for (const [field, value] of Object.entries({ head, html, css, javascript })) {
-    for (const marker of ["${", "@{", "!{", "<%", "%>"]) {
+    for (const marker of ["@{", "!{", "<%", "%>"]) {
       assert.ok(!value.includes(marker), field + " must stay JTE-safe, found " + marker);
     }
+    const stray = value.replace(/\$\{[A-Z0-9_]+@[A-Z_]+\}/g, "");
+    assert.ok(!stray.includes("${"), field + " carries a ${ opener that is not a declared parameter marker");
   }
+  assert.ok(!css.includes("${") && !javascript.includes("${"), "only the root element carries a parameter marker");
 
   const previewSize = (await fs.stat(path.join(outputDir, "preview.html"))).size;
   assert.ok(previewSize > 100_000, "the standalone preview must inline the whole runtime");
@@ -110,7 +115,7 @@ try {
   const packaged = await exportFixturePortalManual({ inputPath: withoutTimelineInput, runtimePath, outputDir });
   assert.ok(packaged, "dropping the timeline module is allowed; the nav item simply disappears");
 
-  console.log("granite-ridge-portal-manual-check ok: JTE-safe parameter-free fixture root, no service base, no auth contract, no live contract opened");
+  console.log("granite-ridge-portal-manual-check ok: JTE-safe fixture root whose only parameter is the operator-owned form address, no service base, no auth contract, no live contract opened");
 } finally {
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.rm(path.join(root, "runtime/escaped-package"), { recursive: true, force: true });

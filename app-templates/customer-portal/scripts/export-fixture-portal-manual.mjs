@@ -82,6 +82,8 @@ async function validateSource(source) {
   }
 }
 
+const DEPLOYMENT_PARAMETERS = new Set(["PORTAL_REQUEST_FORM_URL"]);
+
 function templateFor(source, css, javascript) {
   const runtime = source.runtime;
   const shell = source.shell || {};
@@ -111,8 +113,7 @@ function templateFor(source, css, javascript) {
     "data-portal-nav-pricing-label": navigation.pricing || "",
     "data-portal-nav-products-label": navigation.products || "",
     "data-portal-nav-support-label": navigation.support || "",
-    "data-portal-request-form-url": shell.requestFormUrl || "",
-    "data-portal-allowed-nav-origins": (shell.allowedNavOrigins || []).join(","),
+    "data-portal-request-form-url": ref("PORTAL_REQUEST_FORM_URL", "STRING"),
     "data-portal-weather-client-id": (runtime.weather && runtime.weather.clientId) || "",
     "data-portal-weather-client-secret": (runtime.weather && runtime.weather.clientSecret) || "",
   };
@@ -128,15 +129,35 @@ function templateFor(source, css, javascript) {
     html: '<section id="app" ' + attrs(attributes) + "></section>",
     css,
     javascript,
-    parameters: [],
+    parameters: [parameter(
+      "PORTAL_REQUEST_FORM_URL",
+      shell.requestFormUrl || "",
+      "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert rather than sending the customer somewhere unintended.",
+    )],
   };
 }
 
+function parameter(code, value, description) {
+  return {
+    code,
+    type: "STRING",
+    nls: { en: { NAME: code.replace(/_/g, " "), DESCRIPTION: description } },
+    value,
+  };
+}
+
+function ref(code, type) { return "$" + "{" + code + "@" + type + "}"; }
+
 export function assertJteSafeTemplate(template) {
   if (template.templateLanguage !== "JTE") throw new Error("A fixture portal template must be JTE, the only language proven against this CMS");
-  if (template.parameters.length) throw new Error("A fixture portal root must stay parameter-free; every value it reads is a data-portal-* attribute");
+  const declared = new Set(template.parameters.map(function (item) { return item.code; }));
+  const referenced = new Set();
+  for (const code of declared) {
+    if (!DEPLOYMENT_PARAMETERS.has(code)) {
+      throw new Error("A fixture portal root may only declare a deployment parameter; " + code + " is not one of " + [...DEPLOYMENT_PARAMETERS].join(", "));
+    }
+  }
   const markers = [
-    { token: "${", label: "JTE expression/parameter opener" },
     { token: "@{", label: "JTE code opener" },
     { token: "!{", label: "JTE unsafe-content opener" },
     { token: "<%", label: "server-template code opener" },
@@ -156,6 +177,17 @@ export function assertJteSafeTemplate(template) {
     directive.lastIndex = 0;
     if (match) throw new Error("Refusing to export JTE-unsafe " + field + ": JTE directive " + JSON.stringify(match[0]));
     if (value.includes("\u0000")) throw new Error("Field " + field + " contains a NUL byte");
+    for (const match of value.matchAll(/\$\{([A-Z0-9_]+)@([A-Z_]+)\}/g)) referenced.add(match[1]);
+    const stray = value.replace(/\$\{[A-Z0-9_]+@[A-Z_]+\}/g, "");
+    if (stray.includes("${")) {
+      throw new Error("Refusing to export " + field + ": it carries a ${ opener that is not a declared parameter marker");
+    }
+  }
+  for (const code of referenced) {
+    if (!declared.has(code)) throw new Error("Parameter " + code + " is referenced but never declared");
+  }
+  for (const code of declared) {
+    if (!referenced.has(code)) throw new Error("Parameter " + code + " is declared but never referenced");
   }
   try {
     Function(template.javascript);
@@ -206,8 +238,15 @@ function manifestFor(sourcePath, source, template) {
 function previewFor(source, template) {
   return '<!doctype html>\n<html lang="en" data-theme="' + escapeHtml(source.runtime.theme)
     + '" data-mode="' + escapeHtml((source.shell && source.shell.defaultMode) || "light") + '">\n<head>\n'
-    + template.head + "\n<style>\n" + template.css + "</style>\n</head>\n<body>\n"
-    + template.html + "\n<script>\n" + template.javascript + "\n</script>\n</body>\n</html>\n";
+    + resolveParameters(template.head, template.parameters) + "\n<style>\n" + template.css + "</style>\n</head>\n<body>\n"
+    + resolveParameters(template.html, template.parameters) + "\n<script>\n" + template.javascript + "\n</script>\n</body>\n</html>\n";
+}
+
+function resolveParameters(value, parameters) {
+  const values = new Map((parameters || []).map(function (item) { return [item.code, item.value]; }));
+  return String(value).replace(/\$\{([A-Z0-9_]+)@[A-Z_]+\}/g, function (marker, code) {
+    return values.has(code) ? escapeHtml(values.get(code)) : marker;
+  });
 }
 
 async function writePackage(root, packageData) {

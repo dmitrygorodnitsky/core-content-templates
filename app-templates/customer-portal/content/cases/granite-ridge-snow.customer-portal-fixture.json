@@ -46,10 +46,7 @@
       "proposals": "Contracts",
       "support": "Support"
     },
-    "requestFormUrl": "https://dev-1.servicewand.com/snow-removal--request-quote",
-    "allowedNavOrigins": [
-      "https://dev-1.servicewand.com"
-    ]
+    "requestFormUrl": "https://dev-1.servicewand.com/snow-removal--request-quote"
   },
   "constraints": [
     "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",

@@ -8,5 +8,17 @@
  "templateLanguage": "JTE",
  "parent": null,
  "children": [],
- "parameters": []
+ "parameters": [
+  {
+   "code": "PORTAL_REQUEST_FORM_URL",
+   "type": "STRING",
+   "nls": {
+    "en": {
+     "NAME": "PORTAL REQUEST FORM URL",
+     "DESCRIPTION": "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert rather than sending the customer somewhere unintended."
+    }
+   },
+   "value": "https://dev-1.servicewand.com/snow-removal--request-quote"
+  }
+ ]
 }

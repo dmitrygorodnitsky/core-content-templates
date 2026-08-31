@@ -60,17 +60,27 @@ Three consequences worth knowing:
 3. `pricing` stays enabled. It is not in the nav and is reached from the
    accepted `Manage plan` action on the storm home rail.
 
-The destination is `data-portal-request-form-url`, resolved through the same
-guard as every other external link: https only, and the origin must appear in
-`data-portal-allowed-nav-origins`. It fails closed — a missing or disallowed
-URL leaves the button inert rather than sending the customer somewhere wrong.
+The destination is the CMS parameter `PORTAL_REQUEST_FORM_URL`, rendered into
+`data-portal-request-form-url` on the root element. An operator can repoint the
+button in the CMS without a rebuild.
+
+It is accepted only over https. The origin allow-list that guards the other
+external links is deliberately not applied here: the address and the allow-list
+would arrive through the same trusted channel, so demanding both adds no
+security and one more way to misconfigure — change the parameter, forget the
+list, and the button dies silently.
+
+Everything else fails closed to an inert button: plain http, a `javascript:`
+scheme, an empty value, and — the case worth naming — an unset parameter, which
+JTE renders as its own literal marker rather than as an empty string.
 
 ## Open
 
-1. **The form URL in the fixture is a placeholder.** It points at
-   `https://dev-1.servicewand.com/snow-removal--request-quote`, which is a
-   guess at where `PORTAL_FORM_DOCUMENT` is published. Whoever knows the real
-   address should correct it in
+1. **The shipped default is a placeholder.** It points at
+   `https://dev-1.servicewand.com/snow-removal--request-quote`, a guess at
+   where `PORTAL_FORM_DOCUMENT` is published. Correcting it no longer needs a
+   rebuild — set `PORTAL_REQUEST_FORM_URL` in the CMS. The default that travels
+   with the package lives in
    `content/cases/granite-ridge-snow.customer-portal-fixture.json`.
 2. **The button label.** The brief said the button becomes "request form". It
    ships as `Request a quote`, because the form is `GET_QUOTE_` and the

@@ -5,7 +5,7 @@ import path from "node:path";
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { appointmentRows, clockMinutes, filterRows, minutesOf, resourceNames, sortRows, stateMeta } =
   await import(new URL("src/normalizers/appointments.js", runtimeRoot));
-const { portalProfiles, routeRegistry } = await import(new URL("src/config.js", runtimeRoot));
+const { portalProfiles, readPortalConfig, routeRegistry } = await import(new URL("src/config.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
 
 const overview = graniteRidgeSnowFixture.overview;
@@ -80,5 +80,13 @@ assert.equal(storm.primary.action, "service.requestForm");
 assert.equal(routeRegistry.appointments.module, "appointmentsTimeline",
   "the spa already owns the module id 'appointments'");
 
+const formUrl = (value) => readPortalConfig({ dataset: { portalVertical: "snow", portalRequestFormUrl: value } }).requestFormUrl;
+assert.equal(formUrl("https://dev-1.servicewand.com/form"), "https://dev-1.servicewand.com/form");
+assert.equal(formUrl("http://dev-1.servicewand.com/form"), "", "plain http is discarded rather than opened");
+assert.equal(formUrl("javascript:alert(1)"), "", "a script scheme must never reach location.assign");
+assert.equal(formUrl("${PORTAL_REQUEST_FORM_URL@STRING}"), "", "an unset CMS parameter renders as its own marker, which is not a URL");
+assert.equal(formUrl(""), "");
+assert.equal(formUrl(undefined), "");
+
 console.log("appointments-check ok: " + rows.length + " rows across " + resourceNames(rows).length
-  + " resources, resource sort stable by time, date filter clears to the whole week, and Shop, Services, checkout and the cart are gone from stormRetail");
+  + " resources, resource sort stable by time, date filter clears to the whole week, Shop, Services, checkout and the cart gone from stormRetail, and a form address that only opens over https");

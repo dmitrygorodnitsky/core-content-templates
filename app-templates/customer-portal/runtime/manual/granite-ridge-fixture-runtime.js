@@ -13076,7 +13076,7 @@
       openDrawer("booking");
     },
     "service.requestForm": function() {
-      return externalOnly("requestFormUrl");
+      return openRequestForm();
     },
     "service.requestExtra": function(id) {
       runCommand("service.requestExtra", id, function() {
@@ -13384,6 +13384,15 @@
       return pickTheme(id);
     }
   };
+  function openRequestForm() {
+    var url = state.config.requestFormUrl;
+    if (!url) {
+      failCommand("nav.external.requestFormUrl");
+      return false;
+    }
+    globalThis.location.assign(url);
+    return true;
+  }
   function externalOnly(configKey) {
     var url = configuredExternalUrl(state.config, configKey);
     if (url) {

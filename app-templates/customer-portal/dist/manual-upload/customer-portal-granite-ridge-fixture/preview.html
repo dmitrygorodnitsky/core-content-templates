@@ -3015,9 +3015,11 @@ button { font-family: inherit; }
   font: inherit; font-size: 13px; font-weight: 650; color: var(--ink); cursor: pointer;
 }
 
-.appt-chip:hover { background: rgba(var(--glass), 1); }
+.appt-chip:not(.appt-chip--on):hover { background: rgba(var(--glass), 1); border-color: var(--hair); }
 
 .appt-chip--on { background: var(--accent); border-color: transparent; color: #fff; }
+
+.appt-chip--on:hover { filter: brightness(1.06); }
 
 .appt-chip__count {
   min-width: 20px; padding: 1px 6px; border-radius: var(--radius-pill);
@@ -3663,7 +3665,6 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   data-portal-nav-proposals-label="Contracts"
   data-portal-nav-support-label="Support"
   data-portal-request-form-url="https://dev-1.servicewand.com/snow-removal--request-quote"
-  data-portal-allowed-nav-origins="https://dev-1.servicewand.com"
   data-portal-weather-client-id="zWwBFpZuMEfMsx774O0U1"
   data-portal-weather-client-secret="s0U6ebUfk3AuyM02J5Kvy4cCo9yZ5FPP6BDm5PwJ"></section>
 <script>
@@ -16745,7 +16746,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       openDrawer("booking");
     },
     "service.requestForm": function() {
-      return externalOnly("requestFormUrl");
+      return openRequestForm();
     },
     "service.requestExtra": function(id) {
       runCommand("service.requestExtra", id, function() {
@@ -17053,6 +17054,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return pickTheme(id);
     }
   };
+  function openRequestForm() {
+    var url = state.config.requestFormUrl;
+    if (!url) {
+      failCommand("nav.external.requestFormUrl");
+      return false;
+    }
+    globalThis.location.assign(url);
+    return true;
+  }
   function externalOnly(configKey) {
     var url = configuredExternalUrl(state.config, configKey);
     if (url) {

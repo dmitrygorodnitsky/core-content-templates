@@ -10,9 +10,9 @@
   "parameters": [],
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
-   "html": "d3f5424c56edbc87a57359ce570d6b27c987a81813f77c1e21bbf8bfcf4b04d5",
-   "css": "2925faf6545c519622ed2e38bdff631927fc0b91b8c2c75ce4b71b6d5a263bdf",
-   "javascript": "3a84c61cf82892a298dbbc01d88fcba873f6a6de622daa1b470ad236951f1b09"
+   "html": "1d686e2c847e2b31f91f2d4081446bbee5e8da47fbc7f7efa5fd556e6dd2fd5d",
+   "css": "ab1e0ccb4b45af0398ed7436d2a10ab735a47ba962b1b463c0d76238b1c2b4df",
+   "javascript": "9b7d49a0b86febc5f40421d140276e5be80b34b659b9dbc62607ad01b2523959"
   }
  },
  "runtime": {

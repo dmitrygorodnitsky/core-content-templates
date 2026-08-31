@@ -2270,9 +2270,11 @@
   font: inherit; font-size: 13px; font-weight: 650; color: var(--ink); cursor: pointer;
 }
 
-.appt-chip:hover { background: rgba(var(--glass), 1); }
+.appt-chip:not(.appt-chip--on):hover { background: rgba(var(--glass), 1); border-color: var(--hair); }
 
 .appt-chip--on { background: var(--accent); border-color: transparent; color: #fff; }
+
+.appt-chip--on:hover { filter: brightness(1.06); }
 
 .appt-chip__count {
   min-width: 20px; padding: 1px 6px; border-radius: var(--radius-pill);

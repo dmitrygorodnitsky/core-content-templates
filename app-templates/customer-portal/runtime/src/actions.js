@@ -100,7 +100,7 @@ export var ACTIONS = {
   "seo.faq.toggle": function (id, el, event) { if (event) event.preventDefault(); toggleSeoFaq(id, render); },
   "cart.open":         function ()   { go(isSpa() && spaRetailOpen() ? "cart" : "checkout"); },
   "service.request":   function ()   { openDrawer("booking"); },
-  "service.requestForm": function () { return externalOnly("requestFormUrl"); },
+  "service.requestForm": function () { return openRequestForm(); },
   "service.requestExtra": function (id) { runCommand("service.requestExtra", id, function () { requestExtraService(id); }); },
   "service.reportIssue": function () { failCommand("service.reportIssue"); },
   "access.confirm":    function (id) { runCommand("access.confirm", id, function () { confirmAccess(id); }); },
@@ -191,6 +191,16 @@ export var ACTIONS = {
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav, accountMenu: false }); },
   "theme.pick":        function (id) { return pickTheme(id); }
 };
+
+function openRequestForm() {
+  var url = state.config.requestFormUrl;
+  if (!url) {
+    failCommand("nav.external.requestFormUrl");
+    return false;
+  }
+  globalThis.location.assign(url);
+  return true;
+}
 
 function externalOnly(configKey) {
   var url = configuredExternalUrl(state.config, configKey);
