@@ -10,6 +10,7 @@ const css = await fs.readFile(path.join(root, "runtime/forms/portal-form.css"), 
 function createDom() {
   const byId = new Map();
   const dom = { activeElement: null };
+  const holds = (outer, node) => { for (let current = node; current; current = current.parentNode) if (current === outer) return true; return false; };
   const make = (tag) => {
     const node = {
       tagName: String(tag).toUpperCase(),
@@ -31,7 +32,16 @@ function createDom() {
         this.children.splice(at === -1 ? this.children.length : at, 0, child);
         return child;
       },
-      replaceChildren() { this.children.forEach((child) => { child.parentNode = null; }); this.children = []; },
+      replaceChildren() {
+        const lost = this.children.some((child) => holds(child, dom.activeElement)) ? dom.activeElement : null;
+        if (lost) {
+          dom.activeElement = null;
+          lost.fire("blur", { relatedTarget: null });
+          for (let current = lost; current; current = current.parentNode) current.fire("focusout", { relatedTarget: null });
+        }
+        this.children.forEach((child) => { child.parentNode = null; });
+        this.children = [];
+      },
       addEventListener(type, fn) { (this.listeners[type] = this.listeners[type] || []).push(fn); },
       removeEventListener() {},
       focus() { dom.activeElement = this; },
@@ -42,11 +52,15 @@ function createDom() {
     Object.defineProperty(node, "id", { get: () => id, set(value) { id = String(value); byId.set(id, node); }, enumerable: true });
     return node;
   };
+  const documentListeners = {};
   dom.document = {
     head: make("head"),
     createElement: make,
     getElementById: (value) => byId.get(String(value)) || null,
     querySelector: () => null,
+    addEventListener(type, fn) { (documentListeners[type] = documentListeners[type] || []).push(fn); },
+    fire(type, event) { (documentListeners[type] || []).slice().forEach((fn) => fn(event || {})); },
+    get activeElement() { return dom.activeElement; },
   };
   return dom;
 }
@@ -68,14 +82,19 @@ let timerSeq = 0;
 const runTimers = () => {
   const due = [...timers.values()];
   timers.clear();
-  due.forEach((fn) => fn());
+  due.forEach((timer) => timer.fn());
+};
+const runZeroDelayTimers = () => {
+  const due = [...timers.entries()].filter(([, timer]) => timer.delay === 0);
+  due.forEach(([id]) => timers.delete(id));
+  due.forEach(([, timer]) => timer.fn());
 };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 const librariesLoaded = async () => { await settle(); await settle(); };
 const sandbox = {
   window: {},
   document: dom.document,
-  setTimeout(fn) { timerSeq += 1; timers.set(timerSeq, fn); return timerSeq; },
+  setTimeout(fn, delay) { timerSeq += 1; timers.set(timerSeq, { fn, delay: Number(delay) || 0 }); return timerSeq; },
   clearTimeout(id) { timers.delete(id); },
   fetch(url, init) {
     posted.push({ url, init });
@@ -225,27 +244,69 @@ const held = () => plain(repeat.values.PROPERTY_ADDRESSES);
 const typeInto = (value) => { const box = entry(); box.value = value; box.fire("input"); return box; };
 const bubble = (node, type, event) => { for (let current = node; current; current = current.parentNode) current.fire(type, event); };
 const attachedTo = (node, root) => { for (let current = node; current; current = current.parentNode) if (current === root) return true; return false; };
+const CONTROL_TAGS = ["INPUT", "BUTTON", "SELECT", "TEXTAREA"];
 const focusTarget = (node) => {
   for (let current = node; current; current = current.parentNode) {
-    if (["INPUT", "BUTTON", "SELECT", "TEXTAREA"].includes(current.tagName) || current.getAttribute("tabindex") !== null) return current;
+    if (CONTROL_TAGS.includes(current.tagName) || current.getAttribute("tabindex") !== null) return current;
   }
   return null;
 };
-const press = (target, root) => {
-  const down = { target, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
-  bubble(target, "mousedown", down);
-  const previous = dom.activeElement;
-  const next = focusTarget(target);
-  if (!down.defaultPrevented && previous !== next) {
-    dom.activeElement = next;
-    if (previous) {
-      previous.fire("blur", { relatedTarget: next });
-      bubble(previous, "focusout", { relatedTarget: next });
-    }
-  }
-  if (attachedTo(target, root)) bubble(target, "click", { target });
-};
 const outside = dom.document.createElement("button");
+const moveFocus = (to, root) => {
+  const from = dom.activeElement;
+  if (from === to) return;
+  dom.activeElement = null;
+  if (from) {
+    from.fire("blur", { relatedTarget: to });
+    bubble(from, "focusout", { relatedTarget: to });
+  }
+  if (to && (to === outside || attachedTo(to, root))) {
+    dom.activeElement = to;
+    to.fire("focus", { relatedTarget: from });
+    bubble(to, "focusin", { relatedTarget: from });
+  }
+};
+const underPointer = (root) => collect(root, "pf-field__error").map((node) => node.textContent).join("\n");
+const press = (target, root) => {
+  const before = underPointer(root);
+  const down = { target, button: 0, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+  bubble(target, "mousedown", down);
+  if (!down.defaultPrevented) moveFocus(focusTarget(target), root);
+  const shifted = underPointer(root) !== before;
+  dom.document.fire("mouseup", { target, button: 0 });
+  const clicked = attachedTo(target, root) && !shifted;
+  if (clicked) {
+    bubble(target, "click", { target });
+    let form = target.type === "submit" ? target.parentNode : null;
+    while (form && form.tagName !== "FORM") form = form.parentNode;
+    if (form) form.fire("submit", { preventDefault() {} });
+  }
+  runZeroDelayTimers();
+  return clicked;
+};
+const keyOn = (node, key) => {
+  const event = { key, target: node, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } };
+  dom.document.fire("keydown", event);
+  bubble(node, "keydown", event);
+  return event;
+};
+const tabOrder = (root) => {
+  const order = [];
+  const walk = (node) => {
+    const tabindex = node.getAttribute("tabindex");
+    if ((CONTROL_TAGS.includes(node.tagName) && !node.disabled && tabindex !== "-1") || (tabindex !== null && Number(tabindex) >= 0)) order.push(node);
+    node.children.forEach(walk);
+  };
+  walk(root);
+  return order;
+};
+const tab = (root) => {
+  const from = dom.activeElement;
+  const order = tabOrder(root);
+  const to = order[order.indexOf(from) + 1] || outside;
+  if (!keyOn(from, "Tab").defaultPrevented) moveFocus(to, root);
+  return to;
+};
 
 assert.deepEqual(held(), [], "a repeating address seeds as an empty array, never as a string");
 assert.equal(rows().length, 0, "the empty state renders no rows");
@@ -394,6 +455,79 @@ siteBox.value = "88 Robson Street, Vancouver, BC, Canada";
 siteBox.fire("input");
 assert.equal(single.values.SITE_ADDRESS, "88 Robson Street, Vancouver, BC, Canada", "a single-value address still writes a scalar on every keystroke");
 
+const flow = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+const flowMount = dom.document.createElement("div");
+flow.mount(flowMount);
+await settle();
+const control = (code) => dom.document.getElementById("pf-" + code);
+const wrapOf = (root, code) => collect(root, "pf-field").find((node) => node.dataset.code === code);
+const typeField = (code, value) => { const box = control(code); box.value = value; box.fire("input"); return box; };
+const organizationWrap = wrapOf(flowMount, "ORGANIZATION_NAME");
+control("ORGANIZATION_NAME").focus();
+const tabbedTo = tab(flowMount);
+assert.equal(tabbedTo, control("SELECT_ROLE"), "Tab runs from the first field to the second");
+assert.equal(dom.activeElement, tabbedTo, "leaving an untouched field with Tab keeps the focus on the field Tab moved to");
+assert.equal(wrapOf(flowMount, "ORGANIZATION_NAME"), organizationWrap, "leaving a field repaints it in place instead of re-rendering the card");
+assert.equal(organizationWrap.dataset.state, "invalid", "the required field left empty shows its error at once");
+assert.equal(collect(organizationWrap, "pf-field__error")[0].textContent, "requiredError");
+moveFocus(control("ORGANIZATION_NAME"), flowMount);
+typeField("ORGANIZATION_NAME", "Granite Ridge Properties");
+tab(flowMount);
+assert.equal(organizationWrap.dataset.state, "idle", "leaving it answered clears the error in place");
+
+const roleBox = control("SELECT_ROLE");
+roleBox.value = "OWNER";
+roleBox.fire("change");
+assert.equal(flow.values.SELECT_ROLE, "OWNER");
+assert.notEqual(control("SELECT_ROLE"), roleBox, "a choice re-renders the card");
+assert.equal(dom.activeElement, control("SELECT_ROLE"), "and gives the focus back to the control that was re-rendered");
+for (const [code, value] of [["FIRST_NAME", "Dana"], ["LAST_NAME", "Reyes"], ["EMAIL", "dana@example.com"], ["PHONE", "+1 604 555 0164"]]) {
+  assert.equal(tab(flowMount), control(code), "Tab reaches " + code);
+  typeField(code, value);
+}
+assert.equal(flow.touched.PHONE, undefined, "the last field is still untouched when the pointer goes down on Continue");
+assert.equal(press(collect(flowMount, "btn--primary")[0], flowMount), true, "nothing under the pointer is replaced or moved between mousedown and click");
+assert.equal(flow.step, 1, "the first click on Continue advances");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "PROPERTIES", "focus moves to the step Continue opened, not to the document body");
+assert.equal(press(collect(flowMount, "btn--ghost")[0], flowMount), true);
+assert.equal(flow.step, 0, "Back returns to the first step");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "C9C8004F_EFF7_470F_B924_5719E91A5E4C", "and moves focus to the step it shows");
+
+const sinkForm = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho });
+const sinkMount = dom.document.createElement("div");
+sinkForm.mount(sinkMount);
+await settle();
+control("PLAIN_TEXT").focus();
+assert.equal(sinkForm.touched.PLAIN_TEXT, undefined);
+assert.equal(press(collect(sinkMount, "btn--primary")[0], sinkMount), true, "leaving an empty required field for Continue shows no error under the pointer before the click lands");
+assert.equal(sinkForm.step, 0, "the click lands and validation keeps the step");
+assert.equal(dom.activeElement, control("PLAIN_TEXT"), "focus goes to the first field that needs an answer");
+assert.equal(wrapOf(sinkMount, "PLAIN_TEXT").dataset.state, "invalid");
+
+sinkForm.step = sinkForm.model.groups.findIndex((group) => group.code === "CHOICES");
+sinkForm.render();
+const triggers = () => collect(sinkMount, "pf-choice__input").filter((node) => node.getAttribute("name") === "TRIGGER");
+triggers()[0].focus();
+const arrowed = triggers()[1];
+moveFocus(arrowed, sinkMount);
+assert.equal(attachedTo(arrowed, sinkMount), true, "moving between the options of one radio group re-renders nothing");
+arrowed.checked = true;
+arrowed.fire("change");
+assert.equal(sinkForm.values.TRIGGER, "5CM", "the option an arrow key selected is kept");
+assert.equal(dom.activeElement.getAttribute("value"), "5CM", "and keeps the focus after the card re-renders");
+const chip = collect(sinkMount, "pf-chip")[0];
+moveFocus(chip, sinkMount);
+chip.fire("click");
+assert.deepEqual(plain(sinkForm.values.SURFACES), ["DRIVE"]);
+assert.equal(dom.activeElement.getAttribute("data-focus"), "SURFACES=DRIVE", "a chip toggled from the keyboard keeps the focus");
+assert.equal(dom.activeElement.getAttribute("aria-pressed"), "true");
+const terms = control("ACCEPT_TERMS");
+moveFocus(terms, sinkMount);
+terms.checked = true;
+terms.fire("change");
+assert.equal(sinkForm.values.ACCEPT_TERMS, true);
+assert.equal(dom.activeElement, control("ACCEPT_TERMS"), "a checkbox toggled with Space keeps the focus");
+
 const parented = normalizeSchema({
   id: 10,
   nls: { en: { NAME: "Child" } },
@@ -536,7 +670,7 @@ runTimers();
 await settle();
 press(collect(keyedMount, "pf-address__option")[0], keyedMount);
 await settle();
-assert.deepEqual(keyedAddresses(), [georgia], "the first click on a suggestion lands, although leaving the untouched required list for it would re-render the card under the pointer");
+assert.deepEqual(keyedAddresses(), [georgia], "the first click on a suggestion lands, because pressing it never moves focus out of the untouched required list");
 assert.equal(entry().value, "", "the pick leaves nothing typed behind for Continue to add unseen");
 assert.equal(keyed.values.PROPERTY_COORDINATES, JSON.stringify([{ address: georgia, lat: 49.2869, lng: -123.1257 }]), "a Places data API pick keeps its location for the exact string it committed, as numbers");
 assert.equal(geocoderQueue.length, 0, "a pick asks the Geocoder for nothing");
@@ -669,6 +803,7 @@ const typeSite = (value) => { const box = siteInput(); box.value = value; box.fi
 const siteCoordinates = () => coordinatesIn(site, "SITE_COORDINATES");
 assert.equal(collect(siteMount, "pf-address")[0].dataset.autocomplete, "data-api");
 
+siteInput().focus();
 typeSite("88 Rob");
 runTimers();
 await settle();
@@ -678,8 +813,9 @@ assert.equal(site.values.SITE_ADDRESS, robson);
 assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "a single address keeps its Places location as a one-entry array");
 site.render();
 await settle();
-answerGeocoder(robson, [49.9, -123.9]);
-assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "the geocoder never overrides a location the client picked");
+moveFocus(outside, siteMount);
+assert.equal(geocoderQueue.length, 0, "re-rendering and leaving a picked single address asks the Geocoder for nothing, so nothing can override the location the client picked");
+assert.deepEqual(siteCoordinates(), [{ address: robson, lat: 49.2767, lng: -123.1146 }]);
 
 typeSite(robson + " Unit 4");
 assert.equal(site.values.SITE_COORDINATES, "", "editing a single address by hand drops its location");
@@ -708,6 +844,126 @@ assert.doesNotMatch(surface(siteMount), /SITE_COORDINATES|Hidden coordinates|"la
 typeSite("");
 assert.equal(site.values.SITE_COORDINATES, "", "clearing the address removes its entry");
 await settle();
+
+const unplaceable = "9 Unplaceable Lane, Nowhere";
+siteInput().focus();
+typeSite(unplaceable);
+moveFocus(outside, siteMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [unplaceable], "leaving a typed single address asks the Geocoder once");
+answerGeocoder(unplaceable, null);
+site.render();
+await settle();
+moveFocus(siteInput(), siteMount);
+moveFocus(outside, siteMount);
+assert.equal(geocoderQueue.length, 0, "the unchanged address is not asked again after a re-render and a second blur, even when the first answer placed nothing");
+typeSite(unplaceable + " 2");
+typeSite(unplaceable);
+moveFocus(siteInput(), siteMount);
+moveFocus(outside, siteMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [unplaceable], "editing the text away and back asks again, once");
+answerGeocoder(unplaceable, null);
+typeSite("");
+await settle();
+
+maps.places = dataApi;
+const combo = new PortalForm({ schema: quoteWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const comboMount = dom.document.createElement("div");
+combo.mount(comboMount);
+await settle();
+combo.step = combo.model.groups.findIndex((group) => group.code === "PROPERTIES");
+combo.render();
+await settle();
+const comboHeld = () => plain(combo.values.PROPERTY_ADDRESSES);
+const listbox = () => collect(comboMount, "pf-address__list")[0];
+const options = () => collect(comboMount, "pf-address__option");
+const combobox = entry();
+assert.equal(combobox.getAttribute("role"), "combobox", "a keyed address input is a combobox");
+assert.equal(combobox.getAttribute("aria-autocomplete"), "list");
+assert.equal(combobox.getAttribute("aria-expanded"), "false");
+assert.equal(combobox.getAttribute("aria-controls"), listbox().id, "the combobox names the listbox it controls");
+assert.equal(listbox().getAttribute("role"), "listbox");
+
+moveFocus(combobox, comboMount);
+typeInto("Vancouver");
+runTimers();
+await settle();
+assert.equal(combobox.getAttribute("aria-expanded"), "true", "suggestions open under the focused input");
+assert.deepEqual(
+  plain(options().map((node) => [node.getAttribute("role"), node.getAttribute("tabindex"), node.getAttribute("aria-selected")])),
+  [["option", null, "false"], ["option", null, "false"]],
+  "suggestions are options, never tab stops, and none is active before an arrow key moves",
+);
+assert.equal(combobox.getAttribute("aria-activedescendant"), null);
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id, "ArrowDown makes the first suggestion active");
+assert.equal(options()[0].getAttribute("aria-selected"), "true");
+assert.equal(dom.activeElement, combobox, "DOM focus stays on the input");
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[1].id);
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id, "ArrowDown wraps from the last suggestion to the first");
+keyOn(combobox, "ArrowUp");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[1].id, "ArrowUp wraps from the first suggestion to the last");
+assert.equal(keyOn(combobox, "Escape").defaultPrevented, true);
+assert.equal(listbox().hidden, true, "Escape closes the suggestions");
+assert.equal(combobox.getAttribute("aria-expanded"), "false");
+assert.equal(combobox.getAttribute("aria-activedescendant"), null);
+assert.equal(combobox.value, "Vancouver", "Escape keeps the typed text");
+keyOn(combobox, "ArrowDown");
+assert.equal(combobox.getAttribute("aria-expanded"), "true", "ArrowDown reopens the suggestions for the unchanged text");
+assert.equal(combobox.getAttribute("aria-activedescendant"), options()[0].id);
+assert.equal(keyOn(combobox, "Enter").defaultPrevented, true);
+await settle();
+assert.deepEqual(comboHeld(), [georgia], "Enter commits the active suggestion, not the typed text");
+assert.equal(dom.activeElement, entry(), "focus returns to the emptied entry input");
+assert.equal(geocoderQueue.length, 0, "a picked suggestion carries its own location");
+
+typeInto("88 Rob");
+runTimers();
+await settle();
+keyOn(entry(), "ArrowDown");
+const leftFor = tab(comboMount);
+assert.equal(leftFor, collect(comboMount, "pf-repeat__add")[0], "Tab moves on to the add button, the next control after the input");
+assert.equal(dom.activeElement, leftFor);
+assert.equal(listbox().hidden, true, "Tab closes the suggestions at once");
+assert.deepEqual(comboHeld(), [georgia], "Tab picks nothing");
+assert.equal(entry().value, "88 Rob", "Tab keeps the typed text");
+assert.deepEqual(geocoderQueue.map((call) => call.address), ["88 Rob"], "leaving the entry asks the Geocoder for the typed text once");
+answerGeocoder("88 Rob", null);
+
+moveFocus(entry(), comboMount);
+typeInto("Vancouver");
+moveFocus(outside, comboMount);
+runTimers();
+await settle();
+assert.equal(listbox().hidden, true, "suggestions that arrive after the input lost focus never open");
+answerGeocoder("Vancouver", null);
+
+const denman = "1030 Denman Street, Vancouver, BC, Canada";
+moveFocus(entry(), comboMount);
+typeInto(denman);
+tab(comboMount);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [denman], "leaving the entry for the add button asks for the typed address");
+dom.activeElement.fire("click");
+await settle();
+assert.deepEqual(comboHeld(), [georgia, denman]);
+assert.deepEqual(geocoderQueue.map((call) => call.address), [denman], "committing it with + while that answer is on its way asks nothing more");
+answerGeocoder(denman, [49.2877, -123.1409]);
+assert.deepEqual(coordinatesIn(combo, "PROPERTY_COORDINATES").map((point) => point.address), [georgia, denman], "the one answer lands on the committed address");
+
+const davie = "1200 Davie Street, Vancouver, BC, Canada";
+moveFocus(entry(), comboMount);
+typeInto(davie);
+keyOn(entry(), "Enter");
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [davie], "Enter asks the Geocoder for the committed address");
+typeInto(davie);
+tab(comboMount);
+await settle();
+assert.deepEqual(geocoderQueue.map((call) => call.address), [davie], "typing the committed address again and leaving asks nothing more while its answer is on its way");
+answerGeocoder(davie, [49.2799, -123.1311]);
+assert.equal(coordinatesIn(combo, "PROPERTY_COORDINATES").find((point) => point.address === davie).lat, 49.2799);
+typeInto("");
 
 const gated = new PortalForm({
   schema: {
@@ -747,6 +1003,59 @@ assert.deepEqual(
 gated.values.KIND = "A";
 assert.equal(await gated.submit(), true);
 assert.deepEqual(Object.keys(JSON.parse(posted[posted.length - 1].init.body).attributes["30"]), ["KIND", "CHANNEL"], "coordinates never travel without the address they describe");
+
+const findTags = (node, tag, found) => { if (node.tagName === tag) found.push(node); node.children.forEach((child) => findTags(child, tag, found)); return found; };
+const outcomeMount = dom.document.createElement("div");
+const outcome = new PortalForm({ schema: kitchen, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+outcome.mount(outcomeMount);
+await settle();
+Object.assign(outcome.values, { PLAIN_TEXT: "Plain", EMAIL: "dana@example.com", PROPERTY_TYPE: "RESIDENTIAL", ACCEPT_TERMS: true });
+assert.equal(await outcome.submit(), true);
+const successTitle = collect(outcomeMount, "pf-notice__title")[0];
+assert.equal(outcomeMount.dataset.state, "success");
+assert.equal(successTitle.tagName, "H2", "the confirmation is the heading of what replaced the form");
+assert.equal(dom.activeElement, successTitle, "a successful submit moves focus to the confirmation instead of leaving it on the document body");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__text").map((node) => node.textContent)), ["successStep1", "successStep2", "successStep3"], "the success screen lists the next steps its copy declares, in order");
+assert.equal(collect(outcomeMount, "pf-next__list")[0].tagName, "OL");
+assert.deepEqual(plain(collect(outcomeMount, "pf-next__n").map((node) => node.getAttribute("aria-hidden"))), ["true", "true", "true"], "the drawn numbers are decoration; the ordered list carries the order");
+assert.equal(findTags(outcomeMount, "A", []).length, 0, "the success screen links nowhere: no registration, no sign-in, no portal route");
+const successActions = findTags(outcomeMount, "BUTTON", []);
+assert.deepEqual(plain(successActions.map((node) => node.textContent)), ["successAgainLabel"], "its only action is the optional one that starts over");
+assert.equal(press(successActions[0], outcomeMount), true);
+assert.equal(outcomeMount.dataset.state, "ready", "submit another response brings the form back");
+assert.equal(outcome.step, 0);
+assert.equal(outcome.values.PLAIN_TEXT, "", "with every answer cleared");
+assert.deepEqual(plain(outcome.touched), {}, "and nothing flagged before it is touched again");
+assert.equal(dom.activeElement && dom.activeElement.getAttribute("data-group"), "TEXTS", "focus lands on the first step");
+
+const silentCopy = new Proxy({}, { get: (_, key) => (/^successStep|^successAgainLabel$/.test(String(key)) ? "" : String(key)) });
+const quietMount = dom.document.createElement("div");
+const quiet = new PortalForm({ schema: kitchen, locale: "en", copy: silentCopy });
+quiet.mount(quietMount);
+await settle();
+quiet.state = "success";
+quiet.render();
+assert.equal(collect(quietMount, "pf-next").length, 0, "empty step copy renders no list and no heading");
+assert.equal(findTags(quietMount, "BUTTON", []).length, 0, "an empty again label renders no button");
+assert.equal(collect(quietMount, "pf-notice__title")[0].textContent, "successTitle");
+
+const statesMount = dom.document.createElement("div");
+const states = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+states.mount(statesMount);
+await settle();
+const drawnAs = (state) => { states.state = state; states.render(); return statesMount; };
+assert.equal(collect(drawnAs("loading"), "pf-skeleton").length, 1, "loading draws the skeleton");
+assert.equal(collect(drawnAs("error"), "pf-notice--error").length, 1, "a schema error draws its notice");
+assert.deepEqual(plain(findTags(statesMount, "BUTTON", []).map((node) => node.textContent)), ["retryLabel"], "with a retry action");
+assert.equal(collect(drawnAs("empty"), "pf-notice--empty").length, 1, "an empty form type draws its notice");
+assert.equal(collect(drawnAs("blocked"), "pf-notice--blocked").length, 1, "a missing organization draws its notice inside the form");
+assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
+const sending = collect(drawnAs("submitting"), "btn--primary")[0];
+assert.equal(sending.disabled, true, "submitting disables the primary action");
+assert.equal(sending.textContent, "submittingLabel");
+assert.equal(collect(drawnAs("submit-error"), "pf-notice--error").length, 1, "a failed submit draws its notice inside the form");
+assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
+assert.equal(collect(drawnAs("success"), "pf-notice--success").length, 1, "success draws the confirmation");
 
 assert.doesNotMatch(source, /innerHTML/, "the renderer must not assign innerHTML");
 assert.doesNotMatch(source, /dev-1\.servicewand\.com|lsrc\.pixelnation\.com/, "the renderer must not hardcode a deployment host");
@@ -788,6 +1097,19 @@ try {
   assert.match(template.javascript, /places\.AutocompleteSuggestion/, "the new Places data API is the primary path");
   assert.match(template.javascript, /places\.Autocomplete \?/, "the legacy widget stays as a fallback for older projects");
 
+  for (const code of ["SUCCESS_TITLE", "SUCCESS_BODY", "SUCCESS_NEXT_TITLE", "SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
+    assert.equal(parameters.get(code).type, "LOCALIZED_STRING_SS", code + " is localized CMS copy");
+    assert.match(template.html, new RegExp('data-copy-[a-z0-9-]+="\\$\\{' + code + '@LOCALIZED_STRING_SS\\}"'), code + " reaches the renderer through a data-copy attribute");
+  }
+  for (const code of ["SUCCESS_STEP_1", "SUCCESS_STEP_2", "SUCCESS_STEP_3", "SUCCESS_AGAIN_LABEL"]) {
+    assert.equal(parameters.get(code).value.en, "", code + " ships empty, so the generic default lists no next step and offers no second submission");
+  }
+  assert.doesNotMatch(
+    parameters.get("SUCCESS_TITLE").value.en + " " + parameters.get("SUCCESS_BODY").value.en,
+    /quote|propert|account|sign|regist|touch|email/i,
+    "the default confirmation promises nothing beyond receipt, whatever the form type",
+  );
+
   const tokens = await fs.readFile(path.join(root, "runtime/styles/tokens.css"), "utf8");
   for (const theme of manifest.themes.filter((value) => value !== "hvac")) {
     assert.ok(tokens.includes('data-theme="' + theme + '"'), "tokens.css must define the " + theme + " palette");
@@ -799,4 +1121,4 @@ try {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen");
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, and the success screen promises only its copy");

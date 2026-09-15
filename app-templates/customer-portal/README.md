@@ -110,17 +110,29 @@ same flat uploader as every other family; composing the children into
 
 `runtime/forms/portal-form.js` renders whatever a published Core form type
 declares, in the portal design language and under the eight vertical themes. It
-covers seventeen field kinds — text, textarea, password, email, tel, url, colour,
-date, number, slider, boolean, select, multiselect, radio, checklist, combobox
-and address — plus multi-step groups, input masks, per-field validation, and the
-loading, empty, error, blocked, submitting, success and submit-error states.
+covers eighteen field kinds — text, textarea, password, email, tel, url, colour,
+date, number, slider, boolean, select, multiselect, radio, checklist, combobox,
+address and a repeating address list — plus multi-step groups, input masks,
+per-field validation, and the loading, empty, error, blocked, submitting, success
+and submit-error states.
 
 An attribute whose Input format declares `address` becomes an address field with
-Google suggestions and a map preview. It needs `FORM_MAPS_API_KEY`, a Google
-browser key that is public by design and must be restricted by HTTP referrer and
-API list. While that parameter is empty no Google script is loaded at all and the
-field stays a plain text input that still submits. Only the formatted address
-string is stored; coordinates are not persisted.
+Google suggestions and a map preview, and a list of addresses when it is
+`multiselect`. It needs `FORM_MAPS_API_KEY`, a Google browser key that is public
+by design and must be restricted by HTTP referrer and API list. While that
+parameter is empty no Google script is loaded at all and the field stays a plain
+text input that still submits. The address attribute stores formatted address
+strings. A hidden attribute whose Input format declares
+`coordinates-of:<address code>` is never rendered and submits one JSON entry per
+current address that Google located, so it stays empty without a key.
+Suggestions follow the ARIA combobox pattern, and each address string is
+geocoded once.
+
+The success screen shows `SUCCESS_TITLE` and `SUCCESS_BODY`, a numbered list from
+`SUCCESS_STEP_1` to `SUCCESS_STEP_3` under `SUCCESS_NEXT_TITLE` when any step has
+text, and a start-over button only when `SUCCESS_AGAIN_LABEL` is set. It never
+offers registration or sign-in: an anonymous submission creates no account for
+the visitor.
 
 The contract it reads:
 
@@ -134,8 +146,11 @@ Both requests are anonymous. `uiBehavior` is honoured only as a declarative
 executed, unlike the shared `js/dynamic-form.js` reference client.
 
 Two published schemas are committed under `content/form-types/` and drive the
-preview and the check without a network: the live `GET_QUOTE_` snapshot and a
-`PORTAL_FORM_KITCHEN_SINK` fixture that exercises every kind.
+preview and the check without a network: `GET_QUOTE_` as published on 2026-09-10,
+which dev-1 no longer serves (see
+`content/cases/QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`), and a
+`PORTAL_FORM_KITCHEN_SINK` fixture that exercises every kind but the address
+list.
 
 ```bash
 node app-templates/customer-portal/scripts/portal-form-check.mjs

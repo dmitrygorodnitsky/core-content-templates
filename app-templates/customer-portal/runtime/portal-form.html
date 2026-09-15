@@ -39,6 +39,7 @@
       <select id="h-state">
         <option value="">ready</option><option value="loading">loading</option>
         <option value="error">schema error</option><option value="blocked">no organization</option>
+        <option value="empty">empty</option><option value="submitting">submitting</option>
         <option value="submit-error">submit error</option><option value="success">success</option>
       </select>
     </div>
@@ -49,8 +50,8 @@
   <script>
     var current = null;
 
-    function copy() {
-      return {
+    function copy(code) {
+      var base = {
         title: "Get your free quote",
         subtitle: "Tell us about the property and we will come back with a seasonal number.",
         note: "Preview harness. Nothing is submitted: no organization id is configured.",
@@ -75,13 +76,26 @@
         schemaErrorBody: "We could not reach the form service. Nothing was sent.",
         emptyTitle: "This form has no fields",
         emptyBody: "The published form type contains no visible attributes.",
-        successTitle: "Request received",
-        successBody: "Thanks — we have your details and will be in touch.",
+        successTitle: "Thank you",
+        successBody: "We have received your submission.",
+        successNextTitle: "What happens next",
+        successStep1: "",
+        successStep2: "",
+        successStep3: "",
+        successAgainLabel: "Submit another response",
         submitErrorTitle: "The request was not sent",
         submitErrorBody: "Something went wrong on the way. Your answers are still here — try again.",
         blockedTitle: "Sending is not configured",
         blockedBody: "This form has no organization id yet, so it cannot submit. Set it before publishing.",
       };
+      if (code !== "GET_QUOTE_") return base;
+      return Object.assign(base, {
+        successTitle: "Request received",
+        successBody: "Thank you. Your request has reached our team.",
+        successStep1: "We prepare quotes for each property you listed.",
+        successStep2: "You get one email with a link to review them.",
+        successAgainLabel: "",
+      });
     }
 
     function mount(schema) {
@@ -91,7 +105,7 @@
         locale: "en",
         apiBaseUrl: "https://dev-1.servicewand.com",
         organizationId: null,
-        copy: copy(),
+        copy: copy(schema.code),
         onSubmit: function (payload) { console.log("[PortalForm] submitted", payload); },
       }).mount("#form");
       applyForcedState();

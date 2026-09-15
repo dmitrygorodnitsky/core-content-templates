@@ -36,8 +36,13 @@ const COPY = [
   ["SCHEMA_ERROR_BODY", "We could not reach the form service. Nothing was sent."],
   ["EMPTY_TITLE", "This form has no fields"],
   ["EMPTY_BODY", "The published form type contains no visible attributes."],
-  ["SUCCESS_TITLE", "Request received"],
-  ["SUCCESS_BODY", "Thanks — we have your details and will be in touch."],
+  ["SUCCESS_TITLE", "Thank you"],
+  ["SUCCESS_BODY", "We have received your submission."],
+  ["SUCCESS_NEXT_TITLE", "What happens next", "Heading of the numbered list of next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."],
+  ["SUCCESS_STEP_1", "", "First step of what happens after a successful submission, shown as a numbered list on the success screen. Promise only what really follows a submission of this form type. Leave empty to show no list."],
+  ["SUCCESS_STEP_2", "", "Second next step on the success screen. Leave empty to omit it."],
+  ["SUCCESS_STEP_3", "", "Third next step on the success screen. Leave empty to omit it."],
+  ["SUCCESS_AGAIN_LABEL", "", "Label of a button on the success screen that clears the form for another submission. Leave empty to show no button, which is right whenever a second submission from the same visitor would create duplicate records."],
   ["SUBMIT_ERROR_TITLE", "The request was not sent"],
   ["SUBMIT_ERROR_BODY", "Something went wrong on the way. Your answers are still here — try again."],
   ["BLOCKED_TITLE", "Sending is not configured"],
@@ -55,6 +60,8 @@ const COPY_KEYS = {
   SCHEMA_ERROR_TITLE: "schemaErrorTitle", SCHEMA_ERROR_BODY: "schemaErrorBody",
   EMPTY_TITLE: "emptyTitle", EMPTY_BODY: "emptyBody",
   SUCCESS_TITLE: "successTitle", SUCCESS_BODY: "successBody",
+  SUCCESS_NEXT_TITLE: "successNextTitle", SUCCESS_STEP_1: "successStep1", SUCCESS_STEP_2: "successStep2",
+  SUCCESS_STEP_3: "successStep3", SUCCESS_AGAIN_LABEL: "successAgainLabel",
   SUBMIT_ERROR_TITLE: "submitErrorTitle", SUBMIT_ERROR_BODY: "submitErrorBody",
   BLOCKED_TITLE: "blockedTitle", BLOCKED_BODY: "blockedBody",
 };
@@ -104,7 +111,7 @@ export async function exportPortalFormManual(options = {}) {
 
 function templateFor(css, renderer) {
   const parameters = DEPLOYMENT.map(function (entry) { return field(entry[0], entry[1], "STRING", entry[2]); })
-    .concat(COPY.map(function (entry) { return field(entry[0], entry[1]); }));
+    .concat(COPY.map(function (entry) { return field(entry[0], entry[1], undefined, entry[2]); }));
 
   const attributes = {
     id: "portal-form-root",
@@ -259,6 +266,7 @@ function manifestFor(template) {
       "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
       "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
       "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
+      "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in.",
     ],
   };
 }
@@ -329,6 +337,10 @@ function readme(packageData) {
     "| `FORM_MODE` | `light` or `dark` |",
     "",
     "Every other parameter is copy: labels, button text, and one message per validation and lifecycle state.",
+    "",
+    "## Success screen",
+    "",
+    "`SUCCESS_TITLE` and `SUCCESS_BODY` confirm the submission. `SUCCESS_STEP_1` to `SUCCESS_STEP_3` list what happens next under `SUCCESS_NEXT_TITLE`, and `SUCCESS_AGAIN_LABEL` adds a button that clears the form for another submission. Each renders nothing while it is empty, so the shipped defaults promise nothing beyond receipt.",
     "",
     "## Contract",
     "",

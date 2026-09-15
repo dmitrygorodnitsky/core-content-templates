@@ -262,6 +262,33 @@
     event.preventDefault();
   }
 
+  var CONTROLS = { INPUT: true, SELECT: true, TEXTAREA: true, BUTTON: true };
+
+  function within(outer, node) {
+    for (var current = node; current; current = current.parentNode) {
+      if (current === outer) return true;
+    }
+    return false;
+  }
+
+  function focusKey(node) {
+    if (!node || typeof node.getAttribute !== "function") return "";
+    if (node.id) return "#" + node.id;
+    var name = node.getAttribute("name");
+    if (name) return name + "=" + node.getAttribute("value");
+    return node.getAttribute("data-focus") || "";
+  }
+
+  function findNode(node, match) {
+    if (match(node)) return node;
+    var children = node.children || [];
+    for (var index = 0; index < children.length; index += 1) {
+      var found = findNode(children[index], match);
+      if (found) return found;
+    }
+    return null;
+  }
+
   function debounce(fn, wait) {
     var timer = null;
     return function () {
@@ -297,12 +324,13 @@
     return mapsPromise;
   }
 
-  function geocodeAddress(maps, text, found) {
+  function geocodeAddress(maps, text, answered) {
     var query = String(text == null ? "" : text).trim();
-    if (!query || !maps.Geocoder) return;
+    if (!query || !maps.Geocoder) return false;
     new maps.Geocoder().geocode({ address: query }, function (results, status) {
-      if (status === "OK" && results && results.length) found(results[0]);
+      answered(status === "OK" && results && results.length ? results[0] : null);
     });
+    return true;
   }
 
   function PortalForm(config) {
@@ -314,6 +342,11 @@
     this.touched = {};
     this.pending = {};
     this.locations = {};
+    this.lookups = {};
+    this.previews = {};
+    this.fieldNodes = {};
+    this.unpainted = {};
+    this.pressing = false;
     this.step = 0;
     this.state = "loading";
     this.result = null;
@@ -323,10 +356,41 @@
     this.root = typeof target === "string" ? document.querySelector(target) : target;
     if (!this.root) throw new Error("PortalForm mount target was not found");
     this.root.classList.add("pf");
+    this.trackPress();
     this.render();
     var self = this;
     this.load().then(function () { self.render(); }, function () { self.render(); });
     return this;
+  };
+
+  PortalForm.prototype.trackPress = function () {
+    var self = this;
+    this.root.addEventListener("mousedown", function (event) {
+      if (event.button === 0) self.pressing = true;
+    }, true);
+    document.addEventListener("mouseup", function () {
+      if (self.pressing) setTimeout(function () { self.release(); }, 0);
+    }, true);
+    document.addEventListener("keydown", function () {
+      if (self.pressing) self.release();
+    }, true);
+  };
+
+  PortalForm.prototype.release = function () {
+    var self = this;
+    var waiting = this.unpainted;
+    this.pressing = false;
+    this.unpainted = {};
+    Object.keys(waiting).forEach(function (code) { self.paint(waiting[code]); });
+  };
+
+  PortalForm.prototype.paint = function (field) {
+    if (this.pressing) { this.unpainted[field.code] = field; return; }
+    var nodes = this.fieldNodes[field.code];
+    if (!nodes) return;
+    var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
+    nodes.wrap.setAttribute("data-state", invalid ? "invalid" : "idle");
+    nodes.error.textContent = invalid ? this.errors[field.code] : "";
   };
 
   PortalForm.prototype.load = function () {
@@ -358,6 +422,11 @@
 
   PortalForm.prototype.adopt = function (schema) {
     this.model = normalizeSchema(schema, this.locale);
+    this.seed();
+    this.state = this.model.groups.length ? "ready" : "empty";
+  };
+
+  PortalForm.prototype.seed = function () {
     var preset = this.cfg.presetValues || {};
     var self = this;
     this.eachField(function (field) {
@@ -373,7 +442,6 @@
         self.values[field.code] = "";
       }
     });
-    this.state = this.model.groups.length ? "ready" : "empty";
   };
 
   PortalForm.prototype.eachField = function (visit) {
@@ -474,6 +542,7 @@
       });
       if (this.step < 0) this.step = 0;
       this.render();
+      this.focusInvalid(groups[this.step]);
       return Promise.resolve(false);
     }
 
@@ -524,6 +593,7 @@
         self.state = "success";
         self.result = payload;
         self.render();
+        self.focusKeyed("success");
         if (typeof self.cfg.onSubmit === "function") self.cfg.onSubmit(payload, self.values);
         return true;
       })
@@ -531,6 +601,7 @@
         self.state = "submit-error";
         self.result = { message: error.message };
         self.render();
+        self.focusKeyed("next");
         return false;
       });
   };
@@ -554,18 +625,32 @@
     if (fromGeocoder && known[address]) return;
     known[address] = point;
     this.syncCoordinates(field);
+    var preview = this.previews[field.code];
+    if (preview && known[address]) preview(address, known[address]);
   };
 
-  PortalForm.prototype.locate = function (field, text) {
+  PortalForm.prototype.locate = function (field, text, maps) {
     var self = this;
     var address = addressKey(field, text);
     var known = this.locations[field.code];
-    if (!address || !this.cfg.mapsApiKey || (known && known[address])) return;
-    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
-      geocodeAddress(maps, address, function (best) {
-        self.rememberLocation(field, address, best.geometry.location, true);
+    var asked = this.lookups[field.code] || (this.lookups[field.code] = Object.create(null));
+    if (!address || !this.cfg.mapsApiKey || (known && known[address]) || asked[address]) return;
+    asked[address] = "pending";
+    function ask(loaded) {
+      var sent = geocodeAddress(loaded, address, function (best) {
+        if (best) {
+          delete asked[address];
+          self.rememberLocation(field, address, best.geometry && best.geometry.location, true);
+        } else if (self.holdsAddress(field, address)) {
+          asked[address] = "missed";
+        } else {
+          delete asked[address];
+        }
       });
-    }).catch(function () {});
+      if (!sent) delete asked[address];
+    }
+    if (maps) ask(maps);
+    else loadMaps(this.cfg.mapsApiKey).then(ask).catch(function () { delete asked[address]; });
   };
 
   PortalForm.prototype.syncCoordinates = function (source) {
@@ -574,6 +659,12 @@
     if (known) {
       Object.keys(known).forEach(function (address) {
         if (!self.holdsAddress(source, address)) delete known[address];
+      });
+    }
+    var asked = this.lookups[source.code];
+    if (asked) {
+      Object.keys(asked).forEach(function (address) {
+        if (asked[address] === "missed" && !self.holdsAddress(source, address)) delete asked[address];
       });
     }
     this.model.hidden.forEach(function (field) {
@@ -588,9 +679,24 @@
   };
 
   PortalForm.prototype.render = function () {
+    var active = document.activeElement;
+    var held = within(this.root, active) ? focusKey(active) : "";
+    this.draw();
+    if (held) this.focusKeyed(held);
+  };
+
+  PortalForm.prototype.focusKeyed = function (key) {
+    if (!key) return false;
+    var node = findNode(this.root, function (candidate) { return focusKey(candidate) === key; });
+    if (node) node.focus();
+    return Boolean(node);
+  };
+
+  PortalForm.prototype.draw = function () {
     var self = this;
     var root = this.root;
     root.dataset.state = this.state;
+    this.fieldNodes = {};
     root.replaceChildren();
 
     var card = el("div", "pf__card");
@@ -599,7 +705,7 @@
     if (this.state === "loading") { card.appendChild(this.renderSkeleton()); return; }
     if (this.state === "error") { card.appendChild(this.renderNotice("error", this.cfg.copy.schemaErrorTitle, this.cfg.copy.schemaErrorBody, true)); return; }
     if (this.state === "empty") { card.appendChild(this.renderNotice("empty", this.cfg.copy.emptyTitle, this.cfg.copy.emptyBody, false)); return; }
-    if (this.state === "success") { card.appendChild(this.renderNotice("success", this.cfg.copy.successTitle, this.cfg.copy.successBody, false)); return; }
+    if (this.state === "success") { card.appendChild(this.renderSuccess()); return; }
 
     var groups = this.visibleGroups();
     if (this.step >= groups.length) this.step = Math.max(0, groups.length - 1);
@@ -617,8 +723,13 @@
     form.addEventListener("submit", function (event) { event.preventDefault(); self.advance(groups); });
     card.appendChild(form);
 
-    var section = el("div", "pf-group", { "data-group": group.code });
-    if (group.title) section.appendChild(text("p", "pf-group__title", group.title));
+    var titleId = group.title ? "pf-group-" + group.code : undefined;
+    var section = el("div", "pf-group", { "data-group": group.code, role: "group", tabindex: "-1", "aria-labelledby": titleId });
+    if (group.title) {
+      var groupTitle = text("p", "pf-group__title", group.title);
+      groupTitle.id = titleId;
+      section.appendChild(groupTitle);
+    }
     group.fields.forEach(function (field) { section.appendChild(self.renderField(field)); });
     form.appendChild(section);
 
@@ -633,13 +744,14 @@
     if (multi && this.step > 0) {
       var back = text("button", "btn btn--ghost btn--lg", this.cfg.copy.backLabel);
       back.type = "button";
-      back.addEventListener("click", function () { self.step -= 1; self.render(); });
+      back.addEventListener("click", function () { self.step -= 1; self.render(); self.focusStep(); });
       actions.appendChild(back);
     }
     var last = this.step === groups.length - 1;
     var submitting = this.state === "submitting";
     var next = text("button", "btn btn--primary btn--lg", submitting ? this.cfg.copy.submittingLabel : last ? this.cfg.copy.submitLabel : this.cfg.copy.nextLabel);
     next.type = "submit";
+    next.setAttribute("data-focus", "next");
     if (submitting || (last && !this.canSubmit())) next.disabled = true;
     if (last && !this.canSubmit()) next.dataset.formDestination = "unset";
     actions.appendChild(next);
@@ -654,9 +766,24 @@
 
   PortalForm.prototype.advance = function (groups) {
     this.flushPending();
-    if (!this.validateGroup(groups[this.step])) { this.render(); return; }
-    if (this.step < groups.length - 1) { this.step += 1; this.render(); return; }
+    if (!this.validateGroup(groups[this.step])) { this.render(); this.focusInvalid(groups[this.step]); return; }
+    if (this.step < groups.length - 1) { this.step += 1; this.render(); this.focusStep(); return; }
     this.submit();
+  };
+
+  PortalForm.prototype.focusStep = function () {
+    var section = findNode(this.root, function (node) { return node.getAttribute("data-group") !== null; });
+    if (section) section.focus();
+  };
+
+  PortalForm.prototype.focusInvalid = function (group) {
+    var self = this;
+    var field = group.fields.filter(function (candidate) { return self.errors[candidate.code]; })[0];
+    var nodes = field && this.fieldNodes[field.code];
+    if (!nodes) return;
+    var control = findNode(nodes.wrap, function (node) { return node.id === "pf-" + field.code && CONTROLS[node.tagName] === true; })
+      || findNode(nodes.wrap, function (node) { return CONTROLS[node.tagName] === true; });
+    if (control) control.focus();
   };
 
   PortalForm.prototype.renderSteps = function (groups) {
@@ -702,6 +829,62 @@
     return wrap;
   };
 
+  PortalForm.prototype.renderSuccess = function () {
+    var self = this;
+    var copy = this.cfg.copy;
+    var wrap = el("div", "pf-notice pf-notice--success", { "data-state": "success" });
+    var glyph = text("div", "pf-notice__glyph", "✓");
+    glyph.setAttribute("aria-hidden", "true");
+    wrap.appendChild(glyph);
+    var title = text("h2", "pf-notice__title", copy.successTitle);
+    title.setAttribute("tabindex", "-1");
+    title.setAttribute("data-focus", "success");
+    wrap.appendChild(title);
+    if (copy.successBody) wrap.appendChild(text("div", "pf-notice__body", copy.successBody));
+
+    var steps = [copy.successStep1, copy.successStep2, copy.successStep3].filter(function (step) {
+      return step != null && String(step).trim() !== "";
+    });
+    if (steps.length) {
+      var next = el("div", "pf-next");
+      if (copy.successNextTitle) next.appendChild(text("h3", "pf-next__title", copy.successNextTitle));
+      var list = el("ol", "pf-next__list");
+      steps.forEach(function (step, index) {
+        var item = el("li", "pf-next__item");
+        var number = text("span", "pf-next__n", index + 1);
+        number.setAttribute("aria-hidden", "true");
+        item.appendChild(number);
+        item.appendChild(text("span", "pf-next__text", step));
+        list.appendChild(item);
+      });
+      next.appendChild(list);
+      wrap.appendChild(next);
+    }
+
+    if (copy.successAgainLabel) {
+      var again = text("button", "btn btn--ghost btn--lg", copy.successAgainLabel);
+      again.type = "button";
+      again.addEventListener("click", function () { self.restart(); });
+      wrap.appendChild(again);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.restart = function () {
+    this.values = {};
+    this.errors = {};
+    this.touched = {};
+    this.pending = {};
+    this.locations = {};
+    this.lookups = {};
+    this.result = null;
+    this.step = 0;
+    this.seed();
+    this.state = "ready";
+    this.render();
+    this.focusStep();
+  };
+
   PortalForm.prototype.renderField = function (field) {
     var self = this;
     var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
@@ -722,14 +905,13 @@
     var error = text("p", "pf-field__error", invalid ? this.errors[field.code] : "");
     error.id = id + "-error";
     wrap.appendChild(error);
+    this.fieldNodes[field.code] = { wrap: wrap, error: error };
 
-    wrap.addEventListener("focusout", function () {
+    wrap.addEventListener("focusout", function (event) {
+      if (within(wrap, event.relatedTarget)) return;
       self.touched[field.code] = true;
-      var message = self.validateField(field);
-      if (message !== self.errors[field.code] || (message && !invalid) || (!message && invalid)) {
-        self.errors[field.code] = message;
-        self.render();
-      }
+      self.errors[field.code] = self.validateField(field);
+      self.paint(field);
     });
     return wrap;
   };
@@ -818,6 +1000,7 @@
         var chip = text("button", "pf-chip" + (on ? " pf-chip--on" : ""), choice.label);
         chip.type = "button";
         chip.setAttribute("aria-pressed", on ? "true" : "false");
+        chip.setAttribute("data-focus", field.code + "=" + choice.value);
         chip.addEventListener("click", function () {
           var next = (self.values[field.code] || []).slice();
           var at = next.indexOf(choice.value);
@@ -971,25 +1154,29 @@
       autocomplete: "street-address", "aria-describedby": id + "-error",
     });
     input.value = value != null ? value : "";
+    var listbox = { key: null };
     var take = repeating ? accept : function (formatted) {
       input.value = formatted;
       self.setValue(field, formatted);
     };
+    input.addEventListener("keydown", function (event) {
+      if (listbox.key && listbox.key(event)) return;
+      if (!repeating || event.key !== "Enter") return;
+      event.preventDefault();
+      if (wrap.dataset.autocomplete === "legacy") return;
+      take(input.value);
+    });
     if (repeating) {
       input.addEventListener("input", function () {
         self.pending[field.code] = input.value;
         self.syncCoordinates(field);
       });
-      input.addEventListener("keydown", function (event) {
-        if (event.key !== "Enter") return;
-        event.preventDefault();
-        if (wrap.dataset.autocomplete === "legacy") return;
-        take(input.value);
-      });
     } else {
       input.addEventListener("input", function () { self.setValue(field, input.value); });
     }
-    wrap.appendChild(input);
+    var anchor = el("div", "pf-address__anchor");
+    anchor.appendChild(input);
+    wrap.appendChild(anchor);
 
     var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
     wrap.appendChild(canvas);
@@ -997,15 +1184,16 @@
     if (!this.cfg.mapsApiKey) return wrap;
 
     loadMaps(this.cfg.mapsApiKey).then(function (maps) {
-      self.upgradeAddress(field, wrap, input, canvas, maps, take);
+      self.upgradeAddress(field, wrap, input, canvas, maps, take, listbox);
     }).catch(function () {
       canvas.dataset.state = "idle";
     });
     return wrap;
   };
 
-  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take) {
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take, listbox) {
     var self = this;
+    var repeating = field.kind === "address-list";
     var map = null;
     var marker = null;
 
@@ -1025,42 +1213,22 @@
       marker = new maps.Marker({ map: map, position: location, title: label || "" });
     }
 
-    function geocode(text) {
-      geocodeAddress(maps, text, function (best) {
-        self.rememberLocation(field, text, best.geometry.location, true);
-        show(best.geometry.location, best.formatted_address);
-      });
+    function preview(text) {
+      var address = addressKey(field, text);
+      var known = self.locations[field.code];
+      if (known && known[address]) show(known[address], address);
+      else self.locate(field, text, maps);
     }
+
+    self.previews[field.code] = function (address, point) {
+      if (addressKey(field, repeating ? self.pending[field.code] : input.value) === address) show(point, address);
+    };
 
     function pick(formatted, location) {
-      if (formatted) {
-        take(formatted, true);
-        self.rememberLocation(field, formatted, location, false);
-      }
-      if (location) show(location, formatted);
-      else if (formatted) geocode(formatted);
-    }
-
-    var list = el("ul", "pf-address__list", { role: "listbox", hidden: true });
-    wrap.insertBefore(list, canvas);
-
-    function closeList() { list.replaceChildren(); list.hidden = true; }
-
-    function offerSuggestions(items) {
-      list.replaceChildren();
-      if (!items.length) { list.hidden = true; return; }
-      items.slice(0, 5).forEach(function (item) {
-        var option = el("li", "pf-address__option", { role: "option", tabindex: "0" });
-        option.textContent = item.label;
-        var accept = function () { closeList(); item.accept(); };
-        option.addEventListener("mousedown", keepFocus);
-        option.addEventListener("click", accept);
-        option.addEventListener("keydown", function (event) {
-          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); accept(); }
-        });
-        list.appendChild(option);
-      });
-      list.hidden = false;
+      if (!formatted) return;
+      take(formatted, true);
+      if (location) self.rememberLocation(field, formatted, location, false);
+      else self.locate(field, formatted, maps);
     }
 
     var places = maps.places || {};
@@ -1068,33 +1236,7 @@
     wrap.dataset.autocomplete = mode;
 
     if (mode === "data-api") {
-      var token = places.AutocompleteSessionToken ? new places.AutocompleteSessionToken() : undefined;
-      var query = function () {
-        var value = input.value.trim();
-        if (value.length < 3) { closeList(); return; }
-        places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
-          input: value,
-          sessionToken: token,
-          includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
-          includedRegionCodes: field.tokens.country || undefined,
-        }).then(function (response) {
-          var suggestions = (response && response.suggestions) || [];
-          offerSuggestions(suggestions.map(function (suggestion) {
-            var prediction = suggestion.placePrediction;
-            return {
-              label: prediction && prediction.text ? String(prediction.text) : "",
-              accept: function () {
-                var place = prediction.toPlace();
-                place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
-                  pick(place.formattedAddress, place.location);
-                }).catch(function () { pick(prediction.text ? String(prediction.text) : "", null); });
-              },
-            };
-          }).filter(function (item) { return item.label; }));
-        }).catch(function () { closeList(); });
-      };
-      input.addEventListener("input", debounce(query, 250));
-      input.addEventListener("blur", function () { setTimeout(closeList, 150); });
+      this.suggest(field, input, places, pick, listbox);
     } else if (mode === "legacy") {
       try {
         var autocomplete = new places.Autocomplete(input, {
@@ -1112,12 +1254,128 @@
       }
     }
 
-    if (field.kind === "address-list") {
-      input.addEventListener("blur", function () { geocode(self.pending[field.code]); });
+    if (repeating) {
+      input.addEventListener("blur", function () { preview(self.pending[field.code]); });
     } else {
-      input.addEventListener("blur", function () { geocode(input.value); });
-      geocode(input.value);
+      input.addEventListener("blur", function () { preview(input.value); });
+      preview(input.value);
     }
+  };
+
+  PortalForm.prototype.suggest = function (field, input, places, pick, listbox) {
+    var repeating = field.kind === "address-list";
+    var listId = input.id + "-suggestions";
+    var list = el("ul", "pf-address__list", { id: listId, role: "listbox", "aria-label": field.label, hidden: true });
+    var token = places.AutocompleteSessionToken ? new places.AutocompleteSessionToken() : undefined;
+    var offered = [];
+    var recent = { query: "", items: [] };
+    var active = -1;
+    input.parentNode.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("autocomplete", "off");
+
+    function highlight(index) {
+      active = index;
+      offered.forEach(function (option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.id);
+    }
+
+    function closeList() {
+      list.replaceChildren();
+      list.hidden = true;
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+
+    function choose(option) {
+      closeList();
+      option.accept();
+    }
+
+    function offer(items) {
+      closeList();
+      offered = items.slice(0, 5).map(function (item, index) {
+        var node = el("li", "pf-address__option", { id: listId + "-" + index, role: "option", "aria-selected": "false" });
+        node.textContent = item.label;
+        var option = { node: node, accept: item.accept };
+        node.addEventListener("mousedown", keepFocus);
+        node.addEventListener("click", function () { choose(option); });
+        list.appendChild(node);
+        return option;
+      });
+      if (!offered.length) return;
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    listbox.key = function (event) {
+      if (list.hidden) {
+        if (event.key !== "ArrowDown" || !recent.items.length || recent.query !== input.value.trim()) return false;
+        event.preventDefault();
+        offer(recent.items);
+        highlight(0);
+        return true;
+      }
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+        return true;
+      }
+      if (event.key === "Enter") {
+        if (active !== -1) {
+          event.preventDefault();
+          choose(offered[active]);
+          return true;
+        }
+        closeList();
+        if (repeating) return false;
+        event.preventDefault();
+        return true;
+      }
+      if (event.key !== "Escape") return false;
+      event.preventDefault();
+      closeList();
+      return true;
+    };
+
+    input.addEventListener("input", debounce(function () {
+      var value = input.value.trim();
+      if (value.length < 3) { closeList(); return; }
+      places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: value,
+        sessionToken: token,
+        includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
+        includedRegionCodes: field.tokens.country || undefined,
+      }).then(function (response) {
+        if (document.activeElement !== input || input.value.trim() !== value) return;
+        recent = {
+          query: value,
+          items: ((response && response.suggestions) || []).map(function (suggestion) {
+            var prediction = suggestion.placePrediction;
+            var label = prediction && prediction.text ? String(prediction.text) : "";
+            return {
+              label: label,
+              accept: function () {
+                var place = prediction.toPlace();
+                place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
+                  pick(place.formattedAddress, place.location);
+                }).catch(function () { pick(label, null); });
+              },
+            };
+          }).filter(function (item) { return item.label; }),
+        };
+        offer(recent.items);
+      }).catch(closeList);
+    }, 250));
+    input.addEventListener("blur", closeList);
   };
 
   global.PortalForm = PortalForm;
@@ -1131,7 +1389,7 @@
 
 (function () {
   "use strict";
-  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1":"successStep1","SUCCESS_STEP_2":"successStep2","SUCCESS_STEP_3":"successStep3","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
   var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
   var MODES = ["light","dark"];
   function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }

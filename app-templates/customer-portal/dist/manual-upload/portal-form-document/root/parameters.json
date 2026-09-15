@@ -398,7 +398,7 @@
       }
     },
     "value": {
-      "en": "Request received"
+      "en": "Thank you"
     }
   },
   {
@@ -411,7 +411,72 @@
       }
     },
     "value": {
-      "en": "Thanks — we have your details and will be in touch."
+      "en": "We have received your submission."
+    }
+  },
+  {
+    "code": "SUCCESS_NEXT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS NEXT TITLE",
+        "DESCRIPTION": "Heading of the numbered list of next steps on the success screen. It is shown only while at least one SUCCESS_STEP parameter has text."
+      }
+    },
+    "value": {
+      "en": "What happens next"
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_1",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 1",
+        "DESCRIPTION": "First step of what happens after a successful submission, shown as a numbered list on the success screen. Promise only what really follows a submission of this form type. Leave empty to show no list."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_2",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 2",
+        "DESCRIPTION": "Second next step on the success screen. Leave empty to omit it."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUCCESS_STEP_3",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS STEP 3",
+        "DESCRIPTION": "Third next step on the success screen. Leave empty to omit it."
+      }
+    },
+    "value": {
+      "en": ""
+    }
+  },
+  {
+    "code": "SUCCESS_AGAIN_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SUCCESS AGAIN LABEL",
+        "DESCRIPTION": "Label of a button on the success screen that clears the form for another submission. Leave empty to show no button, which is right whenever a second submission from the same visitor would create duplicate records."
+      }
+    },
+    "value": {
+      "en": ""
     }
   },
   {

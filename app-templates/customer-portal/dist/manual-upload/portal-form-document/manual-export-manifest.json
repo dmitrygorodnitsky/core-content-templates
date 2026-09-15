@@ -5,12 +5,12 @@
   "template": {
     "code": "PORTAL_FORM_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 37,
+    "parameterCount": 42,
     "sha256": {
       "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
-      "html": "abd9543f2535085c99c3b7a529555f7561ac0e671cb63b76647d7ba1f6d16b32",
-      "css": "20e93c844071d3e9eff2668691d5e474e3d4123e46ff8ecd25bba2f5d5801dc8",
-      "javascript": "283f05256ee383bcbf26e7557d2662015bac3117818a492781bf147220d32e0c"
+      "html": "7acb80b301d819a61a151be3d068187afd4614662f119bc91cc2c8b5074d69b9",
+      "css": "f5fd1700ffd7905d9320d3dc5ac8fe6eaf6fff4ebb2181892d74a8cedc1c8d6a",
+      "javascript": "cbbe4674ea694588630965e7f7f146d7527af182ffb0096801a0b4aacb1b9011"
     }
   },
   "renderer": {
@@ -64,6 +64,7 @@
     "Both requests are anonymous: credentials are omitted and no token, session or customer value is ever sent.",
     "Masks are applied only when the attribute declares mask: in its inputFormat. Nothing is inferred, so no value is reshaped without the schema asking.",
     "FORM_MAPS_API_KEY is a public browser key by design and must be restricted by HTTP referrer and API list in the Google console. While it is empty no Google script is loaded at all, and an address field degrades to a plain text input that still submits.",
-    "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette."
+    "FORM_THEME and FORM_MODE accept only a published vertical and light or dark. An unrecognised value falls back to the shipped default instead of writing an unknown data-theme that would silently render the wrong palette.",
+    "The success screen states only what its copy parameters say. SUCCESS_STEP_1 to SUCCESS_STEP_3 and SUCCESS_AGAIN_LABEL render nothing while empty, and the document never offers registration or sign-in."
   ]
 }
