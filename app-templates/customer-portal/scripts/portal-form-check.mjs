@@ -120,6 +120,8 @@ assert.equal(javaType("java.math.BigDecimal"), "number");
 assert.equal(javaType("java.lang.String"), "string");
 assert.equal(javaType("com.servicewand.core.User"), "entity");
 assert.equal(javaType(""), "entity");
+assert.equal(javaType("com.pixelnation.common.domain.Address"), "address", "Core's Address class is an address to type, not an entity to pick");
+assert.equal(javaType("com.example.crm.Address"), "entity", "only Core's Address class is an address, not every class named Address");
 
 const flags = parseTokens("password textarea expanded slider tel url email color date");
 for (const flag of ["password", "textarea", "expanded", "slider", "tel", "url", "email", "color", "date"]) {
@@ -225,11 +227,40 @@ assert.equal(live.groups[1].title, "Real estate properties");
 const published = new Set();
 live.groups.forEach((group) => group.fields.forEach((field) => published.add(field.code)));
 for (const retired of ["PROPERTY_ADDRESS", "PROPERTY_SIZE", "RISK_FACTORS", "SELECT_YOUR_PROPERTY_TYPE"]) {
-  assert.equal(published.has(retired), false, retired + " no longer exists on the published form type");
+  assert.equal(published.has(retired), false, retired + " renders nowhere in the multi-address snapshot of 2026-09-10");
 }
 let requiredCount = 0;
 live.groups.forEach((group) => group.fields.forEach((field) => { if (field.required) requiredCount += 1; }));
 assert.equal(requiredCount, 7, "every attribute but ADDITIONAL_NOTES declares required:true");
+
+const servedQuote = JSON.parse(await fs.readFile(path.join(root, "content/form-types/GET_QUOTE_.2026-09-16.en.json"), "utf8"));
+const served = normalizeSchema(servedQuote, "en");
+assert.equal(served.id, 2);
+assert.deepEqual(
+  plain(servedQuote.attributeGroups.map((group) => group.code)),
+  ["EA849F15_9108_455F_9A05_F26BED67E5CD", "NOTES", "C9C8004F_EFF7_470F_B924_5719E91A5E4C"],
+);
+assert.deepEqual(
+  plain(served.groups.map((group) => [group.code, group.fields.map((field) => field.code)])),
+  [
+    ["EA849F15_9108_455F_9A05_F26BED67E5CD", ["SELECT_YOUR_PROPERTY_TYPE", "PROPERTY_ADDRESS", "RISK_FACTORS", "PROPERTY_SIZE"]],
+    ["C9C8004F_EFF7_470F_B924_5719E91A5E4C", ["SELECT_ROLE", "FIRST_NAME", "LAST_NAME", "EMAIL", "PHONE"]],
+    ["NOTES", ["ADDITIONAL_NOTES"]],
+  ],
+  "the three groups dev-1 served on 2026-09-16 follow attributeOrder, not attributeGroups, each with its fields in row order",
+);
+assert.deepEqual(
+  plain(served.groups.map((group) => group.fields.map((field) => field.kind))),
+  [["select", "address", "checklist", "select"], ["select", "text", "text", "email", "tel"], ["textarea"]],
+);
+assert.deepEqual(plain(served.hidden), []);
+const servedAddress = served.groups[0].fields[1];
+assert.deepEqual(
+  plain([servedAddress.code, servedAddress.kind, servedAddress.required, servedAddress.multiselect, servedAddress.choices.length, servedAddress.typeId, servedAddress.label]),
+  ["PROPERTY_ADDRESS", "address", true, false, 0, 2, "Property Address"],
+  "an Address-classed attribute with the empty options Core now always sends is a required single address, not a select without options",
+);
+assert.equal(servedAddress.tokens.address, false, "it declares no inputFormat, so its class alone makes it an address");
 
 const repeat = new PortalForm({ schema: quote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
 const mounted = dom.document.createElement("div");
@@ -1057,6 +1088,154 @@ assert.equal(collect(drawnAs("submit-error"), "pf-notice--error").length, 1, "a 
 assert.ok(collect(statesMount, "pf-field").length > 0, "and keeps the answers on screen");
 assert.equal(collect(drawnAs("success"), "pf-notice--success").length, 1, "success draws the confirmation");
 
+const servedMount = dom.document.createElement("div");
+const servedForm = new PortalForm({ schema: servedQuote, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example" });
+servedForm.mount(servedMount);
+await settle();
+assert.deepEqual(
+  plain(collect(servedMount, "pf-step").map((node) => node.children[1].textContent)),
+  plain(served.groups.map((group) => group.title)),
+  "the served form draws one step per group, in attributeOrder order",
+);
+const drawnSteps = [];
+for (let index = 0; index < served.groups.length; index += 1) {
+  servedForm.step = index;
+  servedForm.render();
+  drawnSteps.push(collect(servedMount, "pf-field").map((node) => node.dataset.code + ":" + node.dataset.kind));
+}
+assert.deepEqual(plain(drawnSteps), [
+  ["SELECT_YOUR_PROPERTY_TYPE:select", "PROPERTY_ADDRESS:address", "RISK_FACTORS:checklist", "PROPERTY_SIZE:select"],
+  ["SELECT_ROLE:select", "FIRST_NAME:text", "LAST_NAME:text", "EMAIL:email", "PHONE:tel"],
+  ["ADDITIONAL_NOTES:textarea"],
+], "each step draws its group's fields in row order");
+servedForm.step = 0;
+servedForm.render();
+assert.equal(collect(wrapOf(servedMount, "PROPERTY_ADDRESS"), "pf-address").length, 1, "PROPERTY_ADDRESS draws the address control");
+assert.equal(control("PROPERTY_ADDRESS").tagName, "INPUT");
+assert.equal(control("PROPERTY_ADDRESS").getAttribute("autocomplete"), "street-address", "without a maps key the address stays a plain text input");
+assert.equal(collect(servedMount, "pf-address")[0].dataset.autocomplete, undefined);
+assert.deepEqual(
+  plain(findTags(servedMount, "SELECT", []).map((node) => [node.getAttribute("name"), node.children.length - 1])),
+  [["SELECT_YOUR_PROPERTY_TYPE", 5], ["PROPERTY_SIZE", 5]],
+  "the only selects on the property step are the two attributes with options, so no select without options stands in for the address",
+);
+assert.equal(servedForm.values.PROPERTY_ADDRESS, "", "a single Address-classed attribute seeds as a string");
+
+const chooseOption = (code, value) => { const box = control(code); box.value = value; box.fire("change"); };
+chooseOption("SELECT_YOUR_PROPERTY_TYPE", "CONDO_APARTMENT");
+chooseOption("PROPERTY_SIZE", "10000");
+assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+assert.equal(servedForm.step, 0, "Continue with the required address empty keeps the property step");
+assert.deepEqual(plain(collect(servedMount, "pf-field").filter((node) => node.dataset.state === "invalid").map((node) => node.dataset.code)), ["PROPERTY_ADDRESS"]);
+assert.equal(collect(wrapOf(servedMount, "PROPERTY_ADDRESS"), "pf-field__error")[0].textContent, "requiredError");
+assert.equal(dom.activeElement, control("PROPERTY_ADDRESS"), "focus goes to the empty address");
+
+Object.assign(servedForm.values, { SELECT_ROLE: "OWNER", FIRST_NAME: "Dana", LAST_NAME: "Reyes", EMAIL: "dana@example.com", PHONE: "+1 604 555 0164" });
+const postedBeforeServed = posted.length;
+servedForm.step = 2;
+servedForm.render();
+assert.equal(await servedForm.submit(), false, "an empty required address blocks submit even with every other answer given");
+assert.equal(posted.length, postedBeforeServed, "and nothing is posted");
+assert.equal(servedForm.step, 0, "submit returns to the step that holds the address");
+assert.equal(dom.activeElement, control("PROPERTY_ADDRESS"));
+
+const servedTyped = "1200 West Georgia Street, Vancouver, BC, Canada";
+typeField("PROPERTY_ADDRESS", servedTyped);
+assert.equal(servedForm.values.PROPERTY_ADDRESS, servedTyped, "typing writes the address text on every keystroke");
+chooseOption("PROPERTY_SIZE", "25000");
+assert.equal(control("PROPERTY_ADDRESS").value, servedTyped, "a re-render keeps the typed address on screen");
+assert.equal(wrapOf(servedMount, "PROPERTY_ADDRESS").dataset.state, "idle", "and the answered address no longer shows its error");
+for (const expectedStep of [1, 2]) {
+  assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+  assert.equal(servedForm.step, expectedStep);
+}
+assert.equal(press(collect(servedMount, "btn--primary")[0], servedMount), true);
+await settle();
+assert.equal(servedMount.dataset.state, "success", "the typed address lets the form submit");
+assert.equal(posted.length, postedBeforeServed + 1);
+assert.equal(posted[posted.length - 1].url, "https://forms.example/core-cms/api/form/submit.json");
+assert.deepEqual(JSON.parse(posted[posted.length - 1].init.body), {
+  type: { id: 2 },
+  organization: { id: 43 },
+  attributes: {
+    2: {
+      SELECT_YOUR_PROPERTY_TYPE: { value: "CONDO_APARTMENT" },
+      PROPERTY_ADDRESS: { value: servedTyped },
+      PROPERTY_SIZE: { value: "25000" },
+      SELECT_ROLE: { value: "OWNER" },
+      FIRST_NAME: { value: "Dana" },
+      LAST_NAME: { value: "Reyes" },
+      EMAIL: { value: "dana@example.com" },
+      PHONE: { value: "+1 604 555 0164" },
+    },
+  },
+}, "the Address-classed attribute submits the text typed into it, the same value a declared address submits");
+
+const servedWithCoordinates = withHiddenAttribute(servedQuote, coordinatesAttribute("PROPERTY_COORDINATES", "PROPERTY_ADDRESS"), "EA849F15_9108_455F_9A05_F26BED67E5CD", false);
+const pinned = new PortalForm({ schema: servedWithCoordinates, locale: "en", copy: copyEcho, organizationId: 43, apiBaseUrl: "https://forms.example", mapsApiKey: "test-key" });
+const pinnedMount = dom.document.createElement("div");
+pinned.mount(pinnedMount);
+await settle();
+assert.deepEqual(plain(pinned.model.hidden.map((field) => [field.code, field.tokens.coordinatesOf])), [["PROPERTY_COORDINATES", "PROPERTY_ADDRESS"]]);
+assert.deepEqual(plain(pinned.model.groups[0].fields.map((field) => field.code)), plain(served.groups[0].fields.map((field) => field.code)), "the coordinates attribute adds no field to the property step");
+assert.equal(collect(pinnedMount, "pf-address")[0].dataset.autocomplete, "data-api", "with a key the Address-classed field takes the Places data API, as a declared address does");
+const pinnedInput = () => dom.document.getElementById("pf-PROPERTY_ADDRESS");
+const typePinned = (value) => { const box = pinnedInput(); box.value = value; box.fire("input"); return box; };
+pinnedInput().focus();
+typePinned("88 Rob");
+runTimers();
+await settle();
+assert.equal(press(collect(pinnedMount, "pf-address__option")[0], pinnedMount), true);
+await settle();
+assert.equal(pinned.values.PROPERTY_ADDRESS, robson, "a picked suggestion becomes the address text");
+assert.deepEqual(coordinatesIn(pinned, "PROPERTY_COORDINATES"), [{ address: robson, lat: 49.2767, lng: -123.1146 }], "a single Address-classed source keeps its Places location as a one-entry array");
+assert.equal(geocoderQueue.length, 0, "a pick asks the Geocoder for nothing");
+const pinnedTyped = "4000 No. 3 Road, Richmond, BC, Canada";
+typePinned(pinnedTyped);
+assert.equal(pinned.values.PROPERTY_COORDINATES, "", "editing the address by hand drops the picked location");
+pinnedInput().fire("blur");
+assert.deepEqual(geocoderQueue.map((call) => call.address), [pinnedTyped], "leaving a typed address asks the Geocoder for it once");
+answerGeocoder(pinnedTyped, [49.1848, -123.1363]);
+assert.deepEqual(coordinatesIn(pinned, "PROPERTY_COORDINATES"), [{ address: pinnedTyped, lat: 49.1848, lng: -123.1363 }], "the Geocoder answer lands on the typed address");
+Object.assign(pinned.values, { SELECT_YOUR_PROPERTY_TYPE: "TOWNHOME", PROPERTY_SIZE: "5000", SELECT_ROLE: "OWNER", FIRST_NAME: "Dana", LAST_NAME: "Reyes", EMAIL: "dana@example.com", PHONE: "+1 604 555 0164" });
+assert.equal(await pinned.submit(), true);
+const pinnedWire = JSON.parse(posted[posted.length - 1].init.body).attributes["2"];
+assert.deepEqual(pinnedWire.PROPERTY_ADDRESS, { value: pinnedTyped });
+assert.deepEqual(JSON.parse(pinnedWire.PROPERTY_COORDINATES.value), [{ address: pinnedTyped, lat: 49.1848, lng: -123.1363 }], "the hidden coordinates travel with the single address they describe");
+
+const addressClassed = (code, extra) => ({ code, required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.common.domain.Address", nls: { en: { NAME: code } }, options: [], ...extra });
+const classSchema = {
+  id: 41, code: "CLASSES", nls: {}, attributeGroups: [],
+  attributes: [
+    addressClassed("SITES", { multiselect: true }),
+    addressClassed("KNOWN_SITE", { options: [{ value: "501", nls: { en: { NAME: "1200 West Georgia Street" } } }, { value: "502", nls: { en: { NAME: "88 Robson Street" } } }] }),
+    { code: "CREW", required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.rm.domain.Resource", nls: { en: { NAME: "Crew" } }, options: [] },
+    { code: "CREW_BASE", required: true, multiselect: false, freeValue: false, unique: false, className: "com.pixelnation.rm.domain.Resource", nls: { en: { NAME: "Crew base" } }, options: [], inputFormat: "address" },
+  ],
+  attributeOrder: [{ MAIN: ["SITES", "KNOWN_SITE", "CREW", "CREW_BASE"].map((attributeCode) => ({ attributeCode, visible: true })) }],
+};
+assert.deepEqual(
+  plain(normalizeSchema(classSchema, "en").groups[0].fields.map((field) => [field.code, field.kind, field.choices.length])),
+  [["SITES", "address-list", 0], ["KNOWN_SITE", "select", 2], ["CREW", "select", 0], ["CREW_BASE", "select", 0]],
+  "a multiselect Address attribute is an address list, an Address attribute with options keeps its select, and another entity class stays the select it was, even when it declares address",
+);
+const classMount = dom.document.createElement("div");
+const classForm = new PortalForm({ schema: classSchema, locale: "en", copy: copyEcho });
+classForm.mount(classMount);
+await settle();
+assert.deepEqual(plain(classForm.values.SITES), [], "a multiselect Address attribute seeds as an empty array");
+assert.equal(collect(wrapOf(classMount, "SITES"), "pf-repeat").length, 1, "and draws the repeating address control");
+assert.deepEqual(
+  plain(findTags(classMount, "SELECT", []).map((node) => [node.getAttribute("name"), node.children.map((option) => option.value)])),
+  [["KNOWN_SITE", ["", "501", "502"]], ["CREW", [""]], ["CREW_BASE", [""]]],
+  "the Address attribute with options lists its choices, and the other entity class still draws a select with nothing to choose",
+);
+const sitesEntry = dom.document.getElementById("pf-SITES");
+sitesEntry.value = "88 Robson Street, Vancouver, BC, Canada";
+sitesEntry.fire("input");
+classForm.advance(classForm.visibleGroups());
+assert.deepEqual(plain(classForm.values.SITES), ["88 Robson Street, Vancouver, BC, Canada"], "Continue commits the address typed into a multiselect Address attribute but not yet added");
+
 assert.doesNotMatch(source, /innerHTML/, "the renderer must not assign innerHTML");
 assert.doesNotMatch(source, /dev-1\.servicewand\.com|lsrc\.pixelnation\.com/, "the renderer must not hardcode a deployment host");
 assert.match(source, /credentials: "omit"/, "form requests stay anonymous");
@@ -1121,4 +1300,4 @@ try {
   await fs.rm(documentDir, { recursive: true, force: true });
 }
 
-console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, and the success screen promises only its copy");
+console.log("portal-form-check ok: " + KINDS.length + " field kinds, token DSL with spaced masks, attributeOrder authority, parent type ids, declarative behaviour only, anonymous requests, token-driven theming, constrained theme and mode, address fields that load no Google script without a key and wait for importLibrary with one, a repeating address that adds, removes and submits a JSON array, takes the first click on a suggestion and keeps typed text on screen across re-renders, Core's Address class drawn, validated, geocoded and submitted as the address control on the schema dev-1 served on 2026-09-16 while other entity classes stay selects, hidden attributes that never render yet still submit, and address coordinates asked for on every typed commit that follow every add, edit and removal without ever reaching the screen; focus and the first click survive blur and re-render, address suggestions follow the ARIA combobox pattern, each address string is geocoded once, and the success screen promises only its copy");

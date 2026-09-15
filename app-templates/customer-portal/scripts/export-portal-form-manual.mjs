@@ -76,7 +76,7 @@ const DEPLOYMENT = [
   ["FORM_LOCALE", "en", "Locale segment used when reading the schema and when picking labels out of each nls bag."],
   ["FORM_THEME", "snow", "Vertical palette. One of: " + THEMES.join(", ") + ". Any other value falls back to snow."],
   ["FORM_MODE", "light", "Colour mode. One of: " + MODES.join(", ") + ". Any other value falls back to light."],
-  ["FORM_MAPS_API_KEY", "", "Google Maps browser key, used only by fields whose Input format declares address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."],
+  ["FORM_MAPS_API_KEY", "", "Google Maps browser key, used only by address fields: attributes whose Input format declares address and attributes of class Address. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript, Places and Geocoding APIs. While it is empty no Google script is loaded and an address field stays a plain text input."],
 ];
 
 export async function exportPortalFormManual(options = {}) {

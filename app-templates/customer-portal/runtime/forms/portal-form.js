@@ -32,8 +32,11 @@
     return String(value).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
   }
 
+  var CORE_ADDRESS_CLASS = "com.pixelnation.common.domain.Address";
+
   function javaType(className) {
     var name = String(className || "");
+    if (name === CORE_ADDRESS_CLASS) return "address";
     if (name.indexOf("Boolean") !== -1 || name === "boolean") return "boolean";
     if (NUMERIC.test(name)) return "number";
     if (name.indexOf("java.lang.String") !== -1 || /(^|\.)String$/.test(name)) return "string";
@@ -103,7 +106,7 @@
     if (type === "boolean") return "boolean";
     if (type === "number") return tokens.slider ? "slider" : "number";
     if (type === "entity") return "select";
-    if (tokens.address) return attribute.multiselect ? "address-list" : "address";
+    if (type === "address" || tokens.address) return attribute.multiselect ? "address-list" : "address";
     if (tokens.textarea) return "textarea";
     if (tokens.password) return "password";
     if (tokens.email) return "email";

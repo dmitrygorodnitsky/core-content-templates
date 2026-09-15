@@ -116,13 +116,16 @@ address and a repeating address list — plus multi-step groups, input masks,
 per-field validation, and the loading, empty, error, blocked, submitting, success
 and submit-error states.
 
-An attribute whose Input format declares `address` becomes an address field with
-Google suggestions and a map preview, and a list of addresses when it is
-`multiselect`. It needs `FORM_MAPS_API_KEY`, a Google browser key that is public
+An attribute whose Input format declares `address`, or an attribute of Core's
+`com.pixelnation.common.domain.Address` class that carries no options, becomes an
+address field with Google suggestions and a map preview, and a list of addresses
+when it is `multiselect`. An Address attribute that carries options is drawn
+from those options, like any attribute with choices. It needs
+`FORM_MAPS_API_KEY`, a Google browser key that is public
 by design and must be restricted by HTTP referrer and API list. While that
 parameter is empty no Google script is loaded at all and the field stays a plain
-text input that still submits. The address attribute stores formatted address
-strings. A hidden attribute whose Input format declares
+text input that still submits. The address field submits the formatted address
+text. A hidden attribute whose Input format declares
 `coordinates-of:<address code>` is never rendered and submits one JSON entry per
 current address that Google located, so it stays empty without a key.
 Suggestions follow the ARIA combobox pattern, and each address string is
@@ -150,7 +153,8 @@ preview and the check without a network: `GET_QUOTE_` as published on 2026-09-10
 which dev-1 no longer serves (see
 `content/cases/QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`), and a
 `PORTAL_FORM_KITCHEN_SINK` fixture that exercises every kind but the address
-list.
+list. Beside them, `GET_QUOTE_.2026-09-16.en.json` is the single-address
+`GET_QUOTE_` response dev-1 served on 2026-09-16, kept verbatim for the check.
 
 ```bash
 node app-templates/customer-portal/scripts/portal-form-check.mjs
