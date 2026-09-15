@@ -251,6 +251,61 @@ further product input to wait for.
   seed must carry the link before it is used anywhere but dev-1.
 - No write to any server has been made for the takeover so far.
 
+## dev-1 on 2026-09-15
+
+Read-only, as `SNOWLIMITLESS`.
+
+- **`GET_QUOTE_` has been rewritten.** Form type 2 reports `updated`
+  2026-09-14 15:39 by `system`, `optimistic` 12, and carries the single-address
+  contract again: `PROPERTY_ADDRESS`, `SELECT_YOUR_PROPERTY_TYPE`,
+  `PROPERTY_SIZE`, `RISK_FACTORS`, `SELECT_ROLE`, `FIRST_NAME`, `LAST_NAME`,
+  `EMAIL`, `PHONE`, `ADDITIONAL_NOTES`. `PROPERTY_ADDRESSES`,
+  `ORGANIZATION_NAME` and the `PROPERTIES` group are gone. Forms 17–19 were
+  submitted against the multi-address contract on 2026-09-04.
+- **Its schema no longer loads.** The anonymous
+  `/en/core-cms/api/form-type/GET_QUOTE_/get.json` answers `401` with or without
+  an organization header, and `500` with a bearer. `PRE_SEASON_INSPECTION`
+  answers `200` on the same path, so the endpoint works and this form type does
+  not.
+- **The published page is gone.** `/pages/SNOWLIMITLESS/request-quote` answers
+  `404`, "Error page 404 has not been configured".
+- **No submission of the current form can create an account.** Script 169 reads
+  addresses only from `PROPERTY_ADDRESSES`, and `createCustomerAccount` throws
+  `"PROPERTY_ADDRESSES is required"` on an empty list; gap 5 would hide that
+  behind `PROCESSED`.
+- **The CMS holds older packages than the repository.** `PORTAL_FORM_DOCUMENT`
+  (`0d62e1e1-d1af-4ae8-ab5f-9c0d12f0ab04`) carries a renderer with neither the
+  address list nor coordinates, and `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE`
+  (`8c08277e-644e-4935-918c-4c3158448bc9`) is the package of commit `27612ac`,
+  before the Google map.
+- Unchanged since 2026-09-11: workflows 45, 49 and 53, the six scripts of
+  workflow 49, twelve orders all in `INITIAL`, one account with a user (692), no
+  `GET_QUOTE_` form after 2026-09-04 and no property after 2026-08-07. The probe
+  workflows and permissions of 2026-09-11 are removed.
+
+Reproduce with the `HOST` and `TOKEN` above. Form type status, anonymous, then
+the reference form type:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json"
+```
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/en/core-cms/api/form-type/PRE_SEASON_INSPECTION/get.json"
+```
+
+The stored definition and its last change:
+
+```bash
+curl -sS -X POST "$HOST/core-cms/api/form-type/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"mappings":[{"name":"id"},{"name":"code"},{"name":"optimistic"},{"name":"updated"},{"name":"updatedBy"},{"name":"attributes"}],"offset":0,"pageSize":50}'
+```
+
+The published page:
+
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/pages/SNOWLIMITLESS/request-quote"
+```
+
 ## Questions for the team
 
 1. Is `createCustomerAccount` at `PROCESSED` the intended first step, with

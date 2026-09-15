@@ -85,8 +85,11 @@ Seed: `core-ui` `scripts/dev/seeds/serviceAgreementWorkflows.json`, applied to
 dev-1 on 2026-09-11 as workflow 53 with 15 states and 28 events. The server
 created the 28 `P_WF:SERVICE_AGREEMENT_LIFECYCLE:*` permissions and added them
 to `ADMIN` by itself; the seed's grants to the `SW_FS_WS_*` roles were left out
-of that apply. Three states stand in front of `DRAFT` and two failure states
-beside it:
+of that apply. `workflows.ts` grants them through `saveRolePermissions`, which
+sends each Permission as a nested object keyed by `name`: the shape the backend
+reported refused for Documents, Projects and Tasks (§9). Whether roles are
+refused too is unverified. Three states stand in front of `DRAFT` and two
+failure states beside it:
 
 | state | meaning | leaves by |
 | --- | --- | --- |
@@ -212,7 +215,14 @@ what it holds.
   through `/api/document/save.json`, it returned an id but `get.json` answered
   `404` and every list was empty, from `SYSTEM` too. Whether metadata reaches the
   hook, and whether required event attributes are enforced on this path, is
-  still open.
+  still open. On 2026-09-15 the document list is still empty in
+  `SNOWLIMITLESS`, `SERVICE_WAND_WINTER_SERVICES` and `SYSTEM`. The backend's
+  answer that day concerns another failure: the core-ui admin screens send the
+  `permissions` of a Document, Project or Task as nested Permission objects,
+  which the server refuses with `NestedWriteNotAllowedException`, so such records
+  cannot be saved by hand until core-ui maps them as references by id. Our probe
+  document was saved through REST without that error and still could not be
+  read.
 - **`MAPPINGS_*` visibility.** The `IGrantService.mappings` javadoc requires the
   script to be visible in the authenticated organization or SYSTEM-owned;
   `MAPPINGS_ACCOUNT` is SYSTEM-owned.
