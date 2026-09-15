@@ -1,5 +1,5 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, state } from "../state.js";
+import { currentFixture, currentOverview, liveOverviewStatus, quotePackage, state } from "../state.js";
 import { ACTIONS } from "../actions.js";
 import { render } from "../app.js";
 import { createPropertyForecasts } from "../live-weather.js";
@@ -7,6 +7,8 @@ import { createXweatherAdapter } from "../adapters/xweather-adapter.js";
 import { browserStorage, createGeocodeCache, createGoogleMapsAdapter } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { ErrorState } from "../components/primitives/ErrorState.js";
+import { skel } from "../components/primitives/RouteStates.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
@@ -24,16 +26,12 @@ export function overviewModel() {
 export function Overview() {
   var model = overviewModel();
   var page = h("section", { "class": "page", "data-route": "overview", "data-visual-id": "overview" });
-  var customer = currentFixture().customer;
+  var customer = overviewCustomer();
   var header = PageHeader({ title: customer.greeting, sub: subline(model, customer) });
 
   if (!model) {
     page.appendChild(header);
-    page.appendChild(EmptyState({
-      glyph: "◌",
-      title: "Nothing to show yet",
-      desc: "This portal has no overview data configured.",
-    }));
+    page.appendChild(OverviewUnavailable());
     return page;
   }
 
@@ -55,11 +53,44 @@ export function Overview() {
   return page;
 }
 
+function overviewCustomer() {
+  if (state.config.dataMode !== "live") return currentFixture().customer;
+  var name = String(state.sessionName || "").trim();
+  var first = name && name.indexOf("@") === -1 ? name.split(/\s+/)[0] : "";
+  return { greeting: first ? "Welcome back, " + first : "Welcome back", subline: "" };
+}
+
+function OverviewUnavailable() {
+  if (state.config.dataMode !== "live") {
+    return EmptyState({ glyph: "◌", title: "Nothing to show yet", desc: "This portal has no overview data configured." });
+  }
+  var status = liveOverviewStatus();
+  if (status === "loading") {
+    return h("div", { "data-module": "overview-loading", "data-visual-id": "overview-loading", "data-state": "loading", "aria-busy": "true", style: "margin-top:20px" }, [
+      skel("height:420px;border-radius:22px;margin-bottom:16px"),
+      h("div", { "class": "ov-grid" }, [skel("height:170px;border-radius:22px"), skel("height:170px;border-radius:22px"), skel("height:170px;border-radius:22px")]),
+    ]);
+  }
+  if (status === "error") {
+    return ErrorState({ title: "Couldn’t load your home screen", desc: "Your properties or the forecast didn’t load. Nothing was changed — try again." });
+  }
+  if (status === "unauthorized") {
+    return EmptyState({
+      glyph: "⚿",
+      title: "You don’t have access to these properties",
+      desc: "Your account doesn’t include the properties on this portal. If that seems wrong, contact us.",
+      action: { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" },
+    });
+  }
+  return EmptyState({ glyph: "◌", title: "Your home screen isn’t set up yet", desc: "This portal has no service area or forecast configured, so there is nothing to show here yet." });
+}
+
 function subline(model, customer) {
   if (!model || !state.liveWeather) return customer.subline;
   var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
   var count = model.properties.length;
-  return frame.label + " · " + count + (count === 1 ? " property under contract" : " properties under contract");
+  var contracted = count > 0 && model.properties.every(function (property) { return !!property.contract; });
+  return frame.label + " · " + count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
 }
 
 function WeatherPanel(frame, isNow, source) {
@@ -271,9 +302,13 @@ function billStat(label, value, count, valueClass) {
 
 function ContractsWidget(model) {
   var contracts = model.contracts || [];
+  var quotes = quotePackage();
+  var preparing = !!(quotes && quotes.preparing);
   var card = widget("active-contracts", "Active contracts", "contract");
   if (!contracts.length) {
-    card.appendChild(emptyLine("No active contracts", "A contract appears here once a quote is approved."));
+    card.appendChild(preparing
+      ? QuotePreparingLine()
+      : emptyLine("No active contracts", "A contract appears here once your service agreement is approved."));
     return card;
   }
   card.appendChild(lead(String(contracts.length), contracts.length === 1 ? "active contract" : "active contracts"));
@@ -286,8 +321,28 @@ function ContractsWidget(model) {
       text("span", "status-badge status-badge--ok", "Active"),
     ]));
   });
+  if (preparing) card.appendChild(QuotePreparingRow());
   card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
   return card;
+}
+
+function QuotePreparingLine() {
+  return h("div", { "class": "ov-empty", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+    text("div", "ov-empty__title", "We have your request"),
+    text("div", "ov-empty__desc", "We’re preparing your quote. It appears under Contracts once we send it."),
+    h("div", { "class": "link-action", "data-action": "overview.openContracts" }, "Go to Contracts ›"),
+  ]);
+}
+
+function QuotePreparingRow() {
+  return h("div", { "class": "ov-row", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", "data-tone": "info", role: "status" }, [
+    h("i", { "class": "ov-dot" }),
+    h("div", { style: "flex:1;min-width:0" }, [
+      text("div", "ov-row__title", "Request in preparation"),
+      text("div", "ov-row__meta", "We have your request and are preparing your quote."),
+    ]),
+    chevron("overview.openContracts", "", "Go to Contracts"),
+  ]);
 }
 
 function SupportWidget(model) {

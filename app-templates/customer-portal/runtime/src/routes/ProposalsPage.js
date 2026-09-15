@@ -1,9 +1,12 @@
 // customer-portal/runtime/src/routes/ProposalsPage.js — production transfer module.
 import { h } from "../dom.js";
-import { currentProposal, proposalStatusMeta, state } from "../state.js";
+import { currentProposal, proposalStatusMeta, quotePackage, state } from "../state.js";
+import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ProposalCard } from "../components/proposals/ProposalCard.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
+import { PortfolioSchematic, QuoteGroups, QuotePackageHead, QuotesFooter, QuotesPreparing, QuotesPreparingNotice } from "../components/proposals/QuotePackage.js";
+import { knownPlacement } from "../components/storm/PropertyMap.js";
 
 export function proposalRollup() {
   var r = { approved: 0, revision: 0, declined: 0, unseen: 0, viewed: 0 };
@@ -14,6 +17,9 @@ export function proposalRollup() {
 /* ProposalCard (portfolio site row) */
 
 export function ProposalsList() {
+  var quotes = quotePackage();
+  if (quotes) return QuotesList(quotes);
+
   var proposal = currentProposal();
   var statusMeta = proposalStatusMeta();
   var r = proposalRollup();
@@ -24,19 +30,19 @@ export function ProposalsList() {
   page.appendChild(h("div", { "class": "proposals-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { style: "font-weight:800;font-size:28px;line-height:1.15;letter-spacing:-.025em", "data-bind": "proposal.id" }, "Proposal #" + proposal.id),
-      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open \u00b7 sent " + proposal.sent + " \u00b7 valid until " + proposal.validUntil)
+      h("div", { style: "font-size:14.5px;color:var(--ink-2);margin-top:3px" }, open + " property choices open · sent " + proposal.sent + " · valid until " + proposal.validUntil)
     ]),
     h("span", { "class": "proposals-head__pill" }, decided + " of " + state.psites.length + " decided")
   ]));
 
   if (state.view === "empty") {
-    page.appendChild(EmptyState({ glyph: "\ud83d\udcc4", title: "No proposals yet", desc: "When our team sends you a multi-site proposal, it shows up here." }));
+    page.appendChild(EmptyState({ glyph: "📄", title: "No proposals yet", desc: "When our team sends you a multi-site proposal, it shows up here." }));
     return page;
   }
 
   /* portfolio map */
   var canvas = h("div", { "class": "portfolio-map__canvas" }, [
-    h("span", { "class": "portfolio-map__label" }, proposal.mapLabel || "portfolio map \u00b7 Port Coquitlam \u00b7 Coquitlam"),
+    h("span", { "class": "portfolio-map__label" }, proposal.mapLabel || "portfolio map · Port Coquitlam · Coquitlam"),
     h("div", { "class": "portfolio-map__river" })
   ]);
   state.psites.forEach(function (p) {
@@ -61,9 +67,42 @@ export function ProposalsList() {
 
   /* footer */
   page.appendChild(h("div", { "class": "proposal-footer" }, [
-    h("div", { "class": "proposal-footer__icon" }, "\u2726"),
-    h("div", { style: "flex:1;font-size:13px;line-height:1.5;color:var(--ink-2)" }, "Decide each site independently. Every price is derived from that site\u2019s Beam AI measured area, so larger lots scale up automatically. Approved lines become live orders the moment you confirm.")
+    h("div", { "class": "proposal-footer__icon" }, "✦"),
+    h("div", { style: "flex:1;font-size:13px;line-height:1.5;color:var(--ink-2)" }, "Decide each site independently. Every price is derived from that site’s Beam AI measured area, so larger lots scale up automatically. Approving a plan records your decision on the quote we already prepared for that site.")
   ]));
+  return page;
+}
+
+function QuotesList(quotes) {
+  var hasQuotes = quotes.groups.length > 0;
+  var page = h("section", {
+    "class": "page page--narrow", "data-route": "proposals.list", "data-visual-id": "proposals-list",
+    "data-state": hasQuotes ? "ready" : quotes.preparing ? "preparing" : "empty",
+  });
+  page.appendChild(QuotePackageHead(quotes));
+
+  if (!hasQuotes) {
+    page.appendChild(quotes.preparing
+      ? QuotesPreparing()
+      : EmptyState({ glyph: "📄", title: "No quotes yet", desc: "When we send you a quote for a property, it shows up here." }));
+    return page;
+  }
+
+  if (quotes.preparing) page.appendChild(QuotesPreparingNotice());
+  var cache = createGeocodeCache(browserStorage());
+  var placements = quotes.groups.map(function (group) {
+    return group.property ? knownPlacement(group.property, cache) : { point: null, reason: "no-address" };
+  });
+  var schematic = PortfolioSchematic(quotes.groups, placements);
+  if (schematic) page.appendChild(schematic);
+  page.appendChild(h("div", { "class": "rollup-grid", "data-module": "proposal-rollup", "aria-label": "Quotes by decision" }, [
+    rollupCard("Approved", quotes.counts.approved, "var(--ok)"),
+    rollupCard("Revision", quotes.counts.revision, "var(--warn)"),
+    rollupCard("Declined", quotes.counts.declined, "var(--danger)"),
+    rollupCard("Open", quotes.counts.open, "var(--ink-3)"),
+  ]));
+  page.appendChild(QuoteGroups(quotes.groups, placements, !!schematic));
+  if (quotes.counts.open) page.appendChild(QuotesFooter());
   return page;
 }
 

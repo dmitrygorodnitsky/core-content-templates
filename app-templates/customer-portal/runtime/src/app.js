@@ -184,7 +184,8 @@ export function retryRuntimeLoad() {
 
   state.view = "loading";
   render();
-  liveRetryPromise = runtime.loadAllAsync()
+  var weather = state.liveWeatherState === "failed" ? loadLiveWeather(null, state.config) : null;
+  liveRetryPromise = Promise.all([runtime.loadAllAsync(), weather])
     .then(function () {
       state.view = "ready";
       if (continueToIntendedRoute()) return;

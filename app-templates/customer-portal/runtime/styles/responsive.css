@@ -266,3 +266,25 @@
 .vw-mobile .prop-facts { grid-template-columns: 1fr; }
 
 .vw-mobile .prop-head__title { font-size: 24px; }
+
+.vw-mobile .proposals-head { flex-wrap: wrap; align-items: flex-start; row-gap: 10px; }
+
+.vw-mobile .proposals-head__read { flex-basis: 100%; }
+
+.vw-mobile .proposals-head__title { font-size: 24px; }
+
+.vw-mobile .quote-preparing { flex-wrap: nowrap; align-items: flex-start; }
+
+.vw-mobile .quote-preparing .alert-banner__icon { width: 36px; height: 36px; border-radius: 11px; font-size: 16px; }
+
+.vw-mobile .quote-preparing .alert-banner__body { min-width: 0; }
+
+.vw-mobile .proposal-group__head { flex-wrap: wrap; row-gap: 4px; }
+
+.vw-mobile .proposal-card__chev { order: 2; }
+
+.vw-mobile .proposal-group__decision { order: 3; flex-basis: 100%; padding-left: 44px; }
+
+.vw-mobile .proposal-options { padding-left: 18px; }
+
+.vw-mobile .map-pin-label { max-width: 104px; font-size: 11px; }

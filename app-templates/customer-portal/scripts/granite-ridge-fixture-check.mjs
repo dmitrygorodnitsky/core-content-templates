@@ -8,16 +8,20 @@ const { portalProfiles, readPortalConfig } = await import(new URL("src/config.js
 const { fixtureAdapter } = await import(new URL("src/adapters/fixture-adapter.js", runtimeRoot));
 const { createCareFixtureAdapter } = await import(new URL("src/adapters/care-fixture-adapter.js", runtimeRoot));
 const { normalizeCare } = await import(new URL("src/normalizers/care.js", runtimeRoot));
+const { normalizeProposals } = await import(new URL("src/normalizers/index.js", runtimeRoot));
 const {
   applyPortalConfig,
   computeSite,
   currentFixture,
   currentProposal,
+  currentSite,
   currentStormCalendar,
   currentTheme,
   proposalPlanName,
+  proposalPlanPricingModel,
   proposalSites,
   proposalStatusMeta,
+  quotePackage,
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
 const { clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
@@ -82,23 +86,71 @@ assert.equal(calendar.stormCalendar.days.filter((day) => day.today).length, 1);
 assert.equal(calendar.stormCalendar.days.find((day) => day.today).events[0].tech, "Marcus H.");
 assert.equal(currentStormCalendar().accessNotes[2].value, "Do not service Yarrow Ridge");
 
-assert.equal(proposals.proposal.id, "GR-2049");
-assert.equal(currentProposal().mapLabel, "portfolio map · Lakewood · Golden · Arvada · Littleton");
+assert.equal(proposals.proposal, null, "the package model has no proposal number, sent date or validity, because Core holds none of them");
+assert.equal(currentProposal(), null);
 assert.equal(proposalSites().length, 4);
-assert.deepEqual(proposalSites().map((site) => site.status), ["approved", "revision", "declined", "unseen"]);
+assert.ok(proposalSites().every((site) => site.status === undefined && site.x === undefined), "a site no longer carries a decision or an authored map position; its Orders do");
 assert.equal(proposalStatusMeta().approved.badge, "status-badge--ok");
 assert.equal(proposalPlanName("898"), "Seasonal Unlimited");
+assert.equal(proposalPlanName("897"), "Flex Service");
+assert.deepEqual(["897", "898", "899"].map(proposalPlanPricingModel), ["PER_SERVICE", "MONTHLY", "SEASONAL"]);
 assert.equal(proposals.statusMeta, graniteRidgeSnowFixture.proposals.statusMeta);
+
+const normalizedProposals = normalizeProposals(proposals);
+const quotes = normalizedProposals.quotes;
+assert.equal(quotes.agreement.stateCode, "QUOTATION_SENT", "the package is the service agreement, sent once");
+assert.equal(quotes.orders.length, 12, "every sent Order is a row");
+assert.equal(quotes.preparing, true, "the Order still being prepared is withheld and only switches the preparing notice on");
+assert.equal(graniteRidgeSnowFixture.proposals.orders.length, 13);
+assert.deepEqual(
+  plainValue(quotes.agreement.orderBackendIds.slice().sort()),
+  plainValue(quotes.orders.map((order) => order.backendId).sort()),
+  "the agreement lists exactly the Orders that were sent",
+);
+const quotedByBackendId = new Map(graniteRidgeSnowFixture.overview.properties.filter((property) => property.quoteSiteId).map((property) => [property.backendId, property]));
+for (const order of quotes.orders) {
+  assert.ok(quotedByBackendId.has(order.propertyBackendId), `order ${order.backendId} points at a property the fixture does not quote`);
+  assert.ok(order.pricingModel, `order ${order.backendId} has no pricing model label`);
+  assert.deepEqual(plainValue(order.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
+}
+const withheld = graniteRidgeSnowFixture.proposals.orders.find((order) => !quotes.orders.some((sent) => sent.backendId === order.id));
+assert.ok(graniteRidgeSnowFixture.overview.properties.some((property) => property.backendId === withheld.attributes[5].SERVICE_PROPERTY.value), "the withheld Order belongs to a property of this customer");
+
+state.moduleData.proposals = normalizedProposals;
+const pack = quotePackage();
+assert.equal(pack.agreement.label, "Awaiting your decisions");
+assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["gr-foothill", "gr-tabor", "gr-yarrow", "gr-cinnamon"]);
+assert.deepEqual(plainValue(pack.groups.map((group) => group.decision)), ["approved", "revision", "declined", "open"], "every property decision the page shows is exercised");
+for (const group of pack.groups) {
+  assert.deepEqual(plainValue(group.orders.map((order) => order.pricingModel.code)), ["PER_SERVICE", "MONTHLY", "SEASONAL"], group.id + " is quoted once per pricing model");
+}
+assert.deepEqual(plainValue(pack.counts), { orders: 12, properties: 4, decided: 2, approved: 1, revision: 3, declined: 5, open: 3 });
+assert.equal(pack.counts.approved + pack.counts.revision + pack.counts.declined + pack.counts.open, pack.counts.orders, "the rollup counts every row exactly once");
+assert.deepEqual(plainValue(pack.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
+assert.deepEqual(
+  plainValue(pack.groups.map((group) => group.orders.map((order) => order.total && order.total.amount))),
+  [[null, null, 8625], [null, null, 10625], [null, null, 7650], [null, null, 31250]],
+  "only a Core total above zero is a total; a zero grand total is how an unpriced Order reads",
+);
+
+const siteStatus = (id) => { state.currentSiteId = id; return plainValue({ status: currentSite().status, selected: currentSite().selected }); };
+assert.deepEqual(siteStatus("gr-foothill"), { status: "approved", selected: "898" }, "the approved Monthly Order is the Seasonal Unlimited plan on the detail page");
+assert.deepEqual(siteStatus("gr-tabor"), { status: "revision", selected: "898" });
+assert.deepEqual(siteStatus("gr-yarrow"), { status: "declined", selected: "898" });
+assert.deepEqual(siteStatus("gr-cinnamon"), { status: "unseen", selected: "898" });
 
 const foothill = computeSite(proposalSites()[0]);
 assert.equal(foothill.rows.length, 5);
 assert.deepEqual(foothill.rows.map((row) => row.name), graniteRidgeSnowFixture.theme.prop.surfaces);
 assert.equal(foothill.total, 5460);
 assert.ok(foothill.monthly > 0 && foothill.seasonLock > 0);
+assert.equal(foothill.seasonLock, 8625, "the Seasonal Order total matches the Season-Lock price the detail page shows");
 
 const overview = fixtureAdapter.load("overview", context).overview;
 assert.ok(overview, "the snow tenant must carry overview data");
 assert.equal(overview.properties.length, 24, "the map is only worth designing at portfolio density");
+assert.ok(overview.properties.every((property) => Number.isInteger(property.backendId)), "every property carries the Core id its Orders reference");
+assert.equal(new Set(overview.properties.map((property) => property.backendId)).size, overview.properties.length);
 assert.deepEqual(
   plainValue(overview.properties.slice(0, 4).map((property) => propertyStatus(property))),
   ["enroute", "scheduled", "issue", "monitoring"],
@@ -217,4 +269,4 @@ assert.equal(spaCrossConfig.caseId, "", "a beauty fixture case must not load und
 
 applyPortalConfig(config);
 
-console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across overview, storm home, calendar, season log, contracts, services, pricing, shop, orders, support, and activity");
+console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across overview, storm home, calendar, season log, a quotation package of Orders grouped by property, services, pricing, shop, orders, support, and activity");

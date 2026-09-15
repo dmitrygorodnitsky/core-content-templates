@@ -44,10 +44,62 @@ const MONITORED_VISITS = {
   "Lamar Terrace": { appointment: { state: "COMPLETED", service: "Refreeze re-treat", when: "Completed 6:07 AM", dayIndex: 0, resource: "Kyle B.", est: { start: "5:15 AM", end: "5:50 AM" }, actual: { start: "5:41 AM", end: "6:07 AM" } } },
 };
 
+const QUOTE_PATH = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT", "QUOTE_VIEWED"];
+
+const QUOTE_PACKAGE = [
+  [8101, 7101, "PER_SERVICE", "DECLINED", 0],
+  [8102, 7101, "MONTHLY", "CLIENT_APPROVED", 0],
+  [8103, 7101, "SEASONAL", "DECLINED", 8625],
+  [8104, 7102, "PER_SERVICE", "CUSTOMER_CHANGES_REQUESTED", 0],
+  [8105, 7102, "MONTHLY", "CUSTOMER_CHANGES_REQUESTED", 0],
+  [8106, 7102, "SEASONAL", "CUSTOMER_CHANGES_REQUESTED", 10625],
+  [8107, 7103, "PER_SERVICE", "DECLINED", 0],
+  [8108, 7103, "MONTHLY", "DECLINED", 0],
+  [8109, 7103, "SEASONAL", "DECLINED", 7650],
+  [8110, 7104, "PER_SERVICE", "QUOTE_SENT", 0],
+  [8111, 7104, "MONTHLY", "QUOTE_SENT", 0],
+  [8112, 7104, "SEASONAL", "QUOTE_SENT", 31250],
+  [8113, 7207, "MONTHLY", "QUOTE_PREPARED", 0],
+];
+
+function sentQuote(entry) {
+  return QUOTE_PATH.indexOf(entry[3]) === -1 || QUOTE_PATH.indexOf(entry[3]) >= QUOTE_PATH.indexOf("QUOTE_SENT");
+}
+
+function quoteOrder(entry) {
+  const reached = QUOTE_PATH.indexOf(entry[3]);
+  const path = reached === -1 ? QUOTE_PATH.concat([entry[3]]) : QUOTE_PATH.slice(0, reached + 1);
+  return {
+    id: entry[0],
+    type: { id: 5, code: "FIELD_SERVICE_ORDER" },
+    states: path.map(function (code) { return { code: code }; }),
+    grandTotal: entry[4],
+    currency: { code: "USD" },
+    attributes: {
+      5: {
+        SERVICE_PROPERTY: { value: entry[1] },
+        PRICING_MODEL: { value: entry[2] },
+        SERVICE_PERIOD_START: { value: "2026-11-01" },
+        SERVICE_PERIOD_END: { value: "2027-03-31" },
+      },
+    },
+  };
+}
+
+function serviceAgreement(id, states, orderIds) {
+  return {
+    id: id,
+    type: { id: 17, code: "SERVICE_AGREEMENT" },
+    states: states.map(function (code) { return { code: code }; }),
+    attributes: { 17: { ORDERS: { value: orderIds } } },
+  };
+}
+
 function monitoredProperties() {
   return MONITORED_SITES.map(function (site, index) {
     return Object.assign({
       id: "prop-monitored-" + (index + 1),
+      backendId: 7200 + index + 1,
       name: site[0],
       address: (index * 37 + 210) + " " + site[0] + ", " + site[1],
       lat: site[3], lon: site[4], zone: site[2],
@@ -330,28 +382,28 @@ export const graniteRidgeSnowFixture = Object.freeze({
     },
     properties: [
       {
-        id: "prop-foothill", name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
+        id: "prop-foothill", backendId: 7101, name: "Foothill Court", address: "4820 Foothill Court, Lakewood, CO 80215",
         lat: 39.73336, lon: -105.12205, zone: "central", contract: "1234", quoteSiteId: "gr-foothill",
         appointment: { state: "IN_PROGRESS", service: "Lot & drive clearing", when: "Started 5:38 AM", dayIndex: 0, resource: "Marcus H.", est: { start: "5:30 AM", end: "6:20 AM" }, actual: { start: "5:38 AM", end: "" } },
         ticket: null,
         lastService: { service: "Roof snow & ice dam", when: "Jan 12" },
       },
       {
-        id: "prop-tabor", name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
+        id: "prop-tabor", backendId: 7102, name: "Tabor Street", address: "1190 Tabor Street, Golden, CO 80401",
         lat: 39.72431, lon: -105.23627, zone: "north", contract: "1234", quoteSiteId: "gr-tabor",
         appointment: { state: "SCHEDULED", service: "Walkway de-icing", when: "Tomorrow · auto-dispatch", dayIndex: 1, resource: "Priya N.", est: { start: "9:00 AM", end: "9:40 AM" }, actual: null },
         ticket: null,
         lastService: { service: "Lot & drive clearing", when: "Jan 5" },
       },
       {
-        id: "prop-yarrow", name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
+        id: "prop-yarrow", backendId: 7103, name: "Yarrow Ridge", address: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
         lat: 39.80498, lon: -105.0911, zone: "north", contract: "1241", quoteSiteId: "gr-yarrow",
         appointment: { state: "SCHEDULED", service: "Seasonal contract visit", when: "In three days", dayIndex: 3, resource: "Kyle B.", est: { start: "11:30 AM", end: "12:45 PM" }, actual: null },
         ticket: { state: "SUBMITTED", title: "Snow not cleared near entrance" },
         lastService: { service: "Refreeze re-treat", when: "Dec 19" },
       },
       {
-        id: "prop-cinnamon", name: "Cinnamon Bear Way", address: "870 Cinnamon Bear Way, Lakewood, CO 80227",
+        id: "prop-cinnamon", backendId: 7104, name: "Cinnamon Bear Way", address: "870 Cinnamon Bear Way, Lakewood, CO 80227",
         lat: 39.67564, lon: -105.08018, zone: "south", contract: "1241", quoteSiteId: "gr-cinnamon",
         appointment: null,
         ticket: null,
@@ -431,13 +483,10 @@ export const graniteRidgeSnowFixture = Object.freeze({
     ],
   },
   proposals: {
-    proposal: {
-      id: "GR-2049",
-      sent: "Dec 28",
-      validUntil: "Mar 31, 2026",
-      mapLabel: "portfolio map · Lakewood · Golden · Arvada · Littleton",
-    },
-    planNames: { 898: "Seasonal Unlimited", 899: "Season-Lock", 900: "Flex Service" },
+    agreement: serviceAgreement(9101, ["QUOTATION", "QUOTATION_SENT"], QUOTE_PACKAGE.filter(sentQuote).map(function (entry) { return entry[0]; })),
+    orders: QUOTE_PACKAGE.map(quoteOrder),
+    planPricingModels: { 897: "PER_SERVICE", 898: "MONTHLY", 899: "SEASONAL" },
+    planNames: { 897: "Flex Service", 898: "Seasonal Unlimited", 899: "Season-Lock" },
     statusMeta: {
       approved: { label: "✓ Approved", badge: "status-badge--ok", dot: "#34c759" },
       revision: { label: "⟳ Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" },
@@ -446,10 +495,10 @@ export const graniteRidgeSnowFixture = Object.freeze({
       viewed: { label: "• Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" },
     },
     sites: [
-      { id: "gr-foothill", addr: "4820 Foothill Court", city: "Lakewood, CO", postal: "80215", lot: "19,400", areas: [980, 1140, 1620, 540, 1180], status: "approved", selected: "898", x: 24, y: 32 },
-      { id: "gr-tabor", addr: "1190 Tabor Street", city: "Golden, CO", postal: "80401", lot: "23,800", areas: [1320, 1480, 2040, 620, 1460], status: "revision", selected: "898", x: 48, y: 24 },
-      { id: "gr-yarrow", addr: "3355 Yarrow Ridge Drive", city: "Arvada, CO", postal: "80002", lot: "16,200", areas: [840, 980, 1440, 470, 1020], status: "declined", selected: "898", x: 71, y: 36 },
-      { id: "gr-cinnamon", addr: "870 Cinnamon Bear Way", city: "Littleton, CO", postal: "80127", lot: "51,600", areas: [5400, 3600, 8100, 1480, 3200], status: "unseen", selected: "898", x: 56, y: 74 },
+      { id: "gr-foothill", addr: "4820 Foothill Court", city: "Lakewood, CO", postal: "80215", lot: "19,400", areas: [980, 1140, 1620, 540, 1180], selected: "898" },
+      { id: "gr-tabor", addr: "1190 Tabor Street", city: "Golden, CO", postal: "80401", lot: "23,800", areas: [1320, 1480, 2040, 620, 1460], selected: "898" },
+      { id: "gr-yarrow", addr: "3355 Yarrow Ridge Drive", city: "Arvada, CO", postal: "80002", lot: "16,200", areas: [840, 980, 1440, 470, 1020], selected: "898" },
+      { id: "gr-cinnamon", addr: "870 Cinnamon Bear Way", city: "Littleton, CO", postal: "80127", lot: "51,600", areas: [5400, 3600, 8100, 1480, 3200], selected: "898" },
     ],
   },
 });

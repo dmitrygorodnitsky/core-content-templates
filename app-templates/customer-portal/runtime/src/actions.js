@@ -1,6 +1,7 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { cmdPhase, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
+import { quoteDecisionStates, quoteViewStates } from "./normalizers/contracts.js";
+import { cmdPhase, currentAppointment, currentFixture, currentPurchase, currentSite, findProduct, isSpa, orderItems, productItems, proposalPlanPricingModel, proposalSites, quoteGroupFor, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
 import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
 import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
@@ -165,6 +166,7 @@ export var ACTIONS = {
   "appointments.filterDay": function (id) { var day = Number(id); state.apptDay = id === null || id === "" || id === undefined || !Number.isInteger(day) ? null : day; render(); },
   "appointments.openVisit": function (id) { state.visitId = id; go("visit.detail"); },
   "appointments.openProperty": function (id) { state.propertyId = id; go("property.detail"); },
+  "property.showOnMap": function (id) { if (id) state.ovProperty = id; go("overview"); },
   "appointments.sortResource": function () { state.apptSort = state.apptSort === "desc" ? "asc" : "desc"; render(); },
   "overview.openCalendar": function ()   { go("calendar"); },
   "overview.openInvoices": function ()   { go("activity"); },
@@ -1343,8 +1345,19 @@ export function placeFixtureOrder() {
 export function openProposal(id) {
   if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
   state.currentSiteId = id;
-  state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
+  var group = quoteGroupFor(id);
+  if (group) applyQuoteStates(quoteViewStates(group.orders));
+  else state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
   go("proposal.detail");
+}
+
+function applyQuoteStates(changes) {
+  if (!changes.length) return;
+  state.porders = state.porders.map(function (row) {
+    var change = changes.find(function (item) { return String(item.backendId) === String(row.id); });
+    if (!change) return row;
+    return Object.assign({}, row, { states: row.states.concat(change.codes.map(function (code) { return { code: code }; })) });
+  });
 }
 
 export function selectPlan(planId) {
@@ -1359,7 +1372,9 @@ export function decideSite(status) {
   if (["approved", "revision", "declined"].indexOf(status) === -1) throw new Error("Unsupported proposal status");
   var id = state.currentSiteId;
   if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
-  state.psites = state.psites.map(function (p) { return p.id === id ? Object.assign({}, p, { status: status }) : p; });
+  var group = quoteGroupFor(id);
+  if (group) applyQuoteStates(quoteDecisionStates(group.orders, status, proposalPlanPricingModel(currentSite().selected || "898")));
+  else state.psites = state.psites.map(function (p) { return p.id === id ? Object.assign({}, p, { status: status }) : p; });
   go("proposals.list");
   toast(status === "approved" ? "Plan approved in fixture state" : status === "revision" ? "Revision requested in fixture state" : "Proposal declined in fixture state");
 }

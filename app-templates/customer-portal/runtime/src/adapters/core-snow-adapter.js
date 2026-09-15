@@ -1,16 +1,8 @@
+import { attributeEntry, attributeNumber, attributeText, latestStateCode, positiveInteger, text } from "../normalizers/core-record.js";
+import { CUSTOMER_ORDER_STATUS, OPERATOR_ORDER_STATES, QUOTE_ORDER_TYPES } from "../normalizers/contracts.js";
+
 const PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
 const PROPERTY_BASE_TYPE = "PROPERTY";
-const QUOTE_ORDER_TYPES = ["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"];
-
-const CUSTOMER_QUOTE_STATUS = {
-  CLIENT_APPROVED: "approved",
-  CUSTOMER_CHANGES_REQUESTED: "revision",
-  DECLINED: "declined",
-  QUOTE_SENT: "unseen",
-  QUOTE_VIEWED: "viewed",
-};
-
-const OPERATOR_QUOTE_STATES = ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"];
 
 const PROPERTY_PAGE_SIZE = 200;
 const PROPERTY_PAGE_LIMIT = 6;
@@ -104,9 +96,9 @@ export async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, expl
   var withheld = 0;
   quotes.forEach(function (row) {
     var stateCode = latestStateCode(row);
-    var status = CUSTOMER_QUOTE_STATUS[stateCode] || null;
+    var status = Object.prototype.hasOwnProperty.call(CUSTOMER_ORDER_STATUS, stateCode) ? CUSTOMER_ORDER_STATUS[stateCode] : null;
     if (!status) {
-      if (OPERATOR_QUOTE_STATES.indexOf(stateCode) >= 0) withheld += 1;
+      if (OPERATOR_ORDER_STATES.indexOf(stateCode) >= 0) withheld += 1;
       return;
     }
     sites.push(quoteSite(row, status, properties, addresses));
@@ -232,33 +224,6 @@ function formatAddress(address) {
   return [text(address.address1), tail, text(address.postalCode)].filter(Boolean).join(", ");
 }
 
-function latestStateCode(row) {
-  var states = Array.isArray(row && row.states) ? row.states : [];
-  var last = states[states.length - 1];
-  return text(last && last.code);
-}
-
-function attributeEntry(row, code) {
-  var buckets = row && row.attributes;
-  if (!buckets || typeof buckets !== "object") return null;
-  var keys = Object.keys(buckets);
-  for (var index = 0; index < keys.length; index += 1) {
-    var bucket = buckets[keys[index]];
-    if (bucket && Object.prototype.hasOwnProperty.call(bucket, code)) return bucket[code];
-  }
-  return null;
-}
-
-function attributeNumber(row, code) {
-  var entry = attributeEntry(row, code);
-  return entry && entry.value != null ? positiveInteger(entry.value) : null;
-}
-
-function attributeText(row, code) {
-  var entry = attributeEntry(row, code);
-  return entry && entry.value != null ? text(entry.value) : "";
-}
-
 function attributeCoordinate(row, code, limit) {
   var entry = attributeEntry(row, code);
   var value = entry ? entry.value : null;
@@ -334,20 +299,10 @@ function browserOrigin() {
   return globalThis.location && globalThis.location.origin || "";
 }
 
-function positiveInteger(value) {
-  if (value == null || value === "") return null;
-  var number = Number(value);
-  return Number.isInteger(number) && number > 0 ? number : null;
-}
-
 function localizedName(value) {
   if (!value || typeof value !== "object") return "";
   var localized = value.en || value["en-US"] || Object.values(value)[0] || {};
   return text(localized && (localized.NAME || localized.name));
-}
-
-function text(value) {
-  return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
 }
 
 function contractError(code, message) {
@@ -358,8 +313,8 @@ function contractError(code, message) {
 
 export const coreSnowContract = Object.freeze({
   addressMappings: ADDRESS_MAPPINGS,
-  customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_QUOTE_STATUS)),
-  operatorQuoteStates: Object.freeze(OPERATOR_QUOTE_STATES.slice()),
+  customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_ORDER_STATUS)),
+  operatorQuoteStates: Object.freeze(OPERATOR_ORDER_STATES.slice()),
   orderMappings: ORDER_MAPPINGS,
   propertyBaseType: PROPERTY_BASE_TYPE,
   propertyPageLimit: PROPERTY_PAGE_LIMIT,

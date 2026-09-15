@@ -1,9 +1,18 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, state } from "../state.js";
+import { currentFixture, currentOverview, quoteGroupFor, state } from "../state.js";
+import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { knownPlacement } from "../components/storm/PropertyMap.js";
 import { OVERVIEW_STATUS as STATUS, propertyStatus } from "../normalizers/overview.js";
 import { stateMeta } from "../normalizers/appointments.js";
+
+var QUOTE_DECISION = {
+  approved: "option approved",
+  declined: "declined",
+  revision: "changes requested",
+  open: "awaiting your decision",
+};
 
 export function currentProperty() {
   var model = currentOverview();
@@ -23,24 +32,24 @@ export function PropertyDetail() {
 
   var status = propertyStatus(property);
   var contract = contractFor(property);
-  var quote = quoteSiteFor(property);
 
   page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "‹ Back to appointments"));
   page.appendChild(h("div", { "class": "prop-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       text("h1", "prop-head__title", property.name),
-      text("div", "prop-head__addr", property.address),
+      property.address ? text("div", "prop-head__addr", property.address) : null,
     ]),
     text("span", "status-badge status-badge--" + statusTone(status), STATUS[status].label),
   ]));
 
   page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
-    facts(property, contract, quote).map(function (item) {
-      return h("div", { "class": "prop-fact" }, [
+    facts(property, contract).map(function (item) {
+      return h("div", { "class": "prop-fact", "data-fact": item.key }, [
         text("div", "prop-fact__label", item.label),
         item.action
           ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " ›")
           : text("div", "prop-fact__value", item.value),
+        item.note ? text("div", "prop-fact__note", item.note) : null,
       ]);
     })));
 
@@ -88,16 +97,31 @@ function VisitCard(property) {
   return card;
 }
 
-function facts(property, contract, quote) {
+function facts(property, contract) {
   var rows = [
-    { label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined },
-    { label: "Service zone", value: zoneLabel(property.zone) },
+    { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined },
   ];
-  if (quote) {
-    rows.push({ label: "Lot", value: quote.lot + " sq ft" });
-    rows.push({ label: "Quoted", value: "$" + quote.selected + " per visit" });
+  if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
+  var map = mapFact(property);
+  if (map) rows.push(map);
+  var site = quoteSiteFor(property);
+  if (site && site.lot) rows.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
+  var quotes = quoteGroupFor(property.quoteSiteId || property.id);
+  if (quotes) {
+    rows.push({
+      key: "quotes", label: "Quotes",
+      value: quotes.orders.length + (quotes.orders.length === 1 ? " quote" : " quotes") + " · " + QUOTE_DECISION[quotes.decision],
+      action: "proposal.open", id: quotes.id,
+    });
   }
   return rows;
+}
+
+function mapFact(property) {
+  if (!state.config.mapsApiKey) return null;
+  var placement = knownPlacement(property, createGeocodeCache(browserStorage()));
+  if (placement.point) return { key: "map", label: "Map", value: "On the map", action: "property.showOnMap", id: property.id };
+  return { key: "map", label: "Map", value: "Not on the map", note: placement.reason === "no-address" ? "No address on file" : "" };
 }
 
 function contractFor(property) {

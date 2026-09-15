@@ -5,6 +5,7 @@ import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
 import { deriveCoreBookingModel } from "./normalizers/spa-availability.js";
 import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions } from "./normalizers/spa-booking-options.js";
 import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
+import { contractsPackage, groupStatus } from "./normalizers/contracts.js";
 
 export var state = {
   route: "orders.list",
@@ -26,6 +27,7 @@ export var state = {
   payId: "visa",     // selected payment method
   prodCat: "all",    // product category filter
   psites: F.proposalSites.map(function (p) { return Object.assign({}, p); }), // proposal sites (mutable)
+  porders: [],
   ovProperty: null,
   ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
@@ -607,6 +609,15 @@ function liveOverview() {
   };
 }
 
+export function liveOverviewStatus() {
+  if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+  var envelope = state.moduleData.properties;
+  if (envelope && envelope.state === "unauthorized") return "unauthorized";
+  if (state.liveWeatherState === "failed" || (envelope && envelope.state === "error")) return "error";
+  if (!state.liveWeather || !envelope || envelope.state !== "ready") return "loading";
+  return "ready";
+}
+
 export function currentFixture() {
   var fixture = caseFixtureFor(state.config.caseId);
   if (fixture) return fixture;
@@ -639,7 +650,35 @@ function caseProposals() {
 
 export function currentProposal() {
   var proposals = caseProposals();
-  return (proposals && proposals.proposal) || F.proposal;
+  if (proposals) return proposals.proposal || null;
+  return F.proposal;
+}
+
+export function quotePackage() {
+  var data = state.moduleData.proposals;
+  if (!data || !data.quotes) return null;
+  var overview = currentOverview();
+  return contractsPackage(data.quotes, overview && overview.properties);
+}
+
+export function quoteGroupFor(id) {
+  var quotes = quotePackage();
+  return (quotes && quotes.groups.find(function (group) { return !!id && group.id === id; })) || null;
+}
+
+export function proposalPlanPricingModel(planId) {
+  var models = planPricingModels();
+  return Object.prototype.hasOwnProperty.call(models, String(planId)) ? models[String(planId)] : null;
+}
+
+function planForPricingModel(code) {
+  var models = planPricingModels();
+  return Object.keys(models).find(function (planId) { return models[planId] === code; }) || null;
+}
+
+function planPricingModels() {
+  var proposals = caseProposals();
+  return (proposals && proposals.planPricingModels) || {};
 }
 
 export function proposalStatusMeta() {
@@ -873,6 +912,7 @@ export function applyPortalConfig(config) {
   state.psites = fixture && fixture.proposals
     ? cloneCaseValue(fixture.proposals.sites)
     : F.proposalSites.map(function (site) { return Object.assign({}, site); });
+  state.porders = fixture && fixture.proposals && fixture.proposals.orders ? cloneCaseValue(fixture.proposals.orders) : [];
   state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
   state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";
@@ -942,7 +982,15 @@ export function buildCalendarGrid(year, month) {
   return cells;
 }
 
-export function currentSite() { return proposalSites().find(function (p) { return p.id === state.currentSiteId; }) || proposalSites()[0]; }
+export function currentSite() {
+  var sites = proposalSites();
+  var site = sites.find(function (p) { return p.id === state.currentSiteId; }) || sites[0];
+  var group = site ? quoteGroupFor(site.id) : null;
+  if (!group) return site;
+  var approved = group.orders.find(function (order) { return order.status === "approved"; });
+  var approvedPlan = approved && approved.pricingModel ? planForPricingModel(approved.pricingModel.code) : null;
+  return Object.assign({}, site, { status: groupStatus(group.orders), selected: approvedPlan || site.selected, quotes: group });
+}
 
 export function computeSite(site) {
   var cs = 0, ds = 0, total = 0;

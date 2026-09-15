@@ -196,6 +196,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(loading.getAttribute("data-surface"), "google");
   assert.equal(controller.status(), "loading");
   assert.equal(firstCanvas.getAttribute("data-state"), "loading");
+  assert.equal(firstCanvas.querySelector(".ov-map__status-label").textContent, "Loading map…");
   assert.equal(loading.querySelectorAll("[data-module=\"unplaced-properties\"]").length, 0, "every fixture property has a coordinate, so nothing is listed off the map");
 
   await flush();
@@ -265,7 +266,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(popup.querySelector(".ov-tip__close").tagName, "BUTTON");
   assert.equal(pinFor(opened, "prop-foothill").getAttribute("aria-pressed"), "true");
   assert.equal(popup.querySelector("[data-module=\"property-weather\"]").getAttribute("data-state"), "loading");
-  assert.equal(popup.querySelector("[data-module=\"property-weather\"]").textContent, "This property · Today Jan 15Loading forecast…\u00a0Weather · Xweather", "loading reserves the note line, so the popup does not jump when the forecast lands");
+  assert.equal(popup.querySelector("[data-module=\"property-weather\"]").textContent, "This property · Today Jan 15Loading forecast…\u00a0", "loading reserves the note line, so the popup does not jump when the forecast lands");
+  assert.equal(popup.querySelectorAll(".ov-attr").length, 0, "the popup's forecast always comes from the provider the map card already credits, so the popup repeats no attribution");
   assert.equal(weather.urls.length, 1, "opening the popup is what fetches the property's own forecast");
   assert.match(weather.urls[0], /\/forecasts\/39\.73%2C-105\.12\?/);
 
@@ -282,9 +284,10 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const ownWeather = stage({ selectedId: "prop-foothill" }).querySelector("[data-module=\"property-weather\"]");
   assert.equal(ownWeather.getAttribute("data-state"), "property");
   assert.equal(ownWeather.getAttribute("data-weather"), "snow");
-  assert.equal(ownWeather.textContent, "This property · Today Jan 15Light Snow · −3°CSnowfall 0.6 cm forecast · below the 2 cm triggerWeather · Xweather");
+  assert.equal(ownWeather.textContent, "This property · Today Jan 15Light Snow · −3°CSnowfall 0.6 cm forecast · below the 2 cm trigger");
+  assert.equal(ownWeather.getAttribute("data-source"), "xweather");
   const nextDay = stage({ selectedId: "prop-foothill", frame: liveWeather.timeline[1], index: 1 }).querySelector("[data-module=\"property-weather\"]");
-  assert.equal(nextDay.textContent, "This property · Fri Jan 16Snow Showers · −4°CSnowfall 2.4 cm forecast · trigger metWeather · Xweather", "the popup follows the selected day from the same forecast");
+  assert.equal(nextDay.textContent, "This property · Fri Jan 16Snow Showers · −4°CSnowfall 2.4 cm forecast · trigger met", "the popup follows the selected day from the same forecast");
   stage({ selectedId: null });
   const page = dom.fresh();
   const keeper = createFocusKeeper(page);
@@ -369,7 +372,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(docked.getAttribute("aria-label"), "Foothill Court");
   assert.equal(docked.style.left, undefined, "a docked popup is not positioned against the map");
   assert.equal(pinFor(dockedStage, "prop-foothill").getAttribute("aria-pressed"), "true", "its pin stays marked on the map");
-  assert.equal(docked.querySelector("[data-module=\"property-weather\"]").textContent, "This property · Today Jan 15Light Snow · −3°CSnowfall 0.6 cm forecast · below the 2 cm triggerWeather · Xweather", "the docked popup keeps the property's own forecast");
+  assert.equal(docked.querySelector("[data-module=\"property-weather\"]").textContent, "This property · Today Jan 15Light Snow · −3°CSnowfall 0.6 cm forecast · below the 2 cm trigger", "the docked popup keeps the property's own forecast");
   dockKeeper.settle("prop-foothill", null);
   assert.equal(dom.activeElement, docked.querySelector(".ov-tip__close"), "opening moves focus into the docked popup");
   assert.deepEqual(dom.scrolled[dom.scrolled.length - 1], { element: docked, options: { block: "nearest" } }, "and brings it into view, since it opens below the map");
@@ -405,7 +408,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const areaWeather = popupHost.querySelector("[data-module=\"property-weather\"]");
   assert.equal(areaWeather.getAttribute("data-state"), "failed");
   assert.equal(areaWeather.getAttribute("data-weather"), liveWeather.timeline[0].zones.north, "a failed property forecast falls back to the zone forecast already loaded");
-  assert.equal(areaWeather.textContent, "Area forecast · Today Jan 15Storm warning · −6°CThis property’s own forecast is unavailable right now.Weather · Xweather");
+  assert.equal(areaWeather.textContent, "Area forecast · Today Jan 15Storm warning · −6°CThis property’s own forecast is unavailable right now.");
+  assert.equal(areaWeather.getAttribute("data-source"), "xweather");
   stage({ selectedId: "prop-tabor" });
   assert.equal(weather.urls.length, 2, "a failed forecast is not retried on every render");
 
@@ -414,7 +418,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const sample = popupHost.querySelector("[data-module=\"property-weather\"]");
   assert.equal(sample.getAttribute("data-state"), "area");
   assert.match(sample.textContent, /^Area forecast · Today Jan 15/);
-  assert.match(sample.textContent, /Sample conditions$/);
+  assert.equal(sample.getAttribute("data-source"), "sample", "the card credits sample conditions once, so the popup only marks where its reading came from");
 }
 
 {
@@ -442,6 +446,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const before = stage(controller);
   assert.deepEqual(rowIds(before), ["prop-core-1", "prop-core-2", "prop-core-3"], "a property without a coordinate is listed without a pin");
   assert.deepEqual(google.log.geocode, [], "nothing is geocoded before the map has loaded");
+  assert.deepEqual(rowNotes(before), ["Finding it on the map…", "Finding it on the map…", "No address on file"], "each property off the map says why it has no pin");
 
   await flush();
   assert.deepEqual(google.log.geocode, ["12 Frost Lane, Surrey, BC, V3W 1J8", "1 Nowhere Road, Atlantis"], "each address is geocoded once, one at a time, and a property with no address is not guessed at");
@@ -451,6 +456,10 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const after = stage(controller);
   assert.deepEqual(pinIds(google), ["prop-core-1", "prop-core-4"]);
   assert.deepEqual(rowIds(after), ["prop-core-2", "prop-core-3"]);
+  assert.deepEqual(rowNotes(after), ["Address not found on the map", "No address on file"], "a failed geocode stops saying it is being located");
+  assert.deepEqual(after.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.getAttribute("data-placement")), ["not-found", "no-address"]);
+  assert.equal(after.children[0].getAttribute("data-pins"), "2");
+  assert.equal(after.querySelector(".ov-map__status-label").textContent, "", "a map that carries pins shows no status over itself");
   assert.match(after.querySelector("[data-module=\"unplaced-properties\"]").textContent, /^Not on the map2/);
   const frost = pinsOf(google).find((pin) => pin.getAttribute("data-id") === "prop-core-1");
   const at = google.projection.fromLatLngToDivPixel(new google.maps.LatLng(49.12, -122.84));
@@ -461,6 +470,8 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   stage(controller);
   assert.equal(google.log.geocode.length, 2, "a failed address is not retried within the page session");
 
+  const addresslessPopup = stage(controller, { selectedId: "prop-core-3" }).querySelector("[data-module=\"property-tooltip\"]");
+  assert.equal(addresslessPopup.querySelectorAll(".ov-tip__addr").length, 0, "a property with no address shows no empty address line");
   const unplacedPopup = stage(controller, { selectedId: "prop-core-2" });
   const inline = unplacedPopup.querySelector("[data-module=\"property-tooltip\"]");
   assert.equal(inline.getAttribute("data-place"), "inline", "a property with no pin opens the same popup inside its row");
@@ -501,6 +512,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
     viewport: overview.map, selectedId: null, map: null, forecasts,
   });
   assert.equal(list.getAttribute("data-surface"), "list", "without a key the card lists the properties instead of drawing a map");
+  assert.equal(list.querySelectorAll("[data-module=\"map-unavailable\"]").length, 0, "a portal without a key never had a map, so its list apologises for nothing");
   assert.equal(list.querySelectorAll("[data-module=\"property-pin\"]").length, 0);
   const rows = list.querySelectorAll("[data-module=\"property-row\"]");
   assert.equal(rows.length, overview.properties.length, "every property is listed");
@@ -570,6 +582,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(failing.status(), "failed");
   assert.equal(changes, 1, "a rejected key asks for one re-render");
   assert.equal(PropertyStage(props).getAttribute("data-surface"), "list", "a rejected key lists the properties instead of leaving a grey map");
+  assert.equal(PropertyStage(props).querySelector("[data-module=\"map-unavailable\"]").textContent, "The map couldn’t load, so your properties are listed instead.", "a map that failed says so once, above the list it falls back to");
   const unframed = createPropertyMap({
     adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: { document: dom.fresh(), google: { maps: createGoogleStub().maps } } }),
     cache: createGeocodeCache(null),
@@ -578,6 +591,48 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   });
   assert.equal(PropertyStage(Object.assign({}, props, { map: unframed, viewport: null })).getAttribute("data-surface"), "list", "a map with no initial viewport is not drawn");
   assert.equal(unframed.status(), "idle", "and its script is never requested");
+}
+
+{
+  const { knownPlacement } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
+  const cache = createGeocodeCache(memoryStorage());
+  cache.write(addressKey("12 Frost Lane, Surrey, BC"), { lat: 49.12, lon: -122.84 });
+  assert.deepEqual(knownPlacement({ lat: 49.2, lon: -122.9, address: "" }, cache), { point: { lat: 49.2, lon: -122.9 }, reason: "stored" });
+  assert.deepEqual(knownPlacement({ lat: null, lon: null, address: "12 Frost Lane, Surrey, BC" }, cache), { point: { lat: 49.12, lon: -122.84 }, reason: "located" }, "a page without the map reads the point the map already found");
+  assert.deepEqual(knownPlacement({ lat: null, lon: null, address: "" }, cache), { point: null, reason: "no-address" });
+  assert.deepEqual(knownPlacement({ lat: 0, lon: 0, address: "1 Nowhere Road" }, null), { point: null, reason: "unplaced" }, "0,0 is a defaulted Float and an unplaced address stays unplaced, never at the centre");
+
+  const book = [
+    liveProperty("prop-core-11", "North Lot", "11 North Lot, Surrey, BC", null, null),
+    liveProperty("prop-core-12", "South Lot", "12 South Lot, Surrey, BC", null, null),
+  ];
+  const unanswered = createGoogleStub();
+  unanswered.maps.Geocoder = class { geocode(request) { unanswered.log.geocode.push(request.address); } };
+  const session = (maps) => createPropertyMap({
+    adapter: createGoogleMapsAdapter({ apiKey: "AIza-test_key", scope: { document: dom.fresh(), google: { maps } } }),
+    cache: createGeocodeCache(memoryStorage()),
+    dispatch: () => {},
+    onChange: () => {},
+  });
+  const stageOf = (controller) => PropertyStage({ properties: book, frame: liveWeather.timeline[0], index: 0, weather: liveWeather, viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: null, map: controller, forecasts: null });
+  const status = (stage) => ["data-state", "data-pins", "data-locating"].map((name) => stage.children[0].getAttribute(name)).concat(stage.querySelector(".ov-map__status-label").textContent);
+
+  const waiting = session(unanswered.maps);
+  assert.deepEqual(status(stageOf(waiting)), ["loading", "0", "true", "Loading map…"]);
+  await flush();
+  const locating = stageOf(waiting);
+  assert.deepEqual(status(locating), ["ready", "0", "true", "Finding your properties on the map…"], "a ready map with nothing placed yet says it is still looking, and keeps its height so the first pin does not move the page");
+  assert.deepEqual(unanswered.log.geocode, ["11 North Lot, Surrey, BC"], "addresses are still geocoded one at a time");
+  assert.deepEqual(rowNotes(locating), ["Finding it on the map…", "Finding it on the map…"]);
+
+  const refusing = createGoogleStub();
+  const nowhere = session(refusing.maps);
+  stageOf(nowhere);
+  await flush();
+  const none = stageOf(nowhere);
+  assert.deepEqual(status(none), ["ready", "0", "false", "None of your properties could be placed on the map"], "when every address has failed, the empty map shrinks to its status and the list below explains each one");
+  assert.deepEqual(rowNotes(none), ["Address not found on the map", "Address not found on the map"]);
+  assert.equal(none.querySelector("[data-module=\"unplaced-properties\"]").textContent.startsWith("Not on the map2"), true);
 }
 
 {
@@ -630,6 +685,13 @@ function pinsOf(google) {
 
 function pinIds(google) {
   return pinsOf(google).map((pin) => pin.getAttribute("data-id")).sort();
+}
+
+function rowNotes(root) {
+  return root.querySelectorAll("[data-module=\"property-row\"]").map((row) => {
+    const note = row.querySelector(".ov-prow__why");
+    return note ? note.textContent : "";
+  });
 }
 
 function rowIds(root) {
@@ -750,6 +812,7 @@ function createDom() {
     set className(value) { this.setAttribute("class", value); }
     get children() { return this.childNodes.filter((node) => node instanceof Element); }
     get textContent() { return this.childNodes.map((node) => node.textContent).join(""); }
+    set textContent(value) { this.replaceChildren(new Text(value)); }
     setAttribute(name, value) { this.attributes.set(name, String(value)); }
     getAttribute(name) { return this.attributes.has(name) ? this.attributes.get(name) : null; }
     hasAttribute(name) { return this.attributes.has(name); }

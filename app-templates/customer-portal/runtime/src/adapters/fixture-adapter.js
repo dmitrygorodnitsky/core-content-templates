@@ -14,9 +14,11 @@ export const fixtureAdapter = {
         return { orders: context.state.orders, statusMeta: fixture ? fixture.statusMeta || F.statusMeta : F.statusMeta, technician: fixture ? fixture.technician : F.technician, addresses: fixture ? fixture.addresses : F.addresses };
       case "proposals":
         return {
-          proposal: fixture && fixture.proposals ? fixture.proposals.proposal : F.proposal,
+          proposal: fixture && fixture.proposals ? fixture.proposals.proposal || null : F.proposal,
           sites: context.state.psites,
           statusMeta: fixture && fixture.proposals && fixture.proposals.statusMeta ? fixture.proposals.statusMeta : F.pstatus,
+          agreement: fixture && fixture.proposals ? fixture.proposals.agreement || null : null,
+          quoteOrders: fixture && fixture.proposals && fixture.proposals.orders ? context.state.porders : null,
         };
       case "services":
         return { services: theme.svc };

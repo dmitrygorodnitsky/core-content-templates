@@ -1,10 +1,11 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
 import { h } from "../dom.js";
-import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, state } from "../state.js";
+import { computeSite, currentSite, currentTheme, proposalPlanName, proposalPlanPricingModel, proposalStatusMeta, state } from "../state.js";
 import { go, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
+import { PRICING_MODELS } from "../normalizers/contracts.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
 import { Calendar } from "./CalendarPage.js";
@@ -27,25 +28,26 @@ export function beamMap() {
     "left:6%;top:86%;width:86%;height:7%;background:rgba(199,125,255,.4);border:1.5px solid #c77dff;border-radius:3px"
   ];
   var map = h("div", { "class": "beam-map" }, [
-    h("span", { "class": "beam-map__label", style: "top:13px;left:15px" }, "Beam AI \u00b7 aerial property report")
+    h("span", { "class": "beam-map__label", style: "top:13px;left:15px" }, "Beam AI · aerial property report")
   ]);
   rects.forEach(function (s) { map.appendChild(h("div", { style: "position:absolute;" + s })); });
-  map.appendChild(h("span", { "class": "beam-map__label", style: "bottom:11px;left:15px" }, "licensed via ibeam.ai \u2014 drops in here"));
+  map.appendChild(h("span", { "class": "beam-map__label", style: "bottom:11px;left:15px" }, "licensed via ibeam.ai — drops in here"));
   return map;
 }
 
 export function ProposalDetail() {
   var v = currentTheme();
   var p = currentSite();
+  var quotes = p.quotes || null;
   var c = computeSite(p);
   var st = proposalStatusMeta()[p.status];
   var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
 
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "\u2039 Back to proposal"));
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, quotes ? "‹ Back to your quotes" : "‹ Back to proposal"));
   page.appendChild(h("div", { "class": "proposal-detail-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { "class": "proposal-detail-head__title", "data-bind": "site.addr" }, p.addr),
-      h("div", { "class": "proposal-detail-head__meta" }, p.city + " " + p.postal + " \u00b7 lot " + p.lot + " sq ft")
+      h("div", { "class": "proposal-detail-head__meta" }, p.city + " " + p.postal + " · lot " + p.lot + " sq ft")
     ]),
     StatusBadge({ variant: st.badge, label: st.label, bind: "site.statusLabel" })
   ]));
@@ -77,14 +79,14 @@ export function ProposalDetail() {
 
   /* plan selector */
   page.appendChild(h("div", { style: "margin:0 4px 12px" }, [
-    h("div", { style: "font-weight:800;font-size:19px;letter-spacing:-.01em" }, v.prop.svc + " \u2014 choose your plan"),
-    h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:3px" }, "Approving one option declines the other two. Request a revision and we\u2019ll re-quote all three.")
+    h("div", { style: "font-weight:800;font-size:19px;letter-spacing:-.01em" }, v.prop.svc + " — choose your plan"),
+    h("div", { style: "font-size:13px;color:var(--ink-2);margin-top:3px" }, "Approving one option declines the other two. Request a revision and we’ll re-quote all three.")
   ]));
 
   var plans = [
-    { id: "897", name: "Flex Service Plan", tag: "Pay-as-you-go \u00b7 Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
-    { id: "898", name: "Seasonal Unlimited Coverage", tag: "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo \u00d7 5 \u00b7 " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
-    { id: "899", name: "Season-Lock Prepaid", tag: "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time \u00b7 season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
+    { id: "897", name: "Flex Service Plan", tag: quotes ? pricingModelTag("897") : "Pay-as-you-go · Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
+    { id: "898", name: "Seasonal Unlimited Coverage", tag: quotes ? pricingModelTag("898") : "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo × 5 · " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
+    { id: "899", name: "Season-Lock Prepaid", tag: quotes ? pricingModelTag("899") : "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time · season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
   ];
   plans.forEach(function (pl) {
     var sel = pl.id === p.selected;
@@ -113,16 +115,14 @@ export function ProposalDetail() {
   /* decided note */
   var decided = p.status === "approved" || p.status === "revision" || p.status === "declined";
   if (decided) {
-    var note = p.status === "approved" ? "You approved " + proposalPlanName(p.selected) + " \u2014 a live order was created."
-      : p.status === "revision" ? "Revision requested \u2014 our team will re-quote all three options."
-      : "You declined this proposal.";
     page.appendChild(h("div", { "class": "proposal-decided" }, [
       h("div", { "class": "proposal-decided__icon" }, "i"),
-      h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note + " You can still change your decision below.")
+      h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, quotes ? quoteDecisionNote(p) : proposalDecisionNote(p))
     ]));
   }
 
   /* actions */
+  if (quotes && decided) return page;
   var selId = p.selected || "898";
   page.appendChild(h("div", { "class": "proposal-actions" }, [
     ActionButton({ variant: "btn--primary", label: "Approve " + proposalPlanName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
@@ -130,6 +130,24 @@ export function ProposalDetail() {
     ActionButton({ variant: "btn--danger", label: "Decline", action: "proposal.decline", lg: true, visualId: "proposal-decline" })
   ]));
   return page;
+}
+
+function pricingModelTag(planId) {
+  var code = proposalPlanPricingModel(planId);
+  return code && Object.prototype.hasOwnProperty.call(PRICING_MODELS, code) ? PRICING_MODELS[code] : "";
+}
+
+function quoteDecisionNote(p) {
+  if (p.status === "approved") return "You approved " + proposalPlanName(p.selected) + ". The other options for this property are declined.";
+  if (p.status === "revision") return "You asked for changes to these quotes. Our team is reviewing your request.";
+  return "You declined the quotes for this property.";
+}
+
+function proposalDecisionNote(p) {
+  var note = p.status === "approved" ? "You approved " + proposalPlanName(p.selected) + "."
+    : p.status === "revision" ? "Revision requested — our team will re-quote all three options."
+    : "You declined this proposal.";
+  return note + " You can still change your decision below.";
 }
 
 /* =========================================================
