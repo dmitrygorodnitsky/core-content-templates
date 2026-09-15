@@ -110,13 +110,21 @@ Of these, dev-1 grants reach only `account`, `order`, `document`, `task` and
 | Account | `CUSTOMER` | self | |
 | Address | | referenced by the subject Account or a scoped Resource `ADDRESS` | |
 | Resource | `SNOW_REMOVAL_PROPERTY` | attribute `ACCOUNT` | |
-| Order | `FIELD_SERVICE_ORDER`, `WINTER_SERVICES_ORDER` | field `account` | `QUOTE_SENT`, `QUOTE_VIEWED`, `CLIENT_APPROVED`, `DECLINED` |
+| Order | `FIELD_SERVICE_ORDER`, `WINTER_SERVICES_ORDER` | field `account` | `QUOTE_SENT`, `QUOTE_VIEWED`, `CUSTOMER_CHANGES_REQUESTED`, `CLIENT_APPROVED`, `DECLINED` |
 | OrderItem | | through its Order | |
-| Document | `SERVICE_AGREEMENT` | attribute `CLIENT` | `SENT_TO_CLIENT`, `CLIENT_APPROVED`, `ACTIVE`, `SUSPENDED`, `EXPIRED` |
+| Document | `SERVICE_AGREEMENT` | attribute `CLIENT` | `QUOTATION_SENT`, `AWAITING_CLIENT_DETAILS`, `DRAFT`, `PENDING_MANAGEMENT_APPROVAL`, `INTERNALLY_APPROVED`, `SENT_TO_CLIENT`, `CLIENT_APPROVED`, `ACTIVE`, `SUSPENDED`, `EXPIRED` |
 | Appointment | `SNOW_SERVICE_VISIT`, `SNOW_INSPECTION_VISIT` | attribute `RESOURCE` through Resource | |
 | Invoice | `PER_SERVICE`, `FIXED_RATE` | field `account` | |
 | Task | `SUPPORT_TICKET` | attribute `ACCOUNT` | |
 | Media | | referenced by `PROPERTY_PLAN`, `PRE_SERVICE_MEDIA`, `POST_SERVICE_MEDIA` of a scoped row | |
+
+The agreement is in scope from `QUOTATION_SENT`, the state in which its quotes
+reach the client, because the portal's package header reads it while they are
+under review. In `QUOTATION` its quotes have not been sent, so it stays hidden,
+and so does a `CANCELED` package. A quote returned for changes stays visible in
+`CUSTOMER_CHANGES_REQUESTED`. Nothing in scope yet tells a client that a request
+is being prepared, since operator-side Orders and an agreement in `QUOTATION`
+are hidden; question 7 in §5 asks for that signal.
 
 ### 3.2 Role, fields and forms
 
@@ -171,3 +179,10 @@ Of these, dev-1 grants reach only `account`, `order`, `document`, `task` and
 6. A quote sent back for changes returns to `QUOTE_PREPARED` and leaves the
    client's list until it is sent again. Is a state history the right way to
    keep it visible, or should the workflow gain a client-visible revision state?
+7. What tells a signed-in client that a request is being prepared? Operator-side
+   Orders and an agreement in `QUOTATION` are out of scope by design. Our
+   proposal: the `GET_QUOTE_` hook writes the resolved Account into an `ACCOUNT`
+   attribute on the form, and the subject's processed quote requests become
+   readable through `/core-cms/me/form/list.json` with a scope rule on that
+   attribute. Is a scoped form list possible, or should the Account carry a
+   server-maintained flag instead?
