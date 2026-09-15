@@ -12,7 +12,7 @@ Core Auth login, and Core Auth 2FA.
 | `runtime/` | Portal behavior, adapters, routes, state, and styles | Authored production source |
 | `cms/` | Portal and public-landing CMS source contracts | Authored CMS source |
 | `design-inbox/` | Accepted executable visual baseline | Immutable; user updates only |
-| `design-requests/` | Missing-state briefs for the designer | Authored requests, not UI implementations |
+| `design-requests/` | Closed history of briefs written for Claude Design | No new requests; design happens in the session, see `AGENTS.md` |
 | `content/cases/` | Domain fixtures and tenant-specific source documents | Authored domain/content evidence |
 | `scripts/` | Stable build, export, and validation entrypoints | Keep paths stable; see `scripts/README.md` |
 | `dist/` | Generated upload packages and previews | Never hand-edit |

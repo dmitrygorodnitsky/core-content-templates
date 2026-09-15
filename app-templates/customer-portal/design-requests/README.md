@@ -1,5 +1,9 @@
 # Customer Portal Design Requests
 
+Closed on 2026-09-11. Presentation is now designed in the working session — see
+"Visual Design" in `../AGENTS.md` — and no new request is added. The briefs
+below are kept as history.
+
 This directory holds briefs for presentation that is not already covered by the
 accepted executable source in `../design-inbox/`.
 
@@ -22,6 +26,12 @@ this repository. The user reviews it and imports the accepted package into
   requests the still-missing pending, bootstrap-failure, and retry presentation
   for opening that CMS login page directly instead of through an OIDC request.
 
+- [`granite-ridge-live-core-home-and-quotes.md`](granite-ridge-live-core-home-and-quotes.md)
+  requests the presentation the storm home screen and the Contracts list need
+  once their facts come from Core: a property with no coordinate, a quote list
+  with no grouping proposal and no measured area, a quote the operator has not
+  sent, and what the anonymous quote request promises.
+
 ## Shell
 
 - [`storm-portal-top-nav-brand-and-mobile-overflow.md`](storm-portal-top-nav-brand-and-mobile-overflow.md)
@@ -32,6 +42,10 @@ this repository. The user reviews it and imports the accepted package into
 
 ## Granite Ridge Snow Removal
 
+- [`granite-ridge-google-property-map.md`](granite-ridge-google-property-map.md)
+  asks for acceptance of the storm home map on Google Maps: map loading, the
+  list that replaces the map without a key, properties listed off the map, the
+  popup weather block with its loading and failure states, and the attribution.
 - [`granite-ridge-landing-media.md`](granite-ridge-landing-media.md) is an asset
   request, not a design request: the accepted `seoMedia` composition already
   covers both the delivered-image and the striped no-data states, so the landing

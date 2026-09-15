@@ -4,60 +4,43 @@
 
 - `experience/**`: canonical family schema, registry, contracts, and tenant
   descriptors.
-- `runtime/**`: production portal behavior and presentation transferred from
-  accepted design.
+- `runtime/**`: production portal behavior and presentation.
 - `cms/**`, `assets/**`, `public/**`: authored CMS/public surface input.
 - `scripts/**`: stable CLI entrypoints for build, export, and validation.
 - `dist/**`: generated output; never hand-edit.
-- `content/**`, root Markdown, and `design-requests/**`: product/domain evidence
-  and design-gap requests.
+- `content/**` and root Markdown: product and domain evidence.
+- `design-requests/**`: closed history of briefs written for Claude Design; no
+  new request is added.
 
 Repository-wide zone boundaries are documented in
 `../../docs/repository-zones/zone-catalog.md`.
 
-## Visual Source Of Truth
+## Visual Design
 
-`design-inbox/` is immutable, designer-owned executable input. Its accepted
-source, `manifest.json`, stable hooks, reusable components, CSS tokens, layout,
-responsive behavior, and visual states are the source of truth for production
+Since 2026-09-11 presentation is designed in the working session instead of
+being requested from Claude Design. `design-inbox/` remains the accepted
+baseline the existing screens were built from, not the only permitted source of
 presentation.
 
-Do not invent, restyle, simplify, or approximate UI. This includes a new page,
-panel, card, button treatment, empty state, error state, loading state,
-unauthorized state, breakpoint behavior, icon, animation, or visual hierarchy.
-Do not infer a visual solution from a business requirement.
+When a behavior needs presentation that does not exist yet:
 
-Codex owns business logic only: adapters, authentication/session behavior,
-authorization, routing, commands, validation, state transitions, data
-normalization, CMS packaging, and truthful unavailable/error behavior.
+1. Design it directly in `runtime/` as an extension of the existing design
+   language. Reuse the components, CSS tokens, class composition and
+   `data-module` / `data-visual-id` hooks already there before adding new ones.
+2. Design every state the behavior can reach, not only the successful one:
+   loading, empty, partial, error, unavailable and unauthorized.
+3. Verify it in the Browser pane at desktop, tablet (768 px) and mobile (375 px)
+   widths, in light and dark mode, and give the screenshots to the user, who
+   accepts or rejects the presentation from them.
+4. Record the decision where the behavior is documented — the case document,
+   `HANDOFF.md`, or the change itself. Do not write a design request.
 
-## Required Design Gap Flow
-
-When a requested behavior has no accepted visual representation:
-
-1. Do not implement a new visual treatment.
-2. Create a concise request under `design-requests/<slug>.md`. Include the
-   route, user goal, exact states/actions, data that will be dynamic, required
-   responsive widths, existing components that may be reused, and constraints
-   such as PII, authorization, or loading behavior.
-3. Give the request to Claude Design. Claude Design works outside this
-   repository; the user reviews its output and is the only person who updates
-   `design-inbox/`.
-4. Wait until the user has updated `design-inbox/` with the accepted executable
-   design.
-5. Transfer the accepted result 1:1 into `runtime/`. Preserve its component
-   boundaries, stable `data-*` hooks, class composition, and visual states.
-6. Validate against the executable design at the relevant desktop, tablet, and
-   mobile widths before declaring the implementation complete.
-
-Only text values, localization, CMS-authored copy, and the number/content of a
-design-approved repeatable block may vary at runtime. Dynamic data does not
-authorize a new layout or a one-off card variant.
+Runtime data varies text, localized values and the number of repeated items. A
+single record's data does not justify a one-off layout variant.
 
 ## Runtime And CMS Rules
 
-- Never modify `design-inbox/**`. The user alone imports accepted Claude Design
-  output into that directory.
+- Never modify `design-inbox/**`. It belongs to the user.
 - Treat `ARCHITECTURE.md` as the authority for production behavior and
   `DATA-OWNERSHIP.md` for what may become live data.
 - A design fixture or a successful local state transition is never a live
@@ -71,9 +54,7 @@ authorize a new layout or a one-off card variant.
 
 ## Current Auth Example
 
-The Core OIDC login is transferred from
-`design-inbox/src/routes/AuthOidcPage.js`. Future changes must preserve that
-accepted composition and request a new design state before changing it,
-replacing only its fixture phone/OTP actions with the real Core OIDC command.
-If that composition does not cover the required OIDC states, create a design
-request before changing the presentation.
+The Core OIDC login was transferred from
+`design-inbox/src/routes/AuthOidcPage.js`, with its fixture phone/OTP actions
+replaced by the real Core OIDC command. It is the starting point for any change:
+an OIDC state it does not cover is designed under "Visual Design" above.
