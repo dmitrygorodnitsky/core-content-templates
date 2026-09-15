@@ -59,12 +59,16 @@
     return 0;
   }
 
-  function localizedName(nls, locale) {
+  function localizedText(nls, locale, key) {
     if (!nls || typeof nls !== "object") return "";
     var language = String(locale || "en").split("-")[0];
     var bag = nls[locale] || nls[language] || nls.en || nls[Object.keys(nls)[0]];
     if (!bag || typeof bag !== "object") return "";
-    return text(bag.NAME || bag.name).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    return text(bag[key]).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function localizedName(nls, locale) {
+    return localizedText(nls, locale, "NAME") || localizedText(nls, locale, "name");
   }
 
   function attributeEntry(row, code) {
@@ -275,6 +279,7 @@
       code: definition.code,
       kind: kind,
       label: localizedName(definition.nls, locale) || definition.code,
+      description: localizedText(definition.nls, locale, "DESCRIPTION"),
       required: definition.required === true,
       choices: choices,
     };
@@ -432,6 +437,8 @@
       status: status,
       priced: priced,
       lines: priced ? linesOf(row, currency, context.locale, contract) : [],
+      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
+      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
       siblingApproved: false,

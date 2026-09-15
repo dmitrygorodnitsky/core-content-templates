@@ -33,6 +33,11 @@
     REPRESENTATIVE_PHONE: "tel",
   };
 
+  var STATEMENT_COPY = {
+    INFORMATION_CONFIRMED: "confirmInformationStatement",
+    AUTHORITY_CONFIRMED: "confirmAuthorityStatement",
+  };
+
   function el(tag, className, attrs) {
     var node = global.document.createElement(tag);
     if (className) node.className = className;
@@ -71,6 +76,14 @@
 
   function optionLabel(option, copy) {
     return option.model ? copy[MODEL_COPY[option.model]] : ns.fill(copy.optionFallback, { n: option.position });
+  }
+
+  function confirmationStatement(copy, field) {
+    var key = STATEMENT_COPY[field.code];
+    if (!key) return field.description || field.label;
+    var configured = copy[key];
+    if (configured !== ns.defaultCopy()[key]) return configured;
+    return field.description || configured;
   }
 
   function isPending(command) {
@@ -222,6 +235,18 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
+    var breakdown = [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+      .filter(function (row) { return row[2]; });
+    if (breakdown.length) {
+      var list = el("dl", "cr-breakdown");
+      breakdown.forEach(function (row) {
+        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
+        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
+        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
+        list.appendChild(item);
+      });
+      body.appendChild(list);
+    }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
@@ -412,6 +437,7 @@
     var copy = ctx.copy;
     var id = "cr-field-" + field.code;
     var errorId = id + "-error";
+    var describedBy = field.description && field.kind !== "boolean" ? id + "-hint " + errorId : errorId;
     var clientError = details.touched[field.code] ? details.errors[field.code] || "" : "";
     var message = clientError || details.serverErrors[field.code] || "";
     var wrap = el("div", "cr-field", { "data-code": field.code, "data-kind": field.kind, "data-state": message ? "invalid" : "idle" });
@@ -422,7 +448,7 @@
       return Object.assign({
         id: id,
         name: field.code,
-        "aria-describedby": errorId,
+        "aria-describedby": describedBy,
         "aria-invalid": message ? "true" : null,
         "aria-required": field.required ? "true" : null,
         disabled: pending,
@@ -451,7 +477,7 @@
       control.addEventListener("change", function () { patch(ctx.dispatch("details.choose", { code: field.code, value: control.checked })); });
       toggle.appendChild(control);
       toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
-      var caption = text("span", "cr-choice__label", field.label);
+      var caption = text("span", "cr-choice__label", confirmationStatement(copy, field));
       if (field.required) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       toggle.appendChild(caption);
       wrap.appendChild(toggle);
@@ -495,6 +521,7 @@
       wrap.appendChild(control);
     }
     mark(ctx, control, "field-" + field.code);
+    if (field.description && field.kind !== "boolean") wrap.appendChild(text("p", "cr-field__hint", field.description, { id: id + "-hint" }));
     wrap.appendChild(errorNode);
     return wrap;
   }
@@ -772,5 +799,6 @@
   ns.components = Object.freeze({
     renderPage: renderPage,
     optionLabel: optionLabel,
+    confirmationStatement: confirmationStatement,
   });
 })(typeof window !== "undefined" ? window : globalThis);

@@ -43,6 +43,8 @@
     ["LINE_SERVICE", "lineService", "Service"],
     ["LINE_QUANTITY", "lineQuantity", "Quantity"],
     ["LINE_UNIT_PRICE", "lineUnitPrice", "Unit price"],
+    ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
+    ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
@@ -90,6 +92,8 @@
     ["REQUIRED_ERROR", "requiredError", "This field is required."],
     ["EMAIL_ERROR", "emailError", "Enter a valid email address."],
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
+    ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
+    ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
 
     ["AGREEMENT_EYEBROW", "agreementEyebrow", "Service agreement"],
     ["AGREEMENT_TITLE", "agreementTitle", "Review your service agreement"],
@@ -571,12 +575,16 @@
     return 0;
   }
 
-  function localizedName(nls, locale) {
+  function localizedText(nls, locale, key) {
     if (!nls || typeof nls !== "object") return "";
     var language = String(locale || "en").split("-")[0];
     var bag = nls[locale] || nls[language] || nls.en || nls[Object.keys(nls)[0]];
     if (!bag || typeof bag !== "object") return "";
-    return text(bag.NAME || bag.name).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    return text(bag[key]).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function localizedName(nls, locale) {
+    return localizedText(nls, locale, "NAME") || localizedText(nls, locale, "name");
   }
 
   function attributeEntry(row, code) {
@@ -787,6 +795,7 @@
       code: definition.code,
       kind: kind,
       label: localizedName(definition.nls, locale) || definition.code,
+      description: localizedText(definition.nls, locale, "DESCRIPTION"),
       required: definition.required === true,
       choices: choices,
     };
@@ -944,6 +953,8 @@
       status: status,
       priced: priced,
       lines: priced ? linesOf(row, currency, context.locale, contract) : [],
+      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
+      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
       siblingApproved: false,
@@ -1171,6 +1182,11 @@
     REPRESENTATIVE_PHONE: "tel",
   };
 
+  var STATEMENT_COPY = {
+    INFORMATION_CONFIRMED: "confirmInformationStatement",
+    AUTHORITY_CONFIRMED: "confirmAuthorityStatement",
+  };
+
   function el(tag, className, attrs) {
     var node = global.document.createElement(tag);
     if (className) node.className = className;
@@ -1209,6 +1225,14 @@
 
   function optionLabel(option, copy) {
     return option.model ? copy[MODEL_COPY[option.model]] : ns.fill(copy.optionFallback, { n: option.position });
+  }
+
+  function confirmationStatement(copy, field) {
+    var key = STATEMENT_COPY[field.code];
+    if (!key) return field.description || field.label;
+    var configured = copy[key];
+    if (configured !== ns.defaultCopy()[key]) return configured;
+    return field.description || configured;
   }
 
   function isPending(command) {
@@ -1360,6 +1384,18 @@
       return;
     }
     body.appendChild(linesTable(ctx, option));
+    var breakdown = [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+      .filter(function (row) { return row[2]; });
+    if (breakdown.length) {
+      var list = el("dl", "cr-breakdown");
+      breakdown.forEach(function (row) {
+        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
+        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
+        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
+        list.appendChild(item);
+      });
+      body.appendChild(list);
+    }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
@@ -1550,6 +1586,7 @@
     var copy = ctx.copy;
     var id = "cr-field-" + field.code;
     var errorId = id + "-error";
+    var describedBy = field.description && field.kind !== "boolean" ? id + "-hint " + errorId : errorId;
     var clientError = details.touched[field.code] ? details.errors[field.code] || "" : "";
     var message = clientError || details.serverErrors[field.code] || "";
     var wrap = el("div", "cr-field", { "data-code": field.code, "data-kind": field.kind, "data-state": message ? "invalid" : "idle" });
@@ -1560,7 +1597,7 @@
       return Object.assign({
         id: id,
         name: field.code,
-        "aria-describedby": errorId,
+        "aria-describedby": describedBy,
         "aria-invalid": message ? "true" : null,
         "aria-required": field.required ? "true" : null,
         disabled: pending,
@@ -1589,7 +1626,7 @@
       control.addEventListener("change", function () { patch(ctx.dispatch("details.choose", { code: field.code, value: control.checked })); });
       toggle.appendChild(control);
       toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
-      var caption = text("span", "cr-choice__label", field.label);
+      var caption = text("span", "cr-choice__label", confirmationStatement(copy, field));
       if (field.required) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       toggle.appendChild(caption);
       wrap.appendChild(toggle);
@@ -1633,6 +1670,7 @@
       wrap.appendChild(control);
     }
     mark(ctx, control, "field-" + field.code);
+    if (field.description && field.kind !== "boolean") wrap.appendChild(text("p", "cr-field__hint", field.description, { id: id + "-hint" }));
     wrap.appendChild(errorNode);
     return wrap;
   }
@@ -1910,6 +1948,7 @@
   ns.components = Object.freeze({
     renderPage: renderPage,
     optionLabel: optionLabel,
+    confirmationStatement: confirmationStatement,
   });
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {

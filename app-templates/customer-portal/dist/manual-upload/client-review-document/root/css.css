@@ -737,6 +737,14 @@ button { font-family: inherit; }
 
 .cr-total__value { font-size: 18px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 
+.cr-breakdown { margin: 0; padding: 8px 0 6px; }
+
+.cr-breakdown__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 3px 0; font-size: 13px; }
+
+.cr-breakdown__label { color: var(--ink-2); }
+
+.cr-breakdown__value { margin: 0; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
 .cr-note { margin: 12px 0 0; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
 
 .cr-note--pending { display: flex; align-items: center; gap: 9px; }
@@ -827,6 +835,8 @@ button { font-family: inherit; }
 .cr-field__error { margin: 0; font-size: 12px; line-height: 1.45; color: var(--danger); }
 
 .cr-field__error:empty { display: none; }
+
+.cr-field__hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
 
 .cr-input {
   width: 100%; box-sizing: border-box; padding: 11px 13px; border-radius: var(--radius-md);

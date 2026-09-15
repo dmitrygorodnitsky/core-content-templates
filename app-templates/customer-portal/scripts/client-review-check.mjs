@@ -18,6 +18,7 @@ const previewPage = await fs.readFile(path.join(root, "runtime/client-review.htm
 const plain = (value) => JSON.parse(JSON.stringify(value === undefined ? null : value));
 const settle = (promise, ms = 200) => Promise.race([promise.then(() => "idle"), new Promise((resolve) => setTimeout(() => resolve("held"), ms))]);
 const tick = () => new Promise((resolve) => setImmediate(resolve));
+const formatCad = (value) => new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(value);
 
 function createDocument() {
   const document = { activeElement: null };
@@ -259,6 +260,18 @@ const N = loadRuntime().CR.normalizer;
   const format = (value) => new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(value);
   assert.equal(priced.total, format(777.77), "the option total is the server grandTotal, never a sum of lines");
   assert.deepEqual(plain(priced.lines.map((line) => [line.product, line.quantity, line.unitPrice])), [["Snow Removal", "5", format(280)], ["Rock Salt De-Icing", "5", format(1470)]], "lines show product, quantity and unit price as sent");
+  assert.equal(priced.subtotal, format(8750), "the subtotal is the server's totalCharges");
+  assert.equal(priced.taxes, format(437.5), "the taxes are the server's totalTaxes");
+  const withoutTaxes = CR.fixtures.quotationData();
+  delete withoutTaxes.orders[1].totalTaxes;
+  const untaxed = model(withoutTaxes).properties[0].options[1];
+  assert.equal(untaxed.taxes, "", "a totalTaxes the server does not return leaves no taxes value");
+  assert.equal(untaxed.subtotal, format(8750), "and the subtotal still shows");
+  const withoutCharges = CR.fixtures.quotationData();
+  delete withoutCharges.orders[1].totalCharges;
+  assert.equal(model(withoutCharges).properties[0].options[1].subtotal, "", "a totalCharges the server does not return leaves no subtotal value");
+  const bare = model(CR.fixtures.quotationData()).properties[3].options[0];
+  assert.deepEqual([bare.subtotal, bare.taxes, bare.total], ["", "", format(288.75)], "the fixture exercises an option whose server returns only its total");
   assert.equal(normalizer.formatMoney(0.035, "CAD", "en-CA"), format(0.035), "a sub-cent unit price keeps its digits");
   assert.equal(normalizer.formatMoney(null, "CAD", "en-CA"), "", "a missing amount stays missing rather than becoming zero");
   assert.equal(normalizer.formatMoney("abc", "CAD", "en-CA"), "");
@@ -300,7 +313,16 @@ const N = loadRuntime().CR.normalizer;
   vm.runInContext(await fs.readFile(path.join(root, "runtime/forms/portal-form.js"), "utf8"), formSandbox, { filename: "portal-form.js" });
   const formModel = formSandbox.window.PortalForm.normalizeSchema(plain({ id: 0, code: contract.contractDetails.event, nls: {}, attributes: contract.contractDetails.attributes, attributeGroups: [], attributeOrder: contract.contractDetails.attributeOrder }), "en");
   const formFields = formModel.groups.flatMap((group) => group.fields);
-  assert.deepEqual(plain(fields.map((field) => [field.code, field.kind, field.label, field.required, field.choices])), plain(formFields.map((field) => [field.code, field.kind, field.label, field.required, field.choices])), "the details fields keep the form document's field behaviour for the same attributes");
+  assert.deepEqual(plain(fields.map((field) => [field.code, field.kind, field.label, field.description, field.required, field.choices])), plain(formFields.map((field) => [field.code, field.kind, field.label, field.description, field.required, field.choices])), "the details fields keep the form document's field behaviour for the same attributes");
+  const defaults = CR.defaultCopy();
+  const information = fields.find((field) => field.code === "INFORMATION_CONFIRMED");
+  assert.equal(CR.components.confirmationStatement(defaults, information), defaults.confirmInformationStatement, "without an attribute description the confirmation reads as the default statement");
+  const described = Object.assign({}, information, { description: "I confirm these details are true." });
+  assert.equal(CR.components.confirmationStatement(defaults, described), "I confirm these details are true.", "an attribute description is preferred over the default statement");
+  assert.equal(CR.components.confirmationStatement(Object.assign({}, defaults, { confirmInformationStatement: "We confirm our details are correct." }), described), "We confirm our details are correct.", "copy changed in CMS is preferred over the attribute description");
+  const describedContract = plain(contract.contractDetails);
+  describedContract.attributes.find((attribute) => attribute.code === "AUTHORITY_CONFIRMED").nls.en.DESCRIPTION = "I may sign for the client.";
+  assert.equal(normalizer.detailFields(describedContract, "en").find((field) => field.code === "AUTHORITY_CONFIRMED").description, "I may sign for the client.", "an attribute description is read from its nls");
 
   const seedPath = path.resolve("../core-ui/scripts/dev/seeds/serviceAgreementWorkflows.json");
   if (existsSync(seedPath)) {
@@ -479,6 +501,27 @@ async function runScenario(id) {
         assert.ok(surface(email).includes("This address cannot receive mail."), "a server refusal for one attribute shows at that field");
         break;
       }
+      case "option-open": {
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        const rows = byClass(card, "cr-breakdown__row").map((row) => [row.getAttribute("data-kind"), row.children[1].textContent]);
+        assert.deepEqual(rows, [["subtotal", formatCad(8750)], ["taxes", formatCad(437.5)]], "an open option shows the server subtotal and taxes above its total");
+        break;
+      }
+      case "agreement-review": {
+        const priced = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        assert.equal(byClass(priced, "cr-breakdown__row").length, 2, "agreement tables show subtotal and taxes when the server returns them");
+        const bare = byAttribute(run.mount, "aria-labelledby", "cr-property-661")[0];
+        assert.equal(byClass(bare, "cr-breakdown").length, 0, "an option whose server returns neither field shows no breakdown");
+        assert.equal(byClass(bare, "cr-total").length, 1, "and still shows its total");
+        break;
+      }
+      case "contract-details":
+        for (const [code, key, name] of [["INFORMATION_CONFIRMED", "confirmInformationStatement", "Information Confirmation"], ["AUTHORITY_CONFIRMED", "confirmAuthorityStatement", "Authority Confirmation"]]) {
+          const field = all(run.mount, (node) => node.getAttribute("data-code") === code)[0];
+          assert.ok(surface(field).includes(copy[key]), code + " reads as an explicit statement");
+          assert.ok(!surface(field).includes(name), code + " no longer shows its attribute name");
+        }
+        break;
       case "completion":
         assert.ok(!text.includes(copy.completePortal), "completion promises no portal access the data does not show");
         break;
@@ -493,6 +536,21 @@ async function runScenario(id) {
         break;
     }
   }
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.quotationData();
+  delete data.orders.find((row) => row.id === 3102).totalTaxes;
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  controller.dispatch("option.toggle", { id: 3102 });
+  await controller.idle();
+  const card = byAttribute(mount, "aria-labelledby", "cr-property-278")[0];
+  assert.deepEqual(byClass(card, "cr-breakdown__row").map((row) => row.getAttribute("data-kind")), ["subtotal"], "a totalTaxes the server does not return hides the taxes row, and nothing is computed in its place");
+  assert.ok(surface(card).includes(formatCad(9187.5)), "the option total stays the server grandTotal");
 }
 
 {
@@ -677,4 +735,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, grant-gated single-flight commands with read-back, refusals and failures, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, grant-gated single-flight commands with read-back, refusals and failures, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

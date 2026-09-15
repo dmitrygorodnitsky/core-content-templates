@@ -505,6 +505,32 @@
     }
   },
   {
+    "code": "ORDER_SUBTOTAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ORDER SUBTOTAL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Subtotal"
+    }
+  },
+  {
+    "code": "ORDER_TAXES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ORDER TAXES",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Taxes"
+    }
+  },
+  {
     "code": "ORDER_TOTAL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1100,6 +1126,32 @@
     },
     "value": {
       "en": "Choose one"
+    }
+  },
+  {
+    "code": "CONFIRM_INFORMATION_STATEMENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONFIRM INFORMATION STATEMENT",
+        "DESCRIPTION": "Client review document copy. Statement the client agrees to with the INFORMATION_CONFIRMED checkbox. A description on that event attribute replaces this default; a value changed here replaces the description."
+      }
+    },
+    "value": {
+      "en": "I confirm that the information above is accurate."
+    }
+  },
+  {
+    "code": "CONFIRM_AUTHORITY_STATEMENT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CONFIRM AUTHORITY STATEMENT",
+        "DESCRIPTION": "Client review document copy. Statement the client agrees to with the AUTHORITY_CONFIRMED checkbox. A description on that event attribute replaces this default; a value changed here replaces the description."
+      }
+    },
+    "value": {
+      "en": "I confirm that I am authorized to enter into this agreement on behalf of the client."
     }
   },
   {

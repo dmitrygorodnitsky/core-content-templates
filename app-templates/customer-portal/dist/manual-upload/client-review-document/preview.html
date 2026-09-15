@@ -750,6 +750,14 @@ button { font-family: inherit; }
 
 .cr-total__value { font-size: 18px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 
+.cr-breakdown { margin: 0; padding: 8px 0 6px; }
+
+.cr-breakdown__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 3px 0; font-size: 13px; }
+
+.cr-breakdown__label { color: var(--ink-2); }
+
+.cr-breakdown__value { margin: 0; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+
 .cr-note { margin: 12px 0 0; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
 
 .cr-note--pending { display: flex; align-items: center; gap: 9px; }
@@ -840,6 +848,8 @@ button { font-family: inherit; }
 .cr-field__error { margin: 0; font-size: 12px; line-height: 1.45; color: var(--danger); }
 
 .cr-field__error:empty { display: none; }
+
+.cr-field__hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
 
 .cr-input {
   width: 100%; box-sizing: border-box; padding: 11px 13px; border-radius: var(--radius-md);
@@ -1035,6 +1045,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-line-service="Service"
   data-copy-line-quantity="Quantity"
   data-copy-line-unit-price="Unit price"
+  data-copy-order-subtotal="Subtotal"
+  data-copy-order-taxes="Taxes"
   data-copy-order-total="Option total"
   data-copy-lines-empty="No services are listed on this option."
   data-copy-value-not-stated="Not stated"
@@ -1081,6 +1093,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-required-error="This field is required."
   data-copy-email-error="Enter a valid email address."
   data-copy-select-placeholder="Choose one"
+  data-copy-confirm-information-statement="I confirm that the information above is accurate."
+  data-copy-confirm-authority-statement="I confirm that I am authorized to enter into this agreement on behalf of the client."
   data-copy-agreement-eyebrow="Service agreement"
   data-copy-agreement-title="Review your service agreement"
   data-copy-agreement-subtitle="Read the parties, services and terms below, then approve the agreement."
@@ -1184,6 +1198,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["LINE_SERVICE", "lineService", "Service"],
     ["LINE_QUANTITY", "lineQuantity", "Quantity"],
     ["LINE_UNIT_PRICE", "lineUnitPrice", "Unit price"],
+    ["ORDER_SUBTOTAL", "orderSubtotal", "Subtotal"],
+    ["ORDER_TAXES", "orderTaxes", "Taxes"],
     ["ORDER_TOTAL", "orderTotal", "Option total"],
     ["LINES_EMPTY", "linesEmpty", "No services are listed on this option."],
     ["VALUE_NOT_STATED", "valueNotStated", "Not stated"],
@@ -1231,6 +1247,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["REQUIRED_ERROR", "requiredError", "This field is required."],
     ["EMAIL_ERROR", "emailError", "Enter a valid email address."],
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
+    ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
+    ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
 
     ["AGREEMENT_EYEBROW", "agreementEyebrow", "Service agreement"],
     ["AGREEMENT_TITLE", "agreementTitle", "Review your service agreement"],
@@ -1712,12 +1730,16 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return 0;
   }
 
-  function localizedName(nls, locale) {
+  function localizedText(nls, locale, key) {
     if (!nls || typeof nls !== "object") return "";
     var language = String(locale || "en").split("-")[0];
     var bag = nls[locale] || nls[language] || nls.en || nls[Object.keys(nls)[0]];
     if (!bag || typeof bag !== "object") return "";
-    return text(bag.NAME || bag.name).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+    return text(bag[key]).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  function localizedName(nls, locale) {
+    return localizedText(nls, locale, "NAME") || localizedText(nls, locale, "name");
   }
 
   function attributeEntry(row, code) {
@@ -1928,6 +1950,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       code: definition.code,
       kind: kind,
       label: localizedName(definition.nls, locale) || definition.code,
+      description: localizedText(definition.nls, locale, "DESCRIPTION"),
       required: definition.required === true,
       choices: choices,
     };
@@ -2085,6 +2108,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       status: status,
       priced: priced,
       lines: priced ? linesOf(row, currency, context.locale, contract) : [],
+      subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
+      taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
       awaitingClient: state === contract.orderEvents.view.source || state === contract.orderEvents.approve.source,
       siblingApproved: false,
@@ -2312,6 +2337,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     REPRESENTATIVE_PHONE: "tel",
   };
 
+  var STATEMENT_COPY = {
+    INFORMATION_CONFIRMED: "confirmInformationStatement",
+    AUTHORITY_CONFIRMED: "confirmAuthorityStatement",
+  };
+
   function el(tag, className, attrs) {
     var node = global.document.createElement(tag);
     if (className) node.className = className;
@@ -2350,6 +2380,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function optionLabel(option, copy) {
     return option.model ? copy[MODEL_COPY[option.model]] : ns.fill(copy.optionFallback, { n: option.position });
+  }
+
+  function confirmationStatement(copy, field) {
+    var key = STATEMENT_COPY[field.code];
+    if (!key) return field.description || field.label;
+    var configured = copy[key];
+    if (configured !== ns.defaultCopy()[key]) return configured;
+    return field.description || configured;
   }
 
   function isPending(command) {
@@ -2501,6 +2539,18 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return;
     }
     body.appendChild(linesTable(ctx, option));
+    var breakdown = [["subtotal", copy.orderSubtotal, option.subtotal], ["taxes", copy.orderTaxes, option.taxes]]
+      .filter(function (row) { return row[2]; });
+    if (breakdown.length) {
+      var list = el("dl", "cr-breakdown");
+      breakdown.forEach(function (row) {
+        var item = el("div", "cr-breakdown__row", { "data-kind": row[0] });
+        item.appendChild(text("dt", "cr-breakdown__label", row[1]));
+        item.appendChild(text("dd", "cr-breakdown__value", row[2]));
+        list.appendChild(item);
+      });
+      body.appendChild(list);
+    }
     var total = el("div", "cr-total");
     total.appendChild(text("span", "cr-total__label", copy.orderTotal));
     total.appendChild(text("span", "cr-total__value" + (option.total ? "" : " cr-muted"), option.total || copy.valueNotStated));
@@ -2691,6 +2741,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var copy = ctx.copy;
     var id = "cr-field-" + field.code;
     var errorId = id + "-error";
+    var describedBy = field.description && field.kind !== "boolean" ? id + "-hint " + errorId : errorId;
     var clientError = details.touched[field.code] ? details.errors[field.code] || "" : "";
     var message = clientError || details.serverErrors[field.code] || "";
     var wrap = el("div", "cr-field", { "data-code": field.code, "data-kind": field.kind, "data-state": message ? "invalid" : "idle" });
@@ -2701,7 +2752,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return Object.assign({
         id: id,
         name: field.code,
-        "aria-describedby": errorId,
+        "aria-describedby": describedBy,
         "aria-invalid": message ? "true" : null,
         "aria-required": field.required ? "true" : null,
         disabled: pending,
@@ -2730,7 +2781,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       control.addEventListener("change", function () { patch(ctx.dispatch("details.choose", { code: field.code, value: control.checked })); });
       toggle.appendChild(control);
       toggle.appendChild(el("span", "cr-check", { "aria-hidden": "true" }));
-      var caption = text("span", "cr-choice__label", field.label);
+      var caption = text("span", "cr-choice__label", confirmationStatement(copy, field));
       if (field.required) caption.appendChild(text("span", "cr-req", "*", { "aria-hidden": "true" }));
       toggle.appendChild(caption);
       wrap.appendChild(toggle);
@@ -2774,6 +2825,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       wrap.appendChild(control);
     }
     mark(ctx, control, "field-" + field.code);
+    if (field.description && field.kind !== "boolean") wrap.appendChild(text("p", "cr-field__hint", field.description, { id: id + "-hint" }));
     wrap.appendChild(errorNode);
     return wrap;
   }
@@ -3051,6 +3103,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   ns.components = Object.freeze({
     renderPage: renderPage,
     optionLabel: optionLabel,
+    confirmationStatement: confirmationStatement,
   });
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
@@ -3586,7 +3639,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: 3105, property: 430, model: "PER_SERVICE", state: "DECLINED", charges: 631.75, taxes: 31.59, grand: 663.34, lines: [[9, "snow", 1, 350], [10, "iceMelt", 1, 281.75]] },
     { id: 3106, property: 512, model: "SEASONAL", state: "CUSTOMER_CHANGES_REQUESTED", charges: 3240, taxes: 162, grand: 3402, lines: [[11, "snow", 1, 2100], [12, "atv", 12, 95]] },
     { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
-    { id: 3108, property: 661, model: "", state: "QUOTE_SENT", charges: 275, taxes: 13.75, grand: 288.75, lines: [[15, "snow", 1, 275]] },
+    { id: 3108, property: 661, model: "", state: "QUOTE_SENT", grand: 288.75, lines: [[15, "snow", 1, 275]] },
     { id: 3109, property: 702, model: "SEASONAL", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[16, "snow", 1, 1400]] },
     { id: 3110, property: 702, model: "MONTHLY", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[17, "snow", 5, 280]] },
   ];
@@ -3651,14 +3704,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var attributes = { CLIENT: { value: ACCOUNT_ID }, SERVICE_PROPERTY: { value: spec.property } };
     if (ADDRESSES[spec.property]) attributes.SERVICE_ADDRESS = { value: ADDRESSES[spec.property] };
     if (spec.model) attributes.PRICING_MODEL = { value: spec.model };
-    return {
+    var row = {
       id: spec.id,
       type: ORDER_TYPE,
       currency: CURRENCY,
       states: [{ code: spec.state }],
       attributes: { 5: attributes },
-      totalCharges: spec.charges,
-      totalTaxes: spec.taxes,
       grandTotal: spec.grand,
       items: spec.lines.map(function (entry, index) {
         return {
@@ -3670,6 +3721,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         };
       }),
     };
+    if (spec.charges !== undefined) row.totalCharges = spec.charges;
+    if (spec.taxes !== undefined) row.totalTaxes = spec.taxes;
+    return row;
   }
 
   function accountRow(withUser) {

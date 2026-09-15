@@ -31,7 +31,7 @@
     { id: 3105, property: 430, model: "PER_SERVICE", state: "DECLINED", charges: 631.75, taxes: 31.59, grand: 663.34, lines: [[9, "snow", 1, 350], [10, "iceMelt", 1, 281.75]] },
     { id: 3106, property: 512, model: "SEASONAL", state: "CUSTOMER_CHANGES_REQUESTED", charges: 3240, taxes: 162, grand: 3402, lines: [[11, "snow", 1, 2100], [12, "atv", 12, 95]] },
     { id: 3107, property: 512, model: "MONTHLY", state: "QUOTE_VIEWED", charges: 3240, taxes: 162, grand: 3402, lines: [[13, "snow", 5, 420], [14, "atv", 12, 95]] },
-    { id: 3108, property: 661, model: "", state: "QUOTE_SENT", charges: 275, taxes: 13.75, grand: 288.75, lines: [[15, "snow", 1, 275]] },
+    { id: 3108, property: 661, model: "", state: "QUOTE_SENT", grand: 288.75, lines: [[15, "snow", 1, 275]] },
     { id: 3109, property: 702, model: "SEASONAL", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[16, "snow", 1, 1400]] },
     { id: 3110, property: 702, model: "MONTHLY", state: "DECLINED", charges: 1400, taxes: 70, grand: 1470, lines: [[17, "snow", 5, 280]] },
   ];
@@ -96,14 +96,12 @@
     var attributes = { CLIENT: { value: ACCOUNT_ID }, SERVICE_PROPERTY: { value: spec.property } };
     if (ADDRESSES[spec.property]) attributes.SERVICE_ADDRESS = { value: ADDRESSES[spec.property] };
     if (spec.model) attributes.PRICING_MODEL = { value: spec.model };
-    return {
+    var row = {
       id: spec.id,
       type: ORDER_TYPE,
       currency: CURRENCY,
       states: [{ code: spec.state }],
       attributes: { 5: attributes },
-      totalCharges: spec.charges,
-      totalTaxes: spec.taxes,
       grandTotal: spec.grand,
       items: spec.lines.map(function (entry, index) {
         return {
@@ -115,6 +113,9 @@
         };
       }),
     };
+    if (spec.charges !== undefined) row.totalCharges = spec.charges;
+    if (spec.taxes !== undefined) row.totalTaxes = spec.taxes;
+    return row;
   }
 
   function accountRow(withUser) {

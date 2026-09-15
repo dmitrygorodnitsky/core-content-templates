@@ -16,6 +16,10 @@ const apiBaseCode = "REVIEW_API_BASE_URL";
 const styleFiles = ["tokens.css", "base.css", "components.css"];
 export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "components.js", "controller.js"];
 export const previewOnlyFiles = ["fixtures.js"];
+const COPY_NOTES = {
+  CONFIRM_INFORMATION_STATEMENT: "Statement the client agrees to with the INFORMATION_CONFIRMED checkbox. A description on that event attribute replaces this default; a value changed here replaces the description.",
+  CONFIRM_AUTHORITY_STATEMENT: "Statement the client agrees to with the AUTHORITY_CONFIRMED checkbox. A description on that event attribute replaces this default; a value changed here replaces the description.",
+};
 
 export async function exportClientReviewManual(options = {}) {
   const outputDir = path.resolve(options.outputDir || defaultOutputDir);
@@ -103,13 +107,15 @@ function templateFor(css, javascript, copy) {
     javascript,
     parameters: [
       field(apiBaseCode, "", "STRING", "Absolute https origin of the Core deployment with no path, for example https://dev-1.servicewand.com. Any other value is discarded and the page reports that it is not set up. The link token is read only from the #token= fragment of the address the client opens; no token, account or customer value is configured here."),
-    ].concat(copy.map((entry) => field(entry.code, entry.value, "LOCALIZED_STRING_SS", copyDescription(entry.value)))),
+    ].concat(copy.map((entry) => field(entry.code, entry.value, "LOCALIZED_STRING_SS", copyDescription(entry.code, entry.value)))),
   };
 }
 
-function copyDescription(value) {
+function copyDescription(code, value) {
   const placeholders = [...new Set((value.match(/\{[a-zA-Z]+\}/g) || []))];
-  return "Client review document copy." + (placeholders.length ? " Keep " + placeholders.join(", ") + ": the page fills them in." : "");
+  return "Client review document copy."
+    + (placeholders.length ? " Keep " + placeholders.join(", ") + ": the page fills them in." : "")
+    + (COPY_NOTES[code] ? " " + COPY_NOTES[code] : "");
 }
 
 function bootScript() {
@@ -196,14 +202,14 @@ function manifestFor(template, contract) {
       "get.json takes the record id as ?id= and answers the record itself.",
       "event.json takes { id, event, metadata } and a refusal answers 4xx with message and optionally field errors under fieldErrors, errors or violations.",
       "Introspection lists events per entity type; a per-entry entityId or entityIds, when present, narrows them to that record. Event codes may carry a P_WF:{workflow}: prefix, which is dropped.",
-      "MAPPINGS_ORDER projects order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, content, states, type and organization.",
+      "MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, content, states, type and organization.",
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     ],
     constraints: [
       "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
       "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
       "The document ships in live data mode with no fixtures. A data mode other than live finds no fixtures and reports that it is not set up; it never shows demonstration data.",
-      "Money is shown only as the server returns it: unit price as amount, quantity as itemCount, option total as grandTotal. Nothing is summed or multiplied in the browser.",
+      "Money is shown only as the server returns it: unit price as amount, quantity as itemCount, subtotal as totalCharges, taxes as totalTaxes and option total as grandTotal. A field the server does not return has no row; nothing is summed or multiplied in the browser.",
       "Every command is single-flight per record and renders only the state read back afterwards; a refusal shows the server message and assumes nothing.",
       "Markup is built with createElement and textContent; the runtime uses no innerHTML, eval or new Function, and terms are rendered as text blocks.",
       "The theme is snow and the colour mode follows the viewer's prefers-color-scheme.",
