@@ -755,7 +755,7 @@ button { font-family: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .pf-skeleton__bar { animation: none; }
-  .pf-input, .pf-chip, .pf-radio, .pf-check { transition: none; }
+  .pf-input, .pf-chip, .pf-radio, .pf-check, .pf-repeat__row, .pf-repeat__x, .pf-repeat__add { transition: none; }
 }
 
 @media (max-width: 640px) {
@@ -794,6 +794,50 @@ button { font-family: inherit; }
 }
 
 .pf-address__map[data-state="ready"] { height: 190px; border-color: var(--hair); }
+
+.pf-repeat { display: flex; flex-direction: column; gap: 10px; }
+
+.pf-repeat__items { display: flex; flex-direction: column; gap: 8px; }
+
+.pf-repeat__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; box-sizing: border-box; text-align: left; cursor: pointer;
+  padding: 10px 11px 10px 13px;
+  font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--surface-2); border: 1px solid rgba(var(--hair), .14);
+  border-radius: var(--radius-md);
+  transition: border-color .16s, color .16s;
+}
+
+.pf-repeat__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.pf-repeat__x {
+  flex: none; width: 22px; height: 22px; border-radius: var(--radius-pill);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1; color: var(--ink-3);
+  transition: background .16s, color .16s;
+}
+
+.pf-repeat__row:hover { border-color: rgba(var(--hair), .28); }
+.pf-repeat__row:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+.pf-repeat__row:hover .pf-repeat__x,
+.pf-repeat__row:focus-visible .pf-repeat__x { background: var(--danger-bg); color: var(--danger); }
+
+.pf-repeat__entry { display: flex; align-items: flex-start; gap: 8px; }
+
+.pf-repeat__entry .pf-address { flex: 1; min-width: 0; }
+
+.pf-repeat__add {
+  flex: none; width: 44px; height: 44px; padding: 0; cursor: pointer;
+  font: inherit; font-size: 21px; font-weight: 500; line-height: 1;
+  color: var(--ink-2); background: var(--surface-2);
+  border: 1px solid rgba(var(--hair), .14); border-radius: var(--radius-md);
+  transition: border-color .16s, color .16s;
+}
+
+.pf-repeat__add:hover { color: var(--accent); border-color: var(--accent); }
+.pf-repeat__add:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
 
 /* source: portal form document scope */
 html, body { min-height: 100%; }
@@ -890,7 +934,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       address: false,
       rows: null, cols: null, min: null, max: null, step: null,
       minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
-      country: null,
+      country: null, coordinatesOf: null,
     };
     if (!inputFormat) return tokens;
     var rest = String(inputFormat);
@@ -918,6 +962,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         tokens.country = region[1].split(",").map(function (code) { return code.trim().toLowerCase(); }).filter(Boolean);
         return;
       }
+      var source = token.match(/^coordinates-of:(.+)$/);
+      if (source) { tokens.coordinatesOf = source[1]; return; }
       if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
     });
     return tokens;
@@ -944,7 +990,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (type === "boolean") return "boolean";
     if (type === "number") return tokens.slider ? "slider" : "number";
     if (type === "entity") return "select";
-    if (tokens.address) return "address";
+    if (tokens.address) return attribute.multiselect ? "address-list" : "address";
     if (tokens.textarea) return "textarea";
     if (tokens.password) return "password";
     if (tokens.email) return "email";
@@ -975,6 +1021,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     var order = Array.isArray(schema.attributeOrder) ? schema.attributeOrder : [];
     var groups = [];
+    var hidden = [];
     var placed = {};
 
     order.forEach(function (entry) {
@@ -982,11 +1029,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         var rows = Array.isArray(entry[groupCode]) ? entry[groupCode] : [];
         var fields = [];
         rows.forEach(function (row) {
-          if (row.visible === false) return;
           var found = byCode[row.attributeCode];
           if (!found || placed[row.attributeCode]) return;
           placed[row.attributeCode] = true;
-          fields.push(toField(found.attribute, found.typeId, locale));
+          var field = toField(found.attribute, found.typeId, locale);
+          if (row.visible === false || field.tokens.coordinatesOf) hidden.push(field);
+          else fields.push(field);
         });
         if (fields.length) groups.push({ code: groupCode, title: groupTitles[groupCode] || "", fields: fields });
       });
@@ -995,11 +1043,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var loose = [];
     Object.keys(byCode).forEach(function (code) {
       if (placed[code]) return;
-      loose.push(toField(byCode[code].attribute, byCode[code].typeId, locale));
+      var field = toField(byCode[code].attribute, byCode[code].typeId, locale);
+      if (field.tokens.coordinatesOf) hidden.push(field);
+      else loose.push(field);
     });
     if (loose.length) groups.push({ code: "__ungrouped", title: "", fields: loose });
 
-    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups };
+    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups, hidden: hidden };
   }
 
   function toField(attribute, typeId, locale) {
@@ -1071,6 +1121,34 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return filled >= slots;
   }
 
+  function repeatList(value) {
+    if (Array.isArray(value)) return value;
+    return value ? [String(value)] : [];
+  }
+
+  function withEntry(list, entry) {
+    var known = list.some(function (existing) { return String(existing).toLowerCase() === entry.toLowerCase(); });
+    return known ? list : list.concat([entry]);
+  }
+
+  function addressKey(field, text) {
+    var address = text == null ? "" : String(text);
+    return field.kind === "address-list" ? address.trim() : address;
+  }
+
+  function pointOf(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lng = typeof location.lng === "function" ? location.lng() : location.lng;
+    if (typeof lat !== "number" || typeof lng !== "number" || !isFinite(lat) || !isFinite(lng)) return null;
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+    return { lat: lat, lng: lng };
+  }
+
+  function keepFocus(event) {
+    event.preventDefault();
+  }
+
   function debounce(fn, wait) {
     var timer = null;
     return function () {
@@ -1082,6 +1160,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   }
 
   var mapsPromise = null;
+  var MAPS_LIBRARIES = ["maps", "places", "marker", "geocoding"];
 
   function loadMaps(apiKey) {
     if (mapsPromise) return mapsPromise;
@@ -1090,15 +1169,27 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       var script = document.createElement("script");
       script.async = true;
       script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
-        + "&libraries=places,marker&loading=async&v=weekly";
+        + "&loading=async&v=weekly";
       script.addEventListener("error", function () { reject(new Error("maps-script-failed")); });
       script.addEventListener("load", function () {
-        if (global.google && global.google.maps) resolve(global.google.maps);
+        var maps = global.google && global.google.maps;
+        if (maps && typeof maps.importLibrary === "function") resolve(maps);
         else reject(new Error("maps-unavailable"));
       });
       document.head.appendChild(script);
+    }).then(function (maps) {
+      return Promise.all(MAPS_LIBRARIES.map(function (name) { return maps.importLibrary(name); }))
+        .then(function () { return maps; });
     });
     return mapsPromise;
+  }
+
+  function geocodeAddress(maps, text, found) {
+    var query = String(text == null ? "" : text).trim();
+    if (!query || !maps.Geocoder) return;
+    new maps.Geocoder().geocode({ address: query }, function (results, status) {
+      if (status === "OK" && results && results.length) found(results[0]);
+    });
   }
 
   function PortalForm(config) {
@@ -1108,6 +1199,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     this.values = {};
     this.errors = {};
     this.touched = {};
+    this.pending = {};
+    this.locations = {};
     this.step = 0;
     this.state = "loading";
     this.result = null;
@@ -1157,7 +1250,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     this.eachField(function (field) {
       if (Object.prototype.hasOwnProperty.call(preset, field.code)) {
         self.values[field.code] = preset[field.code];
-      } else if (field.kind === "checklist" || field.kind === "multiselect") {
+      } else if (field.kind === "checklist" || field.kind === "multiselect" || field.kind === "address-list") {
         self.values[field.code] = [];
       } else if (field.kind === "boolean") {
         self.values[field.code] = false;
@@ -1171,9 +1264,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   };
 
   PortalForm.prototype.eachField = function (visit) {
-    (this.model ? this.model.groups : []).forEach(function (group) {
+    if (!this.model) return;
+    this.model.groups.forEach(function (group) {
       group.fields.forEach(function (field) { visit(field, group); });
     });
+    this.model.hidden.forEach(function (field) { visit(field, null); });
   };
 
   PortalForm.prototype.visibleGroups = function () {
@@ -1235,8 +1330,28 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return ok;
   };
 
+  PortalForm.prototype.flushPending = function () {
+    var self = this;
+    this.eachField(function (field) {
+      if (field.kind === "address-list") self.takePending(field, self.pending[field.code]);
+    });
+  };
+
+  PortalForm.prototype.takePending = function (field, raw) {
+    var entry = String(raw == null ? "" : raw).trim();
+    this.pending[field.code] = "";
+    if (!entry) return false;
+    var held = repeatList(this.values[field.code]);
+    var next = withEntry(held, entry);
+    if (next === held) return false;
+    this.touched[field.code] = true;
+    this.setValue(field, next);
+    return true;
+  };
+
   PortalForm.prototype.submit = function () {
     var self = this;
+    this.flushPending();
     var groups = this.visibleGroups();
     var ok = true;
     groups.forEach(function (group) { if (!self.validateGroup(group)) ok = false; });
@@ -1258,16 +1373,21 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
 
     var attributes = {};
-    groups.forEach(function (group) {
-      group.fields.forEach(function (field) {
-        var value = self.values[field.code];
-        if (value === "" || value === null || value === undefined) return;
-        if (Array.isArray(value) && !value.length) return;
-        if (field.kind === "boolean" && value !== true) return;
-        var bucket = String(field.typeId != null ? field.typeId : self.model.id);
-        if (!attributes[bucket]) attributes[bucket] = {};
-        attributes[bucket][field.code] = { value: value };
-      });
+    var sent = {};
+    function collect(field) {
+      var value = self.values[field.code];
+      if (value === "" || value === null || value === undefined) return;
+      if (Array.isArray(value) && !value.length) return;
+      if (field.kind === "boolean" && value !== true) return;
+      var bucket = String(field.typeId != null ? field.typeId : self.model.id);
+      if (!attributes[bucket]) attributes[bucket] = {};
+      attributes[bucket][field.code] = { value: value };
+      sent[field.code] = true;
+    }
+    groups.forEach(function (group) { group.fields.forEach(collect); });
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf && !sent[field.tokens.coordinatesOf]) return;
+      collect(field);
     });
 
     this.state = "submitting";
@@ -1305,6 +1425,53 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   PortalForm.prototype.setValue = function (field, value) {
     this.values[field.code] = value;
     if (this.touched[field.code]) this.errors[field.code] = this.validateField(field);
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.holdsAddress = function (field, address) {
+    if (repeatList(this.values[field.code]).indexOf(address) !== -1) return true;
+    return field.kind === "address-list" && String(this.pending[field.code] || "").trim() === address;
+  };
+
+  PortalForm.prototype.rememberLocation = function (field, text, location, fromGeocoder) {
+    var address = addressKey(field, text);
+    var point = pointOf(location);
+    if (!address || !point) return;
+    var known = this.locations[field.code] || (this.locations[field.code] = Object.create(null));
+    if (fromGeocoder && known[address]) return;
+    known[address] = point;
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.locate = function (field, text) {
+    var self = this;
+    var address = addressKey(field, text);
+    var known = this.locations[field.code];
+    if (!address || !this.cfg.mapsApiKey || (known && known[address])) return;
+    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
+      geocodeAddress(maps, address, function (best) {
+        self.rememberLocation(field, address, best.geometry.location, true);
+      });
+    }).catch(function () {});
+  };
+
+  PortalForm.prototype.syncCoordinates = function (source) {
+    var self = this;
+    var known = this.locations[source.code];
+    if (known) {
+      Object.keys(known).forEach(function (address) {
+        if (!self.holdsAddress(source, address)) delete known[address];
+      });
+    }
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf !== source.code) return;
+      var entries = [];
+      repeatList(self.values[source.code]).forEach(function (address) {
+        var point = known && known[address];
+        if (point) entries.push({ address: address, lat: point.lat, lng: point.lng });
+      });
+      self.values[field.code] = entries.length ? JSON.stringify(entries) : "";
+    });
   };
 
   PortalForm.prototype.render = function () {
@@ -1373,6 +1540,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   };
 
   PortalForm.prototype.advance = function (groups) {
+    this.flushPending();
     if (!this.validateGroup(groups[this.step])) { this.render(); return; }
     if (this.step < groups.length - 1) { this.step += 1; this.render(); return; }
     this.submit();
@@ -1585,7 +1753,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return comboWrap;
     }
 
-    if (field.kind === "address") return this.addressControl(field, id, value);
+    if (field.kind === "address") return this.addressControl(field, id, value, null);
+    if (field.kind === "address-list") return this.addressListControl(field, id, value);
 
     var nativeType = field.kind === "number" ? "number"
       : field.kind === "password" ? "password"
@@ -1629,15 +1798,84 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return input;
   };
 
-  PortalForm.prototype.addressControl = function (field, id, value) {
+  PortalForm.prototype.addressListControl = function (field, id, value) {
     var self = this;
+    var held = repeatList(value);
+    var wrap = el("div", "pf-repeat");
+
+    if (held.length) {
+      var items = el("div", "pf-repeat__items", { role: "group", "aria-label": field.label });
+      held.forEach(function (entry) {
+        var row = el("button", "pf-repeat__row", {
+          type: "button", "aria-pressed": "true", "aria-label": String(entry),
+        });
+        row.appendChild(text("span", "pf-repeat__text", entry));
+        var glyph = text("span", "pf-repeat__x", "×");
+        glyph.setAttribute("aria-hidden", "true");
+        row.appendChild(glyph);
+        row.addEventListener("click", function () {
+          self.touched[field.code] = true;
+          self.setValue(field, repeatList(self.values[field.code]).filter(function (existing) {
+            return String(existing) !== String(entry);
+          }));
+          self.renderAndFocus(id);
+        });
+        items.appendChild(row);
+      });
+      wrap.appendChild(items);
+    }
+
+    var entry = el("div", "pf-repeat__entry");
+    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate, picked) {
+      if (self.takePending(field, candidate) && !picked) self.locate(field, candidate);
+      self.renderAndFocus(id);
+    }));
+    var add = text("button", "pf-repeat__add", "+");
+    add.type = "button";
+    add.addEventListener("mousedown", keepFocus);
+    add.addEventListener("click", function () {
+      var typed = self.pending[field.code];
+      if (self.takePending(field, typed)) self.locate(field, typed);
+      self.renderAndFocus(id);
+    });
+    entry.appendChild(add);
+    wrap.appendChild(entry);
+    return wrap;
+  };
+
+  PortalForm.prototype.renderAndFocus = function (id) {
+    this.render();
+    var input = document.getElementById(id);
+    if (input && typeof input.focus === "function") input.focus();
+  };
+
+  PortalForm.prototype.addressControl = function (field, id, value, accept) {
+    var self = this;
+    var repeating = typeof accept === "function";
     var wrap = el("div", "pf-address");
     var input = el("input", "pf-input", {
       type: "text", id: id, name: field.code, placeholder: field.placeholder,
       autocomplete: "street-address", "aria-describedby": id + "-error",
     });
     input.value = value != null ? value : "";
-    input.addEventListener("input", function () { self.setValue(field, input.value); });
+    var take = repeating ? accept : function (formatted) {
+      input.value = formatted;
+      self.setValue(field, formatted);
+    };
+    if (repeating) {
+      input.addEventListener("input", function () {
+        self.pending[field.code] = input.value;
+        self.syncCoordinates(field);
+      });
+      input.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        if (wrap.dataset.autocomplete === "legacy") return;
+        take(input.value);
+      });
+    } else {
+      input.addEventListener("input", function () { self.setValue(field, input.value); });
+    }
     wrap.appendChild(input);
 
     var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
@@ -1646,14 +1884,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (!this.cfg.mapsApiKey) return wrap;
 
     loadMaps(this.cfg.mapsApiKey).then(function (maps) {
-      self.upgradeAddress(field, wrap, input, canvas, maps);
+      self.upgradeAddress(field, wrap, input, canvas, maps, take);
     }).catch(function () {
       canvas.dataset.state = "idle";
     });
     return wrap;
   };
 
-  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps) {
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take) {
     var self = this;
     var map = null;
     var marker = null;
@@ -1674,19 +1912,17 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       marker = new maps.Marker({ map: map, position: location, title: label || "" });
     }
 
-    function geocode(query) {
-      if (!query || !maps.Geocoder) return;
-      new maps.Geocoder().geocode({ address: query }, function (results, status) {
-        if (status !== "OK" || !results || !results.length) return;
-        var best = results[0];
+    function geocode(text) {
+      geocodeAddress(maps, text, function (best) {
+        self.rememberLocation(field, text, best.geometry.location, true);
         show(best.geometry.location, best.formatted_address);
       });
     }
 
     function pick(formatted, location) {
       if (formatted) {
-        input.value = formatted;
-        self.setValue(field, formatted);
+        take(formatted, true);
+        self.rememberLocation(field, formatted, location, false);
       }
       if (location) show(location, formatted);
       else if (formatted) geocode(formatted);
@@ -1704,6 +1940,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         var option = el("li", "pf-address__option", { role: "option", tabindex: "0" });
         option.textContent = item.label;
         var accept = function () { closeList(); item.accept(); };
+        option.addEventListener("mousedown", keepFocus);
         option.addEventListener("click", accept);
         option.addEventListener("keydown", function (event) {
           if (event.key === "Enter" || event.key === " ") { event.preventDefault(); accept(); }
@@ -1762,8 +1999,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       }
     }
 
-    input.addEventListener("blur", function () { if (input.value.trim()) geocode(input.value.trim()); });
-    if (input.value.trim()) geocode(input.value.trim());
+    if (field.kind === "address-list") {
+      input.addEventListener("blur", function () { geocode(self.pending[field.code]); });
+    } else {
+      input.addEventListener("blur", function () { geocode(input.value); });
+      geocode(input.value);
+    }
   };
 
   global.PortalForm = PortalForm;
@@ -1819,8 +2060,43 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 <script>window.__PORTAL_FORM_PREVIEW_SCHEMA={
  "attributes": [
   {
+   "code": "LAST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأخير"
+    },
+    "en": {
+     "NAME": "Last Name"
+    },
+    "es": {
+     "NAME": "Apellido"
+    },
+    "fr": {
+     "NAME": "Nom de famille"
+    },
+    "he": {
+     "NAME": "שם משפחה"
+    },
+    "kk": {
+     "NAME": "Фамилия"
+    },
+    "ru": {
+     "NAME": "Фамилия"
+    },
+    "zh": {
+     "NAME": "姓氏"
+    }
+   },
+   "options": []
+  },
+  {
    "code": "SELECT_ROLE",
-   "required": false,
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
@@ -1972,7 +2248,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   },
   {
    "code": "EMAIL",
-   "required": false,
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
@@ -1982,7 +2258,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
      "NAME": "البريد الإلكتروني"
     },
     "en": {
-     "NAME": "Email"
+     "NAME": "Email",
+     "PLACEHOLDER": "name@example.com"
     },
     "es": {
      "NAME": "Correo electrónico"
@@ -2003,398 +2280,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
      "NAME": "电子邮件"
     }
    },
-   "options": []
-  },
-  {
-   "code": "PROPERTY_ADDRESS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "عنوان العقار"
-    },
-    "en": {
-     "NAME": "Property Address"
-    },
-    "es": {
-     "NAME": "Dirección de la Propiedad"
-    },
-    "fr": {
-     "NAME": "Adresse du bien"
-    },
-    "he": {
-     "NAME": "כתובת הנכס"
-    },
-    "kk": {
-     "NAME": "Мүлік мекенжайы"
-    },
-    "ru": {
-     "NAME": "Адрес недвижимости"
-    },
-    "zh": {
-     "NAME": "房产地址"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "RISK_FACTORS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "عوامل الخطر في الشتاء (اختر كل ما ينطبق)*"
-    },
-    "en": {
-     "NAME": "Winter risk factors (select all that apply)*"
-    },
-    "es": {
-     "NAME": "Factores de riesgo de invierno (seleccione todos los que apliquen)*"
-    },
-    "fr": {
-     "NAME": "Facteurs de risque hivernaux (sélectionnez tout ce qui s'applique)*"
-    },
-    "he": {
-     "NAME": "גורמי סיכון לחורף (בחר את כל המתאימים)*"
-    },
-    "kk": {
-     "NAME": "Қысқы қауіп факторлары (барлығын таңдаңыз)*"
-    },
-    "ru": {
-     "NAME": "Факторы риска (выберите все применимые)*"
-    },
-    "zh": {
-     "NAME": "冬季风险因素 (请选择所有适用项)*"
-    }
-   },
-   "options": [
-    {
-     "value": "SLOPED_DRIVEWAYS",
-     "nls": {
-      "ar": {
-       "NAME": "مداخل سيارات مائلة أو طرق داخلية"
-      },
-      "en": {
-       "NAME": "Sloped Driveways or Internal Roads"
-      },
-      "es": {
-       "NAME": "Entradas con pendiente o vías internas"
-      },
-      "fr": {
-       "NAME": "Allées en pente ou routes internes"
-      },
-      "he": {
-       "NAME": "דרכי כניסה משופעות או כבישים פנימיים"
-      },
-      "kk": {
-       "NAME": "Көлбеу Кіру Жолдары Немесе Ішкі Жолдар"
-      },
-      "ru": {
-       "NAME": "Наклонные подъездные или внутренние дороги"
-      },
-      "zh": {
-       "NAME": "斜坡车道或内部道路"
-      }
-     }
-    },
-    {
-     "value": "STAIR_HEAVY_ACCESS",
-     "nls": {
-      "ar": {
-       "NAME": "إمكانية الوصول المعتمدة بشكل رئيسي على السلالم"
-      },
-      "en": {
-       "NAME": "Stair-Heavy Access"
-      },
-      "es": {
-       "NAME": "Acceso Con Muchas Escaleras"
-      },
-      "fr": {
-       "NAME": "Accès majoritairement par les escaliers"
-      },
-      "he": {
-       "NAME": "גישה עם הרבה מדרגות"
-      },
-      "kk": {
-       "NAME": "Көп Баспалдақты Қолжетімділік"
-      },
-      "ru": {
-       "NAME": "Лестничный доступ"
-      },
-      "zh": {
-       "NAME": "階梯密集的入口"
-      }
-     }
-    },
-    {
-     "value": "DRAINAGE_WATER_FLOW_ISSUES",
-     "nls": {
-      "ar": {
-       "NAME": "مشاكل التصريف / تدفق المياه"
-      },
-      "en": {
-       "NAME": "Drainage / Water Flow Issues"
-      },
-      "es": {
-       "NAME": "Problemas de Drenaje / Flujo de Agua"
-      },
-      "fr": {
-       "NAME": "Drainage / Problèmes d'écoulement de l'eau"
-      },
-      "he": {
-       "NAME": "בעיות ניקוז / זרימת מים"
-      },
-      "kk": {
-       "NAME": "Дренаж / Су ағымы мәселелері"
-      },
-      "ru": {
-       "NAME": "Дренаж / Проблемы с потоком воды"
-      },
-      "zh": {
-       "NAME": "排水 / 水流问题"
-      }
-     }
-    },
-    {
-     "value": "PARKADE_RAMPS",
-     "nls": {
-      "ar": {
-       "NAME": "منحدرات موقف السيارات"
-      },
-      "en": {
-       "NAME": "Parkade Ramps"
-      },
-      "es": {
-       "NAME": "Rampas del Parkade"
-      },
-      "fr": {
-       "NAME": "Parkade Rampes"
-      },
-      "he": {
-       "NAME": "מדרונים בחניון"
-      },
-      "kk": {
-       "NAME": "ПАРКИНГ РАМПТАР"
-      },
-      "ru": {
-       "NAME": "Наклонные парковки / Пандусы"
-      },
-      "zh": {
-       "NAME": "立体停车场坡道"
-      }
-     }
-    },
-    {
-     "value": "SENIOR_RESIDENCE",
-     "nls": {
-      "ar": {
-       "NAME": "سكن كبار السن"
-      },
-      "en": {
-       "NAME": "Senior Residence"
-      },
-      "es": {
-       "NAME": "Residencia para Mayores"
-      },
-      "fr": {
-       "NAME": "Résidence Senior"
-      },
-      "he": {
-       "NAME": "דיור לגיל השלישי"
-      },
-      "kk": {
-       "NAME": "Қарттар үйі"
-      },
-      "ru": {
-       "NAME": "Пансионат для пожилых"
-      },
-      "zh": {
-       "NAME": "老年公寓"
-      }
-     }
-    },
-    {
-     "value": "LOADING_ZONES",
-     "nls": {
-      "ar": {
-       "NAME": "مناطق التحميل"
-      },
-      "en": {
-       "NAME": "Loading Zones"
-      },
-      "es": {
-       "NAME": "Zonas de Carga"
-      },
-      "fr": {
-       "NAME": "Zones de chargement"
-      },
-      "he": {
-       "NAME": "אזורי טעינה"
-      },
-      "kk": {
-       "NAME": "Жүктеу Аймақтары"
-      },
-      "ru": {
-       "NAME": "Зоны погрузки"
-      },
-      "zh": {
-       "NAME": "装卸区"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "PROPERTY_SIZE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "مساحة العقار (قدم مربع)"
-    },
-    "en": {
-     "NAME": "Property Size (sq ft)"
-    },
-    "es": {
-     "NAME": "TAMAÑO DE LA PROPIEDAD (PIES CUADRADOS)"
-    },
-    "fr": {
-     "NAME": "Taille de la propriété (pieds carrés)"
-    },
-    "he": {
-     "NAME": "גודל הנכס (רגל מרובעת)"
-    },
-    "kk": {
-     "NAME": "Жылжымайтын мүлік өлшемі (кв. фут)"
-    },
-    "ru": {
-     "NAME": "Площадь объекта (кв фт)"
-    },
-    "zh": {
-     "NAME": "房产面积（平方英尺）"
-    }
-   },
-   "options": [
-    {
-     "value": "UNDER_5000",
-     "nls": {
-      "ar": {
-       "NAME": "أقل من 5000"
-      },
-      "en": {
-       "NAME": "Under 5000"
-      },
-      "es": {
-       "NAME": "Menos de 5000"
-      },
-      "fr": {
-       "NAME": "Moins de 5 000"
-      },
-      "he": {
-       "NAME": "מתחת ל-5000"
-      },
-      "kk": {
-       "NAME": "5000-ден аз"
-      },
-      "ru": {
-       "NAME": "До 5000"
-      },
-      "zh": {
-       "NAME": "低于5000"
-      }
-     }
-    },
-    {
-     "value": "5000-10000",
-     "nls": {
-      "en": {
-       "NAME": "5,000 - 10,000"
-      }
-     }
-    },
-    {
-     "value": "10000-25000",
-     "nls": {
-      "en": {
-       "NAME": "10,000 - 25,000"
-      }
-     }
-    },
-    {
-     "value": "25000_75000",
-     "nls": {
-      "en": {
-       "NAME": "25,000 - 75,000"
-      }
-     }
-    },
-    {
-     "value": "75000_PLUS",
-     "nls": {
-      "en": {
-       "NAME": "75,000 +"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "PHONE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Phone"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "FIRST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "الاسم الأول"
-    },
-    "en": {
-     "NAME": "First Name"
-    },
-    "es": {
-     "NAME": "Nombre"
-    },
-    "fr": {
-     "NAME": "Prénom"
-    },
-    "he": {
-     "NAME": "שם פרטי"
-    },
-    "kk": {
-     "NAME": "Есімі"
-    },
-    "ru": {
-     "NAME": "Имя"
-    },
-    "zh": {
-     "NAME": "名"
-    }
-   },
-   "options": []
+   "options": [],
+   "inputFormat": "email"
   },
   {
    "code": "ADDITIONAL_NOTES",
@@ -2429,234 +2316,130 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
      "NAME": "补充说明"
     }
    },
-   "options": []
+   "options": [],
+   "inputFormat": "textarea rows:5"
   },
   {
-   "code": "LAST_NAME",
-   "required": false,
+   "code": "FIRST_NAME",
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
    "className": "java.lang.String",
    "nls": {
     "ar": {
-     "NAME": "الاسم الأخير"
+     "NAME": "الاسم الأول"
     },
     "en": {
-     "NAME": "Last Name"
+     "NAME": "First Name"
     },
     "es": {
-     "NAME": "Apellido"
+     "NAME": "Nombre"
     },
     "fr": {
-     "NAME": "Nom de famille"
+     "NAME": "Prénom"
     },
     "he": {
-     "NAME": "שם משפחה"
+     "NAME": "שם פרטי"
     },
     "kk": {
-     "NAME": "Фамилия"
+     "NAME": "Есімі"
     },
     "ru": {
-     "NAME": "Фамилия"
+     "NAME": "Имя"
     },
     "zh": {
-     "NAME": "姓氏"
+     "NAME": "名"
     }
    },
    "options": []
   },
   {
-   "code": "SELECT_YOUR_PROPERTY_TYPE",
-   "required": false,
+   "code": "PHONE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Phone",
+     "PLACEHOLDER": "+1 (303) 555-0164"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "PROPERTY_ADDRESSES",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "عناوين العقارات"
+    },
+    "en": {
+     "NAME": "Addresses of properties"
+    },
+    "es": {
+     "NAME": "Direcciones De Propiedades"
+    },
+    "fr": {
+     "NAME": "Adresses Des Propriétés"
+    },
+    "he": {
+     "NAME": "כתובות נכסים"
+    },
+    "kk": {
+     "NAME": "Мүліктердің Мекенжайлары"
+    },
+    "ru": {
+     "NAME": "Адреса Объектов Недвижимости"
+    },
+    "zh": {
+     "NAME": "房产地址"
+    }
+   },
+   "options": [],
+   "inputFormat": "address"
+  },
+  {
+   "code": "ORGANIZATION_NAME",
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
    "className": "java.lang.String",
    "nls": {
     "ar": {
-     "NAME": "اختر نوع عقارك",
-     "DESCRIPTION": "\u003cp>\u003c/p>",
-     "PLACEHOLDER": "اختر \"أخرى\" إذا لم تكن متأكدًا"
+     "NAME": "المنظمة"
     },
     "en": {
-     "NAME": "Select Your Property Type",
-     "DESCRIPTION": "\u003cp>\u003c/p>",
-     "PLACEHOLDER": "select \"other\" if unsure"
+     "NAME": "Organization"
     },
     "es": {
-     "NAME": "Selecciona tu tipo de propiedad",
-     "PLACEHOLDER": "selecciona \"otro\" si no estás seguro"
+     "NAME": "Organización"
     },
     "fr": {
-     "NAME": "Sélectionnez votre type de propriété",
-     "PLACEHOLDER": "sélectionner \"autre\" si vous n'êtes pas sûr"
+     "NAME": "Organisation"
     },
     "he": {
-     "NAME": "בחר את סוג הנכס שלך",
-     "DESCRIPTION": "\u003cp>\u003c/p>",
-     "PLACEHOLDER": "בחר \"אחר\" אם אינך בטוח"
+     "NAME": "ארגון"
     },
     "kk": {
-     "NAME": "Сіздің мүлік түрін таңдаңыз",
-     "PLACEHOLDER": "Егер күмәніңіз болса, «басқа» таңдаңыз"
+     "NAME": "Ұйым"
     },
     "ru": {
-     "NAME": "Выберите ваш тип недвижимости",
-     "PLACEHOLDER": "Выберите \"другое\", если не уверены"
+     "NAME": "Организация"
     },
     "zh": {
-     "NAME": "选择您的房产类型",
-     "PLACEHOLDER": "如不确定，请选择“其他”"
+     "NAME": "组织"
     }
    },
-   "options": [
-    {
-     "value": "CONDO_APARTMENT",
-     "nls": {
-      "ar": {
-       "NAME": "كوندو / شقة"
-      },
-      "en": {
-       "NAME": "Condo / Apartment"
-      },
-      "es": {
-       "NAME": "Condominio / Apartamento"
-      },
-      "fr": {
-       "NAME": "Condo / Appartement"
-      },
-      "he": {
-       "NAME": "קונדו / דירה"
-      },
-      "kk": {
-       "NAME": "Кондоминиум / Пәтер"
-      },
-      "ru": {
-       "NAME": "Кондоминиум / Квартира"
-      },
-      "zh": {
-       "NAME": "公寓 / 公寓"
-      }
-     }
-    },
-    {
-     "value": "TOWNHOME",
-     "nls": {
-      "ar": {
-       "NAME": "تاون هاوس"
-      },
-      "en": {
-       "NAME": "Townhome"
-      },
-      "es": {
-       "NAME": "Casa adosada"
-      },
-      "fr": {
-       "NAME": "Maison de ville"
-      },
-      "he": {
-       "NAME": "טאון האוס"
-      },
-      "kk": {
-       "NAME": "Қала үйі"
-      },
-      "ru": {
-       "NAME": "Таунхаус"
-      },
-      "zh": {
-       "NAME": "联排别墅"
-      }
-     }
-    },
-    {
-     "value": "PRIVATE_HOME",
-     "nls": {
-      "ar": {
-       "NAME": "منزل خاص"
-      },
-      "en": {
-       "NAME": "Private Home"
-      },
-      "es": {
-       "NAME": "Casa Privada"
-      },
-      "fr": {
-       "NAME": "Maison Privée"
-      },
-      "he": {
-       "NAME": "בית פרטי"
-      },
-      "kk": {
-       "NAME": "Жеке үй"
-      },
-      "ru": {
-       "NAME": "Частный дом"
-      },
-      "zh": {
-       "NAME": "私人住宅"
-      }
-     }
-    },
-    {
-     "value": "MIXED_USE_RETAIL",
-     "nls": {
-      "ar": {
-       "NAME": "متعدد الاستخدامات / البيع بالتجزئة"
-      },
-      "en": {
-       "NAME": "Mixed-use / Retail"
-      },
-      "es": {
-       "NAME": "Uso Mixto / Minorista"
-      },
-      "fr": {
-       "NAME": "Usage mixte / Commerce de détail"
-      },
-      "he": {
-       "NAME": "שימוש מעורב / קמעונאות"
-      },
-      "kk": {
-       "NAME": "Көпфункционалды / Сауда"
-      },
-      "ru": {
-       "NAME": "Смешанная застройка / Розничная торговля"
-      },
-      "zh": {
-       "NAME": "混合用途 / 零售"
-      }
-     }
-    },
-    {
-     "value": "OTHER",
-     "nls": {
-      "ar": {
-       "NAME": "أخرى"
-      },
-      "en": {
-       "NAME": "Other"
-      },
-      "es": {
-       "NAME": "Otro"
-      },
-      "fr": {
-       "NAME": "Autre"
-      },
-      "he": {
-       "NAME": "אחר"
-      },
-      "kk": {
-       "NAME": "Басқа"
-      },
-      "ru": {
-       "NAME": "Другое"
-      },
-      "zh": {
-       "NAME": "其他"
-      }
-     }
-    }
-   ]
+   "options": []
   }
  ],
  "attributeGroups": [
@@ -2683,31 +2466,52 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
      "NAME": "Where should we send your quote?"
     }
    }
+  },
+  {
+   "code": "PROPERTIES",
+   "nls": {
+    "ar": {
+     "NAME": "عقارات"
+    },
+    "en": {
+     "NAME": "Real estate properties"
+    },
+    "es": {
+     "NAME": "Propiedades Inmobiliarias"
+    },
+    "fr": {
+     "NAME": "Propriétés Immobilières"
+    },
+    "he": {
+     "NAME": "נכסי נדל״ן"
+    },
+    "kk": {
+     "NAME": "Жылжымайтын Мүлік Объектілері"
+    },
+    "ru": {
+     "NAME": "Объекты Недвижимости"
+    },
+    "zh": {
+     "NAME": "房地产"
+    }
+   }
   }
  ],
  "attributeOrder": [
   {
    "EA849F15_9108_455F_9A05_F26BED67E5CD": [
     {
-     "attributeCode": "SELECT_YOUR_PROPERTY_TYPE",
-     "visible": true
-    },
-    {
      "attributeCode": "PROPERTY_ADDRESS",
-     "visible": true
-    },
-    {
-     "attributeCode": "RISK_FACTORS",
-     "visible": true
-    },
-    {
-     "attributeCode": "PROPERTY_SIZE",
      "visible": true
     }
    ]
   },
   {
    "C9C8004F_EFF7_470F_B924_5719E91A5E4C": [
+    {
+     "attributeCode": "ORGANIZATION_NAME",
+     "visible": true
+    },
     {
      "attributeCode": "SELECT_ROLE",
      "visible": true
@@ -2726,6 +2530,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     },
     {
      "attributeCode": "PHONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "PROPERTIES": [
+    {
+     "attributeCode": "PROPERTY_ADDRESSES",
      "visible": true
     }
    ]

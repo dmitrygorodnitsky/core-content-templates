@@ -241,7 +241,7 @@ function manifestFor(template) {
     renderer: {
       source: "app-templates/customer-portal/runtime/forms/portal-form.js",
       styles: "app-templates/customer-portal/runtime/forms/portal-form.css",
-      kinds: ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox", "address"],
+      kinds: ["text", "textarea", "password", "email", "tel", "url", "color", "date", "number", "slider", "boolean", "select", "multiselect", "radio", "checklist", "combobox", "address", "address-list"],
     },
     themes: THEMES,
     modes: MODES,

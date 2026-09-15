@@ -9,8 +9,8 @@
     "sha256": {
       "head": "b863f61f7cd6e1e0cd3c65a271e103adea5d9008ce327c16c08abf201548da9e",
       "html": "abd9543f2535085c99c3b7a529555f7561ac0e671cb63b76647d7ba1f6d16b32",
-      "css": "198071bb9073561ec5b98464847e77a2c227ced34bc1e326db0ec22085cf32b4",
-      "javascript": "6ec25681444bea251a2faec3b50c5d5be61e06969b83835a10d926b4e6e65f05"
+      "css": "20e93c844071d3e9eff2668691d5e474e3d4123e46ff8ecd25bba2f5d5801dc8",
+      "javascript": "283f05256ee383bcbf26e7557d2662015bac3117818a492781bf147220d32e0c"
     }
   },
   "renderer": {
@@ -33,7 +33,8 @@
       "radio",
       "checklist",
       "combobox",
-      "address"
+      "address",
+      "address-list"
     ]
   },
   "themes": [

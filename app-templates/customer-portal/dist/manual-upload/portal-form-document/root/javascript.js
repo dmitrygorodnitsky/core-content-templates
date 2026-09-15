@@ -47,7 +47,7 @@
       address: false,
       rows: null, cols: null, min: null, max: null, step: null,
       minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
-      country: null,
+      country: null, coordinatesOf: null,
     };
     if (!inputFormat) return tokens;
     var rest = String(inputFormat);
@@ -75,6 +75,8 @@
         tokens.country = region[1].split(",").map(function (code) { return code.trim().toLowerCase(); }).filter(Boolean);
         return;
       }
+      var source = token.match(/^coordinates-of:(.+)$/);
+      if (source) { tokens.coordinatesOf = source[1]; return; }
       if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
     });
     return tokens;
@@ -101,7 +103,7 @@
     if (type === "boolean") return "boolean";
     if (type === "number") return tokens.slider ? "slider" : "number";
     if (type === "entity") return "select";
-    if (tokens.address) return "address";
+    if (tokens.address) return attribute.multiselect ? "address-list" : "address";
     if (tokens.textarea) return "textarea";
     if (tokens.password) return "password";
     if (tokens.email) return "email";
@@ -132,6 +134,7 @@
 
     var order = Array.isArray(schema.attributeOrder) ? schema.attributeOrder : [];
     var groups = [];
+    var hidden = [];
     var placed = {};
 
     order.forEach(function (entry) {
@@ -139,11 +142,12 @@
         var rows = Array.isArray(entry[groupCode]) ? entry[groupCode] : [];
         var fields = [];
         rows.forEach(function (row) {
-          if (row.visible === false) return;
           var found = byCode[row.attributeCode];
           if (!found || placed[row.attributeCode]) return;
           placed[row.attributeCode] = true;
-          fields.push(toField(found.attribute, found.typeId, locale));
+          var field = toField(found.attribute, found.typeId, locale);
+          if (row.visible === false || field.tokens.coordinatesOf) hidden.push(field);
+          else fields.push(field);
         });
         if (fields.length) groups.push({ code: groupCode, title: groupTitles[groupCode] || "", fields: fields });
       });
@@ -152,11 +156,13 @@
     var loose = [];
     Object.keys(byCode).forEach(function (code) {
       if (placed[code]) return;
-      loose.push(toField(byCode[code].attribute, byCode[code].typeId, locale));
+      var field = toField(byCode[code].attribute, byCode[code].typeId, locale);
+      if (field.tokens.coordinatesOf) hidden.push(field);
+      else loose.push(field);
     });
     if (loose.length) groups.push({ code: "__ungrouped", title: "", fields: loose });
 
-    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups };
+    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups, hidden: hidden };
   }
 
   function toField(attribute, typeId, locale) {
@@ -228,6 +234,34 @@
     return filled >= slots;
   }
 
+  function repeatList(value) {
+    if (Array.isArray(value)) return value;
+    return value ? [String(value)] : [];
+  }
+
+  function withEntry(list, entry) {
+    var known = list.some(function (existing) { return String(existing).toLowerCase() === entry.toLowerCase(); });
+    return known ? list : list.concat([entry]);
+  }
+
+  function addressKey(field, text) {
+    var address = text == null ? "" : String(text);
+    return field.kind === "address-list" ? address.trim() : address;
+  }
+
+  function pointOf(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lng = typeof location.lng === "function" ? location.lng() : location.lng;
+    if (typeof lat !== "number" || typeof lng !== "number" || !isFinite(lat) || !isFinite(lng)) return null;
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+    return { lat: lat, lng: lng };
+  }
+
+  function keepFocus(event) {
+    event.preventDefault();
+  }
+
   function debounce(fn, wait) {
     var timer = null;
     return function () {
@@ -239,6 +273,7 @@
   }
 
   var mapsPromise = null;
+  var MAPS_LIBRARIES = ["maps", "places", "marker", "geocoding"];
 
   function loadMaps(apiKey) {
     if (mapsPromise) return mapsPromise;
@@ -247,15 +282,27 @@
       var script = document.createElement("script");
       script.async = true;
       script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
-        + "&libraries=places,marker&loading=async&v=weekly";
+        + "&loading=async&v=weekly";
       script.addEventListener("error", function () { reject(new Error("maps-script-failed")); });
       script.addEventListener("load", function () {
-        if (global.google && global.google.maps) resolve(global.google.maps);
+        var maps = global.google && global.google.maps;
+        if (maps && typeof maps.importLibrary === "function") resolve(maps);
         else reject(new Error("maps-unavailable"));
       });
       document.head.appendChild(script);
+    }).then(function (maps) {
+      return Promise.all(MAPS_LIBRARIES.map(function (name) { return maps.importLibrary(name); }))
+        .then(function () { return maps; });
     });
     return mapsPromise;
+  }
+
+  function geocodeAddress(maps, text, found) {
+    var query = String(text == null ? "" : text).trim();
+    if (!query || !maps.Geocoder) return;
+    new maps.Geocoder().geocode({ address: query }, function (results, status) {
+      if (status === "OK" && results && results.length) found(results[0]);
+    });
   }
 
   function PortalForm(config) {
@@ -265,6 +312,8 @@
     this.values = {};
     this.errors = {};
     this.touched = {};
+    this.pending = {};
+    this.locations = {};
     this.step = 0;
     this.state = "loading";
     this.result = null;
@@ -314,7 +363,7 @@
     this.eachField(function (field) {
       if (Object.prototype.hasOwnProperty.call(preset, field.code)) {
         self.values[field.code] = preset[field.code];
-      } else if (field.kind === "checklist" || field.kind === "multiselect") {
+      } else if (field.kind === "checklist" || field.kind === "multiselect" || field.kind === "address-list") {
         self.values[field.code] = [];
       } else if (field.kind === "boolean") {
         self.values[field.code] = false;
@@ -328,9 +377,11 @@
   };
 
   PortalForm.prototype.eachField = function (visit) {
-    (this.model ? this.model.groups : []).forEach(function (group) {
+    if (!this.model) return;
+    this.model.groups.forEach(function (group) {
       group.fields.forEach(function (field) { visit(field, group); });
     });
+    this.model.hidden.forEach(function (field) { visit(field, null); });
   };
 
   PortalForm.prototype.visibleGroups = function () {
@@ -392,8 +443,28 @@
     return ok;
   };
 
+  PortalForm.prototype.flushPending = function () {
+    var self = this;
+    this.eachField(function (field) {
+      if (field.kind === "address-list") self.takePending(field, self.pending[field.code]);
+    });
+  };
+
+  PortalForm.prototype.takePending = function (field, raw) {
+    var entry = String(raw == null ? "" : raw).trim();
+    this.pending[field.code] = "";
+    if (!entry) return false;
+    var held = repeatList(this.values[field.code]);
+    var next = withEntry(held, entry);
+    if (next === held) return false;
+    this.touched[field.code] = true;
+    this.setValue(field, next);
+    return true;
+  };
+
   PortalForm.prototype.submit = function () {
     var self = this;
+    this.flushPending();
     var groups = this.visibleGroups();
     var ok = true;
     groups.forEach(function (group) { if (!self.validateGroup(group)) ok = false; });
@@ -415,16 +486,21 @@
     }
 
     var attributes = {};
-    groups.forEach(function (group) {
-      group.fields.forEach(function (field) {
-        var value = self.values[field.code];
-        if (value === "" || value === null || value === undefined) return;
-        if (Array.isArray(value) && !value.length) return;
-        if (field.kind === "boolean" && value !== true) return;
-        var bucket = String(field.typeId != null ? field.typeId : self.model.id);
-        if (!attributes[bucket]) attributes[bucket] = {};
-        attributes[bucket][field.code] = { value: value };
-      });
+    var sent = {};
+    function collect(field) {
+      var value = self.values[field.code];
+      if (value === "" || value === null || value === undefined) return;
+      if (Array.isArray(value) && !value.length) return;
+      if (field.kind === "boolean" && value !== true) return;
+      var bucket = String(field.typeId != null ? field.typeId : self.model.id);
+      if (!attributes[bucket]) attributes[bucket] = {};
+      attributes[bucket][field.code] = { value: value };
+      sent[field.code] = true;
+    }
+    groups.forEach(function (group) { group.fields.forEach(collect); });
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf && !sent[field.tokens.coordinatesOf]) return;
+      collect(field);
     });
 
     this.state = "submitting";
@@ -462,6 +538,53 @@
   PortalForm.prototype.setValue = function (field, value) {
     this.values[field.code] = value;
     if (this.touched[field.code]) this.errors[field.code] = this.validateField(field);
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.holdsAddress = function (field, address) {
+    if (repeatList(this.values[field.code]).indexOf(address) !== -1) return true;
+    return field.kind === "address-list" && String(this.pending[field.code] || "").trim() === address;
+  };
+
+  PortalForm.prototype.rememberLocation = function (field, text, location, fromGeocoder) {
+    var address = addressKey(field, text);
+    var point = pointOf(location);
+    if (!address || !point) return;
+    var known = this.locations[field.code] || (this.locations[field.code] = Object.create(null));
+    if (fromGeocoder && known[address]) return;
+    known[address] = point;
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.locate = function (field, text) {
+    var self = this;
+    var address = addressKey(field, text);
+    var known = this.locations[field.code];
+    if (!address || !this.cfg.mapsApiKey || (known && known[address])) return;
+    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
+      geocodeAddress(maps, address, function (best) {
+        self.rememberLocation(field, address, best.geometry.location, true);
+      });
+    }).catch(function () {});
+  };
+
+  PortalForm.prototype.syncCoordinates = function (source) {
+    var self = this;
+    var known = this.locations[source.code];
+    if (known) {
+      Object.keys(known).forEach(function (address) {
+        if (!self.holdsAddress(source, address)) delete known[address];
+      });
+    }
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf !== source.code) return;
+      var entries = [];
+      repeatList(self.values[source.code]).forEach(function (address) {
+        var point = known && known[address];
+        if (point) entries.push({ address: address, lat: point.lat, lng: point.lng });
+      });
+      self.values[field.code] = entries.length ? JSON.stringify(entries) : "";
+    });
   };
 
   PortalForm.prototype.render = function () {
@@ -530,6 +653,7 @@
   };
 
   PortalForm.prototype.advance = function (groups) {
+    this.flushPending();
     if (!this.validateGroup(groups[this.step])) { this.render(); return; }
     if (this.step < groups.length - 1) { this.step += 1; this.render(); return; }
     this.submit();
@@ -742,7 +866,8 @@
       return comboWrap;
     }
 
-    if (field.kind === "address") return this.addressControl(field, id, value);
+    if (field.kind === "address") return this.addressControl(field, id, value, null);
+    if (field.kind === "address-list") return this.addressListControl(field, id, value);
 
     var nativeType = field.kind === "number" ? "number"
       : field.kind === "password" ? "password"
@@ -786,15 +911,84 @@
     return input;
   };
 
-  PortalForm.prototype.addressControl = function (field, id, value) {
+  PortalForm.prototype.addressListControl = function (field, id, value) {
     var self = this;
+    var held = repeatList(value);
+    var wrap = el("div", "pf-repeat");
+
+    if (held.length) {
+      var items = el("div", "pf-repeat__items", { role: "group", "aria-label": field.label });
+      held.forEach(function (entry) {
+        var row = el("button", "pf-repeat__row", {
+          type: "button", "aria-pressed": "true", "aria-label": String(entry),
+        });
+        row.appendChild(text("span", "pf-repeat__text", entry));
+        var glyph = text("span", "pf-repeat__x", "×");
+        glyph.setAttribute("aria-hidden", "true");
+        row.appendChild(glyph);
+        row.addEventListener("click", function () {
+          self.touched[field.code] = true;
+          self.setValue(field, repeatList(self.values[field.code]).filter(function (existing) {
+            return String(existing) !== String(entry);
+          }));
+          self.renderAndFocus(id);
+        });
+        items.appendChild(row);
+      });
+      wrap.appendChild(items);
+    }
+
+    var entry = el("div", "pf-repeat__entry");
+    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate, picked) {
+      if (self.takePending(field, candidate) && !picked) self.locate(field, candidate);
+      self.renderAndFocus(id);
+    }));
+    var add = text("button", "pf-repeat__add", "+");
+    add.type = "button";
+    add.addEventListener("mousedown", keepFocus);
+    add.addEventListener("click", function () {
+      var typed = self.pending[field.code];
+      if (self.takePending(field, typed)) self.locate(field, typed);
+      self.renderAndFocus(id);
+    });
+    entry.appendChild(add);
+    wrap.appendChild(entry);
+    return wrap;
+  };
+
+  PortalForm.prototype.renderAndFocus = function (id) {
+    this.render();
+    var input = document.getElementById(id);
+    if (input && typeof input.focus === "function") input.focus();
+  };
+
+  PortalForm.prototype.addressControl = function (field, id, value, accept) {
+    var self = this;
+    var repeating = typeof accept === "function";
     var wrap = el("div", "pf-address");
     var input = el("input", "pf-input", {
       type: "text", id: id, name: field.code, placeholder: field.placeholder,
       autocomplete: "street-address", "aria-describedby": id + "-error",
     });
     input.value = value != null ? value : "";
-    input.addEventListener("input", function () { self.setValue(field, input.value); });
+    var take = repeating ? accept : function (formatted) {
+      input.value = formatted;
+      self.setValue(field, formatted);
+    };
+    if (repeating) {
+      input.addEventListener("input", function () {
+        self.pending[field.code] = input.value;
+        self.syncCoordinates(field);
+      });
+      input.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter") return;
+        event.preventDefault();
+        if (wrap.dataset.autocomplete === "legacy") return;
+        take(input.value);
+      });
+    } else {
+      input.addEventListener("input", function () { self.setValue(field, input.value); });
+    }
     wrap.appendChild(input);
 
     var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
@@ -803,14 +997,14 @@
     if (!this.cfg.mapsApiKey) return wrap;
 
     loadMaps(this.cfg.mapsApiKey).then(function (maps) {
-      self.upgradeAddress(field, wrap, input, canvas, maps);
+      self.upgradeAddress(field, wrap, input, canvas, maps, take);
     }).catch(function () {
       canvas.dataset.state = "idle";
     });
     return wrap;
   };
 
-  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps) {
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take) {
     var self = this;
     var map = null;
     var marker = null;
@@ -831,19 +1025,17 @@
       marker = new maps.Marker({ map: map, position: location, title: label || "" });
     }
 
-    function geocode(query) {
-      if (!query || !maps.Geocoder) return;
-      new maps.Geocoder().geocode({ address: query }, function (results, status) {
-        if (status !== "OK" || !results || !results.length) return;
-        var best = results[0];
+    function geocode(text) {
+      geocodeAddress(maps, text, function (best) {
+        self.rememberLocation(field, text, best.geometry.location, true);
         show(best.geometry.location, best.formatted_address);
       });
     }
 
     function pick(formatted, location) {
       if (formatted) {
-        input.value = formatted;
-        self.setValue(field, formatted);
+        take(formatted, true);
+        self.rememberLocation(field, formatted, location, false);
       }
       if (location) show(location, formatted);
       else if (formatted) geocode(formatted);
@@ -861,6 +1053,7 @@
         var option = el("li", "pf-address__option", { role: "option", tabindex: "0" });
         option.textContent = item.label;
         var accept = function () { closeList(); item.accept(); };
+        option.addEventListener("mousedown", keepFocus);
         option.addEventListener("click", accept);
         option.addEventListener("keydown", function (event) {
           if (event.key === "Enter" || event.key === " ") { event.preventDefault(); accept(); }
@@ -919,8 +1112,12 @@
       }
     }
 
-    input.addEventListener("blur", function () { if (input.value.trim()) geocode(input.value.trim()); });
-    if (input.value.trim()) geocode(input.value.trim());
+    if (field.kind === "address-list") {
+      input.addEventListener("blur", function () { geocode(self.pending[field.code]); });
+    } else {
+      input.addEventListener("blur", function () { geocode(input.value); });
+      geocode(input.value);
+    }
   };
 
   global.PortalForm = PortalForm;

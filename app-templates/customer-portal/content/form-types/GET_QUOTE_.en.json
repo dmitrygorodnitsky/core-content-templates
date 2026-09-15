@@ -1,8 +1,43 @@
 {
  "attributes": [
   {
+   "code": "LAST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأخير"
+    },
+    "en": {
+     "NAME": "Last Name"
+    },
+    "es": {
+     "NAME": "Apellido"
+    },
+    "fr": {
+     "NAME": "Nom de famille"
+    },
+    "he": {
+     "NAME": "שם משפחה"
+    },
+    "kk": {
+     "NAME": "Фамилия"
+    },
+    "ru": {
+     "NAME": "Фамилия"
+    },
+    "zh": {
+     "NAME": "姓氏"
+    }
+   },
+   "options": []
+  },
+  {
    "code": "SELECT_ROLE",
-   "required": false,
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
@@ -154,7 +189,7 @@
   },
   {
    "code": "EMAIL",
-   "required": false,
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
@@ -164,7 +199,8 @@
      "NAME": "البريد الإلكتروني"
     },
     "en": {
-     "NAME": "Email"
+     "NAME": "Email",
+     "PLACEHOLDER": "name@example.com"
     },
     "es": {
      "NAME": "Correo electrónico"
@@ -185,398 +221,8 @@
      "NAME": "电子邮件"
     }
    },
-   "options": []
-  },
-  {
-   "code": "PROPERTY_ADDRESS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "عنوان العقار"
-    },
-    "en": {
-     "NAME": "Property Address"
-    },
-    "es": {
-     "NAME": "Dirección de la Propiedad"
-    },
-    "fr": {
-     "NAME": "Adresse du bien"
-    },
-    "he": {
-     "NAME": "כתובת הנכס"
-    },
-    "kk": {
-     "NAME": "Мүлік мекенжайы"
-    },
-    "ru": {
-     "NAME": "Адрес недвижимости"
-    },
-    "zh": {
-     "NAME": "房产地址"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "RISK_FACTORS",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "عوامل الخطر في الشتاء (اختر كل ما ينطبق)*"
-    },
-    "en": {
-     "NAME": "Winter risk factors (select all that apply)*"
-    },
-    "es": {
-     "NAME": "Factores de riesgo de invierno (seleccione todos los que apliquen)*"
-    },
-    "fr": {
-     "NAME": "Facteurs de risque hivernaux (sélectionnez tout ce qui s'applique)*"
-    },
-    "he": {
-     "NAME": "גורמי סיכון לחורף (בחר את כל המתאימים)*"
-    },
-    "kk": {
-     "NAME": "Қысқы қауіп факторлары (барлығын таңдаңыз)*"
-    },
-    "ru": {
-     "NAME": "Факторы риска (выберите все применимые)*"
-    },
-    "zh": {
-     "NAME": "冬季风险因素 (请选择所有适用项)*"
-    }
-   },
-   "options": [
-    {
-     "value": "SLOPED_DRIVEWAYS",
-     "nls": {
-      "ar": {
-       "NAME": "مداخل سيارات مائلة أو طرق داخلية"
-      },
-      "en": {
-       "NAME": "Sloped Driveways or Internal Roads"
-      },
-      "es": {
-       "NAME": "Entradas con pendiente o vías internas"
-      },
-      "fr": {
-       "NAME": "Allées en pente ou routes internes"
-      },
-      "he": {
-       "NAME": "דרכי כניסה משופעות או כבישים פנימיים"
-      },
-      "kk": {
-       "NAME": "Көлбеу Кіру Жолдары Немесе Ішкі Жолдар"
-      },
-      "ru": {
-       "NAME": "Наклонные подъездные или внутренние дороги"
-      },
-      "zh": {
-       "NAME": "斜坡车道或内部道路"
-      }
-     }
-    },
-    {
-     "value": "STAIR_HEAVY_ACCESS",
-     "nls": {
-      "ar": {
-       "NAME": "إمكانية الوصول المعتمدة بشكل رئيسي على السلالم"
-      },
-      "en": {
-       "NAME": "Stair-Heavy Access"
-      },
-      "es": {
-       "NAME": "Acceso Con Muchas Escaleras"
-      },
-      "fr": {
-       "NAME": "Accès majoritairement par les escaliers"
-      },
-      "he": {
-       "NAME": "גישה עם הרבה מדרגות"
-      },
-      "kk": {
-       "NAME": "Көп Баспалдақты Қолжетімділік"
-      },
-      "ru": {
-       "NAME": "Лестничный доступ"
-      },
-      "zh": {
-       "NAME": "階梯密集的入口"
-      }
-     }
-    },
-    {
-     "value": "DRAINAGE_WATER_FLOW_ISSUES",
-     "nls": {
-      "ar": {
-       "NAME": "مشاكل التصريف / تدفق المياه"
-      },
-      "en": {
-       "NAME": "Drainage / Water Flow Issues"
-      },
-      "es": {
-       "NAME": "Problemas de Drenaje / Flujo de Agua"
-      },
-      "fr": {
-       "NAME": "Drainage / Problèmes d'écoulement de l'eau"
-      },
-      "he": {
-       "NAME": "בעיות ניקוז / זרימת מים"
-      },
-      "kk": {
-       "NAME": "Дренаж / Су ағымы мәселелері"
-      },
-      "ru": {
-       "NAME": "Дренаж / Проблемы с потоком воды"
-      },
-      "zh": {
-       "NAME": "排水 / 水流问题"
-      }
-     }
-    },
-    {
-     "value": "PARKADE_RAMPS",
-     "nls": {
-      "ar": {
-       "NAME": "منحدرات موقف السيارات"
-      },
-      "en": {
-       "NAME": "Parkade Ramps"
-      },
-      "es": {
-       "NAME": "Rampas del Parkade"
-      },
-      "fr": {
-       "NAME": "Parkade Rampes"
-      },
-      "he": {
-       "NAME": "מדרונים בחניון"
-      },
-      "kk": {
-       "NAME": "ПАРКИНГ РАМПТАР"
-      },
-      "ru": {
-       "NAME": "Наклонные парковки / Пандусы"
-      },
-      "zh": {
-       "NAME": "立体停车场坡道"
-      }
-     }
-    },
-    {
-     "value": "SENIOR_RESIDENCE",
-     "nls": {
-      "ar": {
-       "NAME": "سكن كبار السن"
-      },
-      "en": {
-       "NAME": "Senior Residence"
-      },
-      "es": {
-       "NAME": "Residencia para Mayores"
-      },
-      "fr": {
-       "NAME": "Résidence Senior"
-      },
-      "he": {
-       "NAME": "דיור לגיל השלישי"
-      },
-      "kk": {
-       "NAME": "Қарттар үйі"
-      },
-      "ru": {
-       "NAME": "Пансионат для пожилых"
-      },
-      "zh": {
-       "NAME": "老年公寓"
-      }
-     }
-    },
-    {
-     "value": "LOADING_ZONES",
-     "nls": {
-      "ar": {
-       "NAME": "مناطق التحميل"
-      },
-      "en": {
-       "NAME": "Loading Zones"
-      },
-      "es": {
-       "NAME": "Zonas de Carga"
-      },
-      "fr": {
-       "NAME": "Zones de chargement"
-      },
-      "he": {
-       "NAME": "אזורי טעינה"
-      },
-      "kk": {
-       "NAME": "Жүктеу Аймақтары"
-      },
-      "ru": {
-       "NAME": "Зоны погрузки"
-      },
-      "zh": {
-       "NAME": "装卸区"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "PROPERTY_SIZE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "مساحة العقار (قدم مربع)"
-    },
-    "en": {
-     "NAME": "Property Size (sq ft)"
-    },
-    "es": {
-     "NAME": "TAMAÑO DE LA PROPIEDAD (PIES CUADRADOS)"
-    },
-    "fr": {
-     "NAME": "Taille de la propriété (pieds carrés)"
-    },
-    "he": {
-     "NAME": "גודל הנכס (רגל מרובעת)"
-    },
-    "kk": {
-     "NAME": "Жылжымайтын мүлік өлшемі (кв. фут)"
-    },
-    "ru": {
-     "NAME": "Площадь объекта (кв фт)"
-    },
-    "zh": {
-     "NAME": "房产面积（平方英尺）"
-    }
-   },
-   "options": [
-    {
-     "value": "UNDER_5000",
-     "nls": {
-      "ar": {
-       "NAME": "أقل من 5000"
-      },
-      "en": {
-       "NAME": "Under 5000"
-      },
-      "es": {
-       "NAME": "Menos de 5000"
-      },
-      "fr": {
-       "NAME": "Moins de 5 000"
-      },
-      "he": {
-       "NAME": "מתחת ל-5000"
-      },
-      "kk": {
-       "NAME": "5000-ден аз"
-      },
-      "ru": {
-       "NAME": "До 5000"
-      },
-      "zh": {
-       "NAME": "低于5000"
-      }
-     }
-    },
-    {
-     "value": "5000-10000",
-     "nls": {
-      "en": {
-       "NAME": "5,000 - 10,000"
-      }
-     }
-    },
-    {
-     "value": "10000-25000",
-     "nls": {
-      "en": {
-       "NAME": "10,000 - 25,000"
-      }
-     }
-    },
-    {
-     "value": "25000_75000",
-     "nls": {
-      "en": {
-       "NAME": "25,000 - 75,000"
-      }
-     }
-    },
-    {
-     "value": "75000_PLUS",
-     "nls": {
-      "en": {
-       "NAME": "75,000 +"
-      }
-     }
-    }
-   ]
-  },
-  {
-   "code": "PHONE",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "en": {
-     "NAME": "Phone"
-    }
-   },
-   "options": []
-  },
-  {
-   "code": "FIRST_NAME",
-   "required": false,
-   "multiselect": false,
-   "freeValue": false,
-   "unique": false,
-   "className": "java.lang.String",
-   "nls": {
-    "ar": {
-     "NAME": "الاسم الأول"
-    },
-    "en": {
-     "NAME": "First Name"
-    },
-    "es": {
-     "NAME": "Nombre"
-    },
-    "fr": {
-     "NAME": "Prénom"
-    },
-    "he": {
-     "NAME": "שם פרטי"
-    },
-    "kk": {
-     "NAME": "Есімі"
-    },
-    "ru": {
-     "NAME": "Имя"
-    },
-    "zh": {
-     "NAME": "名"
-    }
-   },
-   "options": []
+   "options": [],
+   "inputFormat": "email"
   },
   {
    "code": "ADDITIONAL_NOTES",
@@ -611,234 +257,130 @@
      "NAME": "补充说明"
     }
    },
-   "options": []
+   "options": [],
+   "inputFormat": "textarea rows:5"
   },
   {
-   "code": "LAST_NAME",
-   "required": false,
+   "code": "FIRST_NAME",
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
    "className": "java.lang.String",
    "nls": {
     "ar": {
-     "NAME": "الاسم الأخير"
+     "NAME": "الاسم الأول"
     },
     "en": {
-     "NAME": "Last Name"
+     "NAME": "First Name"
     },
     "es": {
-     "NAME": "Apellido"
+     "NAME": "Nombre"
     },
     "fr": {
-     "NAME": "Nom de famille"
+     "NAME": "Prénom"
     },
     "he": {
-     "NAME": "שם משפחה"
+     "NAME": "שם פרטי"
     },
     "kk": {
-     "NAME": "Фамилия"
+     "NAME": "Есімі"
     },
     "ru": {
-     "NAME": "Фамилия"
+     "NAME": "Имя"
     },
     "zh": {
-     "NAME": "姓氏"
+     "NAME": "名"
     }
    },
    "options": []
   },
   {
-   "code": "SELECT_YOUR_PROPERTY_TYPE",
-   "required": false,
+   "code": "PHONE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Phone",
+     "PLACEHOLDER": "+1 (303) 555-0164"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "PROPERTY_ADDRESSES",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "عناوين العقارات"
+    },
+    "en": {
+     "NAME": "Addresses of properties"
+    },
+    "es": {
+     "NAME": "Direcciones De Propiedades"
+    },
+    "fr": {
+     "NAME": "Adresses Des Propriétés"
+    },
+    "he": {
+     "NAME": "כתובות נכסים"
+    },
+    "kk": {
+     "NAME": "Мүліктердің Мекенжайлары"
+    },
+    "ru": {
+     "NAME": "Адреса Объектов Недвижимости"
+    },
+    "zh": {
+     "NAME": "房产地址"
+    }
+   },
+   "options": [],
+   "inputFormat": "address"
+  },
+  {
+   "code": "ORGANIZATION_NAME",
+   "required": true,
    "multiselect": false,
    "freeValue": false,
    "unique": false,
    "className": "java.lang.String",
    "nls": {
     "ar": {
-     "NAME": "اختر نوع عقارك",
-     "DESCRIPTION": "<p></p>",
-     "PLACEHOLDER": "اختر \"أخرى\" إذا لم تكن متأكدًا"
+     "NAME": "المنظمة"
     },
     "en": {
-     "NAME": "Select Your Property Type",
-     "DESCRIPTION": "<p></p>",
-     "PLACEHOLDER": "select \"other\" if unsure"
+     "NAME": "Organization"
     },
     "es": {
-     "NAME": "Selecciona tu tipo de propiedad",
-     "PLACEHOLDER": "selecciona \"otro\" si no estás seguro"
+     "NAME": "Organización"
     },
     "fr": {
-     "NAME": "Sélectionnez votre type de propriété",
-     "PLACEHOLDER": "sélectionner \"autre\" si vous n'êtes pas sûr"
+     "NAME": "Organisation"
     },
     "he": {
-     "NAME": "בחר את סוג הנכס שלך",
-     "DESCRIPTION": "<p></p>",
-     "PLACEHOLDER": "בחר \"אחר\" אם אינך בטוח"
+     "NAME": "ארגון"
     },
     "kk": {
-     "NAME": "Сіздің мүлік түрін таңдаңыз",
-     "PLACEHOLDER": "Егер күмәніңіз болса, «басқа» таңдаңыз"
+     "NAME": "Ұйым"
     },
     "ru": {
-     "NAME": "Выберите ваш тип недвижимости",
-     "PLACEHOLDER": "Выберите \"другое\", если не уверены"
+     "NAME": "Организация"
     },
     "zh": {
-     "NAME": "选择您的房产类型",
-     "PLACEHOLDER": "如不确定，请选择“其他”"
+     "NAME": "组织"
     }
    },
-   "options": [
-    {
-     "value": "CONDO_APARTMENT",
-     "nls": {
-      "ar": {
-       "NAME": "كوندو / شقة"
-      },
-      "en": {
-       "NAME": "Condo / Apartment"
-      },
-      "es": {
-       "NAME": "Condominio / Apartamento"
-      },
-      "fr": {
-       "NAME": "Condo / Appartement"
-      },
-      "he": {
-       "NAME": "קונדו / דירה"
-      },
-      "kk": {
-       "NAME": "Кондоминиум / Пәтер"
-      },
-      "ru": {
-       "NAME": "Кондоминиум / Квартира"
-      },
-      "zh": {
-       "NAME": "公寓 / 公寓"
-      }
-     }
-    },
-    {
-     "value": "TOWNHOME",
-     "nls": {
-      "ar": {
-       "NAME": "تاون هاوس"
-      },
-      "en": {
-       "NAME": "Townhome"
-      },
-      "es": {
-       "NAME": "Casa adosada"
-      },
-      "fr": {
-       "NAME": "Maison de ville"
-      },
-      "he": {
-       "NAME": "טאון האוס"
-      },
-      "kk": {
-       "NAME": "Қала үйі"
-      },
-      "ru": {
-       "NAME": "Таунхаус"
-      },
-      "zh": {
-       "NAME": "联排别墅"
-      }
-     }
-    },
-    {
-     "value": "PRIVATE_HOME",
-     "nls": {
-      "ar": {
-       "NAME": "منزل خاص"
-      },
-      "en": {
-       "NAME": "Private Home"
-      },
-      "es": {
-       "NAME": "Casa Privada"
-      },
-      "fr": {
-       "NAME": "Maison Privée"
-      },
-      "he": {
-       "NAME": "בית פרטי"
-      },
-      "kk": {
-       "NAME": "Жеке үй"
-      },
-      "ru": {
-       "NAME": "Частный дом"
-      },
-      "zh": {
-       "NAME": "私人住宅"
-      }
-     }
-    },
-    {
-     "value": "MIXED_USE_RETAIL",
-     "nls": {
-      "ar": {
-       "NAME": "متعدد الاستخدامات / البيع بالتجزئة"
-      },
-      "en": {
-       "NAME": "Mixed-use / Retail"
-      },
-      "es": {
-       "NAME": "Uso Mixto / Minorista"
-      },
-      "fr": {
-       "NAME": "Usage mixte / Commerce de détail"
-      },
-      "he": {
-       "NAME": "שימוש מעורב / קמעונאות"
-      },
-      "kk": {
-       "NAME": "Көпфункционалды / Сауда"
-      },
-      "ru": {
-       "NAME": "Смешанная застройка / Розничная торговля"
-      },
-      "zh": {
-       "NAME": "混合用途 / 零售"
-      }
-     }
-    },
-    {
-     "value": "OTHER",
-     "nls": {
-      "ar": {
-       "NAME": "أخرى"
-      },
-      "en": {
-       "NAME": "Other"
-      },
-      "es": {
-       "NAME": "Otro"
-      },
-      "fr": {
-       "NAME": "Autre"
-      },
-      "he": {
-       "NAME": "אחר"
-      },
-      "kk": {
-       "NAME": "Басқа"
-      },
-      "ru": {
-       "NAME": "Другое"
-      },
-      "zh": {
-       "NAME": "其他"
-      }
-     }
-    }
-   ]
+   "options": []
   }
  ],
  "attributeGroups": [
@@ -865,31 +407,52 @@
      "NAME": "Where should we send your quote?"
     }
    }
+  },
+  {
+   "code": "PROPERTIES",
+   "nls": {
+    "ar": {
+     "NAME": "عقارات"
+    },
+    "en": {
+     "NAME": "Real estate properties"
+    },
+    "es": {
+     "NAME": "Propiedades Inmobiliarias"
+    },
+    "fr": {
+     "NAME": "Propriétés Immobilières"
+    },
+    "he": {
+     "NAME": "נכסי נדל״ן"
+    },
+    "kk": {
+     "NAME": "Жылжымайтын Мүлік Объектілері"
+    },
+    "ru": {
+     "NAME": "Объекты Недвижимости"
+    },
+    "zh": {
+     "NAME": "房地产"
+    }
+   }
   }
  ],
  "attributeOrder": [
   {
    "EA849F15_9108_455F_9A05_F26BED67E5CD": [
     {
-     "attributeCode": "SELECT_YOUR_PROPERTY_TYPE",
-     "visible": true
-    },
-    {
      "attributeCode": "PROPERTY_ADDRESS",
-     "visible": true
-    },
-    {
-     "attributeCode": "RISK_FACTORS",
-     "visible": true
-    },
-    {
-     "attributeCode": "PROPERTY_SIZE",
      "visible": true
     }
    ]
   },
   {
    "C9C8004F_EFF7_470F_B924_5719E91A5E4C": [
+    {
+     "attributeCode": "ORGANIZATION_NAME",
+     "visible": true
+    },
     {
      "attributeCode": "SELECT_ROLE",
      "visible": true
@@ -908,6 +471,14 @@
     },
     {
      "attributeCode": "PHONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "PROPERTIES": [
+    {
+     "attributeCode": "PROPERTY_ADDRESSES",
      "visible": true
     }
    ]
