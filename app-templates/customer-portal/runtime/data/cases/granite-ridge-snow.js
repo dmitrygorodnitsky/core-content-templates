@@ -232,8 +232,6 @@ export const graniteRidgeSnowFixture = Object.freeze({
     map: {
       center: { lat: 39.7264, lon: -105.1397 },
       zoom: 11,
-      size: { width: 1040, height: 560 },
-      layers: ["flat", "water", "roads", "interstates", "cities", "admin"],
     },
     weather: {
       nowIndex: 0,

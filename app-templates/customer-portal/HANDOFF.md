@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `27612ac`
+- HEAD when this checkpoint was written: `df29104`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -54,6 +54,9 @@ packages remain under `dist/**`, and stable CLI entrypoints remain under
   customer-facing purchase/plan/API model.
 - `content/cases/SPA-VERTICAL-CORE-MODEL.md` — deployed Core types, workflows,
   entity relationships, and money ownership.
+- `content/cases/SNOW-VERTICAL-CORE-MODEL.md` — the same for the winter-services
+  vertical, read from `dev-1` as `SNOWLIMITLESS`, plus the settled decision that
+  the Order is the contract and the rules for reading Core without breaking it.
 - `docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/master.md`
   — program container. Its ledger is partly stale: the separate commerce wave
   closed W4 after the master was written.
@@ -423,13 +426,15 @@ node app-templates/customer-portal/scripts/cms-schema-validation.mjs
 ## Granite Ridge snow tenant
 
 The tenant the next session takes live. Everything on screen is fixture data
-**except the weather and the map image**, which call Xweather from the browser.
+**except the weather**, which calls Xweather from the browser, and **the map**,
+which is Google Maps when a browser key is configured.
 
 | surface | source | preview | check |
 | --- | --- | --- | --- |
 | portal | `runtime/data/cases/granite-ridge-snow.js`, profile `stormRetail` | `runtime/granite-ridge-snow.html` | `scripts/granite-ridge-fixture-check.mjs` |
 | appointments, property, visit | same fixture | same entry | `scripts/appointments-check.mjs` |
-| weather and map | `runtime/src/adapters/xweather-adapter.js` | same entry | `scripts/live-weather-check.mjs` |
+| weather | `runtime/src/adapters/xweather-adapter.js` | same entry | `scripts/live-weather-check.mjs` |
+| property map | `runtime/src/components/storm/PropertyMap.js`, `runtime/src/adapters/google-maps-adapter.js` | same entry; without a key it lists the properties | `scripts/property-map-check.mjs` |
 | portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `scripts/granite-ridge-portal-manual-check.mjs` |
 | landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `scripts/granite-ridge-landing-manual-check.mjs` |
 
@@ -443,11 +448,25 @@ button leaves for `PORTAL_REQUEST_FORM_URL`.
 ### What is already live
 
 `runtime/src/live-weather.js` fetches one daily forecast per service zone from
-Xweather and replaces `overview.weather` when a key is configured. The map is a
-raster image from the same account, and pins are placed by projecting each
-property's real `lat`/`lon` onto it. Every failure — no key, a half key, HTTP
-401, and Xweather's habit of answering a rejected key with HTTP 200 and
-`success:false` — falls back to the fixture without a visible error.
+Xweather and replaces `overview.weather` when a key is configured, plus one
+forecast for a property's own point, rounded to 0.01°, the first time its popup
+opens. Every failure — no key, a half key, HTTP 401, and Xweather's habit of
+answering a rejected key with HTTP 200 and `success:false` — falls back to the
+fixture, or in the popup to the zone forecast labelled as the area forecast.
+
+The Xweather map image was retired on 2026-09-11: it cost 60 accesses a view.
+The card is a Google Maps JavaScript API map when `data-portal-maps-api-key`
+(`PORTAL_MAPS_API_KEY`) holds a key, styled by the optional
+`data-portal-maps-map-id`. Pins are the portal's own buttons drawn through an
+`OverlayView` rather than advanced markers, which do not render without a Map
+ID. The map element survives the runtime's full re-render, so a render is never
+a second map load. A popup opens anchored to its pin; on a map narrower than
+648 px, where a 288 px popup cannot sit beside a pin in the middle, it docks below
+the map inside the card instead, and a resize across that width moves an open
+popup between the two. A property without coordinates is geocoded once and cached in
+`localStorage`; without a key, or when Google rejects it, the card lists the
+properties instead. None of these states has an accepted design yet:
+`design-requests/granite-ridge-google-property-map.md`.
 
 Credentials travel as `data-portal-weather-client-id` / `-secret`. They are
 public by design and origin-scoped; the demo key in the repo is disposable and
@@ -517,27 +536,30 @@ declarative `applyBehavior` value-to-step mapping; the shared
 
 ## Open threads for the next session
 
-1. **The portal's primary button points at a guess.**
-   `PORTAL_REQUEST_FORM_URL` defaults to
-   `https://dev-1.servicewand.com/snow-removal--request-quote`, which is where
-   `PORTAL_FORM_DOCUMENT` might be published. Set the real address in CMS; no
-   rebuild needed.
-2. `PORTAL_FORM_DOCUMENT` already exists in the dev CMS and was **not** created
-   by this package. `--require-missing` refused the first upload. Resolve its id
-   with `scripts/upsert-portal-form.mjs --require-existing` and decide whether to
-   take it over with `--expected-root-id` or to change the template code. Do not
-   overwrite it blindly.
-3. The numeric organization id for `SNOWLIMITLESS` is still unknown. Until
-   `FORM_ORGANIZATION_ID` is set in CMS the form's submit button stays disabled.
-   No code path resolves an organization code to an id.
-4. The published `GET_QUOTE_` form type is unfinished, and the renderer shows it
-   faithfully rather than papering over it: every attribute is `required: false`
-   while `RISK_FACTORS` carries an asterisk in its label; that same attribute is
-   `multiselect: false` while its label says select all that apply; no attribute
-   declares an `inputFormat`, so there are no masks, no typed inputs and no
-   textarea; `SELECT_YOUR_PROPERTY_TYPE` has `DESCRIPTION` of `"<p></p>"`; group
-   names and the form title are English only while fields and options carry eight
-   locales; the first group name reads "so we can can confirm".
+1. ~~The portal's primary button points at a guess.~~ **Resolved 2026-08-31.**
+   The guessed `https://dev-1.servicewand.com/snow-removal--request-quote`
+   answers 404. `PORTAL_FORM_DOCUMENT` is published at PageContext 17,
+   `https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote`, which
+   answers 200 and mounts the renderer. The default now points there; the CMS
+   parameter still overrides it.
+2. ~~Resolve the `PORTAL_FORM_DOCUMENT` id.~~ **Resolved 2026-08-31.** The
+   deployed BlockTemplate is `0d62e1e1-d1af-4ae8-ab5f-9c0d12f0ab04`. A separate
+   `REQUEST_QUOTE` template, `5a6c7eb6-c7bb-4b8a-b532-17322a8918c5`, also exists.
+   Whether to take the id over with `--expected-root-id` or to change the
+   template code is still undecided; do not overwrite it blindly.
+3. ~~The numeric organization id for `SNOWLIMITLESS` is unknown.~~
+   **Resolved 2026-08-31.** It is **43**, and the deployed document already
+   carries `data-form-organization-id="43"`. The submit button is enabled and
+   the anonymous quote path works end to end. `FORM_MAPS_API_KEY` is still the
+   placeholder `#`, so the address control renders without geocoding.
+4. The published `GET_QUOTE_` form type was largely fixed on the backend and the
+   repository snapshot was stale; `content/form-types/GET_QUOTE_.en.json` and
+   `portal-form-check.mjs` now carry the current contract. Every attribute but
+   `ADDITIONAL_NOTES` declares `required: true`, `RISK_FACTORS` is `multiselect`
+   and renders as a checklist, and `inputFormat` now declares `email`, `tel`,
+   `address`, `textarea rows:5` and `expanded`. Still open: group names and the
+   form title are English only while fields and options carry eight locales, and
+   the first group name still reads "so we can can confirm".
 5. **Xweather questions still open with the vendor**: whether MapsGL runs on a
    free developer key; whether `/roadweather` covers private lots and
    residential streets in the Front Range, since that endpoint — not the general
@@ -557,8 +579,8 @@ declarative `applyBehavior` value-to-step mapping; the shared
 8. Smaller, recorded in the design requests: the top nav in the reference mockup
    carries different items and a different primary label; both detail pages read
    the fixture directly and answer an unknown id with an empty state rather than
-   a 404; on mobile the map's live-conditions chip can sit over a pin; and the
-   button label ships as `Request a quote` where the brief said "request form".
+   a 404; and the button label ships as `Request a quote` where the brief said
+   "request form".
 
 `config-behavior-check`, `care-runtime-check`, `route-smoke`,
 `s7-regression-check` and `s6-cms-export-check` fail on a machine without
@@ -581,25 +603,69 @@ clean checkout before treating any of them as broken.
   outside the repository and were deliberately postponed; do not assume they
   are approved or shipped.
 
+## Granite Ridge live read path
+
+Steps 1 and 2 of the previous checkpoint are done. The enumeration lives in
+`content/cases/SNOW-VERTICAL-CORE-MODEL.md` with 92 payload snapshots under
+`content/core-types/`, reproduced by `scripts/snow-core-inventory.mjs`.
+
+`runtime/src/adapters/core-snow-adapter.js` reads a customer's properties and
+quotes from Core. It is proven against `dev-1`: account 62 resolves to two
+`SNOW_REMOVAL_PROPERTY` resources with real British Columbia addresses and two
+quotes correctly withheld as operator-side. Quotes are scoped by the server on
+`account.id`; properties have no server-side account filter and are walked and
+filtered in the browser, which the envelope reports as
+`scopeMode: "browser-filtered"` and which remains a backend debt.
+
+The `properties` module picks the live adapter in live mode. `currentOverview()`
+now returns a live model built only from live facts: properties from Core,
+weather from Xweather, and absent invoices, contracts, support and banner. It
+refuses to render at all rather than fall back to the demonstration forecast or
+the fixture book.
+
+Service geography moved out of the case fixture. `data-portal-service-geography`
+carries `{ map: { center, zoom }, zones: { name: { lat, lon } } }` as JSON and
+fails closed on anything malformed, a null coordinate or zoom included; `map` is
+the initial viewport before the map fits its pins, live weather reads its zone
+centroids from there, and the fixture keeps its own geography for the
+demonstration tenant. A live property's pin comes from `COORD_LAT` and
+`COORD_LNG`, Float attributes being added to Core type `PROPERTY` (153) and
+inherited by `SNOW_REMOVAL_PROPERTY`.
+
+Checks: `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs`, and the
+read-only staging probe `core-snow-live-check.mjs`.
+
 ## Exact next action
 
-The next phase is wiring Granite Ridge to real data. Do not start by writing an
-adapter — start by finding out what exists:
+Two things block a live Granite Ridge portal, and only the first is code.
 
-1. Enumerate what Core actually answers today for this tenant: resource types,
-   entity types, and whether anything resembling Property, Contract, Invoice,
-   Appointment or Support Ticket is published. Record the real endpoint and
-   payload for each, the way `content/form-types/` snapshots the form contract.
-2. Pick the one entity with a real endpoint and wire that single module end to
-   end — adapter, normalizer, live check — leaving every other module on
-   fixtures. The `dataMode` switch already supports a partially live portal.
-3. Only then decide whether weather moves behind Core, using the shape in
-   `design-requests/overview-weather-provider-xweather.md`.
+1. **Presentation.** `design-requests/granite-ridge-live-core-home-and-quotes.md`
+   asks for four states that do not exist: a property with no coordinate, a
+   Contracts list with no grouping proposal and no measured area, a quote the
+   operator has not sent yet, and what the anonymous quote request promises.
+   Until that is accepted, `proposals` stays on fixtures and is not enabled in
+   live mode. The home screen already places a live property from its
+   coordinates or geocoded address and lists it without a pin otherwise, pending
+   `design-requests/granite-ridge-google-property-map.md`.
+2. **Data.** No customer Account that owns anything is linked to a Core User.
+   Account 692 is the only one with a user (29) and owns nothing; account 62
+   owns property 278, property 430 and orders 18 and 19 but has no user. All
+   three quote orders sit in `INITIAL`, before `QUOTE_SENT`, so nothing is
+   customer-visible yet. Linking a user and advancing one order are writes and
+   belong to the user or to the CRM, not to this repository.
 
-Ask the user before opening any live contract. Nothing in this tenant has ever
-called a ServiceWand backend, and the packaged template asserts that it does
-not — `granite-ridge-portal-manual-check` refuses a service base, an auth
-contract or live data mode in the fixture package.
+Then, and only then: the live snow entry needs `data-portal-data-mode="live"`,
+`data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
+`data-portal-account-type-code="CUSTOMER"`, service geography for the British
+Columbia service area, and an enabled-module list restricted to what has both
+data and design. The fixture package must stay as it is —
+`granite-ridge-portal-manual-check` refuses a service base, an auth contract or
+live data mode in it, and that guard is correct.
+
+Still open after that: whether an address the browser geocodes should be written
+back to `COORD_LAT`/`COORD_LNG` by the CRM rather than geocoded again in every
+browser; and whether weather moves behind Core, using the shape in
+`design-requests/overview-weather-provider-xweather.md`.
 
 Resume prompt for a new session:
 

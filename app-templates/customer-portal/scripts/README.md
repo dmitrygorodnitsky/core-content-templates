@@ -14,6 +14,10 @@ and operator commands.
 | `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |
+| `snow-core-inventory.mjs` | Read-only enumeration of the winter-services types, workflows and records; snapshots them under `../content/core-types/` |
+| `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs` | Deterministic contracts for the live snow property/quote reads and the live home-screen seam |
+| `property-map-check.mjs` | The storm home property map against a stubbed `google.maps`: pins, popup anchored or docked, per-property forecast, geocode cache, the keyless list, and the day timeline badges |
+| `core-snow-live-check.mjs` | Live read-only probe of one customer's properties and quotes on staging |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
 | `s6-*`, `s7-*`, `config-behavior-check.mjs`, `route-smoke.mjs` | Broad CMS/runtime regression gates |
 
@@ -43,10 +47,25 @@ which resolves the template by code and never writes template parents, include
 markup, enabled templates, or PageContext records.
 
 `granite-ridge-portal-manual-check.mjs` re-exports the package into a throwaway
-directory and asserts the fixture invariants: a JTE-safe parameter-free root, no
-service base, no OIDC contract, no tenant organization, a noindex head, and an
-exporter that still refuses live data mode, an escape from `dist/manual-upload/`,
-and products without checkout.
+directory and asserts the fixture invariants: a JTE-safe root whose only
+parameters are the operator-owned form address, Google browser key and map ID,
+no Google key shipped, no service base, no OIDC contract, no tenant
+organization, a noindex head, and an exporter that still refuses live data mode,
+an escape from `dist/manual-upload/`, and products without checkout.
+
+`property-map-check.mjs` loads the map module against a hand-rolled DOM and a
+stubbed `google.maps` (Map, OverlayView, LatLng, LatLngBounds, Geocoder). It
+asserts pin placement and colouring, one map load across re-renders, the popup
+anchored to its pin with close, Escape and focus return, the popup docked below a
+map narrower than 648 px with the same focus, Escape, weather and Go to Property,
+and moved between the two only when a stubbed `ResizeObserver` reports the map
+crossing that width under an open popup, the property forecast fetched once on
+open with the area forecast as its fallback, geocoding once per address with only
+successes cached in `localStorage`, and the list that replaces the map when there
+is no key or Google rejects it. It also renders the overview and reads
+`routes.css` and `responsive.css` to keep the timeline badges reading "4 visits":
+no rule may make the badge a flex or grid box, and tablet and mobile still hide
+the word.
 
 `granite-ridge-landing-manual-check.mjs` guards the snow landing family. It
 re-exports into a throwaway directory and asserts that every child records the
@@ -66,11 +85,22 @@ baked into the uploaded template.
 class to field-type mapping, every `inputFormat` token including masks that
 contain spaces, mask application and completeness, `attributeOrder` winning over
 `attributeGroups`, inherited attributes keeping their parent type id,
-`visible:false` being skipped while ungrouped attributes still render, locale
-fallback, and that all sixteen renderable kinds appear in the committed
-fixture. It also refuses a renderer that gains `new Function`, `eval` or
-`innerHTML`, and a stylesheet that hardcodes a colour instead of using a portal
-token.
+`visible:false` attributes never rendering yet still submitting while ungrouped
+attributes still render, locale fallback, and that every renderable kind but the
+repeating address appears in the committed fixture. Against a stubbed
+`google.maps` that models the `loading=async` bootstrap, where classes appear only
+once `importLibrary` resolves, it drives the Places data API, the legacy
+Autocomplete and the Geocoder, and asserts that an attribute declaring
+`coordinates-of:<address code>` never renders, submits one JSON entry per current
+address that has a location, follows every add, edit and removal in both address
+controls, and leaves a keyless submission unchanged. A browser-like press, where
+mousedown moves focus and a click is lost on an element a re-render removed,
+proves that the first click on a suggestion lands, that typed text survives any
+re-render so Continue commits what is on screen, and that Enter or `+` asks the
+Geocoder for the committed string without any blur. A script that fails to load
+or a library import that fails leaves a plain input that still submits. It also refuses a renderer that gains
+`new Function`, `eval` or `innerHTML`, and a stylesheet that hardcodes a colour
+instead of using a portal token.
 
 `customer-experience-login-check.mjs` and
 `customer-experience-2fa-check.mjs` protect the accepted Core Auth transfer

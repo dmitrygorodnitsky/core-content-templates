@@ -36,6 +36,7 @@ const tenant = {
     path.join(portalRoot, "scripts/granite-ridge-fixture-check.mjs"),
     path.join(portalRoot, "scripts/granite-ridge-portal-manual-check.mjs"),
     path.join(portalRoot, "scripts/live-weather-check.mjs"),
+    path.join(portalRoot, "scripts/property-map-check.mjs"),
     path.join(portalRoot, "scripts/appointments-check.mjs"),
   ],
   uploader: path.join(repoRoot, "app-templates/landing-page/scripts/upload-cms-family.mjs"),

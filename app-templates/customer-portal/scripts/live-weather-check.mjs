@@ -4,8 +4,7 @@ import path from "node:path";
 
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
-const { buildTimeline, periodKind, periodNote, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
-const { mapImageUrl, mapOpened, projectPoint, withinFrame } = await import(new URL("src/normalizers/map-image.js", runtimeRoot));
+const { buildTimeline, forecastDay, periodKind, periodNote, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
 
 const ok = (periods) => ({ ok: true, json: async () => ({ success: true, response: [{ periods }] }) });
 
@@ -116,32 +115,8 @@ assert.match(periodNote(period({ weatherPrimaryCoded: "S::S", snowCM: 4, minFeel
 assert.match(periodNote(period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFeelslikeC: 1 })), /below the 2 cm trigger/);
 assert.match(periodNote(period({ weatherPrimaryCoded: "::ZR", snowCM: 9 })), /de-icing expected/, "freezing rain outranks an accumulation note");
 
-const frame = { center: { lat: 39.7264, lon: -105.1397 }, zoom: 11, size: { width: 1040, height: 560 }, layers: ["flat", "roads"] };
-const keyed = { weatherClientId: "cid", weatherClientSecret: "sec" };
+const ownDay = forecastDay(period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFeelslikeC: 1, maxTempC: -3, weather: "Light Snow, Cloudy" }));
+assert.deepEqual(ownDay, { kind: "snow", temp: "−3°C", phrase: "Light Snow", note: "Snowfall 0.6 cm forecast · below the 2 cm trigger" });
+assert.equal(forecastDay(period({ maxTempC: null })).temp, "—", "a property day with no temperature must not read 0°C");
 
-assert.equal(mapOpened(frame, {}), false, "no key means no map image");
-assert.equal(mapOpened(null, keyed), false);
-assert.equal(mapOpened(frame, keyed), true);
-assert.equal(mapImageUrl(frame, {}), "", "a closed map yields no URL rather than a broken one");
-assert.equal(
-  mapImageUrl(frame, keyed),
-  "https://maps.api.xweather.com/cid_sec/flat,roads/1040x560/39.7264,-105.1397,11/current.png",
-);
-assert.equal(
-  mapImageUrl(Object.assign({}, frame, { layers: ["flat", "../../etc", "roads;rm"] }), keyed),
-  "https://maps.api.xweather.com/cid_sec/flat/1040x560/39.7264,-105.1397,11/current.png",
-  "a layer name that is not a plain slug must be dropped, never interpolated into the path",
-);
-assert.equal(mapImageUrl(Object.assign({}, frame, { layers: [] }), keyed), "");
-
-const middle = projectPoint(frame.center.lat, frame.center.lon, frame);
-assert.equal(Math.round(middle.x), 50, "the centre of the frame is the centre of the image");
-assert.equal(Math.round(middle.y), 50);
-assert.ok(projectPoint(frame.center.lat + 0.05, frame.center.lon, frame).y < 50, "north is up");
-assert.ok(projectPoint(frame.center.lat, frame.center.lon + 0.05, frame).x > 50, "east is right");
-assert.equal(projectPoint(Number.NaN, -105, frame), null);
-assert.equal(projectPoint(39, -105, null), null);
-assert.equal(withinFrame(projectPoint(39.7264, -95, frame)), false, "a point outside the frame must be reported, not clamped");
-assert.equal(withinFrame(null), false);
-
-console.log("live-weather-check ok: closed without a key, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, a fixture fallback on every failure, and a Mercator projection that puts north up and refuses unslugged layers");
+console.log("live-weather-check ok: closed without a key, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, a fixture fallback on every failure, and a property day shaped by the same rules as a zone day");

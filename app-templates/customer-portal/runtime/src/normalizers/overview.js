@@ -30,6 +30,10 @@ export function propertyStatus(property) {
 
 export function propertyWeather(property, frame) {
   if (propertyStatus(property) === "issue") return "issue";
+  return zoneWeather(property, frame);
+}
+
+export function zoneWeather(property, frame) {
   var zones = (frame && frame.zones) || null;
   var zone = property && property.zone;
   if (zones && zone && zones[zone]) return zones[zone];

@@ -585,8 +585,26 @@ export function spaPlanOffers() {
 export function currentOverview() {
   var fixture = currentFixture();
   var overview = (fixture && fixture.overview) || null;
-  if (!overview || !state.liveWeather) return overview;
+  if (state.config.dataMode === "live") return liveOverview();
+  if (!overview) return null;
+  if (!state.liveWeather) return overview;
   return Object.assign({}, overview, { weather: state.liveWeather });
+}
+
+function liveOverview() {
+  var geography = state.config.serviceGeography;
+  if (!geography || !state.liveWeather) return null;
+  var envelope = state.moduleData.properties;
+  if (!envelope || envelope.state !== "ready") return null;
+  return {
+    map: geography.map,
+    weather: state.liveWeather,
+    properties: envelope.items || [],
+    invoices: null,
+    contracts: [],
+    support: [],
+    banner: null,
+  };
 }
 
 export function currentFixture() {

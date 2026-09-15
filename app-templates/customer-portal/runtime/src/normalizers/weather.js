@@ -8,6 +8,14 @@ var STORM_TEMP_C = -5;
 var STORM_SNOW_CM = 2;
 var STORM_POP = 40;
 
+export const WEATHER_LEGEND = Object.freeze([
+  Object.freeze({ key: "clear", label: "Clear" }),
+  Object.freeze({ key: "snow", label: "Snow" }),
+  Object.freeze({ key: "freezing", label: "Freezing rain" }),
+  Object.freeze({ key: "storm", label: "Storm warning" }),
+  Object.freeze({ key: "issue", label: "Issue opened" }),
+]);
+
 export function frameDay(date, index) {
   return index === 0 ? "Today" : DAY_NAMES[date.getDay()];
 }
@@ -60,6 +68,15 @@ export function periodNote(period) {
 
   if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast · below the 2 cm trigger";
   return "Below the service trigger";
+}
+
+export function forecastDay(period) {
+  return {
+    kind: periodKind(period),
+    temp: periodTemp(period),
+    phrase: String((period && period.weather) || "").split(",")[0],
+    note: periodNote(period),
+  };
 }
 
 export function buildTimeline(zonePeriods, zoneOrder) {

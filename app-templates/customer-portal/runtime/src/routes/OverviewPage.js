@@ -1,39 +1,21 @@
 import { h } from "../dom.js";
 import { currentFixture, currentOverview, state } from "../state.js";
+import { ACTIONS } from "../actions.js";
+import { render } from "../app.js";
+import { createPropertyForecasts } from "../live-weather.js";
+import { createXweatherAdapter } from "../adapters/xweather-adapter.js";
+import { browserStorage, createGeocodeCache, createGoogleMapsAdapter } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
-import { OVERVIEW_STATUS as STATUS, appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatus, propertyWeather, serviceDayCount } from "../normalizers/overview.js";
-import { mapImageUrl, mapOpened, projectPoint } from "../normalizers/map-image.js";
+import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
+import { icon } from "../components/storm/overview-icons.js";
+import { appointmentDay, clampFrameIndex, invoiceBuckets, money, serviceDayCount } from "../normalizers/overview.js";
 
-var ICONS = {
-  map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
-  calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
-  invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
-  contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
-  support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
-  alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
-  pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
-  snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
-  live: "M12 11.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z M8.6 8.6a4.8 4.8 0 0 0 0 6.8 M15.4 8.6a4.8 4.8 0 0 1 0 6.8 M6 6a8 8 0 0 0 0 12 M18 6a8 8 0 0 1 0 12",
-};
-
-function icon(name, className) {
-  var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("viewBox", "0 0 24 24");
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("focusable", "false");
-  if (className) svg.setAttribute("class", className);
-  var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", ICONS[name] || "");
-  path.setAttribute("fill", "none");
-  path.setAttribute("stroke", "currentColor");
-  path.setAttribute("stroke-width", "1.6");
-  path.setAttribute("stroke-linecap", "round");
-  path.setAttribute("stroke-linejoin", "round");
-  svg.appendChild(path);
-  return svg;
-}
+var propertyMapController = null;
+var propertyForecastStore = null;
+var focusKeeper = null;
+var lastSelection = null;
 
 export function overviewModel() {
   return currentOverview();
@@ -59,7 +41,7 @@ export function Overview() {
   var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
   var frame = weather.timeline[index];
 
-  page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex)]));
+  page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source)]));
   page.appendChild(MapPanel(model, frame, index));
   page.appendChild(InvoicesWidget(model));
 
@@ -80,7 +62,7 @@ function subline(model, customer) {
   return frame.label + " · " + count + (count === 1 ? " property under contract" : " properties under contract");
 }
 
-function WeatherPanel(frame, isNow) {
+function WeatherPanel(frame, isNow, source) {
   var stats = frame.stats || [];
   return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
     h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
@@ -88,6 +70,7 @@ function WeatherPanel(frame, isNow) {
       text("div", "ov-wx__temp", frame.temp),
       text("div", "ov-wx__label", frame.label),
       text("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " · " + frame.note),
+      WeatherAttribution(source),
     ]),
     stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function (stat) {
       return h("div", { "class": "ov-wx__stat" }, [
@@ -100,47 +83,17 @@ function WeatherPanel(frame, isNow) {
 
 function MapPanel(model, frame, index) {
   var weather = model.weather;
-  var geo = mapOpened(model.map, state.config) ? model.map : null;
-  var imageUrl = geo ? mapImageUrl(geo, state.config) : "";
-  var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind, "data-surface": imageUrl ? "map" : "drawn" });
-  if (imageUrl) {
-    canvas.appendChild(h("img", {
-      "class": "ov-map__image", src: imageUrl, alt: "", "aria-hidden": "true",
-      width: String(geo.size.width), height: String(geo.size.height), loading: "eager", decoding: "async",
-    }));
-  } else {
-    canvas.appendChild(h("div", { "class": "ov-map__road" }));
-  }
-  canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
-  canvas.appendChild(h("div", { "class": "ov-map__chip", "data-source": weather.source || "fixture" }, [
-    icon("live", "ov-map__chip-glyph"),
-    text("span", "", weather.source === "xweather" ? "Live conditions · Xweather" : "Sample conditions"),
-  ]));
-
-  var pins = h("div", { "class": "ov-map__pins" });
-  model.properties.forEach(function (property) {
-    var status = propertyStatus(property);
-    var kind = propertyWeather(property, frame);
-    var selected = state.ovProperty === property.id;
-    var at = pinPlacement(property, geo);
-    if (!at) return;
-    pins.appendChild(h("button", {
-      "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-      style: "left:" + at.x + "%;top:" + at.y + "%",
-      "data-action": "overview.selectProperty", "data-id": property.id,
-      "data-module": "property-pin", "data-visual-id": "property-pin",
-      "data-state": status, "data-weather": kind,
-      "aria-label": property.name + " — " + STATUS[status].label,
-      "aria-pressed": selected ? "true" : "false",
-    }, [icon("pin", "ov-pin__glyph")]));
+  var stage = PropertyStage({
+    properties: model.properties,
+    frame: frame,
+    index: index,
+    weather: weather,
+    viewport: model.map,
+    selectedId: state.ovProperty,
+    map: propertyMap(),
+    forecasts: propertyForecasts(),
   });
-
-  var selectedProperty = model.properties.find(function (property) { return property.id === state.ovProperty; });
-  if (selectedProperty) {
-    var anchor = pinPlacement(selectedProperty, geo);
-    if (anchor) pins.appendChild(PropertyTooltip(selectedProperty, frame, anchor));
-  }
-
+  followSelection();
   return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
     h("div", { "class": "ov-map__head" }, [
       h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
@@ -149,9 +102,54 @@ function MapPanel(model, frame, index) {
         return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text("span", "", item.label)]);
       })),
     ]),
-    h("div", { "class": "ov-map__stage" }, [canvas, pins]),
+    stage,
     DayTimeline(weather, index, model.properties),
+    WeatherAttribution(weather.source, "ov-map__attr"),
   ]);
+}
+
+function propertyMap() {
+  if (!state.config.mapsApiKey) return null;
+  if (!propertyMapController) {
+    propertyMapController = createPropertyMap({
+      adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
+      cache: createGeocodeCache(browserStorage()),
+      mapId: state.config.mapsMapId,
+      dispatch: dispatchAction,
+      onChange: render,
+    });
+  }
+  return propertyMapController;
+}
+
+function propertyForecasts() {
+  if (!propertyForecastStore) {
+    propertyForecastStore = createPropertyForecasts({
+      adapter: createXweatherAdapter({ clientId: state.config.weatherClientId, clientSecret: state.config.weatherClientSecret }),
+      onChange: render,
+    });
+  }
+  return propertyForecastStore;
+}
+
+function dispatchAction(name, id) {
+  var action = ACTIONS[name];
+  if (action) action(id);
+}
+
+function followSelection() {
+  if (!focusKeeper) {
+    focusKeeper = createFocusKeeper(document);
+    closeOnEscape(document, function () {
+      return state.route === "overview" && !!state.ovProperty;
+    }, function () {
+      dispatchAction("overview.closeProperty");
+    });
+  }
+  var previous = lastSelection;
+  var current = state.ovProperty;
+  lastSelection = current;
+  Promise.resolve().then(function () { focusKeeper.settle(current, previous); });
 }
 
 function DayTimeline(weather, index, properties) {
@@ -190,42 +188,6 @@ function stepButton(glyph, label, target, disabled) {
     "aria-label": label,
     disabled: disabled ? "disabled" : undefined,
   }, glyph);
-}
-
-function pinPlacement(property, geo) {
-  if (!geo) return { x: property.x, y: property.y };
-  return projectPoint(property.lat, property.lon, geo);
-}
-
-function PropertyTooltip(property, frame, at) {
-  var status = propertyStatus(property);
-  var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
-  var next = property.appointment && property.appointment.state === "SCHEDULED" ? property.appointment : null;
-  var line = active ? active.service + " · " + active.when
-    : next ? next.service + " · " + next.when
-    : property.lastService ? "Last service · " + property.lastService.service + " · " + property.lastService.when
-    : "";
-
-  var above = at.y > 55;
-  var top = above ? "calc(" + at.y + "% - 194px)" : "calc(" + at.y + "% + 12px)";
-  var place = "left:clamp(0px, calc(" + at.x + "% - 144px), calc(100% - 288px));"
-    + "top:clamp(8px, " + top + ", calc(100% - 168px))";
-
-  return h("div", { "class": "ov-tip", style: place, "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, "data-place": above ? "above" : "below", role: "dialog", "aria-label": property.name }, [
-    h("div", { "class": "ov-tip__head" }, [
-      h("div", { style: "flex:1;min-width:0" }, [
-        text("div", "ov-tip__name", property.name),
-        text("div", "ov-tip__addr", property.address),
-      ]),
-      h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "✕"),
-    ]),
-    h("div", { "class": "ov-tip__tags" }, [
-      text("span", "ov-tip__tag ov-tip__tag--" + status, STATUS[status].label),
-      text("span", "ov-tip__tag ov-tip__tag--wx", frame.day + " · " + frame.temp),
-    ]),
-    line ? text("div", "ov-tip__line", line) : null,
-    h("div", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property ›"),
-  ]);
 }
 
 function UpcomingWidget(model, timeline) {

@@ -47,7 +47,7 @@
       "proposals": "Contracts",
       "support": "Support"
     },
-    "requestFormUrl": "https://dev-1.servicewand.com/snow-removal--request-quote"
+    "requestFormUrl": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote"
   },
   "constraints": [
     "Every fact in this package is a repository-owned fixture. No customer, tenant, entitlement, operational, or payment fact comes from a source system.",
@@ -56,6 +56,7 @@
     "Checkout, cart, weather-trigger confirmation, access confirmation, contract approval, and support replies are local fixture transitions. None of them is a business result and none creates a record anywhere.",
     "The nav brand is shortened to Granite Ridge because the accepted top-nav has no overflow treatment for a long brand. See design-requests/storm-portal-top-nav-brand-and-mobile-overflow.md; the shell still overflows horizontally at 375 and 390.",
     "Pricing is reachable from the accepted Manage plan action on the storm home rail rather than from an eighth nav item, to stay inside the accepted nav item count.",
+    "PORTAL_MAPS_API_KEY is a public Google browser key by design and must be restricted by HTTP referrer and API list in the Google console. The package ships it empty: no Google script is loaded and the home screen lists the properties instead of drawing a map.",
     "Opening any live contract requires replacing this package: a real session, a customer-scoped Account resolution, and per-module adapters that fail closed."
   ]
 }

@@ -6,6 +6,7 @@ import { createCoreCartAdapter } from "../adapters/core-cart-adapter.js";
 import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
 import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
+import { createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter } from "../adapters/core-snow-adapter.js";
 import { createCoreOidcAdapter } from "../adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "../adapters/core-user-profile-adapter.js";
 import {
@@ -294,6 +295,28 @@ const cartModule = {
   },
 };
 
+const propertiesModule = {
+  id: "properties",
+  asyncOnly: true,
+  adapter(context) {
+    if (context.config.dataMode === "live") return createCoreSnowPropertiesAdapter();
+    return fixtureAdapter;
+  },
+  normalize(raw) { return raw; },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    return {
+      state: error && error.code === "customer-forbidden" ? "unauthorized" : "error",
+      accountId: null,
+      items: [],
+      scopeMode: null,
+      truncated: false,
+    };
+  },
+};
+
 const checkoutModule = {
   id: "checkout",
   adapter(context) {
@@ -319,7 +342,7 @@ export const modules = {
   plan: planModule,
   overview: module("overview", function (raw) { return raw; }),
   appointmentsTimeline: module("appointmentsTimeline", function (raw) { return raw; }),
-  properties: module("properties", function (raw) { return raw; }),
+  properties: propertiesModule,
   calendar: module("calendar", normalizeCalendar),
   activity: module("activity", normalizeActivity),
   profile: profileModule,

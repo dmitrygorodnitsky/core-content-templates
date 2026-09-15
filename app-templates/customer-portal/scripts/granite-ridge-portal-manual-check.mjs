@@ -38,10 +38,21 @@ try {
   assert.match(html, /data-portal-nav-appointments-label="Appointments"/);
   assert.match(html, /data-portal-primary-cta-label="Request a quote"/);
   assert.match(html, /data-portal-request-form-url="\$\{PORTAL_REQUEST_FORM_URL@STRING\}"/, "the form address is operator-owned, so it is a CMS parameter rather than a baked value");
-  assert.deepEqual(template.parameters.map((item) => item.code), ["PORTAL_REQUEST_FORM_URL"]);
-  assert.equal(template.parameters[0].type, "STRING");
-  assert.match(template.parameters[0].value, /^https:\/\//, "the shipped default must itself be a valid https address");
-  assert.match(template.parameters[0].nls.en.DESCRIPTION, /https/, "the description has to tell the operator what a valid value looks like");
+  assert.deepEqual(template.parameters.map((item) => item.code), ["PORTAL_REQUEST_FORM_URL", "PORTAL_MAPS_API_KEY", "PORTAL_MAPS_MAP_ID"]);
+  assert.ok(template.parameters.every((item) => item.type === "STRING"));
+  const [formUrl, mapsKey, mapId] = template.parameters;
+  assert.match(formUrl.value, /^https:\/\//, "the shipped default must itself be a valid https address");
+  assert.match(formUrl.nls.en.DESCRIPTION, /https/, "the description has to tell the operator what a valid value looks like");
+  assert.match(html, /data-portal-maps-api-key="\$\{PORTAL_MAPS_API_KEY@STRING\}"/, "the Google key is operator-owned, so it is a CMS parameter rather than a baked value");
+  assert.match(html, /data-portal-maps-map-id="\$\{PORTAL_MAPS_MAP_ID@STRING\}"/);
+  assert.equal(mapsKey.value, "", "no Google key ships in the repository");
+  assert.equal(mapId.value, "");
+  assert.match(mapsKey.nls.en.DESCRIPTION, /visible in page source/, "the description must say the key is public");
+  assert.match(mapsKey.nls.en.DESCRIPTION, /HTTP referrer/, "the description must say how to restrict the key");
+  assert.match(mapsKey.nls.en.DESCRIPTION, /Maps JavaScript API and the Geocoding API/, "the description must name the only APIs the key needs");
+  assert.match(mapsKey.nls.en.DESCRIPTION, /no Google script is loaded/, "the description must say what an empty key does");
+  assert.deepEqual(manifest.template.parameters, ["PORTAL_REQUEST_FORM_URL", "PORTAL_MAPS_API_KEY", "PORTAL_MAPS_MAP_ID"]);
+  assert.ok(manifest.constraints.some((line) => line.startsWith("PORTAL_MAPS_API_KEY is a public Google browser key")));
   assert.match(html, /data-portal-brand-name="Granite Ridge"/);
   assert.match(html, /data-portal-nav-care-label="Season log"/);
   assert.match(html, /data-portal-nav-proposals-label="Contracts"/);
@@ -51,6 +62,8 @@ try {
   assert.doesNotMatch(html, /data-portal-organization/, "a fixture package must not name a tenant organization");
   assert.doesNotMatch(html, /account-id|user-id|access-token|bearer/i);
   assert.doesNotMatch(head, /<script/i, "the fixture head must not load an external runtime library");
+  assert.doesNotMatch(head + html, /maps\.googleapis\.com/, "the Google script is loaded lazily by the property map, never by the page");
+  assert.doesNotMatch(javascript, /maps\.api\.xweather\.com/, "the retired Xweather map image must not come back");
   assert.match(head, /name="robots" content="noindex,nofollow"/, "a demonstration portal must not be indexable");
 
   assert.equal(manifest.runtime.dataMode, "fixture");
@@ -115,7 +128,7 @@ try {
   const packaged = await exportFixturePortalManual({ inputPath: withoutTimelineInput, runtimePath, outputDir });
   assert.ok(packaged, "dropping the timeline module is allowed; the nav item simply disappears");
 
-  console.log("granite-ridge-portal-manual-check ok: JTE-safe fixture root whose only parameter is the operator-owned form address, no service base, no auth contract, no live contract opened");
+  console.log("granite-ridge-portal-manual-check ok: JTE-safe fixture root whose only parameters are the operator-owned form address, Google browser key and map ID, no Google key shipped, no service base, no auth contract, no live contract opened");
 } finally {
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.rm(path.join(root, "runtime/escaped-package"), { recursive: true, force: true });

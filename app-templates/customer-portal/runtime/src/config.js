@@ -250,6 +250,9 @@ export function readPortalConfig(root) {
     requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
     weatherClientId: dataset.portalWeatherClientId || "",
     weatherClientSecret: dataset.portalWeatherClientSecret || "",
+    mapsApiKey: mapsToken(dataset.portalMapsApiKey),
+    mapsMapId: mapsToken(dataset.portalMapsMapId),
+    serviceGeography: readServiceGeography(dataset.portalServiceGeography),
     routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
     authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
     defaultRoute: routeRegistry[dataset.portalDefaultRoute] ? dataset.portalDefaultRoute : verticalConfig.defaultRoute,
@@ -316,6 +319,62 @@ export function routePath(routeId, params) {
     }
     return encodeURIComponent(String(values[name]));
   });
+}
+
+export function readServiceGeography(raw) {
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  var parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_) {
+    return null;
+  }
+  if (!parsed || typeof parsed !== "object") return null;
+  var map = readGeoMap(parsed.map);
+  var zones = readGeoZones(parsed.zones);
+  if (!map || !zones) return null;
+  return { map: map, zones: zones };
+}
+
+function readGeoMap(value) {
+  if (!value || typeof value !== "object") return null;
+  var center = readGeoPoint(value.center);
+  var zoom = finiteNumber(value.zoom);
+  if (!center) return null;
+  if (!Number.isFinite(zoom) || zoom < 0 || zoom > 22) return null;
+  return { center: center, zoom: zoom };
+}
+
+function readGeoZones(value) {
+  if (!value || typeof value !== "object") return null;
+  var zones = {};
+  var names = Object.keys(value);
+  for (var index = 0; index < names.length; index += 1) {
+    var point = readGeoPoint(value[names[index]]);
+    if (!point) return null;
+    zones[names[index]] = point;
+  }
+  return names.length ? zones : null;
+}
+
+function readGeoPoint(value) {
+  if (!value || typeof value !== "object") return null;
+  var lat = finiteNumber(value.lat);
+  var lon = finiteNumber(value.lon);
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90) return null;
+  if (!Number.isFinite(lon) || lon < -180 || lon > 180) return null;
+  return { lat: lat, lon: lon };
+}
+
+function finiteNumber(value) {
+  if (typeof value === "number") return value;
+  if (typeof value === "string" && value.trim() !== "") return Number(value);
+  return Number.NaN;
+}
+
+function mapsToken(value) {
+  var token = String(value || "").trim();
+  return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
 }
 
 function vertical(slug, displayName, profile, careNavLabel, weather) {

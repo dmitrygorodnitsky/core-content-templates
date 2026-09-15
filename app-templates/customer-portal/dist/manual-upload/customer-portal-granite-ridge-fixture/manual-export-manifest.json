@@ -7,12 +7,16 @@
  "template": {
   "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
   "templateLanguage": "JTE",
-  "parameters": [],
+  "parameters": [
+   "PORTAL_REQUEST_FORM_URL",
+   "PORTAL_MAPS_API_KEY",
+   "PORTAL_MAPS_MAP_ID"
+  ],
   "sha256": {
    "head": "61a04d3709fb16a8aed409fd6aec77b8a4cfc728577eb5086fecde065d78f2c9",
-   "html": "9e33b0343a43f87fdc346c111d281cb0e7f2e99ff0436c3043353e0f5093ff4d",
-   "css": "7a1494e82236751c1e5a314b6be1dec65a999e253dc0735f46596a7497df7e4c",
-   "javascript": "a8a3f441f4959aa383d70636dc9d6cf29b858e9a0321eb63981cb37cf1fc9efc"
+   "html": "7977bab36627b5e593f1c12a93b7732abd36d1fc53fa42eeff6e8a30e783a802",
+   "css": "72867579741968b6420038ea76aa8a5b541413f0b67fcb650580a93600b9fbae",
+   "javascript": "cfceaf3031035d18bd20228ea919bc76258b557676b99d62cf91497b516b8334"
   }
  },
  "runtime": {
@@ -43,6 +47,7 @@
   "Checkout, cart, weather-trigger confirmation, access confirmation, contract approval, and support replies are local fixture transitions. None of them is a business result and none creates a record anywhere.",
   "The nav brand is shortened to Granite Ridge because the accepted top-nav has no overflow treatment for a long brand. See design-requests/storm-portal-top-nav-brand-and-mobile-overflow.md; the shell still overflows horizontally at 375 and 390.",
   "Pricing is reachable from the accepted Manage plan action on the storm home rail rather than from an eighth nav item, to stay inside the accepted nav item count.",
+  "PORTAL_MAPS_API_KEY is a public Google browser key by design and must be restricted by HTTP referrer and API list in the Google console. The package ships it empty: no Google script is loaded and the home screen lists the properties instead of drawing a map.",
   "Opening any live contract requires replacing this package: a real session, a customer-scoped Account resolution, and per-module adapters that fail closed."
  ]
 }

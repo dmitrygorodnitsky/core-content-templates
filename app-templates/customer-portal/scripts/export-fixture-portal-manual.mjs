@@ -82,7 +82,7 @@ async function validateSource(source) {
   }
 }
 
-const DEPLOYMENT_PARAMETERS = new Set(["PORTAL_REQUEST_FORM_URL"]);
+const DEPLOYMENT_PARAMETERS = new Set(["PORTAL_REQUEST_FORM_URL", "PORTAL_MAPS_API_KEY", "PORTAL_MAPS_MAP_ID"]);
 
 function templateFor(source, css, javascript) {
   const runtime = source.runtime;
@@ -116,6 +116,8 @@ function templateFor(source, css, javascript) {
     "data-portal-request-form-url": ref("PORTAL_REQUEST_FORM_URL", "STRING"),
     "data-portal-weather-client-id": (runtime.weather && runtime.weather.clientId) || "",
     "data-portal-weather-client-secret": (runtime.weather && runtime.weather.clientSecret) || "",
+    "data-portal-maps-api-key": ref("PORTAL_MAPS_API_KEY", "STRING"),
+    "data-portal-maps-map-id": ref("PORTAL_MAPS_MAP_ID", "STRING"),
   };
   return {
     code: source.template.code,
@@ -129,11 +131,23 @@ function templateFor(source, css, javascript) {
     html: '<section id="app" ' + attrs(attributes) + "></section>",
     css,
     javascript,
-    parameters: [parameter(
-      "PORTAL_REQUEST_FORM_URL",
-      shell.requestFormUrl || "",
-      "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert rather than sending the customer somewhere unintended.",
-    )],
+    parameters: [
+      parameter(
+        "PORTAL_REQUEST_FORM_URL",
+        shell.requestFormUrl || "",
+        "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert rather than sending the customer somewhere unintended.",
+      ),
+      parameter(
+        "PORTAL_MAPS_API_KEY",
+        "",
+        "Google Maps browser key for the property map on the home screen. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript API and the Geocoding API. Addresses of properties without stored coordinates are sent to the Geocoding API. While it is empty no Google script is loaded and the home screen lists the properties without a map.",
+      ),
+      parameter(
+        "PORTAL_MAPS_MAP_ID",
+        "",
+        "Optional Google Cloud map ID that styles the property map, created in the same Google Cloud project as PORTAL_MAPS_API_KEY. It is not a secret. While it is empty the map uses Google's default style.",
+      ),
+    ],
   };
 }
 
@@ -214,7 +228,7 @@ function manifestFor(sourcePath, source, template) {
     template: {
       code: template.code,
       templateLanguage: template.templateLanguage,
-      parameters: [],
+      parameters: template.parameters.map(function (item) { return item.code; }),
       sha256: {
         head: sha256(template.head),
         html: sha256(template.html),
@@ -281,8 +295,9 @@ function readmeFor(packageData) {
     "## Manual upload",
     "",
     "Paste `root/head.html`, `root/html.html`, `root/css.css`, and `root/javascript.js` into the",
-    "matching CMS BlockTemplate fields. The template declares no parameters: every value the",
-    "runtime reads is a `data-portal-*` attribute in `root/html.html`.",
+    "matching CMS BlockTemplate fields. Every value the runtime reads is a `data-portal-*` attribute",
+    "in `root/html.html`; the operator-owned ones are the deployment parameters "
+      + packageData.template.parameters.map((item) => "`" + item.code + "`").join(", ") + ".",
     "",
     "Open `preview.html` in a browser to see exactly what CMS will render.",
     "",

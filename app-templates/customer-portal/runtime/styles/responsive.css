@@ -201,7 +201,7 @@
 
 .vw-mobile .ov-bill__stat + .ov-bill__stat { border-left: 0; border-top: 1px solid var(--hair); }
 
-.vw-mobile .ov-day__svc { height: 17px; padding: 0 5px; font-size: 10.5px; }
+.vw-mobile .ov-day__svc { height: 17px; padding: 0 5px; font-size: 10.5px; line-height: 17px; }
 
 .vw-tablet .ov-day__svc-word,
 .vw-mobile .ov-day__svc-word { display: none; }
@@ -220,9 +220,13 @@
 
 .vw-mobile .ov-wx__stats { padding-left: 0; border-left: 0; width: 100%; }
 
-.vw-mobile .ov-map__canvas[data-surface="drawn"] { height: 260px; }
+.vw-mobile .ov-map__canvas { height: 320px; }
 
-.vw-mobile .ov-map__pins .ov-tip { position: absolute; left: 8px !important; right: 8px; width: auto; top: auto !important; bottom: 8px; transform: none !important; }
+.vw-mobile .ov-prow { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .ov-prow__meta { width: 100%; padding-left: 36px; }
+
+.vw-mobile .ov-tip[data-place="inline"] { margin-left: 6px; }
 
 .vw-mobile .ov-day__date { font-size: 10.5px; }
 

@@ -638,8 +638,8 @@
       { label: "Invoices & payments", dot: "#ff8a3d", iconBg: "rgba(255,159,10,.16)", q: "I have a billing question" },
       { label: "Report an issue after service", dot: "#7a52e0", iconBg: "rgba(122,82,224,.16)", q: "I want to report an issue" }
     ];
-    function chatReply(text13) {
-      var t = (text13 || "").toLowerCase();
+    function chatReply(text15) {
+      var t = (text15 || "").toLowerCase();
       if (/(where|track|technician|daniel|coming|arriv)/.test(t)) return "Daniel is about 14 minutes away \u2014 3 stops out. You can watch his live location in the Orders tab.";
       if (/(reschedul|move|change.*(time|date|visit)|cancel)/.test(t)) return "Sure \u2014 which visit would you like to move? You can also reschedule straight from the order details.";
       if (/(bill|invoice|charge|pay|refund|price)/.test(t)) return "Your last invoice #SV-2381 was $480, paid Jan 12. Want me to email you a copy?";
@@ -1861,9 +1861,7 @@
     overview: {
       map: {
         center: { lat: 39.7264, lon: -105.1397 },
-        zoom: 11,
-        size: { width: 1040, height: 560 },
-        layers: ["flat", "water", "roads", "interstates", "cities", "admin"]
+        zoom: 11
       },
       weather: {
         nowIndex: 0,
@@ -2941,6 +2939,9 @@
       requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
       weatherClientId: dataset.portalWeatherClientId || "",
       weatherClientSecret: dataset.portalWeatherClientSecret || "",
+      mapsApiKey: mapsToken(dataset.portalMapsApiKey),
+      mapsMapId: mapsToken(dataset.portalMapsMapId),
+      serviceGeography: readServiceGeography(dataset.portalServiceGeography),
       routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
       authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
       defaultRoute: routeRegistry[dataset.portalDefaultRoute] ? dataset.portalDefaultRoute : verticalConfig.defaultRoute,
@@ -3008,6 +3009,56 @@
       }
       return encodeURIComponent(String(values[name]));
     });
+  }
+  function readServiceGeography(raw) {
+    if (typeof raw !== "string" || !raw.trim()) return null;
+    var parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (_) {
+      return null;
+    }
+    if (!parsed || typeof parsed !== "object") return null;
+    var map = readGeoMap(parsed.map);
+    var zones = readGeoZones(parsed.zones);
+    if (!map || !zones) return null;
+    return { map, zones };
+  }
+  function readGeoMap(value) {
+    if (!value || typeof value !== "object") return null;
+    var center = readGeoPoint(value.center);
+    var zoom = finiteNumber2(value.zoom);
+    if (!center) return null;
+    if (!Number.isFinite(zoom) || zoom < 0 || zoom > 22) return null;
+    return { center, zoom };
+  }
+  function readGeoZones(value) {
+    if (!value || typeof value !== "object") return null;
+    var zones = {};
+    var names = Object.keys(value);
+    for (var index = 0; index < names.length; index += 1) {
+      var point = readGeoPoint(value[names[index]]);
+      if (!point) return null;
+      zones[names[index]] = point;
+    }
+    return names.length ? zones : null;
+  }
+  function readGeoPoint(value) {
+    if (!value || typeof value !== "object") return null;
+    var lat = finiteNumber2(value.lat);
+    var lon = finiteNumber2(value.lon);
+    if (!Number.isFinite(lat) || lat < -90 || lat > 90) return null;
+    if (!Number.isFinite(lon) || lon < -180 || lon > 180) return null;
+    return { lat, lon };
+  }
+  function finiteNumber2(value) {
+    if (typeof value === "number") return value;
+    if (typeof value === "string" && value.trim() !== "") return Number(value);
+    return Number.NaN;
+  }
+  function mapsToken(value) {
+    var token = String(value || "").trim();
+    return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
   }
   function vertical(slug2, displayName, profile, careNavLabel, weather) {
     return {
@@ -3359,11 +3410,11 @@
     }).join(" ");
   }
   function opaqueRef3(prefix, value) {
-    var text13 = String(value || prefix);
+    var text15 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text13.length; index += 1) {
-      var code = text13.charCodeAt(index);
+    for (var index = 0; index < text15.length; index += 1) {
+      var code = text15.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -3659,8 +3710,25 @@
   function currentOverview() {
     var fixture = currentFixture();
     var overview = fixture && fixture.overview || null;
-    if (!overview || !state.liveWeather) return overview;
+    if (state.config.dataMode === "live") return liveOverview();
+    if (!overview) return null;
+    if (!state.liveWeather) return overview;
     return Object.assign({}, overview, { weather: state.liveWeather });
+  }
+  function liveOverview() {
+    var geography = state.config.serviceGeography;
+    if (!geography || !state.liveWeather) return null;
+    var envelope2 = state.moduleData.properties;
+    if (!envelope2 || envelope2.state !== "ready") return null;
+    return {
+      map: geography.map,
+      weather: state.liveWeather,
+      properties: envelope2.items || [],
+      invoices: null,
+      contracts: [],
+      support: [],
+      banner: null
+    };
   }
   function currentFixture() {
     var fixture = caseFixtureFor(state.config.caseId);
@@ -4115,7 +4183,7 @@
   function setCoreCartItemCount(input, context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = cartContext(context, explicitOrigin);
     var priceId = cartPriceId(input);
-    var count = finiteNumber2(input && input.count, NaN);
+    var count = finiteNumber3(input && input.count, NaN);
     if (!Number.isInteger(count) || count < 0) throw contractError("cart-count-invalid", "A cart quantity must be a non-negative integer");
     if (count === 0) return removeCoreCartItem(input, context, fetchImpl, explicitOrigin);
     return singleFlight("cart:count:" + api.accountId + ":" + priceId + ":" + count, async function() {
@@ -4190,13 +4258,13 @@
     lines.forEach(function(line) {
       byRef[line.ref] = line;
     });
-    var subtotal = finiteNumber2(view && view.subtotal, null);
+    var subtotal = finiteNumber3(view && view.subtotal, null);
     return {
       backendId: positiveInteger3(view && view.id) || null,
       byRef,
       currencyCode,
       displaySubtotal: subtotal == null ? null : formatMoney(subtotal, currencyCode),
-      itemCount: finiteNumber2(view && view.itemCount, null),
+      itemCount: finiteNumber3(view && view.itemCount, null),
       lines,
       notes: text3(view && view.notes),
       organizationCode: codeOf(view && view.organization),
@@ -4209,8 +4277,8 @@
     var priceId = positiveInteger3(row && row.priceId);
     if (!priceId) throw contractError("invalid-cart-line", "Core cart item did not include a price id");
     var currencyCode = codes[String(row && row.currency)] || currencyOf(row && row.currency) || cartCurrency;
-    var unitAmount = finiteNumber2(row && row.unitAmount, null);
-    var lineAmount = finiteNumber2(row && row.lineAmount, null);
+    var unitAmount = finiteNumber3(row && row.unitAmount, null);
+    var lineAmount = finiteNumber3(row && row.lineAmount, null);
     var productCode = text3(row && row.productCode);
     var productId = positiveInteger3(row && row.productId) || null;
     var catalogRow = catalogEntry(api, productCode, productId);
@@ -4228,7 +4296,7 @@
       // The SPA_* product type, carried so checkout can pick the matching
       // SPA_ITEM_* line type without a second lookup. See catalogEntry.
       productTypeCode: text3(catalogRow && catalogRow.productTypeCode),
-      qty: finiteNumber2(row && row.count, 0),
+      qty: finiteNumber3(row && row.count, 0),
       ref: LINE_REF_PREFIX + priceId,
       title: text3(catalogRow && (catalogRow.name || catalogRow.title)) || "Item",
       unitAmount,
@@ -4390,7 +4458,7 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : 0;
   }
-  function finiteNumber2(value, fallback) {
+  function finiteNumber3(value, fallback) {
     var number = Number(value);
     return value == null || value === "" || !Number.isFinite(number) ? fallback : number;
   }
@@ -4755,7 +4823,7 @@
   function normalizeLine2(line, currencyCode) {
     var id = positiveInteger4(line && line.id);
     var count = positiveInteger4(line.itemCount) || 1;
-    var unit = finiteNumber3(line.amount);
+    var unit = finiteNumber4(line.amount);
     return {
       ref: "pln-core-" + id,
       kind: ITEM_KINDS[text4(line.type && line.type.code)] || null,
@@ -4819,9 +4887,9 @@
       id,
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
       notes: text4(row.notes),
-      grandTotal: finiteNumber3(row.grandTotal),
-      totalCharges: finiteNumber3(row.totalCharges),
-      totalTaxes: finiteNumber3(row.totalTaxes),
+      grandTotal: finiteNumber4(row.grandTotal),
+      totalCharges: finiteNumber4(row.totalCharges),
+      totalTaxes: finiteNumber4(row.totalTaxes),
       currency: { code: text4(row.currency && row.currency.code), label: localizedName2(row.currency && row.currency.nls) },
       type: { code: text4(row.type && row.type.code), label: localizedName2(row.type && row.type.nls) },
       states,
@@ -4875,7 +4943,7 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber3(value) {
+  function finiteNumber4(value) {
     var number = Number(value);
     return Number.isFinite(number) ? number : null;
   }
@@ -5218,7 +5286,7 @@
         end: new Date(Date.parse(start) + duration).toISOString(),
         id,
         nls: current.nls || { en: { NAME: "Spa appointment" } },
-        optimistic: finiteNumber4(current.optimistic, 0),
+        optimistic: finiteNumber5(current.optimistic, 0),
         organization: requiredRef(current.organization, "Appointment organization"),
         start,
         task: optionalRef(current.task),
@@ -5333,7 +5401,7 @@
     if (!priceId) throw contractError3("order-line-price-missing", "Cart line " + (index + 1) + " has no price id");
     var qty = positiveInteger5(line && line.qty);
     if (!qty) throw contractError3("order-line-count-missing", "Cart line " + (index + 1) + " has no quantity");
-    var unitAmount = finiteNumber4(line && line.unitAmount, null);
+    var unitAmount = finiteNumber5(line && line.unitAmount, null);
     if (unitAmount == null) throw contractError3("order-line-amount-missing", "Cart line " + (index + 1) + " has no server unit amount");
     var productTypeCode = text5(line && line.productTypeCode);
     var itemTypeCode = ITEM_TYPE_BY_PRODUCT_TYPE[productTypeCode];
@@ -5370,11 +5438,11 @@
       accountId,
       lines: rows.map(function(row) {
         return {
-          itemCount: finiteNumber4(row.itemCount, 0),
+          itemCount: finiteNumber5(row.itemCount, 0),
           priceId: positiveInteger5(row.itemPrice && row.itemPrice.id),
           productCode: text5(row.notes),
           typeCode: text5(row.type && row.type.code),
-          unitAmount: finiteNumber4(row.amount, null)
+          unitAmount: finiteNumber5(row.amount, null)
         };
       })
     });
@@ -5691,9 +5759,9 @@
       id,
       optimistic: Number.isFinite(Number(row.optimistic)) ? Number(row.optimistic) : null,
       notes: text5(row.notes),
-      grandTotal: finiteNumber4(row.grandTotal, 0),
-      totalCharges: finiteNumber4(row.totalCharges, 0),
-      totalTaxes: finiteNumber4(row.totalTaxes, 0),
+      grandTotal: finiteNumber5(row.grandTotal, 0),
+      totalCharges: finiteNumber5(row.totalCharges, 0),
+      totalTaxes: finiteNumber5(row.totalTaxes, 0),
       currencyCode: text5(row.currency && row.currency.code),
       typeCode: text5(row.type && row.type.code),
       statusCode: states.join(" \xB7 ")
@@ -5737,7 +5805,7 @@
     var number = Number(candidate);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber4(value, fallback) {
+  function finiteNumber5(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
@@ -5989,7 +6057,7 @@
       id: api.userId,
       language: requiredRef2(current.language, "User language"),
       name: text6(current.name),
-      optimistic: finiteNumber5(current.optimistic, 0),
+      optimistic: finiteNumber6(current.optimistic, 0),
       workflow: requiredRef2(current.workflow, "User workflow")
     };
     if (!entity.email) throw error("profile-email-required", "Email is required");
@@ -6063,7 +6131,7 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function finiteNumber5(value, fallback) {
+  function finiteNumber6(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
@@ -7362,6 +7430,353 @@
     return page;
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/xweather-adapter.js
+  var HOST = "https://data.api.xweather.com";
+  function createXweatherAdapter(options2) {
+    var clientId = options2 && options2.clientId || "";
+    var clientSecret = options2 && options2.clientSecret || "";
+    var fetchImpl = options2 && options2.fetch || (typeof fetch === "function" ? fetch : null);
+    return {
+      opened: function() {
+        return !!(clientId && clientSecret && fetchImpl);
+      },
+      dailyForecast: function(lat, lon, days) {
+        if (!this.opened()) return Promise.reject(new Error("Xweather adapter is not opened"));
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return Promise.reject(new Error("A forecast needs a finite coordinate"));
+        var url = HOST + "/forecasts/" + encodeURIComponent(lat + "," + lon) + "?filter=day&limit=" + encodeURIComponent(String(days)) + "&client_id=" + encodeURIComponent(clientId) + "&client_secret=" + encodeURIComponent(clientSecret);
+        return fetchImpl(url, { credentials: "omit", mode: "cors" }).then(function(response) {
+          if (!response.ok) throw new Error("Xweather HTTP " + response.status);
+          return response.json();
+        }).then(function(payload) {
+          if (!payload || payload.success !== true) {
+            throw new Error("Xweather error: " + (payload && payload.error && payload.error.description || "unknown"));
+          }
+          var periods = payload.response && payload.response[0] && payload.response[0].periods;
+          if (!Array.isArray(periods) || !periods.length) throw new Error("Xweather returned no forecast periods");
+          return periods;
+        });
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/normalizers/weather.js
+  var DAY_NAMES2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var SNOW_CODES = ["S", "SI", "BS", "BY", "WM", "SW"];
+  var FREEZING_CODES = ["ZR", "ZL", "ZY", "IP", "IC"];
+  var THUNDER_CODES = ["T"];
+  var STORM_TEMP_C = -5;
+  var STORM_SNOW_CM = 2;
+  var STORM_POP = 40;
+  var WEATHER_LEGEND = Object.freeze([
+    Object.freeze({ key: "clear", label: "Clear" }),
+    Object.freeze({ key: "snow", label: "Snow" }),
+    Object.freeze({ key: "freezing", label: "Freezing rain" }),
+    Object.freeze({ key: "storm", label: "Storm warning" }),
+    Object.freeze({ key: "issue", label: "Issue opened" })
+  ]);
+  function frameDay(date, index) {
+    return index === 0 ? "Today" : DAY_NAMES2[date.getDay()];
+  }
+  function frameDate(date) {
+    return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
+  }
+  function periodKind(period) {
+    var coded = String(period && period.weatherPrimaryCoded || "");
+    var precipitation = coded.split(":")[2] || "";
+    if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
+    if (SNOW_CODES.indexOf(precipitation) !== -1) {
+      var snow = num(period.snowCM);
+      var feels = num(period.minFeelslikeC);
+      var stormy = Number.isFinite(snow) && snow >= STORM_SNOW_CM || Number.isFinite(feels) && feels <= STORM_TEMP_C;
+      return stormy ? "storm" : "snow";
+    }
+    if (THUNDER_CODES.indexOf(precipitation) !== -1 && num(period.pop) >= STORM_POP) return "storm";
+    return "clear";
+  }
+  function periodTemp(period) {
+    var value = num(period && period.maxTempC);
+    if (!Number.isFinite(value)) return "\u2014";
+    return (value < 0 ? "\u2212" : "") + Math.abs(Math.round(value)) + "\xB0C";
+  }
+  function periodStats(period) {
+    return [
+      { label: "Precipitation", value: statValue(period.pop, "%") },
+      { label: "Wind", value: windValue(period) },
+      { label: "Feels like", value: tempValue(period.minFeelslikeC) },
+      { label: "Humidity", value: statValue(period.humidity, "%") }
+    ];
+  }
+  function periodNote(period) {
+    var kind = periodKind(period);
+    if (kind === "freezing") return "Freezing precipitation \xB7 de-icing expected";
+    var snow = num(period && period.snowCM);
+    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast \xB7 trigger met";
+    if (kind === "storm") {
+      var feels = num(period && period.minFeelslikeC);
+      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight";
+      return "Storm risk " + statValue(period && period.pop, "%") + " \xB7 crews on standby";
+    }
+    if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast \xB7 below the 2 cm trigger";
+    return "Below the service trigger";
+  }
+  function forecastDay(period) {
+    return {
+      kind: periodKind(period),
+      temp: periodTemp(period),
+      phrase: String(period && period.weather || "").split(",")[0],
+      note: periodNote(period)
+    };
+  }
+  function buildTimeline(zonePeriods, zoneOrder) {
+    var lead2 = zonePeriods[zoneOrder[0]];
+    if (!Array.isArray(lead2) || !lead2.length) throw new Error("The lead zone returned no periods");
+    return lead2.map(function(period, index) {
+      var date = periodDate(period);
+      var zones = {};
+      var candidates = [];
+      zoneOrder.forEach(function(zone) {
+        var periods = zonePeriods[zone];
+        var match = Array.isArray(periods) && periods[index] || period;
+        zones[zone] = periodKind(match);
+        candidates.push(match);
+      });
+      var headline = worstPeriod(candidates);
+      return {
+        day: frameDay(date, index),
+        date: frameDate(date),
+        kind: periodKind(headline),
+        temp: periodTemp(headline),
+        label: String(headline.weather || "").split(",")[0] || "Forecast",
+        note: periodNote(headline),
+        stats: periodStats(headline),
+        zones
+      };
+    });
+  }
+  var SEVERITY = { clear: 0, snow: 1, freezing: 2, storm: 3 };
+  function worstPeriod(periods) {
+    return periods.reduce(function(running, period) {
+      var severity = SEVERITY[periodKind(period)];
+      var runningSeverity = SEVERITY[periodKind(running)];
+      if (severity !== runningSeverity) return severity > runningSeverity ? period : running;
+      return (num(period.snowCM) || 0) > (num(running.snowCM) || 0) ? period : running;
+    });
+  }
+  function periodDate(period) {
+    var seconds = num(period && period.timestamp);
+    if (Number.isFinite(seconds)) return new Date(seconds * 1e3);
+    return new Date(String(period && period.dateTimeISO));
+  }
+  function num(value) {
+    if (value === null || value === void 0 || value === "") return Number.NaN;
+    return Number(value);
+  }
+  function round1(value) {
+    return Math.round(value * 10) / 10;
+  }
+  function statValue(value, unit) {
+    var number = num(value);
+    return Number.isFinite(number) ? Math.round(number) + unit : "\u2014";
+  }
+  function tempValue(value) {
+    var number = num(value);
+    if (!Number.isFinite(number)) return "\u2014";
+    return (number < 0 ? "\u2212" : "") + Math.abs(Math.round(number)) + "\xB0C";
+  }
+  function windValue(period) {
+    var speed = num(period && period.windSpeedMaxKPH);
+    if (!Number.isFinite(speed)) speed = num(period && period.windSpeedKPH);
+    if (!Number.isFinite(speed)) return "\u2014";
+    var direction = period && (period.windDirMax || period.windDir);
+    return Math.round(speed) + " km/h" + (direction ? " " + direction : "");
+  }
+
+  // app-templates/customer-portal/runtime/src/live-weather.js
+  var FRAME_COUNT = 7;
+  function liveWeatherOpened(config) {
+    return !!(config && config.weatherClientId && config.weatherClientSecret);
+  }
+  function weatherSource(config, fixtureWeather) {
+    var geography = config && config.serviceGeography;
+    if (geography) return { zoneCentroids: geography.zones, legend: WEATHER_LEGEND };
+    if (config && config.dataMode === "live") return null;
+    return fixtureWeather || null;
+  }
+  function loadLiveWeather(fixtureWeather, config, adapter) {
+    if (!liveWeatherOpened(config)) return Promise.resolve(null);
+    var source = weatherSource(config, fixtureWeather);
+    var centroids = source && source.zoneCentroids || null;
+    if (!centroids) return Promise.resolve(null);
+    var zoneOrder = Object.keys(centroids);
+    if (!zoneOrder.length) return Promise.resolve(null);
+    var client = adapter || createXweatherAdapter({
+      clientId: config.weatherClientId,
+      clientSecret: config.weatherClientSecret
+    });
+    if (!client.opened()) return Promise.resolve(null);
+    state.liveWeatherState = "loading";
+    return Promise.all(zoneOrder.map(function(zone) {
+      return client.dailyForecast(centroids[zone].lat, centroids[zone].lon, FRAME_COUNT);
+    })).then(function(results) {
+      var zonePeriods = {};
+      zoneOrder.forEach(function(zone, index) {
+        zonePeriods[zone] = results[index];
+      });
+      var timeline = buildTimeline(zonePeriods, zoneOrder);
+      state.liveWeather = {
+        nowIndex: 0,
+        legend: source.legend || WEATHER_LEGEND,
+        zoneCentroids: centroids,
+        timeline,
+        source: "xweather"
+      };
+      state.liveWeatherState = "ready";
+      return state.liveWeather;
+    }).catch(function(error2) {
+      state.liveWeather = null;
+      state.liveWeatherState = "failed";
+      console.warn("[portal] live weather unavailable, staying on fixture data", error2);
+      return null;
+    });
+  }
+  function createPropertyForecasts(options2) {
+    var adapter = options2.adapter;
+    var onChange = options2.onChange;
+    var entries = /* @__PURE__ */ new Map();
+    return {
+      request: function(id, point) {
+        if (entries.has(id)) return entries.get(id);
+        if (!point || !adapter.opened()) return null;
+        entries.set(id, { state: "loading", days: [] });
+        adapter.dailyForecast(point.lat, point.lon, FRAME_COUNT).then(function(periods) {
+          return { state: "ready", days: periods.map(forecastDay) };
+        }).catch(function(error2) {
+          console.warn("[portal] property forecast unavailable, showing the area forecast", error2 && error2.message);
+          return { state: "failed", days: [] };
+        }).then(function(entry) {
+          entries.set(id, entry);
+          onChange();
+        });
+        return entries.get(id);
+      }
+    };
+  }
+
+  // app-templates/customer-portal/runtime/src/adapters/google-maps-adapter.js
+  var SCRIPT_URL = "https://maps.googleapis.com/maps/api/js";
+  var LIBRARIES = ["core", "maps", "geocoding"];
+  var GEOCODE_PREFIX = "portal.geocode:";
+  function createGoogleMapsAdapter(options2) {
+    var apiKey = options2 && options2.apiKey || "";
+    var scope = options2 && options2.scope || globalThis;
+    var failureListeners = [];
+    var loading = null;
+    var maps = null;
+    function fail(error2) {
+      failureListeners.slice().forEach(function(listener) {
+        listener(error2);
+      });
+    }
+    return {
+      opened: function() {
+        return !!apiKey;
+      },
+      onFailure: function(listener) {
+        failureListeners.push(listener);
+      },
+      load: function() {
+        if (loading) return loading;
+        if (!apiKey) {
+          loading = Promise.reject(new Error("Google Maps adapter is not opened"));
+          return loading;
+        }
+        loading = scriptNamespace(scope, apiKey, fail).then(importLibraries).then(function(loaded) {
+          maps = loaded;
+          return loaded;
+        });
+        return loading;
+      },
+      geocode: function(address) {
+        if (!maps || typeof maps.Geocoder !== "function") return Promise.reject(new Error("Google Maps is not loaded"));
+        return new Promise(function(resolve, reject) {
+          new maps.Geocoder().geocode({ address }, function(results, status) {
+            var location = status === "OK" && results && results[0] && results[0].geometry && results[0].geometry.location;
+            if (!location || typeof location.lat !== "function" || typeof location.lng !== "function") {
+              reject(new Error("Geocoder answered " + status));
+              return;
+            }
+            resolve({ lat: location.lat(), lon: location.lng() });
+          });
+        });
+      }
+    };
+  }
+  function createGeocodeCache(storage) {
+    return {
+      read: function(key) {
+        if (!key || !storage) return null;
+        try {
+          var raw = storage.getItem(GEOCODE_PREFIX + key);
+          return raw ? JSON.parse(raw) : null;
+        } catch (_) {
+          return null;
+        }
+      },
+      write: function(key, point) {
+        if (!key || !point || !storage) return false;
+        try {
+          storage.setItem(GEOCODE_PREFIX + key, JSON.stringify({ lat: point.lat, lon: point.lon }));
+          return true;
+        } catch (_) {
+          return false;
+        }
+      }
+    };
+  }
+  function browserStorage() {
+    try {
+      return globalThis.localStorage || null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function scriptNamespace(scope, apiKey, fail) {
+    var present = scope.google && scope.google.maps;
+    if (present && (typeof present.importLibrary === "function" || typeof present.Map === "function")) {
+      return Promise.resolve(present);
+    }
+    return new Promise(function(resolve, reject) {
+      var previous = scope.gm_authFailure;
+      scope.gm_authFailure = function() {
+        var error2 = new Error("Google Maps rejected the browser key");
+        reject(error2);
+        fail(error2);
+        if (typeof previous === "function") previous();
+      };
+      var script = scope.document.createElement("script");
+      script.async = true;
+      script.src = SCRIPT_URL + "?key=" + encodeURIComponent(apiKey) + "&loading=async&v=weekly";
+      script.addEventListener("error", function() {
+        reject(new Error("The Google Maps script did not load"));
+      });
+      script.addEventListener("load", function() {
+        var loaded = scope.google && scope.google.maps;
+        if (loaded) resolve(loaded);
+        else reject(new Error("The Google Maps script loaded without google.maps"));
+      });
+      scope.document.head.appendChild(script);
+    });
+  }
+  function importLibraries(maps) {
+    if (typeof maps.importLibrary !== "function") return maps;
+    return Promise.all(LIBRARIES.map(function(name) {
+      return maps.importLibrary(name);
+    })).then(function() {
+      return maps;
+    });
+  }
+
   // app-templates/customer-portal/runtime/src/normalizers/overview.js
   var OVERVIEW_STATUS = {
     issue: {
@@ -7392,6 +7807,9 @@
   }
   function propertyWeather(property, frame) {
     if (propertyStatus(property) === "issue") return "issue";
+    return zoneWeather(property, frame);
+  }
+  function zoneWeather(property, frame) {
     var zones = frame && frame.zones || null;
     var zone = property && property.zone;
     if (zones && zone && zones[zone]) return zones[zone];
@@ -7442,45 +7860,90 @@
     return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // app-templates/customer-portal/runtime/src/normalizers/map-image.js
-  var HOST = "https://maps.api.xweather.com";
-  var TILE = 256;
-  function mapOpened(map, config) {
-    return !!(map && map.center && map.size && config && config.weatherClientId && config.weatherClientSecret);
+  // app-templates/customer-portal/runtime/src/normalizers/property-map.js
+  var POPUP_WIDTH = 288;
+  var POPUP_HEIGHT = 250;
+  var PIN_HEIGHT = 36;
+  var PIN_HALF_WIDTH = 18;
+  var GAP = 10;
+  var EDGE = 8;
+  var LOWER_PART = 0.55;
+  var FORECAST_DECIMALS = 2;
+  function geoPoint(lat, lon) {
+    var latitude = coordinate(lat, 90);
+    var longitude = coordinate(lon, 180);
+    if (latitude === null || longitude === null) return null;
+    if (latitude === 0 && longitude === 0) return null;
+    return { lat: latitude, lon: longitude };
   }
-  function mapImageUrl(map, config) {
-    if (!mapOpened(map, config)) return "";
-    var layers = (map.layers || []).filter(function(layer) {
-      return /^[a-z0-9-]+$/.test(layer);
+  function propertyPoint(property) {
+    return property ? geoPoint(property.lat, property.lon) : null;
+  }
+  function addressKey(address) {
+    if (typeof address !== "string") return "";
+    return address.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").replace(/\s*,\s*/g, ", ").replace(/^[\s,]+|[\s,]+$/g, "");
+  }
+  function forecastPoint(point) {
+    var factor = Math.pow(10, FORECAST_DECIMALS);
+    return { lat: Math.round(point.lat * factor) / factor, lon: Math.round(point.lon * factor) / factor };
+  }
+  function weatherLabel(kind, legend) {
+    var items = legend && legend.length ? legend : WEATHER_LEGEND;
+    var match = items.find(function(item) {
+      return item.key === kind;
     });
-    if (!layers.length) return "";
-    return HOST + "/" + encodeURIComponent(config.weatherClientId + "_" + config.weatherClientSecret) + "/" + layers.join(",") + "/" + map.size.width + "x" + map.size.height + "/" + map.center.lat + "," + map.center.lon + "," + map.zoom + "/current.png";
+    return match ? match.label : "";
   }
-  function projectPoint(lat, lon, map) {
-    if (!Number.isFinite(lat) || !Number.isFinite(lon) || !map || !map.center) return null;
-    var world = TILE * Math.pow(2, map.zoom);
-    var dx = worldX(lon, world) - worldX(map.center.lon, world);
-    var dy = worldY(lat, world) - worldY(map.center.lat, world);
+  function popupWeather(frame, zoneKind, source, entry, index) {
+    var day = frame.day + " " + frame.date;
+    if (entry && entry.state === "loading") return { state: "loading", day, source: "xweather" };
+    var own2 = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
+    if (own2) {
+      return { state: "property", day, kind: own2.kind, temp: own2.temp, phrase: own2.phrase, note: own2.note, source: "xweather" };
+    }
     return {
-      x: (dx + map.size.width / 2) / map.size.width * 100,
-      y: (dy + map.size.height / 2) / map.size.height * 100
+      state: entry && entry.state === "failed" ? "failed" : "area",
+      day,
+      kind: zoneKind,
+      temp: frame.temp,
+      phrase: "",
+      note: "",
+      source: source === "xweather" ? "xweather" : "sample"
     };
   }
-  function worldX(lon, world) {
-    return (lon + 180) / 360 * world;
+  function popupDocks(frameWidth) {
+    return frameWidth > 0 && frameWidth < 2 * (POPUP_WIDTH + PIN_HALF_WIDTH + GAP + EDGE);
   }
-  function worldY(lat, world) {
-    var radians = clampLatitude(lat) * Math.PI / 180;
-    var merc = Math.log(Math.tan(radians) + 1 / Math.cos(radians));
-    return (1 - merc / Math.PI) / 2 * world;
+  function popupPlacement(anchor, frame, size) {
+    var width = size && size.width > 0 ? size.width : POPUP_WIDTH;
+    var height = size && size.height > 0 ? size.height : POPUP_HEIGHT;
+    var room = {
+      below: frame.height - EDGE - anchor.y - GAP,
+      above: anchor.y - PIN_HEIGHT - GAP - EDGE,
+      right: frame.width - EDGE - anchor.x - PIN_HALF_WIDTH - GAP,
+      left: anchor.x - PIN_HALF_WIDTH - GAP - EDGE
+    };
+    var preferred = anchor.y > frame.height * LOWER_PART ? "above" : "below";
+    var other = preferred === "above" ? "below" : "above";
+    var side = height <= room[preferred] ? preferred : height <= room[other] ? other : width <= Math.max(room.right, room.left) ? room.right >= room.left ? "right" : "left" : preferred;
+    var top = side === "above" ? anchor.y - PIN_HEIGHT - GAP - height : side === "below" ? anchor.y + GAP : anchor.y - PIN_HEIGHT / 2 - height / 2;
+    var left = side === "right" ? anchor.x + PIN_HALF_WIDTH + GAP : side === "left" ? anchor.x - PIN_HALF_WIDTH - GAP - width : anchor.x - width / 2;
+    return {
+      side,
+      left: clamp(left, EDGE, frame.width - width - EDGE),
+      top: clamp(top, EDGE, frame.height - height - EDGE)
+    };
   }
-  function clampLatitude(lat) {
-    if (lat > 85.05112878) return 85.05112878;
-    if (lat < -85.05112878) return -85.05112878;
-    return lat;
+  function coordinate(value, limit) {
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
+  }
+  function clamp(value, low, high) {
+    if (high < low) return low;
+    return Math.min(Math.max(value, low), high);
   }
 
-  // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
   var ICONS = {
     map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
     calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
@@ -7489,8 +7952,7 @@
     support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
     alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
     pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
-    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
-    live: "M12 11.2a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6Z M8.6 8.6a4.8 4.8 0 0 0 0 6.8 M15.4 8.6a4.8 4.8 0 0 1 0 6.8 M6 6a8 8 0 0 0 0 12 M18 6a8 8 0 0 1 0 12"
+    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2"
   };
   function icon(name, className) {
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -7508,6 +7970,435 @@
     svg.appendChild(path);
     return svg;
   }
+
+  // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
+  var SINGLE_PIN_ZOOM = 14;
+  var FIT_PADDING = 56;
+  var FOCUS_ACTIONS = ["overview.selectProperty", "overview.closeProperty", "overview.openProperty"];
+  var listScroll = {};
+  function createPropertyMap(options2) {
+    var adapter = options2.adapter;
+    var cache = options2.cache;
+    var dispatch = options2.dispatch;
+    var onChange = options2.onChange;
+    var mapId = options2.mapId || "";
+    var status = "idle";
+    var maps = null;
+    var map = null;
+    var layer = null;
+    var canvas = null;
+    var mount2 = null;
+    var pinsHost = null;
+    var popupHost = null;
+    var view = null;
+    var fitted = null;
+    var narrow = false;
+    var located = /* @__PURE__ */ new Map();
+    var requested = /* @__PURE__ */ new Set();
+    var queue = [];
+    var geocoding = false;
+    return {
+      status: function() {
+        return status;
+      },
+      docked: function() {
+        return narrow;
+      },
+      pointOf,
+      stage
+    };
+    function stage(next) {
+      if (!canvas) build();
+      if (status === "idle") start(next.viewport);
+      view = next;
+      canvas.setAttribute("data-state", status);
+      pinsHost.replaceChildren.apply(pinsHost, next.pins.map(function(pin) {
+        return pin.element;
+      }));
+      popupHost.replaceChildren.apply(popupHost, next.popup && !narrow ? [next.popup.element] : []);
+      draw();
+      Promise.resolve().then(settle);
+      return canvas;
+    }
+    function settle() {
+      fit(view.pins);
+      draw();
+    }
+    function build() {
+      mount2 = h("div", { "class": "ov-map__google" });
+      canvas = h("div", { "class": "ov-map__canvas", "data-surface": "google" }, [
+        mount2,
+        h("div", { "class": "ov-map__status", role: "status" }, "Loading map\u2026")
+      ]);
+      pinsHost = h("div", { "class": "ov-map__pins" });
+      popupHost = h("div", { "class": "ov-map__popup" });
+      pinsHost.addEventListener("click", relay);
+      popupHost.addEventListener("click", relay);
+      new ResizeObserver(resized).observe(canvas);
+    }
+    function resized(entries) {
+      var width = entries[entries.length - 1].contentRect.width;
+      if (!width || popupDocks(width) === narrow) return;
+      narrow = !narrow;
+      if (view && view.popup) onChange();
+    }
+    function relay(event) {
+      var host = event.currentTarget;
+      var target = event.target && typeof event.target.closest === "function" ? event.target.closest("[data-action]") : null;
+      if (!target || !host.contains(target)) return;
+      event.stopPropagation();
+      dispatch(target.getAttribute("data-action"), target.getAttribute("data-id"));
+    }
+    function start(viewport) {
+      status = "loading";
+      adapter.onFailure(fail);
+      adapter.load().then(function(loaded) {
+        if (status === "failed") return;
+        maps = loaded;
+        map = new maps.Map(mount2, mapOptions(viewport, mapId));
+        layer = pinLayer();
+        layer.setMap(map);
+        status = "ready";
+        drain();
+        onChange();
+      }).catch(fail);
+    }
+    function fail(error2) {
+      if (status === "failed") return;
+      status = "failed";
+      console.warn("[portal] Google map unavailable, listing the properties instead", error2 && error2.message);
+      onChange();
+    }
+    function pinLayer() {
+      var overlay = new maps.OverlayView();
+      overlay.onAdd = function() {
+        var panes = overlay.getPanes();
+        panes.overlayMouseTarget.appendChild(pinsHost);
+        panes.floatPane.appendChild(popupHost);
+        if (typeof maps.OverlayView.preventMapHitsAndGesturesFrom === "function") {
+          maps.OverlayView.preventMapHitsAndGesturesFrom(pinsHost);
+          maps.OverlayView.preventMapHitsAndGesturesFrom(popupHost);
+        }
+      };
+      overlay.draw = draw;
+      overlay.onRemove = function() {
+        pinsHost.remove();
+        popupHost.remove();
+      };
+      return overlay;
+    }
+    function draw() {
+      var projection = layer ? layer.getProjection() : null;
+      if (!projection || !view) return;
+      view.pins.forEach(function(pin) {
+        var at = projection.fromLatLngToDivPixel(latLng(pin.point));
+        if (!at) return;
+        pin.element.style.left = at.x + "px";
+        pin.element.style.top = at.y + "px";
+      });
+      if (view.popup && !narrow) placePopup(projection, view.popup);
+    }
+    function placePopup(projection, popup) {
+      var anchor = latLng(popup.point);
+      var at = projection.fromLatLngToDivPixel(anchor);
+      var box = projection.fromLatLngToContainerPixel(anchor);
+      if (!at || !box) return;
+      var place = popupPlacement(
+        box,
+        { width: canvas.offsetWidth, height: canvas.offsetHeight },
+        { width: popup.element.offsetWidth, height: popup.element.offsetHeight }
+      );
+      popup.element.style.left = at.x + place.left - box.x + "px";
+      popup.element.style.top = at.y + place.top - box.y + "px";
+      popup.element.setAttribute("data-place", place.side);
+    }
+    function fit(pins) {
+      if (!map) return;
+      var signature = pins.map(function(pin) {
+        return pin.id + "@" + pin.point.lat + "," + pin.point.lon;
+      }).join("|");
+      if (signature === fitted) return;
+      fitted = signature;
+      if (!pins.length) return;
+      if (pins.length === 1) {
+        map.setCenter(latLng(pins[0].point));
+        map.setZoom(SINGLE_PIN_ZOOM);
+        return;
+      }
+      var bounds = new maps.LatLngBounds();
+      pins.forEach(function(pin) {
+        bounds.extend(latLng(pin.point));
+      });
+      map.fitBounds(bounds, FIT_PADDING);
+    }
+    function latLng(point) {
+      return new maps.LatLng(point.lat, point.lon);
+    }
+    function pointOf(property) {
+      var direct = propertyPoint(property);
+      if (direct) return direct;
+      var key = addressKey(property && property.address);
+      if (!key) return null;
+      if (located.has(key)) return located.get(key);
+      if (requested.has(key)) return null;
+      var cached = cache.read(key);
+      var point = cached ? geoPoint(cached.lat, cached.lon) : null;
+      if (point) {
+        located.set(key, point);
+        return point;
+      }
+      requested.add(key);
+      queue.push({ key, address: property.address });
+      drain();
+      return null;
+    }
+    function drain() {
+      if (geocoding || status !== "ready" || !queue.length) return;
+      geocoding = true;
+      var next = queue.shift();
+      adapter.geocode(next.address).then(function(found) {
+        var point = geoPoint(found.lat, found.lon);
+        if (!point) return;
+        located.set(next.key, point);
+        cache.write(next.key, point);
+        onChange();
+      }).catch(function(error2) {
+        console.warn("[portal] a property could not be placed on the map", error2 && error2.message);
+      }).then(function() {
+        geocoding = false;
+        drain();
+      });
+    }
+  }
+  function PropertyStage(props) {
+    var map = props.map && props.viewport && props.map.status() !== "failed" ? props.map : null;
+    var pointOf = props.map ? props.map.pointOf : propertyPoint;
+    var placed = [];
+    var listed = [];
+    props.properties.forEach(function(property) {
+      var entry = { property, point: pointOf(property) };
+      if (map && entry.point) placed.push(entry);
+      else listed.push(entry);
+    });
+    var chosen = placed.concat(listed).find(function(entry) {
+      return entry.property.id === props.selectedId;
+    }) || null;
+    var popup = chosen ? PropertyPopup(chosen.property, popupView(chosen, props), props.weather.legend) : null;
+    var pinned = !!chosen && placed.indexOf(chosen) !== -1;
+    if (!map) {
+      return h("div", { "class": "ov-map__stage", "data-surface": "list" }, [PropertyList("all", listed, props, popup)]);
+    }
+    var docked = pinned && map.docked();
+    return h("div", { "class": "ov-map__stage", "data-surface": "google" }, [
+      map.stage({
+        viewport: props.viewport,
+        pins: placed.map(function(entry) {
+          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, entry.property.id === props.selectedId) };
+        }),
+        popup: pinned ? { point: chosen.point, element: popup } : null
+      }),
+      docked ? dock(popup) : null,
+      listed.length ? UnplacedProperties(listed, props, pinned ? null : popup) : null
+    ]);
+  }
+  function WeatherAttribution(source, className) {
+    return text7("div", "ov-attr" + (className ? " " + className : ""), source === "xweather" ? "Weather \xB7 Xweather" : "Sample conditions");
+  }
+  function closeOnEscape(target, isOpen, close) {
+    target.addEventListener("keydown", function(event) {
+      if (event.key !== "Escape" || event.defaultPrevented || !isOpen()) return;
+      close();
+    });
+  }
+  function createFocusKeeper(doc) {
+    var remembered = null;
+    doc.addEventListener("focusin", function(event) {
+      remembered = focusIdentity(event.target);
+    }, true);
+    doc.addEventListener("pointerdown", function(event) {
+      remembered = focusIdentity(event.target);
+    }, true);
+    return {
+      settle: function(selectedId, previousId) {
+        var target = null;
+        if (selectedId !== previousId) {
+          target = selectedId ? doc.querySelector(".ov-tip__close") : actionElement(doc, "overview.selectProperty", previousId);
+        } else if (remembered && (!doc.activeElement || doc.activeElement === doc.body)) {
+          target = actionElement(doc, remembered.action, remembered.id);
+        }
+        if (!target) return;
+        var tip = selectedId ? target.closest(".ov-tip") : null;
+        var place = tip ? tip.getAttribute("data-place") : null;
+        if (place === "inline" || place === "dock") tip.scrollIntoView({ block: "nearest" });
+        target.focus({ preventScroll: true });
+        remembered = focusIdentity(target);
+      }
+    };
+  }
+  function focusIdentity(element) {
+    var target = element && typeof element.closest === "function" ? element.closest("[data-action]") : null;
+    var action = target ? target.getAttribute("data-action") : null;
+    return FOCUS_ACTIONS.indexOf(action) === -1 ? null : { action, id: target.getAttribute("data-id") };
+  }
+  function actionElement(root, action, id) {
+    var candidates = root.querySelectorAll('[data-action="' + action + '"]');
+    for (var index = 0; index < candidates.length; index += 1) {
+      if (candidates[index].getAttribute("data-id") === id) return candidates[index];
+    }
+    return null;
+  }
+  function mapOptions(viewport, mapId) {
+    var settings = {
+      center: { lat: viewport.center.lat, lng: viewport.center.lon },
+      zoom: viewport.zoom,
+      disableDefaultUI: true,
+      zoomControl: true,
+      clickableIcons: false,
+      gestureHandling: "cooperative"
+    };
+    if (mapId) settings.mapId = mapId;
+    return settings;
+  }
+  function popupView(entry, props) {
+    var property = entry.property;
+    var live = props.weather.source === "xweather" && entry.point && props.forecasts;
+    var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry.point)) : null;
+    return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index);
+  }
+  function PropertyPin(property, frame, selected) {
+    var status = propertyStatus(property);
+    return h("button", {
+      "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
+      "data-action": "overview.selectProperty",
+      "data-id": property.id,
+      "data-module": "property-pin",
+      "data-visual-id": "property-pin",
+      "data-state": status,
+      "data-weather": propertyWeather(property, frame),
+      "aria-label": property.name + " \u2014 " + OVERVIEW_STATUS[status].label,
+      "aria-pressed": selected ? "true" : "false"
+    }, [icon("pin", "ov-pin__glyph")]);
+  }
+  function PropertyList(key, entries, props, popup) {
+    if (!entries.length) {
+      return h("div", { "class": "ov-empty", "data-state": "empty" }, [
+        text7("div", "ov-empty__title", "No properties yet"),
+        text7("div", "ov-empty__desc", "A property appears here once it is under contract.")
+      ]);
+    }
+    var list = h(
+      "ul",
+      { "class": "ov-plist", "data-module": "property-list", "data-visual-id": "property-list", "aria-label": "Your properties" },
+      entries.map(function(entry) {
+        var selected = entry.property.id === props.selectedId;
+        return h("li", { "class": "ov-plist__item" }, [
+          PropertyRow(entry.property, props, selected),
+          selected && popup ? inline(popup) : null
+        ]);
+      })
+    );
+    list.addEventListener("scroll", function() {
+      listScroll[key] = list.scrollTop;
+    });
+    Promise.resolve().then(function() {
+      list.scrollTop = listScroll[key] || 0;
+    });
+    return list;
+  }
+  function UnplacedProperties(entries, props, popup) {
+    return h("div", { "class": "ov-map__unplaced", "data-module": "unplaced-properties", "data-visual-id": "unplaced-properties" }, [
+      h("div", { "class": "ov-map__unplaced-head" }, [
+        text7("span", "ov-map__unplaced-title", "Not on the map"),
+        text7("span", "ov-map__unplaced-count", String(entries.length))
+      ]),
+      PropertyList("unplaced", entries, props, popup)
+    ]);
+  }
+  function PropertyRow(property, props, selected) {
+    var status = propertyStatus(property);
+    return h("button", {
+      "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
+      "data-action": "overview.selectProperty",
+      "data-id": property.id,
+      "data-module": "property-row",
+      "data-visual-id": "property-row",
+      "data-state": status,
+      "data-weather": propertyWeather(property, props.frame),
+      "aria-expanded": selected ? "true" : "false"
+    }, [
+      h("span", { "class": "ov-prow__pin" }, [icon("pin", "ov-prow__glyph")]),
+      h("span", { "class": "ov-prow__read" }, [
+        text7("span", "ov-prow__name", property.name),
+        property.address ? text7("span", "ov-prow__addr", property.address) : null
+      ]),
+      h("span", { "class": "ov-prow__meta" }, [
+        text7("span", "ov-prow__wx", weatherLabel(zoneWeather(property, props.frame), props.weather.legend)),
+        text7("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
+      ])
+    ]);
+  }
+  function PropertyPopup(property, weather, legend) {
+    var status = propertyStatus(property);
+    var line = visitLine(property);
+    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, role: "dialog", "aria-label": property.name }, [
+      h("div", { "class": "ov-tip__head" }, [
+        h("div", { style: "flex:1;min-width:0" }, [
+          text7("div", "ov-tip__name", property.name),
+          text7("div", "ov-tip__addr", property.address)
+        ]),
+        h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
+      ]),
+      h("div", { "class": "ov-tip__tags" }, [
+        text7("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
+      ]),
+      line ? text7("div", "ov-tip__line", line) : null,
+      PopupWeather(weather, legend),
+      h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
+    ]);
+  }
+  function PopupWeather(view, legend) {
+    var own2 = view.state === "property" || view.state === "loading";
+    var reading = view.state === "loading" ? "Loading forecast\u2026" : (view.phrase || weatherLabel(view.kind, legend)) + " \xB7 " + view.temp;
+    var note = view.state === "failed" ? "This property\u2019s own forecast is unavailable right now." : view.note;
+    return h("div", {
+      "class": "ov-tip__wx",
+      "data-module": "property-weather",
+      "data-visual-id": "property-weather",
+      "data-state": view.state,
+      "data-weather": view.kind,
+      "aria-live": "polite",
+      "aria-busy": view.state === "loading" ? "true" : void 0
+    }, [
+      text7("div", "ov-tip__wx-scope", (own2 ? "This property" : "Area forecast") + " \xB7 " + view.day),
+      h("div", { "class": "ov-tip__wx-read" }, [h("i"), text7("span", "", reading)]),
+      note ? text7("div", "ov-tip__wx-note", note) : null,
+      view.state === "loading" ? h("div", { "class": "ov-tip__wx-note", "aria-hidden": "true" }, "\xA0") : null,
+      WeatherAttribution(view.source)
+    ]);
+  }
+  function visitLine(property) {
+    var appointment = property.appointment;
+    var active = appointment && appointment.state === "IN_PROGRESS" ? appointment : null;
+    var next = appointment && appointment.state === "SCHEDULED" ? appointment : null;
+    return active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
+  }
+  function inline(popup) {
+    popup.setAttribute("data-place", "inline");
+    return popup;
+  }
+  function dock(popup) {
+    popup.setAttribute("data-place", "dock");
+    return popup;
+  }
+  function text7(tag, className, value) {
+    return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
+  var propertyMapController = null;
+  var propertyForecastStore = null;
+  var focusKeeper = null;
+  var lastSelection = null;
   function overviewModel() {
     return currentOverview();
   }
@@ -7528,7 +8419,7 @@
     var weather = model.weather;
     var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
     var frame = weather.timeline[index];
-    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex)]));
+    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source)]));
     page.appendChild(MapPanel(model, frame, index));
     page.appendChild(InvoicesWidget(model));
     var grid = h("div", { "class": "ov-grid" });
@@ -7545,85 +8436,91 @@
     var count = model.properties.length;
     return frame.label + " \xB7 " + count + (count === 1 ? " property under contract" : " properties under contract");
   }
-  function WeatherPanel(frame, isNow) {
+  function WeatherPanel(frame, isNow, source) {
     var stats = frame.stats || [];
     return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
       h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
       h("div", { "class": "ov-wx__read" }, [
-        text7("div", "ov-wx__temp", frame.temp),
-        text7("div", "ov-wx__label", frame.label),
-        text7("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " \xB7 " + frame.note)
+        text8("div", "ov-wx__temp", frame.temp),
+        text8("div", "ov-wx__label", frame.label),
+        text8("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " \xB7 " + frame.note),
+        WeatherAttribution(source)
       ]),
       stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
         return h("div", { "class": "ov-wx__stat" }, [
-          text7("span", "ov-wx__stat-label", stat.label),
-          text7("span", "ov-wx__stat-value", stat.value)
+          text8("span", "ov-wx__stat-label", stat.label),
+          text8("span", "ov-wx__stat-value", stat.value)
         ]);
       })) : null
     ]);
   }
   function MapPanel(model, frame, index) {
     var weather = model.weather;
-    var geo = mapOpened(model.map, state.config) ? model.map : null;
-    var imageUrl = geo ? mapImageUrl(geo, state.config) : "";
-    var canvas = h("div", { "class": "ov-map__canvas", "data-weather": frame.kind, "data-surface": imageUrl ? "map" : "drawn" });
-    if (imageUrl) {
-      canvas.appendChild(h("img", {
-        "class": "ov-map__image",
-        src: imageUrl,
-        alt: "",
-        "aria-hidden": "true",
-        width: String(geo.size.width),
-        height: String(geo.size.height),
-        loading: "eager",
-        decoding: "async"
-      }));
-    } else {
-      canvas.appendChild(h("div", { "class": "ov-map__road" }));
-    }
-    canvas.appendChild(h("div", { "class": "ov-map__overlay", "data-weather": frame.kind }));
-    canvas.appendChild(h("div", { "class": "ov-map__chip", "data-source": weather.source || "fixture" }, [
-      icon("live", "ov-map__chip-glyph"),
-      text7("span", "", weather.source === "xweather" ? "Live conditions \xB7 Xweather" : "Sample conditions")
-    ]));
-    var pins = h("div", { "class": "ov-map__pins" });
-    model.properties.forEach(function(property) {
-      var status = propertyStatus(property);
-      var kind = propertyWeather(property, frame);
-      var selected = state.ovProperty === property.id;
-      var at = pinPlacement(property, geo);
-      if (!at) return;
-      pins.appendChild(h("button", {
-        "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
-        style: "left:" + at.x + "%;top:" + at.y + "%",
-        "data-action": "overview.selectProperty",
-        "data-id": property.id,
-        "data-module": "property-pin",
-        "data-visual-id": "property-pin",
-        "data-state": status,
-        "data-weather": kind,
-        "aria-label": property.name + " \u2014 " + OVERVIEW_STATUS[status].label,
-        "aria-pressed": selected ? "true" : "false"
-      }, [icon("pin", "ov-pin__glyph")]));
+    var stage = PropertyStage({
+      properties: model.properties,
+      frame,
+      index,
+      weather,
+      viewport: model.map,
+      selectedId: state.ovProperty,
+      map: propertyMap(),
+      forecasts: propertyForecasts()
     });
-    var selectedProperty = model.properties.find(function(property) {
-      return property.id === state.ovProperty;
-    });
-    if (selectedProperty) {
-      var anchor = pinPlacement(selectedProperty, geo);
-      if (anchor) pins.appendChild(PropertyTooltip(selectedProperty, frame, anchor));
-    }
+    followSelection();
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
-        text7("h2", "ov-card__title", "Your properties"),
+        text8("h2", "ov-card__title", "Your properties"),
         h("div", { "class": "ov-legend" }, weather.legend.map(function(item) {
-          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text7("span", "", item.label)]);
+          return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text8("span", "", item.label)]);
         }))
       ]),
-      h("div", { "class": "ov-map__stage" }, [canvas, pins]),
-      DayTimeline(weather, index, model.properties)
+      stage,
+      DayTimeline(weather, index, model.properties),
+      WeatherAttribution(weather.source, "ov-map__attr")
     ]);
+  }
+  function propertyMap() {
+    if (!state.config.mapsApiKey) return null;
+    if (!propertyMapController) {
+      propertyMapController = createPropertyMap({
+        adapter: createGoogleMapsAdapter({ apiKey: state.config.mapsApiKey }),
+        cache: createGeocodeCache(browserStorage()),
+        mapId: state.config.mapsMapId,
+        dispatch: dispatchAction,
+        onChange: render
+      });
+    }
+    return propertyMapController;
+  }
+  function propertyForecasts() {
+    if (!propertyForecastStore) {
+      propertyForecastStore = createPropertyForecasts({
+        adapter: createXweatherAdapter({ clientId: state.config.weatherClientId, clientSecret: state.config.weatherClientSecret }),
+        onChange: render
+      });
+    }
+    return propertyForecastStore;
+  }
+  function dispatchAction(name, id) {
+    var action = ACTIONS[name];
+    if (action) action(id);
+  }
+  function followSelection() {
+    if (!focusKeeper) {
+      focusKeeper = createFocusKeeper(document);
+      closeOnEscape(document, function() {
+        return state.route === "overview" && !!state.ovProperty;
+      }, function() {
+        dispatchAction("overview.closeProperty");
+      });
+    }
+    var previous = lastSelection;
+    var current = state.ovProperty;
+    lastSelection = current;
+    Promise.resolve().then(function() {
+      focusKeeper.settle(current, previous);
+    });
   }
   function DayTimeline(weather, index, properties) {
     var last = weather.timeline.length - 1;
@@ -7638,12 +8535,12 @@
         "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : " \u2014 no visit"),
         "aria-pressed": position === index ? "true" : "false"
       }, [
-        text7("span", "ov-day__name", item.day),
-        text7("span", "ov-day__date", item.date),
+        text8("span", "ov-day__name", item.day),
+        text8("span", "ov-day__date", item.date),
         h("i"),
         h("span", { "class": "ov-day__svc" }, visits ? [
-          text7("b", "", String(visits)),
-          text7("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
+          text8("b", "", String(visits)),
+          text8("span", "ov-day__svc-word", visits === 1 ? " visit" : " visits")
         ] : [])
       ]);
     }));
@@ -7662,34 +8559,6 @@
       disabled: disabled ? "disabled" : void 0
     }, glyph);
   }
-  function pinPlacement(property, geo) {
-    if (!geo) return { x: property.x, y: property.y };
-    return projectPoint(property.lat, property.lon, geo);
-  }
-  function PropertyTooltip(property, frame, at) {
-    var status = propertyStatus(property);
-    var active = property.appointment && property.appointment.state === "IN_PROGRESS" ? property.appointment : null;
-    var next = property.appointment && property.appointment.state === "SCHEDULED" ? property.appointment : null;
-    var line = active ? active.service + " \xB7 " + active.when : next ? next.service + " \xB7 " + next.when : property.lastService ? "Last service \xB7 " + property.lastService.service + " \xB7 " + property.lastService.when : "";
-    var above = at.y > 55;
-    var top = above ? "calc(" + at.y + "% - 194px)" : "calc(" + at.y + "% + 12px)";
-    var place = "left:clamp(0px, calc(" + at.x + "% - 144px), calc(100% - 288px));top:clamp(8px, " + top + ", calc(100% - 168px))";
-    return h("div", { "class": "ov-tip", style: place, "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, "data-place": above ? "above" : "below", role: "dialog", "aria-label": property.name }, [
-      h("div", { "class": "ov-tip__head" }, [
-        h("div", { style: "flex:1;min-width:0" }, [
-          text7("div", "ov-tip__name", property.name),
-          text7("div", "ov-tip__addr", property.address)
-        ]),
-        h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
-      ]),
-      h("div", { "class": "ov-tip__tags" }, [
-        text7("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label),
-        text7("span", "ov-tip__tag ov-tip__tag--wx", frame.day + " \xB7 " + frame.temp)
-      ]),
-      line ? text7("div", "ov-tip__line", line) : null,
-      h("div", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
-    ]);
-  }
   function UpcomingWidget(model, timeline) {
     var scheduled = model.properties.filter(function(property) {
       return property.appointment && property.appointment.state === "SCHEDULED";
@@ -7703,7 +8572,7 @@
     scheduled.slice(0, 3).forEach(function(property) {
       var appointment = property.appointment;
       card.appendChild(h("div", { "class": "ov-slot", "data-module": "upcoming-row", "data-visual-id": "upcoming-row" }, [
-        appointment.time ? text7("span", "ov-slot__time", appointment.time) : null,
+        appointment.time ? text8("span", "ov-slot__time", appointment.time) : null,
         h("span", { "class": "ov-slot__pin" }, [icon("pin", "ov-slot__glyph")]),
         h("button", {
           "class": "ov-slot__link",
@@ -7711,8 +8580,8 @@
           "data-id": property.id,
           "aria-label": "Open the " + appointment.service + " visit at " + property.name
         }, [
-          text7("span", "ov-row__title", property.name),
-          text7("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
+          text8("span", "ov-row__title", property.name),
+          text8("span", "ov-row__meta", metaOf(appointmentDay(appointment, timeline), appointment.service))
         ])
       ]));
     });
@@ -7727,7 +8596,7 @@
     var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
-        text7("h2", "ov-card__title", "Invoices"),
+        text8("h2", "ov-card__title", "Invoices"),
         h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
       ])
     ]);
@@ -7748,10 +8617,10 @@
     return h("div", { "class": "ov-alarm", "data-module": "overdue-alert", "data-visual-id": "overdue-alert", role: "alert" }, [
       h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
       h("div", { "class": "ov-alarm__read" }, [
-        text7("div", "ov-alarm__eyebrow", "Overdue amount"),
-        text7("div", "ov-alarm__amount", money2(overdue.amount)),
-        text7("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
-        text7("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
+        text8("div", "ov-alarm__eyebrow", "Overdue amount"),
+        text8("div", "ov-alarm__amount", money2(overdue.amount)),
+        text8("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
+        text8("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
       ]),
       h("div", { "class": "ov-alarm__act" }, [
         ActionButton({ variant: "btn--danger", label: "View overdue invoices \u2192", action: "overview.openInvoices", visualId: "view-overdue-invoices" })
@@ -7760,9 +8629,9 @@
   }
   function billStat(label, value, count, valueClass) {
     return h("div", { "class": "ov-bill__stat" }, [
-      text7("div", "ov-bill__stat-label", label),
-      text7("div", "ov-bill__stat-value " + valueClass, value),
-      text7("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
+      text8("div", "ov-bill__stat-label", label),
+      text8("div", "ov-bill__stat-value " + valueClass, value),
+      text8("div", "ov-bill__stat-count", String(count) + (count === 1 ? " invoice" : " invoices"))
     ]);
   }
   function ContractsWidget(model) {
@@ -7776,10 +8645,10 @@
     contracts.slice(0, 3).forEach(function(contract) {
       card.appendChild(h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row" }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text7("div", "ov-row__title", "Contract #" + contract.number),
-          text7("div", "ov-row__meta", contract.plan)
+          text8("div", "ov-row__title", "Contract #" + contract.number),
+          text8("div", "ov-row__meta", contract.plan)
         ]),
-        text7("span", "status-badge status-badge--ok", "Active")
+        text8("span", "status-badge status-badge--ok", "Active")
       ]));
     });
     card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
@@ -7790,8 +8659,8 @@
     var card = widget("support-requests", "Support requests", "support");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
-        text7("div", "ov-empty__title", "No open requests"),
-        text7("div", "ov-empty__desc", "Everything looks good. Need help?"),
+        text8("div", "ov-empty__title", "No open requests"),
+        text8("div", "ov-empty__desc", "Everything looks good. Need help?"),
         h("div", { "class": "link-action", "data-action": "overview.newRequest" }, "Submit a request \u203A")
       ]));
       return card;
@@ -7801,10 +8670,10 @@
       card.appendChild(h("div", { "class": "ov-row", "data-module": "support-row", "data-visual-id": "support-row", "data-tone": request.tone || "info" }, [
         h("i", { "class": "ov-dot" }),
         h("div", { style: "flex:1;min-width:0" }, [
-          text7("div", "ov-row__title", request.title),
+          text8("div", "ov-row__title", request.title),
           h("div", { "class": "ov-row__meta" }, [
-            text7("span", "ov-row__status", request.status),
-            text7("span", "", " \xB7 " + request.when)
+            text8("span", "ov-row__status", request.status),
+            text8("span", "", " \xB7 " + request.when)
           ])
         ]),
         chevron("overview.openSupport", String(position), "Open " + request.title)
@@ -7817,8 +8686,8 @@
     return h("div", { "class": "card card--pad ov-banner", "data-module": "storm-banner", "data-visual-id": "storm-banner" }, [
       h("span", { "class": "ov-banner__mark" }, [icon("snowflake", "ov-icon")]),
       h("div", { style: "flex:1;min-width:0" }, [
-        text7("div", "ov-banner__title", banner.title),
-        text7("div", "ov-banner__copy", banner.copy)
+        text8("div", "ov-banner__title", banner.title),
+        text8("div", "ov-banner__copy", banner.copy)
       ]),
       ActionButton({ variant: "btn--ghost", label: banner.action, action: "overview.newRequest", visualId: "storm-banner-cta" })
     ]);
@@ -7827,17 +8696,17 @@
     return h("div", { "class": "card card--pad ov-card", "data-module": id, "data-visual-id": id }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon(iconName, "ov-icon")]),
-        text7("h2", "ov-card__title", title)
+        text8("h2", "ov-card__title", title)
       ])
     ]);
   }
   function lead(value, label, meta) {
     return h("div", { "class": "ov-lead" }, [
       h("div", { "class": "ov-lead__main" }, [
-        text7("span", "ov-lead__value", value),
-        text7("span", "ov-lead__label", label)
+        text8("span", "ov-lead__value", value),
+        text8("span", "ov-lead__label", label)
       ]),
-      meta ? text7("div", "ov-lead__meta", meta) : null
+      meta ? text8("div", "ov-lead__meta", meta) : null
     ]);
   }
   function metaOf(day, service) {
@@ -7851,11 +8720,11 @@
   }
   function emptyLine(title, desc) {
     return h("div", { "class": "ov-empty", "data-state": "empty" }, [
-      text7("div", "ov-empty__title", title),
-      text7("div", "ov-empty__desc", desc)
+      text8("div", "ov-empty__title", title),
+      text8("div", "ov-empty__desc", desc)
     ]);
   }
-  function text7(tag, className, value) {
+  function text8(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -7969,8 +8838,8 @@
     var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
     if (!rows.length) {
       card.appendChild(h("div", { "class": "appt__empty" }, [
-        text8("div", "ov-empty__title", "No visits on this day"),
-        text8("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
+        text9("div", "ov-empty__title", "No visits on this day"),
+        text9("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
         h("div", { "class": "link-action", "data-action": "appointments.filterDay", "data-id": "" }, "Show all dates \u203A")
       ]));
       page.appendChild(card);
@@ -7978,7 +8847,7 @@
     }
     card.appendChild(Table(rows, direction));
     page.appendChild(card);
-    page.appendChild(text8("div", "appt__count", rows.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows.length) + " of " + all.length + " appointments"));
+    page.appendChild(text9("div", "appt__count", rows.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows.length) + " of " + all.length + " appointments"));
     return page;
   }
   function subline2(rows, timeline) {
@@ -7996,7 +8865,7 @@
       chips.push(dayChip(frame.day + " " + frame.date, String(index), String(day) === String(index), count));
     });
     return h("div", { "class": "appt-filters", "data-module": "appointment-filters", "data-visual-id": "appointment-filters" }, [
-      text8("span", "appt-filters__label", "Date"),
+      text9("span", "appt-filters__label", "Date"),
       h("div", { "class": "appt-filters__chips", role: "group", "aria-label": "Filter appointments by date" }, chips)
     ]);
   }
@@ -8006,7 +8875,7 @@
       "data-action": "appointments.filterDay",
       "data-id": id,
       "aria-pressed": active ? "true" : "false"
-    }, count ? [text8("span", "", label), text8("span", "appt-chip__count", String(count))] : [text8("span", "", label)]);
+    }, count ? [text9("span", "", label), text9("span", "appt-chip__count", String(count))] : [text9("span", "", label)]);
   }
   function Table(rows, direction) {
     var head2 = h("tr", null, COLUMNS.map(function(column) {
@@ -8016,15 +8885,15 @@
           "class": "appt__sort",
           "data-action": "appointments.sortResource",
           "aria-label": "Sort by resource, currently " + (direction === "desc" ? "descending" : "ascending")
-        }, [text8("span", "", column.label), text8("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
+        }, [text9("span", "", column.label), text9("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
       ]);
     }));
     var body = h("tbody", null, rows.map(function(row) {
       var meta = stateMeta(row.state);
       return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
         h("td", null, [
-          text8("div", "appt__resource", row.resource),
-          row.day ? text8("div", "appt__sub", row.day) : null
+          text9("div", "appt__resource", row.resource),
+          row.day ? text9("div", "appt__sub", row.day) : null
         ]),
         h("td", null, [
           h("button", {
@@ -8033,8 +8902,8 @@
             "data-id": row.id,
             "aria-label": "Open " + row.name
           }, [
-            text8("span", "appt__name", row.name),
-            text8("span", "appt__sub", row.address)
+            text9("span", "appt__name", row.name),
+            text9("span", "appt__sub", row.address)
           ])
         ]),
         h("td", null, [
@@ -8044,8 +8913,8 @@
             "data-id": row.id,
             "aria-label": "Open the " + row.service + " visit at " + row.name
           }, [
-            text8("span", "status-badge status-badge--" + meta.tone, meta.label),
-            text8("span", "appt__sub", row.service)
+            text9("span", "status-badge status-badge--" + meta.tone, meta.label),
+            text9("span", "appt__sub", row.service)
           ])
         ]),
         h("td", { "class": "appt__time" }, row.est || "\u2014"),
@@ -8056,7 +8925,7 @@
       h("table", { "class": "appt__table" }, [h("thead", null, [head2]), body])
     ]);
   }
-  function text8(tag, className, value) {
+  function text9(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -8080,10 +8949,10 @@
     var meta = stateMeta(visit.state);
     page.appendChild(h("div", { "class": "prop-head", "data-state": visit.state.toLowerCase() }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text9("h1", "prop-head__title", visit.service),
-        text9("div", "prop-head__addr", visit.day)
+        text10("h1", "prop-head__title", visit.service),
+        text10("div", "prop-head__addr", visit.day)
       ]),
-      text9("span", "status-badge status-badge--" + meta.tone, meta.label)
+      text10("span", "status-badge status-badge--" + meta.tone, meta.label)
     ]));
     page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "visit-facts", "data-visual-id": "visit-facts" }, [
       fact("Resource", visit.resource),
@@ -8096,11 +8965,11 @@
   }
   function fact(label, value, action, id) {
     return h("div", { "class": "prop-fact" }, [
-      text9("div", "prop-fact__label", label),
-      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text9("div", "prop-fact__value", value)
+      text10("div", "prop-fact__label", label),
+      action ? h("div", { "class": "link-action prop-fact__value", "data-action": action, "data-id": id }, value + " \u203A") : text10("div", "prop-fact__value", value)
     ]);
   }
-  function text9(tag, className, value) {
+  function text10(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -8126,25 +8995,25 @@
     page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
-        text10("h1", "prop-head__title", property.name),
-        text10("div", "prop-head__addr", property.address)
+        text11("h1", "prop-head__title", property.name),
+        text11("div", "prop-head__addr", property.address)
       ]),
-      text10("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label)
+      text11("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label)
     ]));
     page.appendChild(h(
       "div",
       { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
       facts(property, contract, quote).map(function(item) {
         return h("div", { "class": "prop-fact" }, [
-          text10("div", "prop-fact__label", item.label),
-          item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text10("div", "prop-fact__value", item.value)
+          text11("div", "prop-fact__label", item.label),
+          item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text11("div", "prop-fact__value", item.value)
         ]);
       })
     ));
     if (property.ticket) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
-        text10("div", "prop-section__title", "Open request"),
-        text10("div", "prop-ticket__title", property.ticket.title),
+        text11("div", "prop-section__title", "Open request"),
+        text11("div", "prop-ticket__title", property.ticket.title),
         h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
       ]));
     }
@@ -8153,25 +9022,25 @@
   }
   function VisitCard(property) {
     var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
-      text10("div", "prop-section__title", "Service")
+      text11("div", "prop-section__title", "Service")
     ]);
     if (property.appointment) {
       var meta = stateMeta(property.appointment.state);
       card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
         h("div", { style: "flex:1;min-width:0" }, [
-          text10("div", "prop-visit__title", property.appointment.service),
-          text10("div", "prop-visit__meta", property.appointment.when)
+          text11("div", "prop-visit__title", property.appointment.service),
+          text11("div", "prop-visit__meta", property.appointment.when)
         ]),
-        text10("span", "status-badge status-badge--" + meta.tone, meta.label),
-        text10("span", "prop-visit__caret", "\u203A")
+        text11("span", "status-badge status-badge--" + meta.tone, meta.label),
+        text11("span", "prop-visit__caret", "\u203A")
       ]));
     } else {
-      card.appendChild(text10("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
+      card.appendChild(text11("div", "prop-visit__meta", "No visit booked. Dispatch happens automatically when your trigger is met."));
     }
     if (property.lastService) {
       card.appendChild(h("div", { "class": "prop-last" }, [
-        text10("div", "prop-fact__label", "Last service"),
-        text10("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
+        text11("div", "prop-fact__label", "Last service"),
+        text11("div", "prop-visit__meta", property.lastService.service + " \xB7 " + property.lastService.when)
       ]));
     }
     card.appendChild(h("div", { "class": "prop-visits__foot" }, [
@@ -8213,7 +9082,7 @@
   function statusTone(status) {
     return { issue: "danger", enroute: "progress", scheduled: "info", monitoring: "scheduled" }[status] || "scheduled";
   }
-  function text10(tag, className, value) {
+  function text11(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
@@ -8719,10 +9588,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
-  function pitchRow(dot, bg, text13) {
+  function pitchRow(dot, bg, text15) {
     return h("div", { style: "display:flex;align-items:center;gap:12px" }, [
       h("div", { style: "width:34px;height:34px;border-radius:10px;background:" + bg + ";display:grid;place-items:center" }, h("i", { style: "width:12px;height:12px;border-radius:4px;background:" + dot + ";display:block" })),
-      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text13)
+      h("div", { style: "font-size:14px;color:var(--ink-2)" }, text15)
     ]);
   }
   function Auth() {
@@ -10689,8 +11558,8 @@
     page.appendChild(grid);
     return page;
   }
-  function oidcStep(n, text13) {
-    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text13]);
+  function oidcStep(n, text15) {
+    return h("div", { "class": "oidc-step" }, [h("span", { "class": "oidc-step__num" }, String(n)), text15]);
   }
   function OidcSignedOut() {
     return h("div", { "data-state": "ready-signed-out" }, [
@@ -14710,9 +15579,9 @@
       if (w) openOrder(w.id);
     }
   }
-  function pushChat(text13) {
-    if (!text13 || !text13.trim()) throw new Error("Message is empty");
-    state.messages = state.messages.concat([{ from: "user", text: text13.trim() }]);
+  function pushChat(text15) {
+    if (!text15 || !text15.trim()) throw new Error("Message is empty");
+    state.messages = state.messages.concat([{ from: "user", text: text15.trim() }]);
     state.chatInput = "";
     if (state.route !== "support") state.route = "support";
     toast("Message queued in fixture state");
@@ -15012,195 +15881,6 @@
     p.setAttribute("opacity", ".55");
     svg.appendChild(p);
     return svg;
-  }
-
-  // app-templates/customer-portal/runtime/src/adapters/xweather-adapter.js
-  var HOST2 = "https://data.api.xweather.com";
-  function createXweatherAdapter(options2) {
-    var clientId = options2 && options2.clientId || "";
-    var clientSecret = options2 && options2.clientSecret || "";
-    var fetchImpl = options2 && options2.fetch || (typeof fetch === "function" ? fetch : null);
-    return {
-      opened: function() {
-        return !!(clientId && clientSecret && fetchImpl);
-      },
-      dailyForecast: function(lat, lon, days) {
-        if (!this.opened()) return Promise.reject(new Error("Xweather adapter is not opened"));
-        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return Promise.reject(new Error("A forecast needs a finite coordinate"));
-        var url = HOST2 + "/forecasts/" + encodeURIComponent(lat + "," + lon) + "?filter=day&limit=" + encodeURIComponent(String(days)) + "&client_id=" + encodeURIComponent(clientId) + "&client_secret=" + encodeURIComponent(clientSecret);
-        return fetchImpl(url, { credentials: "omit", mode: "cors" }).then(function(response) {
-          if (!response.ok) throw new Error("Xweather HTTP " + response.status);
-          return response.json();
-        }).then(function(payload) {
-          if (!payload || payload.success !== true) {
-            throw new Error("Xweather error: " + (payload && payload.error && payload.error.description || "unknown"));
-          }
-          var periods = payload.response && payload.response[0] && payload.response[0].periods;
-          if (!Array.isArray(periods) || !periods.length) throw new Error("Xweather returned no forecast periods");
-          return periods;
-        });
-      }
-    };
-  }
-
-  // app-templates/customer-portal/runtime/src/normalizers/weather.js
-  var DAY_NAMES2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  var SNOW_CODES = ["S", "SI", "BS", "BY", "WM", "SW"];
-  var FREEZING_CODES = ["ZR", "ZL", "ZY", "IP", "IC"];
-  var THUNDER_CODES = ["T"];
-  var STORM_TEMP_C = -5;
-  var STORM_SNOW_CM = 2;
-  var STORM_POP = 40;
-  function frameDay(date, index) {
-    return index === 0 ? "Today" : DAY_NAMES2[date.getDay()];
-  }
-  function frameDate(date) {
-    return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
-  }
-  function periodKind(period) {
-    var coded = String(period && period.weatherPrimaryCoded || "");
-    var precipitation = coded.split(":")[2] || "";
-    if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
-    if (SNOW_CODES.indexOf(precipitation) !== -1) {
-      var snow = num(period.snowCM);
-      var feels = num(period.minFeelslikeC);
-      var stormy = Number.isFinite(snow) && snow >= STORM_SNOW_CM || Number.isFinite(feels) && feels <= STORM_TEMP_C;
-      return stormy ? "storm" : "snow";
-    }
-    if (THUNDER_CODES.indexOf(precipitation) !== -1 && num(period.pop) >= STORM_POP) return "storm";
-    return "clear";
-  }
-  function periodTemp(period) {
-    var value = num(period && period.maxTempC);
-    if (!Number.isFinite(value)) return "\u2014";
-    return (value < 0 ? "\u2212" : "") + Math.abs(Math.round(value)) + "\xB0C";
-  }
-  function periodStats(period) {
-    return [
-      { label: "Precipitation", value: statValue(period.pop, "%") },
-      { label: "Wind", value: windValue(period) },
-      { label: "Feels like", value: tempValue(period.minFeelslikeC) },
-      { label: "Humidity", value: statValue(period.humidity, "%") }
-    ];
-  }
-  function periodNote(period) {
-    var kind = periodKind(period);
-    if (kind === "freezing") return "Freezing precipitation \xB7 de-icing expected";
-    var snow = num(period && period.snowCM);
-    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast \xB7 trigger met";
-    if (kind === "storm") {
-      var feels = num(period && period.minFeelslikeC);
-      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight";
-      return "Storm risk " + statValue(period && period.pop, "%") + " \xB7 crews on standby";
-    }
-    if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast \xB7 below the 2 cm trigger";
-    return "Below the service trigger";
-  }
-  function buildTimeline(zonePeriods, zoneOrder) {
-    var lead2 = zonePeriods[zoneOrder[0]];
-    if (!Array.isArray(lead2) || !lead2.length) throw new Error("The lead zone returned no periods");
-    return lead2.map(function(period, index) {
-      var date = periodDate(period);
-      var zones = {};
-      var candidates = [];
-      zoneOrder.forEach(function(zone) {
-        var periods = zonePeriods[zone];
-        var match = Array.isArray(periods) && periods[index] || period;
-        zones[zone] = periodKind(match);
-        candidates.push(match);
-      });
-      var headline = worstPeriod(candidates);
-      return {
-        day: frameDay(date, index),
-        date: frameDate(date),
-        kind: periodKind(headline),
-        temp: periodTemp(headline),
-        label: String(headline.weather || "").split(",")[0] || "Forecast",
-        note: periodNote(headline),
-        stats: periodStats(headline),
-        zones
-      };
-    });
-  }
-  var SEVERITY = { clear: 0, snow: 1, freezing: 2, storm: 3 };
-  function worstPeriod(periods) {
-    return periods.reduce(function(running, period) {
-      var severity = SEVERITY[periodKind(period)];
-      var runningSeverity = SEVERITY[periodKind(running)];
-      if (severity !== runningSeverity) return severity > runningSeverity ? period : running;
-      return (num(period.snowCM) || 0) > (num(running.snowCM) || 0) ? period : running;
-    });
-  }
-  function periodDate(period) {
-    var seconds = num(period && period.timestamp);
-    if (Number.isFinite(seconds)) return new Date(seconds * 1e3);
-    return new Date(String(period && period.dateTimeISO));
-  }
-  function num(value) {
-    if (value === null || value === void 0 || value === "") return Number.NaN;
-    return Number(value);
-  }
-  function round1(value) {
-    return Math.round(value * 10) / 10;
-  }
-  function statValue(value, unit) {
-    var number = num(value);
-    return Number.isFinite(number) ? Math.round(number) + unit : "\u2014";
-  }
-  function tempValue(value) {
-    var number = num(value);
-    if (!Number.isFinite(number)) return "\u2014";
-    return (number < 0 ? "\u2212" : "") + Math.abs(Math.round(number)) + "\xB0C";
-  }
-  function windValue(period) {
-    var speed = num(period && period.windSpeedMaxKPH);
-    if (!Number.isFinite(speed)) speed = num(period && period.windSpeedKPH);
-    if (!Number.isFinite(speed)) return "\u2014";
-    var direction = period && (period.windDirMax || period.windDir);
-    return Math.round(speed) + " km/h" + (direction ? " " + direction : "");
-  }
-
-  // app-templates/customer-portal/runtime/src/live-weather.js
-  var FRAME_COUNT = 7;
-  function liveWeatherOpened(config) {
-    return !!(config && config.weatherClientId && config.weatherClientSecret);
-  }
-  function loadLiveWeather(fixtureWeather, config, adapter) {
-    if (!liveWeatherOpened(config)) return Promise.resolve(null);
-    var centroids = fixtureWeather && fixtureWeather.zoneCentroids || null;
-    if (!centroids) return Promise.resolve(null);
-    var zoneOrder = Object.keys(centroids);
-    if (!zoneOrder.length) return Promise.resolve(null);
-    var client = adapter || createXweatherAdapter({
-      clientId: config.weatherClientId,
-      clientSecret: config.weatherClientSecret
-    });
-    if (!client.opened()) return Promise.resolve(null);
-    state.liveWeatherState = "loading";
-    return Promise.all(zoneOrder.map(function(zone) {
-      return client.dailyForecast(centroids[zone].lat, centroids[zone].lon, FRAME_COUNT);
-    })).then(function(results) {
-      var zonePeriods = {};
-      zoneOrder.forEach(function(zone, index) {
-        zonePeriods[zone] = results[index];
-      });
-      var timeline = buildTimeline(zonePeriods, zoneOrder);
-      state.liveWeather = {
-        nowIndex: 0,
-        legend: fixtureWeather.legend,
-        zoneCentroids: centroids,
-        timeline,
-        source: "xweather"
-      };
-      state.liveWeatherState = "ready";
-      return state.liveWeather;
-    }).catch(function(error2) {
-      state.liveWeather = null;
-      state.liveWeatherState = "failed";
-      console.warn("[portal] live weather unavailable, staying on fixture data", error2);
-      return null;
-    });
   }
 
   // app-templates/customer-portal/runtime/src/adapters/fixture-adapter.js
@@ -15510,11 +16190,11 @@
     return null;
   }
   function opaqueRef4(prefix, value) {
-    var text13 = String(value || prefix);
+    var text15 = String(value || prefix);
     var left = 2166136261;
     var right = 2246822507;
-    for (var index = 0; index < text13.length; index += 1) {
-      var code = text13.charCodeAt(index);
+    for (var index = 0; index < text15.length; index += 1) {
+      var code = text15.charCodeAt(index);
       left = Math.imul(left ^ code, 16777619);
       right = Math.imul(right ^ code, 3266489909);
     }
@@ -15771,12 +16451,12 @@
   async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var config = context && context.config || {};
     var session = context && context.session || context && context.state && context.state.session || {};
-    var accessToken = text11(session.accessToken || session.access_token);
+    var accessToken = text12(session.accessToken || session.access_token);
     if (!accessToken) throw contractError5("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin4();
     var coreBase = sameOriginBase5(config.coreApiBase || "/core", origin, "Core API base");
     var accountBase = sameOriginBase5(config.accountApiBase || "/core-acct", origin, "Core Account API base");
-    var tokenType = text11(session.tokenType || session.token_type || "Bearer");
+    var tokenType = text12(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
     var basicInfo = await requestJson5(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
@@ -15787,7 +16467,7 @@
     var userId = positiveInteger7(basicInfo.authenticatedUserId || basicInfo.id);
     if (!userId) throw contractError5("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text11(config.accountTypeCode || "SPA_CUSTOMER");
+    var accountTypeCode = text12(config.accountTypeCode || "SPA_CUSTOMER");
     var accountReply = await requestJson5(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
@@ -15822,11 +16502,11 @@
       organization: { code: organizationCode },
       user: {
         id: userId,
-        displayName: text11(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
+        displayName: text12(basicInfo.authenticatedUserName || basicInfo.authenticatedUser || basicInfo.name)
       },
       account: {
         id: Number(account.id),
-        code: text11(account.code),
+        code: text12(account.code),
         displayName: localizedName4(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
@@ -15834,11 +16514,11 @@
     };
   }
   function selectOrganization(configuredCode, basicInfo) {
-    var configured = text11(configuredCode);
+    var configured = text12(configuredCode);
     var authorized = Array.isArray(basicInfo && basicInfo.authorizedOrganizations) ? basicInfo.authorizedOrganizations.map(function(item) {
-      return text11(item && item.code);
+      return text12(item && item.code);
     }).filter(Boolean) : [];
-    var current = text11(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
+    var current = text12(basicInfo && (basicInfo.organizationCode || basicInfo.defaultOrganizationCode));
     var selected = configured || current || authorized[0];
     if (!selected) throw contractError5("organization-required", "Core basic-info did not provide an organization");
     if (authorized.length && !authorized.includes(selected)) {
@@ -15877,9 +16557,9 @@
   function localizedName4(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
-    return text11(localized2 && (localized2.NAME || localized2.name));
+    return text12(localized2 && (localized2.NAME || localized2.name));
   }
-  function text11(value) {
+  function text12(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
   }
   function contractError5(code, message) {
@@ -16002,7 +16682,7 @@
       backendId: id,
       expiresAt: formatDate3(attributeText2(row, "VALID_UNTIL")),
       kind: "PACKAGE",
-      optimistic: finiteNumber6(row.optimistic, null),
+      optimistic: finiteNumber7(row.optimistic, null),
       ref: PLAN_REF_PREFIX + id,
       remainingUses: remaining,
       sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
@@ -16062,7 +16742,7 @@
     }));
     var byId = {};
     (Array.isArray(response && response.result) ? response.result : []).forEach(function(row) {
-      byId[String(row.id)] = text12(row.code);
+      byId[String(row.id)] = text13(row.code);
     });
     return byId;
   }
@@ -16116,7 +16796,7 @@
       displayRecurringPrice: recurringPrice(line, labels),
       expiresAt: formatDate3(row.expiresOn),
       kind: "MEMBERSHIP",
-      optimistic: finiteNumber6(row.optimistic, null),
+      optimistic: finiteNumber7(row.optimistic, null),
       ref: PLAN_REF_PREFIX + "sub-" + id,
       remainingUses: null,
       renewsAt: formatDate3(row.nextBillingAt || null),
@@ -16130,13 +16810,13 @@
     var config = context && context.config || {};
     var state2 = context && context.state || {};
     var session = context && context.session || state2.session || {};
-    var accessToken = text12(session.accessToken || session.access_token);
+    var accessToken = text13(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
-    var organization = text12(config.organization);
+    var organization = text13(config.organization);
     if (!organization) throw contractError6("organization-required", "Verified portal organization is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
     return {
-      authorization: text12(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      authorization: text13(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
       billBase: sameOriginBase6(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
       coreBase: sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base"),
       config,
@@ -16183,7 +16863,7 @@
   function firstState(row) {
     var states = Array.isArray(row && row.states) ? row.states : [];
     for (var index = 0; index < states.length; index += 1) {
-      var code = text12(states[index] && states[index].code);
+      var code = text13(states[index] && states[index].code);
       if (code) return code;
     }
     return "";
@@ -16210,13 +16890,13 @@
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
       var entry = nls[locales[index]];
-      var name = entry && text12(entry.NAME);
+      var name = entry && text13(entry.NAME);
       if (name) return name;
     }
     return "";
   }
   function sameOriginBase6(base, origin, label) {
-    var value = text12(base);
+    var value = text13(base);
     if (!value) throw contractError6("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
       if (value.indexOf(origin) !== 0) throw contractError6("cross-origin-base", label + " must stay same-origin");
@@ -16231,11 +16911,11 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : 0;
   }
-  function finiteNumber6(value, fallback) {
+  function finiteNumber7(value, fallback) {
     var number = Number(value);
     return Number.isFinite(number) ? number : fallback;
   }
-  function text12(value) {
+  function text13(value) {
     return typeof value === "string" ? value.trim() : value == null ? "" : String(value);
   }
   function contractError6(code, message) {
@@ -16243,6 +16923,262 @@
     error2.code = code;
     return error2;
   }
+
+  // app-templates/customer-portal/runtime/src/adapters/core-snow-adapter.js
+  var PROPERTY_TYPE = "SNOW_REMOVAL_PROPERTY";
+  var PROPERTY_BASE_TYPE = "PROPERTY";
+  var QUOTE_ORDER_TYPES = ["FIELD_SERVICE_ORDER", "WINTER_SERVICES_ORDER"];
+  var CUSTOMER_QUOTE_STATUS = {
+    CLIENT_APPROVED: "approved",
+    CUSTOMER_CHANGES_REQUESTED: "revision",
+    DECLINED: "declined",
+    QUOTE_SENT: "unseen",
+    QUOTE_VIEWED: "viewed"
+  };
+  var OPERATOR_QUOTE_STATES = ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"];
+  var PROPERTY_PAGE_SIZE = 200;
+  var PROPERTY_PAGE_LIMIT = 6;
+  var REF_MAPPINGS4 = [{ name: "id" }, { name: "code" }, { name: "nls" }];
+  var RESOURCE_MAPPINGS2 = [
+    { name: "attributes" },
+    { name: "code" },
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: REF_MAPPINGS4, name: "type", type: "identifier" },
+    { mappings: REF_MAPPINGS4, name: "states", type: "collection" }
+  ];
+  var ADDRESS_MAPPINGS = [
+    { name: "address1" },
+    { name: "city" },
+    { name: "id" },
+    { name: "postalCode" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "country", type: "identifier" },
+    { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "state", type: "identifier" }
+  ];
+  var ORDER_MAPPINGS3 = [
+    { name: "attributes" },
+    { name: "created" },
+    { name: "grandTotal" },
+    { name: "id" },
+    { name: "notes" },
+    { key: "id", mappings: REF_MAPPINGS4, name: "account", type: "identifier" },
+    { key: "id", mappings: REF_MAPPINGS4, name: "currency", type: "identifier" },
+    { mappings: REF_MAPPINGS4, name: "states", type: "collection" },
+    { key: "id", mappings: REF_MAPPINGS4, name: "type", type: "identifier" }
+  ];
+  function createCoreSnowPropertiesAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw contractError7("fetch-unavailable", "Core snow adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "properties") throw contractError7("unsupported-module", "Core snow properties adapter cannot load " + moduleId);
+        return loadSnowProperties(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadSnowProperties(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = readContext(context, explicitOrigin);
+    var rows = await customerProperties(api, fetchImpl);
+    var addresses = await resolveAddresses(api, fetchImpl, rows.items);
+    return {
+      state: "ready",
+      accountId: api.accountId,
+      items: rows.items.map(function(row) {
+        return propertyRecord(row, addresses);
+      }),
+      scopeMode: "browser-filtered",
+      truncated: rows.truncated
+    };
+  }
+  async function customerProperties(api, fetchImpl) {
+    var items = [];
+    var truncated = false;
+    for (var page = 0; page < PROPERTY_PAGE_LIMIT; page += 1) {
+      var response = await requestJson7(fetchImpl, api.resourceBase + "/api/resource/list.json", readOptions(api, {
+        filters: [{ type: "STRING", operator: "=", property: "type.code", value: PROPERTY_TYPE }],
+        mappings: RESOURCE_MAPPINGS2,
+        offset: page * PROPERTY_PAGE_SIZE,
+        pageSize: PROPERTY_PAGE_SIZE
+      }));
+      var rows = Array.isArray(response && response.result) ? response.result : [];
+      rows.forEach(function(row) {
+        if (attributeNumber3(row, "ACCOUNT") === api.accountId) items.push(row);
+      });
+      if (rows.length < PROPERTY_PAGE_SIZE) return { items, truncated: false };
+      truncated = page === PROPERTY_PAGE_LIMIT - 1;
+    }
+    return { items, truncated };
+  }
+  async function resolveAddresses(api, fetchImpl, rows) {
+    var resolved = {};
+    var ids = [];
+    rows.forEach(function(row2) {
+      var id = attributeNumber3(row2, "ADDRESS");
+      if (id && ids.indexOf(id) < 0) ids.push(id);
+    });
+    for (var index = 0; index < ids.length; index += 1) {
+      var response = await requestJson7(fetchImpl, api.coreBase + "/api/address/list.json", readOptions(api, {
+        filters: [{ type: "INTEGER", operator: "=", property: "id", value: String(ids[index]) }],
+        mappings: ADDRESS_MAPPINGS,
+        offset: 0,
+        pageSize: 2
+      }));
+      var row = Array.isArray(response && response.result) ? response.result[0] : null;
+      if (row) resolved[String(ids[index])] = row;
+    }
+    return resolved;
+  }
+  function propertyRecord(row, addresses) {
+    var address = addresses[String(attributeNumber3(row, "ADDRESS"))] || null;
+    return {
+      id: "prop-core-" + row.id,
+      backendId: positiveInteger9(row.id),
+      name: localizedName6(row.nls) || text14(row.code) || "Property",
+      address: formatAddress(address),
+      city: address ? text14(address.city) : "",
+      postal: address ? text14(address.postalCode) : "",
+      region: address && address.state ? text14(address.state.code) : "",
+      country: address && address.country ? text14(address.country.id || address.country.code) : "",
+      category: attributeText3(row, "PROPERTY_CATEGORY") || null,
+      stateCode: latestStateCode(row) || null,
+      lat: attributeCoordinate(row, "COORD_LAT", 90),
+      lon: attributeCoordinate(row, "COORD_LNG", 180),
+      zone: null,
+      contract: null,
+      quoteSiteId: null,
+      appointment: null,
+      ticket: null,
+      lastService: null
+    };
+  }
+  function formatAddress(address) {
+    if (!address) return "";
+    var region = address.state ? text14(address.state.code) : "";
+    var tail = [text14(address.city), region].filter(Boolean).join(", ");
+    return [text14(address.address1), tail, text14(address.postalCode)].filter(Boolean).join(", ");
+  }
+  function latestStateCode(row) {
+    var states = Array.isArray(row && row.states) ? row.states : [];
+    var last = states[states.length - 1];
+    return text14(last && last.code);
+  }
+  function attributeEntry2(row, code) {
+    var buckets = row && row.attributes;
+    if (!buckets || typeof buckets !== "object") return null;
+    var keys = Object.keys(buckets);
+    for (var index = 0; index < keys.length; index += 1) {
+      var bucket2 = buckets[keys[index]];
+      if (bucket2 && Object.prototype.hasOwnProperty.call(bucket2, code)) return bucket2[code];
+    }
+    return null;
+  }
+  function attributeNumber3(row, code) {
+    var entry = attributeEntry2(row, code);
+    return entry && entry.value != null ? positiveInteger9(entry.value) : null;
+  }
+  function attributeText3(row, code) {
+    var entry = attributeEntry2(row, code);
+    return entry && entry.value != null ? text14(entry.value) : "";
+  }
+  function attributeCoordinate(row, code, limit) {
+    var entry = attributeEntry2(row, code);
+    var value = entry ? entry.value : null;
+    var number = typeof value === "number" ? value : typeof value === "string" && value.trim() !== "" ? Number(value) : Number.NaN;
+    return Number.isFinite(number) && Math.abs(number) <= limit ? number : null;
+  }
+  function readContext(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session = runtimeState.session || {};
+    var accessToken = text14(session.accessToken || session.access_token);
+    if (!accessToken) throw contractError7("session-required", "A Core access token is required");
+    var account = runtimeState.customerAccount || session.account || null;
+    var accountId = positiveInteger9(account && account.id);
+    if (!accountId) throw contractError7("customer-unresolved", "A resolved customer Account is required before reading snow records");
+    var organization = text14(config.organization);
+    if (!organization) throw contractError7("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || browserOrigin6();
+    return {
+      accountId,
+      authorization: text14(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      billBase: sameOriginBase7(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase7(config.coreApiBase || "/core", origin, "Core API base"),
+      organization,
+      resourceBase: sameOriginBase7(config.resourceApiBase || "/core-rm", origin, "Core Resource API base")
+    };
+  }
+  function readOptions(api, body) {
+    return {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify(body)
+    };
+  }
+  async function requestJson7(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw contractError7("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "core-request-failed";
+      var error2 = contractError7(code, "Core request failed with HTTP " + response.status);
+      error2.status = response.status;
+      throw error2;
+    }
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw contractError7("invalid-response", "Core response was not valid JSON");
+    }
+    if (typeof payload === "string") throw contractError7("unprojectable-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase7(value, origin, label) {
+    if (!origin) throw contractError7("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw contractError7("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function browserOrigin6() {
+    return globalThis.location && globalThis.location.origin || "";
+  }
+  function positiveInteger9(value) {
+    if (value == null || value === "") return null;
+    var number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
+  }
+  function localizedName6(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return text14(localized2 && (localized2.NAME || localized2.name));
+  }
+  function text14(value) {
+    return typeof value === "string" ? value.trim() : value == null ? "" : String(value).trim();
+  }
+  function contractError7(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+  var coreSnowContract = Object.freeze({
+    addressMappings: ADDRESS_MAPPINGS,
+    customerQuoteStatus: Object.freeze(Object.assign({}, CUSTOMER_QUOTE_STATUS)),
+    operatorQuoteStates: Object.freeze(OPERATOR_QUOTE_STATES.slice()),
+    orderMappings: ORDER_MAPPINGS3,
+    propertyBaseType: PROPERTY_BASE_TYPE,
+    propertyPageLimit: PROPERTY_PAGE_LIMIT,
+    propertyPageSize: PROPERTY_PAGE_SIZE,
+    propertyType: PROPERTY_TYPE,
+    quoteOrderTypes: Object.freeze(QUOTE_ORDER_TYPES.slice()),
+    resourceMappings: RESOURCE_MAPPINGS2,
+    quoteFilters: ["account.id"],
+    propertyFilters: ["type.code"]
+  });
 
   // app-templates/customer-portal/runtime/src/normalizers/care.js
   var CARE_KINDS = ["equipment", "seasonLog", "program", "water", "roof", "monitoring", "healthCare", "beautyCare"];
@@ -16740,6 +17676,29 @@
       return localCartEnvelope(error2 && error2.code === "cart-forbidden" ? "unauthorized" : "error");
     }
   };
+  var propertiesModule = {
+    id: "properties",
+    asyncOnly: true,
+    adapter(context) {
+      if (context.config.dataMode === "live") return createCoreSnowPropertiesAdapter();
+      return fixtureAdapter;
+    },
+    normalize(raw) {
+      return raw;
+    },
+    onError(error2, context) {
+      if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
+    },
+    failureEnvelope(context, error2) {
+      return {
+        state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error",
+        accountId: null,
+        items: [],
+        scopeMode: null,
+        truncated: false
+      };
+    }
+  };
   var checkoutModule = {
     id: "checkout",
     adapter(context) {
@@ -16770,9 +17729,7 @@
     appointmentsTimeline: module("appointmentsTimeline", function(raw) {
       return raw;
     }),
-    properties: module("properties", function(raw) {
-      return raw;
-    }),
+    properties: propertiesModule,
     calendar: module("calendar", normalizeCalendar),
     activity: module("activity", normalizeActivity),
     profile: profileModule,
