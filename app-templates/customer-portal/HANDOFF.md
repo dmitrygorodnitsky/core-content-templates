@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-15
+Updated: 2026-09-16
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `3e4f821`
+- HEAD when this checkpoint was written: `8629638`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -532,12 +532,26 @@ its namespace should be restricted to whatever host serves the portal.
 - **The home map explains a missing pin** — "Finding it on the map…", "Address
   not found on the map", "No address on file" — keeps its height while locating,
   never falls back to the map centre, and credits the weather once per card.
+- **Live mode claims nothing its sources do not hold.** A section without a
+  source says "Not available yet" and offers no action. The live overview model
+  declares its `sources`; a section may say it is empty only once its source is
+  `ready`, and a newly opened source still needs its own loading and error
+  states. Contract, visit, monitoring and trigger facts, including a property
+  status on the map and on property detail, appear only when their sources are
+  open, and the weather card keeps only what Xweather answers. Still open in live
+  mode: the unread dot on the header bell, and a deep link to a property that
+  says it was not found while the list is still loading. Trigger and dispatch
+  wording remains on the storm home, calendar, season log, appointments and
+  order pages, none of them enabled live.
 - **`CLIENT_REVIEW_DOCUMENT` is the anonymous page behind both links**: quote
   review with approve, decline and request changes, the contract details step,
   "being prepared", agreement review with approval, completion, and the link,
   error and partial states. It reads the token only from `#token=`, sends one
-  command at a time, and renders only what it reads back. Its CMS parameters are
-  `REVIEW_API_BASE_URL` and copy. Its live adapter has never run.
+  command at a time, and renders only what it reads back. An option shows the
+  server's `totalCharges` and `totalTaxes` above its total when they are
+  returned, and the two confirmations read as statements a client can agree to.
+  Its CMS parameters are `REVIEW_API_BASE_URL` and copy. Its live adapter has
+  never run.
 - **The quote form** keeps the first click, Tab focus and one geocode per
   address, its suggestions follow the ARIA combobox pattern, and its success
   screen lists next steps from copy parameters. Values proposed for the
@@ -555,8 +569,9 @@ Screenshots of all four went to the user on 2026-09-15 for acceptance.
   `get.json?id=`, `event.json` with `{id, event, metadata}`, whether a grant
   issued on `core-bill` reads through `core` and `core-acct`, and the shape of a
   refusal.
-- `MAPPINGS_ORDER`, with order lines as `items`, and `MAPPINGS_DOCUMENT` do not
-  exist; until they do, reads through a link answer `400`.
+- `MAPPINGS_ORDER`, which must include order lines as `items` and the
+  `totalCharges` and `totalTaxes` fields, and `MAPPINGS_DOCUMENT` do not exist;
+  until they do, reads through a link answer `400`.
 - The planned attributes the pages read: Order `PRICING_MODEL` and
   `SERVICE_ADDRESS`, the agreement's client snapshot under the ten detail codes,
   and `PROVIDER_LEGAL_NAME`, `PROVIDER_REPRESENTATIVE_NAME` and
@@ -758,7 +773,9 @@ A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
 `data-portal-account-type-code="CUSTOMER"`, service geography for the British
 Columbia service area, and an enabled-module list restricted to what has both
-data and design. The fixture package must stay as it is:
+data and design: only `overview` and `properties` have live adapters today, and
+any other module enabled in a live entry fails its boot. The fixture package
+must stay as it is:
 `granite-ridge-portal-manual-check` refuses a service base, an auth contract or
 live data mode in it, and that guard is correct.
 
