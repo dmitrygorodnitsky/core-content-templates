@@ -306,6 +306,47 @@ The published page:
 curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/pages/SNOWLIMITLESS/request-quote"
 ```
 
+## dev-1 on 2026-09-16
+
+Read-only. The form type and the page were read anonymously. The dev key of
+2026-09-15 now answers `401` on every endpoint, `core/api/user/basic-info.json`
+included, so nothing behind a bearer was re-read.
+
+- **The schema loads again.** `/en/core-cms/api/form-type/GET_QUOTE_/get.json`
+  answers `200` without a token from both CMS nodes, `x-node-id`
+  `app-1-core-cms` and `app-3-core-cms`, with identical bodies. The backend's
+  explanation: option loading read an NLS field that `Address` does not have,
+  which surfaced as `401`. The lookup is now skipped, and an Address attribute
+  arrives with `options: []`, which does not mean the field is missing.
+- **The contract is still the single-address one.** Ten attributes in three
+  groups: `SELECT_YOUR_PROPERTY_TYPE`, `PROPERTY_ADDRESS`, `RISK_FACTORS`,
+  `PROPERTY_SIZE`; `SELECT_ROLE`, `FIRST_NAME`, `LAST_NAME`, `EMAIL`, `PHONE`;
+  `ADDITIONAL_NOTES`. `PROPERTY_ADDRESS` is required, single, of class
+  `com.pixelnation.common.domain.Address`, with no `inputFormat`.
+  `PROPERTY_ADDRESSES`, `ORGANIZATION_NAME` and the `PROPERTIES` group are
+  absent. The anonymous body reports `optimistic` 0, so it cannot show whether
+  the stored definition changed after 2026-09-14.
+- **Our renderer could not submit it.** `portal-form.js` sent an attribute
+  without options through its class table, which maps every entity class to a
+  select, so `PROPERTY_ADDRESS` rendered as a required select with no options.
+- **The page is still gone.** `/pages/SNOWLIMITLESS/request-quote` answers `404`
+  on both nodes.
+- **Account creation, as last read on 2026-09-15.** Script 169 reads addresses
+  only from `PROPERTY_ADDRESSES`, and `createCustomerAccount` throws on an empty
+  list, so a submission carrying only `PROPERTY_ADDRESS` creates no account.
+  Script 169 could not be re-read.
+
+Reproduce with the `HOST` above. The node and status of each answer, then the
+attributes; the page command of 2026-09-15 still applies:
+
+```bash
+for i in 1 2 3 4; do curl -sS -o /dev/null -D - "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json" | grep -i -E '^(HTTP|x-node-id)'; done
+```
+
+```bash
+curl -sS "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json" | python3 -c 'import json,sys; t=json.load(sys.stdin); print([(a["code"], a["className"].rsplit(".",1)[-1], a.get("inputFormat"), len(a["options"])) for a in t["attributes"]])'
+```
+
 ## Questions for the team
 
 1. Is `createCustomerAccount` at `PROCESSED` the intended first step, with
@@ -316,3 +357,15 @@ curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/pages/SNOWLIMITLESS/request-quo
 3. Should one quote order be created per address per pricing model, as §4.2
    says, and should each carry `SERVICE_PROPERTY`?
 4. Should a failed step move the form to a visible state instead of logging?
+5. Which `GET_QUOTE_` contract is intended? The form carries a single
+   `PROPERTY_ADDRESS` of class Address since 2026-09-14, while script 169 and
+   `createCustomerAccount` read only `PROPERTY_ADDRESSES`, the multi-address
+   contract of 2026-09-10. One side has to change before a submission can
+   create an account.
+6. What may an anonymous `core-cms/api/form/submit.json` send for an attribute
+   of class `com.pixelnation.common.domain.Address`: the formatted address
+   text, a structured address, or the id of an existing Address? A prospect has
+   no Address rows, and `toAddressId` in script 169 accepts only an `Address`, a
+   number or a map with `id`.
+7. Was `/pages/SNOWLIMITLESS/request-quote` removed on purpose? It answers `404`
+   since 2026-09-15.

@@ -4,8 +4,10 @@ Read-only investigation, 2026-09-10, tenant `SNOWLIMITLESS` on `dev-1`.
 Nothing was written to any environment.
 
 On 2026-09-14 the live form type returned to the single-address contract, so §1
-describes dev-1 as it stood on 2026-09-10; see "dev-1 on 2026-09-15" in
-`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`. The model analysis in §2–§5 still holds.
+describes dev-1 as it stood on 2026-09-10; see "dev-1 on 2026-09-15" and "dev-1
+on 2026-09-16" in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`. The returned
+`PROPERTY_ADDRESS` is of class `com.pixelnation.common.domain.Address`, the
+entity-valued case §5 item 5 discusses. The model analysis in §2–§5 still holds.
 
 ## Answer
 

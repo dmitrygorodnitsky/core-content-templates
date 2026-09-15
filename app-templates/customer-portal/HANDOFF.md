@@ -602,6 +602,26 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
 - Twelve Orders, all in `INITIAL`; account 692 is the only one with a user and
   owns nothing.
 
+### dev-1 on 2026-09-16
+
+With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
+2026-09-16":
+
+- `GET_QUOTE_` answers `200` without a token again, from both CMS nodes
+  (`app-1-core-cms`, `app-3-core-cms`). The backend traced the `401` to option
+  loading reading an NLS field that `Address` does not have; the lookup is now
+  skipped, so an Address attribute always arrives with empty options.
+- The contract is still the single-address one of 2026-09-14.
+  `PROPERTY_ADDRESS` is of class `com.pixelnation.common.domain.Address`,
+  required, with no `inputFormat` and no options; `PROPERTY_ADDRESSES`,
+  `ORGANIZATION_NAME` and the `PROPERTIES` group are absent.
+- `portal-form.js` rendered that field as a required select with no options, so
+  the form could not be submitted.
+- `/pages/SNOWLIMITLESS/request-quote` still answers `404` on both nodes.
+- The dev key of 2026-09-15 answers `401` on every authenticated endpoint,
+  `core/api/user/basic-info.json` included, so the stored definition and script
+  169 were not re-read.
+
 ### Live read path
 
 `runtime/src/adapters/core-snow-adapter.js` reads a customer's properties and
@@ -749,12 +769,15 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
-The backend is down and `GET_QUOTE_` has regressed, so nothing can be shown
-live. In order:
+`GET_QUOTE_` loads again, but it keeps the single-address contract that script
+169, as last read, cannot turn into an account, and its page answers `404`;
+nothing can be shown live. In order:
 
-1. **The backend:** restore `GET_QUOTE_` and its page, make Core documents
-   readable, fix the core-ui `permissions` mapping, and answer
-   `CUSTOMER-SCOPE-GENERIC-API.md` §5.
+1. **The backend:** settle the `GET_QUOTE_` contract and what an anonymous
+   submit may send for an Address attribute
+   (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, questions 5–7), restore the page,
+   make Core documents readable, fix the core-ui `permissions` mapping, and
+   answer `CUSTOMER-SCOPE-GENERIC-API.md` §5.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
