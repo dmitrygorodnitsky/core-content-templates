@@ -1,0 +1,263 @@
+# Quotation flow — what is implemented against spec §4.2
+
+Status: read from `dev-1` as `SNOWLIMITLESS` on 2026-09-10. Read-only; nothing
+was created, updated or transitioned. Script line numbers refer to the script
+content as it was read that day.
+
+Spec: `quotation-contract-client-activation-flow.md`, §4.2 `onEnter(SUBMITTED)`.
+
+## Verdict
+
+The automated quote-request flow creates the customer account and its addresses,
+issues an access grant, and emails the requester a link to a public account page.
+It creates **no service property** and **no quotation order**. The method that
+would create orders exists but nothing calls it; the nine quote orders on dev-1
+were produced by invoking it by hand on 2026-09-02. Any failure in the automated
+step is written to a log while the form still reads `PROCESSED`.
+
+## What the automated flow does today
+
+Form type `GET_QUOTE_`, workflow `WINTER_SERVICES_QUOTATION_FORM` (id 49, Java):
+
+```text
+INITIAL → SUBMITTED → NOTIFIED → PROCESSED
+                   ↘ REJECTED  ↘ REJECTED
+```
+
+| state | hook |
+| --- | --- |
+| `SUBMITTED` | `workflowUtils.validateServiceRegion(entity, context)` |
+| `NOTIFIED` | `workflowUtils.sendQuotationNotification(entity, context)` |
+| `PROCESSED` | `workflowUtils.createQuotations(entity, context)` |
+| `REJECTED` | `workflowUtils.sendQuotationRequesterRejectedNotification(entity, context)` |
+
+`workflowUtils` is script `WINTER_SERVICE_REGION_WORKFLOW_UTILS` (id 169). The
+`PROCESSED` call chain:
+
+1. `createQuotations` (line 111) schedules `createQuotationsAfterCommit(formId)`
+   with `transactionUtils.runAfterTx`.
+2. `createQuotationsAfterCommit` (line 691) loads the form input, calls
+   `executeQuotationCreation`, builds `accountUrl(result)` and sends the
+   requester notification.
+3. `executeQuotationCreation` picks a node with `CORE`, `CORE-PIM` and
+   `CORE-BILL` capabilities and calls `submitQuotationCreation`.
+4. `submitQuotationCreation` dispatches script `WINTER_SERVICE_QUOTATION_CREATOR`
+   (id 176) method **`"createCustomerAccount"`** (line 874). It is the only
+   method name dispatched by string anywhere in script 169.
+5. `createCustomerAccount` in script 176 (lines 191–262) validates the
+   organization, form, addresses, email, phone and role; resolves or creates the
+   account through `resolveFormAccount`; issues `issueAccountReadGrant`; and
+   returns `formId`, `accountId`, `accountCode`, `accountCreated`,
+   `accessToken`, `accessExpiresAt` and `addressIds`. It does not create an
+   order or a resource and does not call `createQuotations`.
+6. Back in script 169, `accountUrl` builds
+   `publicAccountPageUrl() + "?accountId=" + id + "#token=" + token`, and the
+   requester receives it through the processing email template.
+7. The whole job runs inside `catch (Exception e)` that only logs
+   `"Customer account processing failed for form {}"`.
+
+## What spec §4.2 requires, against what exists
+
+| spec §4.2 | implemented |
+| --- | --- |
+| 1. create the client Account | yes — `resolveFormAccount` |
+| 2. create Address records | yes — one `AccountAddress` per submitted address |
+| 3. a Real Estate Resource for every service address | **no** — neither script references a resource |
+| 4. link each Resource to the Account through its `ACCOUNT` attribute | **no** — follows from 3 |
+| 5. three Orders — Monthly, Seasonal, Per Service — for every address | **no** — not called from the flow; see gap 2 |
+| 6. link the Orders to the Account and the Property | partial — `CLIENT` only, no property |
+| 7. notify the Service Provider Manager | yes — at `NOTIFIED` |
+
+## Gaps
+
+1. **No service property is created.** Script 176 and script 169 contain no
+   reference to a resource, `IResourceManager` or `SNOW_REMOVAL_PROPERTY`. The
+   newest `SNOW_REMOVAL_PROPERTY` on dev-1 is resource 908, created 2026-08-07,
+   before any of these forms existed.
+2. **Quotation creation is not wired into the workflow.** Script 176 exposes a
+   public `createQuotations` (line 265) that does create orders, but nothing
+   dispatches it: the `PROCESSED` hook shares its name and dispatches
+   `createCustomerAccount` instead. The naming along the chain —
+   `createQuotations`, `createQuotationsAfterCommit`,
+   `executeQuotationCreation`, `submitQuotationCreation` — describes order
+   creation that does not happen.
+3. **When it is run, `createQuotations` works per form, not per address.** It
+   loops `for (QuoteKind quoteKind : QuoteKind.values())` (line 304) with
+   idempotency keyed on the source form (`existingOrders(sourceFormId)`, line
+   301). It sets `CLIENT` and `QUOTE_REQUEST_FORM_ID` and no `SERVICE_PROPERTY`.
+   A fifty-address request would yield three orders, none tied to an address.
+4. **`createQuotations` needs a property size the form no longer collects.**
+   The size is a method parameter, not read from the form, and
+   `validateInputs` (lines 349–363) throws
+   `"PROPERTY_SIZE must be a positive square-foot value"` without it. The
+   current `GET_QUOTE_` has no `PROPERTY_SIZE`, and the per-property
+   measurements are unset on 629 of 630 properties. The 2026-09-02 run passed
+   75 000 for all three forms, including form 1, which has no size at all — so
+   the three sets of totals are identical.
+5. **Failures are silent.** The after-commit job catches every exception into a
+   log. A form reads `PROCESSED` whether or not anything was created.
+6. **Form hygiene.**
+   - `GET_QUOTE_.attributeOrder` still lists `PROPERTY_ADDRESS`, a deleted
+     attribute, as the only row of group `EA849F15_9108_455F_9A05_F26BED67E5CD`;
+     renderers drop the empty group, so its heading "Tell us about your
+     property…" no longer appears.
+   - Script 169 still prints `PROPERTY_SIZE` into the manager notification
+     (lines 366 and 587); on current forms that line is empty.
+
+## Observed on dev-1
+
+Every `GET_QUOTE_` form, all on workflow 49:
+
+| form | created | state | contract | `PROPERTY_SIZE` | addresses | orders |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 09-02 08:33 | `PROCESSED` | current | — | 1 | 3, created 18:07 |
+| 2 | 09-02 10:48 | `REJECTED` | previous | 75000 | 1 | 0 |
+| 6 | 09-02 11:32 | `PROCESSED` | previous | 75000 | 1 | 3, created 17:54 |
+| 7 | 09-02 12:12 | `PROCESSED` | previous | 75000 | 1 | 3, created 18:01 |
+| 17 | 09-04 14:26 | `REJECTED` | current | — | 2 | 0 |
+| 18 | 09-04 14:32 | `PROCESSED` | current | — | 2 | **0** |
+| 19 | 09-04 14:36 | `PROCESSED` | current | — | 2 | **0** |
+
+- The nine orders created since 2026-09-01 are all `WINTER_SERVICES_ORDER` in
+  `INITIAL`, all on account 694, all with `SERVICE_PROPERTY` unset, three per
+  `QUOTE_REQUEST_FORM_ID` 1, 6 and 7. Each set totals 2444.72, 6687.9 and
+  26751.6.
+- Forms 6, 7 and 1 got their orders in a thirteen-minute window that evening,
+  ten hours after form 1 was submitted.
+- Forms 18 and 19 produced accounts 695 and 696, each with two addresses, a
+  `DRAFT` state and **zero** orders — exactly what `createCustomerAccount`
+  returns.
+
+## Reproduce
+
+Any bearer with read access to `core`, `core-cms`, `core-bill` and `core-rm`:
+
+```bash
+export HOST=https://dev-1.servicewand.com TOKEN='<bearer>'
+```
+
+Forms, their states and submitted attributes:
+
+```bash
+curl -sS -X POST "$HOST/core-cms/api/form/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"mappings":[{"name":"id"},{"name":"created"},{"name":"attributes"},{"key":"id","mappings":[{"name":"id"},{"name":"code"}],"name":"type","type":"identifier"},{"mappings":[{"name":"id"},{"name":"code"}],"name":"states","type":"collection"}],"offset":0,"pageSize":100}'
+```
+
+Orders with their source form, client and property:
+
+```bash
+curl -sS -X POST "$HOST/core-bill/api/order/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"mappings":[{"name":"id"},{"name":"created"},{"name":"grandTotal"},{"name":"attributes"},{"key":"id","mappings":[{"name":"id"},{"name":"code"}],"name":"account","type":"identifier"},{"mappings":[{"name":"id"},{"name":"code"}],"name":"states","type":"collection"}],"offset":0,"pageSize":200}'
+```
+
+Orders for the accounts created by forms 18 and 19 — expect `resultSize` 0:
+
+```bash
+curl -sS -X POST "$HOST/core-bill/api/order/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"filters":[{"type":"INTEGER","operator":"=","property":"account.id","value":"695"}],"mappings":[{"name":"id"}],"offset":0,"pageSize":50}'
+```
+
+Newest service properties — expect nothing after 2026-08-07:
+
+```bash
+curl -sS -X POST "$HOST/core-rm/api/resource/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"mappings":[{"name":"id"},{"name":"created"},{"key":"id","mappings":[{"name":"id"},{"name":"code"}],"name":"type","type":"identifier"}],"sorting":[{"field":"created","direction":"DESC"}],"offset":0,"pageSize":5}'
+```
+
+The only method the workflow dispatches — expect `createCustomerAccount` true and
+`createQuotations` false:
+
+```bash
+curl -sS -X POST "$HOST/core/api/script/list.json" -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -H "X-Organization-Code: SNOWLIMITLESS" -d '{"filters":[{"operator":"=","property":"code","value":"WINTER_SERVICE_REGION_WORKFLOW_UTILS"}],"mappings":[{"name":"id"},{"name":"content"}],"offset":0,"pageSize":1}' | python3 -c 'import json,sys; c=json.load(sys.stdin)["result"][0]["content"]; print({name: "\"%s\"" % name in c for name in ("createCustomerAccount", "createQuotations")})'
+```
+
+## What depends on this
+
+- `SERVICE_AGREEMENT.ORDERS` collects approved quote orders. Without a property
+  on each order the agreement's Schedule A has no premises to list, and with
+  three orders per form there is nothing to choose per address.
+- The customer portal reads properties by account and quotes by
+  `SERVICE_PROPERTY`; neither exists for accounts created through the form.
+
+## Team answers, 2026-09-10
+
+1. **Quotation is manual.** The Service Provider Manager builds the quotes by
+   hand, per address, from the addresses and the rest of the form, and then
+   sends them to the client for approval. `createCustomerAccount` at `PROCESSED`
+   is therefore the intended automated step, and gap 2 — quotation creation not
+   wired into the workflow — is by design rather than a defect. This departs
+   from spec §4.2 item 5, which creates three draft orders automatically; the
+   team's answer is the operative one.
+2. **Property size comes from the manager or from a measurement service.** The
+   manager enters it by hand or obtains it through a service whose response
+   already has a design. The size is not collected on the form and should not
+   be.
+3. **One order per address per pricing model, each carrying
+   `SERVICE_PROPERTY`** — as spec §4.2 describes.
+4. **A failed step must land in a visible state** from which a responsible
+   person can restart it or act otherwise. Logging alone is not acceptable.
+
+Anything the specification does not cover is ours to design; there is no
+further product input to wait for.
+
+## Ownership and scope, settled 2026-09-10
+
+- **Workflow 49 and its six scripts become ours.** `WINTER_SERVICE_REGION_AI`,
+  `WINTER_SERVICE_REGION_WORKFLOW_UTILS`, the three
+  `WINTER_SERVICE_QUOTATION_PROCESSING` / `_REJECTED` / `_REVIEW` email
+  templates and `WINTER_SERVICE_QUOTATION_CREATOR` exist only on the server,
+  last edited on 2026-09-04. They are extracted into `core-ui` seeds before any
+  change, so every later edit — a property per address, a visible failure
+  state — is versioned and reviewable. Once the seed exists, an edit made
+  directly on the server is overwritten by the next apply unless the script is
+  re-extracted first.
+- **The manager's interface for building quotes by hand is out of scope.**
+- **The measurement service is Beam AI.** Its report shape, and how little of it
+  `SNOW_REMOVAL_PROPERTY` can hold, is in `SNOW-VERTICAL-CORE-MODEL.md` §6b.
+
+## Status of the takeover, 2026-09-11
+
+- **The six scripts are in `core-ui`.** Content lives in
+  `scripts/dev/seeds/scripts/` byte-for-byte as on dev-1 — three files use CRLF
+  with a trailing newline, three use LF without one, and `.gitattributes`
+  (`* -text`) keeps git from normalising either. `scripts/dev/coreScripts.ts`
+  extracts, plans and applies; a plan against dev-1 right after extraction
+  reports all six unchanged, confirmed independently by hashing a raw server
+  read against the files.
+- **Server drift is refused by default.** A script edited on the server after its
+  recorded baseline is blocked from apply until
+  `--overwrite-server-drift=CODE@UPDATED` names that exact server version.
+- **Environment-specific metadata is split out.** `PUBLIC_CORE_URL` and
+  `PUBLIC_ACCOUNT_PAGE_URL` on `WINTER_SERVICE_REGION_WORKFLOW_UTILS` live under
+  `environmentMetadata.dev-1`; an environment lacking them is blocked, so a
+  production run cannot publish dev links.
+- **The workflow tool was destructive and is fixed.** Applied to an existing
+  workflow, the previous `workflows.ts` stored an empty event list on its first
+  pass and then failed on `targets`, leaving the workflow with no transitions.
+  Against workflow 49 it would have removed all five. No workflow on dev-1 shows
+  that damage; lsrc, the tool's default base URL, was not checked.
+- **Workflow 49 is in `core-ui`** as `scripts/dev/seeds/winterQuotationWorkflows.json`,
+  generated from the dev-1 read. A plan against dev-1 reports `changeCount: 0` and
+  `deletionCount: 0`, and the server's `updated` stamp for the workflow is still
+  the 2026-09-04 value, so nothing was written. `plan` now reports every
+  difference an apply would make — states and events it would create or delete,
+  targets, localized names, `orderIndex`, `style`, hooks, attributes and the
+  workflow's own fields — so zero genuinely means a no-op.
+- **The previous tool would also have erased names.** It wrote state and event
+  names in English only; on workflow 49 that meant dropping seven of eight
+  languages on the workflow, all five states and all five events. The seed now
+  carries every language.
+- **One binding is not in the seed.** Workflow 49 holds `script →
+  WINTER_SERVICE_REGION_WORKFLOW_UTILS` (id 169), the link that makes
+  `workflowUtils` available to its hooks. It is outside the save mask, so an
+  apply on dev-1 leaves it in place, but a workflow created from this seed on any
+  other environment would run hooks that call an unbound `workflowUtils`. The
+  seed must carry the link before it is used anywhere but dev-1.
+- No write to any server has been made for the takeover so far.
+
+## Questions for the team
+
+1. Is `createCustomerAccount` at `PROCESSED` the intended first step, with
+   quotation creation planned as a later, separate step — or should
+   `PROCESSED` create the quotations?
+2. Where should the property size come from now that the form does not collect
+   it: a manager entering it per property, or measurements on the resource?
+3. Should one quote order be created per address per pricing model, as §4.2
+   says, and should each carry `SERVICE_PROPERTY`?
+4. Should a failed step move the form to a visible state instead of logging?

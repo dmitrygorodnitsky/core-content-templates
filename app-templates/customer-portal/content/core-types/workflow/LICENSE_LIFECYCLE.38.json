@@ -1,0 +1,576 @@
+{
+ "code": "LICENSE_LIFECYCLE",
+ "initialState": {
+  "id": 185,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "License Lifecycle",
+   "DESCRIPTION": "<p>Manages the lifecycle of a license from initial entry through verification, active use, expiration, suspension, revocation, or replacement.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "entityType": "com.pixelnation.common.domain.Document",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 38,
+ "states": [
+  {
+   "style": {
+    "xPos": 1525.7069013655669,
+    "yPos": 400.29374938284997
+   },
+   "id": 187,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The license has been verified, is currently valid, and may be used for the activities or qualifications it authorizes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 367,
+     "code": "ACTIVE-EXPIRING_SOON",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark as Expiring Soon",
+       "DESCRIPTION": "<p>Marks the license as approaching its expiration date while it remains valid. This transition is typically triggered automatically based on the expiration date.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 188,
+       "code": "EXPIRING_SOON"
+      }
+     ]
+    },
+    {
+     "id": 377,
+     "code": "ACTIVE-EXPIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Expire License",
+       "DESCRIPTION": "<p>Marks the license as expired because its expiration date has passed. This transition is typically triggered automatically.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 189,
+       "code": "EXPIRED"
+      }
+     ]
+    },
+    {
+     "id": 378,
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Suspend License",
+       "DESCRIPTION": "<p>Temporarily invalidates the license due to an administrative or regulatory restriction.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 190,
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "id": 379,
+     "code": "ACTIVE-REVOKED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Revoke License",
+       "DESCRIPTION": "<p>Permanently invalidates the license following revocation by the issuing authority.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 191,
+       "code": "REVOKED"
+      }
+     ]
+    },
+    {
+     "id": 380,
+     "code": "ACTIVE-REPLACED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Replace License",
+       "DESCRIPTION": "<p>Marks the license as superseded by a newer license record while preserving the original for historical reference.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 192,
+       "code": "REPLACED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 566.4117028104984,
+    "yPos": 405.70532529448457
+   },
+   "id": 185,
+   "code": "DRAFT",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Draft",
+     "DESCRIPTION": "<p>License information has been created but is incomplete or has not yet been submitted for verification.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 365,
+     "code": "DRAFT-PENDING_VERIFICATION",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Submit for Verification",
+       "DESCRIPTION": "<p>Submits the entered license information and supporting document for verification.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 186,
+       "code": "PENDING_VERIFICATION"
+      }
+     ]
+    },
+    {
+     "id": 381,
+     "code": "DRAFT-REPLACED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Replace License",
+       "DESCRIPTION": "<p>Marks the license as superseded by a newer license record while preserving the original for historical reference.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 192,
+       "code": "REPLACED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2044.1248530941116,
+    "yPos": 649.5519331431391
+   },
+   "id": 189,
+   "code": "EXPIRED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Expired",
+     "DESCRIPTION": "<p>The license has passed its expiration date and can no longer be used as valid authorization.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 369,
+     "code": "EXPIRED-REPLACED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Replace License",
+       "DESCRIPTION": "<p>Marks the license as superseded by a newer license record while preserving the original for historical reference.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 192,
+       "code": "REPLACED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 2056.2973935655978,
+    "yPos": 165.6055553500255
+   },
+   "id": 188,
+   "code": "EXPIRING_SOON",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Expiring Soon",
+     "DESCRIPTION": "<p>The license remains valid but is approaching its expiration date and requires renewal or replacement.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 368,
+     "code": "EXPIRING_SOON-EXPIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Expire License",
+       "DESCRIPTION": "<p>Marks the license as expired because its expiration date has passed. This transition is typically triggered automatically.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 189,
+       "code": "EXPIRED"
+      }
+     ]
+    },
+    {
+     "id": 370,
+     "code": "EXPIRING_SOON-SUSPENDED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Suspend License",
+       "DESCRIPTION": "<p>Temporarily invalidates the license due to an administrative or regulatory restriction.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 190,
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "id": 375,
+     "code": "EXPIRING_SOON-REVOKED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Revoke License",
+       "DESCRIPTION": "<p>Permanently invalidates the license following revocation by the issuing authority.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 191,
+       "code": "REVOKED"
+      }
+     ]
+    },
+    {
+     "id": 376,
+     "code": "EXPIRING_SOON-REPLACED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Replace License",
+       "DESCRIPTION": "<p>Marks the license as superseded by a newer license record while preserving the original for historical reference.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 192,
+       "code": "REPLACED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1042.5693384456904,
+    "yPos": 392
+   },
+   "id": 186,
+   "code": "PENDING_VERIFICATION",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Pending Verification",
+     "DESCRIPTION": "<p>The license has been submitted and is awaiting verification of its details, supporting document, and current validity.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 366,
+     "code": "PENDING_VERIFICATION-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Verify License",
+       "DESCRIPTION": "<p>Confirms that the license details are accurate and that the license is currently valid.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 187,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1289.842595908505,
+    "yPos": -41.629991756607076
+   },
+   "id": 192,
+   "code": "REPLACED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Replaced",
+     "DESCRIPTION": "<p>The license record has been superseded by a newer license document and is retained only for historical reference.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 2056.241813916123,
+    "yPos": 974.8352892708533
+   },
+   "id": 191,
+   "code": "REVOKED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Revoked",
+     "DESCRIPTION": "<p>The license has been permanently revoked by the issuing authority and can no longer be used or reinstated.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 2170.2540029595943,
+    "yPos": 395.7662298147359
+   },
+   "id": 190,
+   "code": "SUSPENDED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Suspended",
+     "DESCRIPTION": "<p>The license has been temporarily suspended and cannot be used until it is reinstated or replaced.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 371,
+     "code": "SUSPENDED-EXPIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Expire License",
+       "DESCRIPTION": "<p>Marks the license as expired because its expiration date has passed. This transition is typically triggered automatically.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 189,
+       "code": "EXPIRED"
+      }
+     ]
+    },
+    {
+     "id": 372,
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Reinstate License",
+       "DESCRIPTION": "<p>Restores a suspended license after the suspension has been lifted.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 187,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 373,
+     "code": "SUSPENDED-REVOKED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Revoke License",
+       "DESCRIPTION": "<p>Permanently invalidates the license following revocation by the issuing authority.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 191,
+       "code": "REVOKED"
+      }
+     ]
+    },
+    {
+     "id": 374,
+     "code": "SUSPENDED-REPLACED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Replace License",
+       "DESCRIPTION": "<p>Marks the license as superseded by a newer license record while preserving the original for historical reference.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 192,
+       "code": "REPLACED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

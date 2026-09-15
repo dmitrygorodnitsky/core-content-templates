@@ -1,0 +1,209 @@
+{
+ "code": "SNOW_WORKFORCE_LIFECYCLE",
+ "initialState": {
+  "id": 87,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Snow Workforce Lifecycle",
+   "DESCRIPTION": "Snow CRM workforce lifecycle for employees and subcontractors used by winter operations."
+  }
+ },
+ "entityType": "com.pixelnation.account.domain.Account",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 15,
+ "states": [
+  {
+   "style": {},
+   "id": 88,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 136,
+     "code": "ACTIVE-ON_HOLD",
+     "nls": {
+      "en": {
+       "NAME": "Place On Hold"
+      }
+     },
+     "targets": [
+      {
+       "id": 89,
+       "code": "ON_HOLD"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 141,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 90,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 91,
+   "code": "ARCHIVED",
+   "nls": {
+    "en": {
+     "NAME": "Archived"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {},
+   "id": 87,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 135,
+     "code": "DRAFT-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 88,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 142,
+     "code": "DRAFT-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive Draft"
+      }
+     },
+     "targets": [
+      {
+       "id": 91,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 90,
+   "code": "INACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Inactive"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 139,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Reactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 88,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 140,
+     "code": "INACTIVE-ARCHIVED",
+     "nls": {
+      "en": {
+       "NAME": "Archive"
+      }
+     },
+     "targets": [
+      {
+       "id": 91,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 89,
+   "code": "ON_HOLD",
+   "nls": {
+    "en": {
+     "NAME": "On Hold"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 137,
+     "code": "ON_HOLD-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Reactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 88,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 138,
+     "code": "ON_HOLD-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 90,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,571 @@
+{
+ "optimistic": 0,
+ "code": "AGENT_DEPLOYMENT_PLAN",
+ "nls": {
+  "en": {
+   "NAME": "Agent Deployment Plan",
+   "DESCRIPTION": "Wizard template for one-click Core RM agent deployment. Create a Document of this type for each deployment plan, for example AGENT_123_DEPLOYMENT. The document stores references to host resources, secrets, users, agent resources, runtime settings, Micrometer defaults, and execution options. Secret values are never copied into the document; only entity ids are stored."
+  }
+ },
+ "workflow": {
+  "id": 3,
+  "code": "AGENT_DEPLOYMENT_PLAN_WORKFLOW"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "HOST": [
+    {
+     "attributeCode": "HOST",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "AGENT": [
+    {
+     "attributeCode": "AGENT",
+     "visible": true
+    },
+    {
+     "attributeCode": "AGENT_CODE",
+     "visible": true
+    },
+    {
+     "attributeCode": "AGENT_NAME",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "AGENT_IDENTITY": [
+    {
+     "attributeCode": "AGENT_USER",
+     "visible": true
+    },
+    {
+     "attributeCode": "AGENT_API_KEY",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ENDPOINTS": [
+    {
+     "attributeCode": "CORE_URL",
+     "visible": true
+    },
+    {
+     "attributeCode": "RM_URL",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "RUNTIME": [
+    {
+     "attributeCode": "VERSION",
+     "visible": true
+    },
+    {
+     "attributeCode": "INSTALL_DIR",
+     "visible": true
+    },
+    {
+     "attributeCode": "SERVICE_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "JAVA_HOME",
+     "visible": true
+    },
+    {
+     "attributeCode": "AGENT_PORT",
+     "visible": true
+    },
+    {
+     "attributeCode": "ARTIFACT_URL",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "MONITORING": [
+    {
+     "attributeCode": "MICROMETER_SENSOR_DEFINITION",
+     "visible": true
+    },
+    {
+     "attributeCode": "MICROMETER_SCHEDULE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "EXECUTION": [
+    {
+     "attributeCode": "EXECUTOR_SCRIPT",
+     "visible": true
+    },
+    {
+     "attributeCode": "DRY_RUN",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "CORE_URL",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Core URL",
+     "LABEL": "Core URL",
+     "DESCRIPTION": "Base URL used by the agent for authentication and shared Core APIs, for example https://core.example.com.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "inputFormat": "url"
+  },
+  {
+   "code": "AGENT_CODE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Agent Code",
+     "LABEL": "Agent Code",
+     "DESCRIPTION": "Stable resource code for a new agent, for example AGENT_PROD_APP_01. Required when creating an agent resource.",
+     "PLACEHOLDER": "AGENT_PROD_APP_01"
+    }
+   },
+   "options": [],
+   "inputFormat": "code",
+   "uiBehavior": "{\"visibleWhen\":{\"attribute\":\"AGENT\",\"equals\":\"__CREATE_NEW__\"}}"
+  },
+  {
+   "code": "AGENT_USER",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.User",
+   "nls": {
+    "en": {
+     "NAME": "Agent User",
+     "LABEL": "Agent User",
+     "DESCRIPTION": "Existing Core user account that owns/runs the deployed agent. The wizard does not create users; create the user first if it does not exist.",
+     "PLACEHOLDER": "Select an existing user"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "ARTIFACT_URL",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Artifact URL",
+     "LABEL": "Artifact URL",
+     "DESCRIPTION": "Optional URL to the agent jar or package. Leave empty when the deployment script should use the default artifact source.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "inputFormat": "url"
+  },
+  {
+   "code": "AGENT_PORT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Agent Port",
+     "LABEL": "Agent Port",
+     "DESCRIPTION": "Local HTTP port used by the Spring Boot agent process, for example 8081.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "defaultValue": 8081
+  },
+  {
+   "code": "HOST",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Host",
+     "LABEL": "Host",
+     "DESCRIPTION": "Existing Linux host resource that will run the Core RM agent. Create and configure the Linux host resource, including its access credentials, before using this deployment plan.",
+     "PLACEHOLDER": "Select an existing Linux host"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 3,
+     "nls": {
+      "en": {
+       "NAME": "Linux Host",
+       "DESCRIPTION": "Linux host resource configured for remote access."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "AGENT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.Resource",
+   "nls": {
+    "en": {
+     "NAME": "Agent",
+     "LABEL": "Agent",
+     "DESCRIPTION": "Select an existing Core RM agent resource, or choose Create new to collect the fields required to create an agent resource during deployment.",
+     "PLACEHOLDER": "Select an agent or Create new..."
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 5,
+     "nls": {
+      "en": {
+       "NAME": "Agent",
+       "DESCRIPTION": "Core RM agent resource."
+      }
+     }
+    }
+   ],
+   "inputFormat": "select-or-create"
+  },
+  {
+   "code": "VERSION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Version",
+     "LABEL": "Version",
+     "DESCRIPTION": "Agent software version to install or verify. Use latest for the currently published artifact, or provide a concrete version such as 1.4.2.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "defaultValue": "latest"
+  },
+  {
+   "code": "SERVICE_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Service Name",
+     "LABEL": "Service Name",
+     "DESCRIPTION": "System service name created or updated by the deployment script, for example core-rm-agent.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "defaultValue": "core-rm-agent"
+  },
+  {
+   "code": "MICROMETER_SENSOR_DEFINITION",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.rm.domain.SensorDefinition",
+   "nls": {
+    "en": {
+     "NAME": "Micrometer Sensor Definition",
+     "LABEL": "Micrometer Sensor Definition",
+     "DESCRIPTION": "Sensor definition attached to the created agent resource. The default is AGENT_MICROMETER.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 4,
+     "nls": {
+      "en": {
+       "NAME": "Micrometer",
+       "DESCRIPTION": "Native Micrometer sensor definitions."
+      }
+     }
+    }
+   ],
+   "defaultValue": 3
+  },
+  {
+   "code": "MICROMETER_SCHEDULE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.rm.agent.domain.PeriodConfig",
+   "nls": {
+    "en": {
+     "NAME": "Micrometer Schedule",
+     "LABEL": "Micrometer Schedule",
+     "DESCRIPTION": "How often the deployed agent publishes Micrometer metrics. Use FIXED_DELAY with an ISO 8601 duration such as PT60S for every 60 seconds, PT5M for every 5 minutes, or PT1H for hourly polling. Use CRON with a Quartz cron expression such as 0 0/5 * * * ? for every 5 minutes at wall-clock boundaries.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "unitCategory": 6,
+   "inputFormat": "period",
+   "defaultValue": {
+    "type": "FIXED_DELAY",
+    "period": "PT60S"
+   }
+  },
+  {
+   "code": "RM_URL",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Core RM URL",
+     "LABEL": "Core RM URL",
+     "DESCRIPTION": "Base URL used by the agent for Core RM configuration and sensor endpoints, for example https://core-rm.example.com.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "inputFormat": "url"
+  },
+  {
+   "code": "JAVA_HOME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Java Home",
+     "LABEL": "Java Home",
+     "DESCRIPTION": "Optional JAVA_HOME path on the remote host. Leave empty to use java from PATH.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "AGENT_API_KEY",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.UserSecret",
+   "nls": {
+    "en": {
+     "NAME": "Agent API Key",
+     "LABEL": "Agent API Key",
+     "DESCRIPTION": "User secret that contains the API key used by the remote agent to authenticate to Core as the selected agent user. The plan stores only the secret id; the deployment script resolves the secret value in memory.",
+     "PLACEHOLDER": "Select an API key user secret"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 7,
+     "nls": {
+      "en": {
+       "NAME": "API Key",
+       "DESCRIPTION": "UserSecret containing the Core API key used by the remote agent."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "EXECUTOR_SCRIPT",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Script",
+   "nls": {
+    "en": {
+     "NAME": "Executor Script",
+     "LABEL": "Executor Script",
+     "DESCRIPTION": "Java script that executes the reviewed deployment plan. The default is AGENT_DEPLOYMENT.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 12,
+     "nls": {
+      "en": {
+       "NAME": "Agent Deployment",
+       "DESCRIPTION": "Scripts in the Agent Deployment category."
+      }
+     }
+    }
+   ],
+   "defaultValue": 67
+  },
+  {
+   "code": "AGENT_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Agent Name",
+     "LABEL": "Agent Name",
+     "DESCRIPTION": "Human-readable agent name stored in NLS, for example Production App Server Agent.",
+     "PLACEHOLDER": "Production App Server Agent"
+    }
+   },
+   "options": [],
+   "uiBehavior": "{\"visibleWhen\":{\"attribute\":\"AGENT\",\"equals\":\"__CREATE_NEW__\"}}"
+  },
+  {
+   "code": "DRY_RUN",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Dry Run",
+     "LABEL": "Dry Run",
+     "DESCRIPTION": "When true, the executor sends progress notifications without executing remote commands. When false, it performs the deployment.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "defaultValue": true
+  },
+  {
+   "code": "INSTALL_DIR",
+   "required": true,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Install Directory",
+     "LABEL": "Install Directory",
+     "DESCRIPTION": "Absolute directory on the Linux host where the agent is installed, for example /opt/core-rm-agent.",
+     "PLACEHOLDER": ""
+    }
+   },
+   "options": [],
+   "defaultValue": "/opt/core-rm-agent"
+  }
+ ],
+ "id": 2,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "HOST",
+   "nls": {
+    "en": {
+     "NAME": "Host",
+     "DESCRIPTION": "Select the existing Linux host resource that will run the agent."
+    }
+   }
+  },
+  {
+   "code": "AGENT_IDENTITY",
+   "nls": {
+    "en": {
+     "NAME": "Agent Identity",
+     "DESCRIPTION": "Core user and API key used by the deployed agent to authenticate back to Core RM."
+    }
+   }
+  },
+  {
+   "code": "EXECUTION",
+   "nls": {
+    "en": {
+     "NAME": "Execution",
+     "DESCRIPTION": "Deployment script and run options used after the plan has been reviewed."
+    }
+   }
+  },
+  {
+   "code": "MONITORING",
+   "nls": {
+    "en": {
+     "NAME": "Monitoring",
+     "DESCRIPTION": "Default Micrometer sensor and publication schedule created for the agent."
+    }
+   }
+  },
+  {
+   "code": "AGENT",
+   "nls": {
+    "en": {
+     "NAME": "Agent",
+     "DESCRIPTION": "Select an existing agent resource or collect the information needed to create one."
+    }
+   }
+  },
+  {
+   "code": "ENDPOINTS",
+   "nls": {
+    "en": {
+     "NAME": "Endpoints",
+     "DESCRIPTION": "Core and Core RM URLs written to the deployed agent runtime configuration."
+    }
+   }
+  },
+  {
+   "code": "RUNTIME",
+   "nls": {
+    "en": {
+     "NAME": "Runtime",
+     "DESCRIPTION": "Remote installation directory, service name, Java runtime, port, and artifact location."
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,125 @@
+{
+ "code": "GENERAL_FSM_ORDER_ITEM_LIFECYCLE",
+ "initialState": {
+  "id": 229,
+  "code": "DRAFT"
+ },
+ "nls": {
+  "en": {
+   "NAME": "General Field Service Order Item Lifecycle"
+  }
+ },
+ "entityType": "com.pixelnation.bill.domain.OrderItem",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 46,
+ "states": [
+  {
+   "style": {
+    "xPos": 1318.1115294163271,
+    "yPos": 315.7196889656782
+   },
+   "id": 232,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 1022.6471152071493,
+    "yPos": 303.72138788215716
+   },
+   "id": 231,
+   "code": "APPROVED",
+   "nls": {
+    "en": {
+     "NAME": "Approved"
+    }
+   },
+   "events": [
+    {
+     "id": 429,
+     "code": "APPROVED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 232,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 304.95364626434116,
+    "yPos": 305.6944406515504
+   },
+   "id": 229,
+   "code": "DRAFT",
+   "nls": {
+    "en": {
+     "NAME": "Draft"
+    }
+   },
+   "events": [
+    {
+     "id": 427,
+     "code": "DRAFT-PENDING_APPROVAL",
+     "nls": {
+      "en": {
+       "NAME": "Request Approval"
+      }
+     },
+     "targets": [
+      {
+       "id": 230,
+       "code": "PENDING_APPROVAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 713.9582608138082,
+    "yPos": 308.2512578754986
+   },
+   "id": 230,
+   "code": "PENDING_APPROVAL",
+   "nls": {
+    "en": {
+     "NAME": "Pending Approval"
+    }
+   },
+   "events": [
+    {
+     "id": 428,
+     "code": "PENDING_APPROVAL-APPROVED",
+     "nls": {
+      "en": {
+       "NAME": "Approve"
+      }
+     },
+     "targets": [
+      {
+       "id": 231,
+       "code": "APPROVED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

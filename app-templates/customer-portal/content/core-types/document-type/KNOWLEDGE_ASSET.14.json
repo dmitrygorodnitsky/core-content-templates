@@ -1,0 +1,932 @@
+{
+ "optimistic": 12,
+ "code": "KNOWLEDGE_ASSET",
+ "nls": {
+  "ar": {
+   "NAME": "الأصل المعرفي"
+  },
+  "en": {
+   "NAME": "Knowledge Asset"
+  },
+  "es": {
+   "NAME": "Activo de conocimiento"
+  },
+  "fr": {
+   "NAME": "Actif de connaissance"
+  },
+  "he": {
+   "NAME": "נכס ידע"
+  },
+  "kk": {
+   "NAME": "Білім активі"
+  },
+  "ru": {
+   "NAME": "Актив знаний"
+  },
+  "zh": {
+   "NAME": "知识资产"
+  }
+ },
+ "workflow": {
+  "id": 44,
+  "code": "KNOWLEDGE_ASSET"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "MODULE",
+     "visible": true
+    },
+    {
+     "attributeCode": "CATEGORY",
+     "visible": true
+    },
+    {
+     "attributeCode": "TOC",
+     "visible": true
+    },
+    {
+     "attributeCode": "RELATED_ARTICLES",
+     "visible": true
+    },
+    {
+     "attributeCode": "REFERENCED_SCREEN",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "CATEGORY",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الفئة"
+    },
+    "en": {
+     "NAME": "Category"
+    },
+    "es": {
+     "NAME": "Categoría"
+    },
+    "fr": {
+     "NAME": "Catégorie"
+    },
+    "he": {
+     "NAME": "קטגוריה"
+    },
+    "kk": {
+     "NAME": "Санат"
+    },
+    "ru": {
+     "NAME": "Категория"
+    },
+    "zh": {
+     "NAME": "类别"
+    }
+   },
+   "options": [
+    {
+     "value": "ARTICLE",
+     "nls": {
+      "ar": {
+       "NAME": "مقالة"
+      },
+      "en": {
+       "NAME": "Article"
+      },
+      "es": {
+       "NAME": "Artículo"
+      },
+      "fr": {
+       "NAME": "Article"
+      },
+      "he": {
+       "NAME": "מאמר"
+      },
+      "kk": {
+       "NAME": "Мақала"
+      },
+      "ru": {
+       "NAME": "Статья"
+      },
+      "zh": {
+       "NAME": "文章"
+      }
+     }
+    },
+    {
+     "value": "TUTORIAL",
+     "nls": {
+      "ar": {
+       "NAME": "دليل تعليمي"
+      },
+      "en": {
+       "NAME": "Tutorial"
+      },
+      "es": {
+       "NAME": "Tutorial"
+      },
+      "fr": {
+       "NAME": "Tutoriel"
+      },
+      "he": {
+       "NAME": "הדרכה"
+      },
+      "kk": {
+       "NAME": "Нұсқаулық"
+      },
+      "ru": {
+       "NAME": "Учебник"
+      },
+      "zh": {
+       "NAME": "教程"
+      }
+     }
+    },
+    {
+     "value": "FAQ",
+     "nls": {
+      "ar": {
+       "NAME": "الأسئلة الشائعة"
+      },
+      "en": {
+       "NAME": "FAQ"
+      },
+      "es": {
+       "NAME": "PREGUNTAS FRECUENTES"
+      },
+      "fr": {
+       "NAME": "Foire aux questions"
+      },
+      "he": {
+       "NAME": "שאלות נפוצות"
+      },
+      "kk": {
+       "NAME": "Жиі қойылатын сұрақтар"
+      },
+      "ru": {
+       "NAME": "Часто задаваемые вопросы"
+      },
+      "zh": {
+       "NAME": "常见问题解答"
+      }
+     }
+    },
+    {
+     "value": "RELEASE_NOTES",
+     "nls": {
+      "ar": {
+       "NAME": "ملاحظات الإصدار"
+      },
+      "en": {
+       "NAME": "Release Notes"
+      },
+      "es": {
+       "NAME": "Notas de lanzamiento"
+      },
+      "fr": {
+       "NAME": "Notes de version"
+      },
+      "he": {
+       "NAME": "הערות השחרור"
+      },
+      "kk": {
+       "NAME": "Шығарылым туралы жазбалар"
+      },
+      "ru": {
+       "NAME": "Примечания к выпуску"
+      },
+      "zh": {
+       "NAME": "更新日志"
+      }
+     }
+    },
+    {
+     "value": "USE_CASE",
+     "nls": {
+      "ar": {
+       "NAME": "حالات الاستخدام"
+      },
+      "en": {
+       "NAME": "Use Cases"
+      },
+      "es": {
+       "NAME": "Casos De Uso"
+      },
+      "fr": {
+       "NAME": "Cas d'utilisation"
+      },
+      "he": {
+       "NAME": "מקרי שימוש"
+      },
+      "kk": {
+       "NAME": "Қолдану жағдайлары"
+      },
+      "ru": {
+       "NAME": "Случаи использования"
+      },
+      "zh": {
+       "NAME": "用例"
+      }
+     }
+    },
+    {
+     "value": "TROUBLESHOOTING_GUIDE",
+     "nls": {
+      "ar": {
+       "NAME": "دليل استكشاف الأخطاء وإصلاحها"
+      },
+      "en": {
+       "NAME": "Troubleshooting Guide"
+      },
+      "es": {
+       "NAME": "Guía de Solución de Problemas"
+      },
+      "fr": {
+       "NAME": "Guide de dépannage"
+      },
+      "he": {
+       "NAME": "מדריך לפתרון תקלות"
+      },
+      "kk": {
+       "NAME": "Қателерді шешу нұсқаулығы"
+      },
+      "ru": {
+       "NAME": "Руководство по устранению неполадок"
+      },
+      "zh": {
+       "NAME": "故障排除指南"
+      }
+     }
+    },
+    {
+     "value": "USER_DOCUMENTATION",
+     "nls": {
+      "ar": {
+       "NAME": "دليل المستخدم"
+      },
+      "en": {
+       "NAME": "User Documentation"
+      },
+      "es": {
+       "NAME": "Documentación del usuario"
+      },
+      "fr": {
+       "NAME": "Documentation Utilisateur"
+      },
+      "he": {
+       "NAME": "תיעוד משתמש"
+      },
+      "kk": {
+       "NAME": "Қолданушы құжаттамасы"
+      },
+      "ru": {
+       "NAME": "Пользовательская документация"
+      },
+      "zh": {
+       "NAME": "用户文档"
+      }
+     }
+    },
+    {
+     "value": "DEVELOPER_DOCUMENTATION",
+     "nls": {
+      "ar": {
+       "NAME": "توثيق المطورين"
+      },
+      "en": {
+       "NAME": "Developer Documentation"
+      },
+      "es": {
+       "NAME": "Documentación del desarrollador"
+      },
+      "fr": {
+       "NAME": "Documentation développeur"
+      },
+      "he": {
+       "NAME": "תיעוד למפתחי תוכנה"
+      },
+      "kk": {
+       "NAME": "Әзірлеушілерге Арналған Құжаттама"
+      },
+      "ru": {
+       "NAME": "Документация разработчика"
+      },
+      "zh": {
+       "NAME": "开发者文档"
+      }
+     }
+    },
+    {
+     "value": "EXAMPLES",
+     "nls": {
+      "ar": {
+       "NAME": "أمثلة"
+      },
+      "en": {
+       "NAME": "Examples"
+      },
+      "es": {
+       "NAME": "Ejemplos"
+      },
+      "fr": {
+       "NAME": "Exemples"
+      },
+      "he": {
+       "NAME": "דוגמאות"
+      },
+      "kk": {
+       "NAME": "Мысалдар"
+      },
+      "ru": {
+       "NAME": "Примеры"
+      },
+      "zh": {
+       "NAME": "示例"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "MODULE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الوحدة"
+    },
+    "en": {
+     "NAME": "Module"
+    },
+    "es": {
+     "NAME": "Módulo"
+    },
+    "fr": {
+     "NAME": "Module"
+    },
+    "he": {
+     "NAME": "מודול"
+    },
+    "kk": {
+     "NAME": "Модуль"
+    },
+    "ru": {
+     "NAME": "Модуль"
+    },
+    "zh": {
+     "NAME": "模块"
+    }
+   },
+   "options": [
+    {
+     "value": "COMMON",
+     "nls": {
+      "ar": {
+       "NAME": "شائع"
+      },
+      "en": {
+       "NAME": "Common"
+      },
+      "es": {
+       "NAME": "Común"
+      },
+      "fr": {
+       "NAME": "Commun"
+      },
+      "he": {
+       "NAME": "נפוץ"
+      },
+      "kk": {
+       "NAME": "Жалпы"
+      },
+      "ru": {
+       "NAME": "Общие"
+      },
+      "zh": {
+       "NAME": "常见"
+      }
+     }
+    },
+    {
+     "value": "CORE-ACCT",
+     "nls": {
+      "ar": {
+       "NAME": "المحاسبة"
+      },
+      "en": {
+       "NAME": "Accounting"
+      },
+      "es": {
+       "NAME": "Contabilidad"
+      },
+      "fr": {
+       "NAME": "Comptabilité"
+      },
+      "he": {
+       "NAME": "חשבונאות"
+      },
+      "kk": {
+       "NAME": "Есеп-қисап"
+      },
+      "ru": {
+       "NAME": "Бухгалтерский учёт"
+      },
+      "zh": {
+       "NAME": "会计"
+      }
+     }
+    },
+    {
+     "value": "CORE-ADS",
+     "nls": {
+      "ar": {
+       "NAME": "الإعلان والتسويق"
+      },
+      "en": {
+       "NAME": "Advertisement and Marketing"
+      },
+      "es": {
+       "NAME": "Publicidad y Marketing"
+      },
+      "fr": {
+       "NAME": "Publicité et Marketing"
+      },
+      "he": {
+       "NAME": "פרסום ושיווק"
+      },
+      "kk": {
+       "NAME": "Жарнама және маркетинг"
+      },
+      "ru": {
+       "NAME": "Реклама и Маркетинг"
+      },
+      "zh": {
+       "NAME": "广告与营销"
+      }
+     }
+    },
+    {
+     "value": "CORE-AUTH",
+     "nls": {
+      "ar": {
+       "NAME": "المصادقة والتفويض"
+      },
+      "en": {
+       "NAME": "Authentication and Authorization"
+      },
+      "es": {
+       "NAME": "Autenticación y Autorización"
+      },
+      "fr": {
+       "NAME": "Authentification et Autorisation"
+      },
+      "he": {
+       "NAME": "אימות והרשאה"
+      },
+      "kk": {
+       "NAME": "Аутентификация және авторизация"
+      },
+      "ru": {
+       "NAME": "Аутентификация и авторизация"
+      },
+      "zh": {
+       "NAME": "认证与授权"
+      }
+     }
+    },
+    {
+     "value": "CORE-BILL",
+     "nls": {
+      "ar": {
+       "NAME": "الفواتير"
+      },
+      "en": {
+       "NAME": "Billing"
+      },
+      "es": {
+       "NAME": "Facturación"
+      },
+      "fr": {
+       "NAME": "Facturation"
+      },
+      "he": {
+       "NAME": "חיוב"
+      },
+      "kk": {
+       "NAME": "Төлемдер"
+      },
+      "ru": {
+       "NAME": "Оплата"
+      },
+      "zh": {
+       "NAME": "账单"
+      }
+     }
+    },
+    {
+     "value": "CORE-CMS",
+     "nls": {
+      "ar": {
+       "NAME": "إدارة المحتوى"
+      },
+      "en": {
+       "NAME": "Content Management"
+      },
+      "es": {
+       "NAME": "Gestión de Contenidos"
+      },
+      "fr": {
+       "NAME": "Gestion de contenu"
+      },
+      "he": {
+       "NAME": "ניהול תוכן"
+      },
+      "kk": {
+       "NAME": "Контентті басқару"
+      },
+      "ru": {
+       "NAME": "Управление контентом"
+      },
+      "zh": {
+       "NAME": "内容管理"
+      }
+     }
+    },
+    {
+     "value": "CORE-ML",
+     "nls": {
+      "ar": {
+       "NAME": "التعلم الآلي والذكاء الاصطناعي"
+      },
+      "en": {
+       "NAME": "Machine Learning and AI"
+      },
+      "es": {
+       "NAME": "Aprendizaje automático e IA"
+      },
+      "fr": {
+       "NAME": "Apprentissage automatique et IA"
+      },
+      "he": {
+       "NAME": "למידת מכונה ובינה מלאכותית"
+      },
+      "kk": {
+       "NAME": "Машиналық оқыту және жасанды интеллект"
+      },
+      "ru": {
+       "NAME": "Машинное обучение и ИИ"
+      },
+      "zh": {
+       "NAME": "机器学习与人工智能"
+      }
+     }
+    },
+    {
+     "value": "CORE-PAY",
+     "nls": {
+      "ar": {
+       "NAME": "المدفوعات عبر الإنترنت"
+      },
+      "en": {
+       "NAME": "Online Payments"
+      },
+      "es": {
+       "NAME": "Pagos En Línea"
+      },
+      "fr": {
+       "NAME": "Paiements En Ligne"
+      },
+      "he": {
+       "NAME": "תשלומים מקוונים"
+      },
+      "kk": {
+       "NAME": "Онлайн төлемдер"
+      },
+      "ru": {
+       "NAME": "Онлайн-платежи"
+      },
+      "zh": {
+       "NAME": "在线支付"
+      }
+     }
+    },
+    {
+     "value": "CORE-PIM",
+     "nls": {
+      "ar": {
+       "NAME": "إدارة معلومات المنتج"
+      },
+      "en": {
+       "NAME": "Product Information Management"
+      },
+      "es": {
+       "NAME": "Gestión de la información de productos"
+      },
+      "fr": {
+       "NAME": "Gestion de l'information produit"
+      },
+      "he": {
+       "NAME": "ניהול מידע על מוצרים"
+      },
+      "kk": {
+       "NAME": "Өнім Туралы Ақпаратты Басқару"
+      },
+      "ru": {
+       "NAME": "Управление информацией о продуктах"
+      },
+      "zh": {
+       "NAME": "产品信息管理"
+      }
+     }
+    },
+    {
+     "value": "CORE-RM",
+     "nls": {
+      "ar": {
+       "NAME": "إدارة الموارد"
+      },
+      "en": {
+       "NAME": "Resource Management"
+      },
+      "es": {
+       "NAME": "Gestión de recursos"
+      },
+      "fr": {
+       "NAME": "Gestion des ressources"
+      },
+      "he": {
+       "NAME": "ניהול משאבים"
+      },
+      "kk": {
+       "NAME": "Ресурс басқару"
+      },
+      "ru": {
+       "NAME": "Управление ресурсами"
+      },
+      "zh": {
+       "NAME": "资源管理"
+      }
+     }
+    },
+    {
+     "value": "CORE-RPT",
+     "nls": {
+      "ar": {
+       "NAME": "التقارير"
+      },
+      "en": {
+       "NAME": "Reporting"
+      },
+      "es": {
+       "NAME": "Informes"
+      },
+      "fr": {
+       "NAME": "Rapportage"
+      },
+      "he": {
+       "NAME": "דיווח"
+      },
+      "kk": {
+       "NAME": "Есеп беру"
+      },
+      "ru": {
+       "NAME": "Отчетность"
+      },
+      "zh": {
+       "NAME": "报告"
+      }
+     }
+    },
+    {
+     "value": "CORE-SVC",
+     "nls": {
+      "ar": {
+       "NAME": "دعم وإدارة الخدمات"
+      },
+      "en": {
+       "NAME": "Support and Service Management"
+      },
+      "es": {
+       "NAME": "Soporte y Gestión de Servicios"
+      },
+      "fr": {
+       "NAME": "Support et gestion des services"
+      },
+      "he": {
+       "NAME": "תמיכה וניהול שירות"
+      },
+      "kk": {
+       "NAME": "Қолдау және қызмет көрсету басқармасы"
+      },
+      "ru": {
+       "NAME": "Поддержка и управление сервисами"
+      },
+      "zh": {
+       "NAME": "支持与服务管理"
+      }
+     }
+    },
+    {
+     "value": "CORE-WEATHER",
+     "nls": {
+      "ar": {
+       "NAME": "الطقس"
+      },
+      "en": {
+       "NAME": "Weater"
+      },
+      "es": {
+       "NAME": "Clima"
+      },
+      "fr": {
+       "NAME": "Météo"
+      },
+      "he": {
+       "NAME": "מזג האוויר"
+      },
+      "kk": {
+       "NAME": "Ауа райы"
+      },
+      "ru": {
+       "NAME": "Погода"
+      },
+      "zh": {
+       "NAME": "天气"
+      }
+     }
+    },
+    {
+     "value": "CORE-ROUTING",
+     "nls": {
+      "ar": {
+       "NAME": "التوجيه واللوجستيات"
+      },
+      "en": {
+       "NAME": "Routing and Logistics"
+      },
+      "es": {
+       "NAME": "Enrutamiento y Logística"
+      },
+      "fr": {
+       "NAME": "Routage et Logistique"
+      },
+      "he": {
+       "NAME": "ניתוב ולוגיסטיקה"
+      },
+      "kk": {
+       "NAME": "Маршрутизация және логистика"
+      },
+      "ru": {
+       "NAME": "Маршрутизация и логистика"
+      },
+      "zh": {
+       "NAME": "路线规划与物流"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "TOC",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Document",
+   "nls": {
+    "ar": {
+     "NAME": "جدول المحتوى"
+    },
+    "en": {
+     "NAME": "Table of Content"
+    },
+    "es": {
+     "NAME": "Tabla de Contenido"
+    },
+    "fr": {
+     "NAME": "Table des matières"
+    },
+    "he": {
+     "NAME": "תוכן העניינים"
+    },
+    "kk": {
+     "NAME": "Мазмұны"
+    },
+    "ru": {
+     "NAME": "Содержание"
+    },
+    "zh": {
+     "NAME": "目录"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 14
+    }
+   ]
+  },
+  {
+   "code": "REFERENCED_SCREEN",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الشاشات المشار إليها",
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    },
+    "en": {
+     "NAME": "Referenced Screens",
+     "DESCRIPTION": "<p>This attribute defines list of screen ids as they defined in the UI configuration</p>"
+    },
+    "es": {
+     "NAME": "Pantallas Referenciadas",
+     "DESCRIPTION": "<p>Este atributo define una lista de identificadores de pantalla tal como están definidos en la configuración de la interfaz de usuario</p>"
+    },
+    "fr": {
+     "NAME": "Écrans référencés",
+     "DESCRIPTION": "<p>Cet attribut définit la liste des identifiants d&#39;écran tels que définis dans la configuration de l&#39;interface utilisateur</p>"
+    },
+    "he": {
+     "NAME": "מסכים שהוזכרו",
+     "DESCRIPTION": "<p class=\"ql-align-right ql-direction-rtl\"></p>"
+    },
+    "kk": {
+     "NAME": "Сілтемеленген экрандар",
+     "DESCRIPTION": "<p>Бұл атрибут UI конфигурациясында анықталғандай экран идентификаторларының тізімін анықтайды</p>"
+    },
+    "ru": {
+     "NAME": "Ссылочные Экраны",
+     "DESCRIPTION": "<p>Этот атрибут определяет список идентификаторов экранов так, как они определены в конфигурации пользовательского интерфейса</p>"
+    },
+    "zh": {
+     "NAME": "被引用的屏幕",
+     "DESCRIPTION": "<p>此 属性 定义了 在 UI 配置 中定义的 屏幕 ID 列表</p>"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "RELATED_ARTICLES",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Document",
+   "nls": {
+    "ar": {
+     "NAME": "مقالات ذات صلة"
+    },
+    "en": {
+     "NAME": "Related Articles"
+    },
+    "es": {
+     "NAME": "Artículos Relacionados"
+    },
+    "fr": {
+     "NAME": "Articles Liés"
+    },
+    "he": {
+     "NAME": "מאמרים קשורים"
+    },
+    "kk": {
+     "NAME": "Қатысты Мақалалар"
+    },
+    "ru": {
+     "NAME": "Похожие Статьи"
+    },
+    "zh": {
+     "NAME": "相关文章"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 14
+    }
+   ]
+  }
+ ],
+ "id": 14,
+ "isAbstract": false,
+ "attributeGroups": []
+}

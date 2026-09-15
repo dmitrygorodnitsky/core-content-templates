@@ -1,0 +1,376 @@
+{
+ "optimistic": 0,
+ "code": "CORE_DEVELOPMENT_TASK",
+ "nls": {
+  "en": {
+   "NAME": "Core Development Task",
+   "DESCRIPTION": "Task type for Core platform software development work."
+  }
+ },
+ "workflow": {
+  "id": 5,
+  "code": "SOFTWARE_DEVELOPMENT"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "DEVELOPMENT": [
+    {
+     "attributeCode": "BRANCH_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "LOCAL_TEST_COMMAND",
+     "visible": true
+    },
+    {
+     "attributeCode": "DUE_DATE",
+     "visible": true
+    },
+    {
+     "attributeCode": "TAGS",
+     "visible": true
+    },
+    {
+     "attributeCode": "ATTACHMENTS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "ORCHESTRATION": [
+    {
+     "attributeCode": "FRONT_MATTER_SCRIPT",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROMPT_TEMPLATE_SCRIPT",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "BRANCH_NAME",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Branch Name"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "LOCAL_TEST_COMMAND",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Local Test Command"
+    }
+   },
+   "options": [],
+   "defaultValue": "./gradlew test"
+  },
+  {
+   "code": "TAGS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Tags"
+    }
+   },
+   "options": [
+    {
+     "value": "BUG",
+     "nls": {
+      "en": {
+       "NAME": "Bug"
+      }
+     }
+    },
+    {
+     "value": "IMPROVEMENT",
+     "nls": {
+      "en": {
+       "NAME": "Improvement"
+      }
+     }
+    },
+    {
+     "value": "IMPORTANT",
+     "nls": {
+      "en": {
+       "NAME": "Important"
+      }
+     }
+    },
+    {
+     "value": "FEATURE",
+     "nls": {
+      "en": {
+       "NAME": "Feature"
+      }
+     }
+    },
+    {
+     "value": "REFACTOR",
+     "nls": {
+      "en": {
+       "NAME": "Refactor"
+      }
+     }
+    },
+    {
+     "value": "TEST",
+     "nls": {
+      "en": {
+       "NAME": "Test"
+      }
+     }
+    },
+    {
+     "value": "DOCUMENTATION",
+     "nls": {
+      "en": {
+       "NAME": "Documentation"
+      }
+     }
+    },
+    {
+     "value": "SECURITY",
+     "nls": {
+      "en": {
+       "NAME": "Security"
+      }
+     }
+    },
+    {
+     "value": "PERFORMANCE",
+     "nls": {
+      "en": {
+       "NAME": "Performance"
+      }
+     }
+    },
+    {
+     "value": "TECH_DEBT",
+     "nls": {
+      "en": {
+       "NAME": "Technical Debt"
+      }
+     }
+    },
+    {
+     "value": "BUILD",
+     "nls": {
+      "en": {
+       "NAME": "Build"
+      }
+     }
+    },
+    {
+     "value": "CI",
+     "nls": {
+      "en": {
+       "NAME": "CI"
+      }
+     }
+    },
+    {
+     "value": "UX",
+     "nls": {
+      "en": {
+       "NAME": "UX"
+      }
+     }
+    },
+    {
+     "value": "BACKEND",
+     "nls": {
+      "en": {
+       "NAME": "Backend"
+      }
+     }
+    },
+    {
+     "value": "FRONTEND",
+     "nls": {
+      "en": {
+       "NAME": "Frontend"
+      }
+     }
+    },
+    {
+     "value": "DATABASE",
+     "nls": {
+      "en": {
+       "NAME": "Database"
+      }
+     }
+    },
+    {
+     "value": "DEVOPS",
+     "nls": {
+      "en": {
+       "NAME": "DevOps"
+      }
+     }
+    }
+   ],
+   "entityTypes": [],
+   "defaultValue": ""
+  },
+  {
+   "code": "FRONT_MATTER_SCRIPT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Script",
+   "nls": {
+    "en": {
+     "NAME": "Front Matter Script"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 13,
+     "nls": {
+      "en": {
+       "NAME": "Front Matter"
+      }
+     }
+    }
+   ],
+   "defaultValue": 74
+  },
+  {
+   "code": "PROMPT_TEMPLATE_SCRIPT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Script",
+   "nls": {
+    "en": {
+     "NAME": "Prompt Template Script"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 14,
+     "nls": {
+      "en": {
+       "NAME": "Prompt Template"
+      }
+     }
+    }
+   ],
+   "defaultValue": 75
+  },
+  {
+   "code": "DUE_DATE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.time.LocalDate",
+   "nls": {
+    "en": {
+     "NAME": "Due Date"
+    }
+   },
+   "options": [],
+   "entityTypes": [],
+   "defaultValue": ""
+  },
+  {
+   "code": "ATTACHMENTS",
+   "required": false,
+   "multiselect": true,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.Media",
+   "nls": {
+    "en": {
+     "NAME": "Attachments"
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": "sound",
+     "nls": {
+      "en": {
+       "NAME": "sound"
+      }
+     }
+    },
+    {
+     "value": "image",
+     "nls": {
+      "en": {
+       "NAME": "image"
+      }
+     }
+    },
+    {
+     "value": "video",
+     "nls": {
+      "en": {
+       "NAME": "video"
+      }
+     }
+    },
+    {
+     "value": "mediaAsset",
+     "nls": {
+      "en": {
+       "NAME": "mediaAsset"
+      }
+     }
+    }
+   ],
+   "defaultValue": ""
+  }
+ ],
+ "id": 1,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "ORCHESTRATION",
+   "nls": {
+    "en": {
+     "NAME": "Orchestration"
+    }
+   }
+  },
+  {
+   "code": "DEVELOPMENT",
+   "nls": {
+    "en": {
+     "NAME": "Development"
+    }
+   }
+  }
+ ]
+}
