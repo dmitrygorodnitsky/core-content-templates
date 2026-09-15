@@ -602,9 +602,10 @@ function liveOverview() {
     map: geography.map,
     weather: state.liveWeather,
     properties: envelope.items || [],
+    sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
     invoices: null,
-    contracts: [],
-    support: [],
+    contracts: null,
+    support: null,
     banner: null,
   };
 }

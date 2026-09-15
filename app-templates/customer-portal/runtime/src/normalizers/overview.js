@@ -60,6 +60,10 @@ export function appointmentDay(appointment, timeline) {
   return frame ? frame.day + " " + frame.date : "";
 }
 
+export function sectionAvailable(model, section) {
+  return !!model && (!model.sources || model.sources[section] === "ready");
+}
+
 export function invoiceBuckets(invoices) {
   var outstanding = (invoices && invoices.outstanding) || [];
   var paid = (invoices && invoices.paidThisMonth) || [];

@@ -13,7 +13,7 @@ const { weatherSource } = await import(new URL("src/live-weather.js", runtimeRoo
 const { WEATHER_LEGEND } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
 const { applyPortalConfig, currentOverview, liveOverviewStatus, state } = await import(new URL("src/state.js", runtimeRoot));
 const { propertyPoint } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
-const { invoiceBuckets, propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
+const { invoiceBuckets, propertyStatus, propertyWeather, sectionAvailable } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
 const { PortalRuntime } = await import(new URL("src/portal-runtime.js", runtimeRoot));
 const { Overview } = await import(new URL("src/routes/OverviewPage.js", runtimeRoot));
@@ -134,9 +134,11 @@ const liveProperties = {
   assert.ok(model);
   assert.equal(model.weather.source, "xweather");
   assert.deepEqual(model.properties, liveProperties.items);
+  assert.deepEqual(model.sources, { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" }, "every home section without a live source is declared unavailable, so none of them can read as empty");
   assert.equal(model.invoices, null, "no Invoice record exists in Core for this tenant");
-  assert.deepEqual(model.contracts, [], "a contract is a customer fact and never comes from the fixture in live mode");
-  assert.deepEqual(model.support, [], "no Support Ticket record exists in Core for this tenant");
+  assert.equal(model.contracts, null, "a contract is a customer fact and never comes from the fixture in live mode");
+  assert.equal(model.support, null, "no Support Ticket record exists in Core for this tenant");
+  for (const section of ["invoices", "appointments", "contracts", "support"]) assert.equal(sectionAvailable(model, section), false);
   assert.equal(model.banner, null);
 
   const buckets = invoiceBuckets(model.invoices);
@@ -151,6 +153,8 @@ const liveProperties = {
 }
 
 const LOAD = ["overview", "properties"];
+const EMPTY_CLAIMS = ["No invoices yet", "No scheduled visits", "No active contracts", "No open requests", "Everything looks good", "Submit a request"];
+const HOME_SECTIONS = ["invoices", "upcoming-services", "active-contracts", "support-requests"];
 const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   timestamp: Math.floor(Date.UTC(2026, 10, 2 + index, 18) / 1000),
   maxTempC: -4 - index,
@@ -241,6 +245,14 @@ function quietConsole() {
     assert.equal(page.querySelectorAll("[data-module=\"error-state\"]").length, 0, "a successful live load renders the home, not the error state");
     assert.ok(page.querySelector("[data-module=\"property-map\"]"));
     assert.ok(!page.textContent.includes("Dana") && !page.textContent.includes("Foothill"), "nothing from the demonstration tenant reaches the live home");
+    for (const claim of EMPTY_CLAIMS) assert.ok(!page.textContent.includes(claim), "the live home never says \"" + claim + "\" about a source it has not opened");
+    for (const id of HOME_SECTIONS) {
+      const card = page.querySelector(`[data-module="${id}"]`);
+      assert.equal(card.getAttribute("data-state"), "unavailable", id + " is unavailable, not empty");
+      assert.match(card.querySelector("[data-module=\"section-unavailable\"]").textContent, /^Not available yet.+ aren’t in the portal yet\.$/);
+      assert.equal(card.querySelectorAll("[data-action]").length, 0, id + " offers no action that cannot work without Core");
+    }
+    assert.ok(page.querySelectorAll(".ov-day").every((day) => !day.getAttribute("aria-label").includes("no visit")), "a day is never announced as having no visit while visits are not read");
     await runtime.loadAllAsync(LOAD);
     assert.equal(calls.xweather.length, 2, "reloading the modules reuses a forecast that already loaded");
     assert.deepEqual(console.errors, [], "a successful live load logs no error");
@@ -311,7 +323,43 @@ function quietConsole() {
   assert.equal(envelope.overview, graniteRidgeSnowFixture.overview, "fixture mode still serves the demonstration overview through the same module");
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state");
+{
+  assert.equal(sectionAvailable(graniteRidgeSnowFixture.overview, "contracts"), true, "a fixture overview is its own source for every section");
+  assert.equal(sectionAvailable({ sources: {} }, "contracts"), false, "a live model that does not declare a source has not opened it");
+  assert.equal(sectionAvailable({ sources: { contracts: "ready" }, contracts: [] }, "contracts"), true, "an opened source with zero rows is available, and empty");
+}
+
+{
+  configure("fixture");
+  const overview = graniteRidgeSnowFixture.overview;
+  const saved = { invoices: overview.invoices, contracts: overview.contracts, support: overview.support, properties: overview.properties };
+  Object.assign(overview, {
+    invoices: { outstanding: [], paidThisMonth: [] },
+    contracts: [],
+    support: [],
+    properties: overview.properties.map((property) => Object.assign({}, property, { appointment: null })),
+  });
+  try {
+    const page = Overview();
+    for (const claim of EMPTY_CLAIMS) assert.ok(page.textContent.includes(claim), "fixture mode still says \"" + claim + "\" when its own rows are empty");
+    assert.equal(page.querySelectorAll("[data-module=\"section-unavailable\"]").length, 0, "fixture mode never marks a section unavailable");
+    assert.ok(page.querySelector("[data-module=\"support-requests\"]").querySelector("[data-action=\"overview.newRequest\"]"), "fixture mode keeps Submit a request");
+    assert.ok(page.querySelectorAll(".ov-day").some((day) => day.getAttribute("aria-label").endsWith(" — no visit")), "fixture mode still announces a day with no visit");
+
+    overview.sources = { invoices: "unavailable", appointments: "ready", contracts: "ready", support: "unavailable" };
+    const mixed = Overview();
+    assert.match(mixed.querySelector("[data-module=\"active-contracts\"]").textContent, /No active contracts/, "a source declared ready with zero rows still says it is empty");
+    assert.match(mixed.querySelector("[data-module=\"upcoming-services\"]").textContent, /No scheduled visits/);
+    assert.equal(mixed.querySelector("[data-module=\"invoices\"]").getAttribute("data-state"), "unavailable");
+    assert.equal(mixed.querySelector("[data-module=\"support-requests\"]").getAttribute("data-state"), "unavailable");
+    assert.ok(!mixed.textContent.includes("No invoices yet") && !mixed.textContent.includes("No open requests"), "only the undeclared sources lose their empty copy");
+  } finally {
+    delete overview.sources;
+    Object.assign(overview, saved);
+  }
+}
+
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy");
 
 function createDom() {
   class Text {

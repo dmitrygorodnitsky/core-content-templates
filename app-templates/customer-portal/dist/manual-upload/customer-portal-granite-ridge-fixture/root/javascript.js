@@ -4300,9 +4300,10 @@
       map: geography.map,
       weather: state.liveWeather,
       properties: envelope2.items || [],
+      sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
       invoices: null,
-      contracts: [],
-      support: [],
+      contracts: null,
+      support: null,
       banner: null
     };
   }
@@ -8383,6 +8384,9 @@
     var frame = appointment && Number.isFinite(appointment.dayIndex) && timeline && timeline[appointment.dayIndex];
     return frame ? frame.day + " " + frame.date : "";
   }
+  function sectionAvailable(model, section) {
+    return !!model && (!model.sources || model.sources[section] === "ready");
+  }
   function invoiceBuckets(invoices) {
     var outstanding = invoices && invoices.outstanding || [];
     var paid = invoices && invoices.paidThisMonth || [];
@@ -9013,7 +9017,7 @@
         }))
       ]),
       stage,
-      DayTimeline(weather, index, model.properties),
+      DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")),
       WeatherAttribution(weather.source, "ov-map__attr")
     ]);
   }
@@ -9059,7 +9063,7 @@
       focusKeeper.settle(current, previous);
     });
   }
-  function DayTimeline(weather, index, properties) {
+  function DayTimeline(weather, index, properties, visitsKnown) {
     var last = weather.timeline.length - 1;
     var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function(item, position) {
       var visits = serviceDayCount(properties, position);
@@ -9069,7 +9073,7 @@
         "data-id": String(position),
         "data-weather": item.kind,
         "data-service": visits ? String(visits) : void 0,
-        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : " \u2014 no visit"),
+        "aria-label": item.day + " " + item.date + " \u2014 " + item.label + (visits ? " \u2014 " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown ? " \u2014 no visit" : ""),
         "aria-pressed": position === index ? "true" : "false"
       }, [
         text9("span", "ov-day__name", item.day),
@@ -9101,6 +9105,7 @@
       return property.appointment && property.appointment.state === "SCHEDULED";
     });
     var card = widget("upcoming-services", "Upcoming services", "calendar");
+    if (!sectionAvailable(model, "appointments")) return unavailableSection(card, "Scheduled visits");
     if (!scheduled.length) {
       card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
       return card;
@@ -9128,15 +9133,17 @@
     return card;
   }
   function InvoicesWidget(model) {
+    var available = sectionAvailable(model, "invoices");
     var buckets = invoiceBuckets(model.invoices);
     var overdue = buckets.overdue;
     var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
       h("div", { "class": "ov-card__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
         text9("h2", "ov-card__title", "Invoices"),
-        h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A")
+        available ? h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all \u203A") : null
       ])
     ]);
+    if (!available) return unavailableSection(card, "Invoices");
     if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
       card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
       return card;
@@ -9176,6 +9183,7 @@
     var quotes = quotePackage();
     var preparing = !!(quotes && quotes.preparing);
     var card = widget("active-contracts", "Active contracts", "contract");
+    if (!sectionAvailable(model, "contracts")) return unavailableSection(card, "Contracts");
     if (!contracts.length) {
       card.appendChild(preparing ? QuotePreparingLine() : emptyLine("No active contracts", "A contract appears here once your service agreement is approved."));
       return card;
@@ -9214,6 +9222,7 @@
   function SupportWidget(model) {
     var requests = model.support || [];
     var card = widget("support-requests", "Support requests", "support");
+    if (!sectionAvailable(model, "support")) return unavailableSection(card, "Support requests");
     if (!requests.length) {
       card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
         text9("div", "ov-empty__title", "No open requests"),
@@ -9280,6 +9289,14 @@
       text9("div", "ov-empty__title", title),
       text9("div", "ov-empty__desc", desc)
     ]);
+  }
+  function unavailableSection(card, subject) {
+    card.setAttribute("data-state", "unavailable");
+    card.appendChild(h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
+      text9("span", "readonly-chip", "Not available yet"),
+      text9("div", "ov-empty__desc", subject + " aren\u2019t in the portal yet.")
+    ]));
+    return card;
   }
   function text9(tag, className, value) {
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));

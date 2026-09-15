@@ -12,7 +12,7 @@ import { skel } from "../components/primitives/RouteStates.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
-import { appointmentDay, clampFrameIndex, invoiceBuckets, money, serviceDayCount } from "../normalizers/overview.js";
+import { appointmentDay, clampFrameIndex, invoiceBuckets, money, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
 
 var propertyMapController = null;
 var propertyForecastStore = null;
@@ -134,7 +134,7 @@ function MapPanel(model, frame, index) {
       })),
     ]),
     stage,
-    DayTimeline(weather, index, model.properties),
+    DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")),
     WeatherAttribution(weather.source, "ov-map__attr"),
   ]);
 }
@@ -183,7 +183,7 @@ function followSelection() {
   Promise.resolve().then(function () { focusKeeper.settle(current, previous); });
 }
 
-function DayTimeline(weather, index, properties) {
+function DayTimeline(weather, index, properties, visitsKnown) {
   var last = weather.timeline.length - 1;
   var track = h("div", { "class": "ov-timeline__track" }, weather.timeline.map(function (item, position) {
     var visits = serviceDayCount(properties, position);
@@ -191,7 +191,7 @@ function DayTimeline(weather, index, properties) {
       "class": "ov-day" + (position === index ? " ov-day--on" : "") + (position === weather.nowIndex ? " ov-day--now" : "") + (visits ? " ov-day--service" : ""),
       "data-action": "overview.scrubWeather", "data-id": String(position),
       "data-weather": item.kind, "data-service": visits ? String(visits) : undefined,
-      "aria-label": item.day + " " + item.date + " — " + item.label + (visits ? " — " + visits + (visits === 1 ? " visit" : " visits") : " — no visit"),
+      "aria-label": item.day + " " + item.date + " — " + item.label + (visits ? " — " + visits + (visits === 1 ? " visit" : " visits") : visitsKnown ? " — no visit" : ""),
       "aria-pressed": position === index ? "true" : "false",
     }, [
       text("span", "ov-day__name", item.day),
@@ -226,6 +226,7 @@ function UpcomingWidget(model, timeline) {
     return property.appointment && property.appointment.state === "SCHEDULED";
   });
   var card = widget("upcoming-services", "Upcoming services", "calendar");
+  if (!sectionAvailable(model, "appointments")) return unavailableSection(card, "Scheduled visits");
   if (!scheduled.length) {
     card.appendChild(emptyLine("No scheduled visits", "Dispatch happens automatically when your trigger is met."));
     return card;
@@ -250,15 +251,18 @@ function UpcomingWidget(model, timeline) {
 }
 
 function InvoicesWidget(model) {
+  var available = sectionAvailable(model, "invoices");
   var buckets = invoiceBuckets(model.invoices);
   var overdue = buckets.overdue;
   var card = h("div", { "class": "card card--pad ov-card ov-bill" + (overdue.count ? " ov-bill--alarm" : ""), "data-module": "invoices", "data-visual-id": "invoices", "data-state": overdue.count ? "overdue" : "current" }, [
     h("div", { "class": "ov-card__head" }, [
       h("span", { "class": "ov-card__icon" }, [icon("invoice", "ov-icon")]),
       text("h2", "ov-card__title", "Invoices"),
-      h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all ›"),
+      available ? h("div", { "class": "link-action ov-bill__all", "data-action": "overview.openInvoices" }, "View all ›") : null,
     ]),
   ]);
+
+  if (!available) return unavailableSection(card, "Invoices");
 
   if (!buckets.outstanding.count && !buckets.paidThisMonth.count) {
     card.appendChild(emptyLine("No invoices yet", "Invoices appear here once the season is billed."));
@@ -305,6 +309,7 @@ function ContractsWidget(model) {
   var quotes = quotePackage();
   var preparing = !!(quotes && quotes.preparing);
   var card = widget("active-contracts", "Active contracts", "contract");
+  if (!sectionAvailable(model, "contracts")) return unavailableSection(card, "Contracts");
   if (!contracts.length) {
     card.appendChild(preparing
       ? QuotePreparingLine()
@@ -348,6 +353,7 @@ function QuotePreparingRow() {
 function SupportWidget(model) {
   var requests = model.support || [];
   var card = widget("support-requests", "Support requests", "support");
+  if (!sectionAvailable(model, "support")) return unavailableSection(card, "Support requests");
   if (!requests.length) {
     card.appendChild(h("div", { "class": "ov-empty", "data-state": "empty" }, [
       text("div", "ov-empty__title", "No open requests"),
@@ -423,6 +429,15 @@ function emptyLine(title, desc) {
     text("div", "ov-empty__title", title),
     text("div", "ov-empty__desc", desc),
   ]);
+}
+
+function unavailableSection(card, subject) {
+  card.setAttribute("data-state", "unavailable");
+  card.appendChild(h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
+    text("span", "readonly-chip", "Not available yet"),
+    text("div", "ov-empty__desc", subject + " aren’t in the portal yet."),
+  ]));
+  return card;
 }
 
 function text(tag, className, value) {
