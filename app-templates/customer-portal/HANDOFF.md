@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `8629638`
+- HEAD when this checkpoint was written: `c778c2e`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -63,7 +63,7 @@ packages remain under `dist/**`, and stable CLI entrypoints remain under
   workflow, hooks, links and pages.
 - `content/cases/QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` — what workflow 49 and
   its scripts do, the team's answers, the takeover into `core-ui`, and dev-1 on
-  2026-09-15.
+  2026-09-15 and 2026-09-16.
 - `content/cases/SNOW-CUSTOMER-PORTAL-API.md` and
   `content/cases/CUSTOMER-SCOPE-GENERIC-API.md` — the customer-scoped API the
   backend owes, per screen and as one generic capability.
@@ -616,7 +616,10 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   required, with no `inputFormat` and no options; `PROPERTY_ADDRESSES`,
   `ORGANIZATION_NAME` and the `PROPERTIES` group are absent.
 - `portal-form.js` rendered that field as a required select with no options, so
-  the form could not be submitted.
+  the form could not be submitted. Since `c778c2e` an Address-class attribute
+  without options renders the address control and submits the typed text;
+  whether Core accepts text there is question 6 in
+  `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`.
 - `/pages/SNOWLIMITLESS/request-quote` still answers `404` on both nodes.
 - The dev key of 2026-09-15 answers `401` on every authenticated endpoint,
   `core/api/user/basic-info.json` included, so the stored definition and script

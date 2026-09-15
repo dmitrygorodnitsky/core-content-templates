@@ -329,6 +329,9 @@ included, so nothing behind a bearer was re-read.
 - **Our renderer could not submit it.** `portal-form.js` sent an attribute
   without options through its class table, which maps every entity class to a
   select, so `PROPERTY_ADDRESS` rendered as a required select with no options.
+  Fixed in `c778c2e`: an attribute of that class without options renders the
+  address control and submits the typed text, checked against a verbatim copy
+  of this response, `content/form-types/GET_QUOTE_.2026-09-16.en.json`.
 - **The page is still gone.** `/pages/SNOWLIMITLESS/request-quote` answers `404`
   on both nodes.
 - **Account creation, as last read on 2026-09-15.** Script 169 reads addresses
