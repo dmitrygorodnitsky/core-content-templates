@@ -184,8 +184,7 @@ export function retryRuntimeLoad() {
 
   state.view = "loading";
   render();
-  var weather = state.liveWeatherState === "failed" ? loadLiveWeather(null, state.config) : null;
-  liveRetryPromise = Promise.all([runtime.loadAllAsync(), weather])
+  liveRetryPromise = runtime.loadAllAsync()
     .then(function () {
       state.view = "ready";
       if (continueToIntendedRoute()) return;
@@ -253,9 +252,11 @@ document.addEventListener("DOMContentLoaded", function () {
   initRouter(render);
   bindActions(mount);
   var fixture = currentFixture();
-  loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function (live) {
-    if (live) render();
-  });
+  if (state.config.dataMode !== "live") {
+    loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function (live) {
+      if (live) render();
+    });
+  }
   loaded.then(function () {
     if (continueToIntendedRoute()) return;
     render();

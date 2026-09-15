@@ -2,16 +2,21 @@ import assert from "node:assert/strict";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
+const dom = createDom();
 globalThis.window = globalThis;
+globalThis.document = dom.document;
+globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} };
 
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { readPortalConfig, readServiceGeography } = await import(new URL("src/config.js", runtimeRoot));
 const { weatherSource } = await import(new URL("src/live-weather.js", runtimeRoot));
 const { WEATHER_LEGEND } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
-const { applyPortalConfig, currentOverview, state } = await import(new URL("src/state.js", runtimeRoot));
+const { applyPortalConfig, currentOverview, liveOverviewStatus, state } = await import(new URL("src/state.js", runtimeRoot));
 const { propertyPoint } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
 const { invoiceBuckets, propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
+const { PortalRuntime } = await import(new URL("src/portal-runtime.js", runtimeRoot));
+const { Overview } = await import(new URL("src/routes/OverviewPage.js", runtimeRoot));
 
 const GEOGRAPHY = JSON.stringify({
   map: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 },
@@ -145,4 +150,247 @@ const liveProperties = {
   assert.deepEqual(model.map, { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, "the configured centre and zoom are the initial viewport");
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, and a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused");
+const LOAD = ["overview", "properties"];
+const PERIODS = Array.from({ length: 7 }, (_, index) => ({
+  timestamp: Math.floor(Date.UTC(2026, 10, 2 + index, 18) / 1000),
+  maxTempC: -4 - index,
+  minFeelslikeC: -2,
+  pop: 60,
+  humidity: 70,
+  snowCM: index === 0 ? 2.4 : 0.4,
+  windSpeedMaxKPH: 12,
+  windDirMax: "N",
+  weather: "Light Snow",
+  weatherPrimaryCoded: "S::S",
+}));
+const coreProperty = {
+  id: 9001,
+  code: "RES-9001",
+  nls: { en: { NAME: "Frost Lane Strata" } },
+  type: { id: 154, code: "SNOW_REMOVAL_PROPERTY" },
+  states: [{ id: 1, code: "ACTIVE" }],
+  attributes: { 153: { ACCOUNT: { value: 62 }, ADDRESS: { value: 610 }, PROPERTY_CATEGORY: { value: "STRATA" }, COORD_LAT: { value: 49.12 }, COORD_LNG: { value: -122.84 } } },
+};
+const coreAddress = { id: 610, address1: "12 Frost Lane", city: "Surrey", postalCode: "V3W 1J8", state: { id: 2, code: "BC" }, country: { id: "CA" } };
+
+function liveRuntime(options = {}) {
+  const outcomes = Object.assign({ properties: "ok", weather: "ok", keys: true }, options);
+  applyPortalConfig(readPortalConfig({
+    dataset: {
+      portalVertical: "snow", portalProfile: "stormRetail", portalTheme: "snow",
+      portalDataMode: "live", portalAuthMode: "required", portalOrganization: "SNOWLIMITLESS",
+      portalCase: "granite-ridge-snow", portalServiceGeography: GEOGRAPHY, portalEnabledModules: "overview,properties",
+      portalWeatherClientId: outcomes.keys ? "cid" : "", portalWeatherClientSecret: outcomes.keys ? "sec" : "",
+    },
+  }));
+  state.config.origin = "https://portal.example.test";
+  Object.assign(state.session, { authenticated: true, accessToken: "test-token", tokenType: "Bearer" });
+  state.customerAccount = { id: 62 };
+  state.account = "ready";
+  state.sessionName = null;
+  state.liveWeather = null;
+  state.liveWeatherState = "off";
+  for (const id of LOAD) {
+    delete state.moduleData[id];
+    delete state.moduleStatus[id];
+  }
+  const calls = { core: [], xweather: [] };
+  globalThis.fetch = async (url) => {
+    const target = String(url);
+    if (target.includes("xweather.com")) {
+      calls.xweather.push(target);
+      if (outcomes.weather === "fail") return { ok: false, status: 503, json: async () => ({}) };
+      return { ok: true, status: 200, json: async () => ({ success: true, error: null, response: [{ periods: PERIODS }] }) };
+    }
+    calls.core.push(target);
+    if (outcomes.properties === "fail") return { ok: false, status: 500, json: async () => ({}) };
+    if (target.includes("/core-rm/api/resource/list.json")) return { ok: true, status: 200, json: async () => ({ resultSize: 1, result: [structuredClone(coreProperty)] }) };
+    if (target.includes("/core/api/address/list.json")) return { ok: true, status: 200, json: async () => ({ resultSize: 1, result: [structuredClone(coreAddress)] }) };
+    throw new Error("unexpected request " + target);
+  };
+  return { runtime: new PortalRuntime({ state }), calls, outcomes };
+}
+
+const settle = async () => { for (let round = 0; round < 6; round += 1) await new Promise((resolve) => setImmediate(resolve)); };
+const failureOf = (promise) => promise.then(() => null, (error) => error);
+
+function quietConsole() {
+  const original = { error: console.error, warn: console.warn };
+  const errors = [];
+  console.error = (...parts) => { errors.push(parts.map(String).join(" ")); };
+  console.warn = () => {};
+  return { errors, restore() { Object.assign(console, original); } };
+}
+
+{
+  const console = quietConsole();
+  try {
+    const { runtime, calls } = liveRuntime();
+    assert.deepEqual(runtime.enabledModuleIds(), ["auth", "overview", "properties"], "a live snow home loads the overview and properties modules once the session resolves");
+    await runtime.loadAllAsync(LOAD);
+    assert.equal(state.moduleStatus.overview, "ready", "the overview module has a live path, so a live load no longer fails on it");
+    assert.deepEqual(state.moduleData.overview, { state: "ready", source: "xweather" }, "the overview module carries the state of its forecast and no fixture data");
+    assert.equal(state.moduleStatus.properties, "ready");
+    assert.equal(calls.xweather.length, 2, "one forecast per configured zone");
+    assert.ok(calls.xweather.every((url) => url.includes("/forecasts/49.")), "only the configured service area is forecast, never the demonstration geography");
+    assert.equal(liveOverviewStatus(), "ready");
+    const model = currentOverview();
+    assert.deepEqual(model.properties.map((property) => property.name), ["Frost Lane Strata"]);
+    assert.equal(model.weather.source, "xweather");
+    const page = Overview();
+    assert.equal(page.querySelectorAll("[data-module=\"error-state\"]").length, 0, "a successful live load renders the home, not the error state");
+    assert.ok(page.querySelector("[data-module=\"property-map\"]"));
+    assert.ok(!page.textContent.includes("Dana") && !page.textContent.includes("Foothill"), "nothing from the demonstration tenant reaches the live home");
+    await runtime.loadAllAsync(LOAD);
+    assert.equal(calls.xweather.length, 2, "reloading the modules reuses a forecast that already loaded");
+    assert.deepEqual(console.errors, [], "a successful live load logs no error");
+  } finally {
+    console.restore();
+  }
+}
+
+{
+  const console = quietConsole();
+  try {
+    const { runtime, calls, outcomes } = liveRuntime({ weather: "fail" });
+    const failure = await failureOf(runtime.loadAllAsync(LOAD));
+    await settle();
+    assert.equal(failure && failure.code, "weather-unavailable", "a forecast that failed is a failed load, not a quiet empty home");
+    assert.equal(state.moduleStatus.overview, "error");
+    assert.deepEqual(state.moduleData.overview, { state: "error", reasonCode: "weather-unavailable" });
+    assert.equal(state.moduleStatus.properties, "ready");
+    assert.equal(currentOverview(), null, "no demonstration forecast stands in for the failed one");
+    assert.equal(liveOverviewStatus(), "error");
+    assert.match(Overview().querySelector("[data-module=\"error-state\"]").textContent, /Couldn’t load your home screen/, "a failed forecast reaches the designed error state");
+
+    outcomes.weather = "ok";
+    await runtime.loadAllAsync(LOAD);
+    assert.equal(calls.xweather.length, 4, "Try again reloads the modules, and the overview module fetches the forecast again");
+    assert.equal(liveOverviewStatus(), "ready");
+    assert.equal(Overview().querySelectorAll("[data-module=\"error-state\"]").length, 0);
+  } finally {
+    console.restore();
+  }
+}
+
+{
+  const console = quietConsole();
+  try {
+    const { runtime } = liveRuntime({ properties: "fail" });
+    const failure = await failureOf(runtime.loadAllAsync(LOAD));
+    await settle();
+    assert.equal(failure && failure.code, "core-request-failed", "a failed properties read still fails the load");
+    assert.equal(state.moduleStatus.overview, "ready", "the forecast loaded; the failure belongs to the properties read");
+    assert.equal(state.moduleData.properties.state, "error");
+    assert.equal(currentOverview(), null, "no fixture book stands in for the failed read");
+    assert.equal(liveOverviewStatus(), "error");
+    assert.match(Overview().querySelector("[data-module=\"error-state\"]").textContent, /Couldn’t load your home screen/, "a failed properties read reaches the designed error state");
+  } finally {
+    console.restore();
+  }
+}
+
+{
+  const console = quietConsole();
+  try {
+    const { runtime, calls } = liveRuntime({ keys: false });
+    await runtime.loadAllAsync(LOAD);
+    assert.deepEqual(state.moduleData.overview, { state: "unconfigured", source: null }, "without weather keys there is nothing to load and nothing failed");
+    assert.equal(calls.xweather.length, 0);
+    assert.equal(liveOverviewStatus(), "unconfigured");
+    assert.match(Overview().querySelector("[data-module=\"empty-state\"]").textContent, /isn’t set up yet/);
+    assert.deepEqual(console.errors, []);
+  } finally {
+    console.restore();
+  }
+}
+
+{
+  configure("fixture");
+  const envelope = new PortalRuntime({ state }).load("overview");
+  assert.equal(envelope.overview, graniteRidgeSnowFixture.overview, "fixture mode still serves the demonstration overview through the same module");
+}
+
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state");
+
+function createDom() {
+  class Text {
+    constructor(value) { this.textContent = String(value); this.parentNode = null; this.listeners = {}; }
+  }
+
+  class Element {
+    constructor(tag) {
+      this.tagName = String(tag).toUpperCase();
+      this.attributes = new Map();
+      this.childNodes = [];
+      this.parentNode = null;
+      this.listeners = {};
+      this.style = {};
+      this.offsetWidth = 0;
+      this.offsetHeight = 0;
+    }
+    get className() { return this.getAttribute("class") || ""; }
+    set className(value) { this.setAttribute("class", value); }
+    get children() { return this.childNodes.filter((node) => node instanceof Element); }
+    get textContent() { return this.childNodes.map((node) => node.textContent).join(""); }
+    set textContent(value) { this.replaceChildren(new Text(value)); }
+    setAttribute(name, value) { this.attributes.set(name, String(value)); }
+    getAttribute(name) { return this.attributes.has(name) ? this.attributes.get(name) : null; }
+    hasAttribute(name) { return this.attributes.has(name); }
+    removeAttribute(name) { this.attributes.delete(name); }
+    appendChild(child) {
+      if (child.parentNode) child.parentNode.removeChild(child);
+      child.parentNode = this;
+      this.childNodes.push(child);
+      return child;
+    }
+    removeChild(child) {
+      this.childNodes = this.childNodes.filter((node) => node !== child);
+      child.parentNode = null;
+      return child;
+    }
+    remove() { if (this.parentNode) this.parentNode.removeChild(this); }
+    replaceChildren(...nodes) {
+      this.childNodes.forEach((node) => { node.parentNode = null; });
+      this.childNodes = [];
+      nodes.forEach((node) => this.appendChild(node));
+    }
+    addEventListener(type, listener) { (this.listeners[type] = this.listeners[type] || []).push(listener); }
+    contains(node) {
+      for (let current = node; current; current = current.parentNode) if (current === this) return true;
+      return false;
+    }
+    closest(selector) {
+      for (let current = this; current instanceof Element; current = current.parentNode) if (matches(current, selector)) return current;
+      return null;
+    }
+    querySelectorAll(selector) {
+      const found = [];
+      const walk = (node) => node.children.forEach((child) => { if (matches(child, selector)) found.push(child); walk(child); });
+      walk(this);
+      return found;
+    }
+    querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
+    focus() {}
+    scrollIntoView() {}
+  }
+
+  function matches(node, selector) {
+    const parts = selector.match(/^[a-zA-Z0-9-]+|\.[\w-]+|\[[^\]]+\]/g) || [];
+    return parts.every((part) => {
+      if (part[0] === ".") return node.className.split(/\s+/).includes(part.slice(1));
+      if (part[0] === "[") {
+        const attribute = /^\[([\w-]+)(?:="([^"]*)")?\]$/.exec(part);
+        return attribute[2] === undefined ? node.hasAttribute(attribute[1]) : node.getAttribute(attribute[1]) === attribute[2];
+      }
+      return node.tagName === part.toUpperCase();
+    });
+  }
+
+  const documentNode = new Element("#document");
+  documentNode.head = new Element("head");
+  documentNode.createElement = (tag) => new Element(tag);
+  documentNode.createElementNS = (_, tag) => new Element(tag);
+  documentNode.createTextNode = (value) => new Text(value);
+  return { document: documentNode };
+}

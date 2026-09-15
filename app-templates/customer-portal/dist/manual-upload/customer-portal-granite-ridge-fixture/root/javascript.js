@@ -10030,7 +10030,7 @@
       if (pl.badge) opt.appendChild(h("span", { "class": "plan-badge2" + (pl.badgeGreen ? " plan-badge2--green" : "") }, pl.badge));
       opt.appendChild(h("div", { "class": "plan-radio" + (sel ? " plan-radio--sel" : "") }, sel ? h("i") : null));
       opt.appendChild(h("div", { "class": "plan-option__body" }, [
-        h("div", { style: "display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-right:104px" }, [
+        h("div", { "class": "plan-option__head" }, [
           h("span", { style: "font-weight:700;font-size:15.5px" }, pl.name),
           h("span", { style: "font-size:12px;color:var(--ink-3)" }, pl.tag)
         ]),
@@ -18377,6 +18377,30 @@
       return context.config.dataMode === "live" ? raw : normalizeCheckout(raw);
     }
   };
+  var liveOverviewAdapter = {
+    async load(moduleId, context) {
+      if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unconfigured", source: null };
+      if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
+      if (!context.state.liveWeather) {
+        var error2 = new Error("The service-area forecast did not load");
+        error2.code = "weather-unavailable";
+        throw error2;
+      }
+      return { state: "ready", source: context.state.liveWeather.source };
+    }
+  };
+  var overviewModule = {
+    id: "overview",
+    adapter(context) {
+      return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
+    },
+    normalize(raw) {
+      return raw;
+    },
+    failureEnvelope(context, error2) {
+      return { state: "error", reasonCode: error2 && error2.code || "overview-unavailable" };
+    }
+  };
   var modules = {
     auth: authModule,
     account: accountModule,
@@ -18389,9 +18413,7 @@
     cart: cartModule,
     checkout: checkoutModule,
     plan: planModule,
-    overview: module("overview", function(raw) {
-      return raw;
-    }),
+    overview: overviewModule,
     appointmentsTimeline: module("appointmentsTimeline", function(raw) {
       return raw;
     }),
@@ -19338,8 +19360,7 @@
     if (liveRetryPromise) return liveRetryPromise;
     state.view = "loading";
     render();
-    var weather = state.liveWeatherState === "failed" ? loadLiveWeather(null, state.config) : null;
-    liveRetryPromise = Promise.all([runtime.loadAllAsync(), weather]).then(function() {
+    liveRetryPromise = runtime.loadAllAsync().then(function() {
       state.view = "ready";
       if (continueToIntendedRoute()) return;
       render();
@@ -19398,9 +19419,11 @@
     initRouter(render);
     bindActions(mount);
     var fixture = currentFixture();
-    loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {
-      if (live) render();
-    });
+    if (state.config.dataMode !== "live") {
+      loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {
+        if (live) render();
+      });
+    }
     loaded.then(function() {
       if (continueToIntendedRoute()) return;
       render();

@@ -653,6 +653,8 @@ div.proposal-group__head:hover { background: transparent; }
 
 .plan-option__body { flex: 1; }
 
+.plan-option__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-right: 104px; }
+
 .plan-option__price { text-align: right; flex-shrink: 0; }
 
 .plan-badge2 { position: absolute; top: -11px; right: 18px; white-space: nowrap; border-radius: var(--radius-pill); padding: 4px 12px; font-weight: 700; font-size: 11px; letter-spacing: .02em; background: var(--accent); color: #fff; }

@@ -1386,6 +1386,8 @@ div.proposal-group__head:hover { background: transparent; }
 
 .plan-option__body { flex: 1; }
 
+.plan-option__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-right: 104px; }
+
 .plan-option__price { text-align: right; flex-shrink: 0; }
 
 .plan-badge2 { position: absolute; top: -11px; right: 18px; white-space: nowrap; border-radius: var(--radius-pill); padding: 4px 12px; font-weight: 700; font-size: 11px; letter-spacing: .02em; background: var(--accent); color: #fff; }
@@ -3288,6 +3290,16 @@ div.proposal-group__head:hover { background: transparent; }
 .vw-mobile .plan-notes { grid-template-columns: 1fr; }
 
 .vw-mobile .proposal-actions { flex-wrap: wrap; }
+
+.vw-tablet .plan-option__body, .vw-mobile .plan-option__body { min-width: 0; }
+
+.vw-tablet .plan-option__head, .vw-mobile .plan-option__head { padding-right: 0; }
+
+.vw-mobile .plan-option { flex-wrap: wrap; row-gap: 10px; }
+
+.vw-mobile .plan-option__body { flex: 1 1 0; }
+
+.vw-mobile .plan-option__price { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding-left: 36px; text-align: left; }
 
 .vw-tablet .stats-grid, .vw-mobile .stats-grid { grid-template-columns: 1fr; }
 

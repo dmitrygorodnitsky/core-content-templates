@@ -94,7 +94,7 @@ export function ProposalDetail() {
     if (pl.badge) opt.appendChild(h("span", { "class": "plan-badge2" + (pl.badgeGreen ? " plan-badge2--green" : "") }, pl.badge));
     opt.appendChild(h("div", { "class": "plan-radio" + (sel ? " plan-radio--sel" : "") }, sel ? h("i") : null));
     opt.appendChild(h("div", { "class": "plan-option__body" }, [
-      h("div", { style: "display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-right:104px" }, [
+      h("div", { "class": "plan-option__head" }, [
         h("span", { style: "font-weight:700;font-size:15.5px" }, pl.name),
         h("span", { style: "font-size:12px;color:var(--ink-3)" }, pl.tag)
       ]),

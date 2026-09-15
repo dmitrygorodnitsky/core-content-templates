@@ -7,6 +7,7 @@ import { createCoreOrdersAdapter } from "../adapters/core-orders-adapter.js";
 import { createCorePlansAdapter } from "../adapters/core-plans-adapter.js";
 import { createCoreSpaDemoAdapter } from "../adapters/core-spa-demo-adapter.js";
 import { createCoreSnowPropertiesAdapter, createCoreSnowQuotesAdapter } from "../adapters/core-snow-adapter.js";
+import { liveWeatherOpened, loadLiveWeather, weatherSource } from "../live-weather.js";
 import { createCoreOidcAdapter } from "../adapters/core-oidc-adapter.js";
 import { createCoreUserProfileAdapter } from "../adapters/core-user-profile-adapter.js";
 import {
@@ -328,6 +329,30 @@ const checkoutModule = {
   },
 };
 
+const liveOverviewAdapter = {
+  async load(moduleId, context) {
+    if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unconfigured", source: null };
+    if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
+    if (!context.state.liveWeather) {
+      var error = new Error("The service-area forecast did not load");
+      error.code = "weather-unavailable";
+      throw error;
+    }
+    return { state: "ready", source: context.state.liveWeather.source };
+  },
+};
+
+const overviewModule = {
+  id: "overview",
+  adapter(context) {
+    return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
+  },
+  normalize(raw) { return raw; },
+  failureEnvelope(context, error) {
+    return { state: "error", reasonCode: (error && error.code) || "overview-unavailable" };
+  },
+};
+
 export const modules = {
   auth: authModule,
   account: accountModule,
@@ -340,7 +365,7 @@ export const modules = {
   cart: cartModule,
   checkout: checkoutModule,
   plan: planModule,
-  overview: module("overview", function (raw) { return raw; }),
+  overview: overviewModule,
   appointmentsTimeline: module("appointmentsTimeline", function (raw) { return raw; }),
   properties: propertiesModule,
   calendar: module("calendar", normalizeCalendar),

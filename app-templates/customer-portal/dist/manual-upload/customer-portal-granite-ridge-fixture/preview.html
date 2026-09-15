@@ -1398,6 +1398,8 @@ div.proposal-group__head:hover { background: transparent; }
 
 .plan-option__body { flex: 1; }
 
+.plan-option__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding-right: 104px; }
+
 .plan-option__price { text-align: right; flex-shrink: 0; }
 
 .plan-badge2 { position: absolute; top: -11px; right: 18px; white-space: nowrap; border-radius: var(--radius-pill); padding: 4px 12px; font-weight: 700; font-size: 11px; letter-spacing: .02em; background: var(--accent); color: #fff; }
@@ -3300,6 +3302,16 @@ div.proposal-group__head:hover { background: transparent; }
 .vw-mobile .plan-notes { grid-template-columns: 1fr; }
 
 .vw-mobile .proposal-actions { flex-wrap: wrap; }
+
+.vw-tablet .plan-option__body, .vw-mobile .plan-option__body { min-width: 0; }
+
+.vw-tablet .plan-option__head, .vw-mobile .plan-option__head { padding-right: 0; }
+
+.vw-mobile .plan-option { flex-wrap: wrap; row-gap: 10px; }
+
+.vw-mobile .plan-option__body { flex: 1 1 0; }
+
+.vw-mobile .plan-option__price { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding-left: 36px; text-align: left; }
 
 .vw-tablet .stats-grid, .vw-mobile .stats-grid { grid-template-columns: 1fr; }
 
@@ -13904,7 +13916,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       if (pl.badge) opt.appendChild(h("span", { "class": "plan-badge2" + (pl.badgeGreen ? " plan-badge2--green" : "") }, pl.badge));
       opt.appendChild(h("div", { "class": "plan-radio" + (sel ? " plan-radio--sel" : "") }, sel ? h("i") : null));
       opt.appendChild(h("div", { "class": "plan-option__body" }, [
-        h("div", { style: "display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-right:104px" }, [
+        h("div", { "class": "plan-option__head" }, [
           h("span", { style: "font-weight:700;font-size:15.5px" }, pl.name),
           h("span", { style: "font-size:12px;color:var(--ink-3)" }, pl.tag)
         ]),
@@ -22251,6 +22263,30 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return context.config.dataMode === "live" ? raw : normalizeCheckout(raw);
     }
   };
+  var liveOverviewAdapter = {
+    async load(moduleId, context) {
+      if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unconfigured", source: null };
+      if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
+      if (!context.state.liveWeather) {
+        var error2 = new Error("The service-area forecast did not load");
+        error2.code = "weather-unavailable";
+        throw error2;
+      }
+      return { state: "ready", source: context.state.liveWeather.source };
+    }
+  };
+  var overviewModule = {
+    id: "overview",
+    adapter(context) {
+      return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
+    },
+    normalize(raw) {
+      return raw;
+    },
+    failureEnvelope(context, error2) {
+      return { state: "error", reasonCode: error2 && error2.code || "overview-unavailable" };
+    }
+  };
   var modules = {
     auth: authModule,
     account: accountModule,
@@ -22263,9 +22299,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     cart: cartModule,
     checkout: checkoutModule,
     plan: planModule,
-    overview: module("overview", function(raw) {
-      return raw;
-    }),
+    overview: overviewModule,
     appointmentsTimeline: module("appointmentsTimeline", function(raw) {
       return raw;
     }),
@@ -23212,8 +23246,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (liveRetryPromise) return liveRetryPromise;
     state.view = "loading";
     render();
-    var weather = state.liveWeatherState === "failed" ? loadLiveWeather(null, state.config) : null;
-    liveRetryPromise = Promise.all([runtime.loadAllAsync(), weather]).then(function() {
+    liveRetryPromise = runtime.loadAllAsync().then(function() {
       state.view = "ready";
       if (continueToIntendedRoute()) return;
       render();
@@ -23272,9 +23305,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     initRouter(render);
     bindActions(mount);
     var fixture = currentFixture();
-    loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {
-      if (live) render();
-    });
+    if (state.config.dataMode !== "live") {
+      loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {
+        if (live) render();
+      });
+    }
     loaded.then(function() {
       if (continueToIntendedRoute()) return;
       render();
