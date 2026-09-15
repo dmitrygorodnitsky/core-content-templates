@@ -61,7 +61,21 @@ export function appointmentDay(appointment, timeline) {
 }
 
 export function sectionAvailable(model, section) {
-  return !!model && (!model.sources || model.sources[section] === "ready");
+  return !!model && sourceOpened(model.sources, section);
+}
+
+export function sourceOpened(sources, section) {
+  return !sources || sources[section] === "ready";
+}
+
+var PROPERTY_STATUS_SOURCES = ["appointments", "support", "contracts"];
+
+export function propertyStatusKnown(sources) {
+  return PROPERTY_STATUS_SOURCES.every(function (section) { return sourceOpened(sources, section); });
+}
+
+export function knownPropertyStatus(property, sources) {
+  return propertyStatusKnown(sources) ? propertyStatus(property) : null;
 }
 
 export function invoiceBuckets(invoices) {

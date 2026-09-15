@@ -9,10 +9,11 @@ import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
 import { ErrorState } from "../components/primitives/ErrorState.js";
 import { skel } from "../components/primitives/RouteStates.js";
+import { SectionUnavailable } from "../components/primitives/SectionUnavailable.js";
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
-import { appointmentDay, clampFrameIndex, invoiceBuckets, money, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
+import { appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatusKnown, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
 
 var propertyMapController = null;
 var propertyForecastStore = null;
@@ -39,7 +40,7 @@ export function Overview() {
   var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
   var frame = weather.timeline[index];
 
-  page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source)]));
+  page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts"))]));
   page.appendChild(MapPanel(model, frame, index));
   page.appendChild(InvoicesWidget(model));
 
@@ -89,18 +90,20 @@ function subline(model, customer) {
   if (!model || !state.liveWeather) return customer.subline;
   var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
   var count = model.properties.length;
-  var contracted = count > 0 && model.properties.every(function (property) { return !!property.contract; });
+  var contracted = sectionAvailable(model, "contracts") && count > 0 && model.properties.every(function (property) { return !!property.contract; });
   return frame.label + " · " + count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
 }
 
-function WeatherPanel(frame, isNow, source) {
+function WeatherPanel(frame, isNow, source, serviceNotes) {
   var stats = frame.stats || [];
+  var note = serviceNotes ? frame.note : frame.forecastNote;
+  var line = isNow ? note : [frame.day + " " + frame.date, note].filter(Boolean).join(" · ");
   return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
     h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
     h("div", { "class": "ov-wx__read" }, [
       text("div", "ov-wx__temp", frame.temp),
       text("div", "ov-wx__label", frame.label),
-      text("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " · " + frame.note),
+      line ? text("div", "ov-wx__note", line) : null,
       WeatherAttribution(source),
     ]),
     stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function (stat) {
@@ -114,6 +117,7 @@ function WeatherPanel(frame, isNow, source) {
 
 function MapPanel(model, frame, index) {
   var weather = model.weather;
+  var statusKnown = propertyStatusKnown(model.sources);
   var stage = PropertyStage({
     properties: model.properties,
     frame: frame,
@@ -123,13 +127,14 @@ function MapPanel(model, frame, index) {
     selectedId: state.ovProperty,
     map: propertyMap(),
     forecasts: propertyForecasts(),
+    sources: model.sources,
   });
   followSelection();
   return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
     h("div", { "class": "ov-map__head" }, [
       h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
       text("h2", "ov-card__title", "Your properties"),
-      h("div", { "class": "ov-legend" }, weather.legend.map(function (item) {
+      h("div", { "class": "ov-legend" }, weather.legend.filter(function (item) { return statusKnown || item.key !== "issue"; }).map(function (item) {
         return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text("span", "", item.label)]);
       })),
     ]),
@@ -433,10 +438,7 @@ function emptyLine(title, desc) {
 
 function unavailableSection(card, subject) {
   card.setAttribute("data-state", "unavailable");
-  card.appendChild(h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
-    text("span", "readonly-chip", "Not available yet"),
-    text("div", "ov-empty__desc", subject + " aren’t in the portal yet."),
-  ]));
+  card.appendChild(SectionUnavailable(subject));
   return card;
 }
 

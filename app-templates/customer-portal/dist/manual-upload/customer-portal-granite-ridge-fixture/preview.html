@@ -7063,6 +7063,104 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return entry && entry.value != null ? text3(entry.value) : "";
   }
 
+  // app-templates/customer-portal/runtime/src/normalizers/overview.js
+  var OVERVIEW_STATUS = {
+    issue: {
+      label: "Issue Opened",
+      copy: "Your request is being reviewed. We\u2019ll get back to you shortly."
+    },
+    enroute: {
+      label: "En Route",
+      copy: "Our team is on the way to this property."
+    },
+    scheduled: {
+      label: "Scheduled",
+      copy: "Service is scheduled for this property."
+    },
+    monitoring: {
+      label: "Active Monitoring",
+      copy: "We\u2019re monitoring conditions and will dispatch service when needed."
+    }
+  };
+  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED"];
+  function propertyStatus(property) {
+    var ticket = property && property.ticket;
+    if (ticket && OPEN_TICKET_STATES.indexOf(ticket.state) !== -1) return "issue";
+    var appointment = property && property.appointment;
+    if (appointment && appointment.state === "IN_PROGRESS") return "enroute";
+    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
+    return "monitoring";
+  }
+  function propertyWeather(property, frame) {
+    if (propertyStatus(property) === "issue") return "issue";
+    return zoneWeather(property, frame);
+  }
+  function zoneWeather(property, frame) {
+    var zones = frame && frame.zones || null;
+    var zone = property && property.zone;
+    if (zones && zone && zones[zone]) return zones[zone];
+    return frame && frame.kind || "clear";
+  }
+  function clampFrameIndex(timeline, index) {
+    var total = timeline && timeline.length || 0;
+    if (!total) return 0;
+    if (index < 0) return 0;
+    if (index > total - 1) return total - 1;
+    return index;
+  }
+  function serviceDayCount(properties, dayIndex) {
+    if (!properties || !Number.isFinite(dayIndex)) return 0;
+    return properties.filter(function(property) {
+      return property.appointment && property.appointment.dayIndex === dayIndex;
+    }).length;
+  }
+  function appointmentDay(appointment, timeline) {
+    var frame = appointment && Number.isFinite(appointment.dayIndex) && timeline && timeline[appointment.dayIndex];
+    return frame ? frame.day + " " + frame.date : "";
+  }
+  function sectionAvailable(model, section) {
+    return !!model && sourceOpened(model.sources, section);
+  }
+  function sourceOpened(sources, section) {
+    return !sources || sources[section] === "ready";
+  }
+  var PROPERTY_STATUS_SOURCES = ["appointments", "support", "contracts"];
+  function propertyStatusKnown(sources) {
+    return PROPERTY_STATUS_SOURCES.every(function(section) {
+      return sourceOpened(sources, section);
+    });
+  }
+  function knownPropertyStatus(property, sources) {
+    return propertyStatusKnown(sources) ? propertyStatus(property) : null;
+  }
+  function invoiceBuckets(invoices) {
+    var outstanding = invoices && invoices.outstanding || [];
+    var paid = invoices && invoices.paidThisMonth || [];
+    var overdue = outstanding.filter(function(invoice) {
+      return invoice.state === "OVERDUE";
+    });
+    var thisMonth = outstanding.filter(function(invoice) {
+      return invoice.state === "DUE_THIS_MONTH";
+    });
+    return {
+      overdue: bucket(overdue),
+      outstanding: bucket(outstanding),
+      dueThisMonth: bucket(thisMonth),
+      paidThisMonth: bucket(paid)
+    };
+  }
+  function bucket(rows) {
+    return {
+      count: rows.length,
+      amount: rows.reduce(function(running, invoice) {
+        return running + (Number(invoice.amount) || 0);
+      }, 0)
+    };
+  }
+  function money(amount) {
+    return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
   // app-templates/customer-portal/runtime/src/normalizers/weather.js
   var DAY_NAMES2 = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -7112,24 +7210,32 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ];
   }
   function periodNote(period) {
+    var reading = periodReading(period);
+    return [reading.forecast, reading.service].filter(Boolean).join(" \xB7 ");
+  }
+  function periodForecastNote(period) {
+    return periodReading(period).forecast;
+  }
+  function periodReading(period) {
     var kind = periodKind(period);
-    if (kind === "freezing") return "Freezing precipitation \xB7 de-icing expected";
+    if (kind === "freezing") return { forecast: "Freezing precipitation", service: "de-icing expected" };
     var snow = num(period && period.snowCM);
-    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast \xB7 trigger met";
+    if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "trigger met" };
     if (kind === "storm") {
       var feels = num(period && period.minFeelslikeC);
-      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight";
-      return "Storm risk " + statValue(period && period.pop, "%") + " \xB7 crews on standby";
+      if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return { forecast: "Feels like " + tempValue(feels) + " \xB7 refreeze risk overnight", service: "" };
+      return { forecast: "Storm risk " + statValue(period && period.pop, "%"), service: "crews on standby" };
     }
-    if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast \xB7 below the 2 cm trigger";
-    return "Below the service trigger";
+    if (Number.isFinite(snow) && snow > 0) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "below the 2 cm trigger" };
+    return { forecast: "", service: "Below the service trigger" };
   }
   function forecastDay(period) {
     return {
       kind: periodKind(period),
       temp: periodTemp(period),
       phrase: String(period && period.weather || "").split(",")[0],
-      note: periodNote(period)
+      note: periodNote(period),
+      forecastNote: periodForecastNote(period)
     };
   }
   function buildTimeline(zonePeriods, zoneOrder) {
@@ -7153,6 +7259,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         temp: periodTemp(headline),
         label: String(headline.weather || "").split(",")[0] || "Forecast",
         note: periodNote(headline),
+        forecastNote: periodForecastNote(headline),
         stats: periodStats(headline),
         zones
       };
@@ -7230,12 +7337,13 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
     return match ? match.label : "";
   }
-  function popupWeather(frame, zoneKind, source, entry, index) {
+  function popupWeather(frame, zoneKind, source, entry, index, sources) {
     var day = frame.day + " " + frame.date;
     if (entry && entry.state === "loading") return { state: "loading", day, source: "xweather" };
     var own3 = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
     if (own3) {
-      return { state: "property", day, kind: own3.kind, temp: own3.temp, phrase: own3.phrase, note: own3.note, source: "xweather" };
+      var note = sourceOpened(sources, "contracts") ? own3.note : own3.forecastNote || "";
+      return { state: "property", day, kind: own3.kind, temp: own3.temp, phrase: own3.phrase, note, source: "xweather" };
     }
     return {
       state: entry && entry.state === "failed" ? "failed" : "area",
@@ -7712,7 +7820,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       return o.status === "inprogress";
     }) || orders[0];
   }
-  function money(n) {
+  function money2(n) {
     return "$" + n.toLocaleString();
   }
   function cartCount() {
@@ -11851,7 +11959,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         h("div", { "class": "qty__val", "data-bind": "cart.qty" }, String(item.qty)),
         h("button", { "class": "qty__btn qty__btn--plus", "data-action": "cart.inc", "data-id": item.name, "aria-label": "Increase" }, "+")
       ]),
-      h("div", { "class": "cart-row__total" }, money(item.priceNum * item.qty)),
+      h("div", { "class": "cart-row__total" }, money2(item.priceNum * item.qty)),
       h("button", { "class": "cart-remove", "data-action": "cart.removeItem", "data-id": item.name }, "Remove")
     ]);
   }
@@ -11924,10 +12032,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     left.appendChild(payPanel);
     var summary = h("div", { "class": "checkout-panel checkout-summary", "data-module": "checkout-summary", "data-visual-id": "checkout-summary" }, [
       h("div", { "class": "panel__title", style: "font-size:16px;margin-bottom:16px" }, "Order summary"),
-      h("div", { "class": "summary-row" }, [h("span", null, "Subtotal"), h("b", null, money(subtotal))]),
+      h("div", { "class": "summary-row" }, [h("span", null, "Subtotal"), h("b", null, money2(subtotal))]),
       h("div", { "class": "summary-row" }, [h("span", null, "Delivery"), h("b", { style: "color:var(--ok)" }, "Free")]),
-      h("div", { "class": "summary-row" }, [h("span", null, "Est. tax"), h("b", null, money(tax))]),
-      h("div", { "class": "summary-total" }, [h("span", null, "Total"), h("span", null, money(subtotal + tax))]),
+      h("div", { "class": "summary-row" }, [h("span", null, "Est. tax"), h("b", null, money2(tax))]),
+      h("div", { "class": "summary-total" }, [h("span", null, "Total"), h("span", null, money2(subtotal + tax))]),
       ActionButton({ variant: "btn--primary", label: "Place order", action: "checkout.placeOrder", block: true, lg: true, visualId: "place-order" }),
       h("div", { "class": "summary-note" }, theme.checkoutNote || "Orders are prepared by Calm Harbor and sent to your saved delivery address.")
     ]);
@@ -12215,90 +12323,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     return null;
   }
 
-  // app-templates/customer-portal/runtime/src/normalizers/overview.js
-  var OVERVIEW_STATUS = {
-    issue: {
-      label: "Issue Opened",
-      copy: "Your request is being reviewed. We\u2019ll get back to you shortly."
-    },
-    enroute: {
-      label: "En Route",
-      copy: "Our team is on the way to this property."
-    },
-    scheduled: {
-      label: "Scheduled",
-      copy: "Service is scheduled for this property."
-    },
-    monitoring: {
-      label: "Active Monitoring",
-      copy: "We\u2019re monitoring conditions and will dispatch service when needed."
-    }
-  };
-  var OPEN_TICKET_STATES = ["SUBMITTED", "IN_PROGRESS", "ESCALATED"];
-  function propertyStatus(property) {
-    var ticket = property && property.ticket;
-    if (ticket && OPEN_TICKET_STATES.indexOf(ticket.state) !== -1) return "issue";
-    var appointment = property && property.appointment;
-    if (appointment && appointment.state === "IN_PROGRESS") return "enroute";
-    if (appointment && appointment.state === "SCHEDULED") return "scheduled";
-    return "monitoring";
+  // app-templates/customer-portal/runtime/src/components/primitives/SectionUnavailable.js
+  function UnavailableChip() {
+    return h("span", { "class": "readonly-chip" }, "Not available yet");
   }
-  function propertyWeather(property, frame) {
-    if (propertyStatus(property) === "issue") return "issue";
-    return zoneWeather(property, frame);
-  }
-  function zoneWeather(property, frame) {
-    var zones = frame && frame.zones || null;
-    var zone = property && property.zone;
-    if (zones && zone && zones[zone]) return zones[zone];
-    return frame && frame.kind || "clear";
-  }
-  function clampFrameIndex(timeline, index) {
-    var total = timeline && timeline.length || 0;
-    if (!total) return 0;
-    if (index < 0) return 0;
-    if (index > total - 1) return total - 1;
-    return index;
-  }
-  function serviceDayCount(properties, dayIndex) {
-    if (!properties || !Number.isFinite(dayIndex)) return 0;
-    return properties.filter(function(property) {
-      return property.appointment && property.appointment.dayIndex === dayIndex;
-    }).length;
-  }
-  function appointmentDay(appointment, timeline) {
-    var frame = appointment && Number.isFinite(appointment.dayIndex) && timeline && timeline[appointment.dayIndex];
-    return frame ? frame.day + " " + frame.date : "";
-  }
-  function sectionAvailable(model, section) {
-    return !!model && (!model.sources || model.sources[section] === "ready");
-  }
-  function invoiceBuckets(invoices) {
-    var outstanding = invoices && invoices.outstanding || [];
-    var paid = invoices && invoices.paidThisMonth || [];
-    var overdue = outstanding.filter(function(invoice) {
-      return invoice.state === "OVERDUE";
-    });
-    var thisMonth = outstanding.filter(function(invoice) {
-      return invoice.state === "DUE_THIS_MONTH";
-    });
-    return {
-      overdue: bucket(overdue),
-      outstanding: bucket(outstanding),
-      dueThisMonth: bucket(thisMonth),
-      paidThisMonth: bucket(paid)
-    };
-  }
-  function bucket(rows) {
-    return {
-      count: rows.length,
-      amount: rows.reduce(function(running, invoice) {
-        return running + (Number(invoice.amount) || 0);
-      }, 0)
-    };
-  }
-  function money2(amount) {
-    return "$" + Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function SectionUnavailable(subject) {
+    return h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
+      UnavailableChip(),
+      h("div", { "class": "ov-empty__desc" }, subject + " aren\u2019t in the portal yet.")
+    ]);
   }
 
   // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
@@ -12572,7 +12605,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var chosen = placed.concat(listed).find(function(entry) {
       return entry.property.id === props.selectedId;
     }) || null;
-    var popup = chosen ? PropertyPopup(chosen.property, popupView(chosen, props), props.weather.legend) : null;
+    var popup = chosen ? PropertyPopup(chosen.property, popupView(chosen, props), props.weather.legend, props.sources) : null;
     var pinned = !!chosen && placed.indexOf(chosen) !== -1;
     if (!map) {
       return h("div", { "class": "ov-map__stage", "data-surface": "list", "data-state": failed ? "failed" : void 0 }, [
@@ -12585,7 +12618,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       map.stage({
         viewport: props.viewport,
         pins: placed.map(function(entry) {
-          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, entry.property.id === props.selectedId) };
+          return { id: entry.property.id, point: entry.point, element: PropertyPin(entry.property, props.frame, entry.property.id === props.selectedId, props.sources) };
         }),
         popup: pinned ? { point: chosen.point, element: popup } : null,
         locating: listed.some(function(entry) {
@@ -12658,19 +12691,19 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var property = entry.property;
     var live = props.weather.source === "xweather" && entry.point && props.forecasts;
     var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry.point)) : null;
-    return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index);
+    return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index, props.sources);
   }
-  function PropertyPin(property, frame, selected) {
-    var status = propertyStatus(property);
+  function PropertyPin(property, frame, selected, sources) {
+    var status = knownPropertyStatus(property, sources);
     return h("button", {
       "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
       "data-action": "overview.selectProperty",
       "data-id": property.id,
       "data-module": "property-pin",
       "data-visual-id": "property-pin",
-      "data-state": status,
-      "data-weather": propertyWeather(property, frame),
-      "aria-label": property.name + " \u2014 " + OVERVIEW_STATUS[status].label,
+      "data-state": status || void 0,
+      "data-weather": status ? propertyWeather(property, frame) : zoneWeather(property, frame),
+      "aria-label": status ? property.name + " \u2014 " + OVERVIEW_STATUS[status].label : property.name,
       "aria-pressed": selected ? "true" : "false"
     }, [icon("pin", "ov-pin__glyph")]);
   }
@@ -12678,7 +12711,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!entries.length) {
       return h("div", { "class": "ov-empty", "data-state": "empty" }, [
         text8("div", "ov-empty__title", "No properties yet"),
-        text8("div", "ov-empty__desc", "A property appears here once it is under contract.")
+        sourceOpened(props.sources, "contracts") ? text8("div", "ov-empty__desc", "A property appears here once it is under contract.") : null
       ]);
     }
     var list = h(
@@ -12710,7 +12743,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]);
   }
   function PropertyRow(property, props, selected, reason) {
-    var status = propertyStatus(property);
+    var status = knownPropertyStatus(property, props.sources);
     var note = reason && Object.prototype.hasOwnProperty.call(PLACEMENT_NOTES, reason) ? PLACEMENT_NOTES[reason] : "";
     return h("button", {
       "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
@@ -12718,8 +12751,8 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       "data-id": property.id,
       "data-module": "property-row",
       "data-visual-id": "property-row",
-      "data-state": status,
-      "data-weather": propertyWeather(property, props.frame),
+      "data-state": status || void 0,
+      "data-weather": status ? propertyWeather(property, props.frame) : zoneWeather(property, props.frame),
       "data-placement": note ? reason : void 0,
       "aria-expanded": selected ? "true" : "false"
     }, [
@@ -12731,14 +12764,14 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       ]),
       h("span", { "class": "ov-prow__meta" }, [
         text8("span", "ov-prow__wx", weatherLabel(zoneWeather(property, props.frame), props.weather.legend)),
-        text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
+        status ? text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
       ])
     ]);
   }
-  function PropertyPopup(property, weather, legend) {
-    var status = propertyStatus(property);
-    var line = visitLine(property);
-    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status, role: "dialog", "aria-label": property.name }, [
+  function PropertyPopup(property, weather, legend, sources) {
+    var status = knownPropertyStatus(property, sources);
+    var line = sourceOpened(sources, "appointments") ? visitLine(property) : "";
+    return h("div", { "class": "ov-tip", "data-module": "property-tooltip", "data-visual-id": "property-tooltip", "data-state": status || void 0, role: "dialog", "aria-label": property.name }, [
       h("div", { "class": "ov-tip__head" }, [
         h("div", { style: "flex:1;min-width:0" }, [
           text8("div", "ov-tip__name", property.name),
@@ -12746,9 +12779,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
         ]),
         h("button", { "class": "ov-tip__close", "data-action": "overview.closeProperty", "aria-label": "Close" }, "\u2715")
       ]),
-      h("div", { "class": "ov-tip__tags" }, [
+      status ? h("div", { "class": "ov-tip__tags" }, [
         text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
-      ]),
+      ]) : null,
       line ? text8("div", "ov-tip__line", line) : null,
       PopupWeather(weather, legend),
       h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
@@ -12813,7 +12846,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     var weather = model.weather;
     var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
     var frame = weather.timeline[index];
-    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source)]));
+    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts"))]));
     page.appendChild(MapPanel(model, frame, index));
     page.appendChild(InvoicesWidget(model));
     var grid = h("div", { "class": "ov-grid" });
@@ -12858,19 +12891,21 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!model || !state.liveWeather) return customer.subline;
     var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
     var count = model.properties.length;
-    var contracted = count > 0 && model.properties.every(function(property) {
+    var contracted = sectionAvailable(model, "contracts") && count > 0 && model.properties.every(function(property) {
       return !!property.contract;
     });
     return frame.label + " \xB7 " + count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
   }
-  function WeatherPanel(frame, isNow, source) {
+  function WeatherPanel(frame, isNow, source, serviceNotes) {
     var stats = frame.stats || [];
+    var note = serviceNotes ? frame.note : frame.forecastNote;
+    var line = isNow ? note : [frame.day + " " + frame.date, note].filter(Boolean).join(" \xB7 ");
     return h("div", { "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary", "data-weather": frame.kind }, [
       h("span", { "class": "ov-wx__mark" }, [icon("snowflake", "ov-wx__glyph")]),
       h("div", { "class": "ov-wx__read" }, [
         text9("div", "ov-wx__temp", frame.temp),
         text9("div", "ov-wx__label", frame.label),
-        text9("div", "ov-wx__note", isNow ? frame.note : frame.day + " " + frame.date + " \xB7 " + frame.note),
+        line ? text9("div", "ov-wx__note", line) : null,
         WeatherAttribution(source)
       ]),
       stats.length ? h("div", { "class": "ov-wx__stats" }, stats.map(function(stat) {
@@ -12883,6 +12918,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function MapPanel(model, frame, index) {
     var weather = model.weather;
+    var statusKnown = propertyStatusKnown(model.sources);
     var stage = PropertyStage({
       properties: model.properties,
       frame,
@@ -12891,14 +12927,17 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       viewport: model.map,
       selectedId: state.ovProperty,
       map: propertyMap(),
-      forecasts: propertyForecasts()
+      forecasts: propertyForecasts(),
+      sources: model.sources
     });
     followSelection();
     return h("div", { "class": "ov-map card", "data-module": "property-map", "data-visual-id": "property-map" }, [
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
         text9("h2", "ov-card__title", "Your properties"),
-        h("div", { "class": "ov-legend" }, weather.legend.map(function(item) {
+        h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
+          return statusKnown || item.key !== "issue";
+        }).map(function(item) {
           return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text9("span", "", item.label)]);
         }))
       ]),
@@ -13036,9 +13075,9 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     if (overdue.count) card.appendChild(OverdueAlert(overdue));
     card.appendChild(h("div", { "class": "ov-bill__stats" }, [
-      billStat("Total outstanding", money2(buckets.outstanding.amount), buckets.outstanding.count, ""),
-      billStat("Due this month", money2(buckets.dueThisMonth.amount), buckets.dueThisMonth.count, ""),
-      billStat("Paid this month", money2(buckets.paidThisMonth.amount), buckets.paidThisMonth.count, "ov-bill__stat-value--ok")
+      billStat("Total outstanding", money(buckets.outstanding.amount), buckets.outstanding.count, ""),
+      billStat("Due this month", money(buckets.dueThisMonth.amount), buckets.dueThisMonth.count, ""),
+      billStat("Paid this month", money(buckets.paidThisMonth.amount), buckets.paidThisMonth.count, "ov-bill__stat-value--ok")
     ]));
     card.appendChild(moreLine(null, "View all invoices", "overview.openInvoices"));
     return card;
@@ -13048,7 +13087,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       h("span", { "class": "ov-alarm__mark" }, [icon("alert", "ov-alarm__glyph")]),
       h("div", { "class": "ov-alarm__read" }, [
         text9("div", "ov-alarm__eyebrow", "Overdue amount"),
-        text9("div", "ov-alarm__amount", money2(overdue.amount)),
+        text9("div", "ov-alarm__amount", money(overdue.amount)),
         text9("div", "ov-alarm__count", "Across " + overdue.count + (overdue.count === 1 ? " overdue invoice" : " overdue invoices")),
         text9("div", "ov-alarm__warn", "Please make a payment to avoid service interruption.")
       ]),
@@ -13178,10 +13217,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function unavailableSection(card, subject) {
     card.setAttribute("data-state", "unavailable");
-    card.appendChild(h("div", { "class": "ov-empty", "data-module": "section-unavailable", "data-visual-id": "section-unavailable" }, [
-      text9("span", "readonly-chip", "Not available yet"),
-      text9("div", "ov-empty__desc", subject + " aren\u2019t in the portal yet.")
-    ]));
+    card.appendChild(SectionUnavailable(subject));
     return card;
   }
   function text9(tag, className, value) {
@@ -13449,47 +13485,53 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
   function PropertyDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+    var model = currentOverview();
     var property = currentProperty();
     if (!property) {
-      page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
-      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Property not found", desc: "This address is not on your contract." }));
+      page.appendChild(BackLink(model));
+      page.appendChild(EmptyState({ glyph: "\u25CC", title: "Property not found", desc: sectionAvailable(model, "contracts") ? "This address is not on your contract." : "We couldn\u2019t find this property." }));
       return page;
     }
-    var status = propertyStatus(property);
+    var status = knownPropertyStatus(property, model.sources);
     var contract = contractFor(property);
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments"));
+    page.appendChild(BackLink(model));
     page.appendChild(h("div", { "class": "prop-head" }, [
       h("div", { style: "flex:1;min-width:0" }, [
         text12("h1", "prop-head__title", property.name),
         property.address ? text12("div", "prop-head__addr", property.address) : null
       ]),
-      text12("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label)
+      status ? text12("span", "status-badge status-badge--" + statusTone(status), OVERVIEW_STATUS[status].label) : null
     ]));
     page.appendChild(h(
       "div",
       { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
-      facts(property, contract).map(function(item) {
-        return h("div", { "class": "prop-fact", "data-fact": item.key }, [
+      facts(property, contract, model).map(function(item) {
+        return h("div", { "class": "prop-fact", "data-fact": item.key, "data-state": item.state }, [
           text12("div", "prop-fact__label", item.label),
-          item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value),
+          item.state === "unavailable" ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()]) : item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value),
           item.note ? text12("div", "prop-fact__note", item.note) : null
         ]);
       })
     ));
-    if (property.ticket) {
+    if (property.ticket && sectionAvailable(model, "support")) {
       page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
         text12("div", "prop-section__title", "Open request"),
         text12("div", "prop-ticket__title", property.ticket.title),
         h("div", { "class": "link-action", "data-action": "nav.go", "data-id": "support" }, "Open support \u203A")
       ]));
     }
-    page.appendChild(VisitCard(property));
+    page.appendChild(VisitCard(property, model));
     return page;
   }
-  function VisitCard(property) {
+  function VisitCard(property, model) {
     var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
       text12("div", "prop-section__title", "Service")
     ]);
+    if (!sectionAvailable(model, "appointments")) {
+      card.setAttribute("data-state", "unavailable");
+      card.appendChild(SectionUnavailable("Scheduled visits"));
+      return card;
+    }
     if (property.appointment) {
       var meta = stateMeta(property.appointment.state);
       card.appendChild(h("div", { "class": "prop-visit", "data-action": "appointments.openVisit", "data-id": property.id, "data-state": property.appointment.state.toLowerCase() }, [
@@ -13514,9 +13556,12 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     ]));
     return card;
   }
-  function facts(property, contract) {
+  function BackLink(model) {
+    return sectionAvailable(model, "appointments") ? h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments") : h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "overview" }, "\u2039 Back to home");
+  }
+  function facts(property, contract, model) {
     var rows = [
-      { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 }
+      sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
     ];
     if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
     var map = mapFact(property);

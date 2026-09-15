@@ -4,7 +4,7 @@ import path from "node:path";
 
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
-const { buildTimeline, forecastDay, periodKind, periodNote, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
+const { buildTimeline, forecastDay, periodForecastNote, periodKind, periodNote, periodTemp, worstKind } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
 
 const ok = (periods) => ({ ok: true, json: async () => ({ success: true, response: [{ periods }] }) });
 
@@ -116,7 +116,16 @@ assert.match(periodNote(period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFe
 assert.match(periodNote(period({ weatherPrimaryCoded: "::ZR", snowCM: 9 })), /de-icing expected/, "freezing rain outranks an accumulation note");
 
 const ownDay = forecastDay(period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFeelslikeC: 1, maxTempC: -3, weather: "Light Snow, Cloudy" }));
-assert.deepEqual(ownDay, { kind: "snow", temp: "−3°C", phrase: "Light Snow", note: "Snowfall 0.6 cm forecast · below the 2 cm trigger" });
+assert.deepEqual(ownDay, { kind: "snow", temp: "−3°C", phrase: "Light Snow", note: "Snowfall 0.6 cm forecast · below the 2 cm trigger", forecastNote: "Snowfall 0.6 cm forecast" });
+
+assert.equal(timeline[0].forecastNote, "Snowfall 3.1 cm forecast", "a frame keeps what the forecast says apart from the contract reading");
+assert.equal(timeline[1].forecastNote, "", "a clear day has nothing to forecast once the service trigger is taken out");
+assert.equal(periodForecastNote(period({ weatherPrimaryCoded: "::ZR", snowCM: 9 })), "Freezing precipitation");
+assert.equal(periodForecastNote(period({ weatherPrimaryCoded: "S::T", pop: 55, minFeelslikeC: 14 })), "Storm risk 55%");
+assert.equal(periodForecastNote(coldStorm), "Feels like −11°C · refreeze risk overnight");
+for (const sample of [period({ weatherPrimaryCoded: "S::S", snowCM: 4 }), period({ weatherPrimaryCoded: "S::S", snowCM: 0.6, minFeelslikeC: 1 }), period({ weatherPrimaryCoded: "::ZR" }), period({ weatherPrimaryCoded: "S::T", pop: 55, minFeelslikeC: 14 }), period()]) {
+  assert.doesNotMatch(periodForecastNote(sample), /trigger|standby|de-icing|dispatch/i, "a forecast note states no dispatch condition");
+}
 assert.equal(forecastDay(period({ maxTempC: null })).temp, "—", "a property day with no temperature must not read 0°C");
 
 console.log("live-weather-check ok: closed without a key, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, a fixture fallback on every failure, and a property day shaped by the same rules as a zone day");

@@ -10,13 +10,14 @@ globalThis.ResizeObserver = class { observe() {} unobserve() {} disconnect() {} 
 const runtimeRoot = pathToFileURL(path.resolve("app-templates/customer-portal/runtime") + "/");
 const { readPortalConfig, readServiceGeography } = await import(new URL("src/config.js", runtimeRoot));
 const { weatherSource } = await import(new URL("src/live-weather.js", runtimeRoot));
-const { WEATHER_LEGEND } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
+const { WEATHER_LEGEND, buildTimeline, forecastDay } = await import(new URL("src/normalizers/weather.js", runtimeRoot));
 const { applyPortalConfig, currentOverview, liveOverviewStatus, state } = await import(new URL("src/state.js", runtimeRoot));
 const { propertyPoint } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
-const { invoiceBuckets, propertyStatus, propertyWeather, sectionAvailable } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
+const { OVERVIEW_STATUS, invoiceBuckets, knownPropertyStatus, propertyStatus, propertyWeather, sectionAvailable } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
 const { PortalRuntime } = await import(new URL("src/portal-runtime.js", runtimeRoot));
 const { Overview } = await import(new URL("src/routes/OverviewPage.js", runtimeRoot));
+const { PropertyStage } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
 
 const GEOGRAPHY = JSON.stringify({
   map: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 },
@@ -146,7 +147,8 @@ const liveProperties = {
   assert.equal(buckets.paidThisMonth.count, 0);
 
   const property = model.properties[0];
-  assert.equal(propertyStatus(property), "monitoring", "a property with no appointment and no ticket is monitored, not scheduled");
+  assert.equal(propertyStatus(property), "monitoring", "the shared rule reads a property with no appointment and no ticket as monitored");
+  assert.equal(knownPropertyStatus(property, model.sources), null, "live mode reads no visit, ticket or contract, so it derives no status for the property");
   assert.equal(propertyWeather(property, model.weather.timeline[0]), "snow", "with no zone the property reads the frame's own kind");
   assert.equal(propertyPoint(property), null, "a property with no coordinates places no pin instead of landing at the map centre");
   assert.deepEqual(model.map, { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, "the configured centre and zoom are the initial viewport");
@@ -253,6 +255,15 @@ function quietConsole() {
       assert.equal(card.querySelectorAll("[data-action]").length, 0, id + " offers no action that cannot work without Core");
     }
     assert.ok(page.querySelectorAll(".ov-day").every((day) => !day.getAttribute("aria-label").includes("no visit")), "a day is never announced as having no visit while visits are not read");
+    assert.equal(page.querySelector(".ov-wx__note").textContent, "Snowfall 2.4 cm forecast", "the live weather card keeps the forecast and drops the contract trigger");
+    assert.deepEqual(page.querySelectorAll(".ov-legend__item").map((item) => item.getAttribute("data-weather")), ["clear", "snow", "freezing", "storm"], "no key is shown for a status live mode cannot read");
+    const rows = page.querySelectorAll("[data-module=\"property-row\"]");
+    assert.equal(rows.length, 1);
+    for (const row of rows) {
+      assert.equal(row.getAttribute("data-state"), null, "a live property row carries no status");
+      assert.equal(row.querySelectorAll(".ov-tip__tag").length, 0);
+    }
+    for (const claim of ["trigger", "crews on standby", "de-icing expected", "Active Monitoring", "Issue opened", "under contract"]) assert.ok(!page.textContent.includes(claim), "the live home never says \"" + claim + "\"");
     await runtime.loadAllAsync(LOAD);
     assert.equal(calls.xweather.length, 2, "reloading the modules reuses a forecast that already loaded");
     assert.deepEqual(console.errors, [], "a successful live load logs no error");
@@ -359,7 +370,67 @@ function quietConsole() {
   }
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy");
+{
+  const frames = buildTimeline({ surrey: PERIODS }, ["surrey"]);
+  const weather = { source: "xweather", nowIndex: 0, zoneCentroids: {}, legend: WEATHER_LEGEND, timeline: frames };
+  const property = { id: "prop-core-9001", backendId: 9001, name: "Frost Lane Strata", address: "12 Frost Lane, Surrey, BC, V3W 1J8", lat: 49.12, lon: -122.84, zone: null, contract: null, appointment: null, ticket: null, lastService: null };
+  const unread = { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" };
+  const forecasts = { request: () => ({ state: "ready", days: PERIODS.map(forecastDay) }) };
+  const pinned = (sources) => {
+    const pins = [];
+    const controller = {
+      status: () => "ready",
+      placement: (entry) => ({ point: { lat: entry.lat, lon: entry.lon }, reason: null }),
+      docked: () => false,
+      stage: (view) => {
+        const host = document.createElement("div");
+        view.pins.forEach((pin) => { pins.push(pin.element); host.appendChild(pin.element); });
+        if (view.popup) host.appendChild(view.popup.element);
+        return host;
+      },
+    };
+    const stage = PropertyStage({ properties: [property], frame: frames[0], index: 0, weather, viewport: { center: { lat: 49.19, lon: -122.85 }, zoom: 10 }, selectedId: property.id, map: controller, forecasts, sources });
+    return { pin: pins[0], tooltip: stage.querySelector("[data-module=\"property-tooltip\"]") };
+  };
+  const reading = "This property · " + frames[0].day + " " + frames[0].date + "Light Snow · −4°C";
+
+  const live = pinned(unread);
+  assert.equal(live.pin.getAttribute("data-state"), null, "a live pin carries no status");
+  assert.equal(live.pin.getAttribute("data-weather"), "storm", "a live pin keeps the colour of its forecast");
+  assert.equal(live.pin.getAttribute("aria-label"), "Frost Lane Strata", "a live pin is announced by name, with no invented status");
+  assert.equal(live.tooltip.getAttribute("data-state"), null);
+  assert.equal(live.tooltip.querySelectorAll(".ov-tip__tag").length, 0, "the live tooltip shows no status");
+  assert.equal(live.tooltip.querySelectorAll(".ov-tip__line").length, 0, "the live tooltip states no visit");
+  assert.equal(live.tooltip.querySelector("[data-module=\"property-weather\"]").textContent, reading + "Snowfall 2.4 cm forecast", "the live tooltip keeps the property forecast without the trigger");
+
+  const fixture = pinned(undefined);
+  assert.equal(fixture.pin.getAttribute("data-state"), "monitoring", "fixture mode still derives a status");
+  assert.equal(fixture.pin.getAttribute("aria-label"), "Frost Lane Strata — " + OVERVIEW_STATUS.monitoring.label);
+  assert.equal(fixture.tooltip.querySelector(".ov-tip__tag").textContent, "Active Monitoring");
+  assert.equal(fixture.tooltip.querySelector("[data-module=\"property-weather\"]").textContent, reading + "Snowfall 2.4 cm forecast · trigger met", "fixture mode keeps the trigger reading");
+}
+
+{
+  configure("fixture");
+  const triggerIndex = graniteRidgeSnowFixture.overview.weather.timeline.findIndex((frame) => /trigger/i.test(frame.note));
+  state.ovWeatherIndex = triggerIndex;
+  try {
+    const page = Overview();
+    assert.match(page.querySelector(".ov-wx__note").textContent, /trigger/i, "fixture mode keeps its trigger reading on the weather card");
+    assert.ok(page.querySelectorAll(".ov-legend__item").some((item) => item.getAttribute("data-weather") === "issue"), "fixture mode keeps the issue key");
+    const tags = page.querySelectorAll(".ov-tip__tag").map((tag) => tag.textContent);
+    for (const label of ["Issue Opened", "En Route", "Scheduled", "Active Monitoring"]) assert.ok(tags.includes(label), "fixture mode still labels a property " + label);
+
+    state.liveWeather = { source: "xweather", nowIndex: 0, zoneCentroids: {}, legend: WEATHER_LEGEND, timeline: buildTimeline({ surrey: PERIODS }, ["surrey"]) };
+    state.ovWeatherIndex = null;
+    assert.equal(Overview().querySelector(".ov-wx__note").textContent, "Snowfall 2.4 cm forecast · trigger met", "an Xweather forecast in fixture mode keeps the trigger reading");
+  } finally {
+    state.ovWeatherIndex = null;
+    state.liveWeather = null;
+  }
+}
+
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
 
 function createDom() {
   class Text {

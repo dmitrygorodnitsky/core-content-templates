@@ -3,8 +3,9 @@ import { currentFixture, currentOverview, quoteGroupFor, state } from "../state.
 import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { SectionUnavailable, UnavailableChip } from "../components/primitives/SectionUnavailable.js";
 import { knownPlacement } from "../components/storm/PropertyMap.js";
-import { OVERVIEW_STATUS as STATUS, propertyStatus } from "../normalizers/overview.js";
+import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, sectionAvailable } from "../normalizers/overview.js";
 import { stateMeta } from "../normalizers/appointments.js";
 
 var QUOTE_DECISION = {
@@ -22,38 +23,41 @@ export function currentProperty() {
 
 export function PropertyDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+  var model = currentOverview();
   var property = currentProperty();
 
   if (!property) {
-    page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "‹ Back to appointments"));
-    page.appendChild(EmptyState({ glyph: "◌", title: "Property not found", desc: "This address is not on your contract." }));
+    page.appendChild(BackLink(model));
+    page.appendChild(EmptyState({ glyph: "◌", title: "Property not found", desc: sectionAvailable(model, "contracts") ? "This address is not on your contract." : "We couldn’t find this property." }));
     return page;
   }
 
-  var status = propertyStatus(property);
+  var status = knownPropertyStatus(property, model.sources);
   var contract = contractFor(property);
 
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "‹ Back to appointments"));
+  page.appendChild(BackLink(model));
   page.appendChild(h("div", { "class": "prop-head" }, [
     h("div", { style: "flex:1;min-width:0" }, [
       text("h1", "prop-head__title", property.name),
       property.address ? text("div", "prop-head__addr", property.address) : null,
     ]),
-    text("span", "status-badge status-badge--" + statusTone(status), STATUS[status].label),
+    status ? text("span", "status-badge status-badge--" + statusTone(status), STATUS[status].label) : null,
   ]));
 
   page.appendChild(h("div", { "class": "card card--pad prop-facts", "data-module": "property-facts", "data-visual-id": "property-facts" },
-    facts(property, contract).map(function (item) {
-      return h("div", { "class": "prop-fact", "data-fact": item.key }, [
+    facts(property, contract, model).map(function (item) {
+      return h("div", { "class": "prop-fact", "data-fact": item.key, "data-state": item.state }, [
         text("div", "prop-fact__label", item.label),
-        item.action
-          ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " ›")
-          : text("div", "prop-fact__value", item.value),
+        item.state === "unavailable"
+          ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()])
+          : item.action
+            ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " ›")
+            : text("div", "prop-fact__value", item.value),
         item.note ? text("div", "prop-fact__note", item.note) : null,
       ]);
     })));
 
-  if (property.ticket) {
+  if (property.ticket && sectionAvailable(model, "support")) {
     page.appendChild(h("div", { "class": "card card--pad prop-ticket", "data-module": "property-ticket", "data-visual-id": "property-ticket" }, [
       text("div", "prop-section__title", "Open request"),
       text("div", "prop-ticket__title", property.ticket.title),
@@ -61,14 +65,20 @@ export function PropertyDetail() {
     ]));
   }
 
-  page.appendChild(VisitCard(property));
+  page.appendChild(VisitCard(property, model));
   return page;
 }
 
-function VisitCard(property) {
+function VisitCard(property, model) {
   var card = h("div", { "class": "card card--pad prop-visits", "data-module": "property-visits", "data-visual-id": "property-visits" }, [
     text("div", "prop-section__title", "Service"),
   ]);
+
+  if (!sectionAvailable(model, "appointments")) {
+    card.setAttribute("data-state", "unavailable");
+    card.appendChild(SectionUnavailable("Scheduled visits"));
+    return card;
+  }
 
   if (property.appointment) {
     var meta = stateMeta(property.appointment.state);
@@ -97,9 +107,17 @@ function VisitCard(property) {
   return card;
 }
 
-function facts(property, contract) {
+function BackLink(model) {
+  return sectionAvailable(model, "appointments")
+    ? h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "‹ Back to appointments")
+    : h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "overview" }, "‹ Back to home");
+}
+
+function facts(property, contract, model) {
   var rows = [
-    { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined },
+    sectionAvailable(model, "contracts")
+      ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined }
+      : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren’t in the portal yet." },
   ];
   if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
   var map = mapFact(property);

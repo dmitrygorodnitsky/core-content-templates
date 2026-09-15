@@ -1,3 +1,4 @@
+import { sourceOpened } from "./overview.js";
 import { WEATHER_LEGEND } from "./weather.js";
 
 var POPUP_WIDTH = 288;
@@ -41,12 +42,13 @@ export function weatherLabel(kind, legend) {
   return match ? match.label : "";
 }
 
-export function popupWeather(frame, zoneKind, source, entry, index) {
+export function popupWeather(frame, zoneKind, source, entry, index, sources) {
   var day = frame.day + " " + frame.date;
   if (entry && entry.state === "loading") return { state: "loading", day: day, source: "xweather" };
   var own = entry && entry.state === "ready" && Array.isArray(entry.days) ? entry.days[index] : null;
   if (own) {
-    return { state: "property", day: day, kind: own.kind, temp: own.temp, phrase: own.phrase, note: own.note, source: "xweather" };
+    var note = sourceOpened(sources, "contracts") ? own.note : own.forecastNote || "";
+    return { state: "property", day: day, kind: own.kind, temp: own.temp, phrase: own.phrase, note: note, source: "xweather" };
   }
   return {
     state: entry && entry.state === "failed" ? "failed" : "area",

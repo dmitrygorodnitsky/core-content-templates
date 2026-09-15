@@ -54,20 +54,29 @@ export function periodStats(period) {
 }
 
 export function periodNote(period) {
+  var reading = periodReading(period);
+  return [reading.forecast, reading.service].filter(Boolean).join(" · ");
+}
+
+export function periodForecastNote(period) {
+  return periodReading(period).forecast;
+}
+
+function periodReading(period) {
   var kind = periodKind(period);
-  if (kind === "freezing") return "Freezing precipitation · de-icing expected";
+  if (kind === "freezing") return { forecast: "Freezing precipitation", service: "de-icing expected" };
 
   var snow = num(period && period.snowCM);
-  if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return "Snowfall " + round1(snow) + " cm forecast · trigger met";
+  if (Number.isFinite(snow) && snow >= STORM_SNOW_CM) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "trigger met" };
 
   if (kind === "storm") {
     var feels = num(period && period.minFeelslikeC);
-    if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return "Feels like " + tempValue(feels) + " · refreeze risk overnight";
-    return "Storm risk " + statValue(period && period.pop, "%") + " · crews on standby";
+    if (Number.isFinite(feels) && feels <= STORM_TEMP_C) return { forecast: "Feels like " + tempValue(feels) + " · refreeze risk overnight", service: "" };
+    return { forecast: "Storm risk " + statValue(period && period.pop, "%"), service: "crews on standby" };
   }
 
-  if (Number.isFinite(snow) && snow > 0) return "Snowfall " + round1(snow) + " cm forecast · below the 2 cm trigger";
-  return "Below the service trigger";
+  if (Number.isFinite(snow) && snow > 0) return { forecast: "Snowfall " + round1(snow) + " cm forecast", service: "below the 2 cm trigger" };
+  return { forecast: "", service: "Below the service trigger" };
 }
 
 export function forecastDay(period) {
@@ -76,6 +85,7 @@ export function forecastDay(period) {
     temp: periodTemp(period),
     phrase: String((period && period.weather) || "").split(",")[0],
     note: periodNote(period),
+    forecastNote: periodForecastNote(period),
   };
 }
 
@@ -101,6 +111,7 @@ export function buildTimeline(zonePeriods, zoneOrder) {
       temp: periodTemp(headline),
       label: String(headline.weather || "").split(",")[0] || "Forecast",
       note: periodNote(headline),
+      forecastNote: periodForecastNote(headline),
       stats: periodStats(headline),
       zones: zones,
     };

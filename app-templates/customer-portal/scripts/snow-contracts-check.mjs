@@ -458,11 +458,27 @@ const one = (root, selector) => root.querySelector(selector);
   assert.equal(all(page, "[data-module=\"quote-preparing\"]").length, 0, "live mode has no quote read, so it claims no preparation");
   const tooltipless = one(page, "[data-module=\"property-row\"]");
   assert.equal(all(tooltipless, ".ov-prow__addr").length, 0, "an absent address renders as absent");
+  assert.equal(tooltipless.getAttribute("data-state"), null, "a live property row carries no status derived from unread visits and tickets");
+  assert.equal(all(tooltipless, ".ov-tip__tag").length, 0);
 
+  const LIVE_CLAIMS = ["Not under contract", "No visit booked", "Dispatch", "dispatch", "trigger", "Active Monitoring", "En Route", "Issue Opened", "Back to appointments", "not on your contract"];
   state.propertyId = "prop-core-278";
   const detail = PropertyDetail();
   assert.deepEqual(all(detail, "[data-fact]").map((fact) => fact.getAttribute("data-fact")), ["contract"], "no zone, lot, quote or map fact is invented for a live property");
   assert.equal(all(detail, ".prop-head__addr").length, 0);
+  assert.equal(all(detail, ".status-badge").length, 0, "a live property header shows no status rather than Active Monitoring");
+  const contractFact = one(detail, "[data-fact=\"contract\"]");
+  assert.equal(contractFact.getAttribute("data-state"), "unavailable");
+  assert.equal(one(contractFact, ".prop-fact__value").textContent + one(contractFact, ".prop-fact__note").textContent, "Not available yetContracts aren’t in the portal yet.");
+  const visits = one(detail, "[data-module=\"property-visits\"]");
+  assert.equal(visits.getAttribute("data-state"), "unavailable");
+  assert.equal(one(visits, "[data-module=\"section-unavailable\"]").textContent, "Not available yetScheduled visits aren’t in the portal yet.");
+  assert.equal(all(visits, "[data-action]").length, 0, "the week view is not reachable live, so the section offers nothing");
+  assert.equal(one(detail, ".detail-back").getAttribute("data-id"), "overview");
+  assert.equal(one(detail, ".detail-back").textContent, "‹ Back to home");
+  for (const claim of LIVE_CLAIMS) assert.ok(!detail.textContent.includes(claim), "live property detail never says \"" + claim + "\"");
+  state.propertyId = "prop-core-missing";
+  assert.doesNotMatch(PropertyDetail().textContent, /contract/i, "a live property that is not found is not said to be off a contract");
   state.moduleData.properties = null;
 }
 
@@ -479,6 +495,21 @@ const one = (root, selector) => root.querySelector(selector);
   ], "without a map on the portal there is no map fact, and a plan id is never shown as a price");
   assert.doesNotMatch(keyless.textContent, /\$898/);
   assert.equal(one(keyless, "[data-fact=\"quotes\"] .link-action").getAttribute("data-id"), "gr-foothill");
+  assert.equal(one(keyless, ".detail-back").textContent, "‹ Back to appointments", "fixture mode keeps its appointments week");
+  assert.equal(all(keyless, ".prop-head .status-badge").length, 1, "fixture mode still states the property status");
+
+  const unbooked = overviewProperties.find((property) => !property.appointment && !property.ticket);
+  state.propertyId = unbooked.id;
+  const quiet = PropertyDetail();
+  assert.match(quiet.textContent, /No visit booked\. Dispatch happens automatically when your trigger is met\./, "fixture mode still explains dispatch for a property with no visit");
+  assert.equal(one(quiet, ".prop-head .status-badge").textContent, "Active Monitoring");
+  const savedContract = unbooked.contract;
+  unbooked.contract = null;
+  try {
+    assert.equal(one(PropertyDetail(), "[data-fact=\"contract\"] .prop-fact__value").textContent, "Not under contract", "fixture mode still says a property without a contract is not under contract");
+  } finally {
+    unbooked.contract = savedContract;
+  }
 
   configureFixture({ portalMapsApiKey: "stubkey" });
   state.propertyId = "prop-foothill";
