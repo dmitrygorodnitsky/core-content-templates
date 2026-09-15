@@ -30,7 +30,9 @@ this repository. The user reviews it and imports the accepted package into
   requests the presentation the storm home screen and the Contracts list need
   once their facts come from Core: a property with no coordinate, a quote list
   with no grouping proposal and no measured area, a quote the operator has not
-  sent, and what the anonymous quote request promises.
+  sent, and what the anonymous quote request promises. Designed in the session
+  on 2026-09-15: §1–§3 in commit `8517674`, §4 as the form's success screen in
+  `6ea9a9e`; presented to the user for acceptance.
 
 ## Shell
 
@@ -46,6 +48,8 @@ this repository. The user reviews it and imports the accepted package into
   asks for acceptance of the storm home map on Google Maps: map loading, the
   list that replaces the map without a key, properties listed off the map, the
   popup weather block with its loading and failure states, and the attribution.
+  Designed in the session on 2026-09-15 in commit `8517674`; presented to the
+  user for acceptance.
 - [`granite-ridge-landing-media.md`](granite-ridge-landing-media.md) is an asset
   request, not a design request: the accepted `seoMedia` composition already
   covers both the delivered-image and the striped no-data states, so the landing

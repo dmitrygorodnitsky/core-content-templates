@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-08-31
+Updated: 2026-09-15
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `df29104`
+- HEAD when this checkpoint was written: `3e4f821`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -55,8 +55,18 @@ packages remain under `dist/**`, and stable CLI entrypoints remain under
 - `content/cases/SPA-VERTICAL-CORE-MODEL.md` — deployed Core types, workflows,
   entity relationships, and money ownership.
 - `content/cases/SNOW-VERTICAL-CORE-MODEL.md` — the same for the winter-services
-  vertical, read from `dev-1` as `SNOWLIMITLESS`, plus the settled decision that
-  the Order is the contract and the rules for reading Core without breaking it.
+  vertical, read from `dev-1` as `SNOWLIMITLESS`: types, pricing, magic links
+  (§6c), settled decisions (§7) and the rules for reading Core without breaking
+  it.
+- `content/cases/QUOTATION-PACKAGE-FLOW.md` — the quotation, contract and client
+  activation design: the service agreement as the quotation package, its
+  workflow, hooks, links and pages.
+- `content/cases/QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` — what workflow 49 and
+  its scripts do, the team's answers, the takeover into `core-ui`, and dev-1 on
+  2026-09-15.
+- `content/cases/SNOW-CUSTOMER-PORTAL-API.md` and
+  `content/cases/CUSTOMER-SCOPE-GENERIC-API.md` — the customer-scoped API the
+  backend owes, per screen and as one generic capability.
 - `docs/stream-tasks/calm-harbor-customer-portal-full-activation-program/master.md`
   — program container. Its ledger is partly stale: the separate commerce wave
   closed W4 after the master was written.
@@ -400,7 +410,7 @@ Public landing upload uses the same uploader with:
 --out app-templates/customer-portal/dist/manual-upload/customer-portal-calm-harbor-landing-staging
 ```
 
-Granite Ridge has one entrypoint that chains rebuild, repackage, four checks and
+Granite Ridge has one entrypoint that chains rebuild, repackage, its checks and
 the upsert by template code. Dry-run is the default; `--require-existing`
 refuses to create a duplicate if the code is not already in the target
 organization:
@@ -415,35 +425,71 @@ The whole deterministic suite for the snow tenant and the form:
 node app-templates/customer-portal/scripts/granite-ridge-fixture-check.mjs
 node app-templates/customer-portal/scripts/appointments-check.mjs
 node app-templates/customer-portal/scripts/live-weather-check.mjs
+node app-templates/customer-portal/scripts/property-map-check.mjs
+node app-templates/customer-portal/scripts/snow-contracts-check.mjs
+node app-templates/customer-portal/scripts/snow-live-overview-check.mjs
+node app-templates/customer-portal/scripts/core-snow-adapter-check.mjs
 node app-templates/customer-portal/scripts/granite-ridge-portal-manual-check.mjs
 node app-templates/customer-portal/scripts/granite-ridge-landing-manual-check.mjs
 node app-templates/customer-portal/scripts/portal-form-check.mjs
+node app-templates/customer-portal/scripts/client-review-check.mjs
 node app-templates/customer-portal/scripts/calm-harbor-fixture-check.mjs
 node app-templates/customer-portal/scripts/customer-experience-config-check.mjs
 node app-templates/customer-portal/scripts/cms-schema-validation.mjs
 ```
 
-## Granite Ridge snow tenant
+## Granite Ridge snow tenant and the quotation flow
 
-The tenant the next session takes live. Everything on screen is fixture data
-**except the weather**, which calls Xweather from the browser, and **the map**,
-which is Google Maps when a browser key is configured.
+Status on 2026-09-15. The tenant is `SNOWLIMITLESS`, organization 43 of type
+`OPERATOR`, on `dev-1`. The client's "Quotation → Contract → Client Activation"
+specification is authoritative but not in the repository; the snow documents in
+the authority map carry its requirements, the founder's and the team's answers,
+and every decision taken where it is silent.
+
+### Settled decisions
+
+- **The service agreement is the quotation package** (2026-09-11). One
+  `FIELD_SERVICE_ORDER` prices one property under one pricing model. The
+  `SERVICE_AGREEMENT` document collects the internally approved Orders, is sent
+  once, receives the client's contract details as attributes of its
+  `AWAITING_CLIENT_DETAILS-DRAFT` event, and follows the specification from
+  `DRAFT` on.
+- **Quotation is manual** (the team, 2026-09-10). The quote form creates the
+  Account and its addresses, a manager builds the Orders by hand, and a failed
+  automated step must land in a visible state.
+- **Customer Portal entitlement is an attribute of the `OPERATOR` organization**
+  (2026-09-11). An activated client receives a portal User only when it is on.
+- **Beam AI measurements are not stored on `SNOW_REMOVAL_PROPERTY`** for now
+  (2026-09-11); the founder prices from one parameter.
+- **Anonymous steps run through magic links, and a signed-in client's input
+  through forms**: `QUOTE_CHANGE_REQUEST`, `SUPPORT_REQUEST` and
+  `SUPPORT_TICKET_REPLY` (2026-09-11).
+- **Signed-in clients need a customer-scoped API before production.** It is
+  requested per screen in `SNOW-CUSTOMER-PORTAL-API.md` and as one generic
+  capability in `CUSTOMER-SCOPE-GENERIC-API.md`.
+- **Presentation is designed in the session** (2026-09-11); see `AGENTS.md`.
+
+### Surfaces
 
 | surface | source | preview | check |
 | --- | --- | --- | --- |
-| portal | `runtime/data/cases/granite-ridge-snow.js`, profile `stormRetail` | `runtime/granite-ridge-snow.html` | `scripts/granite-ridge-fixture-check.mjs` |
-| appointments, property, visit | same fixture | same entry | `scripts/appointments-check.mjs` |
-| weather | `runtime/src/adapters/xweather-adapter.js` | same entry | `scripts/live-weather-check.mjs` |
-| property map | `runtime/src/components/storm/PropertyMap.js`, `runtime/src/adapters/google-maps-adapter.js` | same entry; without a key it lists the properties | `scripts/property-map-check.mjs` |
-| portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `scripts/granite-ridge-portal-manual-check.mjs` |
-| landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `scripts/granite-ridge-landing-manual-check.mjs` |
+| portal | `runtime/data/cases/granite-ridge-snow.js`, profile `stormRetail` | `runtime/granite-ridge-snow.html` | `granite-ridge-fixture-check.mjs` |
+| appointments, property, visit | same fixture | same entry | `appointments-check.mjs` |
+| weather | `runtime/src/adapters/xweather-adapter.js` | same entry | `live-weather-check.mjs` |
+| property map | `runtime/src/components/storm/PropertyMap.js`, `runtime/src/adapters/google-maps-adapter.js` | same entry; without a key it lists the properties | `property-map-check.mjs` |
+| contracts as a package | `runtime/src/normalizers/contracts.js`, `runtime/src/components/proposals/QuotePackage.js` | same entry, Contracts | `snow-contracts-check.mjs` |
+| live properties and home | `runtime/src/adapters/core-snow-adapter.js`, `runtime/src/state.js` | — | `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs` |
+| portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `granite-ridge-portal-manual-check.mjs` |
+| client review document | `runtime/client-review/` | `runtime/client-review.html` | `client-review-check.mjs` |
+| quote form document | `runtime/forms/portal-form.js` | `runtime/portal-form.html` | `portal-form-check.mjs` |
+| landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `granite-ridge-landing-manual-check.mjs` |
 
-Routes in the `stormRetail` profile: `overview`, `appointments`,
-`visit.detail` (`/visits/:id`), `property.detail` (`/properties/:id`),
-`calendar`, `care`, `proposals.list`, `proposals.detail`, `support`,
-`activity`, `profile`, `pricing`. Shop, Services, checkout and the cart are
-retired — every service is ordered through the quote form, and the primary
-button leaves for `PORTAL_REQUEST_FORM_URL`.
+Checks live under `scripts/`. Routes in the `stormRetail` profile: `overview`,
+`appointments`, `visit.detail` (`/visits/:id`), `property.detail`
+(`/properties/:id`), `calendar`, `care`, `proposals.list`, `proposals.detail`,
+`support`, `activity`, `profile`, `pricing`. Shop, Services, checkout and the
+cart are retired: every service is ordered through the quote form, and the
+primary button leaves for `PORTAL_REQUEST_FORM_URL`.
 
 ### What is already live
 
@@ -465,28 +511,97 @@ a second map load. A popup opens anchored to its pin; on a map narrower than
 the map inside the card instead, and a resize across that width moves an open
 popup between the two. A property without coordinates is geocoded once and cached in
 `localStorage`; without a key, or when Google rejects it, the card lists the
-properties instead. None of these states has an accepted design yet:
-`design-requests/granite-ridge-google-property-map.md`.
+properties instead. Their presentation was designed in the
+session on 2026-09-15.
 
 Credentials travel as `data-portal-weather-client-id` / `-secret`. They are
 public by design and origin-scoped; the demo key in the repo is disposable and
 its namespace should be restricted to whatever host serves the portal.
 
-### The shape a live backend has to fill
+### Built on 2026-09-15, on fixtures
 
-Each screen already declares its contract, and the design requests carry the
-field-by-field tables:
+- **Contracts show the package.** The header comes from the agreement: its
+  state, its dates when present, counts, and "N of M properties decided" while
+  quotes are under review. Rows are Orders grouped by property, with a
+  pricing-model label only for known codes and Core's total only above zero with
+  a currency. The rollup counts Orders; a property is decided when one option is
+  approved or all are declined. The Contracts map is a schematic pinned only from
+  stored or already geocoded coordinates. A request still being prepared says
+  "We have your request" and never shows the withheld count. `proposals` stays
+  disabled in live mode.
+- **The home map explains a missing pin** — "Finding it on the map…", "Address
+  not found on the map", "No address on file" — keeps its height while locating,
+  never falls back to the map centre, and credits the weather once per card.
+- **`CLIENT_REVIEW_DOCUMENT` is the anonymous page behind both links**: quote
+  review with approve, decline and request changes, the contract details step,
+  "being prepared", agreement review with approval, completion, and the link,
+  error and partial states. It reads the token only from `#token=`, sends one
+  command at a time, and renders only what it reads back. Its CMS parameters are
+  `REVIEW_API_BASE_URL` and copy. Its live adapter has never run.
+- **The quote form** keeps the first click, Tab focus and one geocode per
+  address, its suggestions follow the ARIA combobox pattern, and its success
+  screen lists next steps from copy parameters. Values proposed for the
+  `GET_QUOTE_` page, not yet set in CMS: `SUCCESS_TITLE` "Request received",
+  `SUCCESS_BODY` "Thank you. Your request has reached our team.",
+  `SUCCESS_NEXT_TITLE` "What happens next", `SUCCESS_STEP_1` "We prepare quotes
+  for each property you listed." and `SUCCESS_STEP_2` "You get one email with a
+  link to review them."
 
-- `design-requests/granite-ridge-overview-home.md` — weather frames, zone
-  forecast, properties, invoices with three states, contracts, support, banner.
-- `design-requests/granite-ridge-appointments-timeline.md` — resource, planned
-  and actual windows, appointment states, day index.
-- `design-requests/overview-weather-provider-xweather.md` — what Xweather
-  answers, what it costs, and what it does not answer.
+Screenshots of all four went to the user on 2026-09-15 for acceptance.
 
-None of these entities exist in Core today. The six that block everything else
-are Property as a Resource type, Contract, Quote with Order Items, Invoice
-workflow, Support Ticket lifecycle, and snow Appointment states.
+### Assumed and not yet verified
+
+- The grant requests: POST with a JSON body, `list.json` without mappings,
+  `get.json?id=`, `event.json` with `{id, event, metadata}`, whether a grant
+  issued on `core-bill` reads through `core` and `core-acct`, and the shape of a
+  refusal.
+- `MAPPINGS_ORDER`, with order lines as `items`, and `MAPPINGS_DOCUMENT` do not
+  exist; until they do, reads through a link answer `400`.
+- The planned attributes the pages read: Order `PRICING_MODEL` and
+  `SERVICE_ADDRESS`, the agreement's client snapshot under the ten detail codes,
+  and `PROVIDER_LEGAL_NAME`, `PROVIDER_REPRESENTATIVE_NAME` and
+  `PROVIDER_REPRESENTATIVE_JOB_TITLE`.
+- Customer-scope payloads: agreement dates as ISO date strings, `ORDERS` as an
+  array or a comma-separated string, and the `get.json` envelope.
+- Whether event metadata reaches a hook through a link
+  (`QUOTATION-PACKAGE-FLOW.md` §9).
+
+### dev-1 and the CMS on 2026-09-15
+
+With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
+2026-09-15":
+
+- `GET_QUOTE_` was rewritten on 2026-09-14 back to the single-address contract.
+  Its schema answers `401` anonymously and `500` with a bearer, and
+  `/pages/SNOWLIMITLESS/request-quote` answers `404`. No submission can create
+  an account until it is restored.
+- The CMS holds older packages than the repository: the form document predates
+  the address list and coordinates, the portal fixture predates the Google map,
+  and `CLIENT_REVIEW_DOCUMENT` was never uploaded.
+- No Core document is readable in any organization. The backend's answer that
+  day covers only the core-ui admin screens, which send the `permissions` of a
+  Document, Project or Task as nested objects the server refuses; that fix
+  belongs to core-ui.
+- `SERVICE_AGREEMENT` (document type 17) and `SERVICE_AGREEMENT_LIFECYCLE`
+  (workflow 53) exist; the role grants of its seed are not applied.
+- Twelve Orders, all in `INITIAL`; account 692 is the only one with a user and
+  owns nothing.
+
+### Live read path
+
+`runtime/src/adapters/core-snow-adapter.js` reads a customer's properties and
+quotes from Core and was proven against `dev-1` on account 62. Properties have
+no server-side account filter and are walked and filtered in the browser,
+reported as `scopeMode: "browser-filtered"`, which remains a backend debt.
+Service geography is deployment configuration: `data-portal-service-geography`
+carries `{ map: { center, zoom }, zones }` as JSON and fails closed on anything
+malformed. A live pin comes from `COORD_LAT` and `COORD_LNG`, which Core type
+`PROPERTY` does not carry yet.
+
+Field-by-field shapes a live backend has to fill are in
+`design-requests/granite-ridge-overview-home.md`,
+`design-requests/granite-ridge-appointments-timeline.md` and
+`design-requests/overview-weather-provider-xweather.md`.
 
 ### Seams to wire against, and traps already paid for
 
@@ -495,7 +610,7 @@ The adapter/normalizer split is the seam: `runtime/src/adapters/*` do IO,
 module is registered in `runtime/src/modules/index.js` and picks its adapter by
 `context.config.dataMode`.
 
-Five things that already cost time here and will again:
+Things that already cost time here and will again:
 
 1. **`Number(null)` is `0`.** It bit three times — a missing temperature
    rendered as `0°C`, an "all dates" filter became day zero, and a missing
@@ -511,6 +626,13 @@ Five things that already cost time here and will again:
    with no error. It caught us twice.
 5. **The lab server on 8765 caches ES modules.** An edit can look unapplied.
    A no-cache server on 8766 is what this session used.
+6. **A control character inside an inline script stops the whole CMS document
+   from parsing.** `export-client-review-manual.mjs` and its check refuse one.
+7. **`background-attachment: fixed` draws a band across tall headless
+   screenshots.** A browser does not show it.
+8. **The Browser pane can be hidden, and its screenshots then fail.** The
+   evidence of 2026-09-15 came from headless Chrome driven by scratchpad
+   scripts, with Google Maps and Xweather stubbed inside the page.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -534,6 +656,10 @@ declarative `applyBehavior` value-to-step mapping; the shared
 `js/dynamic-form.js` reference client executes server JavaScript through
 `new Function`, and this renderer never does.
 
+Its field kinds, the repeating address list with hidden coordinates, the
+combobox behaviour and the success screen parameters are described in
+`README.md`, "Universal Form Document".
+
 ## Open threads for the next session
 
 1. ~~The portal's primary button points at a guess.~~ **Resolved 2026-08-31.**
@@ -551,15 +677,14 @@ declarative `applyBehavior` value-to-step mapping; the shared
    **Resolved 2026-08-31.** It is **43**, and the deployed document already
    carries `data-form-organization-id="43"`. The submit button is enabled and
    the anonymous quote path works end to end. `FORM_MAPS_API_KEY` is still the
-   placeholder `#`, so the address control renders without geocoding.
-4. The published `GET_QUOTE_` form type was largely fixed on the backend and the
-   repository snapshot was stale; `content/form-types/GET_QUOTE_.en.json` and
-   `portal-form-check.mjs` now carry the current contract. Every attribute but
-   `ADDITIONAL_NOTES` declares `required: true`, `RISK_FACTORS` is `multiselect`
-   and renders as a checklist, and `inputFormat` now declares `email`, `tel`,
-   `address`, `textarea rows:5` and `expanded`. Still open: group names and the
-   form title are English only while fields and options carry eight locales, and
-   the first group name still reads "so we can can confirm".
+   placeholder `#`, so the address control renders without geocoding. The path
+   is broken again since 2026-09-14; see "dev-1 and the CMS on 2026-09-15".
+4. `GET_QUOTE_` on dev-1 regressed on 2026-09-14 to the single-address
+   contract. The repository keeps the multi-address contract as published on
+   2026-09-10 in `content/form-types/GET_QUOTE_.en.json`. Still open whenever
+   it returns: group names and the form title are English only while fields
+   and options carry eight locales, and the first group name reads "so we can
+   can confirm".
 5. **Xweather questions still open with the vendor**: whether MapsGL runs on a
    free developer key; whether `/roadweather` covers private lots and
    residential streets in the Front Range, since that endpoint — not the general
@@ -573,19 +698,23 @@ declarative `applyBehavior` value-to-step mapping; the shared
    anyway; and evidence for billing must be stored at the time of the event, not
    re-fetched. The browser path shipped here is stage one and the payload shape
    does not change on the way to Core.
-7. Two gaps against `js/dynamic-form.js` worth closing: preset values are
-   supported by the renderer but not exposed as a CMS parameter, and the success
-   screen offers no way to submit another response.
+7. One gap against `js/dynamic-form.js` is worth closing: preset values are
+   supported by the renderer but not exposed as a CMS parameter. The success
+   screen gained an optional start-over button on 2026-09-15.
 8. Smaller, recorded in the design requests: the top nav in the reference mockup
    carries different items and a different primary label; both detail pages read
    the fixture directly and answer an unknown id with an empty state rather than
    a 404; and the button label ships as `Request a quote` where the brief said
    "request form".
 
+Checks that need `playwright` fail on a machine without it:
 `config-behavior-check`, `care-runtime-check`, `route-smoke`,
-`s7-regression-check` and `s6-cms-export-check` fail on a machine without
-`playwright`. That is an environment gap, not a regression; verify against a
-clean checkout before treating any of them as broken.
+`s6-cms-export-check`, `s7-regression-check`, `s7-route-state-check`,
+`seo-public-check`, `activation-contract-check`,
+`calm-harbor-customer-portal-manual-check` and the `calm-harbor-wave15`–`17`
+runtime and source checks. On 2026-09-15 each failed the same way on a clean
+checkout of HEAD: an environment gap, not a regression. Verify against a clean
+checkout before treating any of them as broken.
 
 ## Open backend/product work
 
@@ -603,75 +732,46 @@ clean checkout before treating any of them as broken.
   outside the repository and were deliberately postponed; do not assume they
   are approved or shipped.
 
-## Granite Ridge live read path
-
-Steps 1 and 2 of the previous checkpoint are done. The enumeration lives in
-`content/cases/SNOW-VERTICAL-CORE-MODEL.md` with 92 payload snapshots under
-`content/core-types/`, reproduced by `scripts/snow-core-inventory.mjs`.
-
-`runtime/src/adapters/core-snow-adapter.js` reads a customer's properties and
-quotes from Core. It is proven against `dev-1`: account 62 resolves to two
-`SNOW_REMOVAL_PROPERTY` resources with real British Columbia addresses and two
-quotes correctly withheld as operator-side. Quotes are scoped by the server on
-`account.id`; properties have no server-side account filter and are walked and
-filtered in the browser, which the envelope reports as
-`scopeMode: "browser-filtered"` and which remains a backend debt.
-
-The `properties` module picks the live adapter in live mode. `currentOverview()`
-now returns a live model built only from live facts: properties from Core,
-weather from Xweather, and absent invoices, contracts, support and banner. It
-refuses to render at all rather than fall back to the demonstration forecast or
-the fixture book.
-
-Service geography moved out of the case fixture. `data-portal-service-geography`
-carries `{ map: { center, zoom }, zones: { name: { lat, lon } } }` as JSON and
-fails closed on anything malformed, a null coordinate or zoom included; `map` is
-the initial viewport before the map fits its pins, live weather reads its zone
-centroids from there, and the fixture keeps its own geography for the
-demonstration tenant. A live property's pin comes from `COORD_LAT` and
-`COORD_LNG`, Float attributes being added to Core type `PROPERTY` (153) and
-inherited by `SNOW_REMOVAL_PROPERTY`.
-
-Checks: `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs`, and the
-read-only staging probe `core-snow-live-check.mjs`.
-
 ## Exact next action
 
-Two things block a live Granite Ridge portal, and only the first is code.
+The backend is down and `GET_QUOTE_` has regressed, so nothing can be shown
+live. In order:
 
-1. **Presentation.** `design-requests/granite-ridge-live-core-home-and-quotes.md`
-   asks for four states that do not exist: a property with no coordinate, a
-   Contracts list with no grouping proposal and no measured area, a quote the
-   operator has not sent yet, and what the anonymous quote request promises.
-   Until that is accepted, `proposals` stays on fixtures and is not enabled in
-   live mode. The home screen already places a live property from its
-   coordinates or geocoded address and lists it without a pin otherwise, pending
-   `design-requests/granite-ridge-google-property-map.md`.
-2. **Data.** No customer Account that owns anything is linked to a Core User.
-   Account 692 is the only one with a user (29) and owns nothing; account 62
-   owns property 278, property 430 and orders 18 and 19 but has no user. All
-   three quote orders sit in `INITIAL`, before `QUOTE_SENT`, so nothing is
-   customer-visible yet. Linking a user and advancing one order are writes and
-   belong to the user or to the CRM, not to this repository.
+1. **The backend:** restore `GET_QUOTE_` and its page, make Core documents
+   readable, fix the core-ui `permissions` mapping, and answer
+   `CUSTOMER-SCOPE-GENERIC-API.md` §5.
+2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
+   upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
+   `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
+   upload `CLIENT_REVIEW_DOCUMENT` once the mappings scripts exist.
+3. **In `core-ui`, once the user confirms it is ours:** `COORD_LAT` and
+   `COORD_LNG` on `PROPERTY`; the hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`,
+   reworked for whatever contract returns; workflow 49 hooks with a property per
+   address, a visible failure state and the `script` binding in its seed;
+   workflow 45 and `ORDER_UTILITIES` into seeds; `MAPPINGS_ORDER` and
+   `MAPPINGS_DOCUMENT`; the planned attributes above; the role grants of
+   workflow 53 with Permissions referenced by id; the three client forms.
+4. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
+   end-to-end package on dev-1.
 
-Then, and only then: the live snow entry needs `data-portal-data-mode="live"`,
+A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
 `data-portal-account-type-code="CUSTOMER"`, service geography for the British
 Columbia service area, and an enabled-module list restricted to what has both
-data and design. The fixture package must stay as it is —
+data and design. The fixture package must stay as it is:
 `granite-ridge-portal-manual-check` refuses a service base, an auth contract or
 live data mode in it, and that guard is correct.
 
 Still open after that: whether an address the browser geocodes should be written
 back to `COORD_LAT`/`COORD_LNG` by the CRM rather than geocoded again in every
-browser; and whether weather moves behind Core, using the shape in
+browser, and whether weather moves behind Core, using the shape in
 `design-requests/overview-weather-provider-xweather.md`.
 
 Resume prompt for a new session:
 
 ```text
 Read app-templates/customer-portal/HANDOFF.md and AGENTS.md, verify the recorded
-git checkpoint against the current tree, then execute only the "Exact next
-action" section. Preserve design-inbox and all unrelated dirty changes. Never
-print or persist credentials.
+git checkpoint against the current tree, then take the "Exact next action" in
+order and ask the user before any dev-1 or CMS write. Preserve design-inbox and
+all unrelated dirty changes. Never print or persist credentials.
 ```

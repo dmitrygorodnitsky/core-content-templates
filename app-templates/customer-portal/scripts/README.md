@@ -18,6 +18,8 @@ and operator commands.
 | `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs` | Deterministic contracts for the live snow property/quote reads and the live home-screen seam |
 | `property-map-check.mjs` | The storm home property map against a stubbed `google.maps`: pins, popup anchored or docked, per-property forecast, geocode cache, the keyless list, and the day timeline badges |
 | `core-snow-live-check.mjs` | Live read-only probe of one customer's properties and quotes on staging |
+| `snow-contracts-check.mjs` | The Contracts package model: the customer-scope order list and agreement document normalized with absent data, grouped by property, with decisions and the rollup |
+| `export-client-review-manual.mjs`, `client-review-check.mjs` | Compile and guard the anonymous quotation and agreement review document |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
 | `s6-*`, `s7-*`, `config-behavior-check.mjs`, `route-smoke.mjs` | Broad CMS/runtime regression gates |
 
