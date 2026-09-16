@@ -80,7 +80,9 @@ fail closed, and that the runtime URL guard accepts only absolute https.
 document and is dry-run by default. Beyond the shared staleness gate it refuses
 to upload a package whose `FORM_API_BASE_URL`, `FORM_TYPE_CODE` or
 `FORM_ORGANIZATION_ID` carries a value: a deployment target belongs in CMS, not
-baked into the uploaded template.
+baked into the uploaded template. An update no longer clears them: the uploader
+keeps whatever CMS holds for a parameter the package ships empty, and names
+every parameter it kept and every one still empty on both sides.
 
 `portal-form-check.mjs` loads `runtime/forms/portal-form.js` in an isolated
 `vm` context and asserts the whole field contract without a browser: the Java

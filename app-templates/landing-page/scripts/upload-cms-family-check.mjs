@@ -17,6 +17,7 @@ const organizationId = 42;
 let missingCode = null;
 let saveRequests = 0;
 let untypedCodeFilters = 0;
+let existingParameters = [];
 const savedEntities = [];
 
 await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
@@ -77,7 +78,7 @@ const server = http.createServer(async (request, response) => {
     const code = codeFilter?.value;
     if (missingCode === "*" || code === missingCode) return send(response, 200, { result: [] });
     const id = code === "FIELD_SERVICE_LANDING" ? rootId : childId;
-    return send(response, 200, { result: [{ id, code }] });
+    return send(response, 200, { result: [{ id, code, parameters: existingParameters }] });
   }
   if (request.url === "/core-cms/api/block-template/save.json") {
     saveRequests += 1;
@@ -105,6 +106,8 @@ try {
   assert.match(success.stdout, new RegExp(`would update: FIELD_SERVICE_LANDING_HEADER -> ${childId}`));
   assert.match(success.stdout, new RegExp(`Organization: SYSTEM -> ${organizationId}`));
   assert.equal(untypedCodeFilters, 0, "code lookups use the STRING filter type expected by core-ui");
+  // the resolved dry run names a parameter neither side fills, before any write
+  assert.match(success.stdout, /no value in the package or in CMS: FIELD_SERVICE_LANDING\.FAVICON_IMG\b/);
 
   const createOnlyArgs = baseArgs
     .filter((arg) => arg !== "--require-existing")
@@ -148,6 +151,51 @@ try {
   assert.equal(Object.hasOwn(savedRoot.parameters.find((parameter) => parameter.code === "FAVICON_IMG_NAME"), "value"), false, "blank STRING values are omitted like core-ui");
   assert.deepEqual(savedRoot.organization, { id: organizationId }, "save payload uses the organization identifier shape emitted by core-ui");
 
+  saveRequests = 0;
+  savedEntities.length = 0;
+  existingParameters = [
+    { code: "FORM_API_BASE_URL", type: "STRING", value: "https://dev-1.servicewand.com", options: [] },
+    { code: "FORM_TYPE_CODE", type: "STRING", value: "GET_QUOTE_" },
+    { code: "FORM_THEME", type: "STRING", value: "hvac" },
+    { code: "NOTE", type: "LOCALIZED_STRING_SS", value: { en: "Operator note" } },
+    { code: "FORM_MAPS_API_KEY", type: "STRING", value: "" },
+  ];
+  await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
+    schemaVersion: 1,
+    root: {
+      code: "FIELD_SERVICE_LANDING",
+      parameters: [
+        { code: "FORM_API_BASE_URL", type: "STRING", value: "" },
+        { code: "FORM_TYPE_CODE", type: "STRING", value: "" },
+        { code: "FORM_ORGANIZATION_ID", type: "STRING", value: "" },
+        { code: "FORM_MAPS_API_KEY", type: "STRING", value: "" },
+        { code: "FORM_THEME", type: "STRING", value: "snow" },
+        { code: "NOTE", type: "LOCALIZED_STRING_SS", value: { en: "" } },
+      ],
+    },
+    children: [],
+  }));
+  const preserving = await execFileAsync(process.execPath, liveArgs, { env });
+  assert.equal(saveRequests, 1);
+  const updatedRoot = savedEntities.find((entity) => entity.code === "FIELD_SERVICE_LANDING");
+  const updated = (code) => updatedRoot.parameters.find((parameter) => parameter.code === code);
+  assert.equal(updated("FORM_API_BASE_URL").value, "https://dev-1.servicewand.com", "a deployment value CMS holds survives an update that ships the parameter empty");
+  assert.equal(updated("FORM_TYPE_CODE").value, "GET_QUOTE_", "every parameter the package ships empty keeps its CMS value, not just the first");
+  assert.deepEqual(updated("NOTE").value, { en: "Operator note" }, "an empty localized bag does not overwrite the localized value CMS holds");
+  assert.equal(updated("FORM_THEME").value, "snow", "a value the package actually ships is written over the CMS value");
+  assert.equal(Object.hasOwn(updated("FORM_ORGANIZATION_ID"), "value"), false, "empty in the package and absent from CMS stays unset");
+  assert.equal(Object.hasOwn(updated("FORM_MAPS_API_KEY"), "value"), false, "an empty CMS value is not a value to preserve");
+  assert.match(preserving.stdout, /CMS value kept: FIELD_SERVICE_LANDING\.FORM_API_BASE_URL/);
+  assert.match(preserving.stdout, /CMS value kept: FIELD_SERVICE_LANDING\.FORM_TYPE_CODE/);
+  assert.match(preserving.stdout, /CMS value kept: FIELD_SERVICE_LANDING\.NOTE/);
+  assert.doesNotMatch(preserving.stdout, /CMS value kept: FIELD_SERVICE_LANDING\.FORM_THEME/);
+  assert.match(preserving.stdout, /no value in the package or in CMS: FIELD_SERVICE_LANDING\.FORM_ORGANIZATION_ID/);
+  assert.match(preserving.stdout, /no value in the package or in CMS: FIELD_SERVICE_LANDING\.FORM_MAPS_API_KEY/);
+  assert.equal(preserving.stdout.includes("dev-1.servicewand.com"), false, "the report names parameters, never the values behind them");
+  assert.equal(preserving.stdout.includes("GET_QUOTE_"), false, "the report names parameters, never the values behind them");
+  assert.equal(preserving.stdout.includes("Operator note"), false, "the report names parameters, never the values behind them");
+  existingParameters = [];
+
   await fs.writeFile(path.join(outDir, "cms-family.payload.json"), JSON.stringify({
     schemaVersion: 1,
     root: {
@@ -175,7 +223,7 @@ try {
     execFileAsync(process.execPath, [path.join(scriptsDir, "upload-cms-family.mjs"), "--out", outDir, "--dry-run"], { env }),
     /POST is referenced but not declared/,
   );
-  console.log("upload-cms-family-check ok: IDs and organization resolved, typed lookups used, parameter contracts checked, relationships stripped, empty values omitted like core-ui");
+  console.log("upload-cms-family-check ok: IDs and organization resolved, typed lookups used, parameter contracts checked, relationships stripped, empty values omitted like core-ui, CMS values preserved on update and reported by name");
 } finally {
   await new Promise((resolve) => server.close(resolve));
   await fs.rm(outDir, { recursive: true, force: true });

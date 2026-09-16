@@ -44,6 +44,10 @@ const usage = () => `Usage:
 The uploader creates or updates each BlockTemplate by code. It never manages
 template parents, root include markup, enabled templates, or PageContext.
 
+On an update a parameter the package ships empty keeps the value CMS already
+holds, and every kept and still-empty parameter is named in the output. A value
+the package ships always wins. Creation is unchanged.
+
 With --require-existing, every template code is resolved before any write and
 the command fails if one is missing. --expected-root-id additionally confirms
 the existing root BlockTemplate UUID. In dry-run mode these flags perform
@@ -265,6 +269,42 @@ const removeCmsEmptyValues = (value) => {
   return value;
 };
 
+const cmsValue = (value) => {
+  const cleaned = removeCmsEmptyValues(value);
+  return isCmsEmptyValue(cleaned) ? undefined : cleaned;
+};
+
+const parameterList = (value) => (Array.isArray(value) ? value : []);
+
+const mergeExistingParameterValues = (template, existing) => {
+  const existingValues = new Map(
+    parameterList(existing?.parameters)
+      .map((parameter) => [parameter.code, cmsValue(parameter.value)])
+      .filter(([, value]) => value !== undefined),
+  );
+  const preserved = [];
+  const empty = [];
+  const parameters = parameterList(template.parameters).map((parameter) => {
+    const { options: _options, ...withoutOptions } = parameter;
+    if (cmsValue(parameter.value) !== undefined) return withoutOptions;
+    const existingValue = existingValues.get(parameter.code);
+    if (existingValue === undefined) {
+      empty.push(parameter.code);
+      return withoutOptions;
+    }
+    preserved.push(parameter.code);
+    return { ...withoutOptions, value: existingValue };
+  });
+  return { parameters, preserved, empty };
+};
+
+const printParameterValuePlan = (template, existing) => {
+  if (!existing?.id) return;
+  const { preserved, empty } = mergeExistingParameterValues(template, existing);
+  for (const code of preserved) console.log(`    CMS value kept: ${template.code}.${code}`);
+  for (const code of empty) console.log(`    no value in the package or in CMS: ${template.code}.${code}`);
+};
+
 const normalizeTemplateForSave = (template, existing, organization) => {
   const {
     children: _children,
@@ -290,10 +330,7 @@ const normalizeTemplateForSave = (template, existing, organization) => {
   if (result.id === undefined) delete result.id;
   if (result.optimistic === undefined) delete result.optimistic;
   if (Array.isArray(result.parameters)) {
-    result.parameters = result.parameters.map((parameter) => {
-      const { options: _options, ...withoutOptions } = parameter;
-      return withoutOptions;
-    });
+    result.parameters = mergeExistingParameterValues(template, existing).parameters;
   }
   return removeCmsEmptyValues(result);
 };
@@ -398,6 +435,7 @@ const printResolvedDryRun = (env, plan) => {
   console.log(`Organization: ${plan.organization.code} -> ${plan.organization.id}`);
   for (const row of plan.rows) {
     console.log(`  ${row.existing?.id ? "would update" : "would create"}: ${row.template.code} -> ${row.existing?.id || "(new)"}`);
+    printParameterValuePlan(row.template, row.existing);
   }
   console.log("\nNo network writes were made. Pass --live with the same safety flags to upload.\n");
 };
@@ -420,6 +458,7 @@ const uploadLive = async (env, plan) => {
     const action = existing?.id ? "updated" : "created";
     results.push({ action, code: template.code, id });
     console.log(`  ${action}: ${template.code} -> ${id}`);
+    printParameterValuePlan(template, existing);
   }
   console.log("Upload complete. Parent links, include lists, and PageContext were not changed.");
   return results;

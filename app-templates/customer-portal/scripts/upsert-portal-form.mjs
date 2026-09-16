@@ -67,7 +67,8 @@ sha256 digests in its own manifest, so a hand-edited package is refused.
 
 The document ships with FORM_API_BASE_URL, FORM_TYPE_CODE and
 FORM_ORGANIZATION_ID empty. It renders nothing and submits nothing until an
-operator fills them in CMS.
+operator fills them in CMS. An update keeps the values CMS already holds for
+them and names every one it kept.
 
 Env credentials, read by the uploader and never printed in full:
   SERVICEWAND_API_KEY or LANDING_API_KEY

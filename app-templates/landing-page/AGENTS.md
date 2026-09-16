@@ -32,6 +32,9 @@ Repository-wide ownership is documented in
   `--expected-root-id` when its UUID is known.
 - The flat uploader must not change template parents, root include markup,
   enabled templates, or PageContext.
+- The flat uploader must not clear a parameter value CMS already holds. A
+  package that ships a parameter empty leaves the CMS value in place; only a
+  value the package actually ships is written.
 - Compatibility wrappers under `docs/cms-components/lab-ui/scripts/**` contain
   forwarding logic only. Product behavior belongs here.
 
