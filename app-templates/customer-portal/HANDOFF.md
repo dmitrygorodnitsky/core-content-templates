@@ -627,7 +627,8 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
 - Script 169 is unchanged since 2026-09-04 and still reads addresses only from
   `PROPERTY_ADDRESSES`, so the form as served creates no account. The stored
   `GET_QUOTE_` is `optimistic` 12 of 2026-09-14 15:39 UTC, and no Core document
-  is readable in `SNOWLIMITLESS`.
+  is readable in `SNOWLIMITLESS`. The team said that day that the rewrite was a
+  mistake and that they restore the form type themselves.
 
 ### Live read path
 
@@ -777,14 +778,12 @@ checkout before treating any of them as broken.
 ## Exact next action
 
 `GET_QUOTE_` loads again, but it keeps the single-address contract that script
-169, as last read, cannot turn into an account, and its page answers `404`;
-nothing can be shown live. In order:
+169 cannot turn into an account, and its page answers `404`; nothing can be
+shown live. The team restores the form type. In order:
 
-1. **The backend:** settle the `GET_QUOTE_` contract and what an anonymous
-   submit may send for an Address attribute
-   (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, questions 5–7), restore the page,
-   make Core documents readable, fix the core-ui `permissions` mapping, and
-   answer `CUSTOMER-SCOPE-GENERIC-API.md` §5.
+1. **The backend:** restore `GET_QUOTE_` and its page, make Core documents
+   readable, fix the core-ui `permissions` mapping, and answer
+   `CUSTOMER-SCOPE-GENERIC-API.md` §5.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;

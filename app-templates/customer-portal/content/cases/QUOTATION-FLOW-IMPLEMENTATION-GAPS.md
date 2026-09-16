@@ -348,6 +348,8 @@ first, as the commands below show.
   while the form type now declares an entity reference.
 - **No Core document is readable.** `core/api/document/list.json` answers with an
   empty list in `SNOWLIMITLESS`, as on 2026-09-15.
+- **The rewrite was not intended.** The team said on 2026-09-16 that the form
+  type was changed by mistake and that they restore it themselves.
 
 Reproduce with the `HOST` above. Every authenticated command needs a `TOKEN`
 exchanged from an API key, good for 15 minutes:
@@ -377,15 +379,14 @@ curl -sS "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json" | python3 -c 'imp
 3. Should one quote order be created per address per pricing model, as §4.2
    says, and should each carry `SERVICE_PROPERTY`?
 4. Should a failed step move the form to a visible state instead of logging?
-5. Which `GET_QUOTE_` contract is intended? The form carries a single
-   `PROPERTY_ADDRESS` of class Address since 2026-09-14, while script 169 and
-   `createCustomerAccount` read only `PROPERTY_ADDRESSES`, the multi-address
-   contract of 2026-09-10. One side has to change before a submission can
-   create an account.
-6. What may an anonymous `core-cms/api/form/submit.json` send for an attribute
-   of class `com.pixelnation.common.domain.Address`: the formatted address
-   text, a structured address, or the id of an existing Address? A prospect has
-   no Address rows, and `toAddressId` in script 169 accepts only an `Address`, a
-   number or a map with `id`.
-7. Was `/pages/SNOWLIMITLESS/request-quote` removed on purpose? It answers `404`
-   since 2026-09-15.
+5. ~~Which `GET_QUOTE_` contract is intended?~~ **Answered 2026-09-16.** The
+   rewrite of 2026-09-14 was a mistake and the team restores the form type.
+   Restored, it carries `PROPERTY_ADDRESSES` as `java.lang.String` with
+   `inputFormat: "address"` and `multiselect: true`, the contract workflow 49
+   and the renderer already expect. Re-read it when it lands: the renderer also
+   handles an Address-class attribute since `c778c2e`, so a second rewrite would
+   render, not break.
+6. Was `/pages/SNOWLIMITLESS/request-quote` removed on purpose? It answers `404`
+   since 2026-09-15, and a restored form still needs its page.
+7. Questions 1 to 4 are now ours to decide, not to ask: workflow 49 and its six
+   scripts became ours on 2026-09-11 and are extracted into `core-ui`.
