@@ -363,6 +363,9 @@ first, as the commands below show.
   request: `document/get.json` takes `id` as a query parameter and answers `500`
   when it is only in the body, `document/size.json` without a filter throws a
   `NullPointerException`, and `core-cms` has no document endpoint at all.
+  **Fixed later the same day:** the list answers with one document in
+  `SNOWLIMITLESS` and 115 in `SYSTEM`. The two probe ids never came back, so
+  the records lost while the gap was open are gone, not hidden.
 - **The rewrite was not intended.** The team said on 2026-09-16 that the form
   type was changed by mistake and that they restore it themselves.
 

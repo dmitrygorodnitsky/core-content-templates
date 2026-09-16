@@ -806,14 +806,16 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
-`GET_QUOTE_` loads again, but it keeps the single-address contract that script
-169 cannot turn into an account, and its page answers `404`; nothing can be
-shown live. The team restores the form type. In order:
+The public quote path works end to end again: the page renders the
+multi-address form, a submission creates the customer Account and its
+addresses, and the flow fires its own first transition. What it still does not
+produce is a service property per address or a quote order. In order:
 
-1. **The backend:** say why `form/submit.json` no longer fires the first
-   transition, evict the compiled script cache on the CMS nodes so script 169
-   can run again, make Core documents readable, fix the core-ui `permissions`
-   mapping, and answer `CUSTOMER-SCOPE-GENERIC-API.md` §5.
+1. **The backend:** evict the compiled script cache on the CMS nodes so script
+   169 can run again, say whether `form/submit.json` is meant to fire the first
+   transition, fix the core-ui `permissions` mapping, and answer
+   `CUSTOMER-SCOPE-GENERIC-API.md` §5. Core documents became readable on
+   2026-09-16.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
