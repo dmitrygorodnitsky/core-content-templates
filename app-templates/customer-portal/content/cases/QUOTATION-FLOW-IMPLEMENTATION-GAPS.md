@@ -337,8 +337,12 @@ first, as the commands below show.
   Fixed in `c778c2e`: an attribute of that class without options renders the
   address control and submits the typed text, checked against a verbatim copy
   of this response, `content/form-types/GET_QUOTE_.2026-09-16.en.json`.
-- **The page is still gone.** `/pages/SNOWLIMITLESS/request-quote` answers `404`
-  on both nodes.
+- **The page came back later that day.** `/pages/SNOWLIMITLESS/request-quote`
+  answers `200` and serves the deployed `PORTAL_FORM_DOCUMENT`, whose renderer
+  predates the Address-class fix. Opened in a browser it renders the three
+  steps, and `#pf-PROPERTY_ADDRESS` is a required select holding one option,
+  the placeholder: there is nothing to choose and the form cannot be
+  completed. The form type itself is unchanged at `optimistic` 12.
 - **Account creation cannot work.** Script 169 is `optimistic` 21, unchanged
   since 2026-09-04 11:10 UTC, as are the five other scripts of workflow 49.
   `propertyAddresses` reads only
@@ -433,7 +437,8 @@ planned, reviewed, applied, and read back from the server.
    and the renderer already expect. Re-read it when it lands: the renderer also
    handles an Address-class attribute since `c778c2e`, so a second rewrite would
    render, not break.
-6. Was `/pages/SNOWLIMITLESS/request-quote` removed on purpose? It answers `404`
-   since 2026-09-15, and a restored form still needs its page.
+6. ~~Was `/pages/SNOWLIMITLESS/request-quote` removed on purpose?~~ **Answered
+   2026-09-16:** it answers `200` again. Only the form type is still to come
+   back.
 7. Questions 1 to 4 are now ours to decide, not to ask: workflow 49 and its six
    scripts became ours on 2026-09-11 and are extracted into `core-ui`.

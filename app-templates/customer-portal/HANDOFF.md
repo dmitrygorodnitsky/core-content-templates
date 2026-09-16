@@ -620,7 +620,10 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   without options renders the address control and submits the typed text;
   whether Core accepts text there is question 6 in
   `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`.
-- `/pages/SNOWLIMITLESS/request-quote` still answers `404` on both nodes.
+- `/pages/SNOWLIMITLESS/request-quote` answers `200` again later that day. It
+  serves the deployed form document, which predates the Address-class fix, so
+  its address field is a select with nothing in it and the form cannot be
+  completed until the renderer is uploaded.
 - A ServiceWand API key is not a bearer. Exchange it for an access token at the
   issuer, `grant_type=api_key` with an `X-API-Key` header; the token lives 15
   minutes.
@@ -790,9 +793,9 @@ checkout before treating any of them as broken.
 169 cannot turn into an account, and its page answers `404`; nothing can be
 shown live. The team restores the form type. In order:
 
-1. **The backend:** restore `GET_QUOTE_` and its page, make Core documents
-   readable, fix the core-ui `permissions` mapping, and answer
-   `CUSTOMER-SCOPE-GENERIC-API.md` §5.
+1. **The backend:** restore the `GET_QUOTE_` form type, whose page is back
+   already, make Core documents readable, fix the core-ui `permissions`
+   mapping, and answer `CUSTOMER-SCOPE-GENERIC-API.md` §5.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
