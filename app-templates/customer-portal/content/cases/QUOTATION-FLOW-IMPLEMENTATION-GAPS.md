@@ -406,8 +406,12 @@ planned, reviewed, applied, and read back from the server.
   on its own node because `app-1-core-rm` and `app-2-core-rm` are the only nodes
   carrying `CORE-RM` and they carry nothing else, so neither 169 nor 176 can
   touch a Resource.
-- **Not applied:** both coordinate patches. A new property therefore carries no
-  coordinates, and `PROPERTY` (153) is still `optimistic` 6.
+- **`PROPERTY` (153) is `optimistic` 7.** `COORD_LAT` and `COORD_LNG`, both
+  `java.lang.Float` and optional, sit after `ADDRESS` in the default group, and
+  a re-plan reports no change. `SNOW_REMOVAL_PROPERTY` (154) inherits them.
+- **Not applied:** the hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`, which the
+  tool refuses while the live form carries no `PROPERTIES` group. Until it
+  lands the form submits no coordinates, so a new property has none to store.
 - **Nothing has executed.** The form contract still blocks the flow, so none of
   this code has run. Its first run is also the first test of
   `IResourceTypeManager`, which no other script on dev-1 uses.

@@ -633,7 +633,9 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   with an event into it and a retry back to `PROCESSED`, both permissions exist
   and role `ADMIN` holds them; scripts 169 and 176 are at `optimistic` 22 and
   26; `WINTER_SERVICE_PROPERTY_CREATOR` is script 200 on `CORE-RM`. The
-  coordinate patches were not applied, and nothing has executed yet.
+  coordinate attributes landed on `PROPERTY` (153), now `optimistic` 7, while
+  the hidden form field stays refused until the form carries its group again.
+  Nothing has executed yet.
 
 ### Live read path
 
@@ -797,10 +799,11 @@ shown live. The team restores the form type. In order:
    upload `CLIENT_REVIEW_DOCUMENT` once the mappings scripts exist.
 3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
    its retry and the `script` binding; a property per address; quote orders per
-   property restructured but still not called. Left: `COORD_LAT` and `COORD_LNG`
-   on `PROPERTY`, which the property creator already writes once they exist; the
-   hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`, reworked for whatever contract
-   returns; wiring quote-order creation once the property size is decided;
+   property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
+   `PROPERTY`, which the property creator writes when the form supplies them.
+   Left: the hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`, reworked for
+   whatever contract returns; wiring quote-order creation once the property
+   size is decided;
    workflow 45 and `ORDER_UTILITIES` into seeds; `MAPPINGS_ORDER` and
    `MAPPINGS_DOCUMENT`; the planned attributes above; the role grants of
    workflow 53 with Permissions referenced by id; the three client forms.
