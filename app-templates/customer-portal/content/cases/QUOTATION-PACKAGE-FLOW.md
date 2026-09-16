@@ -191,9 +191,27 @@ what it holds.
 
 ## 9. Prerequisites and open points
 
-- **`MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT`** do not exist on dev-1 (only
-  `MAPPINGS_ACCOUNT` does); without them the order and document link endpoints
-  answer `400`. They go into our script seeds.
+- **`MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT` are on dev-1** since 2026-09-16,
+  as scripts 203 and 204, owned by `SYSTEM` like `MAPPINGS_ACCOUNT`. Each caps
+  a link to what the client page renders. The order gives the three server
+  totals with their currency, its state, its attributes, and its items with
+  quantity, unit price and product name; the agreement gives its attributes,
+  type, state and the provider name. Internal notes, the per-charge breakdown
+  and `updatedBy`, which would hand over a staff login, stay out.
+- **`attributes` cannot be narrowed.** A mappings script either exposes the
+  whole bag or none of it, so a link carries every attribute on the granted
+  record, service ones included. What a link may reveal is decided by what we
+  put in attributes, not by the mapping.
+- **The terms of the agreement have no home yet.** The review page renders them
+  from `content`, which is not a field of `Document`, and the
+  `SERVICE_AGREEMENT` type declares no attribute for them, so the page shows
+  its empty-terms note. Decided on 2026-09-16: they become an attribute of the
+  type; who fills it, a template at creation or a manager, is still open.
+- **The portal invitation on the agreement page stays hidden.** It asks whether
+  the client Account already has a Core User, and `MAPPINGS_ACCOUNT` does not
+  expose `user`. That script is `SYSTEM`-owned and shared by every tenant, so
+  we do not widen it for one page. The invitation returns when portal access
+  has a source of its own.
 - **The service address must be readable through the link.** A Resource cannot
   be granted, so the page cannot follow `SERVICE_PROPERTY` to the address. The
   hook that adds an Order to the package also records the property's address on
