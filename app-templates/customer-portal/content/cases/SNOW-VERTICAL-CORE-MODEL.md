@@ -230,6 +230,17 @@ Verified against these endpoints, and each of these cost a debugging round:
    ordering is. Whether the same instability affects `resource/list.json` and
    `account/list.json` is untested — their walks agreed with `resultSize` at the
    current volume, which is not proof.
+10. **A code is rewritten on save.** It returns uppercased, and a leading digit
+    becomes a letter: `0` to `A`, and so on to `9` to `J`. Script 176 computes
+    the account code `UUID.nameUUIDFromBytes("WINTER_QUOTE_FORM:43:18")` =
+    `02329d66-096c-39a9-9197-66367e90d8bc`, and dev-1 stores account 695 as
+    `A2329D66-096C-39A9-9197-66367E90D8BC`; form 19 and account 696 agree.
+    Across 273 UUID-shaped account codes the first character is only ever `A`
+    to `J`, and not one is lowercase. A script that generates a code and then
+    reads it back by that code therefore misses its own row about ten times in
+    sixteen and creates a duplicate instead of finding it, which is what
+    `resolveFormAccount` does on dev-1 today. Generate the code freely, but
+    normalise it before the lookup, or begin it with a letter of your own.
 
 ## 6a. The quote calculation, as the team owns it
 
