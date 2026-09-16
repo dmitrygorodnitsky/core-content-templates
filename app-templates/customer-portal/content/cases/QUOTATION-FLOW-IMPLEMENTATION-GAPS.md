@@ -346,8 +346,15 @@ first, as the commands below show.
   `ORGANIZATION_NAME` passes silently. `createCustomerAccount` receives
   `propertyAddresses` as a list of strings, so the workflow expects address text
   while the form type now declares an entity reference.
-- **No Core document is readable.** `core/api/document/list.json` answers with an
-  empty list in `SNOWLIMITLESS`, as on 2026-09-15.
+- **No Core document is readable.** Re-checked on 2026-09-16.
+  `core/api/document/list.json` answers `resultSize` 0 in `SNOWLIMITLESS`,
+  `SERVICE_WAND_WINTER_SERVICES` and `SYSTEM`, and the probe documents 130 and
+  131, whose save returned those ids, answer `404` by id in all three. Document
+  types read normally, `SERVICE_AGREEMENT` (17) included, so the gap is specific
+  to Document rows. Call shapes, so that the report cannot be dismissed as a bad
+  request: `document/get.json` takes `id` as a query parameter and answers `500`
+  when it is only in the body, `document/size.json` without a filter throws a
+  `NullPointerException`, and `core-cms` has no document endpoint at all.
 - **The rewrite was not intended.** The team said on 2026-09-16 that the form
   type was changed by mistake and that they restore it themselves.
 
