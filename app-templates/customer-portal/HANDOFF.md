@@ -765,7 +765,9 @@ checkout before treating any of them as broken.
   organization appearing to sign in through generic ServiceWand presentation.
 - Server-derived customer-scoped portal endpoints. The server must derive User,
   customer Account, and organization from the session rather than accept them
-  as browser authority. Required projections/commands cover Account/Profile,
+  as browser authority. Deferred on 2026-09-16: the first dev version of the
+  snow portal reads the generic endpoints and scopes in the browser, as the spa
+  staging demo already does. Production still requires these endpoints. Required projections/commands cover Account/Profile,
   Orders/OrderItems/Fulfillment, Appointments/Tasks/Projects/availability,
   Cart/checkout, plans/Subscriptions/ledger, and per-resource allowed actions.
 - Booking availability holds, version/conflict behavior, idempotent commands,

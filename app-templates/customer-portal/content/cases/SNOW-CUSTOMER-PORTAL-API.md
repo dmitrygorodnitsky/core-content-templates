@@ -8,6 +8,11 @@ of the "Proposed Customer-Scoped API" in
 screens (`runtime/data/cases/granite-ridge-snow.js`, the Granite Ridge design
 requests) and the Core model in `SNOW-VERTICAL-CORE-MODEL.md`.
 
+**Deferred on 2026-09-16.** The backend builds this later. The first dev version
+of the portal reads the generic endpoints and scopes to the customer Account in
+the browser, which is a bounded dev demonstration and not production isolation.
+No signed-in customer reaches production until this exists.
+
 ## Why
 
 Core grants permissions per entity type within an organization. A portal user

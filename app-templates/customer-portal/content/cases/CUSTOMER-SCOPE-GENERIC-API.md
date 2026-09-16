@@ -6,6 +6,11 @@ version asks for one generic capability that serves every entity type and every
 vertical, and shows the snow portal as its first configuration. Facts marked
 *verified* were read from the dev-1 `api-docs` of each service on 2026-09-11.
 
+**Deferred on 2026-09-16.** The backend builds this later. The first dev version
+of the portal reads the generic endpoints and scopes to the customer Account in
+the browser, which is a bounded dev demonstration and not production isolation.
+No signed-in customer reaches production until this exists.
+
 ## 1. The idea: a signed-in customer is a dynamic access grant
 
 Core already answers most of this question for anonymous users. An access grant
