@@ -629,6 +629,11 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   `GET_QUOTE_` is `optimistic` 12 of 2026-09-14 15:39 UTC, and no Core document
   is readable in `SNOWLIMITLESS`. The team said that day that the rewrite was a
   mistake and that they restore the form type themselves.
+- Applied that day with the user's go: workflow 49 carries `PROCESSING_FAILED`
+  with an event into it and a retry back to `PROCESSED`, both permissions exist
+  and role `ADMIN` holds them; scripts 169 and 176 are at `optimistic` 22 and
+  26; `WINTER_SERVICE_PROPERTY_CREATOR` is script 200 on `CORE-RM`. The
+  coordinate patches were not applied, and nothing has executed yet.
 
 ### Live read path
 
@@ -790,10 +795,12 @@ shown live. The team restores the form type. In order:
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
    upload `CLIENT_REVIEW_DOCUMENT` once the mappings scripts exist.
-3. **In `core-ui`, once the user confirms it is ours:** `COORD_LAT` and
-   `COORD_LNG` on `PROPERTY`; the hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`,
-   reworked for whatever contract returns; workflow 49 hooks with a property per
-   address, a visible failure state and the `script` binding in its seed;
+3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
+   its retry and the `script` binding; a property per address; quote orders per
+   property restructured but still not called. Left: `COORD_LAT` and `COORD_LNG`
+   on `PROPERTY`, which the property creator already writes once they exist; the
+   hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`, reworked for whatever contract
+   returns; wiring quote-order creation once the property size is decided;
    workflow 45 and `ORDER_UTILITIES` into seeds; `MAPPINGS_ORDER` and
    `MAPPINGS_DOCUMENT`; the planned attributes above; the role grants of
    workflow 53 with Permissions referenced by id; the three client forms.

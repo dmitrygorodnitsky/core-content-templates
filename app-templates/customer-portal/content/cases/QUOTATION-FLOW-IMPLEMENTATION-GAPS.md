@@ -73,7 +73,8 @@ INITIAL → SUBMITTED → NOTIFIED → PROCESSED
 1. **No service property is created.** Script 176 and script 169 contain no
    reference to a resource, `IResourceManager` or `SNOW_REMOVAL_PROPERTY`. The
    newest `SNOW_REMOVAL_PROPERTY` on dev-1 is resource 908, created 2026-08-07,
-   before any of these forms existed.
+   before any of these forms existed. Closed in code on 2026-09-16 by script
+   200; it has never run.
 2. **Quotation creation is not wired into the workflow.** Script 176 exposes a
    public `createQuotations` (line 265) that does create orders, but nothing
    dispatches it: the `PROCESSED` hook shares its name and dispatches
@@ -95,7 +96,9 @@ INITIAL → SUBMITTED → NOTIFIED → PROCESSED
    75 000 for all three forms, including form 1, which has no size at all — so
    the three sets of totals are identical.
 5. **Failures are silent.** The after-commit job catches every exception into a
-   log. A form reads `PROCESSED` whether or not anything was created.
+   log. A form reads `PROCESSED` whether or not anything was created. Closed in
+   code on 2026-09-16 for the property step, which now lands the form in
+   `PROCESSING_FAILED`; the account and e-mail steps still only log.
 6. **Form hygiene.**
    - `GET_QUOTE_.attributeOrder` still lists `PROPERTY_ADDRESS`, a deleted
      attribute, as the only row of group `EA849F15_9108_455F_9A05_F26BED67E5CD`;
@@ -249,7 +252,8 @@ further product input to wait for.
   apply on dev-1 leaves it in place, but a workflow created from this seed on any
   other environment would run hooks that call an unbound `workflowUtils`. The
   seed must carry the link before it is used anywhere but dev-1.
-- No write to any server has been made for the takeover so far.
+- The first writes of the takeover landed on 2026-09-16; see "Applied on dev-1
+  on 2026-09-16".
 
 ## dev-1 on 2026-09-15
 
@@ -375,6 +379,38 @@ for i in 1 2 3 4; do curl -sS -o /dev/null -D - "$HOST/en/core-cms/api/form-type
 ```bash
 curl -sS "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json" | python3 -c 'import json,sys; t=json.load(sys.stdin); print([(a["code"], a["className"].rsplit(".",1)[-1], a.get("inputFormat"), len(a["options"])) for a in t["attributes"]])'
 ```
+
+## Applied on dev-1 on 2026-09-16
+
+The first writes of the takeover, with the user's go: prepared in `core-ui`,
+planned, reviewed, applied, and read back from the server.
+
+- **Workflow 49** holds six states and seven events. `PROCESSING_FAILED` was
+  created, with `PROCESSED-PROCESSING_FAILED` carrying a required `MESSAGE` and
+  `PROCESSING_FAILED-PROCESSED` retrying by re-firing `onEnter(PROCESSED)`. A
+  re-plan reports `changeCount` 0. Both permissions exist and role `ADMIN` holds
+  them, so a person can retry a failed form by hand.
+- **Script 169**, `optimistic` 22. The requester notification is queued before
+  property creation, so the new step cannot suppress the e-mail; a failure in it
+  sends the form to `PROCESSING_FAILED` with the error as `MESSAGE`.
+- **Script 176**, `optimistic` 26. `createQuotations` now creates one order per
+  property per pricing model with `SERVICE_PROPERTY` set, and is still not
+  called by the flow. `resolveFormAccount` finds its own account again: it looks
+  the code up as the platform stores it, uppercased with the leading digit
+  lifted (`SNOW-VERTICAL-CORE-MODEL.md` rule 10), and falls back to the raw
+  code. Verified against the live rows: form 18 resolves to account 695 and form
+  19 to account 696.
+- **Script 200, `WINTER_SERVICE_PROPERTY_CREATOR`,** is new, capabilities `CORE`
+  and `CORE-RM`. It creates one `SNOW_REMOVAL_PROPERTY` per submitted address,
+  linked to the account and the address, idempotent by a prefixed code. It runs
+  on its own node because `app-1-core-rm` and `app-2-core-rm` are the only nodes
+  carrying `CORE-RM` and they carry nothing else, so neither 169 nor 176 can
+  touch a Resource.
+- **Not applied:** both coordinate patches. A new property therefore carries no
+  coordinates, and `PROPERTY` (153) is still `optimistic` 6.
+- **Nothing has executed.** The form contract still blocks the flow, so none of
+  this code has run. Its first run is also the first test of
+  `IResourceTypeManager`, which no other script on dev-1 uses.
 
 ## Questions for the team
 
