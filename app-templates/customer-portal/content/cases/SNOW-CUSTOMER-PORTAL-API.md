@@ -13,6 +13,30 @@ of the portal reads the generic endpoints and scopes to the customer Account in
 the browser, which is a bounded dev demonstration and not production isolation.
 No signed-in customer reaches production until this exists.
 
+## What the generic endpoints serve today
+
+Read on 2026-09-16 as `SNOWLIMITLESS`. Every portal need has a source except the
+service agreement, and what is missing is records, not endpoints.
+
+| portal need | endpoint | rows on dev-1 |
+| --- | --- | --- |
+| properties | `core-rm/api/resource/list.json`, kept by the `ACCOUNT` attribute | 691 in the organization |
+| addresses | `core/api/address/list.json` by id | 710 |
+| quotes and contracts as orders | `core-bill/api/order/list.json`, filter `account.id` | 12 |
+| invoices | `core-bill/api/invoice/list.json` | 0 |
+| visits | `core-svc/api/appointment/list.json` | 0 |
+| support tickets | `core-svc/api/task/list.json`, task type `SUPPORT_TICKET` | 0 |
+| seasons | `core-svc/api/project/list.json` | 0 |
+| quote requests | `core-cms/api/form/list.json` | 7 |
+| the customer Account | `core-acct/api/account/list.json` | 661 |
+| service agreements | `core/api/document/list.json` | answers, and every document is invisible |
+
+Two things worth knowing before hunting for an endpoint. Projects, tasks and
+appointments live in `core-svc` and nowhere else; no other service on dev-1
+answers for them, and twenty other service names have no `api-docs` at all. And
+the documentation of a service is at `/{service}/api-docs`, not
+`/{service}/v3/api-docs`, which answers `404`.
+
 ## Why
 
 Core grants permissions per entity type within an organization. A portal user
