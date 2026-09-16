@@ -308,9 +308,10 @@ curl -sS -o /dev/null -w '%{http_code}\n' "$HOST/pages/SNOWLIMITLESS/request-quo
 
 ## dev-1 on 2026-09-16
 
-Read-only. The form type and the page were read anonymously. The dev key of
-2026-09-15 now answers `401` on every endpoint, `core/api/user/basic-info.json`
-included, so nothing behind a bearer was re-read.
+Read-only. The form type and the page were read anonymously; everything else
+was read with a key issued that day. A ServiceWand API key is not a bearer: as
+one it answers `401` everywhere, and it has to be exchanged for an access token
+first, as the commands below show.
 
 - **The schema loads again.** `/en/core-cms/api/form-type/GET_QUOTE_/get.json`
   answers `200` without a token from both CMS nodes, `x-node-id`
@@ -324,8 +325,8 @@ included, so nothing behind a bearer was re-read.
   `ADDITIONAL_NOTES`. `PROPERTY_ADDRESS` is required, single, of class
   `com.pixelnation.common.domain.Address`, with no `inputFormat`.
   `PROPERTY_ADDRESSES`, `ORGANIZATION_NAME` and the `PROPERTIES` group are
-  absent. The anonymous body reports `optimistic` 0, so it cannot show whether
-  the stored definition changed after 2026-09-14.
+  absent. The stored definition is `optimistic` 12, last changed 2026-09-14
+  15:39 UTC, and carries no `inputFormat` on `PROPERTY_ADDRESS` either.
 - **Our renderer could not submit it.** `portal-form.js` sent an attribute
   without options through its class table, which maps every entity class to a
   select, so `PROPERTY_ADDRESS` rendered as a required select with no options.
@@ -334,13 +335,29 @@ included, so nothing behind a bearer was re-read.
   of this response, `content/form-types/GET_QUOTE_.2026-09-16.en.json`.
 - **The page is still gone.** `/pages/SNOWLIMITLESS/request-quote` answers `404`
   on both nodes.
-- **Account creation, as last read on 2026-09-15.** Script 169 reads addresses
-  only from `PROPERTY_ADDRESSES`, and `createCustomerAccount` throws on an empty
-  list, so a submission carrying only `PROPERTY_ADDRESS` creates no account.
-  Script 169 could not be re-read.
+- **Account creation cannot work.** Script 169 is `optimistic` 21, unchanged
+  since 2026-09-04 11:10 UTC, as are the five other scripts of workflow 49.
+  `propertyAddresses` reads only
+  `form.findFirstAttributeValue("PROPERTY_ADDRESSES")`, and an empty list throws
+  `PROPERTY_ADDRESSES is required` twice: where the quotation input is built and
+  in `loadInputs`. `toAddressId`, which accepts an `Address`, a number or a map
+  with `id` and names `PROPERTY_ADDRESS` in its errors, has no caller.
+  `attributeText` returns an empty string for a missing attribute, so the absent
+  `ORGANIZATION_NAME` passes silently. `createCustomerAccount` receives
+  `propertyAddresses` as a list of strings, so the workflow expects address text
+  while the form type now declares an entity reference.
+- **No Core document is readable.** `core/api/document/list.json` answers with an
+  empty list in `SNOWLIMITLESS`, as on 2026-09-15.
 
-Reproduce with the `HOST` above. The node and status of each answer, then the
-attributes; the page command of 2026-09-15 still applies:
+Reproduce with the `HOST` above. Every authenticated command needs a `TOKEN`
+exchanged from an API key, good for 15 minutes:
+
+```bash
+curl -sS -X POST "$HOST/oauth2/oauth2/token" -H "Content-Type: application/x-www-form-urlencoded" -H "X-API-Key: $API_KEY" --data "grant_type=api_key&scope=openid"
+```
+
+The node and status of each answer, then the attributes; the page command of
+2026-09-15 still applies:
 
 ```bash
 for i in 1 2 3 4; do curl -sS -o /dev/null -D - "$HOST/en/core-cms/api/form-type/GET_QUOTE_/get.json" | grep -i -E '^(HTTP|x-node-id)'; done

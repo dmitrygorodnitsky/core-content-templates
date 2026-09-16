@@ -621,9 +621,13 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   whether Core accepts text there is question 6 in
   `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`.
 - `/pages/SNOWLIMITLESS/request-quote` still answers `404` on both nodes.
-- The dev key of 2026-09-15 answers `401` on every authenticated endpoint,
-  `core/api/user/basic-info.json` included, so the stored definition and script
-  169 were not re-read.
+- A ServiceWand API key is not a bearer. Exchange it for an access token at the
+  issuer, `grant_type=api_key` with an `X-API-Key` header; the token lives 15
+  minutes.
+- Script 169 is unchanged since 2026-09-04 and still reads addresses only from
+  `PROPERTY_ADDRESSES`, so the form as served creates no account. The stored
+  `GET_QUOTE_` is `optimistic` 12 of 2026-09-14 15:39 UTC, and no Core document
+  is readable in `SNOWLIMITLESS`.
 
 ### Live read path
 
