@@ -413,9 +413,22 @@ planned, reviewed, applied, and read back from the server.
 - **`PROPERTY` (153) is `optimistic` 7.** `COORD_LAT` and `COORD_LNG`, both
   `java.lang.Float` and optional, sit after `ADDRESS` in the default group, and
   a re-plan reports no change. `SNOW_REMOVAL_PROPERTY` (154) inherits them.
-- **Not applied:** the hidden `PROPERTY_COORDINATES` on `GET_QUOTE_`, which the
-  tool refuses while the live form carries no `PROPERTIES` group. Until it
-  lands the form submits no coordinates, so a new property has none to store.
+- **The form type was repaired the same day.** The user restored
+  `PROPERTY_ADDRESSES` themselves — `java.lang.String`, required, multiselect,
+  `inputFormat: "address"`, eight locales — and two order patches followed:
+  the row moved into the property group after `SELECT_YOUR_PROPERTY_TYPE`, the
+  stale `PROPERTY_ADDRESS` row and the emptied `default` group entry were
+  dropped, and the hidden `PROPERTY_COORDINATES` was added after the address.
+  `GET_QUOTE_` is `optimistic` 16 and both patches re-plan as no change.
+- **The page renders it.** Three steps, the address list beside the property
+  questions, the hidden coordinate field invisible, no console error. Adding
+  several addresses works by the button and by Enter.
+- **Two things the form still gets wrong.** `FORM_MAPS_API_KEY` is the
+  placeholder `#`, so Google loads with an invalid key, Places never arrives
+  and no coordinate is ever captured; an empty value would load no script at
+  all. And seven of the eight locales still name the field in the singular,
+  left over from the rewrite; only `en` reads "Property Addresses", while the
+  repository template carries plural strings for all eight.
 - **Nothing has executed.** The form contract still blocks the flow, so none of
   this code has run. Its first run is also the first test of
   `IResourceTypeManager`, which no other script on dev-1 uses.
