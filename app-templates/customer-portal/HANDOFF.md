@@ -725,7 +725,15 @@ combobox behaviour and the success screen parameters are described in
    deployed BlockTemplate is `0d62e1e1-d1af-4ae8-ab5f-9c0d12f0ab04`. A separate
    `REQUEST_QUOTE` template, `5a6c7eb6-c7bb-4b8a-b532-17322a8918c5`, also exists.
    Whether to take the id over with `--expected-root-id` or to change the
-   template code is still undecided; do not overwrite it blindly.
+   template code is still undecided; do not overwrite it blindly. Confirmed on
+   2026-09-16: the published page renders `PORTAL_FORM_DOCUMENT`, and
+   `REQUEST_QUOTE` is a 3.6 KB template of something else.
+   **A live upload clears the deployment values CMS holds.** The package ships
+   `FORM_API_BASE_URL`, `FORM_TYPE_CODE`, `FORM_ORGANIZATION_ID` and
+   `FORM_MAPS_API_KEY` empty by design, the uploader sends the whole parameter
+   array, and the server takes it as authority, so the page renders nothing
+   until an operator refills them. Read them before an upload; on 2026-09-16
+   they were `https://dev-1.servicewand.com`, `GET_QUOTE_`, `43` and `#`.
 3. ~~The numeric organization id for `SNOWLIMITLESS` is unknown.~~
    **Resolved 2026-08-31.** It is **43**, and the deployed document already
    carries `data-form-organization-id="43"`. The submit button is enabled and
