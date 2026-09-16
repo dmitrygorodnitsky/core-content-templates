@@ -464,9 +464,26 @@ planned, reviewed, applied, and read back from the server.
   query parameter, `audit/revisions.json` is `GET` while `audit/get.json` is
   `POST`, and a workflow apply that touches permissions fails intermittently
   on `/api/permission/list.json`; `--no-grant` and a retry get through.
-- **Junk to delete on dev-1:** forms 25, 36, 37, 39 and 40, all probes. Form 38
-  with account 697 and addresses 713 and 714 is the real run and is worth
-  keeping.
+- **We fire the first transition ourselves now.** State `INITIAL` never had a
+  hook, a rule set or an exit script: its single audit revision is the `ADD` of
+  2026-09-02, so nothing of ours removed one. The workflow is ours, so the
+  utility script gained `submitAfterCreate`, modelled line for line on
+  `validateServiceRegion`, and `INITIAL.onEnter` calls it. After the commit it
+  sends `INITIAL-SUBMITTED` only while the form is still `INITIAL`, so a
+  restored platform transition would simply find nothing to do.
+- **Proof, from the transition rows.** Forms 42 and 43 were moved by user 2,
+  the service user our hook sends as, and form 43 came from the published page
+  with no one watching it. Forms 36, 37, 39 and 40, submitted before the hook
+  existed, sit in `INITIAL` forever. Form 41 was moved by user 30, a person in
+  the admin UI, and its Hong Kong address was correctly rejected.
+- **Every script change needs a new code until the cache is evicted.** Saving
+  content to an existing code does not reach the CMS nodes, so the hook landed
+  as script 202 `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V3`: the 2026-09-04
+  content plus that one method. Workflow 49 is bound to it. Scripts 169 and
+  201 stay where they are.
+- **Junk to delete on dev-1:** forms 25, 36, 37, 39 and 40, all probes, and
+  scripts 201 and 202 once 169 can run again. Forms 38, 42 and 43 with accounts
+  697 and 698 and addresses 713 and 714 are real runs worth keeping.
 
 ## Questions for the team
 
@@ -491,8 +508,9 @@ planned, reviewed, applied, and read back from the server.
 7. Questions 1 to 4 are now ours to decide, not to ask: workflow 49 and its six
    scripts became ours on 2026-09-11 and are extracted into `core-ui`.
 8. Why does `core-cms/api/form/submit.json` no longer move a form out of its
-   initial state? Either restore that, or tell us what should fire the first
-   event now, given that an anonymous caller is refused on `send-event`.
+   initial state? We now fire it from an `INITIAL` hook of our own, so the
+   flow works either way, but it would be good to know whether the platform is
+   meant to do it and simply stopped.
 9. How is the compiled-script cache evicted on the CMS nodes? Saving a new
    version does not reach them and `script/clear-compile-cache` exists only on
    `core`. As it stands, a script that fails to compile once is dead until the

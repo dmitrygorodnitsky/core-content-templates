@@ -639,11 +639,15 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   coordinate attributes landed on `PROPERTY` (153), now `optimistic` 7, and the
   hidden `PROPERTY_COORDINATES` followed on the form once its address row was
   back, leaving `GET_QUOTE_` at `optimistic` 16.
-- The flow ran end to end for the first time: form 38 reached `PROCESSED` and
-  produced account 697 and addresses 713 and 714. Two blockers came out of it,
-  both in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`: `submit.json` no longer
-  fires the first transition, and script 169 stays dead until the CMS nodes
-  evict its compiled class, so workflow 49 is bound to the copy, script 201.
+- The flow runs end to end again, from the published page and with nobody
+  watching: form 43 reached `NOTIFIED` on its own, form 42 reached `PROCESSED`
+  and produced account 698. Two things were in the way, both in
+  `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`. `submit.json` no longer fires the
+  first transition, so `INITIAL.onEnter` now calls `submitAfterCreate` in the
+  utility script. And a script that fails to compile once stays dead on the CMS
+  nodes whatever is saved over it, so every change needs a new code until they
+  are evicted: workflow 49 is bound to script 202, the 2026-09-04 content plus
+  that method.
 
 ### Live read path
 
