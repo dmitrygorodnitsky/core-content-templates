@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-16
+Updated: 2026-09-17
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `c778c2e`
+- HEAD when this checkpoint was written: `4c66893`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -825,11 +825,11 @@ produce is a service property per address or a quote order. In order:
    property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
    `PROPERTY`, which the property creator writes when the form supplies them;
    `MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT`, scripts 203 and 204, the field
-   caps a magic link reads through. Left: wiring quote-order creation once the
-   property size is decided; an attribute for the agreement terms; workflow 45
-   and `ORDER_UTILITIES` into seeds; the planned attributes above; the role
-   grants of workflow 53 with Permissions referenced by id; the three client
-   forms.
+   caps a magic link reads through; `CONTRACT_TERMS` and the three provider
+   fields on document type 17, which the review page reads. Left: wiring
+   quote-order creation once the property size is decided; workflow 45 and
+   `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
+   of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
    end-to-end package on dev-1.
 

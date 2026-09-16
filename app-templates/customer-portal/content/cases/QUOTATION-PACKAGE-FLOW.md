@@ -202,11 +202,24 @@ what it holds.
   whole bag or none of it, so a link carries every attribute on the granted
   record, service ones included. What a link may reveal is decided by what we
   put in attributes, not by the mapping.
-- **The terms of the agreement have no home yet.** The review page renders them
-  from `content`, which is not a field of `Document`, and the
-  `SERVICE_AGREEMENT` type declares no attribute for them, so the page shows
-  its empty-terms note. Decided on 2026-09-16: they become an attribute of the
-  type; who fills it, a template at creation or a manager, is still open.
+- **The terms live in `CONTRACT_TERMS`** on document type 17 since 2026-09-17,
+  one optional string that the attribute editor shows as a multi-line field,
+  and the review page reads it. Three limits, worth stating before anyone
+  treats this page as the contract. The text becomes blocks through an
+  unwritten micro-syntax — `# ` a heading, `- ` an item, a blank line between
+  blocks — so a contract numbered "1. Services" renders as unbroken prose.
+  One string holds one language, so the terms sit unmarked in whatever
+  language they were typed while the rest of the page follows the reader. And
+  one string is one revision: nothing records which wording the client
+  approved, and an edit after approval replaces it silently. The executed
+  instrument is still a PDF elsewhere; this is what the client reads before
+  pressing Approve. Who writes it, a template at creation or a manager, is
+  still open.
+- **The provider party fields are on the type too.** `PROVIDER_LEGAL_NAME`,
+  `PROVIDER_REPRESENTATIVE_NAME` and `PROVIDER_REPRESENTATIVE_JOB_TITLE`, all
+  optional strings, applied in the same write. The page has read them all
+  along; until something fills them the provider card falls back to the
+  organization name.
 - **The portal invitation on the agreement page stays hidden.** It asks whether
   the client Account already has a Core User, and `MAPPINGS_ACCOUNT` does not
   expose `user`. That script is `SYSTEM`-owned and shared by every tenant, so
