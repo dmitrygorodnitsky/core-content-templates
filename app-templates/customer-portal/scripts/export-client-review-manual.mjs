@@ -192,8 +192,8 @@ function manifestFor(template, contract) {
         core.agreementAttributes.providerLegalName,
         core.agreementAttributes.providerRepresentativeName,
         core.agreementAttributes.providerRepresentativeJobTitle,
+        core.agreementAttributes.terms,
       ].concat(core.contractDetails.attributes.map((attribute) => attribute.code)),
-      documentContent: core.rawShape.documentContent,
       accountUser: core.rawShape.accountUser,
     },
     unverified: [
@@ -202,7 +202,7 @@ function manifestFor(template, contract) {
       "get.json takes the record id as ?id= and answers the record itself.",
       "event.json takes { id, event, metadata } and a refusal answers 4xx with message and optionally field errors under fieldErrors, errors or violations.",
       "Introspection lists events per entity type; a per-entry entityId or entityIds, when present, narrows them to that record. Event codes may carry a P_WF:{workflow}: prefix, which is dropped.",
-      "MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, content, states, type and organization.",
+      "MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, states, type and organization.",
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     ],
     constraints: [

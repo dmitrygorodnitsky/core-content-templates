@@ -80,6 +80,7 @@
     { id: "details-closed", label: "Contract details sent — link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
+    { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED" },
     { id: "completion-portal", label: "Completion — ACTIVE with a linked portal user" },
@@ -184,6 +185,7 @@
       attributes.PROVIDER_LEGAL_NAME = { value: "Coastline Winter Services Ltd." };
       attributes.PROVIDER_REPRESENTATIVE_NAME = { value: "Morgan Ellis" };
       attributes.PROVIDER_REPRESENTATIVE_JOB_TITLE = { value: "Contracts Manager" };
+      attributes.CONTRACT_TERMS = { value: TERMS };
     }
     return {
       id: AGREEMENT_ID,
@@ -193,7 +195,6 @@
       organization: { id: 43, code: "COASTLINE_WINTER", nls: { en: { NAME: "Coastline Winter Services" } } },
       states: [{ code: state }],
       attributes: { 17: attributes },
-      content: TERMS,
     };
   }
 
@@ -498,6 +499,10 @@
         break;
       case "agreement-review":
         data = agreementData("SENT_TO_CLIENT", false);
+        break;
+      case "agreement-no-terms":
+        data = agreementData("SENT_TO_CLIENT", false);
+        delete data.documents[0].attributes[17].CONTRACT_TERMS;
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);

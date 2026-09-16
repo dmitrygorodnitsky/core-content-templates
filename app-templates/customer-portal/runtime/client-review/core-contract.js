@@ -76,7 +76,6 @@
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     rawShape: {
       orderLines: "items",
-      documentContent: "content",
       documentOwner: "organization",
       accountUser: "user",
     },
@@ -86,6 +85,7 @@
       effectiveDate: "EFFECTIVE_DATE",
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
+      terms: "CONTRACT_TERMS",
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",

@@ -335,6 +335,21 @@ const N = loadRuntime().CR.normalizer;
     console.log("client-review-check: seed " + seedPath + " not present, details contract not compared");
   }
 
+  const typesPath = path.resolve("../core-ui/scripts/dev/seeds/serviceAgreementTypes.json");
+  if (existsSync(typesPath)) {
+    const types = JSON.parse(await fs.readFile(typesPath, "utf8"));
+    const agreementType = types.typeGroups.flatMap((group) => group.items).find((item) => item.code === contract.agreementType);
+    const terms = agreementType.attributes.find((attribute) => attribute.code === contract.agreementAttributes.terms);
+    assert.ok(terms, contract.agreementAttributes.terms + " is declared on the seeded " + contract.agreementType + " type");
+    assert.equal(terms.className, "java.lang.String", "the terms are one string");
+    assert.equal(terms.required, false, "an agreement may carry none");
+    assert.equal(terms.multiselect, false, "and never more than one");
+    assert.equal(terms.inputFormat, "textarea", "the type asks the attribute editor for a multi-line field");
+    console.log("client-review-check: terms attribute compared with " + path.relative(process.cwd(), typesPath));
+  } else {
+    console.log("client-review-check: seed " + typesPath + " not present, terms attribute not compared");
+  }
+
   const account = CR.fixtures.quotationData().accounts[0];
   assert.deepEqual(plain(normalizer.detailsPrefill(account, fields, "en-CA")), {
     LEGAL_NAME: "Harbourview Strata Corporation",
@@ -355,10 +370,23 @@ const N = loadRuntime().CR.normalizer;
     { kind: "item", text: "One" },
     { kind: "item", text: "Two" },
     { kind: "paragraph", text: "alert(1)" },
-  ], "document content becomes text blocks; markup never reaches the page");
+  ], "written terms become text blocks; markup never reaches the page");
   assert.deepEqual(plain(normalizer.termsBlocks("# Scope\n\nPlain a < b text\n- item")), [
     { kind: "heading", text: "Scope" }, { kind: "paragraph", text: "Plain a < b text" }, { kind: "item", text: "item" },
   ]);
+
+  const termsOf = (mutate) => {
+    const data = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
+    mutate(data.documents[0]);
+    return plain(model(data).agreement.terms);
+  };
+  assert.equal(contract.agreementAttributes.terms, "CONTRACT_TERMS", "the terms are an attribute of the agreement type");
+  assert.ok(termsOf(() => {}).some((block) => block.kind === "heading"), "the page reads its terms from the CONTRACT_TERMS attribute");
+  assert.deepEqual(termsOf((row) => {
+    delete row.attributes[17].CONTRACT_TERMS;
+    row.content = "<h2>Ignored</h2><p>Terms on a field Document does not declare.</p>";
+  }), [], "an agreement without CONTRACT_TERMS has no terms, and a content field on the row is never read");
+  assert.equal(Object.values(contract.rawShape).includes("content"), false, "no part of the contract names a content field");
 }
 
 const EXPECTED_SCENARIOS = {
@@ -369,7 +397,8 @@ const EXPECTED_SCENARIOS = {
   "changes-invalid": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
   "command-failed": ["ready", "quote-review"], decided: ["ready", "quote-review"], "contract-details": ["ready", "contract-details"],
   "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"], "details-closed": ["link-closed", null],
-  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"],
+  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-no-terms": ["ready", "agreement-review"],
+  "agreement-confirm": ["ready", "agreement-review"],
   completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
@@ -513,6 +542,17 @@ async function runScenario(id) {
         const bare = byAttribute(run.mount, "aria-labelledby", "cr-property-661")[0];
         assert.equal(byClass(bare, "cr-breakdown").length, 0, "an option whose server returns neither field shows no breakdown");
         assert.equal(byClass(bare, "cr-total").length, 1, "and still shows its total");
+        const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
+        assert.ok(byClass(panel, "cr-terms__heading").length > 0, "written terms keep their headings");
+        assert.ok(byClass(panel, "cr-terms__paragraph").length > 0, "their paragraphs");
+        assert.equal(byClass(panel, "cr-terms__list").length, 1, "and one list for their consecutive items");
+        assert.ok(!surface(panel).includes(copy.termsEmpty), "and the empty note stays away");
+        break;
+      }
+      case "agreement-no-terms": {
+        const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
+        assert.ok(surface(panel).includes(copy.termsEmpty), "an agreement whose terms were never written keeps the designed empty note");
+        assert.equal(byClass(panel, "cr-terms__heading").length + byClass(panel, "cr-terms__paragraph").length + byClass(panel, "cr-terms__list").length, 0, "and draws no term block");
         break;
       }
       case "contract-details":

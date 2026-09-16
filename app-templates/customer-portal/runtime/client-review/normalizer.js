@@ -583,7 +583,7 @@
         effectiveDate: formatDate(attributeValue(agreement, contract.agreementAttributes.effectiveDate), locale),
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
-        terms: termsBlocks(agreement[contract.rawShape.documentContent]),
+        terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
       },
       names: {
         provider: parties.provider.legalName,

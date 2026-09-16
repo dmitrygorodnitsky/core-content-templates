@@ -1413,7 +1413,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     pricingModels: ["SEASONAL", "MONTHLY", "PER_SERVICE"],
     rawShape: {
       orderLines: "items",
-      documentContent: "content",
       documentOwner: "organization",
       accountUser: "user",
     },
@@ -1423,6 +1422,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       effectiveDate: "EFFECTIVE_DATE",
       termStart: "TERM_START_DATE",
       termEnd: "TERM_END_DATE",
+      terms: "CONTRACT_TERMS",
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
@@ -2254,7 +2254,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         effectiveDate: formatDate(attributeValue(agreement, contract.agreementAttributes.effectiveDate), locale),
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
-        terms: termsBlocks(agreement[contract.rawShape.documentContent]),
+        terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
       },
       names: {
         provider: parties.provider.legalName,
@@ -3688,6 +3688,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "details-closed", label: "Contract details sent — link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
+    { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED" },
     { id: "completion-portal", label: "Completion — ACTIVE with a linked portal user" },
@@ -3792,6 +3793,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       attributes.PROVIDER_LEGAL_NAME = { value: "Coastline Winter Services Ltd." };
       attributes.PROVIDER_REPRESENTATIVE_NAME = { value: "Morgan Ellis" };
       attributes.PROVIDER_REPRESENTATIVE_JOB_TITLE = { value: "Contracts Manager" };
+      attributes.CONTRACT_TERMS = { value: TERMS };
     }
     return {
       id: AGREEMENT_ID,
@@ -3801,7 +3803,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       organization: { id: 43, code: "COASTLINE_WINTER", nls: { en: { NAME: "Coastline Winter Services" } } },
       states: [{ code: state }],
       attributes: { 17: attributes },
-      content: TERMS,
     };
   }
 
@@ -4106,6 +4107,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         break;
       case "agreement-review":
         data = agreementData("SENT_TO_CLIENT", false);
+        break;
+      case "agreement-no-terms":
+        data = agreementData("SENT_TO_CLIENT", false);
+        delete data.documents[0].attributes[17].CONTRACT_TERMS;
         break;
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);
