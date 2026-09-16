@@ -429,9 +429,44 @@ planned, reviewed, applied, and read back from the server.
   all. And seven of the eight locales still name the field in the singular,
   left over from the rewrite; only `en` reads "Property Addresses", while the
   repository template carries plural strings for all eight.
-- **Nothing has executed.** The form contract still blocks the flow, so none of
-  this code has run. Its first run is also the first test of
+- **Script 169 is unusable until the CMS nodes are evicted.** Our edited
+  content does not compile. The platform prepares a workflow hook when the form
+  is created, so every submit answered `500 Execution error` and rolled the
+  whole transaction back. Restoring the 2026-09-04 content byte for byte did
+  not help: `script/clear-compile-cache` exists only on `core`, whose nodes are
+  not the ones executing the hook (`app-1-core-cms`, `app-3-core-cms`), and
+  `core-cms` answers `404` for that path. The way out was a new code: script
+  201 `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V2`, a byte-identical copy of the
+  2026-09-04 content, which compiles fresh. Workflow 49 is bound to it.
+- **Our property creator has still never run**, because the workflow runs the
+  2026-09-04 content through that copy. Its first run is also the first test of
   `IResourceTypeManager`, which no other script on dev-1 uses.
+
+## The first end-to-end run, 2026-09-16
+
+- **The chain works.** Form 38, submitted from the published page with two
+  addresses, went `INITIAL → SUBMITTED → NOTIFIED → PROCESSED` and produced
+  account 697 and addresses 713 and 714, one per submitted address. The
+  region check, the manager notification and the requester e-mail all ran.
+- **But `form/submit.json` no longer fires the first transition.** Every form
+  created since then stays in `INITIAL`. Tested against each suspicion in
+  turn: with workflow 49 reverted to its exact 2026-09-04 shape, with the
+  `SUBMITTED` hook emptied, with either script bound, and with an
+  authenticated caller holding all eight workflow permissions including
+  `INITIAL-SUBMITTED`. The form type carries no submit-event field to lose
+  either: its whole field list is `children, id, code, nls, created, image,
+  isAbstract, optimistic, organization, parents, updated, updatedBy,
+  workflow`. Sending `INITIAL-SUBMITTED` with a token runs the chain
+  immediately, and an anonymous `form/{id}/send-event.json` answers `401`, so
+  the browser cannot do it instead. Forms 17 to 19 of 2026-09-04 did go
+  through, so something outside our reach changed.
+- **Call shapes worth keeping:** `form/{id}/send-event.json` takes `event` as a
+  query parameter, `audit/revisions.json` is `GET` while `audit/get.json` is
+  `POST`, and a workflow apply that touches permissions fails intermittently
+  on `/api/permission/list.json`; `--no-grant` and a retry get through.
+- **Junk to delete on dev-1:** forms 25, 36, 37, 39 and 40, all probes. Form 38
+  with account 697 and addresses 713 and 714 is the real run and is worth
+  keeping.
 
 ## Questions for the team
 
@@ -455,3 +490,10 @@ planned, reviewed, applied, and read back from the server.
    back.
 7. Questions 1 to 4 are now ours to decide, not to ask: workflow 49 and its six
    scripts became ours on 2026-09-11 and are extracted into `core-ui`.
+8. Why does `core-cms/api/form/submit.json` no longer move a form out of its
+   initial state? Either restore that, or tell us what should fire the first
+   event now, given that an anonymous caller is refused on `send-event`.
+9. How is the compiled-script cache evicted on the CMS nodes? Saving a new
+   version does not reach them and `script/clear-compile-cache` exists only on
+   `core`. As it stands, a script that fails to compile once is dead until the
+   nodes restart, and a fixed version never takes effect.

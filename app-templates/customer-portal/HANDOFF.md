@@ -638,7 +638,12 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   26; `WINTER_SERVICE_PROPERTY_CREATOR` is script 200 on `CORE-RM`. The
   coordinate attributes landed on `PROPERTY` (153), now `optimistic` 7, and the
   hidden `PROPERTY_COORDINATES` followed on the form once its address row was
-  back, leaving `GET_QUOTE_` at `optimistic` 16. Nothing has executed yet.
+  back, leaving `GET_QUOTE_` at `optimistic` 16.
+- The flow ran end to end for the first time: form 38 reached `PROCESSED` and
+  produced account 697 and addresses 713 and 714. Two blockers came out of it,
+  both in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`: `submit.json` no longer
+  fires the first transition, and script 169 stays dead until the CMS nodes
+  evict its compiled class, so workflow 49 is bound to the copy, script 201.
 
 ### Live read path
 
@@ -801,8 +806,9 @@ checkout before treating any of them as broken.
 169 cannot turn into an account, and its page answers `404`; nothing can be
 shown live. The team restores the form type. In order:
 
-1. **The backend:** restore the `GET_QUOTE_` form type, whose page is back
-   already, make Core documents readable, fix the core-ui `permissions`
+1. **The backend:** say why `form/submit.json` no longer fires the first
+   transition, evict the compiled script cache on the CMS nodes so script 169
+   can run again, make Core documents readable, fix the core-ui `permissions`
    mapping, and answer `CUSTOMER-SCOPE-GENERIC-API.md` §5.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
