@@ -452,6 +452,16 @@ the dev-1 script list on 2026-09-11.
   link through an in-memory `MAGIC_LINK_ISSUER` role on the system user carrying
   `P_GRANT_W` and `P_ACCT_R`; the guide asks for a persisted service user with a
   narrow role instead.
+- **A link cannot be issued over REST at all**, tried on 2026-09-17 with every
+  permission in hand. `core-bill/api/grant/issue.json` answers `500 SYSTEM user
+  and organization are required to manage mapping definitions`, with the
+  mappings inline and without them alike, because issuing resolves a mapping
+  definition and there is not one on dev-1: `entity-mapping-definition` is
+  empty in `core`, `core-bill` and `core-acct`. Under `X-Organization-Code:
+  SYSTEM` it answers `Access grants cannot be managed in SYSTEM organization`
+  instead. So issuing is a script operation running as the system user inside
+  the tenant, which is exactly what the quotation creator does; a client link
+  for orders and an agreement has to be issued the same way.
 
 ## 7. Settled product decisions
 
