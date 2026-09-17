@@ -1,0 +1,504 @@
+{
+ "code": "EQUIPMENT_LIFECYCLE",
+ "initialState": {
+  "id": 176,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "ar": {
+   "DESCRIPTION": "<p class=\"ql-direction-rtl ql-align-right\"></p>"
+  },
+  "en": {
+   "NAME": "Equipment Lifecycle",
+   "DESCRIPTION": "<p>Manages the lifecycle of equipment from initial setup through operational use, maintenance, retirement, and deletion.</p>"
+  },
+  "he": {
+   "DESCRIPTION": "<p class=\"ql-direction-rtl ql-align-right\"></p>"
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 4,
+  "id": 8,
+  "code": "SERVICE_WAND_WINTER_SERVICES"
+ },
+ "id": 37,
+ "states": [
+  {
+   "style": {
+    "xPos": 1337,
+    "yPos": 365.61238357850215
+   },
+   "id": 179,
+   "code": "ACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "<p>The equipment is operational and available for assignment and use in applicable business operations.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 361,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Deactivate",
+       "DESCRIPTION": "<p>Removes the equipment from current operational use without retiring or deleting its record.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 178,
+       "code": "INACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 352,
+     "code": "ACTIVE-MAINTENANCE_REQUIRED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark Maintenance Required",
+       "DESCRIPTION": "<p>Marks the equipment as requiring inspection, servicing, or repair before it can return to operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 182,
+       "code": "MAINTENANCE_REQUIRED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1339.8151433419405,
+    "yPos": 62.67258015492668
+   },
+   "id": 180,
+   "code": "ARCHIVED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Archived",
+     "DESCRIPTION": "<p>The equipment has been permanently retired from operational use but is retained for historical, reporting, and compliance purposes.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 355,
+     "code": "ARCHIVED-DELETED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Delete",
+       "DESCRIPTION": "<p>Logically deletes the archived equipment record according to applicable retention and deletion rules.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 181,
+       "code": "DELETED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1877.2667214668004,
+    "yPos": 65.75077119904445
+   },
+   "id": 181,
+   "code": "DELETED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Deleted",
+     "DESCRIPTION": "<p>The equipment record has been logically deleted and is no longer available for normal business operations.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "xPos": 898.6982309173568,
+    "yPos": 344.2341339288808
+   },
+   "id": 183,
+   "code": "FAILED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Failed",
+     "DESCRIPTION": "<p>The equipment has failed or has been determined to be unfit for operational use until it is repaired or retired.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 363,
+     "code": "FAILED-UNDER_MAINTENANCE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Start Repair",
+       "DESCRIPTION": "<p>Starts repair work intended to restore failed equipment to an operational condition.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 184,
+       "code": "UNDER_MAINTENANCE"
+      }
+     ]
+    },
+    {
+     "id": 354,
+     "code": "FAILED-ARCHIVED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Archive",
+       "DESCRIPTION": "<p>Permanently retires failed equipment when it will not be repaired or returned to operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 180,
+       "code": "ARCHIVED"
+      }
+     ]
+    },
+    {
+     "id": 356,
+     "code": "FAILED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      }
+     },
+     "targets": [
+      {
+       "id": 179,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 397.1508756993136,
+    "yPos": 73.50052135866073
+   },
+   "id": 178,
+   "code": "INACTIVE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Inactive",
+     "DESCRIPTION": "<p>The equipment has been configured and retained in the system but is not currently available for operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 351,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "<p>Activates the equipment and makes it available for applicable operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 179,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 360,
+     "code": "INACTIVE-ARCHIVED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Archive",
+       "DESCRIPTION": "<p>Permanently retires inactive equipment from operational use while preserving its historical information.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 180,
+       "code": "ARCHIVED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": -113.45140381685488,
+    "yPos": 78.7822831090889
+   },
+   "id": 176,
+   "code": "INITIAL",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>The equipment record has been created but its initial setup has not yet been completed.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 364,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Complete Setup",
+       "DESCRIPTION": "<p>Completes the initial equipment setup after the required information has been provided and marks the equipment as ready for future activation.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 178,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 1866.805828450956,
+    "yPos": 364.55202976197353
+   },
+   "id": 182,
+   "code": "MAINTENANCE_REQUIRED",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Maintenance Required",
+     "DESCRIPTION": "<p>The equipment has been identified as requiring inspection, servicing, or repair and should not be assigned for operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 362,
+     "code": "MAINTENANCE_REQUIRED-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Clear Maintenance Requirement",
+       "DESCRIPTION": "<p>Clears the maintenance requirement after inspection confirms that the equipment is safe and ready for operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 179,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "id": 353,
+     "code": "MAINTENANCE_REQUIRED-FAILED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark as Failed",
+       "DESCRIPTION": "<p>Records that the equipment has been assessed as failed or unfit for continued operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 183,
+       "code": "FAILED"
+      }
+     ]
+    },
+    {
+     "id": 357,
+     "code": "MAINTENANCE_REQUIRED-UNDER_MAINTENANCE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Start Maintenance",
+       "DESCRIPTION": "<p>Starts inspection, servicing, or repair work for the equipment.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 184,
+       "code": "UNDER_MAINTENANCE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 398.04266299009697,
+    "yPos": 356.13059576359444
+   },
+   "id": 184,
+   "code": "UNDER_MAINTENANCE",
+   "nls": {
+    "ar": {
+     "DESCRIPTION": "<p></p>"
+    },
+    "en": {
+     "NAME": "Under Maintenance",
+     "DESCRIPTION": "<p>The equipment is currently undergoing inspection, servicing, or repair and is unavailable for operational use.</p>"
+    },
+    "he": {
+     "DESCRIPTION": "<p></p>"
+    }
+   },
+   "events": [
+    {
+     "id": 358,
+     "code": "UNDER_MAINTENANCE-FAILED",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Mark as Failed",
+       "DESCRIPTION": "<p>Records that maintenance did not restore the equipment to an operational condition.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 183,
+       "code": "FAILED"
+      }
+     ]
+    },
+    {
+     "id": 359,
+     "code": "UNDER_MAINTENANCE-ACTIVE",
+     "nls": {
+      "ar": {
+       "DESCRIPTION": "<p></p>"
+      },
+      "en": {
+       "NAME": "Complete Maintenance",
+       "DESCRIPTION": "<p>Completes the maintenance process and returns the equipment to active operational use.</p>"
+      },
+      "he": {
+       "DESCRIPTION": "<p></p>"
+      }
+     },
+     "targets": [
+      {
+       "id": 179,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

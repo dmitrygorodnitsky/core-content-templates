@@ -1,0 +1,196 @@
+{
+  "classification": "public-authored",
+  "deployment": {
+    "canonicalOrigin": "https://lumabeautystudio.com",
+    "allowedOrigins": [
+      "https://lumabeautystudio.com",
+      "https://booking.lumabeautystudio.com"
+    ],
+    "allowCanonicalQuery": false,
+    "assetBase": "/assets/customer-portal",
+    "publicScriptUrl": "/assets/customer-portal/seo-public.js"
+  },
+  "content": {
+    "brand": {
+      "name": "Luma Beauty Studio",
+      "url": "https://lumabeautystudio.com/"
+    },
+    "vertical": {
+      "name": "Beauty salon",
+      "slug": "beauty"
+    },
+    "meta": {
+      "title": "Hair, skin, and beauty care in Brooklyn | Luma Beauty Studio",
+      "description": "A Brooklyn beauty studio for considered cuts, luminous color, and skincare shaped around your real routine.",
+      "h1": "Beauty that fits your real life in Brooklyn, New York",
+      "locality": "Brooklyn, New York",
+      "localitySlug": "brooklyn",
+      "serviceArea": "Williamsburg, Greenpoint, Fort Greene, and Clinton Hill",
+      "canonical": "https://lumabeautystudio.com/beauty/{locality-slug}"
+    },
+    "hero": {
+      "service": "A warm, detail-led beauty studio for the cut, color, skin, and finishing work that makes the everyday feel more like you.",
+      "note": "Come with a reference, a question, or simply a little time for yourself.",
+      "offer": null,
+      "media": {
+        "url": "https://lumabeautystudio.com/assets/customer-portal/luma-beauty-studio-hero.png",
+        "alt": "Blush-toned Luma Beauty Studio styling station with mirror, chair, flowers, and beauty tools"
+      }
+    },
+    "services": [
+      {
+        "id": "lbs-signature-cut",
+        "name": "Signature cut",
+        "benefit": "A shape built around your texture, schedule, and how you actually like to style at home.",
+        "priceFrom": null,
+        "destination": "https://booking.lumabeautystudio.com/services/signature-cut"
+      },
+      {
+        "id": "lbs-lived-in-color",
+        "name": "Lived-in color",
+        "benefit": "Dimensional color planned for softness now and a graceful grow-out later.",
+        "priceFrom": null,
+        "destination": "https://booking.lumabeautystudio.com/services/lived-in-color"
+      },
+      {
+        "id": "lbs-skin-reset",
+        "name": "Skin reset",
+        "benefit": "A focused facial session that starts with what your skin and routine need this season.",
+        "priceFrom": null,
+        "destination": "https://booking.lumabeautystudio.com/services/skin-reset"
+      }
+    ],
+    "trust": [
+      {
+        "label": "Consultation",
+        "value": "Before every service",
+        "count": null
+      },
+      {
+        "label": "Focus",
+        "value": "Hair and skin together",
+        "count": null
+      },
+      {
+        "label": "Finish",
+        "value": "Wearable at home",
+        "count": null
+      }
+    ],
+    "how": [
+      {
+        "title": "Start with your routine",
+        "description": "Tell us how you wear your hair, what has not been working, and what you want to keep simple."
+      },
+      {
+        "title": "Choose your appointment",
+        "description": "Select a service that gives the studio enough time to do the work with care."
+      },
+      {
+        "title": "Make the look yours",
+        "description": "Your session is guided by your features, preferences, and the level of upkeep you actually want."
+      },
+      {
+        "title": "Leave with a plan",
+        "description": "Get clear, practical guidance for styling, skin, and the right moment to return."
+      }
+    ],
+    "proof": {
+      "title": "The small details are the point",
+      "items": [
+        {
+          "title": "An honest starting point",
+          "description": "A consultation makes room for your references, your maintenance comfort, and a clear recommendation."
+        },
+        {
+          "title": "Designed to be lived in",
+          "description": "The goal is not a one-day finish. It is a result that still feels like you on an ordinary Tuesday."
+        },
+        {
+          "title": "A studio for the whole routine",
+          "description": "Hair and skincare appointments can be planned around the same vision rather than treated as separate chores."
+        }
+      ]
+    },
+    "pricing": {
+      "note": "The right service and total are confirmed in the booking flow after you select the work you want done.",
+      "rows": []
+    },
+    "area": {
+      "cities": [
+        "Williamsburg",
+        "Greenpoint",
+        "Fort Greene",
+        "Clinton Hill"
+      ],
+      "note": "A beauty studio for Brooklyn appointments that deserve a little more thought than a quick errand."
+    },
+    "reviews": [],
+    "faq": [
+      {
+        "id": "consultation",
+        "question": "Can I book if I am not sure which service I need?",
+        "answer": "Yes. Start with the closest match to your goal and use the booking notes to share a reference or question. The consultation refines the plan before work begins."
+      },
+      {
+        "id": "color-preparation",
+        "question": "What should I share before a color appointment?",
+        "answer": "Include a recent photo in natural light, a few references, and any recent color history so the studio can plan the appointment responsibly."
+      },
+      {
+        "id": "same-day-services",
+        "question": "Can hair and skincare be planned together?",
+        "answer": "Yes. Choose the relevant services in booking and the studio can help plan the order and timing of a longer visit."
+      },
+      {
+        "id": "total-before-booking",
+        "question": "When will I see the total?",
+        "answer": "The booking experience confirms the selected service and total before you finalize the appointment."
+      }
+    ],
+    "ctas": {
+      "primaryAction": "seo.cta.book",
+      "primary": {
+        "label": "Find your appointment",
+        "destination": "https://booking.lumabeautystudio.com/"
+      },
+      "secondaryAction": "seo.cta.services",
+      "secondary": {
+        "label": "See services",
+        "destination": "#seo-services"
+      },
+      "call": {
+        "label": "Call the studio",
+        "destination": "tel:+13475550184"
+      }
+    },
+    "final": {
+      "heading": "Your routine, made more considered",
+      "body": "Find your next hair or skin appointment in {locality}."
+    },
+    "footer": {
+      "phone": "+13475550184",
+      "email": "hello@lumabeautystudio.com",
+      "hours": [
+        {
+          "days": "Tuesday to Friday",
+          "hours": "10:00 AM to 8:00 PM"
+        },
+        {
+          "days": "Saturday and Sunday",
+          "hours": "10:00 AM to 6:00 PM"
+        }
+      ],
+      "legal": [
+        {
+          "label": "Privacy",
+          "url": "https://lumabeautystudio.com/privacy"
+        },
+        {
+          "label": "Booking policy",
+          "url": "https://lumabeautystudio.com/booking-policy"
+        }
+      ]
+    }
+  }
+}

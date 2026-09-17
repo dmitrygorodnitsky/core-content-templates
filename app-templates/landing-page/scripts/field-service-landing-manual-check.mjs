@@ -1,0 +1,174 @@
+import assert from "node:assert/strict";
+import crypto from "node:crypto";
+import { execFileSync } from "node:child_process";
+import fs from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
+import { fileURLToPath } from "node:url";
+import { exportFieldServiceLandingManual } from "./export-field-service-landing-manual.mjs";
+
+const scriptsDir = path.dirname(fileURLToPath(import.meta.url));
+const landingRoot = path.resolve(scriptsDir, "..");
+const manualRoot = path.join(landingRoot, "dist/manual-upload");
+const expectedCodes = [
+  "FIELD_SERVICE_LANDING",
+  "FIELD_SERVICE_LANDING_HEADER",
+  "FIELD_SERVICE_LANDING_HERO",
+  "FIELD_SERVICE_LANDING_CONNECTED_OPERATIONS",
+  "FIELD_SERVICE_LANDING_OPERATIONAL_NEEDS",
+  "FIELD_SERVICE_LANDING_PLATFORM_CAPABILITIES",
+  "FIELD_SERVICE_LANDING_MOBILE_WORKFORCE",
+  "FIELD_SERVICE_LANDING_AI_AUTOMATION",
+  "FIELD_SERVICE_LANDING_GROWTH_STAGES",
+  "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES",
+  "FIELD_SERVICE_LANDING_PLATFORM_COMPARISON",
+  "FIELD_SERVICE_LANDING_VISIBILITY_REPORTING_INTEGRATIONS",
+  "FIELD_SERVICE_LANDING_FAQ",
+  "FIELD_SERVICE_LANDING_FINAL_CTA",
+  "FIELD_SERVICE_LANDING_FOOTER",
+];
+const expectedNames = [
+  "Field Service Landing",
+  "Field Service Landing | Header",
+  "Field Service Landing | Hero",
+  "Field Service Landing | Connected Operations",
+  "Field Service Landing | Operational Needs",
+  "Field Service Landing | Platform Capabilities",
+  "Field Service Landing | Mobile Workforce",
+  "Field Service Landing | AI Automation",
+  "Field Service Landing | Growth Stages",
+  "Field Service Landing | Supported Industries",
+  "Field Service Landing | Platform Comparison",
+  "Field Service Landing | Visibility, Reporting & Integrations",
+  "Field Service Landing | FAQ",
+  "Field Service Landing | Final CTA",
+  "Field Service Landing | Footer",
+];
+
+const readJson = async (dir, name) => JSON.parse(await fs.readFile(path.join(dir, name), "utf8"));
+const digest = (value) => crypto.createHash("sha256").update(value).digest("hex");
+
+const listFiles = async (dir, prefix = "") => {
+  const files = [];
+  for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+    const relative = path.posix.join(prefix, entry.name);
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...await listFiles(full, relative));
+    else if (entry.isFile()) files.push(relative);
+  }
+  return files.sort();
+};
+
+const treeHashes = async (dir) => {
+  const out = {};
+  for (const file of await listFiles(dir)) out[file] = digest(await fs.readFile(path.join(dir, file)));
+  return out;
+};
+
+const assertNoLocalPaths = async (dir) => {
+  const forbidden = /(?:\/Users\/|Downloads|\.codex\/attachments|[A-Za-z]:\\Users\\)/;
+  for (const file of await listFiles(dir)) {
+    if (!/\.(?:json|md|html|css|js|mjs|txt)$/.test(file)) continue;
+    const text = await fs.readFile(path.join(dir, file), "utf8");
+    assert.doesNotMatch(text, forbidden, `${file} must not contain an absolute local path`);
+  }
+};
+
+const first = await fs.mkdtemp(path.join(manualRoot, ".field-service-check-a-"));
+const second = await fs.mkdtemp(path.join(manualRoot, ".field-service-check-b-"));
+
+try {
+  await exportFieldServiceLandingManual({ outputDir: first, quiet: true });
+  await exportFieldServiceLandingManual({ outputDir: second, quiet: true });
+
+  const payload = await readJson(first, "cms-family.payload.json");
+  const manifest = await readJson(first, "manual-export-manifest.json");
+  const composition = await readJson(first, "composition.resolved.json");
+  const preview = await fs.readFile(path.join(first, "preview.html"), "utf8");
+  const templates = [payload.root, ...(payload.children || [])];
+  const rootParameters = new Map(payload.root.parameters.map((parameter) => [parameter.code, parameter.type]));
+  const hero = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_HERO");
+  const aiAutomation = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_AI_AUTOMATION");
+  const supportedIndustries = templates.find((template) => template.code === "FIELD_SERVICE_LANDING_SUPPORTED_INDUSTRIES");
+
+  assert.equal(payload.schemaVersion, 1);
+  assert.equal(payload.root.code, "FIELD_SERVICE_LANDING");
+  assert.deepEqual(templates.map((template) => template.code), expectedCodes);
+  assert.deepEqual(templates.map((template) => template.nls?.en?.NAME), expectedNames);
+  assert.equal(payload.children.every((template) => template.code.startsWith("FIELD_SERVICE_LANDING_")), true);
+  assert.deepEqual(manifest.templateCodes, expectedCodes);
+  assert.equal(payload.children.length, 14);
+  assert.equal(templates.reduce((count, template) => count + template.parameters.length, 0), 744);
+  assert.equal(composition.appliedContentCodes.length, 294);
+  assert.equal(composition.contentSource, "content/field-service-operations/parameter-values.json");
+  assert.equal((await listFiles(path.join(first, "children"))).filter((file) => file.endsWith("template.json")).length, 14);
+  assert.doesNotMatch(preview, /\$\{[A-Z0-9_]+(?:@[A-Z0-9_]+)?\}/, "preview must resolve every CMS marker");
+  assert.doesNotMatch(JSON.stringify(payload), /\{\{[A-Za-z0-9_-]+\}\}/, "payload must resolve every block marker");
+  assert.match(payload.root.head, /<title>\$\{ROOT_META_TITLE\}<\/title>/);
+  assert.match(payload.root.head, /content="\$\{ROOT_META_DESCRIPTION\}"/);
+  assert.equal(rootParameters.get("ROOT_META_TITLE"), "STRING");
+  assert.equal(rootParameters.get("ROOT_META_DESCRIPTION"), "STRING");
+  assert.match(payload.root.head, /flag-icons\.min\.css/);
+  assert.match(payload.root.head, /\/core\/image\/\$\{FAVICON_IMG@IMAGE\}\/get\/\$\{FAVICON_IMG_NAME\}/);
+  assert.match(payload.root.head, /FAVICON_LIGHT_IMG@IMAGE/);
+  assert.match(payload.root.head, /FAVICON_DARK_IMG@IMAGE/);
+  assert.equal(rootParameters.get("FAVICON_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_IMG_NAME"), "STRING");
+  assert.equal(rootParameters.get("FAVICON_LIGHT_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_LIGHT_IMG_NAME"), "STRING");
+  assert.equal(rootParameters.get("FAVICON_DARK_IMG"), "IMAGE");
+  assert.equal(rootParameters.get("FAVICON_DARK_IMG_NAME"), "STRING");
+  assert.ok(hero, "hero template must exist");
+  const heroPlaceholderSize = hero.parameters.find((parameter) => parameter.code.endsWith("_PLACEHOLDER_SIZE"));
+  assert.deepEqual(heroPlaceholderSize?.value, { en: "1000 × 1200" });
+  assert.equal(hero.parameters.some((parameter) => parameter.code.endsWith("_PLACEHOLDER_LABEL")), false);
+  assert.doesNotMatch(hero.html, /PLACEHOLDER_LABEL/);
+  assert.ok(aiAutomation, "AI automation template must exist");
+  const aiPlaceholderSize = aiAutomation.parameters.find((parameter) => parameter.code.endsWith("_MEDIA_PLACEHOLDER_SIZE"));
+  assert.deepEqual(aiPlaceholderSize?.value, { en: "1280 × 800" });
+  assert.equal(aiAutomation.parameters.some((parameter) => parameter.code.endsWith("_MEDIA_PLACEHOLDER_LABEL")), false);
+  assert.doesNotMatch(aiAutomation.html, /MEDIA_PLACEHOLDER_LABEL/);
+  assert.ok(supportedIndustries, "supported-industries template must exist");
+  const industriesEyebrow = supportedIndustries.parameters.find((parameter) => parameter.code.endsWith("_EYEBROW"));
+  const industryHints = supportedIndustries.parameters.filter((parameter) => parameter.code.match(/_SLOT_(?:0[1-9]|1[0-3])_PHOTO$/));
+  assert.equal(industriesEyebrow?.type, "LOCALIZED_STRING_SS");
+  assert.equal(industryHints.length, 13);
+  for (const hint of industryHints) assert.deepEqual(hint.value, { en: " " }, `${hint.code} must default to one space`);
+  assert.doesNotMatch(supportedIndustries.html, /Spare slots/);
+  assert.equal(supportedIndustries.parameters.some((parameter) => parameter.code.match(/_SLOT_(?:14|15|16|17|18|19|20)_/)), false);
+  assert.match(payload.root.javascript, /document\.body\.setAttribute\('dir'/);
+  assert.match(payload.root.javascript, /const FALLBACK_LOCALES = \[/);
+  assert.match(payload.root.javascript, /fetch\('\/core\/api\/language\/active\.json'/);
+  assert.match(payload.root.javascript, /\.finally\(rewriteLinks\)/);
+  for (const template of templates) {
+    for (const parameter of template.parameters) {
+      assert.notEqual(parameter.value, null, `${template.code}.${parameter.code} must have a backend-safe default`);
+      assert.notEqual(parameter.value, "", `${template.code}.${parameter.code} must have a backend-safe default`);
+      if (parameter.type === "IMAGE") {
+        assert.match(parameter.value, /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i, `${parameter.code} IMAGE value must be a UUID`);
+      }
+    }
+  }
+  await assertNoLocalPaths(first);
+  assert.deepEqual(await treeHashes(first), await treeHashes(second), "repeat exports must be byte-for-byte deterministic");
+
+  const uploadPreview = execFileSync(process.execPath, [
+    path.resolve(landingRoot, "../../docs/cms-components/lab-ui/scripts/upload-cms-family.mjs"),
+    "--out", first,
+    "--base-url", "https://dev-1.servicewand.com/core",
+    "--org", "SYSTEM",
+    "--dry-run",
+  ], {
+    cwd: path.resolve(landingRoot, "../.."),
+    encoding: "utf8",
+  });
+  assert.match(uploadPreview, /root:\s+FIELD_SERVICE_LANDING/);
+  assert.match(uploadPreview, /template count:\s+15/);
+  assert.match(uploadPreview, /CMS base: https:\/\/dev-1\.servicewand\.com\/core-cms/);
+  assert.match(uploadPreview, /Org:\s+SYSTEM/);
+  assert.match(uploadPreview, /No network writes were made/);
+  console.log(`field-service-landing-manual-check ok: ${expectedCodes.length} templates, 294 content values, backend-safe defaults, deterministic export, dev-1 dry-run payload ready`);
+} finally {
+  await fs.rm(first, { recursive: true, force: true });
+  await fs.rm(second, { recursive: true, force: true });
+}

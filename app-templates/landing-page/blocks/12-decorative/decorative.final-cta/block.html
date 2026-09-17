@@ -1,0 +1,33 @@
+<!-- lab-ui block · decorative.final-cta
+     Bottom-of-page CTA section. Dark card surface with mono eyebrow, large H2,
+     supporting copy and the canonical ServiceWand CTA pair.
+-->
+<section class="final-cta-section" data-block="decorative.final-cta">
+  <div class="final-cta-container">
+    <div class="final-cta-card">
+      <div class="final-cta-inner">
+        <p class="final-cta-eyebrow">{{eyebrow}}</p>
+        <h2 class="final-cta-title">{{title}}</h2>
+        <div class="final-cta-copy">
+          <p>{{body_1}}</p>
+          <p><strong>{{emphasis}}</strong></p>
+          <p>{{body_2}}</p>
+        </div>
+        <div class="final-cta-actions">
+          <a class="btn btn-primary btn-primary-ring" href="{{primary_href}}">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            {{primary_label}}
+          </a>
+          <a class="btn btn-secondary-filled" href="{{secondary_href}}">
+            <svg class="btn-star" width="16" height="16" viewBox="0 0 21 21" fill="currentColor" aria-hidden="true">
+              <path d="M10.5 0L13.4698 7.53015L21 10.5L13.4698 13.4698L10.5 21L7.53015 13.4698L0 10.5L7.53015 7.53015L10.5 0Z"/>
+            </svg>
+            {{secondary_label}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,149 @@
+{
+  "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ",
+  "nls": {
+    "en": {
+      "NAME": "Customer experience | FAQ"
+    }
+  },
+  "templateLanguage": "JTE",
+  "parent": {
+    "code": "CUSTOMER_EXPERIENCE_LANDING"
+  },
+  "children": [],
+  "head": "",
+  "html": "<section class=\"seo-sec\" data-module=\"seo-faq\" data-visual-id=\"seo-faq\" data-state=\"ready\"><div class=\"seo-sec__head\"><span class=\"eyebrow\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_EYEBROW@LOCALIZED_STRING_SS}</span><h2 class=\"seo-sec__title\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_TITLE@LOCALIZED_STRING_SS}</h2></div><div class=\"seo-faq\" itemscope itemtype=\"https://schema.org/FAQPage\"><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[0]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"0\" data-faq-answer=\"${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[1]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"1\" data-faq-answer=\"${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[2]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"2\" data-faq-answer=\"${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div><div class=\"seo-faq__item\" itemscope itemprop=\"mainEntity\" itemtype=\"https://schema.org/Question\" data-bind=\"cms.faq[3]\"><button class=\"seo-faq__q\" data-action=\"seo.faq.toggle\" data-id=\"3\" data-faq-answer=\"${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_ANSWER@LOCALIZED_STRING_SS}\" aria-expanded=\"false\"><span itemprop=\"name\">${CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_QUESTION@LOCALIZED_STRING_SS}</span><span class=\"seo-faq__chev\">+</span></button></div></div></section>",
+  "css": "/* ---------- 9 · FAQ ---------- */\n.seo-faq { max-width: 720px; display: flex; flex-direction: column; gap: 8px; }\n.seo-faq__item { background: rgba(var(--glass),.5); border: 1px solid rgba(var(--hair),.07); border-radius: var(--radius-md); overflow: hidden; }\n.seo-faq__item.is-open { border-color: rgba(var(--accent-rgb),.3); }\n.seo-faq__q {\n  display: flex; justify-content: space-between; align-items: center; gap: 14px; width: 100%;\n  background: none; border: 0; font: inherit; text-align: left; cursor: pointer;\n  padding: 14px 18px; font-weight: 700; font-size: 14px; color: var(--ink);\n}\n.seo-faq__chev { color: var(--accent); font-weight: 800; font-size: 16px; flex: none; }\n.seo-faq__a { padding: 0 18px 15px; }\n.seo-faq__a p { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }",
+  "javascript": "",
+  "parameters": [
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_EYEBROW",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq eyebrow",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_TITLE",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq title",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 1 question",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_1_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 1 answer",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 2 question",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_2_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 2 answer",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 3 question",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_3_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 3 answer",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_QUESTION",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 4 question",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    },
+    {
+      "code": "CUSTOMER_EXPERIENCE_LANDING_11_FAQ_ITEM_4_ANSWER",
+      "type": "LOCALIZED_STRING_SS",
+      "nls": {
+        "en": {
+          "NAME": "Customer experience landing 11 faq item 4 answer",
+          "DESCRIPTION": "Customer experience landing section value."
+        }
+      },
+      "value": {
+        "en": ""
+      }
+    }
+  ]
+}

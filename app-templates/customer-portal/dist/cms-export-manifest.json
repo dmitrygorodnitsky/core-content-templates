@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "surfaces": {
+    "portal": {
+      "block": "cms/block.json",
+      "template": "cms/root-template.html",
+      "package": "portal-cms-package.json",
+      "preview": "customer-portal-preview.html",
+      "auth": "configured",
+      "router": "configured",
+      "entry": "../runtime/src/app.js",
+      "styles": [
+        "../runtime/styles/tokens.css",
+        "../runtime/styles/base.css",
+        "../runtime/styles/shell.css",
+        "../runtime/styles/components.css",
+        "../runtime/styles/routes.css",
+        "../runtime/styles/responsive.css",
+        "../runtime/styles/seo.css"
+      ],
+      "sha256": "9645cd22582370f4eda88b85a7330f7877e9fd34a4a7ddc97a5f5d5bef792fd8",
+      "packageSha256": "f5731b74870f8d296906fa0f837b7e0e4754c09b1648fab2ac596df54c398bcd"
+    },
+    "publicSeo": {
+      "block": "cms/seo-public-block.json",
+      "schema": "cms/seo-public.schema.json",
+      "template": "cms/seo-public-root-template.html",
+      "package": "public-seo-cms-package.json",
+      "preview": "public-seo-preview.html",
+      "previewClassification": "public-authored-test",
+      "auth": "public",
+      "router": "document",
+      "entry": "../public/src/seo-public.js",
+      "styles": [
+        "../runtime/styles/tokens.css",
+        "../runtime/styles/base.css",
+        "../runtime/styles/components.css",
+        "../runtime/styles/seo.css"
+      ],
+      "sha256": "a04bd9c23175ce5f0096095e104975012280df27a295401e7e118272bbd9d8f2",
+      "packageSha256": "65e1039d04be48f5511f46c31d6c1402bba0858f6f271f0a28d77d7a1ca2c13f"
+    }
+  }
+}

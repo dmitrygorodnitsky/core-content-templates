@@ -1,0 +1,15 @@
+[
+  {
+    "code": "CHS_LANDING_01_PUBLIC_NAV_BRAND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BRAND",
+        "DESCRIPTION": "CMS-authored value for Calm Harbor Spa."
+      }
+    },
+    "value": {
+      "en": "Calm Harbor Spa"
+    }
+  }
+]

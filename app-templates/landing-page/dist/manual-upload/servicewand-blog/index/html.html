@@ -1,0 +1,37 @@
+<section class="blog-index" data-block="blog.index-dynamic" data-blog-index
+  data-blog-api-base="${FIELD_SERVICE_BLOG_INDEX_BLOG_API_BASE@STRING}"
+  data-blog-organization="${FIELD_SERVICE_BLOG_INDEX_BLOG_ORGANIZATION@STRING}"
+  data-blog-page-size="${FIELD_SERVICE_BLOG_INDEX_BLOG_PAGE_SIZE@INTEGER}"
+  data-blog-max-results="${FIELD_SERVICE_BLOG_INDEX_BLOG_MAX_RESULTS@INTEGER}"
+  data-blog-base-path="${FIELD_SERVICE_BLOG_INDEX_BLOG_BASE_PATH@STRING}"
+  data-blog-post-path="${FIELD_SERVICE_BLOG_INDEX_BLOG_POST_PATH@STRING}"
+  data-blog-fixture-url="${FIELD_SERVICE_BLOG_INDEX_BLOG_FIXTURE_URL@STRING}"
+  data-blog-read-label="${FIELD_SERVICE_BLOG_INDEX_READ_ARTICLE_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-empty-label="${FIELD_SERVICE_BLOG_INDEX_EMPTY_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-error-label="${FIELD_SERVICE_BLOG_INDEX_ERROR_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-filter-all-label="${FIELD_SERVICE_BLOG_INDEX_FILTER_ALL_LABEL@LOCALIZED_STRING_SS}">
+  <div class="container blog-index__container">
+    <header class="blog-index__hero">
+      <p class="blog-index__eyebrow">${FIELD_SERVICE_BLOG_INDEX_EYEBROW@LOCALIZED_STRING_SS}</p>
+      <h1 class="blog-index__title">${FIELD_SERVICE_BLOG_INDEX_TITLE@LOCALIZED_STRING_SS}</h1>
+      <div class="blog-index__intro">
+        <div>
+          <h2>${FIELD_SERVICE_BLOG_INDEX_INTRO_HEADING@LOCALIZED_STRING_SS}</h2>
+          <p>${FIELD_SERVICE_BLOG_INDEX_INTRO_BODY@LOCALIZED_STRING_SS}</p>
+        </div>
+        <div>
+          <h3>${FIELD_SERVICE_BLOG_INDEX_SECONDARY_HEADING@LOCALIZED_STRING_SS}</h3>
+          <p>${FIELD_SERVICE_BLOG_INDEX_SECONDARY_BODY@LOCALIZED_STRING_SS}</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-index__status" data-blog-status role="status" aria-live="polite">${FIELD_SERVICE_BLOG_INDEX_LOADING_LABEL@LOCALIZED_STRING_SS}</div>
+    <div class="blog-index__filters" data-blog-filters role="group" aria-label="${FIELD_SERVICE_BLOG_INDEX_FILTERS_ARIA_LABEL@LOCALIZED_STRING_SS}" hidden></div>
+    <article class="blog-index__featured" data-blog-featured hidden></article>
+    <div class="blog-index__grid" data-blog-grid aria-label="${FIELD_SERVICE_BLOG_INDEX_GRID_ARIA_LABEL@LOCALIZED_STRING_SS}"></div>
+    <div class="blog-index__actions">
+      <button class="blog-index__more" type="button" data-blog-more hidden>${FIELD_SERVICE_BLOG_INDEX_LOAD_MORE_LABEL@LOCALIZED_STRING_SS}</button>
+    </div>
+  </div>
+</section>

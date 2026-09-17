@@ -1,0 +1,132 @@
+[
+  {
+    "code": "GRS_LANDING_03_TRUST_RATING_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RATING LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Rating"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_RATING_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RATING SLOT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "rating · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_LICENCE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LICENCE LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Municipal contractor licence"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_LICENCE_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LICENCE SLOT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "licence № · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_INSURANCE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "INSURANCE LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Liability insurance"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_INSURANCE_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "INSURANCE SLOT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "policy · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_GUARANTEE_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "GUARANTEE LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "SLA"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_GUARANTEE_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "GUARANTEE VALUE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Cleared within the contracted storm window"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_DISPATCH_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DISPATCH LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Dispatch"
+    }
+  },
+  {
+    "code": "GRS_LANDING_03_TRUST_DISPATCH_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DISPATCH VALUE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Automatic at your snowfall trigger"
+    }
+  }
+]

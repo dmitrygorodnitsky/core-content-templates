@@ -1,0 +1,189 @@
+{
+ "code": "SIMPLE_RESOURCE",
+ "initialState": {
+  "id": 44,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "ar": {
+   "NAME": "دورة حياة المعدات",
+   "DESCRIPTION": "<p></p>"
+  },
+  "en": {
+   "NAME": "Equipment Lifecycle (DELETE)",
+   "DESCRIPTION": "<p>Default equipment lifecycle</p>"
+  },
+  "es": {
+   "NAME": "Ciclo de vida del equipo",
+   "DESCRIPTION": "<p></p>"
+  },
+  "fr": {
+   "NAME": "Cycle de vie de l'équipement",
+   "DESCRIPTION": "<p></p>"
+  },
+  "he": {
+   "NAME": "מחזור החיים של הציוד",
+   "DESCRIPTION": "<p></p>"
+  },
+  "kk": {
+   "NAME": "Жабдықтардың Өмірлік Циклы",
+   "DESCRIPTION": "<p></p>"
+  },
+  "ru": {
+   "NAME": "Жизненный цикл оборудования",
+   "DESCRIPTION": "<p></p>"
+  },
+  "zh": {
+   "NAME": "设备生命周期",
+   "DESCRIPTION": "<p></p>"
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 8,
+ "states": [
+  {
+   "style": {
+    "xPos": 836.0536065143826,
+    "yPos": 248.1710876737622
+   },
+   "id": 46,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    },
+    "es": {
+     "NAME": "activo"
+    },
+    "fr": {
+     "NAME": "actif"
+    },
+    "ru": {
+     "NAME": "активный"
+    },
+    "zh": {
+     "NAME": "活跃"
+    }
+   },
+   "events": [
+    {
+     "id": 56,
+     "code": "ACTIVE-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      },
+      "es": {
+       "NAME": "desactivar"
+      },
+      "fr": {
+       "NAME": "désactiver"
+      },
+      "ru": {
+       "NAME": "деактивировать"
+      },
+      "zh": {
+       "NAME": "停用"
+      }
+     },
+     "targets": [
+      {
+       "id": 45,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": 511,
+    "yPos": 35
+   },
+   "id": 45,
+   "code": "INACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Inactive"
+    },
+    "es": {
+     "NAME": "Inactivo"
+    },
+    "fr": {
+     "NAME": "Inactif"
+    },
+    "ru": {
+     "NAME": "Неактивный"
+    },
+    "zh": {
+     "NAME": "不活跃"
+    }
+   },
+   "events": [
+    {
+     "id": 55,
+     "code": "INACTIVE-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 46,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "xPos": -0.48828255852970415,
+    "yPos": 13.387586950947743
+   },
+   "id": 44,
+   "code": "INITIAL",
+   "nls": {
+    "en": {
+     "NAME": "Initial",
+     "DESCRIPTION": "<p>New resource is created in this state</p>"
+    }
+   },
+   "events": [
+    {
+     "id": 54,
+     "code": "INITIAL-INACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Deactivate"
+      },
+      "es": {
+       "NAME": "Desactivar"
+      },
+      "fr": {
+       "NAME": "Désactiver"
+      },
+      "ru": {
+       "NAME": "Деактивировать"
+      },
+      "zh": {
+       "NAME": "停用"
+      }
+     },
+     "targets": [
+      {
+       "id": 45,
+       "code": "INACTIVE"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

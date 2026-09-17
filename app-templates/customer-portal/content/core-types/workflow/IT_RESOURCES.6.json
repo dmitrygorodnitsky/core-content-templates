@@ -1,0 +1,917 @@
+{
+ "code": "IT_RESOURCES",
+ "initialState": {
+  "id": 27,
+  "code": "NOT_PROVISIONED"
+ },
+ "nls": {
+  "en": {
+   "NAME": "IT Resources",
+   "DESCRIPTION": "Workflow for monitored IT resources. States align with Resource diagnostic status values and include one root state for resources that have not been provisioned yet."
+  }
+ },
+ "entityType": "com.pixelnation.rm.domain.Resource",
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "id": 6,
+ "states": [
+  {
+   "style": {
+    "color": "#2563eb",
+    "severity": "normal"
+   },
+   "id": 28,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active",
+     "DESCRIPTION": "Resource is enabled, expected to exist, and participates in normal operations."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 10,
+     "id": 39,
+     "code": "ACTIVE_DISABLED",
+     "nls": {
+      "en": {
+       "NAME": "Disable",
+       "DESCRIPTION": "Administratively disable this resource so automation and alert escalation do not treat it as active."
+      }
+     },
+     "targets": [
+      {
+       "id": 29,
+       "code": "DISABLED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 30,
+     "id": 41,
+     "code": "ACTIVE_RETIRED",
+     "nls": {
+      "en": {
+       "NAME": "Retire",
+       "DESCRIPTION": "Retire this active resource while preserving history."
+      }
+     },
+     "targets": [
+      {
+       "id": 30,
+       "code": "RETIRED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#dc2626",
+    "severity": "critical"
+   },
+   "id": 33,
+   "code": "CRITICAL",
+   "nls": {
+    "en": {
+     "NAME": "Critical",
+     "DESCRIPTION": "Latest diagnostic evaluation found a critical condition requiring prompt attention."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1001,
+     "id": 8,
+     "code": "CRITICAL_FAIL",
+     "nls": {
+      "en": {
+       "NAME": "Critical to Down",
+       "DESCRIPTION": "Move diagnostic state from Critical to Down."
+      }
+     },
+     "targets": [
+      {
+       "id": 34,
+       "code": "FAIL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1002,
+     "id": 9,
+     "code": "CRITICAL_FAIL_BY_DEPENDENCY",
+     "nls": {
+      "en": {
+       "NAME": "Critical to Fail By Dependency",
+       "DESCRIPTION": "Move diagnostic state from Critical to Fail By Dependency."
+      }
+     },
+     "targets": [
+      {
+       "id": 35,
+       "code": "FAIL_BY_DEPENDENCY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1003,
+     "id": 10,
+     "code": "CRITICAL_NA",
+     "nls": {
+      "en": {
+       "NAME": "Critical to N/A",
+       "DESCRIPTION": "Move diagnostic state from Critical to N/A."
+      }
+     },
+     "targets": [
+      {
+       "id": 36,
+       "code": "NA"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1004,
+     "id": 11,
+     "code": "CRITICAL_PASS",
+     "nls": {
+      "en": {
+       "NAME": "Critical to Pass",
+       "DESCRIPTION": "Move diagnostic state from Critical to Pass."
+      }
+     },
+     "targets": [
+      {
+       "id": 31,
+       "code": "PASS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1005,
+     "id": 12,
+     "code": "CRITICAL_WARN",
+     "nls": {
+      "en": {
+       "NAME": "Critical to Degraded",
+       "DESCRIPTION": "Move diagnostic state from Critical to Degraded."
+      }
+     },
+     "targets": [
+      {
+       "id": 32,
+       "code": "WARN"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#64748b",
+    "severity": "muted"
+   },
+   "id": 29,
+   "code": "DISABLED",
+   "nls": {
+    "en": {
+     "NAME": "Disabled",
+     "DESCRIPTION": "Resource is administratively disabled and should not participate in automation or alert escalation."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 20,
+     "id": 40,
+     "code": "DISABLED_ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate",
+       "DESCRIPTION": "Return this resource to active operation and monitoring."
+      }
+     },
+     "targets": [
+      {
+       "id": 28,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 40,
+     "id": 42,
+     "code": "DISABLED_RETIRED",
+     "nls": {
+      "en": {
+       "NAME": "Retire Disabled",
+       "DESCRIPTION": "Retire this disabled resource while preserving history."
+      }
+     },
+     "targets": [
+      {
+       "id": 30,
+       "code": "RETIRED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#991b1b",
+    "severity": "error"
+   },
+   "id": 34,
+   "code": "FAIL",
+   "nls": {
+    "en": {
+     "NAME": "Down",
+     "DESCRIPTION": "Latest diagnostic evaluation failed. The resource is considered unavailable or non-operational."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1006,
+     "id": 13,
+     "code": "FAIL_CRITICAL",
+     "nls": {
+      "en": {
+       "NAME": "Down to Critical",
+       "DESCRIPTION": "Move diagnostic state from Down to Critical."
+      }
+     },
+     "targets": [
+      {
+       "id": 33,
+       "code": "CRITICAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1007,
+     "id": 14,
+     "code": "FAIL_FAIL_BY_DEPENDENCY",
+     "nls": {
+      "en": {
+       "NAME": "Down to Fail By Dependency",
+       "DESCRIPTION": "Move diagnostic state from Down to Fail By Dependency."
+      }
+     },
+     "targets": [
+      {
+       "id": 35,
+       "code": "FAIL_BY_DEPENDENCY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1008,
+     "id": 15,
+     "code": "FAIL_NA",
+     "nls": {
+      "en": {
+       "NAME": "Down to N/A",
+       "DESCRIPTION": "Move diagnostic state from Down to N/A."
+      }
+     },
+     "targets": [
+      {
+       "id": 36,
+       "code": "NA"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1009,
+     "id": 16,
+     "code": "FAIL_PASS",
+     "nls": {
+      "en": {
+       "NAME": "Down to Pass",
+       "DESCRIPTION": "Move diagnostic state from Down to Pass."
+      }
+     },
+     "targets": [
+      {
+       "id": 31,
+       "code": "PASS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1010,
+     "id": 17,
+     "code": "FAIL_WARN",
+     "nls": {
+      "en": {
+       "NAME": "Down to Degraded",
+       "DESCRIPTION": "Move diagnostic state from Down to Degraded."
+      }
+     },
+     "targets": [
+      {
+       "id": 32,
+       "code": "WARN"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#7c2d12",
+    "severity": "dependency"
+   },
+   "id": 35,
+   "code": "FAIL_BY_DEPENDENCY",
+   "nls": {
+    "en": {
+     "NAME": "Fail By Dependency",
+     "DESCRIPTION": "The resource cannot be evaluated or operated because a required dependency is unavailable."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1011,
+     "id": 18,
+     "code": "FAIL_BY_DEPENDENCY_CRITICAL",
+     "nls": {
+      "en": {
+       "NAME": "Fail By Dependency to Critical",
+       "DESCRIPTION": "Move diagnostic state from Fail By Dependency to Critical."
+      }
+     },
+     "targets": [
+      {
+       "id": 33,
+       "code": "CRITICAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1012,
+     "id": 19,
+     "code": "FAIL_BY_DEPENDENCY_FAIL",
+     "nls": {
+      "en": {
+       "NAME": "Fail By Dependency to Down",
+       "DESCRIPTION": "Move diagnostic state from Fail By Dependency to Down."
+      }
+     },
+     "targets": [
+      {
+       "id": 34,
+       "code": "FAIL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1013,
+     "id": 20,
+     "code": "FAIL_BY_DEPENDENCY_NA",
+     "nls": {
+      "en": {
+       "NAME": "Fail By Dependency to N/A",
+       "DESCRIPTION": "Move diagnostic state from Fail By Dependency to N/A."
+      }
+     },
+     "targets": [
+      {
+       "id": 36,
+       "code": "NA"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1014,
+     "id": 21,
+     "code": "FAIL_BY_DEPENDENCY_PASS",
+     "nls": {
+      "en": {
+       "NAME": "Fail By Dependency to Pass",
+       "DESCRIPTION": "Move diagnostic state from Fail By Dependency to Pass."
+      }
+     },
+     "targets": [
+      {
+       "id": 31,
+       "code": "PASS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1015,
+     "id": 22,
+     "code": "FAIL_BY_DEPENDENCY_WARN",
+     "nls": {
+      "en": {
+       "NAME": "Fail By Dependency to Degraded",
+       "DESCRIPTION": "Move diagnostic state from Fail By Dependency to Degraded."
+      }
+     },
+     "targets": [
+      {
+       "id": 32,
+       "code": "WARN"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#64748b",
+    "severity": "muted"
+   },
+   "id": 36,
+   "code": "NA",
+   "nls": {
+    "en": {
+     "NAME": "N/A",
+     "DESCRIPTION": "Diagnostic evaluation is not applicable or not currently available for this resource."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1016,
+     "id": 23,
+     "code": "NA_CRITICAL",
+     "nls": {
+      "en": {
+       "NAME": "N/A to Critical",
+       "DESCRIPTION": "Move diagnostic state from N/A to Critical."
+      }
+     },
+     "targets": [
+      {
+       "id": 33,
+       "code": "CRITICAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1017,
+     "id": 24,
+     "code": "NA_FAIL",
+     "nls": {
+      "en": {
+       "NAME": "N/A to Down",
+       "DESCRIPTION": "Move diagnostic state from N/A to Down."
+      }
+     },
+     "targets": [
+      {
+       "id": 34,
+       "code": "FAIL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1018,
+     "id": 25,
+     "code": "NA_FAIL_BY_DEPENDENCY",
+     "nls": {
+      "en": {
+       "NAME": "N/A to Fail By Dependency",
+       "DESCRIPTION": "Move diagnostic state from N/A to Fail By Dependency."
+      }
+     },
+     "targets": [
+      {
+       "id": 35,
+       "code": "FAIL_BY_DEPENDENCY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1019,
+     "id": 26,
+     "code": "NA_PASS",
+     "nls": {
+      "en": {
+       "NAME": "N/A to Pass",
+       "DESCRIPTION": "Move diagnostic state from N/A to Pass."
+      }
+     },
+     "targets": [
+      {
+       "id": 31,
+       "code": "PASS"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1020,
+     "id": 27,
+     "code": "NA_WARN",
+     "nls": {
+      "en": {
+       "NAME": "N/A to Degraded",
+       "DESCRIPTION": "Move diagnostic state from N/A to Degraded."
+      }
+     },
+     "targets": [
+      {
+       "id": 32,
+       "code": "WARN"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#94a3b8",
+    "severity": "muted"
+   },
+   "id": 27,
+   "code": "NOT_PROVISIONED",
+   "nls": {
+    "en": {
+     "NAME": "Not Provisioned",
+     "DESCRIPTION": "Resource has been defined but has not yet been provisioned into active monitoring dimensions. This is the single workflow root state and has no incoming events."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1,
+     "id": 38,
+     "code": "PROVISION",
+     "nls": {
+      "en": {
+       "NAME": "Provision",
+       "DESCRIPTION": "Provision this resource into active monitoring with lifecycle Active, diagnostic N/A, and maintenance Operational states."
+      }
+     },
+     "targets": [
+      {
+       "id": 28,
+       "code": "ACTIVE"
+      },
+      {
+       "id": 36,
+       "code": "NA"
+      },
+      {
+       "id": 37,
+       "code": "OPERATIONAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#0f766e",
+    "severity": "normal"
+   },
+   "id": 37,
+   "code": "OPERATIONAL",
+   "nls": {
+    "en": {
+     "NAME": "Operational",
+     "DESCRIPTION": "No maintenance condition is currently open for this resource. Diagnostic health is represented by the diagnostic state."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 100,
+     "id": 43,
+     "code": "OPERATIONAL_REQUIRES_MAINTENANCE",
+     "nls": {
+      "en": {
+       "NAME": "Require Maintenance",
+       "DESCRIPTION": "Mark that this resource requires maintenance or support attention."
+      }
+     },
+     "targets": [
+      {
+       "id": 38,
+       "code": "REQUIRES_MAINTENANCE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 140,
+     "id": 47,
+     "code": "OPERATIONAL_UNDER_MAINTENANCE",
+     "nls": {
+      "en": {
+       "NAME": "Start Maintenance Directly",
+       "DESCRIPTION": "Start maintenance for this resource without first marking it as requiring maintenance."
+      }
+     },
+     "targets": [
+      {
+       "id": 39,
+       "code": "UNDER_MAINTENANCE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#16a34a",
+    "severity": "success"
+   },
+   "id": 31,
+   "code": "PASS",
+   "nls": {
+    "en": {
+     "NAME": "Pass",
+     "DESCRIPTION": "Latest diagnostic evaluation passed. All monitored checks are within acceptable bounds."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1021,
+     "id": 28,
+     "code": "PASS_CRITICAL",
+     "nls": {
+      "en": {
+       "NAME": "Pass to Critical",
+       "DESCRIPTION": "Move diagnostic state from Pass to Critical."
+      }
+     },
+     "targets": [
+      {
+       "id": 33,
+       "code": "CRITICAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1022,
+     "id": 29,
+     "code": "PASS_FAIL",
+     "nls": {
+      "en": {
+       "NAME": "Pass to Down",
+       "DESCRIPTION": "Move diagnostic state from Pass to Down."
+      }
+     },
+     "targets": [
+      {
+       "id": 34,
+       "code": "FAIL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1023,
+     "id": 30,
+     "code": "PASS_FAIL_BY_DEPENDENCY",
+     "nls": {
+      "en": {
+       "NAME": "Pass to Fail By Dependency",
+       "DESCRIPTION": "Move diagnostic state from Pass to Fail By Dependency."
+      }
+     },
+     "targets": [
+      {
+       "id": 35,
+       "code": "FAIL_BY_DEPENDENCY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1024,
+     "id": 31,
+     "code": "PASS_NA",
+     "nls": {
+      "en": {
+       "NAME": "Pass to N/A",
+       "DESCRIPTION": "Move diagnostic state from Pass to N/A."
+      }
+     },
+     "targets": [
+      {
+       "id": 36,
+       "code": "NA"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1025,
+     "id": 32,
+     "code": "PASS_WARN",
+     "nls": {
+      "en": {
+       "NAME": "Pass to Degraded",
+       "DESCRIPTION": "Move diagnostic state from Pass to Degraded."
+      }
+     },
+     "targets": [
+      {
+       "id": 32,
+       "code": "WARN"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#d97706",
+    "severity": "warning"
+   },
+   "id": 38,
+   "code": "REQUIRES_MAINTENANCE",
+   "nls": {
+    "en": {
+     "NAME": "Requires Maintenance",
+     "DESCRIPTION": "The resource requires maintenance or support attention, but work has not started yet."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 110,
+     "id": 44,
+     "code": "REQUIRES_MAINTENANCE_UNDER_MAINTENANCE",
+     "nls": {
+      "en": {
+       "NAME": "Start Maintenance",
+       "DESCRIPTION": "Mark that maintenance work has started for this resource."
+      }
+     },
+     "targets": [
+      {
+       "id": 39,
+       "code": "UNDER_MAINTENANCE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 130,
+     "id": 46,
+     "code": "REQUIRES_MAINTENANCE_OPERATIONAL",
+     "nls": {
+      "en": {
+       "NAME": "Clear Maintenance Requirement",
+       "DESCRIPTION": "Clear the maintenance requirement without starting maintenance work."
+      }
+     },
+     "targets": [
+      {
+       "id": 37,
+       "code": "OPERATIONAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#475569",
+    "severity": "muted"
+   },
+   "id": 30,
+   "code": "RETIRED",
+   "nls": {
+    "en": {
+     "NAME": "Retired",
+     "DESCRIPTION": "Resource is retained for history but is no longer expected to be monitored or operated."
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {
+    "color": "#7c3aed",
+    "severity": "info"
+   },
+   "id": 39,
+   "code": "UNDER_MAINTENANCE",
+   "nls": {
+    "en": {
+     "NAME": "Under Maintenance",
+     "DESCRIPTION": "Maintenance work is in progress. Diagnostic failures may be expected and should be handled differently from operational failures."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 120,
+     "id": 45,
+     "code": "UNDER_MAINTENANCE_OPERATIONAL",
+     "nls": {
+      "en": {
+       "NAME": "Complete Maintenance",
+       "DESCRIPTION": "Close the active maintenance condition and return this resource to operational maintenance state."
+      }
+     },
+     "targets": [
+      {
+       "id": 37,
+       "code": "OPERATIONAL"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {
+    "color": "#ca8a04",
+    "severity": "warning"
+   },
+   "id": 32,
+   "code": "WARN",
+   "nls": {
+    "en": {
+     "NAME": "Degraded",
+     "DESCRIPTION": "Latest diagnostic evaluation found a warning condition. The resource is degraded and should be reviewed."
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 1026,
+     "id": 33,
+     "code": "WARN_CRITICAL",
+     "nls": {
+      "en": {
+       "NAME": "Degraded to Critical",
+       "DESCRIPTION": "Move diagnostic state from Degraded to Critical."
+      }
+     },
+     "targets": [
+      {
+       "id": 33,
+       "code": "CRITICAL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1027,
+     "id": 34,
+     "code": "WARN_FAIL",
+     "nls": {
+      "en": {
+       "NAME": "Degraded to Down",
+       "DESCRIPTION": "Move diagnostic state from Degraded to Down."
+      }
+     },
+     "targets": [
+      {
+       "id": 34,
+       "code": "FAIL"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1028,
+     "id": 35,
+     "code": "WARN_FAIL_BY_DEPENDENCY",
+     "nls": {
+      "en": {
+       "NAME": "Degraded to Fail By Dependency",
+       "DESCRIPTION": "Move diagnostic state from Degraded to Fail By Dependency."
+      }
+     },
+     "targets": [
+      {
+       "id": 35,
+       "code": "FAIL_BY_DEPENDENCY"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1029,
+     "id": 36,
+     "code": "WARN_NA",
+     "nls": {
+      "en": {
+       "NAME": "Degraded to N/A",
+       "DESCRIPTION": "Move diagnostic state from Degraded to N/A."
+      }
+     },
+     "targets": [
+      {
+       "id": 36,
+       "code": "NA"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1030,
+     "id": 37,
+     "code": "WARN_PASS",
+     "nls": {
+      "en": {
+       "NAME": "Degraded to Pass",
+       "DESCRIPTION": "Move diagnostic state from Degraded to Pass."
+      }
+     },
+     "targets": [
+      {
+       "id": 31,
+       "code": "PASS"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

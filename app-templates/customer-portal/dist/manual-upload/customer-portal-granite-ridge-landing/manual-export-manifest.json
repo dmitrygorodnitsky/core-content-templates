@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "fixture-demonstration",
+  "launchState": "demonstration-only",
+  "package": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_FIXTURE",
+    "children": [
+      "GRS_LANDING_01_PUBLIC_NAV",
+      "GRS_LANDING_02_HERO",
+      "GRS_LANDING_03_TRUST",
+      "GRS_LANDING_04_SERVICES",
+      "GRS_LANDING_05_HOW",
+      "GRS_LANDING_06_PROOF",
+      "GRS_LANDING_07_PRICING",
+      "GRS_LANDING_08_SERVICE_AREA",
+      "GRS_LANDING_09_REVIEWS",
+      "GRS_LANDING_10_FAQ",
+      "GRS_LANDING_11_FINAL_CTA",
+      "GRS_LANDING_12_FOOTER"
+    ]
+  },
+  "designSource": "app-templates/customer-portal/design-inbox",
+  "contentSource": {
+    "copy": "design-inbox/data/seo-fixtures.js · SEO[\"Snow Removal\"]",
+    "services": "runtime/data/cases/granite-ridge-snow.js · theme.svc",
+    "tenant": {
+      "brand": "Granite Ridge Snow Removal",
+      "navBrand": "Granite Ridge",
+      "locality": "Denver, Colorado",
+      "localitySlug": "denver",
+      "serviceArea": "Denver metro and the Front Range",
+      "cities": [
+        "Lakewood",
+        "Golden",
+        "Arvada",
+        "Littleton",
+        "Wheat Ridge"
+      ]
+    }
+  },
+  "openedLiveContracts": [],
+  "sha256": {
+    "root": "66bf61c6457e7e6d1d6222bc15128844267573ee0d56d43be41299b962f223e5",
+    "children": "f2d42d9fdf7f0d54a4f6b9b98a0d08c170913ca762014942aeda8dce68dc4098",
+    "css": "77d6018a2109a88688c746dd235d90b637f6df8dbdbc2505eb12ae934f490e7d",
+    "javascript": "3b844ce9d8ea11bafc908fe0792bbea11fdd5d419432065f22380b3f43633bfc"
+  }
+}

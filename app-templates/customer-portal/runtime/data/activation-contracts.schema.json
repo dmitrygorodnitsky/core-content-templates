@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "activation-contracts.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "scope", "allowedDispositions", "healthControlSet", "repositorySearch", "dataSources", "surfaceControls", "actions"],
+  "properties": {
+    "$schema": {"const": "./activation-contracts.schema.json"},
+    "version": {"const": 1},
+    "scope": {"const": "customer-portal-wave9-runtime-program/S5"},
+    "allowedDispositions": {"const": ["local", "fixture", "opened_live", "unavailable", "not_opened"]},
+    "healthControlSet": {"const": ["rbac", "consent", "audit", "secureViewerOrDownload", "leastData"]},
+    "repositorySearch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root", "excluded", "result", "provenLiveException"],
+      "properties": {
+        "root": {"const": "."},
+        "excluded": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "result": {"type": "string", "minLength": 1},
+        "provenLiveException": {"type": "string", "minLength": 1}
+      }
+    },
+    "dataSources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}},
+    "surfaceControls": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/surfaceControl"}},
+    "actions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}}
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "url", "evidence"],
+      "properties": {
+        "status": {"type": "string", "minLength": 1},
+        "url": {"type": ["string", "null"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "healthSecurity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sensitive", "required", "missing", "note"],
+      "properties": {
+        "sensitive": {"type": "boolean"},
+        "required": {"type": "array", "uniqueItems": true, "items": {"enum": ["rbac", "consent", "audit", "secureViewerOrDownload", "leastData"]}},
+        "missing": {"type": "array", "uniqueItems": true, "items": {"enum": ["rbac", "consent", "audit", "secureViewerOrDownload", "leastData"]}},
+        "note": {"type": "string", "minLength": 1}
+      },
+      "allOf": [{
+        "if": {"properties": {"sensitive": {"const": true}}, "required": ["sensitive"]},
+        "then": {
+          "properties": {
+            "required": {
+              "allOf": [
+                {"contains": {"const": "rbac"}},
+                {"contains": {"const": "consent"}},
+                {"contains": {"const": "audit"}},
+                {"contains": {"const": "secureViewerOrDownload"}},
+                {"contains": {"const": "leastData"}}
+              ],
+              "minItems": 5,
+              "maxItems": 5
+            }
+          }
+        }
+      }]
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "owner", "surfaces", "fixtureShape", "normalizer", "endpoint", "auth", "healthSecurity", "concurrency", "successReadback", "errorFallback", "disposition", "networkPolicy", "trace"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["data_source", "action"]},
+        "owner": {"type": "string", "minLength": 1},
+        "surfaces": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "fixtureShape": {"type": "string", "minLength": 1},
+        "normalizer": {"type": "string", "minLength": 1},
+        "endpoint": {"$ref": "#/$defs/endpoint"},
+        "auth": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "healthSecurity": {"$ref": "#/$defs/healthSecurity"},
+        "concurrency": {"type": "string", "minLength": 1},
+        "successReadback": {"type": "string", "minLength": 1},
+        "errorFallback": {"type": "string", "minLength": 1},
+        "disposition": {"enum": ["local", "fixture", "opened_live", "unavailable", "not_opened"]},
+        "networkPolicy": {"type": "string", "minLength": 1},
+        "trace": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"enum": ["unavailable", "not_opened"]}}, "required": ["disposition"]},
+          "then": {"properties": {"networkPolicy": {"const": "none"}, "successReadback": {"enum": ["none", "absent"]}}}
+        },
+        {
+          "if": {"properties": {"disposition": {"const": "opened_live"}}, "required": ["disposition"]},
+          "then": {"properties": {"endpoint": {"properties": {"status": {"const": "repository-proven"}, "url": {"type": "string", "minLength": 1}}, "required": ["status", "url", "evidence"]}}}
+        }
+      ]
+    },
+    "surfaceHealthSecurity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sensitive", "required", "missing"],
+      "properties": {
+        "sensitive": {"type": "boolean"},
+        "required": {"type": "array", "uniqueItems": true, "items": {"enum": ["rbac", "consent", "audit", "secureViewerOrDownload", "leastData"]}},
+        "missing": {"type": "array", "uniqueItems": true, "items": {"enum": ["rbac", "consent", "audit", "secureViewerOrDownload", "leastData"]}}
+      }
+    },
+    "surfaceControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "surface", "action", "entities", "disposition", "effect", "readback", "networkPolicy", "healthSecurity"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^care\\."},
+        "surface": {"enum": ["care:hvac", "care:snow", "care:lawn", "care:pool", "care:roofing", "care:pest", "care:health", "care:beauty"]},
+        "action": {"type": "string", "minLength": 1},
+        "entities": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "disposition": {"enum": ["local", "fixture", "unavailable"]},
+        "effect": {"type": "string", "minLength": 1},
+        "readback": {"type": "string", "minLength": 1},
+        "networkPolicy": {"const": "none"},
+        "healthSecurity": {"$ref": "#/$defs/surfaceHealthSecurity"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"const": "unavailable"}}, "required": ["disposition"]},
+          "then": {"properties": {"readback": {"const": "none"}}}
+        },
+        {
+          "if": {"properties": {"healthSecurity": {"properties": {"sensitive": {"const": true}}, "required": ["sensitive"]}}},
+          "then": {
+            "properties": {
+              "disposition": {"const": "unavailable"},
+              "healthSecurity": {
+                "properties": {
+                  "required": {"minItems": 5, "maxItems": 5},
+                  "missing": {"minItems": 5, "maxItems": 5}
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

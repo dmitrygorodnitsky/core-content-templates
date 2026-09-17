@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "package": {
+    "code": "CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING",
+    "children": [
+      "CHS_LANDING_01_PUBLIC_NAV",
+      "CHS_LANDING_02_HERO",
+      "CHS_LANDING_03_TRUST",
+      "CHS_LANDING_04_SERVICES",
+      "CHS_LANDING_05_HOW",
+      "CHS_LANDING_06_PROOF",
+      "CHS_LANDING_07_PRICING_PIM",
+      "CHS_LANDING_08_PRODUCTS_PIM",
+      "CHS_LANDING_09_SERVICE_AREA",
+      "CHS_LANDING_10_REVIEWS",
+      "CHS_LANDING_11_FAQ",
+      "CHS_LANDING_12_FINAL_CTA",
+      "CHS_LANDING_13_FOOTER"
+    ]
+  },
+  "designSource": "app-templates/customer-portal/design-inbox",
+  "navigation": {
+    "portalUrl": "https://dev-1.servicewand.com/calm-harbor-spa-customer-portal"
+  },
+  "assets": [
+    {
+      "outputPath": "spa-massage-1448.webp",
+      "publicUrl": "/assets/customer-portal/calm-harbor-landing-staging/spa-massage-1448.webp",
+      "sha256": "1db629e16728d540634b7a1c3966a81d33cff177a04d6abcc2411b8c924ed126"
+    },
+    {
+      "outputPath": "spa-room-1600.webp",
+      "publicUrl": "/assets/customer-portal/calm-harbor-landing-staging/spa-room-1600.webp",
+      "sha256": "b803b6703e0f12f856ce077d1cec6c25bf2ccbdd922b7deaf3ce2c7a7400986e"
+    }
+  ],
+  "sha256": {
+    "root": "79450ff4f9216add9eb8cd1c7054fe63d4f119837f5c6c98c765799c7f5f93f5",
+    "children": "08952d3d0e66c81a5cd93ddb92fde0ae6250a4203b80905e65602e7c4619d536",
+    "css": "fea73e1d931553db84846652003bafb4c80ebc3a27f69cf85297d0100029509a",
+    "javascript": "f61fa3741a30f463a8b367d38532fcb3cfce22128e44de6ca2aa84629544f43e"
+  }
+}

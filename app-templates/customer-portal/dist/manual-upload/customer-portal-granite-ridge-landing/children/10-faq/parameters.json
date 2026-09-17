@@ -1,0 +1,132 @@
+[
+  {
+    "code": "GRS_LANDING_10_FAQ_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EYEBROW",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "FAQ"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "TITLE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Common questions"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_1_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "What triggers a visit?"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_1_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 1 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Your contract sets a snowfall threshold (e.g. 2 in / 5 cm). When the local station reports it, dispatch is automatic."
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_2_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "What if the SLA window is missed?"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_2_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 2 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Every response is logged against the window; misses are flagged in your season log and credited per contract terms."
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_3_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Do you serve commercial lots?"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_3_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 3 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Yes — lots, walkways and loading zones, with per-surface pricing and a compliance report per storm."
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_4_QUESTION",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 4 QUESTION",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Can I get proof of service for insurance?"
+    }
+  },
+  {
+    "code": "GRS_LANDING_10_FAQ_ITEM_4_ANSWER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "ITEM 4 ANSWER",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Each visit carries GPS, timestamps, photos and materials used — exportable as a compliance pack."
+    }
+  }
+]

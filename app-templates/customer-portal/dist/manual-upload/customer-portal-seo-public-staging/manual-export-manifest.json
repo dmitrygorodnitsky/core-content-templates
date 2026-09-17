@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "input": "app-templates/customer-portal/content/cases/calm-harbor-spa.public-authored.json",
+  "classification": "public-authored",
+  "vertical": "beauty",
+  "canonical": "https://calmharborspa.com/beauty/austin",
+  "contentAuthority": "validated CMS-authored public document",
+  "launchState": "staging-only",
+  "package": {
+    "code": "CUSTOMER_PORTAL_SEO_PUBLIC",
+    "templateLanguage": "JTE",
+    "parameters": 0,
+    "sha256": {
+      "head": "70325881c22d95ac98e8e5227fbf16103fce21a25c547e4ec6abee7b2cb7cfec",
+      "html": "0f73c669ccd69203ff6f36f71150bd44cd99d22fb480cf35867979f2cbe4f682",
+      "css": "7ab2f8b828b3b3c3f3e509d3d02c0ce976bdcf88fd1eccdaf8bd845cc3b6376b",
+      "javascript": "193b372e63d511104a49614a14249a385591b628d02a7f8af6dd3d97b51532d2",
+      "preview": "a97d964611cd675220b9d8dd124e219b7d675705c1f54b9bcdb6e5bd2e7d590d"
+    }
+  },
+  "assets": [
+    {
+      "outputPath": "calm-harbor-spa-hero.png",
+      "publicUrl": "https://calmharborspa.com/assets/customer-portal/calm-harbor-spa-hero.png",
+      "sha256": "6772c2b83ba4df070c6d81032ee5790a4ed41bebbe78359c94872895cf8c4722"
+    }
+  ],
+  "catalogSnapshot": {
+    "source": "app-templates/customer-portal/content/cases/calm-harbor-spa.staging-catalog-snapshot.json",
+    "sha256": "0d9ef4ee5de05a56c76d420f16da84c2dfe527cbcd1944e149ee7e83200dbc6e",
+    "organization": "CALM_HARBOR_SPA_STAGING",
+    "organizationId": 25,
+    "currency": "USD",
+    "productCodes": [
+      "CHS_GROUNDING_MASSAGE",
+      "CHS_CUSTOM_FACIAL",
+      "CHS_HARBOR_RESET",
+      "CHS_SEASONAL_BODY_RITUAL",
+      "CHS_HARBOR_MEMBERSHIP"
+    ]
+  }
+}

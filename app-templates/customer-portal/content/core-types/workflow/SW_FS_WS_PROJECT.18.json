@@ -1,0 +1,149 @@
+{
+ "code": "SW_FS_WS_PROJECT",
+ "initialState": {
+  "id": 102,
+  "code": "INITIAL"
+ },
+ "nls": {
+  "en": {
+   "NAME": "Winter Services Project",
+   "DESCRIPTION": "Winter Services project lifecycle for service seasons, programs, and property/site records."
+  }
+ },
+ "entityType": "com.pixelnation.svc.domain.Project",
+ "organization": {
+  "optimistic": 3,
+  "id": 9,
+  "code": "SERVICE_WAND_WINTER_SERVICES_CANADA"
+ },
+ "id": 18,
+ "states": [
+  {
+   "style": {},
+   "id": 103,
+   "code": "ACTIVE",
+   "nls": {
+    "en": {
+     "NAME": "Active"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 161,
+     "code": "ACTIVE-SUSPENDED",
+     "nls": {
+      "en": {
+       "NAME": "Suspend"
+      }
+     },
+     "targets": [
+      {
+       "id": 104,
+       "code": "SUSPENDED"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 164,
+     "code": "ACTIVE-CLOSED",
+     "nls": {
+      "en": {
+       "NAME": "Close"
+      }
+     },
+     "targets": [
+      {
+       "id": 105,
+       "code": "CLOSED"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 105,
+   "code": "CLOSED",
+   "nls": {
+    "en": {
+     "NAME": "Closed"
+    }
+   },
+   "events": []
+  },
+  {
+   "style": {},
+   "id": 102,
+   "code": "INITIAL",
+   "nls": {
+    "en": {
+     "NAME": "Initial"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 160,
+     "code": "INITIAL-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 103,
+       "code": "ACTIVE"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "style": {},
+   "id": 104,
+   "code": "SUSPENDED",
+   "nls": {
+    "en": {
+     "NAME": "Suspended"
+    }
+   },
+   "events": [
+    {
+     "orderIndex": 0,
+     "id": 162,
+     "code": "SUSPENDED-ACTIVE",
+     "nls": {
+      "en": {
+       "NAME": "Activate"
+      }
+     },
+     "targets": [
+      {
+       "id": 103,
+       "code": "ACTIVE"
+      }
+     ]
+    },
+    {
+     "orderIndex": 1,
+     "id": 163,
+     "code": "SUSPENDED-CLOSED",
+     "nls": {
+      "en": {
+       "NAME": "Close"
+      }
+     },
+     "targets": [
+      {
+       "id": 105,
+       "code": "CLOSED"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

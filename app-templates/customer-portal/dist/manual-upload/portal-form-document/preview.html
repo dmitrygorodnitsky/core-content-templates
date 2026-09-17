@@ -1,0 +1,2890 @@
+<!doctype html>
+<html lang="en" data-theme="snow" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get your free quote</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* source: runtime/styles/tokens.css */
+/* tokens.css — design tokens: fonts, neutral/vertical/dark theme variables */
+
+/* ============================================================
+   Aircove Customer Portal — styles.css
+   Design tokens + component styles. Visual source of truth.
+   Componentized: each block below maps 1:1 to a component the
+   Codex team will implement (see manifest.json / README.md).
+
+   THEMING is fully declarative:
+     <html data-theme="hvac|snow|lawn|pool|roofing|pest|health|beauty"
+           data-mode="light|dark">
+   app.js only flips these two attributes — every color derives
+   from the custom properties defined here.
+   ============================================================ */
+/* ---------- Fonts ---------- */
+@font-face { font-family: "ManropeFallback"; src: local("Manrope"); }
+
+/* ---------- Design tokens : NEUTRALS (light default) ---------- */
+:root {
+  --font: "Manrope", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ink:      #1d1d1f;
+  --ink-2:    #56607a;
+  --ink-3:    #9aa0ad;
+  --surface:  #ffffff;
+  --surface-2:#f5f5f7;
+  --base:     #eef1f6;
+
+  /* rgb triplets used inside rgba() */
+  --glass:    255,255,255;   /* frosted-panel fill  */
+  --hair:     0,0,0;         /* hairline / shadow    */
+
+  --glass-border: rgba(255,255,255,.70);
+  --glass-blur:   blur(24px) saturate(180%);
+  --shadow-card:  0 8px 28px rgba(13,38,76,.10), inset 0 1px 0 rgba(255,255,255,.70);
+  --shadow-float: 0 12px 40px rgba(13,38,76,.16), inset 0 1px 0 rgba(255,255,255,.80);
+
+  --radius-pill: 999px;
+  --radius-card: 22px;
+  --radius-lg:   24px;
+  --radius-md:   14px;
+  --radius-sm:   11px;
+
+  /* semantic status colors */
+  --ok:     #1f8a44;  --ok-bg:     rgba(52,199,89,.16);
+  --warn:   #b5670a;  --warn-bg:   rgba(255,159,10,.16);
+  --danger: #c0392b;  --danger-bg: rgba(255,59,48,.12);
+  --info:   #0e8fc4;  --info-bg:   rgba(14,143,196,.16);
+
+  /* ACCENT : HVAC (default vertical) */
+  --accent:    #0a5ae6;
+  --accent-2:  #2a7bff;
+  --accent-3:  #3a90ff;
+  --accent-rgb:10,90,230;
+  --bg-1: #cfe0ff;  --bg-2: #d2f4ec;  --bg-3: #e7dcff;
+
+  --app-bg:
+    radial-gradient(120% 90%  at 0%   0%,   var(--bg-1) 0%, transparent 50%),
+    radial-gradient(110% 90%  at 100% 0%,   var(--bg-2) 0%, transparent 44%),
+    radial-gradient(120% 120% at 90%  100%, var(--bg-3) 0%, transparent 50%),
+    var(--base);
+}
+
+/* ---------- Design tokens : VERTICAL THEMES ---------- */
+:root[data-theme="snow"] {
+  --accent:#0e8fc4; --accent-2:#27a6dd; --accent-3:#46b6e6; --accent-rgb:14,143,196;
+  --bg-1:#cfe9f6; --bg-2:#d4eef4; --bg-3:#dee9f7;
+}
+
+:root[data-theme="lawn"] {
+  --accent:#2f9e44; --accent-2:#3fb657; --accent-3:#5fce74; --accent-rgb:47,158,68;
+  --bg-1:#d8f0d6; --bg-2:#e4f4d8; --bg-3:#ebf3df;
+}
+
+:root[data-theme="pool"] {
+  --accent:#0d9488; --accent-2:#15b3a4; --accent-3:#34ccbd; --accent-rgb:13,148,136;
+  --bg-1:#cfeeea; --bg-2:#d6f1ec; --bg-3:#ddeff2;
+}
+
+:root[data-theme="roofing"] {
+  --accent:#4f46e5; --accent-2:#6d63f5; --accent-3:#8b82ff; --accent-rgb:79,70,229;
+  --bg-1:#dcdaf8; --bg-2:#e6e2fb; --bg-3:#efe6fb;
+}
+
+:root[data-theme="pest"] {
+  --accent:#7c3aed; --accent-2:#9554f5; --accent-3:#ad74ff; --accent-rgb:124,58,237;
+  --bg-1:#e7dcfb; --bg-2:#efe2fb; --bg-3:#f2e1f6;
+}
+
+:root[data-theme="health"] {
+  --accent:#0b7285; --accent-2:#0f8ba0; --accent-3:#22a5bb; --accent-rgb:11,114,133;
+  --bg-1:#cfe8ee; --bg-2:#d9eef0; --bg-3:#e2ecf6;
+}
+
+:root[data-theme="beauty"] {
+  --accent:#d6336c; --accent-2:#e64980; --accent-3:#f06595; --accent-rgb:214,51,108;
+  --bg-1:#fbd9e5; --bg-2:#fde2ec; --bg-3:#f7e3f5;
+}
+
+/* ---------- Design tokens : DARK MODE ---------- */
+:root[data-mode="dark"] {
+  --ink:#eef2f8; --ink-2:#aab6c8; --ink-3:#7f8aa0;
+  --surface:#1b2230; --surface-2:#151b29; --base:#0d1320;
+  --glass:38,46,64; --hair:255,255,255;
+  --glass-border: rgba(255,255,255,.14);
+  --shadow-card:  0 8px 28px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  --shadow-float: 0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  --app-bg:
+    radial-gradient(120% 90%  at 0%   0%,   rgba(var(--accent-rgb),.24) 0%, transparent 48%),
+    radial-gradient(110% 90%  at 100% 0%,   rgba(var(--accent-rgb),.14) 0%, transparent 46%),
+    radial-gradient(120% 120% at 90%  100%, rgba(var(--accent-rgb),.18) 0%, transparent 52%),
+    var(--base);
+}
+
+/* source: runtime/styles/base.css */
+/* base.css — reset, base type, links, keyframes */
+
+/* ============================================================
+   Base
+   ============================================================ */
+* { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+
+a:hover { color: var(--accent-2); }
+
+button { font-family: inherit; }
+
+@keyframes sheen  { 0%{transform:translateX(-140%)} 55%,100%{transform:translateX(260%)} }
+
+@keyframes ping   { 0%{transform:scale(1);opacity:.6} 70%,100%{transform:scale(2.6);opacity:0} }
+
+@keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+@keyframes pop    { from{opacity:0;transform:scale(.95) translateY(10px)} to{opacity:1;transform:none} }
+
+@keyframes shimmer{ 0%{background-position:-360px 0} 100%{background-position:360px 0} }
+
+@keyframes route-in{ from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+
+.route-enter{ animation: route-in .34s cubic-bezier(.2,.7,.2,1) both; }
+
+@keyframes wt-pulse{ 0%{box-shadow:0 0 0 0 rgba(255,159,10,.55)} 70%{box-shadow:0 0 0 14px rgba(255,159,10,0)} 100%{box-shadow:0 0 0 0 rgba(255,159,10,0)} }
+
+@keyframes wt-glow{ 0%,100%{box-shadow:0 0 0 0 rgba(255,159,10,0)} 50%{box-shadow:0 0 0 3px rgba(255,159,10,.20)} }
+
+.wt-pulse{ animation: wt-pulse 2s cubic-bezier(.4,0,.6,1) infinite; }
+
+@keyframes drawer-in { from { transform: translateX(100%); } to { transform: none; } }
+
+/* source: runtime/styles/components.css */
+/* components.css — buttons, badges, tabs, cards, panels, states, toast, drawer, dev harness */
+
+/* ============================================================
+   ActionButton  — data-module="action-button"
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 0; border-radius: var(--radius-pill); cursor: pointer;
+  font-weight: 600; font-size: 13px; padding: 9px 16px;
+  white-space: nowrap; transition: transform .08s, filter .15s;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn[disabled] { opacity: .45; cursor: not-allowed; pointer-events: none; }
+
+.btn--primary {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent)); color: #fff;
+  box-shadow: 0 4px 12px rgba(var(--accent-rgb), .35), inset 0 1px 0 rgba(255,255,255,.4);
+}
+
+.btn--primary:hover { filter: brightness(1.05); }
+
+.btn--ghost {
+  background: rgba(var(--glass), .7); border: 1px solid var(--glass-border); color: var(--ink);
+}
+
+.btn--danger {
+  background: rgba(255,59,48,.08); border: 1px solid rgba(255,59,48,.22); color: var(--danger);
+}
+
+.btn--info { background: linear-gradient(180deg, var(--accent-3), var(--accent)); color: #fff; }
+
+.btn--onaccent { background: var(--surface); color: var(--accent); }
+
+.btn--onaccent:hover { filter: brightness(.98); }
+
+.btn--glass-hero { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); color: #fff; }
+
+.btn--glass-hero:hover { background: rgba(255,255,255,.26); }
+
+.btn--block { display: flex; width: 100%; }
+
+.btn--lg { padding: 11px 20px; font-weight: 700; }
+
+/* ============================================================
+   PageHeader  — data-module="page-header"
+   ============================================================ */
+.page-header { display: flex; align-items: flex-end; gap: 14px; margin: 8px 4px 18px; }
+
+.page-header__title { font-weight: 800; font-size: 28px; line-height: 1.18; letter-spacing: -.025em; margin: 0; padding-top: 2px; }
+
+.page-header__sub  { font-size: 14.5px; color: var(--ink-2); margin-top: 3px; }
+
+/* ============================================================
+   StatusBadge  — data-module="status-badge"
+   ============================================================ */
+.status-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: var(--radius-pill); padding: 5px 12px;
+  font-weight: 600; font-size: 12px; white-space: nowrap;
+}
+
+.status-badge--ok       { background: var(--ok-bg);     color: var(--ok); }
+
+.status-badge--progress { background: rgba(255,159,10,.20); color: var(--warn); }
+
+.status-badge--scheduled{ background: rgba(120,120,128,.18); color: var(--ink-3); }
+
+.status-badge--warn     { background: var(--warn-bg);   color: var(--warn); }
+
+.status-badge--danger   { background: var(--danger-bg); color: var(--danger); }
+
+.status-badge--info     { background: var(--info-bg);   color: var(--info); }
+
+/* ============================================================
+   Tabs / SegmentedControl  — data-module="tabs"
+   ============================================================ */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+.tab {
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 6px 13px;
+  font-weight: 530; font-size: 12.5px; color: var(--ink-2);
+  cursor: pointer; white-space: nowrap; user-select: none;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab--active { background: #1d1d1f; color: #fff; font-weight: 590; border-color: transparent; }
+
+:root[data-mode="dark"] .tab--active { background: #fff; color: #10151f; }
+
+.select-pill {
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill); padding: 6px 10px;
+  font-weight: 530; font-size: 12.5px; color: var(--ink-2); cursor: pointer;
+}
+
+/* Card shell — data-module="glass-card" */
+.card {
+  background: rgba(var(--glass), .5);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.card__head { display: flex; align-items: center; gap: 10px; padding: 12px 12px 10px; flex-wrap: wrap; }
+
+.card__title { font-weight: 700; font-size: 16px; }
+
+.card--pad { padding: 18px; }
+
+/* ============================================================
+   States : loading / empty / error  — data-module respectively
+   ============================================================ */
+.skeleton {
+  background: linear-gradient(90deg, rgba(var(--hair),.06) 25%, rgba(var(--hair),.12) 37%, rgba(var(--hair),.06) 63%);
+  background-size: 720px 100%; animation: shimmer 1.4s ease-in-out infinite; border-radius: 8px;
+}
+
+.state-block {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: 10px; padding: 54px 24px; animation: fadein .3s ease;
+}
+
+.state-block__glyph {
+  width: 60px; height: 60px; border-radius: 18px; display: grid; place-items: center;
+  font-size: 26px; background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+}
+
+.state-block__glyph--error { background: var(--danger-bg); }
+
+.state-block__title { font-weight: 700; font-size: 17px; }
+
+.state-block__desc { font-size: 13.5px; color: var(--ink-2); max-width: 340px; }
+
+/* ============================================================
+   Toast  — data-module="toast"
+   ============================================================ */
+.toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  z-index: 300; display: flex; align-items: center; gap: 10px;
+  background: #10151f; color: #fff; border-radius: var(--radius-pill);
+  padding: 12px 20px; font-weight: 600; font-size: 13.5px;
+  box-shadow: 0 12px 34px rgba(0,0,0,.28); animation: pop .28s ease;
+}
+
+.toast__dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: #34c759; }
+
+/* ============================================================
+   Drawer / Modal  — data-module="drawer" / "modal"
+   ============================================================ */
+.scrim { position: fixed; inset: 0; z-index: 250; background: rgba(10,16,28,.42); backdrop-filter: blur(3px); animation: fadein .2s ease; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 260; width: min(440px, 92vw);
+  background: var(--surface); box-shadow: -20px 0 60px rgba(0,0,0,.28);
+  padding: 22px; overflow-y: auto; animation: drawer-in .28s cubic-bezier(.2,.8,.2,1);
+}
+
+.drawer__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+
+.drawer__title { font-weight: 800; font-size: 20px; letter-spacing: -.02em; }
+
+.drawer__close { width: 34px; height: 34px; border-radius: var(--radius-pill); background: var(--surface-2); border: 0; cursor: pointer; font-size: 16px; }
+
+/* ============================================================
+   Dev harness  — data-dev-toolbar  (PREVIEW ONLY — Codex strips this)
+   ============================================================ */
+.dev-toolbar {
+  position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
+  z-index: 400; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+  background: rgba(16,21,31,.9); backdrop-filter: blur(14px); color: #cfd6e4;
+  border: 1px solid rgba(255,255,255,.1); border-radius: 14px;
+  padding: 8px 10px; font: 500 11.5px var(--font); max-width: 96vw;
+}
+
+.dev-toolbar select, .dev-toolbar button {
+  background: rgba(255,255,255,.08); color: #eef2f8; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px; padding: 5px 8px; font: 500 11.5px var(--font); cursor: pointer;
+}
+
+.dev-toolbar__group { display: flex; align-items: center; gap: 4px; }
+
+.dev-toolbar__label { color: #79839a; text-transform: uppercase; letter-spacing: .06em; font-size: 9.5px; }
+
+.dev-toolbar button.is-on { background: var(--accent); border-color: transparent; color: #fff; }
+
+/* Viewport simulation frame (preview harness) */
+.viewport-host { display: flex; justify-content: center; }
+
+.viewport-frame { width: 100%; transition: max-width .2s ease; }
+
+.viewport-frame[data-vw="390"]  { max-width: 390px; }
+
+.viewport-frame[data-vw="768"]  { max-width: 768px; }
+
+/* Wave 14.1 — wide presets are TRUE-width: an explicit width (not just max-width)
+   so a narrower preview pane never clamps the layout; the host scrolls instead. */
+.viewport-frame[data-vw="1180"] { width: 1180px; min-width: 1180px; max-width: 1180px; }
+
+.viewport-frame[data-vw="1440"] { width: 1440px; min-width: 1440px; max-width: 1440px; background: var(--base); }
+
+.viewport-host:has(.viewport-frame[data-vw="1180"]), .viewport-host:has(.viewport-frame[data-vw="1440"]) { justify-content: flex-start; overflow-x: auto; }
+
+.viewport-frame:not([data-vw="1440"]):not([data-vw="full"]) {
+  margin: 14px auto; box-shadow: 0 20px 60px rgba(13,38,76,.18); border-radius: 20px; overflow: hidden; background: var(--base);
+}
+
+/* Panel — frosted section card used across detail */
+.panel {
+  background: rgba(var(--glass), .55);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border); border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(13,38,76,.10); padding: 20px;
+}
+
+.panel__title { font-weight: 700; font-size: 15px; }
+
+.chip { background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); border-radius: var(--radius-pill); padding: 6px 12px; font-weight: 590; font-size: 12px; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+
+
+/* ============================================================
+   Wave 13 — authenticated live-data states
+   (account bootstrap gate, conflict / command-failure banners,
+   contact form fields, message send lifecycle)
+   ============================================================ */
+.account-gate { display: grid; place-items: center; min-height: min(72vh, 640px); }
+
+.account-gate__card { width: 100%; max-width: 460px; }
+
+.account-gate__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+.account-gate__route {
+  display: inline-flex; align-items: center; gap: 2px; margin: 4px 0 6px; white-space: nowrap;
+  padding: 7px 13px; border-radius: var(--radius-pill); font-size: 12.5px; color: var(--ink-2);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border);
+}
+
+.conflict-banner {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 13px 16px; margin: 0 0 16px;
+  border-radius: 14px; background: rgba(255, 159, 10, .1); border: 1px solid rgba(255, 159, 10, .38);
+  animation: fadein .3s ease;
+}
+
+.conflict-banner__icon {
+  width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex: none;
+  font-size: 17px; font-weight: 800; color: var(--warn); background: rgba(255, 159, 10, .16);
+}
+
+.conflict-banner__body { flex: 1; min-width: 160px; }
+
+.inline-fail {
+  display: flex; gap: 11px; align-items: center; padding: 11px 13px;
+  border-radius: 12px; background: var(--danger-bg); border: 1px solid rgba(255, 69, 58, .32);
+  animation: fadein .3s ease;
+}
+
+.inline-fail__icon {
+  width: 22px; height: 22px; border-radius: var(--radius-pill); display: grid; place-items: center; flex: none;
+  font-size: 12px; font-weight: 800; color: var(--danger); background: rgba(255, 69, 58, .16);
+}
+
+/* contact-details form (profile) */
+.field-row { display: flex; flex-direction: column; gap: 6px; }
+
+.field-label { font-size: 12px; font-weight: 700; color: var(--ink-2); letter-spacing: .02em; }
+
+.field {
+  width: 100%; padding: 11px 13px; border-radius: 12px; font: inherit; font-size: 14px; color: var(--ink);
+  background: rgba(var(--glass), .6); border: 1px solid var(--glass-border); outline: none;
+}
+
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.field[data-state="invalid"] { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255, 69, 58, .1); }
+
+.field-error { font-size: 12px; color: var(--danger); }
+
+.contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.vw-mobile .contact-form { grid-template-columns: 1fr; }
+
+/* chat message lifecycle */
+.msg-bubble[data-state="sending"] { opacity: .55; }
+
+.msg-bubble[data-state="failed"] { border: 1px solid rgba(255, 69, 58, .45); }
+
+.msg-status { font-size: 11.5px; color: var(--ink-3); margin-top: 3px; text-align: right; }
+
+.msg-status--failed { color: var(--danger); }
+
+.msg-retry { color: var(--accent); font-weight: 700; cursor: pointer; margin-left: 6px; }
+
+/* pending buttons (command in flight — duplicate submission disabled) */
+.btn[data-state="pending"] { opacity: .8; }
+
+.btn[data-state="failed"] { box-shadow: 0 0 0 2px rgba(255, 69, 58, .28); }
+
+/* cart row while its mutation command is pending */
+.cart-row[data-state="pending"] { opacity: .6; pointer-events: none; }
+
+.cart-row__note { font-size: 12px; color: var(--danger); }
+
+
+/* ============================================================
+   Wave 14 — Calm Harbor spa primitives: unmapped raw status,
+   visit-mode chip, read-only chip, code chip, card footnote
+   ============================================================ */
+/* honest UNMAPPED status: the raw backend code, visually distinct from every
+   customer-status badge — never restyled to look reassuring */
+.status-badge--unmapped {
+  background: transparent; border: 1px dashed rgba(120,120,128,.55); color: var(--ink-2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .03em;
+}
+
+/* visit mode is explicit text, never color alone */
+.visit-mode {
+  display: inline-flex; align-items: center; gap: 6px; border-radius: var(--radius-pill);
+  padding: 4px 11px; font-size: 12px; font-weight: 620;
+  background: rgba(var(--accent-rgb), .08); border: 1px solid rgba(var(--accent-rgb), .22); color: var(--ink);
+  white-space: nowrap;
+}
+
+.visit-mode__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.visit-mode--home .visit-mode__dot { background: transparent; border: 2px solid var(--accent); width: 5px; height: 5px; }
+
+.readonly-chip {
+  display: inline-flex; align-items: center; border-radius: var(--radius-pill); padding: 4px 10px;
+  font-size: 10.5px; font-weight: 680; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(120,120,128,.14); color: var(--ink-3); margin-left: auto; white-space: nowrap;
+}
+
+.code-chip {
+  display: inline-block; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10.5px; background: rgba(120,120,128,.12); border-radius: 6px;
+  padding: 1px 6px; margin-left: 8px; color: var(--ink-3); overflow-wrap: anywhere;
+}
+
+.card__footnote { padding: 12px 16px 14px; font-size: 12px; color: var(--ink-3); border-top: 1px solid var(--glass-border); line-height: 1.5; }
+
+/* source: runtime/forms/portal-form.css */
+.pf-shell {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 56px) clamp(14px, 4vw, 24px);
+  box-sizing: border-box;
+}
+
+.pf {
+  --pf-gap: 18px;
+  display: block;
+  width: 100%;
+  color: var(--ink);
+  font-family: var(--font);
+}
+
+.pf__card {
+  background: var(--surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: clamp(20px, 4vw, 34px);
+}
+
+.pf__head { margin-bottom: 20px; }
+
+.pf__title {
+  margin: 0;
+  font-size: clamp(21px, 3vw, 27px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+}
+
+.pf__sub { margin: 6px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+
+.pf__body { display: block; }
+
+.pf-steps { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+
+.pf-step {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11.5px; font-weight: 650; color: var(--ink-3);
+  border: 1px solid rgba(var(--hair), .12); border-radius: var(--radius-pill);
+  padding: 4px 11px 4px 5px;
+}
+
+.pf-step span { max-width: 26ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.pf-step i {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(120, 120, 128, .14);
+  font-style: normal; font-size: 10.5px; font-weight: 750;
+}
+
+.pf-step--on { color: var(--ink); border-color: rgba(var(--accent-rgb), .45); }
+.pf-step--on i { background: var(--accent); color: #fff; }
+.pf-step--done { color: var(--ink-2); }
+.pf-step--done i { background: rgba(var(--accent-rgb), .18); color: var(--accent); }
+
+.pf-group { display: flex; flex-direction: column; gap: var(--pf-gap); }
+
+.pf-group:focus { outline: none; }
+
+.pf-group__title {
+  margin: 0 0 2px;
+  font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--ink);
+}
+
+.pf-field { display: flex; flex-direction: column; gap: 6px; }
+
+.pf-field__label {
+  display: flex; align-items: baseline; gap: 4px;
+  font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2);
+}
+
+.pf-req { color: var(--danger); font-weight: 800; margin-left: 3px; }
+
+.pf-field__hint { margin: 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+
+.pf-field__error { margin: 0; font-size: 12px; line-height: 1.45; color: var(--danger); }
+.pf-field__error:empty { display: none; }
+
+.pf-input {
+  width: 100%; padding: 11px 13px; border-radius: var(--radius-md);
+  font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--surface-2); border: 1px solid rgba(var(--hair), .14);
+  outline: none; transition: border-color .16s, box-shadow .16s;
+}
+
+.pf-input::placeholder { color: var(--ink-3); }
+
+.pf-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.pf-input--area { resize: vertical; min-height: 96px; line-height: 1.55; }
+
+.pf-color { display: flex; align-items: center; gap: 12px; }
+
+.pf-color__swatch {
+  width: 46px; height: 44px; padding: 4px; flex: none; cursor: pointer;
+  border-radius: var(--radius-md); border: 1px solid rgba(var(--hair), .14);
+  background: var(--surface-2);
+}
+
+.pf-color__swatch::-webkit-color-swatch { border: 0; border-radius: 9px; }
+.pf-color__swatch::-moz-color-swatch { border: 0; border-radius: 9px; }
+
+.pf-color__value { font-family: var(--font-mono); font-size: 13px; color: var(--ink-2); text-transform: uppercase; }
+
+.pf-select { appearance: none; cursor: pointer; padding-right: 38px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%), linear-gradient(135deg, var(--ink-3) 50%, transparent 50%);
+  background-position: calc(100% - 19px) calc(50% + 2px), calc(100% - 14px) calc(50% + 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.pf-field[data-state="invalid"] .pf-input {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(var(--danger-rgb, 255, 69, 58), .1);
+}
+
+.pf-slider { display: flex; align-items: center; gap: 14px; }
+
+.pf-range { flex: 1; appearance: none; height: 4px; border-radius: var(--radius-pill); background: rgba(120, 120, 128, .22); outline: none; }
+
+.pf-range::-webkit-slider-thumb {
+  appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); border: 0; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(var(--accent-rgb), .4);
+}
+
+.pf-range::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); border: 0; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(var(--accent-rgb), .4);
+}
+
+.pf-range:focus-visible { box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .14); }
+
+.pf-slider__val {
+  min-width: 62px; text-align: right;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--ink);
+}
+
+.pf-choices { display: flex; flex-direction: column; gap: 9px; }
+
+.pf-choice {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; line-height: 1.45; color: var(--ink); cursor: pointer;
+}
+
+.pf-choice__input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+.pf-choice__label { flex: 1; }
+
+.pf-radio {
+  width: 22px; height: 22px; border-radius: var(--radius-pill); flex-shrink: 0; margin-top: 1px;
+  border: 2px solid rgba(var(--hair), .28); background: var(--surface-2); display: grid; place-items: center;
+  transition: border-color .16s, background .16s;
+}
+
+.pf-choice__input[type="radio"]:checked + .pf-radio { border: 0; background: var(--accent); box-shadow: 0 2px 6px rgba(var(--accent-rgb), .4); }
+.pf-choice__input[type="radio"]:checked + .pf-radio::after { content: ""; width: 8px; height: 8px; border-radius: var(--radius-pill); background: #fff; }
+
+.pf-check {
+  width: 20px; height: 20px; border-radius: 7px; flex-shrink: 0; margin-top: 2px;
+  border: 1.5px solid rgba(var(--hair), .28); background: var(--surface-2); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; transition: border-color .16s, background .16s;
+}
+
+.pf-choice__input[type="checkbox"]:checked + .pf-check { background: var(--accent); border-color: var(--accent); }
+.pf-choice__input[type="checkbox"]:checked + .pf-check::after { content: "✓"; }
+
+.pf-choice__input:focus-visible + .pf-radio,
+.pf-choice__input:focus-visible + .pf-check { box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+.pf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.pf-chip {
+  font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-2);
+  background: var(--surface-2); border: 1px solid rgba(var(--hair), .14);
+  border-radius: var(--radius-pill); padding: 8px 14px; cursor: pointer;
+  transition: border-color .16s, background .16s, color .16s;
+}
+
+.pf-chip:hover { color: var(--ink); }
+.pf-chip--on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pf-chip:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+.pf-combo { display: block; }
+
+.pf-actions { display: flex; align-items: center; gap: 10px; margin-top: 26px; }
+.pf-actions .btn { flex: 0 0 auto; }
+.pf-actions .btn--primary { margin-left: auto; }
+
+.pf-note { margin: 16px 0 0; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+
+.pf-notice {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  text-align: center; padding: 26px 20px;
+  border: 1px solid rgba(var(--hair), .10); border-radius: var(--radius-lg);
+  background: var(--surface-2);
+}
+
+.pf-notice__glyph {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800;
+  background: rgba(120, 120, 128, .14); color: var(--ink-2);
+}
+
+.pf-notice--success .pf-notice__glyph { background: var(--ok-bg); color: var(--ok); }
+.pf-notice--error .pf-notice__glyph { background: var(--danger-bg); color: var(--danger); }
+.pf-notice--blocked .pf-notice__glyph { background: var(--warn-bg); color: var(--warn); }
+
+.pf-notice__title { margin: 0; font-size: 16px; font-weight: 750; }
+.pf-notice__title:focus { outline: none; }
+.pf-notice__body { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); max-width: 42ch; }
+.pf-notice .btn { margin-top: 6px; }
+
+.pf__body .pf-notice { margin-top: 4px; }
+
+.pf-next {
+  width: 100%; max-width: 440px; margin: 12px auto 0; padding-top: 18px;
+  border-top: 1px solid rgba(var(--hair), .08); text-align: left;
+}
+
+.pf-next__title {
+  margin: 0 0 14px;
+  font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--ink-2);
+}
+
+.pf-next__list { margin: 0; padding: 0; list-style: none; }
+
+.pf-next__item { position: relative; display: flex; align-items: flex-start; gap: 12px; padding-bottom: 18px; }
+
+.pf-next__item:last-child { padding-bottom: 0; }
+
+.pf-next__item:not(:last-child)::before {
+  content: ""; position: absolute; left: 11px; top: 28px; bottom: 4px;
+  width: 2px; border-radius: 2px; background: rgba(var(--accent-rgb), .2);
+}
+
+.pf-next__n {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11.5px; font-weight: 750;
+  background: rgba(var(--accent-rgb), .14); color: var(--accent);
+}
+
+.pf-next__text { padding-top: 2px; font-size: 13.5px; line-height: 1.5; color: var(--ink); }
+
+.pf-next + .btn { margin-top: 18px; }
+
+.pf-skeleton { display: flex; flex-direction: column; gap: 20px; }
+.pf-skeleton__row { display: flex; flex-direction: column; gap: 8px; }
+
+.pf-skeleton__bar {
+  display: block; height: 42px; border-radius: var(--radius-md);
+  background: linear-gradient(90deg, rgba(120, 120, 128, .10), rgba(120, 120, 128, .18), rgba(120, 120, 128, .10));
+  background-size: 200% 100%;
+  animation: pf-shimmer 1.4s ease-in-out infinite;
+}
+
+.pf-skeleton__bar--label { height: 11px; width: 34%; }
+
+@keyframes pf-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-skeleton__bar { animation: none; }
+  .pf-input, .pf-chip, .pf-radio, .pf-check, .pf-repeat__row, .pf-repeat__x, .pf-repeat__add { transition: none; }
+}
+
+@media (max-width: 640px) {
+  .pf__card { padding: 18px 16px 22px; }
+  .pf-actions { flex-direction: column-reverse; align-items: stretch; }
+  .pf-actions .btn { width: 100%; }
+  .pf-actions .btn--primary { margin-left: 0; }
+  .pf-step span { display: none; }
+  .pf-step { padding: 4px; }
+}
+
+.pf-address { position: relative; display: flex; flex-direction: column; gap: 8px; }
+
+.pf-address__anchor { position: relative; }
+
+.pf-address__list {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 20;
+  margin: 4px 0 0; padding: 6px; list-style: none;
+  background: var(--surface); border: 1px solid rgba(var(--hair), .1);
+  border-radius: var(--radius-md); box-shadow: 0 12px 32px rgba(0, 0, 0, .16);
+}
+
+.pf-address__list[hidden] { display: none; }
+
+.pf-address__option {
+  padding: 9px 11px; border-radius: calc(var(--radius-md) - 4px);
+  font-size: 14px; color: var(--ink); cursor: pointer;
+}
+
+.pf-address__option:hover { background: rgba(var(--accent-rgb), .07); }
+
+.pf-address__option[aria-selected="true"] {
+  background: rgba(var(--accent-rgb), .14);
+  box-shadow: inset 0 0 0 1px rgba(var(--accent-rgb), .3);
+}
+
+.pf-address__map {
+  height: 0; overflow: hidden; border-radius: var(--radius-md); isolation: isolate;
+  border: 1px solid transparent; transition: height .2s ease;
+}
+
+.pf-address__map[data-state="ready"] { height: 190px; border-color: rgba(var(--hair), .1); }
+
+.pf-repeat { display: flex; flex-direction: column; gap: 10px; }
+
+.pf-repeat__items { display: flex; flex-direction: column; gap: 8px; }
+
+.pf-repeat__row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; box-sizing: border-box; text-align: left; cursor: pointer;
+  padding: 10px 11px 10px 13px;
+  font: inherit; font-size: 14px; color: var(--ink);
+  background: var(--surface-2); border: 1px solid rgba(var(--hair), .14);
+  border-radius: var(--radius-md);
+  transition: border-color .16s, color .16s;
+}
+
+.pf-repeat__text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.pf-repeat__x {
+  flex: none; width: 22px; height: 22px; border-radius: var(--radius-pill);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px; line-height: 1; color: var(--ink-3);
+  transition: background .16s, color .16s;
+}
+
+.pf-repeat__row:hover { border-color: rgba(var(--hair), .28); }
+.pf-repeat__row:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+.pf-repeat__row:hover .pf-repeat__x,
+.pf-repeat__row:focus-visible .pf-repeat__x { background: var(--danger-bg); color: var(--danger); }
+
+.pf-repeat__entry { display: flex; align-items: flex-start; gap: 8px; }
+
+.pf-repeat__entry .pf-address { flex: 1; min-width: 0; }
+
+.pf-repeat__add {
+  flex: none; width: 44px; height: 44px; padding: 0; cursor: pointer;
+  font: inherit; font-size: 21px; font-weight: 500; line-height: 1;
+  color: var(--ink-2); background: var(--surface-2);
+  border: 1px solid rgba(var(--hair), .14); border-radius: var(--radius-md);
+  transition: border-color .16s, color .16s;
+}
+
+.pf-repeat__add:hover { color: var(--accent); border-color: var(--accent); }
+.pf-repeat__add:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .18); }
+
+/* source: portal form document scope */
+html, body { min-height: 100%; }
+body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var(--font); }</style>
+</head>
+<body>
+<section id="portal-form-root"
+  data-form-api-base=""
+  data-form-type-code=""
+  data-form-organization-id=""
+  data-form-locale="en"
+  data-form-theme="snow"
+  data-form-mode="light"
+  data-form-maps-api-key=""
+  data-copy-title="Get your free quote"
+  data-copy-subtitle="Tell us about the property and we will come back with a seasonal number."
+  data-copy-note=""
+  data-copy-submit-label="Send request"
+  data-copy-submitting-label="Sending…"
+  data-copy-next-label="Continue"
+  data-copy-back-label="Back"
+  data-copy-retry-label="Try again"
+  data-copy-step-fallback="Step {n}"
+  data-copy-select-placeholder="Choose one"
+  data-copy-required-error="This field is required."
+  data-copy-format-error="That format is not accepted."
+  data-copy-incomplete-error="Finish filling this field."
+  data-copy-email-error="Enter a valid email address."
+  data-copy-url-error="Enter a full https address."
+  data-copy-number-error="Enter a number."
+  data-copy-min-error="Minimum is {n}."
+  data-copy-max-error="Maximum is {n}."
+  data-copy-min-length-error="At least {n} characters."
+  data-copy-max-length-error="At most {n} characters."
+  data-copy-schema-error-title="The form could not be loaded"
+  data-copy-schema-error-body="We could not reach the form service. Nothing was sent."
+  data-copy-empty-title="This form has no fields"
+  data-copy-empty-body="The published form type contains no visible attributes."
+  data-copy-success-title="Thank you"
+  data-copy-success-body="We have received your submission."
+  data-copy-success-next-title="What happens next"
+  data-copy-success-step1=""
+  data-copy-success-step2=""
+  data-copy-success-step3=""
+  data-copy-success-again-label=""
+  data-copy-submit-error-title="The request was not sent"
+  data-copy-submit-error-body="Something went wrong on the way. Your answers are still here — try again."
+  data-copy-blocked-title="Sending is not configured"
+  data-copy-blocked-body="This form has no organization id yet, so it cannot submit.">
+  <div class="pf-shell"><div data-portal-form-mount></div></div>
+</section>
+<script>
+(function (global) {
+  "use strict";
+
+  var MASK_CLASSES = { "9": /\d/, A: /[A-Za-z]/, "*": /[A-Za-z0-9]/ };
+  var NUMERIC = /Integer|Long|Float|Double|BigDecimal|Short|Byte|^int$|^long$|^float$|^double$/;
+
+  function el(tag, className, attrs) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (attrs) {
+      Object.keys(attrs).forEach(function (key) {
+        var value = attrs[key];
+        if (value === undefined || value === null || value === false) return;
+        if (value === true) node.setAttribute(key, "");
+        else node.setAttribute(key, String(value));
+      });
+    }
+    return node;
+  }
+
+  function text(tag, className, value) {
+    var node = el(tag, className);
+    node.textContent = value == null ? "" : String(value);
+    return node;
+  }
+
+  function localized(nls, locale, key) {
+    if (!nls || typeof nls !== "object") return "";
+    var bag = nls[locale] || nls.en || nls[Object.keys(nls)[0]] || {};
+    var value = bag[key || "NAME"];
+    if (value == null) return "";
+    return String(value).replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
+  }
+
+  var CORE_ADDRESS_CLASS = "com.pixelnation.common.domain.Address";
+
+  function javaType(className) {
+    var name = String(className || "");
+    if (name === CORE_ADDRESS_CLASS) return "address";
+    if (name.indexOf("Boolean") !== -1 || name === "boolean") return "boolean";
+    if (NUMERIC.test(name)) return "number";
+    if (name.indexOf("java.lang.String") !== -1 || /(^|\.)String$/.test(name)) return "string";
+    return "entity";
+  }
+
+  function parseTokens(inputFormat) {
+    var tokens = {
+      password: false, textarea: false, expanded: false, slider: false,
+      tel: false, url: false, email: false, color: false, date: false,
+      address: false,
+      rows: null, cols: null, min: null, max: null, step: null,
+      minLength: null, maxLength: null, re: null, mask: null, placeholder: null,
+      country: null, coordinatesOf: null,
+    };
+    if (!inputFormat) return tokens;
+    var rest = String(inputFormat);
+    var placeholder = rest.match(/placeholder:([^;]+)/);
+    if (placeholder) {
+      tokens.placeholder = placeholder[1].trim();
+      rest = rest.replace(/placeholder:[^;]+/, " ");
+    }
+    var mask = rest.match(/mask:([^;]+?)(?=\s*;|\s+(?:password|textarea|expanded|slider|tel|url|email|color|date)\b|\s+[a-zA-Z]+:|\s*$)/);
+    if (mask) {
+      tokens.mask = mask[1].trim();
+      rest = rest.replace(mask[0], " ");
+    }
+    rest.split(/[\s;]+/).filter(Boolean).forEach(function (token) {
+      if (token === "password" || token === "textarea" || token === "expanded" || token === "slider"
+        || token === "tel" || token === "url" || token === "email" || token === "color" || token === "date"
+        || token === "address") {
+        tokens[token] = true;
+        return;
+      }
+      var pair = token.match(/^(rows|cols|min|max|step|minLength|maxLength):(.+)$/);
+      if (pair) { tokens[pair[1]] = Number(pair[2]); return; }
+      var region = token.match(/^country:([A-Za-z,]+)$/);
+      if (region) {
+        tokens.country = region[1].split(",").map(function (code) { return code.trim().toLowerCase(); }).filter(Boolean);
+        return;
+      }
+      var source = token.match(/^coordinates-of:(.+)$/);
+      if (source) { tokens.coordinatesOf = source[1]; return; }
+      if (token.indexOf("re:") === 0) tokens.re = token.slice(3);
+    });
+    return tokens;
+  }
+
+  function normalizeChoices(attribute, locale) {
+    return (Array.isArray(attribute.options) ? attribute.options : [])
+      .map(function (option) {
+        return {
+          value: String(option.value != null ? option.value : option.code != null ? option.code : option.id != null ? option.id : ""),
+          label: String(option.label || option.name || localized(option.nls, locale) || option.value || ""),
+        };
+      })
+      .filter(function (option) { return option.value !== ""; });
+  }
+
+  function fieldKind(attribute, tokens, choices) {
+    if (choices.length) {
+      if (attribute.freeValue && !attribute.multiselect) return "combobox";
+      if (tokens.expanded) return attribute.multiselect ? "checklist" : "radio";
+      return attribute.multiselect ? "multiselect" : "select";
+    }
+    var type = javaType(attribute.className);
+    if (type === "boolean") return "boolean";
+    if (type === "number") return tokens.slider ? "slider" : "number";
+    if (type === "entity") return "select";
+    if (type === "address" || tokens.address) return attribute.multiselect ? "address-list" : "address";
+    if (tokens.textarea) return "textarea";
+    if (tokens.password) return "password";
+    if (tokens.email) return "email";
+    if (tokens.tel) return "tel";
+    if (tokens.url) return "url";
+    if (tokens.color) return "color";
+    if (tokens.date) return "date";
+    return "text";
+  }
+
+  function normalizeSchema(schema, locale) {
+    var owners = [{ id: schema.id, attributes: schema.attributes || [], groups: schema.attributeGroups || [] }];
+    (schema.parents || []).forEach(function (parent) {
+      owners.push({ id: parent.id, attributes: parent.attributes || [], groups: parent.attributeGroups || [] });
+    });
+
+    var byCode = {};
+    owners.forEach(function (owner) {
+      (owner.attributes || []).forEach(function (attribute) {
+        if (!byCode[attribute.code]) byCode[attribute.code] = { attribute: attribute, typeId: owner.id };
+      });
+    });
+
+    var groupTitles = {};
+    owners.forEach(function (owner) {
+      (owner.groups || []).forEach(function (group) { groupTitles[group.code] = localized(group.nls, locale); });
+    });
+
+    var order = Array.isArray(schema.attributeOrder) ? schema.attributeOrder : [];
+    var groups = [];
+    var hidden = [];
+    var placed = {};
+
+    order.forEach(function (entry) {
+      Object.keys(entry || {}).forEach(function (groupCode) {
+        var rows = Array.isArray(entry[groupCode]) ? entry[groupCode] : [];
+        var fields = [];
+        rows.forEach(function (row) {
+          var found = byCode[row.attributeCode];
+          if (!found || placed[row.attributeCode]) return;
+          placed[row.attributeCode] = true;
+          var field = toField(found.attribute, found.typeId, locale);
+          if (row.visible === false || field.tokens.coordinatesOf) hidden.push(field);
+          else fields.push(field);
+        });
+        if (fields.length) groups.push({ code: groupCode, title: groupTitles[groupCode] || "", fields: fields });
+      });
+    });
+
+    var loose = [];
+    Object.keys(byCode).forEach(function (code) {
+      if (placed[code]) return;
+      var field = toField(byCode[code].attribute, byCode[code].typeId, locale);
+      if (field.tokens.coordinatesOf) hidden.push(field);
+      else loose.push(field);
+    });
+    if (loose.length) groups.push({ code: "__ungrouped", title: "", fields: loose });
+
+    return { id: schema.id, code: schema.code, title: localized(schema.nls, locale), groups: groups, hidden: hidden };
+  }
+
+  function toField(attribute, typeId, locale) {
+    var tokens = parseTokens(attribute.inputFormat);
+    var choices = normalizeChoices(attribute, locale);
+    var label = localized(attribute.nls, locale);
+    return {
+      code: attribute.code,
+      typeId: typeId,
+      kind: fieldKind(attribute, tokens, choices),
+      label: label,
+      placeholder: tokens.placeholder || localized(attribute.nls, locale, "PLACEHOLDER") || "",
+      description: localized(attribute.nls, locale, "DESCRIPTION"),
+      required: attribute.required === true,
+      multiselect: attribute.multiselect === true,
+      freeValue: attribute.freeValue === true,
+      choices: choices,
+      tokens: tokens,
+      behavior: parseBehavior(attribute.uiBehavior),
+      mask: tokens.mask || null,
+    };
+  }
+
+  function parseBehavior(source) {
+    if (!source) return null;
+    var body = String(source).replace(/\/\*[\s\S]*?\*\//g, "").trim();
+    var call = body.match(/applyBehavior\(\s*(\{[\s\S]*?\})\s*\)/);
+    if (!call) return null;
+    var literal = call[1]
+      .replace(/([{,]\s*)([A-Za-z_$][\w$]*)\s*:/g, '$1"$2":')
+      .replace(/'/g, '"')
+      .replace(/,\s*}/g, "}");
+    try {
+      var mapping = JSON.parse(literal);
+      var clean = {};
+      Object.keys(mapping).forEach(function (key) {
+        if (typeof mapping[key] === "string") clean[String(key).toUpperCase()] = mapping[key];
+      });
+      return Object.keys(clean).length ? clean : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function applyMask(raw, mask) {
+    var out = "";
+    var index = 0;
+    for (var position = 0; position < mask.length && index < raw.length; position += 1) {
+      var slot = mask.charAt(position);
+      var matcher = MASK_CLASSES[slot];
+      if (!matcher) {
+        out += slot;
+        if (raw.charAt(index) === slot) index += 1;
+        continue;
+      }
+      while (index < raw.length && !matcher.test(raw.charAt(index))) index += 1;
+      if (index >= raw.length) break;
+      out += slot === "A" ? raw.charAt(index).toUpperCase() : raw.charAt(index);
+      index += 1;
+    }
+    return out;
+  }
+
+  function maskComplete(value, mask) {
+    var slots = mask.split("").filter(function (character) { return MASK_CLASSES[character]; }).length;
+    var filled = value.split("").filter(function (character, position) {
+      return MASK_CLASSES[mask.charAt(position)];
+    }).length;
+    return filled >= slots;
+  }
+
+  function repeatList(value) {
+    if (Array.isArray(value)) return value;
+    return value ? [String(value)] : [];
+  }
+
+  function withEntry(list, entry) {
+    var known = list.some(function (existing) { return String(existing).toLowerCase() === entry.toLowerCase(); });
+    return known ? list : list.concat([entry]);
+  }
+
+  function addressKey(field, text) {
+    var address = text == null ? "" : String(text);
+    return field.kind === "address-list" ? address.trim() : address;
+  }
+
+  function pointOf(location) {
+    if (!location) return null;
+    var lat = typeof location.lat === "function" ? location.lat() : location.lat;
+    var lng = typeof location.lng === "function" ? location.lng() : location.lng;
+    if (typeof lat !== "number" || typeof lng !== "number" || !isFinite(lat) || !isFinite(lng)) return null;
+    if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+    return { lat: lat, lng: lng };
+  }
+
+  function keepFocus(event) {
+    event.preventDefault();
+  }
+
+  var CONTROLS = { INPUT: true, SELECT: true, TEXTAREA: true, BUTTON: true };
+
+  function within(outer, node) {
+    for (var current = node; current; current = current.parentNode) {
+      if (current === outer) return true;
+    }
+    return false;
+  }
+
+  function focusKey(node) {
+    if (!node || typeof node.getAttribute !== "function") return "";
+    if (node.id) return "#" + node.id;
+    var name = node.getAttribute("name");
+    if (name) return name + "=" + node.getAttribute("value");
+    return node.getAttribute("data-focus") || "";
+  }
+
+  function findNode(node, match) {
+    if (match(node)) return node;
+    var children = node.children || [];
+    for (var index = 0; index < children.length; index += 1) {
+      var found = findNode(children[index], match);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function debounce(fn, wait) {
+    var timer = null;
+    return function () {
+      var args = arguments;
+      var self = this;
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () { fn.apply(self, args); }, wait);
+    };
+  }
+
+  var mapsPromise = null;
+  var MAPS_LIBRARIES = ["maps", "places", "marker", "geocoding"];
+
+  function loadMaps(apiKey) {
+    if (mapsPromise) return mapsPromise;
+    if (!apiKey) return Promise.reject(new Error("no-key"));
+    mapsPromise = new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(apiKey)
+        + "&loading=async&v=weekly";
+      script.addEventListener("error", function () { reject(new Error("maps-script-failed")); });
+      script.addEventListener("load", function () {
+        var maps = global.google && global.google.maps;
+        if (maps && typeof maps.importLibrary === "function") resolve(maps);
+        else reject(new Error("maps-unavailable"));
+      });
+      document.head.appendChild(script);
+    }).then(function (maps) {
+      return Promise.all(MAPS_LIBRARIES.map(function (name) { return maps.importLibrary(name); }))
+        .then(function () { return maps; });
+    });
+    return mapsPromise;
+  }
+
+  function geocodeAddress(maps, text, answered) {
+    var query = String(text == null ? "" : text).trim();
+    if (!query || !maps.Geocoder) return false;
+    new maps.Geocoder().geocode({ address: query }, function (results, status) {
+      answered(status === "OK" && results && results.length ? results[0] : null);
+    });
+    return true;
+  }
+
+  function PortalForm(config) {
+    this.cfg = config || {};
+    this.locale = this.cfg.locale || "en";
+    this.model = null;
+    this.values = {};
+    this.errors = {};
+    this.touched = {};
+    this.pending = {};
+    this.locations = {};
+    this.lookups = {};
+    this.previews = {};
+    this.fieldNodes = {};
+    this.unpainted = {};
+    this.pressing = false;
+    this.step = 0;
+    this.state = "loading";
+    this.result = null;
+  }
+
+  PortalForm.prototype.mount = function (target) {
+    this.root = typeof target === "string" ? document.querySelector(target) : target;
+    if (!this.root) throw new Error("PortalForm mount target was not found");
+    this.root.classList.add("pf");
+    this.trackPress();
+    this.render();
+    var self = this;
+    this.load().then(function () { self.render(); }, function () { self.render(); });
+    return this;
+  };
+
+  PortalForm.prototype.trackPress = function () {
+    var self = this;
+    this.root.addEventListener("mousedown", function (event) {
+      if (event.button === 0) self.pressing = true;
+    }, true);
+    document.addEventListener("mouseup", function () {
+      if (self.pressing) setTimeout(function () { self.release(); }, 0);
+    }, true);
+    document.addEventListener("keydown", function () {
+      if (self.pressing) self.release();
+    }, true);
+  };
+
+  PortalForm.prototype.release = function () {
+    var self = this;
+    var waiting = this.unpainted;
+    this.pressing = false;
+    this.unpainted = {};
+    Object.keys(waiting).forEach(function (code) { self.paint(waiting[code]); });
+  };
+
+  PortalForm.prototype.paint = function (field) {
+    if (this.pressing) { this.unpainted[field.code] = field; return; }
+    var nodes = this.fieldNodes[field.code];
+    if (!nodes) return;
+    var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
+    nodes.wrap.setAttribute("data-state", invalid ? "invalid" : "idle");
+    nodes.error.textContent = invalid ? this.errors[field.code] : "";
+  };
+
+  PortalForm.prototype.load = function () {
+    var self = this;
+    if (this.cfg.schema) {
+      this.adopt(this.cfg.schema);
+      return Promise.resolve();
+    }
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    if (!base || !this.cfg.formTypeCode) {
+      this.state = "error";
+      this.result = { reason: "unconfigured" };
+      return Promise.reject(new Error("unconfigured"));
+    }
+    var url = base + "/" + encodeURIComponent(this.locale) + "/core-cms/api/form-type/"
+      + encodeURIComponent(this.cfg.formTypeCode) + "/get.json";
+    return fetch(url, { method: "GET", credentials: "omit", headers: { accept: "application/json" } })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(function (schema) { self.adopt(schema); })
+      .catch(function (error) {
+        self.state = "error";
+        self.result = { reason: "schema", message: error.message };
+        throw error;
+      });
+  };
+
+  PortalForm.prototype.adopt = function (schema) {
+    this.model = normalizeSchema(schema, this.locale);
+    this.seed();
+    this.state = this.model.groups.length ? "ready" : "empty";
+  };
+
+  PortalForm.prototype.seed = function () {
+    var preset = this.cfg.presetValues || {};
+    var self = this;
+    this.eachField(function (field) {
+      if (Object.prototype.hasOwnProperty.call(preset, field.code)) {
+        self.values[field.code] = preset[field.code];
+      } else if (field.kind === "checklist" || field.kind === "multiselect" || field.kind === "address-list") {
+        self.values[field.code] = [];
+      } else if (field.kind === "boolean") {
+        self.values[field.code] = false;
+      } else if (field.kind === "slider") {
+        self.values[field.code] = field.tokens.min != null ? field.tokens.min : 0;
+      } else {
+        self.values[field.code] = "";
+      }
+    });
+  };
+
+  PortalForm.prototype.eachField = function (visit) {
+    if (!this.model) return;
+    this.model.groups.forEach(function (group) {
+      group.fields.forEach(function (field) { visit(field, group); });
+    });
+    this.model.hidden.forEach(function (field) { visit(field, null); });
+  };
+
+  PortalForm.prototype.visibleGroups = function () {
+    if (!this.model) return [];
+    var controlled = {};
+    var shown = {};
+    this.eachField(function (field) {
+      if (!field.behavior) return;
+      Object.keys(field.behavior).forEach(function (key) { controlled[field.behavior[key]] = true; });
+    });
+    var self = this;
+    this.eachField(function (field) {
+      if (!field.behavior) return;
+      var current = self.values[field.code];
+      var selected = Array.isArray(current) ? current : current ? [current] : [];
+      selected.forEach(function (value) {
+        var target = field.behavior[String(value).toUpperCase()];
+        if (target) shown[target] = true;
+      });
+    });
+    return this.model.groups.filter(function (group) {
+      return !controlled[group.code] || shown[group.code];
+    });
+  };
+
+  PortalForm.prototype.validateField = function (field) {
+    var value = this.values[field.code];
+    var tokens = field.tokens;
+    var empty = value === "" || value === null || value === undefined
+      || (Array.isArray(value) && value.length === 0)
+      || (field.kind === "boolean" && value !== true);
+    if (field.required && empty) return this.cfg.copy.requiredError;
+    if (empty) return "";
+    var asText = Array.isArray(value) ? value.join(",") : String(value);
+    if (field.mask && !maskComplete(asText, field.mask)) return this.cfg.copy.incompleteError;
+    if (tokens.re && !new RegExp(tokens.re).test(asText)) return this.cfg.copy.formatError;
+    if (field.kind === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(asText)) return this.cfg.copy.emailError;
+    if (field.kind === "url" && !/^https?:\/\/[^\s]+$/.test(asText)) return this.cfg.copy.urlError;
+    if (tokens.minLength != null && asText.length < tokens.minLength) return this.cfg.copy.minLengthError.replace("{n}", tokens.minLength);
+    if (tokens.maxLength != null && asText.length > tokens.maxLength) return this.cfg.copy.maxLengthError.replace("{n}", tokens.maxLength);
+    if (field.kind === "number" || field.kind === "slider") {
+      var numeric = Number(asText);
+      if (!isFinite(numeric)) return this.cfg.copy.numberError;
+      if (tokens.min != null && numeric < tokens.min) return this.cfg.copy.minError.replace("{n}", tokens.min);
+      if (tokens.max != null && numeric > tokens.max) return this.cfg.copy.maxError.replace("{n}", tokens.max);
+    }
+    return "";
+  };
+
+  PortalForm.prototype.validateGroup = function (group) {
+    var self = this;
+    var ok = true;
+    group.fields.forEach(function (field) {
+      var message = self.validateField(field);
+      self.errors[field.code] = message;
+      self.touched[field.code] = true;
+      if (message) ok = false;
+    });
+    return ok;
+  };
+
+  PortalForm.prototype.flushPending = function () {
+    var self = this;
+    this.eachField(function (field) {
+      if (field.kind === "address-list") self.takePending(field, self.pending[field.code]);
+    });
+  };
+
+  PortalForm.prototype.takePending = function (field, raw) {
+    var entry = String(raw == null ? "" : raw).trim();
+    this.pending[field.code] = "";
+    if (!entry) return false;
+    var held = repeatList(this.values[field.code]);
+    var next = withEntry(held, entry);
+    if (next === held) return false;
+    this.touched[field.code] = true;
+    this.setValue(field, next);
+    return true;
+  };
+
+  PortalForm.prototype.submit = function () {
+    var self = this;
+    this.flushPending();
+    var groups = this.visibleGroups();
+    var ok = true;
+    groups.forEach(function (group) { if (!self.validateGroup(group)) ok = false; });
+    if (!ok) {
+      this.step = groups.findIndex(function (group) {
+        return group.fields.some(function (field) { return self.errors[field.code]; });
+      });
+      if (this.step < 0) this.step = 0;
+      this.render();
+      this.focusInvalid(groups[this.step]);
+      return Promise.resolve(false);
+    }
+
+    var organizationId = this.cfg.organizationId;
+    var base = String(this.cfg.apiBaseUrl || "").replace(/\/+$/, "");
+    if (!organizationId || !base) {
+      this.state = "blocked";
+      this.render();
+      return Promise.resolve(false);
+    }
+
+    var attributes = {};
+    var sent = {};
+    function collect(field) {
+      var value = self.values[field.code];
+      if (value === "" || value === null || value === undefined) return;
+      if (Array.isArray(value) && !value.length) return;
+      if (field.kind === "boolean" && value !== true) return;
+      var bucket = String(field.typeId != null ? field.typeId : self.model.id);
+      if (!attributes[bucket]) attributes[bucket] = {};
+      attributes[bucket][field.code] = { value: value };
+      sent[field.code] = true;
+    }
+    groups.forEach(function (group) { group.fields.forEach(collect); });
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf && !sent[field.tokens.coordinatesOf]) return;
+      collect(field);
+    });
+
+    this.state = "submitting";
+    this.render();
+
+    return fetch(base + "/core-cms/api/form/submit.json", {
+      method: "POST",
+      credentials: "omit",
+      headers: { "Content-Type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        type: { id: this.model.id },
+        organization: { id: organizationId },
+        attributes: attributes,
+      }),
+    })
+      .then(function (response) {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json().catch(function () { return {}; });
+      })
+      .then(function (payload) {
+        self.state = "success";
+        self.result = payload;
+        self.render();
+        self.focusKeyed("success");
+        if (typeof self.cfg.onSubmit === "function") self.cfg.onSubmit(payload, self.values);
+        return true;
+      })
+      .catch(function (error) {
+        self.state = "submit-error";
+        self.result = { message: error.message };
+        self.render();
+        self.focusKeyed("next");
+        return false;
+      });
+  };
+
+  PortalForm.prototype.setValue = function (field, value) {
+    this.values[field.code] = value;
+    if (this.touched[field.code]) this.errors[field.code] = this.validateField(field);
+    this.syncCoordinates(field);
+  };
+
+  PortalForm.prototype.holdsAddress = function (field, address) {
+    if (repeatList(this.values[field.code]).indexOf(address) !== -1) return true;
+    return field.kind === "address-list" && String(this.pending[field.code] || "").trim() === address;
+  };
+
+  PortalForm.prototype.rememberLocation = function (field, text, location, fromGeocoder) {
+    var address = addressKey(field, text);
+    var point = pointOf(location);
+    if (!address || !point) return;
+    var known = this.locations[field.code] || (this.locations[field.code] = Object.create(null));
+    if (fromGeocoder && known[address]) return;
+    known[address] = point;
+    this.syncCoordinates(field);
+    var preview = this.previews[field.code];
+    if (preview && known[address]) preview(address, known[address]);
+  };
+
+  PortalForm.prototype.locate = function (field, text, maps) {
+    var self = this;
+    var address = addressKey(field, text);
+    var known = this.locations[field.code];
+    var asked = this.lookups[field.code] || (this.lookups[field.code] = Object.create(null));
+    if (!address || !this.cfg.mapsApiKey || (known && known[address]) || asked[address]) return;
+    asked[address] = "pending";
+    function ask(loaded) {
+      var sent = geocodeAddress(loaded, address, function (best) {
+        if (best) {
+          delete asked[address];
+          self.rememberLocation(field, address, best.geometry && best.geometry.location, true);
+        } else if (self.holdsAddress(field, address)) {
+          asked[address] = "missed";
+        } else {
+          delete asked[address];
+        }
+      });
+      if (!sent) delete asked[address];
+    }
+    if (maps) ask(maps);
+    else loadMaps(this.cfg.mapsApiKey).then(ask).catch(function () { delete asked[address]; });
+  };
+
+  PortalForm.prototype.syncCoordinates = function (source) {
+    var self = this;
+    var known = this.locations[source.code];
+    if (known) {
+      Object.keys(known).forEach(function (address) {
+        if (!self.holdsAddress(source, address)) delete known[address];
+      });
+    }
+    var asked = this.lookups[source.code];
+    if (asked) {
+      Object.keys(asked).forEach(function (address) {
+        if (asked[address] === "missed" && !self.holdsAddress(source, address)) delete asked[address];
+      });
+    }
+    this.model.hidden.forEach(function (field) {
+      if (field.tokens.coordinatesOf !== source.code) return;
+      var entries = [];
+      repeatList(self.values[source.code]).forEach(function (address) {
+        var point = known && known[address];
+        if (point) entries.push({ address: address, lat: point.lat, lng: point.lng });
+      });
+      self.values[field.code] = entries.length ? JSON.stringify(entries) : "";
+    });
+  };
+
+  PortalForm.prototype.render = function () {
+    var active = document.activeElement;
+    var held = within(this.root, active) ? focusKey(active) : "";
+    this.draw();
+    if (held) this.focusKeyed(held);
+  };
+
+  PortalForm.prototype.focusKeyed = function (key) {
+    if (!key) return false;
+    var node = findNode(this.root, function (candidate) { return focusKey(candidate) === key; });
+    if (node) node.focus();
+    return Boolean(node);
+  };
+
+  PortalForm.prototype.draw = function () {
+    var self = this;
+    var root = this.root;
+    root.dataset.state = this.state;
+    this.fieldNodes = {};
+    root.replaceChildren();
+
+    var card = el("div", "pf__card");
+    root.appendChild(card);
+
+    if (this.state === "loading") { card.appendChild(this.renderSkeleton()); return; }
+    if (this.state === "error") { card.appendChild(this.renderNotice("error", this.cfg.copy.schemaErrorTitle, this.cfg.copy.schemaErrorBody, true)); return; }
+    if (this.state === "empty") { card.appendChild(this.renderNotice("empty", this.cfg.copy.emptyTitle, this.cfg.copy.emptyBody, false)); return; }
+    if (this.state === "success") { card.appendChild(this.renderSuccess()); return; }
+
+    var groups = this.visibleGroups();
+    if (this.step >= groups.length) this.step = Math.max(0, groups.length - 1);
+    var multi = groups.length > 1;
+    var group = groups[this.step];
+
+    var head = el("div", "pf__head");
+    head.appendChild(text("h2", "pf__title", this.cfg.copy.title || this.model.title));
+    if (this.cfg.copy.subtitle) head.appendChild(text("p", "pf__sub", this.cfg.copy.subtitle));
+    card.appendChild(head);
+
+    if (multi) card.appendChild(this.renderSteps(groups));
+
+    var form = el("form", "pf__body", { novalidate: true });
+    form.addEventListener("submit", function (event) { event.preventDefault(); self.advance(groups); });
+    card.appendChild(form);
+
+    var titleId = group.title ? "pf-group-" + group.code : undefined;
+    var section = el("div", "pf-group", { "data-group": group.code, role: "group", tabindex: "-1", "aria-labelledby": titleId });
+    if (group.title) {
+      var groupTitle = text("p", "pf-group__title", group.title);
+      groupTitle.id = titleId;
+      section.appendChild(groupTitle);
+    }
+    group.fields.forEach(function (field) { section.appendChild(self.renderField(field)); });
+    form.appendChild(section);
+
+    if (this.state === "submit-error") {
+      form.appendChild(this.renderNotice("error", this.cfg.copy.submitErrorTitle, this.cfg.copy.submitErrorBody, false));
+    }
+    if (this.state === "blocked") {
+      form.appendChild(this.renderNotice("blocked", this.cfg.copy.blockedTitle, this.cfg.copy.blockedBody, false));
+    }
+
+    var actions = el("div", "pf-actions");
+    if (multi && this.step > 0) {
+      var back = text("button", "btn btn--ghost btn--lg", this.cfg.copy.backLabel);
+      back.type = "button";
+      back.addEventListener("click", function () { self.step -= 1; self.render(); self.focusStep(); });
+      actions.appendChild(back);
+    }
+    var last = this.step === groups.length - 1;
+    var submitting = this.state === "submitting";
+    var next = text("button", "btn btn--primary btn--lg", submitting ? this.cfg.copy.submittingLabel : last ? this.cfg.copy.submitLabel : this.cfg.copy.nextLabel);
+    next.type = "submit";
+    next.setAttribute("data-focus", "next");
+    if (submitting || (last && !this.canSubmit())) next.disabled = true;
+    if (last && !this.canSubmit()) next.dataset.formDestination = "unset";
+    actions.appendChild(next);
+    form.appendChild(actions);
+
+    if (this.cfg.copy.note) card.appendChild(text("p", "pf-note", this.cfg.copy.note));
+  };
+
+  PortalForm.prototype.canSubmit = function () {
+    return Boolean(this.cfg.organizationId && this.cfg.apiBaseUrl);
+  };
+
+  PortalForm.prototype.advance = function (groups) {
+    this.flushPending();
+    if (!this.validateGroup(groups[this.step])) { this.render(); this.focusInvalid(groups[this.step]); return; }
+    if (this.step < groups.length - 1) { this.step += 1; this.render(); this.focusStep(); return; }
+    this.submit();
+  };
+
+  PortalForm.prototype.focusStep = function () {
+    var section = findNode(this.root, function (node) { return node.getAttribute("data-group") !== null; });
+    if (section) section.focus();
+  };
+
+  PortalForm.prototype.focusInvalid = function (group) {
+    var self = this;
+    var field = group.fields.filter(function (candidate) { return self.errors[candidate.code]; })[0];
+    var nodes = field && this.fieldNodes[field.code];
+    if (!nodes) return;
+    var control = findNode(nodes.wrap, function (node) { return node.id === "pf-" + field.code && CONTROLS[node.tagName] === true; })
+      || findNode(nodes.wrap, function (node) { return CONTROLS[node.tagName] === true; });
+    if (control) control.focus();
+  };
+
+  PortalForm.prototype.renderSteps = function (groups) {
+    var self = this;
+    var wrap = el("div", "pf-steps", { role: "list" });
+    groups.forEach(function (group, index) {
+      var state = index === self.step ? "on" : index < self.step ? "done" : "todo";
+      var step = el("div", "pf-step pf-step--" + state, { role: "listitem", "data-state": state });
+      step.appendChild(text("i", "", state === "done" ? "✓" : String(index + 1)));
+      step.appendChild(text("span", "", group.title || self.cfg.copy.stepFallback.replace("{n}", index + 1)));
+      wrap.appendChild(step);
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.renderSkeleton = function () {
+    var wrap = el("div", "pf-skeleton", { "data-state": "loading", "aria-busy": "true" });
+    for (var index = 0; index < 4; index += 1) {
+      var row = el("div", "pf-skeleton__row");
+      row.appendChild(el("span", "pf-skeleton__bar pf-skeleton__bar--label"));
+      row.appendChild(el("span", "pf-skeleton__bar"));
+      wrap.appendChild(row);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.renderNotice = function (kind, title, body, retry) {
+    var self = this;
+    var wrap = el("div", "pf-notice pf-notice--" + kind, { "data-state": kind, role: kind === "error" ? "alert" : "status" });
+    wrap.appendChild(text("div", "pf-notice__glyph", kind === "success" ? "✓" : kind === "empty" ? "◌" : "!"));
+    wrap.appendChild(text("div", "pf-notice__title", title));
+    if (body) wrap.appendChild(text("div", "pf-notice__body", body));
+    if (retry) {
+      var button = text("button", "btn btn--primary", self.cfg.copy.retryLabel);
+      button.type = "button";
+      button.addEventListener("click", function () {
+        self.state = "loading";
+        self.render();
+        self.load().then(function () { self.render(); }, function () { self.render(); });
+      });
+      wrap.appendChild(button);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.renderSuccess = function () {
+    var self = this;
+    var copy = this.cfg.copy;
+    var wrap = el("div", "pf-notice pf-notice--success", { "data-state": "success" });
+    var glyph = text("div", "pf-notice__glyph", "✓");
+    glyph.setAttribute("aria-hidden", "true");
+    wrap.appendChild(glyph);
+    var title = text("h2", "pf-notice__title", copy.successTitle);
+    title.setAttribute("tabindex", "-1");
+    title.setAttribute("data-focus", "success");
+    wrap.appendChild(title);
+    if (copy.successBody) wrap.appendChild(text("div", "pf-notice__body", copy.successBody));
+
+    var steps = [copy.successStep1, copy.successStep2, copy.successStep3].filter(function (step) {
+      return step != null && String(step).trim() !== "";
+    });
+    if (steps.length) {
+      var next = el("div", "pf-next");
+      if (copy.successNextTitle) next.appendChild(text("h3", "pf-next__title", copy.successNextTitle));
+      var list = el("ol", "pf-next__list");
+      steps.forEach(function (step, index) {
+        var item = el("li", "pf-next__item");
+        var number = text("span", "pf-next__n", index + 1);
+        number.setAttribute("aria-hidden", "true");
+        item.appendChild(number);
+        item.appendChild(text("span", "pf-next__text", step));
+        list.appendChild(item);
+      });
+      next.appendChild(list);
+      wrap.appendChild(next);
+    }
+
+    if (copy.successAgainLabel) {
+      var again = text("button", "btn btn--ghost btn--lg", copy.successAgainLabel);
+      again.type = "button";
+      again.addEventListener("click", function () { self.restart(); });
+      wrap.appendChild(again);
+    }
+    return wrap;
+  };
+
+  PortalForm.prototype.restart = function () {
+    this.values = {};
+    this.errors = {};
+    this.touched = {};
+    this.pending = {};
+    this.locations = {};
+    this.lookups = {};
+    this.result = null;
+    this.step = 0;
+    this.seed();
+    this.state = "ready";
+    this.render();
+    this.focusStep();
+  };
+
+  PortalForm.prototype.renderField = function (field) {
+    var self = this;
+    var invalid = Boolean(this.touched[field.code] && this.errors[field.code]);
+    var wrap = el("div", "pf-field", { "data-code": field.code, "data-kind": field.kind, "data-state": invalid ? "invalid" : "idle" });
+    var id = "pf-" + field.code;
+
+    if (field.kind !== "boolean") {
+      var label = el("label", "pf-field__label", { for: id });
+      label.appendChild(text("span", "", field.label));
+      if (field.required) label.appendChild(text("span", "pf-req", "*"));
+      wrap.appendChild(label);
+    }
+
+    var control = this.buildControl(field, id);
+    wrap.appendChild(control);
+
+    if (field.description) wrap.appendChild(text("p", "pf-field__hint", field.description));
+    var error = text("p", "pf-field__error", invalid ? this.errors[field.code] : "");
+    error.id = id + "-error";
+    wrap.appendChild(error);
+    this.fieldNodes[field.code] = { wrap: wrap, error: error };
+
+    wrap.addEventListener("focusout", function (event) {
+      if (within(wrap, event.relatedTarget)) return;
+      self.touched[field.code] = true;
+      self.errors[field.code] = self.validateField(field);
+      self.paint(field);
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.buildControl = function (field, id) {
+    var self = this;
+    var value = this.values[field.code];
+    var tokens = field.tokens;
+
+    if (field.kind === "textarea") {
+      var area = el("textarea", "pf-input pf-input--area", {
+        id: id, name: field.code, placeholder: field.placeholder,
+        rows: tokens.rows || 4, maxlength: tokens.maxLength,
+        "aria-describedby": id + "-error",
+      });
+      area.value = value || "";
+      area.addEventListener("input", function () { self.setValue(field, area.value); });
+      return area;
+    }
+
+    if (field.kind === "slider") {
+      var sliderWrap = el("div", "pf-slider");
+      var min = tokens.min != null ? tokens.min : 0;
+      var max = tokens.max != null ? tokens.max : 100;
+      var range = el("input", "pf-range", {
+        type: "range", id: id, name: field.code, min: min, max: max,
+        step: tokens.step != null ? tokens.step : 1,
+      });
+      range.value = value != null && value !== "" ? value : min;
+      var readout = text("output", "pf-slider__val", range.value);
+      range.addEventListener("input", function () {
+        readout.textContent = range.value;
+        self.setValue(field, Number(range.value));
+      });
+      sliderWrap.appendChild(range);
+      sliderWrap.appendChild(readout);
+      return sliderWrap;
+    }
+
+    if (field.kind === "boolean") {
+      var toggle = el("label", "pf-choice", { for: id });
+      var box = el("input", "pf-choice__input", { type: "checkbox", id: id, name: field.code });
+      box.checked = value === true;
+      box.addEventListener("change", function () { self.setValue(field, box.checked); self.render(); });
+      toggle.appendChild(box);
+      toggle.appendChild(el("span", "pf-check"));
+      var copy = text("span", "pf-choice__label", field.label);
+      if (field.required) copy.appendChild(text("span", "pf-req", "*"));
+      toggle.appendChild(copy);
+      return toggle;
+    }
+
+    if (field.kind === "radio" || field.kind === "checklist") {
+      var multiple = field.kind === "checklist";
+      var list = el("div", "pf-choices", { role: multiple ? "group" : "radiogroup", "aria-label": field.label });
+      field.choices.forEach(function (choice, index) {
+        var option = el("label", "pf-choice");
+        var input = el("input", "pf-choice__input", {
+          type: multiple ? "checkbox" : "radio",
+          name: field.code + (multiple ? "[]" : ""),
+          value: choice.value,
+          id: index === 0 ? id : undefined,
+        });
+        input.checked = multiple ? (value || []).indexOf(choice.value) !== -1 : value === choice.value;
+        input.addEventListener("change", function () {
+          if (!multiple) { self.setValue(field, choice.value); self.render(); return; }
+          var next = (self.values[field.code] || []).slice();
+          var at = next.indexOf(choice.value);
+          if (input.checked && at === -1) next.push(choice.value);
+          if (!input.checked && at !== -1) next.splice(at, 1);
+          self.setValue(field, next);
+          self.render();
+        });
+        option.appendChild(input);
+        option.appendChild(el("span", multiple ? "pf-check" : "pf-radio"));
+        option.appendChild(text("span", "pf-choice__label", choice.label));
+        list.appendChild(option);
+      });
+      return list;
+    }
+
+    if (field.kind === "multiselect") {
+      var chips = el("div", "pf-chips", { role: "group", "aria-label": field.label, id: id });
+      field.choices.forEach(function (choice) {
+        var on = (value || []).indexOf(choice.value) !== -1;
+        var chip = text("button", "pf-chip" + (on ? " pf-chip--on" : ""), choice.label);
+        chip.type = "button";
+        chip.setAttribute("aria-pressed", on ? "true" : "false");
+        chip.setAttribute("data-focus", field.code + "=" + choice.value);
+        chip.addEventListener("click", function () {
+          var next = (self.values[field.code] || []).slice();
+          var at = next.indexOf(choice.value);
+          if (at === -1) next.push(choice.value); else next.splice(at, 1);
+          self.touched[field.code] = true;
+          self.setValue(field, next);
+          self.render();
+        });
+        chips.appendChild(chip);
+      });
+      return chips;
+    }
+
+    if (field.kind === "select") {
+      var select = el("select", "pf-input pf-select", { id: id, name: field.code, "aria-describedby": id + "-error" });
+      var blank = text("option", "", field.placeholder || this.cfg.copy.selectPlaceholder);
+      blank.value = "";
+      select.appendChild(blank);
+      field.choices.forEach(function (choice) {
+        var option = text("option", "", choice.label);
+        option.value = choice.value;
+        if (value === choice.value) option.selected = true;
+        select.appendChild(option);
+      });
+      select.addEventListener("change", function () { self.setValue(field, select.value); self.render(); });
+      return select;
+    }
+
+    if (field.kind === "combobox") {
+      var comboWrap = el("div", "pf-combo");
+      var listId = id + "-list";
+      var combo = el("input", "pf-input", {
+        id: id, name: field.code, list: listId, placeholder: field.placeholder,
+        "aria-describedby": id + "-error",
+      });
+      combo.value = value || "";
+      combo.addEventListener("input", function () { self.setValue(field, combo.value); });
+      var datalist = el("datalist", "", { id: listId });
+      field.choices.forEach(function (choice) {
+        var option = el("option", "", { value: choice.value });
+        option.textContent = choice.label;
+        datalist.appendChild(option);
+      });
+      comboWrap.appendChild(combo);
+      comboWrap.appendChild(datalist);
+      return comboWrap;
+    }
+
+    if (field.kind === "address") return this.addressControl(field, id, value, null);
+    if (field.kind === "address-list") return this.addressListControl(field, id, value);
+
+    var nativeType = field.kind === "number" ? "number"
+      : field.kind === "password" ? "password"
+      : field.kind === "email" ? "email"
+      : field.kind === "tel" ? "tel"
+      : field.kind === "url" ? "url"
+      : field.kind === "color" ? "color"
+      : field.kind === "date" ? "date"
+      : "text";
+
+    if (field.kind === "color") {
+      var colorWrap = el("div", "pf-color");
+      var swatch = el("input", "pf-color__swatch", { type: "color", id: id, name: field.code, "aria-describedby": id + "-error" });
+      swatch.value = value || "#0e8fc4";
+      var readout = text("span", "pf-color__value", swatch.value);
+      swatch.addEventListener("input", function () {
+        readout.textContent = swatch.value;
+        self.setValue(field, swatch.value);
+      });
+      colorWrap.appendChild(swatch);
+      colorWrap.appendChild(readout);
+      return colorWrap;
+    }
+
+    var input = el("input", "pf-input", {
+      type: nativeType, id: id, name: field.code, placeholder: field.placeholder,
+      inputmode: field.kind === "number" ? "decimal" : field.kind === "tel" ? "tel" : undefined,
+      min: tokens.min, max: tokens.max, step: tokens.step,
+      maxlength: field.mask ? field.mask.length : tokens.maxLength,
+      autocomplete: field.kind === "email" ? "email" : field.kind === "tel" ? "tel" : undefined,
+      "aria-describedby": id + "-error",
+    });
+    input.value = value != null ? value : "";
+    input.addEventListener("input", function () {
+      if (field.mask) {
+        var masked = applyMask(input.value, field.mask);
+        if (masked !== input.value) input.value = masked;
+      }
+      self.setValue(field, input.value);
+    });
+    return input;
+  };
+
+  PortalForm.prototype.addressListControl = function (field, id, value) {
+    var self = this;
+    var held = repeatList(value);
+    var wrap = el("div", "pf-repeat");
+
+    if (held.length) {
+      var items = el("div", "pf-repeat__items", { role: "group", "aria-label": field.label });
+      held.forEach(function (entry) {
+        var row = el("button", "pf-repeat__row", {
+          type: "button", "aria-pressed": "true", "aria-label": String(entry),
+        });
+        row.appendChild(text("span", "pf-repeat__text", entry));
+        var glyph = text("span", "pf-repeat__x", "×");
+        glyph.setAttribute("aria-hidden", "true");
+        row.appendChild(glyph);
+        row.addEventListener("click", function () {
+          self.touched[field.code] = true;
+          self.setValue(field, repeatList(self.values[field.code]).filter(function (existing) {
+            return String(existing) !== String(entry);
+          }));
+          self.renderAndFocus(id);
+        });
+        items.appendChild(row);
+      });
+      wrap.appendChild(items);
+    }
+
+    var entry = el("div", "pf-repeat__entry");
+    entry.appendChild(this.addressControl(field, id, this.pending[field.code] || "", function (candidate, picked) {
+      if (self.takePending(field, candidate) && !picked) self.locate(field, candidate);
+      self.renderAndFocus(id);
+    }));
+    var add = text("button", "pf-repeat__add", "+");
+    add.type = "button";
+    add.addEventListener("mousedown", keepFocus);
+    add.addEventListener("click", function () {
+      var typed = self.pending[field.code];
+      if (self.takePending(field, typed)) self.locate(field, typed);
+      self.renderAndFocus(id);
+    });
+    entry.appendChild(add);
+    wrap.appendChild(entry);
+    return wrap;
+  };
+
+  PortalForm.prototype.renderAndFocus = function (id) {
+    this.render();
+    var input = document.getElementById(id);
+    if (input && typeof input.focus === "function") input.focus();
+  };
+
+  PortalForm.prototype.addressControl = function (field, id, value, accept) {
+    var self = this;
+    var repeating = typeof accept === "function";
+    var wrap = el("div", "pf-address");
+    var input = el("input", "pf-input", {
+      type: "text", id: id, name: field.code, placeholder: field.placeholder,
+      autocomplete: "street-address", "aria-describedby": id + "-error",
+    });
+    input.value = value != null ? value : "";
+    var listbox = { key: null };
+    var take = repeating ? accept : function (formatted) {
+      input.value = formatted;
+      self.setValue(field, formatted);
+    };
+    input.addEventListener("keydown", function (event) {
+      if (listbox.key && listbox.key(event)) return;
+      if (!repeating || event.key !== "Enter") return;
+      event.preventDefault();
+      if (wrap.dataset.autocomplete === "legacy") return;
+      take(input.value);
+    });
+    if (repeating) {
+      input.addEventListener("input", function () {
+        self.pending[field.code] = input.value;
+        self.syncCoordinates(field);
+      });
+    } else {
+      input.addEventListener("input", function () { self.setValue(field, input.value); });
+    }
+    var anchor = el("div", "pf-address__anchor");
+    anchor.appendChild(input);
+    wrap.appendChild(anchor);
+
+    var canvas = el("div", "pf-address__map", { "data-state": "idle", "aria-hidden": "true" });
+    wrap.appendChild(canvas);
+
+    if (!this.cfg.mapsApiKey) return wrap;
+
+    loadMaps(this.cfg.mapsApiKey).then(function (maps) {
+      self.upgradeAddress(field, wrap, input, canvas, maps, take, listbox);
+    }).catch(function () {
+      canvas.dataset.state = "idle";
+    });
+    return wrap;
+  };
+
+  PortalForm.prototype.upgradeAddress = function (field, wrap, input, canvas, maps, take, listbox) {
+    var self = this;
+    var repeating = field.kind === "address-list";
+    var map = null;
+    var marker = null;
+
+    function show(location, label) {
+      if (!location) return;
+      canvas.dataset.state = "ready";
+      canvas.removeAttribute("aria-hidden");
+      if (!map) {
+        map = new maps.Map(canvas, {
+          center: location, zoom: 16, disableDefaultUI: true, zoomControl: true,
+          mapId: self.cfg.mapsMapId || undefined,
+        });
+      } else {
+        map.setCenter(location);
+      }
+      if (marker && marker.setMap) marker.setMap(null);
+      marker = new maps.Marker({ map: map, position: location, title: label || "" });
+    }
+
+    function preview(text) {
+      var address = addressKey(field, text);
+      var known = self.locations[field.code];
+      if (known && known[address]) show(known[address], address);
+      else self.locate(field, text, maps);
+    }
+
+    self.previews[field.code] = function (address, point) {
+      if (addressKey(field, repeating ? self.pending[field.code] : input.value) === address) show(point, address);
+    };
+
+    function pick(formatted, location) {
+      if (!formatted) return;
+      take(formatted, true);
+      if (location) self.rememberLocation(field, formatted, location, false);
+      else self.locate(field, formatted, maps);
+    }
+
+    var places = maps.places || {};
+    var mode = places.AutocompleteSuggestion ? "data-api" : places.Autocomplete ? "legacy" : "geocode";
+    wrap.dataset.autocomplete = mode;
+
+    if (mode === "data-api") {
+      this.suggest(field, input, places, pick, listbox);
+    } else if (mode === "legacy") {
+      try {
+        var autocomplete = new places.Autocomplete(input, {
+          fields: ["formatted_address", "geometry"],
+          types: ["address"],
+          componentRestrictions: field.tokens.country ? { country: field.tokens.country } : undefined,
+        });
+        autocomplete.addListener("place_changed", function () {
+          var place = autocomplete.getPlace();
+          if (!place) return;
+          pick(place.formatted_address, place.geometry && place.geometry.location);
+        });
+      } catch (_) {
+        wrap.dataset.autocomplete = "geocode";
+      }
+    }
+
+    if (repeating) {
+      input.addEventListener("blur", function () { preview(self.pending[field.code]); });
+    } else {
+      input.addEventListener("blur", function () { preview(input.value); });
+      preview(input.value);
+    }
+  };
+
+  PortalForm.prototype.suggest = function (field, input, places, pick, listbox) {
+    var repeating = field.kind === "address-list";
+    var listId = input.id + "-suggestions";
+    var list = el("ul", "pf-address__list", { id: listId, role: "listbox", "aria-label": field.label, hidden: true });
+    var token = places.AutocompleteSessionToken ? new places.AutocompleteSessionToken() : undefined;
+    var offered = [];
+    var recent = { query: "", items: [] };
+    var active = -1;
+    input.parentNode.appendChild(list);
+    input.setAttribute("role", "combobox");
+    input.setAttribute("aria-autocomplete", "list");
+    input.setAttribute("aria-controls", listId);
+    input.setAttribute("aria-expanded", "false");
+    input.setAttribute("autocomplete", "off");
+
+    function highlight(index) {
+      active = index;
+      offered.forEach(function (option, position) {
+        option.node.setAttribute("aria-selected", position === index ? "true" : "false");
+      });
+      if (index === -1) input.removeAttribute("aria-activedescendant");
+      else input.setAttribute("aria-activedescendant", offered[index].node.id);
+    }
+
+    function closeList() {
+      list.replaceChildren();
+      list.hidden = true;
+      offered = [];
+      highlight(-1);
+      input.setAttribute("aria-expanded", "false");
+    }
+
+    function choose(option) {
+      closeList();
+      option.accept();
+    }
+
+    function offer(items) {
+      closeList();
+      offered = items.slice(0, 5).map(function (item, index) {
+        var node = el("li", "pf-address__option", { id: listId + "-" + index, role: "option", "aria-selected": "false" });
+        node.textContent = item.label;
+        var option = { node: node, accept: item.accept };
+        node.addEventListener("mousedown", keepFocus);
+        node.addEventListener("click", function () { choose(option); });
+        list.appendChild(node);
+        return option;
+      });
+      if (!offered.length) return;
+      list.hidden = false;
+      input.setAttribute("aria-expanded", "true");
+    }
+
+    listbox.key = function (event) {
+      if (list.hidden) {
+        if (event.key !== "ArrowDown" || !recent.items.length || recent.query !== input.value.trim()) return false;
+        event.preventDefault();
+        offer(recent.items);
+        highlight(0);
+        return true;
+      }
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        var count = offered.length;
+        highlight(event.key === "ArrowDown" ? (active + 1) % count : (active <= 0 ? count : active) - 1);
+        return true;
+      }
+      if (event.key === "Enter") {
+        if (active !== -1) {
+          event.preventDefault();
+          choose(offered[active]);
+          return true;
+        }
+        closeList();
+        if (repeating) return false;
+        event.preventDefault();
+        return true;
+      }
+      if (event.key !== "Escape") return false;
+      event.preventDefault();
+      closeList();
+      return true;
+    };
+
+    input.addEventListener("input", debounce(function () {
+      var value = input.value.trim();
+      if (value.length < 3) { closeList(); return; }
+      places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: value,
+        sessionToken: token,
+        includedPrimaryTypes: ["street_address", "premise", "subpremise", "route"],
+        includedRegionCodes: field.tokens.country || undefined,
+      }).then(function (response) {
+        if (document.activeElement !== input || input.value.trim() !== value) return;
+        recent = {
+          query: value,
+          items: ((response && response.suggestions) || []).map(function (suggestion) {
+            var prediction = suggestion.placePrediction;
+            var label = prediction && prediction.text ? String(prediction.text) : "";
+            return {
+              label: label,
+              accept: function () {
+                var place = prediction.toPlace();
+                place.fetchFields({ fields: ["formattedAddress", "location"] }).then(function () {
+                  pick(place.formattedAddress, place.location);
+                }).catch(function () { pick(label, null); });
+              },
+            };
+          }).filter(function (item) { return item.label; }),
+        };
+        offer(recent.items);
+      }).catch(closeList);
+    }, 250));
+    input.addEventListener("blur", closeList);
+  };
+
+  global.PortalForm = PortalForm;
+  global.PortalForm.normalizeSchema = normalizeSchema;
+  global.PortalForm.parseTokens = parseTokens;
+  global.PortalForm.applyMask = applyMask;
+  global.PortalForm.maskComplete = maskComplete;
+  global.PortalForm.javaType = javaType;
+  global.PortalForm.parseBehavior = parseBehavior;
+})(typeof window !== "undefined" ? window : globalThis);
+
+(function () {
+  "use strict";
+  var COPY_KEYS = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1":"successStep1","SUCCESS_STEP_2":"successStep2","SUCCESS_STEP_3":"successStep3","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"};
+  var THEMES = ["hvac","snow","lawn","pool","roofing","pest","health","beauty"];
+  var MODES = ["light","dark"];
+  function oneOf(value, allowed, fallback) { return allowed.indexOf(value) === -1 ? fallback : value; }
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true }); else fn(); }
+  function attribute(root, name) { return String(root.getAttribute(name) || "").trim(); }
+  function safeBase(value) {
+    if (!value) return "";
+    try { var url = new URL(value); return url.protocol === "https:" ? url.origin + url.pathname.replace(/\/+$/, "") : ""; } catch (_) { return ""; }
+  }
+  function copyFrom(root) {
+    var copy = {};
+    Object.keys(COPY_KEYS).forEach(function (code) {
+      var name = "data-copy-" + COPY_KEYS[code].replace(/[A-Z]/g, function (character) { return "-" + character.toLowerCase(); });
+      copy[COPY_KEYS[code]] = attribute(root, name);
+    });
+    return copy;
+  }
+  ready(function () {
+    var root = document.getElementById("portal-form-root");
+    if (!root || typeof window.PortalForm !== "function") return;
+    var mount = root.querySelector("[data-portal-form-mount]");
+    if (!mount) return;
+    var theme = oneOf(attribute(root, "data-form-theme").toLowerCase(), THEMES, "snow");
+    var mode = oneOf(attribute(root, "data-form-mode").toLowerCase(), MODES, "light");
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset.mode = mode;
+    var organizationId = Number(attribute(root, "data-form-organization-id"));
+    new window.PortalForm({
+      apiBaseUrl: safeBase(attribute(root, "data-form-api-base")),
+      formTypeCode: attribute(root, "data-form-type-code"),
+      organizationId: Number.isFinite(organizationId) && organizationId > 0 ? organizationId : null,
+      locale: attribute(root, "data-form-locale") || "en",
+      mapsApiKey: attribute(root, "data-form-maps-api-key"),
+      copy: copyFrom(root),
+    }).mount(mount);
+  });
+})();
+</script>
+<script>window.__PORTAL_FORM_PREVIEW_SCHEMA={
+ "attributes": [
+  {
+   "code": "LAST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأخير"
+    },
+    "en": {
+     "NAME": "Last Name"
+    },
+    "es": {
+     "NAME": "Apellido"
+    },
+    "fr": {
+     "NAME": "Nom de famille"
+    },
+    "he": {
+     "NAME": "שם משפחה"
+    },
+    "kk": {
+     "NAME": "Фамилия"
+    },
+    "ru": {
+     "NAME": "Фамилия"
+    },
+    "zh": {
+     "NAME": "姓氏"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "SELECT_ROLE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "اختر الدور"
+    },
+    "en": {
+     "NAME": "Select Role"
+    },
+    "es": {
+     "NAME": "Seleccionar rol"
+    },
+    "fr": {
+     "NAME": "Sélectionner le rôle"
+    },
+    "he": {
+     "NAME": "בחר תפקיד"
+    },
+    "kk": {
+     "NAME": "Рөлді таңдаңыз"
+    },
+    "ru": {
+     "NAME": "Выберите роль"
+    },
+    "zh": {
+     "NAME": "选择角色"
+    }
+   },
+   "options": [
+    {
+     "value": "OWNER",
+     "nls": {
+      "ar": {
+       "NAME": "المالك"
+      },
+      "en": {
+       "NAME": "Owner"
+      },
+      "es": {
+       "NAME": "Propietario"
+      },
+      "fr": {
+       "NAME": "Propriétaire"
+      },
+      "he": {
+       "NAME": "בעל"
+      },
+      "kk": {
+       "NAME": "Иесі"
+      },
+      "ru": {
+       "NAME": "Владелец"
+      },
+      "zh": {
+       "NAME": "所有者"
+      }
+     }
+    },
+    {
+     "value": "PROPERTY_MANAGER",
+     "nls": {
+      "ar": {
+       "NAME": "مدير الممتلكات"
+      },
+      "en": {
+       "NAME": "Property Manager"
+      },
+      "es": {
+       "NAME": "Administrador de Propiedades"
+      },
+      "fr": {
+       "NAME": "Gestionnaire immobilier"
+      },
+      "he": {
+       "NAME": "מנהל נכסים"
+      },
+      "kk": {
+       "NAME": "Мүлік менеджері"
+      },
+      "ru": {
+       "NAME": "Менеджер по недвижимости"
+      },
+      "zh": {
+       "NAME": "物业经理"
+      }
+     }
+    },
+    {
+     "value": "COUNCIL_MEMBER",
+     "nls": {
+      "ar": {
+       "NAME": "عضو المجلس"
+      },
+      "en": {
+       "NAME": "Council Member"
+      },
+      "es": {
+       "NAME": "Concejal"
+      },
+      "fr": {
+       "NAME": "Membre du conseil"
+      },
+      "he": {
+       "NAME": "חבר המועצה"
+      },
+      "kk": {
+       "NAME": "Кеңес мүшесі"
+      },
+      "ru": {
+       "NAME": "Член совета"
+      },
+      "zh": {
+       "NAME": "理事"
+      }
+     }
+    },
+    {
+     "value": "OTHER",
+     "nls": {
+      "ar": {
+       "NAME": "أخرى"
+      },
+      "en": {
+       "NAME": "Other"
+      },
+      "es": {
+       "NAME": "Otro"
+      },
+      "fr": {
+       "NAME": "Autre"
+      },
+      "he": {
+       "NAME": "אחר"
+      },
+      "kk": {
+       "NAME": "Басқа"
+      },
+      "ru": {
+       "NAME": "Другое"
+      },
+      "zh": {
+       "NAME": "其他"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "EMAIL",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "البريد الإلكتروني"
+    },
+    "en": {
+     "NAME": "Email",
+     "PLACEHOLDER": "name@example.com"
+    },
+    "es": {
+     "NAME": "Correo electrónico"
+    },
+    "fr": {
+     "NAME": "Courriel"
+    },
+    "he": {
+     "NAME": "אימייל"
+    },
+    "kk": {
+     "NAME": "Электрондық пошта"
+    },
+    "ru": {
+     "NAME": "Электронная почта"
+    },
+    "zh": {
+     "NAME": "电子邮件"
+    }
+   },
+   "options": [],
+   "inputFormat": "email"
+  },
+  {
+   "code": "ADDITIONAL_NOTES",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "ملاحظات إضافية"
+    },
+    "en": {
+     "NAME": "Additional Notes"
+    },
+    "es": {
+     "NAME": "Notas Adicionales"
+    },
+    "fr": {
+     "NAME": "Notes supplémentaires"
+    },
+    "he": {
+     "NAME": "הערות נוספות"
+    },
+    "kk": {
+     "NAME": "Қосымша ескертпелер"
+    },
+    "ru": {
+     "NAME": "Заметки"
+    },
+    "zh": {
+     "NAME": "补充说明"
+    }
+   },
+   "options": [],
+   "inputFormat": "textarea rows:5"
+  },
+  {
+   "code": "FIRST_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "الاسم الأول"
+    },
+    "en": {
+     "NAME": "First Name"
+    },
+    "es": {
+     "NAME": "Nombre"
+    },
+    "fr": {
+     "NAME": "Prénom"
+    },
+    "he": {
+     "NAME": "שם פרטי"
+    },
+    "kk": {
+     "NAME": "Есімі"
+    },
+    "ru": {
+     "NAME": "Имя"
+    },
+    "zh": {
+     "NAME": "名"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PHONE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Phone",
+     "PLACEHOLDER": "+1 (303) 555-0164"
+    }
+   },
+   "options": [],
+   "inputFormat": "tel"
+  },
+  {
+   "code": "PROPERTY_ADDRESSES",
+   "required": true,
+   "multiselect": true,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "عناوين العقارات"
+    },
+    "en": {
+     "NAME": "Addresses of properties"
+    },
+    "es": {
+     "NAME": "Direcciones De Propiedades"
+    },
+    "fr": {
+     "NAME": "Adresses Des Propriétés"
+    },
+    "he": {
+     "NAME": "כתובות נכסים"
+    },
+    "kk": {
+     "NAME": "Мүліктердің Мекенжайлары"
+    },
+    "ru": {
+     "NAME": "Адреса Объектов Недвижимости"
+    },
+    "zh": {
+     "NAME": "房产地址"
+    }
+   },
+   "options": [],
+   "inputFormat": "address"
+  },
+  {
+   "code": "ORGANIZATION_NAME",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "ar": {
+     "NAME": "المنظمة"
+    },
+    "en": {
+     "NAME": "Organization"
+    },
+    "es": {
+     "NAME": "Organización"
+    },
+    "fr": {
+     "NAME": "Organisation"
+    },
+    "he": {
+     "NAME": "ארגון"
+    },
+    "kk": {
+     "NAME": "Ұйым"
+    },
+    "ru": {
+     "NAME": "Организация"
+    },
+    "zh": {
+     "NAME": "组织"
+    }
+   },
+   "options": []
+  }
+ ],
+ "attributeGroups": [
+  {
+   "code": "EA849F15_9108_455F_9A05_F26BED67E5CD",
+   "nls": {
+    "en": {
+     "NAME": "Tell us about your property so we can can confirm service availability and prepare your quote"
+    }
+   }
+  },
+  {
+   "code": "NOTES",
+   "nls": {
+    "en": {
+     "NAME": "Notes"
+    }
+   }
+  },
+  {
+   "code": "C9C8004F_EFF7_470F_B924_5719E91A5E4C",
+   "nls": {
+    "en": {
+     "NAME": "Where should we send your quote?"
+    }
+   }
+  },
+  {
+   "code": "PROPERTIES",
+   "nls": {
+    "ar": {
+     "NAME": "عقارات"
+    },
+    "en": {
+     "NAME": "Real estate properties"
+    },
+    "es": {
+     "NAME": "Propiedades Inmobiliarias"
+    },
+    "fr": {
+     "NAME": "Propriétés Immobilières"
+    },
+    "he": {
+     "NAME": "נכסי נדל״ן"
+    },
+    "kk": {
+     "NAME": "Жылжымайтын Мүлік Объектілері"
+    },
+    "ru": {
+     "NAME": "Объекты Недвижимости"
+    },
+    "zh": {
+     "NAME": "房地产"
+    }
+   }
+  }
+ ],
+ "attributeOrder": [
+  {
+   "EA849F15_9108_455F_9A05_F26BED67E5CD": [
+    {
+     "attributeCode": "PROPERTY_ADDRESS",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "C9C8004F_EFF7_470F_B924_5719E91A5E4C": [
+    {
+     "attributeCode": "ORGANIZATION_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "SELECT_ROLE",
+     "visible": true
+    },
+    {
+     "attributeCode": "FIRST_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "LAST_NAME",
+     "visible": true
+    },
+    {
+     "attributeCode": "EMAIL",
+     "visible": true
+    },
+    {
+     "attributeCode": "PHONE",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "PROPERTIES": [
+    {
+     "attributeCode": "PROPERTY_ADDRESSES",
+     "visible": true
+    }
+   ]
+  },
+  {
+   "NOTES": [
+    {
+     "attributeCode": "ADDITIONAL_NOTES",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "parents": [],
+ "children": [],
+ "image": {
+  "mediaType": "image",
+  "metadata": []
+ },
+ "isAbstract": false,
+ "code": "GET_QUOTE_",
+ "optimistic": 0,
+ "nls": {
+  "en": {
+   "NAME": "Get Your Free Quote"
+  }
+ },
+ "id": 2,
+ "permissions": []
+}
+;
+document.addEventListener('DOMContentLoaded', function () {
+  var mount = document.querySelector('[data-portal-form-mount]');
+  if (!mount) return;
+  mount.replaceChildren();
+  var root = document.getElementById('portal-form-root');
+  var copy = {};
+  Object.keys({"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1":"successStep1","SUCCESS_STEP_2":"successStep2","SUCCESS_STEP_3":"successStep3","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"}).forEach(function (code) {
+    var key = {"TITLE":"title","SUBTITLE":"subtitle","NOTE":"note","SUBMIT_LABEL":"submitLabel","SUBMITTING_LABEL":"submittingLabel","NEXT_LABEL":"nextLabel","BACK_LABEL":"backLabel","RETRY_LABEL":"retryLabel","STEP_FALLBACK":"stepFallback","SELECT_PLACEHOLDER":"selectPlaceholder","REQUIRED_ERROR":"requiredError","FORMAT_ERROR":"formatError","INCOMPLETE_ERROR":"incompleteError","EMAIL_ERROR":"emailError","URL_ERROR":"urlError","NUMBER_ERROR":"numberError","MIN_ERROR":"minError","MAX_ERROR":"maxError","MIN_LENGTH_ERROR":"minLengthError","MAX_LENGTH_ERROR":"maxLengthError","SCHEMA_ERROR_TITLE":"schemaErrorTitle","SCHEMA_ERROR_BODY":"schemaErrorBody","EMPTY_TITLE":"emptyTitle","EMPTY_BODY":"emptyBody","SUCCESS_TITLE":"successTitle","SUCCESS_BODY":"successBody","SUCCESS_NEXT_TITLE":"successNextTitle","SUCCESS_STEP_1":"successStep1","SUCCESS_STEP_2":"successStep2","SUCCESS_STEP_3":"successStep3","SUCCESS_AGAIN_LABEL":"successAgainLabel","SUBMIT_ERROR_TITLE":"submitErrorTitle","SUBMIT_ERROR_BODY":"submitErrorBody","BLOCKED_TITLE":"blockedTitle","BLOCKED_BODY":"blockedBody"}[code];
+    copy[key] = root.getAttribute('data-copy-' + key.replace(/[A-Z]/g, function (c) { return '-' + c.toLowerCase(); })) || '';
+  });
+  new window.PortalForm({ schema: window.__PORTAL_FORM_PREVIEW_SCHEMA, locale: 'en', copy: copy }).mount(mount);
+});</script>
+</body>
+</html>

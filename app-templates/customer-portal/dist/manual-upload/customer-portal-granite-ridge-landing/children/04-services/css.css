@@ -1,0 +1,16 @@
+/* ---------- 3 · services grid ---------- */
+.seo-svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.seo-svc {
+  background: rgba(var(--glass),.55); border: 1px solid var(--glass-border); border-radius: var(--radius-card);
+  padding: 20px; cursor: pointer; transition: transform .18s, box-shadow .18s;
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-card);
+}
+.seo-svc:hover { transform: translateY(-3px); box-shadow: var(--shadow-float); }
+.seo-svc__icon { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 12px; }
+.seo-svc__icon > i { width: 15px; height: 15px; border-radius: 5px; display: block; }
+.seo-svc__name { font-weight: 800; font-size: 16px; }
+.seo-svc__benefit { font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.5; }
+.seo-svc__meta { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 13px; }
+.seo-svc__meta > span:first-child { font-weight: 700; color: var(--ink); }
+.seo-svc__go { color: var(--accent); font-weight: 700; }

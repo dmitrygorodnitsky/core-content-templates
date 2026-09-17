@@ -1,0 +1,50 @@
+<section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post
+  data-blog-api-base="${FIELD_SERVICE_BLOG_POST_BLOG_API_BASE@STRING}"
+  data-blog-organization="${FIELD_SERVICE_BLOG_POST_BLOG_ORGANIZATION@STRING}"
+  data-blog-category-id="${FIELD_SERVICE_BLOG_POST_BLOG_CATEGORY_ID@INTEGER}"
+  data-blog-page-size="${FIELD_SERVICE_BLOG_POST_BLOG_PAGE_SIZE@INTEGER}"
+  data-blog-max-results="${FIELD_SERVICE_BLOG_POST_BLOG_MAX_RESULTS@INTEGER}"
+  data-blog-base-path="${FIELD_SERVICE_BLOG_POST_BLOG_BASE_PATH@STRING}"
+  data-blog-post-path="${FIELD_SERVICE_BLOG_POST_BLOG_POST_PATH@STRING}"
+  data-blog-fixture-url="${FIELD_SERVICE_BLOG_POST_BLOG_FIXTURE_URL@STRING}"
+  data-blog-read-label="${FIELD_SERVICE_BLOG_POST_READ_ARTICLE_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-related-limit="${FIELD_SERVICE_BLOG_POST_RELATED_LIMIT@INTEGER}"
+  data-blog-copy-link-label="${FIELD_SERVICE_BLOG_POST_COPY_LINK_LABEL@LOCALIZED_STRING_SS}"
+  data-blog-link-copied-label="${FIELD_SERVICE_BLOG_POST_LINK_COPIED_LABEL@LOCALIZED_STRING_SS}">
+  <div class="container blog-post-page__container">
+    <nav class="blog-post-page__breadcrumb" aria-label="${FIELD_SERVICE_BLOG_POST_BREADCRUMB_ARIA_LABEL@LOCALIZED_STRING_SS}">
+      <a href="${FIELD_SERVICE_BLOG_POST_BLOG_BASE_PATH@STRING}" data-blog-index-link>${FIELD_SERVICE_BLOG_POST_BLOG_LABEL@LOCALIZED_STRING_SS}</a>
+      <span aria-hidden="true">/</span>
+      <span data-blog-current-title>${FIELD_SERVICE_BLOG_POST_ARTICLE_LABEL@LOCALIZED_STRING_SS}</span>
+    </nav>
+
+    <div class="blog-post-page__byline-row">
+      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__share" data-blog-share role="group" aria-label="${FIELD_SERVICE_BLOG_POST_SHARE_ARIA_LABEL@LOCALIZED_STRING_SS}" hidden></div>
+    </div>
+    <div class="blog-post-page__hero" data-blog-current-image hidden></div>
+
+    <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">
+      ${POST@BLOG_POST_CONTENT_SS}
+    </article>
+
+    <div class="blog-post-page__tags" data-blog-tags aria-label="${FIELD_SERVICE_BLOG_POST_TAGS_ARIA_LABEL@LOCALIZED_STRING_SS}" hidden></div>
+
+    <aside class="blog-post-page__author-card" data-blog-author hidden>
+      <span class="blog-post-page__author-card-avatar" data-blog-author-avatar="${AUTHOR_AVATAR}" aria-hidden="true"></span>
+      <div class="blog-post-page__author-card-text">
+        <p class="blog-post-page__author-card-name" data-blog-author-name>${AUTHOR_NAME}</p>
+        <p class="blog-post-page__author-card-bio" data-blog-author-bio>${AUTHOR_BIO@LOCALIZED_STRING_SS}</p>
+      </div>
+    </aside>
+
+    <aside class="blog-post-page__related" data-blog-related-section hidden>
+      <div class="blog-post-page__related-head">
+        <p>${FIELD_SERVICE_BLOG_POST_RELATED_EYEBROW@LOCALIZED_STRING_SS}</p>
+        <h2>${FIELD_SERVICE_BLOG_POST_RELATED_TITLE@LOCALIZED_STRING_SS}</h2>
+      </div>
+      <div class="blog-post-page__related-grid" data-blog-related aria-label="${FIELD_SERVICE_BLOG_POST_RELATED_ARIA_LABEL@LOCALIZED_STRING_SS}"></div>
+    </aside>
+  </div>
+  <script type="application/ld+json" data-blog-article-schema>${SEO_LD_SCHEMA@LOCALIZED_JSON_OBJECT}</script>
+</section>

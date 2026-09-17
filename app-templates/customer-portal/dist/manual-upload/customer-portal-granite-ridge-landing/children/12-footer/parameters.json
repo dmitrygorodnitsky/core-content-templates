@@ -1,0 +1,230 @@
+[
+  {
+    "code": "GRS_LANDING_12_FOOTER_PHONE_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PHONE SLOT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "phone · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_EMAIL_SLOT",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "EMAIL SLOT",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "email · from CMS"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_SERVICE_AREA",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "SERVICE AREA",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Denver metro and the Front Range"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_CITIES",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CITIES",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Lakewood · Golden · Arvada · Littleton · Wheat Ridge"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_BRAND",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "BRAND",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Granite Ridge Snow Removal"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_CANONICAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CANONICAL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "canonical: /snow/denver"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_1_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 1 DAYS",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Mon–Fri"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_1_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 1 VALUE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "7:00 – 20:00"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_2_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 2 DAYS",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Sat"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_2_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 2 VALUE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "8:00 – 18:00"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_3_DAYS",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 3 DAYS",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Sun"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_HOURS_3_VALUE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "HOURS 3 VALUE",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Emergency only"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_1_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 1 LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Privacy policy"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_1_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 1 HREF",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_2_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 2 LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Terms of service"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_2_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 2 HREF",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_3_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 3 LABEL",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": {
+      "en": "Licence & insurance"
+    }
+  },
+  {
+    "code": "GRS_LANDING_12_FOOTER_LEGAL_3_HREF",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "LEGAL 3 HREF",
+        "DESCRIPTION": "CMS-authored value for Granite Ridge Snow Removal."
+      }
+    },
+    "value": "#"
+  }
+]

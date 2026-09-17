@@ -1,0 +1,162 @@
+{
+ "optimistic": 1,
+ "code": "PROJECT_TASK_TYPE",
+ "nls": {
+  "en": {
+   "NAME": "Project Task Type"
+  }
+ },
+ "workflow": {
+  "id": 10,
+  "code": "TASK"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "default": [
+    {
+     "attributeCode": "STARTED_AT",
+     "visible": true
+    },
+    {
+     "attributeCode": "COMPLETED_AT",
+     "visible": true
+    },
+    {
+     "attributeCode": "PRIORITY",
+     "visible": true
+    },
+    {
+     "attributeCode": "COMPLETION_NOTE",
+     "visible": true
+    },
+    {
+     "attributeCode": "IS_COMPLETED",
+     "visible": true
+    },
+    {
+     "attributeCode": "PROGRESS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "IS_COMPLETED",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Boolean",
+   "nls": {
+    "en": {
+     "NAME": "Is Completed"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COMPLETION_NOTE",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Completion Note"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PROGRESS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.Integer",
+   "nls": {
+    "en": {
+     "NAME": "Progress"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "COMPLETED_AT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDateTime",
+   "nls": {
+    "en": {
+     "NAME": "Completed At"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "STARTED_AT",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.time.LocalDateTime",
+   "nls": {
+    "en": {
+     "NAME": "Started At"
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "PRIORITY",
+   "required": false,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Priority"
+    }
+   },
+   "options": [
+    {
+     "value": "HIGH",
+     "nls": {
+      "en": {
+       "NAME": "High"
+      }
+     }
+    },
+    {
+     "value": "MEDIUM",
+     "nls": {
+      "en": {
+       "NAME": "Medium"
+      }
+     }
+    },
+    {
+     "value": "LOW",
+     "nls": {
+      "en": {
+       "NAME": "Low"
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 2,
+ "isAbstract": false,
+ "attributeGroups": []
+}

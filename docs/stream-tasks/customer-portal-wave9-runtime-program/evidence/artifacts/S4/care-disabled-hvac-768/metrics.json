@@ -1,0 +1,324 @@
+{
+  "id": "care-disabled-hvac-768",
+  "surface": "care",
+  "vertical": "HVAC",
+  "width": 768,
+  "height": 900,
+  "mode": "light",
+  "state": "disabled",
+  "referenceState": "unauthorized",
+  "variant": "default",
+  "comparisonMode": "contract-state",
+  "reference": {
+    "url": "/design-inbox/source.html",
+    "sha256": "27190ed44aab8479047f3b1d5eec44f92d8bc3e13b92411d6dc8248ae3b052f2",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 22,
+        "y": 16,
+        "width": 724,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 449.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": null,
+      "firstCard": null,
+      "primaryAction": {
+        "x": 260.14,
+        "y": 377.03,
+        "width": 100.28,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 768,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "27190ed44aab8479047f3b1d5eec44f92d8bc3e13b92411d6dc8248ae3b052f2",
+        "27190ed44aab8479047f3b1d5eec44f92d8bc3e13b92411d6dc8248ae3b052f2"
+      ],
+      "firstSha256": "27190ed44aab8479047f3b1d5eec44f92d8bc3e13b92411d6dc8248ae3b052f2",
+      "secondSha256": "27190ed44aab8479047f3b1d5eec44f92d8bc3e13b92411d6dc8248ae3b052f2",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "implementation": {
+    "url": "/runtime/source.html#/care",
+    "sha256": "294843219934c7ac4b1fd8bf79f04352c6e14579d392fffb4f35bf34fe8ace6e",
+    "failures": [],
+    "metrics": {
+      "shell": {
+        "x": 0,
+        "y": 0,
+        "width": 768,
+        "height": 900,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgb(238, 241, 246)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "topNav": {
+        "x": 22,
+        "y": 16,
+        "width": 724,
+        "height": 54,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "border": "1px solid rgba(255, 255, 255, 0.7)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "page": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 403.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "title": null,
+      "subtitle": null,
+      "grid": null,
+      "firstCard": null,
+      "primaryAction": null,
+      "mobileNav": null
+    },
+    "readiness": {
+      "fontsStatus": "loaded",
+      "fontCount": 1,
+      "framesObserved": 2,
+      "twoFrameLayoutStable": true,
+      "prepaintSegments": 1,
+      "prepaintPositions": [
+        0
+      ],
+      "prepaintReturnedToOrigin": true
+    },
+    "captureViewport": {
+      "width": 768,
+      "height": 900
+    },
+    "captureStability": {
+      "method": "dual-browser-phase-normalized-ready-contexts",
+      "warmupSha256": [
+        "294843219934c7ac4b1fd8bf79f04352c6e14579d392fffb4f35bf34fe8ace6e",
+        "294843219934c7ac4b1fd8bf79f04352c6e14579d392fffb4f35bf34fe8ace6e"
+      ],
+      "firstSha256": "294843219934c7ac4b1fd8bf79f04352c6e14579d392fffb4f35bf34fe8ace6e",
+      "secondSha256": "294843219934c7ac4b1fd8bf79f04352c6e14579d392fffb4f35bf34fe8ace6e",
+      "twoCapturePixelsStable": true
+    }
+  },
+  "raw": {
+    "changed": 18087,
+    "changedPct": 2.6167534722222223,
+    "rms": 15.000140608265875
+  },
+  "accepted": {
+    "changed": 18087,
+    "changedPct": 2.6167534722222223,
+    "rms": 15.000140608265875
+  },
+  "effectBounds": [],
+  "unavailableInventory": {
+    "applies": false,
+    "expected": [],
+    "actual": [],
+    "expectedCount": 0,
+    "actualCount": 0,
+    "truthfulCount": 0,
+    "exactMatch": true,
+    "countMatch": true,
+    "allTruthful": true,
+    "expectedMode": "strict-full",
+    "modeMatch": true
+  },
+  "changedComponents": [],
+  "unassociatedComponents": [],
+  "assertions": {
+    "careReferenceUnauthorized": true,
+    "careRuntimeDisabled": true
+  },
+  "dimensions": {
+    "width": 768,
+    "height": 900,
+    "referenceHeight": 900,
+    "implementationHeight": 900
+  },
+  "metricsEqual": false,
+  "metricDelta": {
+    "page": {
+      "reference": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 449.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      },
+      "implementation": {
+        "x": 0,
+        "y": 78,
+        "width": 768,
+        "height": 403.03,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "16px",
+        "fontWeight": "400",
+        "lineHeight": "normal",
+        "color": "rgb(29, 29, 31)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(29, 29, 31)",
+        "borderRadius": "0px",
+        "display": "block",
+        "gridTemplateColumns": "none"
+      }
+    },
+    "primaryAction": {
+      "reference": {
+        "x": 260.14,
+        "y": 377.03,
+        "width": 100.28,
+        "height": 36,
+        "fontFamily": "Manrope, system-ui, -apple-system, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "600",
+        "lineHeight": "normal",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgba(0, 0, 0, 0)",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "999px",
+        "display": "flex",
+        "gridTemplateColumns": "none"
+      },
+      "implementation": null
+    }
+  },
+  "metricDeltaDisposition": {
+    "applies": false,
+    "fields": [
+      "page",
+      "primaryAction"
+    ],
+    "exactUnavailableControlBounds": false
+  },
+  "persistedImages": {
+    "reference": {
+      "file": "reference.webp",
+      "sha256": "aa3d45fdd8424e4c012428ae89e207a1bd6ed1326772c3b32475b6e563d6a10c",
+      "decodedPixelSha256": "f11bdd7a6a0253964cce55a7ddc763847cf95a6c31913bf3cbfee0e8e21c7e45",
+      "width": 768,
+      "height": 900
+    },
+    "implementation": {
+      "file": "implementation.webp",
+      "sha256": "80b4e7def9e1cbfa93bba58ec124713ef2131beb689c12c3f7fc6c80dc92f256",
+      "decodedPixelSha256": "57266d0308a0b5b958a222a4d985e86375f188d65b0bc3c8966bb71e2f56470a",
+      "width": 768,
+      "height": 900
+    },
+    "diff": {
+      "file": "diff.webp",
+      "sha256": "be932de48cf6bc2dd63902943b471bd5432a87ec3274a1033eeb73aab0c55810",
+      "decodedPixelSha256": "8104bffcab114d59134da461d21ff4e59aab614e5fa33292e202f0089ce28cc0",
+      "width": 768,
+      "height": 900
+    }
+  },
+  "persistedImagesVerified": true,
+  "passed": true
+}

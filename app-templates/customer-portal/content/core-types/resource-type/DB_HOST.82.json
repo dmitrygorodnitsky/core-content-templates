@@ -1,0 +1,181 @@
+{
+ "optimistic": 0,
+ "code": "DB_HOST",
+ "nls": {
+  "en": {
+   "NAME": "Database Host",
+   "DESCRIPTION": "Database host resource. Inherits Linux host access and network attributes, and adds database engine metadata and login credentials."
+  }
+ },
+ "workflow": {
+  "id": 6,
+  "code": "IT_RESOURCES"
+ },
+ "organization": {
+  "optimistic": 1,
+  "id": 1,
+  "code": "SYSTEM"
+ },
+ "attributeOrder": [
+  {
+   "DATABASE": [
+    {
+     "attributeCode": "TYPE",
+     "visible": true
+    },
+    {
+     "attributeCode": "VERSION",
+     "visible": true
+    },
+    {
+     "attributeCode": "CREDENTIALS",
+     "visible": true
+    }
+   ]
+  }
+ ],
+ "attributes": [
+  {
+   "code": "VERSION",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Database Version",
+     "DESCRIPTION": "Database engine version."
+    }
+   },
+   "options": []
+  },
+  {
+   "code": "TYPE",
+   "required": true,
+   "multiselect": false,
+   "freeValue": false,
+   "unique": false,
+   "className": "java.lang.String",
+   "nls": {
+    "en": {
+     "NAME": "Database Type",
+     "DESCRIPTION": "Database engine type."
+    }
+   },
+   "options": [
+    {
+     "value": "POSTGRESQL",
+     "nls": {
+      "en": {
+       "NAME": "PostgreSQL",
+       "DESCRIPTION": "PostgreSQL database."
+      }
+     }
+    },
+    {
+     "value": "MSSQL",
+     "nls": {
+      "en": {
+       "NAME": "Microsoft SQL Server",
+       "DESCRIPTION": "Microsoft SQL Server database."
+      }
+     }
+    },
+    {
+     "value": "INFORMIX",
+     "nls": {
+      "en": {
+       "NAME": "Informix",
+       "DESCRIPTION": "IBM Informix database."
+      }
+     }
+    },
+    {
+     "value": "ORACLE",
+     "nls": {
+      "en": {
+       "NAME": "Oracle",
+       "DESCRIPTION": "Oracle Database."
+      }
+     }
+    },
+    {
+     "value": "MYSQL",
+     "nls": {
+      "en": {
+       "NAME": "MySQL",
+       "DESCRIPTION": "MySQL database."
+      }
+     }
+    },
+    {
+     "value": "MARIADB",
+     "nls": {
+      "en": {
+       "NAME": "MariaDB",
+       "DESCRIPTION": "MariaDB database."
+      }
+     }
+    },
+    {
+     "value": "DB2",
+     "nls": {
+      "en": {
+       "NAME": "IBM Db2",
+       "DESCRIPTION": "IBM Db2 database."
+      }
+     }
+    },
+    {
+     "value": "SQLITE",
+     "nls": {
+      "en": {
+       "NAME": "SQLite",
+       "DESCRIPTION": "SQLite database."
+      }
+     }
+    }
+   ]
+  },
+  {
+   "code": "CREDENTIALS",
+   "required": false,
+   "multiselect": false,
+   "freeValue": true,
+   "unique": false,
+   "className": "com.pixelnation.common.domain.OrganizationSecret",
+   "nls": {
+    "en": {
+     "NAME": "Database Credentials",
+     "DESCRIPTION": "Organization secret used to authenticate to the database."
+    }
+   },
+   "options": [],
+   "entityTypes": [
+    {
+     "value": 6,
+     "nls": {
+      "en": {
+       "NAME": "Username / Password",
+       "DESCRIPTION": "Organization secret containing database username and password."
+      }
+     }
+    }
+   ]
+  }
+ ],
+ "id": 82,
+ "isAbstract": false,
+ "attributeGroups": [
+  {
+   "code": "DATABASE",
+   "nls": {
+    "en": {
+     "NAME": "Database",
+     "DESCRIPTION": "Database engine metadata and credentials."
+    }
+   }
+  }
+ ]
+}

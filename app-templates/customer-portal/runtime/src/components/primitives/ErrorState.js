@@ -1,0 +1,13 @@
+// customer-portal/runtime/src/components/primitives/ErrorState.js — production transfer module.
+import { h } from "../../dom.js";
+import { state } from "../../state.js";
+import { ActionButton } from "./ActionButton.js";
+
+export function ErrorState(props) {
+  return h("div", { "class": "state-block", "data-module": "error-state", "data-visual-id": "error-state", "data-state": "error" }, [
+    h("div", { "class": "state-block__glyph state-block__glyph--error" }, "\u26a0"),
+    h("div", { "class": "state-block__title" }, props.title || "Something went wrong"),
+    h("div", { "class": "state-block__desc" }, props.desc || "We couldn\u2019t load your orders. Check your connection and try again."),
+    ActionButton({ variant: "btn--primary", label: "Try again", action: "ui.retry", visualId: "retry" })
+  ]);
+}

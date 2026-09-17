@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "family": "CUSTOMER_PORTAL_CALM_HARBOR_PIM_STAGING",
+  "kind": "single-live-pim-root",
+  "children": [],
+  "reason": "Pricing and retail products are the only opened live modules; the root ships one CMS javascript field."
+}

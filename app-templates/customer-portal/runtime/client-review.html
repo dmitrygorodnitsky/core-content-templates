@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="snow" data-mode="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Client review — quotation and agreement preview</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="client-review/client-review.css">
+  <style>
+    body { margin: 0; background: var(--app-bg); }
+    .cr-harness {
+      position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+      padding: 10px clamp(12px, 3vw, 24px); background: var(--surface);
+      border-bottom: 1px solid var(--glass-border); box-shadow: var(--shadow-card); font-family: var(--font);
+    }
+    .cr-harness label { font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: var(--ink-3); }
+    .cr-harness select {
+      max-width: 100%; padding: 6px 9px; border-radius: 10px; font: inherit; font-size: 13px;
+      color: var(--ink); background: var(--surface-2); border: 1px solid var(--glass-border);
+    }
+    .cr-harness[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div class="cr-harness" data-dev-toolbar>
+    <label for="h-state">State</label>
+    <select id="h-state"></select>
+    <label for="h-theme">Theme</label>
+    <select id="h-theme">
+      <option>snow</option><option>hvac</option><option>lawn</option><option>pool</option>
+      <option>roofing</option><option>pest</option><option>health</option><option>beauty</option>
+    </select>
+    <label for="h-mode">Mode</label>
+    <select id="h-mode"><option>light</option><option>dark</option></select>
+    <button type="button" class="btn btn--ghost" id="h-replay">Replay</button>
+  </div>
+
+  <section id="client-review-root" data-review-data-mode="fixture">
+    <div data-client-review-mount></div>
+  </section>
+
+  <script src="client-review/copy.js"></script>
+  <script src="client-review/core-contract.js"></script>
+  <script src="client-review/adapter.js"></script>
+  <script src="client-review/normalizer.js"></script>
+  <script src="client-review/components.js"></script>
+  <script src="client-review/controller.js"></script>
+  <script src="client-review/fixtures.js"></script>
+  <script>
+    (function () {
+      "use strict";
+      var params = new URLSearchParams(window.location.search);
+      var root = document.getElementById("client-review-root");
+      var harness = document.querySelector("[data-dev-toolbar]");
+      var state = document.getElementById("h-state");
+      var theme = document.getElementById("h-theme");
+      var mode = document.getElementById("h-mode");
+
+      window.ClientReview.fixtures.scenarios.forEach(function (scenario) {
+        var option = document.createElement("option");
+        option.value = scenario.id;
+        option.textContent = scenario.label;
+        state.appendChild(option);
+      });
+
+      harness.hidden = params.get("toolbar") === "0";
+      state.value = params.get("state") || "quote-review";
+      if (!state.value) state.value = "quote-review";
+      theme.value = params.get("theme") || "snow";
+      if (!theme.value) theme.value = "snow";
+      mode.value = params.get("mode") === "dark" ? "dark" : "light";
+      window.ClientReview.fixtures.options.delay = params.has("delay") ? Number(params.get("delay")) || 0 : harness.hidden ? 0 : 450;
+
+      function remember() {
+        var next = new URLSearchParams(window.location.search);
+        next.set("state", state.value);
+        next.set("theme", theme.value);
+        next.set("mode", mode.value);
+        window.history.replaceState(null, "", "?" + next.toString());
+      }
+
+      function paint() {
+        document.documentElement.dataset.theme = theme.value;
+        document.documentElement.dataset.mode = mode.value;
+        remember();
+      }
+
+      function start() {
+        paint();
+        var controller = window.ClientReview.boot(root, { scenario: state.value, locale: "en-CA" });
+        if (controller) window.ClientReview.fixtures.play(controller, controller.steps);
+      }
+
+      state.addEventListener("change", start);
+      theme.addEventListener("change", paint);
+      mode.addEventListener("change", paint);
+      document.getElementById("h-replay").addEventListener("click", start);
+      start();
+    })();
+  </script>
+</body>
+</html>

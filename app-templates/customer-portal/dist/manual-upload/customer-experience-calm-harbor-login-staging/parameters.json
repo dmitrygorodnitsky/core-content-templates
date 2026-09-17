@@ -1,0 +1,258 @@
+[
+  {
+    "code": "THEME",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "theme",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": "hvac"
+  },
+  {
+    "code": "MODE",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "mode",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": "light"
+  },
+  {
+    "code": "TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "title",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Sign in — Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "BRAND_NAME",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "brand name",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Calm Harbor Spa"
+    }
+  },
+  {
+    "code": "CARD_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card title",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  },
+  {
+    "code": "CARD_SUBTITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card subtitle",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Enter your username and password to continue."
+    }
+  },
+  {
+    "code": "ERROR_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "error title",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "We couldn’t sign you in"
+    }
+  },
+  {
+    "code": "ERROR_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "error body",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Check your username and password, then try again."
+    }
+  },
+  {
+    "code": "LOGOUT_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "logout title",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "You’ve been signed out"
+    }
+  },
+  {
+    "code": "LOGOUT_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "logout body",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Your session has ended. Sign in again to continue."
+    }
+  },
+  {
+    "code": "USERNAME_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "username label",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Username"
+    }
+  },
+  {
+    "code": "PASSWORD_LABEL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "password label",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Password"
+    }
+  },
+  {
+    "code": "FORGOT_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "forgot password",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Forgot your password?"
+    }
+  },
+  {
+    "code": "SHOW_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "show password",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Show"
+    }
+  },
+  {
+    "code": "HIDE_PASSWORD",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "hide password",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Hide"
+    }
+  },
+  {
+    "code": "LOGIN_BUTTON",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "login button",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Sign in"
+    }
+  },
+  {
+    "code": "CARD_NOTE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "card note",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "We will never ask for your password by email, message or phone."
+    }
+  },
+  {
+    "code": "PITCH_EYEBROW",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "pitch eyebrow",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "Customer account"
+    }
+  },
+  {
+    "code": "PITCH_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "pitch title",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "You’re signing in on the account service."
+    }
+  },
+  {
+    "code": "PITCH_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "pitch body",
+        "DESCRIPTION": "Calm Harbor deployed login compatibility value."
+      }
+    },
+    "value": {
+      "en": "The portal sent you here because this is the only page where your password is entered. Once you’re signed in, you’ll be taken straight back to where you started."
+    }
+  }
+]

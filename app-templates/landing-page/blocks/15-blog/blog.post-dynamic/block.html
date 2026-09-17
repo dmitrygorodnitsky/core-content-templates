@@ -1,0 +1,50 @@
+<section class="blog-post-page" data-block="blog.post-dynamic" data-blog-post
+  data-blog-api-base="{{blog_api_base}}"
+  data-blog-organization="{{blog_organization}}"
+  data-blog-category-id="{{blog_category_id}}"
+  data-blog-page-size="{{blog_page_size}}"
+  data-blog-max-results="{{blog_max_results}}"
+  data-blog-base-path="{{blog_base_path}}"
+  data-blog-post-path="{{blog_post_path}}"
+  data-blog-fixture-url="{{blog_fixture_url}}"
+  data-blog-read-label="{{read_article_label}}"
+  data-blog-related-limit="{{related_limit}}"
+  data-blog-copy-link-label="{{copy_link_label}}"
+  data-blog-link-copied-label="{{link_copied_label}}">
+  <div class="container blog-post-page__container">
+    <nav class="blog-post-page__breadcrumb" aria-label="{{breadcrumb_aria_label}}">
+      <a href="{{blog_base_path}}" data-blog-index-link>{{blog_label}}</a>
+      <span aria-hidden="true">/</span>
+      <span data-blog-current-title>{{article_label}}</span>
+    </nav>
+
+    <div class="blog-post-page__byline-row">
+      <div class="blog-post-page__meta" data-blog-current-meta hidden></div>
+      <div class="blog-post-page__share" data-blog-share role="group" aria-label="{{share_aria_label}}" hidden></div>
+    </div>
+    <div class="blog-post-page__hero" data-blog-current-image hidden></div>
+
+    <article class="blog-post-page__document" data-blog-document data-blog-render-state="pending" aria-busy="true">
+      ${POST@BLOG_POST_CONTENT_SS}
+    </article>
+
+    <div class="blog-post-page__tags" data-blog-tags aria-label="{{tags_aria_label}}" hidden></div>
+
+    <aside class="blog-post-page__author-card" data-blog-author hidden>
+      <span class="blog-post-page__author-card-avatar" data-blog-author-avatar="{{author_avatar}}" aria-hidden="true"></span>
+      <div class="blog-post-page__author-card-text">
+        <p class="blog-post-page__author-card-name" data-blog-author-name>{{author_name}}</p>
+        <p class="blog-post-page__author-card-bio" data-blog-author-bio>{{author_bio}}</p>
+      </div>
+    </aside>
+
+    <aside class="blog-post-page__related" data-blog-related-section hidden>
+      <div class="blog-post-page__related-head">
+        <p>{{related_eyebrow}}</p>
+        <h2>{{related_title}}</h2>
+      </div>
+      <div class="blog-post-page__related-grid" data-blog-related aria-label="{{related_aria_label}}"></div>
+    </aside>
+  </div>
+  <script type="application/ld+json" data-blog-article-schema>{{seo_ld_schema}}</script>
+</section>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mobile.4-card-glyph · lab-ui harness</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../00-tokens/tokens.css">
+<link rel="stylesheet" href="./block.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; font-family: var(--font-family); background: var(--color-bg); color: var(--color-text); }
+  .harness-label {
+    font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--color-gray-blue);
+    padding: 24px var(--container-padding-x) 0;
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="harness-label">mobile.4-card-glyph · live</div>
+
+<section class="mob4" data-block="mobile.4-card-glyph">
+  <div class="container">
+    <header class="mob4-top">
+      <p class="eyebrow">Lorem ipsum dolor</p>
+      <h2 class="mob4-title">Lorem Ipsum Dolor Sit Amet</h2>
+      <div class="mob4-lede">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+      </div>
+    </header>
+
+    <div class="mob4-grid">
+      <article class="mob4-card" data-slot="01">
+        <div class="mob4-glyph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="14" y="6" width="36" height="52" rx="6" stroke="currentColor" stroke-width="2"/><line x1="22" y1="14" x2="42" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="22" x2="42" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="22" y1="30" x2="34" y2="30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="32" cy="50" r="2.5" fill="currentColor"/></svg>
+        </div>
+        <h3 class="mob4-card-title">Lorem Ipsum Dolor</h3>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </article>
+      <article class="mob4-card" data-slot="02">
+        <div class="mob4-glyph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="22" stroke="currentColor" stroke-width="2"/><path d="M22 32l8 8 14-16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="mob4-card-title">Lorem Ipsum</h3>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+      </article>
+      <article class="mob4-card" data-slot="03">
+        <div class="mob4-glyph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><path d="M14 36 L26 24 L34 32 L50 16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 16 L50 16 L50 22" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><line x1="14" y1="48" x2="50" y2="48" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <h3 class="mob4-card-title">Lorem Ipsum Dolor</h3>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+      </article>
+      <article class="mob4-card" data-slot="04">
+        <div class="mob4-glyph" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><path d="M18 10h22l8 8v36H18V10Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M40 10v9h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M25 27h16M25 34h13M25 41h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="43" cy="43" r="7" stroke="currentColor" stroke-width="2"/><path d="M39.5 43l2.5 2.5 4.5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3 class="mob4-card-title">Lorem Ipsum</h3>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+        <p class="mob4-card-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script src="../../scripts/harness-background-preview.js"></script>
+</body>
+</html>

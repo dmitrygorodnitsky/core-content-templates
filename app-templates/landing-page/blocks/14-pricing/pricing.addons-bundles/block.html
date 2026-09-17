@@ -1,0 +1,144 @@
+<!-- lab-ui block · pricing.addons-bundles
+     Add-ons rendered as horizontal rows grouped by category.
+     Up to 6 add-ons across up to 3 groups. Each row exposes a
+     quantity meter, a unit price, and an "Add" CTA.
+-->
+<section class="ab-addons" id="pricing-addons" data-block="pricing.addons-bundles">
+  <div class="container">
+    <header class="ab-top">
+      <p class="ab-eyebrow">{{eyebrow}}</p>
+      <h2 class="ab-title">{{title}}</h2>
+      <p class="ab-lede">{{lede}}</p>
+    </header>
+
+    <div class="ab-groups">
+      <section class="ab-group" data-group-visible="{{group_01_visible}}">
+        <header class="ab-group-head">
+          <span class="ab-group-tag">{{group_01_tag}}</span>
+          <h3 class="ab-group-title">{{group_01_title}}</h3>
+          <p class="ab-group-lede">{{group_01_lede}}</p>
+        </header>
+        <ol class="ab-list" aria-label="{{group_01_title}}">
+          <li class="ab-row ab-row--{{addon_01_state}}" data-addon-visible="{{addon_01_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_01_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_01_name}}</p>
+              <p class="ab-row-desc">{{addon_01_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_01_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_01_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_01_price}}</span>
+              <span class="ab-row-priceunit">{{addon_01_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_01_cta_url}}">{{addon_01_cta_label}}</a>
+          </li>
+          <li class="ab-row ab-row--{{addon_02_state}}" data-addon-visible="{{addon_02_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_02_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_02_name}}</p>
+              <p class="ab-row-desc">{{addon_02_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_02_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_02_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_02_price}}</span>
+              <span class="ab-row-priceunit">{{addon_02_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_02_cta_url}}">{{addon_02_cta_label}}</a>
+          </li>
+        </ol>
+      </section>
+
+      <section class="ab-group" data-group-visible="{{group_02_visible}}">
+        <header class="ab-group-head">
+          <span class="ab-group-tag">{{group_02_tag}}</span>
+          <h3 class="ab-group-title">{{group_02_title}}</h3>
+          <p class="ab-group-lede">{{group_02_lede}}</p>
+        </header>
+        <ol class="ab-list" aria-label="{{group_02_title}}">
+          <li class="ab-row ab-row--{{addon_03_state}}" data-addon-visible="{{addon_03_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_03_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_03_name}}</p>
+              <p class="ab-row-desc">{{addon_03_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_03_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_03_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_03_price}}</span>
+              <span class="ab-row-priceunit">{{addon_03_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_03_cta_url}}">{{addon_03_cta_label}}</a>
+          </li>
+          <li class="ab-row ab-row--{{addon_04_state}}" data-addon-visible="{{addon_04_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_04_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_04_name}}</p>
+              <p class="ab-row-desc">{{addon_04_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_04_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_04_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_04_price}}</span>
+              <span class="ab-row-priceunit">{{addon_04_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_04_cta_url}}">{{addon_04_cta_label}}</a>
+          </li>
+        </ol>
+      </section>
+
+      <section class="ab-group" data-group-visible="{{group_03_visible}}">
+        <header class="ab-group-head">
+          <span class="ab-group-tag">{{group_03_tag}}</span>
+          <h3 class="ab-group-title">{{group_03_title}}</h3>
+          <p class="ab-group-lede">{{group_03_lede}}</p>
+        </header>
+        <ol class="ab-list" aria-label="{{group_03_title}}">
+          <li class="ab-row ab-row--{{addon_05_state}}" data-addon-visible="{{addon_05_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_05_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_05_name}}</p>
+              <p class="ab-row-desc">{{addon_05_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_05_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_05_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_05_price}}</span>
+              <span class="ab-row-priceunit">{{addon_05_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_05_cta_url}}">{{addon_05_cta_label}}</a>
+          </li>
+          <li class="ab-row ab-row--{{addon_06_state}}" data-addon-visible="{{addon_06_visible}}">
+            <div class="ab-row-marker" aria-hidden="true"><span>{{addon_06_glyph}}</span></div>
+            <div class="ab-row-body">
+              <p class="ab-row-name">{{addon_06_name}}</p>
+              <p class="ab-row-desc">{{addon_06_description}}</p>
+            </div>
+            <div class="ab-row-meter">
+              <span class="ab-meter-qty">{{addon_06_quantity}}</span>
+              <span class="ab-meter-unit">{{addon_06_unit}}</span>
+            </div>
+            <div class="ab-row-pricecol">
+              <span class="ab-row-price">{{addon_06_price}}</span>
+              <span class="ab-row-priceunit">{{addon_06_price_unit}}</span>
+            </div>
+            <a class="ab-row-cta" href="{{addon_06_cta_url}}">{{addon_06_cta_label}}</a>
+          </li>
+        </ol>
+      </section>
+    </div>
+
+    <p class="ab-disclaimer">{{disclaimer}}</p>
+  </div>
+</section>

@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "kind": "client-review-document",
+  "template": {
+    "code": "CLIENT_REVIEW_DOCUMENT",
+    "templateLanguage": "JTE",
+    "parameterCount": 144,
+    "sha256": {
+      "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
+      "html": "2721e4810a47be726e25fd48ca4e8f489bae578217efcf2d969afccce5932c96",
+      "css": "3829f96e0920695cd1685fcebf4b79a474d36051a035ca115123bd733eb5436e",
+      "javascript": "3abb203e923a18383b8c25de6a21aa37a5a4fbc61ba1cd8d7818f73ac9b50821"
+    }
+  },
+  "runtime": {
+    "sources": [
+      "app-templates/customer-portal/runtime/client-review/copy.js",
+      "app-templates/customer-portal/runtime/client-review/core-contract.js",
+      "app-templates/customer-portal/runtime/client-review/adapter.js",
+      "app-templates/customer-portal/runtime/client-review/normalizer.js",
+      "app-templates/customer-portal/runtime/client-review/components.js",
+      "app-templates/customer-portal/runtime/client-review/controller.js"
+    ],
+    "styles": [
+      "app-templates/customer-portal/runtime/styles/tokens.css",
+      "app-templates/customer-portal/runtime/styles/base.css",
+      "app-templates/customer-portal/runtime/styles/components.css",
+      "app-templates/customer-portal/runtime/client-review/client-review.css"
+    ],
+    "previewOnly": [
+      "app-templates/customer-portal/runtime/client-review/fixtures.js"
+    ],
+    "dataMode": "live",
+    "theme": "snow",
+    "colorMode": "prefers-color-scheme"
+  },
+  "api": {
+    "introspect": "POST {apiBase}/core/i/{token}/introspect.json",
+    "reads": [
+      "POST {apiBase}/core/i/{token}/document/list.json",
+      "POST {apiBase}/core-acct/i/{token}/account/list.json",
+      "POST {apiBase}/core-bill/i/{token}/order/list.json",
+      "POST {apiBase}/core-bill/i/{token}/order/get.json?id={orderId}"
+    ],
+    "commands": [
+      "POST {apiBase}/core-bill/i/{token}/order/event.json { id, event, metadata }",
+      "POST {apiBase}/core/i/{token}/document/event.json { id, event, metadata }"
+    ],
+    "listBody": "{ offset, pageSize: 200 }, at most 10 pages",
+    "credentials": "omit",
+    "token": "read from the #token= fragment only; it appears in no query string, storage, console output or page markup"
+  },
+  "events": {
+    "order": [
+      "QUOTE_SENT-QUOTE_VIEWED",
+      "QUOTE_VIEWED-CLIENT_APPROVED",
+      "QUOTE_VIEWED-DECLINED",
+      "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED"
+    ],
+    "agreement": [
+      "AWAITING_CLIENT_DETAILS-DRAFT",
+      "SENT_TO_CLIENT-CLIENT_APPROVED"
+    ],
+    "contractDetailsAttributes": [
+      "LEGAL_NAME",
+      "CLIENT_TYPE",
+      "BILLING_ADDRESS",
+      "REPRESENTATIVE_FIRST_NAME",
+      "REPRESENTATIVE_LAST_NAME",
+      "REPRESENTATIVE_JOB_TITLE",
+      "REPRESENTATIVE_EMAIL",
+      "REPRESENTATIVE_PHONE",
+      "INFORMATION_CONFIRMED",
+      "AUTHORITY_CONFIRMED"
+    ]
+  },
+  "plannedFields": {
+    "order": [
+      "SERVICE_ADDRESS",
+      "PRICING_MODEL"
+    ],
+    "orderLines": "items",
+    "agreement": [
+      "PROVIDER_LEGAL_NAME",
+      "PROVIDER_REPRESENTATIVE_NAME",
+      "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      "CONTRACT_TERMS",
+      "LEGAL_NAME",
+      "CLIENT_TYPE",
+      "BILLING_ADDRESS",
+      "REPRESENTATIVE_FIRST_NAME",
+      "REPRESENTATIVE_LAST_NAME",
+      "REPRESENTATIVE_JOB_TITLE",
+      "REPRESENTATIVE_EMAIL",
+      "REPRESENTATIVE_PHONE",
+      "INFORMATION_CONFIRMED",
+      "AUTHORITY_CONFIRMED"
+    ],
+    "accountUser": "user"
+  },
+  "unverified": [
+    "Grant endpoints are anonymous POST requests with a JSON body; list.json pages with offset and pageSize and sends no mappings, relying on the read mappings of each grant entry.",
+    "The grant issued on core-bill is readable through core for document, core-acct for account and core-bill for order.",
+    "get.json takes the record id as ?id= and answers the record itself.",
+    "event.json takes { id, event, metadata } and a refusal answers 4xx with message and optionally field errors under fieldErrors, errors or violations.",
+    "Introspection lists events per entity type; a per-entry entityId or entityIds, when present, narrows them to that record. Event codes may carry a P_WF:{workflow}: prefix, which is dropped.",
+    "MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, states, type and organization.",
+    "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9)."
+  ],
+  "constraints": [
+    "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
+    "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
+    "The document ships in live data mode with no fixtures. A data mode other than live finds no fixtures and reports that it is not set up; it never shows demonstration data.",
+    "Money is shown only as the server returns it: unit price as amount, quantity as itemCount, subtotal as totalCharges, taxes as totalTaxes and option total as grandTotal. A field the server does not return has no row; nothing is summed or multiplied in the browser.",
+    "Every command is single-flight per record and renders only the state read back afterwards; a refusal shows the server message and assumes nothing.",
+    "Markup is built with createElement and textContent; the runtime uses no innerHTML, eval or new Function, and terms are rendered as text blocks.",
+    "The theme is snow and the colour mode follows the viewer's prefers-color-scheme."
+  ]
+}
