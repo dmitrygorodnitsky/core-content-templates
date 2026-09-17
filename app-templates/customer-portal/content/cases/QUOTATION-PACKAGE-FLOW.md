@@ -243,27 +243,29 @@ what it holds.
   model attribute; the team's creator writes the kind into `notes` and item
   `metadata`. The page has to label each option, so the Order gets a
   `PRICING_MODEL` attribute (`SEASONAL`, `MONTHLY`, `PER_SERVICE`).
-- **Event metadata through a link — not yet proven.** The team's own scripts
-  send `metadata: {MESSAGE}` with an event and read `MESSAGE` from the hook's
-  `context`. The dev-1 javadoc gives the anonymous endpoint
-  `grantSendEvent(token, AccessGrantEventRequest(id, event, metadata))` and the
-  service `IWorkflowService.sendEvent(event, entity, metadata)`, the same map
-  type the authenticated `/{id}/send-event.json` takes; it has no method bodies.
-  A probe on 2026-09-11 in `SERVICE_WAND_WINTER_SERVICES` got as far as issuing
-  a grant carrying `P_WF:ZZ_CLAUDE_PROBE_GRANT_EVENT:DRAFT-SUBMITTED`: introspect
-  listed exactly that event, and revocation took effect. Every event call then
-  answered `404`, because the probe document was not readable at all: created
-  through `/api/document/save.json`, it returned an id but `get.json` answered
-  `404` and every list was empty, from `SYSTEM` too. Whether metadata reaches the
-  hook, and whether required event attributes are enforced on this path, is
-  still open. On 2026-09-15 the document list is still empty in
-  `SNOWLIMITLESS`, `SERVICE_WAND_WINTER_SERVICES` and `SYSTEM`. The backend's
-  answer that day concerns another failure: the core-ui admin screens send the
-  `permissions` of a Document, Project or Task as nested Permission objects,
-  which the server refuses with `NestedWriteNotAllowedException`, so such records
-  cannot be saved by hand until core-ui maps them as references by id. Our probe
-  document was saved through REST without that error and still could not be
-  read.
+- **Required event attributes are not enforced through a link.** The event
+  `AWAITING_CLIENT_DETAILS-DRAFT` declares nine required attributes and one
+  optional. Sent through a link on 2026-09-17 with no metadata at all, it was
+  accepted and the agreement moved to `DRAFT`. So nothing on the server
+  guarantees the ten contract details ever arrive; the page's own validation is
+  the only gate, and a hook that reads them must treat every one as absent.
+- **Nothing persists what an event carried.** A transition through a link is
+  audited as a revision whose username is `na`, and `order-state-transition`
+  records only the entity, the state, the user and the time. The metadata map is
+  visible to a hook and nowhere else, so it cannot be recovered after the fact.
+- **Event metadata through a link — still unproven, and now we know why.** A
+  hook cannot be run on the agreement workflow at all today. Workflow 49 reaches
+  its Java utilities because its `scriptLanguage` is `Java`; workflow 53 is
+  `JavaScript`, and switching it to `Java` on 2026-09-17 set `workflow.valid` to
+  false and stopped every transition until it was switched back. Binding the
+  script while leaving the language as `JavaScript` keeps the workflow valid, but
+  a hook body calling `workflowUtils.recordEventContext(entity, context)`
+  recorded nothing on either `core` node. An `onEnter` hook also cannot refuse a
+  transition: one that throws does not stop the move, which matches our own hooks
+  queueing their work after the commit. Until a Java hook runs on a Document
+  workflow, neither the client's message nor the contract details can be read
+  out of an event, and no hook of ours can issue a link, send an email or record
+  an answer. That is question 11 for the backend.
 - **`MAPPINGS_*` visibility.** The `IGrantService.mappings` javadoc requires the
   script to be visible in the authenticated organization or SYSTEM-owned;
   `MAPPINGS_ACCOUNT` is SYSTEM-owned.

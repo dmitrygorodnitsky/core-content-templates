@@ -531,3 +531,16 @@ planned, reviewed, applied, and read back from the server.
     all and the pages need another source. `updatedBy` should leave the client
     profiles in the same pass; it hands over a staff login and we drop it per
     grant today.
+11. How does a Document workflow run a Java hook? Workflow 49 calls our
+    utilities because it is a `Java` workflow bound to a script. Workflow 53,
+    the service agreement lifecycle, is a `JavaScript` workflow: setting its
+    `scriptLanguage` to `Java` on 2026-09-17 made `workflow.valid` false and
+    every transition stopped until it was set back, while binding the script
+    with the language left alone keeps the workflow valid but a hook body
+    calling `workflowUtils` records nothing on either `core` node. Our own
+    script executes fine on those nodes through `script/{code}/{function}/exec.json`,
+    so the script is not the problem. Until this is answered the agreement
+    workflow cannot issue a link, send an email, record the client's answer, or
+    read the message an event carried — and an event's required attributes are
+    not enforced on the anonymous path either, so nothing else catches a missing
+    answer.
