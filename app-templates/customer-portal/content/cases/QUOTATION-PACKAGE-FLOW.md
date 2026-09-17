@@ -191,17 +191,27 @@ what it holds.
 
 ## 9. Prerequisites and open points
 
-- **`MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT` are on dev-1** since 2026-09-16,
-  as scripts 203 and 204, owned by `SYSTEM` like `MAPPINGS_ACCOUNT`. Each caps
-  a link to what the client page renders. The order gives the three server
-  totals with their currency, its state, its attributes, and its items with
-  quantity, unit price and product name; the agreement gives its attributes,
-  type, state and the provider name. Internal notes, the per-charge breakdown
-  and `updatedBy`, which would hand over a staff login, stay out.
-- **`attributes` cannot be narrowed.** A mappings script either exposes the
-  whole bag or none of it, so a link carries every attribute on the granted
-  record, service ones included. What a link may reveal is decided by what we
-  put in attributes, not by the mapping.
+- **The link works; what it carries does not.** On 2026-09-17 a real grant over
+  account 694, orders 36, 37 and 38 and agreement 132 was issued on dev-1 and
+  opened with no credential: introspection listed the three types and the two
+  delegated events, `list.json` returned the three orders and the agreement, and
+  `QUOTE_SENT` → `QUOTE_VIEWED` went through the link on two orders. The review
+  page booted against that link in live mode and stopped at `unknown-state`,
+  which is the honest answer: a link delivers `states` with `nls` and no `code`,
+  so the page cannot tell which state it is looking at.
+- **A link exposes no attributes and no money.** Mappings now come from a
+  SYSTEM-owned `EntityMappingDefinition` and not from a `MAPPINGS_{ENTITY}`
+  script, and its generated ceiling admits scalar leaves and NLS while excluding
+  typed-entity `attributes` and flattening associations to ids. So a link cannot
+  carry `CONTRACT_TERMS`, the provider fields, `CLIENT` or `ORDERS`, the order
+  totals, the item lines, or the state codes — everything §8 asks both pages to
+  render. A grant may narrow that tree and nothing more: asking for
+  `totalCharges` is refused as exceeding the ceiling. Scripts 203 and 204 are
+  not consulted on this path. The gap is a SYSTEM-side decision, and it is
+  question 10 for the backend.
+- **What a link may reveal is decided by what we put in attributes.** Whenever
+  the ceiling admits them, it admits the whole bag, service attributes included,
+  so a record reachable by a client holds nothing we would not show one.
 - **The terms live in `CONTRACT_TERMS`** on document type 17 since 2026-09-17,
   one optional string that the attribute editor shows as a multi-line field,
   and the review page reads it. Three limits, worth stating before anyone

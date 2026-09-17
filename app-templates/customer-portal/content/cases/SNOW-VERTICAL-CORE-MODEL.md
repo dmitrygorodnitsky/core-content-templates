@@ -435,14 +435,20 @@ the dev-1 script list on 2026-09-11.
   (`core-acct`), `order` (`core-bill`), and `task` and `appointment`
   (`core-svc`). **`core-cms` and `core-rm` expose none: a Form and a Resource
   cannot be reached through a link.**
-- Every granted entity needs a Velocity script `MAPPINGS_{ENTITY}`, and the
-  endpoint answers `400` without it. dev-1 lists only `MAPPINGS_ACCOUNT`.
+- **What a link carries comes from an `EntityMappingDefinition`, not from a
+  `MAPPINGS_{ENTITY}` script.** `POST /{service}/api/grant/mappings.json` with
+  `{ entityType, operations }` answers, for each operation, the effective
+  mapping tree, the permission the server derives from the registered
+  `GrantTypeContribution`, and the SYSTEM `mappingDefinitionId` to attach when
+  issuing. On dev-1 on 2026-09-17: Account 102 `P_ACCT_R`, Order 114
+  `P_ORDER_R`, Document 11 `P_DOCUMENT_R`, each the `DEFAULT` profile and
+  enabled. A link issued this way returns the profile's shape and not the shape
+  of `MAPPINGS_ACCOUNT`, so those scripts no longer decide what a link exposes.
 - One grant holds Account, Order and Document entries together only when it is
   issued on `core-bill`.
 - Introspection answers `{ expiresAt, types: [{ entityType, canRead, canWrite,
   events: [{ id, code, nls }] }] }`; after revocation it answers `401`, not the
-  `404` the guide describes. A document grant's `get.json` answers `400` while
-  `MAPPINGS_DOCUMENT` is missing.
+  `404` the guide describes. Events are listed per type, not per entity.
 - Since the `core` deploy of 2026-09-11, `core` admits a request only for an
   organization where the user holds a role of its own; a role in a parent
   organization no longer carries over. `core-acct`, `core-bill` and `core-cms`
@@ -452,16 +458,36 @@ the dev-1 script list on 2026-09-11.
   link through an in-memory `MAGIC_LINK_ISSUER` role on the system user carrying
   `P_GRANT_W` and `P_ACCT_R`; the guide asks for a persisted service user with a
   narrow role instead.
-- **A link cannot be issued over REST at all**, tried on 2026-09-17 with every
-  permission in hand. `core-bill/api/grant/issue.json` answers `500 SYSTEM user
-  and organization are required to manage mapping definitions`, with the
-  mappings inline and without them alike, because issuing resolves a mapping
-  definition and there is not one on dev-1: `entity-mapping-definition` is
-  empty in `core`, `core-bill` and `core-acct`. Under `X-Organization-Code:
-  SYSTEM` it answers `Access grants cannot be managed in SYSTEM organization`
-  instead. So issuing is a script operation running as the system user inside
-  the tenant, which is exactly what the quotation creator does; a client link
-  for orders and an agreement has to be issued the same way.
+- **A link is issued over REST** once every entry carries the
+  `mappingDefinitionId` that `grant/mappings.json` returns. Without it the call
+  answers `500 SYSTEM user and organization are required to manage mapping
+  definitions`, and under `X-Organization-Code: SYSTEM` it answers `Access
+  grants cannot be managed in SYSTEM organization`; both were read on
+  2026-09-17 as a refusal of the whole path before the profiles were. Proven the
+  same day on dev-1: grants 9 and 10 over account 694, orders 36, 37 and 38 and
+  agreement 132, issued with an admin token in `SNOWLIMITLESS`, then read and
+  used without any credential. `entity-mapping-definition/list.json` is empty in
+  a tenant and holds 172 enabled records under `X-Organization-Code: SYSTEM`.
+- **The profile is a ceiling, and it is far below what a client page needs.** It
+  admits scalar leaves and NLS, excludes typed-entity `attributes` and flattens
+  every association to ids. Through a link an Order gives `id`, `created`,
+  `updated`, `notes`, `currency`, `organization`, `type`, `workflow`, `account`
+  and `states` with `nls` and no `code` — no `totalCharges`, no `totalTaxes`, no
+  `grandTotal`, `items` as bare ids, no attributes. A Document gives `id`,
+  `code`, `nls`, `type`, `states`, `organization` and `workflow` — no attributes,
+  so no `CONTRACT_TERMS`, no `ORDERS`, no provider fields. The same records read
+  in full through an authenticated call.
+- **`readMappings` may only omit.** A subset is accepted and applied, which is
+  how the `updatedBy` the profile exposes by default — a staff login — is kept
+  out of a link. A tree naming anything above the ceiling is refused:
+  `requested read exceeds its ceiling at property totalCharges`.
+- **Anonymous reads and workflow events both work.** `introspect.json`,
+  `get.json`, `list.json` and `event.json` answer with no credential and with no
+  locale prefix. An event outside the grant answers `403`, an entity outside it
+  `404`, and a granted event answers `200` with an empty body and moves the
+  record: orders 36 and 37 went `QUOTE_SENT` → `QUOTE_VIEWED` through the link on
+  2026-09-17. Events sent back to back are dropped in silence here as everywhere
+  else in Core.
 
 ## 7. Settled product decisions
 

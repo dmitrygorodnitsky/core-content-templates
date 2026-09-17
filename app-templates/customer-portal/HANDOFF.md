@@ -565,13 +565,17 @@ Screenshots of all four went to the user on 2026-09-15 for acceptance.
 
 ### Assumed and not yet verified
 
-- The grant requests: POST with a JSON body, `list.json` without mappings,
-  `get.json?id=`, `event.json` with `{id, event, metadata}`, whether a grant
-  issued on `core-bill` reads through `core` and `core-acct`, and the shape of a
-  refusal.
-- `MAPPINGS_ORDER`, which must include order lines as `items` and the
-  `totalCharges` and `totalTaxes` fields, and `MAPPINGS_DOCUMENT` do not exist;
-  until they do, reads through a link answer `400`.
+- ~~The grant requests.~~ **Verified on 2026-09-17** against a real link on
+  dev-1: POST with a JSON body, `list.json` paged, `get.json?id=`, `event.json`
+  with `{id, event, metadata}`, a grant issued on `core-bill` read through
+  `core` and `core-acct`, `403` for an event outside the grant and `404` for an
+  entity outside it.
+- ~~`MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT` must exist first.~~ **Superseded.**
+  A link's fields come from a SYSTEM `EntityMappingDefinition`, and its ceiling
+  carries no attributes, no order totals, item lines as ids and `states` without
+  `code`. The review page boots against a real link and stops at
+  `unknown-state`. Scripts 203 and 204 are not consulted on this path;
+  `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` question 10 is the ask.
 - The planned attributes the pages read: Order `PRICING_MODEL` and
   `SERVICE_ADDRESS`, the agreement's client snapshot under the ten detail codes,
   and `PROVIDER_LEGAL_NAME`, `PROVIDER_REPRESENTATIVE_NAME` and
@@ -830,7 +834,12 @@ produce is a service property per address or a quote order. In order:
    quote-order creation once the property size is decided; workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
-4. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
+4. **Blocked on the backend:** the client review pages. The link itself works —
+   grant 10 on dev-1 reads account 694, orders 36, 37 and 38 and agreement 132
+   with no credential, and moved two orders to `QUOTE_VIEWED` — but its mapping
+   profile exposes neither prices nor terms nor state codes, so the page has
+   nothing to render. Question 10.
+5. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
    end-to-end package on dev-1.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,

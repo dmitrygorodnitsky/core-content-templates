@@ -518,3 +518,16 @@ planned, reviewed, applied, and read back from the server.
    version does not reach them and `script/clear-compile-cache` exists only on
    `core`. As it stands, a script that fails to compile once is dead until the
    nodes restart, and a fixed version never takes effect.
+10. Can the SYSTEM `EntityMappingDefinition` for Order, Document and Account be
+    widened for magic links, and by whom? A link issued on 2026-09-17 works —
+    it is read and it moves a workflow — but its `DEFAULT` profile carries no
+    typed-entity `attributes`, no order totals, item lines as bare ids, and
+    `states` without `code`, so a client review page has no price to approve, no
+    terms to read, and no way to tell which state a record is in. A grant may
+    only narrow that tree; `totalCharges` is refused as exceeding the ceiling.
+    Either those profiles gain `attributes`, `totalCharges`, `totalTaxes`,
+    `grandTotal`, `items` with their product and amount, `states.code`, and the
+    account's contacts and addresses — or a link cannot carry a quotation at
+    all and the pages need another source. `updatedBy` should leave the client
+    profiles in the same pass; it hands over a staff login and we drop it per
+    grant today.
