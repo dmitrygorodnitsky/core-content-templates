@@ -488,6 +488,49 @@ planned, reviewed, applied, and read back from the server.
   scripts 201 and 202 once 169 can run again. Forms 38, 42 and 43 with accounts
   697 and 698 and addresses 713 and 714 are real runs worth keeping.
 
+## dev-1 on 2026-09-17
+
+The client pages and the property step were taken as far as the platform allows.
+
+- **The quote page package and the review page are both published.**
+  `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` was re-uploaded and answers at
+  `/snow-removal--customer-portal-fixture`; its primary button held a guessed
+  address that answers `404` and now holds the published form page.
+  `CLIENT_REVIEW_DOCUMENT` did not exist on dev-1 and was created, and an
+  operator gave it `/pages/SNOWLIMITLESS/review` with its API base filled in.
+  Opened in a browser with a real grant token, the page reads the token from the
+  fragment, calls `introspect.json` and `document/list.json` anonymously, gets
+  `200` from both, and renders "not available right now" — the honest answer
+  while a link carries no state codes.
+- **Rebinding a workflow's script does not reach the nodes, and the workflow
+  goes quiet.** Pointing workflow 49 at a new utility script left every hook
+  silent: a submitted form stayed in `INITIAL`, a form moved to `SUBMITTED` by
+  hand stayed there, and the workflow still read `valid: true` with the correct
+  script bound. Re-saving a state's `onEnter` with the identical text brought
+  every hook back at once. Whoever repoints a script must re-save the hooks in
+  the same pass, and a silent workflow is not evidence that a script is broken.
+- **A new script code is not executed on the `core-rm` nodes.** Three
+  submissions of a newly created script through `script/{code}/{function}/exec.json`,
+  across both rm nodes, returned a request id and then nothing at all: no
+  result, no error, no effect. The script that has lived there for a while
+  answers on the same node within seconds. So on those nodes a fixed script
+  cannot be introduced under a new code either, which is the only workaround we
+  had for the compiled-class cache.
+- **The property creator had never run, and fails on first contact.** Called
+  directly it throws Hibernate's `LazyInitializationException`: it walks the
+  resource type's `attributes` and `parents`, both lazy collections, with no
+  session open. The fix is one transaction around the body, and it is written,
+  seeded and deployed as `WINTER_SERVICE_PROPERTY_CREATOR_V2` — it cannot run
+  until the nodes pick up a new code. Workflow 49 is bound to
+  `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V5`, which calls it, so the step starts
+  working the moment they do.
+- **A failed step did not become visible.** The property step failed and the
+  form stayed in `PROCESSED`; the `PROCESSED-PROCESSING_FAILED` event we send on
+  failure never took, because it follows the transition into `PROCESSED` too
+  closely and Core drops events sent back to back. The team asked for failures to
+  land in a visible state, and the platform's own event coalescing is what
+  prevents it.
+
 ## Questions for the team
 
 1. Is `createCustomerAccount` at `PROCESSED` the intended first step, with
@@ -517,7 +560,15 @@ planned, reviewed, applied, and read back from the server.
 9. How is the compiled-script cache evicted on the CMS nodes? Saving a new
    version does not reach them and `script/clear-compile-cache` exists only on
    `core`. As it stands, a script that fails to compile once is dead until the
-   nodes restart, and a fixed version never takes effect.
+   nodes restart, and a fixed version never takes effect. On 2026-09-17 this
+   turned out to be wider than the CMS nodes and wider than compilation: the
+   `core-rm` nodes do not execute a **newly created** script code at all —
+   the submission returns a request id and then nothing, no result and no
+   effect, while an older code answers on the same node in seconds — and
+   repointing a workflow at another script does not reach the nodes either,
+   which silences every hook of that workflow until a state's `onEnter` is
+   re-saved. Together these leave no way to ship a corrected script to those
+   nodes.
 10. Can the SYSTEM `EntityMappingDefinition` for Order, Document and Account be
     widened for magic links, and by whom? A link issued on 2026-09-17 works —
     it is read and it moves a workflow — but its `DEFAULT` profile carries no
