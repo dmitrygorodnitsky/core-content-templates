@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-18
+Updated: 2026-09-21
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- HEAD when this checkpoint was written: `4c66893`
+- Implementation checkpoint before this handoff refresh: `d5d862e`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -830,7 +830,10 @@ produce is a service property per address or a quote order. In order:
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
    `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
-   upload `CLIENT_REVIEW_DOCUMENT` once the mappings scripts exist.
+   upload the regenerated `CLIENT_REVIEW_DOCUMENT`, set
+   `REVIEW_API_BASE_URL`, issue a fresh combined link, and complete its browser
+   pass. Existing links retain their older mapping snapshots and cannot verify
+   the new contract.
 3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
    its retry and the `script` binding; a property per address; quote orders per
    property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
@@ -841,17 +844,17 @@ produce is a service property per address or a quote order. In order:
    quote-order creation once the property size is decided; workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
-4. **Partly unblocked on the backend:** the client review pages. The link itself
-   works — grant 10 on dev-1 reads account 694, orders 36, 37 and 38 and
-   agreement 132 with no credential, and moved two orders to `QUOTE_VIEWED`.
-   Since 2026-09-18 newly issued links may also carry typed-entity attributes,
-   including agreement terms and Order linkage fields. Prices, expanded item
-   lines and state codes are still outside the profile, so the page cannot yet
-   identify its state or render a priced option. OrderItem, ProductPrice and
-   Product need grant contributions and profiles so their exact ids can be
-   added as separate entries to the same link. Question 10.
-5. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
-   end-to-end package on dev-1.
+4. **Backend read contract verified on 2026-09-21:** a freshly issued combined
+   link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
+   `ProductPrice` and `Product` records anonymously. It returns Order totals and
+   Order/Document `states[].code`; introspection reports every type readable.
+   The client-review runtime joins the id-only line chain and keeps all totals
+   server-owned. The remaining work is deployment and a browser pass with a
+   newly issued link, not another mapping change. Question 10 records the
+   completed backend verification.
+5. **Then:** run the event-metadata probe through a disposable link in
+   `SNOWLIMITLESS`, verify command read-back across the quotation and agreement
+   states, and complete the first end-to-end package on dev-1.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
