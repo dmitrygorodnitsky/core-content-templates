@@ -1,10 +1,12 @@
 # Quotation package — the service agreement carries the quotes
 
-Status: design, decided with the user on 2026-09-11. The agreement lifecycle and
-document type are on dev-1 (§4.2); no hook, link or page is implemented. Facts
-marked *verified* were read from dev-1 on 2026-09-11; everything else is our
-design, filling what the client spec
-(`quotation-contract-client-activation-flow.md`) leaves open.
+Status: design, decided with the user on 2026-09-11 and revised on 2026-09-17
+and 2026-09-21. The agreement lifecycle and document type are on dev-1 (§4.2).
+Links are issued and read anonymously, both pages are built in
+`runtime/client-review/`, and a hook on the agreement workflow runs and reads
+what an event carried; none of the §5 hooks is written yet. Facts marked
+*verified* were read from dev-1; everything else is our design, filling what the
+client spec (`quotation-contract-client-activation-flow.md`) leaves open.
 
 Related: `SNOW-VERTICAL-CORE-MODEL.md` §6c (magic links) and §7 (decisions),
 `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` (workflow 49 and its scripts).
@@ -29,9 +31,10 @@ collects the client's contract details as attributes of one of its own events.
 ## 2. The flow at a glance
 
 ```text
-GET_QUOTE_ form ── PROCESSED ──► Account, addresses, one SNOW_REMOVAL_PROPERTY per address
+GET_QUOTE_ form, on submit ──► Account, addresses, one SNOW_REMOVAL_PROPERTY per address,
+                               one Order per property × pricing model, SERVICE_PROPERTY set
                                    │
-manager prepares Orders by hand: one per property × pricing model, SERVICE_PROPERTY set
+manager takes the request (NOTIFIED → PROCESSED by hand), reviews and corrects the Orders
                                    │
 Order QUOTE_APPROVED_INTERNALLY ──► added to the account's open agreement (QUOTATION)
                                    │
@@ -46,16 +49,23 @@ every property decided ──► Agreement AWAITING_CLIENT_DETAILS
                                    │
 client submits contract details (event on the agreement, with attributes)
                                    ▼
+Agreement CLIENT_DETAILS_RECEIVED ── our hook checks them ──► DRAFT, or back to AWAITING_CLIENT_DETAILS
+                                   │
 Agreement DRAFT ──► PENDING_MANAGEMENT_APPROVAL ──► INTERNALLY_APPROVED ──► SENT_TO_CLIENT
                                    │                         (link + email)
 client approves ──► CLIENT_APPROVED ──► Account → ACTIVE ──► portal User if the operator has the portal
 ```
 
+Since 2026-09-17 the manager no longer builds the quotes: every entity is
+created with the request, the form no longer collects a property size, and the
+manager reviews and corrects the Orders. The manager's send is to become a bulk
+action over the reviewed Orders, designed separately.
+
 ## 3. Records
 
 | record | role in the flow | status |
 | --- | --- | --- |
-| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; property per address and a failure state still to add |
+| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; failure state `PROCESSING_FAILED` in place; the property step is written but does not run in the flow yet, and Order creation is not wired (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, dev-1 on 2026-09-21) |
 | `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
 | `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | exists; not created by the form yet |
 | `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; joins our seeds |
@@ -88,15 +98,16 @@ to `ADMIN` by itself; the seed's grants to the `SW_FS_WS_*` roles were left out
 of that apply. `workflows.ts` grants them through `saveRolePermissions`, which
 sends each Permission as a nested object keyed by `name`: the shape the backend
 reported refused for Documents, Projects and Tasks (§9). Whether roles are
-refused too is unverified. Three states stand in front of `DRAFT` and two
-failure states beside it:
+refused too is unverified. Four states stand in front of `DRAFT`, one of them
+transient, and two failure states beside it:
 
 | state | meaning | leaves by |
 | --- | --- | --- |
 | `QUOTATION` (initial) | quotes are being collected | `Send Quotation` (manager) → `QUOTATION_SENT`; cancel → `CANCELED` |
 | `QUOTATION_SENT` | the client is deciding | package complete → `AWAITING_CLIENT_DETAILS`; nothing approved → `CANCELED` |
 | `QUOTATION_SEND_FAILED` | sending failed after the manager's click | retry → `QUOTATION_SENT` |
-| `AWAITING_CLIENT_DETAILS` | approved quotes are known; Party B details missing | client submits details → `DRAFT` |
+| `AWAITING_CLIENT_DETAILS` | approved quotes are known; Party B details missing | client submits details → `CLIENT_DETAILS_RECEIVED` |
+| `CLIENT_DETAILS_RECEIVED` | transient: our hook is checking the details | complete → `DRAFT`; incomplete → back to `AWAITING_CLIENT_DETAILS` |
 | `DRAFT` … `ARCHIVED` | as seeded, following spec §11–15 | |
 | `AGREEMENT_SEND_FAILED` | sending the agreement link failed | retry → `SENT_TO_CLIENT` |
 
@@ -104,9 +115,27 @@ The contract-details event carries the ten attributes of spec §9.2 —
 `LEGAL_NAME`, `CLIENT_TYPE`, `BILLING_ADDRESS`, `REPRESENTATIVE_FIRST_NAME`,
 `REPRESENTATIVE_LAST_NAME`, `REPRESENTATIVE_JOB_TITLE`, `REPRESENTATIVE_EMAIL`,
 `REPRESENTATIVE_PHONE`, `INFORMATION_CONFIRMED`, `AUTHORITY_CONFIRMED` — which are
-today the `CONTRACT_INFORMATION` form type seed. That form type and its
-lifecycle stay in `core-ui`, unapplied, until event metadata through a link is
-confirmed (§9); then they are dropped.
+today the `CONTRACT_INFORMATION` form type seed. Event metadata through a link
+was confirmed on 2026-09-21 (§9), so that form type and its lifecycle, still in
+`core-ui` and never applied, are to be dropped.
+
+**The details are checked in a transient state** (decided with the user on
+2026-09-21). A hook cannot refuse an event, and the server does not enforce an
+event's required attributes on the anonymous path (§9), so nothing stops
+incomplete details on the way into `DRAFT`. The client's event therefore becomes
+`AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`, carrying the ten attributes in
+place of today's `AWAITING_CLIENT_DETAILS-DRAFT`, and lands in
+`CLIENT_DETAILS_RECEIVED`, whose `onEnter` is the one place those attributes are
+visible. When they are complete the hook writes Party B into the account and a
+snapshot into the agreement, then sends `CLIENT_DETAILS_RECEIVED-DRAFT`; when
+they are not, it records what is missing and sends
+`CLIENT_DETAILS_RECEIVED-AWAITING_CLIENT_DETAILS`, so the same link can submit
+again. Core drops an event sent too soon after the transition before it
+(dev-1, 2026-09-17), so the follow-up event is sent after the commit with a
+delay or a retry, and an agreement left in `CLIENT_DETAILS_RECEIVED` must be
+visible to the manager. The seed, the link's event permission (§7) and the
+review page change with it: the page sends `AWAITING_CLIENT_DETAILS-DRAFT` today
+and has to show the transient state while it reads the agreement again.
 
 `EFFECTIVE_DATE` is optional, because it cannot be known while the agreement is
 still a package.
@@ -124,13 +153,13 @@ approved.
 
 | trigger | does | if it cannot |
 | --- | --- | --- |
-| Order enters `QUOTE_APPROVED_INTERNALLY` | requires `SERVICE_PROPERTY`; adds the Order to the agreement already listing it, else to the client's agreement in `QUOTATION`, else to a new one | refuses the transition with a message the manager sees |
+| Order enters `QUOTE_APPROVED_INTERNALLY` | requires `SERVICE_PROPERTY`; adds the Order to the agreement already listing it, else to the client's agreement in `QUOTATION`, else to a new one | cannot refuse the transition (§9); what it does instead is decided with the Order hooks |
 | Agreement enters `QUOTATION_SENT` | sends `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` to each listed Order still there; `DRAFT-PROSPECT` on the account; issues the quotation link; emails the primary contact | `QUOTATION_SEND_FAILED` |
 | Order enters `CLIENT_APPROVED` | declines the other options for the same property in the same agreement; evaluates the package | |
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
 | package evaluation | see §6 | |
-| Agreement leaves `AWAITING_CLIENT_DETAILS` | validates the details; writes Party B into the account and a snapshot into the agreement; removes unapproved Orders from `ORDERS`; revokes the quotation link; notifies `CONTRACT_MANAGER` | refuses the event; the client sees the message |
+| Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | sends it back to `AWAITING_CLIENT_DETAILS` with what is missing; the client sees it on the page |
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
@@ -144,6 +173,12 @@ Work that spans Documents and Orders runs as a script on a node with both
 dispatches `WINTER_SERVICE_QUOTATION_CREATOR`. Such work runs after the
 triggering transaction commits, which is why its failures need the visible
 states above rather than a log line.
+
+The hooks of workflow 53, a `JavaScript` workflow, reach the bound script as
+`this.workflowUtils`; a `Java` workflow such as 45 writes `workflowUtils` (§9). A
+`JavaScript` hook cannot refuse its transition. Whether an exception in a `Java`
+hook rolls one back is untested, so every check above ends in a state rather
+than relying on a refusal.
 
 ## 6. When a package is complete
 
@@ -165,11 +200,13 @@ agreement, because the first one is no longer in `QUOTATION`.
 
 Both are issued on `core-bill`, the one service that registers Account, Order
 and Document grant entries together, by a persisted service user whose role
-holds only `P_GRANT_W` and the permissions below.
+holds only `P_GRANT_W` and the permissions below. The six entity types a review
+link carries, and the service that grants each, are in
+`SNOW-CLIENT-REVIEW-MAGIC-LINK-ENTITIES.md`.
 
 | link | issued | entries | page | revoked |
 | --- | --- | --- | --- | --- |
-| quotation | agreement enters `QUOTATION_SENT`, and again when a changed quote is re-sent | Account `P_ACCT_R`; each Order `P_ORDER_R` and `P_WF:GENERAL_FSM_ORDER:` `QUOTE_SENT-QUOTE_VIEWED`, `QUOTE_VIEWED-CLIENT_APPROVED`, `QUOTE_VIEWED-DECLINED`, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:AWAITING_CLIENT_DETAILS-DRAFT` | quote review | details submitted, re-issue, or cancel |
+| quotation | agreement enters `QUOTATION_SENT`, and again when a changed quote is re-sent | Account `P_ACCT_R`; each Order `P_ORDER_R` and `P_WF:GENERAL_FSM_ORDER:` `QUOTE_SENT-QUOTE_VIEWED`, `QUOTE_VIEWED-CLIENT_APPROVED`, `QUOTE_VIEWED-DECLINED`, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`; each Order's `OrderItem` records with their `ProductPrice` and `Product`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` | quote review | details submitted, re-issue, or cancel |
 | agreement | agreement enters `SENT_TO_CLIENT` | Account `P_ACCT_R`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED`; its Orders `P_ORDER_R` | agreement review | client approval |
 
 The token is never stored; the agreement keeps the grant ids so a hook can
@@ -191,32 +228,17 @@ what it holds.
 
 ## 9. Prerequisites and open points
 
-- **The link works; what it carries does not.** On 2026-09-17 a real grant over
-  account 694, orders 36, 37 and 38 and agreement 132 was issued on dev-1 and
-  opened with no credential: introspection listed the three types and the two
-  delegated events, `list.json` returned the three orders and the agreement, and
-  `QUOTE_SENT` → `QUOTE_VIEWED` went through the link on two orders. The review
-  page booted against that link in live mode and stopped at `unknown-state`,
-  which is the honest answer: a link delivers `states` with `nls` and no `code`,
-  so the page cannot tell which state it is looking at. On 2026-09-18 a newly
-  issued read-only grant also proved that Order and Document attributes pass
-  through the same anonymous path; old grants did not expand.
-- **A link exposes attributes now, but still no money or state codes.** Mappings
-  come from a SYSTEM-owned `EntityMappingDefinition` and not from a
-  `MAPPINGS_{ENTITY}` script. After the backend admitted `attributes` as a
-  primitive, SYSTEM `DEFAULT` profiles 102 (Account), 114 (Order) and 11
-  (Document) were widened on 2026-09-18 and read back as the effective
-  `SNOWLIMITLESS` profiles. This opens `CONTRACT_TERMS`, provider fields,
-  `CLIENT`, `ORDERS`, `PRICING_MODEL` and `SERVICE_ADDRESS` to a new grant that
-  explicitly requests the attributes bag. It does not open order totals,
-  expanded item lines, or `states.code`: item lines remain bare ids and a grant
-  may still only narrow the ceiling. The line records must be separate
-  `OrderItem` entries in the same grant, with their referenced `ProductPrice`
-  and `Product` records also entered explicitly rather than expanded through a
-  deep Order mapping. On 2026-09-18 grant preparation returned `400 ... is not
-  grantable` for all three types in their owning services. Scripts 203 and 204
-  are not consulted. The remaining gap is a backend and SYSTEM policy decision
-  tracked by question 10.
+- **The link works and carries what the pages need** (*verified* 2026-09-21).
+  A grant issued on 2026-09-17 over account 694, orders 36, 37 and 38 and
+  agreement 132 was read with no credential and moved two Orders to
+  `QUOTE_VIEWED`, but its profile carried no attributes, totals or state codes,
+  and the review page stopped at `unknown-state`. On 2026-09-18 the backend
+  admitted typed-entity `attributes`, and the SYSTEM `DEFAULT` profiles 102
+  (Account), 114 (Order) and 11 (Document) gained them. On 2026-09-21 a fresh
+  combined grant read the Order totals, `states[].code` and separate
+  `OrderItem`, `ProductPrice` and `Product` records. Grants issued earlier keep
+  their old snapshots and have to be reissued. The entry list is in
+  `SNOW-CLIENT-REVIEW-MAGIC-LINK-ENTITIES.md`.
 - **What a link may reveal is decided by what we put in attributes.** Whenever
   the ceiling admits them, it admits the whole bag, service attributes included,
   so a record reachable by a client holds nothing we would not show one.
@@ -238,11 +260,10 @@ what it holds.
   optional strings, applied in the same write. The page has read them all
   along; until something fills them the provider card falls back to the
   organization name.
-- **The portal invitation on the agreement page stays hidden.** It asks whether
-  the client Account already has a Core User, and `MAPPINGS_ACCOUNT` does not
-  expose `user`. That script is `SYSTEM`-owned and shared by every tenant, so
-  we do not widen it for one page. The invitation returns when portal access
-  has a source of its own.
+- **The portal invitation on the agreement page can come back.** It asks
+  whether the client Account already has a Core User, and the Account profile
+  now exposes `user` as `{ id }` (read on 2026-09-21), which is enough to tell.
+  The page keeps it hidden until it asks for that field.
 - **The service address must be readable through the link.** A Resource cannot
   be granted, so the page cannot follow `SERVICE_PROPERTY` to the address. The
   hook that adds an Order to the package also records the property's address on
@@ -255,25 +276,38 @@ what it holds.
   `AWAITING_CLIENT_DETAILS-DRAFT` declares nine required attributes and one
   optional. Sent through a link on 2026-09-17 with no metadata at all, it was
   accepted and the agreement moved to `DRAFT`. So nothing on the server
-  guarantees the ten contract details ever arrive; the page's own validation is
-  the only gate, and a hook that reads them must treat every one as absent.
+  guarantees the ten contract details ever arrive. The page's own validation is
+  the first gate and our hook in `CLIENT_DETAILS_RECEIVED` the second (§4.2); the
+  hook treats every detail as possibly absent.
 - **Nothing persists what an event carried.** A transition through a link is
   audited as a revision whose username is `na`, and `order-state-transition`
   records only the entity, the state, the user and the time. The metadata map is
   visible to a hook and nowhere else, so it cannot be recovered after the fact.
-- **Event metadata through a link — still unproven, and now we know why.** A
-  hook cannot be run on the agreement workflow at all today. Workflow 49 reaches
-  its Java utilities because its `scriptLanguage` is `Java`; workflow 53 is
-  `JavaScript`, and switching it to `Java` on 2026-09-17 set `workflow.valid` to
-  false and stopped every transition until it was switched back. Binding the
-  script while leaving the language as `JavaScript` keeps the workflow valid, but
-  a hook body calling `workflowUtils.recordEventContext(entity, context)`
-  recorded nothing on either `core` node. An `onEnter` hook also cannot refuse a
-  transition: one that throws does not stop the move, which matches our own hooks
-  queueing their work after the commit. Until a Java hook runs on a Document
-  workflow, neither the client's message nor the contract details can be read
-  out of an event, and no hook of ours can issue a link, send an email or record
-  an answer. That is question 11 for the backend.
+  The hook that reads the details therefore writes them where they belong
+  before the agreement moves on.
+- **Event metadata through a link — proven on 2026-09-21.** A hook on the
+  agreement workflow runs and reads what an event carried once its body
+  addresses the bound script correctly. A `JavaScript` workflow compiles its
+  hooks into a generated class whose constructor receives the script —
+  `constructor(workflowService, globalContext, workflowUtils, scriptUtils)` —
+  and every state handler holds it as `this.workflowUtils`; a `Java` workflow
+  such as 49 writes plain `workflowUtils`. With probe script 205 bound to
+  workflow 53 and `this.workflowUtils.recordEventContext(entity, context)` as the
+  `onEnter` of `DRAFT`, an authenticated event and an anonymous event through a
+  link both reached the script, `context` carried `MESSAGE` and `PROBE`, and
+  `USER_NAME` read `anonymous` for the link. The attempt of 2026-09-17 had
+  written `workflowUtils` without `this.`, a `ReferenceError` that a `try/catch`
+  around it swallowed.
+- **A hook cannot refuse its transition** (*verified* 2026-09-21). An `onEnter`
+  that recorded its context and then threw because `MESSAGE` was missing still
+  let `PENDING_MANAGEMENT_APPROVAL` → `DRAFT` complete, and the event answered
+  HTTP 200. Checks therefore end in a state (§4.2, §5), never in a refusal.
+- **Do not switch an existing workflow's `scriptLanguage`.** On 2026-09-17
+  workflow 53 set to `Java` with a script bound read back `valid: false`, and
+  events then answered HTTP 200 without moving the document; set back to
+  `JavaScript`, it worked again. Generated `sourceCode` is language-specific — a
+  Java class for workflows 14, 45 and 49, a JavaScript class for 53 — and a
+  switch apparently does not regenerate it.
 - **`MAPPINGS_*` visibility.** The `IGrantService.mappings` javadoc requires the
   script to be visible in the authenticated organization or SYSTEM-owned;
   `MAPPINGS_ACCOUNT` is SYSTEM-owned.

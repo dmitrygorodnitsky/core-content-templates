@@ -196,6 +196,16 @@ curl -sS -X POST "$HOST/core/api/script/list.json" -H "Authorization: Bearer $TO
 4. **A failed step must land in a visible state** from which a responsible
    person can restart it or act otherwise. Logging alone is not acceptable.
 
+**Answers 1 and 2 were superseded by the user on 2026-09-17.** Every entity is
+created as soon as a request is submitted: the Account, its addresses, a
+`SNOW_REMOVAL_PROPERTY` per address and three Orders per property, one per
+pricing model. The manager no longer builds the quotes but reviews and corrects
+them, and sends one link for all of them through a bulk action designed
+separately. The form's `NOTIFIED` → `PROCESSED` transition stays manual: it is
+the manager taking the request into work, not the trigger for creation. The form
+no longer collects a property size; the manager works it out when pricing needs
+it. Answers 3 and 4 stand, and 4 is `PROCESSING_FAILED`.
+
 Anything the specification does not cover is ours to design; there is no
 further product input to wait for.
 
@@ -531,6 +541,41 @@ The client pages and the property step were taken as far as the platform allows.
   land in a visible state, and the platform's own event coalescing is what
   prevents it.
 
+## dev-1, late on 2026-09-17 and on 2026-09-21
+
+- **The property creator works once it writes in a read-write transaction.**
+  `WINTER_SERVICE_PROPERTY_CREATOR_V2` wrapped its body in
+  `transactionUtils.getInNewTx`, which opens a read-only transaction, and
+  Postgres refused `nextval()` in it. `WINTER_SERVICE_PROPERTY_CREATOR_V3`
+  (script 215) uses `getInNewTxRW` and, called directly on 2026-09-17, created
+  properties 951, 952 and 953. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V6`
+  (script 216) calls it.
+- **The flow still stops before the property step, at the creator's account
+  link.** A traced run on 2026-09-17 showed `createCustomerAccount` of
+  `WINTER_SERVICE_QUOTATION_CREATOR` failing when it issues the requester's
+  Account link: its inline `readMappings` asked for `attributes`, which the
+  profile did not hold yet. The job ends there, so neither the property step nor
+  the requester email runs, and the Account is left without properties. Since
+  2026-09-18 the profile holds `attributes`, but the same tree also asks for
+  nested `contacts` and `addresses`, which the Account profile summarises as ids.
+  Issued on 2026-09-21 against account 694 with the creator's exact tree, the
+  grant was refused with `Mapping requested read.contacts changes an operation
+  defined by its ceiling`, and nothing was created. The fix is ours: narrow the
+  tree to the profile — `id`, `code`, `nls`, `attributes`, `type`, `states` — or
+  drop the link from the first email, which is open with the user.
+- **Workflow 49 is bound to a diagnostic build.** It points at
+  `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V7` (script 219), V6 with a trace buffer
+  added to find the failure above. It is replaced by a clean build before the
+  next run, and a state's `onEnter` is re-saved in the same pass.
+- **Hooks on the agreement workflow run.** See question 11: the body has to
+  address the script as `this.workflowUtils`. A hook cannot refuse its
+  transition — one that recorded its context and then threw still let the move
+  complete with HTTP 200.
+- **`core-bill` answers our API key with `401`** since the redeploy of
+  2026-09-21, for `grant/list.json` and `grant/issue.json` alike, while `core`
+  and `core-acct` accept it. The probe link of that day was issued on `core`,
+  which grants a Document on its own.
+
 ## Questions for the team
 
 1. Is `createCustomerAccount` at `PROCESSED` the intended first step, with
@@ -552,7 +597,8 @@ The client pages and the property step were taken as far as the platform allows.
    2026-09-16:** it answers `200` again. Only the form type is still to come
    back.
 7. Questions 1 to 4 are now ours to decide, not to ask: workflow 49 and its six
-   scripts became ours on 2026-09-11 and are extracted into `core-ui`.
+   scripts became ours on 2026-09-11 and are extracted into `core-ui`. They were
+   decided with the user on 2026-09-17; see the note under "Team answers".
 8. Why does `core-cms/api/form/submit.json` no longer move a form out of its
    initial state? We now fire it from an `INITIAL` hook of our own, so the
    flow works either way, but it would be good to know whether the platform is
@@ -584,16 +630,19 @@ The client pages and the property step were taken as far as the platform allows.
     The account's contact/address projection remains ids only and is an optional
     prefill enhancement, not a quote-review blocker. `updatedBy` should remain
     outside client profiles because it exposes a staff login.
-11. How does a Document workflow run a Java hook? Workflow 49 calls our
-    utilities because it is a `Java` workflow bound to a script. Workflow 53,
-    the service agreement lifecycle, is a `JavaScript` workflow: setting its
-    `scriptLanguage` to `Java` on 2026-09-17 made `workflow.valid` false and
-    every transition stopped until it was set back, while binding the script
-    with the language left alone keeps the workflow valid but a hook body
-    calling `workflowUtils` records nothing on either `core` node. Our own
-    script executes fine on those nodes through `script/{code}/{function}/exec.json`,
-    so the script is not the problem. Until this is answered the agreement
-    workflow cannot issue a link, send an email, record the client's answer, or
-    read the message an event carried — and an event's required attributes are
-    not enforced on the anonymous path either, so nothing else catches a missing
-    answer.
+11. ~~How does a Document workflow run a Java hook?~~ **Answered on our side,
+    2026-09-21: the hook body was wrong.** A `JavaScript` workflow compiles its
+    hooks into a generated class whose constructor receives the bound script,
+    and every state handler holds it as `this.workflowUtils`. We had written the
+    hook as in a `Java` workflow, `workflowUtils.recordEventContext(entity,
+    context)`, which is a `ReferenceError` inside a JavaScript method, and a
+    `try/catch` around it swallowed the error. With `this.workflowUtils` on
+    `DRAFT` of workflow 53 and probe script 205 bound, the hook ran for an
+    authenticated event and for an anonymous event through a link, and
+    `context` carried the event metadata with `USER_NAME` `anonymous` for the
+    link. Two limits remain, both verified and both handled in the flow rather
+    than asked: a hook cannot refuse its transition, and an event's required
+    attributes are not enforced on the anonymous path.
+    `QUOTATION-PACKAGE-FLOW.md` §4.2 answers both with a transient validation
+    state. The `valid: false` of 2026-09-17 came from switching the workflow's
+    `scriptLanguage`, which is not to be done (§9 there).

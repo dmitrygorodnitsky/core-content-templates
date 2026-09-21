@@ -454,9 +454,14 @@ and every decision taken where it is silent.
   once, receives the client's contract details as attributes of its
   `AWAITING_CLIENT_DETAILS-DRAFT` event, and follows the specification from
   `DRAFT` on.
-- **Quotation is manual** (the team, 2026-09-10). The quote form creates the
-  Account and its addresses, a manager builds the Orders by hand, and a failed
-  automated step must land in a visible state.
+- **Every entity is created with the request** (the user, 2026-09-17,
+  superseding the team's "quotation is manual" of 2026-09-10). A submitted quote
+  form creates the Account, its addresses, a property per address and three
+  Orders per property, one per pricing model. The manager takes the request by
+  moving it from `NOTIFIED` to `PROCESSED` by hand, reviews and corrects the
+  Orders, and sends one link for all of them through a bulk action designed
+  separately. The form no longer collects a property size. A failed automated
+  step must land in a visible state.
 - **Customer Portal entitlement is an attribute of the `OPERATOR` organization**
   (2026-09-11). An activated client receives a portal User only when it is on.
 - **Beam AI measurements are not stored on `SNOW_REMOVAL_PROPERTY`** for now
@@ -706,6 +711,13 @@ Things that already cost time here and will again:
 8. **The Browser pane can be hidden, and its screenshots then fail.** The
    evidence of 2026-09-15 came from headless Chrome driven by scratchpad
    scripts, with Google Maps and Xweather stubbed inside the page.
+9. **A `JavaScript` workflow's hook reaches its script as `this.workflowUtils`.**
+   A `Java` workflow such as 49 writes `workflowUtils`; the same line in a
+   JavaScript hook is a `ReferenceError`, and a `try/catch` around it hid that
+   from 2026-09-17 to 2026-09-21. A hook cannot refuse its transition either.
+10. **Never switch an existing workflow's `scriptLanguage`.** Workflow 53 set to
+    `Java` read back `valid: false` and then answered every event with HTTP 200
+    without moving anything.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -840,8 +852,13 @@ produce is a service property per address or a quote order. In order:
    `PROPERTY`, which the property creator writes when the form supplies them;
    `MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT`, scripts 203 and 204, the field
    caps a magic link reads through; `CONTRACT_TERMS` and the three provider
-   fields on document type 17, which the review page reads. Left: wiring
-   quote-order creation once the property size is decided; workflow 45 and
+   fields on document type 17, which the review page reads. The flow still
+   stops before the property step: the quotation creator's account link asks
+   for nested contacts and addresses and is refused at `read.contacts`
+   (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, dev-1 on 2026-09-21), and workflow
+   49 is bound to the diagnostic `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V7`.
+   Left: that fix and a clean utilities build; creating the three Orders per
+   property on submit (decided 2026-09-17); workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Backend read contract verified on 2026-09-21:** a freshly issued combined
@@ -852,9 +869,12 @@ produce is a service property per address or a quote order. In order:
    server-owned. The remaining work is deployment and a browser pass with a
    newly issued link, not another mapping change. Question 10 records the
    completed backend verification.
-5. **Then:** run the event-metadata probe through a disposable link in
-   `SNOWLIMITLESS`, verify command read-back across the quotation and agreement
-   states, and complete the first end-to-end package on dev-1.
+5. **Then:** write the hooks of `QUOTATION-PACKAGE-FLOW.md` §5, including the
+   transient `CLIENT_DETAILS_RECEIVED` state of §4.2. The event-metadata probe
+   passed on 2026-09-21: a hook on workflow 53 reaches the bound script as
+   `this.workflowUtils` and reads what an event carried through a link. Verify
+   command read-back across the quotation and agreement states, and complete
+   the first end-to-end package on dev-1.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
