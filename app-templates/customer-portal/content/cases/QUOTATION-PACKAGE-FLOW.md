@@ -1,12 +1,9 @@
 # Quotation package — the service agreement carries the quotes
 
 Status: design, decided with the user on 2026-09-11 and revised on 2026-09-17
-and 2026-09-21. The agreement lifecycle and document type are on dev-1 (§4.2).
-Links are issued and read anonymously, both pages are built in
-`runtime/client-review/`, and a hook on the agreement workflow runs and reads
-what an event carried; none of the §5 hooks is written yet. Facts marked
-*verified* were read from dev-1; everything else is our design, filling what the
-client spec (`quotation-contract-client-activation-flow.md`) leaves open.
+and 2026-09-21; where the flow stands is §10. Facts marked *verified* were read
+from dev-1; everything else is our design, filling what the client spec
+(`quotation-contract-client-activation-flow.md`) leaves open.
 
 Related: `SNOW-VERTICAL-CORE-MODEL.md` §6c (magic links) and §7 (decisions),
 `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` (workflow 49 and its scripts).
@@ -65,9 +62,9 @@ action over the reviewed Orders, designed separately.
 
 | record | role in the flow | status |
 | --- | --- | --- |
-| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; failure state `PROCESSING_FAILED` in place; the property step is written but does not run in the flow yet, and Order creation is not wired (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, dev-1 on 2026-09-21) |
+| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; on `PROCESSED` it creates the Account, its link and a property per address (*verified* 2026-09-21), and a failure lands in `PROCESSING_FAILED`; creation is still to move to `NOTIFIED`, and Order creation is not wired (§10) |
 | `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
-| `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | exists; not created by the form yet |
+| `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21 (Property 956) |
 | `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; joins our seeds |
 | `SERVICE_AGREEMENT` (Document) | the package, then the contract | type 17 and workflow 53 on dev-1, owned by `SERVICE_WAND_WINTER_SERVICES`; seed role grants not applied |
 | organization type `OPERATOR` | portal flag; `QUOTATION_MANAGER`, `CONTRACT_MANAGER` for notifications | managers *verified*; portal flag to add |
@@ -313,3 +310,41 @@ what it holds.
   `MAPPINGS_ACCOUNT` is SYSTEM-owned.
 - The portal flag on `OPERATOR` and the customer role a provisioned User receives
   are still to be named.
+
+## 10. Where the flow stands, 2026-09-21
+
+| step of §2 | state |
+| --- | --- |
+| request → Account and addresses | *verified*: the form runs by itself up to `NOTIFIED`; the Account is created when the request enters `PROCESSED` (Accounts 705 and 706) |
+| the Account link of the first email | *verified*: `WINTER_SERVICE_QUOTATION_CREATOR_V3` (script 224) asks only for fields inside the Account profile, and the link reads the Account with no credential |
+| a property per address | *verified*: Property 956 was created by the flow; the first attempt landed in `PROCESSING_FAILED` and the retry succeeded, with the cause not recorded |
+| every entity created on submit | not yet: creation runs on `PROCESSED`, which is the manager's manual step, so it waits for the manager; the decision of 2026-09-17 moves it to `NOTIFIED` |
+| three Orders per property | not wired |
+| Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
+| Send Quotation as a bulk action | not designed; a separate task |
+| quote review page | built in `runtime/client-review/`, not deployed; it needs the six-type link of §7 |
+| client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; approve, decline and request changes not yet through a live link |
+| package evaluation → `AWAITING_CLIENT_DETAILS` | not written |
+| details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | designed (§4.2); a hook on workflow 53 runs and reads what an event carried (*verified* 2026-09-21); the seed, the hook and the page are not changed yet |
+| `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | not written |
+| approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
+
+Next, in order:
+
+1. **Create every entity on `NOTIFIED`.** Move `createQuotations` from the
+   `PROCESSED` hook to the `NOTIFIED` hook, next to the manager's notification,
+   with its failure event leaving from `NOTIFIED`; `PROCESSED` stays the
+   manager's manual step. Find out why the first property attempt failed.
+2. **Create the three Orders per property with them**, each carrying
+   `SERVICE_PROPERTY` and its pricing model.
+3. **Deploy the review page** and pass it with a fresh six-type link issued by
+   hand. The key we use has been answered `401` by `core-bill` since
+   2026-09-21, and `core-bill` grants the Order entries.
+4. **Write the Order hooks** on workflow 45: add an Order to its agreement,
+   decline the other options of a decided property, evaluate the package,
+   notify `QUOTATION_MANAGER` of requested changes.
+5. **Write the agreement side** on workflow 53: the transient
+   `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
+   checking state; then the `SENT_TO_CLIENT` link and email, approval, and
+   activation.
+6. **Send Quotation as a bulk action**, designed separately.

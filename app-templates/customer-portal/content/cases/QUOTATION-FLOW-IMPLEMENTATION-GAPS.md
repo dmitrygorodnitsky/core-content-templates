@@ -564,7 +564,9 @@ The client pages and the property step were taken as far as the platform allows.
   and property creator V3. The script seed and workflow both re-plan with zero
   drift. A fresh form reached `NOTIFIED` automatically; the notification hook
   did not send `NOTIFIED-PROCESSED`, so that transition was sent manually for
-  the downstream proof. The first Property attempt entered
+  the downstream proof. No build of the utilities sends that event: by the
+  user's decision of 2026-09-17 it is the manager's step, and entity creation is
+  to move from `PROCESSED` to `NOTIFIED`. The first Property attempt entered
   `PROCESSING_FAILED`; the same property call then created Property 956 directly
   on `app-1-core-rm`, and the built-in retry completed without another failure.
 - **Hooks on the agreement workflow run.** See question 11: the body has to
