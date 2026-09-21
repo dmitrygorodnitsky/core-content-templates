@@ -569,19 +569,21 @@ The client pages and the property step were taken as far as the platform allows.
    which silences every hook of that workflow until a state's `onEnter` is
    re-saved. Together these leave no way to ship a corrected script to those
    nodes.
-10. Can the SYSTEM `EntityMappingDefinition` for Order, Document and Account be
-    widened for magic links, and by whom? A link issued on 2026-09-17 works —
-    it is read and it moves a workflow — but its `DEFAULT` profile carries no
-    typed-entity `attributes`, no order totals, item lines as bare ids, and
-    `states` without `code`, so a client review page has no price to approve, no
-    terms to read, and no way to tell which state a record is in. A grant may
-    only narrow that tree; `totalCharges` is refused as exceeding the ceiling.
-    Either those profiles gain `attributes`, `totalCharges`, `totalTaxes`,
-    `grandTotal`, `items` with their product and amount, `states.code`, and the
-    account's contacts and addresses — or a link cannot carry a quotation at
-    all and the pages need another source. `updatedBy` should leave the client
-    profiles in the same pass; it hands over a staff login and we drop it per
-    grant today.
+10. ~~Can the SYSTEM `EntityMappingDefinition` expose typed-entity attributes?~~
+    **Answered 2026-09-18:** the deployed ceiling accepts
+    `{ "name": "attributes", "type": "primitive" }`. SYSTEM `DEFAULT`
+    profiles 102 (Account), 114 (Order) and 11 (Document) now contain it, there
+    is no explicit `SNOWLIMITLESS` override, and a newly issued read-only grant
+    returned the Order and Document attribute bags anonymously. Existing grants
+    retained their original subsets, as designed. **Answered 2026-09-21:** after
+    the backend redeploy, a fresh combined grant returned `totalCharges`,
+    `totalTaxes`, `grandTotal`, and `states[].code`. Separate `OrderItem`,
+    `ProductPrice`, and `Product` entries were grantable through `core-bill` and
+    `core-pim`; all six anonymous reads returned 200 and introspection marked all
+    six types readable. The client-review runtime now joins the id-only chain.
+    The account's contact/address projection remains ids only and is an optional
+    prefill enhancement, not a quote-review blocker. `updatedBy` should remain
+    outside client profiles because it exposes a staff login.
 11. How does a Document workflow run a Java hook? Workflow 49 calls our
     utilities because it is a `Java` workflow bound to a script. Workflow 53,
     the service agreement lifecycle, is a `JavaScript` workflow: setting its

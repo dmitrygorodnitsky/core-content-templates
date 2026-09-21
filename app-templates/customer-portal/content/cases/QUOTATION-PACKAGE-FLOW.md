@@ -198,17 +198,25 @@ what it holds.
   `QUOTE_SENT` → `QUOTE_VIEWED` went through the link on two orders. The review
   page booted against that link in live mode and stopped at `unknown-state`,
   which is the honest answer: a link delivers `states` with `nls` and no `code`,
-  so the page cannot tell which state it is looking at.
-- **A link exposes no attributes and no money.** Mappings now come from a
-  SYSTEM-owned `EntityMappingDefinition` and not from a `MAPPINGS_{ENTITY}`
-  script, and its generated ceiling admits scalar leaves and NLS while excluding
-  typed-entity `attributes` and flattening associations to ids. So a link cannot
-  carry `CONTRACT_TERMS`, the provider fields, `CLIENT` or `ORDERS`, the order
-  totals, the item lines, or the state codes — everything §8 asks both pages to
-  render. A grant may narrow that tree and nothing more: asking for
-  `totalCharges` is refused as exceeding the ceiling. Scripts 203 and 204 are
-  not consulted on this path. The gap is a SYSTEM-side decision, and it is
-  question 10 for the backend.
+  so the page cannot tell which state it is looking at. On 2026-09-18 a newly
+  issued read-only grant also proved that Order and Document attributes pass
+  through the same anonymous path; old grants did not expand.
+- **A link exposes attributes now, but still no money or state codes.** Mappings
+  come from a SYSTEM-owned `EntityMappingDefinition` and not from a
+  `MAPPINGS_{ENTITY}` script. After the backend admitted `attributes` as a
+  primitive, SYSTEM `DEFAULT` profiles 102 (Account), 114 (Order) and 11
+  (Document) were widened on 2026-09-18 and read back as the effective
+  `SNOWLIMITLESS` profiles. This opens `CONTRACT_TERMS`, provider fields,
+  `CLIENT`, `ORDERS`, `PRICING_MODEL` and `SERVICE_ADDRESS` to a new grant that
+  explicitly requests the attributes bag. It does not open order totals,
+  expanded item lines, or `states.code`: item lines remain bare ids and a grant
+  may still only narrow the ceiling. The line records must be separate
+  `OrderItem` entries in the same grant, with their referenced `ProductPrice`
+  and `Product` records also entered explicitly rather than expanded through a
+  deep Order mapping. On 2026-09-18 grant preparation returned `400 ... is not
+  grantable` for all three types in their owning services. Scripts 203 and 204
+  are not consulted. The remaining gap is a backend and SYSTEM policy decision
+  tracked by question 10.
 - **What a link may reveal is decided by what we put in attributes.** Whenever
   the ceiling admits them, it admits the whole bag, service attributes included,
   so a record reachable by a client holds nothing we would not show one.

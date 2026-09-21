@@ -468,15 +468,19 @@ the dev-1 script list on 2026-09-11.
   agreement 132, issued with an admin token in `SNOWLIMITLESS`, then read and
   used without any credential. `entity-mapping-definition/list.json` is empty in
   a tenant and holds 172 enabled records under `X-Organization-Code: SYSTEM`.
-- **The profile is a ceiling, and it is far below what a client page needs.** It
-  admits scalar leaves and NLS, excludes typed-entity `attributes` and flattens
-  every association to ids. Through a link an Order gives `id`, `created`,
-  `updated`, `notes`, `currency`, `organization`, `type`, `workflow`, `account`
-  and `states` with `nls` and no `code` — no `totalCharges`, no `totalTaxes`, no
-  `grandTotal`, `items` as bare ids, no attributes. A Document gives `id`,
-  `code`, `nls`, `type`, `states`, `organization` and `workflow` — no attributes,
-  so no `CONTRACT_TERMS`, no `ORDERS`, no provider fields. The same records read
-  in full through an authenticated call.
+- **The profile is a ceiling, and it is still below what a client page needs.**
+  On 2026-09-18 the deployed ceiling began admitting typed-entity `attributes`
+  as a primitive. SYSTEM `DEFAULT` profiles 102 (Account), 114 (Order) and 11
+  (Document) were widened and a new anonymous grant proved that Order and
+  Document attribute bags arrive; old grants retained their prior snapshots.
+  Associations are still flattened. Through a link an Order gives `id`,
+  `created`, `updated`, `notes`, `currency`, `organization`, `type`, `workflow`,
+  `account`, `attributes` and `states` with `nls` and no `code` — no
+  `totalCharges`, no `totalTaxes`, no `grandTotal`, and `items` remain bare ids.
+  A Document now carries `attributes`, so terms and linkage fields can be
+  requested, but the same missing state code still prevents the page from
+  identifying the agreement state. The same records read in full through an
+  authenticated call.
 - **`readMappings` may only omit.** A subset is accepted and applied, which is
   how the `updatedBy` the profile exposes by default — a staff login — is kept
   out of a link. A tree naming anything above the ceiling is refused:

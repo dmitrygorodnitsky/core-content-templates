@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-17
+Updated: 2026-09-18
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -551,7 +551,9 @@ its namespace should be restricted to whatever host serves the portal.
   server's `totalCharges` and `totalTaxes` above its total when they are
   returned, and the two confirmations read as statements a client can agree to.
   Its CMS parameters are `REVIEW_API_BASE_URL` and copy. Its live adapter has
-  never run.
+  contract coverage for the combined `Document`, `Account`, `Order`,
+  `OrderItem`, `ProductPrice` and `Product` grant. The production CMS package
+  still needs upload and a browser pass with a fresh real link.
 - **The quote form** keeps the first click, Tab focus and one geocode per
   address, its suggestions follow the ARIA combobox pattern, and its success
   screen lists next steps from copy parameters. Values proposed for the
@@ -572,10 +574,15 @@ Screenshots of all four went to the user on 2026-09-15 for acceptance.
   entity outside it.
 - ~~`MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT` must exist first.~~ **Superseded.**
   A link's fields come from a SYSTEM `EntityMappingDefinition`, and its ceiling
-  carries no attributes, no order totals, item lines as ids and `states` without
-  `code`. The review page boots against a real link and stops at
-  `unknown-state`. Scripts 203 and 204 are not consulted on this path;
-  `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md` question 10 is the ask.
+  is the authority; scripts 203 and 204 are not consulted. On 2026-09-18 the
+  deployed ceiling accepted `attributes` as a primitive. SYSTEM `DEFAULT`
+  profiles 102 (Account), 114 (Order) and 11 (Document) were updated. A fresh
+  combined grant rechecked on 2026-09-21 returns Order totals and
+  `states[].code`, plus separate `OrderItem`, `ProductPrice` and `Product`
+  records through their anonymous endpoints; introspection reports all six
+  entity types readable. Existing grants keep their original snapshots and
+  must be reissued when their field set changes. The client-review runtime now
+  joins the id-only chain instead of expecting deep Order item projections.
 - The planned attributes the pages read: Order `PRICING_MODEL` and
   `SERVICE_ADDRESS`, the agreement's client snapshot under the ten detail codes,
   and `PROVIDER_LEGAL_NAME`, `PROVIDER_REPRESENTATIVE_NAME` and
@@ -834,11 +841,15 @@ produce is a service property per address or a quote order. In order:
    quote-order creation once the property size is decided; workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
-4. **Blocked on the backend:** the client review pages. The link itself works —
-   grant 10 on dev-1 reads account 694, orders 36, 37 and 38 and agreement 132
-   with no credential, and moved two orders to `QUOTE_VIEWED` — but its mapping
-   profile exposes neither prices nor terms nor state codes, so the page has
-   nothing to render. Question 10.
+4. **Partly unblocked on the backend:** the client review pages. The link itself
+   works — grant 10 on dev-1 reads account 694, orders 36, 37 and 38 and
+   agreement 132 with no credential, and moved two orders to `QUOTE_VIEWED`.
+   Since 2026-09-18 newly issued links may also carry typed-entity attributes,
+   including agreement terms and Order linkage fields. Prices, expanded item
+   lines and state codes are still outside the profile, so the page cannot yet
+   identify its state or render a priced option. OrderItem, ProductPrice and
+   Product need grant contributions and profiles so their exact ids can be
+   added as separate entries to the same link. Question 10.
 5. **Then:** the metadata probe through a link in `SNOWLIMITLESS`, and the first
    end-to-end package on dev-1.
 
