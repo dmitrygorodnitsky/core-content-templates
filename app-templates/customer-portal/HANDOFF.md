@@ -829,10 +829,13 @@ checkout before treating any of them as broken.
 
 ## Exact next action
 
-The public quote path works end to end again: the page renders the
-multi-address form, a submission creates the customer Account and its
-addresses, and the flow fires its own first transition. What it still does not
-produce is a service property per address or a quote order. In order:
+The public quote page renders the multi-address form and the workflow fires its
+own first transition. On 2026-09-21 a fresh submission reached `NOTIFIED`
+without intervention, but the notification hook did not send
+`NOTIFIED-PROCESSED`; that is now the first live-flow blocker. Once that event
+was sent manually, the Account, its magic link and the service Property were
+created by the seeded scripts. Quote Orders remain manual by the team's
+2026-09-10 decision. In order:
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
    169 can run again, say whether `form/submit.json` is meant to fire the first
@@ -852,13 +855,16 @@ produce is a service property per address or a quote order. In order:
    `PROPERTY`, which the property creator writes when the form supplies them;
    `MAPPINGS_ORDER` and `MAPPINGS_DOCUMENT`, scripts 203 and 204, the field
    caps a magic link reads through; `CONTRACT_TERMS` and the three provider
-   fields on document type 17, which the review page reads. The flow still
-   stops before the property step: the quotation creator's account link asks
-   for nested contacts and addresses and is refused at `read.contacts`
-   (`QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, dev-1 on 2026-09-21), and workflow
-   49 is bound to the diagnostic `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V7`.
-   Left: that fix and a clean utilities build; creating the three Orders per
-   property on submit (decided 2026-09-17); workflow 45 and
+   fields on document type 17, which the review page reads. Applied on
+   2026-09-21: `WINTER_SERVICE_QUOTATION_CREATOR_V3` (script 224) narrows the
+   Account grant to `id`, `code`, `nls`, `attributes` and `type`, and creates
+   the Account inside `getInNewTxRW`; workflow 49 is bound to the clean
+   `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V9` (script 225). A direct run created
+   Account 705 and its grant returned `200` from both introspection and
+   anonymous Account list. The workflow path then created Account 706; Property
+   956 was created by `WINTER_SERVICE_PROPERTY_CREATOR_V3`, and the retry held
+   the form in `PROCESSED`. Left: repair the automatic notification transition;
+   workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Backend read contract verified on 2026-09-21:** a freshly issued combined

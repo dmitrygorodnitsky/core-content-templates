@@ -550,23 +550,23 @@ The client pages and the property step were taken as far as the platform allows.
   (script 215) uses `getInNewTxRW` and, called directly on 2026-09-17, created
   properties 951, 952 and 953. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V6`
   (script 216) calls it.
-- **The flow still stops before the property step, at the creator's account
-  link.** A traced run on 2026-09-17 showed `createCustomerAccount` of
-  `WINTER_SERVICE_QUOTATION_CREATOR` failing when it issues the requester's
-  Account link: its inline `readMappings` asked for `attributes`, which the
-  profile did not hold yet. The job ends there, so neither the property step nor
-  the requester email runs, and the Account is left without properties. Since
-  2026-09-18 the profile holds `attributes`, but the same tree also asks for
-  nested `contacts` and `addresses`, which the Account profile summarises as ids.
-  Issued on 2026-09-21 against account 694 with the creator's exact tree, the
-  grant was refused with `Mapping requested read.contacts changes an operation
-  defined by its ceiling`, and nothing was created. The fix is ours: narrow the
-  tree to the profile — `id`, `code`, `nls`, `attributes`, `type`, `states` — or
-  drop the link from the first email, which is open with the user.
-- **Workflow 49 is bound to a diagnostic build.** It points at
-  `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V7` (script 219), V6 with a trace buffer
-  added to find the failure above. It is replaced by a clean build before the
-  next run, and a state's `onEnter` is re-saved in the same pass.
+- **The Account link blocker is fixed and proven.**
+  `WINTER_SERVICE_QUOTATION_CREATOR_V3` (script 224) asks only for `id`, `code`,
+  `nls`, `attributes` and `type`, all inside the Account profile ceiling. The
+  backend redeploy also exposed a transaction regression at
+  `accountManager.save`; V3 wraps Account resolution in `getInNewTxRW`. A
+  direct 2026-09-21 run created Account 705, and its new grant returned `200`
+  from `introspect.json` and anonymous `account/list.json`, including the
+  requested attributes. The workflow path then created Account 706 through the
+  same script.
+- **Workflow 49 is back on a clean build.** It points at
+  `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V9` (script 225), which calls creator V3
+  and property creator V3. The script seed and workflow both re-plan with zero
+  drift. A fresh form reached `NOTIFIED` automatically; the notification hook
+  did not send `NOTIFIED-PROCESSED`, so that transition was sent manually for
+  the downstream proof. The first Property attempt entered
+  `PROCESSING_FAILED`; the same property call then created Property 956 directly
+  on `app-1-core-rm`, and the built-in retry completed without another failure.
 - **Hooks on the agreement workflow run.** See question 11: the body has to
   address the script as `this.workflowUtils`. A hook cannot refuse its
   transition — one that recorded its context and then threw still let the move
