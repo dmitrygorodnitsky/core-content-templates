@@ -20,6 +20,7 @@ and operator commands.
 | `core-snow-live-check.mjs` | Live read-only probe of one customer's properties and quotes on staging |
 | `snow-contracts-check.mjs` | The Contracts package model: the customer-scope order list and agreement document normalized with absent data, grouped by property, with decisions and the rollup |
 | `export-client-review-manual.mjs`, `client-review-check.mjs` | Compile and guard the anonymous quotation and agreement review document |
+| `snow-magic-link-mappings.mjs` | Dry-run-first, optimistic-lock guarded update that adds the typed-entity `attributes` bag to the Account, Order and Document grant profiles used by snow client review |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
 | `s6-*`, `s7-*`, `config-behavior-check.mjs`, `route-smoke.mjs` | Broad CMS/runtime regression gates |
 
