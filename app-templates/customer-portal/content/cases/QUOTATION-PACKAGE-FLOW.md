@@ -31,7 +31,8 @@ collects the client's contract details as attributes of one of its own events.
 GET_QUOTE_ form, on submit ──► Account, addresses, one SNOW_REMOVAL_PROPERTY per address,
                                one Order per property × pricing model, SERVICE_PROPERTY set
                                    │
-manager takes the request (NOTIFIED → PROCESSED by hand), reviews and corrects the Orders
+manager takes the request (NOTIFIED → PROCESSED by hand): the requester gets the email with
+the Account link, and the manager reviews and corrects the Orders
                                    │
 Order QUOTE_APPROVED_INTERNALLY ──► added to the account's open agreement (QUOTATION)
                                    │
@@ -62,7 +63,7 @@ action over the reviewed Orders, designed separately.
 
 | record | role in the flow | status |
 | --- | --- | --- |
-| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; on `PROCESSED` it creates the Account, its link and a property per address (*verified* 2026-09-21), and a failure lands in `PROCESSING_FAILED`; creation is still to move to `NOTIFIED`, and Order creation is not wired (§10) |
+| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; entering `NOTIFIED` creates the Account and a property per address, and the manager's manual move to `PROCESSED` issues the Account link and sends the requester's email (*verified* 2026-09-21); Order creation is not wired (§10) |
 | `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
 | `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21 (Property 956) |
 | `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; joins our seeds |
@@ -315,10 +316,10 @@ what it holds.
 
 | step of §2 | state |
 | --- | --- |
-| request → Account and addresses | *verified*: the form runs by itself up to `NOTIFIED`; the Account is created when the request enters `PROCESSED` (Accounts 705 and 706) |
-| the Account link of the first email | *verified*: `WINTER_SERVICE_QUOTATION_CREATOR_V3` (script 224) asks only for fields inside the Account profile, and the link reads the Account with no credential |
-| a property per address | *verified*: Property 956 was created by the flow; the first attempt landed in `PROCESSING_FAILED` and the retry succeeded, with the cause not recorded |
-| every entity created on submit | not yet: creation runs on `PROCESSED`, which is the manager's manual step, so it waits for the manager; the decision of 2026-09-17 moves it to `NOTIFIED` |
+| request → Account and addresses | *verified*: the form runs by itself up to `NOTIFIED`, and entering `NOTIFIED` creates the Account (form 56 → Account 708) |
+| the Account link of the requester's email | *verified*: issued when the manager moves the request to `PROCESSED`, by `issueAccountLink` of `WINTER_SERVICE_QUOTATION_CREATOR_V4` (script 227), with the grant tree narrowed to the Account profile; form 57 got exactly one link (grant 46) about 12 s after the move |
+| a property per address | *verified*: Property 957 for form 56, about 25 s after submission; in an earlier run the first attempt landed in `PROCESSING_FAILED` and the retry created Property 956, with the cause not recorded |
+| every entity created on submit | *verified* 2026-09-21: creation runs on `NOTIFIED` (`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V11`, script 228) and issues no link — form 57 had Account 709 and Property 958 about 7 s after submission and no grant until the manager's move. By the user's decision of 2026-09-21 the requester's email and its link wait for `PROCESSED`, so a request the manager rejects never received them. `npm run winter-quotation-flow-check` in `core-ui` fails if either moves back |
 | three Orders per property | not wired |
 | Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
 | Send Quotation as a bulk action | not designed; a separate task |
@@ -331,10 +332,14 @@ what it holds.
 
 Next, in order:
 
-1. **Create every entity on `NOTIFIED`.** Move `createQuotations` from the
-   `PROCESSED` hook to the `NOTIFIED` hook, next to the manager's notification,
-   with its failure event leaving from `NOTIFIED`; `PROCESSED` stays the
-   manager's manual step. Find out why the first property attempt failed.
+1. **Make every failure visible.** Only a property failure sends
+   `NOTIFIED-PROCESSING_FAILED`; a failure in the Account step is only logged
+   and leaves the request in `NOTIFIED`, where it looks like a request waiting
+   for the manager. At `PROCESSED` a failed link or email is only logged too:
+   the request stays in `PROCESSED` with no email and no retry, and a manager
+   who takes a request before its creation has finished (about 7–25 s) hits
+   the same dead end. A link issued before a failed email stays live. Find out
+   why the first property attempt of 2026-09-21 failed.
 2. **Create the three Orders per property with them**, each carrying
    `SERVICE_PROPERTY` and its pricing model.
 3. **Deploy the review page** and pass it with a fresh six-type link issued by

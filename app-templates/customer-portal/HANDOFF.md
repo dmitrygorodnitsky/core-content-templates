@@ -458,8 +458,9 @@ and every decision taken where it is silent.
   superseding the team's "quotation is manual" of 2026-09-10). A submitted quote
   form creates the Account, its addresses, a property per address and three
   Orders per property, one per pricing model. The manager takes the request by
-  moving it from `NOTIFIED` to `PROCESSED` by hand, reviews and corrects the
-  Orders, and sends one link for all of them through a bulk action designed
+  moving it from `NOTIFIED` to `PROCESSED` by hand, which sends the requester
+  the email with the Account link (the user, 2026-09-21), reviews and corrects
+  the Orders, and sends one link for all of them through a bulk action designed
   separately. The form no longer collects a property size. A failed automated
   step must land in a visible state.
 - **Customer Portal entitlement is an attribute of the `OPERATOR` organization**
@@ -718,6 +719,12 @@ Things that already cost time here and will again:
 10. **Never switch an existing workflow's `scriptLanguage`.** Workflow 53 set to
     `Java` read back `valid: false` and then answered every event with HTTP 200
     without moving anything.
+11. **`NOTIFIED` → `PROCESSED` is manual on purpose.** It is the manager taking
+    the request into work, and it is what sends the requester the email with
+    the Account link; every entity is created earlier, on entering `NOTIFIED`.
+    A request sitting in `NOTIFIED` is waiting for a person, not stuck, and no
+    hook should send that event. `npm run winter-quotation-flow-check` in
+    `core-ui` guards the split.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -830,13 +837,15 @@ checkout before treating any of them as broken.
 ## Exact next action
 
 The public quote page renders the multi-address form and the workflow runs by
-itself up to `NOTIFIED`. On 2026-09-21, once the request was moved to
-`PROCESSED`, the Account, its magic link and the service Property were created
-by the seeded scripts. `NOTIFIED` → `PROCESSED` is the manager's manual step by
-the user's decision of 2026-09-17, and no build of the utilities has ever sent
-it; what is left is to create every entity on `NOTIFIED` instead of on
-`PROCESSED`, and the three Orders per property with them. Where the whole flow
-stands is `QUOTATION-PACKAGE-FLOW.md` §10. In order:
+itself up to `NOTIFIED`. Since 2026-09-21 entering `NOTIFIED` creates the
+Account and a property per address, and the manager's manual move to
+`PROCESSED` issues the Account link and sends the requester's email (form 57 →
+Account 709 and Property 958 at `NOTIFIED`, grant 46 after the move), by the
+user's decisions of 2026-09-17 and 2026-09-21. No build of the utilities sends
+`NOTIFIED-PROCESSED`, and `npm run winter-quotation-flow-check` in `core-ui`
+fails if creation, the link or the email moves. What is left on the request
+side is the three Orders per property. Where the whole flow stands is `QUOTATION-PACKAGE-FLOW.md` §10. In
+order:
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
    169 can run again, say whether `form/submit.json` is meant to fire the first
@@ -864,9 +873,13 @@ stands is `QUOTATION-PACKAGE-FLOW.md` §10. In order:
    Account 705 and its grant returned `200` from both introspection and
    anonymous Account list. The workflow path then created Account 706; Property
    956 was created by `WINTER_SERVICE_PROPERTY_CREATOR_V3`, and the retry held
-   the form in `PROCESSED`. Left: moving entity creation from `PROCESSED` to
-   `NOTIFIED`, with the three Orders per property (decided 2026-09-17);
-   workflow 45 and
+   the form in `PROCESSED`. Later the same day creation moved to `NOTIFIED`
+   and the requester's email with its link to `PROCESSED`: workflow 49 is bound
+   to `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V11` (script 228), which dispatches
+   `WINTER_SERVICE_QUOTATION_CREATOR_V4` (script 227); a failure sends
+   `NOTIFIED-PROCESSING_FAILED`, and a retry is `PROCESSING_FAILED-NOTIFIED`.
+   Left: the three Orders per property (decided 2026-09-17); making Account,
+   link and email failures visible; workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Backend read contract verified on 2026-09-21:** a freshly issued combined

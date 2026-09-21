@@ -406,7 +406,9 @@ planned, reviewed, applied, and read back from the server.
   created, with `PROCESSED-PROCESSING_FAILED` carrying a required `MESSAGE` and
   `PROCESSING_FAILED-PROCESSED` retrying by re-firing `onEnter(PROCESSED)`. A
   re-plan reports `changeCount` 0. Both permissions exist and role `ADMIN` holds
-  them, so a person can retry a failed form by hand.
+  them, so a person can retry a failed form by hand. Superseded on 2026-09-21:
+  creation moved to `NOTIFIED`, the failure event is now
+  `NOTIFIED-PROCESSING_FAILED` and the retry `PROCESSING_FAILED-NOTIFIED`.
 - **Script 169**, `optimistic` 22. The requester notification is queued before
   property creation, so the new step cannot suppress the e-mail; a failure in it
   sends the form to `PROCESSING_FAILED` with the error as `MESSAGE`.
@@ -569,6 +571,35 @@ The client pages and the property step were taken as far as the platform allows.
   to move from `PROCESSED` to `NOTIFIED`. The first Property attempt entered
   `PROCESSING_FAILED`; the same property call then created Property 956 directly
   on `app-1-core-rm`, and the built-in retry completed without another failure.
+  Later the same day the workflow moved to V10, below.
+- **Creation runs on `NOTIFIED`.** `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V10`
+  (script 226) is V9 with its failure event and its "still in state" guard moved
+  from `PROCESSED` to `NOTIFIED`. The `NOTIFIED` hook sends the manager's email
+  and runs creation, `PROCESSED` holds no hook, and the old
+  `PROCESSED-PROCESSING_FAILED` / `PROCESSING_FAILED-PROCESSED` gave way to
+  `NOTIFIED-PROCESSING_FAILED` / `PROCESSING_FAILED-NOTIFIED`. Form 56, submitted
+  anonymously, reached `NOTIFIED` in 7 s; Account 708, its link (grant 45) and
+  Property 957 existed 25 s after submission while the form stayed in
+  `NOTIFIED`. Moving it to `PROCESSED` by hand created nothing more.
+  `npm run winter-quotation-flow-check` in `core-ui` asserts the split. That
+  build still sent the requester's email with its link as part of creation,
+  and each retry issued a new link without revoking the old one (Account 706
+  holds grants 40 to 44).
+- **The requester's email and its link wait for the manager.** By the user's
+  decision of 2026-09-21, `WINTER_SERVICE_QUOTATION_CREATOR_V4` (script 227)
+  creates the Account without a grant and gains `issueAccountLink`, which only
+  finds the form's existing Account and issues its narrowed read grant.
+  `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V11` (script 228) creates on
+  `NOTIFIED` without a link or requester email, and its `PROCESSED` hook
+  dispatches `issueAccountLink` and sends the processing email with the link.
+  Form 57 reached `NOTIFIED`, Account 709 and Property 958 existed about 7 s
+  after submission, and no grant was issued; about 12 s after the manual move
+  to `PROCESSED` exactly one grant, 46, existed for Account 709. The email
+  itself cannot be read back through the API. A retry no longer issues links.
+  What remains only logged: a failure in the Account step at `NOTIFIED`, and a
+  failed link or email at `PROCESSED`, which leaves the request in `PROCESSED`
+  with no retry — including a manager who takes the request before its
+  creation has finished.
 - **Hooks on the agreement workflow run.** See question 11: the body has to
   address the script as `this.workflowUtils`. A hook cannot refuse its
   transition — one that recorded its context and then threw still let the move
