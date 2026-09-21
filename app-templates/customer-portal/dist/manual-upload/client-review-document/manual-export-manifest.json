@@ -10,7 +10,7 @@
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
       "html": "2721e4810a47be726e25fd48ca4e8f489bae578217efcf2d969afccce5932c96",
       "css": "3829f96e0920695cd1685fcebf4b79a474d36051a035ca115123bd733eb5436e",
-      "javascript": "3abb203e923a18383b8c25de6a21aa37a5a4fbc61ba1cd8d7818f73ac9b50821"
+      "javascript": "dc5af9689c32947f53377a64b594dc15c37482ca70571076b23c0e634ddd6dfb"
     }
   },
   "runtime": {
@@ -41,7 +41,10 @@
       "POST {apiBase}/core/i/{token}/document/list.json",
       "POST {apiBase}/core-acct/i/{token}/account/list.json",
       "POST {apiBase}/core-bill/i/{token}/order/list.json",
-      "POST {apiBase}/core-bill/i/{token}/order/get.json?id={orderId}"
+      "POST {apiBase}/core-bill/i/{token}/order/get.json?id={orderId}",
+      "POST {apiBase}/core-bill/i/{token}/order-item/list.json",
+      "POST {apiBase}/core-pim/i/{token}/product-price/list.json",
+      "POST {apiBase}/core-pim/i/{token}/product/list.json"
     ],
     "commands": [
       "POST {apiBase}/core-bill/i/{token}/order/event.json { id, event, metadata }",
@@ -99,14 +102,14 @@
     ],
     "accountUser": "user"
   },
+  "verified": [
+    "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
+    "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
+    "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }."
+  ],
   "unverified": [
-    "Grant endpoints are anonymous POST requests with a JSON body; list.json pages with offset and pageSize and sends no mappings, relying on the read mappings of each grant entry.",
-    "The grant issued on core-bill is readable through core for document, core-acct for account and core-bill for order.",
-    "get.json takes the record id as ?id= and answers the record itself.",
-    "event.json takes { id, event, metadata } and a refusal answers 4xx with message and optionally field errors under fieldErrors, errors or violations.",
-    "Introspection lists events per entity type; a per-entry entityId or entityIds, when present, narrows them to that record. Event codes may carry a P_WF:{workflow}: prefix, which is dropped.",
-    "MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, states, type and organization.",
-    "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9)."
+    "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
+    "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link."
   ],
   "constraints": [
     "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",

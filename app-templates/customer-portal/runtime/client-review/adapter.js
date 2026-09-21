@@ -8,7 +8,10 @@
     entities: {
       account: { service: "core-acct", segment: "account" },
       order: { service: "core-bill", segment: "order" },
+      "order-item": { service: "core-bill", segment: "order-item" },
       document: { service: "core", segment: "document" },
+      "product-price": { service: "core-pim", segment: "product-price" },
+      product: { service: "core-pim", segment: "product" },
     },
     pageSize: 200,
     pageLimit: 10,

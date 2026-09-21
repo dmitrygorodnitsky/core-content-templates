@@ -57,7 +57,7 @@
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -67,7 +67,10 @@
           })
           : Promise.resolve({ rows: [], failed: false });
         var ordersRead = ordersReadable ? adapter.list("order") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead]).then(function (parts) {
+        var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
+        var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
+        var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -92,6 +95,9 @@
               documents: documents,
               orders: orders,
               accounts: parts[1].rows,
+              orderItems: parts[3],
+              productPrices: parts[4],
+              products: parts[5],
               accountFailed: parts[1].failed,
             };
           });

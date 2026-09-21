@@ -26,19 +26,23 @@ POST {apiBase}/core/i/{token}/document/list.json
 POST {apiBase}/core-acct/i/{token}/account/list.json
 POST {apiBase}/core-bill/i/{token}/order/list.json
 POST {apiBase}/core-bill/i/{token}/order/get.json?id={orderId}
+POST {apiBase}/core-bill/i/{token}/order-item/list.json
+POST {apiBase}/core-pim/i/{token}/product-price/list.json
+POST {apiBase}/core-pim/i/{token}/product/list.json
 POST {apiBase}/core-bill/i/{token}/order/event.json { id, event, metadata }
 POST {apiBase}/core/i/{token}/document/event.json { id, event, metadata }
 ```
 
+## Verified
+
+- On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.
+- Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.
+- Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.
+
 ## Unverified
 
-- Grant endpoints are anonymous POST requests with a JSON body; list.json pages with offset and pageSize and sends no mappings, relying on the read mappings of each grant entry.
-- The grant issued on core-bill is readable through core for document, core-acct for account and core-bill for order.
-- get.json takes the record id as ?id= and answers the record itself.
-- event.json takes { id, event, metadata } and a refusal answers 4xx with message and optionally field errors under fieldErrors, errors or violations.
-- Introspection lists events per entity type; a per-entry entityId or entityIds, when present, narrows them to that record. Event codes may carry a P_WF:{workflow}: prefix, which is dropped.
-- MAPPINGS_ORDER projects grandTotal, totalCharges, totalTaxes, currency and order lines as items with amount, itemCount, sortOrder and itemPrice.product.nls; MAPPINGS_DOCUMENT projects attributes, states, type and organization.
 - Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).
+- The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.
 
 ## Constraints
 

@@ -189,6 +189,9 @@ const N = loadRuntime().CR.normalizer;
     documents: data.documents,
     orders: data.orders,
     accounts: data.accounts,
+    orderItems: data.orderItems,
+    productPrices: data.productPrices,
+    products: data.products,
     accountFailed: data.accountFails,
   }, { locale: "en-CA", contract });
 
@@ -276,6 +279,17 @@ const N = loadRuntime().CR.normalizer;
   assert.equal(normalizer.formatMoney(null, "CAD", "en-CA"), "", "a missing amount stays missing rather than becoming zero");
   assert.equal(normalizer.formatMoney("abc", "CAD", "en-CA"), "");
   assert.equal(normalizer.formatMoney(12, "", "en-CA"), new Intl.NumberFormat("en-CA", { minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(12), "an amount without a currency is shown without inventing one");
+
+  const joined = CR.fixtures.quotationData();
+  const joinedOrder = joined.orders.find((row) => row.id === 3102);
+  joined.documents[0].attributes[17].ORDERS.value = [3102];
+  joined.orders = [joinedOrder];
+  joined.orderItems = joinedOrder.items.map((line) => ({ id: line.id, sortOrder: line.sortOrder, itemCount: line.itemCount, amount: line.amount, itemPrice: { id: line.itemPrice.id } }));
+  joined.productPrices = joinedOrder.items.map((line) => ({ id: line.itemPrice.id, product: { id: line.itemPrice.product.id } }));
+  joined.products = joinedOrder.items.map((line) => line.itemPrice.product);
+  joinedOrder.items = joinedOrder.items.map((line) => ({ id: line.id }));
+  assert.deepEqual(plain(model(joined).properties[0].options[0].lines.map((line) => [line.product, line.quantity, line.unitPrice])), [["Snow Removal", "5", format(280)], ["Rock Salt De-Icing", "5", format(1470)]], "shallow Order item references join through separately granted OrderItem, ProductPrice and Product rows");
+  assert.equal(normalizer.entityKind("com.pixelnation.pim.domain.ProductPrice"), "product-price", "ProductPrice introspection uses the adapter's product-price key");
 
   const narrowed = CR.fixtures.quotationData();
   narrowed.grant.types[1].events = narrowed.grant.types[1].events.filter((event) => event.code !== "QUOTE_VIEWED-DECLINED");
@@ -596,6 +610,24 @@ async function runScenario(id) {
 {
   const runtime = loadRuntime({ fixtures: true });
   const data = runtime.CR.fixtures.quotationData();
+  const orderItems = [];
+  const productPrices = {};
+  const products = {};
+  data.orders.forEach((order) => {
+    order.items = order.items.map((line) => {
+      const price = line.itemPrice;
+      const product = price.product;
+      orderItems.push({ id: line.id, sortOrder: line.sortOrder, itemCount: line.itemCount, amount: line.amount, itemPrice: { id: price.id } });
+      productPrices[price.id] = { id: price.id, product: { id: product.id } };
+      products[product.id] = product;
+      return { id: line.id };
+    });
+  });
+  data.grant.types.push(
+    { entityType: "OrderItem", canRead: true, canWrite: false, events: [] },
+    { entityType: "ProductPrice", canRead: true, canWrite: false, events: [] },
+    { entityType: "Product", canRead: true, canWrite: false, events: [] },
+  );
   const serverAdapter = runtime.CR.fixtures.createFixtureAdapter(data, {});
   const TOKEN = "grant-token-8f3a1c+/=";
   const encoded = encodeURIComponent(TOKEN);
@@ -615,6 +647,9 @@ async function runScenario(id) {
     if (route === "core/i/TOKEN/document/list.json") return answer(serverAdapter.list("document").then((result) => ({ result })));
     if (route === "core-acct/i/TOKEN/account/list.json") return answer(serverAdapter.list("account").then((result) => ({ result })));
     if (route === "core-bill/i/TOKEN/order/list.json") return answer(serverAdapter.list("order").then((result) => ({ result })));
+    if (route === "core-bill/i/TOKEN/order-item/list.json") return reply(200, { result: orderItems });
+    if (route === "core-pim/i/TOKEN/product-price/list.json") return reply(200, { result: Object.values(productPrices) });
+    if (route === "core-pim/i/TOKEN/product/list.json") return reply(200, { result: Object.values(products) });
     if (route === "core-bill/i/TOKEN/order/get.json") return answer(serverAdapter.get("order", Number(query.get("id"))));
     if (route === "core-bill/i/TOKEN/order/event.json") {
       if (eventReply) return eventReply;
@@ -629,6 +664,8 @@ async function runScenario(id) {
   const controller = runtime.CR.boot(host, { location: { hash: "#token=" + encoded }, fetch, mount, locale: "en-CA" });
   await controller.idle();
   assert.equal(controller.snapshot().phase, "ready", "live mode reads the package through the grant endpoints, never the fixtures loaded beside it");
+  assert.deepEqual(plain(controller.snapshot().view.properties[0].options[1].lines.map((line) => line.product)), ["Snow Removal", "Rock Salt De-Icing"], "live mode joins shallow order items through all three additional grant entities");
+  for (const suffix of ["/order-item/list.json", "/product-price/list.json", "/product/list.json"]) assert.ok(calls.some((call) => call.url.endsWith(suffix)), "live mode reads " + suffix + " through the grant");
 
   const toggle = byAttribute(mount, "data-focus-key", "toggle-3102")[0];
   toggle.fire("click");
@@ -739,6 +776,9 @@ try {
   assert.doesNotMatch(Object.values({ head: template.head, html: template.html, javascript: template.javascript }).join("\n"), /servicewand\.com|pixelnation\.com/, "no deployment host is baked in");
   assert.equal(manifest.uploadPerformed, false);
   assert.equal(manifest.kind, "client-review-document");
+  for (const path of ["/core-bill/i/{token}/order-item/list.json", "/core-pim/i/{token}/product-price/list.json", "/core-pim/i/{token}/product/list.json"]) {
+    assert.ok(manifest.api.reads.some((read) => read.includes(path)), "the manual package documents the grant read " + path);
+  }
   for (const [field, file] of Object.entries({ head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" })) {
     const content = await fs.readFile(path.join(outputDir, file), "utf8");
     assert.equal(crypto.createHash("sha256").update(content.replace(/\n$/, ""), "utf8").digest("hex"), manifest.template.sha256[field], file + " matches its manifest digest");

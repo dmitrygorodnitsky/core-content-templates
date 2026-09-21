@@ -297,7 +297,10 @@
     entities: {
       account: { service: "core-acct", segment: "account" },
       order: { service: "core-bill", segment: "order" },
+      "order-item": { service: "core-bill", segment: "order-item" },
       document: { service: "core", segment: "document" },
+      "product-price": { service: "core-pim", segment: "product-price" },
+      product: { service: "core-pim", segment: "product" },
     },
     pageSize: 200,
     pageLimit: 10,
@@ -635,7 +638,9 @@
   function entityKind(entityType) {
     var tail = text(entityType).split(".").pop() || "";
     var compact = tail.replace(/[^A-Za-z]/g, "").toLowerCase();
-    return compact === "orderitem" ? "order-item" : compact;
+    if (compact === "orderitem") return "order-item";
+    if (compact === "productprice") return "product-price";
+    return compact;
   }
 
   function eventCodeOf(entry) {
@@ -910,11 +915,27 @@
     };
   }
 
-  function linesOf(row, currency, locale, contract) {
+  function rowsById(rows) {
+    var found = {};
+    (Array.isArray(rows) ? rows : []).forEach(function (row) {
+      var id = positiveInteger(row && row.id);
+      if (id && !found[id]) found[id] = row;
+    });
+    return found;
+  }
+
+  function referenced(value, rows) {
+    if (!value || typeof value !== "object") return null;
+    var id = positiveInteger(value.id);
+    return id && rows[id] ? rows[id] : value;
+  }
+
+  function linesOf(row, currency, locale, contract, catalog) {
     var raw = row && Array.isArray(row[contract.rawShape.orderLines]) ? row[contract.rawShape.orderLines] : [];
     return raw
       .map(function (line, position) {
-        return { line: line, position: position, rank: line && typeof line === "object" ? finiteOrNull(line.sortOrder) : null };
+        var resolved = referenced(line, catalog.orderItems);
+        return { line: resolved, position: position, rank: resolved ? finiteOrNull(resolved.sortOrder) : null };
       })
       .filter(function (entry) { return entry.line && typeof entry.line === "object"; })
       .sort(function (left, right) {
@@ -925,11 +946,12 @@
       })
       .map(function (entry) {
         var line = entry.line;
-        var price = line.itemPrice && typeof line.itemPrice === "object" ? line.itemPrice : null;
+        var price = referenced(line.itemPrice, catalog.productPrices);
+        var product = referenced(price && price.product, catalog.products);
         var lineId = positiveInteger(line.id);
         return {
           key: lineId ? "line-" + lineId : "position-" + entry.position,
-          product: localizedName(price && price.product && price.product.nls, locale) || localizedName(price && price.nls, locale),
+          product: localizedName(product && product.nls, locale) || localizedName(price && price.product && price.product.nls, locale) || localizedName(price && price.nls, locale),
           quantity: formatQuantity(line.itemCount, locale),
           unitPrice: formatMoney(line.amount, currency, locale),
         };
@@ -952,7 +974,7 @@
       state: state,
       status: status,
       priced: priced,
-      lines: priced ? linesOf(row, currency, context.locale, contract) : [],
+      lines: priced ? linesOf(row, currency, context.locale, contract, context.catalog) : [],
       subtotal: priced ? formatMoney(row.totalCharges, currency, context.locale) : "",
       taxes: priced ? formatMoney(row.totalTaxes, currency, context.locale) : "",
       total: priced ? formatMoney(row.grandTotal, currency, context.locale) : "",
@@ -1080,7 +1102,15 @@
       else unreadable += 1;
     });
 
-    var properties = propertiesOf(readable, { locale: locale, contract: contract });
+    var properties = propertiesOf(readable, {
+      locale: locale,
+      contract: contract,
+      catalog: {
+        orderItems: rowsById(input.orderItems),
+        productPrices: rowsById(input.productPrices),
+        products: rowsById(input.products),
+      },
+    });
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
@@ -2010,7 +2040,7 @@
       return adapter.introspect().then(function (rawGrant) {
         var grant = normalizer.grantOf(rawGrant);
         if (!normalizer.canRead(grant, "document")) {
-          return { grant: grant, documents: [], orders: [], accounts: [], accountFailed: false };
+          return { grant: grant, documents: [], orders: [], accounts: [], orderItems: [], productPrices: [], products: [], accountFailed: false };
         }
         var ordersReadable = normalizer.canRead(grant, "order");
         var accountRead = normalizer.canRead(grant, "account")
@@ -2020,7 +2050,10 @@
           })
           : Promise.resolve({ rows: [], failed: false });
         var ordersRead = ordersReadable ? adapter.list("order") : Promise.resolve([]);
-        return Promise.all([adapter.list("document"), accountRead, ordersRead]).then(function (parts) {
+        var orderItemsRead = normalizer.canRead(grant, "order-item") ? adapter.list("order-item") : Promise.resolve([]);
+        var productPricesRead = normalizer.canRead(grant, "product-price") ? adapter.list("product-price") : Promise.resolve([]);
+        var productsRead = normalizer.canRead(grant, "product") ? adapter.list("product") : Promise.resolve([]);
+        return Promise.all([adapter.list("document"), accountRead, ordersRead, orderItemsRead, productPricesRead, productsRead]).then(function (parts) {
           var documents = parts[0];
           var orders = parts[2].slice();
           var present = {};
@@ -2045,6 +2078,9 @@
               documents: documents,
               orders: orders,
               accounts: parts[1].rows,
+              orderItems: parts[3],
+              productPrices: parts[4],
+              products: parts[5],
               accountFailed: parts[1].failed,
             };
           });
