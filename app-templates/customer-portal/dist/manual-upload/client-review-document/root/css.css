@@ -726,7 +726,15 @@ button { font-family: inherit; }
 
 .cr-lines th.cr-num, .cr-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
+.cr-lines th.cr-num { width: 128px; padding-left: 32px; }
+
 .cr-lines__service { font-weight: 600; overflow-wrap: anywhere; }
+
+.cr-lines-empty { padding-bottom: 10px; border-bottom: 1px solid rgba(var(--hair), .05); }
+
+.cr-lines-empty:has(+ .cr-total),
+.cr-lines-wrap:has(+ .cr-total) tbody tr:last-child,
+.cr-lines-wrap:has(+ .cr-total) tbody tr:last-child td { border-bottom-color: transparent; }
 
 .cr-total {
   display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
@@ -736,6 +744,8 @@ button { font-family: inherit; }
 .cr-total__label { font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
 .cr-total__value { font-size: 18px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+
+.cr-total__value.cr-muted { font-size: 13.5px; font-weight: 500; letter-spacing: normal; }
 
 .cr-breakdown { margin: 0; padding: 8px 0 6px; }
 
@@ -815,6 +825,8 @@ button { font-family: inherit; }
 .cr-approved__option { font-size: 12.5px; color: var(--ink-3); }
 
 .cr-approved__total { flex: none; font-size: 14.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.cr-approved__total.cr-muted { font-size: 13.5px; font-weight: 500; }
 
 .cr-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
 

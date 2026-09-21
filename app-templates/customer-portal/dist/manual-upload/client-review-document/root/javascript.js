@@ -1384,22 +1384,22 @@
 
   function linesTable(ctx, option) {
     var copy = ctx.copy;
-    if (!option.lines.length) return text("p", "cr-note", copy.linesEmpty);
+    if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
     var wrap = el("div", "cr-lines-wrap");
-    var table = el("table", "cr-lines");
-    var head = el("thead");
-    var headRow = el("tr");
-    headRow.appendChild(text("th", "", copy.lineService, { scope: "col" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col" }));
+    var table = el("table", "cr-lines", { role: "table" });
+    var head = el("thead", "", { role: "rowgroup" });
+    var headRow = el("tr", "", { role: "row" });
+    headRow.appendChild(text("th", "", copy.lineService, { scope: "col", role: "columnheader" }));
+    headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col", role: "columnheader" }));
+    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
     head.appendChild(headRow);
     table.appendChild(head);
-    var body = el("tbody");
+    var body = el("tbody", "", { role: "rowgroup" });
     option.lines.forEach(function (line) {
-      var row = el("tr", "", { "data-line": line.key });
-      row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { "data-label": copy.lineService }));
-      row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { "data-label": copy.lineQuantity }));
-      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { "data-label": copy.lineUnitPrice }));
+      var row = el("tr", "", { role: "row", "data-line": line.key });
+      row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { role: "cell", "data-label": copy.lineService }));
+      row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { role: "cell", "data-label": copy.lineQuantity }));
+      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { role: "cell", "data-label": copy.lineUnitPrice }));
       body.appendChild(row);
     });
     table.appendChild(body);

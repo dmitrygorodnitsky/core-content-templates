@@ -739,7 +739,15 @@ button { font-family: inherit; }
 
 .cr-lines th.cr-num, .cr-num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
+.cr-lines th.cr-num { width: 128px; padding-left: 32px; }
+
 .cr-lines__service { font-weight: 600; overflow-wrap: anywhere; }
+
+.cr-lines-empty { padding-bottom: 10px; border-bottom: 1px solid rgba(var(--hair), .05); }
+
+.cr-lines-empty:has(+ .cr-total),
+.cr-lines-wrap:has(+ .cr-total) tbody tr:last-child,
+.cr-lines-wrap:has(+ .cr-total) tbody tr:last-child td { border-bottom-color: transparent; }
 
 .cr-total {
   display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
@@ -749,6 +757,8 @@ button { font-family: inherit; }
 .cr-total__label { font-size: 13px; font-weight: 700; color: var(--ink-2); }
 
 .cr-total__value { font-size: 18px; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+
+.cr-total__value.cr-muted { font-size: 13.5px; font-weight: 500; letter-spacing: normal; }
 
 .cr-breakdown { margin: 0; padding: 8px 0 6px; }
 
@@ -828,6 +838,8 @@ button { font-family: inherit; }
 .cr-approved__option { font-size: 12.5px; color: var(--ink-3); }
 
 .cr-approved__total { flex: none; font-size: 14.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.cr-approved__total.cr-muted { font-size: 13.5px; font-weight: 500; }
 
 .cr-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 16px; }
 
@@ -2539,22 +2551,22 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   function linesTable(ctx, option) {
     var copy = ctx.copy;
-    if (!option.lines.length) return text("p", "cr-note", copy.linesEmpty);
+    if (!option.lines.length) return text("p", "cr-note cr-lines-empty", copy.linesEmpty);
     var wrap = el("div", "cr-lines-wrap");
-    var table = el("table", "cr-lines");
-    var head = el("thead");
-    var headRow = el("tr");
-    headRow.appendChild(text("th", "", copy.lineService, { scope: "col" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col" }));
-    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col" }));
+    var table = el("table", "cr-lines", { role: "table" });
+    var head = el("thead", "", { role: "rowgroup" });
+    var headRow = el("tr", "", { role: "row" });
+    headRow.appendChild(text("th", "", copy.lineService, { scope: "col", role: "columnheader" }));
+    headRow.appendChild(text("th", "cr-num", copy.lineQuantity, { scope: "col", role: "columnheader" }));
+    headRow.appendChild(text("th", "cr-num", copy.lineUnitPrice, { scope: "col", role: "columnheader" }));
     head.appendChild(headRow);
     table.appendChild(head);
-    var body = el("tbody");
+    var body = el("tbody", "", { role: "rowgroup" });
     option.lines.forEach(function (line) {
-      var row = el("tr", "", { "data-line": line.key });
-      row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { "data-label": copy.lineService }));
-      row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { "data-label": copy.lineQuantity }));
-      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { "data-label": copy.lineUnitPrice }));
+      var row = el("tr", "", { role: "row", "data-line": line.key });
+      row.appendChild(text("td", "cr-lines__service" + (line.product ? "" : " cr-muted"), line.product || copy.serviceUnnamed, { role: "cell", "data-label": copy.lineService }));
+      row.appendChild(text("td", "cr-num" + (line.quantity ? "" : " cr-muted"), line.quantity || copy.valueNotStated, { role: "cell", "data-label": copy.lineQuantity }));
+      row.appendChild(text("td", "cr-num" + (line.unitPrice ? "" : " cr-muted"), line.unitPrice || copy.valueNotStated, { role: "cell", "data-label": copy.lineUnitPrice }));
       body.appendChild(row);
     });
     table.appendChild(body);
