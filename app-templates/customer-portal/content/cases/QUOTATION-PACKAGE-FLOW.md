@@ -311,8 +311,11 @@ what it holds.
 - **`MAPPINGS_*` visibility.** The `IGrantService.mappings` javadoc requires the
   script to be visible in the authenticated organization or SYSTEM-owned;
   `MAPPINGS_ACCOUNT` is SYSTEM-owned.
-- The portal flag on `OPERATOR` and the customer role a provisioned User receives
-  are still to be named.
+- The portal flag on `OPERATOR` remains intentionally deferred. The staging
+  customer role is `SW_FS_WS_CUSTOMER_PORTAL` (role 75 on dev-1): it contains
+  only the permissions needed by the live `overview` and `properties` modules.
+  It is not a production customer boundary until backend reads are scoped to
+  the linked customer Account.
 
 ## 10. Where the flow stands, 2026-09-22
 
@@ -325,13 +328,13 @@ what it holds.
 | three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
 | Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER` |
 | quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712 |
-| Send Quotation as a bulk action | not designed; a separate task |
+| Send Quotation as a bulk action | outside this stream; owned as a separate task |
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
 | client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards both delivery paths, six entity types, writable permissions and compensation |
-| approval → Account `ACTIVE` → portal User | *Approval and Account activation verified* 2026-09-22: authenticated `SENT_TO_CLIENT-CLIENT_APPROVED` on agreement 133 first invoked `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked grant 51, cleared `AGREEMENT_GRANT_ID`, and moved Account 694 through its actual `DRAFT-PROSPECT` and `PROSPECT-ACTIVE` events. The final anonymous proof reused smoke agreement 134; its unpriced Order 53 first produced the expected `AGREEMENT_SEND_FAILED`, so the test record was rebound to the established acceptance pair Account 694 and priced Order 38 and passed the retry path. A fresh writable Document grant 54 opened the live review page: the page rendered `Agreement approved`, the agreement reached `CLIENT_APPROVED`, the stored grant ID was cleared, Account 694 remained `ACTIVE`, and the same token returned `401` after revocation. The backend-generated cross-service grant 52 used to enter `SENT_TO_CLIENT` was explicitly revoked before this isolated action proof. Workflow 53 exposes retryable `ACTIVATION_FAILED`; the processor accepts `PROSPECT`, `INACTIVE` and already-`ACTIVE` Accounts idempotently. Portal User provisioning remains separate until a dedicated customer role is defined; the portal flag is intentionally deferred |
+| approval → Account `ACTIVE` → portal User | *Approval and Account activation verified* 2026-09-22: authenticated `SENT_TO_CLIENT-CLIENT_APPROVED` on agreement 133 first invoked `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked grant 51, cleared `AGREEMENT_GRANT_ID`, and moved Account 694 through its actual `DRAFT-PROSPECT` and `PROSPECT-ACTIVE` events. The final anonymous proof reused smoke agreement 134; its unpriced Order 53 first produced the expected `AGREEMENT_SEND_FAILED`, so the test record was rebound to the established acceptance pair Account 694 and priced Order 38 and passed the retry path. A fresh writable Document grant 54 opened the live review page: the page rendered `Agreement approved`, the agreement reached `CLIENT_APPROVED`, the stored grant ID was cleared, Account 694 remained `ACTIVE`, and the same token returned `401` after revocation. The backend-generated cross-service grant 52 used to enter `SENT_TO_CLIENT` was explicitly revoked before this isolated action proof. Workflow 53 exposes retryable `ACTIVATION_FAILED`; the processor accepts `PROSPECT`, `INACTIVE` and already-`ACTIVE` Accounts idempotently. The staging role `SW_FS_WS_CUSTOMER_PORTAL` (75) now exists with the minimal current portal permissions; User creation, Account linking and role assignment remain separate. The portal flag is intentionally deferred |
 
 Failure visibility was completed on 2026-09-22. A validation failure is
 retryable through `VALIDATION_FAILED`; Account or Property creation failure is
@@ -354,8 +357,9 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Send Quotation as a bulk action**, designed separately on top of the
-   delivery path.
-2. **Provision a portal User only after a dedicated customer role exists.**
-   The portal flag is intentionally deferred, and generic entity-read
-   permissions are not an acceptable production customer boundary.
+1. **Provision and link the portal User after Account activation.** Assign
+   `SW_FS_WS_CUSTOMER_PORTAL` (role 75 on dev-1); the portal flag is
+   intentionally deferred. The role is staging-only until backend reads are
+   scoped to the linked customer Account. Generic entity-read permissions are
+   not an acceptable production customer boundary. Bulk Send Quotation is
+   owned outside this stream.

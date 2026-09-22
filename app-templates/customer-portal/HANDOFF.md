@@ -920,8 +920,10 @@ transition. Where the whole flow stands is
    fresh writable link: agreement 134 reached `CLIENT_APPROVED`, the page
    rendered `Agreement approved`, grant 54 was revoked, its stored ID was
    cleared and Account 694 remained `ACTIVE`. A post-action introspection of
-   the same token returned `401`. Left: optional portal User provisioning and
-   the three client forms.
+   the same token returned `401`. The staging-only customer role
+   `SW_FS_WS_CUSTOMER_PORTAL` (75 on dev-1) now exists with the minimal
+   `overview` and `properties` permissions. Left: create and link the portal
+   User, assign that role, and finish the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -955,9 +957,11 @@ transition. Where the whole flow stands is
    activates Accounts from `DRAFT`, `PROSPECT` or `INACTIVE`; failures enter
    retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
    and `npm run service-agreement-delivery-check` guard the flow. Quotation
-   delivery is also automatic and compensated now. Next are the separate bulk
-   Send Quotation action and portal User provisioning after a dedicated
-   customer role is named; the portal flag remains intentionally deferred.
+   delivery is also automatic and compensated now. The bulk Send Quotation
+   action is owned outside this stream. Next here is portal User provisioning:
+   create and link the User and assign `SW_FS_WS_CUSTOMER_PORTAL` (75 on
+   dev-1). The portal flag remains intentionally deferred; the role remains
+   staging-only until customer Account scoping is enforced by the backend.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
