@@ -10,7 +10,7 @@
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
       "html": "2721e4810a47be726e25fd48ca4e8f489bae578217efcf2d969afccce5932c96",
       "css": "89d382fbfe360a9c6fb38586e1a23f1d7ef4caf88bfcd01d6f42309525572644",
-      "javascript": "45b45b11910131b488cb2ce9ef9daf5983730b153f1c27ed64cf618809bda515"
+      "javascript": "f21373671d1c601cf7ccf55bde126bd2ca21ee7e0c4c303301228dfd8bae2612"
     }
   },
   "runtime": {
@@ -62,7 +62,7 @@
       "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED"
     ],
     "agreement": [
-      "AWAITING_CLIENT_DETAILS-DRAFT",
+      "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
       "SENT_TO_CLIENT-CLIENT_APPROVED"
     ],
     "contractDetailsAttributes": [

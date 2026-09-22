@@ -452,8 +452,8 @@ and every decision taken where it is silent.
   `FIELD_SERVICE_ORDER` prices one property under one pricing model. The
   `SERVICE_AGREEMENT` document collects the internally approved Orders, is sent
   once, receives the client's contract details as attributes of its
-  `AWAITING_CLIENT_DETAILS-DRAFT` event, and follows the specification from
-  `DRAFT` on.
+  `AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` event; the transient hook
+  validates and persists them before moving the agreement to `DRAFT`.
 - **Every entity is created with the request** (the user, 2026-09-17,
   superseding the team's "quotation is manual" of 2026-09-10). A submitted quote
   form creates the Account, its addresses, a property per address and three
@@ -899,9 +899,13 @@ transition. Where the whole flow stands is
    62 additionally created one unpriced draft per property and pricing model,
    with `SERVICE_PROPERTY`, `QUOTE_REQUEST_FORM_ID` and `PRICING_MODEL`; its
    idempotency rerun created nothing. Applied on 2026-09-22: workflow 45 and
-   its Order hooks are versioned in seeds and live on dev-1. Left: the planned
-   workflow 53 changes and its role grants with Permissions referenced by id;
-   the three client forms.
+   its Order hooks are versioned in seeds and live on dev-1. Workflow 53 now
+   has the transient `CLIENT_DETAILS_RECEIVED` state and dispatches its
+   cross-service work through `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V3`
+   (script 249) to `SNOW_SERVICE_AGREEMENT_PROCESSOR_V2` (script 250). Agreement
+   133 proved the automatic details path through `DRAFT`. Left: the rest of the
+   agreement lifecycle, role grants with Permissions referenced by id, and the
+   three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -912,12 +916,14 @@ transition. Where the whole flow stands is
    `200`. The live browser pass displayed CA$2,444.72, CA$6,687.90 and
    CA$26,751.60 with their service lines. Question 10 records the completed
    backend verification.
-5. **Then:** write the agreement hooks of `QUOTATION-PACKAGE-FLOW.md` §5,
-   including the transient `CLIENT_DETAILS_RECEIVED` state of §4.2. The Order
-   half is complete. The event-metadata probe passed on 2026-09-21: a hook on
-   workflow 53 reaches the bound script as `this.workflowUtils` and reads what
-   an event carried through a link. Verify command read-back across the
-   agreement states, and complete the first end-to-end package on dev-1.
+5. **Then:** continue the agreement hooks of
+   `QUOTATION-PACKAGE-FLOW.md` §5 from `DRAFT`. The details half is complete:
+   workflow 53 validates in `CLIENT_DETAILS_RECEIVED`, persists Party B,
+   removes unapproved Orders, notifies `CONTRACT_MANAGER` and reaches `DRAFT`.
+   `npm run service-agreement-client-details-check` guards the seeds and script
+   split. The live review page sends the new event and recognizes the transient
+   state. Next are management approval, `SENT_TO_CLIENT`, its fresh agreement
+   link and email, then client approval and Account activation.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,

@@ -1,7 +1,7 @@
 # Quotation package — the service agreement carries the quotes
 
-Status: design, decided with the user on 2026-09-11 and revised on 2026-09-17
-and 2026-09-21; where the flow stands is §10. Facts marked *verified* were read
+Status: implementation in progress, decided with the user on 2026-09-11 and
+revised through 2026-09-22; where the flow stands is §10. Facts marked *verified* were read
 from dev-1; everything else is our design, filling what the client spec
 (`quotation-contract-client-activation-flow.md`) leaves open.
 
@@ -90,7 +90,7 @@ We add:
 ### 4.2 Service agreement — `SERVICE_AGREEMENT_LIFECYCLE`
 
 Seed: `core-ui` `scripts/dev/seeds/serviceAgreementWorkflows.json`, applied to
-dev-1 on 2026-09-11 as workflow 53 with 15 states and 28 events. The server
+dev-1 as workflow 53 and extended on 2026-09-22 to 16 states and 30 events. The server
 created the 28 `P_WF:SERVICE_AGREEMENT_LIFECYCLE:*` permissions and added them
 to `ADMIN` by itself; the seed's grants to the `SW_FS_WS_*` roles were left out
 of that apply. `workflows.ts` grants them through `saveRolePermissions`, which
@@ -113,16 +113,16 @@ The contract-details event carries the ten attributes of spec §9.2 —
 `LEGAL_NAME`, `CLIENT_TYPE`, `BILLING_ADDRESS`, `REPRESENTATIVE_FIRST_NAME`,
 `REPRESENTATIVE_LAST_NAME`, `REPRESENTATIVE_JOB_TITLE`, `REPRESENTATIVE_EMAIL`,
 `REPRESENTATIVE_PHONE`, `INFORMATION_CONFIRMED`, `AUTHORITY_CONFIRMED` — which are
-today the `CONTRACT_INFORMATION` form type seed. Event metadata through a link
-was confirmed on 2026-09-21 (§9), so that form type and its lifecycle, still in
-`core-ui` and never applied, are to be dropped.
+also persisted on document type 17. Event metadata through a link was confirmed
+on 2026-09-21 (§9), so the separate `CONTRACT_INFORMATION` form type and its
+lifecycle, still in `core-ui` and never applied, are to be dropped.
 
 **The details are checked in a transient state** (decided with the user on
 2026-09-21). A hook cannot refuse an event, and the server does not enforce an
 event's required attributes on the anonymous path (§9), so nothing stops
 incomplete details on the way into `DRAFT`. The client's event therefore becomes
-`AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`, carrying the ten attributes in
-place of today's `AWAITING_CLIENT_DETAILS-DRAFT`, and lands in
+`AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`, carrying the ten attributes,
+and lands in
 `CLIENT_DETAILS_RECEIVED`, whose `onEnter` is the one place those attributes are
 visible. When they are complete the hook writes Party B into the account and a
 snapshot into the agreement, then sends `CLIENT_DETAILS_RECEIVED-DRAFT`; when
@@ -131,9 +131,9 @@ they are not, it records what is missing and sends
 again. Core drops an event sent too soon after the transition before it
 (dev-1, 2026-09-17), so the follow-up event is sent after the commit with a
 delay or a retry, and an agreement left in `CLIENT_DETAILS_RECEIVED` must be
-visible to the manager. The seed, the link's event permission (§7) and the
-review page change with it: the page sends `AWAITING_CLIENT_DETAILS-DRAFT` today
-and has to show the transient state while it reads the agreement again.
+visible to the manager. This is live on dev-1: workflow utility V3 dispatches
+processor V2 to a `CORE`/`CORE-ACCT`/`CORE-BILL` node, and the review page sends
+the new event and treats the transient state as processing.
 
 `EFFECTIVE_DATE` is optional, because it cannot be known while the agreement is
 still a package.
@@ -326,7 +326,7 @@ what it holds.
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
 | client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; the event permissions are present in the current combined grant and the underlying approve/request-changes transitions were verified authenticated on 2026-09-22, but a writable fresh link still needs the final browser pass |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
-| details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | designed (§4.2); a hook on workflow 53 runs and reads what an event carried (*verified* 2026-09-21); the seed, the hook and the page are not changed yet |
+| details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | not written |
 | approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
 
@@ -348,8 +348,8 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Write the agreement side** on workflow 53: the transient
-   `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
-   checking state; then the `SENT_TO_CLIENT` link and email, approval, and
-   activation.
+1. **Continue the agreement side** on workflow 53: management approval, the
+   `SENT_TO_CLIENT` link and email, client approval, Account activation and
+   optional portal User provisioning. The transient details step is complete
+   and guarded by `service-agreement-client-details-check`.
 2. **Send Quotation as a bulk action**, designed separately.

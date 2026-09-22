@@ -225,7 +225,8 @@ const N = loadRuntime().CR.normalizer;
 
   const EXPECTED_KIND = {
     QUOTATION: "preparing", QUOTATION_SENT: "quote-review", QUOTATION_SEND_FAILED: "unavailable",
-    AWAITING_CLIENT_DETAILS: "contract-details", DRAFT: "preparing", PENDING_MANAGEMENT_APPROVAL: "preparing",
+    AWAITING_CLIENT_DETAILS: "contract-details", CLIENT_DETAILS_RECEIVED: "preparing", DRAFT: "preparing",
+    PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", AGREEMENT_SEND_FAILED: "unavailable",
     CLIENT_APPROVED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
     ARCHIVED: "closed", CANCELED: "closed",
@@ -481,7 +482,7 @@ async function runScenario(id) {
           REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
           INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true,
         }, "the details travel as event metadata, trimmed, with the optional empty job title left out");
-        assert.deepEqual(run.sent[0].slice(0, 3), ["document", 5205, "AWAITING_CLIENT_DETAILS-DRAFT"]);
+        assert.deepEqual(run.sent[0].slice(0, 3), ["document", 5205, "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED"]);
         break;
       case "partial":
         assert.ok(text.includes("1 option could not be loaded"), "partial data is announced");

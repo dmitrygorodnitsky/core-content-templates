@@ -208,7 +208,7 @@
       types: [
         { entityType: "Account", canRead: true, canWrite: false, events: [] },
         { entityType: "Order", canRead: true, canWrite: false, events: QUOTATION_EVENTS.map(grantEvent) },
-        { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("AWAITING_CLIENT_DETAILS-DRAFT", 9)] },
+        { entityType: "Document", canRead: true, canWrite: false, events: [grantEvent("AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", 9)] },
       ],
     };
   }
@@ -304,7 +304,7 @@
     if (code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
-    if (code === "AWAITING_CLIENT_DETAILS-DRAFT") {
+    if (code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
       var missing = {};
       ns.contract.contractDetails.attributes.forEach(function (attribute) {
         var value = metadata[attribute.code];
@@ -325,8 +325,9 @@
       }
       if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) evaluatePackage(data);
     }
-    if (entity === "document" && target === "DRAFT") {
+    if (entity === "document" && code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
       Object.keys(metadata).forEach(function (key) { row.attributes[17][key] = { value: metadata[key] }; });
+      row.states = [{ code: "DRAFT" }];
       if (hooks.revokeOnDetails !== false) data.closed = true;
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
@@ -483,7 +484,7 @@
         break;
       case "details-refused":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
-        behavior.events["AWAITING_CLIENT_DETAILS-DRAFT"] = {
+        behavior.events["AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED"] = {
           outcome: "refuse",
           message: "",
           fieldErrors: { REPRESENTATIVE_EMAIL: "This address cannot receive mail. Enter another email." },

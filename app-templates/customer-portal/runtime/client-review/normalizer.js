@@ -22,6 +22,7 @@
     QUOTATION_SENT: { kind: "quote-review" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
+    CLIENT_DETAILS_RECEIVED: { kind: "preparing" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },

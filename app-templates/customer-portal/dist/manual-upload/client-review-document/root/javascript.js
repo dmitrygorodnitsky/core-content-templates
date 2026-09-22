@@ -236,7 +236,8 @@
       "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
     ],
     agreementStates: [
-      "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS", "DRAFT",
+      "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
+      "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
     ],
@@ -247,7 +248,7 @@
       changes: { code: "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", source: "QUOTE_VIEWED", messageAttribute: "MESSAGE" },
     },
     agreementEvents: {
-      details: { code: "AWAITING_CLIENT_DETAILS-DRAFT", source: "AWAITING_CLIENT_DETAILS" },
+      details: { code: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED", source: "AWAITING_CLIENT_DETAILS" },
       approve: { code: "SENT_TO_CLIENT-CLIENT_APPROVED", source: "SENT_TO_CLIENT" },
     },
     orderAttributes: {
@@ -273,7 +274,7 @@
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
     },
     contractDetails: {
-      event: "AWAITING_CLIENT_DETAILS-DRAFT",
+      event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
       attributes: CONTRACT_DETAILS_ATTRIBUTES,
       attributeOrder: [
         {
@@ -541,6 +542,7 @@
     QUOTATION_SENT: { kind: "quote-review" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
+    CLIENT_DETAILS_RECEIVED: { kind: "preparing" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
