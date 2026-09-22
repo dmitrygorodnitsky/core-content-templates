@@ -860,11 +860,15 @@ whole flow stands is
    2026-09-16.
 2. **When dev-1 is back, each write with the user's go:** re-read `GET_QUOTE_`;
    upload `PORTAL_FORM_DOCUMENT` and set its success copy; upload
-   `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key;
-   upload the regenerated `CLIENT_REVIEW_DOCUMENT`, set
-   `REVIEW_API_BASE_URL`, issue a fresh combined link, and complete its browser
-   pass. Existing links retain their older mapping snapshots and cannot verify
-   the new contract.
+   `CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE` with a restricted Google browser key.
+   The `CLIENT_REVIEW_DOCUMENT` part was completed on 2026-09-22: the generated
+   JavaScript and CSS were uploaded to the existing SYSTEM-owned template
+   `7f4ded3f-083d-4a71-a2e6-ac168f4e093b`, while its SNOWLIMITLESS PageContext
+   and `REVIEW_API_BASE_URL` were preserved. All four live template hashes now
+   match the repository. Fresh grant 50 over test agreement 133 and the other
+   18 records rendered the three quote cards, their six line items and their
+   server totals in the browser. Existing links still retain their older
+   mapping snapshots and cannot verify the new contract.
 3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
    its retry and the `script` binding; a property per address; quote orders per
    property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
@@ -890,14 +894,16 @@ whole flow stands is
    idempotency rerun created nothing. Left: workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
-4. **Backend read contract verified on 2026-09-21:** a freshly issued combined
+4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
    Order/Document `states[].code`; introspection reports every type readable.
    The client-review runtime joins the id-only line chain and keeps all totals
-   server-owned. The remaining work is deployment and a browser pass with a
-   newly issued link, not another mapping change. Question 10 records the
-   completed backend verification.
+   server-owned. On 2026-09-22 `core-bill` again accepted the API key; grant 50
+   contained 19 exact records and all six anonymous list endpoints returned
+   `200`. The live browser pass displayed CA$2,444.72, CA$6,687.90 and
+   CA$26,751.60 with their service lines. Question 10 records the completed
+   backend verification.
 5. **Then:** write the hooks of `QUOTATION-PACKAGE-FLOW.md` §5, including the
    transient `CLIENT_DETAILS_RECEIVED` state of §4.2. The event-metadata probe
    passed on 2026-09-21: a hook on workflow 53 reaches the bound script as

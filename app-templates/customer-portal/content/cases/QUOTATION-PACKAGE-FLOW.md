@@ -323,7 +323,7 @@ what it holds.
 | three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
 | Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
 | Send Quotation as a bulk action | not designed; a separate task |
-| quote review page | built in `runtime/client-review/`, not deployed; it needs the six-type link of §7 |
+| quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
 | client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; approve, decline and request changes not yet through a live link |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | not written |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | designed (§4.2); a hook on workflow 53 runs and reads what an event carried (*verified* 2026-09-21); the seed, the hook and the page are not changed yet |
@@ -348,14 +348,11 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Deploy the review page** and pass it with a fresh six-type link issued by
-   hand. The key we use has been answered `401` by `core-bill` since
-   2026-09-21, and `core-bill` grants the Order entries.
-2. **Write the Order hooks** on workflow 45: add an Order to its agreement,
+1. **Write the Order hooks** on workflow 45: add an Order to its agreement,
    decline the other options of a decided property, evaluate the package,
    notify `QUOTATION_MANAGER` of requested changes.
-3. **Write the agreement side** on workflow 53: the transient
+2. **Write the agreement side** on workflow 53: the transient
    `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
    checking state; then the `SENT_TO_CLIENT` link and email, approval, and
    activation.
-4. **Send Quotation as a bulk action**, designed separately.
+3. **Send Quotation as a bulk action**, designed separately.

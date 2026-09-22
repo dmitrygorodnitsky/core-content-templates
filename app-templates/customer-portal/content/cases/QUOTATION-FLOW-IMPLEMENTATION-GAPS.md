@@ -619,10 +619,12 @@ The client pages and the property step were taken as far as the platform allows.
   address the script as `this.workflowUtils`. A hook cannot refuse its
   transition — one that recorded its context and then threw still let the move
   complete with HTTP 200.
-- **`core-bill` answers our API key with `401`** since the redeploy of
-  2026-09-21, for `grant/list.json` and `grant/issue.json` alike, while `core`
-  and `core-acct` accept it. The probe link of that day was issued on `core`,
-  which grants a Document on its own.
+- **The temporary `core-bill` API-key refusal is gone.** On 2026-09-22 the same
+  key received `200` from `grant/list.json`; it then issued combined grants 49
+  and 50 through `core-bill`. Grant 50 contains Account 694, test agreement 133,
+  Orders 36–38, OrderItems 59–64, six ProductPrices and Products 25 and 28.
+  Introspection and all six anonymous list endpoints returned `200` with
+  `canRead: true`, and the published review page rendered the records.
 
 ## Questions for the team
 
