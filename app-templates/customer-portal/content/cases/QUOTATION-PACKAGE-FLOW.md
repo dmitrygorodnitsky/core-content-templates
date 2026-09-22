@@ -326,7 +326,7 @@ what it holds.
 | Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER` |
 | Send Quotation as a bulk action | not designed; a separate task |
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
-| client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; the event permissions are present in the current combined grant and the underlying approve/request-changes transitions were verified authenticated on 2026-09-22, but a writable fresh link still needs the final browser pass |
+| client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V4` (script 251). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards the hooks, six entity types, approval permission and compensation |
@@ -352,11 +352,12 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Finish the quotation decision browser proof:** use a fresh combined link
-   to verify approve and request-changes actions, including the required
-   `MESSAGE`, from the live page. The agreement approval browser proof is
-   complete.
-2. **Send Quotation as a bulk action**, designed separately.
+1. **Wire quotation delivery to `QUOTATION_SENT`.** The browser proof issued
+   grant 57 explicitly through `core-bill`; the workflow still does not send
+   listed Orders to `QUOTE_SENT`, issue and persist the combined grant, email
+   its one-time token, or compensate through `QUOTATION_SEND_FAILED` by itself.
+2. **Send Quotation as a bulk action**, designed separately on top of that
+   delivery path.
 3. **Provision a portal User only after a dedicated customer role exists.**
    The portal flag is intentionally deferred, and generic entity-read
    permissions are not an acceptable production customer boundary.

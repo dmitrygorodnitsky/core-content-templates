@@ -930,8 +930,15 @@ transition. Where the whole flow stands is
    server-owned. On 2026-09-22 `core-bill` again accepted the API key; grant 50
    contained 19 exact records and all six anonymous list endpoints returned
    `200`. The live browser pass displayed CA$2,444.72, CA$6,687.90 and
-   CA$26,751.60 with their service lines. Question 10 records the completed
-   backend verification.
+   CA$26,751.60 with their service lines. A second live browser pass on
+   2026-09-22 used combined grant 57 over agreement 135 and Orders 39–40:
+   Order 39 was approved, Order 40 rejected an empty change request and then
+   accepted one carrying `MESSAGE`, and the page updated to one approved option
+   and one changes-requested option. The test grant was then revoked, its ID
+   cleared and its token returned `401`. This grant was issued explicitly
+   through `core-bill`; automatic quotation delivery on entry to
+   `QUOTATION_SENT` is still not wired. Question 10 records the backend
+   verification.
 5. **Then:** finish the agreement side of
    `QUOTATION-PACKAGE-FLOW.md` §5. The details, delivery and Account activation
    hooks are complete. Workflow 53 validates in
