@@ -312,14 +312,14 @@ what it holds.
 - The portal flag on `OPERATOR` and the customer role a provisioned User receives
   are still to be named.
 
-## 10. Where the flow stands, 2026-09-21
+## 10. Where the flow stands, 2026-09-22
 
 | step of §2 | state |
 | --- | --- |
-| request → Account and addresses | *verified*: the form runs by itself up to `NOTIFIED`, and entering `NOTIFIED` creates the Account (form 56 → Account 708) |
-| the Account link of the requester's email | *verified*: issued when the manager moves the request to `PROCESSED`, by `issueAccountLink` of `WINTER_SERVICE_QUOTATION_CREATOR_V4` (script 227), with the grant tree narrowed to the Account profile; form 57 got exactly one link (grant 46) about 12 s after the move |
-| a property per address | *verified*: Property 957 for form 56, about 25 s after submission; in an earlier run the first attempt landed in `PROCESSING_FAILED` and the retry created Property 956, with the cause not recorded |
-| every entity created on submit | *verified* 2026-09-21: creation runs on `NOTIFIED` (`WINTER_SERVICE_REGION_WORKFLOW_UTILS_V11`, script 228) and issues no link — form 57 had Account 709 and Property 958 about 7 s after submission and no grant until the manager's move. By the user's decision of 2026-09-21 the requester's email and its link wait for `PROCESSED`, so a request the manager rejects never received them. `npm run winter-quotation-flow-check` in `core-ui` fails if either moves back |
+| request → Account and addresses | *verified*: creation runs on `NOTIFIED`, then the workflow enters `READY_FOR_REVIEW`; form 60 created Account 711 and reached the ready state without operator help |
+| the Account link of the requester's email | *verified*: issued only when the manager sends `READY_FOR_REVIEW-PROCESSED`, by `issueAccountLink` of `WINTER_SERVICE_QUOTATION_CREATOR_V6` (script 233); form 60 remained ready until the manual event and then stayed `PROCESSED` after the link and email were queued |
+| a property per address | *verified*: form 60 created Property 960 on its first attempt. Form 59 created Account 710 and Property 959 once; repeated processing reused both records without duplicates |
+| every entity created on submit | *verified* 2026-09-22: `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V15` (script 234) creates on `NOTIFIED`, exposes `VALIDATION_FAILED` and `PROCESSING_FAILED`, and unlocks manager actions only in `READY_FOR_REVIEW`. A rejected request cannot receive a client link. Link/email failure moves `PROCESSED` to retryable `DELIVERY_FAILED`; a grant issued before a failed email is revoked before the failure transition. `npm run winter-quotation-flow-check` guards the split and compensation |
 | three Orders per property | not wired |
 | Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
 | Send Quotation as a bulk action | not designed; a separate task |
@@ -330,26 +330,28 @@ what it holds.
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | not written |
 | approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
 
+Failure visibility was completed on 2026-09-22. A validation failure is
+retryable through `VALIDATION_FAILED`; Account or Property creation failure is
+retryable through `PROCESSING_FAILED`; client link or email failure is
+retryable through `DELIVERY_FAILED`. `READY_FOR_REVIEW` removes the early
+manager race. The historical first Property failure of 2026-09-21 cannot be
+reconstructed because its event metadata was stored as `{}`; it did not recur
+for forms 59 or 60. The retry investigation did uncover and fix a separate V4
+lazy-loading error on an existing Account: V6 returns detached-safe IDs from
+the transaction, and form 59 proved the retry without duplicate entities.
+
 Next, in order:
 
-1. **Make every failure visible.** Only a property failure sends
-   `NOTIFIED-PROCESSING_FAILED`; a failure in the Account step is only logged
-   and leaves the request in `NOTIFIED`, where it looks like a request waiting
-   for the manager. At `PROCESSED` a failed link or email is only logged too:
-   the request stays in `PROCESSED` with no email and no retry, and a manager
-   who takes a request before its creation has finished (about 7–25 s) hits
-   the same dead end. A link issued before a failed email stays live. Find out
-   why the first property attempt of 2026-09-21 failed.
-2. **Create the three Orders per property with them**, each carrying
+1. **Create the three Orders per property with them**, each carrying
    `SERVICE_PROPERTY` and its pricing model.
-3. **Deploy the review page** and pass it with a fresh six-type link issued by
+2. **Deploy the review page** and pass it with a fresh six-type link issued by
    hand. The key we use has been answered `401` by `core-bill` since
    2026-09-21, and `core-bill` grants the Order entries.
-4. **Write the Order hooks** on workflow 45: add an Order to its agreement,
+3. **Write the Order hooks** on workflow 45: add an Order to its agreement,
    decline the other options of a decided property, evaluate the package,
    notify `QUOTATION_MANAGER` of requested changes.
-5. **Write the agreement side** on workflow 53: the transient
+4. **Write the agreement side** on workflow 53: the transient
    `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
    checking state; then the `SENT_TO_CLIENT` link and email, approval, and
    activation.
-6. **Send Quotation as a bulk action**, designed separately.
+5. **Send Quotation as a bulk action**, designed separately.

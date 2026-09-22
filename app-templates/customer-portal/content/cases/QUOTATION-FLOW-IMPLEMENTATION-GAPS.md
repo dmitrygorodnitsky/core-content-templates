@@ -600,6 +600,18 @@ The client pages and the property step were taken as far as the platform allows.
   failed link or email at `PROCESSED`, which leaves the request in `PROCESSED`
   with no retry — including a manager who takes the request before its
   creation has finished.
+- **Those visibility and race gaps are closed.** On 2026-09-22 workflow 49 was
+  bound to `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V15` (script 234), which moves
+  successful creation from `NOTIFIED` to `READY_FOR_REVIEW` and allows the
+  manager to process or reject only from that ready state. Validation,
+  Account/Property creation and link/email delivery now enter separate
+  retryable `VALIDATION_FAILED`, `PROCESSING_FAILED` and `DELIVERY_FAILED`
+  states. `WINTER_SERVICE_QUOTATION_CREATOR_V6` (script 233) returns detached-
+  safe Account/address IDs on retry and revokes a just-issued grant when the
+  following customer-email step fails. Forms 59 and 60 verified the final path
+  and entity reuse. The current organization has no resolved manager-email
+  recipient, so V15 records that notification problem without blocking an
+  otherwise valid request.
 - **Hooks on the agreement workflow run.** See question 11: the body has to
   address the script as `this.workflowUtils`. A hook cannot refuse its
   transition — one that recorded its context and then threw still let the move

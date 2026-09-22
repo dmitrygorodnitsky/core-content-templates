@@ -837,15 +837,17 @@ checkout before treating any of them as broken.
 ## Exact next action
 
 The public quote page renders the multi-address form and the workflow runs by
-itself up to `NOTIFIED`. Since 2026-09-21 entering `NOTIFIED` creates the
-Account and a property per address, and the manager's manual move to
-`PROCESSED` issues the Account link and sends the requester's email (form 57 →
-Account 709 and Property 958 at `NOTIFIED`, grant 46 after the move), by the
-user's decisions of 2026-09-17 and 2026-09-21. No build of the utilities sends
-`NOTIFIED-PROCESSED`, and `npm run winter-quotation-flow-check` in `core-ui`
-fails if creation, the link or the email moves. What is left on the request
-side is the three Orders per property. Where the whole flow stands is `QUOTATION-PACKAGE-FLOW.md` §10. In
-order:
+itself through `NOTIFIED` to `READY_FOR_REVIEW`. Since 2026-09-22 entering
+`NOTIFIED` creates the Account and a property per address; only the manager's
+manual `READY_FOR_REVIEW-PROCESSED` event issues the Account link and sends the
+requester's email. Form 60 proved the final path with Account 711 and Property
+960. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V15` (script 234) exposes retryable
+`VALIDATION_FAILED`, `PROCESSING_FAILED` and `DELIVERY_FAILED` states, while
+`WINTER_SERVICE_QUOTATION_CREATOR_V6` (script 233) revokes a just-issued grant
+when the following email step fails. `npm run winter-quotation-flow-check` in
+`core-ui` guards that split. What is left on the request side is the three
+Orders per property. Where the whole flow stands is
+`QUOTATION-PACKAGE-FLOW.md` §10. In order:
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
    169 can run again, say whether `form/submit.json` is meant to fire the first
@@ -874,12 +876,12 @@ order:
    anonymous Account list. The workflow path then created Account 706; Property
    956 was created by `WINTER_SERVICE_PROPERTY_CREATOR_V3`, and the retry held
    the form in `PROCESSED`. Later the same day creation moved to `NOTIFIED`
-   and the requester's email with its link to `PROCESSED`: workflow 49 is bound
-   to `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V11` (script 228), which dispatches
-   `WINTER_SERVICE_QUOTATION_CREATOR_V4` (script 227); a failure sends
-   `NOTIFIED-PROCESSING_FAILED`, and a retry is `PROCESSING_FAILED-NOTIFIED`.
-   Left: the three Orders per property (decided 2026-09-17); making Account,
-   link and email failures visible; workflow 45 and
+   and the requester's email with its link to `PROCESSED`. Superseded on
+   2026-09-22 by V15/V6: successful creation enters `READY_FOR_REVIEW`, manager
+   actions are unavailable before that state, and validation, creation and
+   delivery failures have separate retryable states. Forms 59 and 60 verified
+   the new flow and did not duplicate their Account or Property on retry.
+   Left: the three Orders per property (decided 2026-09-17); workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Backend read contract verified on 2026-09-21:** a freshly issued combined
