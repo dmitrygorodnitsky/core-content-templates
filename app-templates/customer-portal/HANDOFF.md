@@ -902,8 +902,8 @@ transition. Where the whole flow stands is
    idempotency rerun created nothing. Applied on 2026-09-22: workflow 45 and
    its Order hooks are versioned in seeds and live on dev-1. Workflow 53 now
    has the transient `CLIENT_DETAILS_RECEIVED` state and dispatches its
-   cross-service work through `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V4`
-   (script 251). Client details still run through
+   cross-service work through `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5`
+   (script 255). Client details still run through
    `SNOW_SERVICE_AGREEMENT_PROCESSOR_V2` (script 250); agreement delivery runs
    through `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) and email template
    253. Agreement 133 proved the automatic details path through `DRAFT`, then
@@ -935,10 +935,15 @@ transition. Where the whole flow stands is
    Order 39 was approved, Order 40 rejected an empty change request and then
    accepted one carrying `MESSAGE`, and the page updated to one approved option
    and one changes-requested option. The test grant was then revoked, its ID
-   cleared and its token returned `401`. This grant was issued explicitly
-   through `core-bill`; automatic quotation delivery on entry to
-   `QUOTATION_SENT` is still not wired. Question 10 records the backend
-   verification.
+   cleared and its token returned `401`. Automatic quotation delivery is now
+   wired through `SNOW_SERVICE_QUOTATION_DELIVERY_V1` (script 256) and
+   `WINTER_SERVICE_QUOTATION_READY` (template 257). On 2026-09-22 a single
+   transition of agreement 136 to `QUOTATION_SENT` moved Orders 41–42 to
+   `QUOTE_SENT`, issued combined grant 58, persisted only its ID and completed
+   the email call. Agreement 137 proved compensation: its incomplete Order 50
+   moved the agreement to `QUOTATION_SEND_FAILED` without a grant ID while the
+   Order and Account remained in their pre-delivery states. Question 10 records
+   the backend verification.
 5. **Then:** finish the agreement side of
    `QUOTATION-PACKAGE-FLOW.md` §5. The details, delivery and Account activation
    hooks are complete. Workflow 53 validates in
@@ -949,9 +954,10 @@ transition. Where the whole flow stands is
    `AGREEMENT_SEND_FAILED`. Approval revokes that grant, clears its ID and
    activates Accounts from `DRAFT`, `PROSPECT` or `INACTIVE`; failures enter
    retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
-   and `npm run service-agreement-delivery-check` guard the flow. Next are the
-   final magic-link browser pass and portal User provisioning after its flag
-   and customer role are named.
+   and `npm run service-agreement-delivery-check` guard the flow. Quotation
+   delivery is also automatic and compensated now. Next are the separate bulk
+   Send Quotation action and portal User provisioning after a dedicated
+   customer role is named; the portal flag remains intentionally deferred.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
