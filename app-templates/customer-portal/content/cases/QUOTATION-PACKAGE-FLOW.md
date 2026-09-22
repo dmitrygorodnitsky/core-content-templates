@@ -205,7 +205,7 @@ link carries, and the service that grants each, are in
 | link | issued | entries | page | revoked |
 | --- | --- | --- | --- | --- |
 | quotation | agreement enters `QUOTATION_SENT`, and again when a changed quote is re-sent | Account `P_ACCT_R`; each Order `P_ORDER_R` and `P_WF:GENERAL_FSM_ORDER:` `QUOTE_SENT-QUOTE_VIEWED`, `QUOTE_VIEWED-CLIENT_APPROVED`, `QUOTE_VIEWED-DECLINED`, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`; each Order's `OrderItem` records with their `ProductPrice` and `Product`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` | quote review | details submitted, re-issue, or cancel |
-| agreement | agreement enters `SENT_TO_CLIENT` | Account `P_ACCT_R`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED`; its Orders `P_ORDER_R` | agreement review | client approval |
+| agreement | agreement enters `SENT_TO_CLIENT` | Account `P_ACCT_R`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED`; each Order and OrderItem `P_ORDER_R`; each ProductPrice `P_PRICE_R`; each Product `P_PRODUCT_R` | agreement review | client approval |
 
 The token is never stored; the agreement keeps the grant ids so a hook can
 revoke them.
@@ -327,7 +327,7 @@ what it holds.
 | client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; the event permissions are present in the current combined grant and the underlying approve/request-changes transitions were verified authenticated on 2026-09-22, but a writable fresh link still needs the final browser pass |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
-| `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | not written |
+| `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V4` (script 251). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards the hooks, six entity types, approval permission and compensation |
 | approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
 
 Failure visibility was completed on 2026-09-22. A validation failure is
@@ -348,8 +348,10 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Continue the agreement side** on workflow 53: management approval, the
-   `SENT_TO_CLIENT` link and email, client approval, Account activation and
-   optional portal User provisioning. The transient details step is complete
-   and guarded by `service-agreement-client-details-check`.
+1. **Continue the agreement side** on workflow 53 from client approval: verify
+   `SENT_TO_CLIENT-CLIENT_APPROVED` with a fresh writable link, revoke the
+   agreement grant, activate the Account, then add optional portal User
+   provisioning once the portal flag and customer role are named. Details and
+   delivery are guarded by `service-agreement-client-details-check` and
+   `service-agreement-delivery-check`.
 2. **Send Quotation as a bulk action**, designed separately.

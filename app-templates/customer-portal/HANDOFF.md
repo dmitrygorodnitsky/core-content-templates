@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-21
+Updated: 2026-09-22
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -28,7 +28,7 @@ one-customer demonstration.
 
 - Repository: `/Users/imighty/Code/core-content-templates`
 - Branch: `codex/lab-ui-durable-catalog`
-- Implementation checkpoint before this handoff refresh: `d5d862e`
+- Implementation checkpoint before this handoff refresh: `a2fd49e`
 - Current staging tenant: `CALM_HARBOR_SPA_STAGING`
 - Main authenticated CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_STAGING`
 - Public landing CMS family: `CUSTOMER_PORTAL_CALM_HARBOR_LANDING_STAGING`
@@ -901,11 +901,15 @@ transition. Where the whole flow stands is
    idempotency rerun created nothing. Applied on 2026-09-22: workflow 45 and
    its Order hooks are versioned in seeds and live on dev-1. Workflow 53 now
    has the transient `CLIENT_DETAILS_RECEIVED` state and dispatches its
-   cross-service work through `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V3`
-   (script 249) to `SNOW_SERVICE_AGREEMENT_PROCESSOR_V2` (script 250). Agreement
-   133 proved the automatic details path through `DRAFT`. Left: the rest of the
-   agreement lifecycle, role grants with Permissions referenced by id, and the
-   three client forms.
+   cross-service work through `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V4`
+   (script 251). Client details still run through
+   `SNOW_SERVICE_AGREEMENT_PROCESSOR_V2` (script 250); agreement delivery runs
+   through `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) and email template
+   253. Agreement 133 proved the automatic details path through `DRAFT`, then
+   management approval through `SENT_TO_CLIENT`; grant 51 was issued and its ID
+   persisted without the token. Left: client approval, Account activation,
+   optional portal User provisioning, role grants with Permissions referenced
+   by id, and the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -917,13 +921,15 @@ transition. Where the whole flow stands is
    CA$26,751.60 with their service lines. Question 10 records the completed
    backend verification.
 5. **Then:** continue the agreement hooks of
-   `QUOTATION-PACKAGE-FLOW.md` §5 from `DRAFT`. The details half is complete:
-   workflow 53 validates in `CLIENT_DETAILS_RECEIVED`, persists Party B,
-   removes unapproved Orders, notifies `CONTRACT_MANAGER` and reaches `DRAFT`.
-   `npm run service-agreement-client-details-check` guards the seeds and script
-   split. The live review page sends the new event and recognizes the transient
-   state. Next are management approval, `SENT_TO_CLIENT`, its fresh agreement
-   link and email, then client approval and Account activation.
+   `QUOTATION-PACKAGE-FLOW.md` §5 after `SENT_TO_CLIENT`. The details and
+   agreement-delivery halves are complete. Workflow 53 validates in
+   `CLIENT_DETAILS_RECEIVED`, persists Party B, removes unapproved Orders,
+   notifies `CONTRACT_MANAGER` and reaches `DRAFT`; internal approval then
+   advances automatically, issues a 30-day six-type agreement grant and queues
+   the client email. Delivery failures revoke a just-issued grant and enter
+   `AGREEMENT_SEND_FAILED`. `npm run service-agreement-client-details-check`
+   and `npm run service-agreement-delivery-check` guard both halves. Next are
+   client approval, grant revocation and Account activation.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
