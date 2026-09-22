@@ -615,7 +615,8 @@ With reproduction steps in `QUOTATION-FLOW-IMPLEMENTATION-GAPS.md`, "dev-1 on
   Document, Project or Task as nested objects the server refuses; that fix
   belongs to core-ui.
 - `SERVICE_AGREEMENT` (document type 17) and `SERVICE_AGREEMENT_LIFECYCLE`
-  (workflow 53) exist; the role grants of its seed are not applied.
+  (workflow 53) exist; the role grants of its seed were not applied at that
+  checkpoint. They were reconciled on 2026-09-22 as recorded below.
 - Twelve Orders, all in `INITIAL`; account 692 is the only one with a user and
   owns nothing.
 
@@ -910,9 +911,13 @@ transition. Where the whole flow stands is
    persisted without the token. The authenticated approval check then ran
    `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked the agreement
    grant, cleared its ID and moved Account 694 through `DRAFT`, `PROSPECT` and
-   `ACTIVE`. Left: the final approval pass through an actual magic link,
-   optional portal User provisioning, role grants with Permissions referenced
-   by id, and the three client forms.
+   `ACTIVE`. The workflow deployer now writes role permissions as identifier
+   links and reconciles the workflow's permission set exactly. A live readback
+   on 2026-09-22 found all 33 events on `SW_FS_WS_COMPANY_ADMIN`, 6 on
+   `SW_FS_WS_SALES`, 2 on `SW_FS_WS_OPERATIONS_MANAGER` and 4 on
+   `SW_FS_WS_BILLING_FINANCE`, with no missing or extra workflow permissions.
+   Left: the final approval pass through an actual magic link, optional portal
+   User provisioning, and the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and

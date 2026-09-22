@@ -67,7 +67,7 @@ action over the reviewed Orders, designed separately.
 | `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
 | `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21; form 62 created Property 962 |
 | `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; form 62 created Orders 53–55 with `SERVICE_PROPERTY` and `PRICING_MODEL` |
-| `SERVICE_AGREEMENT` (Document) | the package, then the contract | type 17 and workflow 53 on dev-1, owned by `SERVICE_WAND_WINTER_SERVICES`; seed role grants not applied |
+| `SERVICE_AGREEMENT` (Document) | the package, then the contract | type 17 and workflow 53 on dev-1, owned by `SERVICE_WAND_WINTER_SERVICES`; seed role grants applied and read back exactly on 2026-09-22 |
 | organization type `OPERATOR` | portal flag; `QUOTATION_MANAGER`, `CONTRACT_MANAGER` for notifications | managers *verified*; portal flag to add |
 
 ## 4. Workflows
@@ -90,14 +90,16 @@ We add:
 ### 4.2 Service agreement — `SERVICE_AGREEMENT_LIFECYCLE`
 
 Seed: `core-ui` `scripts/dev/seeds/serviceAgreementWorkflows.json`, applied to
-dev-1 as workflow 53 and extended on 2026-09-22 to 16 states and 30 events. The server
-created the 28 `P_WF:SERVICE_AGREEMENT_LIFECYCLE:*` permissions and added them
-to `ADMIN` by itself; the seed's grants to the `SW_FS_WS_*` roles were left out
-of that apply. `workflows.ts` grants them through `saveRolePermissions`, which
-sends each Permission as a nested object keyed by `name`: the shape the backend
-reported refused for Documents, Projects and Tasks (§9). Whether roles are
-refused too is unverified. Four states stand in front of `DRAFT`, one of them
-transient, and two failure states beside it:
+dev-1 as workflow 53 and extended on 2026-09-22 to 17 states and 33 events.
+`workflows.ts` enumerates generated workflow permissions in the SYSTEM
+deployment context, preserves their `SERVICE_WAND_WINTER_SERVICES` ownership,
+and saves each role permission as the backend's link-only `{ id }` identifier.
+The deployer removes stale permissions of this workflow before adding the exact
+seed set. Live readback from the `SERVICEWAND`-owned roles found 33 permissions
+on `SW_FS_WS_COMPANY_ADMIN`, 6 on `SW_FS_WS_SALES`, 2 on
+`SW_FS_WS_OPERATIONS_MANAGER` and 4 on `SW_FS_WS_BILLING_FINANCE`, with no
+missing or extra workflow permission. Four states stand in front of `DRAFT`,
+one of them transient, and two failure states beside it:
 
 | state | meaning | leaves by |
 | --- | --- | --- |
