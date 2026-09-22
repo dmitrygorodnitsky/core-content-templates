@@ -907,7 +907,10 @@ transition. Where the whole flow stands is
    through `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) and email template
    253. Agreement 133 proved the automatic details path through `DRAFT`, then
    management approval through `SENT_TO_CLIENT`; grant 51 was issued and its ID
-   persisted without the token. Left: client approval, Account activation,
+   persisted without the token. The authenticated approval check then ran
+   `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked the agreement
+   grant, cleared its ID and moved Account 694 through `DRAFT`, `PROSPECT` and
+   `ACTIVE`. Left: the final approval pass through an actual magic link,
    optional portal User provisioning, role grants with Permissions referenced
    by id, and the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
@@ -920,16 +923,19 @@ transition. Where the whole flow stands is
    `200`. The live browser pass displayed CA$2,444.72, CA$6,687.90 and
    CA$26,751.60 with their service lines. Question 10 records the completed
    backend verification.
-5. **Then:** continue the agreement hooks of
-   `QUOTATION-PACKAGE-FLOW.md` §5 after `SENT_TO_CLIENT`. The details and
-   agreement-delivery halves are complete. Workflow 53 validates in
+5. **Then:** finish the agreement side of
+   `QUOTATION-PACKAGE-FLOW.md` §5. The details, delivery and Account activation
+   hooks are complete. Workflow 53 validates in
    `CLIENT_DETAILS_RECEIVED`, persists Party B, removes unapproved Orders,
    notifies `CONTRACT_MANAGER` and reaches `DRAFT`; internal approval then
    advances automatically, issues a 30-day six-type agreement grant and queues
    the client email. Delivery failures revoke a just-issued grant and enter
-   `AGREEMENT_SEND_FAILED`. `npm run service-agreement-client-details-check`
-   and `npm run service-agreement-delivery-check` guard both halves. Next are
-   client approval, grant revocation and Account activation.
+   `AGREEMENT_SEND_FAILED`. Approval revokes that grant, clears its ID and
+   activates Accounts from `DRAFT`, `PROSPECT` or `INACTIVE`; failures enter
+   retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
+   and `npm run service-agreement-delivery-check` guard the flow. Next are the
+   final magic-link browser pass and portal User provisioning after its flag
+   and customer role are named.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,

@@ -328,13 +328,15 @@ what it holds.
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V4` (script 251). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards the hooks, six entity types, approval permission and compensation |
-| approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
+| approval → Account `ACTIVE` → portal User | *Account activation verified* 2026-09-22: authenticated `SENT_TO_CLIENT-CLIENT_APPROVED` on agreement 133 invoked `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked grant 51, cleared `AGREEMENT_GRANT_ID`, and moved Account 694 through its actual `DRAFT-PROSPECT` and `PROSPECT-ACTIVE` events. Workflow 53 now exposes retryable `ACTIVATION_FAILED`; the processor also accepts `PROSPECT`, `INACTIVE` and already-`ACTIVE` Accounts idempotently. The final event still needs a browser pass through a fresh writable magic link. Portal User provisioning remains unwritten because the portal flag and customer role are not named |
 
 Failure visibility was completed on 2026-09-22. A validation failure is
 retryable through `VALIDATION_FAILED`; Account or Property creation failure is
 retryable through `PROCESSING_FAILED`; client link or email failure is
 retryable through `DELIVERY_FAILED`. `READY_FOR_REVIEW` removes the early
-manager race. The historical first Property failure of 2026-09-21 cannot be
+manager race. Agreement delivery uses `AGREEMENT_SEND_FAILED`, and post-approval
+Account activation uses `ACTIVATION_FAILED`; both re-enter their processing
+state on retry. The historical first Property failure of 2026-09-21 cannot be
 reconstructed because its event metadata was stored as `{}`; it did not recur
 for forms 59 or 60. The retry investigation did uncover and fix a separate V4
 lazy-loading error on an existing Account: V6 returns detached-safe IDs from
@@ -348,10 +350,11 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Continue the agreement side** on workflow 53 from client approval: verify
-   `SENT_TO_CLIENT-CLIENT_APPROVED` with a fresh writable link, revoke the
-   agreement grant, activate the Account, then add optional portal User
-   provisioning once the portal flag and customer role are named. Details and
-   delivery are guarded by `service-agreement-client-details-check` and
+1. **Finish the agreement browser proof:** issue a fresh writable agreement
+   link and verify `SENT_TO_CLIENT-CLIENT_APPROVED` from the live page. The
+   backend hook, grant revocation and Account activation are already verified.
+   Then add optional portal User provisioning once the portal flag and customer
+   role are named. Details, delivery and activation are guarded by
+   `service-agreement-client-details-check` and
    `service-agreement-delivery-check`.
 2. **Send Quotation as a bulk action**, designed separately.
