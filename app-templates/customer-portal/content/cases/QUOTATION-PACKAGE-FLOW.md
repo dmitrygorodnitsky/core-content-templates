@@ -51,7 +51,7 @@ Agreement CLIENT_DETAILS_RECEIVED ── our hook checks them ──► DRAFT, o
                                    │
 Agreement DRAFT ──► PENDING_MANAGEMENT_APPROVAL ──► INTERNALLY_APPROVED ──► SENT_TO_CLIENT
                                    │                         (link + email)
-client approves ──► CLIENT_APPROVED ──► Account → ACTIVE ──► portal User if the operator has the portal
+client approves ──► CLIENT_APPROVED ──► Account → ACTIVE ──► portal User (staging; portal flag deferred)
 ```
 
 Since 2026-09-17 the manager no longer builds the quotes: every entity is
@@ -163,7 +163,7 @@ approved.
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
-| Account enters `ACTIVE` | if the operator's portal flag is on, creates the User, links it, assigns the customer role, emails onboarding | |
+| Agreement approval activates the Account | creates or reuses the User from the Account's primary email, links `Account.user`, assigns the staging customer role; onboarding email remains to be added | `ACTIVATION_FAILED` and retry |
 
 Every lifecycle change of another record is an event on that record's workflow,
 never a direct state write (spec §2.2).
@@ -334,7 +334,7 @@ what it holds.
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards both delivery paths, six entity types, writable permissions and compensation |
-| approval → Account `ACTIVE` → portal User | *Approval and Account activation verified* 2026-09-22: authenticated `SENT_TO_CLIENT-CLIENT_APPROVED` on agreement 133 first invoked `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (script 254), revoked grant 51, cleared `AGREEMENT_GRANT_ID`, and moved Account 694 through its actual `DRAFT-PROSPECT` and `PROSPECT-ACTIVE` events. The final anonymous proof reused smoke agreement 134; its unpriced Order 53 first produced the expected `AGREEMENT_SEND_FAILED`, so the test record was rebound to the established acceptance pair Account 694 and priced Order 38 and passed the retry path. A fresh writable Document grant 54 opened the live review page: the page rendered `Agreement approved`, the agreement reached `CLIENT_APPROVED`, the stored grant ID was cleared, Account 694 remained `ACTIVE`, and the same token returned `401` after revocation. The backend-generated cross-service grant 52 used to enter `SENT_TO_CLIENT` was explicitly revoked before this isolated action proof. Workflow 53 exposes retryable `ACTIVATION_FAILED`; the processor accepts `PROSPECT`, `INACTIVE` and already-`ACTIVE` Accounts idempotently. The staging role `SW_FS_WS_CUSTOMER_PORTAL` (75) now exists with the minimal current portal permissions; User creation, Account linking and role assignment remain separate. The portal flag is intentionally deferred |
+| approval → Account `ACTIVE` → portal User | *Verified on dev-1* 2026-09-22: anonymous approval of agreement 134 revoked its grant and activated Account 694. `SNOW_PORTAL_USER_PROVISION_V1` (script 258) is now called after `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (254) by workflow utility 255. It creates or reuses a User from the one PRIMARY email, assigns `SW_FS_WS_CUSTOMER_PORTAL` (75) in `SNOWLIMITLESS`, and writes `Account.user`; failure enters retryable `ACTIVATION_FAILED`. Account 694 links to User 35. A separate ACTIVE smoke Account 714 created User 43, assigned the role and linked it; rerun changed nothing. For an end-to-end retry, role 75 was removed from User 35, agreement 134 ran `ACTIVATION_FAILED` → `CLIENT_APPROVED`, and the workflow restored the role. The retry also exposed and fixed a null read of already-cleared `AGREEMENT_GRANT_ID` in activation script 254. The portal flag is deferred. Onboarding email and a real customer OIDC login remain unverified |
 
 Failure visibility was completed on 2026-09-22. A validation failure is
 retryable through `VALIDATION_FAILED`; Account or Property creation failure is
@@ -357,9 +357,10 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Provision and link the portal User after Account activation.** Assign
-   `SW_FS_WS_CUSTOMER_PORTAL` (role 75 on dev-1); the portal flag is
-   intentionally deferred. The role is staging-only until backend reads are
-   scoped to the linked customer Account. Generic entity-read permissions are
-   not an acceptable production customer boundary. Bulk Send Quotation is
-   owned outside this stream.
+1. **Verify customer sign-in and onboarding.** Use an OIDC identity matching a
+   provisioned User, check the live `overview` and `properties` modules, and
+   add the onboarding email. The role is staging-only until backend reads are
+   scoped to the linked customer Account; browser filters alone are not a
+   production customer boundary.
+2. **Build the three client forms** specified for the portal. Bulk Send
+   Quotation is owned outside this stream.

@@ -464,7 +464,8 @@ and every decision taken where it is silent.
   separately. The form no longer collects a property size. A failed automated
   step must land in a visible state.
 - **Customer Portal entitlement is an attribute of the `OPERATOR` organization**
-  (2026-09-11). An activated client receives a portal User only when it is on.
+  (2026-09-11). This remains the product design; staging defers the flag and
+  provisions a portal User when a client Account is activated after approval.
 - **Beam AI measurements are not stored on `SNOW_REMOVAL_PROPERTY`** for now
   (2026-09-11); the founder prices from one parameter.
 - **Anonymous steps run through magic links, and a signed-in client's input
@@ -922,8 +923,12 @@ transition. Where the whole flow stands is
    cleared and Account 694 remained `ACTIVE`. A post-action introspection of
    the same token returned `401`. The staging-only customer role
    `SW_FS_WS_CUSTOMER_PORTAL` (75 on dev-1) now exists with the minimal
-   `overview` and `properties` permissions. Left: create and link the portal
-   User, assign that role, and finish the three client forms.
+   `overview` and `properties` permissions. Provisioning is live through
+   `SNOW_PORTAL_USER_PROVISION_V1` (258): Account 714 created User 43 with the
+   role and Account link; an approval retry on agreement 134 restored the
+   intentionally removed role on User 35. The retry fix in activation script
+   254 treats a cleared agreement grant as absent. Left: customer OIDC sign-in,
+   onboarding email, and the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -958,10 +963,13 @@ transition. Where the whole flow stands is
    retryable `ACTIVATION_FAILED`. `npm run service-agreement-client-details-check`
    and `npm run service-agreement-delivery-check` guard the flow. Quotation
    delivery is also automatic and compensated now. The bulk Send Quotation
-   action is owned outside this stream. Next here is portal User provisioning:
-   create and link the User and assign `SW_FS_WS_CUSTOMER_PORTAL` (75 on
-   dev-1). The portal flag remains intentionally deferred; the role remains
-   staging-only until customer Account scoping is enforced by the backend.
+   action is owned outside this stream. Portal User provisioning now runs after
+   Account activation through script 258 and assigns `SW_FS_WS_CUSTOMER_PORTAL`
+   (75 on dev-1); new-User and retry paths were checked on Accounts 714 and
+   694. The portal flag remains intentionally deferred. Next here are a real
+   customer OIDC sign-in, onboarding email and the three client forms. The role
+   remains staging-only until customer Account scoping is enforced by the
+   backend.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,

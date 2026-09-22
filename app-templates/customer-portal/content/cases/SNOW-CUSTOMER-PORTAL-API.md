@@ -178,5 +178,8 @@ records it concerns, the same way the `GET_QUOTE_` request does.
 - `SUPPORT_TICKET` has no workflow; `SUPPORT_TICKET_LIFECYCLE` exists and is not
   attached.
 - `SNOW_SERVICE_VISIT.RESOURCE` points at a type that does not exist.
-- The customer portal role and the `OPERATOR` portal flag are not defined yet.
+- The staging customer role `SW_FS_WS_CUSTOMER_PORTAL` exists on dev-1 and is
+  assigned during Account activation; the `OPERATOR` portal flag remains
+  intentionally deferred. The role is not a production boundary without
+  backend-enforced customer Account scope.
 - The three form types above, their workflows and their hooks.
