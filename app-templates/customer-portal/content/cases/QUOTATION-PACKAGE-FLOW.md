@@ -321,11 +321,11 @@ what it holds.
 | a property per address | *verified*: form 60 created Property 960 on its first attempt. Form 59 created Account 710 and Property 959 once; repeated processing reused both records without duplicates |
 | every entity created on submit | *verified* 2026-09-22: `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V16` (script 237) creates on `NOTIFIED`, exposes `VALIDATION_FAILED` and `PROCESSING_FAILED`, and unlocks manager actions only in `READY_FOR_REVIEW`. A rejected request cannot receive a client link. Link/email failure moves `PROCESSED` to retryable `DELIVERY_FAILED`; a grant issued before a failed email is revoked before the failure transition. `npm run winter-quotation-flow-check` guards the split and compensation |
 | three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
-| Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
+| Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER` |
 | Send Quotation as a bulk action | not designed; a separate task |
 | quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
-| client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; approve, decline and request changes not yet through a live link |
-| package evaluation → `AWAITING_CLIENT_DETAILS` | not written |
+| client decisions through a link | `QUOTE_SENT` → `QUOTE_VIEWED` *verified* on 2026-09-17; the event permissions are present in the current combined grant and the underlying approve/request-changes transitions were verified authenticated on 2026-09-22, but a writable fresh link still needs the final browser pass |
+| package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | designed (§4.2); a hook on workflow 53 runs and reads what an event carried (*verified* 2026-09-21); the seed, the hook and the page are not changed yet |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | not written |
 | approval → Account `ACTIVE` → portal User | not written; workflow 14 is `Java` with no script bound, and the portal flag and the customer role are still to be named |
@@ -348,11 +348,8 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Write the Order hooks** on workflow 45: add an Order to its agreement,
-   decline the other options of a decided property, evaluate the package,
-   notify `QUOTATION_MANAGER` of requested changes.
-2. **Write the agreement side** on workflow 53: the transient
+1. **Write the agreement side** on workflow 53: the transient
    `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
    checking state; then the `SENT_TO_CLIENT` link and email, approval, and
    activation.
-3. **Send Quotation as a bulk action**, designed separately.
+2. **Send Quotation as a bulk action**, designed separately.

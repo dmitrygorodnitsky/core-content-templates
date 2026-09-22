@@ -849,8 +849,15 @@ when the following email step fails. `npm run winter-quotation-flow-check` in
 `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236): form 62 created
 Account 713, Property 962 and Orders 53–55 for `PER_SERVICE`, `MONTHLY` and
 `SEASONAL`; a repeat returned the same IDs and created zero records. The drafts
-start unpriced because the form intentionally has no property size. Where the
-whole flow stands is
+start unpriced because the form intentionally has no property size. Workflow 45
+is now bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238):
+approved-internally Orders join a quotation agreement, a client approval
+declines the sibling pricing options for the same property, terminal decisions
+evaluate the package, and a requested-change event requires `MESSAGE` and
+notifies the configured `QUOTATION_MANAGER`. Orders 53–55 and agreement 134
+proved the live path: approving Order 53 declined 54 and 55 and moved the
+agreement to `AWAITING_CLIENT_DETAILS`; Order 36 proved the requested-change
+transition. Where the whole flow stands is
 `QUOTATION-PACKAGE-FLOW.md` §10. In order:
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
@@ -891,9 +898,10 @@ whole flow stands is
    the new flow and did not duplicate their Account or Property on retry. Form
    62 additionally created one unpriced draft per property and pricing model,
    with `SERVICE_PROPERTY`, `QUOTE_REQUEST_FORM_ID` and `PRICING_MODEL`; its
-   idempotency rerun created nothing. Left: workflow 45 and
-   `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
-   of workflow 53 with Permissions referenced by id; the three client forms.
+   idempotency rerun created nothing. Applied on 2026-09-22: workflow 45 and
+   its Order hooks are versioned in seeds and live on dev-1. Left: the planned
+   workflow 53 changes and its role grants with Permissions referenced by id;
+   the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -904,12 +912,12 @@ whole flow stands is
    `200`. The live browser pass displayed CA$2,444.72, CA$6,687.90 and
    CA$26,751.60 with their service lines. Question 10 records the completed
    backend verification.
-5. **Then:** write the hooks of `QUOTATION-PACKAGE-FLOW.md` §5, including the
-   transient `CLIENT_DETAILS_RECEIVED` state of §4.2. The event-metadata probe
-   passed on 2026-09-21: a hook on workflow 53 reaches the bound script as
-   `this.workflowUtils` and reads what an event carried through a link. Verify
-   command read-back across the quotation and agreement states, and complete
-   the first end-to-end package on dev-1.
+5. **Then:** write the agreement hooks of `QUOTATION-PACKAGE-FLOW.md` §5,
+   including the transient `CLIENT_DETAILS_RECEIVED` state of §4.2. The Order
+   half is complete. The event-metadata probe passed on 2026-09-21: a hook on
+   workflow 53 reaches the bound script as `this.workflowUtils` and reads what
+   an event carried through a link. Verify command read-back across the
+   agreement states, and complete the first end-to-end package on dev-1.
 
 A live snow entry additionally needs `data-portal-data-mode="live"`,
 `data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
