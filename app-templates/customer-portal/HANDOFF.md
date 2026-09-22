@@ -916,8 +916,12 @@ transition. Where the whole flow stands is
    on 2026-09-22 found all 33 events on `SW_FS_WS_COMPANY_ADMIN`, 6 on
    `SW_FS_WS_SALES`, 2 on `SW_FS_WS_OPERATIONS_MANAGER` and 4 on
    `SW_FS_WS_BILLING_FINANCE`, with no missing or extra workflow permissions.
-   Left: the final approval pass through an actual magic link, optional portal
-   User provisioning, and the three client forms.
+   The final anonymous approval was then verified in the live browser with a
+   fresh writable link: agreement 134 reached `CLIENT_APPROVED`, the page
+   rendered `Agreement approved`, grant 54 was revoked, its stored ID was
+   cleared and Account 694 remained `ACTIVE`. A post-action introspection of
+   the same token returned `401`. Left: optional portal User provisioning and
+   the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
