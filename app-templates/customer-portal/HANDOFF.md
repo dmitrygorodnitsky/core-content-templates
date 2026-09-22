@@ -841,12 +841,16 @@ itself through `NOTIFIED` to `READY_FOR_REVIEW`. Since 2026-09-22 entering
 `NOTIFIED` creates the Account and a property per address; only the manager's
 manual `READY_FOR_REVIEW-PROCESSED` event issues the Account link and sends the
 requester's email. Form 60 proved the final path with Account 711 and Property
-960. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V15` (script 234) exposes retryable
+960. `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V16` (script 237) exposes retryable
 `VALIDATION_FAILED`, `PROCESSING_FAILED` and `DELIVERY_FAILED` states, while
 `WINTER_SERVICE_QUOTATION_CREATOR_V6` (script 233) revokes a just-issued grant
 when the following email step fails. `npm run winter-quotation-flow-check` in
-`core-ui` guards that split. What is left on the request side is the three
-Orders per property. Where the whole flow stands is
+`core-ui` guards that split. V16 also dispatches
+`WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236): form 62 created
+Account 713, Property 962 and Orders 53–55 for `PER_SERVICE`, `MONTHLY` and
+`SEASONAL`; a repeat returned the same IDs and created zero records. The drafts
+start unpriced because the form intentionally has no property size. Where the
+whole flow stands is
 `QUOTATION-PACKAGE-FLOW.md` §10. In order:
 
 1. **The backend:** evict the compiled script cache on the CMS nodes so script
@@ -877,11 +881,13 @@ Orders per property. Where the whole flow stands is
    956 was created by `WINTER_SERVICE_PROPERTY_CREATOR_V3`, and the retry held
    the form in `PROCESSED`. Later the same day creation moved to `NOTIFIED`
    and the requester's email with its link to `PROCESSED`. Superseded on
-   2026-09-22 by V15/V6: successful creation enters `READY_FOR_REVIEW`, manager
+   2026-09-22 by V16/V6: successful creation enters `READY_FOR_REVIEW`, manager
    actions are unavailable before that state, and validation, creation and
    delivery failures have separate retryable states. Forms 59 and 60 verified
-   the new flow and did not duplicate their Account or Property on retry.
-   Left: the three Orders per property (decided 2026-09-17); workflow 45 and
+   the new flow and did not duplicate their Account or Property on retry. Form
+   62 additionally created one unpriced draft per property and pricing model,
+   with `SERVICE_PROPERTY`, `QUOTE_REQUEST_FORM_ID` and `PRICING_MODEL`; its
+   idempotency rerun created nothing. Left: workflow 45 and
    `ORDER_UTILITIES` into seeds; the planned attributes above; the role grants
    of workflow 53 with Permissions referenced by id; the three client forms.
 4. **Backend read contract verified on 2026-09-21:** a freshly issued combined

@@ -62,43 +62,46 @@ INITIAL → SUBMITTED → NOTIFIED → PROCESSED
 | --- | --- |
 | 1. create the client Account | yes — `resolveFormAccount` |
 | 2. create Address records | yes — one `AccountAddress` per submitted address |
-| 3. a Real Estate Resource for every service address | **no** — neither script references a resource |
-| 4. link each Resource to the Account through its `ACCOUNT` attribute | **no** — follows from 3 |
-| 5. three Orders — Monthly, Seasonal, Per Service — for every address | **no** — not called from the flow; see gap 2 |
-| 6. link the Orders to the Account and the Property | partial — `CLIENT` only, no property |
+| 3. a Real Estate Resource for every service address | yes — `WINTER_SERVICE_PROPERTY_CREATOR_V3` |
+| 4. link each Resource to the Account through its `ACCOUNT` attribute | yes |
+| 5. three Orders — Monthly, Seasonal, Per Service — for every address | yes — unpriced drafts created on `NOTIFIED` by script 236 |
+| 6. link the Orders to the Account and the Property | yes — `CLIENT`, `SERVICE_PROPERTY`, source form and `PRICING_MODEL` |
 | 7. notify the Service Provider Manager | yes — at `NOTIFIED` |
 
 ## Gaps
 
-1. **No service property is created.** Script 176 and script 169 contain no
+1. **Closed: no service property was created.** Script 176 and script 169 contain no
    reference to a resource, `IResourceManager` or `SNOW_REMOVAL_PROPERTY`. The
    newest `SNOW_REMOVAL_PROPERTY` on dev-1 is resource 908, created 2026-08-07,
    before any of these forms existed. Closed in code on 2026-09-16 by script
-   200; it has never run.
-2. **Quotation creation is not wired into the workflow.** Script 176 exposes a
+   200; V3 is now part of the live flow.
+2. **Closed: quotation creation was not wired into the workflow.** Script 176 exposes a
    public `createQuotations` (line 265) that does create orders, but nothing
    dispatches it: the `PROCESSED` hook shares its name and dispatches
    `createCustomerAccount` instead. The naming along the chain —
    `createQuotations`, `createQuotationsAfterCommit`,
    `executeQuotationCreation`, `submitQuotationCreation` — describes order
-   creation that does not happen.
-3. **When it is run, `createQuotations` works per form, not per address.** It
+   creation that did not happen. V16 now dispatches the dedicated draft creator.
+3. **Closed: the old `createQuotations` worked per form, not per address.** It
    loops `for (QuoteKind quoteKind : QuoteKind.values())` (line 304) with
    idempotency keyed on the source form (`existingOrders(sourceFormId)`, line
    301). It sets `CLIENT` and `QUOTE_REQUEST_FORM_ID` and no `SERVICE_PROPERTY`.
-   A fifty-address request would yield three orders, none tied to an address.
-4. **`createQuotations` needs a property size the form no longer collects.**
+   A fifty-address request would have yielded three orders, none tied to an
+   address. Script 236 instead creates three drafts for every property ID.
+4. **Closed: `createQuotations` needed a property size the form no longer collects.**
    The size is a method parameter, not read from the form, and
    `validateInputs` (lines 349–363) throws
    `"PROPERTY_SIZE must be a positive square-foot value"` without it. The
    current `GET_QUOTE_` has no `PROPERTY_SIZE`, and the per-property
    measurements are unset on 629 of 630 properties. The 2026-09-02 run passed
    75 000 for all three forms, including form 1, which has no size at all — so
-   the three sets of totals are identical.
-5. **Failures are silent.** The after-commit job catches every exception into a
+   the three sets of totals are identical. Script 236 creates unpriced drafts;
+   pricing remains a manager-review step.
+5. **Closed: failures were silent.** The after-commit job catches every exception into a
    log. A form reads `PROCESSED` whether or not anything was created. Closed in
    code on 2026-09-16 for the property step, which now lands the form in
-   `PROCESSING_FAILED`; the account and e-mail steps still only log.
+   `PROCESSING_FAILED`; V16/V6 now expose validation, preparation and delivery
+   failures through separate retryable states.
 6. **Form hygiene.**
    - `GET_QUOTE_.attributeOrder` still lists `PROPERTY_ADDRESS`, a deleted
      attribute, as the only row of group `EA849F15_9108_455F_9A05_F26BED67E5CD`;

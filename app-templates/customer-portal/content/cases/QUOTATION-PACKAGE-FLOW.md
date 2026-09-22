@@ -63,10 +63,10 @@ action over the reviewed Orders, designed separately.
 
 | record | role in the flow | status |
 | --- | --- | --- |
-| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; entering `NOTIFIED` creates the Account and a property per address, and the manager's manual move to `PROCESSED` issues the Account link and sends the requester's email (*verified* 2026-09-21); Order creation is not wired (§10) |
+| `GET_QUOTE_` form, workflow 49 | the anonymous request | live, ours; entering `NOTIFIED` creates the Account, a property per address and three unpriced Order drafts per property, then enters `READY_FOR_REVIEW`; the manager's manual move to `PROCESSED` issues the Account link and sends the requester's email (*verified* 2026-09-22) |
 | `Account` (`CUSTOMER`), workflow 14 `SNOW_CUSTOMER_LIFECYCLE` | the client; Party B | live, owned by `SERVICE_WAND_WINTER_SERVICES_CANADA` |
-| `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21 (Property 956) |
-| `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; joins our seeds |
+| `SNOW_REMOVAL_PROPERTY` (Resource 154) | one per service address | created by the flow since 2026-09-21; form 62 created Property 962 |
+| `Order` (`FIELD_SERVICE_ORDER`), workflow 45 `GENERAL_FSM_ORDER` | one quote: one property under one pricing model | live, owned by `SERVICE_WAND_WINTER_SERVICES`; form 62 created Orders 53–55 with `SERVICE_PROPERTY` and `PRICING_MODEL` |
 | `SERVICE_AGREEMENT` (Document) | the package, then the contract | type 17 and workflow 53 on dev-1, owned by `SERVICE_WAND_WINTER_SERVICES`; seed role grants not applied |
 | organization type `OPERATOR` | portal flag; `QUOTATION_MANAGER`, `CONTRACT_MANAGER` for notifications | managers *verified*; portal flag to add |
 
@@ -319,8 +319,8 @@ what it holds.
 | request → Account and addresses | *verified*: creation runs on `NOTIFIED`, then the workflow enters `READY_FOR_REVIEW`; form 60 created Account 711 and reached the ready state without operator help |
 | the Account link of the requester's email | *verified*: issued only when the manager sends `READY_FOR_REVIEW-PROCESSED`, by `issueAccountLink` of `WINTER_SERVICE_QUOTATION_CREATOR_V6` (script 233); form 60 remained ready until the manual event and then stayed `PROCESSED` after the link and email were queued |
 | a property per address | *verified*: form 60 created Property 960 on its first attempt. Form 59 created Account 710 and Property 959 once; repeated processing reused both records without duplicates |
-| every entity created on submit | *verified* 2026-09-22: `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V15` (script 234) creates on `NOTIFIED`, exposes `VALIDATION_FAILED` and `PROCESSING_FAILED`, and unlocks manager actions only in `READY_FOR_REVIEW`. A rejected request cannot receive a client link. Link/email failure moves `PROCESSED` to retryable `DELIVERY_FAILED`; a grant issued before a failed email is revoked before the failure transition. `npm run winter-quotation-flow-check` guards the split and compensation |
-| three Orders per property | not wired |
+| every entity created on submit | *verified* 2026-09-22: `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V16` (script 237) creates on `NOTIFIED`, exposes `VALIDATION_FAILED` and `PROCESSING_FAILED`, and unlocks manager actions only in `READY_FOR_REVIEW`. A rejected request cannot receive a client link. Link/email failure moves `PROCESSED` to retryable `DELIVERY_FAILED`; a grant issued before a failed email is revoked before the failure transition. `npm run winter-quotation-flow-check` guards the split and compensation |
+| three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
 | Order hooks of §5 on workflow 45 | not written; workflow 45 is `Java` with `ORDER_UTILITIES` bound |
 | Send Quotation as a bulk action | not designed; a separate task |
 | quote review page | built in `runtime/client-review/`, not deployed; it needs the six-type link of §7 |
@@ -340,18 +340,22 @@ for forms 59 or 60. The retry investigation did uncover and fix a separate V4
 lazy-loading error on an existing Account: V6 returns detached-safe IDs from
 the transaction, and form 59 proved the retry without duplicate entities.
 
+Order draft creation was completed on 2026-09-22. Because the request no longer
+collects a property size, the three Orders start in `INITIAL` without priced
+items; each records its `SERVICE_PROPERTY`, source form and `PRICING_MODEL`.
+The manager supplies or corrects the measured pricing during review instead of
+the automation inventing a size.
+
 Next, in order:
 
-1. **Create the three Orders per property with them**, each carrying
-   `SERVICE_PROPERTY` and its pricing model.
-2. **Deploy the review page** and pass it with a fresh six-type link issued by
+1. **Deploy the review page** and pass it with a fresh six-type link issued by
    hand. The key we use has been answered `401` by `core-bill` since
    2026-09-21, and `core-bill` grants the Order entries.
-3. **Write the Order hooks** on workflow 45: add an Order to its agreement,
+2. **Write the Order hooks** on workflow 45: add an Order to its agreement,
    decline the other options of a decided property, evaluate the package,
    notify `QUOTATION_MANAGER` of requested changes.
-4. **Write the agreement side** on workflow 53: the transient
+3. **Write the agreement side** on workflow 53: the transient
    `CLIENT_DETAILS_RECEIVED` in the seed, its hook, the page's new event and
    checking state; then the `SENT_TO_CLIENT` link and email, approval, and
    activation.
-5. **Send Quotation as a bulk action**, designed separately.
+4. **Send Quotation as a bulk action**, designed separately.
