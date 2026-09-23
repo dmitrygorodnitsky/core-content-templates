@@ -1158,13 +1158,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-confirm-authority-statement="I confirm that I am authorized to enter into this agreement on behalf of the client."
   data-copy-details-returned-title="Your details came back"
   data-copy-details-returned-body="The provider's system could not accept them. Fix the marked fields and send your details again."
-  data-copy-details-returned-reenter="The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."
+  data-copy-details-returned-reenter="The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."
   data-copy-details-returned-unknown="The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."
-  data-copy-details-returned-unknown-reenter="The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."
+  data-copy-details-returned-unknown-reenter="The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."
   data-copy-details-returned-unexplained="The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."
   data-copy-details-processing-title="Your details were not saved"
   data-copy-details-processing-body="Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."
-  data-copy-details-processing-reenter="Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."
+  data-copy-details-processing-reenter="Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."
   data-copy-returned-missing="This was missing from the details you sent."
   data-copy-returned-unconfirmed="This confirmation was missing from the details you sent."
   data-copy-returned-choice="The choice you sent was not recognized. Choose one of the options."
@@ -1337,13 +1337,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
     ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
     ["DETAILS_RETURNED_BODY", "detailsReturnedBody", "The provider's system could not accept them. Fix the marked fields and send your details again."],
-    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."],
+    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."],
     ["DETAILS_RETURNED_UNKNOWN", "detailsReturnedUnknown", "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."],
-    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."],
+    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."],
     ["DETAILS_RETURNED_UNEXPLAINED", "detailsReturnedUnexplained", "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."],
     ["DETAILS_PROCESSING_TITLE", "detailsProcessingTitle", "Your details were not saved"],
     ["DETAILS_PROCESSING_BODY", "detailsProcessingBody", "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."],
-    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."],
+    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."],
     ["RETURNED_MISSING", "returnedMissing", "This was missing from the details you sent."],
     ["RETURNED_UNCONFIRMED", "returnedUnconfirmed", "This confirmation was missing from the details you sent."],
     ["RETURNED_CHOICE", "returnedChoice", "The choice you sent was not recognized. Choose one of the options."],
@@ -1535,6 +1535,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
+    },
+    accountPrefill: {
+      BILLING_ADDRESS: "BILLING_ADDRESS",
+      REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_FIRST_NAME",
+      REPRESENTATIVE_LAST_NAME: "REPRESENTATIVE_LAST_NAME",
+      REPRESENTATIVE_JOB_TITLE: "REPRESENTATIVE_JOB_TITLE",
+      REPRESENTATIVE_EMAIL: "REPRESENTATIVE_EMAIL",
+      REPRESENTATIVE_PHONE: "REPRESENTATIVE_PHONE",
     },
     detailsReturn: {
       processingFailed: "PROCESSING_FAILED",
@@ -2183,7 +2191,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return found ? text(found.value) : "";
   }
 
-  function primaryEmail(account) {
+  function accountAttributeText(account, contract, fieldCode) {
+    var codes = contract.accountPrefill;
+    return owns(codes, fieldCode) ? attributeText(account, codes[fieldCode]) : "";
+  }
+
+  function primaryEmail(account, contract) {
     var found = [];
     (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
       if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
@@ -2192,7 +2205,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         if (value) found.push(value);
       });
     });
-    return found.length === 1 ? found[0] : "";
+    return found.length === 1 ? found[0] : accountAttributeText(account, contract, "REPRESENTATIVE_EMAIL");
   }
 
   function formatAddress(address, locale) {
@@ -2214,7 +2227,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return billing ? formatAddress(billing.address, locale) : "";
   }
 
-  function detailsPrefill(account, fields, locale) {
+  function detailsPrefill(account, fields, locale, contract) {
     var values = {};
     if (!account || typeof account !== "object") return values;
     var contact = primaryContact(account);
@@ -2228,7 +2241,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     };
     fields.forEach(function (field) {
       if (field.kind === "boolean") return;
-      var value = attributeText(account, field.code) || text(derived[field.code]);
+      var value = accountAttributeText(account, contract, field.code) || text(derived[field.code]);
       if (!value) return;
       if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return;
       values[field.code] = value;
@@ -2241,7 +2254,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var owner = agreement && agreement[contract.rawShape.documentOwner];
     var contact = primaryContact(account);
     function stated(code) {
-      return attributeText(agreement, code) || attributeText(account, code);
+      return attributeText(agreement, code) || accountAttributeText(account, contract, code);
     }
     var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
     var typeValue = stated("CLIENT_TYPE");
@@ -2498,11 +2511,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       details: {
         available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
-        prefill: detailsPrefill(account, fields, locale),
+        prefill: detailsPrefill(account, fields, locale, contract),
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
-      primaryEmail: primaryEmail(account),
+      primaryEmail: primaryEmail(account, contract),
     };
   }
 
@@ -4177,6 +4190,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
   var ACCOUNT_ID = 694;
   var AGREEMENT_ID = 5205;
+  var ACCOUNT_TYPE = { id: 2, code: "SNOW_COMMERCIAL_CUSTOMER", nls: { en: { NAME: "Commercial customer" } } };
   var ORDER_TYPE = { id: 5, code: "FIELD_SERVICE_ORDER" };
   var CURRENCY = { id: 3, code: "CAD" };
 
@@ -4245,6 +4259,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     "5.1.1 Either party may end it early with 30 days' written notice.",
   ].join("\n");
 
+  var ACCOUNT_PREFILL = {
+    BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+    REPRESENTATIVE_FIRST_NAME: "Dana",
+    REPRESENTATIVE_LAST_NAME: "Reyes",
+    REPRESENTATIVE_JOB_TITLE: "Property Manager",
+    REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
+    REPRESENTATIVE_PHONE: "+1 604 555 0164",
+  };
+
   var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
 
   var QUOTATION_EVENTS = [
@@ -4279,11 +4302,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
     { id: "decided-next-step", label: "Last decision sent here — details step opens on its own" },
     { id: "contract-details", label: "Contract details — pre-filled from the account" },
+    { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
+    { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
     { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
     { id: "details-checking-slow", label: "Contract details check — taking longer than usual" },
     { id: "details-returned", label: "Contract details returned, link reopened — fields to fix" },
+    { id: "details-returned-attributes", label: "Contract details returned, link reopened — pre-filled from Account attributes" },
     { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
     { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
     { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
@@ -4301,6 +4327,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
+    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from Account attributes" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
@@ -4342,7 +4369,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       id: ACCOUNT_ID,
       code: "ACC-694",
       nls: { en: { NAME: "Harbourview Strata Corporation" } },
-      type: { code: "CUSTOMER", nls: { en: { NAME: "Customer" } } },
+      type: clone(ACCOUNT_TYPE),
       attributes: { 2: { MANAGEMENT_COMPANY: { value: "Lionsgate Property Management" } } },
       contacts: [{
         firstName: "Dana",
@@ -4685,6 +4712,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return data;
   }
 
+  function attributedAccount(data) {
+    var codes = ns.contract.accountPrefill;
+    idOnlyAccount(data).accounts.forEach(function (row) {
+      var bucket = row.attributes[row.type.id];
+      Object.keys(codes).forEach(function (field) { bucket[codes[field]] = { value: ACCOUNT_PREFILL[field] }; });
+    });
+    return data;
+  }
+
   function returnedData(errors) {
     var data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
     data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
@@ -4801,6 +4837,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "contract-details":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         break;
+      case "contract-details-attributes":
+        data = attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        break;
+      case "contract-details-ids-only":
+        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        break;
       case "details-invalid":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = [["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }], ["details.submit", {}]];
@@ -4825,6 +4867,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         break;
       case "details-returned":
         data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
+        break;
+      case "details-returned-attributes":
+        data = attributedAccount(returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED"));
         break;
       case "details-returned-processing":
         data = returnedData("PROCESSING_FAILED");
@@ -4900,6 +4945,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         delete data.accounts[0].contacts;
         portalUrl = PORTAL_URL;
         break;
+      case "completion-attributes":
+        data = attributedAccount(agreementData("CLIENT_APPROVED", false));
+        portalUrl = PORTAL_URL;
+        break;
       case "link-closed-portal":
         behavior.introspect = "unauthorized";
         portalUrl = PORTAL_URL;
@@ -4953,6 +5002,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     agreementData: agreementData,
     detailsErrors: detailsErrors,
     idOnlyAccount: idOnlyAccount,
+    attributedAccount: attributedAccount,
     numberedTerms: NUMBERED_TERMS,
     portalUrl: PORTAL_URL,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),

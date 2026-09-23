@@ -217,17 +217,20 @@ function manifestFor(template, contract) {
         core.agreementAttributes.terms,
         core.agreementAttributes.detailsErrors,
       ].concat(core.contractDetails.attributes.map((attribute) => attribute.code)),
-      accountPrimaryEmail: "contacts[type PRIMARY].contactEntries[type EMAIL].value, shown only when exactly one is returned",
+      account: Object.values(core.accountPrefill),
+      accountPrimaryEmail: "contacts[type PRIMARY].contactEntries[type EMAIL].value when exactly one is returned, otherwise the Account attribute " + core.accountPrefill.REPRESENTATIVE_EMAIL,
     },
     verified: [
       "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
       "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
       "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
+      "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes.",
     ],
     unverified: [
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
       "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
-      "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it, and whether the link's Account profile returns contacts with their EMAIL entries is unverified; without them the invitation names no address.",
+      "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
+      "No dev-1 link has returned the Account attributes " + Object.values(core.accountPrefill).join(", ") + " yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address.",
     ],
     constraints: [
       "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",

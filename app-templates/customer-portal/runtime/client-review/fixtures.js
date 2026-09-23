@@ -5,6 +5,7 @@
 
   var ACCOUNT_ID = 694;
   var AGREEMENT_ID = 5205;
+  var ACCOUNT_TYPE = { id: 2, code: "SNOW_COMMERCIAL_CUSTOMER", nls: { en: { NAME: "Commercial customer" } } };
   var ORDER_TYPE = { id: 5, code: "FIELD_SERVICE_ORDER" };
   var CURRENCY = { id: 3, code: "CAD" };
 
@@ -73,6 +74,15 @@
     "5.1.1 Either party may end it early with 30 days' written notice.",
   ].join("\n");
 
+  var ACCOUNT_PREFILL = {
+    BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+    REPRESENTATIVE_FIRST_NAME: "Dana",
+    REPRESENTATIVE_LAST_NAME: "Reyes",
+    REPRESENTATIVE_JOB_TITLE: "Property Manager",
+    REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
+    REPRESENTATIVE_PHONE: "+1 604 555 0164",
+  };
+
   var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
 
   var QUOTATION_EVENTS = [
@@ -107,11 +117,14 @@
     { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
     { id: "decided-next-step", label: "Last decision sent here — details step opens on its own" },
     { id: "contract-details", label: "Contract details — pre-filled from the account" },
+    { id: "contract-details-attributes", label: "Contract details — contacts and addresses as ids, pre-filled from Account attributes" },
+    { id: "contract-details-ids-only", label: "Contract details — contacts and addresses as ids, no Account attributes" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
     { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
     { id: "details-checking-slow", label: "Contract details check — taking longer than usual" },
     { id: "details-returned", label: "Contract details returned, link reopened — fields to fix" },
+    { id: "details-returned-attributes", label: "Contract details returned, link reopened — pre-filled from Account attributes" },
     { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
     { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
     { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
@@ -129,6 +142,7 @@
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
     { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
+    { id: "completion-attributes", label: "Completion — CLIENT_APPROVED, sign-in email from Account attributes" },
     { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
@@ -170,7 +184,7 @@
       id: ACCOUNT_ID,
       code: "ACC-694",
       nls: { en: { NAME: "Harbourview Strata Corporation" } },
-      type: { code: "CUSTOMER", nls: { en: { NAME: "Customer" } } },
+      type: clone(ACCOUNT_TYPE),
       attributes: { 2: { MANAGEMENT_COMPANY: { value: "Lionsgate Property Management" } } },
       contacts: [{
         firstName: "Dana",
@@ -513,6 +527,15 @@
     return data;
   }
 
+  function attributedAccount(data) {
+    var codes = ns.contract.accountPrefill;
+    idOnlyAccount(data).accounts.forEach(function (row) {
+      var bucket = row.attributes[row.type.id];
+      Object.keys(codes).forEach(function (field) { bucket[codes[field]] = { value: ACCOUNT_PREFILL[field] }; });
+    });
+    return data;
+  }
+
   function returnedData(errors) {
     var data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
     data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
@@ -629,6 +652,12 @@
       case "contract-details":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         break;
+      case "contract-details-attributes":
+        data = attributedAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        break;
+      case "contract-details-ids-only":
+        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        break;
       case "details-invalid":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = [["details.input", { code: "REPRESENTATIVE_PHONE", value: "" }], ["details.submit", {}]];
@@ -653,6 +682,9 @@
         break;
       case "details-returned":
         data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
+        break;
+      case "details-returned-attributes":
+        data = attributedAccount(returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED"));
         break;
       case "details-returned-processing":
         data = returnedData("PROCESSING_FAILED");
@@ -728,6 +760,10 @@
         delete data.accounts[0].contacts;
         portalUrl = PORTAL_URL;
         break;
+      case "completion-attributes":
+        data = attributedAccount(agreementData("CLIENT_APPROVED", false));
+        portalUrl = PORTAL_URL;
+        break;
       case "link-closed-portal":
         behavior.introspect = "unauthorized";
         portalUrl = PORTAL_URL;
@@ -781,6 +817,7 @@
     agreementData: agreementData,
     detailsErrors: detailsErrors,
     idOnlyAccount: idOnlyAccount,
+    attributedAccount: attributedAccount,
     numberedTerms: NUMBERED_TERMS,
     portalUrl: PORTAL_URL,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),

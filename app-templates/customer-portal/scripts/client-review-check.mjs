@@ -474,7 +474,8 @@ const N = loadRuntime().CR.normalizer;
   }
 
   const account = CR.fixtures.quotationData().accounts[0];
-  assert.deepEqual(plain(normalizer.detailsPrefill(account, fields, "en-CA")), {
+  const prefillOf = (row, source = contract) => plain(normalizer.detailsPrefill(row, fields, "en-CA", source));
+  assert.deepEqual(prefillOf(account), {
     LEGAL_NAME: "Harbourview Strata Corporation",
     BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
     REPRESENTATIVE_FIRST_NAME: "Dana",
@@ -484,9 +485,65 @@ const N = loadRuntime().CR.normalizer;
   }, "pre-fill takes only what the account holds: a billing-typed address, the primary contact and its EMAIL and PHONE entries, never the contact's role as a job title and never a confirmation");
   const serviceOnly = plain(account);
   serviceOnly.addresses = serviceOnly.addresses.filter((entry) => entry.types[0].code === "SERVICE");
-  assert.equal(normalizer.detailsPrefill(serviceOnly, fields, "en-CA").BILLING_ADDRESS, undefined, "a service address is never offered as the billing address");
+  assert.equal(prefillOf(serviceOnly).BILLING_ADDRESS, undefined, "a service address is never offered as the billing address");
   const idOnly = plain(CR.fixtures.idOnlyAccount({ accounts: [plain(account)] }).accounts[0]);
-  assert.deepEqual(plain(normalizer.detailsPrefill(idOnly, fields, "en-CA")), { LEGAL_NAME: "Harbourview Strata Corporation" }, "contacts and addresses returned as ids only, as the link returns them today, pre-fill the Legal Name alone");
+  assert.deepEqual(prefillOf(idOnly), { LEGAL_NAME: "Harbourview Strata Corporation" }, "contacts and addresses returned as ids only, without the Account attributes, as the link returns them today, pre-fill the Legal Name alone");
+
+  assert.deepEqual(plain(contract.accountPrefill), {
+    BILLING_ADDRESS: "BILLING_ADDRESS",
+    REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_FIRST_NAME",
+    REPRESENTATIVE_LAST_NAME: "REPRESENTATIVE_LAST_NAME",
+    REPRESENTATIVE_JOB_TITLE: "REPRESENTATIVE_JOB_TITLE",
+    REPRESENTATIVE_EMAIL: "REPRESENTATIVE_EMAIL",
+    REPRESENTATIVE_PHONE: "REPRESENTATIVE_PHONE",
+  }, "the Account carries the pre-fill under exactly these six attribute codes; the Legal Name, the client type and the confirmations have none");
+  const attributed = plain(CR.fixtures.attributedAccount({ accounts: [plain(account)] }).accounts[0]);
+  const accountBucket = (row) => row.attributes[row.type.id];
+  assert.deepEqual(Object.keys(accountBucket(attributed)).filter((code) => code !== "MANAGEMENT_COMPANY"), Object.values(plain(contract.accountPrefill)), "the fixture Account carries the contract's attribute codes, keyed by its type id");
+  assert.deepEqual([attributed.contacts, attributed.addresses], [[{ id: 901 }], [{ id: 902 }]], "beside contacts and addresses returned as ids only");
+  const fromAttributes = {
+    LEGAL_NAME: "Harbourview Strata Corporation",
+    BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+    REPRESENTATIVE_FIRST_NAME: "Dana",
+    REPRESENTATIVE_LAST_NAME: "Reyes",
+    REPRESENTATIVE_JOB_TITLE: "Property Manager",
+    REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example",
+    REPRESENTATIVE_PHONE: "+1 604 555 0164",
+  };
+  assert.deepEqual(prefillOf(attributed), fromAttributes, "with contacts and addresses as ids only, the Account attributes pre-fill every text detail but the client type, and the Legal Name still comes from the Account name");
+  const both = plain(account);
+  accountBucket(both)[contract.accountPrefill.REPRESENTATIVE_PHONE] = { value: "+1 604 555 0199" };
+  accountBucket(both)[contract.accountPrefill.BILLING_ADDRESS] = { value: "PO Box 12, Vancouver, BC V6C 3T8" };
+  const bothPrefill = prefillOf(both);
+  assert.deepEqual([bothPrefill.REPRESENTATIVE_PHONE, bothPrefill.BILLING_ADDRESS, bothPrefill.REPRESENTATIVE_FIRST_NAME], ["+1 604 555 0199", "PO Box 12, Vancouver, BC V6C 3T8", "Dana"], "an Account attribute, when present, wins over the contact or address it was copied from, and a detail without one keeps today's source");
+  accountBucket(both)[contract.accountPrefill.REPRESENTATIVE_PHONE] = { value: "   " };
+  assert.equal(prefillOf(both).REPRESENTATIVE_PHONE, "+1 604 555 0164", "a blank attribute is not present: the contact entry fills the field");
+  for (const code of Object.keys(contract.accountPrefill)) {
+    const renamed = plain(contract);
+    renamed.accountPrefill[code] = "RENAMED_" + code;
+    const row = plain(attributed);
+    accountBucket(row)["RENAMED_" + code] = { value: "Read through the contract" };
+    assert.equal(prefillOf(row, renamed)[code], "Read through the contract", code + " is pre-filled from the Account attribute the contract names");
+    delete accountBucket(row)["RENAMED_" + code];
+    assert.equal(prefillOf(row, renamed)[code], undefined, code + " is never pre-filled from an Account attribute the contract does not name");
+  }
+  const unnamed = plain(attributed);
+  Object.assign(accountBucket(unnamed), { LEGAL_NAME: { value: "Harbourview Holdings Ltd." }, CLIENT_TYPE: { value: "ORGANIZATION" }, INFORMATION_CONFIRMED: { value: "true" }, AUTHORITY_CONFIRMED: { value: "true" } });
+  assert.deepEqual(prefillOf(unnamed), fromAttributes, "an Account attribute outside the contract pre-fills nothing: the Legal Name stays the Account name, and the client type and the confirmations stay empty");
+  const overreaching = plain(contract);
+  Object.assign(overreaching.accountPrefill, { INFORMATION_CONFIRMED: "INFORMATION_CONFIRMED", AUTHORITY_CONFIRMED: "AUTHORITY_CONFIRMED" });
+  const confirmed = prefillOf(unnamed, overreaching);
+  assert.deepEqual([confirmed.INFORMATION_CONFIRMED, confirmed.AUTHORITY_CONFIRMED], [undefined, undefined], "a confirmation is never pre-filled, even from an attribute a contract would name");
+
+  const clientParty = (data, source = contract) => plain(normalizer.reviewModel({ grant: normalizer.grantOf(data.grant), documents: data.documents, orders: data.orders, accounts: data.accounts }, { locale: "en-CA", contract: source }).parties.client);
+  assert.equal(clientParty(CR.fixtures.attributedAccount(CR.fixtures.agreementData("SENT_TO_CLIENT", false))).representativeJobTitle, "Strata Council President", "the agreement's own client snapshot wins over the Account attributes");
+  const unsnapshotted = CR.fixtures.attributedAccount(CR.fixtures.agreementData("SENT_TO_CLIENT", false));
+  Object.keys(contract.accountPrefill).forEach((code) => { delete unsnapshotted.documents[0].attributes[17][code]; });
+  const fallback = clientParty(unsnapshotted);
+  assert.deepEqual([fallback.billingAddress, fallback.representativeName, fallback.representativeJobTitle, fallback.email, fallback.phone], [fromAttributes.BILLING_ADDRESS, "Dana Reyes", "Property Manager", fromAttributes.REPRESENTATIVE_EMAIL, fromAttributes.REPRESENTATIVE_PHONE], "an agreement without the client snapshot shows the Account attributes the contract names");
+  const renamedPhone = plain(contract);
+  renamedPhone.accountPrefill.REPRESENTATIVE_PHONE = "RENAMED_REPRESENTATIVE_PHONE";
+  assert.equal(clientParty(unsnapshotted, renamedPhone).phone, "", "and never an Account attribute under a code the contract does not name");
 
   const blocks = normalizer.termsBlocks("<h2>1. Scope</h2><p>Clear &amp; salt<br>daily.</p><ul><li>One</li><li>Two</li></ul><script>alert(1)</script>");
   assert.deepEqual(plain(blocks), [
@@ -551,14 +608,15 @@ const EXPECTED_SCENARIOS = {
   "view-unconfirmed": ["ready", "quote-review"], decided: ["ready", "quote-review"],
   "decided-following": ["ready", "quote-review"], "decided-following-slow": ["ready", "quote-review"], "decided-next-step": ["ready", "contract-details"],
   "contract-details": ["ready", "contract-details"],
+  "contract-details-attributes": ["ready", "contract-details"], "contract-details-ids-only": ["ready", "contract-details"],
   "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"],
   "details-checking": ["ready", "checking"], "details-checking-slow": ["ready", "checking"],
-  "details-returned": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
+  "details-returned": ["ready", "contract-details"], "details-returned-attributes": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
   "details-returned-unknown": ["ready", "contract-details"], "details-returned-sent": ["ready", "contract-details"], "details-closed": ["link-closed", null],
   "details-stale-checking": ["ready", "checking"], "details-stale-slow": ["ready", "checking"], "details-stale-closed": ["link-closed", null],
   preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"],
   "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
-  completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"],
+  completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"], "completion-attributes": ["ready", "completion"],
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
@@ -590,6 +648,22 @@ const fieldNamed = (node, code) => all(node, (candidate) => candidate.getAttribu
 const controlOf = (field) => byAttribute(field, "id", "cr-field-" + field.getAttribute("data-code"))[0];
 const errorOf = (field) => byClass(field, "cr-field__error")[0];
 const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
+const FORM_FROM_ATTRIBUTES = {
+  LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "",
+  BILLING_ADDRESS: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8, Canada",
+  REPRESENTATIVE_FIRST_NAME: "Dana", REPRESENTATIVE_LAST_NAME: "Reyes", REPRESENTATIVE_JOB_TITLE: "Property Manager",
+  REPRESENTATIVE_EMAIL: "dana.reyes@harbourview.example", REPRESENTATIVE_PHONE: "+1 604 555 0164",
+  INFORMATION_CONFIRMED: false, AUTHORITY_CONFIRMED: false,
+};
+
+function assertForm(run, expected, message) {
+  assert.deepEqual(plain(run.controller.snapshot().details.values), expected, message);
+  for (const [code, value] of Object.entries(expected)) {
+    const control = controlOf(fieldNamed(run.mount, code));
+    if (typeof value === "boolean") assert.equal(control.checked, value, code + (value ? " is ticked" : " is not ticked for the client"));
+    else assert.equal(control.value, value, code + " shows " + JSON.stringify(value));
+  }
+}
 
 {
   const ids = loadRuntime({ fixtures: true }).CR.fixtures.scenarios.map((scenario) => scenario.id);
@@ -658,7 +732,7 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
       }
       case "details-returned": {
         const notice = byAttribute(run.mount, "data-returned", "fields")[0];
-        assert.ok(notice && surface(notice).includes(copy.detailsReturnedTitle) && surface(notice).includes(copy.detailsReturnedReenter), "a reopened link says the details must be entered again, the marked fields being why they came back");
+        assert.ok(notice && surface(notice).includes(copy.detailsReturnedTitle) && surface(notice).includes(copy.detailsReturnedReenter), "a reopened link says that what is filled in comes from the account and asks for the rest, the marked fields being why the details came back");
         assert.equal(notice.getAttribute("data-form"), "fresh");
         assert.ok(!surface(notice).includes(copy.detailsReturnedBody), "and does not ask to fix fields the form no longer holds");
         const reopened = run.controller.snapshot().details.values;
@@ -679,6 +753,28 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
         assert.doesNotMatch(visibleText(run.mount), /_INVALID|CLIENT_DETAILS_ERRORS/, "no raw code reaches the page");
         break;
       }
+      case "details-returned-attributes": {
+        const notice = byAttribute(run.mount, "data-returned", "fields")[0];
+        assert.ok(notice && surface(notice).includes(copy.detailsReturnedReenter), "a reopened link pre-filled from the Account attributes keeps the same reopened-link wording");
+        assert.equal(notice.getAttribute("data-form"), "fresh");
+        assertForm(run, FORM_FROM_ATTRIBUTES, "the returned form on a reopened link is pre-filled from the Account attributes, the client type and both confirmations left to the client");
+        for (const code of ["CLIENT_TYPE", "REPRESENTATIVE_EMAIL", "AUTHORITY_CONFIRMED"]) {
+          assert.equal(fieldNamed(run.mount, code).getAttribute("data-state"), "invalid", code + " stays marked on a pre-filled form");
+        }
+        break;
+      }
+      case "contract-details-attributes": {
+        assertForm(run, FORM_FROM_ATTRIBUTES, "with contacts and addresses as ids only, the details step opens pre-filled from the Account attributes, the client type and both confirmations left to the client");
+        assert.equal(["fields", "processing", "unexplained"].reduce((count, kind) => count + byAttribute(run.mount, "data-returned", kind).length, 0), 0, "details awaited for the first time carry no notice");
+        for (const [code, value] of [["CLIENT_TYPE", "ORGANIZATION"], ["INFORMATION_CONFIRMED", true], ["AUTHORITY_CONFIRMED", true]]) run.controller.dispatch("details.choose", { code, value });
+        run.controller.dispatch("details.submit");
+        await run.controller.idle();
+        assert.deepEqual(run.sent.map((call) => call[3]), [{ ...FORM_FROM_ATTRIBUTES, CLIENT_TYPE: "ORGANIZATION", INFORMATION_CONFIRMED: true, AUTHORITY_CONFIRMED: true }], "once the client chooses the rest, the pre-filled values travel as the details, the job title included");
+        break;
+      }
+      case "contract-details-ids-only":
+        assertForm(run, Object.fromEntries(Object.entries(FORM_FROM_ATTRIBUTES).map(([code, value]) => [code, code === "LEGAL_NAME" ? value : typeof value === "boolean" ? false : ""])), "without the Account attributes, as the link returns the Account today, the Legal Name is the one pre-filled value");
+        break;
       case "details-returned-processing": {
         const notice = byAttribute(run.mount, "data-returned", "processing")[0];
         assert.ok(notice && surface(notice).includes(copy.detailsProcessingTitle) && surface(notice).includes(copy.detailsProcessingReenter), "PROCESSING_FAILED on a reopened link has its own wording and asks for the details again");
@@ -945,6 +1041,14 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
         assert.equal(portalLinks(invitation).length, 1);
         break;
       }
+      case "completion-attributes": {
+        assert.deepEqual(plain(run.runtime.CR.fixtures.setup(id).data.accounts[0].contacts), [{ id: 901 }], "the link returns the Account's contacts as ids only");
+        const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
+        assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "so the invitation names the sign-in address the Account attributes carry");
+        assert.equal(run.controller.snapshot().primaryEmail, "dana.reyes@harbourview.example");
+        assert.equal(portalLinks(invitation).length, 1);
+        break;
+      }
       case "approval-closed": {
         assert.ok(text.includes(copy.closedAfterApprovalBody), "a link that closes right after approval says so");
         const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
@@ -982,8 +1086,9 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 
 {
   const { CR } = loadRuntime({ fixtures: true });
+  const contract = CR.contract;
   const account = plain(CR.fixtures.agreementData("CLIENT_APPROVED", false).accounts[0]);
-  const emailOf = (mutate) => { const row = plain(account); mutate(row); return CR.normalizer.primaryEmail(row); };
+  const emailOf = (mutate, source = contract) => { const row = plain(account); mutate(row); return CR.normalizer.primaryEmail(row, source); };
   assert.equal(emailOf(() => {}), "dana.reyes@harbourview.example", "the portal sign-in is the PRIMARY contact's EMAIL entry");
   assert.equal(emailOf((row) => { delete row.contacts; }), "", "a link that returns no contacts names no email");
   assert.equal(emailOf((row) => { row.contacts = [{ id: 7 }]; }), "", "an id-only contact names no email");
@@ -991,6 +1096,17 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
   assert.equal(emailOf((row) => { row.contacts[0].contactEntries.push({ value: "office@harbourview.example", type: { code: "EMAIL" } }); }), "", "two primary emails, which provisioning refuses, name none");
   assert.equal(emailOf((row) => { row.contacts[0].contactEntries[0].value = "  "; }), "", "a blank entry is not an email");
   assert.equal(emailOf((row) => { row.contacts.push({ type: { code: "SECONDARY" }, contactEntries: [{ value: "x@y.example", type: { code: "EMAIL" } }] }); }), "dana.reyes@harbourview.example", "another contact's email is not the sign-in");
+
+  const signIn = (value, code = contract.accountPrefill.REPRESENTATIVE_EMAIL) => (row) => { row.attributes[row.type.id][code] = { value }; };
+  const idOnlyWith = (value, code) => (row) => { row.contacts = [{ id: 7 }]; signIn(value, code)(row); };
+  assert.equal(emailOf(idOnlyWith("dana.reyes@harbourview.example")), "dana.reyes@harbourview.example", "with contacts as ids only, the sign-in is the Account's REPRESENTATIVE_EMAIL attribute");
+  assert.equal(emailOf(signIn("office@harbourview.example")), "dana.reyes@harbourview.example", "contacts that carry types and entries stay the first choice over the attribute");
+  assert.equal(emailOf((row) => { row.contacts[0].contactEntries = row.contacts[0].contactEntries.filter((entry) => entry.type.code !== "EMAIL"); signIn("office@harbourview.example")(row); }), "office@harbourview.example", "when the contacts name no single address, the attribute names it");
+  assert.equal(emailOf(idOnlyWith("   ")), "", "a blank attribute names no email");
+  const renamed = plain(contract);
+  renamed.accountPrefill.REPRESENTATIVE_EMAIL = "RENAMED_REPRESENTATIVE_EMAIL";
+  assert.equal(emailOf(idOnlyWith("dana.reyes@harbourview.example"), renamed), "", "an attribute under a code the contract does not name is not the sign-in");
+  assert.equal(emailOf(idOnlyWith("dana.reyes@harbourview.example", "RENAMED_REPRESENTATIVE_EMAIL"), renamed), "dana.reyes@harbourview.example", "the sign-in is read from the attribute the contract names");
 
   const invitations = [];
   for (const withUser of [false, true]) {
@@ -1274,8 +1390,23 @@ async function decideLast(controller, kind) {
   controller.start();
   await controller.idle();
   const invitation = byAttribute(mount, "data-portal", "invitation")[0];
-  assert.ok(visibleText(invitation).includes(controller.copy.portalBody) && !visibleText(invitation).includes("@"), "contacts returned as ids only, as the link returns them today, leave the invitation on its no-email wording");
+  assert.ok(visibleText(invitation).includes(controller.copy.portalBody) && !visibleText(invitation).includes("@"), "contacts returned as ids only and no Account attributes, as the link returns them today, leave the invitation on its no-email wording");
   assert.equal(controller.snapshot().primaryEmail, "");
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.attributedAccount(runtime.CR.fixtures.agreementData("SENT_TO_CLIENT", false));
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, { hooks: { revokeOnApproval: true } }), mount, timers: fakeTimers(), locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  controller.dispatch("agreement.intent");
+  controller.dispatch("agreement.confirm");
+  await controller.idle();
+  assert.equal(controller.snapshot().closedAfter, "approval");
+  const invitation = byAttribute(mount, "data-portal", "invitation")[0];
+  assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "a link that closes right after approval names the sign-in address the Account attributes carried in the last read");
 }
 
 async function stagedController(build, behavior = {}, pollDelays) {
@@ -1399,6 +1530,34 @@ const staleForm = (run) => byAttribute(run.mount, "data-returned", "processing")
   await sendDetails(run.controller);
   assert.equal(kindOf(run), "preparing", "a readback in any state other than the two details states is rendered as it is");
   assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController((F) => F.attributedAccount(F.quotationData("AWAITING_CLIENT_DETAILS", F.decidedStates)), { hooks: { details: "processing-failed" } });
+  const { controller } = run;
+  const typed = () => [controller.snapshot().details.values.REPRESENTATIVE_PHONE, controller.snapshot().details.values.REPRESENTATIVE_JOB_TITLE];
+  assert.deepEqual(typed(), ["+1 604 555 0164", "Property Manager"], "the form opens with what the Account attributes carry");
+  controller.dispatch("details.input", { code: "REPRESENTATIVE_PHONE", value: "+1 604 555 0199" });
+  controller.dispatch("details.input", { code: "REPRESENTATIVE_JOB_TITLE", value: "" });
+  controller.dispatch("refresh", {});
+  await controller.idle();
+  assert.deepEqual(typed(), ["+1 604 555 0199", ""], "a re-read never puts an attribute back over what the client typed or cleared in this session");
+  for (const [code, value] of [["CLIENT_TYPE", "ORGANIZATION"], ["INFORMATION_CONFIRMED", true], ["AUTHORITY_CONFIRMED", true]]) controller.dispatch("details.choose", { code, value });
+  controller.dispatch("details.submit");
+  await controller.idle();
+  assert.deepEqual([run.sent[0][3].REPRESENTATIVE_PHONE, run.sent[0][3].REPRESENTATIVE_JOB_TITLE], ["+1 604 555 0199", undefined], "what the client typed is what is sent");
+  run.timers.fire();
+  await controller.idle();
+  const held = byAttribute(run.mount, "data-returned", "processing")[0];
+  assert.ok(held && held.getAttribute("data-form") === "sent", "a return after sending here keeps the wording for the form that holds what was typed");
+  assert.deepEqual(typed(), ["+1 604 555 0199", ""], "and the typed values, not the Account attributes");
+
+  const reopenedMount = run.runtime.document.createElement("div");
+  const reopened = run.CR.createController({ adapter: run.CR.fixtures.createFixtureAdapter(run.data, {}), mount: reopenedMount, timers: fakeTimers(), locale: "en-CA" });
+  reopened.start();
+  await reopened.idle();
+  assert.deepEqual([reopened.snapshot().details.values.REPRESENTATIVE_PHONE, reopened.snapshot().details.values.REPRESENTATIVE_JOB_TITLE], ["+1 604 555 0164", "Property Manager"], "the same link opened again cannot show what was sent, so it pre-fills from the Account attributes");
+  assert.equal(byAttribute(reopenedMount, "data-returned", "processing")[0].getAttribute("data-form"), "fresh");
 }
 
 for (const [kind, orderId, event, status] of [
@@ -1769,6 +1928,7 @@ try {
   for (const path of ["/core-bill/i/{token}/order-item/list.json", "/core-pim/i/{token}/product-price/list.json", "/core-pim/i/{token}/product/list.json"]) {
     assert.ok(manifest.api.reads.some((read) => read.includes(path)), "the manual package documents the grant read " + path);
   }
+  assert.deepEqual(manifest.plannedFields.account, plain(Object.values(loadRuntime().CR.contract.accountPrefill)), "the manual package lists the Account attributes the page reads, as the contract names them");
   for (const [field, file] of Object.entries({ head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" })) {
     const content = await fs.readFile(path.join(outputDir, file), "utf8");
     assert.equal(crypto.createHash("sha256").update(content.replace(/\n$/, ""), "utf8").digest("hex"), manifest.template.sha256[field], file + " matches its manifest digest");
@@ -1810,4 +1970,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, contract details and the portal sign-in read from the Account attributes the contract names, never a confirmation and never over what the client typed, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

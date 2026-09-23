@@ -10,7 +10,7 @@
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
       "html": "4f1717e3f63c84b372d9456479eac63e89f0147a0cf979bb830a24a45badfebc",
       "css": "b2caf324d1d0e510238855839b8dbc130e99fd0ca9b946206e7bb5cf8cb7f697",
-      "javascript": "6bc446c3914f96b3d37e2be6b1216c5cc18775f54c08e93c74ea8385d787eadf"
+      "javascript": "423cf25b3c3376608329bf6a6cf3a2554720f6d4b1efbcab260e683e6a560d7b"
     }
   },
   "runtime": {
@@ -111,17 +111,27 @@
       "INFORMATION_CONFIRMED",
       "AUTHORITY_CONFIRMED"
     ],
-    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL].value, shown only when exactly one is returned"
+    "account": [
+      "BILLING_ADDRESS",
+      "REPRESENTATIVE_FIRST_NAME",
+      "REPRESENTATIVE_LAST_NAME",
+      "REPRESENTATIVE_JOB_TITLE",
+      "REPRESENTATIVE_EMAIL",
+      "REPRESENTATIVE_PHONE"
+    ],
+    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL].value when exactly one is returned, otherwise the Account attribute REPRESENTATIVE_EMAIL"
   },
   "verified": [
     "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
     "Order totals and Order/Document states[].code are server-owned fields; line details join through Order.items -> OrderItem.itemPrice -> ProductPrice.product -> Product.",
-    "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }."
+    "Grant list endpoints accept anonymous POST requests with offset and pageSize, get.json takes ?id=, and event.json accepts { id, event, metadata }.",
+    "On 2026-09-23 a dev-1 link returned the Account's contacts and addresses as ids only, and the backend confirmed that Contact, ContactEntry and AccountAddress will never be grantable. The details pre-fill and the portal sign-in address therefore read Account attributes."
   ],
   "unverified": [
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
     "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
-    "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it, and whether the link's Account profile returns contacts with their EMAIL entries is unverified; without them the invitation names no address."
+    "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it.",
+    "No dev-1 link has returned the Account attributes BILLING_ADDRESS, REPRESENTATIVE_FIRST_NAME, REPRESENTATIVE_LAST_NAME, REPRESENTATIVE_JOB_TITLE, REPRESENTATIVE_EMAIL, REPRESENTATIVE_PHONE yet. Without them only the Legal Name pre-fills and the portal invitation names no sign-in address."
   ],
   "constraints": [
     "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",

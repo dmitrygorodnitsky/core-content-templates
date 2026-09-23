@@ -1227,7 +1227,7 @@
       }
     },
     "value": {
-      "en": "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."
+      "en": "The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."
     }
   },
   {
@@ -1253,7 +1253,7 @@
       }
     },
     "value": {
-      "en": "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."
+      "en": "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."
     }
   },
   {
@@ -1305,7 +1305,7 @@
       }
     },
     "value": {
-      "en": "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."
+      "en": "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."
     }
   },
   {

@@ -98,13 +98,13 @@
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
     ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
     ["DETAILS_RETURNED_BODY", "detailsReturnedBody", "The provider's system could not accept them. Fix the marked fields and send your details again."],
-    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."],
+    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again; the marked fields are why they came back."],
     ["DETAILS_RETURNED_UNKNOWN", "detailsReturnedUnknown", "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."],
-    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."],
+    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. What is filled in for you comes from your account. Check it, complete the rest and send your details again, or contact the provider."],
     ["DETAILS_RETURNED_UNEXPLAINED", "detailsReturnedUnexplained", "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."],
     ["DETAILS_PROCESSING_TITLE", "detailsProcessingTitle", "Your details were not saved"],
     ["DETAILS_PROCESSING_BODY", "detailsProcessingBody", "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."],
-    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."],
+    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. What is filled in for you comes from your account. Check it, complete the rest and send your details again."],
     ["RETURNED_MISSING", "returnedMissing", "This was missing from the details you sent."],
     ["RETURNED_UNCONFIRMED", "returnedUnconfirmed", "This confirmation was missing from the details you sent."],
     ["RETURNED_CHOICE", "returnedChoice", "The choice you sent was not recognized. Choose one of the options."],
@@ -296,6 +296,14 @@
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
       detailsErrors: "CLIENT_DETAILS_ERRORS",
+    },
+    accountPrefill: {
+      BILLING_ADDRESS: "BILLING_ADDRESS",
+      REPRESENTATIVE_FIRST_NAME: "REPRESENTATIVE_FIRST_NAME",
+      REPRESENTATIVE_LAST_NAME: "REPRESENTATIVE_LAST_NAME",
+      REPRESENTATIVE_JOB_TITLE: "REPRESENTATIVE_JOB_TITLE",
+      REPRESENTATIVE_EMAIL: "REPRESENTATIVE_EMAIL",
+      REPRESENTATIVE_PHONE: "REPRESENTATIVE_PHONE",
     },
     detailsReturn: {
       processingFailed: "PROCESSING_FAILED",
@@ -944,7 +952,12 @@
     return found ? text(found.value) : "";
   }
 
-  function primaryEmail(account) {
+  function accountAttributeText(account, contract, fieldCode) {
+    var codes = contract.accountPrefill;
+    return owns(codes, fieldCode) ? attributeText(account, codes[fieldCode]) : "";
+  }
+
+  function primaryEmail(account, contract) {
     var found = [];
     (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
       if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
@@ -953,7 +966,7 @@
         if (value) found.push(value);
       });
     });
-    return found.length === 1 ? found[0] : "";
+    return found.length === 1 ? found[0] : accountAttributeText(account, contract, "REPRESENTATIVE_EMAIL");
   }
 
   function formatAddress(address, locale) {
@@ -975,7 +988,7 @@
     return billing ? formatAddress(billing.address, locale) : "";
   }
 
-  function detailsPrefill(account, fields, locale) {
+  function detailsPrefill(account, fields, locale, contract) {
     var values = {};
     if (!account || typeof account !== "object") return values;
     var contact = primaryContact(account);
@@ -989,7 +1002,7 @@
     };
     fields.forEach(function (field) {
       if (field.kind === "boolean") return;
-      var value = attributeText(account, field.code) || text(derived[field.code]);
+      var value = accountAttributeText(account, contract, field.code) || text(derived[field.code]);
       if (!value) return;
       if (field.choices.length && !field.choices.some(function (option) { return option.value === value; })) return;
       values[field.code] = value;
@@ -1002,7 +1015,7 @@
     var owner = agreement && agreement[contract.rawShape.documentOwner];
     var contact = primaryContact(account);
     function stated(code) {
-      return attributeText(agreement, code) || attributeText(account, code);
+      return attributeText(agreement, code) || accountAttributeText(account, contract, code);
     }
     var typeField = fields.filter(function (field) { return field.code === "CLIENT_TYPE"; })[0];
     var typeValue = stated("CLIENT_TYPE");
@@ -1259,11 +1272,11 @@
       details: {
         available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
-        prefill: detailsPrefill(account, fields, locale),
+        prefill: detailsPrefill(account, fields, locale, contract),
         returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
-      primaryEmail: primaryEmail(account),
+      primaryEmail: primaryEmail(account, contract),
     };
   }
 
