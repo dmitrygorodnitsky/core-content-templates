@@ -613,7 +613,7 @@ function runtimeScript() {
 })();`;
 }
 
-async function readDesignCss() {
+export async function readDesignCss() {
   const read = async function (file) { return (await fs.readFile(path.join(designRoot, "styles", file), "utf8")).trim(); };
   const [tokens, base, components, shell, seo, responsive, routes] = await Promise.all([
     read("tokens.css"), read("base.css"), read("components.css"), read("shell.css"), read("seo.css"), read("responsive.css"), read("routes.css"),
@@ -690,7 +690,7 @@ function before(source, marker) {
   return source.slice(0, index).trim();
 }
 
-function between(source, startMarker, endMarker) {
+export function between(source, startMarker, endMarker) {
   const start = source.indexOf(startMarker);
   const end = source.indexOf(endMarker, start + startMarker.length);
   if (start < 0 || end < 0 || end <= start) throw new Error("Design CSS markers are missing or out of order: " + startMarker + " -> " + endMarker);
