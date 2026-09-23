@@ -1,5 +1,10 @@
 import { caseVerticalFor } from "../data/case-fixtures.js";
 
+export const SIGNED_OUT_DESTINATIONS = Object.freeze(["sign-in", "landing"]);
+const LANDING_REASON_PARAMETER = "portal";
+export const LANDING_ENTRY_REASONS = Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
+export const ACCOUNT_NO_ACCESS_STATES = Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
+
 export const portalProfiles = {
   onDemand: {
     id: "onDemand",
@@ -211,6 +216,7 @@ export function readPortalConfig(root) {
     logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
     registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
     allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+    signedOutDestination: allowed(dataset.portalSignedOutDestination, SIGNED_OUT_DESTINATIONS, "sign-in"),
     navigation: {
       primary: dataset.portalNavPrimaryLabel || "",
       appointments: dataset.portalNavAppointmentsLabel || "",
@@ -308,6 +314,18 @@ export function configuredExternalUrl(config, key) {
   if (parsed.protocol !== "https:") return "";
   var allowedOrigins = config.allowedNavOrigins || [];
   return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+}
+
+export function landingEntryUrl(config, reason) {
+  var landing = configuredExternalUrl(config, "landingUrl");
+  if (!landing || !reason) return landing;
+  var url = new URL(landing);
+  url.searchParams.set(LANDING_REASON_PARAMETER, reason);
+  return url.href;
+}
+
+export function landingEntryOpen(config) {
+  return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
 }
 
 function safeConfiguredUrl(value) {

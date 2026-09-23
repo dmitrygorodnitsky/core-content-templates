@@ -57,6 +57,12 @@ try {
   assert.equal(dataset["data-portal-auth-callback-path"], coreOidcCallback.callbackPath);
   assert.equal(dataset["data-portal-auth-return-storage-key"], coreOidcCallback.returnStorageKey, "the shared callback page reads this key to return to the portal");
   assert.equal(dataset["data-portal-auth-logout-return-storage-key"], coreOidcCallback.logoutReturnStorageKey);
+  assert.equal(dataset["data-portal-signed-out-destination"], "landing", "the public landing is the portal's anonymous face");
+  assert.equal(dataset["data-portal-landing-url"], "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home");
+  assert.equal(dataset["data-portal-logout-return-url"], dataset["data-portal-landing-url"] + "?portal=signed-out", "Sign out returns to the landing and tells it why");
+  assert.equal(dataset["data-portal-allowed-nav-origins"], "https://dev-1.servicewand.com");
+  assert.deepEqual(manifest.runtime.entry, { signedOutDestination: "landing", landingUrl: source.shell.landingUrl, logoutReturnUrl: source.shell.logoutReturnUrl, allowedNavOrigins: source.shell.allowedNavOrigins });
+  assert.match(readme, /\| signed-out destination \| the landing `https:\/\/dev-1\.servicewand\.com\/pages\/SNOWLIMITLESS\/home` \|/);
   const geography = readServiceGeography(dataset["data-portal-service-geography"]);
   assert.ok(geography, "the runtime must accept the shipped service geography");
   assert.deepEqual(geography, readServiceGeography(JSON.stringify(source.serviceGeography)));
@@ -161,6 +167,15 @@ try {
     ["an Account type list with a space", (s) => { s.account.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER, CUSTOMER"; }, /comma-separated list/],
     ["a lowercase Account type", (s) => { s.account.accountTypeCode = "customer"; }, /upper-snake code/],
     ["an Account type listed twice", (s) => { s.account.accountTypeCode = "CUSTOMER,CUSTOMER"; }, /lists a code twice/],
+    ["an unknown signed-out destination", (s) => { s.shell.signedOutDestination = "elsewhere"; }, /signedOutDestination must be one of sign-in, landing/],
+    ["the landing destination without a landing address", (s) => { delete s.shell.landingUrl; }, /needs shell\.landingUrl/],
+    ["a landing address outside the allowed origins", (s) => { s.shell.landingUrl = "https://www.example.test/home"; }, /landingUrl must sit on an origin listed/],
+    ["a plain-http landing address", (s) => { s.shell.landingUrl = "http://dev-1.servicewand.com/pages/SNOWLIMITLESS/home"; }, /landingUrl must be an absolute https address/],
+    ["a sign-out return that is not the landing", (s) => { s.shell.logoutReturnUrl = "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/portal#/login"; }, /needs shell\.logoutReturnUrl https:\/\/dev-1\.servicewand\.com\/pages\/SNOWLIMITLESS\/home\?portal=signed-out/],
+    ["a sign-out return outside the allowed origins", (s) => { s.shell.signedOutDestination = "sign-in"; s.shell.logoutReturnUrl = "https://www.example.test/bye"; }, /logoutReturnUrl must sit on an origin listed/],
+    ["an allowed origin with a path", (s) => { s.shell.allowedNavOrigins = ["https://dev-1.servicewand.com/pages"]; }, /bare https origins/],
+    ["an empty origin list", (s) => { s.shell.allowedNavOrigins = []; }, /nonempty list of https origins/],
+    ["an origin listed twice", (s) => { s.shell.allowedNavOrigins = ["https://dev-1.servicewand.com", "https://dev-1.servicewand.com"]; }, /lists an origin twice/],
   ];
   for (const [label, mutate, expected] of refusals) {
     const mutated = structuredClone(source);
@@ -171,6 +186,15 @@ try {
   }
   await assert.rejects(exportLivePortalManual({ inputPath, runtimePath: fixtureRuntimePath, outputDir: outputDir + "-refused" }), /Fixture data leaked/, "a fixture bundle must never ship as the live runtime");
   await assert.rejects(exportLivePortalManual({ inputPath, runtimePath, outputDir: path.join(root, "runtime/escaped-package") }), /dist\/manual-upload/);
+
+  const plain = structuredClone(source);
+  for (const key of ["signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"]) delete plain.shell[key];
+  const plainInput = path.join(outputDir, "plain-source.json");
+  await fs.writeFile(plainInput, JSON.stringify(plain));
+  const plainPackage = await exportLivePortalManual({ inputPath: plainInput, runtimePath, outputDir: outputDir + "-plain" });
+  const plainTemplate = JSON.parse(await fs.readFile(path.join(outputDir + "-plain", "root/template.json"), "utf8"));
+  assert.doesNotMatch(plainTemplate.html, /data-portal-(signed-out-destination|landing-url|logout-return-url|allowed-nav-origins)=/, "a source without a landing ships none of its attributes and keeps the sign-in card");
+  assert.equal(plainPackage.manifest.runtime.entry.signedOutDestination, "sign-in");
 
   const growth = portalProfiles.stormRetail.modules.find((id) => !source.runtime.enabledModules.includes(id) && id !== "pricing");
   if (growth) {
@@ -187,6 +211,7 @@ try {
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.rm(outputDir + "-refused", { recursive: true, force: true });
   await fs.rm(outputDir + "-grown", { recursive: true, force: true });
+  await fs.rm(outputDir + "-plain", { recursive: true, force: true });
   await fs.rm(path.join(root, "runtime/escaped-package"), { recursive: true, force: true });
 }
 

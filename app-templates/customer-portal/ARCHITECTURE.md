@@ -86,6 +86,39 @@ The authenticated portal does not contain a second public landing/home page.
 Unauthenticated entry comes from the separately deployed landing or Core Auth;
 the portal resumes at its configured authenticated route.
 
+### The Landing As The Portal's Public Entry
+
+A live root that requires sign-in may make the separately deployed landing its
+anonymous face with `data-portal-signed-out-destination="landing"`. The opt-in
+takes effect only together with a `data-portal-landing-url` on an https origin
+listed in `data-portal-allowed-nav-origins`. Without it, and in every fixture
+root, the portal keeps its sign-in card. With it:
+
+1. A private route whose session check settles signed out replaces itself with
+   the landing (`location.replace`) and adds no reason. Nothing leaves while the
+   check is still running (`checking-session`) or when Core sign-in is
+   `unavailable`, which keeps its retry.
+2. Sign-out returns to the landing with `?portal=signed-out` through
+   `data-portal-logout-return-url`, the existing Core OIDC logout return.
+3. A signed-in User whose customer Account gate ends in `customer-not-linked`,
+   `organization-forbidden` or `customer-forbidden` replaces the page with the
+   landing and `?portal=no-access`, without signing out. The Core Auth session
+   is shared with Core UI on the same origin, and ending it would sign an
+   operator out of the admin too.
+4. `#/login` (`auth.oidc`) remains the explicit sign-in entry and never leaves
+   for the landing. Signed out it shows the sign-in card; signed in with access
+   it continues to the default route; signed in without access it shows the
+   account gate for that state with its Sign out.
+5. `customer-account-ambiguous`, `customer-unavailable` and `session-expired`
+   keep their portal states.
+
+The portal leaves only by rules 1 and 3, only when a session or Account check
+settles, and never from `#/login`. The landing never navigates on its own, and
+its sign-in link enters `#/login`, so the two surfaces cannot redirect each
+other in a cycle. While the opt-in is on, the session check replaces its
+history entry instead of adding one, so Back from the landing goes to the page
+before the portal.
+
 For the current direct-session compatibility flow, an unauthenticated portal
 may send the browser to its tenant CMS login document. Because that raw CMS
 document does not receive Core Auth runtime substitutions, its generated login
@@ -262,7 +295,8 @@ Guard contract:
 
 - Unknown routes resolve deliberately, never to a blank page.
 - Unauthenticated private access goes to `auth.phone` and retains the intended
-  route.
+  route, unless the root makes the landing its public entry (see "The Landing
+  As The Portal's Public Entry").
 - Disabled modules do not appear in navigation. Direct access renders a clear
   disabled state or the configured reachable default, except Care entitlement
   failures, which use the accepted Care gate described below.

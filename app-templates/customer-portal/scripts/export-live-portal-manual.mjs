@@ -49,7 +49,7 @@ const runtimeKeys = ["vertical", "theme", "profile", "routerMode", "defaultRoute
 const accountKeys = ["organization", "accountTypeCode", "coreApiBase", "accountApiBase", "billApiBase", "resourceApiBase", "serviceApiBase"];
 const requiredAccountBases = ["coreApiBase", "accountApiBase"];
 const authKeys = ["coreBase", "callbackPath", "returnStorageKey", "logoutReturnStorageKey"];
-const shellKeys = ["experienceId", "brandName", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl"];
+const shellKeys = ["experienceId", "brandName", "defaultMode", "primaryCtaLabel", "navigation", "requestFormUrl", "signedOutDestination", "landingUrl", "logoutReturnUrl", "allowedNavOrigins"];
 const navigationKeys = ["primary", "appointments", "calendar", "activity", "care", "proposals", "services", "pricing", "products", "account", "support"];
 
 const credentialShapes = [
@@ -106,7 +106,7 @@ async function validateSource(source) {
   assertAuthContract(source.auth);
   assertAccountContract(source.account);
 
-  const { portalProfiles, readServiceGeography, resolveProfile, routeRegistry, verticalProfiles } = await import(pathToFileURL(path.join(portalRoot, "runtime/src/config.js")).href);
+  const { LANDING_ENTRY_REASONS, SIGNED_OUT_DESTINATIONS, landingEntryUrl, portalProfiles, readServiceGeography, resolveProfile, routeRegistry, verticalProfiles } = await import(pathToFileURL(path.join(portalRoot, "runtime/src/config.js")).href);
   if (!verticalProfiles[runtime.vertical]) throw new Error("Unknown vertical " + runtime.vertical);
   if (!verticalProfiles[runtime.theme]) throw new Error("Unknown theme " + runtime.theme);
   const profile = portalProfiles[runtime.profile];
@@ -133,7 +133,37 @@ async function validateSource(source) {
   for (const key of navigationKeys) assertOptionalText((shell.navigation || {})[key], "shell.navigation." + key);
   if (shell.defaultMode !== undefined && !["light", "dark"].includes(shell.defaultMode)) throw new Error("shell.defaultMode must be light or dark");
   if (shell.requestFormUrl !== undefined && !isHttpsUrl(shell.requestFormUrl)) throw new Error("shell.requestFormUrl must be an absolute https address");
+  assertEntryContract(shell, { LANDING_ENTRY_REASONS, SIGNED_OUT_DESTINATIONS, landingEntryUrl });
   return geography;
+}
+
+function assertEntryContract(shell, configModule) {
+  const origins = shell.allowedNavOrigins;
+  if (origins !== undefined) {
+    if (!Array.isArray(origins) || !origins.length) throw new Error("shell.allowedNavOrigins must be a nonempty list of https origins");
+    for (const origin of origins) {
+      if (!isHttpsUrl(origin) || new URL(origin).origin !== origin) throw new Error("shell.allowedNavOrigins must list bare https origins, got " + JSON.stringify(origin));
+    }
+    if (new Set(origins).size !== origins.length) throw new Error("shell.allowedNavOrigins lists an origin twice");
+  }
+  for (const key of ["landingUrl", "logoutReturnUrl"]) {
+    if (shell[key] === undefined) continue;
+    if (!isHttpsUrl(shell[key])) throw new Error("shell." + key + " must be an absolute https address");
+    if (!(origins || []).includes(new URL(shell[key]).origin)) {
+      throw new Error("shell." + key + " must sit on an origin listed in shell.allowedNavOrigins; the runtime refuses any other destination");
+    }
+  }
+  const destination = shell.signedOutDestination;
+  if (destination === undefined) return;
+  if (!configModule.SIGNED_OUT_DESTINATIONS.includes(destination)) {
+    throw new Error("shell.signedOutDestination must be one of " + configModule.SIGNED_OUT_DESTINATIONS.join(", "));
+  }
+  if (destination !== "landing") return;
+  if (shell.landingUrl === undefined) throw new Error("shell.signedOutDestination landing needs shell.landingUrl, or the runtime keeps the sign-in card");
+  const signedOutReturn = configModule.landingEntryUrl({ landingUrl: shell.landingUrl, allowedNavOrigins: origins }, configModule.LANDING_ENTRY_REASONS.signedOut);
+  if (shell.logoutReturnUrl !== signedOutReturn) {
+    throw new Error("shell.signedOutDestination landing needs shell.logoutReturnUrl " + signedOutReturn + ", so Sign out returns to the landing and says so");
+  }
 }
 
 function assertAuthContract(auth) {
@@ -249,6 +279,10 @@ function templateFor(source, geography, css, javascript) {
     "data-portal-auth-callback-path": auth.callbackPath,
     "data-portal-auth-return-storage-key": auth.returnStorageKey,
     "data-portal-auth-logout-return-storage-key": auth.logoutReturnStorageKey,
+    "data-portal-signed-out-destination": shell.signedOutDestination,
+    "data-portal-landing-url": shell.landingUrl,
+    "data-portal-logout-return-url": shell.logoutReturnUrl,
+    "data-portal-allowed-nav-origins": shell.allowedNavOrigins ? shell.allowedNavOrigins.join(",") : undefined,
   });
   const emitted = Object.fromEntries(Object.entries(attributes).filter(([, value]) => value !== undefined));
   return {
@@ -353,8 +387,18 @@ function manifestFor(sourcePath, source, geography, template) {
       auth: Object.assign({ flow: "oidc-authorization-code-pkce" }, source.auth),
       account: source.account,
       serviceGeography: geography,
+      entry: entryFor(source.shell || {}),
     },
     constraints: source.constraints,
+  };
+}
+
+function entryFor(shell) {
+  return {
+    signedOutDestination: shell.signedOutDestination || "sign-in",
+    landingUrl: shell.landingUrl || null,
+    logoutReturnUrl: shell.logoutReturnUrl || null,
+    allowedNavOrigins: shell.allowedNavOrigins || [],
   };
 }
 
@@ -393,6 +437,7 @@ function readme(source, template, manifest) {
     "| organization | `" + account.organization + "` |",
     "| customer Account types | " + account.accountTypeCode.split(",").map((code) => "`" + code + "`").join(", ") + " |",
     "| enabled modules | " + source.runtime.enabledModules.map((id) => "`" + id + "`").join(", ") + " |",
+    "| signed-out destination | " + (manifest.runtime.entry.signedOutDestination === "landing" ? "the landing `" + manifest.runtime.entry.landingUrl + "`" : "the portal sign-in card") + " |",
     "| launch state | `" + manifest.launchState + "` |",
     "",
     "## Upload",

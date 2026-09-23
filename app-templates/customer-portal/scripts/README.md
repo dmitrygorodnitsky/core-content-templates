@@ -13,6 +13,7 @@ and operator commands.
 | `portal-manual-package.mjs` | Library, not an entrypoint: the file, style and head mechanics shared by the live and Calm Harbor portal exporters |
 | `upsert-*.mjs` | One operator entrypoint per deliverable: build, export, check, then create-or-update the BlockTemplate by code |
 | `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
+| `export-live-landing-manual.mjs`, `granite-ridge-staging-landing-manual-check.mjs` | Compile and guard a live public landing from a source under `../cms/`: one root template, no children |
 | `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
 | `core-*-adapter-check.mjs`, `pim-adapter-check.mjs` | Deterministic adapter contracts |
 | `core-*-live-check.mjs` | Explicit live staging probes; may create real records |
@@ -22,6 +23,7 @@ and operator commands.
 | `core-snow-live-check.mjs` | Live read-only probe of one customer's properties and quotes on staging |
 | `snow-contracts-check.mjs` | The Contracts package model: the customer-scope order list and agreement document normalized with absent data, grouped by property, with decisions and the rollup |
 | `snow-portal-shell-check.mjs` | The live snow shell: the customer Account gate whatever the module list, no placeholder route and no action without a configured destination, the bell dot, route rewriting, Sign out from the header and the mobile menu, and the spa gates unchanged |
+| `snow-portal-public-entry-check.mjs` | The landing as the snow portal's public entry: every decision over the opt-in, the session and the account gate, and the real boot of `runtime/src` in worker threads against the shipped root — who leaves for the landing and with which reason, who never does, what Sign out stores for the Core callback, and no history entry left behind |
 | `snow-account-profile-check.mjs` | The snow profile: one server-scoped read of the customer Account with its contacts and typed addresses, its normalizer and fixture data, and every page state |
 | `export-client-review-manual.mjs`, `client-review-check.mjs` | Compile and guard the anonymous quotation and agreement review document |
 | `snow-magic-link-mappings.mjs` | Dry-run-first, optimistic-lock guarded update that adds the typed-entity `attributes` bag to the Account, Order and Document grant profiles used by snow client review |
@@ -52,9 +54,11 @@ stub and refuses a bundle that still carries a fixture marker;
 output path. `export-live-portal-manual.mjs` refuses a source that leaves live
 data mode, lacks the Core OIDC or customer Account contract, names a service
 base that is not a same-origin path, enables a module its profile does not own
-or a PIM module without a PIM contract, carries a key it does not ship, or
+or a PIM module without a PIM contract, carries a key it does not ship,
 ships an operator-owned parameter with anything but the `#` placeholder, which
-the runtime reads as not set.
+the runtime reads as not set, or makes the landing its public entry without a
+landing address on an allowed https origin or with a sign-out return other than
+that landing with `?portal=signed-out`.
 
 `upsert-granite-ridge-portal.mjs` chains the four steps for the snow tenant and
 is dry-run by default. `--live` refuses to run without an explicit `--base-url`,
@@ -99,6 +103,28 @@ root as its parent, that every declared parameter is referenced and every
 referenced parameter is declared, that no block calls a backend or names a Core
 service or a deployment host, that the three portal destinations ship empty and
 fail closed, and that the runtime URL guard accepts only absolute https.
+
+`export-live-landing-manual.mjs` is that landing's live counterpart: it
+compiles a source under `../cms/` into one JTE root with no children, because
+the uploader never composes child includes. It refuses a key it does not ship,
+a missing or empty copy value, copy with surrounding whitespace, the `#`
+placeholder or a character CMS would insert unescaped (`<`, `>`, `&`, `"`, a
+backtick, `${` or a control character), a destination that is not an absolute
+https address in canonical form on `https://dev-1.servicewand.com`, an address
+with credentials or a query, a fragment on any address but sign-in, a city
+listed twice, a parameter without a value, and an output outside
+`dist/manual-upload/`. `granite-ridge-staging-landing-manual-check.mjs` rebuilds
+the package in memory and compares it with `../dist/` byte for byte, asserts the
+brand, the three destinations, `noindex,nofollow`, the dropped trust, proof,
+pricing and reviews sections, no forbidden claim or demonstration copy, and the
+same cities as the portal's service geography, runs the runtime in a `vm`
+against stubs of the shipped markup so that only `?portal=signed-out` and
+`?portal=no-access` show a notice and `#` disables its links, and drives every
+exporter refusal. `upsert-granite-ridge-staging-landing.mjs` chains rebuild,
+repackage, that check and the upsert by code through `upload-cms-family.mjs`.
+It is dry-run by default, `--live` refuses to run without an explicit
+`--base-url`, `--skip-build` refuses a package that differs from a fresh build,
+and it never creates or changes a PageContext.
 
 `upsert-portal-form.mjs` chains regenerate, check and upsert for the form
 document and is dry-run by default. Beyond the shared staleness gate it refuses

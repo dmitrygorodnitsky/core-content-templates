@@ -4073,7 +4073,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
 </style>
 </head>
 <body>
-<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Appointments" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url"></section>
+<section id="app" data-portal-experience-id="granite-ridge-snow-staging" data-portal-brand-name="Limitless Snow Removal" data-portal-vertical="snow" data-portal-profile="stormRetail" data-portal-theme="snow" data-portal-default-mode="light" data-portal-router-mode="hash" data-portal-default-route="overview" data-portal-enabled-modules="overview,properties,proposals,profile" data-portal-auth-mode="required" data-portal-error-mode="error" data-portal-data-mode="live" data-portal-primary-cta-label="Request a quote" data-portal-nav-primary-label="Home" data-portal-nav-appointments-label="Appointments" data-portal-nav-calendar-label="Calendar" data-portal-nav-care-label="Season log" data-portal-nav-proposals-label="Contracts" data-portal-nav-support-label="Support" data-portal-request-form-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote" data-portal-weather-client-id="#" data-portal-weather-client-secret="#" data-portal-maps-api-key="#" data-portal-maps-map-id="#" data-portal-service-geography="{&quot;map&quot;:{&quot;center&quot;:{&quot;lat&quot;:49.23,&quot;lon&quot;:-122.98},&quot;zoom&quot;:10},&quot;zones&quot;:{&quot;vancouver&quot;:{&quot;lat&quot;:49.2827,&quot;lon&quot;:-123.1207},&quot;richmond&quot;:{&quot;lat&quot;:49.1666,&quot;lon&quot;:-123.1336},&quot;surrey&quot;:{&quot;lat&quot;:49.1913,&quot;lon&quot;:-122.849},&quot;burnaby&quot;:{&quot;lat&quot;:49.2488,&quot;lon&quot;:-122.9805},&quot;coquitlam&quot;:{&quot;lat&quot;:49.2838,&quot;lon&quot;:-122.7932}}}" data-portal-organization="SNOWLIMITLESS" data-portal-account-type-code="SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER" data-portal-core-api-base="/core" data-portal-account-api-base="/core-acct" data-portal-bill-api-base="/core-bill" data-portal-resource-api-base="/core-rm" data-portal-auth-core-base="/core" data-portal-auth-callback-path="/core/oauth2-callback.html" data-portal-auth-return-storage-key="oidc-return-url" data-portal-auth-logout-return-storage-key="oidc-logout-return-url" data-portal-signed-out-destination="landing" data-portal-landing-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home" data-portal-logout-return-url="https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home?portal=signed-out" data-portal-allowed-nav-origins="https://dev-1.servicewand.com"></section>
 <script>
 (() => {
   var __defProp = Object.defineProperty;
@@ -4786,6 +4786,10 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   }
 
   // app-templates/customer-portal/runtime/src/config.js
+  var SIGNED_OUT_DESTINATIONS = Object.freeze(["sign-in", "landing"]);
+  var LANDING_REASON_PARAMETER = "portal";
+  var LANDING_ENTRY_REASONS = Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
+  var ACCOUNT_NO_ACCESS_STATES = Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
   var portalProfiles = {
     onDemand: {
       id: "onDemand",
@@ -4985,6 +4989,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
       logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
       registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
       allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+      signedOutDestination: allowed(dataset.portalSignedOutDestination, SIGNED_OUT_DESTINATIONS, "sign-in"),
       navigation: {
         primary: dataset.portalNavPrimaryLabel || "",
         appointments: dataset.portalNavAppointmentsLabel || "",
@@ -5083,6 +5088,16 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (parsed.protocol !== "https:") return "";
     var allowedOrigins = config.allowedNavOrigins || [];
     return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+  }
+  function landingEntryUrl(config, reason) {
+    var landing = configuredExternalUrl(config, "landingUrl");
+    if (!landing || !reason) return landing;
+    var url = new URL(landing);
+    url.searchParams.set(LANDING_REASON_PARAMETER, reason);
+    return url.href;
+  }
+  function landingEntryOpen(config) {
+    return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
   }
   function safeConfiguredUrl(value) {
     if (!value) return "";
@@ -17984,6 +17999,11 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     return { id: requested, reason };
   }
+  function publicEntryDestination() {
+    if (!landingEntryOpen(state.config) || !state.session.intendedRoute) return "";
+    if (!state.session.authenticated) return state.oidc === "ready-signed-out" ? landingEntryUrl(state.config) : "";
+    return ACCOUNT_NO_ACCESS_STATES.includes(state.account) ? landingEntryUrl(state.config, LANDING_ENTRY_REASONS.noAccess) : "";
+  }
   function reachableDefaultRoute() {
     if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
     if (isRouteReachable("orders.list")) return "orders.list";
@@ -18052,7 +18072,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     }
     var initial = resolveRoute(routeFromLocation());
     state.route = initial.id;
-    writeRouteToLocation(initial.id);
+    writeRouteToLocation(initial.id, landingEntryOpen(state.config));
   }
   function renderRoute() {
     var resolved = resolveRoute(state.route);
@@ -23127,6 +23147,15 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
   var liveRetryPromise;
   var careTransitionPromise;
   var drawerScroll = 0;
+  var leavingFor = "";
+  function leaveForPublicEntry() {
+    if (leavingFor) return true;
+    var destination2 = publicEntryDestination();
+    if (!destination2) return false;
+    leavingFor = destination2;
+    globalThis.location.replace(destination2);
+    return true;
+  }
   function loadGrantedCareTransition() {
     var envelope2 = state.moduleData.care;
     var granted = state.config.dataMode === "fixture" && state.config.enabledModules.includes("care") && state.session.authenticated === true && state.session.hasCustomerScope === true && state.session.hasTenantScope === true && state.access && state.access.care && state.access.care.status === "granted";
@@ -23143,6 +23172,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     });
   }
   function render() {
+    if (leavingFor) return;
     var root = document.documentElement;
     root.setAttribute("data-theme", state.config.theme);
     root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
@@ -23259,6 +23289,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (!continueToIntendedRoute()) render();
   }
   function continueToIntendedRoute() {
+    if (leaveForPublicEntry()) return true;
     if (!state.session.authenticated || state.account !== "ready") return false;
     var intended = state.session.intendedRoute;
     if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
@@ -23313,6 +23344,7 @@ a.seo-svc, button.seo-svc { display: block; width: 100%; color: var(--ink); font
     if (signingIn) {
       render();
       runtime.loadAsync("auth").then(function() {
+        if (leaveForPublicEntry()) return null;
         render();
         if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
         return null;

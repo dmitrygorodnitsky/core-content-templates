@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
 import { activeProfile, isModuleEnabled, isPublic, isSpa, spaCapability, state } from "./state.js";
-import { customerAccountProfile, matchRoutePath, routePath, routeRegistry } from "./config.js";
+import { ACCOUNT_NO_ACCESS_STATES, LANDING_ENTRY_REASONS, customerAccountProfile, landingEntryOpen, landingEntryUrl, matchRoutePath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
 import { OrderDetail } from "./routes/OrderDetailPage.js";
@@ -86,6 +86,12 @@ export function resolveRoute(routeId) {
   return { id: requested, reason: reason };
 }
 
+export function publicEntryDestination() {
+  if (!landingEntryOpen(state.config) || !state.session.intendedRoute) return "";
+  if (!state.session.authenticated) return state.oidc === "ready-signed-out" ? landingEntryUrl(state.config) : "";
+  return ACCOUNT_NO_ACCESS_STATES.includes(state.account) ? landingEntryUrl(state.config, LANDING_ENTRY_REASONS.noAccess) : "";
+}
+
 function reachableDefaultRoute() {
   if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
   if (isRouteReachable("orders.list")) return "orders.list";
@@ -160,7 +166,7 @@ export function initRouter(onRouteChange) {
   }
   var initial = resolveRoute(routeFromLocation());
   state.route = initial.id;
-  writeRouteToLocation(initial.id);
+  writeRouteToLocation(initial.id, landingEntryOpen(state.config));
 }
 
 export function renderRoute() {

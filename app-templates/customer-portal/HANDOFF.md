@@ -1,6 +1,6 @@
 # Customer Portal — cross-session handoff
 
-Updated: 2026-09-22
+Updated: 2026-09-23
 
 This is the canonical resume checkpoint for the customer portal work: the Calm
 Harbor spa tenant, the Granite Ridge snow tenant, the universal form document,
@@ -489,6 +489,8 @@ and every decision taken where it is silent.
 | portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `granite-ridge-portal-manual-check.mjs` |
 | live portal package | `cms/granite-ridge-snow.customer-portal-staging.json` | dev-1 `/pages/SNOWLIMITLESS/portal` | `granite-ridge-staging-portal-manual-check.mjs` |
 | live Contracts and profile | `runtime/src/adapters/core-snow-adapter.js`, `runtime/src/contract-commands.js`, `runtime/src/adapters/core-account-profile-adapter.js` | same entry | `snow-contracts-live-check.mjs`, `snow-account-profile-check.mjs`, `snow-portal-shell-check.mjs` |
+| landing as the portal's public entry | `shell.signedOutDestination` and the landing addresses in `cms/granite-ridge-snow.customer-portal-staging.json`; `publicEntryDestination` in `runtime/src/router.js`, the boot in `runtime/src/app.js` | same entry | `snow-portal-public-entry-check.mjs`, `granite-ridge-staging-portal-manual-check.mjs` |
+| live landing package | `cms/granite-ridge-snow.landing-staging.json`, exported by `scripts/export-live-landing-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing-staging/preview.html`; dev-1 `/pages/SNOWLIMITLESS/home` once published | `granite-ridge-staging-landing-manual-check.mjs` |
 | client review document | `runtime/client-review/` | `runtime/client-review.html` | `client-review-check.mjs` |
 | quote form document | `runtime/forms/portal-form.js` | `runtime/portal-form.html` | `portal-form-check.mjs` |
 | landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `granite-ridge-landing-manual-check.mjs` |
@@ -1081,6 +1083,47 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
   PageContext 22's values, because every upload writes `#` back into the
   template.
 - **Portal link:** the review page's `PORTAL_URL` points at the portal.
+- **The public landing as its anonymous face** (built 2026-09-23, not live).
+  The live source sets `shell.signedOutDestination` to `landing`, `landingUrl`
+  to `https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home`,
+  `logoutReturnUrl` to that address with `?portal=signed-out`, and
+  `allowedNavOrigins` to `https://dev-1.servicewand.com`. The exporter refuses
+  the setting without a landing address on an allowed origin, or with any other
+  sign-out return. The rules are in `ARCHITECTURE.md`, "The Landing As The
+  Portal's Public Entry": a signed-out visit to a private route replaces itself
+  with the landing; sign-out returns there with `?portal=signed-out`;
+  `customer-not-linked`, `organization-forbidden` and `customer-forbidden`
+  replace the page with `?portal=no-access` without signing out; `#/login`
+  never leaves, and the landing's Sign in enters it. Headless Chrome drove the
+  exported package through every rule on 2026-09-23 with Core stubbed and the
+  real callback page's code.
+- **Core's callback honours the logout return.** Read anonymously on
+  2026-09-23 (`x-node-id` `app-2-core`, last modified 2026-09-22):
+  `/core/oauth2-callback.html` takes its logout branch when `sessionStorage`
+  holds `oidc-logout-return-url` and the address carries no `code`. It removes
+  that key and every `oidc.user:*` entry in `localStorage`, then
+  `location.replace`s to the stored address, query included. It does not check
+  that address's origin; the portal checks it before storing it.
+- **Publication is pending, in this order.** Re-uploading the portal while the
+  landing answers 404 would send every signed-out visitor to a missing page.
+  1. Upload the landing `CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING` with
+     `upsert-granite-ridge-staging-landing.mjs`. It is a single root template
+     with no children, because the uploader never composes child includes.
+  2. Create the SNOWLIMITLESS PageContext `home` for it, so
+     `/pages/SNOWLIMITLESS/home` answers 200; it answered 404 on 2026-09-23.
+     A one-off script outside the repository creates it: it saves url
+     `/pages/SNOWLIMITLESS/home`, `excludeFromSeo: true`, organization 7
+     (`SERVICEWAND`) as for PageContexts 17, 21 and 22, and the landing
+     template. CMS creates it only while every template parameter holds a
+     value.
+  3. Re-upload the portal to its template, then fetch it several times for
+     trap 12:
+
+     ```bash
+     SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 3e57675e-c967-47b2-9501-9235830f3bc3 --require-existing --live
+     ```
+- Pressing Back onto `#/login` while signed in with access shows an empty
+  sign-in card. That predates the landing and affects every portal.
 
 The fixture package must stay as it is: `granite-ridge-portal-manual-check`
 refuses a service base, an auth contract or live data mode in it, and that

@@ -5,7 +5,7 @@ import { readPortalConfig } from "./config.js";
 import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalAccessRequired, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
 import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
-import { initRouter, renderRoute } from "./router.js";
+import { initRouter, publicEntryDestination, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { InlineFailure } from "./components/primitives/RouteStates.js";
@@ -63,6 +63,16 @@ export function BookingDrawer() {
    ========================================================= */
 var mount, shell, resizeObs, runtime, liveRetryPromise, careTransitionPromise;
 var drawerScroll = 0;
+var leavingFor = "";
+
+function leaveForPublicEntry() {
+  if (leavingFor) return true;
+  var destination = publicEntryDestination();
+  if (!destination) return false;
+  leavingFor = destination;
+  globalThis.location.replace(destination);
+  return true;
+}
 
 function loadGrantedCareTransition() {
   var envelope = state.moduleData.care;
@@ -87,6 +97,7 @@ function loadGrantedCareTransition() {
 }
 
 export function render() {
+  if (leavingFor) return;
   /* theming: declarative attributes only */
   var root = document.documentElement;
   root.setAttribute("data-theme", state.config.theme);
@@ -210,6 +221,7 @@ function resumeIntendedRoute() {
 }
 
 function continueToIntendedRoute() {
+  if (leaveForPublicEntry()) return true;
   if (!state.session.authenticated || state.account !== "ready") return false;
   var intended = state.session.intendedRoute;
   if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
@@ -269,6 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (signingIn) {
     render();
     runtime.loadAsync("auth").then(function () {
+      if (leaveForPublicEntry()) return null;
       render();
       if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
       return null;

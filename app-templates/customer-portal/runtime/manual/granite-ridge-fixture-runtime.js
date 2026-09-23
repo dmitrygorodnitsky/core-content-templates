@@ -2944,6 +2944,10 @@
   }
 
   // app-templates/customer-portal/runtime/src/config.js
+  var SIGNED_OUT_DESTINATIONS = Object.freeze(["sign-in", "landing"]);
+  var LANDING_REASON_PARAMETER = "portal";
+  var LANDING_ENTRY_REASONS = Object.freeze({ signedOut: "signed-out", noAccess: "no-access" });
+  var ACCOUNT_NO_ACCESS_STATES = Object.freeze(["customer-not-linked", "organization-forbidden", "customer-forbidden"]);
   var portalProfiles = {
     onDemand: {
       id: "onDemand",
@@ -3143,6 +3147,7 @@
       logoutReturnUrl: safeConfiguredUrl(dataset.portalLogoutReturnUrl),
       registrationUrl: safeConfiguredUrl(dataset.portalRegistrationUrl),
       allowedNavOrigins: splitList(dataset.portalAllowedNavOrigins),
+      signedOutDestination: allowed(dataset.portalSignedOutDestination, SIGNED_OUT_DESTINATIONS, "sign-in"),
       navigation: {
         primary: dataset.portalNavPrimaryLabel || "",
         appointments: dataset.portalNavAppointmentsLabel || "",
@@ -3241,6 +3246,16 @@
     if (parsed.protocol !== "https:") return "";
     var allowedOrigins = config.allowedNavOrigins || [];
     return allowedOrigins.includes(parsed.origin) ? parsed.href : "";
+  }
+  function landingEntryUrl(config, reason) {
+    var landing = configuredExternalUrl(config, "landingUrl");
+    if (!landing || !reason) return landing;
+    var url = new URL(landing);
+    url.searchParams.set(LANDING_REASON_PARAMETER, reason);
+    return url.href;
+  }
+  function landingEntryOpen(config) {
+    return !!config && config.signedOutDestination === "landing" && customerAccountRequired(config) && !!landingEntryUrl(config);
   }
   function safeConfiguredUrl(value) {
     if (!value) return "";
@@ -16645,6 +16660,11 @@
     }
     return { id: requested, reason };
   }
+  function publicEntryDestination() {
+    if (!landingEntryOpen(state.config) || !state.session.intendedRoute) return "";
+    if (!state.session.authenticated) return state.oidc === "ready-signed-out" ? landingEntryUrl(state.config) : "";
+    return ACCOUNT_NO_ACCESS_STATES.includes(state.account) ? landingEntryUrl(state.config, LANDING_ENTRY_REASONS.noAccess) : "";
+  }
   function reachableDefaultRoute() {
     if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
     if (isRouteReachable("orders.list")) return "orders.list";
@@ -16713,7 +16733,7 @@
     }
     var initial = resolveRoute(routeFromLocation());
     state.route = initial.id;
-    writeRouteToLocation(initial.id);
+    writeRouteToLocation(initial.id, landingEntryOpen(state.config));
   }
   function renderRoute() {
     var resolved = resolveRoute(state.route);
@@ -21788,6 +21808,15 @@
   var liveRetryPromise;
   var careTransitionPromise;
   var drawerScroll = 0;
+  var leavingFor = "";
+  function leaveForPublicEntry() {
+    if (leavingFor) return true;
+    var destination2 = publicEntryDestination();
+    if (!destination2) return false;
+    leavingFor = destination2;
+    globalThis.location.replace(destination2);
+    return true;
+  }
   function loadGrantedCareTransition() {
     var envelope2 = state.moduleData.care;
     var granted = state.config.dataMode === "fixture" && state.config.enabledModules.includes("care") && state.session.authenticated === true && state.session.hasCustomerScope === true && state.session.hasTenantScope === true && state.access && state.access.care && state.access.care.status === "granted";
@@ -21804,6 +21833,7 @@
     });
   }
   function render() {
+    if (leavingFor) return;
     var root = document.documentElement;
     root.setAttribute("data-theme", state.config.theme);
     root.setAttribute("data-mode", state.mode === "Dark" ? "dark" : "light");
@@ -21920,6 +21950,7 @@
     if (!continueToIntendedRoute()) render();
   }
   function continueToIntendedRoute() {
+    if (leaveForPublicEntry()) return true;
     if (!state.session.authenticated || state.account !== "ready") return false;
     var intended = state.session.intendedRoute;
     if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
@@ -21974,6 +22005,7 @@
     if (signingIn) {
       render();
       runtime.loadAsync("auth").then(function() {
+        if (leaveForPublicEntry()) return null;
         render();
         if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
         return null;

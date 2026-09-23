@@ -19,6 +19,7 @@ const staging = {
     "granite-ridge-staging-portal-manual-check.mjs",
     "core-account-adapter-check.mjs",
     "snow-portal-shell-check.mjs",
+    "snow-portal-public-entry-check.mjs",
     "snow-account-profile-check.mjs",
     "snow-contracts-check.mjs",
     "core-snow-adapter-check.mjs",
