@@ -8157,6 +8157,12 @@
     }
     return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
   }
+  function storedCoreOidcUser() {
+    if (!manager) return Promise.resolve(null);
+    return manager.getUser().then(function(user) {
+      return user && !user.expired ? user : null;
+    });
+  }
   function startCoreOidcSignIn(config) {
     if (!manager) return Promise.reject(contractError5("oidc-manager-unavailable", "Core sign-in is not ready"));
     var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
@@ -14676,6 +14682,7 @@
     else if (s === "ready-signed-out") card.appendChild(OidcSignedOut());
     else if (s === "redirecting") card.appendChild(OidcProgress("redirecting", "Taking you to secure sign-in\u2026", "This page is leaving for the secure account service. You\u2019ll come back here automatically \u2014 no need to do anything."));
     else if (s === "unavailable") card.appendChild(OidcUnavailable());
+    else if (s === "ready-signed-in") card.appendChild(OidcSignedIn());
     else if (s === "signing-out") card.appendChild(OidcProgress("signing-out", "Signing you out\u2026", "Finishing sign-out with the secure account service. One moment."));
     grid.appendChild(card);
     page.appendChild(grid);
@@ -14696,6 +14703,16 @@
       ]),
       ActionButton({ variant: "btn--primary", label: "Continue to secure sign-in", action: "auth.oidcSignIn", block: true, lg: true, visualId: "oidc-signin" }),
       h("div", { "class": "oidc-note" }, "By continuing you agree to our Terms & Privacy Policy.")
+    ]);
+  }
+  function OidcSignedIn() {
+    return h("div", { "data-state": "ready-signed-in" }, [
+      h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]),
+      h("div", { "class": "oidc-title" }, "You\u2019re signed in"),
+      h("div", { "class": "oidc-sub" }, "You can go straight to your account."),
+      h("div", { "class": "oidc-actions" }, [
+        ActionButton({ variant: "btn--primary", label: "Open the portal", action: "nav.go", id: state.config.defaultRoute, block: true, lg: true, visualId: "oidc-open-portal" })
+      ])
     ]);
   }
   function OidcProgress(stateName, title, sub) {
@@ -16649,6 +16666,9 @@
       state.session.intendedRoute = requested;
       return { id: "auth.oidc", reason: "unauthorized" };
     }
+    if (requested === "auth.oidc" && signedInWithAccess()) {
+      return { id: defaultRoute, reason: "signed-in" };
+    }
     if (requested === "care" && !isModuleEnabled("care")) {
       return { id: "care", reason: "disabled" };
     }
@@ -16659,6 +16679,9 @@
       return { id: "care", reason: careAccessReason() };
     }
     return { id: requested, reason };
+  }
+  function signedInWithAccess() {
+    return customerPortalAccessRequired() && state.session.authenticated === true && state.account === "ready";
   }
   function publicEntryDestination() {
     if (!landingEntryOpen(state.config) || !state.session.intendedRoute) return "";
@@ -16733,7 +16756,7 @@
     }
     var initial = resolveRoute(routeFromLocation());
     state.route = initial.id;
-    writeRouteToLocation(initial.id, landingEntryOpen(state.config));
+    writeRouteToLocation(initial.id, true);
   }
   function renderRoute() {
     var resolved = resolveRoute(state.route);
@@ -18550,7 +18573,7 @@
     Object.assign(state, patch);
     render();
   }
-  function go(route) {
+  function go(route, replace) {
     var resolved = resolveRoute(route);
     state.route = resolved.id;
     state.mobileNav = false;
@@ -18561,7 +18584,7 @@
       state.spaBookAck = false;
       state.spaNote = "";
     }
-    writeRouteToLocation(resolved.id);
+    writeRouteToLocation(resolved.id, replace);
     render();
   }
   function openOrder(id) {
@@ -21809,6 +21832,7 @@
   var careTransitionPromise;
   var drawerScroll = 0;
   var leavingFor = "";
+  var SETTLED_SIGN_IN_STATES = ["ready-signed-out", "ready-signed-in", "unavailable"];
   function leaveForPublicEntry() {
     if (leavingFor) return true;
     var destination2 = publicEntryDestination();
@@ -21956,8 +21980,20 @@
     if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
     if (!intended) return false;
     state.session.intendedRoute = null;
-    go(intended);
+    go(intended, true);
     return true;
+  }
+  function recheckRestoredSession(event) {
+    if (!event || !event.persisted || !customerPortalAccessRequired()) return;
+    if (leavingFor || !SETTLED_SIGN_IN_STATES.includes(state.oidc) || state.account === "resolving-customer") {
+      globalThis.location.reload();
+      return;
+    }
+    storedCoreOidcUser().then(function(user) {
+      if ((user && user.access_token || "") !== (state.session.accessToken || "")) globalThis.location.reload();
+    }, function() {
+      globalThis.location.reload();
+    });
   }
   function invalidateCareRuntime() {
     if (!runtime) return null;
@@ -21996,6 +22032,7 @@
     var loaded = runtime.loadAllAsync();
     initRouter(render);
     bindActions(mount);
+    globalThis.addEventListener("pageshow", recheckRestoredSession);
     var fixture = currentFixture();
     if (state.config.dataMode !== "live") {
       loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function(live) {

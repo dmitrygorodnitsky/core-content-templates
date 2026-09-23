@@ -3,8 +3,7 @@
 // account service: auth.oidcSignIn starts the redirect, the browser leaves this page
 // and returns to the same /login URL. No password input, API key, access token or
 // customer Account id is ever rendered here. A restored signed-in session is consumed
-// by the Account gate and immediately resumes the intended/default private route; it is
-// deliberately not presented as a standalone "you are signed in" portal page.
+// by the Account gate and immediately resumes the intended/default private route.
 import { h } from "../dom.js";
 import { state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
@@ -27,6 +26,7 @@ export function AuthOidc() {
   else if (s === "ready-signed-out") card.appendChild(OidcSignedOut());
   else if (s === "redirecting") card.appendChild(OidcProgress("redirecting", "Taking you to secure sign-in\u2026", "This page is leaving for the secure account service. You\u2019ll come back here automatically \u2014 no need to do anything."));
   else if (s === "unavailable") card.appendChild(OidcUnavailable());
+  else if (s === "ready-signed-in") card.appendChild(OidcSignedIn());
   else if (s === "signing-out") card.appendChild(OidcProgress("signing-out", "Signing you out\u2026", "Finishing sign-out with the secure account service. One moment."));
 
   grid.appendChild(card);
@@ -50,6 +50,17 @@ function OidcSignedOut() {
     ]),
     ActionButton({ variant: "btn--primary", label: "Continue to secure sign-in", action: "auth.oidcSignIn", block: true, lg: true, visualId: "oidc-signin" }),
     h("div", { "class": "oidc-note" }, "By continuing you agree to our Terms & Privacy Policy.")
+  ]);
+}
+
+function OidcSignedIn() {
+  return h("div", { "data-state": "ready-signed-in" }, [
+    h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph oidc-glyph--ok" }, "\u2713")]),
+    h("div", { "class": "oidc-title" }, "You\u2019re signed in"),
+    h("div", { "class": "oidc-sub" }, "You can go straight to your account."),
+    h("div", { "class": "oidc-actions" }, [
+      ActionButton({ variant: "btn--primary", label: "Open the portal", action: "nav.go", id: state.config.defaultRoute, block: true, lg: true, visualId: "oidc-open-portal" })
+    ])
   ]);
 }
 

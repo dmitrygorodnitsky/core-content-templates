@@ -7,6 +7,7 @@ import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, publicEntryDestination, renderRoute } from "./router.js";
 import { PortalRuntime } from "./portal-runtime.js";
+import { storedCoreOidcUser } from "./adapters/core-oidc-adapter.js";
 import { ActionButton } from "./components/primitives/ActionButton.js";
 import { InlineFailure } from "./components/primitives/RouteStates.js";
 import { SimulationBadge } from "./components/spa/CommerceBits.js";
@@ -64,6 +65,7 @@ export function BookingDrawer() {
 var mount, shell, resizeObs, runtime, liveRetryPromise, careTransitionPromise;
 var drawerScroll = 0;
 var leavingFor = "";
+var SETTLED_SIGN_IN_STATES = ["ready-signed-out", "ready-signed-in", "unavailable"];
 
 function leaveForPublicEntry() {
   if (leavingFor) return true;
@@ -227,8 +229,21 @@ function continueToIntendedRoute() {
   if (!intended && state.route === "auth.oidc") intended = state.config.defaultRoute || "orders.list";
   if (!intended) return false;
   state.session.intendedRoute = null;
-  go(intended);
+  go(intended, true);
   return true;
+}
+
+function recheckRestoredSession(event) {
+  if (!event || !event.persisted || !customerPortalAccessRequired()) return;
+  if (leavingFor || !SETTLED_SIGN_IN_STATES.includes(state.oidc) || state.account === "resolving-customer") {
+    globalThis.location.reload();
+    return;
+  }
+  storedCoreOidcUser().then(function (user) {
+    if ((user && user.access_token || "") !== (state.session.accessToken || "")) globalThis.location.reload();
+  }, function () {
+    globalThis.location.reload();
+  });
 }
 
 export function invalidateCareRuntime() {
@@ -272,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);
+  globalThis.addEventListener("pageshow", recheckRestoredSession);
   var fixture = currentFixture();
   if (state.config.dataMode !== "live") {
     loadLiveWeather(fixture && fixture.overview && fixture.overview.weather, state.config).then(function (live) {

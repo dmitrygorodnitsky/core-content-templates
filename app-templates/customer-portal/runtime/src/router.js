@@ -1,6 +1,6 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
-import { activeProfile, isModuleEnabled, isPublic, isSpa, spaCapability, state } from "./state.js";
+import { activeProfile, customerPortalAccessRequired, isModuleEnabled, isPublic, isSpa, spaCapability, state } from "./state.js";
 import { ACCOUNT_NO_ACCESS_STATES, LANDING_ENTRY_REASONS, customerAccountProfile, landingEntryOpen, landingEntryUrl, matchRoutePath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
@@ -71,6 +71,10 @@ export function resolveRoute(routeId) {
     return { id: "auth.oidc", reason: "unauthorized" };
   }
 
+  if (requested === "auth.oidc" && signedInWithAccess()) {
+    return { id: defaultRoute, reason: "signed-in" };
+  }
+
   if (requested === "care" && !isModuleEnabled("care")) {
     return { id: "care", reason: "disabled" };
   }
@@ -84,6 +88,10 @@ export function resolveRoute(routeId) {
   }
 
   return { id: requested, reason: reason };
+}
+
+function signedInWithAccess() {
+  return customerPortalAccessRequired() && state.session.authenticated === true && state.account === "ready";
 }
 
 export function publicEntryDestination() {
@@ -166,7 +174,7 @@ export function initRouter(onRouteChange) {
   }
   var initial = resolveRoute(routeFromLocation());
   state.route = initial.id;
-  writeRouteToLocation(initial.id, landingEntryOpen(state.config));
+  writeRouteToLocation(initial.id, true);
 }
 
 export function renderRoute() {

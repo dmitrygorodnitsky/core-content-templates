@@ -263,6 +263,31 @@ function configure(dataset, extra = {}) {
 }
 
 {
+  configure(SNOW_LIVE, { portalEnabledModules: "account,overview,properties,proposals,profile" });
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "overview", reason: "signed-in" }, "a signed-in User with access is never kept on the sign-in route");
+  state.account = "resolving-customer";
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "auth.oidc", reason: null }, "while the Account resolves the sign-in route stays, under the checking gate");
+  state.account = "customer-not-linked";
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "auth.oidc", reason: null }, "without access the sign-in route keeps the gate for that state");
+  state.session.authenticated = false;
+  state.account = "session-required";
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "auth.oidc", reason: null }, "signed out, the sign-in route is the sign-in card");
+  configure(SNOW_FIXTURE);
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "auth.oidc", reason: null }, "a portal that signs nobody in keeps its sign-in route reachable");
+  configure(SPA_LIVE);
+  assert.deepEqual(resolveRoute("auth.oidc"), { id: "orders.list", reason: "signed-in" }, "the spa leaves its sign-in route for its own default");
+
+  configure(SNOW_LIVE);
+  state.oidc = "ready-signed-in";
+  const signedIn = one(AuthOidc(), "[data-module=\"core-oidc-auth\"]");
+  assert.equal(signedIn.getAttribute("data-state"), "ready-signed-in");
+  assert.ok(one(signedIn, ".oidc-title").textContent.length > 0, "the signed-in sign-in card is never blank");
+  assert.deepEqual(actions(signedIn), ["nav.go"], "its one action opens the portal");
+  assert.equal(one(signedIn, "[data-visual-id=\"oidc-open-portal\"]").getAttribute("data-id"), "overview", "at the default route");
+  assert.equal(all(signedIn, ".oidc-spinner").length, 0, "and it promises no progress that never comes");
+}
+
+{
   configure(SNOW_LIVE, { portalEnabledModules: "overview,properties" });
   const gates = {};
   const gate = (id) => new Promise((resolve, reject) => { gates[id] = { resolve, reject }; });
@@ -299,7 +324,7 @@ function configure(dataset, extra = {}) {
   assert.deepEqual(settledCalls[settledCalls.length - 1].sort(), ["overview", "properties"]);
 }
 
-console.log("snow-portal-shell-check ok: a live signed-in portal resolves the customer Account whatever its module list says and never exposes the account placeholder, an unexpected Account failure lands on the designed gate, a disabled, unknown or placeholder route is rewritten to the route shown, no header, gate or access-refusal action is rendered without a configured destination, the snow portal speaks of no catalog, the bell shows a dot only for unread items of an Activity source, gate symbols sit on a tile, Sign out is reachable from the header and the mobile menu whenever sign-in is required, the first render never waits for the forecast while every read that settles asks for one more render, and the spa gates keep their accepted actions, copy and glyphs");
+console.log("snow-portal-shell-check ok: a live signed-in portal resolves the customer Account whatever its module list says and never exposes the account placeholder, an unexpected Account failure lands on the designed gate, a disabled, unknown or placeholder route is rewritten to the route shown, no header, gate or access-refusal action is rendered without a configured destination, the snow portal speaks of no catalog, the bell shows a dot only for unread items of an Activity source, gate symbols sit on a tile, Sign out is reachable from the header and the mobile menu whenever sign-in is required, the first render never waits for the forecast while every read that settles asks for one more render, the spa gates keep their accepted actions, copy and glyphs, a signed-in User with access is sent from the sign-in route to the default route while a portal without sign-in keeps it, and the signed-in sign-in card is never blank");
 
 function createDom() {
   class Text {

@@ -115,9 +115,10 @@ root, the portal keeps its sign-in card. With it:
 The portal leaves only by rules 1 and 3, only when a session or Account check
 settles, and never from `#/login`. The landing never navigates on its own, and
 its sign-in link enters `#/login`, so the two surfaces cannot redirect each
-other in a cycle. While the opt-in is on, the session check replaces its
-history entry instead of adding one, so Back from the landing goes to the page
-before the portal.
+other in a cycle. The portal adds no history entry of its own around sign-in
+(see the guard contract), so Back from the landing goes to the page before the
+portal, and Back from the portal after the landing's Sign in goes to the
+landing.
 
 For the current direct-session compatibility flow, an unauthenticated portal
 may send the browser to its tenant CMS login document. Because that raw CMS
@@ -300,6 +301,15 @@ Guard contract:
 - Disabled modules do not appear in navigation. Direct access renders a clear
   disabled state or the configured reachable default, except Care entitlement
   failures, which use the accepted Care gate described below.
+- In a live portal that requires sign-in, a signed-in User with access is
+  never shown the sign-in route: `auth.oidc` resolves to the default route. The
+  portal adds no history entry of its own around sign-in. The session check
+  replaces the requested route's entry, and continuing from the sign-in route to
+  the intended or default route replaces that entry too.
+- A portal page restored from the back/forward cache re-reads its stored Core
+  session. It reloads when it was left while the session or Account was being
+  checked, or during the hand-off to Core sign-in or sign-out, or when the
+  stored session differs from the one it shows. Otherwise it stays as restored.
 - Router modes remain `hash` (CMS default), `history` (only with server path
   fallback), and `memory` (tests/previews).
 - Public SEO production correctness must be provable with the portal script

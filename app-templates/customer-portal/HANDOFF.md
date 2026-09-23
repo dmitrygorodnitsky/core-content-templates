@@ -1136,10 +1136,31 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
   ```bash
   SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-landing.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 21fe079c-db53-4f3a-9b4a-10450a73e385 --require-existing --live
   ```
-- The sign-in card says "By continuing you agree to our Terms & Privacy
-  Policy", and the tenant has no such pages. The copy is still to be decided.
-- Pressing Back onto `#/login` while signed in with access shows an empty
-  sign-in card. That predates the landing and affects every portal.
+- The sign-in card keeps "By continuing you agree to our Terms & Privacy
+  Policy": the user decided on 2026-09-23 to keep the line, and that the Terms
+  and Privacy pages being absent on dev is acceptable.
+- **Back around sign-in** (fixed in the repository on 2026-09-23, not yet
+  uploaded; every portal). The portal adds no history entry of its own around
+  sign-in: the session check and the continue from `#/login` replace their
+  entries. Back after the landing's Sign in returns to the landing. When a
+  signed-in User with access reaches `#/login` again, from an old entry or a
+  typed address, the default route replaces it. While the Account resolves, the
+  checking gate stays; without access, the gate for that state stays. A page
+  restored from the back/forward cache re-reads the stored session. It reloads
+  when it was left mid-check or mid-hand-off to Core sign-in or sign-out, or
+  when its session changed. It therefore never stays on "Taking you to secure
+  sign-in…", and a signed-out User never sees a restored private page. The
+  sign-in card's signed-in state is no longer empty: it says "You're signed in"
+  and offers one action, Open the portal. Only a portal without sign-in can
+  reach it. dev-1 serves the portal and Core's responses `no-store`, so current
+  Chrome reloads the page on Back rather than restoring it. The harness proves
+  a real restore with Chrome for Testing in new headless mode, once Playwright's
+  `--disable-back-forward-cache` is removed; `chrome-headless-shell` never
+  restores. To publish, re-upload the portal:
+
+  ```bash
+  SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 3e57675e-c967-47b2-9501-9235830f3bc3 --require-existing --live
+  ```
 
 The fixture package must stay as it is: `granite-ridge-portal-manual-check`
 refuses a service base, an auth contract or live data mode in it, and that

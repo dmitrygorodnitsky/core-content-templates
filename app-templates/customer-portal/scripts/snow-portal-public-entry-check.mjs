@@ -108,7 +108,7 @@ async function main() {
   assert.deepEqual(initialWrite({}, "#/overview"), { writes: [["replace", "#/login"]], intended: "overview", route: "auth.oidc" }, "with the landing on, the session check never adds a history entry the landing could be trapped behind");
   assert.deepEqual(initialWrite({}, ""), { writes: [["replace", "#/login"]], intended: "overview", route: "auth.oidc" }, "the bare portal address is a private-route visit");
   assert.deepEqual(initialWrite({}, "#/login"), { writes: [], intended: null, route: "auth.oidc" }, "#/login is public, so nothing is intended beyond it");
-  assert.deepEqual(initialWrite({ portalSignedOutDestination: undefined }, "#/overview"), { writes: [["push", "#/login"]], intended: "overview", route: "auth.oidc" }, "with the setting off the router writes history as it always has");
+  assert.deepEqual(initialWrite({ portalSignedOutDestination: undefined }, "#/overview"), { writes: [["replace", "#/login"]], intended: "overview", route: "auth.oidc" }, "every portal replaces the entry while the session is checked, so Back never returns to a route it could not show");
 
   const scenarios = [
     { id: "signed out on a private route", hash: "#/overview", session: "signed-out", replaced: [LANDING], last: "oidc:checking-session", never: ["oidc:ready-signed-out"] },
@@ -122,7 +122,22 @@ async function main() {
     ...NO_ACCESS_STATES.map((gate) => ({ id: gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, replaced: [NO_ACCESS], last: "gate:resolving-customer", never: ["gate:" + gate] })),
     ...["customer-account-ambiguous", "customer-unavailable", "session-expired"].map((gate) => ({ id: gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, replaced: [], last: "gate:" + gate })),
     ...NO_ACCESS_STATES.map((gate) => ({ id: gate + " on #/login", hash: "#/login", session: "signed-in", account: gate, replaced: [], last: "gate:" + gate, actions: ["auth.signOut"] })),
-    { id: "signed in with access on #/login", hash: "#/login", session: "signed-in", account: "ready", replaced: [], last: "route:overview", route: "overview", pushed: "#/overview" },
+    { id: "signed in with access on #/login", hash: "#/login", session: "signed-in", account: "ready", replaced: [], last: "route:overview", route: "overview", writes: [["replace", "#/overview"]] },
+    { id: "signed in with access on a private route", hash: "#/overview", session: "signed-in", account: "ready", replaced: [], last: "route:overview", route: "overview", writes: [["replace", "#/login"], ["replace", "#/overview"]] },
+    { id: "setting off, signed in with access on #/login", hash: "#/login", session: "signed-in", account: "ready", off: true, replaced: [], last: "route:overview", route: "overview", writes: [["replace", "#/overview"]] },
+    { id: "signed in with access, a jump to #/login", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ hash: "#/login" }], replaced: [], last: "route:overview", route: "overview", address: "#/overview", writes: [["replace", "#/login"], ["replace", "#/overview"], ["jump", "#/login"], ["replace", "#/overview"]], neverAfterSteps: ["oidc:ready-signed-in"] },
+    { id: "setting off, a jump to #/login", hash: "#/overview", session: "signed-in", account: "ready", off: true, steps: [{ hash: "#/login" }], replaced: [], last: "route:overview", route: "overview", address: "#/overview", writes: [["replace", "#/login"], ["replace", "#/overview"], ["jump", "#/login"], ["replace", "#/overview"]], neverAfterSteps: ["oidc:ready-signed-in"] },
+    { id: "a jump to #/login while the Account resolves", hash: "#/overview", session: "signed-in", account: "pending", steps: [{ hash: "#/profile" }, { hash: "#/login" }], replaced: [], last: "gate:resolving-customer", address: "#/login", writes: [["replace", "#/login"], ["jump", "#/profile"], ["jump", "#/login"]] },
+    { id: "the Account resolving after a jump to #/login", hash: "#/overview", session: "signed-in", account: "pending", steps: [{ hash: "#/profile" }, { hash: "#/login" }, { release: "account" }], replaced: [], last: "route:overview", route: "overview", address: "#/overview", writes: [["replace", "#/login"], ["jump", "#/profile"], ["jump", "#/login"], ["replace", "#/overview"]] },
+    { id: "customer-not-linked, a jump to #/login", hash: "#/login", session: "signed-in", account: "customer-not-linked", steps: [{ hash: "#/profile" }, { hash: "#/login" }], replaced: [], last: "gate:customer-not-linked", address: "#/login", actions: ["auth.signOut"], writes: [["jump", "#/profile"], ["jump", "#/login"]] },
+    { id: "a page restored while it was leaving for Core sign-in", hash: "#/login", session: "signed-out", steps: [{ click: "oidc-signin" }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a page restored while it was signing out", hash: "#/login", session: "signed-in", account: "customer-not-linked", steps: [{ click: "account-signout" }, { signOutElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1, signedOutTo: SIGNED_OUT_RETURN },
+    { id: "a page restored after its session ended elsewhere", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ signOutElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a signed-in page restored after its stored session expired", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ expireStoredSession: true }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a signed-out page restored after a sign-in elsewhere", hash: "#/login", session: "signed-out", steps: [{ signInElsewhere: true }, { pageshow: true }], replaced: [], reloads: 1 },
+    { id: "a signed-in page restored with the same session", hash: "#/overview", session: "signed-in", account: "ready", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "route:overview" },
+    { id: "a signed-out page restored with no session", hash: "#/login", session: "signed-out", steps: [{ pageshow: true }], replaced: [], reloads: 0, last: "oidc:ready-signed-out" },
+    { id: "a first page load", hash: "#/login", session: "signed-out", steps: [{ click: "oidc-signin" }, { pageshow: false }], replaced: [], reloads: 0, last: "oidc:redirecting" },
     { id: "sign-out from the no-access gate", hash: "#/login", session: "signed-in", account: "customer-not-linked", click: "account-signout", replaced: [], signedOutTo: SIGNED_OUT_RETURN },
     { id: "setting off, signed out on a private route", hash: "#/overview", session: "signed-out", off: true, replaced: [], last: "oidc:ready-signed-out" },
     ...NO_ACCESS_STATES.map((gate) => ({ id: "setting off, " + gate + " on a private route", hash: "#/overview", session: "signed-in", account: gate, off: true, replaced: [], last: "gate:" + gate })),
@@ -142,7 +157,12 @@ async function main() {
     for (const card of scenario.never || []) assert.equal(result.cards.includes(card), false, label + ": " + card + " never renders before leaving");
     if (scenario.actions) assert.deepEqual(result.actions, scenario.actions, label + ": the actions on the card");
     if (scenario.route) assert.equal(result.route, scenario.route, label + ": the route it continues to");
-    if (scenario.pushed) assert.deepEqual(result.history[result.history.length - 1], ["push", scenario.pushed], label + ": continues as it always has");
+    if (scenario.writes) assert.deepEqual(result.history, scenario.writes, label + ": history writes");
+    assert.equal(result.history.some(([kind]) => kind === "push"), false, label + ": the portal pushes no history entry of its own");
+    if (scenario.address) assert.equal(result.address, scenario.address, label + ": the address it ends on");
+    for (const card of scenario.neverAfterSteps || []) assert.equal(result.cardsAfterSteps.includes(card), false, label + ": " + card + " never renders after the jump");
+    assert.equal(result.cardsAfterSteps.includes("oidc:ready-signed-in"), false, label + ": no signed-in sign-in card");
+    assert.equal(result.reloads, scenario.reloads || 0, label + ": reloads");
     if (scenario.signedOutTo) {
       assert.equal(result.calls.signoutRedirect, 1, label + ": Core sign-out starts once");
       assert.equal(result.logoutReturn, scenario.signedOutTo, label + ": the shared Core callback finds the landing with the signed-out reason");
@@ -157,7 +177,7 @@ async function main() {
   }
 
   console.log("snow-portal-public-entry-check ok: " + decisions + " decisions over the opt-in, the session and the account gate, and " + scenarios.length
-    + " boots of runtime/src against the shipped root. A private route that settles signed out replaces itself with the landing; customer-not-linked, organization-forbidden and customer-forbidden replace it with ?portal=no-access without signing out; the session check, an unavailable sign-in, #/login, the ambiguous, unavailable and expired gates, and the setting off never leave; Sign out stores the landing with ?portal=signed-out for the shared Core callback; and the session check adds no history entry");
+    + " boots of runtime/src against the shipped root. A private route that settles signed out replaces itself with the landing; customer-not-linked, organization-forbidden and customer-forbidden replace it with ?portal=no-access without signing out; the session check, an unavailable sign-in, #/login, the ambiguous, unavailable and expired gates, and the setting off never leave; Sign out stores the landing with ?portal=signed-out for the shared Core callback. With or without the landing, the portal pushes no history entry of its own around sign-in: the session check and the continue from #/login replace theirs, a jump to #/login while signed in with access shows the default route in place, and never the signed-in sign-in card; the Account still resolving keeps the checking gate and a missing access keeps its gate. A page restored from the back/forward cache reloads when it was leaving for Core sign-in or sign-out, or when its session changed, and stays when it did not");
 }
 
 function runWorker(file, data) {
@@ -184,6 +204,17 @@ async function boot({ scenario, runtimeRoot, dataset }) {
     browser.click(scenario.click);
     await browser.settle();
   }
+  const cardsBeforeSteps = browser.cards.length;
+  for (const step of scenario.steps || []) {
+    if (step.click) browser.click(step.click);
+    if (step.hash) browser.jump(step.hash);
+    if (step.signOutElsewhere) browser.session.user = null;
+    if (step.signInElsewhere) browser.session.user = signedInUser();
+    if (step.expireStoredSession) browser.session.user = Object.assign(signedInUser(), { expired: true });
+    if (step.release) browser.release(step.release);
+    if (step.pageshow !== undefined) browser.pageshow(step.pageshow);
+    await browser.settle();
+  }
   const state = globalThis.AircovePortal.state;
   parentPort.postMessage({
     replaced: browser.replaced,
@@ -193,6 +224,9 @@ async function boot({ scenario, runtimeRoot, dataset }) {
     rendersAfterLeaving: browser.rendersAfterLeaving(),
     actions: browser.cardActions(),
     route: state.route,
+    address: globalThis.location.hash,
+    cardsAfterSteps: browser.cards.slice(cardsBeforeSteps),
+    reloads: browser.reloads.length,
     calls: browser.calls,
     logoutReturn: browser.sessionStorage.getItem("oidc-logout-return-url"),
     errors: browser.errors,
@@ -221,7 +255,10 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
   const history = [];
   const cards = [];
   const errors = [];
+  const reloads = [];
   const calls = { signoutRedirect: 0, removeUser: 0, signinRedirect: 0 };
+  const session = { user: scenario.session === "signed-in" ? signedInUser() : null };
+  const pending = {};
   let renders = 0;
   let rendersAtLeave = null;
   const document = createDocument();
@@ -246,6 +283,7 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
     get href() { return PORTAL_ORIGIN + PORTAL_PATH + this.hash; },
     replace(url) { replaced.push(url); if (rendersAtLeave === null) rendersAtLeave = renders; },
     assign(url) { assigned.push(url); },
+    reload() { reloads.push(this.href); },
   };
   const memoryStorage = () => {
     const values = new Map();
@@ -268,13 +306,20 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
     requestAnimationFrame: (callback) => setTimeout(callback, 0),
     addEventListener: (type, listener) => { windowListeners[type] = listener; },
     removeEventListener: () => {},
-    fetch: coreFetch(scenario),
+    fetch: coreFetch(scenario, pending),
   });
   if (scenario.oidcLibrary === false) delete globalThis.oidc;
-  else globalThis.oidc = oidcLibrary(scenario, calls);
+  else globalThis.oidc = oidcLibrary(session, calls);
 
   return {
-    document, replaced, assigned, history, cards, errors, calls, sessionStorage,
+    document, replaced, assigned, history, cards, errors, calls, sessionStorage, reloads, session,
+    jump(hash) {
+      history.push(["jump", hash]);
+      location.hash = hash;
+      windowListeners.hashchange({ type: "hashchange" });
+    },
+    pageshow(persisted) { windowListeners.pageshow({ type: "pageshow", persisted }); },
+    release(name) { pending[name](); },
     rendersAfterLeaving: () => (rendersAtLeave === null ? 0 : renders - rendersAtLeave),
     cardActions() {
       const card = mount.querySelector('[data-module="core-oidc-auth"]') || mount.querySelector('[data-module="account-bootstrap"]');
@@ -291,12 +336,15 @@ function installBrowser({ hash, dataset = {}, scenario = {} }) {
   };
 }
 
-function oidcLibrary(scenario, calls) {
-  const user = scenario.session === "signed-in" ? { access_token: "stub-access-token", token_type: "Bearer", expired: false, profile: { name: "Jordan Lee" } } : null;
+function signedInUser() {
+  return { access_token: "stub-access-token", token_type: "Bearer", expired: false, profile: { name: "Jordan Lee" } };
+}
+
+function oidcLibrary(session, calls) {
   return {
     WebStorageStateStore: class { constructor(options) { this.options = options; } },
     UserManager: class {
-      async getUser() { return user; }
+      async getUser() { return session.user; }
       async removeUser() { calls.removeUser += 1; }
       async signinRedirect() { calls.signinRedirect += 1; }
       async signoutRedirect() { calls.signoutRedirect += 1; }
@@ -304,7 +352,7 @@ function oidcLibrary(scenario, calls) {
   };
 }
 
-function coreFetch(scenario) {
+function coreFetch(scenario, pending) {
   let discoveryFailures = 0;
   const reply = (status, body) => Promise.resolve({ ok: status >= 200 && status < 300, status, headers: { get: () => null }, json: async () => body, text: async () => JSON.stringify(body) });
   const account = (id) => ({ id, code: "CUST-" + id, nls: { en: { NAME: "Harbourview Strata Council" } }, optimistic: 3, user: { id: 7001 }, type: { id: 5, code: "SNOW_RESIDENTIAL_CUSTOMER" }, attributes: {} });
@@ -322,6 +370,7 @@ function coreFetch(scenario) {
       return reply(200, { authenticatedUserId: 7001, authenticatedUserName: "Jordan Lee", authorizedOrganizations: organizations.map((code, index) => ({ id: 43 + index, code })) });
     }
     if (url.pathname === "/core-acct/api/account/list.json") {
+      if (scenario.account === "pending" && !pending.account) return new Promise((resolve) => { pending.account = () => resolve(reply(200, { resultSize: 1, result: [account(5001)] })); });
       if (scenario.account === "customer-forbidden") return reply(403, {});
       if (scenario.account === "customer-unavailable") return reply(500, {});
       if (scenario.account === "customer-not-linked") return reply(200, { resultSize: 0, result: [] });

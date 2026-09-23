@@ -1194,7 +1194,7 @@ export function requestCareRetreat(id, element) {
 
 export function setState(patch) { Object.assign(state, patch); render(); }
 
-export function go(route) {
+export function go(route, replace) {
   var resolved = resolveRoute(route);
   state.route = resolved.id;
   state.mobileNav = false;
@@ -1205,7 +1205,7 @@ export function go(route) {
     state.spaBookAck = false;
     state.spaNote = "";
   }
-  writeRouteToLocation(resolved.id);
+  writeRouteToLocation(resolved.id, replace);
   render();
 }
 

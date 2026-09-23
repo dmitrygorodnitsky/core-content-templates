@@ -57,6 +57,11 @@ export async function loadCoreOidcSession(config) {
   return { state: user ? "ready-signed-in" : "ready-signed-out", user: user || null };
 }
 
+export function storedCoreOidcUser() {
+  if (!manager) return Promise.resolve(null);
+  return manager.getUser().then(function (user) { return user && !user.expired ? user : null; });
+}
+
 export function startCoreOidcSignIn(config) {
   if (!manager) return Promise.reject(contractError("oidc-manager-unavailable", "Core sign-in is not ready"));
   var returnUrl = portalRouteUrl(config, config.defaultRoute || "orders.list");
