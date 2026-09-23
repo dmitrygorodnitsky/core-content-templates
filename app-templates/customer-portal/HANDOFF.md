@@ -487,6 +487,8 @@ and every decision taken where it is silent.
 | contracts as a package | `runtime/src/normalizers/contracts.js`, `runtime/src/components/proposals/QuotePackage.js` | same entry, Contracts | `snow-contracts-check.mjs` |
 | live properties and home | `runtime/src/adapters/core-snow-adapter.js`, `runtime/src/state.js` | — | `core-snow-adapter-check.mjs`, `snow-live-overview-check.mjs` |
 | portal package | `content/cases/granite-ridge-snow.customer-portal-fixture.json` | `dist/manual-upload/customer-portal-granite-ridge-fixture/preview.html` | `granite-ridge-portal-manual-check.mjs` |
+| live portal package | `cms/granite-ridge-snow.customer-portal-staging.json` | dev-1 `/pages/SNOWLIMITLESS/portal` | `granite-ridge-staging-portal-manual-check.mjs` |
+| live Contracts and profile | `runtime/src/adapters/core-snow-adapter.js`, `runtime/src/contract-commands.js`, `runtime/src/adapters/core-account-profile-adapter.js` | same entry | `snow-contracts-live-check.mjs`, `snow-account-profile-check.mjs`, `snow-portal-shell-check.mjs` |
 | client review document | `runtime/client-review/` | `runtime/client-review.html` | `client-review-check.mjs` |
 | quote form document | `runtime/forms/portal-form.js` | `runtime/portal-form.html` | `portal-form-check.mjs` |
 | landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `granite-ridge-landing-manual-check.mjs` |
@@ -545,9 +547,9 @@ its namespace should be restricted to whatever host serves the portal.
   `ready`, and a newly opened source still needs its own loading and error
   states. Contract, visit, monitoring and trigger facts, including a property
   status on the map and on property detail, appear only when their sources are
-  open, and the weather card keeps only what Xweather answers. Still open in live
-  mode: the unread dot on the header bell, and a deep link to a property that
-  says it was not found while the list is still loading. Trigger and dispatch
+  open, and the weather card keeps only what Xweather answers. The unread dot on
+  the header bell and a deep link that said a property was not found while the
+  list was still loading were fixed on 2026-09-23. Trigger and dispatch
   wording remains on the storm home, calendar, season log, appointments and
   order pages, none of them enabled live.
 - **`CLIENT_REVIEW_DOCUMENT` is the anonymous page behind both links**: quote
@@ -728,11 +730,22 @@ Things that already cost time here and will again:
     A request sitting in `NOTIFIED` is waiting for a person, not stuck, and no
     hook should send that event. `npm run winter-quotation-flow-check` in
     `core-ui` guards the split.
-12. **A CMS node can keep serving an old template.** After the upload of
-    2026-09-23, `app-3-core-cms` kept the previous `CLIENT_REVIEW_DOCUMENT`
-    while `app-1-core-cms` served the new one, and requests alternate between
-    them. After every upload, fetch the page several times and compare the
-    `x-node-id` response header with the body.
+12. **A CMS node can keep serving an old template.** The CMS nodes do not
+    invalidate each other's page cache after a template save: the node that
+    took the save serves the new page, and the other node may keep the old one,
+    although its API already returns the new template. On 2026-09-23 this hit
+    both `app-3-core-cms` and `app-1-core-cms`. A browser's navigations can stay
+    pinned to the stale node. After every upload, fetch the page several times
+    and compare the `x-node-id` header with the body; if one node is stale, send
+    one identical save steered to it (read, and when a read lands on the other
+    node, save next). The backend is asked to fix the invalidation.
+13. **After a client's anonymous event, a dispatched script must not send
+    workflow events as that client.** Core does not apply them there: processor
+    V3's `DRAFT` and activation V1's `PROSPECT-ACTIVE` both failed on 2026-09-23.
+    Events that follow a client's action are sent from the workflow utility's
+    own hook context (utility V7 and later send `CLIENT_DETAILS_RECEIVED-DRAFT`)
+    or as a service identity: the system user holding an in-memory role, as
+    activation V2 and provisioning V2 do.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -1000,31 +1013,50 @@ transition. Where the whole flow stands is
    action is owned outside this stream. Portal User provisioning now runs after
    Account activation through script 258 and assigns `SW_FS_WS_CUSTOMER_PORTAL`
    (75 on dev-1); new-User and retry paths were checked on Accounts 714 and
-   694. The portal flag remains intentionally deferred. Found on 2026-09-23,
-   and next here:
-   - `SNOW_SERVICE_QUOTATION_DELIVERY_V1` grants
-     `QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of
-     `AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`, so a link from the email
-     cannot send the contract details.
-   - Processor V2 revokes the quotation grant without clearing
-     `QUOTATION_GRANT_ID`, and adds another `BILLING` address on every
-     submission.
-   - `service-agreement-client-details-check` still expects utility V4, although
-     workflow 53 moved to V5.
+   694. The portal flag remains intentionally deferred.
 
-   After those, a real live snow-portal sign-in and the three client forms. The role
-   remains staging-only until customer Account scoping is enforced by the
-   backend.
+   On 2026-09-23 the first end-to-end run took a public request to a client
+   signed in to the live portal. The steps, the defects it found and their
+   fixes are in `QUOTATION-PACKAGE-FLOW.md` §10, "The first end-to-end run".
+   Live after it:
+   - quotation delivery V2 (263), which grants the details event;
+   - details processor V4 (267);
+   - activation V2 (269) and provisioning V2 (270), which act as a service
+     identity;
+   - workflow utility V8 (268);
+   - draft pricer V2 (265);
+   - the published portal on PageContext 22.
 
-A live snow entry additionally needs `data-portal-data-mode="live"`,
-`data-portal-auth-mode="required"`, `data-portal-organization="SNOWLIMITLESS"`,
-`data-portal-account-type-code="CUSTOMER"`, service geography for the British
-Columbia service area, and an enabled-module list restricted to what has both
-data and design: only `overview` and `properties` have live adapters today, and
-any other module enabled in a live entry fails its boot. The fixture package
-must stay as it is:
-`granite-ridge-portal-manual-check` refuses a service base, an auth contract or
-live data mode in it, and that guard is correct.
+   Trap 13 is the lesson. A second run the same day (form 64, agreement 139)
+   proved that an anonymous approval activates the Account and provisions the
+   User without an operator. Next here are the three client forms.
+
+   The role remains staging-only until customer Account scoping is enforced by
+   the backend.
+
+The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
+(`scripts/export-live-portal-manual.mjs` from
+`cms/granite-ridge-snow.customer-portal-staging.json`, guarded by
+`granite-ridge-staging-portal-manual-check.mjs`, uploaded by
+`upsert-granite-ridge-staging-portal.mjs`).
+
+- **Published** on dev-1 on 2026-09-23 as BlockTemplate
+  `3e57675e-c967-47b2-9501-9235830f3bc3` on PageContext 22,
+  `/pages/SNOWLIMITLESS/portal`.
+- **Settings:** live data, Core OIDC sign-in, SNOWLIMITLESS, brand "Limitless
+  Snow Removal" (the user's choice), British Columbia service geography.
+- **Modules:** overview, properties, proposals and profile.
+- **Account types:** `SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER`;
+  the snow creator assigns the first two.
+- **Operator keys:** the Xweather pair and the Maps key and map id ship as the
+  placeholder `#`, which the runtime reads as unset. Real keys belong in
+  PageContext 22's values, because every upload writes `#` back into the
+  template.
+- **Portal link:** the review page's `PORTAL_URL` points at the portal.
+
+The fixture package must stay as it is: `granite-ridge-portal-manual-check`
+refuses a service base, an auth contract or live data mode in it, and that
+guard is correct.
 
 Still open after that: whether an address the browser geocodes should be written
 back to `COORD_LAT`/`COORD_LNG` by the CRM rather than geocoded again in every

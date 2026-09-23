@@ -13,6 +13,20 @@ of the portal reads the generic endpoints and scopes to the customer Account in
 the browser, which is a bounded dev demonstration and not production isolation.
 No signed-in customer reaches production until this exists.
 
+**Interim reads, 2026-09-23.** The user decided that until this API exists the
+portal reads the generic endpoints. It filters to the signed-in customer's
+Account or User in the request where the endpoint can, in the browser where it
+cannot, and shows records unfiltered where neither can; every live envelope
+states `scopeMode` per read. The mapping:
+- Agreements and quotes: agreements come from the document list by `CLIENT`; a
+  quote is the order list by `account.id`, plus its order items and catalog
+  rows.
+- Commands: each is `send-event.json` on the Order or Document, preceded by an
+  ownership and state pre-read.
+- The profile: one account read by id and `user.id`.
+
+None of this is isolation; the rules below still stand.
+
 ## What the generic endpoints serve today
 
 Read on 2026-09-16 as `SNOWLIMITLESS`. Every portal need has a source except the
@@ -29,7 +43,10 @@ service agreement, and what is missing is records, not endpoints.
 | seasons | `core-svc/api/project/list.json` | 0 |
 | quote requests | `core-cms/api/form/list.json` | 7 |
 | the customer Account | `core-acct/api/account/list.json` | 661 |
-| service agreements | `core/api/document/list.json` | answers, and every document is invisible |
+| service agreements | `core/api/document/list.json`, type `SERVICE_AGREEMENT`, filter `attributes.{type}.CLIENT.value` | 6 on 2026-09-23, owned by organization 43 |
+| quote lines | `core-bill/api/order-item/list.json`, filter `order.account.id` | 14 for Account 694 |
+| prices and products | `core-pim/api/product-price/list.json`, `core-pim/api/product/list.json` by id | catalog, unscoped |
+| the customer profile | `core-acct/api/account/list.json`, filters `id` and `user.id`, contacts and addresses projected | one `PRIMARY` contact per Account |
 
 Two things worth knowing before hunting for an endpoint. Projects, tasks and
 appointments live in `core-svc` and nowhere else; no other service on dev-1
@@ -69,6 +86,22 @@ contract.
 | `GET /portal/v1/me` | user, Account, operator, whether the operator has the portal, locale, time zone | User, `Account.user`, organization type `OPERATOR` |
 | `GET /portal/v1/profile` | Account name, primary contact, email, phone, billing address, notification preferences | Account, Contact, AccountAddress |
 | `PATCH /portal/v1/profile` | changes the whitelisted fields above | same |
+
+Served read-only by the generic endpoints since 2026-09-23.
+- **The read.** The profile page sends one `core-acct/api/account/list.json`
+  with `id` and `user.id` filters, projecting the Account's contacts with typed
+  entries and its typed addresses. The browser drops a row whose id or User
+  differs, and then reports the read as browser-filtered.
+- **What it shows.**
+  - The primary contact is the `PRIMARY` contact with the lowest id.
+  - Email and phone are its `EMAIL` and `PHONE` entries.
+  - Billing is every Account address typed `BILLING`.
+- **Not served.** Notification preferences have no Core source, and `PATCH` is
+  not opened.
+
+The customer Account itself is resolved by `user.id` and a list of account
+types: the snow creator assigns `SNOW_RESIDENTIAL_CUSTOMER` or
+`SNOW_COMMERCIAL_CUSTOMER`, not `CUSTOMER`.
 
 ### Properties
 
@@ -180,6 +213,14 @@ records it concerns, the same way the `GET_QUOTE_` request does.
 - `SNOW_SERVICE_VISIT.RESOURCE` points at a type that does not exist.
 - The staging customer role `SW_FS_WS_CUSTOMER_PORTAL` exists on dev-1 and is
   assigned during Account activation; the `OPERATOR` portal flag remains
-  intentionally deferred. The role is not a production boundary without
-  backend-enforced customer Account scope.
+  intentionally deferred.
+  - **What it holds since 2026-09-23:** the reads of the profile and Contracts,
+    and exactly four events: view, approve and decline a quote, and approve an
+    agreement. It has no change request, which will be a form.
+  - **Guard:** `snow-customer-portal-role-check` in core-ui holds it to an
+    exact allowlist.
+  - **Proven live:** provisioned User 51 read home, Contracts, the agreement
+    and the profile with no refusal.
+  - **Limit:** the role is not a production boundary without backend-enforced
+    customer Account scope.
 - The three form types above, their workflows and their hooks.
