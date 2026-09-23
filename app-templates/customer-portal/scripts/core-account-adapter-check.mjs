@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { createCoreAccountAdapter, coreAccountContract } from "../runtime/src/adapters/core-account-adapter.js";
+import { accountTypeCodes, createCoreAccountAdapter, coreAccountContract } from "../runtime/src/adapters/core-account-adapter.js";
 
 const origin = "https://dev-1.servicewand.com";
 const context = {
@@ -38,6 +38,43 @@ const context = {
   assert.equal(accountRequest.offset, 0);
   assert.equal(accountRequest.pageSize, 2);
   assert.deepEqual(accountRequest.mappings, coreAccountContract.accountMappings);
+  assert.equal(result.scopeMode, "server-scoped");
+}
+
+{
+  const listContext = structuredClone(context);
+  listContext.config.organization = "SNOWLIMITLESS";
+  listContext.config.accountTypeCode = "SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER";
+  const snowInfo = () => json({ authenticatedUserId: 42, authenticatedUserName: "Jordan Lee", organizationCode: "SNOWLIMITLESS", authorizedOrganizations: [{ code: "SNOWLIMITLESS" }] });
+  const row = (id, typeCode) => ({ id, optimistic: 1, code: "SNOW-" + id, nls: { en: { NAME: "Snow customer " + id } }, user: { id: 42 }, type: { id: 9, code: typeCode } });
+  const resolveWith = (reply, calls) => createCoreAccountAdapter({ origin, fetch: responseSequence([snowInfo(), json(reply)], calls) }).resolve(listContext);
+
+  const calls = [];
+  const result = await resolveWith({ resultSize: 1, result: [row(717, "SNOW_RESIDENTIAL_CUSTOMER")] }, calls);
+  assert.equal(result.account.id, 717);
+  assert.equal(result.account.typeCode, "SNOW_RESIDENTIAL_CUSTOMER", "a type list resolves to the type the Account actually has");
+  assert.equal(result.scopeMode, "server-scoped", "the server filtered the types, so nothing was dropped in the browser");
+  const listRequest = JSON.parse(calls[1].options.body);
+  assert.deepEqual(listRequest.filters, [
+    { type: "INTEGER", operator: "=", property: "user.id", value: "42" },
+    { type: "STRING", operator: "IN", property: "type.code", value: "SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER" },
+  ], "a type list is one server-side IN filter next to the user");
+  assert.deepEqual(listRequest.mappings, coreAccountContract.typedAccountMappings, "the type code is read back so the browser can check it");
+  assert.equal(listRequest.pageSize, 2);
+
+  const filtered = await resolveWith({ resultSize: 2, result: [row(80, "EMPLOYEE"), row(717, "SNOW_COMMERCIAL_CUSTOMER")] });
+  assert.equal(filtered.account.id, 717, "a row of an unlisted type is dropped in the browser");
+  assert.equal(filtered.account.typeCode, "SNOW_COMMERCIAL_CUSTOMER");
+  assert.equal(filtered.scopeMode, "browser-filtered", "a type check that happened in the browser is reported as such");
+
+  await rejectsWith("customer-not-linked", () => resolveWith({ resultSize: 1, result: [row(80, "EMPLOYEE")] }));
+  await rejectsWith("customer-not-linked", () => resolveWith({ resultSize: 0, result: [] }));
+  await rejectsWith("customer-account-ambiguous", () => resolveWith({ resultSize: 2, result: [row(717, "SNOW_RESIDENTIAL_CUSTOMER"), row(718, "CUSTOMER")] }));
+  await rejectsWith("customer-account-ambiguous", () => resolveWith({ resultSize: 3, result: [row(80, "EMPLOYEE"), row(717, "SNOW_RESIDENTIAL_CUSTOMER")] }));
+
+  assert.deepEqual(accountTypeCodes(" SNOW_RESIDENTIAL_CUSTOMER , CUSTOMER,CUSTOMER,"), ["SNOW_RESIDENTIAL_CUSTOMER", "CUSTOMER"]);
+  assert.deepEqual(accountTypeCodes("SPA_CUSTOMER"), ["SPA_CUSTOMER"], "a single code keeps its single equality filter");
+  assert.deepEqual(accountTypeCodes(""), ["SPA_CUSTOMER"]);
 }
 
 await rejectsWith("customer-not-linked", async () => {
@@ -68,7 +105,7 @@ await rejectsWith("cross-origin-service", async () => {
   await createCoreAccountAdapter({ origin, fetch: successfulFetch([]) }).resolve(crossOriginContext);
 });
 
-console.log("core-account-adapter-check ok: Core basic-info -> user-scoped SPA_CUSTOMER Account, fail-closed states");
+console.log("core-account-adapter-check ok: Core basic-info -> user-scoped SPA_CUSTOMER Account, a type list read through one IN filter and re-checked in the browser with an honest scope, fail-closed states");
 
 function successfulFetch(calls) {
   return responseSequence([basicInfo(), json({

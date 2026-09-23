@@ -16,6 +16,19 @@ const ACCOUNT_MAPPINGS = [
   { key: "id", name: "user", type: "identifier" },
 ];
 
+const TYPED_ACCOUNT_MAPPINGS = ACCOUNT_MAPPINGS.map(function (mapping) {
+  return mapping.name === "type" ? { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" } : mapping;
+});
+
+export function accountTypeCodes(value) {
+  var codes = [];
+  String(value || "").split(",").forEach(function (item) {
+    var code = item.trim();
+    if (code && codes.indexOf(code) === -1) codes.push(code);
+  });
+  return codes.length ? codes : ["SPA_CUSTOMER"];
+}
+
 export function createCoreAccountAdapter(options = {}) {
   var fetchImpl = options.fetch || globalThis.fetch;
   if (typeof fetchImpl !== "function") throw contractError("fetch-unavailable", "Core account adapter requires fetch");
@@ -53,7 +66,8 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
   if (!userId) throw contractError("invalid-session-user", "Core basic-info did not return authenticatedUserId");
 
   var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-  var accountTypeCode = text(config.accountTypeCode || "SPA_CUSTOMER");
+  var typeCodes = accountTypeCodes(config.accountTypeCode);
+  var typeList = typeCodes.length > 1;
   var accountReply = await requestJson(fetchImpl, accountBase + "/api/account/list.json", {
     method: "POST",
     credentials: "same-origin",
@@ -66,16 +80,22 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
     body: JSON.stringify({
       filters: [
         { type: "INTEGER", operator: "=", property: "user.id", value: String(userId) },
-        { type: "STRING", operator: "=", property: "type.code", value: accountTypeCode },
+        typeList
+          ? { type: "STRING", operator: "IN", property: "type.code", value: typeCodes.join(",") }
+          : { type: "STRING", operator: "=", property: "type.code", value: typeCodes[0] },
       ],
-      mappings: ACCOUNT_MAPPINGS,
+      mappings: typeList ? TYPED_ACCOUNT_MAPPINGS : ACCOUNT_MAPPINGS,
       offset: 0,
       pageSize: 2,
     }),
   });
-  var accounts = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+  var returned = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+  var accounts = typeList
+    ? returned.filter(function (row) { return typeCodes.indexOf(text(row && row.type && row.type.code)) !== -1; })
+    : returned;
+  var total = Number(accountReply.resultSize || returned.length);
   if (!accounts.length) throw contractError("customer-not-linked", "No customer Account is linked to the signed-in Core User");
-  if (accounts.length !== 1 || Number(accountReply.resultSize || accounts.length) > 1) {
+  if (accounts.length !== 1 || (typeList ? total > returned.length : total > 1)) {
     throw contractError("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
   }
 
@@ -87,6 +107,7 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
 
   return {
     state: "ready",
+    scopeMode: accounts.length === returned.length ? "server-scoped" : "browser-filtered",
     organization: { code: organizationCode },
     user: {
       id: userId,
@@ -97,7 +118,7 @@ export async function resolveCoreAccount(context, fetchImpl = globalThis.fetch, 
       code: text(account.code),
       displayName: localizedName(account.nls) || "Customer account",
       optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
-      typeCode: accountTypeCode,
+      typeCode: typeList ? text(account.type && account.type.code) : typeCodes[0],
     },
   };
 }
@@ -167,5 +188,6 @@ function contractError(code, message) {
 export const coreAccountContract = Object.freeze({
   basicInfoMappings: BASIC_INFO_MAPPINGS,
   accountMappings: ACCOUNT_MAPPINGS,
+  typedAccountMappings: TYPED_ACCOUNT_MAPPINGS,
   accountFilters: ["user.id", "type.code"],
 });

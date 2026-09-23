@@ -3182,10 +3182,10 @@
       authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
       authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
       requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
-      weatherClientId: dataset.portalWeatherClientId || "",
-      weatherClientSecret: dataset.portalWeatherClientSecret || "",
-      mapsApiKey: mapsToken(dataset.portalMapsApiKey),
-      mapsMapId: mapsToken(dataset.portalMapsMapId),
+      weatherClientId: browserCredential(dataset.portalWeatherClientId),
+      weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
+      mapsApiKey: browserCredential(dataset.portalMapsApiKey),
+      mapsMapId: browserCredential(dataset.portalMapsMapId),
       serviceGeography: readServiceGeography(dataset.portalServiceGeography),
       routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
       authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
@@ -3308,7 +3308,7 @@
     if (typeof value === "string" && value.trim() !== "") return Number(value);
     return Number.NaN;
   }
-  function mapsToken(value) {
+  function browserCredential(value) {
     var token = String(value || "").trim();
     return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
   }
@@ -8613,17 +8613,18 @@
 
   // app-templates/customer-portal/runtime/src/components/shell/PublicNav.js
   function PublicNav() {
+    var landingOpen = isSpa() || !!configuredExternalUrl(state.config, "landingUrl");
     return h(
       "div",
       { "class": "top-nav-wrap" },
       h("nav", { "class": "top-nav", "data-module": "public-nav", "data-visual-id": "public-nav" }, [
-        h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
+        h("div", { "class": "top-nav__brand", "data-action": landingOpen ? "nav.landing" : void 0 }, [
           h("div", { "class": "brand-logo" }),
           h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
         ]),
         h("div", { "class": "top-nav__actions" }, [
           h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E"),
-          state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" })
+          state.route === "landing" || state.route === "seo.landing" ? ActionButton({ variant: "btn--primary", label: "Sign in", action: "auth.gotoSignin", visualId: "public-signin" }) : landingOpen ? ActionButton({ variant: "btn--ghost", label: "\u2039 Home", action: "nav.landing", visualId: "public-home" }) : null
         ])
       ])
     );
@@ -19834,6 +19835,17 @@
     { key: "id", name: "type", type: "identifier" },
     { key: "id", name: "user", type: "identifier" }
   ];
+  var TYPED_ACCOUNT_MAPPINGS = ACCOUNT_MAPPINGS.map(function(mapping) {
+    return mapping.name === "type" ? { key: "id", mappings: [{ name: "id" }, { name: "code" }], name: "type", type: "identifier" } : mapping;
+  });
+  function accountTypeCodes(value) {
+    var codes = [];
+    String(value || "").split(",").forEach(function(item) {
+      var code = item.trim();
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    return codes.length ? codes : ["SPA_CUSTOMER"];
+  }
   function createCoreAccountAdapter(options2 = {}) {
     var fetchImpl = options2.fetch || globalThis.fetch;
     if (typeof fetchImpl !== "function") throw contractError6("fetch-unavailable", "Core account adapter requires fetch");
@@ -19866,7 +19878,8 @@
     var userId = positiveInteger8(basicInfo.authenticatedUserId || basicInfo.id);
     if (!userId) throw contractError6("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
-    var accountTypeCode = text13(config.accountTypeCode || "SPA_CUSTOMER");
+    var typeCodes = accountTypeCodes(config.accountTypeCode);
+    var typeList = typeCodes.length > 1;
     var accountReply = await requestJson7(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
@@ -19879,16 +19892,20 @@
       body: JSON.stringify({
         filters: [
           { type: "INTEGER", operator: "=", property: "user.id", value: String(userId) },
-          { type: "STRING", operator: "=", property: "type.code", value: accountTypeCode }
+          typeList ? { type: "STRING", operator: "IN", property: "type.code", value: typeCodes.join(",") } : { type: "STRING", operator: "=", property: "type.code", value: typeCodes[0] }
         ],
-        mappings: ACCOUNT_MAPPINGS,
+        mappings: typeList ? TYPED_ACCOUNT_MAPPINGS : ACCOUNT_MAPPINGS,
         offset: 0,
         pageSize: 2
       })
     });
-    var accounts = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+    var returned = Array.isArray(accountReply && accountReply.result) ? accountReply.result : [];
+    var accounts = typeList ? returned.filter(function(row) {
+      return typeCodes.indexOf(text13(row && row.type && row.type.code)) !== -1;
+    }) : returned;
+    var total = Number(accountReply.resultSize || returned.length);
     if (!accounts.length) throw contractError6("customer-not-linked", "No customer Account is linked to the signed-in Core User");
-    if (accounts.length !== 1 || Number(accountReply.resultSize || accounts.length) > 1) {
+    if (accounts.length !== 1 || (typeList ? total > returned.length : total > 1)) {
       throw contractError6("customer-account-ambiguous", "The signed-in Core User must resolve to exactly one customer Account");
     }
     var account = accounts[0] || {};
@@ -19898,6 +19915,7 @@
     }
     return {
       state: "ready",
+      scopeMode: accounts.length === returned.length ? "server-scoped" : "browser-filtered",
       organization: { code: organizationCode },
       user: {
         id: userId,
@@ -19908,7 +19926,7 @@
         code: text13(account.code),
         displayName: localizedName7(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
-        typeCode: accountTypeCode
+        typeCode: typeList ? text13(account.type && account.type.code) : typeCodes[0]
       }
     };
   }
@@ -19969,6 +19987,7 @@
   var coreAccountContract = Object.freeze({
     basicInfoMappings: BASIC_INFO_MAPPINGS,
     accountMappings: ACCOUNT_MAPPINGS,
+    typedAccountMappings: TYPED_ACCOUNT_MAPPINGS,
     accountFilters: ["user.id", "type.code"]
   });
 

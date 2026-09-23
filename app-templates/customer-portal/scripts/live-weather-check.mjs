@@ -64,6 +64,35 @@ assert.match(requested, /^https:\/\/data\.api\.xweather\.com\//, "the forecast h
 assert.match(requested, /client_id=id%20one/, "credentials must be encoded, not concatenated raw");
 assert.match(requested, /client_secret=secret%2Ftwo/);
 
+globalThis.window = globalThis;
+const { readPortalConfig } = await import(new URL("src/config.js", runtimeRoot));
+const { liveWeatherOpened, loadLiveWeather } = await import(new URL("src/live-weather.js", runtimeRoot));
+const { applyPortalConfig, liveForecastState } = await import(new URL("src/state.js", runtimeRoot));
+
+{
+  const geography = JSON.stringify({ map: { center: { lat: 49.23, lon: -122.98 }, zoom: 10 }, zones: { vancouver: { lat: 49.28, lon: -123.12 } } });
+  const weatherConfig = (clientId, clientSecret) => readPortalConfig({ dataset: {
+    portalVertical: "snow", portalProfile: "stormRetail", portalDataMode: "live", portalAuthMode: "required",
+    portalServiceGeography: geography, portalWeatherClientId: clientId, portalWeatherClientSecret: clientSecret,
+  } });
+  const placeholder = weatherConfig("#", "#");
+  assert.equal(placeholder.weatherClientId, "", "the # placeholder a CMS parameter ships with is not a credential");
+  assert.equal(placeholder.weatherClientSecret, "");
+  assert.equal(liveWeatherOpened(placeholder), false);
+  let forecastCalls = 0;
+  const spy = { opened: () => true, dailyForecast: async () => { forecastCalls += 1; return [period()]; } };
+  assert.equal(await loadLiveWeather(null, placeholder, spy), null);
+  assert.equal(forecastCalls, 0, "Xweather is never called with the placeholder");
+  applyPortalConfig(placeholder);
+  assert.equal(liveForecastState(), "unconfigured", "with the placeholder the forecast card says it is not set up");
+  assert.equal(weatherConfig("${PORTAL_WEATHER_CLIENT_ID@STRING}", "${PORTAL_WEATHER_CLIENT_SECRET@STRING}").weatherClientId, "", "an unset CMS parameter renders as its own marker, which is not a credential");
+  assert.equal(weatherConfig("id\" onload=\"x", "secret").weatherClientId, "", "a value that is not a plain token never reaches a request");
+  const configured = weatherConfig(" zAbc123DEF ", "s3cret_Value-40");
+  assert.equal(configured.weatherClientId, "zAbc123DEF");
+  assert.equal(configured.weatherClientSecret, "s3cret_Value-40");
+  assert.equal(liveWeatherOpened(configured), true);
+}
+
 assert.equal(periodKind(period({ weatherPrimaryCoded: "::CL" })), "clear");
 assert.equal(periodKind(period({ weatherPrimaryCoded: "S::S", snowCM: 0.4, minFeelslikeC: 1 })), "snow");
 assert.equal(periodKind(period({ weatherPrimaryCoded: "S::S", snowCM: 3.1, minFeelslikeC: 1 })), "storm", "past the 2 cm trigger a snow day is a storm day");
@@ -128,4 +157,4 @@ for (const sample of [period({ weatherPrimaryCoded: "S::S", snowCM: 4 }), period
 }
 assert.equal(forecastDay(period({ maxTempC: null })).temp, "—", "a property day with no temperature must not read 0°C");
 
-console.log("live-weather-check ok: closed without a key, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, a fixture fallback on every failure, and a property day shaped by the same rules as a zone day");
+console.log("live-weather-check ok: closed without a key and never called with the # placeholder or an unset CMS marker, rejects HTTP and success:false alike, encoded credentials, zone-worst headline, a fixture fallback on every failure, and a property day shaped by the same rules as a zone day");

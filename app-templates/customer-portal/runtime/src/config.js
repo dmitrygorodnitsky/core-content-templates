@@ -250,10 +250,10 @@ export function readPortalConfig(root) {
     authReturnStorageKey: dataset.portalAuthReturnStorageKey || "oidc-return-url",
     authLogoutReturnStorageKey: dataset.portalAuthLogoutReturnStorageKey || "oidc-logout-return-url",
     requestFormUrl: safeConfiguredUrl(dataset.portalRequestFormUrl),
-    weatherClientId: dataset.portalWeatherClientId || "",
-    weatherClientSecret: dataset.portalWeatherClientSecret || "",
-    mapsApiKey: mapsToken(dataset.portalMapsApiKey),
-    mapsMapId: mapsToken(dataset.portalMapsMapId),
+    weatherClientId: browserCredential(dataset.portalWeatherClientId),
+    weatherClientSecret: browserCredential(dataset.portalWeatherClientSecret),
+    mapsApiKey: browserCredential(dataset.portalMapsApiKey),
+    mapsMapId: browserCredential(dataset.portalMapsMapId),
     serviceGeography: readServiceGeography(dataset.portalServiceGeography),
     routerMode: allowed(dataset.portalRouterMode, ["hash", "history", "memory"], "hash"),
     authMode: allowed(dataset.portalAuthMode, ["fixture", "required"], "fixture"),
@@ -383,7 +383,7 @@ function finiteNumber(value) {
   return Number.NaN;
 }
 
-function mapsToken(value) {
+function browserCredential(value) {
   var token = String(value || "").trim();
   return /^[A-Za-z0-9_-]+$/.test(token) ? token : "";
 }

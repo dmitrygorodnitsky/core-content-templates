@@ -23,6 +23,7 @@ const { PortalRuntime } = await load("src/portal-runtime.js");
 const { ACCOUNT_GATE_STATES, modules } = await load("src/modules/index.js");
 const { initRouter, resolveRoute } = await load("src/router.js");
 const { TopNav } = await load("src/components/shell/TopNav.js");
+const { PublicNav } = await load("src/components/shell/PublicNav.js");
 const { AccountBootstrap } = await load("src/components/shell/AccountBootstrap.js");
 const { AuthOidc } = await load("src/routes/AuthOidcPage.js");
 const { UnauthorizedState } = await load("src/components/primitives/RouteStates.js");
@@ -240,6 +241,25 @@ function configure(dataset, extra = {}) {
   state.oidc = "unavailable";
   assert.deepEqual(actions(AuthOidc()), ["auth.retrySession", "nav.landing"]);
   assert.deepEqual(actions(UnauthorizedState({ scope: "your orders", backRoute: "orders.list" })), ["support.email", "nav.go"]);
+}
+
+{
+  const signedOutHeader = (dataset, extra) => {
+    configure(dataset, extra);
+    state.session.authenticated = false;
+    state.route = "auth.oidc";
+    return PublicNav();
+  };
+  const bare = signedOutHeader(SNOW_LIVE);
+  assert.equal(all(bare, "[data-visual-id=\"public-home\"]").length, 0, "the signed-out header offers no Home link that goes nowhere");
+  assert.equal(one(bare, ".top-nav__brand").getAttribute("data-action"), null, "the signed-out brand is not a link without a landing address");
+  assert.equal(actions(bare).filter((action) => RAW_ACTIONS.test(action)).length, 0);
+  const linked = signedOutHeader(SNOW_LIVE, { portalLandingUrl: "https://www.example.test/", portalAllowedNavOrigins: "https://www.example.test" });
+  assert.equal(one(linked, "[data-visual-id=\"public-home\"]").getAttribute("data-action"), "nav.landing", "a configured landing address is the Home link");
+  assert.equal(one(linked, ".top-nav__brand").getAttribute("data-action"), "nav.landing");
+  const outside = signedOutHeader(SNOW_LIVE, { portalLandingUrl: "https://elsewhere.example.test/" });
+  assert.equal(all(outside, "[data-visual-id=\"public-home\"]").length, 0, "a landing address outside the allowed origins is not a destination");
+  assert.equal(one(signedOutHeader(SPA_LIVE), "[data-visual-id=\"public-home\"]").getAttribute("data-action"), "nav.landing", "the spa keeps its Home link");
 }
 
 {
