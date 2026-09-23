@@ -25,10 +25,12 @@ import { exportFixturePortalManual } from "./export-fixture-portal-manual.mjs";
 
 const repoRoot = path.resolve(".");
 const portalRoot = path.join(repoRoot, "app-templates/customer-portal");
+const uploader = path.join(repoRoot, "app-templates/landing-page/scripts/upload-cms-family.mjs");
 
 const tenant = {
   caseId: "granite-ridge-snow",
   templateCode: "CUSTOMER_PORTAL_GRANITE_RIDGE_FIXTURE",
+  runtimeLabel: "fixture",
   source: path.join(portalRoot, "content/cases/granite-ridge-snow.customer-portal-fixture.json"),
   runtime: path.join(portalRoot, "runtime/manual/granite-ridge-fixture-runtime.js"),
   package: path.join(portalRoot, "dist/manual-upload/customer-portal-granite-ridge-fixture"),
@@ -39,7 +41,20 @@ const tenant = {
     path.join(portalRoot, "scripts/property-map-check.mjs"),
     path.join(portalRoot, "scripts/appointments-check.mjs"),
   ],
-  uploader: path.join(repoRoot, "app-templates/landing-page/scripts/upload-cms-family.mjs"),
+  buildRuntime() {
+    return buildFixturePortalRuntime({ case: tenant.caseId, output: tenant.runtime });
+  },
+  exportPackage() {
+    return exportFixturePortalManual({ inputPath: tenant.source, runtimePath: tenant.runtime, outputDir: tenant.package });
+  },
+  assertPackage(manifest) {
+    if (manifest.runtime.dataMode !== "fixture" || manifest.runtime.authMode !== "fixture") {
+      throw new Error("Refusing to upsert a package that is not in fixture mode");
+    }
+    if (manifest.runtime.case !== tenant.caseId) {
+      throw new Error("Package case is " + manifest.runtime.case + ", expected " + tenant.caseId);
+    }
+  },
 };
 
 export function parseArgs(argv) {
@@ -93,26 +108,21 @@ function sha256(value) {
   return crypto.createHash("sha256").update(value, "utf8").digest("hex");
 }
 
-async function assertPackageMatchesManifest() {
-  const manifest = JSON.parse(await fs.readFile(path.join(tenant.package, "manual-export-manifest.json"), "utf8"));
+async function assertPackageMatchesManifest(deliverable) {
+  const manifest = JSON.parse(await fs.readFile(path.join(deliverable.package, "manual-export-manifest.json"), "utf8"));
   const fields = { head: "root/head.html", html: "root/html.html", css: "root/css.css", javascript: "root/javascript.js" };
   for (const [field, file] of Object.entries(fields)) {
-    const content = await fs.readFile(path.join(tenant.package, file), "utf8");
+    const content = await fs.readFile(path.join(deliverable.package, file), "utf8");
     const expected = manifest.template.sha256[field];
     const actual = sha256(field === "head" || field === "html" ? content.replace(/\n$/, "") : content);
     if (actual !== expected) {
       throw new Error("Package field " + file + " no longer matches its manifest digest. Regenerate it instead of hand-editing: drop --skip-build.");
     }
   }
-  if (manifest.template.code !== tenant.templateCode) {
-    throw new Error("Package template code is " + manifest.template.code + ", expected " + tenant.templateCode);
+  if (manifest.template.code !== deliverable.templateCode) {
+    throw new Error("Package template code is " + manifest.template.code + ", expected " + deliverable.templateCode);
   }
-  if (manifest.runtime.dataMode !== "fixture" || manifest.runtime.authMode !== "fixture") {
-    throw new Error("Refusing to upsert a package that is not in fixture mode");
-  }
-  if (manifest.runtime.case !== tenant.caseId) {
-    throw new Error("Package case is " + manifest.runtime.case + ", expected " + tenant.caseId);
-  }
+  await deliverable.assertPackage(manifest);
   return manifest;
 }
 
@@ -127,25 +137,29 @@ function run(command, args, label) {
   });
 }
 
-export async function upsertGraniteRidgePortal(options) {
+export function upsertGraniteRidgePortal(options) {
+  return upsertPortalPackage(options, tenant);
+}
+
+export async function upsertPortalPackage(options, deliverable) {
   if (!options.skipBuild) {
-    console.log("[1/4] building the fixture runtime bundle");
-    const built = await buildFixturePortalRuntime({ case: tenant.caseId, output: tenant.runtime });
+    console.log("[1/4] building the " + deliverable.runtimeLabel + " runtime bundle");
+    const built = await deliverable.buildRuntime();
     console.log("      " + path.relative(repoRoot, built.output) + " (" + built.bytes + " bytes)");
 
     console.log("[2/4] regenerating the manual package");
-    await exportFixturePortalManual({ inputPath: tenant.source, runtimePath: tenant.runtime, outputDir: tenant.package });
-    console.log("      " + path.relative(repoRoot, tenant.package));
+    await deliverable.exportPackage();
+    console.log("      " + path.relative(repoRoot, deliverable.package));
   } else {
     console.log("[1/4] skipped build");
     console.log("[2/4] verifying the package on disk against its manifest");
   }
 
-  const manifest = await assertPackageMatchesManifest();
+  const manifest = await assertPackageMatchesManifest(deliverable);
 
   if (!options.skipChecks) {
     console.log("[3/4] running deterministic checks");
-    for (const check of tenant.checks) {
+    for (const check of deliverable.checks) {
       await run(process.execPath, [check], path.basename(check));
     }
   } else {
@@ -153,7 +167,7 @@ export async function upsertGraniteRidgePortal(options) {
   }
 
   console.log("[4/4] " + (options.mode === "live" ? "upserting into CMS" : "resolving the CMS plan without writing"));
-  const uploaderArgs = [tenant.uploader, "--out", tenant.package, "--org", options.org];
+  const uploaderArgs = [uploader, "--out", deliverable.package, "--org", options.org];
   if (options.baseUrl) uploaderArgs.push("--base-url", options.baseUrl);
   if (options.expectedRootId) uploaderArgs.push("--expected-root-id", options.expectedRootId);
   if (options.requireExisting) uploaderArgs.push("--require-existing");
@@ -161,7 +175,7 @@ export async function upsertGraniteRidgePortal(options) {
   uploaderArgs.push(options.mode === "live" ? "--live" : "--dry-run");
   await run(process.execPath, uploaderArgs, "upload-cms-family");
 
-  return { templateCode: manifest.template.code, mode: options.mode, package: tenant.package };
+  return { templateCode: manifest.template.code, mode: options.mode, package: deliverable.package };
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
