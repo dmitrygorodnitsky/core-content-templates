@@ -127,6 +127,26 @@ function loadRuntime(options = {}) {
   return { sandbox, CR: sandbox.ClientReview, document, consoleCalls, storageCalls };
 }
 
+async function boundProcessorPath() {
+  const seedsDir = path.resolve("../core-ui/scripts/dev/seeds");
+  const workflowsPath = path.join(seedsDir, "serviceAgreementWorkflows.json");
+  const scriptsPath = path.join(seedsDir, "serviceAgreementScripts.json");
+  if (!existsSync(workflowsPath) || !existsSync(scriptsPath)) return null;
+  const workflows = JSON.parse(await fs.readFile(workflowsPath, "utf8")).workflows;
+  const scripts = JSON.parse(await fs.readFile(scriptsPath, "utf8")).scripts;
+  const contentOf = (code) => {
+    const entry = scripts.find((script) => script.code === code);
+    assert.ok(entry && entry.contentFile, "serviceAgreementScripts.json declares " + code);
+    return path.join(seedsDir, entry.contentFile);
+  };
+  const bound = workflows.find((workflow) => workflow.code === "SERVICE_AGREEMENT_LIFECYCLE");
+  assert.ok(bound && bound.script, "SERVICE_AGREEMENT_LIFECYCLE is bound to a utility script");
+  const utility = await fs.readFile(contentOf(bound.script), "utf8");
+  const processors = [...new Set([...utility.matchAll(/"(SNOW_SERVICE_AGREEMENT_PROCESSOR_V\d+)"/g)].map((match) => match[1]))];
+  assert.equal(processors.length, 1, bound.script + " dispatches exactly one details processor");
+  return contentOf(processors[0]);
+}
+
 function section(document, attributes) {
   const node = document.createElement("section");
   Object.entries(attributes).forEach(([name, value]) => node.setAttribute(name, value));
@@ -419,8 +439,8 @@ const N = loadRuntime().CR.normalizer;
     assert.equal(model(data).details.returned.returned, expected, "CLIENT_DETAILS_ERRORS is read only while the agreement awaits the details again, not in " + state);
   }
 
-  const processorPath = path.resolve("../core-ui/scripts/dev/seeds/scripts/SNOW_SERVICE_AGREEMENT_PROCESSOR_V2.java");
-  if (existsSync(processorPath)) {
+  const processorPath = await boundProcessorPath();
+  if (processorPath && existsSync(processorPath)) {
     const processor = await fs.readFile(processorPath, "utf8");
     const listOf = (name) => [...((processor.match(new RegExp(name + "\\s*=\\s*List\\.of\\(([^)]*)\\)")) || ["", ""])[1]).matchAll(/"([A-Z_]+)"/g)].map((match) => match[1]);
     const required = listOf("REQUIRED_TEXT_FIELDS");
