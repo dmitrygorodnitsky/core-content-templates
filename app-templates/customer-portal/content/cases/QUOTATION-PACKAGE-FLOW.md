@@ -469,10 +469,30 @@ Next, in order:
      save.
 2. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.
-3. **Open question for the user:** whether the five-month season should cost
-   four monthly payments, as the catalog prices it. The seasonal prices
-   224–241 carry exactly four times the monthly amounts with a five-month
-   interval, set by `su` on 2026-09-02.
+3. **Price by the founder's model.** Received from the user on 2026-09-23.
+   - A visit of snow removal and a visit of de-icing each have a price set by
+     the serviced area. It is not a fixed rate per square foot.
+   - The season total is de-icing × 28 plus snow removal × 4.
+   - The monthly option is that total divided by the five months.
+   - The prepaid seasonal option is the total × 0.9.
+   - Example: 10,000 sq ft at 245 de-icing and 350 snow removal gives 1,652 a
+     month and 7,434 for the season.
+
+   The dev-1 catalog prices the three models independently: per-visit, monthly
+   and seasonal tiers of flat fee plus a per-square-foot rate, and its seasonal
+   rows carry four times the monthly amounts over five months instead of 4.5.
+   A pricer V3 should derive monthly and seasonal from the per-visit prices,
+   keeping the coefficients as OPERATOR attributes. It waits for the per-visit
+   price table by area from the founder.
+
+Drafts are priced from the property's measured area since 2026-09-23:
+- SNOW_REMOVAL_PROPERTY carries `SERVICE_AREA_SQFT`, which the manager fills.
+- Order utilities V3 (script 296, workflow 45) price an Order without lines
+  when it enters `QUOTE_PREPARED`: they read the area on a `CORE-RM` node
+  (script 295) and run the draft pricer.
+- Without an area the Order stays unpriced.
+- Order 58 was priced this way; Order 59, whose property has no area, stayed
+  empty.
 
 Resolved on 2026-09-23 after the runs:
 - **Order lines save through REST again.** Workflow 46

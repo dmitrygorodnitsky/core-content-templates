@@ -1052,7 +1052,12 @@ transition. Where the whole flow stands is
    - each client link carries the representative and billing details as
      Account attributes, from which the review page pre-fills (trap 15).
 
-   Workflow 53 runs utility V10 (292). Next here are the three client forms.
+   Workflow 53 runs utility V10 (292). Workflow 45 runs order utilities V3
+   (296): a draft entering `QUOTE_PREPARED` is priced from its property's
+   `SERVICE_AREA_SQFT`, which the manager fills. The founder's pricing model
+   (per-visit prices by area; monthly and seasonal derived from them) waits
+   for its per-visit price table (`QUOTATION-PACKAGE-FLOW.md` §10). Next here
+   are the three client forms.
 
    The role remains staging-only until customer Account scoping is enforced by
    the backend.
