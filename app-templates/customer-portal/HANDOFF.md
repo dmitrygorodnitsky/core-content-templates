@@ -590,10 +590,11 @@ Screenshots of all four went to the user on 2026-09-15 for acceptance.
   entity types readable. Existing grants keep their original snapshots and
   must be reissued when their field set changes. The client-review runtime now
   joins the id-only chain instead of expecting deep Order item projections.
-- The planned attributes the pages read: Order `PRICING_MODEL` and
-  `SERVICE_ADDRESS`, the agreement's client snapshot under the ten detail codes,
-  and `PROVIDER_LEGAL_NAME`, `PROVIDER_REPRESENTATIVE_NAME` and
-  `PROVIDER_REPRESENTATIVE_JOB_TITLE`.
+- The planned attributes the pages read: the agreement's client snapshot under
+  the ten detail codes, and `PROVIDER_LEGAL_NAME`,
+  `PROVIDER_REPRESENTATIVE_NAME` and `PROVIDER_REPRESENTATIVE_JOB_TITLE`. Order
+  `PRICING_MODEL` is written by the draft creator since 2026-09-22, and
+  `SERVICE_ADDRESS` by `SNOW_QUOTATION_ORDER_UTILITIES_V2` since 2026-09-23.
 - Customer-scope payloads: agreement dates as ISO date strings, `ORDERS` as an
   array or a comma-separated string, and the `get.json` envelope.
 - Whether event metadata reaches a hook through a link
@@ -727,6 +728,11 @@ Things that already cost time here and will again:
     A request sitting in `NOTIFIED` is waiting for a person, not stuck, and no
     hook should send that event. `npm run winter-quotation-flow-check` in
     `core-ui` guards the split.
+12. **A CMS node can keep serving an old template.** After the upload of
+    2026-09-23, `app-3-core-cms` kept the previous `CLIENT_REVIEW_DOCUMENT`
+    while `app-1-core-cms` served the new one, and requests alternate between
+    them. After every upload, fetch the page several times and compare the
+    `x-node-id` response header with the body.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -877,7 +883,14 @@ transition. Where the whole flow stands is
    match the repository. Fresh grant 50 over test agreement 133 and the other
    18 records rendered the three quote cards, their six line items and their
    server totals in the browser. Existing links still retain their older
-   mapping snapshots and cannot verify the new contract.
+   mapping snapshots and cannot verify the new contract. On 2026-09-23 the
+   version with the checking state, returned details, portal invitation
+   (`PORTAL_URL` left empty) and numbered terms was uploaded to the same
+   template the same way; the four hashes match and PageContext 21 is
+   unchanged. `app-3-core-cms` still served the previous one (trap 12), and the
+   backend is asked to evict it. The next version, which follows the last
+   decision on its own and words a return on a reopened link, is not uploaded
+   yet.
 3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
    its retry and the `script` binding; a property per address; quote orders per
    property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
@@ -936,8 +949,12 @@ transition. Where the whole flow stands is
    ACTIVE smoke Account 716 created User 50 the same way using a reachable
    mailbox; the user confirmed receipt of the automatically generated password
    email. The operator plan now resolves a User by login because email is not
-   unique. Left: publish and test the live snow portal and build the three
-   client forms.
+   unique. Applied on 2026-09-23: `SERVICE_ADDRESS` on type 5,
+   `SNOW_SERVICE_PROPERTY_ADDRESS_V1` (259) and
+   `SNOW_QUOTATION_ORDER_UTILITIES_V2` (260), and workflow 45 bound to V2 with
+   state 221 re-saved; Orders 41 and 42 were backfilled on both core-bill
+   nodes. Left: fix quotation delivery and the details processor (item 5),
+   publish and test the live snow portal, and build the three client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -959,7 +976,15 @@ transition. Where the whole flow stands is
    the email call. Agreement 137 proved compensation: its incomplete Order 50
    moved the agreement to `QUOTATION_SEND_FAILED` without a grant ID while the
    Order and Account remained in their pre-delivery states. Question 10 records
-   the backend verification.
+   the backend verification. A third live browser pass on 2026-09-23 used
+   hand-issued grant 59 over agreement 136:
+   - Orders 41 and 42 were approved on the page.
+   - A details event without phone and authority came back with both fields
+     marked.
+   - The details sent from the page passed the checking state into `DRAFT`.
+   - The grant was then revoked.
+   - Through the link the Account returns contacts and addresses as ids only,
+     so only the legal name pre-fills.
 5. **Then:** finish the agreement side of
    `QUOTATION-PACKAGE-FLOW.md` §5. The details, delivery and Account activation
    hooks are complete. Workflow 53 validates in
@@ -975,8 +1000,19 @@ transition. Where the whole flow stands is
    action is owned outside this stream. Portal User provisioning now runs after
    Account activation through script 258 and assigns `SW_FS_WS_CUSTOMER_PORTAL`
    (75 on dev-1); new-User and retry paths were checked on Accounts 714 and
-   694. The portal flag remains intentionally deferred. Next here are a real
-   live snow-portal sign-in and the three client forms. The role
+   694. The portal flag remains intentionally deferred. Found on 2026-09-23,
+   and next here:
+   - `SNOW_SERVICE_QUOTATION_DELIVERY_V1` grants
+     `QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of
+     `AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`, so a link from the email
+     cannot send the contract details.
+   - Processor V2 revokes the quotation grant without clearing
+     `QUOTATION_GRANT_ID`, and adds another `BILLING` address on every
+     submission.
+   - `service-agreement-client-details-check` still expects utility V4, although
+     workflow 53 moved to V5.
+
+   After those, a real live snow-portal sign-in and the three client forms. The role
    remains staging-only until customer Account scoping is enforced by the
    backend.
 

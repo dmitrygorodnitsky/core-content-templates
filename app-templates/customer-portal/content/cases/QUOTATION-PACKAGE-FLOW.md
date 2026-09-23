@@ -1,7 +1,7 @@
 # Quotation package — the service agreement carries the quotes
 
 Status: implementation in progress, decided with the user on 2026-09-11 and
-revised through 2026-09-22; where the flow stands is §10. Facts marked *verified* were read
+revised through 2026-09-23; where the flow stands is §10. Facts marked *verified* were read
 from dev-1; everything else is our design, filling what the client spec
 (`quotation-contract-client-activation-flow.md`) leaves open.
 
@@ -133,9 +133,13 @@ they are not, it records what is missing and sends
 again. Core drops an event sent too soon after the transition before it
 (dev-1, 2026-09-17), so the follow-up event is sent after the commit with a
 delay or a retry, and an agreement left in `CLIENT_DETAILS_RECEIVED` must be
-visible to the manager. This is live on dev-1: workflow utility V3 dispatches
+visible to the manager. This is live on dev-1: the workflow utility dispatches
 processor V2 to a `CORE`/`CORE-ACCT`/`CORE-BILL` node, and the review page sends
-the new event and treats the transient state as processing.
+the new event. Since 2026-09-23 the page shows `CLIENT_DETAILS_RECEIVED` as a
+checking state, right after the submit and when the link is opened there. It
+re-reads one read at a time for up to 75 s, then offers Refresh status, and
+moves to whatever it reads: the returned form, the link closed after the
+details, or `DRAFT` and later states.
 
 `EFFECTIVE_DATE` is optional, because it cannot be known while the agreement is
 still a package.
@@ -159,7 +163,7 @@ approved.
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
 | package evaluation | see §6 | |
-| Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | sends it back to `AWAITING_CLIENT_DETAILS` with what is missing; the client sees it on the page |
+| Agreement enters `CLIENT_DETAILS_RECEIVED` | checks the ten details the event carried; when they are complete, writes Party B into the account and a snapshot into the agreement, removes unapproved Orders from `ORDERS`, revokes the quotation link, notifies `CONTRACT_MANAGER` and sends the agreement to `DRAFT` (§4.2) | writes the codes of what is missing or invalid to `CLIENT_DETAILS_ERRORS` (comma-separated), or `PROCESSING_FAILED` when processing itself fails, and sends it back to `AWAITING_CLIENT_DETAILS`; the page marks each named field and says a `PROCESSING_FAILED` return is not the client's mistake |
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
@@ -224,7 +228,8 @@ what it holds.
   attributes in the same shape `portal-form.js` renders form attributes, and
   pre-filled from the account.
 - **Agreement review** — spec §14 and §19.6: parties, properties and services,
-  prices, terms from the document content; approve; the completion state.
+  prices, terms from `CONTRACT_TERMS`; approve; the completion state with the
+  portal invitation.
 
 ## 9. Prerequisites and open points
 
@@ -244,11 +249,14 @@ what it holds.
   so a record reachable by a client holds nothing we would not show one.
 - **The terms live in `CONTRACT_TERMS`** on document type 17 since 2026-09-17,
   one optional string that the attribute editor shows as a multi-line field,
-  and the review page reads it. Three limits, worth stating before anyone
-  treats this page as the contract. The text becomes blocks through an
-  unwritten micro-syntax — `# ` a heading, `- ` an item, a blank line between
-  blocks — so a contract numbered "1. Services" renders as unbroken prose.
-  One string holds one language, so the terms sit unmarked in whatever
+  and the review page reads it. The text becomes blocks through a
+  micro-syntax: `# ` a heading, `- ` an item, a blank line between blocks.
+  Since 2026-09-23 a line starting with a number marker (`1.`, `1)`, `1.1`,
+  `2.3.`) is a numbered clause that keeps its number and depth, together with
+  the lines under it up to the next blank line or marker; a prose line that
+  starts with a decimal such as "1.5 hours" is read as clause 1.5. Two limits,
+  worth stating before anyone treats this page as the contract. One string
+  holds one language, so the terms sit unmarked in whatever
   language they were typed while the rest of the page follows the reader. And
   one string is one revision: nothing records which wording the client
   approved, and an edit after approval replaces it silently. The executed
@@ -260,14 +268,26 @@ what it holds.
   optional strings, applied in the same write. The page has read them all
   along; until something fills them the provider card falls back to the
   organization name.
-- **The portal invitation on the agreement page can come back.** It asks
-  whether the client Account already has a Core User, and the Account profile
-  now exposes `user` as `{ id }` (read on 2026-09-21), which is enough to tell.
-  The page keeps it hidden until it asks for that field.
-- **The service address must be readable through the link.** A Resource cannot
-  be granted, so the page cannot follow `SERVICE_PROPERTY` to the address. The
-  hook that adds an Order to the package also records the property's address on
-  the Order.
+- **The portal invitation is back** (2026-09-23). The completion states
+  (`CLIENT_APPROVED`, `ACTIVATION_FAILED`, `ACTIVE`) and the link closed right
+  after approval explain portal access without asking `Account.user`, which the
+  readback right after approval usually cannot see yet: a client without a
+  portal password receives one by email once access is ready, and an existing
+  password stays the same. The page names the Account's PRIMARY email only when
+  the link returns exactly one, the rule provisioning uses, and links to the
+  portal only when the CMS parameter `PORTAL_URL` is set. Through the link the
+  Account returns its contacts and addresses as ids only (dev-1, 2026-09-23),
+  so the invitation names no address and the details form pre-fills only the
+  legal name, until the grant also carries `Contact`, `ContactEntry`,
+  `AccountAddress` and `Address` records.
+- **The service address is written on the Order.** A Resource cannot be
+  granted, so the page cannot follow `SERVICE_PROPERTY` to the address. Since
+  2026-09-23 `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260, workflow 45)
+  asks `SNOW_SERVICE_PROPERTY_ADDRESS_V1` (259) on a `CORE-RM` node for the
+  address of the Order's current `SERVICE_PROPERTY` and writes
+  `SERVICE_ADDRESS` before the Order joins its package. A failed lookup is
+  logged and never keeps the Order out, and `refreshServiceAddress` backfills
+  one Order; Orders 41 and 42 were backfilled on both core-bill nodes.
 - **The pricing model is not a field.** `FIELD_SERVICE_ORDER` has no pricing
   model attribute; the team's creator writes the kind into `notes` and item
   `metadata`. The page has to label each option, so the Order gets a
@@ -317,7 +337,7 @@ what it holds.
   It is not a production customer boundary until backend reads are scoped to
   the linked customer Account.
 
-## 10. Where the flow stands, 2026-09-22
+## 10. Where the flow stands, 2026-09-23
 
 | step of §2 | state |
 | --- | --- |
@@ -326,13 +346,13 @@ what it holds.
 | a property per address | *verified*: form 60 created Property 960 on its first attempt. Form 59 created Account 710 and Property 959 once; repeated processing reused both records without duplicates |
 | every entity created on submit | *verified* 2026-09-22: `WINTER_SERVICE_REGION_WORKFLOW_UTILS_V16` (script 237) creates on `NOTIFIED`, exposes `VALIDATION_FAILED` and `PROCESSING_FAILED`, and unlocks manager actions only in `READY_FOR_REVIEW`. A rejected request cannot receive a client link. Link/email failure moves `PROCESSED` to retryable `DELIVERY_FAILED`; a grant issued before a failed email is revoked before the failure transition. `npm run winter-quotation-flow-check` guards the split and compensation |
 | three Orders per property | *verified*: `WINTER_SERVICE_QUOTATION_DRAFT_CREATOR_V1` (script 236) created Orders 53–55 for Property 962 with `PER_SERVICE`, `MONTHLY` and `SEASONAL`; rerunning it returned those IDs with `ordersCreated: 0` |
-| Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER` |
-| quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712 |
+| Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER`. Since 2026-09-23 the binding is `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260), which also writes `SERVICE_ADDRESS` (§9); its hook path is proven by the next end-to-end run |
+| quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712. **Defect found 2026-09-23:** the grant carries `P_WF:SERVICE_AGREEMENT_LIFECYCLE:QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of `…:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` (`SNOW_SERVICE_QUOTATION_DELIVERY_V1`), so a link from the email cannot send the contract details; every live details pass so far used a hand-issued grant |
 | Send Quotation as a bulk action | outside this stream; owned as a separate task |
-| quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser |
+| quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser. On 2026-09-23 the version with the checking state, returned details, portal invitation and numbered terms was uploaded: the four hashes match, and `REVIEW_API_BASE_URL` and PageContext 21 were kept. `app-3-core-cms` kept serving the previous template while `app-1-core-cms` served the new one, and the backend is asked to evict it. The next version, which follows the last decision on its own and words a return on a reopened link, is not uploaded yet |
 | client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
-| details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
+| details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event. *Verified in the live browser* 2026-09-23 with hand-issued grant 59 over agreement 136: after Orders 41 and 42 were approved on the page, a details event without phone and authority came back with both fields marked, and the details sent from the page passed the checking state into `DRAFT`. Two defects of processor V2 surfaced: it revokes the quotation grant without clearing `QUOTATION_GRANT_ID`, and it adds another `BILLING` address to the Account on every submission |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards both delivery paths, six entity types, writable permissions and compensation |
 | approval → Account `ACTIVE` → portal User | *Verified on dev-1* 2026-09-22: anonymous approval of agreement 134 revoked its grant and activated Account 694. `SNOW_PORTAL_USER_PROVISION_V1` (script 258) is called after activation script 254 by workflow utility 255. It creates or reuses a User using the PRIMARY email as login, assigns `SW_FS_WS_CUSTOMER_PORTAL` (75) in `SNOWLIMITLESS`, and writes `Account.user`; failure enters retryable `ACTIVATION_FAILED`. Account 694 links to User 35. ACTIVE smoke Account 714 created User 43, assigned the role and linked it; an approval retry on agreement 134 restored an intentionally removed role on User 35. Activation script 254 handles a cleared `AGREEMENT_GRANT_ID`. The portal flag remains deferred. An admin password reset for User 43 returned `200/[true]`; a reachable test mailbox supplied the password, and Core OIDC accepted the login. Calm Harbor correctly denied that SNOWLIMITLESS user access to its own organization. Script 258 now calls Core `UserService.generateNewPassword` after the User transaction commits. ACTIVE smoke Account 715 created User 49 with `credentialsIssued: true`; rerun returned `created: false`, `credentialsIssued: false`. ACTIVE smoke Account 716 created User 50 with the same result, and the user confirmed receipt of the automatically generated password email at a reachable mailbox. The operator `snow-portal-user plan` now resolves by login, not non-unique email. Login to a live snow portal remains unverified |
 
@@ -357,11 +377,23 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Verify the live snow portal.** Publish its live entry, use an OIDC identity
-   matching a provisioned User, and check `overview` and `properties`. The
-   automated password email was received in a reachable test mailbox.
-   The role is staging-only until backend reads are scoped to the linked
+1. **Fix quotation delivery and the details processor.**
+   - A new delivery script grants `AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED`.
+   - A new processor clears `QUOTATION_GRANT_ID` after revoking the grant and
+     reuses the Account's `BILLING` address.
+   - A new workflow utility dispatches both. Workflow 53 is rebound without
+     touching its `scriptLanguage`, and `service-agreement-client-details-check`,
+     which still expects utility V4, follows the binding.
+   - Check whether the grant can carry the Account's `Contact`, `ContactEntry`,
+     `AccountAddress` and `Address` records, for pre-fill.
+2. **Verify the live snow portal.** Publish its live entry at
+   `/pages/SNOWLIMITLESS/portal` once the portal screens read the generic
+   endpoints. The user decided on 2026-09-23 that they filter to the signed-in
+   customer's Account or User where the endpoint or the browser can, and show
+   records unfiltered where neither can. Then run a fresh request end to end
+   from a reachable test mailbox, ending in an OIDC sign-in of the provisioned
+   User. The role is staging-only until backend reads are scoped to the linked
    customer Account; browser filters alone are not a production customer
    boundary.
-2. **Build the three client forms** specified for the portal. Bulk Send
+3. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.
