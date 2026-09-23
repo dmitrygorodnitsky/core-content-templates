@@ -17,7 +17,7 @@ export function TopNav(gated) {
   }
   var navItems = profile.nav.filter(isNavItemEnabled);
   var links = navItems.map(function (n) {
-    var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
+    var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail"));
     return h("span", {
       "class": "nav-link" + (active ? " nav-link--active" : ""),
       "data-action": "nav.go", "data-id": n.key, "data-state": active ? "active" : undefined
@@ -53,7 +53,7 @@ export function TopNav(gated) {
   if (state.mobileNav) {
     nav.appendChild(h("div", { "class": "mobile-nav", "data-state": "mobile-navigation-open" },
       navItems.map(function (n) {
-        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && state.route === "proposal.detail");
+        var active = n.key === state.route || (n.key === "orders.list" && state.route === "order.detail") || (n.key === "products" && state.route === "checkout") || (n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail"));
         return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel(n));
       }).concat(isModuleEnabled("profile") ? [
         h("div", { "class": "mobile-nav__divider" }),

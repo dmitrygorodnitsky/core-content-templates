@@ -1,4 +1,4 @@
-import { normalizeQuoteOrders, normalizeServiceAgreement } from "./contracts.js";
+import { normalizeContracts } from "./contracts.js";
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -33,16 +33,14 @@ export function normalizeOrders(raw) {
 export function normalizeProposals(raw) {
   var normalized = {
     proposal: raw.proposal ? clone(raw.proposal) : null,
-    sites: clone(raw.sites).map(function (site) {
+    sites: Array.isArray(raw.sites) ? clone(raw.sites).map(function (site) {
       return Object.assign({}, site, {
         allowedActions: ["proposal.selectPlan", "proposal.approve", "proposal.requestRevision", "proposal.decline"],
       });
-    }),
+    }) : [],
     statusMeta: raw.statusMeta,
   };
-  if (raw.quoteOrders) {
-    normalized.quotes = Object.assign({ agreement: normalizeServiceAgreement(raw.agreement) }, normalizeQuoteOrders(raw.quoteOrders));
-  }
+  if (raw.quoteOrders || raw.reads) normalized.quotes = normalizeContracts(raw);
   return normalized;
 }
 

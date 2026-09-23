@@ -297,4 +297,36 @@
 
 .vw-mobile .proposal-options { padding-left: 18px; }
 
+.vw-mobile .agreement-row { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .agreement-row .proposal-card__body { flex: 1 1 calc(100% - 96px); min-width: 0; }
+
+.vw-mobile .agreement-row .status-badge { order: 3; margin-left: 44px; }
+
+.vw-mobile .alert-banner--partial { flex-wrap: nowrap; align-items: flex-start; }
+
+.vw-mobile .alert-banner--partial .alert-banner__body { min-width: 0; }
+
+.vw-mobile .quote-package-link { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .quote-package-link__label { flex-basis: calc(100% - 32px); }
+
+.vw-mobile .quote-package-link .status-badge { order: 3; }
+
+.vw-mobile .quote-option__head { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .decision-confirm .btn, .vw-mobile .quote-option__decide .proposal-actions .btn { flex: 1 1 auto; }
+
+.vw-mobile .agreement-parties { grid-template-columns: 1fr; }
+
+.vw-mobile .agreement-facts__row { grid-template-columns: 1fr; gap: 2px; }
+
+.vw-mobile .terms-num[data-depth="2"], .vw-mobile .terms-paragraph[data-depth="1"] { padding-left: 1.6em; }
+
+.vw-mobile .terms-num[data-depth="3"], .vw-mobile .terms-num[data-depth="4"], .vw-mobile .terms-paragraph[data-depth="2"], .vw-mobile .terms-paragraph[data-depth="3"], .vw-mobile .terms-paragraph[data-depth="4"] { padding-left: 3.2em; }
+
+.vw-mobile .terms-list[data-depth="1"] { padding-left: 2.8em; }
+
+.vw-mobile .terms-list[data-depth="2"], .vw-mobile .terms-list[data-depth="3"], .vw-mobile .terms-list[data-depth="4"] { padding-left: 4.4em; }
+
 .vw-mobile .map-pin-label { max-width: 104px; font-size: 11px; }

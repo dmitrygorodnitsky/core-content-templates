@@ -318,6 +318,33 @@ const propertiesModule = {
   },
 };
 
+const proposalsModule = {
+  id: "proposals",
+  adapter(context) {
+    if (context.config.dataMode === "live") {
+      if (context.config.vertical === "snow") return createCoreSnowQuotesAdapter();
+      var closed = new Error("Live adapter is not opened for module proposals");
+      closed.code = "live-adapter-not-opened";
+      throw closed;
+    }
+    return fixtureAdapter;
+  },
+  normalize(raw) { return normalizeProposals(raw); },
+  onError(error, context) {
+    if (error && error.code === "session-expired") context.state.account = "session-expired";
+  },
+  failureEnvelope(context, error) {
+    var code = error && error.code;
+    return {
+      state: code === "customer-forbidden" ? "unauthorized" : code === "live-adapter-not-opened" ? "unavailable" : "error",
+      reasonCode: code || "proposals-load-failed",
+      proposal: null,
+      sites: [],
+      statusMeta: null,
+    };
+  },
+};
+
 const checkoutModule = {
   id: "checkout",
   adapter(context) {
@@ -358,7 +385,7 @@ export const modules = {
   account: accountModule,
   appointments: appointmentsModule,
   orders: ordersModule,
-  proposals: module("proposals", normalizeProposals),
+  proposals: proposalsModule,
   services: module("services", normalizeServices),
   pricing: module("pricing", normalizePricing),
   products: module("products", normalizeProducts),

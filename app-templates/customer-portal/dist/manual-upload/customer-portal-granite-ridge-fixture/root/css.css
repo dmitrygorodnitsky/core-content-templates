@@ -1400,6 +1400,188 @@ div.proposal-group__head:hover { background: transparent; }
 
 .proposal-actions { display: flex; gap: 10px; margin-top: 4px; }
 
+h1.proposal-detail-head__title { margin: 0; }
+
+.contracts-section + .contracts-section { margin-top: 26px; }
+
+.contracts-section__title { display: flex; align-items: center; gap: 8px; margin: 0 4px 10px; font-size: 11.5px; font-weight: 680; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+
+.contracts-section__count { border-radius: var(--radius-pill); padding: 1px 8px; background: rgba(var(--hair), .07); color: var(--ink-2); font-size: 11px; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+
+.agreement-row { width: 100%; border: 0; border-top: 1px solid var(--glass-border); background: transparent; font: inherit; color: inherit; text-align: left; }
+
+.agreement-row:first-child { border-top: 0; }
+
+.agreement-row:focus-visible, .quote-package-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.agreement-row .status-badge { flex-shrink: 0; }
+
+.agreement-row__diamond { background: #8a94a6; }
+
+.agreement-row__diamond[data-tone="ok"] { background: #34c759; }
+
+.agreement-row__diamond[data-tone="info"] { background: var(--info); }
+
+.agreement-row__diamond[data-tone="warn"] { background: #ff9f0a; }
+
+.alert-banner--partial { background: rgba(255,159,10,.08); border: 1px solid rgba(255,159,10,.28); cursor: default; padding: 12px 15px; gap: 12px; margin-bottom: 12px; }
+
+.alert-banner--partial .alert-banner__desc { margin-top: 0; color: var(--ink); line-height: 1.45; }
+
+.alert-banner__icon--partial { width: 30px; height: 30px; border-radius: 10px; font-size: 14px; font-weight: 800; color: var(--warn); background: rgba(255,159,10,.16); }
+
+.quote-package-link { display: flex; align-items: center; gap: 10px; width: 100%; margin: 0 0 14px; padding: 11px 15px; border-radius: 14px; border: 1px solid var(--glass-border); background: rgba(var(--glass), .55); font: inherit; color: inherit; text-align: left; cursor: pointer; }
+
+.quote-package-link:hover { background: rgba(var(--glass), .75); }
+
+.quote-package-link__label { flex: 1; min-width: 0; font-weight: 650; font-size: 13.5px; }
+
+.quote-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+
+.quote-option__head { display: flex; align-items: center; gap: 10px; }
+
+.quote-option__model { flex: 1; min-width: 0; margin: 0; font-weight: 750; font-size: 16px; letter-spacing: -.01em; }
+
+.quote-lines { margin-top: 8px; }
+
+.quote-line__body { flex: 1; min-width: 0; }
+
+.quote-line__title--unnamed { color: var(--ink-3); font-style: italic; }
+
+.quote-totals { margin-top: 4px; padding-top: 2px; border-top: 1px solid var(--glass-border); }
+
+.quote-totals .money-rows__row span:last-child, .quote-line .purch-line__side b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.quote-option__note { margin-top: 8px; font-size: 12.5px; line-height: 1.5; color: var(--ink-3); }
+
+.quote-option__decide { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--glass-border); }
+
+.quote-option__decide .conflict-banner, .agreement-approve .conflict-banner { margin: 0; }
+
+.decision-confirm { border-radius: 14px; padding: 14px 15px; background: rgba(var(--accent-rgb), .06); border: 1px solid rgba(var(--accent-rgb), .18); }
+
+.decision-confirm[data-kind="decline"] { background: rgba(255,59,48,.05); border-color: rgba(255,59,48,.2); }
+
+.decision-confirm__title { margin: 0; font-weight: 700; font-size: 14.5px; }
+
+.decision-confirm__body { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+
+.decision-confirm .proposal-actions { margin-top: 12px; flex-wrap: wrap; }
+
+.decision-note { display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+
+.decision-note__spinner { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(var(--accent-rgb), .25); border-top-color: var(--accent); animation: contracts-spin .9s linear infinite; }
+
+@keyframes contracts-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) { .decision-note__spinner { animation: none; } }
+
+.decision-outcome { flex-wrap: wrap; }
+
+.decision-outcome__body { flex: 1 1 220px; min-width: 0; font-size: 13px; line-height: 1.45; }
+
+.decision-outcome__title { font-weight: 700; font-size: 13.5px; }
+
+.decision-outcome__desc { margin-top: 2px; font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+
+.agreement-detail-head__eyebrow { margin-bottom: 4px; font-size: 11.5px; font-weight: 680; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+
+.agreement-notice { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 14px; padding: 12px 15px; border-radius: 14px; font-size: 13.5px; line-height: 1.45; background: rgba(var(--glass), .55); border: 1px solid var(--glass-border); }
+
+.agreement-notice[data-tone="info"] { background: rgba(14,143,196,.08); border-color: rgba(14,143,196,.22); }
+
+.agreement-notice[data-tone="warn"] { background: rgba(255,159,10,.10); border-color: rgba(255,159,10,.30); }
+
+.agreement-notice[data-tone="ok"] { background: rgba(52,199,89,.10); border-color: rgba(52,199,89,.26); }
+
+.agreement-notice__dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--ink-3); }
+
+.agreement-notice[data-tone="info"] .agreement-notice__dot { background: var(--info); }
+
+.agreement-notice[data-tone="warn"] .agreement-notice__dot { background: var(--warn); }
+
+.agreement-notice[data-tone="ok"] .agreement-notice__dot { background: var(--ok); }
+
+.agreement-notice__text { flex: 1; min-width: 200px; }
+
+.agreement-notice__link { font-weight: 650; white-space: nowrap; }
+
+.agreement-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: stretch; margin-bottom: 14px; }
+
+.agreement-card__title { margin: 0 0 8px; font-weight: 700; font-size: 15px; }
+
+.agreement-facts { margin: 0; }
+
+.agreement-facts__row { display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 12px; padding: 8px 0; border-top: 1px solid var(--glass-border); font-size: 13px; }
+
+.agreement-facts__row:first-child { border-top: 0; }
+
+.agreement-facts__label { margin: 0; color: var(--ink-3); }
+
+.agreement-facts__value { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.agreement-facts__value--missing { font-weight: 500; color: var(--ink-3); }
+
+.agreement-term, .agreement-terms, .agreement-approve { margin-bottom: 14px; }
+
+.agreement-services { margin: 22px 0 14px; }
+
+.agreement-section-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 0 4px 10px; }
+
+.agreement-section-head .contracts-section__title { margin: 0; }
+
+.agreement-section-head__sub { font-size: 12.5px; color: var(--ink-3); }
+
+.agreement-property + .agreement-property { margin-top: 16px; }
+
+.agreement-property__head { margin: 0 4px 8px; }
+
+.agreement-property__title { margin: 0; font-weight: 750; font-size: 16px; overflow-wrap: anywhere; }
+
+.agreement-property__address { margin-top: 2px; font-size: 12.5px; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.agreement-property__options { display: flex; flex-direction: column; gap: 10px; }
+
+.agreement-approve__copy { margin: 0 0 12px; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+
+.agreement-approve .proposal-actions { flex-wrap: wrap; }
+
+.terms-heading { margin: 18px 0 6px; font-weight: 750; font-size: 14.5px; }
+
+.agreement-card__title + .terms-heading { margin-top: 4px; }
+
+.terms-paragraph { margin: 6px 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); white-space: pre-line; overflow-wrap: anywhere; }
+
+.terms-num { display: flex; gap: 8px; margin: 6px 0; font-size: 13.5px; line-height: 1.55; }
+
+.terms-num__marker { flex: none; min-width: 2.2em; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.terms-num__text { flex: 1; min-width: 0; color: var(--ink-2); overflow-wrap: anywhere; }
+
+.terms-num[data-depth="1"] .terms-num__text { font-weight: 650; color: var(--ink); }
+
+.terms-list { margin: 6px 0; padding-left: 1.2em; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+
+.terms-list li { margin: 3px 0; }
+
+.terms-num[data-depth="2"] { padding-left: 2.8em; }
+
+.terms-num[data-depth="3"] { padding-left: 5.6em; }
+
+.terms-num[data-depth="4"] { padding-left: 8.4em; }
+
+.terms-paragraph[data-depth="1"] { padding-left: 2.8em; }
+
+.terms-paragraph[data-depth="2"] { padding-left: 5.6em; }
+
+.terms-paragraph[data-depth="3"], .terms-paragraph[data-depth="4"] { padding-left: 8.4em; }
+
+.terms-list[data-depth="1"] { padding-left: 4em; }
+
+.terms-list[data-depth="2"] { padding-left: 6.8em; }
+
+.terms-list[data-depth="3"], .terms-list[data-depth="4"] { padding-left: 9.6em; }
+
 /* ============================================================
    WAVE 5 — Profile / Calendar / Activity / Support
    ============================================================ */
@@ -3535,6 +3717,38 @@ div.proposal-group__head:hover { background: transparent; }
 .vw-mobile .proposal-group__decision { order: 3; flex-basis: 100%; padding-left: 44px; }
 
 .vw-mobile .proposal-options { padding-left: 18px; }
+
+.vw-mobile .agreement-row { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .agreement-row .proposal-card__body { flex: 1 1 calc(100% - 96px); min-width: 0; }
+
+.vw-mobile .agreement-row .status-badge { order: 3; margin-left: 44px; }
+
+.vw-mobile .alert-banner--partial { flex-wrap: nowrap; align-items: flex-start; }
+
+.vw-mobile .alert-banner--partial .alert-banner__body { min-width: 0; }
+
+.vw-mobile .quote-package-link { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .quote-package-link__label { flex-basis: calc(100% - 32px); }
+
+.vw-mobile .quote-package-link .status-badge { order: 3; }
+
+.vw-mobile .quote-option__head { flex-wrap: wrap; row-gap: 6px; }
+
+.vw-mobile .decision-confirm .btn, .vw-mobile .quote-option__decide .proposal-actions .btn { flex: 1 1 auto; }
+
+.vw-mobile .agreement-parties { grid-template-columns: 1fr; }
+
+.vw-mobile .agreement-facts__row { grid-template-columns: 1fr; gap: 2px; }
+
+.vw-mobile .terms-num[data-depth="2"], .vw-mobile .terms-paragraph[data-depth="1"] { padding-left: 1.6em; }
+
+.vw-mobile .terms-num[data-depth="3"], .vw-mobile .terms-num[data-depth="4"], .vw-mobile .terms-paragraph[data-depth="2"], .vw-mobile .terms-paragraph[data-depth="3"], .vw-mobile .terms-paragraph[data-depth="4"] { padding-left: 3.2em; }
+
+.vw-mobile .terms-list[data-depth="1"] { padding-left: 2.8em; }
+
+.vw-mobile .terms-list[data-depth="2"], .vw-mobile .terms-list[data-depth="3"], .vw-mobile .terms-list[data-depth="4"] { padding-left: 4.4em; }
 
 .vw-mobile .map-pin-label { max-width: 104px; font-size: 11px; }
 

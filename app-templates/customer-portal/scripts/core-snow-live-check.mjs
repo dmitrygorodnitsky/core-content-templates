@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import process from "node:process";
 import { loadSnowProperties, loadSnowQuotes } from "../runtime/src/adapters/core-snow-adapter.js";
 import { resolveCoreAccount } from "../runtime/src/adapters/core-account-adapter.js";
+import { contractsPackage, normalizeContracts } from "../runtime/src/normalizers/contracts.js";
 
 const origin = new URL(process.env.SERVICEWAND_BASE_URL || "https://dev-1.servicewand.com").origin;
 const organization = process.env.SERVICEWAND_ORG || "SNOWLIMITLESS";
@@ -61,6 +62,7 @@ try {
   const context = { config, state: { session, customerAccount: account } };
   const properties = await loadSnowProperties(context, globalThis.fetch, origin);
   const quotes = await loadSnowQuotes(context, globalThis.fetch, origin);
+  const contracts = contractsPackage(normalizeContracts(quotes), properties.items);
 
   console.log(JSON.stringify({
     tokenKind: kind,
@@ -80,10 +82,18 @@ try {
     quotes: {
       state: quotes.state,
       scopeMode: quotes.scopeMode,
-      visible: quotes.sites.length,
-      unsentCount: quotes.unsentCount,
-      statuses: quotes.sites.map((site) => site.status),
-      sample: quotes.sites.slice(0, 3).map((site) => ({ id: site.id, stateCode: site.stateCode, status: site.status, addr: site.addr })),
+      reads: quotes.reads,
+      rows: {
+        agreements: quotes.agreements ? quotes.agreements.length : null,
+        orders: quotes.quoteOrders ? quotes.quoteOrders.length : null,
+        orderItems: quotes.orderItems ? quotes.orderItems.length : null,
+        productPrices: quotes.productPrices ? quotes.productPrices.length : null,
+        products: quotes.products ? quotes.products.length : null,
+      },
+      agreements: contracts.agreements.map((row) => ({ id: row.id, stage: row.agreement.stage, quotes: row.quoteCount, unreadableOrders: row.unreadableOrders })),
+      groups: contracts.groups.map((group) => ({ id: group.id, decision: group.decision, orders: group.orders.map((order) => ({ id: order.backendId, status: order.status, lines: order.lines.length, linesState: order.linesState, total: order.money && order.money.total })) })),
+      preparing: contracts.preparing,
+      partial: contracts.partial,
     },
   }, null, 2));
 } catch (error) {

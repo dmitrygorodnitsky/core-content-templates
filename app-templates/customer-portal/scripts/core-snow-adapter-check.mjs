@@ -12,7 +12,6 @@ const context = {
 };
 
 const propertyType = { id: 154, code: "SNOW_REMOVAL_PROPERTY", nls: { en: { NAME: "Snow Removal Property" } } };
-const orderType = { id: 5, code: "FIELD_SERVICE_ORDER", nls: { en: { NAME: "Field service order" } } };
 
 function property(id, accountId, addressId, name, stateCode) {
   const row = {
@@ -30,20 +29,6 @@ function property(id, accountId, addressId, name, stateCode) {
 
 function address(id, line, city, postal) {
   return { id, address1: line, city, postalCode: postal, state: { id: 2, code: "BC" }, country: { id: "CA" } };
-}
-
-function order(id, stateCode, propertyId) {
-  const row = {
-    id,
-    account: { id: 62 },
-    type: orderType,
-    grandTotal: 0,
-    created: 1785961364110,
-    states: [{ id: 1, code: stateCode }],
-    attributes: { 5: { CLIENT: { value: 62 } } },
-  };
-  if (propertyId != null) row.attributes[5].SERVICE_PROPERTY = { value: propertyId };
-  return row;
 }
 
 function coreFetch(table, calls) {
@@ -64,7 +49,7 @@ function coreFetch(table, calls) {
       const page = (table.properties || []).slice(body.offset, body.offset + body.pageSize);
       return json({ resultSize: (table.properties || []).length, result: page });
     }
-    return json({ resultSize: (table.orders || []).length, result: table.orders || [] });
+    throw new Error("unexpected request " + url);
   };
 }
 
@@ -172,49 +157,145 @@ function coreFetch(table, calls) {
   assert.equal(result.truncated, false, "a book that ends exactly on a page boundary is complete once the next page comes back empty");
 }
 
-{
-  const calls = [];
-  const table = {
-    orders: [
-      order(18, "INITIAL", 278),
-      order(19, "QUOTE_PREPARED", 278),
-      order(20, "QUOTE_SENT", 278),
-      order(21, "QUOTE_VIEWED", 278),
-      order(22, "CLIENT_APPROVED", 278),
-      order(23, "DECLINED", null),
-      order(24, "CUSTOMER_CHANGES_REQUESTED", 278),
-    ],
-    properties: [property(278, 62, 610, "123 Main Street")],
-    addresses: [address(610, "#1001 - 7445 132nd Street", "Surrey", "V3W 1J8")],
+const winterOrderType = { id: 6, code: "WINTER_SERVICES_ORDER", nls: { en: { NAME: "Winter services order" } } };
+
+function quote(id, stateCode, propertyId, extra = {}) {
+  return Object.assign({
+    id,
+    account: { id: 62 },
+    type: winterOrderType,
+    currency: { id: 21, code: "CAD" },
+    totalCharges: 2444.72,
+    totalTaxes: 0,
+    grandTotal: 2444.72,
+    states: [{ id: 200 + id, code: stateCode }],
+    attributes: { 5: Object.assign({ CLIENT: { value: 62 }, PRICING_MODEL: { value: "SEASONAL" } }, propertyId ? { SERVICE_PROPERTY: { value: propertyId } } : {}) },
+    items: [{ id: id * 10 + 1 }, { id: id * 10 + 2 }],
+  }, extra);
+}
+
+function line(orderId, position, priceId, amount) {
+  return { id: orderId * 10 + position, order: { id: orderId }, itemPrice: { id: priceId }, amount, itemCount: 1, sortOrder: position - 1, grandTotal: amount, totalTaxes: 0 };
+}
+
+function agreement(id, stateCode, orderIds, client = 62) {
+  return {
+    id,
+    type: { id: 17, code: "SERVICE_AGREEMENT" },
+    organization: { id: 43, code: "GRANITE_RIDGE_SNOW", nls: { en: { NAME: "Granite Ridge Snow Removal" } } },
+    states: [{ id: 300 + id, code: stateCode }],
+    attributes: { 17: { CLIENT: { value: client }, ORDERS: { value: orderIds } } },
   };
-  const adapter = createCoreSnowQuotesAdapter({ origin, fetch: coreFetch(table, calls) });
-  const result = await adapter.load("proposals", context);
+}
 
-  assert.equal(result.state, "ready");
-  assert.equal(result.scopeMode, "server-scoped");
-  assert.deepEqual(calls[0].body.filters, [{ type: "INTEGER", operator: "=", property: "account.id", value: "62" }]);
-  assert.deepEqual(result.sites.map((site) => site.backendId), [20, 21, 22, 23, 24]);
-  assert.deepEqual(result.sites.map((site) => site.status), ["unseen", "viewed", "approved", "declined", "revision"]);
-  assert.equal(result.unsentCount, 2, "a quote the operator has not sent is not the customer's business but is still counted");
+function quoteTable(overrides = {}) {
+  return Object.assign({
+    agreements: [agreement(136, "QUOTATION_SENT", [41, 42]), agreement(133, "CLIENT_APPROVED", [38])],
+    orders: [quote(38, "CLIENT_APPROVED", 959), quote(41, "QUOTE_SENT", 959), quote(42, "QUOTE_VIEWED", 958), quote(43, "INITIAL", 958)],
+    orderItems: [line(38, 1, 227, 4891.92), line(38, 2, 233, 21859.68), line(41, 1, 227, 4891.92), line(41, 2, 233, 21859.68), line(42, 1, 28, 1528.48), line(42, 2, 36, 916.24), line(43, 1, 53, 1222.98)],
+    productPrices: [{ id: 227, product: { id: 25 } }, { id: 233, product: { id: 28 } }, { id: 28, product: { id: 25 } }, { id: 36, product: { id: 28 } }, { id: 53, product: { id: 25 } }],
+    products: [{ id: 25, code: "PARKING_LOT_SNOW_REMOVAL", nls: { en: { NAME: "Snow Removal" } } }, { id: 28, code: "ROCK_SALT_DE_ICING", nls: { en: { NAME: "Rock Salt De-Icing" } } }],
+    fail: {},
+    serverFiltersClient: true,
+  }, overrides);
+}
 
-  const sent = result.sites[0];
-  assert.equal(sent.addr, "123 Main Street");
-  assert.equal(sent.city, "Surrey");
-  assert.equal(sent.postal, "V3W 1J8");
-  assert.equal(sent.propertyId, "prop-core-278");
-  for (const absent of ["lot", "areas", "selected", "x", "y"]) {
-    assert.equal(sent[absent], null, absent + " is design-only and has no Core source");
-  }
-  const declined = result.sites[3];
-  assert.equal(declined.propertyId, null);
-  assert.equal(declined.addr, "");
+function quoteFetch(table, calls = []) {
+  return async (url, options) => {
+    const target = new URL(url);
+    const route = target.pathname;
+    const body = options.body ? JSON.parse(options.body) : null;
+    calls.push({ url, route, body, headers: options.headers, method: options.method });
+    const failure = Object.keys(table.fail).find((fragment) => url.includes(fragment));
+    if (failure) return { ok: false, status: table.fail[failure], async json() { return {}; } };
+    const filterValue = (property) => ((body && body.filters) || []).find((filter) => filter.property === property);
+    const inIds = (property) => String(filterValue(property).value).split(",").map(Number);
+    if (route === "/core/api/document-type/list.json") return json({ resultSize: 1, result: [{ id: 17, code: "SERVICE_AGREEMENT" }] });
+    if (route === "/core/api/document/list.json") {
+      const client = filterValue("attributes.17.CLIENT.value");
+      const rows = table.serverFiltersClient ? table.agreements.filter((row) => String(row.attributes[17].CLIENT.value) === client.value) : table.agreements;
+      return json({ resultSize: rows.length, result: rows });
+    }
+    if (route === "/core-bill/api/order/list.json") return json({ resultSize: table.orders.length, result: table.orders });
+    if (route === "/core-bill/api/order-item/list.json") {
+      const wanted = inIds("order.id");
+      const rows = table.orderItems.filter((row) => wanted.includes(row.order.id));
+      return json({ resultSize: rows.length, result: rows });
+    }
+    if (route === "/core-pim/api/product-price/list.json") return json({ resultSize: 1, result: table.productPrices.filter((row) => inIds("id").includes(row.id)) });
+    if (route === "/core-pim/api/product/list.json") return json({ resultSize: 1, result: table.products.filter((row) => inIds("id").includes(row.id)) });
+    if (route === "/core-bill/api/order/get.json") {
+      const row = table.orders.find((candidate) => candidate.id === Number(target.searchParams.get("id")));
+      return row ? json(row) : { ok: false, status: 404, async json() { throw new Error("empty"); } };
+    }
+    if (route === "/core/api/document/get.json") {
+      const row = table.agreements.find((candidate) => candidate.id === Number(target.searchParams.get("id")));
+      return row ? json(row) : { ok: false, status: 404, async json() { throw new Error("empty"); } };
+    }
+    if (route.endsWith("/send-event.json")) return { ok: true, status: 200, async json() { throw new Error("empty body"); } };
+    throw new Error("unexpected request " + url);
+  };
 }
 
 {
-  const adapter = createCoreSnowQuotesAdapter({ origin, fetch: coreFetch({ orders: [] }) });
-  const result = await adapter.load("proposals", context);
-  assert.deepEqual(result.sites, []);
-  assert.equal(result.unsentCount, 0);
+  const calls = [];
+  const adapter = createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable(), calls) });
+  const result = await adapter.load("proposals", Object.assign({}, context, { state: Object.assign({}, context.state, { customerAccount: { id: 62, displayName: "Harbour View Strata" } }) }));
+
+  assert.equal(result.state, "ready");
+  assert.equal(result.accountId, 62);
+  assert.equal(result.scopeMode, "server-scoped", "every customer record was narrowed to the Account in the request");
+  assert.deepEqual(plain(result.reads), {
+    agreements: { state: "ready", scopeMode: "server-scoped", truncated: false },
+    orders: { state: "ready", scopeMode: "server-scoped", truncated: false },
+    orderItems: { state: "ready", scopeMode: "server-scoped", truncated: false },
+    productPrices: { state: "ready", scopeMode: "unscoped", truncated: false },
+    products: { state: "ready", scopeMode: "unscoped", truncated: false },
+  }, "each read states how it was narrowed; catalog rows are tenant records nothing filters to the customer");
+  assert.deepEqual(plain(result.client), { displayName: "Harbour View Strata" });
+  assert.deepEqual(result.agreements.map((row) => row.id), [136, 133]);
+  assert.deepEqual(result.quoteOrders.map((row) => row.id), [38, 41, 42, 43], "the adapter passes rows through; the normalizer withholds operator-side Orders");
+  assert.deepEqual(result.orderItems.map((row) => row.id), [381, 382, 411, 412, 421, 422], "lines are read only for Orders the customer can see");
+  assert.deepEqual(result.productPrices.map((row) => row.id).sort((a, b) => a - b), [28, 36, 227, 233]);
+  assert.deepEqual(result.products.map((row) => row.id), [25, 28]);
+
+  const byRoute = (route) => calls.filter((call) => call.route === route);
+  assert.deepEqual(byRoute("/core/api/document-type/list.json")[0].body.filters, [{ type: "STRING", operator: "=", property: "code", value: "SERVICE_AGREEMENT" }]);
+  assert.deepEqual(byRoute("/core/api/document/list.json")[0].body.filters, [
+    { type: "STRING", operator: "=", property: "type.code", value: "SERVICE_AGREEMENT" },
+    { type: "INTEGER", operator: "=", property: "attributes.17.CLIENT.value", value: "62" },
+  ], "agreements are filtered to the customer's Account in the request, through the type id Core returned");
+  assert.deepEqual(byRoute("/core-bill/api/order/list.json")[0].body.filters, [{ type: "INTEGER", operator: "=", property: "account.id", value: "62" }]);
+  assert.deepEqual(byRoute("/core-bill/api/order-item/list.json")[0].body.filters, [
+    { type: "INTEGER", operator: "=", property: "order.account.id", value: "62" },
+    { type: "INTEGER", operator: "IN", property: "order.id", value: "38,41,42" },
+  ]);
+  assert.deepEqual(byRoute("/core-pim/api/product-price/list.json")[0].body.filters, [{ type: "INTEGER", operator: "IN", property: "id", value: "227,233,28,36" }]);
+  assert.deepEqual(byRoute("/core-pim/api/product/list.json")[0].body.filters, [{ type: "INTEGER", operator: "IN", property: "id", value: "25,28" }]);
+  assert.ok(calls.every((call) => call.method === "POST" && call.headers["X-Organization-Code"] === "SNOWLIMITLESS" && call.headers.Authorization === "Bearer test-token"));
+  assert.ok(calls.every((call) => call.url.startsWith(origin + "/")), "every service is reached same-origin");
+  assert.equal(calls.filter((call) => call.route.endsWith("/send-event.json")).length, 0, "a read sends no event");
+}
+
+{
+  const table = quoteTable({
+    serverFiltersClient: false,
+    agreements: [agreement(136, "QUOTATION_SENT", [41, 42]), agreement(137, "QUOTATION_SEND_FAILED", [50], 712)],
+    orders: [quote(41, "QUOTE_SENT", 959), Object.assign(quote(50, "QUOTE_SENT", 960), { account: { id: 712 } })],
+  });
+  const result = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(table) }).load("proposals", context);
+  assert.deepEqual(result.agreements.map((row) => row.id), [136], "a row the server should have filtered out is dropped in the browser");
+  assert.equal(result.reads.agreements.scopeMode, "browser-filtered", "and the read then says it was browser-filtered");
+  assert.deepEqual(result.quoteOrders.map((row) => row.id), [41]);
+  assert.equal(result.reads.orders.scopeMode, "browser-filtered");
+  assert.equal(result.scopeMode, "browser-filtered", "the envelope never claims more isolation than its weakest customer read");
+}
+
+{
+  const empty = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ agreements: [], orders: [quote(43, "INITIAL", 958)] })) }).load("proposals", context);
+  assert.deepEqual(empty.orderItems, [], "without a visible Order no line is read");
+  assert.equal(empty.reads.orderItems.state, "ready");
+  assert.deepEqual(empty.products, []);
 }
 
 {
@@ -233,17 +314,88 @@ function coreFetch(table, calls) {
 }
 
 {
-  const failing = (status) => async () => ({ ok: false, status, async json() { return {}; } });
-  await rejectsWith("session-expired", () => createCoreSnowQuotesAdapter({ origin, fetch: failing(401) }).load("proposals", context));
-  await rejectsWith("customer-forbidden", () => createCoreSnowQuotesAdapter({ origin, fetch: failing(403) }).load("proposals", context));
-  await rejectsWith("core-request-failed", () => createCoreSnowQuotesAdapter({ origin, fetch: failing(500) }).load("proposals", context));
+  const partialAgreements = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/document/list.json": 500 } })) }).load("proposals", context);
+  assert.equal(partialAgreements.agreements, null, "a failed read is absent, never an empty list");
+  assert.deepEqual(plain(partialAgreements.reads.agreements), { state: "error", scopeMode: null, truncated: false, reasonCode: "core-request-failed" });
+  assert.deepEqual(partialAgreements.quoteOrders.map((row) => row.id), [38, 41, 42, 43], "the quotes still load when the agreements do not");
+
+  const forbiddenAgreements = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/document-type/list.json": 403 } })) }).load("proposals", context);
+  assert.equal(forbiddenAgreements.reads.agreements.state, "unauthorized", "a role without document permissions reads as unauthorized for agreements only");
+
+  const partialOrders = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core-bill/api/order/list.json": 500 } })) }).load("proposals", context);
+  assert.equal(partialOrders.quoteOrders, null);
+  assert.equal(partialOrders.reads.orderItems.state, "error", "lines are unknown when their Orders are");
+  assert.deepEqual(partialOrders.agreements.map((row) => row.id), [136, 133]);
+
+  const partialLines = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core-bill/api/order-item/list.json": 500 } })) }).load("proposals", context);
+  assert.equal(partialLines.orderItems, null);
+  assert.equal(partialLines.reads.productPrices.state, "error");
+  assert.equal(partialLines.reads.products.state, "error");
+
+  const catalogSession = await createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core-pim/api/product/list.json": 401 } })) }).load("proposals", context);
+  assert.equal(catalogSession.reads.products.state, "error", "a catalog 401 is a partial read, never a sign-out");
+  assert.equal(catalogSession.products, null);
+
+  await rejectsWith("core-request-failed", () => createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/document/list.json": 500, "/core-bill/api/order/list.json": 500 } })) }).load("proposals", context));
+  await rejectsWith("customer-forbidden", () => createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core/api/document": 403, "/core-bill/api/order/list.json": 403 } })) }).load("proposals", context));
+  await rejectsWith("session-expired", () => createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core-bill/api/order/list.json": 401 } })) }).load("proposals", context));
+  await rejectsWith("session-expired", () => createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable({ fail: { "/core-bill/api/order-item/list.json": 401 } })) }).load("proposals", context));
   await rejectsWith("unprojectable-response", () => createCoreSnowQuotesAdapter({
     origin,
     fetch: async () => ({ ok: true, status: 200, async json() { return "<!doctype html>"; } }),
   }).load("proposals", context));
+  await rejectsWith("customer-unresolved", () => createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(quoteTable()) }).load("proposals", { config: context.config, state: { session: context.state.session } }));
+}
+
+{
+  const calls = [];
+  const table = quoteTable();
+  const adapter = createCoreSnowQuotesAdapter({ origin, fetch: quoteFetch(table, calls) });
+  const row = await adapter.readOrder(42, context);
+  assert.equal(row.id, 42);
+  assert.equal(calls[0].route, "/core-bill/api/order/get.json");
+  assert.equal(new URL(calls[0].url).searchParams.get("id"), "42");
+  assert.ok(Array.isArray(calls[0].body), "a get sends its mappings as the body");
+  assert.ok(calls[0].body.some((mapping) => mapping.name === "account"), "the pre-read asks for the Order's Account so ownership can be checked");
+
+  table.orders.push(Object.assign(quote(77, "QUOTE_VIEWED", 958), { account: { id: 701 } }));
+  await rejectsWith("customer-forbidden", () => adapter.readOrder(77, context));
+  await rejectsWith("not-found", () => adapter.readOrder(999, context));
+  await rejectsWith("invalid-target", () => adapter.readOrder("x", context));
+
+  const document = await adapter.readAgreement(136, context);
+  assert.equal(document.id, 136);
+  table.agreements.push(agreement(140, "SENT_TO_CLIENT", [], 701));
+  await rejectsWith("customer-forbidden", () => adapter.readAgreement(140, context));
+  await rejectsWith("not-found", () => adapter.readAgreement(1, context));
+
+  calls.length = 0;
+  assert.equal(await adapter.sendOrderEvent(42, "QUOTE_VIEWED-CLIENT_APPROVED", context), true);
+  assert.equal(calls[0].url, origin + "/core-bill/api/order/42/send-event.json?event=QUOTE_VIEWED-CLIENT_APPROVED");
+  assert.equal(calls[0].method, "POST");
+  assert.deepEqual(calls[0].body, {}, "the generic event carries no attributes");
+  assert.equal(await adapter.sendAgreementEvent(136, "SENT_TO_CLIENT-CLIENT_APPROVED", context), true);
+  assert.equal(calls[1].url, origin + "/core/api/document/136/send-event.json?event=SENT_TO_CLIENT-CLIENT_APPROVED");
+  await rejectsWith("invalid-event", () => adapter.sendOrderEvent(42, "approve&admin=1", context));
+
+  const answering = (status) => createCoreSnowQuotesAdapter({ origin, fetch: async () => ({ ok: status < 300, status, async json() { return {}; } }) });
+  await rejectsWith("session-expired", () => answering(401).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
+  await rejectsWith("customer-forbidden", () => answering(403).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
+  await rejectsWith("not-found", () => answering(404).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
+  await rejectsWith("command-refused", () => answering(409).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
+  await rejectsWith("core-request-failed", () => answering(500).sendOrderEvent(42, "QUOTE_VIEWED-DECLINED", context));
 }
 
 assert.deepEqual(coreSnowContract.quoteFilters, ["account.id"]);
+assert.deepEqual(coreSnowContract.orderItemFilters, ["order.account.id", "order.id"]);
+assert.deepEqual(plain(coreSnowContract.scopeModes), {
+  agreements: "server-scoped",
+  orders: "server-scoped",
+  orderItems: "server-scoped",
+  productPrices: "unscoped",
+  products: "unscoped",
+  properties: "browser-filtered",
+});
 assert.deepEqual(coreSnowContract.propertyFilters, ["type.code"]);
 assert.equal(coreSnowContract.propertyType, "SNOW_REMOVAL_PROPERTY");
 assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
@@ -251,7 +403,8 @@ assert.deepEqual(Object.keys(coreSnowContract.customerQuoteStatus).sort(), [
 ]);
 assert.deepEqual(coreSnowContract.operatorQuoteStates, ["CHANGES_REQUESTED", "INITIAL", "QUOTE_APPROVED_INTERNALLY", "QUOTE_PREPARED"]);
 
-console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, quotes scoped by the server, operator-side quote states withheld, and every design-only field left absent");
+console.log("core-snow-adapter-check ok: properties filtered in the browser against an inherited ACCOUNT attribute, coordinates read from COORD_LAT and COORD_LNG with a missing value left missing, agreements, quotes and their lines filtered to the Account in the request with any foreign row dropped and reported as browser-filtered, catalog rows reported as unscoped, a failed read left absent as a partial result, a catalog 401 kept from signing the customer out, and the pre-read, ownership check and generic event request of every contract command")
 
 function json(value) { return { ok: true, status: 200, async json() { return structuredClone(value); } }; }
+function plain(value) { return JSON.parse(JSON.stringify(value)); }
 async function rejectsWith(code, operation) { await assert.rejects(operation, function (error) { return error && error.code === code; }); }

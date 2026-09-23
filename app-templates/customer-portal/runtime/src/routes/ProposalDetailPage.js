@@ -1,11 +1,15 @@
 // customer-portal/runtime/src/routes/ProposalDetailPage.js — production transfer module.
 import { h } from "../dom.js";
-import { computeSite, currentSite, currentTheme, proposalPlanName, proposalPlanPricingModel, proposalStatusMeta, state } from "../state.js";
-import { go, selectPlan } from "../actions.js";
+import { computeSite, currentSite, currentTheme, proposalPlanName, proposalStatusMeta, quoteGroupFor, quotePackage, state } from "../state.js";
+import { contractCommandsBusy, go, scheduleQuoteViews, selectPlan } from "../actions.js";
 import { StatusBadge } from "../components/primitives/StatusBadge.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
+import { NotFoundState } from "../components/primitives/RouteStates.js";
 import { ProposalComparison } from "../components/proposals/ProposalComparison.js";
-import { PRICING_MODELS } from "../normalizers/contracts.js";
+import { QUOTE_STATUS } from "../components/proposals/QuotePackage.js";
+import { QuoteOptionCard } from "../components/proposals/QuoteOptionCard.js";
+import { ContractDetailSkeleton, PartialNotice, contractsGate } from "../components/proposals/ContractStates.js";
+import { formatDatePeriod } from "../normalizers/contracts.js";
 import { Profile } from "./ProfilePage.js";
 import { Activity } from "./ActivityPage.js";
 import { Calendar } from "./CalendarPage.js";
@@ -36,14 +40,14 @@ export function beamMap() {
 }
 
 export function ProposalDetail() {
+  if (state.config.dataMode === "live" || quotePackage()) return QuoteDetail();
   var v = currentTheme();
   var p = currentSite();
-  var quotes = p.quotes || null;
   var c = computeSite(p);
   var st = proposalStatusMeta()[p.status];
   var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail", "data-state": p.status });
 
-  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, quotes ? "‹ Back to your quotes" : "‹ Back to proposal"));
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "‹ Back to proposal"));
   page.appendChild(h("div", { "class": "proposal-detail-head" }, [
     h("div", { style: "flex:1" }, [
       h("div", { "class": "proposal-detail-head__title", "data-bind": "site.addr" }, p.addr),
@@ -84,9 +88,9 @@ export function ProposalDetail() {
   ]));
 
   var plans = [
-    { id: "897", name: "Flex Service Plan", tag: quotes ? pricingModelTag("897") : "Pay-as-you-go · Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
-    { id: "898", name: "Seasonal Unlimited Coverage", tag: quotes ? pricingModelTag("898") : "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo × 5 · " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
-    { id: "899", name: "Season-Lock Prepaid", tag: quotes ? pricingModelTag("899") : "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time · season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
+    { id: "897", name: "Flex Service Plan", tag: "Pay-as-you-go · Order #34897", isFlex: true, desc: "Best for smaller or low-exposure sites. Billed per service at the rates above." },
+    { id: "898", name: "Seasonal Unlimited Coverage", tag: "Order #34898", badge: "MOST SELECTED", priceMain: comp.monthlyStr, priceSub: "/ mo × 5 · " + v.prop.months, desc: "Predictable budget, full-season protection. " + v.prop.unlimDesc + " GPS logs + photos after every visit." },
+    { id: "899", name: "Season-Lock Prepaid", tag: "Order #34899", badge: "BEST VALUE", badgeGreen: true, priceMain: comp.lockStr, priceSub: "one-time · season", desc: "Maximum cost certainty for the whole season. 10% saving vs. monthly. " + v.prop.unlimDesc }
   ];
   plans.forEach(function (pl) {
     var sel = pl.id === p.selected;
@@ -117,12 +121,11 @@ export function ProposalDetail() {
   if (decided) {
     page.appendChild(h("div", { "class": "proposal-decided" }, [
       h("div", { "class": "proposal-decided__icon" }, "i"),
-      h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, quotes ? quoteDecisionNote(p) : proposalDecisionNote(p))
+      h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, proposalDecisionNote(p))
     ]));
   }
 
   /* actions */
-  if (quotes && decided) return page;
   var selId = p.selected || "898";
   page.appendChild(h("div", { "class": "proposal-actions" }, [
     ActionButton({ variant: "btn--primary", label: "Approve " + proposalPlanName(selId), action: "proposal.approve", block: true, lg: true, visualId: "proposal-approve" }),
@@ -132,15 +135,87 @@ export function ProposalDetail() {
   return page;
 }
 
-function pricingModelTag(planId) {
-  var code = proposalPlanPricingModel(planId);
-  return code && Object.prototype.hasOwnProperty.call(PRICING_MODELS, code) ? PRICING_MODELS[code] : "";
+function QuoteDetail() {
+  var page = h("section", { "class": "page page--narrow", "data-route": "proposal.detail", "data-visual-id": "proposal-detail" });
+  page.appendChild(h("div", { "class": "detail-back", "data-action": "proposal.review", "data-visual-id": "proposal-back" }, "‹ Back to your contracts"));
+  var gate = contractsGate(ContractDetailSkeleton);
+  if (gate) {
+    page.setAttribute("data-state", gate.getAttribute("data-state") || "loading");
+    page.appendChild(gate);
+    return page;
+  }
+  var group = quoteGroupFor(state.currentSiteId);
+  if (!group) {
+    page.setAttribute("data-state", "not-found");
+    page.appendChild(NotFoundState({ noun: "quote", backLabel: "contracts", backRoute: "proposals.list" }));
+    return page;
+  }
+  scheduleQuoteViews(group);
+  var status = QUOTE_STATUS[group.status];
+  var busy = contractCommandsBusy();
+  page.setAttribute("data-state", group.status);
+
+  var facts = [group.address, group.servicePeriod ? "Service period " + formatDatePeriod(group.servicePeriod) : ""].filter(Boolean);
+  page.appendChild(h("div", { "class": "proposal-detail-head", "data-module": "quote-detail-head", "data-visual-id": "quote-detail-head" }, [
+    h("div", { style: "flex:1;min-width:0" }, [
+      h("h1", { "class": "proposal-detail-head__title", "data-bind": "quote.property" }, group.title),
+      facts.length ? h("div", { "class": "proposal-detail-head__meta" }, facts.join(" · ")) : null,
+    ]),
+    StatusBadge({ variant: status.badge, label: status.label, bind: "quote.groupStatus", state: group.status }),
+  ]));
+
+  var agreement = group.agreement;
+  if (agreement && agreement.stage !== "preparing") {
+    page.appendChild(h("button", { "class": "quote-package-link", "data-module": "quote-package-link", "data-visual-id": "quote-package-link", "data-action": "agreement.open", "data-id": agreement.id }, [
+      h("span", { "class": "quote-package-link__label" }, "Part of your service agreement"),
+      StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
+      h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "›"),
+    ]));
+  }
+
+  if (group.orders.some(function (order) { return order.linesState !== "ready"; })) {
+    page.appendChild(PartialNotice("Some services on these quotes couldn’t be loaded. Prices and totals shown come from our system as returned."));
+  }
+
+  var note = decisionNote(group);
+  if (note) {
+    page.appendChild(h("div", { "class": "proposal-decided", "data-module": "quote-decided", "data-state": group.decision }, [
+      h("div", { "class": "proposal-decided__icon" }, "i"),
+      h("div", { style: "font-size:13px;line-height:1.45;color:var(--ink-2)" }, note)
+    ]));
+  }
+
+  var open = group.orders.filter(function (order) { return order.status === "unseen" || order.status === "viewed"; });
+  var list = h("div", { "class": "quote-options", "data-module": "quote-options", "data-visual-id": "quote-options" });
+  group.orders.forEach(function (order) {
+    list.appendChild(QuoteOptionCard(order, {
+      interactive: true,
+      busy: busy,
+      siblingsOpen: open.some(function (other) { return other.backendId !== order.backendId; }),
+    }));
+  });
+  page.appendChild(list);
+
+  if (open.length) {
+    page.appendChild(h("div", { "class": "proposal-footer", "data-module": "quote-detail-footer", "data-visual-id": "quote-detail-footer" }, [
+      h("div", { "class": "proposal-footer__icon" }, "✦"),
+      h("div", { "class": "proposal-footer__copy" }, "Approving one option for this property declines its other options."),
+    ]));
+  }
+  return page;
 }
 
-function quoteDecisionNote(p) {
-  if (p.status === "approved") return "You approved " + proposalPlanName(p.selected) + ". The other options for this property are declined.";
-  if (p.status === "revision") return "You asked for changes to these quotes. Our team is reviewing your request.";
-  return "You declined the quotes for this property.";
+function decisionNote(group) {
+  if (group.decision === "approved") {
+    var approved = group.orders.find(function (order) { return order.status === "approved"; });
+    var name = approved && approved.pricingModel ? approved.pricingModel.label : "an option";
+    var others = group.orders.filter(function (order) { return order !== approved; });
+    var allDeclined = others.length > 0 && others.every(function (order) { return order.status === "declined"; });
+    return "You approved " + name + "." + (allDeclined ? " The other options for this property are declined." : "");
+  }
+  if (group.decision === "revision") return "You asked for changes to these quotes. Our team is reviewing your request.";
+  if (group.decision === "declined") return "You declined the quotes for this property.";
+  return "";
 }
 
 function proposalDecisionNote(p) {

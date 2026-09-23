@@ -1,7 +1,9 @@
 // customer-portal/runtime/src/actions.js — production transfer module.
 import { F } from "../data/fixtures.js";
-import { quoteDecisionStates, quoteViewStates } from "./normalizers/contracts.js";
-import { cmdPhase, currentAppointment, currentFixture, currentPurchase, currentSite, findProduct, isSpa, orderItems, productItems, proposalPlanPricingModel, proposalSites, quoteGroupFor, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
+import { createContractCommands } from "./contract-commands.js";
+import { createFixtureContractsGateway } from "./adapters/fixture-adapter.js";
+import { createCoreSnowQuotesAdapter } from "./adapters/core-snow-adapter.js";
+import { cmdPhase, contractAgreementFor, currentAppointment, currentFixture, currentPurchase, findProduct, isSpa, orderItems, productItems, proposalSites, quoteGroupFor, quotePackage, spaBookingModel, spaBookingOpen, spaBookingOpts, spaBookingQuote, spaBookingSlotState, spaCartEnvelope, spaCatalogServices, spaCurrentApiDemoOpen, spaFlowSteps, spaNoteState, spaOptionsComplete, spaOptionsStepOn, spaPlanOffers, spaPlanSellOpen, spaProfileValues, spaRetailOpen, spaSelectedAddOns, spaSelectedLocation, spaSelectedSlot, spaSellInfo, spaVisitMode, state } from "./state.js";
 import { invalidateCareRuntime, reloadCareRuntime, reloadRuntimeModule, render, retryRuntimeLoad } from "./app.js";
 import { createCoreCartAdapter } from "./adapters/core-cart-adapter.js";
 import { createPickupFulfillment } from "./adapters/core-orders-adapter.js";
@@ -76,6 +78,16 @@ export var ACTIONS = {
   "proposal.approve":  function ()   { runCommand("proposal.approve", state.currentSiteId, function () { decideSite("approved"); }); },
   "proposal.requestRevision": function () { runCommand("proposal.requestRevision", state.currentSiteId, function () { decideSite("revision"); }); },
   "proposal.decline":  function ()   { runCommand("proposal.decline", state.currentSiteId, function () { decideSite("declined"); }); },
+  "agreement.open":    function (id) { openAgreement(id); },
+  "quote.approve":     function (id) { return openContractConfirm("approve", id); },
+  "quote.decline":     function (id) { return openContractConfirm("decline", id); },
+  "quote.confirm":     function (id) { return confirmContractCommand("quote", id); },
+  "quote.cancel":      function ()   { return cancelContractConfirm(); },
+  "quote.retryView":   function (id) { return retryQuoteView(id); },
+  "agreement.approve": function (id) { return openContractConfirm("agreement", id); },
+  "agreement.confirm": function (id) { return confirmContractCommand("agreement", id); },
+  "agreement.cancel":  function ()   { return cancelContractConfirm(); },
+  "contracts.refresh": function ()   { return refreshContracts(); },
   "weather.confirm":   function (id) { runCommand("weather.confirm", id, function () { confirmWeather(id, "confirmed"); }); },
   "weather.decline":   function (id) { runCommand("weather.decline", id, function () { confirmWeather(id, "declined"); }); },
   "membership.activate": function () { failCommand("membership.activate"); },
@@ -1343,21 +1355,108 @@ export function placeFixtureOrder() {
 }
 
 export function openProposal(id) {
+  if (quotePackage()) {
+    var group = quoteGroupFor(id);
+    if (!group) throw new Error("Quote not found");
+    state.currentSiteId = group.id;
+    state.contractConfirm = null;
+    go("proposal.detail");
+    return;
+  }
   if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
   state.currentSiteId = id;
-  var group = quoteGroupFor(id);
-  if (group) applyQuoteStates(quoteViewStates(group.orders));
-  else state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
+  state.psites = state.psites.map(function (p) { return (p.id === id && p.status === "unseen") ? Object.assign({}, p, { status: "viewed" }) : p; });
   go("proposal.detail");
 }
 
-function applyQuoteStates(changes) {
-  if (!changes.length) return;
-  state.porders = state.porders.map(function (row) {
-    var change = changes.find(function (item) { return String(item.backendId) === String(row.id); });
-    if (!change) return row;
-    return Object.assign({}, row, { states: row.states.concat(change.codes.map(function (code) { return { code: code }; })) });
+export function openAgreement(id) {
+  if (!contractAgreementFor(id)) throw new Error("Agreement not found");
+  state.agreementId = id;
+  state.contractConfirm = null;
+  go("agreement.detail");
+}
+
+var contractCommands = createContractCommands({
+  state: state,
+  render: function () { render(); },
+  notify: function (message) { toast(message); },
+  current: function () { return quotePackage(); },
+  context: function () { return { config: state.config, state: state }; },
+  gateway: function () {
+    return state.config.dataMode === "live" ? createCoreSnowQuotesAdapter() : createFixtureContractsGateway(state);
+  },
+  reload: function () {
+    return reloadRuntimeModule("proposals").then(function () {
+      var pkg = quotePackage();
+      if (!pkg) throw new Error("The contracts readback did not return a package");
+      return pkg;
+    });
+  },
+});
+
+export function contractCommandsBusy() {
+  return contractCommands.busy();
+}
+
+export function scheduleQuoteViews(group) {
+  if (!group || contractCommands.busy()) return;
+  var pending = group.orders.filter(function (order) {
+    return order.status === "unseen" && !state.quoteViews[order.backendId];
+  }).map(function (order) { return order.backendId; });
+  if (!pending.length) return;
+  pending.forEach(function (id) { state.quoteViews[id] = "pending"; });
+  Promise.resolve().then(function () {
+    if (contractCommands.busy()) {
+      pending.forEach(function (id) { if (state.quoteViews[id] === "pending") delete state.quoteViews[id]; });
+      render();
+      return;
+    }
+    contractCommands.view(pending);
   });
+}
+
+function contractTarget(id) {
+  var backendId = Number(id);
+  return Number.isInteger(backendId) && backendId > 0 ? backendId : null;
+}
+
+function openContractConfirm(kind, id) {
+  var backendId = contractTarget(id);
+  if (!backendId || contractCommands.busy()) return false;
+  state.contractConfirm = { kind: kind, backendId: backendId };
+  if (state.contractCommand && state.contractCommand.phase !== "pending") state.contractCommand = null;
+  render();
+  return true;
+}
+
+function confirmContractCommand(kind, id) {
+  var backendId = contractTarget(id);
+  var confirm = state.contractConfirm;
+  if (!backendId || !confirm || confirm.backendId !== backendId) return false;
+  if (kind === "agreement") return confirm.kind === "agreement" ? contractCommands.approveAgreement(backendId) : false;
+  if (confirm.kind !== "approve" && confirm.kind !== "decline") return false;
+  return contractCommands.decide(confirm.kind, backendId);
+}
+
+function cancelContractConfirm() {
+  if (contractCommands.busy()) return false;
+  state.contractConfirm = null;
+  render();
+  return true;
+}
+
+function retryQuoteView(id) {
+  var backendId = contractTarget(id);
+  if (!backendId || contractCommands.busy()) return false;
+  delete state.quoteViews[backendId];
+  return contractCommands.view([backendId]);
+}
+
+function refreshContracts() {
+  if (contractCommands.busy()) return false;
+  state.contractCommand = null;
+  state.contractConfirm = null;
+  return reloadRuntimeModule("proposals").catch(function () { return null; });
 }
 
 export function selectPlan(planId) {
@@ -1372,9 +1471,7 @@ export function decideSite(status) {
   if (["approved", "revision", "declined"].indexOf(status) === -1) throw new Error("Unsupported proposal status");
   var id = state.currentSiteId;
   if (!proposalSites().some(function (p) { return p.id === id; })) throw new Error("Proposal not found");
-  var group = quoteGroupFor(id);
-  if (group) applyQuoteStates(quoteDecisionStates(group.orders, status, proposalPlanPricingModel(currentSite().selected || "898")));
-  else state.psites = state.psites.map(function (p) { return p.id === id ? Object.assign({}, p, { status: status }) : p; });
+  state.psites = state.psites.map(function (p) { return p.id === id ? Object.assign({}, p, { status: status }) : p; });
   go("proposals.list");
   toast(status === "approved" ? "Plan approved in fixture state" : status === "revision" ? "Revision requested in fixture state" : "Proposal declined in fixture state");
 }

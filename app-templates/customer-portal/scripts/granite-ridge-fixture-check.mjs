@@ -11,16 +11,11 @@ const { normalizeCare } = await import(new URL("src/normalizers/care.js", runtim
 const { normalizeProposals } = await import(new URL("src/normalizers/index.js", runtimeRoot));
 const {
   applyPortalConfig,
-  computeSite,
   currentFixture,
   currentProposal,
-  currentSite,
   currentStormCalendar,
   currentTheme,
-  proposalPlanName,
-  proposalPlanPricingModel,
   proposalSites,
-  proposalStatusMeta,
   quotePackage,
   state,
 } = await import(new URL("src/state.js", runtimeRoot));
@@ -89,38 +84,55 @@ assert.equal(currentStormCalendar().accessNotes[2].value, "Do not service Yarrow
 assert.equal(proposals.proposal, null, "the package model has no proposal number, sent date or validity, because Core holds none of them");
 assert.equal(currentProposal(), null);
 assert.equal(proposalSites().length, 4);
-assert.ok(proposalSites().every((site) => site.status === undefined && site.x === undefined), "a site no longer carries a decision or an authored map position; its Orders do");
-assert.equal(proposalStatusMeta().approved.badge, "status-badge--ok");
-assert.equal(proposalPlanName("898"), "Seasonal Unlimited");
-assert.equal(proposalPlanName("897"), "Flex Service");
-assert.deepEqual(["897", "898", "899"].map(proposalPlanPricingModel), ["PER_SERVICE", "MONTHLY", "SEASONAL"]);
-assert.equal(proposals.statusMeta, graniteRidgeSnowFixture.proposals.statusMeta);
+assert.ok(proposalSites().every((site) => site.status === undefined && site.x === undefined && site.areas === undefined && site.selected === undefined), "a site carries no decision, map position, measured area or plan; its Orders and their lines do");
+assert.equal(graniteRidgeSnowFixture.proposals.planPricingModels, undefined, "the retired plan ids have no mapping to pricing models any more");
+assert.equal(graniteRidgeSnowFixture.proposals.planNames, undefined);
 
+const fixtureProposals = graniteRidgeSnowFixture.proposals;
 const normalizedProposals = normalizeProposals(proposals);
 const quotes = normalizedProposals.quotes;
-assert.equal(quotes.agreement.stateCode, "QUOTATION_SENT", "the package is the service agreement, sent once");
-assert.equal(quotes.orders.length, 12, "every sent Order is a row");
+assert.deepEqual(plainValue(quotes.agreements.map((agreement) => [agreement.backendId, agreement.stateCode])), [
+  [9101, "QUOTATION_SENT"], [9102, "SENT_TO_CLIENT"], [9103, "AWAITING_CLIENT_DETAILS"], [9104, "PENDING_MANAGEMENT_APPROVAL"], [9100, "ACTIVE"], [9099, "EXPIRED"],
+  [9098, "SUSPENDED"], [9097, "ARCHIVED"], [9096, "CANCELED"], [9095, "CLIENT_APPROVED"],
+], "the customer holds one agreement in every stage the Contracts screens show");
+assert.equal(quotes.orders.length, 31, "every sent Order is a row");
 assert.equal(quotes.preparing, true, "the Order still being prepared is withheld and only switches the preparing notice on");
-assert.equal(graniteRidgeSnowFixture.proposals.orders.length, 13);
-assert.deepEqual(
-  plainValue(quotes.agreement.orderBackendIds.slice().sort()),
-  plainValue(quotes.orders.map((order) => order.backendId).sort()),
-  "the agreement lists exactly the Orders that were sent",
-);
-const quotedByBackendId = new Map(graniteRidgeSnowFixture.overview.properties.filter((property) => property.quoteSiteId).map((property) => [property.backendId, property]));
-for (const order of quotes.orders) {
-  assert.ok(quotedByBackendId.has(order.propertyBackendId), `order ${order.backendId} points at a property the fixture does not quote`);
-  assert.ok(order.pricingModel, `order ${order.backendId} has no pricing model label`);
-  assert.deepEqual(plainValue(order.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
+assert.equal(fixtureProposals.orders.length, 32);
+assert.deepEqual(quotes.withheldBackendIds, [8113]);
+const listedBy = new Map();
+for (const agreement of quotes.agreements) {
+  for (const id of agreement.orderBackendIds) {
+    assert.ok(!listedBy.has(id), `order ${id} is listed by two agreements`);
+    listedBy.set(id, agreement.backendId);
+  }
 }
-const withheld = graniteRidgeSnowFixture.proposals.orders.find((order) => !quotes.orders.some((sent) => sent.backendId === order.id));
+assert.deepEqual(plainValue([...listedBy.keys()].sort()), plainValue(quotes.orders.map((order) => order.backendId).sort()), "every sent Order belongs to exactly one agreement, and the withheld one to none");
+const propertiesByBackendId = new Map(graniteRidgeSnowFixture.overview.properties.map((property) => [property.backendId, property]));
+for (const order of quotes.orders) {
+  assert.ok(propertiesByBackendId.has(order.propertyBackendId), `order ${order.backendId} points at a property the fixture does not have`);
+  assert.ok(order.pricingModel, `order ${order.backendId} has no pricing model label`);
+  assert.equal(order.linesState, "ready", `order ${order.backendId} has unreadable lines`);
+  assert.equal(order.lines.length, 2);
+  assert.ok(order.lines.every((line) => line.product && line.quantity && line.unitPrice && line.total), `order ${order.backendId} has a line without product, quantity, unit price or total`);
+}
+for (const row of fixtureProposals.orders) {
+  const lines = fixtureProposals.orderItems.filter((line) => line.order.id === row.id);
+  assert.deepEqual(plainValue(row.items.map((item) => item.id)), plainValue(lines.map((line) => line.id)), `order ${row.id} lists exactly its own lines`);
+  lines.forEach((line) => assert.equal(line.grandTotal, Math.round(line.amount * line.itemCount * 100) / 100, `line ${line.id} total is its quantity times its unit price`));
+  assert.equal(row.totalCharges, Math.round(lines.reduce((sum, line) => sum + line.grandTotal, 0) * 100) / 100, `order ${row.id} charges are its lines`);
+  assert.equal(row.grandTotal, Math.round((row.totalCharges + row.totalTaxes) * 100) / 100, `order ${row.id} total is its charges plus taxes`);
+}
+const withheld = fixtureProposals.orders.find((order) => order.id === 8113);
 assert.ok(graniteRidgeSnowFixture.overview.properties.some((property) => property.backendId === withheld.attributes[5].SERVICE_PROPERTY.value), "the withheld Order belongs to a property of this customer");
+assert.ok(fixtureProposals.orderItems.some((line) => line.order.id === 8113), "the withheld Order has lines, so the normalizer's refusal to show them is exercised");
 
 state.moduleData.proposals = normalizedProposals;
 const pack = quotePackage();
-assert.equal(pack.agreement.label, "Awaiting your decisions");
-assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["gr-foothill", "gr-tabor", "gr-yarrow", "gr-cinnamon"]);
+assert.deepEqual(plainValue(pack.agreements.map((row) => row.agreement.stage)), ["approval", "review", "details", "drafting", "approved", "active", "suspended", "expired", "archived", "canceled"]);
+assert.deepEqual(plainValue(pack.groups.map((group) => group.id)), ["quote-9101-7101", "quote-9101-7102", "quote-9101-7103", "quote-9101-7104"]);
 assert.deepEqual(plainValue(pack.groups.map((group) => group.decision)), ["approved", "revision", "declined", "open"], "every property decision the page shows is exercised");
+assert.deepEqual(plainValue(pack.groups.map((group) => group.status)), ["approved", "revision", "declined", "viewed"]);
+assert.deepEqual(plainValue(pack.groups[3].orders.map((order) => order.status)), ["viewed", "unseen", "unseen"], "an open property mixes a viewed option with unseen ones, so both the decisions and the view event are exercised");
 for (const group of pack.groups) {
   assert.deepEqual(plainValue(group.orders.map((order) => order.pricingModel.code)), ["PER_SERVICE", "MONTHLY", "SEASONAL"], group.id + " is quoted once per pricing model");
 }
@@ -129,22 +141,15 @@ assert.equal(pack.counts.approved + pack.counts.revision + pack.counts.declined 
 assert.deepEqual(plainValue(pack.servicePeriod), { start: "2026-11-01", end: "2027-03-31" });
 assert.deepEqual(
   plainValue(pack.groups.map((group) => group.orders.map((order) => order.total && order.total.amount))),
-  [[null, null, 8625], [null, null, 10625], [null, null, 7650], [null, null, 31250]],
-  "only a Core total above zero is a total; a zero grand total is how an unpriced Order reads",
+  [[266.51, 9322.74, 8875.13], [328.25, 11483.64, 10933.13], [236.67, 8268.02, 7871.85], [992.99, 33766.64, 32156.25]],
+  "each option carries Core's grand total; nothing is derived from an area",
 );
-
-const siteStatus = (id) => { state.currentSiteId = id; return plainValue({ status: currentSite().status, selected: currentSite().selected }); };
-assert.deepEqual(siteStatus("gr-foothill"), { status: "approved", selected: "898" }, "the approved Monthly Order is the Seasonal Unlimited plan on the detail page");
-assert.deepEqual(siteStatus("gr-tabor"), { status: "revision", selected: "898" });
-assert.deepEqual(siteStatus("gr-yarrow"), { status: "declined", selected: "898" });
-assert.deepEqual(siteStatus("gr-cinnamon"), { status: "unseen", selected: "898" });
-
-const foothill = computeSite(proposalSites()[0]);
-assert.equal(foothill.rows.length, 5);
-assert.deepEqual(foothill.rows.map((row) => row.name), graniteRidgeSnowFixture.theme.prop.surfaces);
-assert.equal(foothill.total, 5460);
-assert.ok(foothill.monthly > 0 && foothill.seasonLock > 0);
-assert.equal(foothill.seasonLock, 8625, "the Seasonal Order total matches the Season-Lock price the detail page shows");
+const approval = pack.agreements[0];
+assert.deepEqual(plainValue(approval.properties.map((entry) => [entry.title, entry.orders.map((order) => order.status)])), [["Alkire Street", ["approved"]], ["Braun Court", ["approved"]]], "past review an agreement's services are its approved options");
+assert.ok(approval.agreement.terms.some((block) => block.kind === "numbered" && block.marker === "1)"), "the terms exercise every numbered marker style");
+assert.ok(approval.agreement.terms.some((block) => block.kind === "item"));
+assert.ok(approval.agreement.terms.some((block) => block.kind === "heading"));
+assert.deepEqual(plainValue(pack.agreements.filter((row) => row.agreement.allowedActions.includes("approve")).map((row) => row.id)), ["agreement-core-9102"], "exactly one agreement is waiting for the customer's approval");
 
 const overview = fixtureAdapter.load("overview", context).overview;
 assert.ok(overview, "the snow tenant must carry overview data");
@@ -269,4 +274,4 @@ assert.equal(spaCrossConfig.caseId, "", "a beauty fixture case must not load und
 
 applyPortalConfig(config);
 
-console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across overview, storm home, calendar, season log, a quotation package of Orders grouped by property, services, pricing, shop, orders, support, and activity");
+console.log("granite-ridge-fixture-check ok: coherent snow fixture organization across overview, storm home, calendar, season log, service agreements in every stage the Contracts screens reach with Orders, lines and server totals that add up, services, pricing, shop, orders, support, and activity");

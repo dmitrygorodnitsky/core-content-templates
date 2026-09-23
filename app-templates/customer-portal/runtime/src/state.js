@@ -5,7 +5,7 @@ import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
 import { deriveCoreBookingModel } from "./normalizers/spa-availability.js";
 import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions } from "./normalizers/spa-booking-options.js";
 import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
-import { contractsPackage, groupStatus } from "./normalizers/contracts.js";
+import { contractsPackage } from "./normalizers/contracts.js";
 
 export var state = {
   route: "orders.list",
@@ -28,6 +28,11 @@ export var state = {
   prodCat: "all",    // product category filter
   psites: F.proposalSites.map(function (p) { return Object.assign({}, p); }), // proposal sites (mutable)
   porders: [],
+  pagreements: [],
+  agreementId: null,
+  quoteViews: {},
+  contractCommand: null,
+  contractConfirm: null,
   ovProperty: null,
   ovWeatherIndex: null,
   currentSiteId: "s2", // open proposal site
@@ -658,28 +663,31 @@ export function currentProposal() {
 export function quotePackage() {
   var data = state.moduleData.proposals;
   if (!data || !data.quotes) return null;
+  return contractsPackage(data.quotes, contractProperties());
+}
+
+function contractProperties() {
+  if (state.config.dataMode === "live") {
+    var envelope = state.moduleData.properties;
+    return envelope && envelope.state === "ready" && Array.isArray(envelope.items) ? envelope.items : [];
+  }
   var overview = currentOverview();
-  return contractsPackage(data.quotes, overview && overview.properties);
+  return (overview && overview.properties) || [];
 }
 
 export function quoteGroupFor(id) {
   var quotes = quotePackage();
-  return (quotes && quotes.groups.find(function (group) { return !!id && group.id === id; })) || null;
+  if (!quotes || !id) return null;
+  var exact = quotes.groups.find(function (group) { return group.id === id; });
+  if (exact) return exact;
+  return quotes.groups.filter(function (group) {
+    return !!group.property && (group.property.quoteSiteId === id || group.property.id === id);
+  }).sort(function (left, right) { return (right.agreementBackendId || 0) - (left.agreementBackendId || 0); })[0] || null;
 }
 
-export function proposalPlanPricingModel(planId) {
-  var models = planPricingModels();
-  return Object.prototype.hasOwnProperty.call(models, String(planId)) ? models[String(planId)] : null;
-}
-
-function planForPricingModel(code) {
-  var models = planPricingModels();
-  return Object.keys(models).find(function (planId) { return models[planId] === code; }) || null;
-}
-
-function planPricingModels() {
-  var proposals = caseProposals();
-  return (proposals && proposals.planPricingModels) || {};
+export function contractAgreementFor(id) {
+  var quotes = quotePackage();
+  return (quotes && id && quotes.agreements.find(function (row) { return row.id === id; })) || null;
 }
 
 export function proposalStatusMeta() {
@@ -914,6 +922,11 @@ export function applyPortalConfig(config) {
     ? cloneCaseValue(fixture.proposals.sites)
     : F.proposalSites.map(function (site) { return Object.assign({}, site); });
   state.porders = fixture && fixture.proposals && fixture.proposals.orders ? cloneCaseValue(fixture.proposals.orders) : [];
+  state.pagreements = fixture && fixture.proposals && fixture.proposals.agreements ? cloneCaseValue(fixture.proposals.agreements) : [];
+  state.agreementId = null;
+  state.quoteViews = {};
+  state.contractCommand = null;
+  state.contractConfirm = null;
   state.prefs = fixture ? cloneCaseValue(fixture.prefs) : { receipts: true, sms: true, marketing: false };
   state.messages = fixture ? cloneCaseValue(fixture.initialMessages) : F.initialMessages.slice();
   state.filter = "all";
@@ -985,12 +998,7 @@ export function buildCalendarGrid(year, month) {
 
 export function currentSite() {
   var sites = proposalSites();
-  var site = sites.find(function (p) { return p.id === state.currentSiteId; }) || sites[0];
-  var group = site ? quoteGroupFor(site.id) : null;
-  if (!group) return site;
-  var approved = group.orders.find(function (order) { return order.status === "approved"; });
-  var approvedPlan = approved && approved.pricingModel ? planForPricingModel(approved.pricingModel.code) : null;
-  return Object.assign({}, site, { status: groupStatus(group.orders), selected: approvedPlan || site.selected, quotes: group });
+  return sites.find(function (p) { return p.id === state.currentSiteId; }) || sites[0];
 }
 
 export function computeSite(site) {

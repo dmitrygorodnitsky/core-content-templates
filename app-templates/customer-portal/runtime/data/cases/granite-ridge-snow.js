@@ -45,53 +45,210 @@ const MONITORED_VISITS = {
 };
 
 const QUOTE_PATH = ["INITIAL", "QUOTE_PREPARED", "QUOTE_APPROVED_INTERNALLY", "QUOTE_SENT", "QUOTE_VIEWED"];
+const AGREEMENT_PATH = ["QUOTATION", "QUOTATION_SENT", "AWAITING_CLIENT_DETAILS", "CLIENT_DETAILS_RECEIVED", "DRAFT", "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "CLIENT_APPROVED", "ACTIVE"];
+const CLIENT_ACCOUNT = 6001;
+const SALES_TAX_RATE = 0.029;
+const MONTHS_IN_SEASON = 5;
 
-const QUOTE_PACKAGE = [
-  [8101, 7101, "PER_SERVICE", "DECLINED", 0],
-  [8102, 7101, "MONTHLY", "CLIENT_APPROVED", 0],
-  [8103, 7101, "SEASONAL", "DECLINED", 8625],
-  [8104, 7102, "PER_SERVICE", "CUSTOMER_CHANGES_REQUESTED", 0],
-  [8105, 7102, "MONTHLY", "CUSTOMER_CHANGES_REQUESTED", 0],
-  [8106, 7102, "SEASONAL", "CUSTOMER_CHANGES_REQUESTED", 10625],
-  [8107, 7103, "PER_SERVICE", "DECLINED", 0],
-  [8108, 7103, "MONTHLY", "DECLINED", 0],
-  [8109, 7103, "SEASONAL", "DECLINED", 7650],
-  [8110, 7104, "PER_SERVICE", "QUOTE_SENT", 0],
-  [8111, 7104, "MONTHLY", "QUOTE_SENT", 0],
-  [8112, 7104, "SEASONAL", "QUOTE_SENT", 31250],
-  [8113, 7207, "MONTHLY", "QUOTE_PREPARED", 0],
+const SEASONS = {
+  "2024-25": ["2024-11-01", "2025-03-31"],
+  "2025-26": ["2025-11-01", "2026-03-31"],
+  "2026-27": ["2026-11-01", "2027-03-31"],
+};
+
+const SNOW_PRODUCTS = [
+  { id: 601, code: "GRS_SNOW_CLEARING", nls: { en: { NAME: "Snow clearing" } }, type: { id: 5, code: "AREA_BASED_SNOW_REMOVAL" } },
+  { id: 602, code: "GRS_DEICING", nls: { en: { NAME: "De-icing" } }, type: { id: 9, code: "AREA_BASED_DE_ICING" } },
 ];
 
-function sentQuote(entry) {
-  return QUOTE_PATH.indexOf(entry[3]) === -1 || QUOTE_PATH.indexOf(entry[3]) >= QUOTE_PATH.indexOf("QUOTE_SENT");
+const PRICE_ROWS = { PER_SERVICE: [701, 702], MONTHLY: [703, 704], SEASONAL: [705, 706] };
+
+const PRICE_BOOK = {
+  7101: { PER_SERVICE: [185, 74], MONTHLY: [1256, 556], SEASONAL: [5980, 2645] },
+  7102: { PER_SERVICE: [228, 91], MONTHLY: [1548, 684], SEASONAL: [7370, 3255] },
+  7103: { PER_SERVICE: [164, 66], MONTHLY: [1113, 494], SEASONAL: [5300, 2350] },
+  7104: { PER_SERVICE: [668, 297], MONTHLY: [4547, 2016], SEASONAL: [21650, 9600] },
+  7201: { PER_SERVICE: [190, 76], SEASONAL: [6150, 2720] },
+  7202: { MONTHLY: [1340, 590], SEASONAL: [6420, 2840] },
+  7203: { MONTHLY: [1180, 520], SEASONAL: [5620, 2480] },
+  7204: { MONTHLY: [1225, 540], SEASONAL: [5840, 2590] },
+  7205: { PER_SERVICE: [172, 69], SEASONAL: [5420, 2400] },
+  7206: { MONTHLY: [1405, 620] },
+  7207: { MONTHLY: [1060, 470] },
+  7208: { SEASONAL: [4980, 2210] },
+  7209: { MONTHLY: [1290, 570], SEASONAL: [6180, 2730] },
+  7210: { SEASONAL: [5160, 2290] },
+  7211: { PER_SERVICE: [176, 71], SEASONAL: [5560, 2460] },
+  7212: { MONTHLY: [1120, 495], SEASONAL: [5360, 2370] },
+};
+
+const SERVICE_ADDRESSES = {
+  7101: "4820 Foothill Court, Lakewood, CO 80215",
+  7102: "1190 Tabor Street, Golden, CO 80401",
+  7103: "3355 Yarrow Ridge Drive, Arvada, CO 80002",
+  7104: "870 Cinnamon Bear Way, Lakewood, CO 80227",
+};
+
+const QUOTE_ORDERS = [
+  [8101, 7101, "PER_SERVICE", "DECLINED", "2026-27"],
+  [8102, 7101, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8103, 7101, "SEASONAL", "DECLINED", "2026-27"],
+  [8104, 7102, "PER_SERVICE", "CUSTOMER_CHANGES_REQUESTED", "2026-27"],
+  [8105, 7102, "MONTHLY", "CUSTOMER_CHANGES_REQUESTED", "2026-27"],
+  [8106, 7102, "SEASONAL", "CUSTOMER_CHANGES_REQUESTED", "2026-27"],
+  [8107, 7103, "PER_SERVICE", "DECLINED", "2026-27"],
+  [8108, 7103, "MONTHLY", "DECLINED", "2026-27"],
+  [8109, 7103, "SEASONAL", "DECLINED", "2026-27"],
+  [8110, 7104, "PER_SERVICE", "QUOTE_VIEWED", "2026-27"],
+  [8111, 7104, "MONTHLY", "QUOTE_SENT", "2026-27"],
+  [8112, 7104, "SEASONAL", "QUOTE_SENT", "2026-27"],
+  [8113, 7207, "MONTHLY", "QUOTE_PREPARED", "2026-27"],
+  [8201, 7201, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8202, 7201, "PER_SERVICE", "DECLINED", "2026-27"],
+  [8203, 7202, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8204, 7202, "SEASONAL", "DECLINED", "2026-27"],
+  [8301, 7203, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8302, 7203, "MONTHLY", "DECLINED", "2026-27"],
+  [8401, 7204, "MONTHLY", "CLIENT_APPROVED", "2026-27"],
+  [8402, 7204, "SEASONAL", "DECLINED", "2026-27"],
+  [8001, 7205, "SEASONAL", "CLIENT_APPROVED", "2025-26"],
+  [8002, 7205, "PER_SERVICE", "DECLINED", "2025-26"],
+  [8003, 7206, "MONTHLY", "CLIENT_APPROVED", "2025-26"],
+  [8501, 7208, "SEASONAL", "CLIENT_APPROVED", "2024-25"],
+  [8601, 7209, "MONTHLY", "CLIENT_APPROVED", "2025-26"],
+  [8602, 7209, "SEASONAL", "DECLINED", "2025-26"],
+  [8701, 7210, "SEASONAL", "CLIENT_APPROVED", "2024-25"],
+  [8801, 7211, "PER_SERVICE", "DECLINED", "2026-27"],
+  [8802, 7211, "SEASONAL", "DECLINED", "2026-27"],
+  [8901, 7212, "SEASONAL", "CLIENT_APPROVED", "2026-27"],
+  [8902, 7212, "MONTHLY", "DECLINED", "2026-27"],
+];
+
+const PROVIDER = {
+  PROVIDER_LEGAL_NAME: "Granite Ridge Snow Removal LLC",
+  PROVIDER_REPRESENTATIVE_NAME: "Jordan Pike",
+  PROVIDER_REPRESENTATIVE_JOB_TITLE: "Contracts Manager",
+};
+
+const CLIENT_DETAILS = {
+  LEGAL_NAME: "Whitlock Property Group LLC",
+  CLIENT_TYPE: "ORGANIZATION",
+  BILLING_ADDRESS: "1550 Wynkoop Street, Suite 400, Denver, CO 80202",
+  REPRESENTATIVE_FIRST_NAME: "Dana",
+  REPRESENTATIVE_LAST_NAME: "Whitlock",
+  REPRESENTATIVE_JOB_TITLE: "Portfolio Manager",
+  REPRESENTATIVE_EMAIL: "dana.whitlock@example.test",
+  REPRESENTATIVE_PHONE: "+1 (303) 555-0164",
+};
+
+const CONTRACT_TERMS = [
+  "# Winter service terms",
+  "",
+  "1. Services",
+  "1.1 Granite Ridge clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.",
+  "1.2 Every visit is logged with its arrival time and photographs.",
+  "",
+  "2. Service triggers",
+  "2.1 Clearing starts once snowfall reaches 2 cm.",
+  "2.2 De-icing is applied when the surface temperature is forecast at or below 0 °C.",
+  "",
+  "3. Invoicing",
+  "- Seasonal options are invoiced once, at the start of the term.",
+  "- Monthly options are invoiced on the first day of each month of the term.",
+  "- Per-service options are invoiced after each visit.",
+  "",
+  "4. Access",
+  "The client keeps each property accessible and tells Granite Ridge about obstacles such as parked vehicles or construction work.",
+  "1) Gate codes are shared through the storm desk only.",
+  "2) Blackout days are agreed in writing before the season starts.",
+  "",
+  "# Cancellation",
+  "Either party may cancel with thirty days written notice before the season starts.",
+].join("\n");
+
+const AGREEMENTS = [
+  { id: 9101, state: "QUOTATION_SENT", orders: [8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109, 8110, 8111, 8112], attributes: {} },
+  { id: 9102, state: "SENT_TO_CLIENT", orders: [8201, 8202, 8203, 8204], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-20", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9103, state: "AWAITING_CLIENT_DETAILS", orders: [8301, 8302], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }, PROVIDER) },
+  { id: 9104, state: "PENDING_MANAGEMENT_APPROVAL", orders: [8401, 8402], attributes: Object.assign({ TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1] }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9100, state: "ACTIVE", orders: [8001, 8002, 8003], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-15", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9099, state: "EXPIRED", orders: [8501], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-10", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9098, state: "SUSPENDED", orders: [8601, 8602], attributes: Object.assign({ EFFECTIVE_DATE: "2025-10-12", TERM_START_DATE: SEASONS["2025-26"][0], TERM_END_DATE: SEASONS["2025-26"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9097, state: "ARCHIVED", orders: [8701], attributes: Object.assign({ EFFECTIVE_DATE: "2024-10-08", TERM_START_DATE: SEASONS["2024-25"][0], TERM_END_DATE: SEASONS["2024-25"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+  { id: 9096, state: "CANCELED", orders: [8801, 8802], attributes: {} },
+  { id: 9095, state: "CLIENT_APPROVED", orders: [8901, 8902], attributes: Object.assign({ EFFECTIVE_DATE: "2026-10-18", TERM_START_DATE: SEASONS["2026-27"][0], TERM_END_DATE: SEASONS["2026-27"][1], CONTRACT_TERMS: CONTRACT_TERMS }, PROVIDER, CLIENT_DETAILS) },
+];
+const AGREEMENT_ENDINGS = {
+  SUSPENDED: ["ACTIVE", "SUSPENDED"],
+  EXPIRED: ["ACTIVE", "EXPIRED"],
+  ARCHIVED: ["ACTIVE", "EXPIRED", "ARCHIVED"],
+  CANCELED: ["QUOTATION_SENT", "CANCELED"],
+};
+
+function statePath(path, target) {
+  const reached = path.indexOf(target);
+  return (reached === -1 ? path.concat([target]) : path.slice(0, reached + 1)).map(function (code) { return { code: code }; });
+}
+
+function money(value) {
+  return Math.round(value * 100) / 100;
+}
+
+function quoteLines(entry) {
+  const prices = PRICE_BOOK[entry[1]][entry[2]];
+  const count = entry[2] === "MONTHLY" ? MONTHS_IN_SEASON : 1;
+  return prices.map(function (amount, index) {
+    return {
+      id: entry[0] * 10 + index + 1,
+      order: { id: entry[0] },
+      itemPrice: { id: PRICE_ROWS[entry[2]][index] },
+      amount: amount,
+      itemCount: count,
+      sortOrder: index,
+      grandTotal: money(amount * count),
+    };
+  });
 }
 
 function quoteOrder(entry) {
-  const reached = QUOTE_PATH.indexOf(entry[3]);
-  const path = reached === -1 ? QUOTE_PATH.concat([entry[3]]) : QUOTE_PATH.slice(0, reached + 1);
+  const lines = quoteLines(entry);
+  const charges = money(lines.reduce(function (sum, line) { return sum + line.grandTotal; }, 0));
+  const taxes = money(charges * SALES_TAX_RATE);
+  const attributes = {
+    CLIENT: { value: CLIENT_ACCOUNT },
+    SERVICE_PROPERTY: { value: entry[1] },
+    PRICING_MODEL: { value: entry[2] },
+    SERVICE_PERIOD_START: { value: SEASONS[entry[4]][0] },
+    SERVICE_PERIOD_END: { value: SEASONS[entry[4]][1] },
+  };
+  if (SERVICE_ADDRESSES[entry[1]]) attributes.SERVICE_ADDRESS = { value: SERVICE_ADDRESSES[entry[1]] };
   return {
     id: entry[0],
-    type: { id: 5, code: "FIELD_SERVICE_ORDER" },
-    states: path.map(function (code) { return { code: code }; }),
-    grandTotal: entry[4],
-    currency: { code: "USD" },
-    attributes: {
-      5: {
-        SERVICE_PROPERTY: { value: entry[1] },
-        PRICING_MODEL: { value: entry[2] },
-        SERVICE_PERIOD_START: { value: "2026-11-01" },
-        SERVICE_PERIOD_END: { value: "2027-03-31" },
-      },
-    },
+    type: { id: 6, code: "WINTER_SERVICES_ORDER" },
+    account: { id: CLIENT_ACCOUNT },
+    states: statePath(QUOTE_PATH, entry[3]),
+    totalCharges: charges,
+    totalTaxes: taxes,
+    grandTotal: money(charges + taxes),
+    currency: { id: 2, code: "USD" },
+    attributes: { 5: attributes },
+    items: lines.map(function (line) { return { id: line.id }; }),
   };
 }
 
-function serviceAgreement(id, states, orderIds) {
+function serviceAgreement(spec) {
+  const attributes = { CLIENT: { value: CLIENT_ACCOUNT }, ORDERS: { value: spec.orders.slice() } };
+  Object.keys(spec.attributes).forEach(function (code) { attributes[code] = { value: spec.attributes[code] }; });
+  const ending = AGREEMENT_ENDINGS[spec.state];
+  const states = ending
+    ? statePath(AGREEMENT_PATH, ending[0]).concat(ending.slice(1).map(function (code) { return { code: code }; }))
+    : statePath(AGREEMENT_PATH, spec.state);
   return {
-    id: id,
+    id: spec.id,
     type: { id: 17, code: "SERVICE_AGREEMENT" },
-    states: states.map(function (code) { return { code: code }; }),
-    attributes: { 17: { ORDERS: { value: orderIds } } },
+    organization: { id: 43, code: "GRANITE_RIDGE_SNOW", nls: { en: { NAME: "Granite Ridge Snow Removal" } } },
+    states: states,
+    attributes: { 17: attributes },
   };
 }
 
@@ -483,22 +640,18 @@ export const graniteRidgeSnowFixture = Object.freeze({
     ],
   },
   proposals: {
-    agreement: serviceAgreement(9101, ["QUOTATION", "QUOTATION_SENT"], QUOTE_PACKAGE.filter(sentQuote).map(function (entry) { return entry[0]; })),
-    orders: QUOTE_PACKAGE.map(quoteOrder),
-    planPricingModels: { 897: "PER_SERVICE", 898: "MONTHLY", 899: "SEASONAL" },
-    planNames: { 897: "Flex Service", 898: "Seasonal Unlimited", 899: "Season-Lock" },
-    statusMeta: {
-      approved: { label: "✓ Approved", badge: "status-badge--ok", dot: "#34c759" },
-      revision: { label: "⟳ Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" },
-      declined: { label: "✕ Declined", badge: "status-badge--danger", dot: "#ff3b30" },
-      unseen: { label: "◔ Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" },
-      viewed: { label: "• Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" },
-    },
+    agreements: AGREEMENTS.map(serviceAgreement),
+    orders: QUOTE_ORDERS.map(quoteOrder),
+    orderItems: QUOTE_ORDERS.reduce(function (lines, entry) { return lines.concat(quoteLines(entry)); }, []),
+    productPrices: Object.keys(PRICE_ROWS).reduce(function (rows, model) {
+      return rows.concat(PRICE_ROWS[model].map(function (id, index) { return { id: id, product: { id: SNOW_PRODUCTS[index].id } }; }));
+    }, []),
+    products: SNOW_PRODUCTS,
     sites: [
-      { id: "gr-foothill", addr: "4820 Foothill Court", city: "Lakewood, CO", postal: "80215", lot: "19,400", areas: [980, 1140, 1620, 540, 1180], selected: "898" },
-      { id: "gr-tabor", addr: "1190 Tabor Street", city: "Golden, CO", postal: "80401", lot: "23,800", areas: [1320, 1480, 2040, 620, 1460], selected: "898" },
-      { id: "gr-yarrow", addr: "3355 Yarrow Ridge Drive", city: "Arvada, CO", postal: "80002", lot: "16,200", areas: [840, 980, 1440, 470, 1020], selected: "898" },
-      { id: "gr-cinnamon", addr: "870 Cinnamon Bear Way", city: "Littleton, CO", postal: "80127", lot: "51,600", areas: [5400, 3600, 8100, 1480, 3200], selected: "898" },
+      { id: "gr-foothill", addr: "4820 Foothill Court", city: "Lakewood, CO", postal: "80215", lot: "19,400" },
+      { id: "gr-tabor", addr: "1190 Tabor Street", city: "Golden, CO", postal: "80401", lot: "23,800" },
+      { id: "gr-yarrow", addr: "3355 Yarrow Ridge Drive", city: "Arvada, CO", postal: "80002", lot: "16,200" },
+      { id: "gr-cinnamon", addr: "870 Cinnamon Bear Way", city: "Littleton, CO", postal: "80127", lot: "51,600" },
     ],
   },
 });
