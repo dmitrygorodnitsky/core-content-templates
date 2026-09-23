@@ -282,13 +282,18 @@
     return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
   }
 
-  function returnedDetails(value, fields, vocabulary) {
+  function detailsCodes(value) {
     var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
     var codes = [];
     source.forEach(function (entry) {
       var code = text(entry);
       if (code && codes.indexOf(code) === -1) codes.push(code);
     });
+    return codes;
+  }
+
+  function returnedDetails(value, fields, vocabulary) {
+    var codes = detailsCodes(value);
     var kinds = {};
     fields.forEach(function (field) { kinds[field.code] = field.kind; });
     var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
@@ -672,6 +677,7 @@
         termStart: formatDate(attributeValue(agreement, contract.agreementAttributes.termStart), locale),
         termEnd: formatDate(attributeValue(agreement, contract.agreementAttributes.termEnd), locale),
         terms: termsBlocks(attributeValue(agreement, contract.agreementAttributes.terms)),
+        detailsErrors: detailsCodes(attributeValue(agreement, contract.agreementAttributes.detailsErrors)).join(","),
       },
       names: {
         provider: parties.provider.legalName,

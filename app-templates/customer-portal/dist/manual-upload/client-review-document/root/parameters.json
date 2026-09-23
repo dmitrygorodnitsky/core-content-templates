@@ -893,6 +893,19 @@
     }
   },
   {
+    "code": "COMMAND_UNCONFIRMED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "COMMAND UNCONFIRMED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system accepted this, but has not shown the change yet. Refresh the status in a minute."
+    }
+  },
+  {
     "code": "REFRESH_LABEL",
     "type": "LOCALIZED_STRING_SS",
     "nls": {

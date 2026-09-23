@@ -72,6 +72,7 @@
     ["REFUSED_TITLE", "refusedTitle", "Not accepted"],
     ["REFUSED_FALLBACK", "refusedFallback", "The provider's system did not accept this request."],
     ["FAILED_BODY", "failedBody", "We could not confirm whether this went through. Refresh the status before trying again."],
+    ["COMMAND_UNCONFIRMED", "commandUnconfirmed", "The provider's system accepted this, but has not shown the change yet. Refresh the status in a minute."],
     ["REFRESH_LABEL", "refreshLabel", "Refresh status"],
     ["PARTIAL_ONE", "partialOne", "1 option could not be loaded. Everything else is shown as the provider's system returned it."],
     ["PARTIAL_MANY", "partialMany", "{n} options could not be loaded. Everything else is shown as the provider's system returned it."],

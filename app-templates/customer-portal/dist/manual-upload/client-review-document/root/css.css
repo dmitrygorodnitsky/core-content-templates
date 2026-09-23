@@ -835,6 +835,8 @@ button { font-family: inherit; }
 
 .cr-outcome .btn { flex: none; align-self: center; }
 
+.cr-option__body > .cr-notice { margin-top: 14px; }
+
 .cr-approved__list { list-style: none; margin: 0; padding: 0; }
 
 .cr-approved__item {

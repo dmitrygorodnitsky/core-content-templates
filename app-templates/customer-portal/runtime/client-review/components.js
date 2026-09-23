@@ -345,9 +345,24 @@
     return panel;
   }
 
+  function unconfirmedNotice(ctx, recordKey) {
+    var box = notice("info", "", ctx.copy.commandUnconfirmed, refreshButton(ctx, recordKey, ctx.copy.refreshLabel), { quiet: true });
+    box.setAttribute("data-command", "unconfirmed");
+    return box;
+  }
+
+  function announceUnconfirmed(ctx) {
+    var commands = ctx.snapshot.commands;
+    if (Object.keys(commands).some(function (key) { return commands[key].status === "unconfirmed"; })) announce(ctx, [ctx.copy.commandUnconfirmed]);
+  }
+
   function optionFooter(body, ctx, property, option) {
     var copy = ctx.copy;
     var command = ctx.snapshot.commands[option.recordKey] || null;
+    if (command && command.status === "unconfirmed") {
+      body.appendChild(unconfirmedNotice(ctx, option.recordKey));
+      return;
+    }
     var pending = isPending(command);
     if (command && command.event === ns.contract.orderEvents.view.code) {
       if (pending) {
@@ -456,6 +471,7 @@
     var list = el("div", "cr-properties");
     view.properties.forEach(function (property) { list.appendChild(propertyCard(ctx, property, true)); });
     shell.appendChild(list);
+    announceUnconfirmed(ctx);
   }
 
   function fieldNode(ctx, field, pending) {
@@ -710,6 +726,10 @@
     var command = ctx.snapshot.commands[recordKey] || null;
     var pending = isPending(command);
     var card = el("section", "cr-panel cr-approve", { "data-state": pending ? "pending" : "idle" });
+    if (command && command.status === "unconfirmed") {
+      card.appendChild(unconfirmedNotice(ctx, recordKey));
+      return card;
+    }
     if (!view.canApproveAgreement) {
       card.appendChild(text("p", "cr-note", copy.agreementNoAction));
       return card;
@@ -817,6 +837,7 @@
     shell.appendChild(terms);
 
     if (reviewing) shell.appendChild(approveSection(ctx));
+    announceUnconfirmed(ctx);
   }
 
   function ready(shell, ctx) {

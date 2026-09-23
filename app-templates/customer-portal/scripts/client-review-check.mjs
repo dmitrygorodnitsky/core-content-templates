@@ -547,20 +547,22 @@ const EXPECTED_SCENARIOS = {
   error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
-  "command-failed": ["ready", "quote-review"], decided: ["ready", "quote-review"],
+  "command-failed": ["ready", "quote-review"], "command-stale-pending": ["ready", "quote-review"], "command-unconfirmed": ["ready", "quote-review"],
+  "view-unconfirmed": ["ready", "quote-review"], decided: ["ready", "quote-review"],
   "decided-following": ["ready", "quote-review"], "decided-following-slow": ["ready", "quote-review"], "decided-next-step": ["ready", "contract-details"],
   "contract-details": ["ready", "contract-details"],
   "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"],
   "details-checking": ["ready", "checking"], "details-checking-slow": ["ready", "checking"],
   "details-returned": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
   "details-returned-unknown": ["ready", "contract-details"], "details-returned-sent": ["ready", "contract-details"], "details-closed": ["link-closed", null],
+  "details-stale-checking": ["ready", "checking"], "details-stale-slow": ["ready", "checking"], "details-stale-closed": ["link-closed", null],
   preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"],
-  "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
+  "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "agreement-unconfirmed": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
   completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"],
   "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
-const POLLED_SCENARIOS = new Set(["details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step"]);
+const POLLED_SCENARIOS = new Set(["details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step", "details-stale-slow", "details-stale-closed", "command-unconfirmed", "view-unconfirmed", "agreement-unconfirmed"]);
 
 async function runScenario(id) {
   const runtime = loadRuntime({ fixtures: true });
@@ -763,11 +765,81 @@ const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
       case "command-refused":
         assert.ok(text.includes("This option was revised by the provider after you opened it."), "the server's refusal message is shown");
         assert.equal(run.controller.snapshot().view.properties[0].options[1].status, "viewed", "a refusal assumes no state change");
+        assert.equal(run.timers.pending, 0, "a refused command is not followed");
         break;
       case "command-failed":
         assert.ok(text.includes(copy.failedBody));
         assert.ok(byAttribute(run.mount, "data-action", "refresh").length > 0, "a failed command offers a status refresh, not a blind resend");
+        assert.equal(run.timers.pending, 0, "a failed command is not followed");
         break;
+      case "command-stale-pending": {
+        const card = byAttribute(run.mount, "aria-labelledby", "cr-property-278")[0];
+        const confirm = byAttribute(card, "data-action", "option.confirm")[0];
+        assert.equal(run.controller.snapshot().commands["order:3102"].status, "pending", "an accepted decision whose readback still shows the option undecided stays pending");
+        assert.equal(confirm.getAttribute("data-state"), "pending");
+        assert.notEqual(confirm.getAttribute("disabled"), null, "and cannot be sent again");
+        assert.equal(confirm.textContent, copy.sendingLabel);
+        run.controller.dispatch("option.confirm", { id: 3102 });
+        run.controller.dispatch("option.intent", { id: 3102, kind: "decline" });
+        await tick();
+        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_VIEWED-CLIENT_APPROVED"], "no second decision leaves the page");
+        assert.equal(run.timers.pending, 1, "the page keeps reading");
+        assert.equal(run.live.textContent, "", "a pending decision makes no announcement of its own");
+        break;
+      }
+      case "command-unconfirmed":
+      case "view-unconfirmed": {
+        const orderId = id === "command-unconfirmed" ? 3102 : 3101;
+        const body = byAttribute(run.mount, "id", "cr-option-" + orderId)[0];
+        const note = byAttribute(body, "data-command", "unconfirmed")[0];
+        assert.ok(note && surface(note).includes(copy.commandUnconfirmed), id + ": an accepted command not seen within the budget says so");
+        assert.equal(byAttribute(note, "data-action", "refresh").length, 1, "and offers Refresh status");
+        assert.equal(["option.approve", "option.decline", "option.changes", "option.confirm", "option.view"].reduce((count, action) => count + byAttribute(body, "data-action", action).length, 0), 0, "without offering the command again");
+        assert.equal(byClass(body, "cr-note--pending").length, 0);
+        assert.equal(run.controller.snapshot().commands["order:" + orderId].status, "unconfirmed");
+        assert.equal(run.timers.pending, 0, "the page stops reading on its own");
+        assert.ok(run.live.textContent.includes(copy.commandUnconfirmed), "the fallback is announced");
+        assert.equal(run.sent.length, 1);
+        run.controller.dispatch("option.toggle", { id: orderId });
+        run.controller.dispatch("option.toggle", { id: orderId });
+        run.controller.dispatch("option.view", { id: orderId });
+        run.controller.dispatch("option.intent", { id: orderId, kind: "approve" });
+        run.controller.dispatch("option.confirm", { id: orderId });
+        await tick();
+        assert.equal(run.sent.length, 1, "reopening or deciding the option again sends nothing");
+        break;
+      }
+      case "details-stale-checking":
+        assert.equal(run.sent.length, 1);
+        assert.equal(byAttribute(run.mount, "data-returned", "processing").length + byClass(run.mount, "cr-form-card").length, 0, "an accepted submit whose readback still shows the old return never shows the returned form");
+        assert.equal(byClass(run.mount, "cr-state")[0].getAttribute("data-checking"), "active");
+        assert.ok(run.live.textContent.includes(copy.checkingTitle), "the checking state is announced");
+        assert.equal(run.timers.pending, 1);
+        break;
+      case "details-stale-slow":
+        assert.equal(byClass(run.mount, "cr-state")[0].getAttribute("data-checking"), "slow", "without a newer read the budget ends in the slow check");
+        assert.equal(byAttribute(run.mount, "data-returned", "processing").length + byClass(run.mount, "cr-form-card").length, 0, "never in the stale returned form");
+        assert.equal(byAttribute(run.mount, "data-action", "refresh").length, 1);
+        assert.equal(run.timers.pending, 0);
+        break;
+      case "details-stale-closed":
+        assert.ok(text.includes(copy.closedAfterDetailsBody), "a stale readback is followed until the link closes after the details");
+        assert.equal(run.timers.pending, 0);
+        assert.ok(run.live.textContent.includes(copy.closedAfterTitle));
+        break;
+      case "agreement-unconfirmed": {
+        const card = byClass(run.mount, "cr-approve")[0];
+        const note = byAttribute(card, "data-command", "unconfirmed")[0];
+        assert.ok(note && surface(note).includes(copy.commandUnconfirmed), "an accepted approval not seen within the budget says so");
+        assert.equal(byAttribute(card, "data-action", "agreement.approve").length + byAttribute(card, "data-action", "agreement.confirm").length, 0, "and does not offer approval again");
+        assert.equal(run.timers.pending, 0);
+        assert.ok(run.live.textContent.includes(copy.commandUnconfirmed));
+        run.controller.dispatch("agreement.intent");
+        run.controller.dispatch("agreement.confirm");
+        await tick();
+        assert.deepEqual(run.sent.map((call) => call[2]), ["SENT_TO_CLIENT-CLIENT_APPROVED"], "one approval left the page");
+        break;
+      }
       case "decided": {
         const notice = byAttribute(run.mount, "data-decided", "settled")[0];
         assert.ok(notice && surface(notice).includes(copy.decidedTitle) && surface(notice).includes(copy.decidedBody), "a link opened on a fully decided package keeps today's card");
@@ -1204,6 +1276,292 @@ async function decideLast(controller, kind) {
   const invitation = byAttribute(mount, "data-portal", "invitation")[0];
   assert.ok(visibleText(invitation).includes(controller.copy.portalBody) && !visibleText(invitation).includes("@"), "contacts returned as ids only, as the link returns them today, leave the invitation on its no-email wording");
   assert.equal(controller.snapshot().primaryEmail, "");
+}
+
+async function stagedController(build, behavior = {}, pollDelays) {
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = build(CR.fixtures);
+  const adapter = CR.fixtures.createFixtureAdapter(data, behavior);
+  const counts = { reads: 0 };
+  const introspect = adapter.introspect;
+  adapter.introspect = () => { counts.reads += 1; return introspect(); };
+  const sent = [];
+  const sendEvent = adapter.sendEvent;
+  adapter.sendEvent = (...args) => { sent.push(plain(args)); return sendEvent(...args); };
+  const timers = fakeTimers();
+  const live = runtime.document.createElement("p");
+  const mount = runtime.document.createElement("div");
+  const controller = CR.createController({ adapter, mount, live, timers, pollDelays, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  return { runtime, CR, data, adapter, counts, sent, timers, live, mount, controller, copy: controller.copy };
+}
+
+const returnedWith = (errors) => (F) => {
+  const data = F.idOnlyAccount(F.quotationData("AWAITING_CLIENT_DETAILS", F.decidedStates));
+  data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
+  return data;
+};
+
+async function sendDetails(controller) {
+  for (const [code, value] of [["BILLING_ADDRESS", "1500 Harbour Green Drive, Vancouver"], ["REPRESENTATIVE_FIRST_NAME", "Dana"], ["REPRESENTATIVE_LAST_NAME", "Reyes"], ["REPRESENTATIVE_EMAIL", "dana.reyes@harbourview.example"], ["REPRESENTATIVE_PHONE", "+1 604 555 0164"]]) {
+    controller.dispatch("details.input", { code, value });
+  }
+  controller.dispatch("details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" });
+  controller.dispatch("details.choose", { code: "INFORMATION_CONFIRMED", value: true });
+  controller.dispatch("details.choose", { code: "AUTHORITY_CONFIRMED", value: true });
+  controller.dispatch("details.submit");
+  await controller.idle();
+}
+
+const kindOf = (run) => run.controller.snapshot().view && run.controller.snapshot().view.kind;
+const staleForm = (run) => byAttribute(run.mount, "data-returned", "processing").length + byClass(run.mount, "cr-form-card").length;
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { staleReads: 1 });
+  assert.ok(byAttribute(run.mount, "data-returned", "processing")[0], "the earlier return shows before the new submit");
+  await sendDetails(run.controller);
+  assert.equal(run.sent.length, 1);
+  assert.equal(kindOf(run), "checking", "a first readback that still shows the earlier return does not roll the page back");
+  assert.equal(staleForm(run), 0, "and the stale returned form does not come back");
+  assert.ok(run.live.textContent.includes(run.copy.checkingTitle));
+  assert.equal(run.timers.pending, 1, "the page follows the submit with the checking budget");
+  run.timers.fire();
+  await run.controller.idle();
+  assert.equal(run.controller.snapshot().phase, "link-closed");
+  assert.equal(run.controller.snapshot().closedAfter, "details", "the revoked link reads as closed after the details, as on agreement 138");
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { staleReads: 1, hooks: { detailsCodes: ["REPRESENTATIVE_PHONE"] } });
+  await sendDetails(run.controller);
+  assert.equal(kindOf(run), "checking");
+  run.timers.fire();
+  await run.controller.idle();
+  assert.equal(kindOf(run), "contract-details", "CLIENT_DETAILS_ERRORS that differ from the ones held at submit prove a completed cycle");
+  const notice = byAttribute(run.mount, "data-returned", "fields")[0];
+  assert.ok(notice && notice.getAttribute("data-form") === "sent", "and the new return shows with the typed values held");
+  assert.equal(run.controller.snapshot().details.serverErrors.REPRESENTATIVE_PHONE, run.copy.returnedMissing);
+  assert.equal(run.controller.snapshot().details.values.REPRESENTATIVE_PHONE, "+1 604 555 0164");
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { staleReads: 1, hooks: { details: "processing-failed", settleAfter: 3 } });
+  await sendDetails(run.controller);
+  assert.equal(kindOf(run), "checking");
+  run.timers.fire();
+  await run.controller.idle();
+  assert.equal(kindOf(run), "checking", "a read of CLIENT_DETAILS_RECEIVED keeps checking");
+  run.timers.fire();
+  await run.controller.idle();
+  assert.equal(kindOf(run), "contract-details", "after CLIENT_DETAILS_RECEIVED was seen, AWAITING_CLIENT_DETAILS with the same errors is a completed cycle");
+  const notice = byAttribute(run.mount, "data-returned", "processing")[0];
+  assert.ok(notice && notice.getAttribute("data-form") === "sent");
+  assert.ok(run.live.textContent.includes(run.copy.detailsProcessingTitle));
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { hooks: { details: "hold" } });
+  const sendEvent = run.adapter.sendEvent;
+  run.adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
+    run.data.documents[0].states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+    run.data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: "" };
+    return result;
+  });
+  await sendDetails(run.controller);
+  assert.equal(kindOf(run), "contract-details", "a change of CLIENT_DETAILS_ERRORS to empty also proves a completed cycle");
+  assert.equal(byAttribute(run.mount, "data-returned", "processing").length + byAttribute(run.mount, "data-returned", "fields").length, 0, "and the form shows without a return notice");
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { staleReads: 99 }, [1, 1]);
+  await sendDetails(run.controller);
+  await drain(run.controller, run.timers);
+  assert.equal(kindOf(run), "checking");
+  assert.equal(run.controller.snapshot().waiting.exhausted, true);
+  assert.equal(byClass(run.mount, "cr-state")[0].getAttribute("data-checking"), "slow", "no evidence within the budget ends in the slow check");
+  assert.equal(staleForm(run), 0, "never in the stale returned form");
+  const reads = run.counts.reads;
+  byAttribute(run.mount, "data-action", "refresh")[0].fire("click");
+  await run.controller.idle();
+  assert.equal(run.counts.reads, reads + 1, "Refresh status reads once");
+  assert.equal(byClass(run.mount, "cr-state")[0].getAttribute("data-checking"), "slow", "and a read that is still stale keeps the slow check");
+  assert.equal(staleForm(run), 0);
+}
+
+{
+  const run = await stagedController(returnedWith("PROCESSING_FAILED"), { hooks: { revokeOnDetails: false, settleAfter: 1 } });
+  await sendDetails(run.controller);
+  assert.equal(kindOf(run), "preparing", "a readback in any state other than the two details states is rendered as it is");
+  assert.equal(run.timers.pending, 0);
+}
+
+for (const [kind, orderId, event, status] of [
+  ["view", 3101, "QUOTE_SENT-QUOTE_VIEWED", "viewed"],
+  ["approve", 3102, "QUOTE_VIEWED-CLIENT_APPROVED", "approved"],
+  ["decline", 3102, "QUOTE_VIEWED-DECLINED", "declined"],
+  ["changes", 3102, "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED", "changes"],
+]) {
+  const run = await stagedController((F) => F.quotationData(), { staleReads: 1 });
+  const { controller } = run;
+  const optionOf = () => controller.snapshot().view.properties[0].options.find((option) => option.id === orderId);
+  controller.dispatch("option.toggle", { id: orderId });
+  await controller.idle();
+  if (kind !== "view") {
+    controller.dispatch("option.intent", { id: orderId, kind });
+    if (kind === "changes") controller.dispatch("option.draft", { id: orderId, value: "Please quote weekly visits." });
+    controller.dispatch("option.confirm", { id: orderId });
+    await controller.idle();
+  }
+  assert.deepEqual(run.sent.map((call) => call[2]), [event], kind + " left the page once");
+  assert.equal(optionOf().state, event.split("-")[0], kind + ": the first readback still shows the source state");
+  assert.equal((controller.snapshot().commands["order:" + orderId] || {}).status, "pending", kind + " stays pending instead of being offered again");
+  const body = byAttribute(run.mount, "id", "cr-option-" + orderId)[0];
+  const offered = all(body, (node) => ["option.approve", "option.decline", "option.changes", "option.confirm", "option.view"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null);
+  assert.equal(offered.length, 0, kind + ": nothing in the option can be sent again");
+  if (kind === "view") assert.equal(byClass(body, "cr-note--pending").length, 1, "the view shows as pending");
+  controller.dispatch("option.toggle", { id: orderId });
+  controller.dispatch("option.toggle", { id: orderId });
+  controller.dispatch("option.view", { id: orderId });
+  controller.dispatch("option.intent", { id: orderId, kind: "approve" });
+  controller.dispatch("option.confirm", { id: orderId });
+  await tick();
+  assert.equal(run.sent.length, 1, kind + ": no path sends it again while it is pending");
+  assert.equal(run.timers.pending, 1, kind + " is followed with the checking budget");
+  run.timers.fire();
+  await controller.idle();
+  assert.equal(optionOf().status, status, kind + " lands once a read shows it");
+  assert.equal(controller.snapshot().commands["order:" + orderId], undefined);
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController((F) => F.quotationData(), { staleReads: 3 }, [1]);
+  const { controller } = run;
+  controller.dispatch("option.toggle", { id: 3102 });
+  await controller.idle();
+  controller.dispatch("option.intent", { id: 3102, kind: "approve" });
+  controller.dispatch("option.confirm", { id: 3102 });
+  await controller.idle();
+  await drain(controller, run.timers);
+  assert.equal((controller.snapshot().commands["order:3102"] || {}).status, "unconfirmed", "an accepted decision not seen within the budget falls back to Refresh status");
+  assert.ok(run.live.textContent.includes(run.copy.commandUnconfirmed));
+  const refresh = () => byAttribute(byAttribute(run.mount, "id", "cr-option-3102")[0], "data-action", "refresh")[0].fire("click");
+  refresh();
+  await controller.idle();
+  assert.equal((controller.snapshot().commands["order:3102"] || {}).status, "unconfirmed", "a read that is still stale keeps it");
+  assert.equal(run.timers.pending, 0, "and does not restart the budget");
+  refresh();
+  await controller.idle();
+  assert.equal(controller.snapshot().view.properties[0].options[1].status, "approved", "the first fresh read lands it");
+  assert.equal(controller.snapshot().commands["order:3102"], undefined);
+  assert.equal(run.sent.length, 1);
+}
+
+{
+  const run = await stagedController((F) => F.quotationData());
+  const { controller, data } = run;
+  const order = () => data.orders.find((row) => row.id === 3102);
+  const sendEvent = run.adapter.sendEvent;
+  run.adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
+    order().states = [{ code: "QUOTE_VIEWED" }];
+    data.unreadable = [3102];
+    return result;
+  });
+  controller.dispatch("option.toggle", { id: 3102 });
+  await controller.idle();
+  controller.dispatch("option.intent", { id: 3102, kind: "approve" });
+  controller.dispatch("option.confirm", { id: 3102 });
+  await controller.idle();
+  assert.equal(controller.snapshot().view.unreadableOrders, 1, "the readback misses the decided option");
+  assert.equal((controller.snapshot().commands["order:3102"] || {}).status, "pending", "which keeps its decision pending rather than taken as seen");
+  data.unreadable = [];
+  run.timers.fire();
+  await controller.idle();
+  controller.dispatch("option.toggle", { id: 3102 });
+  await controller.idle();
+  const body = byAttribute(run.mount, "id", "cr-option-3102")[0];
+  assert.equal(run.sent.length, 1, "reopening the option sends nothing");
+  assert.equal(all(body, (node) => ["option.approve", "option.decline", "option.changes", "option.confirm"].includes(node.getAttribute("data-action")) && node.getAttribute("disabled") === null).length, 0, "so a later read that shows it undecided offers nothing again");
+  order().states = [{ code: "CLIENT_APPROVED" }];
+  run.timers.fire();
+  await controller.idle();
+  assert.equal(controller.snapshot().commands["order:3102"], undefined, "it lands once a read shows the decision");
+}
+
+{
+  const run = await stagedController((F) => F.quotationData(), { staleReads: 2 }, [1]);
+  const { controller } = run;
+  for (const orderId of [3102, 3107]) {
+    controller.dispatch("option.toggle", { id: orderId });
+    await controller.idle();
+    controller.dispatch("option.intent", { id: orderId, kind: "approve" });
+    controller.dispatch("option.confirm", { id: orderId });
+    await controller.idle();
+    if (orderId === 3102) {
+      await drain(controller, run.timers);
+      assert.equal((controller.snapshot().commands["order:3102"] || {}).status, "unconfirmed");
+    }
+  }
+  assert.equal((controller.snapshot().commands["order:3107"] || {}).status, "pending", "a new command after a spent budget gets a budget of its own");
+  assert.equal(run.timers.pending, 1, "and the page reads again");
+  assert.equal(controller.snapshot().commands["order:3102"], undefined, "while the earlier one lands on the next read that shows it");
+}
+
+{
+  const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false), { staleReads: 1 });
+  const { controller } = run;
+  controller.dispatch("agreement.intent");
+  controller.dispatch("agreement.confirm");
+  await controller.idle();
+  assert.equal(kindOf(run), "agreement-review", "the first readback still shows the agreement awaiting approval");
+  assert.equal((controller.snapshot().commands["document:5205"] || {}).status, "pending");
+  const confirm = byAttribute(run.mount, "data-action", "agreement.confirm")[0];
+  assert.ok(confirm && confirm.getAttribute("disabled") !== null && confirm.textContent === run.copy.sendingLabel, "the approval shows as pending");
+  controller.dispatch("agreement.confirm");
+  controller.dispatch("agreement.intent");
+  await tick();
+  assert.equal(run.sent.length, 1, "and is not sent again");
+  run.timers.fire();
+  await controller.idle();
+  assert.equal(kindOf(run), "completion", "the approval lands on the completion page");
+  assert.ok(run.live.textContent.includes(run.copy.completeApprovedTitle), "which is announced, since it arrived on its own");
+  assert.equal(run.timers.pending, 0);
+}
+
+{
+  const run = await stagedController((F) => F.agreementData("SENT_TO_CLIENT", false), { staleReads: 1, hooks: { revokeOnApproval: true } });
+  const { controller } = run;
+  controller.dispatch("agreement.intent");
+  controller.dispatch("agreement.confirm");
+  await controller.idle();
+  assert.equal(kindOf(run), "agreement-review");
+  run.timers.fire();
+  await controller.idle();
+  assert.equal(controller.snapshot().phase, "link-closed");
+  assert.equal(controller.snapshot().closedAfter, "approval", "a link revoked after a stale approval readback reads as closed after the approval");
+}
+
+{
+  const run = await stagedController((F) => F.quotationData("QUOTATION_SENT", F.lastOpenStates), { staleReads: 1 });
+  const { controller } = run;
+  controller.dispatch("option.toggle", { id: 3108 });
+  await controller.idle();
+  run.timers.fire();
+  await controller.idle();
+  controller.dispatch("option.intent", { id: 3108, kind: "approve" });
+  controller.dispatch("option.confirm", { id: 3108 });
+  await controller.idle();
+  assert.equal(controller.snapshot().view.allDecided, false, "the stale readback does not show the last decision yet");
+  assert.equal((controller.snapshot().commands["order:3108"] || {}).status, "pending");
+  await drain(controller, run.timers);
+  assert.equal(kindOf(run), "contract-details", "once the decision lands the page follows it to the details step");
+  assert.ok(run.live.textContent.includes(run.copy.detailsTitle));
 }
 
 {

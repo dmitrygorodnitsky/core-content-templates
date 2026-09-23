@@ -39,6 +39,7 @@
       retryContext: {},
       primaryEmail: "",
       followDecisions: false,
+      accepted: {},
       refreshing: false,
       expanded: {},
       confirm: null,
@@ -61,8 +62,72 @@
       return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
     }
 
-    function waitingNow() {
+    function pageWaitingNow() {
       return checkingNow() || followingNow();
+    }
+
+    function waitingNow() {
+      return pageWaitingNow() || (state.phase === "ready" && Object.keys(state.accepted).length > 0);
+    }
+
+    function eventSource(code) {
+      var found = "";
+      [contract.orderEvents, contract.agreementEvents].forEach(function (events) {
+        Object.keys(events).forEach(function (key) { if (events[key].code === code) found = events[key].source; });
+      });
+      return found;
+    }
+
+    function accept(recordKey, entity, id, event, closedAfter) {
+      var details = event === contract.agreementEvents.details.code;
+      state.accepted[recordKey] = {
+        entity: entity,
+        id: id,
+        event: event,
+        source: eventSource(event),
+        closedAfter: closedAfter,
+        errorsBefore: details && state.view && state.view.agreement ? state.view.agreement.detailsErrors : "",
+      };
+      if (details) {
+        state.details.returnPending = true;
+        state.details.sent = true;
+      }
+      poll.attempt = 0;
+      poll.exhausted = false;
+    }
+
+    function currentOf(expectation, view) {
+      if (expectation.entity !== "order") return view.agreement ? view.agreement.state : "";
+      var option = optionsOf(view).filter(function (candidate) { return candidate.id === expectation.id; })[0];
+      return option ? option.state : null;
+    }
+
+    function landed(expectation, view) {
+      var current = currentOf(expectation, view);
+      if (current === null) return false;
+      if (current !== expectation.source) return true;
+      return expectation.event === contract.agreementEvents.details.code && view.agreement.detailsErrors !== expectation.errorsBefore;
+    }
+
+    function settleAccepted() {
+      var receiving = false;
+      Object.keys(state.accepted).forEach(function (recordKey) {
+        var expectation = state.accepted[recordKey];
+        if (!landed(expectation, state.view)) {
+          if (expectation.event === contract.agreementEvents.details.code) receiving = true;
+          return;
+        }
+        delete state.accepted[recordKey];
+        delete state.commands[recordKey];
+        if (expectation.event === contract.orderEvents.approve.code || expectation.event === contract.orderEvents.decline.code) state.followDecisions = true;
+      });
+      if (receiving) state.view.kind = "checking";
+    }
+
+    function markAccepted() {
+      Object.keys(state.accepted).forEach(function (recordKey) {
+        state.commands[recordKey] = { status: poll.exhausted ? "unconfirmed" : "pending", event: state.accepted[recordKey].event, message: "" };
+      });
     }
 
     function pageKey() {
@@ -202,9 +267,9 @@
 
     function announces(before, after) {
       if (before.phase !== "ready") return false;
-      var now = waitingNow();
-      if (before.waiting !== now || (now && poll.exhausted && !before.exhausted)) return true;
-      return Boolean(after.event) && before.page !== pageKey();
+      if (before.pageWaiting !== pageWaitingNow()) return true;
+      if (waitingNow() && poll.exhausted && !before.exhausted) return true;
+      return (Boolean(after.event) || Boolean(after.quiet)) && before.page !== pageKey();
     }
 
     function speak(rendered) {
@@ -213,7 +278,9 @@
     }
 
     function readContext() {
-      return checkingNow() ? { afterCommand: true, closedAfter: "details" } : {};
+      var closedAfter = checkingNow() ? "details" : "";
+      Object.keys(state.accepted).forEach(function (recordKey) { closedAfter = closedAfter || state.accepted[recordKey].closedAfter; });
+      return closedAfter ? { afterCommand: true, closedAfter: closedAfter } : {};
     }
 
     function load(context) {
@@ -223,7 +290,7 @@
       }
       if (loading) return loading;
       var after = context || {};
-      var before = { phase: state.phase, page: pageKey(), waiting: waitingNow(), exhausted: poll.exhausted };
+      var before = { phase: state.phase, page: pageKey(), pageWaiting: pageWaitingNow(), exhausted: poll.exhausted };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -233,12 +300,8 @@
         state.closedAfter = "";
         state.errorAfterCommand = false;
         state.primaryEmail = state.view.primaryEmail || "";
-        if (after.event === contract.orderEvents.approve.code || after.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        settleAccepted();
         if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
-        if (after.event === contract.agreementEvents.details.code) {
-          state.details.returnPending = true;
-          state.details.sent = true;
-        }
         seedDetails();
         prune();
       }, function (error) {
@@ -258,6 +321,7 @@
         state.refreshing = false;
         loading = null;
         track();
+        markAccepted();
         var rendered = render();
         if (announces(before, after)) speak(rendered);
       });
@@ -276,8 +340,8 @@
       state.commands[recordKey] = { status: "pending", event: event, message: "" };
       render();
       var task = adapter.sendEvent(entity, id, event, metadata).then(function () {
+        accept(recordKey, entity, id, event, after.closedAfter || "");
         return reload({ afterCommand: true, closedAfter: after.closedAfter || "", event: event }).then(function () {
-          delete state.commands[recordKey];
           if (typeof after.onSuccess === "function") after.onSuccess();
           render();
           return true;
@@ -341,7 +405,7 @@
       var opening = !state.expanded[option.id];
       if (opening) state.expanded[option.id] = true;
       else delete state.expanded[option.id];
-      if (opening && option.actions.view && !state.commands[option.recordKey] && !busy()) {
+      if (opening && option.actions.view && !state.commands[option.recordKey] && !state.accepted[option.recordKey] && !busy()) {
         send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
         return;
       }
@@ -351,7 +415,7 @@
     function confirmOption(id) {
       var option = findOption(id);
       var confirm = state.confirm;
-      if (!option || !confirm || confirm.id !== option.id || !option.actions[confirm.kind] || busy()) return;
+      if (!option || !confirm || confirm.id !== option.id || !option.actions[confirm.kind] || busy() || state.accepted[option.recordKey]) return;
       var event = contract.orderEvents[confirm.kind];
       var metadata = {};
       if (confirm.kind === "changes") {
@@ -418,13 +482,13 @@
           return;
         case "option.view":
           option = findOption(data.id);
-          if (!option || !option.actions.view || busy()) return;
+          if (!option || !option.actions.view || busy() || state.accepted[option.recordKey]) return;
           clearOutcome(option.recordKey);
           send(option.recordKey, "order", option.id, contract.orderEvents.view.code, {}, {});
           return;
         case "option.intent":
           option = findOption(data.id);
-          if (!option || !option.actions[data.kind] || busy() || inflight[option.recordKey]) return;
+          if (!option || !option.actions[data.kind] || busy() || inflight[option.recordKey] || state.accepted[option.recordKey]) return;
           clearOutcome(option.recordKey);
           state.confirm = { recordKey: option.recordKey, id: option.id, kind: data.kind };
           state.focusKey = data.kind === "changes" ? "draft-" + option.id : "confirm-" + option.id;
@@ -471,7 +535,7 @@
           submitDetails();
           return;
         case "agreement.intent":
-          if (!view || !view.canApproveAgreement || busy() || inflight[view.agreement.recordKey]) return;
+          if (!view || !view.canApproveAgreement || busy() || inflight[view.agreement.recordKey] || state.accepted[view.agreement.recordKey]) return;
           clearOutcome(view.agreement.recordKey);
           state.confirm = { recordKey: view.agreement.recordKey, id: view.agreement.id, kind: "agreement" };
           state.focusKey = "confirm-agreement";
@@ -484,7 +548,7 @@
           render();
           return;
         case "agreement.confirm":
-          if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy()) return;
+          if (!view || !view.canApproveAgreement || !state.confirm || state.confirm.kind !== "agreement" || busy() || state.accepted[view.agreement.recordKey]) return;
           send(view.agreement.recordKey, "document", view.agreement.id, contract.agreementEvents.approve.code, {}, { closedAfter: "approval" });
           return;
         default:

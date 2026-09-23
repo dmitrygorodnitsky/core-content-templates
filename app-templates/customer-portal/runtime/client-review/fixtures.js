@@ -99,6 +99,9 @@
     { id: "command-pending", label: "Decision pending" },
     { id: "command-refused", label: "Decision refused by the server" },
     { id: "command-failed", label: "Decision failed" },
+    { id: "command-stale-pending", label: "Decision accepted, readback still shows the option undecided — pending" },
+    { id: "command-unconfirmed", label: "Decision accepted, change not seen within the budget — Refresh status" },
+    { id: "view-unconfirmed", label: "Option opened, view accepted but not seen within the budget — Refresh status" },
     { id: "decided", label: "Every property decided — link opened, provider not done yet" },
     { id: "decided-following", label: "Last decision sent here — next step being opened" },
     { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
@@ -112,12 +115,16 @@
     { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
     { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
     { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
+    { id: "details-stale-checking", label: "Details sent over an old return, readback still shows it — checking" },
+    { id: "details-stale-slow", label: "Details sent over an old return, no newer read within the budget — slow check" },
+    { id: "details-stale-closed", label: "Details sent over an old return, stale readback, then checked and closed" },
     { id: "details-closed", label: "Contract details sent — checked, link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
     { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
+    { id: "agreement-unconfirmed", label: "Agreement approval accepted, change not seen within the budget — Refresh status" },
     { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
     { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
     { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
@@ -394,7 +401,7 @@
     var outcome = hooks.details || "check";
     if (!pending || outcome === "hold") return;
     pending.reads += 1;
-    if (pending.reads < 2) return;
+    if (pending.reads < (hooks.settleAfter || 2)) return;
     data.pendingDetails = null;
     var agreement = data.documents[0];
     var bucket = agreement.attributes[17];
@@ -414,6 +421,8 @@
     var settings = behavior || {};
     var reviewError = ns.adapter.reviewError;
     var introspectFailures = settings.introspect === "fail-once" ? 1 : 0;
+    var stale = { left: 0, snapshot: null };
+    var served = data;
 
     function never() {
       return new Promise(function () {});
@@ -433,8 +442,8 @@
       });
     }
 
-    function guard() {
-      if (data.closed) throw reviewError("link-closed", 401);
+    function guard(source) {
+      if (source.closed) throw reviewError("link-closed", 401);
     }
 
     return {
@@ -443,32 +452,37 @@
         return later(function () {
           settleEvaluation(data, settings.hooks || {});
           settleDetails(data, settings.hooks || {});
-          guard();
+          served = data;
+          if (stale.left > 0) {
+            stale.left -= 1;
+            served = stale.snapshot;
+          }
+          guard(served);
           if (settings.introspect === "unauthorized") throw reviewError("link-closed", 401);
           if (introspectFailures > 0) {
             introspectFailures = 0;
             throw reviewError("failed", 503);
           }
-          return clone(data.grant);
+          return clone(served.grant);
         });
       },
       list: function (entity) {
         return later(function () {
-          guard();
+          guard(served);
           if (entity === "account") {
-            if (data.accountFails) throw reviewError("failed", 500);
-            return clone(data.accounts);
+            if (served.accountFails) throw reviewError("failed", 500);
+            return clone(served.accounts);
           }
-          if (entity === "document") return clone(data.documents);
-          if (entity === "order") return clone(data.orders.filter(function (row) { return data.unreadable.indexOf(row.id) === -1; }));
+          if (entity === "document") return clone(served.documents);
+          if (entity === "order") return clone(served.orders.filter(function (row) { return served.unreadable.indexOf(row.id) === -1; }));
           throw reviewError("refused", 400);
         });
       },
       get: function (entity, id) {
         return later(function () {
-          guard();
-          var row = entity === "order" ? data.orders.filter(function (candidate) { return candidate.id === id; })[0] : null;
-          if (!row || data.unreadable.indexOf(id) !== -1) throw reviewError("refused", 404);
+          guard(served);
+          var row = entity === "order" ? served.orders.filter(function (candidate) { return candidate.id === id; })[0] : null;
+          if (!row || served.unreadable.indexOf(id) !== -1) throw reviewError("refused", 404);
           return clone(row);
         });
       },
@@ -476,10 +490,16 @@
         var rule = (settings.events || {})[code] || { outcome: "accept" };
         if (rule.outcome === "hold") return never();
         return later(function () {
-          guard();
+          guard(data);
           if (rule.outcome === "refuse") throw reviewError("refused", 409, rule.message || "", rule.fieldErrors || {});
           if (rule.outcome === "fail") throw reviewError("failed", 502);
-          return apply(data, entity, id, code, metadata || {}, settings.hooks || {});
+          var before = settings.staleReads ? clone(data) : null;
+          var result = apply(data, entity, id, code, metadata || {}, settings.hooks || {});
+          if (before) {
+            stale.snapshot = before;
+            stale.left = settings.staleReads;
+          }
+          return result;
         });
       },
     };
@@ -574,6 +594,20 @@
         behavior.events["QUOTE_VIEWED-CLIENT_APPROVED"] = { outcome: "fail" };
         steps = approve.concat([["option.confirm", { id: 3102 }]]);
         break;
+      case "command-stale-pending":
+        behavior.staleReads = 99;
+        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        break;
+      case "command-unconfirmed":
+        behavior.staleReads = 99;
+        steps = approve.concat([["option.confirm", { id: 3102 }]]);
+        pollDelays = [300, 300, 300];
+        break;
+      case "view-unconfirmed":
+        behavior.staleReads = 99;
+        steps = [["option.toggle", { id: 3101 }]];
+        pollDelays = [300, 300, 300];
+        break;
       case "decided":
         data = quotationData("QUOTATION_SENT", DECIDED);
         break;
@@ -631,6 +665,23 @@
         behavior.hooks.details = "processing-failed";
         steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
         break;
+      case "details-stale-checking":
+        data = returnedData("PROCESSING_FAILED");
+        behavior.staleReads = 1;
+        behavior.hooks.details = "hold";
+        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        break;
+      case "details-stale-slow":
+        data = returnedData("PROCESSING_FAILED");
+        behavior.staleReads = 99;
+        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        pollDelays = [300, 300, 300];
+        break;
+      case "details-stale-closed":
+        data = returnedData("PROCESSING_FAILED");
+        behavior.staleReads = 1;
+        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        break;
       case "details-closed":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = confirmBoth.concat([["details.submit", {}]]);
@@ -652,6 +703,12 @@
       case "agreement-confirm":
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
+        break;
+      case "agreement-unconfirmed":
+        data = agreementData("SENT_TO_CLIENT", false);
+        behavior.staleReads = 99;
+        steps = [["agreement.intent", {}], ["agreement.confirm", {}]];
+        pollDelays = [300, 300, 300];
         break;
       case "approval-closed":
         data = agreementData("SENT_TO_CLIENT", false);
