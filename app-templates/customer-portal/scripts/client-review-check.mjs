@@ -20,6 +20,34 @@ const settle = (promise, ms = 200) => Promise.race([promise.then(() => "idle"), 
 const tick = () => new Promise((resolve) => setImmediate(resolve));
 const formatCad = (value) => new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2, maximumFractionDigits: 6 }).format(value);
 
+function fakeTimers() {
+  let now = 0;
+  let sequence = 0;
+  const queue = new Map();
+  const waits = [];
+  return {
+    waits,
+    get now() { return now; },
+    get pending() { return queue.size; },
+    set(callback, ms) { sequence += 1; queue.set(sequence, { at: now + ms, ms, callback }); return sequence; },
+    clear(handle) { queue.delete(handle); },
+    fire() {
+      const next = [...queue.entries()].sort((left, right) => left[1].at - right[1].at)[0];
+      if (!next) return false;
+      queue.delete(next[0]);
+      now = next[1].at;
+      waits.push(next[1].ms);
+      next[1].callback();
+      return true;
+    },
+  };
+}
+
+async function drain(controller, timers, limit = 40) {
+  await controller.idle();
+  for (let fired = 0; fired < limit && timers.fire(); fired += 1) await controller.idle();
+}
+
 function createDocument() {
   const document = { activeElement: null };
   document.createElement = (tag) => {
@@ -59,6 +87,11 @@ function surface(node) {
   const parts = [];
   walk(node, (candidate) => { parts.push(candidate.ownText, String(candidate.value ?? ""), ...Object.values(candidate.attributes)); });
   return parts.join("\n");
+}
+function visibleText(node) {
+  const parts = [];
+  walk(node, (candidate) => { parts.push(candidate.ownText); });
+  return parts.join("");
 }
 
 function loadRuntime(options = {}) {
@@ -158,6 +191,14 @@ for (const token of ["--accent", "--accent-rgb", "--ink", "--ink-2", "--ink-3", 
   assert.equal(safeApiBase("https://user:pass@core.example"), "", "a base with credentials is discarded");
   assert.equal(safeApiBase("$" + "{REVIEW_API_BASE_URL@STRING}"), "", "an unresolved CMS marker is not a base");
 
+  const { safePortalUrl } = CR.adapter;
+  assert.equal(safePortalUrl("https://portal.example.com/"), "https://portal.example.com/");
+  assert.equal(safePortalUrl(" https://portal.example.com/sign-in?from=review "), "https://portal.example.com/sign-in?from=review", "a portal address may carry a path and a query");
+  assert.equal(safePortalUrl("https://portal.example.com"), "https://portal.example.com/", "the portal address is used as the URL parser normalizes it");
+  for (const refused of ["", "   ", "http://portal.example.com/", "javascript:alert(1)", "data:text/html,x", "//portal.example.com/", "/portal", "portal.example.com", "https://user:pass@portal.example.com/", "$" + "{PORTAL_URL@STRING}"]) {
+    assert.equal(safePortalUrl(refused), "", JSON.stringify(refused) + " is not a portal address");
+  }
+
   const errors = CR.adapter.fieldErrorsOf({
     fieldErrors: [{ field: "metadata.LEGAL_NAME", message: "Too short" }],
     errors: { "REPRESENTATIVE_EMAIL": ["Unreachable"], lowercase: "ignored" },
@@ -225,12 +266,13 @@ const N = loadRuntime().CR.normalizer;
 
   const EXPECTED_KIND = {
     QUOTATION: "preparing", QUOTATION_SENT: "quote-review", QUOTATION_SEND_FAILED: "unavailable",
-    AWAITING_CLIENT_DETAILS: "contract-details", CLIENT_DETAILS_RECEIVED: "preparing", DRAFT: "preparing",
+    AWAITING_CLIENT_DETAILS: "contract-details", CLIENT_DETAILS_RECEIVED: "checking", DRAFT: "preparing",
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", AGREEMENT_SEND_FAILED: "unavailable",
-    CLIENT_APPROVED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
+    CLIENT_APPROVED: "completion", ACTIVATION_FAILED: "completion", ACTIVE: "completion", SUSPENDED: "reference", EXPIRED: "reference",
     ARCHIVED: "closed", CANCELED: "closed",
   };
+  const EXPECTED_COMPLETION = { CLIENT_APPROVED: "approved", ACTIVATION_FAILED: "finishing", ACTIVE: "active" };
   assert.deepEqual(Object.keys(EXPECTED_KIND).sort(), plain(contract.agreementStates).sort(), "every agreement state has an expected page");
   const quotationGrant = CR.fixtures.quotationData().grant;
   const agreementGrant = CR.fixtures.agreementData("SENT_TO_CLIENT").grant;
@@ -239,6 +281,8 @@ const N = loadRuntime().CR.normalizer;
     data.grant = { expiresAt: quotationGrant.expiresAt, types: quotationGrant.types.slice(0, 2).concat([{ entityType: "Document", canRead: true, events: agreementGrant.types[2].events.concat(quotationGrant.types[2].events) }]) };
     const view = model(data);
     assert.equal(view.kind, EXPECTED_KIND[state] || "unavailable", state + " selects its page");
+    assert.equal(view.completion, EXPECTED_COMPLETION[state] || "", state + " selects its completion wording");
+    assert.equal(view.reason === "unknown-state", !EXPECTED_KIND[state], state + (EXPECTED_KIND[state] ? " is never answered as an unknown state" : " is an unknown state"));
     const offered = view.properties.some((property) => property.options.some((option) => Object.values(option.actions).some(Boolean)));
     assert.equal(offered, state === "QUOTATION_SENT", state + " offers quote decisions only while the package is sent");
     assert.equal(view.details.available, state === "AWAITING_CLIENT_DETAILS", state + " offers the details step only while details are awaited");
@@ -342,12 +386,56 @@ const N = loadRuntime().CR.normalizer;
   const seedPath = path.resolve("../core-ui/scripts/dev/seeds/serviceAgreementWorkflows.json");
   if (existsSync(seedPath)) {
     const seed = JSON.parse(await fs.readFile(seedPath, "utf8"));
-    const seedEvent = seed.workflows.find((workflow) => workflow.code === contract.agreementWorkflow).events.find((event) => event.code === contract.contractDetails.event);
+    const seedWorkflow = seed.workflows.find((workflow) => workflow.code === contract.agreementWorkflow);
+    const seedEvent = seedWorkflow.events.find((event) => event.code === contract.contractDetails.event);
     assert.deepEqual(plain(contract.contractDetails.attributes), seedEvent.attributes, "the shipped details contract equals the seed's event attributes");
     assert.deepEqual(plain(contract.contractDetails.attributeOrder), seedEvent.attributeOrder, "the shipped details order equals the seed's event attribute order");
-    console.log("client-review-check: details contract compared with " + path.relative(process.cwd(), seedPath));
+    assert.deepEqual(plain(contract.agreementStates), seedWorkflow.states.map((state) => state.code), "the page knows every state of the seeded agreement workflow, ACTIVATION_FAILED included");
+    console.log("client-review-check: details contract and agreement states compared with " + path.relative(process.cwd(), seedPath));
   } else {
-    console.log("client-review-check: seed " + seedPath + " not present, details contract not compared");
+    console.log("client-review-check: seed " + seedPath + " not present, details contract and agreement states not compared");
+  }
+
+  const returnedOf = (value) => plain(normalizer.returnedDetails(value, fields, contract.detailsReturn));
+  const nothingReturned = { returned: false, processingFailed: false, unexplained: false, fields: {} };
+  for (const empty of [undefined, null, "", " , ", [], 12]) assert.deepEqual(returnedOf(empty), nothingReturned, JSON.stringify(empty) + " returns nothing");
+  const requiredText = plain(contract.contractDetails.attributes.filter((attribute) => attribute.required && attribute.className !== "java.lang.Boolean").map((attribute) => attribute.code));
+  assert.deepEqual(requiredText, ["LEGAL_NAME", "CLIENT_TYPE", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"]);
+  assert.deepEqual(returnedOf(requiredText.join(",")), { returned: true, processingFailed: false, unexplained: false, fields: Object.fromEntries(requiredText.map((code) => [code, "missing"])) }, "a blank required text field comes back under its own code and marks that field");
+  assert.deepEqual(returnedOf("CLIENT_TYPE_INVALID,REPRESENTATIVE_EMAIL_INVALID,INFORMATION_CONFIRMED,AUTHORITY_CONFIRMED"), {
+    returned: true, processingFailed: false, unexplained: false,
+    fields: { CLIENT_TYPE: "choice", REPRESENTATIVE_EMAIL: "email", INFORMATION_CONFIRMED: "unconfirmed", AUTHORITY_CONFIRMED: "unconfirmed" },
+  }, "the two _INVALID codes mark their fields, and a confirmation that was not true marks its checkbox");
+  assert.deepEqual(returnedOf("PROCESSING_FAILED"), { returned: true, processingFailed: true, unexplained: false, fields: {} }, "PROCESSING_FAILED marks no field");
+  assert.deepEqual(returnedOf("TAX_NUMBER_MISSING"), { returned: true, processingFailed: false, unexplained: true, fields: {} }, "an unknown code is counted, never mapped");
+  assert.deepEqual(returnedOf(" REPRESENTATIVE_PHONE , ,REPRESENTATIVE_PHONE,constructor,toString,__proto__"), { returned: true, processingFailed: false, unexplained: true, fields: { REPRESENTATIVE_PHONE: "missing" } }, "codes are trimmed and de-duplicated, and an inherited property name is an unknown code");
+  assert.deepEqual(returnedOf(["LEGAL_NAME", "CLIENT_TYPE_INVALID", "CLIENT_TYPE"]), { returned: true, processingFailed: false, unexplained: false, fields: { LEGAL_NAME: "missing", CLIENT_TYPE: "choice" } }, "a list value is read like the comma-separated string, and the first reason for a field wins");
+  const modelled = plain(CR.fixtures.detailsErrors({ CLIENT_TYPE: "partnership", REPRESENTATIVE_EMAIL: "dana@", INFORMATION_CONFIRMED: "true" }));
+  assert.deepEqual(modelled, ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_LAST_NAME", "REPRESENTATIVE_PHONE", "CLIENT_TYPE_INVALID", "REPRESENTATIVE_EMAIL_INVALID", "INFORMATION_CONFIRMED", "AUTHORITY_CONFIRMED"], "the fixture models the processor's validation and code order");
+  assert.equal(returnedOf(modelled.join(",")).unexplained, false, "every code of the modelled processor is known to the page");
+  for (const [state, expected] of [["AWAITING_CLIENT_DETAILS", true], ["CLIENT_DETAILS_RECEIVED", false], ["DRAFT", false]]) {
+    const data = CR.fixtures.quotationData(state, CR.fixtures.decidedStates);
+    data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: "LEGAL_NAME" };
+    assert.equal(model(data).details.returned.returned, expected, "CLIENT_DETAILS_ERRORS is read only while the agreement awaits the details again, not in " + state);
+  }
+
+  const processorPath = path.resolve("../core-ui/scripts/dev/seeds/scripts/SNOW_SERVICE_AGREEMENT_PROCESSOR_V2.java");
+  if (existsSync(processorPath)) {
+    const processor = await fs.readFile(processorPath, "utf8");
+    const listOf = (name) => [...((processor.match(new RegExp(name + "\\s*=\\s*List\\.of\\(([^)]*)\\)")) || ["", ""])[1]).matchAll(/"([A-Z_]+)"/g)].map((match) => match[1]);
+    const required = listOf("REQUIRED_TEXT_FIELDS");
+    const booleans = listOf("BOOLEAN_FIELDS");
+    const invalid = [...processor.matchAll(/missing\.add\("([A-Z_]+)"\)/g)].map((match) => match[1]);
+    const failure = [...processor.matchAll(/List\.of\("([A-Z_]+)"\)\)/g)].map((match) => match[1]);
+    assert.ok(processor.includes("\"" + contract.agreementAttributes.detailsErrors + "\""), "the processor writes " + contract.agreementAttributes.detailsErrors);
+    assert.deepEqual(required, requiredText, "the processor's required text fields are the contract's");
+    assert.deepEqual(booleans, plain(contract.contractDetails.attributes.filter((attribute) => attribute.className === "java.lang.Boolean").map((attribute) => attribute.code)), "the processor's confirmations are the contract's");
+    assert.deepEqual(invalid, Object.keys(contract.detailsReturn.invalid), "the processor's _INVALID codes are the contract's");
+    assert.deepEqual(failure, [contract.detailsReturn.processingFailed], "the processor's failure code is the contract's");
+    assert.equal(returnedOf(required.concat(invalid, booleans, failure).join(",")).unexplained, false, "every code the processor can write is known to the page");
+    console.log("client-review-check: details return codes compared with " + path.relative(process.cwd(), processorPath));
+  } else {
+    console.log("client-review-check: seed " + processorPath + " not present, details return codes not compared");
   }
 
   const typesPath = path.resolve("../core-ui/scripts/dev/seeds/serviceAgreementTypes.json");
@@ -377,6 +465,8 @@ const N = loadRuntime().CR.normalizer;
   const serviceOnly = plain(account);
   serviceOnly.addresses = serviceOnly.addresses.filter((entry) => entry.types[0].code === "SERVICE");
   assert.equal(normalizer.detailsPrefill(serviceOnly, fields, "en-CA").BILLING_ADDRESS, undefined, "a service address is never offered as the billing address");
+  const idOnly = plain(CR.fixtures.idOnlyAccount({ accounts: [plain(account)] }).accounts[0]);
+  assert.deepEqual(plain(normalizer.detailsPrefill(idOnly, fields, "en-CA")), { LEGAL_NAME: "Harbourview Strata Corporation" }, "contacts and addresses returned as ids only, as the link returns them today, pre-fill the Legal Name alone");
 
   const blocks = normalizer.termsBlocks("<h2>1. Scope</h2><p>Clear &amp; salt<br>daily.</p><ul><li>One</li><li>Two</li></ul><script>alert(1)</script>");
   assert.deepEqual(plain(blocks), [
@@ -389,6 +479,33 @@ const N = loadRuntime().CR.normalizer;
   assert.deepEqual(plain(normalizer.termsBlocks("# Scope\n\nPlain a < b text\n- item")), [
     { kind: "heading", text: "Scope" }, { kind: "paragraph", text: "Plain a < b text" }, { kind: "item", text: "item" },
   ]);
+  assert.deepEqual(plain(normalizer.termsBlocks("# 1. Scope\n- 1. First\nnext line\n\nIntro\n- item")), [
+    { kind: "heading", text: "1. Scope" }, { kind: "item", text: "1. First" }, { kind: "paragraph", text: "next line" },
+    { kind: "paragraph", text: "Intro" }, { kind: "item", text: "item" },
+  ], "a numbered heading or item keeps the # and - syntax, and a line after an item is still its own paragraph");
+  const clause = (number, depth, value) => ({ kind: "clause", number, depth, text: value });
+  assert.deepEqual(plain(normalizer.termsBlocks(CR.fixtures.numberedTerms)), [
+    clause("1.", 1, "Services\nThe Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property."),
+    clause("2.", 1, "Service triggers"),
+    clause("2.1", 2, "Snow removal starts once accumulation reaches 5 cm."),
+    clause("2.2", 2, "De-icing is applied when the surface temperature is forecast at or below 0 °C,\nincluding overnight frost on walkways and ramps."),
+    clause("3.", 1, "Invoicing"),
+    clause("3.1)", 2, "Seasonal options are invoiced once, at the start of the term."),
+    clause("3.2)", 2, "Monthly options are invoiced on the first day of each month of the term."),
+    clause("3.3)", 2, "Per-service options are invoiced after each visit."),
+    clause("4.", 1, "Access\nThe Client keeps each property accessible and tells the Provider about obstacles:"),
+    { kind: "item", text: "parked vehicles;" },
+    { kind: "item", text: "construction work." },
+    clause("5.", 1, "Term and notice"),
+    clause("5.1.", 2, "This agreement runs from the term start date to the term end date."),
+    clause("5.1.1", 3, "Either party may end it early with 30 days' written notice."),
+  ], "numbered lines keep their numbers as written and their depth, and continuation lines belong to their clause");
+  assert.deepEqual(plain(normalizer.termsBlocks("Scope of work:\n1) Plowing\n2) Salting\nafter heavy snow\n\nSigned below.")), [
+    { kind: "paragraph", text: "Scope of work:" }, clause("1)", 1, "Plowing"), clause("2)", 1, "Salting\nafter heavy snow"), { kind: "paragraph", text: "Signed below." },
+  ], "a paragraph before a clause stays a paragraph, and a blank line ends a clause");
+  for (const prose of ["5 cm of snow starts a visit.", "2026 season pricing applies.", "15.03.2026 is the first day.", "3.14159 is not a clause.", "12.5% is added late.", "1.\nServices"]) {
+    assert.ok(plain(normalizer.termsBlocks(prose)).every((block) => block.kind === "paragraph"), JSON.stringify(prose) + " stays prose");
+  }
 
   const termsOf = (mutate) => {
     const data = CR.fixtures.agreementData("SENT_TO_CLIENT", false);
@@ -410,17 +527,26 @@ const EXPECTED_SCENARIOS = {
   error: ["error", null], partial: ["ready", "quote-review"], "option-open": ["ready", "quote-review"],
   "view-pending": ["ready", "quote-review"], "view-failed": ["ready", "quote-review"], "approve-confirm": ["ready", "quote-review"],
   "changes-invalid": ["ready", "quote-review"], "command-pending": ["ready", "quote-review"], "command-refused": ["ready", "quote-review"],
-  "command-failed": ["ready", "quote-review"], decided: ["ready", "quote-review"], "contract-details": ["ready", "contract-details"],
-  "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"], "details-closed": ["link-closed", null],
-  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-no-terms": ["ready", "agreement-review"],
-  "agreement-confirm": ["ready", "agreement-review"],
-  completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "reference-expired": ["ready", "reference"],
+  "command-failed": ["ready", "quote-review"], decided: ["ready", "quote-review"],
+  "decided-following": ["ready", "quote-review"], "decided-following-slow": ["ready", "quote-review"], "decided-next-step": ["ready", "contract-details"],
+  "contract-details": ["ready", "contract-details"],
+  "details-invalid": ["ready", "contract-details"], "details-refused": ["ready", "contract-details"],
+  "details-checking": ["ready", "checking"], "details-checking-slow": ["ready", "checking"],
+  "details-returned": ["ready", "contract-details"], "details-returned-processing": ["ready", "contract-details"],
+  "details-returned-unknown": ["ready", "contract-details"], "details-returned-sent": ["ready", "contract-details"], "details-closed": ["link-closed", null],
+  preparing: ["ready", "preparing"], "agreement-review": ["ready", "agreement-review"], "agreement-numbered-terms": ["ready", "agreement-review"],
+  "agreement-no-terms": ["ready", "agreement-review"], "agreement-confirm": ["ready", "agreement-review"], "approval-closed": ["link-closed", null],
+  completion: ["ready", "completion"], "completion-portal": ["ready", "completion"], "completion-finishing": ["ready", "completion"],
+  "link-closed-portal": ["link-closed", null], "reference-expired": ["ready", "reference"],
   "closed-canceled": ["ready", "closed"], unavailable: ["ready", "unavailable"],
 };
+const POLLED_SCENARIOS = new Set(["details-checking-slow", "details-closed", "details-returned-sent", "decided-following-slow", "decided-next-step"]);
 
 async function runScenario(id) {
   const runtime = loadRuntime({ fixtures: true });
   const mount = runtime.document.createElement("div");
+  const live = runtime.document.createElement("p");
+  const timers = fakeTimers();
   const host = section(runtime.document, { "data-review-data-mode": "fixture" });
   const sent = [];
   const setup = runtime.CR.fixtures.setup;
@@ -432,10 +558,16 @@ async function runScenario(id) {
     }
     return result;
   };
-  const controller = runtime.CR.boot(host, { scenario: id, mount, locale: "en-CA" });
+  const controller = runtime.CR.boot(host, { scenario: id, mount, live, timers, locale: "en-CA" });
   const outcome = await settle(runtime.CR.fixtures.play(controller, controller.steps).then(() => controller.idle()));
-  return { runtime, mount, controller, sent, outcome, copy: controller.copy };
+  if (POLLED_SCENARIOS.has(id)) await drain(controller, timers);
+  return { runtime, mount, live, timers, controller, sent, outcome, copy: controller.copy };
 }
+
+const fieldNamed = (node, code) => all(node, (candidate) => candidate.getAttribute("data-code") === code)[0];
+const controlOf = (field) => byAttribute(field, "id", "cr-field-" + field.getAttribute("data-code"))[0];
+const errorOf = (field) => byClass(field, "cr-field__error")[0];
+const portalLinks = (node) => byAttribute(node, "data-action", "portal.open");
 
 {
   const ids = loadRuntime({ fixtures: true }).CR.fixtures.scenarios.map((scenario) => scenario.id);
@@ -471,9 +603,94 @@ async function runScenario(id) {
       }
       case "link-closed":
         assert.ok(text.includes(copy.linkClosedTitle));
+        assert.equal(byAttribute(run.mount, "data-portal", "sign-in").length + portalLinks(run.mount).length, 0, "without PORTAL_URL a closed link offers no portal line");
         break;
+      case "link-closed-portal": {
+        assert.ok(text.includes(copy.linkClosedTitle) && text.includes(copy.linkClosedBody));
+        const aside = byAttribute(run.mount, "data-portal", "sign-in")[0];
+        assert.ok(aside && surface(aside).includes(copy.linkClosedPortal), "with PORTAL_URL a closed link of unknown reason adds a secondary sign-in line");
+        assert.equal(portalLinks(aside)[0].getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
+        assert.ok(!text.includes(copy.portalTitle), "and promises no portal access");
+        break;
+      }
+      case "details-checking": {
+        const card = byClass(run.mount, "cr-state")[0];
+        assert.equal(card.getAttribute("data-checking"), "active", "an agreement in CLIENT_DETAILS_RECEIVED shows the checking state");
+        assert.equal(card.getAttribute("role"), null, "the checking card is redrawn on every read, so it is not itself a live region");
+        assert.ok(text.includes(copy.checkingTitle) && text.includes(copy.checkingBody));
+        assert.ok(!text.includes(copy.preparingTitle), "the checking state no longer says the agreement is being prepared");
+        assert.equal(byAttribute(run.mount, "data-action", "refresh").length, 0, "while it re-reads on its own it offers no refresh");
+        assert.equal(run.timers.pending, 1, "the next read is scheduled");
+        assert.equal(run.live.textContent, "", "opening the link on a checking agreement announces nothing beyond the page");
+        break;
+      }
+      case "details-checking-slow": {
+        const card = byClass(run.mount, "cr-state")[0];
+        assert.equal(card.getAttribute("data-checking"), "slow");
+        assert.ok(text.includes(copy.checkingSlowTitle) && text.includes(copy.checkingSlowBody), "a spent budget says the check is taking longer than usual");
+        assert.equal(byAttribute(run.mount, "data-action", "refresh").length, 1, "and offers Refresh status");
+        assert.deepEqual(run.timers.waits, [300, 300, 300], "the preview scenario runs a shortened budget");
+        assert.equal(run.timers.pending, 0, "and stops re-reading");
+        assert.ok(run.live.textContent.includes(copy.checkingSlowTitle), "the change is announced");
+        break;
+      }
+      case "details-returned": {
+        const notice = byAttribute(run.mount, "data-returned", "fields")[0];
+        assert.ok(notice && surface(notice).includes(copy.detailsReturnedTitle) && surface(notice).includes(copy.detailsReturnedReenter), "a reopened link says the details must be entered again, the marked fields being why they came back");
+        assert.equal(notice.getAttribute("data-form"), "fresh");
+        assert.ok(!surface(notice).includes(copy.detailsReturnedBody), "and does not ask to fix fields the form no longer holds");
+        const reopened = run.controller.snapshot().details.values;
+        assert.equal(reopened.LEGAL_NAME, "Harbourview Strata Corporation", "with contacts and addresses returned as ids only, the Legal Name is the one pre-filled value");
+        assert.deepEqual(["BILLING_ADDRESS", "REPRESENTATIVE_FIRST_NAME", "REPRESENTATIVE_EMAIL", "REPRESENTATIVE_PHONE"].map((code) => reopened[code]), ["", "", "", ""]);
+        assert.equal(notice.getAttribute("role"), null, "the notice is page content; the live region announces a return that happens while the page is open");
+        const shell = run.mount.children[0].children[0];
+        assert.ok(shell.children.indexOf(notice) < shell.children.indexOf(byClass(run.mount, "cr-form-card")[0]), "the notice stands above the form");
+        for (const [code, key] of [["CLIENT_TYPE", "returnedMissing"], ["REPRESENTATIVE_EMAIL", "returnedEmail"], ["AUTHORITY_CONFIRMED", "returnedUnconfirmed"]]) {
+          const field = fieldNamed(run.mount, code);
+          assert.equal(field.getAttribute("data-state"), "invalid", code + " is marked");
+          assert.equal(controlOf(field).getAttribute("aria-invalid"), "true", code + " is invalid for assistive technology");
+          assert.equal(errorOf(field).textContent, copy[key], code + " says what came back");
+        }
+        for (const code of ["LEGAL_NAME", "BILLING_ADDRESS", "REPRESENTATIVE_PHONE", "INFORMATION_CONFIRMED"]) {
+          assert.equal(fieldNamed(run.mount, code).getAttribute("data-state"), "idle", code + " is not marked");
+        }
+        assert.doesNotMatch(visibleText(run.mount), /_INVALID|CLIENT_DETAILS_ERRORS/, "no raw code reaches the page");
+        break;
+      }
+      case "details-returned-processing": {
+        const notice = byAttribute(run.mount, "data-returned", "processing")[0];
+        assert.ok(notice && surface(notice).includes(copy.detailsProcessingTitle) && surface(notice).includes(copy.detailsProcessingReenter), "PROCESSING_FAILED on a reopened link has its own wording and asks for the details again");
+        assert.equal(notice.getAttribute("data-form"), "fresh");
+        assert.equal(notice.getAttribute("data-state"), "info", "and is not presented as the client's mistake");
+        assert.ok(!surface(notice).includes(copy.detailsReturnedBody) && !surface(notice).includes(copy.detailsProcessingBody));
+        assert.equal(all(run.mount, (node) => String(node.className).split(/\s+/).includes("cr-field") && node.getAttribute("data-state") === "invalid").length, 0, "no field is marked");
+        assert.ok(!visibleText(run.mount).includes("PROCESSING_FAILED"));
+        break;
+      }
+      case "details-returned-unknown": {
+        const notice = byAttribute(run.mount, "data-returned", "unexplained")[0];
+        assert.ok(notice && surface(notice).includes(copy.detailsReturnedUnknownReenter), "an unknown code on a reopened link produces the generic line and asks for the details again");
+        assert.ok(!surface(notice).includes(copy.detailsReturnedUnknown), "not the wording for a form that still holds what was sent");
+        assert.ok(!visibleText(run.mount).includes("TAX_NUMBER_MISSING"), "never the raw code");
+        assert.equal(all(run.mount, (node) => String(node.className).split(/\s+/).includes("cr-field") && node.getAttribute("data-state") === "invalid").length, 0);
+        break;
+      }
+      case "details-returned-sent": {
+        const notice = byAttribute(run.mount, "data-returned", "processing")[0];
+        assert.ok(notice && surface(notice).includes(copy.detailsProcessingBody), "a return after sending in this session keeps the wording for the form that holds what was typed");
+        assert.equal(notice.getAttribute("data-form"), "sent");
+        assert.ok(!surface(notice).includes(copy.detailsProcessingReenter));
+        const values = run.controller.snapshot().details.values;
+        assert.deepEqual([values.BILLING_ADDRESS, values.REPRESENTATIVE_PHONE, values.CLIENT_TYPE, values.AUTHORITY_CONFIRMED], ["1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8", "+1 604 555 0164", "ORGANIZATION", true], "and the form holds what the client typed");
+        assert.ok(run.live.textContent.includes(copy.detailsProcessingTitle), "the return is announced");
+        assert.equal(run.timers.pending, 0);
+        break;
+      }
       case "details-closed":
-        assert.ok(text.includes(copy.closedAfterDetailsBody), "a link that closes right after the details were sent says so without claiming acceptance");
+        assert.ok(text.includes(copy.closedAfterDetailsBody), "a link that closes after the details were checked says so without claiming acceptance");
+        assert.equal(run.timers.pending, 0, "the page stops re-reading once the link closes");
+        assert.ok(run.live.textContent.includes(copy.closedAfterTitle), "the link closing while the page checks is announced");
+        assert.equal(byAttribute(run.mount, "data-portal", "invitation").length, 0, "no portal access is promised after the details step");
         assert.equal(run.sent.length, 1);
         assert.deepEqual(run.sent[0][3], {
           LEGAL_NAME: "Harbourview Strata Corporation", CLIENT_TYPE: "ORGANIZATION",
@@ -531,8 +748,40 @@ async function runScenario(id) {
         assert.ok(text.includes(copy.failedBody));
         assert.ok(byAttribute(run.mount, "data-action", "refresh").length > 0, "a failed command offers a status refresh, not a blind resend");
         break;
-      case "decided":
-        assert.ok(text.includes(copy.decidedTitle));
+      case "decided": {
+        const notice = byAttribute(run.mount, "data-decided", "settled")[0];
+        assert.ok(notice && surface(notice).includes(copy.decidedTitle) && surface(notice).includes(copy.decidedBody), "a link opened on a fully decided package keeps today's card");
+        assert.equal(byAttribute(notice, "data-action", "refresh").length, 1, "with Check again");
+        assert.equal(notice.getAttribute("role"), "status", "and today's status role");
+        assert.equal(run.timers.pending, 0, "and does not re-read on its own: the page did not cause that state");
+        break;
+      }
+      case "decided-following": {
+        const notice = byAttribute(run.mount, "data-decided", "following")[0];
+        assert.ok(notice && surface(notice).includes(copy.decidedTitle) && surface(notice).includes(copy.decidedFollowingBody), "after the page's own last decision the card says the page updates on its own");
+        assert.equal(byAttribute(notice, "data-action", "refresh").length, 0, "and offers no Check again while it re-reads");
+        assert.equal(notice.getAttribute("role"), null, "it is redrawn on every read, so it is not itself a live region");
+        assert.ok(byClass(notice, "cr-notice__icon--busy").length === 1, "its icon shows that the page is working");
+        assert.equal(run.timers.pending, 1, "the next read is scheduled");
+        assert.ok(run.live.textContent.includes(copy.decidedFollowingBody), "and the wait is announced");
+        assert.deepEqual(run.sent.map((call) => call[2]), ["QUOTE_SENT-QUOTE_VIEWED", "QUOTE_VIEWED-CLIENT_APPROVED"]);
+        break;
+      }
+      case "decided-following-slow": {
+        const notice = byAttribute(run.mount, "data-decided", "settled")[0];
+        assert.ok(notice && surface(notice).includes(copy.decidedBody), "a spent budget falls back to today's card");
+        assert.equal(byAttribute(notice, "data-action", "refresh").length, 1, "with Check again");
+        assert.deepEqual(run.timers.waits, [300, 300, 300], "the preview scenario runs a shortened budget");
+        assert.equal(run.timers.pending, 0, "and stops re-reading");
+        assert.ok(run.live.textContent.includes(copy.decidedBody), "the fallback is announced");
+        break;
+      }
+      case "decided-next-step":
+        assert.ok(text.includes(copy.detailsTitle), "the details step follows the last decision on its own");
+        assert.equal(byAttribute(run.mount, "data-decided", "following").length + byAttribute(run.mount, "data-decided", "settled").length, 0);
+        assert.equal(run.timers.pending, 0, "and the page stops re-reading");
+        assert.ok(run.live.textContent.includes(copy.detailsTitle), "the move is announced");
+        assert.deepEqual(run.timers.waits, [plain(run.runtime.CR.checkingDelays)[0]], "one wait of the checking backoff was enough");
         break;
       case "details-invalid":
         assert.ok(all(run.mount, (node) => node.getAttribute("data-state") === "invalid" && String(node.className).includes("cr-field")).length >= 3, "validation marks the missing fields");
@@ -577,12 +826,58 @@ async function runScenario(id) {
           assert.ok(!surface(field).includes(name), code + " no longer shows its attribute name");
         }
         break;
-      case "completion":
-        assert.ok(!text.includes(copy.completePortal), "completion promises no portal access the data does not show");
+      case "completion": {
+        const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
+        assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "completion invites the client to the portal");
+        assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "naming the primary email the link returned");
+        assert.equal(portalLinks(run.mount).length, 0, "without PORTAL_URL there is no portal button");
         break;
-      case "completion-portal":
-        assert.ok(text.includes(copy.completePortal));
+      }
+      case "completion-portal": {
+        const link = portalLinks(run.mount)[0];
+        assert.ok(link, "with PORTAL_URL completion offers the portal");
+        assert.equal(link.tagName, "A", "as a link, because it navigates");
+        assert.equal(link.getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
+        assert.equal(link.textContent, copy.portalOpen);
+        assert.ok(byAttribute(run.mount, "data-portal", "invitation")[0].children.includes(link), "inside the invitation");
         break;
+      }
+      case "completion-finishing": {
+        assert.ok(text.includes(copy.completeApprovedTitle) && text.includes(copy.completeFinishingBody), "ACTIVATION_FAILED shows the approval recorded and the provider finishing the setup");
+        const badge = byClass(run.mount, "status-badge")[0];
+        assert.equal(badge.textContent, copy.agreementApproved);
+        assert.ok(String(badge.className).includes("status-badge--ok"));
+        assert.equal(byClass(run.mount, "cr-state").length + byClass(run.mount, "cr-outcome").length + byClass(run.mount, "status-badge--danger").length + byClass(run.mount, "status-badge--warn").length, 0, "with no error styling and no unavailable state");
+        const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
+        assert.ok(visibleText(invitation).includes(copy.portalBody) && !visibleText(invitation).includes("@"), "without a primary email in the link the invitation names none");
+        assert.equal(portalLinks(invitation).length, 1);
+        break;
+      }
+      case "approval-closed": {
+        assert.ok(text.includes(copy.closedAfterApprovalBody), "a link that closes right after approval says so");
+        const invitation = byAttribute(run.mount, "data-portal", "invitation")[0];
+        assert.ok(invitation && surface(invitation).includes(copy.portalTitle), "and carries the portal invitation");
+        assert.ok(visibleText(invitation).includes("dana.reyes@harbourview.example"), "with the primary email the link returned before it closed");
+        assert.equal(portalLinks(invitation)[0].getAttribute("href"), run.runtime.CR.fixtures.portalUrl);
+        assert.deepEqual(run.sent.map((call) => call[2]), ["SENT_TO_CLIENT-CLIENT_APPROVED"]);
+        break;
+      }
+      case "agreement-numbered-terms": {
+        const panel = byAttribute(run.mount, "aria-labelledby", "cr-terms-title")[0];
+        const lists = byClass(panel, "cr-terms__clauses");
+        assert.equal(lists.length, 2, "consecutive clauses form one list, and the bullet items between them end it");
+        for (const list of lists) {
+          assert.equal(list.tagName, "OL");
+          assert.equal(list.getAttribute("role"), "list", "the ordered list keeps its list role without list markers");
+        }
+        const items = byClass(panel, "cr-terms__clause");
+        assert.deepEqual(items.map((item) => byClass(item, "cr-terms__number")[0].textContent), ["1.", "2.", "2.1", "2.2", "3.", "3.1)", "3.2)", "3.3)", "4.", "5.", "5.1.", "5.1.1"], "numbers show as written");
+        assert.deepEqual(items.map((item) => item.getAttribute("data-depth")), ["1", "1", "2", "2", "1", "2", "2", "2", "1", "1", "2", "3"], "and keep their depth");
+        assert.ok(items.every((item) => item.children.every((child) => child.children.length === 0)), "each clause is a number and a text node");
+        assert.equal(byClass(panel, "cr-terms__list").length, 1, "the - items between them still render as a bullet list");
+        assert.equal(byClass(panel, "cr-terms__paragraph").length, 0, "no numbered line falls back to prose");
+        break;
+      }
       case "agreement-confirm":
         assert.ok(text.includes(copy.agreementConfirmTitle));
         assert.equal(run.sent.length, 0);
@@ -591,6 +886,317 @@ async function runScenario(id) {
         break;
     }
   }
+}
+
+{
+  const { CR } = loadRuntime({ fixtures: true });
+  const account = plain(CR.fixtures.agreementData("CLIENT_APPROVED", false).accounts[0]);
+  const emailOf = (mutate) => { const row = plain(account); mutate(row); return CR.normalizer.primaryEmail(row); };
+  assert.equal(emailOf(() => {}), "dana.reyes@harbourview.example", "the portal sign-in is the PRIMARY contact's EMAIL entry");
+  assert.equal(emailOf((row) => { delete row.contacts; }), "", "a link that returns no contacts names no email");
+  assert.equal(emailOf((row) => { row.contacts = [{ id: 7 }]; }), "", "an id-only contact names no email");
+  assert.equal(emailOf((row) => { row.contacts[0].type.code = "BILLING"; }), "", "only a PRIMARY contact carries the sign-in");
+  assert.equal(emailOf((row) => { row.contacts[0].contactEntries.push({ value: "office@harbourview.example", type: { code: "EMAIL" } }); }), "", "two primary emails, which provisioning refuses, name none");
+  assert.equal(emailOf((row) => { row.contacts[0].contactEntries[0].value = "  "; }), "", "a blank entry is not an email");
+  assert.equal(emailOf((row) => { row.contacts.push({ type: { code: "SECONDARY" }, contactEntries: [{ value: "x@y.example", type: { code: "EMAIL" } }] }); }), "dana.reyes@harbourview.example", "another contact's email is not the sign-in");
+
+  const invitations = [];
+  for (const withUser of [false, true]) {
+    const runtime = loadRuntime({ fixtures: true });
+    const mount = runtime.document.createElement("div");
+    const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(runtime.CR.fixtures.agreementData("CLIENT_APPROVED", withUser), {}), mount, timers: fakeTimers(), locale: "en-CA" });
+    controller.start();
+    await controller.idle();
+    invitations.push(surface(byAttribute(mount, "data-portal", "invitation")[0]));
+  }
+  assert.equal(invitations[0], invitations[1], "the invitation reads the same whether or not Account.user is already linked at readback");
+}
+
+async function checkingController(options = {}) {
+  const runtime = loadRuntime({ fixtures: true });
+  const { CR } = runtime;
+  const data = CR.fixtures.quotationData(options.state || "CLIENT_DETAILS_RECEIVED", options.orderStates || CR.fixtures.decidedStates);
+  const adapter = CR.fixtures.createFixtureAdapter(data, { hooks: options.hooks || { details: "hold" } });
+  const counts = { reads: 0, failNext: false };
+  const introspect = adapter.introspect;
+  adapter.introspect = () => {
+    counts.reads += 1;
+    if (counts.failNext) {
+      counts.failNext = false;
+      return Promise.reject(CR.adapter.reviewError("failed", 503));
+    }
+    return introspect();
+  };
+  const timers = fakeTimers();
+  const live = runtime.document.createElement("p");
+  const mount = runtime.document.createElement("div");
+  const controller = CR.createController({ adapter, mount, live, timers, pollDelays: options.pollDelays, locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  return { runtime, CR, data, adapter, counts, timers, live, mount, controller, copy: controller.copy };
+}
+
+{
+  const run = await checkingController();
+  const { controller, timers, counts, live, mount, copy, data } = run;
+  const delays = plain(run.CR.checkingDelays);
+  const budget = delays.reduce((sum, ms) => sum + ms, 0);
+  assert.ok(budget >= 60000 && budget <= 90000, "the checking budget is " + budget + " ms, within 60 to 90 s");
+  assert.ok(delays.every((ms, index) => index === 0 || ms >= delays[index - 1]), "the waits back off");
+  assert.equal(controller.snapshot().view.kind, "checking");
+  assert.equal(counts.reads, 1);
+  for (let poll = 1; poll <= delays.length; poll += 1) {
+    assert.equal(timers.pending, 1, "one read is scheduled at a time");
+    if (poll === 3) counts.failNext = true;
+    timers.fire();
+    assert.equal(timers.pending, 0, "nothing else is scheduled while a read is in flight");
+    await controller.idle();
+    assert.equal(counts.reads, poll + 1, "every wait ends in exactly one read");
+    assert.equal(controller.snapshot().view && controller.snapshot().view.kind, "checking", "a failed read while checking keeps the checking state");
+  }
+  assert.deepEqual(timers.waits, delays, "the reads follow the backoff");
+  assert.equal(timers.now, budget, "and end when the budget is spent");
+  assert.equal(timers.pending, 0);
+  assert.equal(controller.snapshot().waiting.exhausted, true);
+  assert.ok(surface(mount).includes(copy.checkingSlowTitle));
+  assert.ok(live.textContent.includes(copy.checkingSlowTitle), "running out of budget is announced");
+  byAttribute(mount, "data-action", "refresh")[0].fire("click");
+  await controller.idle();
+  assert.equal(counts.reads, delays.length + 2, "Refresh status reads once");
+  assert.equal(timers.pending, 0, "and does not restart the budget");
+  assert.equal(controller.snapshot().waiting.exhausted, true);
+
+  data.documents[0].states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+  data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: "PROCESSING_FAILED" };
+  byAttribute(mount, "data-action", "refresh")[0].fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().view.kind, "contract-details", "the page moves to whatever it reads");
+  assert.equal(controller.snapshot().waiting.exhausted, false);
+  assert.ok(live.textContent.includes(copy.detailsProcessingTitle), "leaving the checking state is announced");
+  assert.equal(timers.pending, 0);
+}
+
+{
+  const run = await checkingController({ state: "AWAITING_CLIENT_DETAILS", hooks: { detailsCodes: ["REPRESENTATIVE_PHONE", "CLIENT_TYPE_INVALID", "SOMETHING_NEW"] } });
+  const { controller, timers, live, mount, copy } = run;
+  assert.equal(byAttribute(mount, "data-returned", "fields").length, 0, "details awaited for the first time carry no notice");
+  controller.dispatch("details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" });
+  controller.dispatch("details.choose", { code: "INFORMATION_CONFIRMED", value: true });
+  controller.dispatch("details.choose", { code: "AUTHORITY_CONFIRMED", value: true });
+  controller.dispatch("details.input", { code: "REPRESENTATIVE_JOB_TITLE", value: "Council President" });
+  controller.dispatch("details.submit");
+  await controller.idle();
+  assert.equal(controller.snapshot().view.kind, "checking", "right after the details are sent the page checks them");
+  assert.ok(live.textContent.includes(copy.checkingTitle), "and announces it");
+  assert.equal(timers.pending, 1);
+  timers.fire();
+  await controller.idle();
+  const snapshot = controller.snapshot();
+  assert.equal(snapshot.view.kind, "contract-details", "returned details bring the form back");
+  assert.deepEqual([snapshot.details.values.CLIENT_TYPE, snapshot.details.values.REPRESENTATIVE_JOB_TITLE, snapshot.details.values.AUTHORITY_CONFIRMED], ["ORGANIZATION", "Council President", true], "with what the client entered");
+  assert.equal(snapshot.details.serverErrors.REPRESENTATIVE_PHONE, copy.returnedMissing);
+  assert.equal(snapshot.details.serverErrors.CLIENT_TYPE, copy.returnedChoice);
+  const notice = byAttribute(mount, "data-returned", "fields")[0];
+  assert.ok(surface(notice).includes(copy.detailsReturnedBody) && surface(notice).includes(copy.detailsReturnedUnexplained), "an unknown code next to known ones adds the generic line");
+  assert.equal(notice.getAttribute("data-form"), "sent", "the form holds what this session sent, so the notice keeps asking to fix the marked fields");
+  assert.ok(!visibleText(mount).includes("SOMETHING_NEW"));
+  assert.ok(live.textContent.includes(copy.detailsReturnedTitle), "the return is announced");
+  assert.equal(timers.pending, 0, "and the page stops re-reading");
+  const phone = fieldNamed(mount, "REPRESENTATIVE_PHONE");
+  assert.equal(phone.getAttribute("data-state"), "invalid");
+  controlOf(phone).value = "+1 604 555 0199";
+  controlOf(phone).fire("input");
+  assert.equal(controller.snapshot().details.serverErrors.REPRESENTATIVE_PHONE, undefined, "correcting a marked field clears its mark");
+  assert.equal(phone.getAttribute("data-state"), "idle");
+  controller.dispatch("refresh", {});
+  await controller.idle();
+  assert.equal(controller.snapshot().details.serverErrors.REPRESENTATIVE_PHONE, undefined, "a refresh does not put back a mark the client already answered");
+  assert.equal(controller.snapshot().details.serverErrors.CLIENT_TYPE, copy.returnedChoice);
+  assert.equal(controller.snapshot().details.values.REPRESENTATIVE_PHONE, "+1 604 555 0199");
+}
+
+{
+  const run = await checkingController({ state: "AWAITING_CLIENT_DETAILS" });
+  const { controller, timers, data, adapter, copy } = run;
+  const sendEvent = adapter.sendEvent;
+  adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
+    data.documents[0].states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+    data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: "REPRESENTATIVE_EMAIL_INVALID" };
+    return result;
+  });
+  controller.dispatch("details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" });
+  controller.dispatch("details.choose", { code: "INFORMATION_CONFIRMED", value: true });
+  controller.dispatch("details.choose", { code: "AUTHORITY_CONFIRMED", value: true });
+  controller.dispatch("details.submit");
+  await controller.idle();
+  assert.equal(controller.snapshot().view.kind, "contract-details");
+  assert.equal(controller.snapshot().details.serverErrors.REPRESENTATIVE_EMAIL, copy.returnedEmail, "a return the hook finished before the readback still marks its field");
+  assert.equal(timers.pending, 0);
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.quotationData("AWAITING_CLIENT_DETAILS", runtime.CR.fixtures.decidedStates);
+  data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: "LEGAL_NAME" };
+  data.grant.types = data.grant.types.map((type) => (type.entityType === "Document" ? Object.assign({}, type, { events: [] }) : type));
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, timers: fakeTimers(), locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  assert.equal(byAttribute(mount, "data-returned", "fields").length, 0, "a link that cannot send the details again does not ask the client to");
+  assert.ok(surface(mount).includes(controller.copy.detailsUnavailable));
+}
+
+{
+  const run = await checkingController({ pollDelays: [1] });
+  const { controller, timers, counts, data, mount, copy } = run;
+  await drain(controller, timers);
+  assert.equal(controller.snapshot().waiting.exhausted, true);
+  counts.failNext = true;
+  byAttribute(mount, "data-action", "refresh")[0].fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().phase, "error", "a manual refresh that fails shows the error");
+  assert.ok(surface(mount).includes(copy.readbackErrorBody), "worded as a read after the details reached the provider");
+  data.closed = true;
+  byAttribute(mount, "data-action", "retry")[0].fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().phase, "link-closed");
+  assert.equal(controller.snapshot().closedAfter, "details", "a link that closes while the details are checked reads as closed after the details, also on retry");
+}
+
+{
+  const run = await checkingController();
+  const { controller, timers, data, live, copy } = run;
+  assert.equal(timers.pending, 1);
+  data.documents[0].states = [{ code: "DRAFT" }];
+  await controller.reload({});
+  assert.equal(controller.snapshot().view.kind, "preparing", "DRAFT after the check shows as today");
+  assert.equal(timers.pending, 0, "a read that leaves the checking state cancels the scheduled one");
+  assert.ok(live.textContent.includes(copy.preparingTitle), "and the move is announced");
+}
+
+async function decideLast(controller, kind) {
+  controller.dispatch("option.toggle", { id: 3108 });
+  await controller.idle();
+  controller.dispatch("option.intent", { id: 3108, kind });
+  if (kind === "changes") controller.dispatch("option.draft", { id: 3108, value: "Please quote weekly visits." });
+  controller.dispatch("option.confirm", { id: 3108 });
+  await controller.idle();
+}
+
+{
+  const lastOpen = plain(loadRuntime({ fixtures: true }).CR.fixtures.lastOpenStates);
+  const run = await checkingController({ state: "QUOTATION_SENT", orderStates: lastOpen, hooks: { evaluation: "hold" } });
+  const { controller, timers, counts, live, mount, copy, data } = run;
+  assert.equal(controller.snapshot().view.allDecided, false);
+  assert.equal(timers.pending, 0, "an undecided package is not followed");
+  await decideLast(controller, "approve");
+  assert.equal(controller.snapshot().view.kind, "quote-review");
+  assert.equal(controller.snapshot().view.allDecided, true);
+  assert.equal(controller.snapshot().waiting.decisions, true, "the page follows its own last decision");
+  assert.ok(live.textContent.includes(copy.decidedFollowingBody), "and announces that it waits");
+  const delays = plain(run.CR.checkingDelays);
+  const readsBefore = counts.reads;
+  for (let poll = 1; poll <= delays.length; poll += 1) {
+    assert.equal(timers.pending, 1, "one read is scheduled at a time");
+    if (poll === 2) counts.failNext = true;
+    timers.fire();
+    assert.equal(timers.pending, 0, "nothing else is scheduled while a read is in flight");
+    await controller.idle();
+    assert.equal(counts.reads, readsBefore + poll, "every wait ends in exactly one read");
+    assert.equal(controller.snapshot().view && controller.snapshot().view.kind, "quote-review", "a failed read while following keeps the decided page");
+  }
+  assert.deepEqual(timers.waits, delays, "the decisions are followed with the checking backoff");
+  assert.equal(controller.snapshot().waiting.exhausted, true);
+  const settled = byAttribute(mount, "data-decided", "settled")[0];
+  assert.ok(settled && surface(settled).includes(copy.decidedBody), "a spent budget falls back to today's card");
+  assert.ok(live.textContent.includes(copy.decidedBody), "and says so");
+  byAttribute(mount, "data-action", "refresh")[0].fire("click");
+  await controller.idle();
+  assert.equal(counts.reads, readsBefore + delays.length + 1, "Check again reads once");
+  assert.equal(timers.pending, 0, "and does not restart the budget");
+  data.documents[0].states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+  byAttribute(mount, "data-action", "refresh")[0].fire("click");
+  await controller.idle();
+  assert.equal(controller.snapshot().view.kind, "contract-details", "the page renders whatever it reads");
+  assert.equal(controller.snapshot().waiting.decisions, false);
+  assert.ok(live.textContent.includes(copy.detailsTitle), "and the move is announced");
+}
+
+{
+  const lastOpen = plain(loadRuntime({ fixtures: true }).CR.fixtures.lastOpenStates);
+  const run = await checkingController({ state: "QUOTATION_SENT", orderStates: lastOpen, hooks: { evaluation: "hold" } });
+  const { controller, timers, adapter, data, live, copy } = run;
+  const sendEvent = adapter.sendEvent;
+  adapter.sendEvent = (...args) => sendEvent(...args).then((result) => {
+    if (args[2] === "QUOTE_VIEWED-CLIENT_APPROVED") data.documents[0].states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+    return result;
+  });
+  await decideLast(controller, "approve");
+  assert.equal(controller.snapshot().view.kind, "contract-details", "an evaluation that finished before the readback lands on the details step at once");
+  assert.equal(timers.pending, 0);
+  assert.ok(live.textContent.includes(copy.detailsTitle), "and the move is announced like one the page waited for");
+}
+
+{
+  const declined = Object.fromEntries([3101, 3102, 3103, 3104, 3105, 3106, 3107, 3109, 3110].map((id) => [id, "DECLINED"]));
+  const run = await checkingController({ state: "QUOTATION_SENT", orderStates: declined, hooks: {} });
+  const { controller, timers, live, copy } = run;
+  await decideLast(controller, "decline");
+  assert.equal(controller.snapshot().waiting.decisions, true, "a last decline that decides the package is followed too");
+  timers.fire();
+  await controller.idle();
+  assert.equal(controller.snapshot().view.kind, "closed", "a package with no approval moves on to its closed state");
+  assert.ok(live.textContent.includes(copy.canceledTitle));
+  assert.equal(timers.pending, 0);
+}
+
+{
+  const lastOpen = plain(loadRuntime({ fixtures: true }).CR.fixtures.lastOpenStates);
+  const run = await checkingController({ state: "QUOTATION_SENT", orderStates: lastOpen, hooks: { evaluation: "hold" } });
+  const { controller, timers, data } = run;
+  await decideLast(controller, "approve");
+  data.closed = true;
+  timers.fire();
+  await controller.idle();
+  assert.equal(controller.snapshot().phase, "link-closed");
+  assert.equal(controller.snapshot().closedAfter, "", "a link that closes while decisions are followed reads as a closed link, not as closed after the details");
+  assert.equal(timers.pending, 0);
+}
+
+{
+  const lastOpen = plain(loadRuntime({ fixtures: true }).CR.fixtures.lastOpenStates);
+  const run = await checkingController({ state: "QUOTATION_SENT", orderStates: lastOpen, hooks: {} });
+  const { controller, timers } = run;
+  await decideLast(controller, "changes");
+  assert.equal(controller.snapshot().view.properties.find((property) => property.key === "property-661").status, "changes");
+  assert.equal(controller.snapshot().waiting.decisions, false, "a change request decides nothing, so nothing is followed");
+  assert.equal(timers.pending, 0);
+}
+
+{
+  const runtime = loadRuntime({ fixtures: true });
+  const data = runtime.CR.fixtures.idOnlyAccount(runtime.CR.fixtures.agreementData("CLIENT_APPROVED", true));
+  const mount = runtime.document.createElement("div");
+  const controller = runtime.CR.createController({ adapter: runtime.CR.fixtures.createFixtureAdapter(data, {}), mount, timers: fakeTimers(), locale: "en-CA" });
+  controller.start();
+  await controller.idle();
+  const invitation = byAttribute(mount, "data-portal", "invitation")[0];
+  assert.ok(visibleText(invitation).includes(controller.copy.portalBody) && !visibleText(invitation).includes("@"), "contacts returned as ids only, as the link returns them today, leave the invitation on its no-email wording");
+  assert.equal(controller.snapshot().primaryEmail, "");
+}
+
+{
+  const run = await checkingController();
+  const { controller, timers, counts, mount } = run;
+  assert.equal(timers.pending, 1);
+  controller.stop();
+  assert.equal(timers.pending, 0, "stop cancels the scheduled read");
+  const page = mount.children[0];
+  await controller.reload({});
+  assert.equal(mount.children[0], page, "a stopped controller no longer draws into its mount");
+  assert.equal(timers.pending, 0, "and schedules nothing");
+  assert.equal(counts.reads, 2);
 }
 
 {
@@ -753,7 +1359,12 @@ try {
   assert.equal(template.code, "CLIENT_REVIEW_DOCUMENT");
   assert.equal(template.templateLanguage, "JTE");
   const nonCopy = template.parameters.filter((parameter) => parameter.type !== "LOCALIZED_STRING_SS");
-  assert.deepEqual(nonCopy.map((parameter) => [parameter.code, parameter.type, parameter.value]), [["REVIEW_API_BASE_URL", "STRING", ""]], "the API base is the only non-copy parameter and it ships empty");
+  assert.deepEqual(nonCopy.map((parameter) => [parameter.code, parameter.type, parameter.value]), [["REVIEW_API_BASE_URL", "STRING", ""], ["PORTAL_URL", "STRING", ""]], "the API base and the portal address are the only non-copy parameters, and both ship empty");
+  assert.match(template.html, /data-review-portal-url="\$\{PORTAL_URL@STRING\}"/, "the portal address reaches the page only through its section attribute");
+  assert.match(template.html, /<p class="cr-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-client-review-live><\/p>/, "the document carries a live region that survives every redraw");
+  assert.match(previewPage, /data-client-review-live/, "and so does the preview page");
+  assert.deepEqual(manifest.runtime.checkingDelaysMs, plain(loadRuntime().CR.checkingDelays), "the manifest documents the checking backoff the runtime uses");
+  assert.ok(manifest.constraints.some((line) => line.startsWith("PORTAL_URL ")), "the manifest states what PORTAL_URL does");
   const copyEntries = loadRuntime().CR.copyEntries;
   assert.deepEqual(template.parameters.filter((parameter) => parameter.type === "LOCALIZED_STRING_SS").map((parameter) => [parameter.code, parameter.value.en]), plain(copyEntries.map((entry) => [entry[0], entry[2]])), "every other parameter is runtime copy with its default");
   for (const parameter of template.parameters) {
@@ -801,10 +1412,15 @@ try {
   assert.ok(bootStart > 0, "the document javascript ends with its boot script");
   vm.runInContext(template.javascript.slice(0, bootStart), exportedSandbox, { filename: "javascript.js" });
   let exportedFetches = 0;
-  const unconfigured = exportedSandbox.ClientReview.boot(section(exported.document, { "data-review-data-mode": "live", "data-review-api-base": "$" + "{REVIEW_API_BASE_URL@STRING}" }), { fetch: () => { exportedFetches += 1; }, mount: exported.document.createElement("div"), locale: "en-CA" });
+  const unconfigured = exportedSandbox.ClientReview.boot(section(exported.document, { "data-review-data-mode": "live", "data-review-api-base": "$" + "{REVIEW_API_BASE_URL@STRING}", "data-review-portal-url": "$" + "{PORTAL_URL@STRING}" }), { fetch: () => { exportedFetches += 1; }, mount: exported.document.createElement("div"), locale: "en-CA" });
   await unconfigured.idle();
   assert.equal(unconfigured.snapshot().phase, "unconfigured", "the uploaded document without a base reports that it is not set up");
+  assert.equal(unconfigured.snapshot().portalUrl, "", "an unresolved PORTAL_URL marker is no portal address");
   assert.equal(exportedFetches, 0);
+  for (const [value, expected] of [["https://portal.example.com/sign-in", "https://portal.example.com/sign-in"], ["http://portal.example.com/", ""], ["https://user:pass@portal.example.com/", ""]]) {
+    const configured = exportedSandbox.ClientReview.boot(section(exported.document, { "data-review-data-mode": "live", "data-review-api-base": "", "data-review-portal-url": value }), { mount: exported.document.createElement("div"), locale: "en-CA" });
+    assert.equal(configured.snapshot().portalUrl, expected, "the uploaded document reads PORTAL_URL " + value + " as " + JSON.stringify(expected));
+  }
   assert.equal(exportedSandbox.ClientReview.fixtures, undefined, "the uploaded document has no fixtures to fall back on");
 
   const committed = path.join(root, "dist/manual-upload/client-review-document");
@@ -816,4 +1432,4 @@ try {
   await fs.rm(tempDir, { recursive: true, force: true });
 }
 
-console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, grant-gated single-flight commands with read-back, refusals and failures, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");
+console.log("client-review-check ok: " + Object.keys(EXPECTED_SCENARIOS).length + " preview states, every order and agreement state, grouping and counts-only summary, server subtotal and taxes shown only when returned, confirmation statements with description and CMS precedence, grant-gated single-flight commands with read-back, refusals and failures, returned details codes, a bounded one-read-at-a-time checking backoff with announcements, the portal invitation with and without PORTAL_URL, ACTIVATION_FAILED as completion, numbered terms, token only in the grant path, no money arithmetic, innerHTML, eval, console or storage, portal tokens only, and a live-only deterministic CMS package");

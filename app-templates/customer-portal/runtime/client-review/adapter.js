@@ -76,6 +76,19 @@
     return url.origin;
   }
 
+  function safePortalUrl(value) {
+    var text = String(value == null ? "" : value).trim();
+    if (!text) return "";
+    var url;
+    try {
+      url = new URL(text);
+    } catch (_) {
+      return "";
+    }
+    if (url.protocol !== "https:" || url.username || url.password) return "";
+    return url.href;
+  }
+
   function clip(value) {
     var text = typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
     if (text.length <= GRANT.messageLimit) return text;
@@ -223,6 +236,7 @@
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
+    safePortalUrl: safePortalUrl,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,

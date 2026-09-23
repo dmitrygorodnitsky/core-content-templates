@@ -57,7 +57,7 @@
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
-      "CLIENT_APPROVED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
+      "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
     ],
     orderEvents: {
       view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
@@ -78,7 +78,6 @@
     rawShape: {
       orderLines: "items",
       documentOwner: "organization",
-      accountUser: "user",
     },
     agreementAttributes: {
       client: "CLIENT",
@@ -90,6 +89,14 @@
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      detailsErrors: "CLIENT_DETAILS_ERRORS",
+    },
+    detailsReturn: {
+      processingFailed: "PROCESSING_FAILED",
+      invalid: {
+        CLIENT_TYPE_INVALID: { field: "CLIENT_TYPE", reason: "choice" },
+        REPRESENTATIVE_EMAIL_INVALID: { field: "REPRESENTATIVE_EMAIL", reason: "email" },
+      },
     },
     contractDetails: {
       event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",

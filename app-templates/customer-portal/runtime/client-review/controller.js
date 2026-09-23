@@ -4,6 +4,15 @@
   var ns = global.ClientReview || (global.ClientReview = {});
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
+  var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+
+  function systemTimers() {
+    return {
+      set: function (callback, ms) { return global.setTimeout(callback, ms); },
+      clear: function (handle) { global.clearTimeout(handle); },
+    };
+  }
 
   function createController(options) {
     var settings = options || {};
@@ -11,16 +20,25 @@
     var copy = ns.withDefaults(settings.copy);
     var locale = settings.locale || "en";
     var mount = settings.mount || null;
+    var live = settings.live || null;
+    var timers = settings.timers || systemTimers();
+    var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
+    var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
     var listeners = [];
+    var stopped = false;
+    var poll = { timer: null, attempt: 0, exhausted: false };
     var state = {
       phase: settings.phase || "loading",
       view: null,
       closedAfter: "",
       errorAfterCommand: false,
+      retryContext: {},
+      primaryEmail: "",
+      followDecisions: false,
       refreshing: false,
       expanded: {},
       confirm: null,
@@ -32,7 +50,23 @@
     };
 
     function emptyDetails(agreementId) {
-      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false };
+      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false, returnPending: true, sent: false };
+    }
+
+    function checkingNow() {
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "checking";
+    }
+
+    function followingNow() {
+      return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
+    }
+
+    function waitingNow() {
+      return checkingNow() || followingNow();
+    }
+
+    function pageKey() {
+      return state.phase + ":" + (state.view ? state.view.kind : "");
     }
 
     function optionsOf(view) {
@@ -107,12 +141,20 @@
 
     function seedDetails() {
       var view = state.view;
-      if (!view || view.kind !== "contract-details" || state.details.seededFor === view.agreement.id) return;
-      var details = emptyDetails(view.agreement.id);
-      view.details.fields.forEach(function (field) {
-        details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+      if (!view || view.kind !== "contract-details") return;
+      if (state.details.seededFor !== view.agreement.id) {
+        var details = emptyDetails(view.agreement.id);
+        view.details.fields.forEach(function (field) {
+          details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+        });
+        state.details = details;
+      }
+      if (!state.details.returnPending) return;
+      state.details.returnPending = false;
+      var marked = view.details.returned.fields;
+      Object.keys(marked).forEach(function (code) {
+        state.details.serverErrors[code] = copy[RETURNED_COPY[marked[code]]] || copy.returnedMissing;
       });
-      state.details = details;
     }
 
     function prune() {
@@ -128,6 +170,52 @@
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
     }
 
+    function stopPolling() {
+      if (poll.timer !== null) timers.clear(poll.timer);
+      poll.timer = null;
+    }
+
+    function schedulePoll() {
+      stopPolling();
+      poll.timer = timers.set(function () {
+        poll.timer = null;
+        poll.attempt += 1;
+        load(Object.assign({ afterCommand: true, quiet: true }, readContext()));
+      }, delays[poll.attempt]);
+    }
+
+    function track() {
+      if (stopped) return;
+      if (!waitingNow()) {
+        stopPolling();
+        poll.attempt = 0;
+        poll.exhausted = false;
+        return;
+      }
+      if (poll.exhausted) return;
+      if (poll.attempt >= delays.length) {
+        poll.exhausted = true;
+        return;
+      }
+      schedulePoll();
+    }
+
+    function announces(before, after) {
+      if (before.phase !== "ready") return false;
+      var now = waitingNow();
+      if (before.waiting !== now || (now && poll.exhausted && !before.exhausted)) return true;
+      return Boolean(after.event) && before.page !== pageKey();
+    }
+
+    function speak(rendered) {
+      var message = rendered && rendered.announcement ? rendered.announcement : "";
+      if (live && message) live.textContent = message;
+    }
+
+    function readContext() {
+      return checkingNow() ? { afterCommand: true, closedAfter: "details" } : {};
+    }
+
     function load(context) {
       if (!adapter) {
         render();
@@ -135,6 +223,7 @@
       }
       if (loading) return loading;
       var after = context || {};
+      var before = { phase: state.phase, page: pageKey(), waiting: waitingNow(), exhausted: poll.exhausted };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -143,22 +232,34 @@
         state.phase = "ready";
         state.closedAfter = "";
         state.errorAfterCommand = false;
+        state.primaryEmail = state.view.primaryEmail || "";
+        if (after.event === contract.orderEvents.approve.code || after.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
+        if (after.event === contract.agreementEvents.details.code) {
+          state.details.returnPending = true;
+          state.details.sent = true;
+        }
         seedDetails();
         prune();
       }, function (error) {
+        var closed = Boolean(error && error.code === "link-closed");
+        if (after.quiet && !closed && waitingNow()) return;
         state.view = null;
         state.confirm = null;
-        if (error && error.code === "link-closed") {
+        if (closed) {
           state.phase = "link-closed";
           state.closedAfter = after.closedAfter || "";
         } else {
           state.phase = "error";
           state.errorAfterCommand = Boolean(after.afterCommand);
+          state.retryContext = { afterCommand: Boolean(after.afterCommand), closedAfter: after.closedAfter || "" };
         }
       }).then(function () {
         state.refreshing = false;
         loading = null;
-        render();
+        track();
+        var rendered = render();
+        if (announces(before, after)) speak(rendered);
       });
       return loading;
     }
@@ -175,7 +276,7 @@
       state.commands[recordKey] = { status: "pending", event: event, message: "" };
       render();
       var task = adapter.sendEvent(entity, id, event, metadata).then(function () {
-        return reload({ afterCommand: true, closedAfter: after.closedAfter || "" }).then(function () {
+        return reload({ afterCommand: true, closedAfter: after.closedAfter || "", event: event }).then(function () {
           delete state.commands[recordKey];
           if (typeof after.onSuccess === "function") after.onSuccess();
           render();
@@ -306,11 +407,11 @@
       var view = state.view;
       switch (type) {
         case "retry":
-          load({});
+          load(state.retryContext);
           return;
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
-          reload({});
+          reload(readContext());
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -404,13 +505,18 @@
         draftInvalid: state.draftInvalid,
         commands: state.commands,
         details: state.details,
+        waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
+        portalUrl: portalUrl,
+        primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
     }
 
     function render() {
+      if (stopped) return null;
+      var rendered = null;
       if (mount && ns.components) {
-        var rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
+        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
         var key = state.focusKey;
         state.focusKey = "";
         var target = key && rendered && rendered.focus ? rendered.focus[key] : null;
@@ -418,6 +524,12 @@
       }
       var current = snapshot();
       listeners.forEach(function (listener) { listener(current); });
+      return rendered;
+    }
+
+    function stop() {
+      stopped = true;
+      stopPolling();
     }
 
     function idle() {
@@ -435,6 +547,7 @@
 
     var controller = {
       start: start,
+      stop: stop,
       dispatch: dispatch,
       reload: reload,
       idle: idle,
@@ -475,7 +588,14 @@
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
-    var options = { mount: mount, copy: copyFromAttributes(section), locale: env.locale || displayLocale(env) };
+    var options = {
+      mount: mount,
+      live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
+      timers: env.timers,
+      portalUrl: section.getAttribute("data-review-portal-url"),
+      copy: copyFromAttributes(section),
+      locale: env.locale || displayLocale(env),
+    };
     var steps = [];
     if (dataMode === "fixture") {
       var setup = ns.fixtures && typeof ns.fixtures.setup === "function" ? ns.fixtures.setup(env.scenario) : null;
@@ -484,6 +604,8 @@
       } else {
         options.adapter = setup.adapter || null;
         if (setup.phase) options.phase = setup.phase;
+        if (setup.portalUrl) options.portalUrl = setup.portalUrl;
+        if (setup.pollDelays) options.pollDelays = setup.pollDelays;
         steps = setup.steps || [];
       }
     } else {
@@ -502,5 +624,6 @@
   }
 
   ns.createController = createController;
+  ns.checkingDelays = Object.freeze(CHECKING_DELAYS.slice());
   ns.boot = boot;
 })(typeof window !== "undefined" ? window : globalThis);

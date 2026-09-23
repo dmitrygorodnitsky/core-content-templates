@@ -5,12 +5,12 @@
   "template": {
     "code": "CLIENT_REVIEW_DOCUMENT",
     "templateLanguage": "JTE",
-    "parameterCount": 144,
+    "parameterCount": 168,
     "sha256": {
       "head": "f1c3486ef79fb84dd6af7baff69fc992cf2806ae5b9e9e35ddbd69cb88fec28c",
-      "html": "2721e4810a47be726e25fd48ca4e8f489bae578217efcf2d969afccce5932c96",
-      "css": "89d382fbfe360a9c6fb38586e1a23f1d7ef4caf88bfcd01d6f42309525572644",
-      "javascript": "f21373671d1c601cf7ccf55bde126bd2ca21ee7e0c4c303301228dfd8bae2612"
+      "html": "4cad8c3a8d968994ce9fde88effbed40060d63d701d8d24abd9a8b7b90310a2c",
+      "css": "bd135c1fe9394b8cda42e32882ad6cc461c390780976a78e5bc9d132b398858e",
+      "javascript": "514cd34051cca9e4a1031bd7a7977c145cd4bcac86d48a75491b73eff8f6dc62"
     }
   },
   "runtime": {
@@ -33,7 +33,17 @@
     ],
     "dataMode": "live",
     "theme": "snow",
-    "colorMode": "prefers-color-scheme"
+    "colorMode": "prefers-color-scheme",
+    "checkingDelaysMs": [
+      2000,
+      3000,
+      5000,
+      8000,
+      12000,
+      15000,
+      15000,
+      15000
+    ]
   },
   "api": {
     "introspect": "POST {apiBase}/core/i/{token}/introspect.json",
@@ -89,6 +99,7 @@
       "PROVIDER_REPRESENTATIVE_NAME",
       "PROVIDER_REPRESENTATIVE_JOB_TITLE",
       "CONTRACT_TERMS",
+      "CLIENT_DETAILS_ERRORS",
       "LEGAL_NAME",
       "CLIENT_TYPE",
       "BILLING_ADDRESS",
@@ -100,7 +111,7 @@
       "INFORMATION_CONFIRMED",
       "AUTHORITY_CONFIRMED"
     ],
-    "accountUser": "user"
+    "accountPrimaryEmail": "contacts[type PRIMARY].contactEntries[type EMAIL].value, shown only when exactly one is returned"
   },
   "verified": [
     "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
@@ -109,11 +120,15 @@
   ],
   "unverified": [
     "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
-    "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link."
+    "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
+    "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it, and whether the link's Account profile returns contacts with their EMAIL entries is unverified; without them the invitation names no address."
   ],
   "constraints": [
     "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
+    "PORTAL_URL ships empty. When it is an absolute https address, the completion states, the closed-after-approval state and a closed link offer an Open the customer portal link to it; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
     "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
+    "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after 2, 3, 5, 8, 12, 15, 15, 15 s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
+    "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",
     "The document ships in live data mode with no fixtures. A data mode other than live finds no fixtures and reports that it is not set up; it never shows demonstration data.",
     "Money is shown only as the server returns it: unit price as amount, quantity as itemCount, subtotal as totalCharges, taxes as totalTaxes and option total as grandTotal. A field the server does not return has no row; nothing is summed or multiplied in the browser.",
     "Every command is single-flight per record and renders only the state read back afterwards; a refusal shows the server message and assumes nothing.",

@@ -90,8 +90,12 @@
     return Boolean(command && command.status === "pending");
   }
 
-  function stateCard(tone, glyph, title, body, action) {
-    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: tone === "error" ? "alert" : "status" });
+  function announce(ctx, parts) {
+    ctx.announcement = parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+  }
+
+  function stateCard(tone, glyph, title, body, action, quiet) {
+    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: quiet ? null : tone === "error" ? "alert" : "status" });
     card.appendChild(text("div", "cr-state__glyph", glyph, { "aria-hidden": "true" }));
     card.appendChild(text("h1", "cr-state__title", title));
     if (body) card.appendChild(text("p", "cr-state__body", body));
@@ -99,12 +103,22 @@
     return card;
   }
 
-  function notice(tone, title, body, action) {
-    var box = el("div", "cr-notice cr-notice--" + tone, { role: "status", "data-state": tone });
-    box.appendChild(text("span", "cr-notice__icon", tone === "ok" ? "✓" : tone === "warn" ? "!" : "i", { "aria-hidden": "true" }));
+  function announcedCard(ctx, tone, glyph, title, body, action) {
+    announce(ctx, [title, body]);
+    return stateCard(tone, glyph, title, body, action);
+  }
+
+  function notice(tone, title, body, action, options) {
+    var settings = options || {};
+    var box = el("div", "cr-notice cr-notice--" + tone, { role: settings.quiet ? null : "status", "data-state": tone });
+    var glyph = settings.busy ? "" : tone === "ok" ? "✓" : tone === "warn" ? "!" : "i";
+    box.appendChild(text("span", "cr-notice__icon" + (settings.busy ? " cr-notice__icon--busy" : ""), glyph, { "aria-hidden": "true" }));
     var content = el("div", "cr-notice__body");
     if (title) content.appendChild(text("p", "cr-notice__title", title));
-    if (body) content.appendChild(text("p", "cr-notice__text", body));
+    (Array.isArray(body) ? body : [body]).forEach(function (line) {
+      if (!line) return;
+      content.appendChild(typeof line === "string" ? text("p", "cr-notice__text", line) : line);
+    });
     box.appendChild(content);
     if (action) box.appendChild(action);
     return box;
@@ -159,6 +173,7 @@
     head.appendChild(top);
     head.appendChild(text("h1", "cr-title", title));
     if (subtitle) head.appendChild(text("p", "cr-sub", subtitle));
+    announce(ctx, [title, subtitle]);
     var meta = el("dl", "cr-meta");
     [[copy.fromLabel, view.names && view.names.provider], [copy.forLabel, view.names && view.names.client]].forEach(function (entry) {
       if (!entry[1]) return;
@@ -416,13 +431,24 @@
     return card;
   }
 
+  function decidedNotice(ctx) {
+    var copy = ctx.copy;
+    var waiting = ctx.snapshot.waiting;
+    var following = waiting.decisions && !waiting.exhausted;
+    var body = following ? copy.decidedFollowingBody : copy.decidedBody;
+    announce(ctx, [copy.decidedTitle, body]);
+    var box = notice("ok", copy.decidedTitle, body, following ? null : refreshButton(ctx, "", copy.checkAgain), { quiet: waiting.decisions, busy: following });
+    box.setAttribute("data-decided", following ? "following" : "settled");
+    return box;
+  }
+
   function quoteReview(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.quoteEyebrow, copy.quoteTitle, copy.quoteSubtitle, null));
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
-    if (view.allDecided) shell.appendChild(notice("ok", copy.decidedTitle, copy.decidedBody, refreshButton(ctx, "", copy.checkAgain)));
+    if (view.allDecided) shell.appendChild(decidedNotice(ctx));
     if (!view.properties.length && !view.unreadableOrders) {
       shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
       return;
@@ -580,10 +606,33 @@
     return entries;
   }
 
+  function returnedNotice(ctx) {
+    var copy = ctx.copy;
+    var details = ctx.snapshot.view.details;
+    var returned = details.returned;
+    if (!returned.returned || !details.available) return null;
+    var held = ctx.snapshot.details.sent;
+    var marked = Object.keys(returned.fields).length > 0;
+    var processing = !marked && returned.processingFailed;
+    var title = processing ? copy.detailsProcessingTitle : copy.detailsReturnedTitle;
+    var lead = marked ? (held ? copy.detailsReturnedBody : copy.detailsReturnedReenter)
+      : processing ? (held ? copy.detailsProcessingBody : copy.detailsProcessingReenter)
+        : held ? copy.detailsReturnedUnknown : copy.detailsReturnedUnknownReenter;
+    var lines = [lead];
+    if (returned.unexplained && (marked || processing)) lines.push(copy.detailsReturnedUnexplained);
+    announce(ctx, [title].concat(lines));
+    var box = notice(processing ? "info" : "warn", title, lines, null, { quiet: true });
+    box.setAttribute("data-returned", marked ? "fields" : processing ? "processing" : "unexplained");
+    box.setAttribute("data-form", held ? "sent" : "fresh");
+    return box;
+  }
+
   function contractDetails(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.detailsEyebrow, copy.detailsTitle, copy.detailsSubtitle, null));
+    var returned = returnedNotice(ctx);
+    if (returned) shell.appendChild(returned);
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
     var approved = approvedEntries(view);
     if (approved.length) {
@@ -603,6 +652,35 @@
       shell.appendChild(section);
     }
     shell.appendChild(detailsForm(ctx));
+  }
+
+  function portalLink(ctx) {
+    return text("a", "btn btn--ghost", ctx.copy.portalOpen, { href: ctx.snapshot.portalUrl, rel: "noreferrer", "data-action": "portal.open" });
+  }
+
+  function portalBody(ctx, className) {
+    var email = ctx.snapshot.primaryEmail;
+    if (!email) return text("p", className, ctx.copy.portalBody);
+    var line = el("p", className);
+    ctx.copy.portalEmailBody.split("{email}").forEach(function (part, index) {
+      if (index > 0) line.appendChild(text("strong", "cr-portal__email", email));
+      if (part) line.appendChild(text("span", "", part));
+    });
+    return line;
+  }
+
+  function portalInvitation(ctx) {
+    var box = notice("info", ctx.copy.portalTitle, [portalBody(ctx, "cr-notice__text")], ctx.snapshot.portalUrl ? portalLink(ctx) : null);
+    box.setAttribute("data-portal", "invitation");
+    return box;
+  }
+
+  function portalAside(ctx, title, line) {
+    var aside = el("div", "cr-state__aside", { "data-portal": title ? "invitation" : "sign-in" });
+    if (title) aside.appendChild(text("h2", "cr-state__aside-title", title));
+    aside.appendChild(line);
+    if (ctx.snapshot.portalUrl) aside.appendChild(portalLink(ctx));
+    return aside;
   }
 
   function joinName(name, title) {
@@ -660,6 +738,13 @@
     return card;
   }
 
+  function clauseItem(block) {
+    var item = el("li", "cr-terms__clause", { "data-depth": String(Math.min(block.depth, 3)) });
+    item.appendChild(text("span", "cr-terms__number", block.number));
+    item.appendChild(text("span", "cr-terms__clause-text", block.text));
+    return item;
+  }
+
   function agreementPage(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
@@ -669,9 +754,9 @@
       : completion ? text("span", "status-badge status-badge--ok", view.completion === "active" ? copy.agreementActive : copy.agreementApproved)
         : null;
     var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle) : copy.agreementTitle;
-    var subtitle = completion ? copy.completeBody : reviewing ? copy.agreementSubtitle : "";
+    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody) : reviewing ? copy.agreementSubtitle : "";
     shell.appendChild(pageHead(ctx, copy.agreementEyebrow, title, subtitle, badgeNode));
-    if (completion && view.portalAccess) shell.appendChild(notice("ok", "", copy.completePortal, null));
+    if (completion) shell.appendChild(portalInvitation(ctx));
     if (view.kind === "reference") shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
 
@@ -706,8 +791,10 @@
     terms.appendChild(text("h2", "cr-section-title", copy.termsTitle, { id: "cr-terms-title" }));
     if (!term.terms.length) terms.appendChild(text("p", "cr-note", copy.termsEmpty));
     var list = null;
+    var clauses = null;
     term.terms.forEach(function (block) {
       if (block.kind === "item") {
+        clauses = null;
         if (!list) {
           list = el("ul", "cr-terms__list");
           terms.appendChild(list);
@@ -716,6 +803,15 @@
         return;
       }
       list = null;
+      if (block.kind === "clause") {
+        if (!clauses) {
+          clauses = el("ol", "cr-terms__clauses", { role: "list" });
+          terms.appendChild(clauses);
+        }
+        clauses.appendChild(clauseItem(block));
+        return;
+      }
+      clauses = null;
       terms.appendChild(text(block.kind === "heading" ? "h3" : "p", block.kind === "heading" ? "cr-terms__heading" : "cr-terms__paragraph", block.text));
     });
     shell.appendChild(terms);
@@ -738,20 +834,45 @@
       case "completion":
         agreementPage(shell, ctx);
         return;
+      case "checking":
+        shell.appendChild(checkingCard(ctx));
+        return;
       case "preparing":
-        shell.appendChild(stateCard("progress", "…", copy.preparingTitle, copy.preparingBody, null));
+        shell.appendChild(announcedCard(ctx, "progress", "…", copy.preparingTitle, copy.preparingBody, null));
         return;
       case "closed":
         shell.appendChild(view.reason === "archived"
-          ? stateCard("neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
-          : stateCard("neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
+          ? announcedCard(ctx, "neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
+          : announcedCard(ctx, "neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
         return;
       case "empty":
-        shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
+        shell.appendChild(announcedCard(ctx, "neutral", "○", copy.emptyTitle, copy.emptyBody, null));
         return;
       default:
-        shell.appendChild(stateCard("warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
+        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
     }
+  }
+
+  function checkingCard(ctx) {
+    var copy = ctx.copy;
+    var slow = ctx.snapshot.waiting.exhausted;
+    var title = slow ? copy.checkingSlowTitle : copy.checkingTitle;
+    var body = slow ? copy.checkingSlowBody : copy.checkingBody;
+    announce(ctx, [title, body]);
+    var card = stateCard("progress", slow ? "…" : "", title, body, slow ? refreshButton(ctx, "", copy.refreshLabel) : null, true);
+    card.setAttribute("data-checking", slow ? "slow" : "active");
+    return card;
+  }
+
+  function closedCard(ctx) {
+    var copy = ctx.copy;
+    var after = ctx.snapshot.closedAfter;
+    if (!after) {
+      var signIn = ctx.snapshot.portalUrl ? portalAside(ctx, "", text("p", "cr-state__aside-text", copy.linkClosedPortal)) : null;
+      return announcedCard(ctx, "neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, signIn);
+    }
+    var invitation = after === "approval" ? portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")) : null;
+    return announcedCard(ctx, "info", "i", copy.closedAfterTitle, after === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, invitation);
   }
 
   function renderPage(mount, snapshot, dispatch, copy) {
@@ -760,6 +881,7 @@
       dispatch: dispatch,
       copy: copy,
       focus: {},
+      announcement: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready",
     };
     var page = el("div", "cr-page", {
@@ -780,12 +902,10 @@
         shell.appendChild(stateCard("warn", "?", copy.linkMissingTitle, copy.linkMissingBody, null));
         break;
       case "link-closed":
-        shell.appendChild(snapshot.closedAfter
-          ? stateCard("info", "i", copy.closedAfterTitle, snapshot.closedAfter === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, null)
-          : stateCard("neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, null));
+        shell.appendChild(closedCard(ctx));
         break;
       case "error":
-        shell.appendChild(stateCard("error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
+        shell.appendChild(announcedCard(ctx, "error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
           button(copy.retryLabel, "btn--primary btn--lg", function () { dispatch("retry"); }, { "data-action": "retry" })));
         break;
       default:
@@ -793,7 +913,7 @@
     }
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus };
+    return { focus: ctx.focus, announcement: ctx.announcement };
   }
 
   ns.components = Object.freeze({

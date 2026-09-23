@@ -11,6 +11,17 @@
     "value": ""
   },
   {
+    "code": "PORTAL_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL URL",
+        "DESCRIPTION": "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement and a closed link offer an Open the customer portal button that links to it; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."
+      }
+    },
+    "value": ""
+  },
+  {
     "code": "DOCUMENT_TITLE",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -960,6 +971,19 @@
     }
   },
   {
+    "code": "DECIDED_FOLLOWING_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DECIDED FOLLOWING BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system is processing your decisions. This page updates on its own."
+    }
+  },
+  {
     "code": "CHECK_AGAIN",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
@@ -1152,6 +1176,227 @@
     },
     "value": {
       "en": "I confirm that I am authorized to enter into this agreement on behalf of the client."
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your details came back"
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system could not accept them. Fix the marked fields and send your details again."
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_REENTER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED REENTER",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_UNKNOWN",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED UNKNOWN",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_UNKNOWN_REENTER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED UNKNOWN REENTER",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."
+    }
+  },
+  {
+    "code": "DETAILS_RETURNED_UNEXPLAINED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS RETURNED UNEXPLAINED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."
+    }
+  },
+  {
+    "code": "DETAILS_PROCESSING_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS PROCESSING TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your details were not saved"
+    }
+  },
+  {
+    "code": "DETAILS_PROCESSING_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS PROCESSING BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."
+    }
+  },
+  {
+    "code": "DETAILS_PROCESSING_REENTER",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "DETAILS PROCESSING REENTER",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."
+    }
+  },
+  {
+    "code": "RETURNED_MISSING",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETURNED MISSING",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "This was missing from the details you sent."
+    }
+  },
+  {
+    "code": "RETURNED_UNCONFIRMED",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETURNED UNCONFIRMED",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "This confirmation was missing from the details you sent."
+    }
+  },
+  {
+    "code": "RETURNED_CHOICE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETURNED CHOICE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The choice you sent was not recognized. Choose one of the options."
+    }
+  },
+  {
+    "code": "RETURNED_EMAIL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "RETURNED EMAIL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The email address you sent was not accepted. Enter a valid email address."
+    }
+  },
+  {
+    "code": "CHECKING_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHECKING TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "We are checking your details"
+    }
+  },
+  {
+    "code": "CHECKING_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHECKING BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system received your details and is checking them. This page updates on its own."
+    }
+  },
+  {
+    "code": "CHECKING_SLOW_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHECKING SLOW TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "This is taking longer than usual"
+    }
+  },
+  {
+    "code": "CHECKING_SLOW_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "CHECKING SLOW BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."
     }
   },
   {
@@ -1558,16 +1803,68 @@
     }
   },
   {
-    "code": "COMPLETE_PORTAL",
+    "code": "COMPLETE_FINISHING_BODY",
     "type": "LOCALIZED_STRING_SS",
     "nls": {
       "en": {
-        "NAME": "COMPLETE PORTAL",
+        "NAME": "COMPLETE FINISHING BODY",
         "DESCRIPTION": "Client review document copy."
       }
     },
     "value": {
-      "en": "A customer portal account is linked to this client."
+      "en": "The provider's system has recorded your approval. The provider is finishing setting up your account; nothing is needed from you."
+    }
+  },
+  {
+    "code": "PORTAL_TITLE",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL TITLE",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Your customer portal access"
+    }
+  },
+  {
+    "code": "PORTAL_EMAIL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL EMAIL BODY",
+        "DESCRIPTION": "Client review document copy. Keep {email}: the page fills them in."
+      }
+    },
+    "value": {
+      "en": "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."
+    }
+  },
+  {
+    "code": "PORTAL_BODY",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL BODY",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."
+    }
+  },
+  {
+    "code": "PORTAL_OPEN",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL OPEN",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "Open the customer portal"
     }
   },
   {
@@ -1724,6 +2021,19 @@
     },
     "value": {
       "en": "Ask the provider to send you a new link."
+    }
+  },
+  {
+    "code": "LINK_CLOSED_PORTAL",
+    "type": "LOCALIZED_STRING_SS",
+    "nls": {
+      "en": {
+        "NAME": "LINK CLOSED PORTAL",
+        "DESCRIPTION": "Client review document copy."
+      }
+    },
+    "value": {
+      "en": "If you already have customer portal access, you can sign in there."
     }
   },
   {

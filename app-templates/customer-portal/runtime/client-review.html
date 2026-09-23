@@ -44,6 +44,7 @@
 
   <section id="client-review-root" data-review-data-mode="fixture">
     <div data-client-review-mount></div>
+    <p class="cr-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-client-review-live></p>
   </section>
 
   <script src="client-review/copy.js"></script>
@@ -92,10 +93,13 @@
         remember();
       }
 
+      var current = null;
+
       function start() {
         paint();
-        var controller = window.ClientReview.boot(root, { scenario: state.value, locale: "en-CA" });
-        if (controller) window.ClientReview.fixtures.play(controller, controller.steps);
+        if (current) current.stop();
+        current = window.ClientReview.boot(root, { scenario: state.value, locale: "en-CA" });
+        if (current) window.ClientReview.fixtures.play(current, current.steps);
       }
 
       state.addEventListener("change", start);

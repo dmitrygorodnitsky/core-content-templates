@@ -49,6 +49,32 @@
     "<p>The Client keeps each property accessible and tells the Provider about obstacles such as parked vehicles or construction work.</p>",
   ].join("");
 
+  var NUMBERED_TERMS = [
+    "1. Services",
+    "The Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.",
+    "",
+    "2. Service triggers",
+    "2.1 Snow removal starts once accumulation reaches 5 cm.",
+    "2.2 De-icing is applied when the surface temperature is forecast at or below 0 °C,",
+    "including overnight frost on walkways and ramps.",
+    "",
+    "3. Invoicing",
+    "3.1) Seasonal options are invoiced once, at the start of the term.",
+    "3.2) Monthly options are invoiced on the first day of each month of the term.",
+    "3.3) Per-service options are invoiced after each visit.",
+    "",
+    "4. Access",
+    "The Client keeps each property accessible and tells the Provider about obstacles:",
+    "- parked vehicles;",
+    "- construction work.",
+    "",
+    "5. Term and notice",
+    "5.1. This agreement runs from the term start date to the term end date.",
+    "5.1.1 Either party may end it early with 30 days' written notice.",
+  ].join("\n");
+
+  var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
+
   var QUOTATION_EVENTS = [
     "QUOTE_SENT-QUOTE_VIEWED",
     "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -73,17 +99,30 @@
     { id: "command-pending", label: "Decision pending" },
     { id: "command-refused", label: "Decision refused by the server" },
     { id: "command-failed", label: "Decision failed" },
-    { id: "decided", label: "Every property decided — provider not done yet" },
+    { id: "decided", label: "Every property decided — link opened, provider not done yet" },
+    { id: "decided-following", label: "Last decision sent here — next step being opened" },
+    { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
+    { id: "decided-next-step", label: "Last decision sent here — details step opens on its own" },
     { id: "contract-details", label: "Contract details — pre-filled from the account" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
-    { id: "details-closed", label: "Contract details sent — link closed" },
+    { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
+    { id: "details-checking-slow", label: "Contract details check — taking longer than usual" },
+    { id: "details-returned", label: "Contract details returned, link reopened — fields to fix" },
+    { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
+    { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
+    { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
+    { id: "details-closed", label: "Contract details sent — checked, link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
+    { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
-    { id: "completion", label: "Completion — CLIENT_APPROVED" },
-    { id: "completion-portal", label: "Completion — ACTIVE with a linked portal user" },
+    { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
+    { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
+    { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
+    { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
+    { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
@@ -241,6 +280,7 @@
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
+  var LAST_OPEN = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED" };
 
   function agreementData(state, withUser) {
     var approved = [3102, 3104, 3107, 3108];
@@ -304,15 +344,6 @@
     if (code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
-    if (code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
-      var missing = {};
-      ns.contract.contractDetails.attributes.forEach(function (attribute) {
-        var value = metadata[attribute.code];
-        var filled = attribute.className === "java.lang.Boolean" ? value === true : typeof value === "string" && value.trim() !== "";
-        if (attribute.required && !filled) missing[attribute.code] = "This value is required.";
-      });
-      if (Object.keys(missing).length) throw reviewError("refused", 400, "", missing);
-    }
     row.states = [{ code: target }];
     if (entity === "order") {
       if (target === "CLIENT_APPROVED" && hooks.declineSiblings !== false) {
@@ -323,15 +354,60 @@
           }
         });
       }
-      if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) evaluatePackage(data);
+      if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) data.pendingEvaluation = { reads: 0 };
     }
     if (entity === "document" && code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
-      Object.keys(metadata).forEach(function (key) { row.attributes[17][key] = { value: metadata[key] }; });
-      row.states = [{ code: "DRAFT" }];
-      if (hooks.revokeOnDetails !== false) data.closed = true;
+      data.pendingDetails = { metadata: clone(metadata), reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
     return null;
+  }
+
+  function detailsErrors(metadata) {
+    var attributes = ns.contract.contractDetails.attributes;
+    var codes = [];
+    attributes.forEach(function (attribute) {
+      var value = metadata[attribute.code];
+      if (attribute.required && attribute.className !== "java.lang.Boolean" && !(typeof value === "string" && value.trim())) codes.push(attribute.code);
+    });
+    var type = String(metadata.CLIENT_TYPE || "").trim();
+    if (type && ["INDIVIDUAL", "ORGANIZATION"].indexOf(type.toUpperCase()) === -1) codes.push("CLIENT_TYPE_INVALID");
+    var email = String(metadata.REPRESENTATIVE_EMAIL || "").trim();
+    if (email && (email.indexOf("@") === -1 || email.charAt(0) === "@" || email.slice(-1) === "@")) codes.push("REPRESENTATIVE_EMAIL_INVALID");
+    attributes.forEach(function (attribute) {
+      if (attribute.className === "java.lang.Boolean" && metadata[attribute.code] !== true) codes.push(attribute.code);
+    });
+    return codes;
+  }
+
+  function settleEvaluation(data, hooks) {
+    var pending = data.pendingEvaluation;
+    if (!pending || hooks.evaluation === "hold") return;
+    pending.reads += 1;
+    if (pending.reads < 2) return;
+    data.pendingEvaluation = null;
+    evaluatePackage(data);
+  }
+
+  function settleDetails(data, hooks) {
+    var pending = data.pendingDetails;
+    var outcome = hooks.details || "check";
+    if (!pending || outcome === "hold") return;
+    pending.reads += 1;
+    if (pending.reads < 2) return;
+    data.pendingDetails = null;
+    var agreement = data.documents[0];
+    var bucket = agreement.attributes[17];
+    var codes = outcome === "processing-failed" ? ["PROCESSING_FAILED"] : hooks.detailsCodes || detailsErrors(pending.metadata);
+    if (codes.length) {
+      bucket.CLIENT_DETAILS_ERRORS = { value: codes.join(",") };
+      agreement.states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+      return;
+    }
+    Object.keys(pending.metadata).forEach(function (key) { bucket[key] = { value: pending.metadata[key] }; });
+    bucket.CLIENT_DETAILS_ERRORS = { value: "" };
+    agreement.states = [{ code: "DRAFT" }];
+    if (hooks.revokeOnDetails !== false) data.closed = true;
   }
 
   function createFixtureAdapter(data, behavior) {
@@ -365,6 +441,8 @@
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
+          settleEvaluation(data, settings.hooks || {});
+          settleDetails(data, settings.hooks || {});
           guard();
           if (settings.introspect === "unauthorized") throw reviewError("link-closed", 401);
           if (introspectFailures > 0) {
@@ -407,17 +485,41 @@
     };
   }
 
+  function idOnlyAccount(data) {
+    data.accounts.forEach(function (row) {
+      row.contacts = [{ id: 901 }];
+      row.addresses = [{ id: 902 }];
+    });
+    return data;
+  }
+
+  function returnedData(errors) {
+    var data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+    data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
+    return data;
+  }
+
   function build(id, delay) {
     var data = quotationData();
     var behavior = { introspect: "ok", events: {}, hooks: {}, delay: delay };
     var steps = [];
     var phase = "";
+    var portalUrl = "";
+    var pollDelays = null;
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
       ["details.choose", { code: "INFORMATION_CONFIRMED", value: true }],
       ["details.choose", { code: "AUTHORITY_CONFIRMED", value: true }],
     ];
+    var typeDetails = [
+      ["details.input", { code: "BILLING_ADDRESS", value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8" }],
+      ["details.input", { code: "REPRESENTATIVE_FIRST_NAME", value: "Dana" }],
+      ["details.input", { code: "REPRESENTATIVE_LAST_NAME", value: "Reyes" }],
+      ["details.input", { code: "REPRESENTATIVE_EMAIL", value: "dana.reyes@harbourview.example" }],
+      ["details.input", { code: "REPRESENTATIVE_PHONE", value: "+1 604 555 0164" }],
+    ];
+    var lastDecision = [["option.toggle", { id: 3108 }], ["option.intent", { id: 3108, kind: "approve" }], ["option.confirm", { id: 3108 }]];
     switch (id) {
       case "loading":
         behavior.introspect = "hold";
@@ -475,6 +577,21 @@
       case "decided":
         data = quotationData("QUOTATION_SENT", DECIDED);
         break;
+      case "decided-following":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
+        steps = lastDecision;
+        break;
+      case "decided-following-slow":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
+        steps = lastDecision;
+        pollDelays = [300, 300, 300];
+        break;
+      case "decided-next-step":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        steps = lastDecision;
+        break;
       case "contract-details":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         break;
@@ -491,6 +608,29 @@
         };
         steps = confirmBoth.concat([["details.submit", {}]]);
         break;
+      case "details-checking":
+        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
+        behavior.hooks.details = "hold";
+        break;
+      case "details-checking-slow":
+        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
+        behavior.hooks.details = "hold";
+        pollDelays = [300, 300, 300];
+        break;
+      case "details-returned":
+        data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
+        break;
+      case "details-returned-processing":
+        data = returnedData("PROCESSING_FAILED");
+        break;
+      case "details-returned-unknown":
+        data = returnedData("TAX_NUMBER_MISSING");
+        break;
+      case "details-returned-sent":
+        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        behavior.hooks.details = "processing-failed";
+        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        break;
       case "details-closed":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = confirmBoth.concat([["details.submit", {}]]);
@@ -501,6 +641,10 @@
       case "agreement-review":
         data = agreementData("SENT_TO_CLIENT", false);
         break;
+      case "agreement-numbered-terms":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.documents[0].attributes[17].CONTRACT_TERMS = { value: NUMBERED_TERMS };
+        break;
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
@@ -509,11 +653,27 @@
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
         break;
+      case "approval-closed":
+        data = agreementData("SENT_TO_CLIENT", false);
+        behavior.hooks.revokeOnApproval = true;
+        steps = [["agreement.intent", {}], ["agreement.confirm", {}]];
+        portalUrl = PORTAL_URL;
+        break;
       case "completion":
         data = agreementData("CLIENT_APPROVED", false);
         break;
       case "completion-portal":
         data = agreementData("ACTIVE", true);
+        portalUrl = PORTAL_URL;
+        break;
+      case "completion-finishing":
+        data = agreementData("ACTIVATION_FAILED", false);
+        delete data.accounts[0].contacts;
+        portalUrl = PORTAL_URL;
+        break;
+      case "link-closed-portal":
+        behavior.introspect = "unauthorized";
+        portalUrl = PORTAL_URL;
         break;
       case "reference-expired":
         data = agreementData("EXPIRED", false);
@@ -527,7 +687,7 @@
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays };
   }
 
   function setup(requested) {
@@ -539,6 +699,8 @@
       adapter: built.phase ? null : createFixtureAdapter(built.data, built.behavior),
       steps: built.steps,
       data: built.data,
+      portalUrl: built.portalUrl,
+      pollDelays: built.pollDelays,
     };
   }
 
@@ -560,6 +722,11 @@
     createFixtureAdapter: createFixtureAdapter,
     quotationData: quotationData,
     agreementData: agreementData,
+    detailsErrors: detailsErrors,
+    idOnlyAccount: idOnlyAccount,
+    numberedTerms: NUMBERED_TERMS,
+    portalUrl: PORTAL_URL,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),
+    lastOpenStates: Object.freeze(Object.assign({}, LAST_OPEN)),
   };
 })(typeof window !== "undefined" ? window : globalThis);

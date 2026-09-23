@@ -22,13 +22,14 @@
     QUOTATION_SENT: { kind: "quote-review" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
-    CLIENT_DETAILS_RECEIVED: { kind: "preparing" },
+    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
+    ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
     ACTIVE: { kind: "completion", completion: "active" },
     SUSPENDED: { kind: "reference", banner: "suspended" },
     EXPIRED: { kind: "reference", banner: "expired" },
@@ -237,6 +238,7 @@
     var blocks = [];
     source.split(/\n[ \t]*\n+/).forEach(function (chunk) {
       var paragraph = [];
+      var clause = null;
       function flush() {
         if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join("\n") });
         paragraph = [];
@@ -246,12 +248,21 @@
         if (!trimmed) return;
         var heading = /^#{1,6}\s+(.+)$/.exec(trimmed);
         var item = /^[-*•]\s+(.+)$/.exec(trimmed);
+        var numbered = heading || item ? null : clauseOf(trimmed);
         if (heading) {
           flush();
+          clause = null;
           blocks.push({ kind: "heading", text: heading[1] });
         } else if (item) {
           flush();
+          clause = null;
           blocks.push({ kind: "item", text: item[1] });
+        } else if (numbered) {
+          flush();
+          clause = numbered;
+          blocks.push(clause);
+        } else if (clause) {
+          clause.text += "\n" + trimmed;
         } else {
           paragraph.push(trimmed);
         }
@@ -259,6 +270,43 @@
       flush();
     });
     return blocks;
+  }
+
+  function clauseOf(line) {
+    var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
+    if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
+    return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
+  }
+
+  function owns(map, key) {
+    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
+  }
+
+  function returnedDetails(value, fields, vocabulary) {
+    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
+    var codes = [];
+    source.forEach(function (entry) {
+      var code = text(entry);
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    var kinds = {};
+    fields.forEach(function (field) { kinds[field.code] = field.kind; });
+    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
+    codes.forEach(function (code) {
+      if (code === vocabulary.processingFailed) {
+        result.processingFailed = true;
+        return;
+      }
+      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
+      var field = invalid ? invalid.field : code;
+      if (!owns(kinds, field)) {
+        result.unexplained = true;
+        return;
+      }
+      if (owns(result.fields, field)) return;
+      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
+    });
+    return result;
   }
 
   function inputTokens(inputFormat) {
@@ -324,6 +372,18 @@
       return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);
     })[0];
     return found ? text(found.value) : "";
+  }
+
+  function primaryEmail(account) {
+    var found = [];
+    (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
+      if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
+      (Array.isArray(contact.contactEntries) ? contact.contactEntries : []).forEach(function (entry) {
+        var value = entry && text(entry.type && entry.type.code).toUpperCase() === "EMAIL" ? text(entry.value) : "";
+        if (value) found.push(value);
+      });
+    });
+    return found.length === 1 ? found[0] : "";
   }
 
   function formatAddress(address, locale) {
@@ -596,7 +656,7 @@
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
-    var user = account ? account[contract.rawShape.accountUser] : null;
+    var awaitingDetails = state === detailsEvent.source;
 
     return {
       kind: disposition.kind,
@@ -626,12 +686,13 @@
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: state === detailsEvent.source && eventGranted(grant, "document", agreementId, detailsEvent.code),
+        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale),
+        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
-      portalAccess: Boolean(user && typeof user === "object" && positiveInteger(user.id)),
+      primaryEmail: primaryEmail(account),
     };
   }
 
@@ -650,6 +711,8 @@
     formatQuantity: formatQuantity,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
+    returnedDetails: returnedDetails,
+    primaryEmail: primaryEmail,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,

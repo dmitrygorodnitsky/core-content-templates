@@ -78,6 +78,7 @@
     ["ACCOUNT_PARTIAL", "accountPartial", "Your account details could not be loaded, so nothing is filled in for you."],
     ["DECIDED_TITLE", "decidedTitle", "Every property has a decision"],
     ["DECIDED_BODY", "decidedBody", "The provider opens the next step once its system has processed your decisions."],
+    ["DECIDED_FOLLOWING_BODY", "decidedFollowingBody", "The provider's system is processing your decisions. This page updates on its own."],
     ["CHECK_AGAIN", "checkAgain", "Check again"],
 
     ["DETAILS_EYEBROW", "detailsEyebrow", "Contract details"],
@@ -94,6 +95,23 @@
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
     ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
+    ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
+    ["DETAILS_RETURNED_BODY", "detailsReturnedBody", "The provider's system could not accept them. Fix the marked fields and send your details again."],
+    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."],
+    ["DETAILS_RETURNED_UNKNOWN", "detailsReturnedUnknown", "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."],
+    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."],
+    ["DETAILS_RETURNED_UNEXPLAINED", "detailsReturnedUnexplained", "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."],
+    ["DETAILS_PROCESSING_TITLE", "detailsProcessingTitle", "Your details were not saved"],
+    ["DETAILS_PROCESSING_BODY", "detailsProcessingBody", "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."],
+    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."],
+    ["RETURNED_MISSING", "returnedMissing", "This was missing from the details you sent."],
+    ["RETURNED_UNCONFIRMED", "returnedUnconfirmed", "This confirmation was missing from the details you sent."],
+    ["RETURNED_CHOICE", "returnedChoice", "The choice you sent was not recognized. Choose one of the options."],
+    ["RETURNED_EMAIL", "returnedEmail", "The email address you sent was not accepted. Enter a valid email address."],
+    ["CHECKING_TITLE", "checkingTitle", "We are checking your details"],
+    ["CHECKING_BODY", "checkingBody", "The provider's system received your details and is checking them. This page updates on its own."],
+    ["CHECKING_SLOW_TITLE", "checkingSlowTitle", "This is taking longer than usual"],
+    ["CHECKING_SLOW_BODY", "checkingSlowBody", "The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."],
 
     ["AGREEMENT_EYEBROW", "agreementEyebrow", "Service agreement"],
     ["AGREEMENT_TITLE", "agreementTitle", "Review your service agreement"],
@@ -127,7 +145,11 @@
     ["COMPLETE_APPROVED_TITLE", "completeApprovedTitle", "Agreement approved"],
     ["COMPLETE_ACTIVE_TITLE", "completeActiveTitle", "Agreement active"],
     ["COMPLETE_BODY", "completeBody", "The provider's system has recorded your approval."],
-    ["COMPLETE_PORTAL", "completePortal", "A customer portal account is linked to this client."],
+    ["COMPLETE_FINISHING_BODY", "completeFinishingBody", "The provider's system has recorded your approval. The provider is finishing setting up your account; nothing is needed from you."],
+    ["PORTAL_TITLE", "portalTitle", "Your customer portal access"],
+    ["PORTAL_EMAIL_BODY", "portalEmailBody", "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."],
+    ["PORTAL_BODY", "portalBody", "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."],
+    ["PORTAL_OPEN", "portalOpen", "Open the customer portal"],
 
     ["PREPARING_TITLE", "preparingTitle", "Your agreement is being prepared"],
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],
@@ -141,6 +163,7 @@
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
     ["LINK_CLOSED_BODY", "linkClosedBody", "Ask the provider to send you a new link."],
+    ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
     ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
     ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
     ["CLOSED_AFTER_APPROVAL_BODY", "closedAfterApprovalBody", "It closed after your approval was sent. The provider closes it when the agreement review ends."],
@@ -239,7 +262,7 @@
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
-      "CLIENT_APPROVED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
+      "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
     ],
     orderEvents: {
       view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
@@ -260,7 +283,6 @@
     rawShape: {
       orderLines: "items",
       documentOwner: "organization",
-      accountUser: "user",
     },
     agreementAttributes: {
       client: "CLIENT",
@@ -272,6 +294,14 @@
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      detailsErrors: "CLIENT_DETAILS_ERRORS",
+    },
+    detailsReturn: {
+      processingFailed: "PROCESSING_FAILED",
+      invalid: {
+        CLIENT_TYPE_INVALID: { field: "CLIENT_TYPE", reason: "choice" },
+        REPRESENTATIVE_EMAIL_INVALID: { field: "REPRESENTATIVE_EMAIL", reason: "email" },
+      },
     },
     contractDetails: {
       event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
@@ -364,6 +394,19 @@
     if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash) return "";
     if (url.pathname && url.pathname !== "/") return "";
     return url.origin;
+  }
+
+  function safePortalUrl(value) {
+    var text = String(value == null ? "" : value).trim();
+    if (!text) return "";
+    var url;
+    try {
+      url = new URL(text);
+    } catch (_) {
+      return "";
+    }
+    if (url.protocol !== "https:" || url.username || url.password) return "";
+    return url.href;
   }
 
   function clip(value) {
@@ -513,6 +556,7 @@
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
+    safePortalUrl: safePortalUrl,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,
@@ -542,13 +586,14 @@
     QUOTATION_SENT: { kind: "quote-review" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
-    CLIENT_DETAILS_RECEIVED: { kind: "preparing" },
+    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
+    ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
     ACTIVE: { kind: "completion", completion: "active" },
     SUSPENDED: { kind: "reference", banner: "suspended" },
     EXPIRED: { kind: "reference", banner: "expired" },
@@ -757,6 +802,7 @@
     var blocks = [];
     source.split(/\n[ \t]*\n+/).forEach(function (chunk) {
       var paragraph = [];
+      var clause = null;
       function flush() {
         if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join("\n") });
         paragraph = [];
@@ -766,12 +812,21 @@
         if (!trimmed) return;
         var heading = /^#{1,6}\s+(.+)$/.exec(trimmed);
         var item = /^[-*•]\s+(.+)$/.exec(trimmed);
+        var numbered = heading || item ? null : clauseOf(trimmed);
         if (heading) {
           flush();
+          clause = null;
           blocks.push({ kind: "heading", text: heading[1] });
         } else if (item) {
           flush();
+          clause = null;
           blocks.push({ kind: "item", text: item[1] });
+        } else if (numbered) {
+          flush();
+          clause = numbered;
+          blocks.push(clause);
+        } else if (clause) {
+          clause.text += "\n" + trimmed;
         } else {
           paragraph.push(trimmed);
         }
@@ -779,6 +834,43 @@
       flush();
     });
     return blocks;
+  }
+
+  function clauseOf(line) {
+    var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
+    if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
+    return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
+  }
+
+  function owns(map, key) {
+    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
+  }
+
+  function returnedDetails(value, fields, vocabulary) {
+    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
+    var codes = [];
+    source.forEach(function (entry) {
+      var code = text(entry);
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    var kinds = {};
+    fields.forEach(function (field) { kinds[field.code] = field.kind; });
+    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
+    codes.forEach(function (code) {
+      if (code === vocabulary.processingFailed) {
+        result.processingFailed = true;
+        return;
+      }
+      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
+      var field = invalid ? invalid.field : code;
+      if (!owns(kinds, field)) {
+        result.unexplained = true;
+        return;
+      }
+      if (owns(result.fields, field)) return;
+      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
+    });
+    return result;
   }
 
   function inputTokens(inputFormat) {
@@ -844,6 +936,18 @@
       return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);
     })[0];
     return found ? text(found.value) : "";
+  }
+
+  function primaryEmail(account) {
+    var found = [];
+    (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
+      if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
+      (Array.isArray(contact.contactEntries) ? contact.contactEntries : []).forEach(function (entry) {
+        var value = entry && text(entry.type && entry.type.code).toUpperCase() === "EMAIL" ? text(entry.value) : "";
+        if (value) found.push(value);
+      });
+    });
+    return found.length === 1 ? found[0] : "";
   }
 
   function formatAddress(address, locale) {
@@ -1116,7 +1220,7 @@
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
-    var user = account ? account[contract.rawShape.accountUser] : null;
+    var awaitingDetails = state === detailsEvent.source;
 
     return {
       kind: disposition.kind,
@@ -1146,12 +1250,13 @@
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: state === detailsEvent.source && eventGranted(grant, "document", agreementId, detailsEvent.code),
+        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale),
+        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
-      portalAccess: Boolean(user && typeof user === "object" && positiveInteger(user.id)),
+      primaryEmail: primaryEmail(account),
     };
   }
 
@@ -1170,6 +1275,8 @@
     formatQuantity: formatQuantity,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
+    returnedDetails: returnedDetails,
+    primaryEmail: primaryEmail,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,
@@ -1271,8 +1378,12 @@
     return Boolean(command && command.status === "pending");
   }
 
-  function stateCard(tone, glyph, title, body, action) {
-    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: tone === "error" ? "alert" : "status" });
+  function announce(ctx, parts) {
+    ctx.announcement = parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+  }
+
+  function stateCard(tone, glyph, title, body, action, quiet) {
+    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: quiet ? null : tone === "error" ? "alert" : "status" });
     card.appendChild(text("div", "cr-state__glyph", glyph, { "aria-hidden": "true" }));
     card.appendChild(text("h1", "cr-state__title", title));
     if (body) card.appendChild(text("p", "cr-state__body", body));
@@ -1280,12 +1391,22 @@
     return card;
   }
 
-  function notice(tone, title, body, action) {
-    var box = el("div", "cr-notice cr-notice--" + tone, { role: "status", "data-state": tone });
-    box.appendChild(text("span", "cr-notice__icon", tone === "ok" ? "✓" : tone === "warn" ? "!" : "i", { "aria-hidden": "true" }));
+  function announcedCard(ctx, tone, glyph, title, body, action) {
+    announce(ctx, [title, body]);
+    return stateCard(tone, glyph, title, body, action);
+  }
+
+  function notice(tone, title, body, action, options) {
+    var settings = options || {};
+    var box = el("div", "cr-notice cr-notice--" + tone, { role: settings.quiet ? null : "status", "data-state": tone });
+    var glyph = settings.busy ? "" : tone === "ok" ? "✓" : tone === "warn" ? "!" : "i";
+    box.appendChild(text("span", "cr-notice__icon" + (settings.busy ? " cr-notice__icon--busy" : ""), glyph, { "aria-hidden": "true" }));
     var content = el("div", "cr-notice__body");
     if (title) content.appendChild(text("p", "cr-notice__title", title));
-    if (body) content.appendChild(text("p", "cr-notice__text", body));
+    (Array.isArray(body) ? body : [body]).forEach(function (line) {
+      if (!line) return;
+      content.appendChild(typeof line === "string" ? text("p", "cr-notice__text", line) : line);
+    });
     box.appendChild(content);
     if (action) box.appendChild(action);
     return box;
@@ -1340,6 +1461,7 @@
     head.appendChild(top);
     head.appendChild(text("h1", "cr-title", title));
     if (subtitle) head.appendChild(text("p", "cr-sub", subtitle));
+    announce(ctx, [title, subtitle]);
     var meta = el("dl", "cr-meta");
     [[copy.fromLabel, view.names && view.names.provider], [copy.forLabel, view.names && view.names.client]].forEach(function (entry) {
       if (!entry[1]) return;
@@ -1597,13 +1719,24 @@
     return card;
   }
 
+  function decidedNotice(ctx) {
+    var copy = ctx.copy;
+    var waiting = ctx.snapshot.waiting;
+    var following = waiting.decisions && !waiting.exhausted;
+    var body = following ? copy.decidedFollowingBody : copy.decidedBody;
+    announce(ctx, [copy.decidedTitle, body]);
+    var box = notice("ok", copy.decidedTitle, body, following ? null : refreshButton(ctx, "", copy.checkAgain), { quiet: waiting.decisions, busy: following });
+    box.setAttribute("data-decided", following ? "following" : "settled");
+    return box;
+  }
+
   function quoteReview(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.quoteEyebrow, copy.quoteTitle, copy.quoteSubtitle, null));
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
-    if (view.allDecided) shell.appendChild(notice("ok", copy.decidedTitle, copy.decidedBody, refreshButton(ctx, "", copy.checkAgain)));
+    if (view.allDecided) shell.appendChild(decidedNotice(ctx));
     if (!view.properties.length && !view.unreadableOrders) {
       shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
       return;
@@ -1761,10 +1894,33 @@
     return entries;
   }
 
+  function returnedNotice(ctx) {
+    var copy = ctx.copy;
+    var details = ctx.snapshot.view.details;
+    var returned = details.returned;
+    if (!returned.returned || !details.available) return null;
+    var held = ctx.snapshot.details.sent;
+    var marked = Object.keys(returned.fields).length > 0;
+    var processing = !marked && returned.processingFailed;
+    var title = processing ? copy.detailsProcessingTitle : copy.detailsReturnedTitle;
+    var lead = marked ? (held ? copy.detailsReturnedBody : copy.detailsReturnedReenter)
+      : processing ? (held ? copy.detailsProcessingBody : copy.detailsProcessingReenter)
+        : held ? copy.detailsReturnedUnknown : copy.detailsReturnedUnknownReenter;
+    var lines = [lead];
+    if (returned.unexplained && (marked || processing)) lines.push(copy.detailsReturnedUnexplained);
+    announce(ctx, [title].concat(lines));
+    var box = notice(processing ? "info" : "warn", title, lines, null, { quiet: true });
+    box.setAttribute("data-returned", marked ? "fields" : processing ? "processing" : "unexplained");
+    box.setAttribute("data-form", held ? "sent" : "fresh");
+    return box;
+  }
+
   function contractDetails(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.detailsEyebrow, copy.detailsTitle, copy.detailsSubtitle, null));
+    var returned = returnedNotice(ctx);
+    if (returned) shell.appendChild(returned);
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
     var approved = approvedEntries(view);
     if (approved.length) {
@@ -1784,6 +1940,35 @@
       shell.appendChild(section);
     }
     shell.appendChild(detailsForm(ctx));
+  }
+
+  function portalLink(ctx) {
+    return text("a", "btn btn--ghost", ctx.copy.portalOpen, { href: ctx.snapshot.portalUrl, rel: "noreferrer", "data-action": "portal.open" });
+  }
+
+  function portalBody(ctx, className) {
+    var email = ctx.snapshot.primaryEmail;
+    if (!email) return text("p", className, ctx.copy.portalBody);
+    var line = el("p", className);
+    ctx.copy.portalEmailBody.split("{email}").forEach(function (part, index) {
+      if (index > 0) line.appendChild(text("strong", "cr-portal__email", email));
+      if (part) line.appendChild(text("span", "", part));
+    });
+    return line;
+  }
+
+  function portalInvitation(ctx) {
+    var box = notice("info", ctx.copy.portalTitle, [portalBody(ctx, "cr-notice__text")], ctx.snapshot.portalUrl ? portalLink(ctx) : null);
+    box.setAttribute("data-portal", "invitation");
+    return box;
+  }
+
+  function portalAside(ctx, title, line) {
+    var aside = el("div", "cr-state__aside", { "data-portal": title ? "invitation" : "sign-in" });
+    if (title) aside.appendChild(text("h2", "cr-state__aside-title", title));
+    aside.appendChild(line);
+    if (ctx.snapshot.portalUrl) aside.appendChild(portalLink(ctx));
+    return aside;
   }
 
   function joinName(name, title) {
@@ -1841,6 +2026,13 @@
     return card;
   }
 
+  function clauseItem(block) {
+    var item = el("li", "cr-terms__clause", { "data-depth": String(Math.min(block.depth, 3)) });
+    item.appendChild(text("span", "cr-terms__number", block.number));
+    item.appendChild(text("span", "cr-terms__clause-text", block.text));
+    return item;
+  }
+
   function agreementPage(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
@@ -1850,9 +2042,9 @@
       : completion ? text("span", "status-badge status-badge--ok", view.completion === "active" ? copy.agreementActive : copy.agreementApproved)
         : null;
     var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle) : copy.agreementTitle;
-    var subtitle = completion ? copy.completeBody : reviewing ? copy.agreementSubtitle : "";
+    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody) : reviewing ? copy.agreementSubtitle : "";
     shell.appendChild(pageHead(ctx, copy.agreementEyebrow, title, subtitle, badgeNode));
-    if (completion && view.portalAccess) shell.appendChild(notice("ok", "", copy.completePortal, null));
+    if (completion) shell.appendChild(portalInvitation(ctx));
     if (view.kind === "reference") shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
 
@@ -1887,8 +2079,10 @@
     terms.appendChild(text("h2", "cr-section-title", copy.termsTitle, { id: "cr-terms-title" }));
     if (!term.terms.length) terms.appendChild(text("p", "cr-note", copy.termsEmpty));
     var list = null;
+    var clauses = null;
     term.terms.forEach(function (block) {
       if (block.kind === "item") {
+        clauses = null;
         if (!list) {
           list = el("ul", "cr-terms__list");
           terms.appendChild(list);
@@ -1897,6 +2091,15 @@
         return;
       }
       list = null;
+      if (block.kind === "clause") {
+        if (!clauses) {
+          clauses = el("ol", "cr-terms__clauses", { role: "list" });
+          terms.appendChild(clauses);
+        }
+        clauses.appendChild(clauseItem(block));
+        return;
+      }
+      clauses = null;
       terms.appendChild(text(block.kind === "heading" ? "h3" : "p", block.kind === "heading" ? "cr-terms__heading" : "cr-terms__paragraph", block.text));
     });
     shell.appendChild(terms);
@@ -1919,20 +2122,45 @@
       case "completion":
         agreementPage(shell, ctx);
         return;
+      case "checking":
+        shell.appendChild(checkingCard(ctx));
+        return;
       case "preparing":
-        shell.appendChild(stateCard("progress", "…", copy.preparingTitle, copy.preparingBody, null));
+        shell.appendChild(announcedCard(ctx, "progress", "…", copy.preparingTitle, copy.preparingBody, null));
         return;
       case "closed":
         shell.appendChild(view.reason === "archived"
-          ? stateCard("neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
-          : stateCard("neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
+          ? announcedCard(ctx, "neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
+          : announcedCard(ctx, "neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
         return;
       case "empty":
-        shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
+        shell.appendChild(announcedCard(ctx, "neutral", "○", copy.emptyTitle, copy.emptyBody, null));
         return;
       default:
-        shell.appendChild(stateCard("warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
+        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
     }
+  }
+
+  function checkingCard(ctx) {
+    var copy = ctx.copy;
+    var slow = ctx.snapshot.waiting.exhausted;
+    var title = slow ? copy.checkingSlowTitle : copy.checkingTitle;
+    var body = slow ? copy.checkingSlowBody : copy.checkingBody;
+    announce(ctx, [title, body]);
+    var card = stateCard("progress", slow ? "…" : "", title, body, slow ? refreshButton(ctx, "", copy.refreshLabel) : null, true);
+    card.setAttribute("data-checking", slow ? "slow" : "active");
+    return card;
+  }
+
+  function closedCard(ctx) {
+    var copy = ctx.copy;
+    var after = ctx.snapshot.closedAfter;
+    if (!after) {
+      var signIn = ctx.snapshot.portalUrl ? portalAside(ctx, "", text("p", "cr-state__aside-text", copy.linkClosedPortal)) : null;
+      return announcedCard(ctx, "neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, signIn);
+    }
+    var invitation = after === "approval" ? portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")) : null;
+    return announcedCard(ctx, "info", "i", copy.closedAfterTitle, after === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, invitation);
   }
 
   function renderPage(mount, snapshot, dispatch, copy) {
@@ -1941,6 +2169,7 @@
       dispatch: dispatch,
       copy: copy,
       focus: {},
+      announcement: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready",
     };
     var page = el("div", "cr-page", {
@@ -1961,12 +2190,10 @@
         shell.appendChild(stateCard("warn", "?", copy.linkMissingTitle, copy.linkMissingBody, null));
         break;
       case "link-closed":
-        shell.appendChild(snapshot.closedAfter
-          ? stateCard("info", "i", copy.closedAfterTitle, snapshot.closedAfter === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, null)
-          : stateCard("neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, null));
+        shell.appendChild(closedCard(ctx));
         break;
       case "error":
-        shell.appendChild(stateCard("error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
+        shell.appendChild(announcedCard(ctx, "error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
           button(copy.retryLabel, "btn--primary btn--lg", function () { dispatch("retry"); }, { "data-action": "retry" })));
         break;
       default:
@@ -1974,7 +2201,7 @@
     }
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus };
+    return { focus: ctx.focus, announcement: ctx.announcement };
   }
 
   ns.components = Object.freeze({
@@ -1989,6 +2216,15 @@
   var ns = global.ClientReview || (global.ClientReview = {});
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
+  var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+
+  function systemTimers() {
+    return {
+      set: function (callback, ms) { return global.setTimeout(callback, ms); },
+      clear: function (handle) { global.clearTimeout(handle); },
+    };
+  }
 
   function createController(options) {
     var settings = options || {};
@@ -1996,16 +2232,25 @@
     var copy = ns.withDefaults(settings.copy);
     var locale = settings.locale || "en";
     var mount = settings.mount || null;
+    var live = settings.live || null;
+    var timers = settings.timers || systemTimers();
+    var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
+    var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
     var listeners = [];
+    var stopped = false;
+    var poll = { timer: null, attempt: 0, exhausted: false };
     var state = {
       phase: settings.phase || "loading",
       view: null,
       closedAfter: "",
       errorAfterCommand: false,
+      retryContext: {},
+      primaryEmail: "",
+      followDecisions: false,
       refreshing: false,
       expanded: {},
       confirm: null,
@@ -2017,7 +2262,23 @@
     };
 
     function emptyDetails(agreementId) {
-      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false };
+      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false, returnPending: true, sent: false };
+    }
+
+    function checkingNow() {
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "checking";
+    }
+
+    function followingNow() {
+      return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
+    }
+
+    function waitingNow() {
+      return checkingNow() || followingNow();
+    }
+
+    function pageKey() {
+      return state.phase + ":" + (state.view ? state.view.kind : "");
     }
 
     function optionsOf(view) {
@@ -2092,12 +2353,20 @@
 
     function seedDetails() {
       var view = state.view;
-      if (!view || view.kind !== "contract-details" || state.details.seededFor === view.agreement.id) return;
-      var details = emptyDetails(view.agreement.id);
-      view.details.fields.forEach(function (field) {
-        details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+      if (!view || view.kind !== "contract-details") return;
+      if (state.details.seededFor !== view.agreement.id) {
+        var details = emptyDetails(view.agreement.id);
+        view.details.fields.forEach(function (field) {
+          details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+        });
+        state.details = details;
+      }
+      if (!state.details.returnPending) return;
+      state.details.returnPending = false;
+      var marked = view.details.returned.fields;
+      Object.keys(marked).forEach(function (code) {
+        state.details.serverErrors[code] = copy[RETURNED_COPY[marked[code]]] || copy.returnedMissing;
       });
-      state.details = details;
     }
 
     function prune() {
@@ -2113,6 +2382,52 @@
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
     }
 
+    function stopPolling() {
+      if (poll.timer !== null) timers.clear(poll.timer);
+      poll.timer = null;
+    }
+
+    function schedulePoll() {
+      stopPolling();
+      poll.timer = timers.set(function () {
+        poll.timer = null;
+        poll.attempt += 1;
+        load(Object.assign({ afterCommand: true, quiet: true }, readContext()));
+      }, delays[poll.attempt]);
+    }
+
+    function track() {
+      if (stopped) return;
+      if (!waitingNow()) {
+        stopPolling();
+        poll.attempt = 0;
+        poll.exhausted = false;
+        return;
+      }
+      if (poll.exhausted) return;
+      if (poll.attempt >= delays.length) {
+        poll.exhausted = true;
+        return;
+      }
+      schedulePoll();
+    }
+
+    function announces(before, after) {
+      if (before.phase !== "ready") return false;
+      var now = waitingNow();
+      if (before.waiting !== now || (now && poll.exhausted && !before.exhausted)) return true;
+      return Boolean(after.event) && before.page !== pageKey();
+    }
+
+    function speak(rendered) {
+      var message = rendered && rendered.announcement ? rendered.announcement : "";
+      if (live && message) live.textContent = message;
+    }
+
+    function readContext() {
+      return checkingNow() ? { afterCommand: true, closedAfter: "details" } : {};
+    }
+
     function load(context) {
       if (!adapter) {
         render();
@@ -2120,6 +2435,7 @@
       }
       if (loading) return loading;
       var after = context || {};
+      var before = { phase: state.phase, page: pageKey(), waiting: waitingNow(), exhausted: poll.exhausted };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -2128,22 +2444,34 @@
         state.phase = "ready";
         state.closedAfter = "";
         state.errorAfterCommand = false;
+        state.primaryEmail = state.view.primaryEmail || "";
+        if (after.event === contract.orderEvents.approve.code || after.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
+        if (after.event === contract.agreementEvents.details.code) {
+          state.details.returnPending = true;
+          state.details.sent = true;
+        }
         seedDetails();
         prune();
       }, function (error) {
+        var closed = Boolean(error && error.code === "link-closed");
+        if (after.quiet && !closed && waitingNow()) return;
         state.view = null;
         state.confirm = null;
-        if (error && error.code === "link-closed") {
+        if (closed) {
           state.phase = "link-closed";
           state.closedAfter = after.closedAfter || "";
         } else {
           state.phase = "error";
           state.errorAfterCommand = Boolean(after.afterCommand);
+          state.retryContext = { afterCommand: Boolean(after.afterCommand), closedAfter: after.closedAfter || "" };
         }
       }).then(function () {
         state.refreshing = false;
         loading = null;
-        render();
+        track();
+        var rendered = render();
+        if (announces(before, after)) speak(rendered);
       });
       return loading;
     }
@@ -2160,7 +2488,7 @@
       state.commands[recordKey] = { status: "pending", event: event, message: "" };
       render();
       var task = adapter.sendEvent(entity, id, event, metadata).then(function () {
-        return reload({ afterCommand: true, closedAfter: after.closedAfter || "" }).then(function () {
+        return reload({ afterCommand: true, closedAfter: after.closedAfter || "", event: event }).then(function () {
           delete state.commands[recordKey];
           if (typeof after.onSuccess === "function") after.onSuccess();
           render();
@@ -2291,11 +2619,11 @@
       var view = state.view;
       switch (type) {
         case "retry":
-          load({});
+          load(state.retryContext);
           return;
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
-          reload({});
+          reload(readContext());
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -2389,13 +2717,18 @@
         draftInvalid: state.draftInvalid,
         commands: state.commands,
         details: state.details,
+        waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
+        portalUrl: portalUrl,
+        primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
     }
 
     function render() {
+      if (stopped) return null;
+      var rendered = null;
       if (mount && ns.components) {
-        var rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
+        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
         var key = state.focusKey;
         state.focusKey = "";
         var target = key && rendered && rendered.focus ? rendered.focus[key] : null;
@@ -2403,6 +2736,12 @@
       }
       var current = snapshot();
       listeners.forEach(function (listener) { listener(current); });
+      return rendered;
+    }
+
+    function stop() {
+      stopped = true;
+      stopPolling();
     }
 
     function idle() {
@@ -2420,6 +2759,7 @@
 
     var controller = {
       start: start,
+      stop: stop,
       dispatch: dispatch,
       reload: reload,
       idle: idle,
@@ -2460,7 +2800,14 @@
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
-    var options = { mount: mount, copy: copyFromAttributes(section), locale: env.locale || displayLocale(env) };
+    var options = {
+      mount: mount,
+      live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
+      timers: env.timers,
+      portalUrl: section.getAttribute("data-review-portal-url"),
+      copy: copyFromAttributes(section),
+      locale: env.locale || displayLocale(env),
+    };
     var steps = [];
     if (dataMode === "fixture") {
       var setup = ns.fixtures && typeof ns.fixtures.setup === "function" ? ns.fixtures.setup(env.scenario) : null;
@@ -2469,6 +2816,8 @@
       } else {
         options.adapter = setup.adapter || null;
         if (setup.phase) options.phase = setup.phase;
+        if (setup.portalUrl) options.portalUrl = setup.portalUrl;
+        if (setup.pollDelays) options.pollDelays = setup.pollDelays;
         steps = setup.steps || [];
       }
     } else {
@@ -2487,6 +2836,7 @@
   }
 
   ns.createController = createController;
+  ns.checkingDelays = Object.freeze(CHECKING_DELAYS.slice());
   ns.boot = boot;
 })(typeof window !== "undefined" ? window : globalThis);
 (function () {

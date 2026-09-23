@@ -13,6 +13,8 @@ const defaultOutputDir = path.join(distRoot, "client-review-document");
 const reviewRoot = path.join(portalRoot, "runtime/client-review");
 const rootCode = "CLIENT_REVIEW_DOCUMENT";
 const apiBaseCode = "REVIEW_API_BASE_URL";
+const portalUrlCode = "PORTAL_URL";
+const urlValidators = { [apiBaseCode]: "safeApiBase", [portalUrlCode]: "safePortalUrl" };
 const styleFiles = ["tokens.css", "base.css", "components.css"];
 export const runtimeFiles = ["copy.js", "core-contract.js", "adapter.js", "normalizer.js", "components.js", "controller.js"];
 export const previewOnlyFiles = ["fixtures.js"];
@@ -36,6 +38,7 @@ export async function exportClientReviewManual(options = {}) {
   const contract = contractOf(runtimeJs);
   const css = portalCss.concat([reviewCss]).map((source) => source.trim()).concat([documentCss()]).join("\n\n");
   const template = templateFor(css, runtimeJs + "\n" + bootScript(), contract.copy);
+  assertUrlDefaults(template, contract);
   assertJteSafeTemplate(template);
   assertNoScriptTerminator(template.javascript);
   assertPrintable({ head: template.head, html: template.html, css: template.css, javascript: template.javascript, fixtures: fixtures.join("\n") });
@@ -68,7 +71,19 @@ function contractOf(runtimeJs) {
     copy: review.copyEntries.map((entry) => ({ code: entry[0], key: entry[1], value: entry[2] })),
     grant: JSON.parse(JSON.stringify(review.adapter.contract)),
     core: JSON.parse(JSON.stringify(review.contract)),
+    checkingDelays: JSON.parse(JSON.stringify(review.checkingDelays)),
+    acceptsUrl: (code, value) => review.adapter[urlValidators[code]](value) === value,
   };
+}
+
+function assertUrlDefaults(template, contract) {
+  for (const code of Object.keys(urlValidators)) {
+    const parameter = template.parameters.find((entry) => entry.code === code);
+    if (!parameter || parameter.type !== "STRING") throw new Error(code + " must be a STRING parameter of the document");
+    if (parameter.value !== "" && !contract.acceptsUrl(code, parameter.value)) {
+      throw new Error("Refusing to export " + code + " with a default the page would discard: " + parameter.value);
+    }
+  }
 }
 
 function documentCss() {
@@ -83,6 +98,7 @@ function templateFor(css, javascript, copy) {
     id: "client-review-root",
     "data-review-data-mode": "live",
     "data-review-api-base": ref(apiBaseCode, "STRING"),
+    "data-review-portal-url": ref(portalUrlCode, "STRING"),
   };
   copy.forEach((entry) => { attributes["data-copy-" + kebab(entry.key)] = ref(entry.code); });
   return {
@@ -102,11 +118,13 @@ function templateFor(css, javascript, copy) {
       '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;530;600;700;800&display=swap" rel="stylesheet">',
     ].join("\n"),
-    html: "<section " + attrs(attributes) + ">\n  <div data-client-review-mount></div>\n</section>",
+    html: "<section " + attrs(attributes) + ">\n  <div data-client-review-mount></div>\n"
+      + "  <p class=\"cr-visually-hidden\" role=\"status\" aria-live=\"polite\" aria-atomic=\"true\" data-client-review-live></p>\n</section>",
     css,
     javascript,
     parameters: [
       field(apiBaseCode, "", "STRING", "Absolute https origin of the Core deployment with no path, for example https://dev-1.servicewand.com. Any other value is discarded and the page reports that it is not set up. The link token is read only from the #token= fragment of the address the client opens; no token, account or customer value is configured here."),
+      field(portalUrlCode, "", "STRING", "Absolute https address of the customer portal, for example https://portal.example.com/. When set, an approved agreement and a closed link offer an Open the customer portal button that links to it; while empty, the page explains portal access without a button. Any other value is discarded and no button shows. It is only linked to: no account, user or token value is configured here."),
     ].concat(copy.map((entry) => field(entry.code, entry.value, "LOCALIZED_STRING_SS", copyDescription(entry.code, entry.value)))),
   };
 }
@@ -163,6 +181,7 @@ function manifestFor(template, contract) {
       dataMode: "live",
       theme: "snow",
       colorMode: "prefers-color-scheme",
+      checkingDelaysMs: contract.checkingDelays,
     },
     api: {
       introspect: "POST {apiBase}/" + grant.introspect.service + "/i/{token}/" + grant.introspect.tail,
@@ -196,8 +215,9 @@ function manifestFor(template, contract) {
         core.agreementAttributes.providerRepresentativeName,
         core.agreementAttributes.providerRepresentativeJobTitle,
         core.agreementAttributes.terms,
+        core.agreementAttributes.detailsErrors,
       ].concat(core.contractDetails.attributes.map((attribute) => attribute.code)),
-      accountUser: core.rawShape.accountUser,
+      accountPrimaryEmail: "contacts[type PRIMARY].contactEntries[type EMAIL].value, shown only when exactly one is returned",
     },
     verified: [
       "On 2026-09-21 a fresh dev-1 grant returned Document, Account, Order, OrderItem, ProductPrice and Product through their anonymous service endpoints, with canRead true in introspection.",
@@ -207,10 +227,14 @@ function manifestFor(template, contract) {
     unverified: [
       "Event metadata reaches the workflow hook, and required event attributes are enforced on this path (QUOTATION-PACKAGE-FLOW.md §9).",
       "The generated CLIENT_REVIEW_DOCUMENT package still needs a production CMS upload and browser acceptance with a fresh real link.",
+      "The checking state, a returned details step and the portal invitation have not been exercised against dev-1. CLIENT_DETAILS_ERRORS is read as the details processor seed writes it, and whether the link's Account profile returns contacts with their EMAIL entries is unverified; without them the invitation names no address.",
     ],
     constraints: [
       "REVIEW_API_BASE_URL must be an absolute https origin without a path. Until it is set the page reports that it is not set up and sends nothing.",
+      "PORTAL_URL ships empty. When it is an absolute https address, the completion states, the closed-after-approval state and a closed link offer an Open the customer portal link to it; any other value is discarded and no link shows. The portal access text itself never depends on Account.user.",
       "Every other parameter is copy. No token, account, order, document or customer value is a parameter.",
+      "While the agreement is CLIENT_DETAILS_RECEIVED the page re-reads it one read at a time after " + contract.checkingDelays.map((ms) => ms / 1000).join(", ") + " s, then says the check is taking longer than usual and offers Refresh status. It stops re-reading as soon as the agreement leaves that state.",
+      "CLIENT_DETAILS_ERRORS reaches the client only as copy: a known code marks its field, PROCESSING_FAILED has its own notice, and an unknown code adds a generic line, never the code.",
       "The document ships in live data mode with no fixtures. A data mode other than live finds no fixtures and reports that it is not set up; it never shows demonstration data.",
       "Money is shown only as the server returns it: unit price as amount, quantity as itemCount, subtotal as totalCharges, taxes as totalTaxes and option total as grandTotal. A field the server does not return has no row; nothing is summed or multiplied in the browser.",
       "Every command is single-flight per record and renders only the state read back afterwards; a refusal shows the server message and assumes nothing.",
@@ -267,6 +291,7 @@ function readme(packageData) {
     "| parameter | meaning |",
     "| --- | --- |",
     "| `" + apiBaseCode + "` | absolute https origin of the Core deployment, without a path |",
+    "| `" + portalUrlCode + "` | optional absolute https address of the customer portal; empty shows no portal button |",
     "",
     "Every other parameter is copy. The client opens the page with `#token=` in the address; the token is never a parameter.",
     "",

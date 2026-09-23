@@ -626,6 +626,24 @@ button { font-family: inherit; }
 
 .cr-state .btn { margin-top: 8px; }
 
+.cr-state[data-checking="active"] .cr-state__glyph::after {
+  content: ""; width: 22px; height: 22px; box-sizing: border-box; border-radius: var(--radius-pill);
+  border: 2.5px solid rgba(var(--accent-rgb), .22); border-top-color: var(--accent);
+  animation: cr-spin .8s linear infinite;
+}
+
+.cr-state__aside {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  width: 100%; max-width: 50ch; box-sizing: border-box;
+  margin-top: 14px; padding-top: 18px; border-top: 1px solid rgba(var(--hair), .08);
+}
+
+.cr-state__aside-title { margin: 0; font-size: 15px; font-weight: 750; letter-spacing: -.005em; }
+
+.cr-state__aside-text { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+
+.cr-portal__email { font-weight: 700; color: var(--ink); overflow-wrap: anywhere; }
+
 .cr-notice {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   padding: 13px 15px; border-radius: 16px;
@@ -645,6 +663,12 @@ button { font-family: inherit; }
 
 .cr-notice--ok .cr-notice__icon { color: var(--ok); }
 
+.cr-notice__icon--busy::after {
+  content: ""; width: 14px; height: 14px; box-sizing: border-box; border-radius: var(--radius-pill);
+  border: 2px solid rgba(var(--hair), .12); border-top-color: currentColor;
+  animation: cr-spin .8s linear infinite;
+}
+
 .cr-notice__body { flex: 1 1 240px; min-width: 0; }
 
 .cr-notice__title { margin: 0; font-size: 14px; font-weight: 700; }
@@ -652,6 +676,8 @@ button { font-family: inherit; }
 .cr-notice__text { margin: 2px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
 
 .cr-notice__title + .cr-notice__text { margin-top: 2px; }
+
+.cr-notice__text + .cr-notice__text { margin-top: 6px; }
 
 .cr-notice .btn { flex: none; }
 
@@ -952,6 +978,22 @@ button { font-family: inherit; }
 
 .cr-terms__list li + li { margin-top: 4px; }
 
+.cr-terms__clauses { list-style: none; margin: 0 0 10px; padding: 0; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); }
+
+.cr-terms__clause { display: grid; grid-template-columns: minmax(2em, max-content) minmax(0, 1fr); column-gap: .55em; }
+
+.cr-terms__clause + .cr-terms__clause { margin-top: 4px; }
+
+.cr-terms__clause + .cr-terms__clause[data-depth="1"] { margin-top: 12px; }
+
+.cr-terms__clause[data-depth="2"] { padding-left: 2.55em; }
+
+.cr-terms__clause[data-depth="3"] { padding-left: 5.1em; }
+
+.cr-terms__number { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.cr-terms__clause-text { min-width: 0; white-space: pre-line; overflow-wrap: anywhere; }
+
 .cr-skeleton { display: flex; flex-direction: column; gap: 16px; }
 
 .cr-skeleton__bar { display: block; border-radius: 8px; }
@@ -1004,11 +1046,13 @@ button { font-family: inherit; }
   .cr-lines td.cr-num { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--ink-2); }
   .cr-lines td.cr-num::before { content: attr(data-label); font-size: 12px; color: var(--ink-3); }
   .cr-lines__service { margin-bottom: 4px; font-size: 14px; }
+  .cr-terms__clause[data-depth="2"] { padding-left: 1.2em; }
+  .cr-terms__clause[data-depth="3"] { padding-left: 2.4em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cr-option__chevron, .cr-input, .cr-check, .cr-page[aria-busy="true"] .cr-property { transition: none; }
-  .cr-note--pending::before { animation: none; }
+  .cr-note--pending::before, .cr-state[data-checking="active"] .cr-state__glyph::after, .cr-notice__icon--busy::after { animation: none; }
 }
 
 html, body { min-height: 100%; }
@@ -1019,6 +1063,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 <section id="client-review-root"
   data-review-data-mode="fixture"
   data-review-api-base=""
+  data-review-portal-url=""
   data-copy-document-title="Your quotation and agreement"
   data-copy-loading-label="Loading your quotation"
   data-copy-from-label="From"
@@ -1092,6 +1137,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-account-partial="Your account details could not be loaded, so nothing is filled in for you."
   data-copy-decided-title="Every property has a decision"
   data-copy-decided-body="The provider opens the next step once its system has processed your decisions."
+  data-copy-decided-following-body="The provider's system is processing your decisions. This page updates on its own."
   data-copy-check-again="Check again"
   data-copy-details-eyebrow="Contract details"
   data-copy-details-title="Complete your contract details"
@@ -1107,6 +1153,23 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-select-placeholder="Choose one"
   data-copy-confirm-information-statement="I confirm that the information above is accurate."
   data-copy-confirm-authority-statement="I confirm that I am authorized to enter into this agreement on behalf of the client."
+  data-copy-details-returned-title="Your details came back"
+  data-copy-details-returned-body="The provider's system could not accept them. Fix the marked fields and send your details again."
+  data-copy-details-returned-reenter="The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."
+  data-copy-details-returned-unknown="The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."
+  data-copy-details-returned-unknown-reenter="The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."
+  data-copy-details-returned-unexplained="The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."
+  data-copy-details-processing-title="Your details were not saved"
+  data-copy-details-processing-body="Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."
+  data-copy-details-processing-reenter="Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."
+  data-copy-returned-missing="This was missing from the details you sent."
+  data-copy-returned-unconfirmed="This confirmation was missing from the details you sent."
+  data-copy-returned-choice="The choice you sent was not recognized. Choose one of the options."
+  data-copy-returned-email="The email address you sent was not accepted. Enter a valid email address."
+  data-copy-checking-title="We are checking your details"
+  data-copy-checking-body="The provider's system received your details and is checking them. This page updates on its own."
+  data-copy-checking-slow-title="This is taking longer than usual"
+  data-copy-checking-slow-body="The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."
   data-copy-agreement-eyebrow="Service agreement"
   data-copy-agreement-title="Review your service agreement"
   data-copy-agreement-subtitle="Read the parties, services and terms below, then approve the agreement."
@@ -1138,7 +1201,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-complete-approved-title="Agreement approved"
   data-copy-complete-active-title="Agreement active"
   data-copy-complete-body="The provider's system has recorded your approval."
-  data-copy-complete-portal="A customer portal account is linked to this client."
+  data-copy-complete-finishing-body="The provider's system has recorded your approval. The provider is finishing setting up your account; nothing is needed from you."
+  data-copy-portal-title="Your customer portal access"
+  data-copy-portal-email-body="You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."
+  data-copy-portal-body="You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."
+  data-copy-portal-open="Open the customer portal"
   data-copy-preparing-title="Your agreement is being prepared"
   data-copy-preparing-body="Nothing is needed from you on this page right now."
   data-copy-canceled-title="This quotation is closed"
@@ -1151,6 +1218,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-link-missing-body="Open the full link from your email. Nothing can be shown without it."
   data-copy-link-closed-title="This link has expired or was withdrawn"
   data-copy-link-closed-body="Ask the provider to send you a new link."
+  data-copy-link-closed-portal="If you already have customer portal access, you can sign in there."
   data-copy-closed-after-title="This link is now closed"
   data-copy-closed-after-details-body="It closed after your details were sent. The provider closes it when the details step ends."
   data-copy-closed-after-approval-body="It closed after your approval was sent. The provider closes it when the agreement review ends."
@@ -1163,6 +1231,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   data-copy-unconfigured-title="This page is not set up yet"
   data-copy-unconfigured-body="Its connection to the provider's system is missing.">
   <div data-client-review-mount></div>
+  <p class="cr-visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-client-review-live></p>
 </section>
 <script>
 (function (global) {
@@ -1245,6 +1314,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["ACCOUNT_PARTIAL", "accountPartial", "Your account details could not be loaded, so nothing is filled in for you."],
     ["DECIDED_TITLE", "decidedTitle", "Every property has a decision"],
     ["DECIDED_BODY", "decidedBody", "The provider opens the next step once its system has processed your decisions."],
+    ["DECIDED_FOLLOWING_BODY", "decidedFollowingBody", "The provider's system is processing your decisions. This page updates on its own."],
     ["CHECK_AGAIN", "checkAgain", "Check again"],
 
     ["DETAILS_EYEBROW", "detailsEyebrow", "Contract details"],
@@ -1261,6 +1331,23 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["SELECT_PLACEHOLDER", "selectPlaceholder", "Choose one"],
     ["CONFIRM_INFORMATION_STATEMENT", "confirmInformationStatement", "I confirm that the information above is accurate."],
     ["CONFIRM_AUTHORITY_STATEMENT", "confirmAuthorityStatement", "I confirm that I am authorized to enter into this agreement on behalf of the client."],
+    ["DETAILS_RETURNED_TITLE", "detailsReturnedTitle", "Your details came back"],
+    ["DETAILS_RETURNED_BODY", "detailsReturnedBody", "The provider's system could not accept them. Fix the marked fields and send your details again."],
+    ["DETAILS_RETURNED_REENTER", "detailsReturnedReenter", "The provider's system could not accept the details you sent, and this page cannot show them again. Enter your details again and send them; the marked fields are why they came back."],
+    ["DETAILS_RETURNED_UNKNOWN", "detailsReturnedUnknown", "The provider's system could not accept them, for a reason this page cannot show. Check your details and send them again, or contact the provider."],
+    ["DETAILS_RETURNED_UNKNOWN_REENTER", "detailsReturnedUnknownReenter", "The provider's system could not accept the details you sent, and this page can show neither the reason nor your details. Enter your details again and send them, or contact the provider."],
+    ["DETAILS_RETURNED_UNEXPLAINED", "detailsReturnedUnexplained", "The provider's system also reported a problem this page cannot show. Contact the provider if your details come back again."],
+    ["DETAILS_PROCESSING_TITLE", "detailsProcessingTitle", "Your details were not saved"],
+    ["DETAILS_PROCESSING_BODY", "detailsProcessingBody", "Nothing was wrong with what you entered: the provider's system could not save it. Check the form and send your details again."],
+    ["DETAILS_PROCESSING_REENTER", "detailsProcessingReenter", "Nothing was wrong with the details you sent, but the provider's system could not save them and this page cannot show them again. Enter your details again and send them."],
+    ["RETURNED_MISSING", "returnedMissing", "This was missing from the details you sent."],
+    ["RETURNED_UNCONFIRMED", "returnedUnconfirmed", "This confirmation was missing from the details you sent."],
+    ["RETURNED_CHOICE", "returnedChoice", "The choice you sent was not recognized. Choose one of the options."],
+    ["RETURNED_EMAIL", "returnedEmail", "The email address you sent was not accepted. Enter a valid email address."],
+    ["CHECKING_TITLE", "checkingTitle", "We are checking your details"],
+    ["CHECKING_BODY", "checkingBody", "The provider's system received your details and is checking them. This page updates on its own."],
+    ["CHECKING_SLOW_TITLE", "checkingSlowTitle", "This is taking longer than usual"],
+    ["CHECKING_SLOW_BODY", "checkingSlowBody", "The provider's system received your details but has not finished checking them. Refresh the status in a minute, or open this link again later."],
 
     ["AGREEMENT_EYEBROW", "agreementEyebrow", "Service agreement"],
     ["AGREEMENT_TITLE", "agreementTitle", "Review your service agreement"],
@@ -1294,7 +1381,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["COMPLETE_APPROVED_TITLE", "completeApprovedTitle", "Agreement approved"],
     ["COMPLETE_ACTIVE_TITLE", "completeActiveTitle", "Agreement active"],
     ["COMPLETE_BODY", "completeBody", "The provider's system has recorded your approval."],
-    ["COMPLETE_PORTAL", "completePortal", "A customer portal account is linked to this client."],
+    ["COMPLETE_FINISHING_BODY", "completeFinishingBody", "The provider's system has recorded your approval. The provider is finishing setting up your account; nothing is needed from you."],
+    ["PORTAL_TITLE", "portalTitle", "Your customer portal access"],
+    ["PORTAL_EMAIL_BODY", "portalEmailBody", "You sign in with {email}. If you have no portal password yet, the provider's system emails one to this address once your access is ready. If you already have a portal password, it stays the same."],
+    ["PORTAL_BODY", "portalBody", "You sign in with the primary email address on your account. If you have no portal password yet, the provider's system emails one to that address once your access is ready. If you already have a portal password, it stays the same."],
+    ["PORTAL_OPEN", "portalOpen", "Open the customer portal"],
 
     ["PREPARING_TITLE", "preparingTitle", "Your agreement is being prepared"],
     ["PREPARING_BODY", "preparingBody", "Nothing is needed from you on this page right now."],
@@ -1308,6 +1399,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
     ["LINK_CLOSED_BODY", "linkClosedBody", "Ask the provider to send you a new link."],
+    ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
     ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
     ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
     ["CLOSED_AFTER_APPROVAL_BODY", "closedAfterApprovalBody", "It closed after your approval was sent. The provider closes it when the agreement review ends."],
@@ -1406,7 +1498,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
-      "CLIENT_APPROVED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
+      "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
     ],
     orderEvents: {
       view: { code: "QUOTE_SENT-QUOTE_VIEWED", source: "QUOTE_SENT" },
@@ -1427,7 +1519,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     rawShape: {
       orderLines: "items",
       documentOwner: "organization",
-      accountUser: "user",
     },
     agreementAttributes: {
       client: "CLIENT",
@@ -1439,6 +1530,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       providerLegalName: "PROVIDER_LEGAL_NAME",
       providerRepresentativeName: "PROVIDER_REPRESENTATIVE_NAME",
       providerRepresentativeJobTitle: "PROVIDER_REPRESENTATIVE_JOB_TITLE",
+      detailsErrors: "CLIENT_DETAILS_ERRORS",
+    },
+    detailsReturn: {
+      processingFailed: "PROCESSING_FAILED",
+      invalid: {
+        CLIENT_TYPE_INVALID: { field: "CLIENT_TYPE", reason: "choice" },
+        REPRESENTATIVE_EMAIL_INVALID: { field: "REPRESENTATIVE_EMAIL", reason: "email" },
+      },
     },
     contractDetails: {
       event: "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED",
@@ -1531,6 +1630,19 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (url.protocol !== "https:" || url.username || url.password || url.search || url.hash) return "";
     if (url.pathname && url.pathname !== "/") return "";
     return url.origin;
+  }
+
+  function safePortalUrl(value) {
+    var text = String(value == null ? "" : value).trim();
+    if (!text) return "";
+    var url;
+    try {
+      url = new URL(text);
+    } catch (_) {
+      return "";
+    }
+    if (url.protocol !== "https:" || url.username || url.password) return "";
+    return url.href;
   }
 
   function clip(value) {
@@ -1680,6 +1792,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     createGrantAdapter: createGrantAdapter,
     tokenFromFragment: tokenFromFragment,
     safeApiBase: safeApiBase,
+    safePortalUrl: safePortalUrl,
     reviewError: reviewError,
     refusalMessage: refusalMessage,
     fieldErrorsOf: fieldErrorsOf,
@@ -1709,13 +1822,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     QUOTATION_SENT: { kind: "quote-review" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
-    CLIENT_DETAILS_RECEIVED: { kind: "preparing" },
+    CLIENT_DETAILS_RECEIVED: { kind: "checking" },
     DRAFT: { kind: "preparing" },
     PENDING_MANAGEMENT_APPROVAL: { kind: "preparing" },
     INTERNALLY_APPROVED: { kind: "preparing" },
     SENT_TO_CLIENT: { kind: "agreement-review" },
     AGREEMENT_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     CLIENT_APPROVED: { kind: "completion", completion: "approved" },
+    ACTIVATION_FAILED: { kind: "completion", completion: "finishing" },
     ACTIVE: { kind: "completion", completion: "active" },
     SUSPENDED: { kind: "reference", banner: "suspended" },
     EXPIRED: { kind: "reference", banner: "expired" },
@@ -1924,6 +2038,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var blocks = [];
     source.split(/\n[ \t]*\n+/).forEach(function (chunk) {
       var paragraph = [];
+      var clause = null;
       function flush() {
         if (paragraph.length) blocks.push({ kind: "paragraph", text: paragraph.join("\n") });
         paragraph = [];
@@ -1933,12 +2048,21 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         if (!trimmed) return;
         var heading = /^#{1,6}\s+(.+)$/.exec(trimmed);
         var item = /^[-*•]\s+(.+)$/.exec(trimmed);
+        var numbered = heading || item ? null : clauseOf(trimmed);
         if (heading) {
           flush();
+          clause = null;
           blocks.push({ kind: "heading", text: heading[1] });
         } else if (item) {
           flush();
+          clause = null;
           blocks.push({ kind: "item", text: item[1] });
+        } else if (numbered) {
+          flush();
+          clause = numbered;
+          blocks.push(clause);
+        } else if (clause) {
+          clause.text += "\n" + trimmed;
         } else {
           paragraph.push(trimmed);
         }
@@ -1946,6 +2070,43 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       flush();
     });
     return blocks;
+  }
+
+  function clauseOf(line) {
+    var match = /^(\d{1,3}(?:\.\d{1,3})*)([.)]?)\s+(.+)$/.exec(line);
+    if (!match || (!match[2] && match[1].indexOf(".") === -1)) return null;
+    return { kind: "clause", number: match[1] + match[2], depth: match[1].split(".").length, text: match[3] };
+  }
+
+  function owns(map, key) {
+    return Boolean(map) && Object.prototype.hasOwnProperty.call(map, key);
+  }
+
+  function returnedDetails(value, fields, vocabulary) {
+    var source = Array.isArray(value) ? value : typeof value === "string" ? value.split(",") : [];
+    var codes = [];
+    source.forEach(function (entry) {
+      var code = text(entry);
+      if (code && codes.indexOf(code) === -1) codes.push(code);
+    });
+    var kinds = {};
+    fields.forEach(function (field) { kinds[field.code] = field.kind; });
+    var result = { returned: codes.length > 0, processingFailed: false, unexplained: false, fields: {} };
+    codes.forEach(function (code) {
+      if (code === vocabulary.processingFailed) {
+        result.processingFailed = true;
+        return;
+      }
+      var invalid = owns(vocabulary.invalid, code) ? vocabulary.invalid[code] : null;
+      var field = invalid ? invalid.field : code;
+      if (!owns(kinds, field)) {
+        result.unexplained = true;
+        return;
+      }
+      if (owns(result.fields, field)) return;
+      result.fields[field] = invalid ? invalid.reason : kinds[field] === "boolean" ? "unconfirmed" : "missing";
+    });
+    return result;
   }
 
   function inputTokens(inputFormat) {
@@ -2011,6 +2172,18 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       return entry && text(entry.type && entry.type.code).toUpperCase() === typeCode && text(entry.value);
     })[0];
     return found ? text(found.value) : "";
+  }
+
+  function primaryEmail(account) {
+    var found = [];
+    (account && Array.isArray(account.contacts) ? account.contacts : []).forEach(function (contact) {
+      if (!contact || typeof contact !== "object" || text(contact.type && contact.type.code).toUpperCase() !== "PRIMARY") return;
+      (Array.isArray(contact.contactEntries) ? contact.contactEntries : []).forEach(function (entry) {
+        var value = entry && text(entry.type && entry.type.code).toUpperCase() === "EMAIL" ? text(entry.value) : "";
+        if (value) found.push(value);
+      });
+    });
+    return found.length === 1 ? found[0] : "";
   }
 
   function formatAddress(address, locale) {
@@ -2283,7 +2456,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (state === "QUOTATION_SENT") grantActions(properties, grant, contract);
     var detailsEvent = contract.agreementEvents.details;
     var approveEvent = contract.agreementEvents.approve;
-    var user = account ? account[contract.rawShape.accountUser] : null;
+    var awaitingDetails = state === detailsEvent.source;
 
     return {
       kind: disposition.kind,
@@ -2313,12 +2486,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       unreadableOrders: unreadable,
       accountUnavailable: Boolean(input.accountFailed),
       details: {
-        available: state === detailsEvent.source && eventGranted(grant, "document", agreementId, detailsEvent.code),
+        available: awaitingDetails && eventGranted(grant, "document", agreementId, detailsEvent.code),
         fields: fields,
         prefill: detailsPrefill(account, fields, locale),
+        returned: returnedDetails(awaitingDetails ? attributeValue(agreement, contract.agreementAttributes.detailsErrors) : null, fields, contract.detailsReturn),
       },
       canApproveAgreement: state === approveEvent.source && eventGranted(grant, "document", agreementId, approveEvent.code),
-      portalAccess: Boolean(user && typeof user === "object" && positiveInteger(user.id)),
+      primaryEmail: primaryEmail(account),
     };
   }
 
@@ -2337,6 +2511,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     formatQuantity: formatQuantity,
     formatDate: formatDate,
     termsBlocks: termsBlocks,
+    returnedDetails: returnedDetails,
+    primaryEmail: primaryEmail,
     detailFields: detailFields,
     detailsPrefill: detailsPrefill,
     pickAgreement: pickAgreement,
@@ -2438,8 +2614,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return Boolean(command && command.status === "pending");
   }
 
-  function stateCard(tone, glyph, title, body, action) {
-    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: tone === "error" ? "alert" : "status" });
+  function announce(ctx, parts) {
+    ctx.announcement = parts.filter(Boolean).map(function (part) { return /[.!?…:]$/.test(part) ? part : part + "."; }).join(" ");
+  }
+
+  function stateCard(tone, glyph, title, body, action, quiet) {
+    var card = el("section", "cr-panel cr-state cr-state--" + tone, { "data-state": tone, role: quiet ? null : tone === "error" ? "alert" : "status" });
     card.appendChild(text("div", "cr-state__glyph", glyph, { "aria-hidden": "true" }));
     card.appendChild(text("h1", "cr-state__title", title));
     if (body) card.appendChild(text("p", "cr-state__body", body));
@@ -2447,12 +2627,22 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return card;
   }
 
-  function notice(tone, title, body, action) {
-    var box = el("div", "cr-notice cr-notice--" + tone, { role: "status", "data-state": tone });
-    box.appendChild(text("span", "cr-notice__icon", tone === "ok" ? "✓" : tone === "warn" ? "!" : "i", { "aria-hidden": "true" }));
+  function announcedCard(ctx, tone, glyph, title, body, action) {
+    announce(ctx, [title, body]);
+    return stateCard(tone, glyph, title, body, action);
+  }
+
+  function notice(tone, title, body, action, options) {
+    var settings = options || {};
+    var box = el("div", "cr-notice cr-notice--" + tone, { role: settings.quiet ? null : "status", "data-state": tone });
+    var glyph = settings.busy ? "" : tone === "ok" ? "✓" : tone === "warn" ? "!" : "i";
+    box.appendChild(text("span", "cr-notice__icon" + (settings.busy ? " cr-notice__icon--busy" : ""), glyph, { "aria-hidden": "true" }));
     var content = el("div", "cr-notice__body");
     if (title) content.appendChild(text("p", "cr-notice__title", title));
-    if (body) content.appendChild(text("p", "cr-notice__text", body));
+    (Array.isArray(body) ? body : [body]).forEach(function (line) {
+      if (!line) return;
+      content.appendChild(typeof line === "string" ? text("p", "cr-notice__text", line) : line);
+    });
     box.appendChild(content);
     if (action) box.appendChild(action);
     return box;
@@ -2507,6 +2697,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     head.appendChild(top);
     head.appendChild(text("h1", "cr-title", title));
     if (subtitle) head.appendChild(text("p", "cr-sub", subtitle));
+    announce(ctx, [title, subtitle]);
     var meta = el("dl", "cr-meta");
     [[copy.fromLabel, view.names && view.names.provider], [copy.forLabel, view.names && view.names.client]].forEach(function (entry) {
       if (!entry[1]) return;
@@ -2764,13 +2955,24 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return card;
   }
 
+  function decidedNotice(ctx) {
+    var copy = ctx.copy;
+    var waiting = ctx.snapshot.waiting;
+    var following = waiting.decisions && !waiting.exhausted;
+    var body = following ? copy.decidedFollowingBody : copy.decidedBody;
+    announce(ctx, [copy.decidedTitle, body]);
+    var box = notice("ok", copy.decidedTitle, body, following ? null : refreshButton(ctx, "", copy.checkAgain), { quiet: waiting.decisions, busy: following });
+    box.setAttribute("data-decided", following ? "following" : "settled");
+    return box;
+  }
+
   function quoteReview(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.quoteEyebrow, copy.quoteTitle, copy.quoteSubtitle, null));
     shell.appendChild(summary(ctx));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
-    if (view.allDecided) shell.appendChild(notice("ok", copy.decidedTitle, copy.decidedBody, refreshButton(ctx, "", copy.checkAgain)));
+    if (view.allDecided) shell.appendChild(decidedNotice(ctx));
     if (!view.properties.length && !view.unreadableOrders) {
       shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
       return;
@@ -2928,10 +3130,33 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return entries;
   }
 
+  function returnedNotice(ctx) {
+    var copy = ctx.copy;
+    var details = ctx.snapshot.view.details;
+    var returned = details.returned;
+    if (!returned.returned || !details.available) return null;
+    var held = ctx.snapshot.details.sent;
+    var marked = Object.keys(returned.fields).length > 0;
+    var processing = !marked && returned.processingFailed;
+    var title = processing ? copy.detailsProcessingTitle : copy.detailsReturnedTitle;
+    var lead = marked ? (held ? copy.detailsReturnedBody : copy.detailsReturnedReenter)
+      : processing ? (held ? copy.detailsProcessingBody : copy.detailsProcessingReenter)
+        : held ? copy.detailsReturnedUnknown : copy.detailsReturnedUnknownReenter;
+    var lines = [lead];
+    if (returned.unexplained && (marked || processing)) lines.push(copy.detailsReturnedUnexplained);
+    announce(ctx, [title].concat(lines));
+    var box = notice(processing ? "info" : "warn", title, lines, null, { quiet: true });
+    box.setAttribute("data-returned", marked ? "fields" : processing ? "processing" : "unexplained");
+    box.setAttribute("data-form", held ? "sent" : "fresh");
+    return box;
+  }
+
   function contractDetails(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
     shell.appendChild(pageHead(ctx, copy.detailsEyebrow, copy.detailsTitle, copy.detailsSubtitle, null));
+    var returned = returnedNotice(ctx);
+    if (returned) shell.appendChild(returned);
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
     var approved = approvedEntries(view);
     if (approved.length) {
@@ -2951,6 +3176,35 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       shell.appendChild(section);
     }
     shell.appendChild(detailsForm(ctx));
+  }
+
+  function portalLink(ctx) {
+    return text("a", "btn btn--ghost", ctx.copy.portalOpen, { href: ctx.snapshot.portalUrl, rel: "noreferrer", "data-action": "portal.open" });
+  }
+
+  function portalBody(ctx, className) {
+    var email = ctx.snapshot.primaryEmail;
+    if (!email) return text("p", className, ctx.copy.portalBody);
+    var line = el("p", className);
+    ctx.copy.portalEmailBody.split("{email}").forEach(function (part, index) {
+      if (index > 0) line.appendChild(text("strong", "cr-portal__email", email));
+      if (part) line.appendChild(text("span", "", part));
+    });
+    return line;
+  }
+
+  function portalInvitation(ctx) {
+    var box = notice("info", ctx.copy.portalTitle, [portalBody(ctx, "cr-notice__text")], ctx.snapshot.portalUrl ? portalLink(ctx) : null);
+    box.setAttribute("data-portal", "invitation");
+    return box;
+  }
+
+  function portalAside(ctx, title, line) {
+    var aside = el("div", "cr-state__aside", { "data-portal": title ? "invitation" : "sign-in" });
+    if (title) aside.appendChild(text("h2", "cr-state__aside-title", title));
+    aside.appendChild(line);
+    if (ctx.snapshot.portalUrl) aside.appendChild(portalLink(ctx));
+    return aside;
   }
 
   function joinName(name, title) {
@@ -3008,6 +3262,13 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     return card;
   }
 
+  function clauseItem(block) {
+    var item = el("li", "cr-terms__clause", { "data-depth": String(Math.min(block.depth, 3)) });
+    item.appendChild(text("span", "cr-terms__number", block.number));
+    item.appendChild(text("span", "cr-terms__clause-text", block.text));
+    return item;
+  }
+
   function agreementPage(shell, ctx) {
     var view = ctx.snapshot.view;
     var copy = ctx.copy;
@@ -3017,9 +3278,9 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       : completion ? text("span", "status-badge status-badge--ok", view.completion === "active" ? copy.agreementActive : copy.agreementApproved)
         : null;
     var title = completion ? (view.completion === "active" ? copy.completeActiveTitle : copy.completeApprovedTitle) : copy.agreementTitle;
-    var subtitle = completion ? copy.completeBody : reviewing ? copy.agreementSubtitle : "";
+    var subtitle = completion ? (view.completion === "finishing" ? copy.completeFinishingBody : copy.completeBody) : reviewing ? copy.agreementSubtitle : "";
     shell.appendChild(pageHead(ctx, copy.agreementEyebrow, title, subtitle, badgeNode));
-    if (completion && view.portalAccess) shell.appendChild(notice("ok", "", copy.completePortal, null));
+    if (completion) shell.appendChild(portalInvitation(ctx));
     if (view.kind === "reference") shell.appendChild(notice("warn", "", view.banner === "expired" ? copy.agreementExpired : copy.agreementSuspended, null));
     readNotices(ctx).forEach(function (node) { shell.appendChild(node); });
 
@@ -3054,8 +3315,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     terms.appendChild(text("h2", "cr-section-title", copy.termsTitle, { id: "cr-terms-title" }));
     if (!term.terms.length) terms.appendChild(text("p", "cr-note", copy.termsEmpty));
     var list = null;
+    var clauses = null;
     term.terms.forEach(function (block) {
       if (block.kind === "item") {
+        clauses = null;
         if (!list) {
           list = el("ul", "cr-terms__list");
           terms.appendChild(list);
@@ -3064,6 +3327,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         return;
       }
       list = null;
+      if (block.kind === "clause") {
+        if (!clauses) {
+          clauses = el("ol", "cr-terms__clauses", { role: "list" });
+          terms.appendChild(clauses);
+        }
+        clauses.appendChild(clauseItem(block));
+        return;
+      }
+      clauses = null;
       terms.appendChild(text(block.kind === "heading" ? "h3" : "p", block.kind === "heading" ? "cr-terms__heading" : "cr-terms__paragraph", block.text));
     });
     shell.appendChild(terms);
@@ -3086,20 +3358,45 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "completion":
         agreementPage(shell, ctx);
         return;
+      case "checking":
+        shell.appendChild(checkingCard(ctx));
+        return;
       case "preparing":
-        shell.appendChild(stateCard("progress", "…", copy.preparingTitle, copy.preparingBody, null));
+        shell.appendChild(announcedCard(ctx, "progress", "…", copy.preparingTitle, copy.preparingBody, null));
         return;
       case "closed":
         shell.appendChild(view.reason === "archived"
-          ? stateCard("neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
-          : stateCard("neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
+          ? announcedCard(ctx, "neutral", "⊘", copy.archivedTitle, copy.archivedBody, null)
+          : announcedCard(ctx, "neutral", "⊘", copy.canceledTitle, copy.canceledBody, null));
         return;
       case "empty":
-        shell.appendChild(stateCard("neutral", "○", copy.emptyTitle, copy.emptyBody, null));
+        shell.appendChild(announcedCard(ctx, "neutral", "○", copy.emptyTitle, copy.emptyBody, null));
         return;
       default:
-        shell.appendChild(stateCard("warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
+        shell.appendChild(announcedCard(ctx, "warn", "!", copy.unavailableTitle, copy.unavailableBody, null));
     }
+  }
+
+  function checkingCard(ctx) {
+    var copy = ctx.copy;
+    var slow = ctx.snapshot.waiting.exhausted;
+    var title = slow ? copy.checkingSlowTitle : copy.checkingTitle;
+    var body = slow ? copy.checkingSlowBody : copy.checkingBody;
+    announce(ctx, [title, body]);
+    var card = stateCard("progress", slow ? "…" : "", title, body, slow ? refreshButton(ctx, "", copy.refreshLabel) : null, true);
+    card.setAttribute("data-checking", slow ? "slow" : "active");
+    return card;
+  }
+
+  function closedCard(ctx) {
+    var copy = ctx.copy;
+    var after = ctx.snapshot.closedAfter;
+    if (!after) {
+      var signIn = ctx.snapshot.portalUrl ? portalAside(ctx, "", text("p", "cr-state__aside-text", copy.linkClosedPortal)) : null;
+      return announcedCard(ctx, "neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, signIn);
+    }
+    var invitation = after === "approval" ? portalAside(ctx, copy.portalTitle, portalBody(ctx, "cr-state__aside-text")) : null;
+    return announcedCard(ctx, "info", "i", copy.closedAfterTitle, after === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, invitation);
   }
 
   function renderPage(mount, snapshot, dispatch, copy) {
@@ -3108,6 +3405,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       dispatch: dispatch,
       copy: copy,
       focus: {},
+      announcement: "",
       busy: snapshot.refreshing || snapshot.phase !== "ready",
     };
     var page = el("div", "cr-page", {
@@ -3128,12 +3426,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         shell.appendChild(stateCard("warn", "?", copy.linkMissingTitle, copy.linkMissingBody, null));
         break;
       case "link-closed":
-        shell.appendChild(snapshot.closedAfter
-          ? stateCard("info", "i", copy.closedAfterTitle, snapshot.closedAfter === "details" ? copy.closedAfterDetailsBody : copy.closedAfterApprovalBody, null)
-          : stateCard("neutral", "⊘", copy.linkClosedTitle, copy.linkClosedBody, null));
+        shell.appendChild(closedCard(ctx));
         break;
       case "error":
-        shell.appendChild(stateCard("error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
+        shell.appendChild(announcedCard(ctx, "error", "!", copy.errorTitle, snapshot.errorAfterCommand ? copy.readbackErrorBody : copy.errorBody,
           button(copy.retryLabel, "btn--primary btn--lg", function () { dispatch("retry"); }, { "data-action": "retry" })));
         break;
       default:
@@ -3141,7 +3437,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     }
     mount.replaceChildren();
     mount.appendChild(page);
-    return { focus: ctx.focus };
+    return { focus: ctx.focus, announcement: ctx.announcement };
   }
 
   ns.components = Object.freeze({
@@ -3156,6 +3452,15 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   var ns = global.ClientReview || (global.ClientReview = {});
 
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var CHECKING_DELAYS = [2000, 3000, 5000, 8000, 12000, 15000, 15000, 15000];
+  var RETURNED_COPY = { missing: "returnedMissing", unconfirmed: "returnedUnconfirmed", choice: "returnedChoice", email: "returnedEmail" };
+
+  function systemTimers() {
+    return {
+      set: function (callback, ms) { return global.setTimeout(callback, ms); },
+      clear: function (handle) { global.clearTimeout(handle); },
+    };
+  }
 
   function createController(options) {
     var settings = options || {};
@@ -3163,16 +3468,25 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     var copy = ns.withDefaults(settings.copy);
     var locale = settings.locale || "en";
     var mount = settings.mount || null;
+    var live = settings.live || null;
+    var timers = settings.timers || systemTimers();
+    var delays = Array.isArray(settings.pollDelays) && settings.pollDelays.length ? settings.pollDelays.slice() : CHECKING_DELAYS.slice();
+    var portalUrl = ns.adapter.safePortalUrl(settings.portalUrl);
     var contract = ns.contract;
     var normalizer = ns.normalizer;
     var inflight = {};
     var loading = null;
     var listeners = [];
+    var stopped = false;
+    var poll = { timer: null, attempt: 0, exhausted: false };
     var state = {
       phase: settings.phase || "loading",
       view: null,
       closedAfter: "",
       errorAfterCommand: false,
+      retryContext: {},
+      primaryEmail: "",
+      followDecisions: false,
       refreshing: false,
       expanded: {},
       confirm: null,
@@ -3184,7 +3498,23 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     };
 
     function emptyDetails(agreementId) {
-      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false };
+      return { seededFor: agreementId, values: {}, errors: {}, touched: {}, serverErrors: {}, invalid: false, returnPending: true, sent: false };
+    }
+
+    function checkingNow() {
+      return state.phase === "ready" && Boolean(state.view) && state.view.kind === "checking";
+    }
+
+    function followingNow() {
+      return state.phase === "ready" && state.followDecisions && Boolean(state.view) && state.view.kind === "quote-review" && state.view.allDecided;
+    }
+
+    function waitingNow() {
+      return checkingNow() || followingNow();
+    }
+
+    function pageKey() {
+      return state.phase + ":" + (state.view ? state.view.kind : "");
     }
 
     function optionsOf(view) {
@@ -3259,12 +3589,20 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     function seedDetails() {
       var view = state.view;
-      if (!view || view.kind !== "contract-details" || state.details.seededFor === view.agreement.id) return;
-      var details = emptyDetails(view.agreement.id);
-      view.details.fields.forEach(function (field) {
-        details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+      if (!view || view.kind !== "contract-details") return;
+      if (state.details.seededFor !== view.agreement.id) {
+        var details = emptyDetails(view.agreement.id);
+        view.details.fields.forEach(function (field) {
+          details.values[field.code] = field.kind === "boolean" ? false : view.details.prefill[field.code] || "";
+        });
+        state.details = details;
+      }
+      if (!state.details.returnPending) return;
+      state.details.returnPending = false;
+      var marked = view.details.returned.fields;
+      Object.keys(marked).forEach(function (code) {
+        state.details.serverErrors[code] = copy[RETURNED_COPY[marked[code]]] || copy.returnedMissing;
       });
-      state.details = details;
     }
 
     function prune() {
@@ -3280,6 +3618,52 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       if (!present[confirm.id] || !present[confirm.id].actions[confirm.kind]) state.confirm = null;
     }
 
+    function stopPolling() {
+      if (poll.timer !== null) timers.clear(poll.timer);
+      poll.timer = null;
+    }
+
+    function schedulePoll() {
+      stopPolling();
+      poll.timer = timers.set(function () {
+        poll.timer = null;
+        poll.attempt += 1;
+        load(Object.assign({ afterCommand: true, quiet: true }, readContext()));
+      }, delays[poll.attempt]);
+    }
+
+    function track() {
+      if (stopped) return;
+      if (!waitingNow()) {
+        stopPolling();
+        poll.attempt = 0;
+        poll.exhausted = false;
+        return;
+      }
+      if (poll.exhausted) return;
+      if (poll.attempt >= delays.length) {
+        poll.exhausted = true;
+        return;
+      }
+      schedulePoll();
+    }
+
+    function announces(before, after) {
+      if (before.phase !== "ready") return false;
+      var now = waitingNow();
+      if (before.waiting !== now || (now && poll.exhausted && !before.exhausted)) return true;
+      return Boolean(after.event) && before.page !== pageKey();
+    }
+
+    function speak(rendered) {
+      var message = rendered && rendered.announcement ? rendered.announcement : "";
+      if (live && message) live.textContent = message;
+    }
+
+    function readContext() {
+      return checkingNow() ? { afterCommand: true, closedAfter: "details" } : {};
+    }
+
     function load(context) {
       if (!adapter) {
         render();
@@ -3287,6 +3671,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       }
       if (loading) return loading;
       var after = context || {};
+      var before = { phase: state.phase, page: pageKey(), waiting: waitingNow(), exhausted: poll.exhausted };
       if (state.phase === "ready" && state.view) state.refreshing = true;
       else state.phase = "loading";
       render();
@@ -3295,22 +3680,34 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         state.phase = "ready";
         state.closedAfter = "";
         state.errorAfterCommand = false;
+        state.primaryEmail = state.view.primaryEmail || "";
+        if (after.event === contract.orderEvents.approve.code || after.event === contract.orderEvents.decline.code) state.followDecisions = true;
+        if (state.view.kind !== "quote-review" || !state.view.allDecided) state.followDecisions = false;
+        if (after.event === contract.agreementEvents.details.code) {
+          state.details.returnPending = true;
+          state.details.sent = true;
+        }
         seedDetails();
         prune();
       }, function (error) {
+        var closed = Boolean(error && error.code === "link-closed");
+        if (after.quiet && !closed && waitingNow()) return;
         state.view = null;
         state.confirm = null;
-        if (error && error.code === "link-closed") {
+        if (closed) {
           state.phase = "link-closed";
           state.closedAfter = after.closedAfter || "";
         } else {
           state.phase = "error";
           state.errorAfterCommand = Boolean(after.afterCommand);
+          state.retryContext = { afterCommand: Boolean(after.afterCommand), closedAfter: after.closedAfter || "" };
         }
       }).then(function () {
         state.refreshing = false;
         loading = null;
-        render();
+        track();
+        var rendered = render();
+        if (announces(before, after)) speak(rendered);
       });
       return loading;
     }
@@ -3327,7 +3724,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       state.commands[recordKey] = { status: "pending", event: event, message: "" };
       render();
       var task = adapter.sendEvent(entity, id, event, metadata).then(function () {
-        return reload({ afterCommand: true, closedAfter: after.closedAfter || "" }).then(function () {
+        return reload({ afterCommand: true, closedAfter: after.closedAfter || "", event: event }).then(function () {
           delete state.commands[recordKey];
           if (typeof after.onSuccess === "function") after.onSuccess();
           render();
@@ -3458,11 +3855,11 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       var view = state.view;
       switch (type) {
         case "retry":
-          load({});
+          load(state.retryContext);
           return;
         case "refresh":
           if (data.recordKey) clearOutcome(data.recordKey);
-          reload({});
+          reload(readContext());
           return;
         case "option.toggle":
           toggleOption(data.id);
@@ -3556,13 +3953,18 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         draftInvalid: state.draftInvalid,
         commands: state.commands,
         details: state.details,
+        waiting: { exhausted: poll.exhausted, decisions: state.followDecisions },
+        portalUrl: portalUrl,
+        primaryEmail: state.primaryEmail,
         pending: Object.keys(inflight),
       };
     }
 
     function render() {
+      if (stopped) return null;
+      var rendered = null;
       if (mount && ns.components) {
-        var rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
+        rendered = ns.components.renderPage(mount, snapshot(), dispatch, copy);
         var key = state.focusKey;
         state.focusKey = "";
         var target = key && rendered && rendered.focus ? rendered.focus[key] : null;
@@ -3570,6 +3972,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       }
       var current = snapshot();
       listeners.forEach(function (listener) { listener(current); });
+      return rendered;
+    }
+
+    function stop() {
+      stopped = true;
+      stopPolling();
     }
 
     function idle() {
@@ -3587,6 +3995,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
 
     var controller = {
       start: start,
+      stop: stop,
       dispatch: dispatch,
       reload: reload,
       idle: idle,
@@ -3627,7 +4036,14 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (!section || typeof section.getAttribute !== "function") return null;
     var mount = env.mount || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-mount]")) || section;
     var dataMode = String(section.getAttribute("data-review-data-mode") || "").trim().toLowerCase() === "fixture" ? "fixture" : "live";
-    var options = { mount: mount, copy: copyFromAttributes(section), locale: env.locale || displayLocale(env) };
+    var options = {
+      mount: mount,
+      live: env.live || (typeof section.querySelector === "function" && section.querySelector("[data-client-review-live]")) || null,
+      timers: env.timers,
+      portalUrl: section.getAttribute("data-review-portal-url"),
+      copy: copyFromAttributes(section),
+      locale: env.locale || displayLocale(env),
+    };
     var steps = [];
     if (dataMode === "fixture") {
       var setup = ns.fixtures && typeof ns.fixtures.setup === "function" ? ns.fixtures.setup(env.scenario) : null;
@@ -3636,6 +4052,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       } else {
         options.adapter = setup.adapter || null;
         if (setup.phase) options.phase = setup.phase;
+        if (setup.portalUrl) options.portalUrl = setup.portalUrl;
+        if (setup.pollDelays) options.pollDelays = setup.pollDelays;
         steps = setup.steps || [];
       }
     } else {
@@ -3654,6 +4072,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   }
 
   ns.createController = createController;
+  ns.checkingDelays = Object.freeze(CHECKING_DELAYS.slice());
   ns.boot = boot;
 })(typeof window !== "undefined" ? window : globalThis);
 (function (global) {
@@ -3707,6 +4126,32 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     "<p>The Client keeps each property accessible and tells the Provider about obstacles such as parked vehicles or construction work.</p>",
   ].join("");
 
+  var NUMBERED_TERMS = [
+    "1. Services",
+    "The Provider clears snow and applies de-icing material at each property listed in this agreement, under the option approved for that property.",
+    "",
+    "2. Service triggers",
+    "2.1 Snow removal starts once accumulation reaches 5 cm.",
+    "2.2 De-icing is applied when the surface temperature is forecast at or below 0 °C,",
+    "including overnight frost on walkways and ramps.",
+    "",
+    "3. Invoicing",
+    "3.1) Seasonal options are invoiced once, at the start of the term.",
+    "3.2) Monthly options are invoiced on the first day of each month of the term.",
+    "3.3) Per-service options are invoiced after each visit.",
+    "",
+    "4. Access",
+    "The Client keeps each property accessible and tells the Provider about obstacles:",
+    "- parked vehicles;",
+    "- construction work.",
+    "",
+    "5. Term and notice",
+    "5.1. This agreement runs from the term start date to the term end date.",
+    "5.1.1 Either party may end it early with 30 days' written notice.",
+  ].join("\n");
+
+  var PORTAL_URL = "https://portal.coastline-winter.example/sign-in";
+
   var QUOTATION_EVENTS = [
     "QUOTE_SENT-QUOTE_VIEWED",
     "QUOTE_VIEWED-CLIENT_APPROVED",
@@ -3731,17 +4176,30 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     { id: "command-pending", label: "Decision pending" },
     { id: "command-refused", label: "Decision refused by the server" },
     { id: "command-failed", label: "Decision failed" },
-    { id: "decided", label: "Every property decided — provider not done yet" },
+    { id: "decided", label: "Every property decided — link opened, provider not done yet" },
+    { id: "decided-following", label: "Last decision sent here — next step being opened" },
+    { id: "decided-following-slow", label: "Last decision sent here — next step taking longer, Check again" },
+    { id: "decided-next-step", label: "Last decision sent here — details step opens on its own" },
     { id: "contract-details", label: "Contract details — pre-filled from the account" },
     { id: "details-invalid", label: "Contract details — validation errors" },
     { id: "details-refused", label: "Contract details — refused per field" },
-    { id: "details-closed", label: "Contract details sent — link closed" },
+    { id: "details-checking", label: "Contract details sent — being checked (CLIENT_DETAILS_RECEIVED)" },
+    { id: "details-checking-slow", label: "Contract details check — taking longer than usual" },
+    { id: "details-returned", label: "Contract details returned, link reopened — fields to fix" },
+    { id: "details-returned-processing", label: "Contract details returned, link reopened — provider could not save them" },
+    { id: "details-returned-unknown", label: "Contract details returned, link reopened — reason not shown" },
+    { id: "details-returned-sent", label: "Contract details returned after sending here — provider could not save them" },
+    { id: "details-closed", label: "Contract details sent — checked, link closed" },
     { id: "preparing", label: "Agreement being prepared — DRAFT" },
     { id: "agreement-review", label: "Agreement review — SENT_TO_CLIENT" },
+    { id: "agreement-numbered-terms", label: "Agreement review — numbered contract terms" },
     { id: "agreement-no-terms", label: "Agreement review — no contract terms written" },
     { id: "agreement-confirm", label: "Agreement approval — confirmation" },
-    { id: "completion", label: "Completion — CLIENT_APPROVED" },
-    { id: "completion-portal", label: "Completion — ACTIVE with a linked portal user" },
+    { id: "approval-closed", label: "Agreement approved — link closed, portal invitation" },
+    { id: "completion", label: "Completion — CLIENT_APPROVED, no portal address" },
+    { id: "completion-portal", label: "Completion — ACTIVE, portal address configured" },
+    { id: "completion-finishing", label: "Completion — ACTIVATION_FAILED, no primary email in the link" },
+    { id: "link-closed-portal", label: "Link expired or revoked — portal address configured" },
     { id: "reference-expired", label: "Expired agreement — read only" },
     { id: "closed-canceled", label: "Canceled — closed" },
     { id: "unavailable", label: "Send failed — unavailable" },
@@ -3899,6 +4357,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
   }
 
   var DECIDED = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED", 3108: "CLIENT_APPROVED" };
+  var LAST_OPEN = { 3101: "DECLINED", 3102: "CLIENT_APPROVED", 3103: "DECLINED", 3107: "CLIENT_APPROVED" };
 
   function agreementData(state, withUser) {
     var approved = [3102, 3104, 3107, 3108];
@@ -3962,15 +4421,6 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     if (code === "QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED" && !String(metadata.MESSAGE || "").trim()) {
       throw reviewError("refused", 400, "", { MESSAGE: "A message is required." });
     }
-    if (code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
-      var missing = {};
-      ns.contract.contractDetails.attributes.forEach(function (attribute) {
-        var value = metadata[attribute.code];
-        var filled = attribute.className === "java.lang.Boolean" ? value === true : typeof value === "string" && value.trim() !== "";
-        if (attribute.required && !filled) missing[attribute.code] = "This value is required.";
-      });
-      if (Object.keys(missing).length) throw reviewError("refused", 400, "", missing);
-    }
     row.states = [{ code: target }];
     if (entity === "order") {
       if (target === "CLIENT_APPROVED" && hooks.declineSiblings !== false) {
@@ -3981,15 +4431,60 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
           }
         });
       }
-      if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) evaluatePackage(data);
+      if ((target === "CLIENT_APPROVED" || target === "DECLINED") && hooks.evaluatePackage !== false) data.pendingEvaluation = { reads: 0 };
     }
     if (entity === "document" && code === "AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED") {
-      Object.keys(metadata).forEach(function (key) { row.attributes[17][key] = { value: metadata[key] }; });
-      row.states = [{ code: "DRAFT" }];
-      if (hooks.revokeOnDetails !== false) data.closed = true;
+      data.pendingDetails = { metadata: clone(metadata), reads: 0 };
     }
     if (entity === "document" && target === "CLIENT_APPROVED" && hooks.revokeOnApproval === true) data.closed = true;
     return null;
+  }
+
+  function detailsErrors(metadata) {
+    var attributes = ns.contract.contractDetails.attributes;
+    var codes = [];
+    attributes.forEach(function (attribute) {
+      var value = metadata[attribute.code];
+      if (attribute.required && attribute.className !== "java.lang.Boolean" && !(typeof value === "string" && value.trim())) codes.push(attribute.code);
+    });
+    var type = String(metadata.CLIENT_TYPE || "").trim();
+    if (type && ["INDIVIDUAL", "ORGANIZATION"].indexOf(type.toUpperCase()) === -1) codes.push("CLIENT_TYPE_INVALID");
+    var email = String(metadata.REPRESENTATIVE_EMAIL || "").trim();
+    if (email && (email.indexOf("@") === -1 || email.charAt(0) === "@" || email.slice(-1) === "@")) codes.push("REPRESENTATIVE_EMAIL_INVALID");
+    attributes.forEach(function (attribute) {
+      if (attribute.className === "java.lang.Boolean" && metadata[attribute.code] !== true) codes.push(attribute.code);
+    });
+    return codes;
+  }
+
+  function settleEvaluation(data, hooks) {
+    var pending = data.pendingEvaluation;
+    if (!pending || hooks.evaluation === "hold") return;
+    pending.reads += 1;
+    if (pending.reads < 2) return;
+    data.pendingEvaluation = null;
+    evaluatePackage(data);
+  }
+
+  function settleDetails(data, hooks) {
+    var pending = data.pendingDetails;
+    var outcome = hooks.details || "check";
+    if (!pending || outcome === "hold") return;
+    pending.reads += 1;
+    if (pending.reads < 2) return;
+    data.pendingDetails = null;
+    var agreement = data.documents[0];
+    var bucket = agreement.attributes[17];
+    var codes = outcome === "processing-failed" ? ["PROCESSING_FAILED"] : hooks.detailsCodes || detailsErrors(pending.metadata);
+    if (codes.length) {
+      bucket.CLIENT_DETAILS_ERRORS = { value: codes.join(",") };
+      agreement.states = [{ code: "AWAITING_CLIENT_DETAILS" }];
+      return;
+    }
+    Object.keys(pending.metadata).forEach(function (key) { bucket[key] = { value: pending.metadata[key] }; });
+    bucket.CLIENT_DETAILS_ERRORS = { value: "" };
+    agreement.states = [{ code: "DRAFT" }];
+    if (hooks.revokeOnDetails !== false) data.closed = true;
   }
 
   function createFixtureAdapter(data, behavior) {
@@ -4023,6 +4518,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       introspect: function () {
         if (settings.introspect === "hold") return never();
         return later(function () {
+          settleEvaluation(data, settings.hooks || {});
+          settleDetails(data, settings.hooks || {});
           guard();
           if (settings.introspect === "unauthorized") throw reviewError("link-closed", 401);
           if (introspectFailures > 0) {
@@ -4065,17 +4562,41 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     };
   }
 
+  function idOnlyAccount(data) {
+    data.accounts.forEach(function (row) {
+      row.contacts = [{ id: 901 }];
+      row.addresses = [{ id: 902 }];
+    });
+    return data;
+  }
+
+  function returnedData(errors) {
+    var data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+    data.documents[0].attributes[17].CLIENT_DETAILS_ERRORS = { value: errors };
+    return data;
+  }
+
   function build(id, delay) {
     var data = quotationData();
     var behavior = { introspect: "ok", events: {}, hooks: {}, delay: delay };
     var steps = [];
     var phase = "";
+    var portalUrl = "";
+    var pollDelays = null;
     var approve = [["option.toggle", { id: 3102 }], ["option.intent", { id: 3102, kind: "approve" }]];
     var confirmBoth = [
       ["details.choose", { code: "CLIENT_TYPE", value: "ORGANIZATION" }],
       ["details.choose", { code: "INFORMATION_CONFIRMED", value: true }],
       ["details.choose", { code: "AUTHORITY_CONFIRMED", value: true }],
     ];
+    var typeDetails = [
+      ["details.input", { code: "BILLING_ADDRESS", value: "1500 Harbour Green Drive, Suite 210, Vancouver, BC V6C 3T8" }],
+      ["details.input", { code: "REPRESENTATIVE_FIRST_NAME", value: "Dana" }],
+      ["details.input", { code: "REPRESENTATIVE_LAST_NAME", value: "Reyes" }],
+      ["details.input", { code: "REPRESENTATIVE_EMAIL", value: "dana.reyes@harbourview.example" }],
+      ["details.input", { code: "REPRESENTATIVE_PHONE", value: "+1 604 555 0164" }],
+    ];
+    var lastDecision = [["option.toggle", { id: 3108 }], ["option.intent", { id: 3108, kind: "approve" }], ["option.confirm", { id: 3108 }]];
     switch (id) {
       case "loading":
         behavior.introspect = "hold";
@@ -4133,6 +4654,21 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "decided":
         data = quotationData("QUOTATION_SENT", DECIDED);
         break;
+      case "decided-following":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
+        steps = lastDecision;
+        break;
+      case "decided-following-slow":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        behavior.hooks.evaluation = "hold";
+        steps = lastDecision;
+        pollDelays = [300, 300, 300];
+        break;
+      case "decided-next-step":
+        data = quotationData("QUOTATION_SENT", LAST_OPEN);
+        steps = lastDecision;
+        break;
       case "contract-details":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         break;
@@ -4149,6 +4685,29 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         };
         steps = confirmBoth.concat([["details.submit", {}]]);
         break;
+      case "details-checking":
+        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
+        behavior.hooks.details = "hold";
+        break;
+      case "details-checking-slow":
+        data = quotationData("CLIENT_DETAILS_RECEIVED", DECIDED);
+        behavior.hooks.details = "hold";
+        pollDelays = [300, 300, 300];
+        break;
+      case "details-returned":
+        data = returnedData("CLIENT_TYPE,REPRESENTATIVE_EMAIL_INVALID,AUTHORITY_CONFIRMED");
+        break;
+      case "details-returned-processing":
+        data = returnedData("PROCESSING_FAILED");
+        break;
+      case "details-returned-unknown":
+        data = returnedData("TAX_NUMBER_MISSING");
+        break;
+      case "details-returned-sent":
+        data = idOnlyAccount(quotationData("AWAITING_CLIENT_DETAILS", DECIDED));
+        behavior.hooks.details = "processing-failed";
+        steps = typeDetails.concat(confirmBoth, [["details.submit", {}]]);
+        break;
       case "details-closed":
         data = quotationData("AWAITING_CLIENT_DETAILS", DECIDED);
         steps = confirmBoth.concat([["details.submit", {}]]);
@@ -4159,6 +4718,10 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       case "agreement-review":
         data = agreementData("SENT_TO_CLIENT", false);
         break;
+      case "agreement-numbered-terms":
+        data = agreementData("SENT_TO_CLIENT", false);
+        data.documents[0].attributes[17].CONTRACT_TERMS = { value: NUMBERED_TERMS };
+        break;
       case "agreement-no-terms":
         data = agreementData("SENT_TO_CLIENT", false);
         delete data.documents[0].attributes[17].CONTRACT_TERMS;
@@ -4167,11 +4730,27 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
         data = agreementData("SENT_TO_CLIENT", false);
         steps = [["agreement.intent", {}]];
         break;
+      case "approval-closed":
+        data = agreementData("SENT_TO_CLIENT", false);
+        behavior.hooks.revokeOnApproval = true;
+        steps = [["agreement.intent", {}], ["agreement.confirm", {}]];
+        portalUrl = PORTAL_URL;
+        break;
       case "completion":
         data = agreementData("CLIENT_APPROVED", false);
         break;
       case "completion-portal":
         data = agreementData("ACTIVE", true);
+        portalUrl = PORTAL_URL;
+        break;
+      case "completion-finishing":
+        data = agreementData("ACTIVATION_FAILED", false);
+        delete data.accounts[0].contacts;
+        portalUrl = PORTAL_URL;
+        break;
+      case "link-closed-portal":
+        behavior.introspect = "unauthorized";
+        portalUrl = PORTAL_URL;
         break;
       case "reference-expired":
         data = agreementData("EXPIRED", false);
@@ -4185,7 +4764,7 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       default:
         break;
     }
-    return { data: data, behavior: behavior, steps: steps, phase: phase };
+    return { data: data, behavior: behavior, steps: steps, phase: phase, portalUrl: portalUrl, pollDelays: pollDelays };
   }
 
   function setup(requested) {
@@ -4197,6 +4776,8 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
       adapter: built.phase ? null : createFixtureAdapter(built.data, built.behavior),
       steps: built.steps,
       data: built.data,
+      portalUrl: built.portalUrl,
+      pollDelays: built.pollDelays,
     };
   }
 
@@ -4218,7 +4799,12 @@ body { margin: 0; background: var(--app-bg); color: var(--ink); font-family: var
     createFixtureAdapter: createFixtureAdapter,
     quotationData: quotationData,
     agreementData: agreementData,
+    detailsErrors: detailsErrors,
+    idOnlyAccount: idOnlyAccount,
+    numberedTerms: NUMBERED_TERMS,
+    portalUrl: PORTAL_URL,
     decidedStates: Object.freeze(Object.assign({}, DECIDED)),
+    lastOpenStates: Object.freeze(Object.assign({}, LAST_OPEN)),
   };
 })(typeof window !== "undefined" ? window : globalThis);
 
