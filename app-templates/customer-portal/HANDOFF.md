@@ -490,7 +490,7 @@ and every decision taken where it is silent.
 | live portal package | `cms/granite-ridge-snow.customer-portal-staging.json` | dev-1 `/pages/SNOWLIMITLESS/portal` | `granite-ridge-staging-portal-manual-check.mjs` |
 | live Contracts and profile | `runtime/src/adapters/core-snow-adapter.js`, `runtime/src/contract-commands.js`, `runtime/src/adapters/core-account-profile-adapter.js` | same entry | `snow-contracts-live-check.mjs`, `snow-account-profile-check.mjs`, `snow-portal-shell-check.mjs` |
 | landing as the portal's public entry | `shell.signedOutDestination` and the landing addresses in `cms/granite-ridge-snow.customer-portal-staging.json`; `publicEntryDestination` in `runtime/src/router.js`, the boot in `runtime/src/app.js` | same entry | `snow-portal-public-entry-check.mjs`, `granite-ridge-staging-portal-manual-check.mjs` |
-| live landing package | `cms/granite-ridge-snow.landing-staging.json`, exported by `scripts/export-live-landing-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing-staging/preview.html`; dev-1 `/pages/SNOWLIMITLESS/home` once published | `granite-ridge-staging-landing-manual-check.mjs` |
+| live landing package | `cms/granite-ridge-snow.landing-staging.json`, exported by `scripts/export-live-landing-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing-staging/preview.html`; dev-1 `/pages/SNOWLIMITLESS/home` (PageContext 23) | `granite-ridge-staging-landing-manual-check.mjs` |
 | client review document | `runtime/client-review/` | `runtime/client-review.html` | `client-review-check.mjs` |
 | quote form document | `runtime/forms/portal-form.js` | `runtime/portal-form.html` | `portal-form-check.mjs` |
 | landing | `scripts/export-granite-ridge-landing-blocks-manual.mjs` | `dist/manual-upload/customer-portal-granite-ridge-landing/preview.html` | `granite-ridge-landing-manual-check.mjs` |
@@ -1083,7 +1083,7 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
   PageContext 22's values, because every upload writes `#` back into the
   template.
 - **Portal link:** the review page's `PORTAL_URL` points at the portal.
-- **The public landing as its anonymous face** (built 2026-09-23, not live).
+- **The public landing as its anonymous face** (live on dev-1 since 2026-09-23).
   The live source sets `shell.signedOutDestination` to `landing`, `landingUrl`
   to `https://dev-1.servicewand.com/pages/SNOWLIMITLESS/home`,
   `logoutReturnUrl` to that address with `?portal=signed-out`, and
@@ -1104,24 +1104,40 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
   that key and every `oidc.user:*` entry in `localStorage`, then
   `location.replace`s to the stored address, query included. It does not check
   that address's origin; the portal checks it before storing it.
-- **Publication is pending, in this order.** Re-uploading the portal while the
-  landing answers 404 would send every signed-out visitor to a missing page.
-  1. Upload the landing `CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING` with
-     `upsert-granite-ridge-staging-landing.mjs`. It is a single root template
-     with no children, because the uploader never composes child includes.
-  2. Create the SNOWLIMITLESS PageContext `home` for it, so
-     `/pages/SNOWLIMITLESS/home` answers 200; it answered 404 on 2026-09-23.
-     A one-off script outside the repository creates it: it saves url
-     `/pages/SNOWLIMITLESS/home`, `excludeFromSeo: true`, organization 7
-     (`SERVICEWAND`) as for PageContexts 17, 21 and 22, and the landing
-     template. CMS creates it only while every template parameter holds a
-     value.
-  3. Re-upload the portal to its template, then fetch it several times for
-     trap 12:
+- **Published on 2026-09-23, landing first.** Re-uploading the portal while the
+  landing answers 404 would have sent every signed-out visitor to a missing
+  page.
+  1. The landing is BlockTemplate `21fe079c-db53-4f3a-9b4a-10450a73e385`,
+     `CUSTOMER_PORTAL_GRANITE_RIDGE_LANDING_STAGING`, in SYSTEM, from commit
+     `53b4532`. It is a single root template with no children, because the
+     uploader never composes child includes.
+  2. PageContext 23 serves it at `/pages/SNOWLIMITLESS/home`, with
+     `excludeFromSeo: true` and organization 7 (`SERVICEWAND`), as for
+     PageContexts 17, 21 and 22. A one-off script outside the repository
+     created it. CMS creates a PageContext only while every template parameter
+     holds a value.
+  3. The portal template `3e57675e-c967-47b2-9501-9235830f3bc3` was
+     re-uploaded from commit `13f191b`. `app-3-core-cms` kept serving the old
+     root until one identical save was steered to it (trap 12). Both nodes now
+     serve `data-portal-signed-out-destination="landing"`.
 
-     ```bash
-     SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 3e57675e-c967-47b2-9501-9235830f3bc3 --require-existing --live
-     ```
+  A headless, anonymous pass on the live pages the same day found the
+  following:
+  - `/portal#/overview` and the bare `/portal` end on the landing.
+  - `?portal=signed-out` and `?portal=no-access` show their notices and drop
+    the parameter from the address.
+  - A bogus or script-like value shows nothing.
+  - Get a free quote opens the quote form, and Sign in opens `portal#/login`
+    without bouncing back.
+
+  CMS drops the final newline of a template's stylesheet and script, so a byte
+  comparison with the package has to ignore it. Later landing updates run:
+
+  ```bash
+  SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-landing.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 21fe079c-db53-4f3a-9b4a-10450a73e385 --require-existing --live
+  ```
+- The sign-in card says "By continuing you agree to our Terms & Privacy
+  Policy", and the tenant has no such pages. The copy is still to be decided.
 - Pressing Back onto `#/login` while signed in with access shows an empty
   sign-in card. That predates the landing and affects every portal.
 
