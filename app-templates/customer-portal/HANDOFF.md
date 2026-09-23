@@ -761,6 +761,13 @@ Things that already cost time here and will again:
     `CUSTOMER_STATUS` that dev-1 lacks. A `snow-types` re-apply would drop the
     prefill attributes: re-apply `snowResidentialCustomerPrefillPatch.json` and
     `snowCommercialCustomerPrefillPatch.json` after it, or align the seed first.
+16. **A line created in Java needs its workflow and initial state.** Saving an
+    Order with new lines gives the lines neither, though REST gives a line both
+    and a new Order saved in Java gets its type's. Such a line cannot be
+    updated through REST: without a workflow Core creates a default one that
+    breaks on its organization, and with the workflow alone the save answers
+    "Execution error". Draft pricer V3 (300) sets both on every line it writes;
+    lines 84–87 and 89–92, written before it, still lack them.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -1062,10 +1069,12 @@ transition. Where the whole flow stands is
    - each client link carries the representative and billing details as
      Account attributes, from which the review page pre-fills (trap 15).
 
-   Workflow 45 runs order utilities V3 (296): a draft entering
+   Workflow 45 runs order utilities V4 (301): a draft entering
    `QUOTE_PREPARED` is priced from its property's `SERVICE_AREA_SQFT`, which
-   the manager fills. The founder's pricing model (per-visit prices by area;
-   monthly and seasonal derived from them) waits for its per-visit price table
+   the manager fills, by draft pricer V3 (300). Its lines carry workflow 46 and
+   `DRAFT`, so the manager can update and delete them through REST (trap 16).
+   The founder's pricing model (per-visit prices by area; monthly and seasonal
+   derived from them) waits for its per-visit price table
    (`QUOTATION-PACKAGE-FLOW.md` §10).
 
    **A revised quote goes back to the client** (live on dev-1 since the
@@ -1091,10 +1100,12 @@ transition. Where the whole flow stands is
 
    The user saw the headings "Review quotation options" and "Review the
    updated quotation" in the two emails. The review page that knows
-   `QUOTATION_UPDATE` and points a closed link to the newest email is live. A
-   line the draft pricer created cannot be updated through REST yet
-   (`QUOTATION-PACKAGE-FLOW.md` §10, Next). After that come the three client
-   forms.
+   `QUOTATION_UPDATE` and points a closed link to the newest email is live.
+   Since the evening of 2026-09-23 a line the draft pricer writes can be
+   updated and deleted through REST: Order 61 was priced into lines 95 and 96,
+   line 95 was updated on both core-bill nodes and line 96 was deleted
+   (`QUOTATION-PACKAGE-FLOW.md` §10, "Resolved on 2026-09-23 after the runs").
+   Next come the three client forms.
 
    The role remains staging-only until customer Account scoping is enforced by
    the backend.

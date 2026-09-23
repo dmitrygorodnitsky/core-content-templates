@@ -561,15 +561,9 @@ Next, in order:
      through `app-1-core-cms` ran the chain.
    - The CMS nodes do not invalidate each other's page cache after a template
      save.
-2. **Let the manager edit a priced line.** The draft pricer creates lines
-   without a workflow. A REST update of line 91 on 2026-09-23 failed on both
-   core-bill nodes: without a workflow the save tried to create a default
-   workflow and broke its not-null organization, and with workflow 46 it
-   answered "Execution error". A line created through REST with workflow 46
-   saves. The pricer should give its lines workflow 46.
-3. **Build the three client forms** specified for the portal. Bulk Send
+2. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.
-4. **Price by the founder's model.** Received from the user on 2026-09-23.
+3. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by
      the serviced area. It is not a fixed rate per square foot.
    - The season total is de-icing × 28 plus snow removal × 4.
@@ -581,15 +575,15 @@ Next, in order:
    The dev-1 catalog prices the three models independently: per-visit, monthly
    and seasonal tiers of flat fee plus a per-square-foot rate, and its seasonal
    rows carry four times the monthly amounts over five months instead of 4.5.
-   A pricer V3 should derive monthly and seasonal from the per-visit prices,
-   keeping the coefficients as OPERATOR attributes. It waits for the per-visit
-   price table by area from the founder.
+   The next draft pricer should derive monthly and seasonal from the per-visit
+   prices, keeping the coefficients as OPERATOR attributes. It waits for the
+   per-visit price table by area from the founder.
 
 Drafts are priced from the property's measured area since 2026-09-23:
 - SNOW_REMOVAL_PROPERTY carries `SERVICE_AREA_SQFT`, which the manager fills.
-- Order utilities V3 (script 296, workflow 45) price an Order without lines
+- Order utilities V4 (script 301, workflow 45) price an Order without lines
   when it enters `QUOTE_PREPARED`: they read the area on a `CORE-RM` node
-  (script 295) and run the draft pricer.
+  (script 295) and run draft pricer V3 (script 300).
 - Without an area the Order stays unpriced.
 - Order 58 was priced this way; Order 59, whose property has no area, stayed
   empty.
@@ -600,8 +594,26 @@ Resolved on 2026-09-23 after the runs:
   164): category API, `CORE-BILL` only, package `com.pixelnation.bill.utils`.
   It now runs `SNOW_ORDER_ITEM_UTILITIES_V1` (script 287), shaped like every
   working utility, and a line saved on one core-bill node and updated on the
-  other answered 200. That holds for a line created through REST; a line the
-  draft pricer created still cannot be updated (Next, item 2).
+  other answered 200. That held only for a line created through REST until
+  the next item.
+- **A line the draft pricer wrote can be edited.** Read on dev-1, the pricer's
+  lines 91 and 92 differed from line 94, saved through REST, only in `workflow`
+  and `states`: 94 held workflow 46 and its initial state `DRAFT` (229) from
+  its first revision, and 91 and 92 held neither, like every priced line
+  before them (84–87, 89–90). The pricer adds its lines to the Order and saves
+  the Order, and that save gives new lines no workflow, though a new Order
+  saved in Java gets its type's. Without a workflow a REST update made Core
+  create a default one, which broke its not-null organization; with workflow
+  46 the line had no state and the save answered "Execution error". Draft
+  pricer V3 (script 300) gives each line its item type's workflow and that
+  workflow's initial state, and order utilities V4 (script 301) call it.
+  Workflow 45 was bound to V4 at 20:52 UTC on 2026-09-23, and states 221, 223,
+  226, 227 and 228 were re-saved. The proof, on Order 61 (`SEASONAL`) after
+  Property 964 was given 75,000 sq ft: `INITIAL-QUOTE_PREPARED` priced it 1.5 s
+  later into lines 95 and 96, each with workflow 46 and `DRAFT` from its first
+  revision. Line 95 was updated through REST on `app-1-core-bill` and on
+  `app-3-core-bill`, and line 96 was deleted; each answered 200. Lines 84–87
+  and 89–92, written before V3, still have no workflow.
 - **The provider party and terms** come from the organization (§9).
 - **The details form pre-fills** from Account attributes (§9).
 
