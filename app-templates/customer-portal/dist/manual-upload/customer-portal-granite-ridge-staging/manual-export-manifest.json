@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "uploadPerformed": false,
+  "mode": "staging",
+  "launchState": "staging-only",
+  "input": "app-templates/customer-portal/cms/granite-ridge-snow.customer-portal-staging.json",
+  "template": {
+    "code": "CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING",
+    "templateLanguage": "JTE",
+    "parameters": [
+      "PORTAL_REQUEST_FORM_URL",
+      "PORTAL_WEATHER_CLIENT_ID",
+      "PORTAL_WEATHER_CLIENT_SECRET",
+      "PORTAL_MAPS_API_KEY",
+      "PORTAL_MAPS_MAP_ID"
+    ],
+    "sha256": {
+      "head": "2d73a4975671d61afa33139b86357240a81ca29c3d64c8094335705c978ae9ab",
+      "html": "c6ee449f7a648405d00a4e3d0df659a2de9e7b4f1d5b4e1bf9d983af9a70d21b",
+      "css": "7eded1ad0cc4a251232145fedd15a20de5cd0ab8bb43f4ba0e58ecf57e349989",
+      "javascript": "193419d43e8fc91b2c5bc6d79d14e7c1f11e04c1b17e16b9f27fbd18ce30f878"
+    }
+  },
+  "runtime": {
+    "delivery": "inline-template-javascript",
+    "sameOriginRequired": true,
+    "dataMode": "live",
+    "authMode": "required",
+    "vertical": "snow",
+    "profile": "stormRetail",
+    "openedModules": [
+      "overview",
+      "properties",
+      "proposals",
+      "profile"
+    ],
+    "auth": {
+      "flow": "oidc-authorization-code-pkce",
+      "coreBase": "/core",
+      "callbackPath": "/core/oauth2-callback.html",
+      "returnStorageKey": "oidc-return-url",
+      "logoutReturnStorageKey": "oidc-logout-return-url"
+    },
+    "account": {
+      "organization": "SNOWLIMITLESS",
+      "accountTypeCode": "SNOW_RESIDENTIAL_CUSTOMER,SNOW_COMMERCIAL_CUSTOMER,CUSTOMER",
+      "coreApiBase": "/core",
+      "accountApiBase": "/core-acct",
+      "billApiBase": "/core-bill",
+      "resourceApiBase": "/core-rm"
+    },
+    "serviceGeography": {
+      "map": {
+        "center": {
+          "lat": 49.23,
+          "lon": -122.98
+        },
+        "zoom": 10
+      },
+      "zones": {
+        "vancouver": {
+          "lat": 49.2827,
+          "lon": -123.1207
+        },
+        "richmond": {
+          "lat": 49.1666,
+          "lon": -123.1336
+        },
+        "surrey": {
+          "lat": 49.1913,
+          "lon": -122.849
+        },
+        "burnaby": {
+          "lat": 49.2488,
+          "lon": -122.9805
+        },
+        "coquitlam": {
+          "lat": 49.2838,
+          "lon": -122.7932
+        }
+      }
+    }
+  },
+  "constraints": [
+    "The page must be served from dev-1.servicewand.com, so the Core discovery document, the registered /core/oauth2-callback.html redirect and every service base stay same-origin.",
+    "The signed-in Core User resolves to exactly one SNOWLIMITLESS customer Account through Account.user before any private module loads. The Account type must be one of those listed in accountTypeCode: SNOW_RESIDENTIAL_CUSTOMER and SNOW_COMMERCIAL_CUSTOMER, which the snow quotation flow creates, and CUSTOMER. Core filters the types with one IN filter and the browser checks them again. No linked Account, more than one, an organization the User may not enter, or a failed read all stop at the account gate.",
+    "Properties come from the tenant-level SNOW_REMOVAL_PROPERTY list and are filtered to the resolved Account in the browser. The staging role SW_FS_WS_CUSTOMER_PORTAL can read every property of the tenant, so this package is staging-only until Core scopes that read to the customer Account on the server.",
+    "enabledModules lists only what has live data and a live design: overview, properties, Contracts and the read-only profile. The runtime resolves the customer Account for every entry that requires sign-in, so account is not listed. Another stormRetail module joins the list here once its live adapter and design exist; the exporter refuses a module the profile does not own.",
+    "PORTAL_WEATHER_CLIENT_ID, PORTAL_WEATHER_CLIENT_SECRET, PORTAL_MAPS_API_KEY and PORTAL_MAPS_MAP_ID are operator-owned CMS parameters. They ship the placeholder #, which the runtime reads as not set, because CMS creates no page for a template whose parameters have no value. The Xweather pair and the Google browser key are visible in page source by design and must be restricted to the serving host.",
+    "The CMS template never stores or authors a password, API key, access token, User id, Account id, role or authorization result. SNOWLIMITLESS names the deployment tenant; it does not select a customer.",
+    "Contracts reads the customer's quote Orders and service agreements from Core's generic endpoints and opens the customer's own decisions as Core workflow events: marking a sent quote viewed, approving or declining a quote, and approving an agreement sent for approval. Each runs one at a time, checks the record's state first and counts only once a readback shows the new state. Service requests and support replies are not available."
+  ]
+}

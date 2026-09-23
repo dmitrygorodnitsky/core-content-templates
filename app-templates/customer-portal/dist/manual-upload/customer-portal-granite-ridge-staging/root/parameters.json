@@ -1,0 +1,57 @@
+[
+  {
+    "code": "PORTAL_REQUEST_FORM_URL",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL REQUEST FORM URL",
+        "DESCRIPTION": "Absolute https address of the published request-a-quote form. The primary button in the top bar opens it. Any other scheme is discarded and the button stays inert."
+      }
+    },
+    "value": "https://dev-1.servicewand.com/pages/SNOWLIMITLESS/request-quote"
+  },
+  {
+    "code": "PORTAL_WEATHER_CLIENT_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL WEATHER CLIENT ID",
+        "DESCRIPTION": "Xweather client ID for the service-area forecast on the home screen. It is visible in page source, as every Xweather browser credential is, so restrict its namespace in the Xweather account to the host that serves this page. The forecast is requested only while both this and PORTAL_WEATHER_CLIENT_SECRET hold a key; the # it ships with means not set, and the home screen then says the forecast is not set up."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_WEATHER_CLIENT_SECRET",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL WEATHER CLIENT SECRET",
+        "DESCRIPTION": "Xweather client secret paired with PORTAL_WEATHER_CLIENT_ID. Xweather sends it from the browser, so it is visible in page source too; restrict the namespace to the host that serves this page. The forecast is requested only while both hold a key; the # it ships with means not set."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_MAPS_API_KEY",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL MAPS API KEY",
+        "DESCRIPTION": "Google Maps browser key for the property map on the home screen. It is visible in page source, as every browser key is, so restrict it by HTTP referrer to this host and to the Maps JavaScript API and the Geocoding API. Addresses of properties without stored coordinates are sent to the Geocoding API. While it holds the # it ships with, no Google script is loaded and the home screen lists the properties without a map."
+      }
+    },
+    "value": "#"
+  },
+  {
+    "code": "PORTAL_MAPS_MAP_ID",
+    "type": "STRING",
+    "nls": {
+      "en": {
+        "NAME": "PORTAL MAPS MAP ID",
+        "DESCRIPTION": "Optional Google Cloud map ID that styles the property map, created in the same Google Cloud project as PORTAL_MAPS_API_KEY. It is not a secret. While it holds the # it ships with, the map uses Google's default style."
+      }
+    },
+    "value": "#"
+  }
+]

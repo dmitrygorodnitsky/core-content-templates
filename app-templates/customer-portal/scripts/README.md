@@ -9,6 +9,8 @@ and operator commands.
 | `customer-experience-*`, `create-customer-experience.mjs`, `build-customer-experience.mjs` | Configure, compile, and validate the four-surface family |
 | `export-*`, `generate-*`, `build-calm-harbor-target-runtime.mjs` | Generate owned runtime/CMS artifacts |
 | `build-fixture-portal-runtime.mjs`, `export-fixture-portal-manual.mjs` | Compile and package a fixture-only demonstration portal for one registered case |
+| `build-live-portal-runtime.mjs`, `export-live-portal-manual.mjs` | Compile and package a live, signed-in portal root from a source under `../cms/` |
+| `portal-manual-package.mjs` | Library, not an entrypoint: the file, style and head mechanics shared by the live and Calm Harbor portal exporters |
 | `upsert-*.mjs` | One operator entrypoint per deliverable: build, export, check, then create-or-update the BlockTemplate by code |
 | `export-*-landing-blocks-manual.mjs` | Compile a tenant public landing into a CMS family: one root plus independently editable section blocks |
 | `export-portal-form-manual.mjs`, `portal-form-check.mjs` | Compile and guard the universal Core form document rendered in the portal design language |
@@ -19,6 +21,8 @@ and operator commands.
 | `property-map-check.mjs` | The storm home property map against a stubbed `google.maps`: pins, popup anchored or docked, per-property forecast, geocode cache, the keyless list, and the day timeline badges |
 | `core-snow-live-check.mjs` | Live read-only probe of one customer's properties and quotes on staging |
 | `snow-contracts-check.mjs` | The Contracts package model: the customer-scope order list and agreement document normalized with absent data, grouped by property, with decisions and the rollup |
+| `snow-portal-shell-check.mjs` | The live snow shell: the customer Account gate whatever the module list, no placeholder route and no action without a configured destination, the bell dot, route rewriting, Sign out from the header and the mobile menu, and the spa gates unchanged |
+| `snow-account-profile-check.mjs` | The snow profile: one server-scoped read of the customer Account with its contacts and typed addresses, its normalizer and fixture data, and every page state |
 | `export-client-review-manual.mjs`, `client-review-check.mjs` | Compile and guard the anonymous quotation and agreement review document |
 | `snow-magic-link-mappings.mjs` | Dry-run-first, optimistic-lock guarded update that adds the typed-entity `attributes` bag to the Account, Order and Document grant profiles used by snow client review |
 | `*-visual-check.mjs`, `visual-acceptance.mjs` | Browser-based visual evidence |
@@ -41,6 +45,17 @@ source that leaves fixture mode, claims an authentication contract, carries an
 `account`/`pim`/`auth` block, enables a module its profile does not own, or
 enables products without checkout.
 
+The live pair is its counterpart. `build-live-portal-runtime.mjs` bundles
+`runtime/src/app.js` with every fixture data module aliased to its `live-*`
+stub and refuses a bundle that still carries a fixture marker;
+`build-calm-harbor-target-runtime.mjs` is that builder with the Calm Harbor
+output path. `export-live-portal-manual.mjs` refuses a source that leaves live
+data mode, lacks the Core OIDC or customer Account contract, names a service
+base that is not a same-origin path, enables a module its profile does not own
+or a PIM module without a PIM contract, carries a key it does not ship, or
+ships an operator-owned parameter with anything but the `#` placeholder, which
+the runtime reads as not set.
+
 `upsert-granite-ridge-portal.mjs` chains the four steps for the snow tenant and
 is dry-run by default. `--live` refuses to run without an explicit `--base-url`,
 and `--skip-build` verifies the package on disk still matches the sha256 digests
@@ -48,6 +63,14 @@ in its own manifest, so a hand-edited package is refused rather than uploaded.
 The upsert itself is delegated to `../../landing-page/scripts/upload-cms-family.mjs`,
 which resolves the template by code and never writes template parents, include
 markup, enabled templates, or PageContext records.
+
+`upsert-granite-ridge-staging-portal.mjs` chains the same four steps for
+`CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`, built from
+`../cms/granite-ridge-snow.customer-portal-staging.json`. With `--skip-build`
+it also verifies the upload payload against the manifest and refuses an
+operator-owned parameter that carries anything but `#`.
+`granite-ridge-staging-portal-manual-check.mjs` re-exports that package into a
+throwaway directory, asserts its invariants and drives every refusal.
 
 `granite-ridge-portal-manual-check.mjs` re-exports the package into a throwaway
 directory and asserts the fixture invariants: a JTE-safe root whose only
