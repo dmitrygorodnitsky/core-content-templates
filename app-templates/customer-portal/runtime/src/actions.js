@@ -172,6 +172,7 @@ export var ACTIONS = {
   "overview.selectProperty": function (id) { state.ovProperty = state.ovProperty === id ? null : id; render(); },
   "overview.closeProperty": function () { state.ovProperty = null; render(); },
   "overview.scrubWeather": function (id) { state.ovWeatherIndex = Number(id); render(); },
+  "overview.retryWeather": function () { return retryForecast(); },
   "overview.openProperty": function (id) { if (id) state.propertyId = id; go("property.detail"); },
   "overview.openProperties": function () { go("appointments"); },
   "overview.openAppointments": function () { go("appointments"); },
@@ -197,7 +198,7 @@ export var ACTIONS = {
         return false;
       });
     }
-    state.session.authenticated = false; state.account = "session-expired"; state.phone = ""; state.code = ""; invalidateCareRuntime(); go("auth.oidc"); toast("Signed out");
+    state.session.authenticated = false; state.account = "session-expired"; state.oidc = "ready-signed-out"; state.phone = ""; state.code = ""; invalidateCareRuntime(); go("auth.oidc"); toast("Signed out");
   },
   "calendar.open":     function ()   { go("calendar"); },
   "calendar.prev":     function ()   { calShift(-1); },
@@ -207,6 +208,11 @@ export var ACTIONS = {
   "ui.toggleMobileNav":function ()   { setState({ mobileNav: !state.mobileNav, accountMenu: false }); },
   "theme.pick":        function (id) { return pickTheme(id); }
 };
+
+function retryForecast() {
+  if (state.config.dataMode !== "live" || state.liveWeatherState === "loading") return false;
+  return reloadRuntimeModule("overview").catch(function () { return null; });
+}
 
 function openRequestForm() {
   var url = state.config.requestFormUrl;

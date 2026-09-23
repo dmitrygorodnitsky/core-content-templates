@@ -803,10 +803,17 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.match(one(Overview(), "[data-module=\"empty-state\"]").textContent, /You don’t have access to these properties/);
   state.moduleData.properties = { state: "ready", items: [] };
   state.liveWeatherState = "failed";
-  assert.equal(all(Overview(), "[data-module=\"error-state\"]").length, 1, "a failed forecast is an error, not an empty home");
+  const forecastFailed = Overview();
+  assert.equal(all(forecastFailed, "[data-module=\"error-state\"]").length, 0, "a failed forecast leaves the properties on screen");
+  assert.equal(one(forecastFailed, "[data-module=\"weather-summary\"]").getAttribute("data-state"), "error", "the weather card owns the failed forecast");
+  assert.ok(one(forecastFailed, "[data-module=\"property-map\"]"));
 
   configureLive({ portalServiceGeography: "" });
-  assert.match(one(Overview(), "[data-module=\"empty-state\"]").textContent, /isn’t set up yet/);
+  state.moduleData.properties = { state: "ready", items: [] };
+  const noGeography = Overview();
+  assert.equal(one(noGeography, "[data-module=\"weather-summary\"]").getAttribute("data-state"), "unavailable");
+  assert.match(one(noGeography, "[data-module=\"weather-summary\"]").textContent, /isn’t set up for this portal yet/);
+  assert.ok(one(noGeography, "[data-module=\"property-map\"]"), "a home without a service area still lists the properties");
 
   configureLive();
   const liveProperty = {
@@ -820,8 +827,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   page = Overview();
   assert.equal(one(page, ".page-header__sub").textContent, "Snowfall 2 cm · 1 property", "a live property is not called under contract");
   const liveContracts = one(page, "[data-module=\"active-contracts\"]");
-  assert.equal(liveContracts.getAttribute("data-state"), "unavailable", "the home widget has no live contract read, so it never tells a customer they have no contract");
-  assert.equal(one(liveContracts, "[data-module=\"section-unavailable\"]").textContent, "Not available yetContracts aren’t in the portal yet.");
+  assert.equal(liveContracts.getAttribute("data-state"), "loading", "the home widget waits for the live Contracts read instead of saying there is no contract");
+  assert.equal(all(liveContracts, "[data-module=\"section-unavailable\"]").length, 0, "Contracts is live, so the home no longer says it is not in the portal");
   assert.equal(all(liveContracts, "[data-state=\"empty\"]").length, 0);
   assert.equal(all(page, "[data-module=\"quote-preparing\"]").length, 0, "the live home claims no preparation");
   const tooltipless = one(page, "[data-module=\"property-row\"]");
@@ -836,8 +843,8 @@ const RETIRED = ["Proposal #", "valid until", "sent Dec", "sq ft", "Beam AI", "l
   assert.equal(all(detail, ".prop-head__addr").length, 0);
   assert.equal(all(detail, ".status-badge").length, 0, "a live property header shows no status rather than Active Monitoring");
   const contractFact = one(detail, "[data-fact=\"contract\"]");
-  assert.equal(contractFact.getAttribute("data-state"), "unavailable");
-  assert.equal(one(contractFact, ".prop-fact__value").textContent + one(contractFact, ".prop-fact__note").textContent, "Not available yetContracts aren’t in the portal yet.");
+  assert.equal(contractFact.getAttribute("data-state"), "loading", "the agreement fact waits for the live Contracts read");
+  assert.equal(one(contractFact, ".prop-fact__label").textContent, "Service agreement");
   const visits = one(detail, "[data-module=\"property-visits\"]");
   assert.equal(visits.getAttribute("data-state"), "unavailable");
   assert.equal(one(visits, "[data-module=\"section-unavailable\"]").textContent, "Not available yetScheduled visits aren’t in the portal yet.");

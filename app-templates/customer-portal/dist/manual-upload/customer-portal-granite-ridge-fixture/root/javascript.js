@@ -1987,6 +1987,47 @@
       memberSince: "2022",
       stats: { orders: "38", spent: "$14,820", savings: "$2,140" }
     },
+    customerAccount: {
+      id: CLIENT_ACCOUNT,
+      code: "GRS-CUSTOMER-6001",
+      nls: { en: { NAME: "Whitlock Property Group" } },
+      type: { id: 2, code: "CUSTOMER" },
+      user: { id: 4301 },
+      states: [{ id: 83, code: "ACTIVE" }],
+      contacts: [
+        {
+          id: 6101,
+          firstName: "Dana",
+          lastName: "Whitlock",
+          title: "Portfolio Manager",
+          type: { id: 1, code: "PRIMARY" },
+          contactEntries: [
+            { id: 6111, type: { id: 1, code: "EMAIL" }, value: "dana.whitlock@example.test" },
+            { id: 6112, type: { id: 2, code: "PHONE" }, value: "+1 (303) 555-0164" }
+          ]
+        },
+        {
+          id: 6102,
+          firstName: "Marco",
+          lastName: "Ruiz",
+          title: "Facilities Coordinator",
+          type: { id: 2, code: "SECONDARY" },
+          contactEntries: [{ id: 6121, type: { id: 1, code: "EMAIL" }, value: "marco.ruiz@example.test" }]
+        }
+      ],
+      addresses: [
+        {
+          id: 6201,
+          types: [{ id: 1, code: "BILLING" }],
+          address: { id: 7301, address1: "1550 Wynkoop Street", address2: "Suite 400", city: "Denver", postalCode: "80202", state: { id: 6, code: "CO" } }
+        },
+        {
+          id: 6202,
+          types: [{ id: 3, code: "SERVICE" }],
+          address: { id: 7302, address1: "4820 Foothill Court", city: "Lakewood", postalCode: "80215", state: { id: 6, code: "CO" } }
+        }
+      ]
+    },
     addresses: [
       { id: "foothill", label: "Foothill Court", line: "4820 Foothill Court", city: "Lakewood, CO 80215", dot: accent2, iconBg: softAccent2 },
       { id: "tabor", label: "Tabor Street", line: "1190 Tabor Street", city: "Golden, CO 80401", dot: ok, iconBg: softOk },
@@ -2325,8 +2366,8 @@
       orderItems: QUOTE_ORDERS.reduce(function(lines, entry) {
         return lines.concat(quoteLines(entry));
       }, []),
-      productPrices: Object.keys(PRICE_ROWS).reduce(function(rows, model) {
-        return rows.concat(PRICE_ROWS[model].map(function(id, index) {
+      productPrices: Object.keys(PRICE_ROWS).reduce(function(rows2, model) {
+        return rows2.concat(PRICE_ROWS[model].map(function(id, index) {
           return { id, product: { id: SNOW_PRODUCTS[index].id } };
         }));
       }, []),
@@ -2969,7 +3010,8 @@
       modules: ["overview", "appointmentsTimeline", "properties", "orders", "calendar", "activity", "proposals", "care", "pricing", "profile", "support"],
       weatherCalendar: true,
       showCart: false,
-      drawerTitle: "Request service"
+      drawerTitle: "Request service",
+      customerAccountProfile: true
     },
     spaStaging: {
       id: "spaStaging",
@@ -3029,7 +3071,7 @@
     products: { id: "products", path: "/products", module: "products" },
     "product.detail": { id: "product.detail", path: "/products/:id", module: "products", param: "id" },
     checkout: { id: "checkout", path: "/checkout", module: "checkout" },
-    account: { id: "account", path: "/account", module: "account" },
+    account: { id: "account", path: "/account", module: "account", ownedByProfile: true },
     "purchases.list": { id: "purchases.list", path: "/purchases", module: "purchases" },
     "purchase.detail": { id: "purchase.detail", path: "/purchases/:id", module: "purchases", param: "id" },
     plan: { id: "plan", path: "/account/plan", module: "plan" },
@@ -3179,6 +3221,13 @@
       pimCta: dataset.portalPimCta || "",
       defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light")
     };
+  }
+  function customerAccountRequired(config) {
+    return !!config && config.dataMode === "live" && config.authMode === "required";
+  }
+  function customerAccountProfile(config) {
+    var profile = config && portalProfiles[config.profile];
+    return !!(profile && profile.customerAccountProfile);
   }
   function configuredExternalUrl(config, key) {
     var value = config && config[key];
@@ -3412,10 +3461,10 @@
       paidThisMonth: bucket(paid)
     };
   }
-  function bucket(rows) {
+  function bucket(rows2) {
     return {
-      count: rows.length,
-      amount: rows.reduce(function(running, invoice) {
+      count: rows2.length,
+      amount: rows2.reduce(function(running, invoice) {
         return running + (Number(invoice.amount) || 0);
       }, 0)
     };
@@ -3447,8 +3496,8 @@
     return MONTH_NAMES[date.getMonth()] + " " + date.getDate();
   }
   function periodKind(period) {
-    var coded3 = String(period && period.weatherPrimaryCoded || "");
-    var precipitation = coded3.split(":")[2] || "";
+    var coded4 = String(period && period.weatherPrimaryCoded || "");
+    var precipitation = coded4.split(":")[2] || "";
     if (FREEZING_CODES.indexOf(precipitation) !== -1) return "freezing";
     if (SNOW_CODES.indexOf(precipitation) !== -1) {
       var snow = num(period.snowCM);
@@ -3600,6 +3649,10 @@
     });
     return match ? match.label : "";
   }
+  function weatherReading(kind, frame, legend) {
+    if (frame && kind === frame.kind && frame.label) return frame.label;
+    return weatherLabel(kind, legend);
+  }
   function popupWeather(frame, zoneKind, source, entry, index, sources) {
     var day = frame.day + " " + frame.date;
     if (entry && entry.state === "loading") return { state: "loading", day, source: "xweather" };
@@ -3613,7 +3666,7 @@
       day,
       kind: zoneKind,
       temp: frame.temp,
-      phrase: "",
+      phrase: zoneKind === frame.kind ? frame.label || "" : "",
       note: "",
       source: source === "xweather" ? "xweather" : "sample"
     };
@@ -3833,13 +3886,13 @@
       if (isOpen(order)) counts.open += 1;
       else counts[order.status] += 1;
     });
-    var rows = agreements.filter(function(agreement) {
+    var rows2 = agreements.filter(function(agreement) {
       return agreement.stage !== "preparing";
     }).map(function(agreement) {
       return agreementRow(agreement, orders, readable, byProperty);
     }).sort(byStage);
     return {
-      agreements: rows,
+      agreements: rows2,
       groups,
       counts,
       deciding: counts.open > 0,
@@ -3848,7 +3901,7 @@
       sources: data.sources || {},
       truncated: !!data.truncated,
       scopeMode: data.scopeMode || null,
-      partial: partialOf(data, orders, rows)
+      partial: partialOf(data, orders, rows2)
     };
   }
   function groupDecision(orders) {
@@ -3871,9 +3924,9 @@
       });
       if (found) return found;
     }
-    var rows = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
-    for (var position = 0; position < rows.length; position += 1) {
-      var listed = rows[position].orders.find(function(order) {
+    var rows2 = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
+    for (var position = 0; position < rows2.length; position += 1) {
+      var listed = rows2[position].orders.find(function(order) {
         return order.backendId === backendId;
       });
       if (listed) return listed;
@@ -3881,8 +3934,8 @@
     return null;
   }
   function findAgreement(pkg, backendId) {
-    var rows = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
-    return rows.find(function(row) {
+    var rows2 = pkg && Array.isArray(pkg.agreements) ? pkg.agreements : [];
+    return rows2.find(function(row) {
       return row.agreement.backendId === backendId;
     }) || null;
   }
@@ -4069,12 +4122,12 @@
       servicePeriod: sharedPeriod(listed)
     };
   }
-  function partialOf(data, orders, rows) {
+  function partialOf(data, orders, rows2) {
     var sources = data.sources || {};
     var lines = orders.some(function(order) {
       return order.linesState !== "ready";
     });
-    var unreadableOrders = rows.reduce(function(sum, row) {
+    var unreadableOrders = rows2.reduce(function(sum, row) {
       return sum + row.unreadableOrders;
     }, 0);
     return {
@@ -4181,9 +4234,9 @@
   function scopeModeOf(value) {
     return SCOPE_MODES.indexOf(value) === -1 ? null : value;
   }
-  function rowsById(rows) {
+  function rowsById(rows2) {
     var found = /* @__PURE__ */ new Map();
-    (Array.isArray(rows) ? rows : []).forEach(function(row) {
+    (Array.isArray(rows2) ? rows2 : []).forEach(function(row) {
       var id = positiveInteger3(row && row.id);
       if (id && !found.has(id)) found.set(id, row);
     });
@@ -4967,13 +5020,14 @@
     return Object.assign({}, overview, { weather: state.liveWeather });
   }
   function liveOverview() {
-    var geography = state.config.serviceGeography;
-    if (!geography || !state.liveWeather) return null;
     var envelope2 = state.moduleData.properties;
     if (!envelope2 || envelope2.state !== "ready") return null;
+    var geography = state.config.serviceGeography;
+    var forecast = liveForecastState();
     return {
-      map: geography.map,
-      weather: state.liveWeather,
+      map: geography ? geography.map : null,
+      weather: forecast === "ready" ? state.liveWeather : null,
+      forecast,
       properties: envelope2.items || [],
       sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
       invoices: null,
@@ -4983,12 +5037,26 @@
     };
   }
   function liveOverviewStatus() {
-    if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+    if (!isModuleEnabled("properties")) return "unconfigured";
     var envelope2 = state.moduleData.properties;
     if (envelope2 && envelope2.state === "unauthorized") return "unauthorized";
-    if (state.liveWeatherState === "failed" || envelope2 && envelope2.state === "error") return "error";
-    if (!state.liveWeather || !envelope2 || envelope2.state !== "ready") return "loading";
+    if (envelope2 && envelope2.state === "error") return "error";
+    if (!envelope2 || envelope2.state !== "ready") return "loading";
     return "ready";
+  }
+  function liveForecastState() {
+    if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+    if (state.liveWeatherState === "ready" && state.liveWeather) return "ready";
+    if (state.liveWeatherState === "failed") return "failed";
+    return "loading";
+  }
+  function activityUnread() {
+    if (!isModuleEnabled("activity") || state.config.dataMode === "live" || state.activityReadAll) return false;
+    return (currentFixture().activity || []).some(function(group) {
+      return (group.items || []).some(function(item) {
+        return !!item.unread;
+      });
+    });
   }
   function currentFixture() {
     var fixture = caseFixtureFor(state.config.caseId);
@@ -5229,7 +5297,7 @@
     return !!(route && route.public);
   }
   function customerPortalAccessRequired() {
-    return state.config.dataMode === "live" && state.config.authMode === "required" && state.config.enabledModules.includes("account");
+    return customerAccountRequired(state.config);
   }
   function customerPortalGateActive() {
     return customerPortalAccessRequired() && state.session.authenticated === true && state.account !== "ready";
@@ -5350,7 +5418,7 @@
   function computeSite(site) {
     var cs = 0, ds = 0, total = 0;
     var names = currentTheme().prop.surfaces;
-    var rows = F.surfaceDefs.map(function(d, i) {
+    var rows2 = F.surfaceDefs.map(function(d, i) {
       var a = site.areas[i];
       var c = Math.round(a * d.clear), de = Math.round(a * d.deice);
       cs += c;
@@ -5372,7 +5440,7 @@
     var monthly = Math.round(unlim / 5 / 5) * 5;
     var seasonLock = Math.round(unlim * 0.9 / 25) * 25;
     return {
-      rows,
+      rows: rows2,
       total,
       clearing,
       deice,
@@ -5633,6 +5701,12 @@
       }
     }
   };
+  var fixtureAccountProfileAdapter = {
+    load(moduleId, context) {
+      var fixture = caseFixtureFor(context.config.caseId);
+      return { account: fixture && fixture.customerAccount ? clone(fixture.customerAccount) : null, scopeMode: null };
+    }
+  };
   function createFixtureContractsGateway(state2) {
     return {
       async readOrder(backendId) {
@@ -5674,9 +5748,9 @@
       client: quotation ? { displayName: fixture.customer.fullName } : null
     };
   }
-  function fixtureRow(rows, backendId) {
+  function fixtureRow(rows2, backendId) {
     var id = positiveInteger3(backendId);
-    var row = (rows || []).find(function(candidate) {
+    var row = (rows2 || []).find(function(candidate) {
       return candidate.id === id;
     });
     if (!row) throw coded2("not-found");
@@ -5687,8 +5761,8 @@
     if (parts.length !== 2 || latestStateCode(row) !== parts[0]) throw coded2("command-refused");
     return parts[1];
   }
-  function withState(rows, ids, code) {
-    return rows.map(function(row) {
+  function withState(rows2, ids, code) {
+    return rows2.map(function(row) {
       return ids.indexOf(row.id) === -1 ? row : Object.assign({}, row, { states: row.states.concat({ code }) });
     });
   }
@@ -5869,16 +5943,16 @@
   }
   async function loadSnowProperties(context, fetchImpl = globalThis.fetch, explicitOrigin) {
     var api = readContext(context, explicitOrigin);
-    var rows = await customerProperties(api, fetchImpl);
-    var addresses = await resolveAddresses(api, fetchImpl, rows.items);
+    var rows2 = await customerProperties(api, fetchImpl);
+    var addresses = await resolveAddresses(api, fetchImpl, rows2.items);
     return {
       state: "ready",
       accountId: api.accountId,
-      items: rows.items.map(function(row) {
+      items: rows2.items.map(function(row) {
         return propertyRecord(row, addresses);
       }),
       scopeMode: "browser-filtered",
-      truncated: rows.truncated
+      truncated: rows2.truncated
     };
   }
   async function loadSnowQuotes(context, fetchImpl = globalThis.fetch, explicitOrigin) {
@@ -5990,23 +6064,23 @@
       offset: 0,
       pageSize: CATALOG_PAGE_SIZE
     }));
-    var rows = listResult(reply).filter(function(row) {
+    var rows2 = listResult(reply).filter(function(row) {
       return ids.indexOf(positiveInteger3(row && row.id)) !== -1;
     });
-    return { rows, scopeMode: "unscoped", truncated: resultSizeOf(reply, rows.length) > rows.length };
+    return { rows: rows2, scopeMode: "unscoped", truncated: resultSizeOf(reply, rows2.length) > rows2.length };
   }
   function scopedRows(reply, owned) {
-    var rows = listResult(reply);
-    var kept = rows.filter(owned);
+    var rows2 = listResult(reply);
+    var kept = rows2.filter(owned);
     return {
       rows: kept,
-      scopeMode: kept.length === rows.length ? "server-scoped" : "browser-filtered",
-      truncated: resultSizeOf(reply, rows.length) > rows.length
+      scopeMode: kept.length === rows2.length ? "server-scoped" : "browser-filtered",
+      truncated: resultSizeOf(reply, rows2.length) > rows2.length
     };
   }
-  function customerVisibleOrderIds(rows) {
+  function customerVisibleOrderIds(rows2) {
     var ids = [];
-    (rows || []).forEach(function(row) {
+    (rows2 || []).forEach(function(row) {
       var id = positiveInteger3(row && row.id);
       if (!id || QUOTE_ORDER_TYPES.indexOf(text3(row.type && row.type.code)) === -1) return;
       if (!Object.prototype.hasOwnProperty.call(CUSTOMER_ORDER_STATUS, latestStateCode(row))) return;
@@ -6014,9 +6088,9 @@
     });
     return ids;
   }
-  function referencedIds(rows, field) {
+  function referencedIds(rows2, field) {
     var ids = [];
-    (rows || []).forEach(function(row) {
+    (rows2 || []).forEach(function(row) {
       var id = positiveInteger3(row && row[field] && row[field].id);
       if (id && ids.indexOf(id) === -1) ids.push(id);
     });
@@ -6086,19 +6160,19 @@
         offset: page * PROPERTY_PAGE_SIZE,
         pageSize: PROPERTY_PAGE_SIZE
       }));
-      var rows = Array.isArray(response && response.result) ? response.result : [];
-      rows.forEach(function(row) {
+      var rows2 = Array.isArray(response && response.result) ? response.result : [];
+      rows2.forEach(function(row) {
         if (attributeNumber(row, "ACCOUNT") === api.accountId) items.push(row);
       });
-      if (rows.length < PROPERTY_PAGE_SIZE) return { items, truncated: false };
+      if (rows2.length < PROPERTY_PAGE_SIZE) return { items, truncated: false };
       truncated = page === PROPERTY_PAGE_LIMIT - 1;
     }
     return { items, truncated };
   }
-  async function resolveAddresses(api, fetchImpl, rows) {
+  async function resolveAddresses(api, fetchImpl, rows2) {
     var resolved = {};
     var ids = [];
-    rows.forEach(function(row2) {
+    rows2.forEach(function(row2) {
       var id = attributeNumber(row2, "ADDRESS");
       if (id && ids.indexOf(id) < 0) ids.push(id);
     });
@@ -6382,14 +6456,14 @@
     return normalizeCart(view, api, codes);
   }
   function normalizeCart(view, api, codes) {
-    var rows = Array.isArray(view && view.items) ? view.items : [];
+    var rows2 = Array.isArray(view && view.items) ? view.items : [];
     var lineCodes = [];
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       var code = codes[String(row && row.currency)] || currencyOf(row && row.currency);
       if (code && lineCodes.indexOf(code) < 0) lineCodes.push(code);
     });
     var currencyCode2 = currencyOf(view && view.currency) || (lineCodes.length === 1 ? lineCodes[0] : "") || defaultCurrency(api);
-    var lines = rows.map(function(row) {
+    var lines = rows2.map(function(row) {
       return normalizeLine(row, currencyCode2, api, codes);
     });
     var byRef = {};
@@ -6453,8 +6527,8 @@
   }
   function currencyIdsIn(view) {
     var ids = [];
-    var rows = Array.isArray(view && view.items) ? view.items : [];
-    rows.concat([view || {}]).forEach(function(row) {
+    var rows2 = Array.isArray(view && view.items) ? view.items : [];
+    rows2.concat([view || {}]).forEach(function(row) {
       var id = positiveInteger4(row && row.currency);
       if (id && ids.indexOf(id) < 0) ids.push(id);
     });
@@ -6466,8 +6540,8 @@
       return listDictionary(api, fetchImpl, [{ operator: "=", property: "id", type: "INTEGER", value: String(id) }]);
     }));
     var byId = {};
-    results.forEach(function(rows) {
-      rows.forEach(function(row) {
+    results.forEach(function(rows2) {
+      rows2.forEach(function(row) {
         byId[String(row.id)] = text4(row.code);
       });
     });
@@ -6475,8 +6549,8 @@
   }
   async function currencyIdByCode(api, fetchImpl, code) {
     if (!code) throw contractError2("cart-currency-missing", "A currency is required to add a cart item");
-    var rows = await listDictionary(api, fetchImpl, [{ operator: "=", property: "code", type: "STRING", value: code }]);
-    var id = positiveInteger4(rows[0] && rows[0].id);
+    var rows2 = await listDictionary(api, fetchImpl, [{ operator: "=", property: "code", type: "STRING", value: code }]);
+    var id = positiveInteger4(rows2[0] && rows2[0].id);
     if (!id) throw contractError2("cart-currency-missing", "Currency " + code + " is not provisioned in this organization");
     return id;
   }
@@ -6742,8 +6816,8 @@
       offset: 0,
       pageSize: 200
     }));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    var row = rows.find(function(candidate) {
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
+    var row = rows2.find(function(candidate) {
       return attributeNumber2(candidate, "SOURCE_ORDER") === orderId2 && attributeText2(candidate, "RECORD_CODE") === marker;
     });
     if (!row) return null;
@@ -6771,8 +6845,8 @@
     } catch (error2) {
       return { reason: "resource-read-refused", row: null, status: error2 && error2.status || null };
     }
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    var row = rows[0] && positiveInteger5(rows[0].id) ? rows[0] : null;
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
+    var row = rows2[0] && positiveInteger5(rows2[0].id) ? rows2[0] : null;
     return { reason: row ? null : "no-studio-row", row, status: null };
   }
   async function resolveOne(api, fetchImpl, url, filters, mappings, errorCode) {
@@ -6846,7 +6920,7 @@
       },
       body: JSON.stringify(request)
     });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
     var headers = {
       Accept: "application/json",
       Authorization: authorization,
@@ -6854,15 +6928,15 @@
       "X-Organization-Code": organization
     };
     var context2 = { billBase, fetchImpl, headers };
-    var orderIds = rows.map(function(row) {
+    var orderIds = rows2.map(function(row) {
       return positiveInteger5(row && row.id);
     }).filter(Boolean);
     var joined = await Promise.all([linesByOrder(context2, orderIds), fulfillmentByOrder(context2, orderIds)]);
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       assertOwnedBy(row, accountId);
     });
     var withoutLines = 0;
-    var items = rows.filter(function(row) {
+    var items = rows2.filter(function(row) {
       var hasLines = (joined[0][String(row.id)] || []).length > 0;
       if (!hasLines) withoutLines += 1;
       return hasLines;
@@ -6878,7 +6952,7 @@
       accountId,
       resultSize: items.length,
       ordersWithoutLines: withoutLines,
-      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
+      accountResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows2.length,
       items,
       byRef
     };
@@ -6900,9 +6974,9 @@
       pageSize: 500,
       sorting: [{ field: "sortOrder", direction: "ASC" }]
     });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
     var grouped = {};
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       var id = positiveInteger5(row.order && row.order.id);
       if (orderIds.indexOf(id) < 0) return;
       (grouped[String(id)] = grouped[String(id)] || []).push(row);
@@ -6917,9 +6991,9 @@
       offset: 0,
       pageSize: 200
     });
-    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
     var byOrder = {};
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       var id = attributeNumber2(row, "SOURCE_ORDER");
       if (!id || orderIds.indexOf(id) < 0) return;
       byOrder[String(id)] = {
@@ -7223,9 +7297,9 @@
       pageSize: positiveInteger6(api.config.appointmentsPageSize) || 100,
       sorting: [{ field: "start", direction: "ASC" }]
     }));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
     var customerAccountId = positiveInteger6(api.customer && api.customer.id);
-    var scoped = customerAccountId ? rows.filter(function(row) {
+    var scoped = customerAccountId ? rows2.filter(function(row) {
       return customerAttributeId(row, "CUSTOMER_ACCOUNT") === customerAccountId;
     }) : [];
     var items = scoped.map(normalizeAppointment);
@@ -7254,7 +7328,7 @@
       }));
       var providerResponse = resourceResults[0];
       var locationResponse = resourceResults[1];
-      availability = normalizeCoreAvailability(providerResponse && providerResponse.result, rows, {
+      availability = normalizeCoreAvailability(providerResponse && providerResponse.result, rows2, {
         now,
         horizonDays: api.config.bookingHorizonDays,
         maxVisibleDays: api.config.bookingVisibleDays,
@@ -7274,7 +7348,7 @@
       // Named to stay honest: the narrowing is done by this client, not by Core.
       scopeMode: "customer-filtered-client-side",
       resultSize: items.length,
-      tenantResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows.length,
+      tenantResultSize: Number.isFinite(Number(response && response.resultSize)) ? Number(response.resultSize) : rows2.length,
       items,
       next: upcoming[0] || null,
       upcoming: upcoming.slice(1),
@@ -7470,10 +7544,10 @@
       if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before checkout");
       if (!lines.length) throw contractError4("order-lines-required", "An order needs at least one cart line");
       var marker = DEMO_CODE_PREFIX + "ORDER_" + accountId + "_" + requestRef;
-      var rows = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
+      var rows2 = await listMany(fetchImpl, api.billBase + "/api/order/list.json", api, [
         { type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }
       ], ORDER_MAPPINGS3, [{ field: "id", direction: "DESC" }]);
-      var existing = rows.find(function(row) {
+      var existing = rows2.find(function(row) {
         return recordCodeOf(row) === marker || text6(row.notes) === marker;
       });
       if (existing) return withOrderLines(fetchImpl, api, normalizeOrder2(existing, accountId), accountId);
@@ -7553,7 +7627,7 @@
     return { itemType, priceId, productCode: text6(line && line.productCode), qty, unitAmount };
   }
   async function itemTypesByCode(fetchImpl, api) {
-    var rows = await listMany(
+    var rows2 = await listMany(
       fetchImpl,
       api.billBase + "/api/order-item-type/list.json",
       api,
@@ -7563,18 +7637,18 @@
       100
     );
     var byCode = {};
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       if (row.workflow && positiveInteger6(row.workflow.id)) byCode[text6(row.code)] = row;
     });
     return byCode;
   }
   async function withOrderLines(fetchImpl, api, order, accountId) {
-    var rows = await listMany(fetchImpl, api.billBase + "/api/order-item/list.json", api, [
+    var rows2 = await listMany(fetchImpl, api.billBase + "/api/order-item/list.json", api, [
       { type: "INTEGER", operator: "=", property: "order.id", value: String(order.id) }
     ], ORDER_ITEM_SAVE_MAPPINGS, [{ field: "sortOrder", direction: "ASC" }], 200);
     return Object.assign({}, order, {
       accountId,
-      lines: rows.map(function(row) {
+      lines: rows2.map(function(row) {
         return {
           itemCount: finiteNumber6(row.itemCount, 0),
           priceId: positiveInteger6(row.itemPrice && row.itemPrice.id),
@@ -7631,10 +7705,10 @@
   async function resolveCarePlan(fetchImpl, api) {
     var accountId = positiveInteger6(api.customer && api.customer.id);
     if (!accountId) throw contractError4("customer-account-required", "Resolved customer Account is required before booking");
-    var rows = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
+    var rows2 = await listMany(fetchImpl, api.serviceBase + "/api/project/list.json", api, [
       { type: "STRING", operator: "=", property: "type.code", value: CARE_PLAN_TYPE }
     ], CARE_PLAN_MAPPINGS);
-    var owned = rows.find(function(row) {
+    var owned = rows2.find(function(row) {
       return customerAttributeId(row, "CUSTOMER_ACCOUNT") === accountId;
     });
     if (!owned) throw contractError4("care-plan-missing", "This customer has no care plan to record a visit against");
@@ -7672,8 +7746,8 @@
     var body = { filters, mappings, offset: 0, pageSize: 1 };
     if (sorting) body.sorting = sorting;
     var response = await requestJson4(fetchImpl, url, requestOptions2(api, body));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    return rows[0] || null;
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
+    return rows2[0] || null;
   }
   async function listMany(fetchImpl, url, api, filters, mappings, sorting, pageSize) {
     var body = { filters, mappings, offset: 0, pageSize: pageSize || 200 };
@@ -8293,6 +8367,35 @@
     ]);
   }
 
+  // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
+  var ICONS = {
+    map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
+    calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
+    invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
+    contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
+    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
+    alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
+    pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
+    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2",
+    signOut: "M10 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2H10 M14.5 8l4 4-4 4 M18.5 12H9.5"
+  };
+  function icon(name, className) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    if (className) svg.setAttribute("class", className);
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", ICONS[name] || "");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.6");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+    return svg;
+  }
+
   // app-templates/customer-portal/runtime/src/components/shell/SpaTopNav.js
   function spaBrand() {
     return h("div", { "class": "top-nav__brand", "data-action": "nav.go", "data-id": "orders.list" }, [
@@ -8430,21 +8533,27 @@
     var actions = [
       h("div", { "class": "icon-btn icon-btn--optional", "data-action": "ui.toggleMode", title: "Toggle light/dark" }, state.mode === "Dark" ? "\u2600" : "\u263E")
     ];
-    if (profile.primary) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
+    if (primaryConnected(profile.primary)) actions.push(ActionButton({ variant: "btn--primary", label: state.config.primaryCtaLabel || profile.primary.label, action: profile.primary.action, visualId: "primary-cta" }));
     if (!profile.weatherCalendar && isModuleEnabled("calendar")) actions.push(h("div", { "class": "icon-btn icon-btn--optional", "data-action": "calendar.open", title: "Calendar" }, "\u{1F4C5}"));
     if (profile.showCart && isModuleEnabled("checkout")) actions.push(h("div", { "class": "icon-btn", "data-action": "cart.open", title: "Cart", "data-state": cartCount() ? "filled" : "empty" }, ["\u{1F6D2}", cartCount() ? h("span", { "class": "cart-badge", "data-bind": "cart.count" }, String(cartCount())) : null]));
     var activityEnabled = isModuleEnabled("activity");
+    var unread = activityUnread();
     actions.push(h("div", {
       "class": "icon-btn icon-btn--optional",
       "data-module": "activity-control",
       "data-action": activityEnabled ? "activity.open" : void 0,
+      "data-state": unread ? "unread" : void 0,
       title: activityEnabled ? "Activity" : void 0,
       "aria-disabled": activityEnabled ? void 0 : "true"
-    }, ["\u{1F514}", h("span", { "class": "dot-badge" })]));
-    if (isModuleEnabled("profile")) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
+    }, ["\u{1F514}", unread ? h("span", { "class": "dot-badge" }) : null]));
+    var profileEnabled = isModuleEnabled("profile");
+    var signInRequired = state.config.authMode === "required";
+    if (profileEnabled) actions.push(h("div", { "class": "avatar", "data-action": "profile.open", title: "Profile" }));
+    else if (signInRequired) actions.push(h("button", { "class": "icon-btn icon-btn--optional", "data-module": "sign-out-control", "data-visual-id": "sign-out-control", "data-action": "auth.signOut", title: "Sign out", "aria-label": "Sign out", type: "button" }, [icon("signOut", "ov-icon")]));
     actions.push(h("div", { "class": "icon-btn hamburger", "data-action": "ui.toggleMobileNav", title: "Menu" }, "\u2630"));
+    var landingOpen = !!configuredExternalUrl(state.config, "landingUrl");
     var nav = h("nav", { "class": "top-nav", "data-module": "top-nav", "data-visual-id": "top-nav" }, [
-      h("div", { "class": "top-nav__brand", "data-action": "nav.landing" }, [
+      h("div", { "class": "top-nav__brand", "data-action": landingOpen ? "nav.landing" : "nav.go", "data-id": landingOpen ? void 0 : state.config.defaultRoute }, [
         h("div", { "class": "brand-logo" }),
         h("span", { "class": "brand-name", "data-bind": "brand.name" }, state.config.brandName || "Aircove")
       ]),
@@ -8458,13 +8567,18 @@
         navItems.map(function(n) {
           var active = n.key === state.route || n.key === "orders.list" && state.route === "order.detail" || n.key === "products" && state.route === "checkout" || n.key === "proposals.list" && (state.route === "proposal.detail" || state.route === "agreement.detail");
           return h("span", { "class": "nav-link" + (active ? " nav-link--active" : ""), "data-action": "nav.go", "data-id": n.key }, navLabel2(n));
-        }).concat(isModuleEnabled("profile") ? [
-          h("div", { "class": "mobile-nav__divider" }),
+        }).concat(profileEnabled || signInRequired ? [h("div", { "class": "mobile-nav__divider" })] : [], profileEnabled ? [
           h("span", { "class": "nav-link" + (state.route === "profile" ? " nav-link--active" : ""), "data-action": "profile.open" }, navLabel2({ key: "profile", label: "Profile" }))
+        ] : [], signInRequired ? [
+          h("span", { "class": "nav-link", "data-module": "mobile-sign-out", "data-action": "auth.signOut" }, "Sign out")
         ] : [])
       ));
     }
     return h("div", { "class": "top-nav-wrap" }, nav);
+  }
+  function primaryConnected(primary) {
+    if (!primary) return false;
+    return primary.action !== "service.requestForm" || !!state.config.requestFormUrl;
   }
   function isNavItemEnabled(item) {
     var route = routeRegistry[item.key];
@@ -9782,6 +9896,22 @@
     });
   }
 
+  // app-templates/customer-portal/runtime/src/components/shell/Destinations.js
+  function SupportContactButton(props) {
+    if (isSpa()) return ActionButton(Object.assign({ label: "Contact support", action: "support.email" }, props));
+    if (!configuredExternalUrl(state.config, "supportUrl")) return null;
+    return ActionButton(Object.assign({ label: "Contact support", action: "support.open" }, props));
+  }
+  function LandingReturnButton(props) {
+    if (isSpa()) return ActionButton(Object.assign({ label: "Back to the catalog", action: "nav.landing" }, props));
+    if (!configuredExternalUrl(state.config, "landingUrl")) return null;
+    return ActionButton(Object.assign({ label: "Back to our website", action: "nav.landing" }, props));
+  }
+  function GateGlyph(glyph) {
+    if (isSpa()) return h("div", { "class": "oidc-glyph" }, glyph);
+    return h("div", { "class": "oidc-glyph", "data-tone": "neutral", style: "background:rgba(var(--accent-rgb),.12);color:var(--accent)" }, glyph);
+  }
+
   // app-templates/customer-portal/runtime/src/components/primitives/RouteStates.js
   function UnauthorizedState(props) {
     props = props || {};
@@ -9790,7 +9920,7 @@
       h("div", { "class": "state-block__title" }, "You don\u2019t have access to this page"),
       h("div", { "class": "state-block__desc" }, "Your account doesn\u2019t include access to " + (props.scope || "this area") + ". If that seems wrong, we can sort it out."),
       h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" }, [
-        ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", visualId: "unauthorized-support" }),
+        SupportContactButton({ variant: "btn--primary", visualId: "unauthorized-support" }),
         ActionButton({ variant: "btn--ghost", label: "Go back", action: "nav.go", id: props.backRoute || "orders.list", visualId: "unauthorized-back" })
       ])
     ]);
@@ -9855,34 +9985,6 @@
       UnavailableChip(),
       h("div", { "class": "ov-empty__desc" }, subject + " aren\u2019t in the portal yet.")
     ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/storm/overview-icons.js
-  var ICONS = {
-    map: "M4 7.5 9.5 5l5 2.5L20 5v11.5L14.5 19l-5-2.5L4 19V7.5Z M9.5 5v11.5 M14.5 7.5V19",
-    calendar: "M4.5 7.5h15v12a1.5 1.5 0 0 1-1.5 1.5H6a1.5 1.5 0 0 1-1.5-1.5v-12Z M4.5 7.5V6A1.5 1.5 0 0 1 6 4.5h12A1.5 1.5 0 0 1 19.5 6v1.5 M8.5 3v3 M15.5 3v3 M8 12h3 M8 16h8",
-    invoice: "M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z M9.5 8.5h5 M9.5 12.5h5 M9.5 16h3",
-    contract: "M12 3.2 19.5 6v6c0 4.2-3 7.6-7.5 8.8C7.5 19.6 4.5 16.2 4.5 12V6L12 3.2Z M9 12.2l2.2 2.2 4-4.2",
-    support: "M4.5 6.5A2 2 0 0 1 6.5 4.5h11a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H10l-4 3.5v-3.5H6.5a2 2 0 0 1-2-2v-7Z M9 9.5h6 M9 12.5h4",
-    alert: "M12 4.2 21 19.5H3L12 4.2Z M12 10v4.4 M12 16.6v.6",
-    pin: "M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 1 1 13 0C18.5 15.2 12 21 12 21Z M12 12.8a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z",
-    snowflake: "M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M12 7l-2.6-2.2 M12 7l2.6-2.2 M12 17l-2.6 2.2 M12 17l2.6 2.2"
-  };
-  function icon(name, className) {
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("focusable", "false");
-    if (className) svg.setAttribute("class", className);
-    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", ICONS[name] || "");
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "currentColor");
-    path.setAttribute("stroke-width", "1.6");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-    svg.appendChild(path);
-    return svg;
   }
 
   // app-templates/customer-portal/runtime/src/components/storm/PropertyMap.js
@@ -10128,7 +10230,7 @@
     var chosen = placed.concat(listed).find(function(entry) {
       return entry.property.id === props.selectedId;
     }) || null;
-    var popup = chosen ? PropertyPopup(chosen.property, popupView(chosen, props), props.weather.legend, props.sources) : null;
+    var popup = chosen ? PropertyPopup(chosen.property, props.frame ? popupView(chosen, props) : null, props.weather ? props.weather.legend : null, props.sources) : null;
     var pinned = !!chosen && placed.indexOf(chosen) !== -1;
     if (!map) {
       return h("div", { "class": "ov-map__stage", "data-surface": "list", "data-state": failed ? "failed" : void 0 }, [
@@ -10216,6 +10318,10 @@
     var forecast = live ? props.forecasts.request(property.id, forecastPoint(entry.point)) : null;
     return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index, props.sources);
   }
+  function weatherKey(property, frame, status) {
+    if (status) return propertyWeather(property, frame);
+    return frame ? zoneWeather(property, frame) : void 0;
+  }
   function PropertyPin(property, frame, selected, sources) {
     var status = knownPropertyStatus(property, sources);
     return h("button", {
@@ -10225,7 +10331,7 @@
       "data-module": "property-pin",
       "data-visual-id": "property-pin",
       "data-state": status || void 0,
-      "data-weather": status ? propertyWeather(property, frame) : zoneWeather(property, frame),
+      "data-weather": weatherKey(property, frame, status),
       "aria-label": status ? property.name + " \u2014 " + OVERVIEW_STATUS[status].label : property.name,
       "aria-pressed": selected ? "true" : "false"
     }, [icon("pin", "ov-pin__glyph")]);
@@ -10275,7 +10381,7 @@
       "data-module": "property-row",
       "data-visual-id": "property-row",
       "data-state": status || void 0,
-      "data-weather": status ? propertyWeather(property, props.frame) : zoneWeather(property, props.frame),
+      "data-weather": weatherKey(property, props.frame, status),
       "data-placement": note ? reason : void 0,
       "aria-expanded": selected ? "true" : "false"
     }, [
@@ -10286,7 +10392,7 @@
         note ? text8("span", "ov-prow__why", note) : null
       ]),
       h("span", { "class": "ov-prow__meta" }, [
-        text8("span", "ov-prow__wx", weatherLabel(zoneWeather(property, props.frame), props.weather.legend)),
+        props.frame ? text8("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
         status ? text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label) : null
       ])
     ]);
@@ -10306,7 +10412,7 @@
         text8("span", "ov-tip__tag ov-tip__tag--" + status, OVERVIEW_STATUS[status].label)
       ]) : null,
       line ? text8("div", "ov-tip__line", line) : null,
-      PopupWeather(weather, legend),
+      weather ? PopupWeather(weather, legend) : null,
       h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property \u203A")
     ]);
   }
@@ -10348,6 +10454,162 @@
     return h(tag, className ? { "class": className } : null, value == null ? "" : String(value));
   }
 
+  // app-templates/customer-portal/runtime/src/components/proposals/QuotePackage.js
+  var QUOTE_STATUS = Object.freeze({
+    approved: Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
+    revision: Object.freeze({ label: "\u27F3 Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" }),
+    declined: Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
+    unseen: Object.freeze({ label: "\u25D4 Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" }),
+    viewed: Object.freeze({ label: "\u2022 Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" })
+  });
+  var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
+  var DECISION_LABEL = {
+    approved: "Option approved",
+    declined: "Declined",
+    revision: "Changes requested",
+    open: "Awaiting your decision"
+  };
+  function ContractsHead(quotes) {
+    var counts = quotes.counts;
+    var facts2 = [];
+    if (quotes.agreements.length) facts2.push(plural(quotes.agreements.length, "service agreement", "service agreements"));
+    if (counts.orders) {
+      facts2.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
+    }
+    if (quotes.servicePeriod) facts2.push("Service period " + formatDatePeriod(quotes.servicePeriod));
+    var deciding = quotes.deciding && counts.properties > 0;
+    return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
+      h("div", { "class": "proposals-head__read" }, [
+        h("div", { "class": "proposals-head__title-row" }, [
+          h("h1", { "class": "proposals-head__title" }, quotes.groups.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")
+        ]),
+        facts2.length ? h("div", { "class": "proposals-head__sub" }, facts2.join(" \xB7 ")) : null
+      ]),
+      deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null
+    ]);
+  }
+  function ContractsSectionTitle(label, count) {
+    return h("h2", { "class": "contracts-section__title" }, [label, count ? h("span", { "class": "contracts-section__count" }, String(count)) : null]);
+  }
+  function AgreementList(rows2) {
+    return h("div", { "class": "site-list agreement-list", "data-module": "agreement-list", "data-visual-id": "agreement-list" }, rows2.map(function(row) {
+      var agreement = row.agreement;
+      return h("button", {
+        "class": "proposal-card agreement-row",
+        "data-module": "agreement-row",
+        "data-visual-id": "agreement-row",
+        "data-action": "agreement.open",
+        "data-id": row.id,
+        "data-state": agreement.stage,
+        "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label
+      }, [
+        h("span", { "class": "proposal-card__diamond agreement-row__diamond", "data-tone": agreement.tone }),
+        h("span", { "class": "proposal-card__body" }, [
+          h("span", { "class": "proposal-card__name" }, agreementTitle(row)),
+          h("span", { "class": "proposal-card__meta" }, agreementMeta(row))
+        ]),
+        StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ]);
+    }));
+  }
+  function agreementTitle(row) {
+    var names = row.propertyNames;
+    if (!names.length) return "Service agreement";
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return names[0] + " and " + names[1];
+    return names[0] + " and " + (names.length - 1) + " more";
+  }
+  function agreementMeta(row) {
+    var agreement = row.agreement;
+    var facts2 = [];
+    if (row.propertyNames.length) facts2.push("Service agreement");
+    if (agreement.stage === "review" && row.quoteCount) {
+      facts2.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
+    }
+    if (agreement.term) facts2.push("Term " + formatDatePeriod(agreement.term));
+    else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
+    else if (row.servicePeriod) facts2.push("Service period " + formatDatePeriod(row.servicePeriod));
+    if (!facts2.length) facts2.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
+    return facts2.join(" \xB7 ");
+  }
+  function QuotesPreparing() {
+    return h("div", { "class": "state-block", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+      h("div", { "class": "state-block__glyph quote-preparing__glyph" }, "\u25D4"),
+      h("div", { "class": "state-block__title" }, "We have your request"),
+      h("div", { "class": "state-block__desc" }, "We\u2019re preparing your quote. It appears here as soon as we send it to you.")
+    ]);
+  }
+  function QuotesPreparingNotice() {
+    return h("div", { "class": "alert-banner alert-banner--info quote-preparing", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
+      h("div", { "class": "alert-banner__icon quote-preparing__glyph" }, "\u25D4"),
+      h("div", { "class": "alert-banner__body" }, [
+        h("div", { "class": "alert-banner__title" }, "We\u2019re still preparing part of your request"),
+        h("div", { "class": "alert-banner__desc" }, "Anything we send you appears in this list.")
+      ])
+    ]);
+  }
+  function PortfolioSchematic(groups, placements) {
+    var positions = schematicPositions(placements.map(function(placement) {
+      return placement.point;
+    }));
+    var placed = positions.filter(Boolean).length;
+    if (!placed) return null;
+    var mappable = groups.filter(function(group) {
+      return !!group.propertyBackendId;
+    }).length;
+    var canvas = h("div", { "class": "portfolio-map__canvas" }, [
+      h("span", { "class": "portfolio-map__label" }, "portfolio map" + (placed < mappable ? " \xB7 " + placed + " of " + plural(mappable, "property", "properties") + " on the map" : ""))
+    ]);
+    groups.forEach(function(group, index) {
+      var position = positions[index];
+      if (!position) return;
+      canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + position.x + "%;top:" + position.y + "%", "data-state": group.decision }, [
+        h("div", { "class": "map-pin-diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
+        h("div", { "class": "map-pin-label" }, group.title)
+      ]));
+    });
+    return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
+  }
+  function QuoteGroups(groups, placements, mapShown) {
+    return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
+      var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
+      var summary = [group.address, plural(group.orders.length, "quote", "quotes")].filter(Boolean).join(" \xB7 ");
+      var head2 = [
+        h("span", { "class": "proposal-card__diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
+        h("span", { "class": "proposal-card__body" }, [
+          h("span", { "class": "proposal-card__name" }, group.title),
+          h("span", { "class": "proposal-card__meta" }, summary),
+          offMap ? h("span", { "class": "proposal-card__tag" }, "Not on the map") : null
+        ]),
+        h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
+        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
+      ];
+      return h("section", { "class": "proposal-group", "data-module": "quote-property", "data-visual-id": "quote-property", "data-state": group.decision }, [
+        h("button", { "class": "proposal-card proposal-group__head", "data-action": "proposal.open", "data-id": group.id, "aria-label": "Open the quotes for " + group.title }, head2),
+        h("ul", { "class": "proposal-options", "aria-label": "Quotes for " + group.title }, group.orders.map(QuoteOption))
+      ]);
+    }));
+  }
+  function QuotesFooter() {
+    return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
+      h("div", { "class": "proposal-footer__icon" }, "\u2726"),
+      h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we\u2019ll ask for your contract details and prepare your service agreement.")
+    ]);
+  }
+  function QuoteOption(order) {
+    var meta = QUOTE_STATUS[order.status];
+    var total = formatOrderTotal(order.total);
+    return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
+      h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
+      total ? h("span", { "class": "proposal-option__total" }, total) : null,
+      StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
+    ]);
+  }
+  function plural(count, one, many) {
+    return count + " " + (count === 1 ? one : many);
+  }
+
   // app-templates/customer-portal/runtime/src/routes/OverviewPage.js
   var propertyMapController = null;
   var propertyForecastStore = null;
@@ -10367,13 +10629,13 @@
       return page;
     }
     var weather = model.weather;
-    var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
-    var frame = weather.timeline[index];
-    page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts"))]));
+    var index = weather ? clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex) : 0;
+    var frame = weather ? weather.timeline[index] : null;
+    page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : ForecastUnavailable(model.forecast)]));
     page.appendChild(MapPanel(model, frame, index));
     page.appendChild(InvoicesWidget(model));
     var grid = h("div", { "class": "ov-grid" });
-    grid.appendChild(UpcomingWidget(model, weather.timeline));
+    grid.appendChild(UpcomingWidget(model, weather ? weather.timeline : []));
     grid.appendChild(ContractsWidget(model));
     grid.appendChild(SupportWidget(model));
     page.appendChild(grid);
@@ -10398,26 +10660,57 @@
       ]);
     }
     if (status === "error") {
-      return ErrorState({ title: "Couldn\u2019t load your home screen", desc: "Your properties or the forecast didn\u2019t load. Nothing was changed \u2014 try again." });
+      return ErrorState({ title: "Couldn\u2019t load your home screen", desc: "Your properties didn\u2019t load. Nothing was changed \u2014 try again." });
     }
     if (status === "unauthorized") {
       return EmptyState({
         glyph: "\u26BF",
         title: "You don\u2019t have access to these properties",
         desc: "Your account doesn\u2019t include the properties on this portal. If that seems wrong, contact us.",
-        action: { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" }
+        action: supportAction()
       });
     }
-    return EmptyState({ glyph: "\u25CC", title: "Your home screen isn\u2019t set up yet", desc: "This portal has no service area or forecast configured, so there is nothing to show here yet." });
+    return EmptyState({ glyph: "\u25CC", title: "Your home screen isn\u2019t set up yet", desc: "This portal doesn\u2019t list your properties yet, so there is nothing to show here." });
+  }
+  function supportAction() {
+    if (isModuleEnabled("support")) return { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" };
+    if (configuredExternalUrl(state.config, "supportUrl")) return { variant: "btn--ghost", label: "Contact support", action: "support.open", visualId: "overview-support" };
+    return null;
   }
   function subline(model, customer) {
-    if (!model || !state.liveWeather) return customer.subline;
+    if (!model || !model.weather || !state.liveWeather) return customer.subline || propertyCount(model);
     var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
+    return frame.label + " \xB7 " + propertyCount(model);
+  }
+  function propertyCount(model) {
+    if (!model) return "";
     var count = model.properties.length;
     var contracted = sectionAvailable(model, "contracts") && count > 0 && model.properties.every(function(property) {
       return !!property.contract;
     });
-    return frame.label + " \xB7 " + count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
+    return count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
+  }
+  function ForecastUnavailable(forecast) {
+    var loading = forecast === "loading";
+    var failed = forecast === "failed";
+    return h("div", {
+      "class": "ov-wx",
+      "data-module": "weather-summary",
+      "data-visual-id": "weather-summary",
+      "data-state": loading ? "loading" : failed ? "error" : "unavailable",
+      "aria-busy": loading ? "true" : void 0,
+      "aria-live": "polite"
+    }, [
+      h("span", { "class": "ov-wx__mark", style: "background:rgba(var(--hair),.08);color:var(--ink-3)" }, [icon("snowflake", "ov-wx__glyph")]),
+      h("div", { "class": "ov-wx__read" }, loading ? [
+        skel("width:132px;height:15px;margin:3px 0 7px"),
+        skel("width:188px;height:11px")
+      ] : [
+        text9("div", "ov-wx__label", "Forecast unavailable"),
+        text9("div", "ov-wx__note", failed ? "The forecast didn\u2019t load. Your properties are shown without it." : "The forecast isn\u2019t set up for this portal yet."),
+        failed ? h("button", { "class": "link-action", "data-action": "overview.retryWeather", type: "button", style: "margin-top:6px" }, "Try again \u203A") : null
+      ])
+    ]);
   }
   function WeatherPanel(frame, isNow, source, serviceNotes) {
     var stats = frame.stats || [];
@@ -10440,7 +10733,7 @@
     ]);
   }
   function MapPanel(model, frame, index) {
-    var weather = model.weather;
+    var weather = frame ? model.weather : null;
     var statusKnown = propertyStatusKnown(model.sources);
     var stage = PropertyStage({
       properties: model.properties,
@@ -10458,15 +10751,15 @@
       h("div", { "class": "ov-map__head" }, [
         h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
         text9("h2", "ov-card__title", "Your properties"),
-        h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
+        weather ? h("div", { "class": "ov-legend" }, weather.legend.filter(function(item) {
           return statusKnown || item.key !== "issue";
         }).map(function(item) {
           return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text9("span", "", item.label)]);
-        }))
+        })) : null
       ]),
       stage,
-      DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")),
-      WeatherAttribution(weather.source, "ov-map__attr")
+      weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
+      weather ? WeatherAttribution(weather.source, "ov-map__attr") : null
     ]);
   }
   function propertyMap() {
@@ -10627,6 +10920,7 @@
     ]);
   }
   function ContractsWidget(model) {
+    if (state.config.dataMode === "live" && isModuleEnabled("proposals")) return LiveContractsWidget();
     var contracts = model.contracts || [];
     var quotes = quotePackage();
     var preparing = !!(quotes && quotes.preparing);
@@ -10648,6 +10942,92 @@
     });
     if (preparing) card.appendChild(QuotePreparingRow());
     card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
+    return card;
+  }
+  function LiveContractsWidget() {
+    var card = widget("active-contracts", "Contracts", "contract");
+    var envelope2 = state.moduleData.proposals;
+    var readbackFailed = !!(state.contractCommand && state.contractCommand.phase === "readback-failed");
+    if (readbackFailed || !envelope2 && state.moduleStatus.proposals === "error" || envelope2 && envelope2.state === "error") return contractsProblem(card, "error", "Couldn\u2019t load your contracts", "Nothing was changed. Try again in a moment.", true);
+    if (!envelope2) return contractsLoading(card);
+    if (envelope2.state === "unauthorized") return contractsProblem(card, "unauthorized", "No access to contracts", "Your account doesn\u2019t include access to your contracts.", false);
+    var quotes = quotePackage();
+    if (envelope2.state === "unavailable" || !quotes) return unavailableSection(card, "Contracts");
+    var agreements = quotes.agreements;
+    var partial = !!(quotes.partial && (quotes.partial.agreements || quotes.partial.orders));
+    card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.groups.length ? "ready" : quotes.preparing ? "preparing" : "empty");
+    if (!agreements.length && !quotes.groups.length) {
+      card.appendChild(quotes.preparing ? QuotePreparingLine() : emptyLine("No contracts yet", "When we send you a quote or a service agreement, it appears here."));
+      if (partial) card.appendChild(ContractsPartialLine());
+      return card;
+    }
+    if (agreements.length) {
+      card.appendChild(lead(String(agreements.length), agreements.length === 1 ? "service agreement" : "service agreements"));
+      agreements.slice(0, 3).forEach(function(row) {
+        card.appendChild(AgreementLine(row));
+      });
+    } else {
+      card.appendChild(lead(
+        String(quotes.counts.orders),
+        quotes.counts.orders === 1 ? "quote" : "quotes",
+        quotes.counts.properties ? quotes.counts.decided + " of " + plural(quotes.counts.properties, "property", "properties") + " decided" : ""
+      ));
+      if (quotes.deciding) card.appendChild(QuotesDecisionLine(quotes));
+    }
+    if (quotes.preparing) card.appendChild(QuotePreparingRow());
+    if (partial) card.appendChild(ContractsPartialLine());
+    card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+    return card;
+  }
+  function AgreementLine(row) {
+    var agreement = row.agreement;
+    var meta = agreementLineMeta(row);
+    return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        text9("div", "ov-row__title", agreementTitle(row)),
+        h("div", { "class": "ov-row__line", style: "margin-top:4px;flex-wrap:wrap;row-gap:4px" }, [
+          text9("span", "status-badge status-badge--" + agreement.tone, agreement.label),
+          meta ? text9("span", "ov-row__meta", meta) : null
+        ])
+      ]),
+      chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label)
+    ]);
+  }
+  function agreementLineMeta(row) {
+    var agreement = row.agreement;
+    if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
+    if (agreement.term) return formatDatePeriod(agreement.term);
+    if (agreement.effectiveDate) return "Effective " + formatIsoDate(agreement.effectiveDate);
+    return row.servicePeriod ? formatDatePeriod(row.servicePeriod) : "";
+  }
+  function QuotesDecisionLine(quotes) {
+    return h("div", { "class": "ov-row", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-tone": "info" }, [
+      h("i", { "class": "ov-dot" }),
+      h("div", { style: "flex:1;min-width:0" }, [
+        text9("div", "ov-row__title", "Quotes awaiting your decision"),
+        text9("div", "ov-row__meta", plural(quotes.counts.open, "option", "options") + " still open")
+      ]),
+      chevron("overview.openContracts", "", "Go to Contracts")
+    ]);
+  }
+  function ContractsPartialLine() {
+    return h("div", { "class": "ov-row__meta", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, "Part of your contracts couldn\u2019t be loaded. Contracts shows what did.");
+  }
+  function contractsLoading(card) {
+    card.setAttribute("data-state", "loading");
+    card.setAttribute("aria-busy", "true");
+    card.appendChild(h("div", { "class": "ov-lead", "data-module": "contracts-loading", "data-visual-id": "contracts-loading" }, [skel("width:46%;height:24px")]));
+    card.appendChild(skel("height:13px;width:82%"));
+    card.appendChild(skel("height:13px;width:64%"));
+    return card;
+  }
+  function contractsProblem(card, stateName, title, desc, retry) {
+    card.setAttribute("data-state", stateName);
+    card.appendChild(h("div", { "class": "ov-empty", "data-module": "contracts-" + stateName, "data-visual-id": "contracts-" + stateName, "data-state": stateName, role: stateName === "error" ? "alert" : "status" }, [
+      text9("div", "ov-empty__title", title),
+      text9("div", "ov-empty__desc", desc),
+      retry ? h("button", { "class": "link-action", "data-action": "contracts.refresh", type: "button" }, "Try again \u203A") : null
+    ]));
     return card;
   }
   function QuotePreparingLine() {
@@ -10756,12 +11136,12 @@
     CANCELLED: { label: "Cancelled", tone: "scheduled" }
   };
   function appointmentRows(properties, timeline) {
-    var rows = [];
+    var rows2 = [];
     (properties || []).forEach(function(property) {
       var appointment = property.appointment;
       if (!appointment) return;
       var frame = timeline && timeline[appointment.dayIndex];
-      rows.push({
+      rows2.push({
         id: property.id,
         resource: appointment.resource || "Unassigned",
         name: property.name,
@@ -10775,15 +11155,15 @@
         minutes: minutesOf(appointment.est)
       });
     });
-    return rows;
+    return rows2;
   }
   function stateMeta(state2) {
     return APPOINTMENT_STATE[state2] || { label: state2 || "Unknown", tone: "scheduled" };
   }
-  function resourceNames(rows) {
+  function resourceNames(rows2) {
     var seen = {};
     var names = [];
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       if (seen[row.resource]) return;
       seen[row.resource] = true;
       names.push(row.resource);
@@ -10792,16 +11172,16 @@
       return a.localeCompare(b);
     });
   }
-  function filterRows(rows, dayIndex) {
-    if (dayIndex === null || dayIndex === void 0 || dayIndex === "") return rows.slice();
+  function filterRows(rows2, dayIndex) {
+    if (dayIndex === null || dayIndex === void 0 || dayIndex === "") return rows2.slice();
     var wanted = Number(dayIndex);
-    return rows.filter(function(row) {
+    return rows2.filter(function(row) {
       return row.dayIndex === wanted;
     });
   }
-  function sortRows(rows, direction) {
+  function sortRows(rows2, direction) {
     var factor = direction === "desc" ? -1 : 1;
-    return rows.slice().sort(function(a, b) {
+    return rows2.slice().sort(function(a, b) {
       var byResource = a.resource.localeCompare(b.resource) * factor;
       if (byResource) return byResource;
       if (a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
@@ -10852,10 +11232,10 @@
     }
     var day = state.apptDay;
     var direction = state.apptSort === "desc" ? "desc" : "asc";
-    var rows = sortRows(filterRows(all, day), direction);
+    var rows2 = sortRows(filterRows(all, day), direction);
     page.appendChild(Filters(all, timeline, day));
     var card = h("div", { "class": "card card--pad appt", "data-module": "appointments-table", "data-visual-id": "appointments-table" });
-    if (!rows.length) {
+    if (!rows2.length) {
       card.appendChild(h("div", { "class": "appt__empty" }, [
         text10("div", "ov-empty__title", "No visits on this day"),
         text10("div", "ov-empty__desc", "Pick another date, or clear the filter to see the whole week."),
@@ -10864,20 +11244,20 @@
       page.appendChild(card);
       return page;
     }
-    card.appendChild(Table(rows, direction));
+    card.appendChild(Table(rows2, direction));
     page.appendChild(card);
-    page.appendChild(text10("div", "appt__count", rows.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows.length) + " of " + all.length + " appointments"));
+    page.appendChild(text10("div", "appt__count", rows2.length === all.length ? String(all.length) + (all.length === 1 ? " appointment" : " appointments") : String(rows2.length) + " of " + all.length + " appointments"));
     return page;
   }
-  function subline2(rows, timeline) {
+  function subline2(rows2, timeline) {
     var span = timeline.length ? timeline[0].date + " \u2013 " + timeline[timeline.length - 1].date : "";
-    var resources = resourceNames(rows).length;
+    var resources = resourceNames(rows2).length;
     return span ? span + " \xB7 " + resources + (resources === 1 ? " resource" : " resources") : resources + (resources === 1 ? " resource" : " resources");
   }
-  function Filters(rows, timeline, day) {
+  function Filters(rows2, timeline, day) {
     var chips = [dayChip("All dates", "", day === null || day === void 0 || day === "")];
     timeline.forEach(function(frame, index) {
-      var count = rows.filter(function(row) {
+      var count = rows2.filter(function(row) {
         return row.dayIndex === index;
       }).length;
       if (!count) return;
@@ -10896,7 +11276,7 @@
       "aria-pressed": active ? "true" : "false"
     }, count ? [text10("span", "", label), text10("span", "appt-chip__count", String(count))] : [text10("span", "", label)]);
   }
-  function Table(rows, direction) {
+  function Table(rows2, direction) {
     var head2 = h("tr", null, COLUMNS.map(function(column) {
       if (!column.sortable) return h("th", { scope: "col" }, column.label);
       return h("th", { scope: "col", "aria-sort": direction === "desc" ? "descending" : "ascending" }, [
@@ -10907,7 +11287,7 @@
         }, [text10("span", "", column.label), text10("span", "appt__caret", direction === "desc" ? "\u2193" : "\u2191")])
       ]);
     }));
-    var body = h("tbody", null, rows.map(function(row) {
+    var body = h("tbody", null, rows2.map(function(row) {
       var meta = stateMeta(row.state);
       return h("tr", { "data-module": "appointment-row", "data-visual-id": "appointment-row", "data-state": row.state.toLowerCase() }, [
         h("td", null, [
@@ -10952,8 +11332,8 @@
   function currentVisit() {
     var model = currentOverview();
     var timeline = model && model.weather && model.weather.timeline || [];
-    var rows = appointmentRows(model && model.properties, timeline);
-    return rows.find(function(row) {
+    var rows2 = appointmentRows(model && model.properties, timeline);
+    return rows2.find(function(row) {
       return row.id === state.visitId;
     }) || null;
   }
@@ -10993,6 +11373,11 @@
   }
 
   // app-templates/customer-portal/runtime/src/routes/PropertyDetailPage.js
+  var AGREEMENT_FACT_NOTES = {
+    unauthorized: "Your account doesn\u2019t include access to contracts.",
+    unavailable: "Contracts aren\u2019t in the portal yet.",
+    error: "Your contracts couldn\u2019t be loaded."
+  };
   var QUOTE_DECISION = {
     approved: "option approved",
     declined: "declined",
@@ -11008,9 +11393,21 @@
   }
   function PropertyDetail() {
     var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+    var source = state.config.dataMode === "live" ? liveOverviewStatus() : "ready";
+    if (source !== "ready") {
+      page.setAttribute("data-state", source === "loading" ? "loading" : source === "unauthorized" ? "unauthorized" : "error");
+      if (source === "loading") page.appendChild(PropertySkeleton());
+      else if (source === "unauthorized") page.appendChild(UnauthorizedState({ scope: "this property", backRoute: state.config.defaultRoute }));
+      else {
+        page.appendChild(BackLink(null));
+        page.appendChild(ErrorState({ title: "Couldn\u2019t load this property", desc: "Nothing was changed. Check your connection and try again." }));
+      }
+      return page;
+    }
     var model = currentOverview();
     var property = currentProperty();
     if (!property) {
+      page.setAttribute("data-state", "not-found");
       page.appendChild(BackLink(model));
       page.appendChild(EmptyState({ glyph: "\u25CC", title: "Property not found", desc: sectionAvailable(model, "contracts") ? "This address is not on your contract." : "We couldn\u2019t find this property." }));
       return page;
@@ -11031,7 +11428,7 @@
       facts(property, contract, model).map(function(item) {
         return h("div", { "class": "prop-fact", "data-fact": item.key, "data-state": item.state }, [
           text12("div", "prop-fact__label", item.label),
-          item.state === "unavailable" ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()]) : item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value),
+          item.state === "unavailable" ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()]) : item.state === "loading" ? h("div", { "class": "prop-fact__value", "aria-busy": "true" }, [skel("width:62%;height:15px")]) : item.action ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " \u203A") : text12("div", "prop-fact__value", item.value),
           item.note ? text12("div", "prop-fact__note", item.note) : null
         ]);
       })
@@ -11083,17 +11480,17 @@
     return sectionAvailable(model, "appointments") ? h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "appointments" }, "\u2039 Back to appointments") : h("div", { "class": "detail-back", "data-action": "nav.go", "data-id": "overview" }, "\u2039 Back to home");
   }
   function facts(property, contract, model) {
-    var rows = [
-      sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
+    var rows2 = [
+      sectionAvailable(model, "contracts") ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " \xB7 " + contract.plan : "Not under contract", action: contract ? "nav.go" : void 0, id: contract ? "proposals.list" : void 0 } : state.config.dataMode === "live" && isModuleEnabled("proposals") ? liveAgreementFact(property) : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren\u2019t in the portal yet." }
     ];
-    if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
+    if (property.zone) rows2.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
     var map = mapFact(property);
-    if (map) rows.push(map);
+    if (map) rows2.push(map);
     var site = quoteSiteFor(property);
-    if (site && site.lot) rows.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
+    if (site && site.lot) rows2.push({ key: "lot", label: "Lot", value: site.lot + " sq ft" });
     var quotes = quoteGroupFor(property.quoteSiteId || property.id);
     if (quotes) {
-      rows.push({
+      rows2.push({
         key: "quotes",
         label: "Quotes",
         value: quotes.orders.length + (quotes.orders.length === 1 ? " quote" : " quotes") + " \xB7 " + QUOTE_DECISION[quotes.decision],
@@ -11101,7 +11498,30 @@
         id: quotes.id
       });
     }
-    return rows;
+    return rows2;
+  }
+  function liveAgreementFact(property) {
+    var envelope2 = state.moduleData.proposals;
+    if (!envelope2 && state.moduleStatus.proposals !== "error") return { key: "contract", label: "Service agreement", state: "loading" };
+    var readable = !!envelope2 && !AGREEMENT_FACT_NOTES[envelope2.state] && !(state.contractCommand && state.contractCommand.phase === "readback-failed");
+    var quotes = readable ? quotePackage() : null;
+    if (!quotes) return { key: "contract", label: "Service agreement", state: "unavailable", note: AGREEMENT_FACT_NOTES[envelope2 && envelope2.state] || AGREEMENT_FACT_NOTES.error };
+    var row = quotes.agreements.find(function(agreement) {
+      return agreement.properties.some(function(entry) {
+        return entry.propertyBackendId === property.backendId;
+      });
+    });
+    return row ? { key: "contract", label: "Service agreement", value: row.agreement.label, action: "agreement.open", id: row.id } : { key: "contract", label: "Service agreement", value: "None yet" };
+  }
+  function PropertySkeleton() {
+    return h("div", { "data-module": "property-loading", "data-visual-id": "property-loading", "data-state": "loading", "aria-busy": "true" }, [
+      skel("width:124px;height:13px;margin-bottom:16px"),
+      h("div", { "class": "prop-head" }, [h("div", { style: "flex:1;min-width:0" }, [skel("width:48%;height:30px;margin-bottom:9px"), skel("width:66%;height:13px")])]),
+      h("div", { "class": "card card--pad prop-facts" }, [0, 1].map(function() {
+        return h("div", { "class": "prop-fact" }, [skel("width:38%;height:11px;margin-bottom:8px"), skel("width:70%;height:15px")]);
+      })),
+      skel("height:140px;border-radius:22px")
+    ]);
   }
   function mapFact(property) {
     if (!state.config.mapsApiKey) return null;
@@ -11152,162 +11572,6 @@
       StatusBadge({ variant: st.badge, label: st.label, bind: "site.statusLabel" }),
       h("span", { style: "font-weight:600;font-size:18px;color:#c2c7d0" }, "\u203A")
     ]);
-  }
-
-  // app-templates/customer-portal/runtime/src/components/proposals/QuotePackage.js
-  var QUOTE_STATUS = Object.freeze({
-    approved: Object.freeze({ label: "\u2713 Approved", badge: "status-badge--ok", dot: "#34c759" }),
-    revision: Object.freeze({ label: "\u27F3 Revision pending", badge: "status-badge--warn", dot: "#ff9f0a" }),
-    declined: Object.freeze({ label: "\u2715 Declined", badge: "status-badge--danger", dot: "#ff3b30" }),
-    unseen: Object.freeze({ label: "\u25D4 Unseen", badge: "status-badge--scheduled", dot: "#8a94a6" }),
-    viewed: Object.freeze({ label: "\u2022 Reviewing", badge: "status-badge--scheduled", dot: "#8a94a6" })
-  });
-  var DECISION_META = { approved: "approved", declined: "declined", revision: "revision", open: "unseen" };
-  var DECISION_LABEL = {
-    approved: "Option approved",
-    declined: "Declined",
-    revision: "Changes requested",
-    open: "Awaiting your decision"
-  };
-  function ContractsHead(quotes) {
-    var counts = quotes.counts;
-    var facts2 = [];
-    if (quotes.agreements.length) facts2.push(plural(quotes.agreements.length, "service agreement", "service agreements"));
-    if (counts.orders) {
-      facts2.push(plural(counts.orders, "quote", "quotes") + (counts.properties ? " for " + plural(counts.properties, "property", "properties") : ""));
-    }
-    if (quotes.servicePeriod) facts2.push("Service period " + formatDatePeriod(quotes.servicePeriod));
-    var deciding = quotes.deciding && counts.properties > 0;
-    return h("div", { "class": "proposals-head", "data-module": "quote-package-head", "data-visual-id": "quote-package-head", "data-state": deciding ? "deciding" : "settled" }, [
-      h("div", { "class": "proposals-head__read" }, [
-        h("div", { "class": "proposals-head__title-row" }, [
-          h("h1", { "class": "proposals-head__title" }, quotes.groups.length && !quotes.agreements.length ? "Your quotes" : "Your contracts")
-        ]),
-        facts2.length ? h("div", { "class": "proposals-head__sub" }, facts2.join(" \xB7 ")) : null
-      ]),
-      deciding ? h("span", { "class": "proposals-head__pill" }, counts.decided + " of " + plural(counts.properties, "property", "properties") + " decided") : null
-    ]);
-  }
-  function ContractsSectionTitle(label, count) {
-    return h("h2", { "class": "contracts-section__title" }, [label, count ? h("span", { "class": "contracts-section__count" }, String(count)) : null]);
-  }
-  function AgreementList(rows) {
-    return h("div", { "class": "site-list agreement-list", "data-module": "agreement-list", "data-visual-id": "agreement-list" }, rows.map(function(row) {
-      var agreement = row.agreement;
-      return h("button", {
-        "class": "proposal-card agreement-row",
-        "data-module": "agreement-row",
-        "data-visual-id": "agreement-row",
-        "data-action": "agreement.open",
-        "data-id": row.id,
-        "data-state": agreement.stage,
-        "aria-label": "Open the service agreement " + agreementTitle(row) + " \u2014 " + agreement.label
-      }, [
-        h("span", { "class": "proposal-card__diamond agreement-row__diamond", "data-tone": agreement.tone }),
-        h("span", { "class": "proposal-card__body" }, [
-          h("span", { "class": "proposal-card__name" }, agreementTitle(row)),
-          h("span", { "class": "proposal-card__meta" }, agreementMeta(row))
-        ]),
-        StatusBadge({ variant: "status-badge--" + agreement.tone, label: agreement.label, bind: "agreement.stateLabel", state: agreement.stage }),
-        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
-      ]);
-    }));
-  }
-  function agreementTitle(row) {
-    var names = row.propertyNames;
-    if (!names.length) return "Service agreement";
-    if (names.length === 1) return names[0];
-    if (names.length === 2) return names[0] + " and " + names[1];
-    return names[0] + " and " + (names.length - 1) + " more";
-  }
-  function agreementMeta(row) {
-    var agreement = row.agreement;
-    var facts2 = [];
-    if (row.propertyNames.length) facts2.push("Service agreement");
-    if (agreement.stage === "review" && row.quoteCount) {
-      facts2.push(plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : ""));
-    }
-    if (agreement.term) facts2.push("Term " + formatDatePeriod(agreement.term));
-    else if (agreement.effectiveDate) facts2.push("Effective " + formatIsoDate(agreement.effectiveDate));
-    else if (row.servicePeriod) facts2.push("Service period " + formatDatePeriod(row.servicePeriod));
-    if (!facts2.length) facts2.push(row.propertyCount ? plural(row.propertyCount, "property", "properties") : "No properties listed yet");
-    return facts2.join(" \xB7 ");
-  }
-  function QuotesPreparing() {
-    return h("div", { "class": "state-block", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
-      h("div", { "class": "state-block__glyph quote-preparing__glyph" }, "\u25D4"),
-      h("div", { "class": "state-block__title" }, "We have your request"),
-      h("div", { "class": "state-block__desc" }, "We\u2019re preparing your quote. It appears here as soon as we send it to you.")
-    ]);
-  }
-  function QuotesPreparingNotice() {
-    return h("div", { "class": "alert-banner alert-banner--info quote-preparing", "data-module": "quote-preparing", "data-visual-id": "quote-preparing", "data-state": "preparing", role: "status" }, [
-      h("div", { "class": "alert-banner__icon quote-preparing__glyph" }, "\u25D4"),
-      h("div", { "class": "alert-banner__body" }, [
-        h("div", { "class": "alert-banner__title" }, "We\u2019re still preparing part of your request"),
-        h("div", { "class": "alert-banner__desc" }, "Anything we send you appears in this list.")
-      ])
-    ]);
-  }
-  function PortfolioSchematic(groups, placements) {
-    var positions = schematicPositions(placements.map(function(placement) {
-      return placement.point;
-    }));
-    var placed = positions.filter(Boolean).length;
-    if (!placed) return null;
-    var mappable = groups.filter(function(group) {
-      return !!group.propertyBackendId;
-    }).length;
-    var canvas = h("div", { "class": "portfolio-map__canvas" }, [
-      h("span", { "class": "portfolio-map__label" }, "portfolio map" + (placed < mappable ? " \xB7 " + placed + " of " + plural(mappable, "property", "properties") + " on the map" : ""))
-    ]);
-    groups.forEach(function(group, index) {
-      var position = positions[index];
-      if (!position) return;
-      canvas.appendChild(h("div", { "class": "map-pin-wrap", style: "left:" + position.x + "%;top:" + position.y + "%", "data-state": group.decision }, [
-        h("div", { "class": "map-pin-diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
-        h("div", { "class": "map-pin-label" }, group.title)
-      ]));
-    });
-    return h("div", { "class": "portfolio-map", "data-module": "portfolio-map", "data-visual-id": "portfolio-map", "data-surface": "schematic" }, canvas);
-  }
-  function QuoteGroups(groups, placements, mapShown) {
-    return h("div", { "class": "site-list", "data-module": "proposal-list", "data-visual-id": "proposal-list" }, groups.map(function(group, index) {
-      var offMap = mapShown && !!group.propertyBackendId && !placements[index].point;
-      var summary = [group.address, plural(group.orders.length, "quote", "quotes")].filter(Boolean).join(" \xB7 ");
-      var head2 = [
-        h("span", { "class": "proposal-card__diamond", style: "background:" + QUOTE_STATUS[DECISION_META[group.decision]].dot }),
-        h("span", { "class": "proposal-card__body" }, [
-          h("span", { "class": "proposal-card__name" }, group.title),
-          h("span", { "class": "proposal-card__meta" }, summary),
-          offMap ? h("span", { "class": "proposal-card__tag" }, "Not on the map") : null
-        ]),
-        h("span", { "class": "proposal-group__decision", "data-state": group.decision }, DECISION_LABEL[group.decision]),
-        h("span", { "class": "proposal-card__chev", "aria-hidden": "true" }, "\u203A")
-      ];
-      return h("section", { "class": "proposal-group", "data-module": "quote-property", "data-visual-id": "quote-property", "data-state": group.decision }, [
-        h("button", { "class": "proposal-card proposal-group__head", "data-action": "proposal.open", "data-id": group.id, "aria-label": "Open the quotes for " + group.title }, head2),
-        h("ul", { "class": "proposal-options", "aria-label": "Quotes for " + group.title }, group.orders.map(QuoteOption))
-      ]);
-    }));
-  }
-  function QuotesFooter() {
-    return h("div", { "class": "proposal-footer", "data-module": "quote-package-footer", "data-visual-id": "quote-package-footer" }, [
-      h("div", { "class": "proposal-footer__icon" }, "\u2726"),
-      h("div", { "class": "proposal-footer__copy" }, "Decide each property on its own. Approving one option for a property declines its other options. Once every property has a decision, we\u2019ll ask for your contract details and prepare your service agreement.")
-    ]);
-  }
-  function QuoteOption(order) {
-    var meta = QUOTE_STATUS[order.status];
-    var total = formatOrderTotal(order.total);
-    return h("li", { "class": "proposal-option", "data-module": "quote-row", "data-visual-id": "quote-row", "data-state": order.status }, [
-      h("span", { "class": "proposal-option__model" }, order.pricingModel ? order.pricingModel.label : "Quote"),
-      total ? h("span", { "class": "proposal-option__total" }, total) : null,
-      StatusBadge({ variant: meta.badge, label: meta.label, bind: "quote.statusLabel", state: order.status })
-    ]);
-  }
-  function plural(count, one, many) {
-    return count + " " + (count === 1 ? one : many);
   }
 
   // app-templates/customer-portal/runtime/src/components/proposals/ContractStates.js
@@ -11456,10 +11720,10 @@
     if (!order.money) {
       return h("div", { "class": "quote-option__note", "data-module": "quote-totals", "data-state": "unpriced" }, "No price is stated on this quote yet.");
     }
-    var rows = [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
+    var rows2 = [["Subtotal", order.money.subtotal, "subtotal"], ["Taxes", order.money.taxes, "taxes"]].filter(function(row) {
       return !!row[1];
     });
-    var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows.map(function(row) {
+    var wrap = h("div", { "class": "money-rows quote-totals", "data-module": "quote-totals", "data-visual-id": "quote-totals" }, rows2.map(function(row) {
       return h("div", { "class": "money-rows__row", "data-kind": row[2] }, [h("span", null, row[0]), h("span", null, row[1])]);
     }));
     if (order.money.total) {
@@ -12194,15 +12458,15 @@
     ]);
   }
   function AgreementTerm(agreement) {
-    var rows = [
+    var rows2 = [
       ["Effective date", agreement.effectiveDate ? formatIsoDate(agreement.effectiveDate) : ""],
       ["Starts", agreement.term ? formatIsoDate(agreement.term.start) : ""],
       ["Ends", agreement.term ? formatIsoDate(agreement.term.end) : ""]
     ].filter(function(row) {
       return !!row[1];
     });
-    if (!rows.length) return null;
-    return FactsCard("Term", "agreement-term", rows);
+    if (!rows2.length) return null;
+    return FactsCard("Term", "agreement-term", rows2);
   }
   function AgreementServices(row) {
     var section = h("section", { "class": "agreement-services", "data-module": "agreement-services", "data-visual-id": "agreement-services", "aria-labelledby": "agreement-services-title" }, [
@@ -12300,10 +12564,10 @@
     }
     return card;
   }
-  function FactsCard(title, className, rows) {
+  function FactsCard(title, className, rows2) {
     return h("section", { "class": "card card--pad " + className, "data-module": className, "data-visual-id": className }, [
       h("h2", { "class": "agreement-card__title" }, title),
-      h("dl", { "class": "agreement-facts" }, rows.map(function(row) {
+      h("dl", { "class": "agreement-facts" }, rows2.map(function(row) {
         return h("div", { "class": "agreement-facts__row" }, [
           h("dt", { "class": "agreement-facts__label" }, row[0]),
           h("dd", { "class": "agreement-facts__value" + (row[1] ? "" : " agreement-facts__value--missing") }, row[1] || "Not stated")
@@ -12364,6 +12628,70 @@
     var decision = agreement.allowedActions.indexOf("approve") !== -1 ? AgreementApproval(row, contractCommandsBusy()) : AgreementOutcome(agreement);
     if (decision) page.appendChild(decision);
     return page;
+  }
+
+  // app-templates/customer-portal/runtime/src/routes/AccountProfilePage.js
+  function accountProfileView() {
+    var envelope2 = state.moduleData.profile;
+    if (state.moduleStatus.profile === "loading" || !envelope2) return "loading";
+    return envelope2.state;
+  }
+  function AccountProfile() {
+    var view = accountProfileView();
+    var envelope2 = state.moduleData.profile;
+    var page = h("section", { "class": "page page--narrow", "data-route": "profile", "data-visual-id": "profile", "data-state": view });
+    if (view === "loading") page.appendChild(ProfileSkeleton());
+    else if (view === "unauthorized") page.appendChild(UnauthorizedState({ scope: "your account details", backRoute: state.config.defaultRoute }));
+    else if (view === "error") page.appendChild(ErrorState({ title: "Couldn\u2019t load your account details", desc: "Nothing was changed. Check your connection and try again." }));
+    else if (view === "unavailable") page.appendChild(stateBlock(EmptyState({ glyph: "\u25CB", title: "Your account details aren\u2019t available", desc: "They didn\u2019t come back for this sign-in. Sign out and sign in again, or try later." }), "unavailable"));
+    else {
+      page.appendChild(ProfileHead(envelope2));
+      page.appendChild(view === "empty" ? EmptyState({ glyph: "\u25CC", title: "No contact details on file", desc: "We don\u2019t have a contact, email, phone or billing address for your account yet." }) : ProfileFacts(envelope2));
+    }
+    page.appendChild(h("button", { "class": "signout-btn", "data-action": "auth.signOut", "data-visual-id": "sign-out", type: "button", style: "width:100%;margin-top:18px" }, "Sign out"));
+    return page;
+  }
+  function ProfileHead(envelope2) {
+    return h("div", { "class": "prop-head", "data-module": "profile-head", "data-visual-id": "profile-head" }, [
+      h("div", { style: "flex:1;min-width:0" }, [
+        h("h1", { "class": "prop-head__title", style: "overflow-wrap:anywhere" }, envelope2.accountName || "Your account"),
+        h("div", { "class": "prop-head__addr" }, "The details we have on file for your account.")
+      ])
+    ]);
+  }
+  function ProfileFacts(envelope2) {
+    var contact = envelope2.contact;
+    var billing = envelope2.billingAddresses || [];
+    return h("div", { "class": "card card--pad prop-facts", "data-module": "profile-facts", "data-visual-id": "profile-facts", "data-state": envelope2.state }, [
+      Fact("contact", "Primary contact", contact && contact.name ? [contact.name] : [], contact && contact.name ? contact.title : ""),
+      Fact("email", "Email", envelope2.emails || []),
+      Fact("phone", "Phone", envelope2.phones || []),
+      Fact("billing", billing.length > 1 ? "Billing addresses" : "Billing address", billing)
+    ]);
+  }
+  function Fact(key, label, values, note) {
+    var children = [h("div", { "class": "prop-fact__label" }, label)];
+    if (values.length) {
+      values.forEach(function(value) {
+        children.push(h("div", { "class": "prop-fact__value", style: "overflow-wrap:anywhere" }, value));
+      });
+      if (note) children.push(h("div", { "class": "prop-fact__note" }, note));
+    } else {
+      children.push(h("div", { "class": "prop-fact__note" }, "Not on file"));
+    }
+    return h("div", { "class": "prop-fact", "data-fact": key, "data-state": values.length ? "ready" : "missing" }, children);
+  }
+  function ProfileSkeleton() {
+    return h("div", { "data-module": "profile-loading", "data-visual-id": "profile-loading", "data-state": "loading", "aria-busy": "true" }, [
+      h("div", { "class": "prop-head" }, [h("div", { style: "flex:1;min-width:0" }, [skel("width:52%;height:30px;margin-bottom:9px"), skel("width:38%;height:13px")])]),
+      h("div", { "class": "card card--pad prop-facts" }, [0, 1, 2, 3].map(function() {
+        return h("div", { "class": "prop-fact" }, [skel("width:34%;height:11px;margin-bottom:8px"), skel("width:72%;height:15px")]);
+      }))
+    ]);
+  }
+  function stateBlock(block, stateName) {
+    block.setAttribute("data-state", stateName);
+    return block;
   }
 
   // app-templates/customer-portal/runtime/src/routes/AuthPage.js
@@ -12831,10 +13159,10 @@
       h("div", { "class": "card__head" }, [h("span", { "class": "card__title" }, "Stations & sensors")]),
       h("div", { style: "padding:0 18px" }, [map])
     ]);
-    var rows = h("div", { style: "padding:0 18px 12px" });
+    var rows2 = h("div", { style: "padding:0 18px 12px" });
     m.stations.forEach(function(s) {
       var c = ST[s.status] || ST.clear;
-      rows.appendChild(h("div", { "class": "log-row", "data-module": "station-row", "data-state": s.status }, [
+      rows2.appendChild(h("div", { "class": "log-row", "data-module": "station-row", "data-state": s.status }, [
         h("div", { "class": "log-date" }, s.id),
         h("div", { style: "flex:1;min-width:0" }, [
           h("div", { style: "font-weight:600;font-size:13.5px", "data-bind": "station.label" }, s.label),
@@ -12843,7 +13171,7 @@
         careChip(c[0], c[1])
       ]));
     });
-    list.appendChild(rows);
+    list.appendChild(rows2);
     var rStatus = ui.retreatPending || ui.retreatRequest && ui.retreatRequest.status === "submitting" ? "requesting" : ui.retreatRequest && ui.retreatRequest.status === "submitted" ? "used" : m.guarantee.status || "available";
     var sc = m.guarantee.scope;
     var retreatBody;
@@ -14024,8 +14352,8 @@
       return { title: merge(own2(item, titleKey, path), tags, path + "." + titleKey), desc: merge(own2(item, descriptionKey, path), tags, path + "." + descriptionKey) };
     });
   }
-  function normalizePricingRows(rows, tags) {
-    return rows.map(function(row, index) {
+  function normalizePricingRows(rows2, tags) {
+    return rows2.map(function(row, index) {
       var path = "content.pricing.rows[" + index + "]";
       row = object(row, path);
       return { name: merge(own2(row, "name", path), tags, path + ".name"), from: optionalMerge(own2(row, "from", path), tags, path + ".from"), unit: optionalMerge(own2(row, "unit", path), tags, path + ".unit"), reason: optionalMerge(own2(row, "reason", path), tags, path + ".reason") };
@@ -14368,7 +14696,7 @@
       h("div", { "class": "oidc-sub" }, "We couldn\u2019t reach the secure account service, so sign-in can\u2019t start right now. There\u2019s no other way to sign in here \u2014 please try again in a moment."),
       h("div", { "class": "oidc-actions" }, [
         ActionButton({ variant: "btn--primary", label: "Try again", action: "auth.retrySession", block: true, lg: true, visualId: "oidc-retry" }),
-        ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "oidc-back-catalog" })
+        LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "oidc-back-catalog" })
       ])
     ]);
   }
@@ -14402,11 +14730,11 @@
     return StatusBadge({ variant: F.spaCommerce.purchases.statusBadges[label] || "status-badge--scheduled", label, bind: "purchase.customerStatus" });
   }
   function MoneyRows(money4) {
-    var rows = [["Subtotal", money4.subtotal, "money.subtotal"]];
-    if (money4.discount) rows.push(["Discount", money4.discount, "money.discount"]);
-    rows.push(["Tax", money4.tax, "money.tax"]);
+    var rows2 = [["Subtotal", money4.subtotal, "money.subtotal"]];
+    if (money4.discount) rows2.push(["Discount", money4.discount, "money.discount"]);
+    rows2.push(["Tax", money4.tax, "money.tax"]);
     var wrap = h("div", { "class": "money-rows", "data-module": "commercial-totals", "data-visual-id": "commercial-totals" });
-    rows.forEach(function(r) {
+    rows2.forEach(function(r) {
       if (r[1] == null) return;
       wrap.appendChild(h("div", { "class": "money-rows__row" }, [h("span", null, r[0]), h("span", { "data-bind": r[2] }, r[1])]));
     });
@@ -15364,10 +15692,10 @@
     ]));
     var listWrap = h("div", { "class": "order-list" });
     var fixtureRows = state.spaRows === "one" ? F.spa.stagingOrders.slice(0, 1) : F.spa.stagingOrders;
-    var rows = liveEnvelope && Array.isArray(liveEnvelope.items) ? liveEnvelope.items.map(liveOrder) : fixtureRows;
+    var rows2 = liveEnvelope && Array.isArray(liveEnvelope.items) ? liveEnvelope.items.map(liveOrder) : fixtureRows;
     if (routeState === "loading") {
       for (var i = 0; i < 3; i++) listWrap.appendChild(skeletonRow());
-    } else if (routeState === "empty" || rows.length === 0) {
+    } else if (routeState === "empty" || rows2.length === 0) {
       listWrap.appendChild(EmptyState({
         glyph: "\u25CE",
         title: "No orders on your account yet",
@@ -15375,7 +15703,7 @@
         action: { variant: "btn--ghost", label: "Browse services", action: "nav.go", id: "services", visualId: "orders-empty-browse" }
       }));
     } else {
-      rows.forEach(function(o, i2) {
+      rows2.forEach(function(o, i2) {
         listWrap.appendChild(h("article", { "class": "spa-order-row", "data-module": "spa-order-row", "data-visual-id": "spa-order-row", "data-order-ref": o.ref }, [
           orderThumb(o),
           h("div", { "class": "spa-order-row__body" }, [
@@ -16308,7 +16636,7 @@
     if (requested === "care" && !isModuleEnabled("care")) {
       return { id: "care", reason: "disabled" };
     }
-    if (!activeRoute.public && !isModuleEnabled(activeRoute.module)) {
+    if (!activeRoute.public && !privateRouteOpen(activeRoute)) {
       return { id: defaultRoute, reason: "disabled" };
     }
     if (requested === "care") {
@@ -16320,14 +16648,18 @@
     if (isRouteReachable(state.config.defaultRoute)) return state.config.defaultRoute;
     if (isRouteReachable("orders.list")) return "orders.list";
     var enabledRoute = Object.values(routeRegistry).find(function(route) {
-      return !route.public && isModuleEnabled(route.module);
+      return !route.public && privateRouteOpen(route);
     });
     return enabledRoute ? enabledRoute.id : "auth.oidc";
   }
   function isRouteReachable(routeId) {
     var route = routeRegistry[routeId];
     if (!route || route.parityOnly && state.config.dataMode === "live") return false;
-    return !!(route.public || isModuleEnabled(route.module));
+    return !!(route.public || privateRouteOpen(route));
+  }
+  function privateRouteOpen(route) {
+    if (!isModuleEnabled(route.module)) return false;
+    return !route.ownedByProfile || activeProfile().modules.includes(route.module);
   }
   function routeFromLocation() {
     if (state.config.routerMode === "memory") return state.route;
@@ -16352,22 +16684,25 @@
     applyRouteParams(match);
     return match.id;
   }
-  function writeRouteToLocation(routeId) {
+  function writeRouteToLocation(routeId, replace) {
     scopeRouteQuery(routeId);
     if (state.config.routerMode === "memory") return;
     var path = routePath(routeId, paramsForRoute(routeId));
     var query = state.routeQuery || "";
+    var record = replace ? "replaceState" : "pushState";
     if (state.config.routerMode === "history") {
-      if (window.location.pathname + window.location.search !== path + query) window.history.pushState({}, "", path + query);
+      if (window.location.pathname + window.location.search !== path + query) window.history[record]({}, "", path + query);
       return;
     }
     var nextHash = "#" + path + query;
-    if (window.location.hash !== nextHash) window.history.pushState({}, "", nextHash);
+    if (window.location.hash !== nextHash) window.history[record]({}, "", nextHash);
   }
   function initRouter(onRouteChange) {
     var applyLocation = function() {
-      var resolved = resolveRoute(routeFromLocation());
+      var requested = routeFromLocation();
+      var resolved = resolveRoute(requested);
       state.route = resolved.id;
+      if (resolved.id !== requested) writeRouteToLocation(resolved.id, true);
       onRouteChange();
     };
     if (state.config.routerMode === "history") {
@@ -16425,7 +16760,7 @@
       case "agreement.detail":
         return AgreementDetail();
       case "profile":
-        return isSpa() ? SpaProfile() : Profile();
+        return isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
       case "activity":
         return Activity();
       case "calendar":
@@ -17122,6 +17457,9 @@
       state.ovWeatherIndex = Number(id);
       render();
     },
+    "overview.retryWeather": function() {
+      return retryForecast();
+    },
     "overview.openProperty": function(id) {
       if (id) state.propertyId = id;
       go("property.detail");
@@ -17184,6 +17522,7 @@
       }
       state.session.authenticated = false;
       state.account = "session-expired";
+      state.oidc = "ready-signed-out";
       state.phone = "";
       state.code = "";
       invalidateCareRuntime();
@@ -17213,6 +17552,12 @@
       return pickTheme(id);
     }
   };
+  function retryForecast() {
+    if (state.config.dataMode !== "live" || state.liveWeatherState === "loading") return false;
+    return reloadRuntimeModule("overview").catch(function() {
+      return null;
+    });
+  }
   function openRequestForm() {
     var url = state.config.requestFormUrl;
     if (!url) {
@@ -18740,6 +19085,257 @@
     return svg;
   }
 
+  // app-templates/customer-portal/runtime/src/adapters/core-account-profile-adapter.js
+  var CODE_MAPPINGS = [{ name: "id" }, { name: "code" }];
+  var PROFILE_MAPPINGS = [
+    { name: "id" },
+    { name: "nls" },
+    { key: "id", mappings: [{ name: "id" }], name: "user", type: "identifier" },
+    {
+      mappings: [
+        { name: "id" },
+        { name: "firstName" },
+        { name: "lastName" },
+        { name: "title" },
+        { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" },
+        {
+          mappings: [
+            { name: "id" },
+            { name: "value" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "type", type: "identifier" }
+          ],
+          name: "contactEntries",
+          type: "collection"
+        }
+      ],
+      name: "contacts",
+      type: "collection"
+    },
+    {
+      mappings: [
+        { name: "id" },
+        { mappings: CODE_MAPPINGS, name: "types", type: "collection" },
+        {
+          key: "id",
+          mappings: [
+            { name: "id" },
+            { name: "address1" },
+            { name: "address2" },
+            { name: "city" },
+            { name: "postalCode" },
+            { key: "id", mappings: CODE_MAPPINGS, name: "state", type: "identifier" }
+          ],
+          name: "address",
+          type: "identifier"
+        }
+      ],
+      name: "addresses",
+      type: "collection"
+    }
+  ];
+  function createCoreAccountProfileAdapter(options2 = {}) {
+    var fetchImpl = options2.fetch || globalThis.fetch;
+    if (typeof fetchImpl !== "function") throw coded3("fetch-unavailable", "Core account profile adapter requires fetch");
+    return {
+      async load(moduleId, context) {
+        if (moduleId !== "profile") throw coded3("unsupported-module", "Core account profile adapter cannot load " + moduleId);
+        return loadCustomerAccountProfile(context, fetchImpl, options2.origin);
+      }
+    };
+  }
+  async function loadCustomerAccountProfile(context, fetchImpl = globalThis.fetch, explicitOrigin) {
+    var api = requestContext3(context, explicitOrigin);
+    var reply = await requestJson6(fetchImpl, api.accountBase + "/api/account/list.json", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Authorization: api.authorization,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Organization-Code": api.organization
+      },
+      body: JSON.stringify({
+        filters: [
+          { type: "INTEGER", operator: "=", property: "id", value: String(api.accountId) },
+          { type: "INTEGER", operator: "=", property: "user.id", value: String(api.userId) }
+        ],
+        mappings: PROFILE_MAPPINGS,
+        offset: 0,
+        pageSize: 2
+      })
+    });
+    var rows2 = Array.isArray(reply && reply.result) ? reply.result : [];
+    var owned = rows2.filter(function(row) {
+      return ownedBySession(row, api);
+    });
+    if (!owned.length) throw coded3("profile-unavailable", "Core did not return the signed-in customer's Account");
+    return { account: owned[0], scopeMode: owned.length === rows2.length ? "server-scoped" : "browser-filtered" };
+  }
+  function ownedBySession(row, api) {
+    if (!row || typeof row !== "object" || positiveInteger3(row.id) !== api.accountId) return false;
+    var linked = row.user && typeof row.user === "object" ? positiveInteger3(row.user.id) : null;
+    return linked === null || linked === api.userId;
+  }
+  function requestContext3(context, explicitOrigin) {
+    var config = context && context.config || {};
+    var runtimeState = context && context.state || {};
+    var session = runtimeState.session || {};
+    var accessToken = text3(session.accessToken || session.access_token);
+    if (!accessToken) throw coded3("session-required", "A Core access token is required");
+    var userId = positiveInteger3(session.userId);
+    if (!userId) throw coded3("session-user-required", "The signed-in Core User is required");
+    var account = runtimeState.customerAccount || session.account || null;
+    var accountId = positiveInteger3(account && account.id);
+    if (!accountId) throw coded3("customer-unresolved", "A resolved customer Account is required before reading its profile");
+    var organization = text3(config.organization);
+    if (!organization) throw coded3("organization-required", "A portal organization code is required");
+    var origin = explicitOrigin || config.origin || globalThis.location && globalThis.location.origin || "";
+    return {
+      accountBase: sameOriginBase6(config.accountApiBase || "/core-acct", origin, "Core Account API base"),
+      accountId,
+      authorization: text3(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
+      organization,
+      userId
+    };
+  }
+  async function requestJson6(fetchImpl, url, options2) {
+    var response = await fetchImpl(url, options2);
+    if (!response || typeof response.ok !== "boolean") throw coded3("invalid-response", "Core request returned an invalid response");
+    if (!response.ok) {
+      var code = response.status === 401 ? "session-expired" : response.status === 403 ? "customer-forbidden" : "profile-request-failed";
+      var failure2 = coded3(code, "Core Account request failed with HTTP " + response.status);
+      failure2.status = response.status;
+      throw failure2;
+    }
+    var payload;
+    try {
+      payload = await response.json();
+    } catch (_) {
+      throw coded3("invalid-response", "Core response was not valid JSON");
+    }
+    if (!payload || typeof payload !== "object") throw coded3("invalid-response", "Core answered with an unprojected body");
+    return payload;
+  }
+  function sameOriginBase6(value, origin, label) {
+    if (!origin) throw coded3("origin-required", label + " requires a browser origin");
+    var target = new URL(String(value || ""), origin);
+    if (target.origin !== new URL(origin).origin) throw coded3("cross-origin-service", label + " must be same-origin");
+    return target.href.replace(/\/+$/, "");
+  }
+  function coded3(code, message) {
+    var error2 = new Error(message);
+    error2.code = code;
+    return error2;
+  }
+  var coreAccountProfileContract = Object.freeze({
+    endpoint: "/api/account/list.json",
+    filters: Object.freeze(["id", "user.id"]),
+    mappings: PROFILE_MAPPINGS,
+    scopeMode: "server-scoped"
+  });
+
+  // app-templates/customer-portal/runtime/src/normalizers/account-profile.js
+  var ACCOUNT_PROFILE_SCOPE_MODES = Object.freeze(["server-scoped", "browser-filtered"]);
+  var PRIMARY_CONTACT = "PRIMARY";
+  var BILLING_ADDRESS = "BILLING";
+  var EMAIL_ENTRY = "EMAIL";
+  var PHONE_ENTRY = "PHONE";
+  function normalizeAccountProfile(raw) {
+    var source = raw && typeof raw === "object" ? raw : {};
+    var account = source.account && typeof source.account === "object" && !Array.isArray(source.account) ? source.account : null;
+    if (!account) return accountProfileFailure("profile-unavailable");
+    var primary = primaryContact(account.contacts);
+    var contact = primary ? { name: [plain(primary.firstName), plain(primary.lastName)].filter(Boolean).join(" "), title: plain(primary.title) } : null;
+    var emails = primary ? entryValues(primary.contactEntries, EMAIL_ENTRY) : [];
+    var phones = primary ? entryValues(primary.contactEntries, PHONE_ENTRY) : [];
+    var billingAddresses = typedAddresses(account.addresses, BILLING_ADDRESS);
+    var filled = [!!(contact && contact.name), emails.length > 0, phones.length > 0, billingAddresses.length > 0];
+    return {
+      state: filled.every(Boolean) ? "ready" : filled.some(Boolean) ? "partial" : "empty",
+      reasonCode: null,
+      scopeMode: ACCOUNT_PROFILE_SCOPE_MODES.indexOf(source.scopeMode) === -1 ? null : source.scopeMode,
+      accountName: localizedName6(account.nls),
+      contact,
+      emails,
+      phones,
+      billingAddresses,
+      allowedActions: []
+    };
+  }
+  function accountProfileFailure(code) {
+    return {
+      state: code === "customer-forbidden" ? "unauthorized" : code === "profile-unavailable" ? "unavailable" : "error",
+      reasonCode: code || "profile-load-failed",
+      scopeMode: null,
+      accountName: "",
+      contact: null,
+      emails: [],
+      phones: [],
+      billingAddresses: [],
+      allowedActions: []
+    };
+  }
+  function formatAccountAddress(address) {
+    if (!address || typeof address !== "object") return "";
+    var region = address.state && typeof address.state === "object" ? plain(address.state.code) : "";
+    return [plain(address.address1), plain(address.address2), plain(address.city), region, plain(address.postalCode)].filter(Boolean).join(", ");
+  }
+  function primaryContact(contacts) {
+    var primaries = rows(contacts).filter(function(contact) {
+      return text3(contact.type && contact.type.code) === PRIMARY_CONTACT;
+    });
+    return primaries.sort(byIdAscending)[0] || null;
+  }
+  function entryValues(entries, typeCode) {
+    var values = [];
+    rows(entries).forEach(function(entry) {
+      if (text3(entry.type && entry.type.code) !== typeCode) return;
+      var value = plain(entry.value);
+      if (value && values.indexOf(value) === -1) values.push(value);
+    });
+    return values;
+  }
+  function typedAddresses(addresses, typeCode) {
+    var formatted = [];
+    rows(addresses).filter(function(row) {
+      return rows(row.types).some(function(type) {
+        return text3(type.code) === typeCode;
+      });
+    }).sort(byIdDescending).forEach(function(row) {
+      var line = formatAccountAddress(row.address);
+      if (line && formatted.indexOf(line) === -1) formatted.push(line);
+    });
+    return formatted;
+  }
+  function byIdAscending(left, right) {
+    return compareIds(left, right, 1);
+  }
+  function byIdDescending(left, right) {
+    return compareIds(left, right, -1);
+  }
+  function compareIds(left, right, direction) {
+    var a = positiveInteger3(left && left.id);
+    var b = positiveInteger3(right && right.id);
+    if (a === b) return 0;
+    if (a === null) return 1;
+    if (b === null) return -1;
+    return (a - b) * direction;
+  }
+  function rows(value) {
+    return Array.isArray(value) ? value.filter(function(row) {
+      return row && typeof row === "object";
+    }) : [];
+  }
+  function localizedName6(value) {
+    if (!value || typeof value !== "object") return "";
+    var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
+    return plain(localized2 && (localized2.NAME || localized2.name));
+  }
+  function plain(value) {
+    if (typeof value === "string") return value.trim();
+    return typeof value === "number" && Number.isFinite(value) ? String(value) : "";
+  }
+
   // app-templates/customer-portal/runtime/src/adapters/core-pim-adapter.js
   var API_PATH = "/public/{organization}/catalog/price-comparison.json";
   var INVENTORY_TYPE_CODE = "SPA_STOCK";
@@ -18848,9 +19444,9 @@
       ]
     };
   }
-  function sellabilityByProductCode(rows, products) {
+  function sellabilityByProductCode(rows2, products) {
     var inStockByProductId = /* @__PURE__ */ new Map();
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       if (!isStockRow(row)) return;
       var productId = referenceId(row && row.product);
       if (productId === null) return;
@@ -18933,8 +19529,8 @@
       ]
     };
   }
-  function normalizeModels(rows, productCodes) {
-    return rows.map(function(row) {
+  function normalizeModels(rows2, productCodes) {
+    return rows2.map(function(row) {
       var products = Array.isArray(row && row.products) ? row.products : [];
       var codes = products.map(function(product) {
         return String(product && product.code || "");
@@ -18960,8 +19556,8 @@
       return model.code && model.productCodes.length;
     });
   }
-  function normalizeReviews(rows, productCodes) {
-    return rows.map(function(row) {
+  function normalizeReviews(rows2, productCodes) {
+    return rows2.map(function(row) {
       var states = Array.isArray(row && row.states) ? row.states.map(function(state2) {
         return String(state2 && state2.code || "");
       }) : [];
@@ -19058,11 +19654,11 @@
     return "/" + base.replace(/^\/+/, "") + path;
   }
   function normalizePimRows(data, config) {
-    var rows = Array.isArray(data && data.prices) ? data.prices.slice() : [];
-    rows.sort(function(left, right) {
+    var rows2 = Array.isArray(data && data.prices) ? data.prices.slice() : [];
+    rows2.sort(function(left, right) {
       return sortPriority(left) - sortPriority(right);
     });
-    return rows.map(function(row, index) {
+    return rows2.map(function(row, index) {
       var product = productFromRow(row);
       var nls = localized(product.nls, "en");
       var display = row.price && row.price.display || {};
@@ -19257,11 +19853,11 @@
     var accessToken = text13(session.accessToken || session.access_token);
     if (!accessToken) throw contractError6("session-required", "A Core access token is required");
     var origin = explicitOrigin || config.origin || browserOrigin5();
-    var coreBase = sameOriginBase6(config.coreApiBase || "/core", origin, "Core API base");
-    var accountBase = sameOriginBase6(config.accountApiBase || "/core-acct", origin, "Core Account API base");
+    var coreBase = sameOriginBase7(config.coreApiBase || "/core", origin, "Core API base");
+    var accountBase = sameOriginBase7(config.accountApiBase || "/core-acct", origin, "Core Account API base");
     var tokenType = text13(session.tokenType || session.token_type || "Bearer");
     var authorization = tokenType + " " + accessToken;
-    var basicInfo = await requestJson6(fetchImpl, coreBase + "/api/user/basic-info.json", {
+    var basicInfo = await requestJson7(fetchImpl, coreBase + "/api/user/basic-info.json", {
       method: "POST",
       credentials: "same-origin",
       headers: { Authorization: authorization, "Content-Type": "application/json", Accept: "application/json" },
@@ -19271,7 +19867,7 @@
     if (!userId) throw contractError6("invalid-session-user", "Core basic-info did not return authenticatedUserId");
     var organizationCode = selectOrganization(config.organization || config.pimOrganization, basicInfo);
     var accountTypeCode = text13(config.accountTypeCode || "SPA_CUSTOMER");
-    var accountReply = await requestJson6(fetchImpl, accountBase + "/api/account/list.json", {
+    var accountReply = await requestJson7(fetchImpl, accountBase + "/api/account/list.json", {
       method: "POST",
       credentials: "same-origin",
       headers: {
@@ -19310,7 +19906,7 @@
       account: {
         id: Number(account.id),
         code: text13(account.code),
-        displayName: localizedName6(account.nls) || "Customer account",
+        displayName: localizedName7(account.nls) || "Customer account",
         optimistic: Number.isFinite(Number(account.optimistic)) ? Number(account.optimistic) : null,
         typeCode: accountTypeCode
       }
@@ -19329,7 +19925,7 @@
     }
     return selected;
   }
-  async function requestJson6(fetchImpl, url, options2) {
+  async function requestJson7(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (!response || typeof response.ok !== "boolean") throw contractError6("invalid-response", "Core request returned an invalid response");
     if (!response.ok) {
@@ -19344,7 +19940,7 @@
       throw contractError6("invalid-response", "Core response was not valid JSON");
     }
   }
-  function sameOriginBase6(value, origin, label) {
+  function sameOriginBase7(value, origin, label) {
     if (!origin) throw contractError6("origin-required", label + " requires a browser origin");
     var target = new URL(String(value || ""), origin);
     if (target.origin !== new URL(origin).origin) throw contractError6("cross-origin-service", label + " must be same-origin");
@@ -19357,7 +19953,7 @@
     var number = Number(value);
     return Number.isInteger(number) && number > 0 ? number : null;
   }
-  function localizedName6(value) {
+  function localizedName7(value) {
     if (!value || typeof value !== "object") return "";
     var localized2 = value.en || value["en-US"] || Object.values(value)[0] || {};
     return text13(localized2 && (localized2.NAME || localized2.name));
@@ -19455,14 +20051,14 @@
     };
   }
   async function loadEnrollments(api, accountId, fetchImpl) {
-    var response = await requestJson7(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
+    var response = await requestJson8(fetchImpl, api.serviceBase + "/api/project/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: ENROLLMENT_TYPE }],
       mappings: ENROLLMENT_MAPPINGS,
       offset: 0,
       pageSize: positiveInteger9(api.config.plansPageSize) || 100
     }));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    return rows.filter(function(row) {
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
+    return rows2.filter(function(row) {
       return attributeNumber3(row, "CUSTOMER_ACCOUNT") === accountId;
     }).map(normalizeEnrollment);
   }
@@ -19490,26 +20086,26 @@
       remainingUses: remaining,
       sourcePurchase: sourceOrder ? PURCHASE_REF_PREFIX + sourceOrder : null,
       status,
-      title: localizedName7(row.nls) || "Package",
+      title: localizedName8(row.nls) || "Package",
       totalUses: total
     };
   }
   async function loadMemberships(api, accountId, fetchImpl) {
-    var response = await requestJson7(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
+    var response = await requestJson8(fetchImpl, api.billBase + "/api/subscription/list.json", requestOptions3(api, {
       filters: [{ type: "INTEGER", operator: "=", property: "account.id", value: String(accountId) }],
       mappings: SUBSCRIPTION_MAPPINGS,
       offset: 0,
       pageSize: positiveInteger9(api.config.plansPageSize) || 100
     }));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
-    if (!rows.length) return [];
-    var lines = await membershipLines(api, rows, fetchImpl);
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
+    if (!rows2.length) return [];
+    var lines = await membershipLines(api, rows2, fetchImpl);
     var lineRows = Object.values(lines);
     var resolved = await Promise.all([
       codesById(api, api.coreBase, "dictionary", uniqueIds(lineRows, currencyId), fetchImpl),
       codesById(api, api.coreBase, "unit", uniqueIds(lineRows, intervalUnitId), fetchImpl)
     ]);
-    return rows.map(function(row) {
+    return rows2.map(function(row) {
       var line = lines[String(orderId(row))] || null;
       return normalizeMembership(row, line, {
         currency: resolved[0][String(currencyId(line))] || "",
@@ -19535,7 +20131,7 @@
   }
   async function codesById(api, base, endpoint, ids, fetchImpl) {
     if (!ids.length) return {};
-    var response = await requestJson7(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
+    var response = await requestJson8(fetchImpl, base + "/api/" + endpoint + "/list.json", requestOptions3(api, {
       filters: ids.map(function(id) {
         return { type: "INTEGER", operator: "=", property: "id", value: String(id) };
       }),
@@ -19560,15 +20156,15 @@
   async function membershipLines(api, subscriptions, fetchImpl) {
     var orderIds = subscriptions.map(orderId).filter(Boolean);
     if (!orderIds.length) return {};
-    var response = await requestJson7(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
+    var response = await requestJson8(fetchImpl, api.billBase + "/api/order-item/list.json", requestOptions3(api, {
       filters: [{ type: "STRING", operator: "=", property: "type.code", value: MEMBERSHIP_ITEM_TYPE }],
       mappings: ORDER_ITEM_MAPPINGS3,
       offset: 0,
       pageSize: 200
     }));
-    var rows = Array.isArray(response && response.result) ? response.result : [];
+    var rows2 = Array.isArray(response && response.result) ? response.result : [];
     var byOrder = {};
-    rows.forEach(function(row) {
+    rows2.forEach(function(row) {
       var key = String(row.order && row.order.id);
       if (orderIds.indexOf(positiveInteger9(row.order && row.order.id)) >= 0 && !byOrder[key]) byOrder[key] = row;
     });
@@ -19620,12 +20216,12 @@
     var origin = explicitOrigin || config.origin || browserOrigin6();
     return {
       authorization: text14(session.tokenType || session.token_type || "Bearer") + " " + accessToken,
-      billBase: sameOriginBase7(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
-      coreBase: sameOriginBase7(config.coreApiBase || "/core", origin, "Core API base"),
+      billBase: sameOriginBase8(config.billApiBase || "/core-bill", origin, "Core Bill API base"),
+      coreBase: sameOriginBase8(config.coreApiBase || "/core", origin, "Core API base"),
       config,
       customer: context && context.account || state2.customerAccount || session.account || {},
       organization,
-      serviceBase: sameOriginBase7(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
+      serviceBase: sameOriginBase8(config.serviceApiBase || "/core-svc", origin, "Core Service API base")
     };
   }
   function requestOptions3(api, body) {
@@ -19641,7 +20237,7 @@
       method: "POST"
     };
   }
-  async function requestJson7(fetchImpl, url, options2) {
+  async function requestJson8(fetchImpl, url, options2) {
     var response = await fetchImpl(url, options2);
     if (response.status === 401) throw contractError7("session-expired", "Core rejected the portal session");
     if (response.status === 403) throw contractError7("customer-forbidden", "Core refused the plan read for this customer");
@@ -19677,7 +20273,7 @@
   function membershipTitle(line) {
     if (!line) return "Membership";
     var product = line.itemPrice && line.itemPrice.product;
-    return localizedName7(product && product.nls) || localizedName7(line.itemPrice && line.itemPrice.nls) || "Membership";
+    return localizedName8(product && product.nls) || localizedName8(line.itemPrice && line.itemPrice.nls) || "Membership";
   }
   function formatMoney4(amount, currency) {
     return new Intl.NumberFormat("en-US", { currency, style: "currency" }).format(Number(amount)).replace(/\.00$/, "");
@@ -19688,7 +20284,7 @@
     if (Number.isNaN(date.getTime())) return null;
     return date.toLocaleDateString("en-US", { day: "numeric", month: "short", timeZone: "UTC", year: "numeric" });
   }
-  function localizedName7(nls) {
+  function localizedName8(nls) {
     if (!nls || typeof nls !== "object") return "";
     var locales = Object.keys(nls);
     for (var index = 0; index < locales.length; index += 1) {
@@ -19698,7 +20294,7 @@
     }
     return "";
   }
-  function sameOriginBase7(base, origin, label) {
+  function sameOriginBase8(base, origin, label) {
     var value = text14(base);
     if (!value) throw contractError7("api-base-required", label + " is required");
     if (/^https?:\/\//i.test(value)) {
@@ -20028,6 +20624,7 @@
       return normalizeCare(raw, context);
     }
   };
+  var ACCOUNT_GATE_STATES = Object.freeze(["customer-not-linked", "customer-account-ambiguous", "organization-forbidden", "customer-forbidden", "session-expired"]);
   var accountModule = {
     id: "account",
     asyncOnly: true,
@@ -20058,7 +20655,8 @@
     onError(error2, context) {
       context.state.customerAccount = null;
       delete context.state.session.account;
-      context.state.account = error2 && error2.code || "customer-unavailable";
+      var code = error2 && error2.code;
+      context.state.account = ACCOUNT_GATE_STATES.includes(code) ? code : "customer-unavailable";
     },
     failureEnvelope(context, error2) {
       return { state: error2 && error2.code || "customer-unavailable", items: [] };
@@ -20068,15 +20666,18 @@
     id: "profile",
     asyncOnly: true,
     adapter(context) {
+      if (customerAccountProfile(context.config)) return context.config.dataMode === "live" ? createCoreAccountProfileAdapter() : fixtureAccountProfileAdapter;
       return context.config.dataMode === "live" ? createCoreUserProfileAdapter() : fixtureAdapter;
     },
     normalize(raw, context) {
+      if (customerAccountProfile(context.config)) return normalizeAccountProfile(raw);
       return context.config.dataMode === "live" ? raw : normalizeProfile(raw);
     },
     onError(error2, context) {
       if (error2 && error2.code === "session-expired") context.state.account = "session-expired";
     },
     failureEnvelope(context, error2) {
+      if (customerAccountProfile(context.config)) return accountProfileFailure(error2 && error2.code);
       return { state: error2 && error2.code === "customer-forbidden" ? "unauthorized" : "error", email: "", phone: null, prefs: {}, allowedActions: [] };
     }
   };
@@ -20290,18 +20891,15 @@
   };
   var liveOverviewAdapter = {
     async load(moduleId, context) {
-      if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unconfigured", source: null };
+      if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unavailable", reasonCode: "forecast-unconfigured", source: null };
       if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
-      if (!context.state.liveWeather) {
-        var error2 = new Error("The service-area forecast did not load");
-        error2.code = "weather-unavailable";
-        throw error2;
-      }
+      if (!context.state.liveWeather) return { state: "error", reasonCode: "weather-unavailable", source: null };
       return { state: "ready", source: context.state.liveWeather.source };
     }
   };
   var overviewModule = {
     id: "overview",
+    gatesFirstRender: false,
     adapter(context) {
       return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
     },
@@ -20503,11 +21101,25 @@
         await this.loadAsync("account");
         ids = ids.filter((moduleId) => moduleId !== "account");
       }
-      return Promise.all(ids.map((moduleId) => this.loadAsync(moduleId)));
+      var deferred = this.state.config && this.state.config.dataMode === "live" ? ids.filter((moduleId) => this.modules[moduleId] && this.modules[moduleId].gatesFirstRender === false) : [];
+      deferred.forEach((moduleId) => {
+        this.loadAsync(moduleId).catch(() => null);
+      });
+      return Promise.all(ids.filter((moduleId) => !deferred.includes(moduleId)).map((moduleId) => this.loadAsync(moduleId)));
+    }
+    settled() {
+      return Promise.allSettled(Array.from(this.inFlight.values(), (flight) => flight.promise)).then(() => void 0);
+    }
+    eachSettled(callback) {
+      this.inFlight.forEach((flight) => {
+        flight.promise.then(() => callback(), () => callback());
+      });
     }
     enabledModuleIds() {
-      var enabled = this.state.config && this.state.config.enabledModules || [];
-      return openedModuleIds.filter((moduleId) => moduleId === "auth" || enabled.includes(moduleId));
+      var config = this.state.config || {};
+      var enabled = config.enabledModules || [];
+      var accountGate = customerAccountRequired(config);
+      return openedModuleIds.filter((moduleId) => moduleId === "auth" || moduleId === "account" && accountGate || enabled.includes(moduleId));
     }
     invalidate(moduleId) {
       var descriptor = this.modules[moduleId];
@@ -21042,6 +21654,13 @@
   function gateActions(list) {
     return h("div", { "class": "account-gate__actions" }, list);
   }
+  function supportOrSignOut() {
+    var support = SupportContactButton({ variant: "btn--primary", block: true, lg: true, visualId: "account-support" });
+    return gateActions([
+      support,
+      ActionButton(support ? { variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" } : { variant: "btn--primary", label: "Sign out", action: "auth.signOut", block: true, lg: true, visualId: "account-signout" })
+    ]);
+  }
   function AccountBootstrap() {
     var s = state.account;
     var intendedRoute = state.session.intendedRoute || state.route;
@@ -21061,45 +21680,33 @@
         ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
       ]));
     } else if (s === "customer-not-linked") {
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u26AD")]));
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u26AD")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "This sign-in isn\u2019t linked to a customer account"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "You\u2019re signed in, but this identity isn\u2019t connected to an active customer account with us, so the portal can\u2019t be opened. Our support team can link it for you."));
-      card.appendChild(gateActions([
-        ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", block: true, lg: true, visualId: "account-support" }),
-        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
-      ]));
+      card.appendChild(supportOrSignOut());
     } else if (s === "customer-account-ambiguous") {
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u29C9")]));
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u29C9")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "We can\u2019t tell which account is yours"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in matches more than one customer account, so the portal won\u2019t guess. Our support team can link the right one \u2014 nothing is shown until then."));
-      card.appendChild(gateActions([
-        ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", block: true, lg: true, visualId: "account-support" }),
-        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
-      ]));
+      card.appendChild(supportOrSignOut());
     } else if (s === "organization-forbidden") {
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u2302")]));
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u2302")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "This sign-in can\u2019t be used here"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in works, but it doesn\u2019t belong to this portal\u2019s organization, so nothing here can be opened. If that seems wrong, contact support."));
-      card.appendChild(gateActions([
-        ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", block: true, lg: true, visualId: "account-support" }),
-        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
-      ]));
+      card.appendChild(supportOrSignOut());
     } else if (s === "customer-forbidden") {
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u26BF")]));
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u26BF")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "This account can\u2019t open the customer portal"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "Your sign-in works, but it doesn\u2019t include access to the customer portal. If you believe it should, contact support."));
-      card.appendChild(gateActions([
-        ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", block: true, lg: true, visualId: "account-support" }),
-        ActionButton({ variant: "btn--ghost", label: "Sign out", action: "auth.signOut", block: true, visualId: "account-signout" })
-      ]));
+      card.appendChild(supportOrSignOut());
     } else if (s === "session-expired") {
-      card.appendChild(h("div", { "class": "oidc-status" }, [h("div", { "class": "oidc-glyph" }, "\u23F1")]));
+      card.appendChild(h("div", { "class": "oidc-status" }, [GateGlyph("\u23F1")]));
       card.appendChild(h("div", { "class": "oidc-title" }, "Your session ended"));
       card.appendChild(h("div", { "class": "oidc-sub" }, "For your security you were signed out. Nothing you see below is live anymore. Sign in again and you\u2019ll come right back here."));
       card.appendChild(h("div", { "class": "account-gate__route" }, ["Returning to\u2002", h("b", null, routeLabel(intendedRoute))]));
       card.appendChild(gateActions([
         ActionButton({ variant: "btn--primary", label: "Sign in again", action: "auth.oidcSignIn", block: true, lg: true, visualId: "account-reauth" }),
-        ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "account-catalog" })
+        LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "account-catalog" })
       ]));
     }
     page.appendChild(card);
@@ -21280,10 +21887,18 @@
       console.error("[aircove] runtime retry failed", error2);
       if (continueToIntendedRoute()) return;
       render();
+    }).then(function() {
+      return runtime.settled();
+    }).then(function() {
+      render();
     }).finally(function() {
       liveRetryPromise = null;
     });
     return liveRetryPromise;
+  }
+  function resumeIntendedRoute() {
+    runtime.eachSettled(render);
+    if (!continueToIntendedRoute()) render();
   }
   function continueToIntendedRoute() {
     if (!state.session.authenticated || state.account !== "ready") return false;
@@ -21326,6 +21941,8 @@
     mount = document.getElementById("app");
     applyPortalConfig(readPortalConfig(mount));
     runtime = new PortalRuntime({ state });
+    var signingIn = customerPortalAccessRequired();
+    if (signingIn) state.oidc = "checking-session";
     var loaded = runtime.loadAllAsync();
     initRouter(render);
     bindActions(mount);
@@ -21335,6 +21952,14 @@
         if (live) render();
       });
     }
+    if (signingIn) {
+      render();
+      runtime.loadAsync("auth").then(function() {
+        render();
+        if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
+        return null;
+      }, render);
+    }
     loaded.then(function() {
       if (continueToIntendedRoute()) return;
       render();
@@ -21342,6 +21967,10 @@
       state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
       console.error("[aircove] runtime load failed", error2);
       if (continueToIntendedRoute()) return;
+      render();
+    }).then(function() {
+      return runtime.settled();
+    }).then(function() {
       render();
     });
   });

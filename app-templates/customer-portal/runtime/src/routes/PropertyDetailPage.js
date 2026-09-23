@@ -1,12 +1,20 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, quoteGroupFor, state } from "../state.js";
+import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quoteGroupFor, quotePackage, state } from "../state.js";
 import { browserStorage, createGeocodeCache } from "../adapters/google-maps-adapter.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
 import { EmptyState } from "../components/primitives/EmptyState.js";
+import { ErrorState } from "../components/primitives/ErrorState.js";
+import { UnauthorizedState, skel } from "../components/primitives/RouteStates.js";
 import { SectionUnavailable, UnavailableChip } from "../components/primitives/SectionUnavailable.js";
 import { knownPlacement } from "../components/storm/PropertyMap.js";
 import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, sectionAvailable } from "../normalizers/overview.js";
 import { stateMeta } from "../normalizers/appointments.js";
+
+var AGREEMENT_FACT_NOTES = {
+  unauthorized: "Your account doesn’t include access to contracts.",
+  unavailable: "Contracts aren’t in the portal yet.",
+  error: "Your contracts couldn’t be loaded.",
+};
 
 var QUOTE_DECISION = {
   approved: "option approved",
@@ -23,10 +31,23 @@ export function currentProperty() {
 
 export function PropertyDetail() {
   var page = h("section", { "class": "page page--narrow", "data-route": "property.detail", "data-visual-id": "property-detail" });
+  var source = state.config.dataMode === "live" ? liveOverviewStatus() : "ready";
+  if (source !== "ready") {
+    page.setAttribute("data-state", source === "loading" ? "loading" : source === "unauthorized" ? "unauthorized" : "error");
+    if (source === "loading") page.appendChild(PropertySkeleton());
+    else if (source === "unauthorized") page.appendChild(UnauthorizedState({ scope: "this property", backRoute: state.config.defaultRoute }));
+    else {
+      page.appendChild(BackLink(null));
+      page.appendChild(ErrorState({ title: "Couldn’t load this property", desc: "Nothing was changed. Check your connection and try again." }));
+    }
+    return page;
+  }
+
   var model = currentOverview();
   var property = currentProperty();
 
   if (!property) {
+    page.setAttribute("data-state", "not-found");
     page.appendChild(BackLink(model));
     page.appendChild(EmptyState({ glyph: "◌", title: "Property not found", desc: sectionAvailable(model, "contracts") ? "This address is not on your contract." : "We couldn’t find this property." }));
     return page;
@@ -50,7 +71,9 @@ export function PropertyDetail() {
         text("div", "prop-fact__label", item.label),
         item.state === "unavailable"
           ? h("div", { "class": "prop-fact__value" }, [UnavailableChip()])
-          : item.action
+          : item.state === "loading"
+            ? h("div", { "class": "prop-fact__value", "aria-busy": "true" }, [skel("width:62%;height:15px")])
+            : item.action
             ? h("div", { "class": "link-action prop-fact__value", "data-action": item.action, "data-id": item.id }, item.value + " ›")
             : text("div", "prop-fact__value", item.value),
         item.note ? text("div", "prop-fact__note", item.note) : null,
@@ -117,7 +140,9 @@ function facts(property, contract, model) {
   var rows = [
     sectionAvailable(model, "contracts")
       ? { key: "contract", label: "Contract", value: contract ? "#" + contract.number + " · " + contract.plan : "Not under contract", action: contract ? "nav.go" : undefined, id: contract ? "proposals.list" : undefined }
-      : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren’t in the portal yet." },
+      : state.config.dataMode === "live" && isModuleEnabled("proposals")
+        ? liveAgreementFact(property)
+        : { key: "contract", label: "Contract", state: "unavailable", note: "Contracts aren’t in the portal yet." },
   ];
   if (property.zone) rows.push({ key: "zone", label: "Service zone", value: zoneLabel(property.zone) });
   var map = mapFact(property);
@@ -133,6 +158,31 @@ function facts(property, contract, model) {
     });
   }
   return rows;
+}
+
+function liveAgreementFact(property) {
+  var envelope = state.moduleData.proposals;
+  if (!envelope && state.moduleStatus.proposals !== "error") return { key: "contract", label: "Service agreement", state: "loading" };
+  var readable = !!envelope && !AGREEMENT_FACT_NOTES[envelope.state] && !(state.contractCommand && state.contractCommand.phase === "readback-failed");
+  var quotes = readable ? quotePackage() : null;
+  if (!quotes) return { key: "contract", label: "Service agreement", state: "unavailable", note: AGREEMENT_FACT_NOTES[envelope && envelope.state] || AGREEMENT_FACT_NOTES.error };
+  var row = quotes.agreements.find(function (agreement) {
+    return agreement.properties.some(function (entry) { return entry.propertyBackendId === property.backendId; });
+  });
+  return row
+    ? { key: "contract", label: "Service agreement", value: row.agreement.label, action: "agreement.open", id: row.id }
+    : { key: "contract", label: "Service agreement", value: "None yet" };
+}
+
+function PropertySkeleton() {
+  return h("div", { "data-module": "property-loading", "data-visual-id": "property-loading", "data-state": "loading", "aria-busy": "true" }, [
+    skel("width:124px;height:13px;margin-bottom:16px"),
+    h("div", { "class": "prop-head" }, [h("div", { style: "flex:1;min-width:0" }, [skel("width:48%;height:30px;margin-bottom:9px"), skel("width:66%;height:13px")])]),
+    h("div", { "class": "card card--pad prop-facts" }, [0, 1].map(function () {
+      return h("div", { "class": "prop-fact" }, [skel("width:38%;height:11px;margin-bottom:8px"), skel("width:70%;height:15px")]);
+    })),
+    skel("height:140px;border-radius:22px"),
+  ]);
 }
 
 function mapFact(property) {

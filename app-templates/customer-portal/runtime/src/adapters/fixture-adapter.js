@@ -52,6 +52,13 @@ export const fixtureAdapter = {
   },
 };
 
+export const fixtureAccountProfileAdapter = {
+  load(moduleId, context) {
+    var fixture = caseFixtureFor(context.config.caseId);
+    return { account: fixture && fixture.customerAccount ? clone(fixture.customerAccount) : null, scopeMode: null };
+  },
+};
+
 export function createFixtureContractsGateway(state) {
   return {
     async readOrder(backendId) {

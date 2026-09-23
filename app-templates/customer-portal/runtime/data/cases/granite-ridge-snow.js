@@ -365,6 +365,47 @@ export const graniteRidgeSnowFixture = Object.freeze({
     memberSince: "2022",
     stats: { orders: "38", spent: "$14,820", savings: "$2,140" },
   },
+  customerAccount: {
+    id: CLIENT_ACCOUNT,
+    code: "GRS-CUSTOMER-6001",
+    nls: { en: { NAME: "Whitlock Property Group" } },
+    type: { id: 2, code: "CUSTOMER" },
+    user: { id: 4301 },
+    states: [{ id: 83, code: "ACTIVE" }],
+    contacts: [
+      {
+        id: 6101,
+        firstName: "Dana",
+        lastName: "Whitlock",
+        title: "Portfolio Manager",
+        type: { id: 1, code: "PRIMARY" },
+        contactEntries: [
+          { id: 6111, type: { id: 1, code: "EMAIL" }, value: "dana.whitlock@example.test" },
+          { id: 6112, type: { id: 2, code: "PHONE" }, value: "+1 (303) 555-0164" },
+        ],
+      },
+      {
+        id: 6102,
+        firstName: "Marco",
+        lastName: "Ruiz",
+        title: "Facilities Coordinator",
+        type: { id: 2, code: "SECONDARY" },
+        contactEntries: [{ id: 6121, type: { id: 1, code: "EMAIL" }, value: "marco.ruiz@example.test" }],
+      },
+    ],
+    addresses: [
+      {
+        id: 6201,
+        types: [{ id: 1, code: "BILLING" }],
+        address: { id: 7301, address1: "1550 Wynkoop Street", address2: "Suite 400", city: "Denver", postalCode: "80202", state: { id: 6, code: "CO" } },
+      },
+      {
+        id: 6202,
+        types: [{ id: 3, code: "SERVICE" }],
+        address: { id: 7302, address1: "4820 Foothill Court", city: "Lakewood", postalCode: "80215", state: { id: 6, code: "CO" } },
+      },
+    ],
+  },
   addresses: [
     { id: "foothill", label: "Foothill Court", line: "4820 Foothill Court", city: "Lakewood, CO 80215", dot: accent, iconBg: softAccent },
     { id: "tabor", label: "Tabor Street", line: "1190 Tabor Street", city: "Golden, CO 80401", dot: ok, iconBg: softOk },

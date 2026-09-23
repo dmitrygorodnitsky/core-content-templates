@@ -1,3 +1,4 @@
+import { customerAccountRequired } from "./config.js";
 import { openedModuleIds, modules } from "./modules/index.js";
 
 export class PortalRuntime {
@@ -189,12 +190,26 @@ export class PortalRuntime {
       await this.loadAsync("account");
       ids = ids.filter((moduleId) => moduleId !== "account");
     }
-    return Promise.all(ids.map((moduleId) => this.loadAsync(moduleId)));
+    var deferred = this.state.config && this.state.config.dataMode === "live"
+      ? ids.filter((moduleId) => this.modules[moduleId] && this.modules[moduleId].gatesFirstRender === false)
+      : [];
+    deferred.forEach((moduleId) => { this.loadAsync(moduleId).catch(() => null); });
+    return Promise.all(ids.filter((moduleId) => !deferred.includes(moduleId)).map((moduleId) => this.loadAsync(moduleId)));
+  }
+
+  settled() {
+    return Promise.allSettled(Array.from(this.inFlight.values(), (flight) => flight.promise)).then(() => undefined);
+  }
+
+  eachSettled(callback) {
+    this.inFlight.forEach((flight) => { flight.promise.then(() => callback(), () => callback()); });
   }
 
   enabledModuleIds() {
-    var enabled = this.state.config && this.state.config.enabledModules || [];
-    return openedModuleIds.filter((moduleId) => moduleId === "auth" || enabled.includes(moduleId));
+    var config = this.state.config || {};
+    var enabled = config.enabledModules || [];
+    var accountGate = customerAccountRequired(config);
+    return openedModuleIds.filter((moduleId) => moduleId === "auth" || (moduleId === "account" && accountGate) || enabled.includes(moduleId));
   }
 
   invalidate(moduleId) {

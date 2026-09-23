@@ -17,6 +17,7 @@ const { OVERVIEW_STATUS, invoiceBuckets, knownPropertyStatus, propertyStatus, pr
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
 const { PortalRuntime } = await import(new URL("src/portal-runtime.js", runtimeRoot));
 const { Overview } = await import(new URL("src/routes/OverviewPage.js", runtimeRoot));
+const { PropertyDetail } = await import(new URL("src/routes/PropertyDetailPage.js", runtimeRoot));
 const { PropertyStage } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
 
 const GEOGRAPHY = JSON.stringify({
@@ -109,12 +110,20 @@ const liveProperties = {
 {
   configure("live");
   state.moduleData.properties = liveProperties;
-  assert.equal(currentOverview(), null, "a live home screen without live weather has no accepted representation and must not fall back to a fabricated forecast");
+  const withoutForecast = currentOverview();
+  assert.deepEqual(withoutForecast.properties, liveProperties.items, "properties that loaded are shown whatever the forecast does");
+  assert.equal(withoutForecast.weather, null, "no fabricated forecast stands in for a missing one");
+  assert.equal(withoutForecast.forecast, "unconfigured", "without weather keys the forecast says it is not set up");
 
   configure("live", "");
   state.liveWeather = liveWeather;
+  state.liveWeatherState = "ready";
   state.moduleData.properties = liveProperties;
-  assert.equal(currentOverview(), null, "without configured service geography the live home screen has no map and no zones");
+  const withoutGeography = currentOverview();
+  assert.equal(withoutGeography.map, null, "without service geography there is no viewport, so the card lists the properties");
+  assert.equal(withoutGeography.weather, null, "a forecast is never read without configured zones");
+  assert.equal(withoutGeography.forecast, "unconfigured");
+  assert.deepEqual(withoutGeography.properties, liveProperties.items);
 }
 
 {
@@ -128,11 +137,14 @@ const liveProperties = {
 
 {
   configure("live");
+  Object.assign(state.config, { weatherClientId: "cid", weatherClientSecret: "sec" });
   state.liveWeather = liveWeather;
+  state.liveWeatherState = "ready";
   state.moduleData.properties = liveProperties;
   const model = currentOverview();
 
   assert.ok(model);
+  assert.equal(model.forecast, "ready");
   assert.equal(model.weather.source, "xweather");
   assert.deepEqual(model.properties, liveProperties.items);
   assert.deepEqual(model.sources, { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" }, "every home section without a live source is declared unavailable, so none of them can read as empty");
@@ -206,6 +218,7 @@ function liveRuntime(options = {}) {
     if (target.includes("xweather.com")) {
       calls.xweather.push(target);
       if (outcomes.weather === "fail") return { ok: false, status: 503, json: async () => ({}) };
+      if (outcomes.weather === "hold") return new Promise(() => {});
       return { ok: true, status: 200, json: async () => ({ success: true, error: null, response: [{ periods: PERIODS }] }) };
     }
     calls.core.push(target);
@@ -232,8 +245,9 @@ function quietConsole() {
   const console = quietConsole();
   try {
     const { runtime, calls } = liveRuntime();
-    assert.deepEqual(runtime.enabledModuleIds(), ["auth", "overview", "properties"], "a live snow home loads the overview and properties modules once the session resolves");
+    assert.deepEqual(runtime.enabledModuleIds(), ["auth", "account", "overview", "properties"], "a live signed-in portal resolves the customer Account whether or not its module list names it");
     await runtime.loadAllAsync(LOAD);
+    await runtime.settled();
     assert.equal(state.moduleStatus.overview, "ready", "the overview module has a live path, so a live load no longer fails on it");
     assert.deepEqual(state.moduleData.overview, { state: "ready", source: "xweather" }, "the overview module carries the state of its forecast and no fixture data");
     assert.equal(state.moduleStatus.properties, "ready");
@@ -259,6 +273,9 @@ function quietConsole() {
     assert.deepEqual(page.querySelectorAll(".ov-legend__item").map((item) => item.getAttribute("data-weather")), ["clear", "snow", "freezing", "storm"], "no key is shown for a status live mode cannot read");
     const rows = page.querySelectorAll("[data-module=\"property-row\"]");
     assert.equal(rows.length, 1);
+    assert.equal(rows[0].getAttribute("data-weather"), "storm", "the 2.4 cm day keeps its trigger colour");
+    assert.equal(rows[0].querySelector(".ov-prow__wx").textContent, page.querySelector(".ov-wx__label").textContent, "a property row reads the same forecast as the weather card");
+    assert.equal(rows[0].querySelector(".ov-prow__wx").textContent, "Light Snow");
     for (const row of rows) {
       assert.equal(row.getAttribute("data-state"), null, "a live property row carries no status");
       assert.equal(row.querySelectorAll(".ov-tip__tag").length, 0);
@@ -277,20 +294,30 @@ function quietConsole() {
   try {
     const { runtime, calls, outcomes } = liveRuntime({ weather: "fail" });
     const failure = await failureOf(runtime.loadAllAsync(LOAD));
-    await settle();
-    assert.equal(failure && failure.code, "weather-unavailable", "a forecast that failed is a failed load, not a quiet empty home");
+    await runtime.settled();
+    assert.equal(failure, null, "a failed forecast does not fail the load");
     assert.equal(state.moduleStatus.overview, "error");
-    assert.deepEqual(state.moduleData.overview, { state: "error", reasonCode: "weather-unavailable" });
+    assert.deepEqual(state.moduleData.overview, { state: "error", reasonCode: "weather-unavailable", source: null });
     assert.equal(state.moduleStatus.properties, "ready");
-    assert.equal(currentOverview(), null, "no demonstration forecast stands in for the failed one");
-    assert.equal(liveOverviewStatus(), "error");
-    assert.match(Overview().querySelector("[data-module=\"error-state\"]").textContent, /Couldn’t load your home screen/, "a failed forecast reaches the designed error state");
+    const model = currentOverview();
+    assert.equal(model.weather, null, "no demonstration forecast stands in for the failed one");
+    assert.equal(model.forecast, "failed");
+    assert.equal(liveOverviewStatus(), "ready", "the home follows the properties read, not the forecast");
+    const page = Overview();
+    assert.equal(page.querySelectorAll("[data-module=\"error-state\"]").length, 0, "a failed forecast never hides the properties");
+    const card = page.querySelector("[data-module=\"weather-summary\"]");
+    assert.equal(card.getAttribute("data-state"), "error", "the weather card owns its failure");
+    assert.match(card.textContent, /^Forecast unavailableThe forecast didn’t load\. Your properties are shown without it\./);
+    assert.equal(card.querySelector("[data-action=\"overview.retryWeather\"]").textContent, "Try again ›");
+    assert.deepEqual(page.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.querySelector(".ov-prow__name").textContent), ["Frost Lane Strata"]);
+    assert.equal(page.querySelectorAll(".ov-prow__wx").length + page.querySelectorAll(".ov-legend__item").length + page.querySelectorAll("[data-module=\"weather-timeline\"]").length, 0, "no weather reading, legend or day strip without a forecast");
+    assert.equal(page.querySelector(".page-header__sub").textContent, "1 property");
 
     outcomes.weather = "ok";
-    await runtime.loadAllAsync(LOAD);
-    assert.equal(calls.xweather.length, 4, "Try again reloads the modules, and the overview module fetches the forecast again");
-    assert.equal(liveOverviewStatus(), "ready");
-    assert.equal(Overview().querySelectorAll("[data-module=\"error-state\"]").length, 0);
+    await runtime.reloadAsync("overview");
+    assert.equal(calls.xweather.length, 4, "Try again reloads the overview module, which fetches the forecast again");
+    assert.equal(currentOverview().forecast, "ready");
+    assert.ok(Overview().querySelector("[data-module=\"weather-summary\"][data-weather]"), "the forecast replaces its unavailable state once it loads");
   } finally {
     console.restore();
   }
@@ -317,12 +344,49 @@ function quietConsole() {
   const console = quietConsole();
   try {
     const { runtime, calls } = liveRuntime({ keys: false });
+    state.propertyId = "prop-core-9001";
+    const deepLink = PropertyDetail();
+    assert.equal(deepLink.getAttribute("data-state"), "loading", "a deep link to a property waits for the properties read");
+    assert.equal(deepLink.querySelector("[data-module=\"property-loading\"]").getAttribute("aria-busy"), "true");
+    assert.doesNotMatch(deepLink.textContent, /not found/i, "a property is never called missing while the list is still loading");
     await runtime.loadAllAsync(LOAD);
-    assert.deepEqual(state.moduleData.overview, { state: "unconfigured", source: null }, "without weather keys there is nothing to load and nothing failed");
+    assert.deepEqual(state.moduleData.overview, { state: "unavailable", reasonCode: "forecast-unconfigured", source: null }, "without weather keys there is nothing to load and nothing failed");
     assert.equal(calls.xweather.length, 0);
-    assert.equal(liveOverviewStatus(), "unconfigured");
-    assert.match(Overview().querySelector("[data-module=\"empty-state\"]").textContent, /isn’t set up yet/);
+    assert.equal(liveOverviewStatus(), "ready", "the properties loaded, so the home is ready without a forecast");
+    const page = Overview();
+    const card = page.querySelector("[data-module=\"weather-summary\"]");
+    assert.equal(card.getAttribute("data-state"), "unavailable");
+    assert.equal(card.textContent, "Forecast unavailableThe forecast isn’t set up for this portal yet.");
+    assert.equal(card.querySelectorAll("[data-action]").length, 0, "nothing to retry when nothing is configured");
+    assert.deepEqual(page.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.querySelector(".ov-prow__name").textContent), ["Frost Lane Strata"], "properties that loaded are listed without a forecast");
+    assert.doesNotMatch(page.textContent, /no service area or forecast configured|isn’t set up yet/);
+    assert.equal(page.querySelector(".page-header__sub").textContent, "1 property");
+    const detail = PropertyDetail();
+    assert.equal(detail.querySelector(".prop-head__title").textContent, "Frost Lane Strata", "the property page opens without a forecast");
+    assert.equal(detail.getAttribute("data-state"), null);
+    state.propertyId = "prop-core-4040";
+    assert.equal(PropertyDetail().getAttribute("data-state"), "not-found", "an id outside the loaded list is not found once the list is in");
     assert.deepEqual(console.errors, []);
+  } finally {
+    console.restore();
+  }
+}
+
+{
+  const console = quietConsole();
+  try {
+    const { runtime, calls } = liveRuntime({ weather: "hold" });
+    await runtime.loadAllAsync(LOAD);
+    assert.equal(calls.xweather.length, 2, "the forecast was asked for");
+    assert.equal(state.moduleStatus.properties, "ready", "the first render waits for the properties, never for a third-party forecast");
+    assert.equal(state.moduleStatus.overview, "loading");
+    const model = currentOverview();
+    assert.equal(model.forecast, "loading");
+    const page = Overview();
+    const card = page.querySelector("[data-module=\"weather-summary\"]");
+    assert.equal(card.getAttribute("data-state"), "loading", "a forecast still on its way shows its own loading state");
+    assert.equal(card.getAttribute("aria-busy"), "true");
+    assert.deepEqual(page.querySelectorAll("[data-module=\"property-row\"]").map((row) => row.querySelector(".ov-prow__name").textContent), ["Frost Lane Strata"], "properties show while the forecast loads");
   } finally {
     console.restore();
   }
@@ -430,7 +494,7 @@ function quietConsole() {
   }
 }
 
-console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error while a failed forecast or properties read reaches the designed error state, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
+console.log("snow-live-overview-check ok: service geography is deployment configuration with a centre and zoom only, live mode reads properties from Core, a fabricated forecast, a fixture book, a null coordinate and an unplaceable pin are all refused, and the overview module loads its live forecast without error and without holding back the properties, a failed or unconfigured forecast leaves the properties on screen with the weather card in its own state while a failed properties read reaches the designed error state, a property row reads the forecast the weather card reads, a deep link waits for the list, and a home section with no live source says it is not in the portal yet instead of claiming it is empty, while fixture mode keeps its empty copy, and live mode derives no property status, visit, contract or trigger reading from sources it has not opened while fixture mode keeps them");
 
 function createDom() {
   class Text {

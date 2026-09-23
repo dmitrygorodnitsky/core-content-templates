@@ -42,6 +42,11 @@ export function weatherLabel(kind, legend) {
   return match ? match.label : "";
 }
 
+export function weatherReading(kind, frame, legend) {
+  if (frame && kind === frame.kind && frame.label) return frame.label;
+  return weatherLabel(kind, legend);
+}
+
 export function popupWeather(frame, zoneKind, source, entry, index, sources) {
   var day = frame.day + " " + frame.date;
   if (entry && entry.state === "loading") return { state: "loading", day: day, source: "xweather" };
@@ -55,7 +60,7 @@ export function popupWeather(frame, zoneKind, source, entry, index, sources) {
     day: day,
     kind: zoneKind,
     temp: frame.temp,
-    phrase: "",
+    phrase: zoneKind === frame.kind ? frame.label || "" : "",
     note: "",
     source: source === "xweather" ? "xweather" : "sample",
   };

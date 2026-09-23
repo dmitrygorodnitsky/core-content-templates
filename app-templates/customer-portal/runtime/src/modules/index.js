@@ -1,4 +1,7 @@
-import { fixtureAdapter } from "../adapters/fixture-adapter.js";
+import { customerAccountProfile } from "../config.js";
+import { fixtureAccountProfileAdapter, fixtureAdapter } from "../adapters/fixture-adapter.js";
+import { createCoreAccountProfileAdapter } from "../adapters/core-account-profile-adapter.js";
+import { accountProfileFailure, normalizeAccountProfile } from "../normalizers/account-profile.js";
 import { corePimAdapter } from "../adapters/core-pim-adapter.js";
 import { createCareFixtureAdapter } from "../adapters/care-fixture-adapter.js";
 import { createCoreAccountAdapter } from "../adapters/core-account-adapter.js";
@@ -119,6 +122,8 @@ const careModule = {
   },
 };
 
+export const ACCOUNT_GATE_STATES = Object.freeze(["customer-not-linked", "customer-account-ambiguous", "organization-forbidden", "customer-forbidden", "session-expired"]);
+
 const accountModule = {
   id: "account",
   asyncOnly: true,
@@ -147,7 +152,8 @@ const accountModule = {
   onError(error, context) {
     context.state.customerAccount = null;
     delete context.state.session.account;
-    context.state.account = error && error.code || "customer-unavailable";
+    var code = error && error.code;
+    context.state.account = ACCOUNT_GATE_STATES.includes(code) ? code : "customer-unavailable";
   },
   failureEnvelope(context, error) { return { state: error && error.code || "customer-unavailable", items: [] }; },
 };
@@ -155,10 +161,19 @@ const accountModule = {
 const profileModule = {
   id: "profile",
   asyncOnly: true,
-  adapter(context) { return context.config.dataMode === "live" ? createCoreUserProfileAdapter() : fixtureAdapter; },
-  normalize(raw, context) { return context.config.dataMode === "live" ? raw : normalizeProfile(raw); },
+  adapter(context) {
+    if (customerAccountProfile(context.config)) return context.config.dataMode === "live" ? createCoreAccountProfileAdapter() : fixtureAccountProfileAdapter;
+    return context.config.dataMode === "live" ? createCoreUserProfileAdapter() : fixtureAdapter;
+  },
+  normalize(raw, context) {
+    if (customerAccountProfile(context.config)) return normalizeAccountProfile(raw);
+    return context.config.dataMode === "live" ? raw : normalizeProfile(raw);
+  },
   onError(error, context) { if (error && error.code === "session-expired") context.state.account = "session-expired"; },
-  failureEnvelope(context, error) { return { state: error && error.code === "customer-forbidden" ? "unauthorized" : "error", email: "", phone: null, prefs: {}, allowedActions: [] }; },
+  failureEnvelope(context, error) {
+    if (customerAccountProfile(context.config)) return accountProfileFailure(error && error.code);
+    return { state: error && error.code === "customer-forbidden" ? "unauthorized" : "error", email: "", phone: null, prefs: {}, allowedActions: [] };
+  },
 };
 
 const authModule = {
@@ -358,19 +373,16 @@ const checkoutModule = {
 
 const liveOverviewAdapter = {
   async load(moduleId, context) {
-    if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unconfigured", source: null };
+    if (!liveWeatherOpened(context.config) || !weatherSource(context.config, null)) return { state: "unavailable", reasonCode: "forecast-unconfigured", source: null };
     if (!(context.state.liveWeatherState === "ready" && context.state.liveWeather)) await loadLiveWeather(null, context.config);
-    if (!context.state.liveWeather) {
-      var error = new Error("The service-area forecast did not load");
-      error.code = "weather-unavailable";
-      throw error;
-    }
+    if (!context.state.liveWeather) return { state: "error", reasonCode: "weather-unavailable", source: null };
     return { state: "ready", source: context.state.liveWeather.source };
   },
 };
 
 const overviewModule = {
   id: "overview",
+  gatesFirstRender: false,
   adapter(context) {
     return context.config.dataMode === "live" ? liveOverviewAdapter : fixtureAdapter;
   },

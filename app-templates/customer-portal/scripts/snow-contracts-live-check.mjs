@@ -559,12 +559,111 @@ for (const [status, phase] of [[403, "refused"], [409, "refused"], [500, "failed
   assert.equal(pkg.agreements.find((row) => row.id === "agreement-core-9101").agreement.label, "Contract details needed");
 }
 
+{
+  const { Overview } = await load("src/routes/OverviewPage.js");
+  const { PropertyDetail } = await load("src/routes/PropertyDetailPage.js");
+  const console = quietConsole();
+  const place = (backendId, name) => ({ id: "prop-core-" + backendId, backendId, name, address: "", lat: null, lon: null, zone: null, contract: null, quoteSiteId: null, appointment: null, ticket: null, lastService: null });
+  const properties = { state: "ready", accountId: ACCOUNT, scopeMode: "browser-filtered", truncated: false, items: [place(958, "Juniper Terrace"), place(959, "Aspen Commons")] };
+  const widget = async (table, dataset) => {
+    const runtime = liveRuntime(table || coreTable(), dataset);
+    state.contractCommand = null;
+    state.moduleData.properties = structuredClone(properties);
+    state.moduleStatus.properties = "ready";
+    if (table) await runtime.loadAsync("proposals").catch(() => null);
+    return one(Overview(), "[data-module=\"active-contracts\"]");
+  };
+  try {
+    const loading = await widget(null);
+    assert.equal(loading.getAttribute("data-state"), "loading", "the home widget waits for the Contracts read");
+    assert.equal(loading.getAttribute("aria-busy"), "true");
+    assert.equal(all(loading, "[data-module=\"section-unavailable\"]").length, 0);
+
+    const ready = await widget(coreTable());
+    assert.equal(ready.getAttribute("data-state"), "ready", "the home widget reads the same live module as the Contracts page");
+    assert.equal(one(ready, ".ov-card__title").textContent, "Contracts");
+    assert.equal(one(ready, ".ov-lead").textContent, "2service agreements");
+    const rows = all(ready, "[data-module=\"contract-row\"]");
+    assert.deepEqual(rows.map((row) => row.getAttribute("data-state")), ["approval", "review"], "an agreement waiting for the customer comes first, as on the Contracts page");
+    assert.deepEqual(rows.map((row) => one(row, ".ov-row__title").textContent), ["Juniper Terrace", "Aspen Commons"]);
+    assert.deepEqual(rows.map((row) => one(row, ".status-badge").textContent), ["Ready for your approval", "Awaiting your decisions"]);
+    assert.deepEqual(rows.map((row) => [one(row, ".ov-chev").getAttribute("data-action"), one(row, ".ov-chev").getAttribute("data-id")]), [["agreement.open", "agreement-core-5602"], ["agreement.open", "agreement-core-5601"]]);
+    assert.deepEqual(rows.map((row) => (one(row, ".ov-row__meta") || { textContent: "" }).textContent), ["Nov 1, 2026 – Mar 31, 2027", "2 quotes for 1 property"]);
+    assert.equal(one(ready, ".ov-more").getAttribute("data-action"), "overview.openContracts");
+    assert.doesNotMatch(ready.textContent, /aren’t in the portal yet|No active contracts/);
+
+    state.propertyId = "prop-core-958";
+    const approval = one(PropertyDetail(), "[data-fact=\"contract\"]");
+    assert.equal(one(approval, ".prop-fact__label").textContent, "Service agreement");
+    assert.equal(one(approval, ".prop-fact__value").textContent, "Ready for your approval ›");
+    assert.equal(one(approval, ".prop-fact__value").getAttribute("data-action"), "agreement.open");
+    assert.equal(one(approval, ".prop-fact__value").getAttribute("data-id"), "agreement-core-5602");
+    state.propertyId = "prop-core-959";
+    assert.equal(one(one(PropertyDetail(), "[data-fact=\"contract\"]"), ".prop-fact__value").textContent, "Awaiting your decisions ›", "a property follows the agreement that lists it");
+
+    const emptyTable = coreTable();
+    emptyTable.agreements = [];
+    emptyTable.orders = [];
+    const empty = await widget(emptyTable);
+    assert.equal(empty.getAttribute("data-state"), "empty");
+    assert.equal(one(empty, ".ov-empty").textContent, "No contracts yetWhen we send you a quote or a service agreement, it appears here.");
+    state.propertyId = "prop-core-958";
+    assert.equal(one(one(PropertyDetail(), "[data-fact=\"contract\"]"), ".prop-fact__value").textContent, "None yet", "a read that found no agreement says so only once the read is in");
+
+    const preparingTable = coreTable();
+    preparingTable.agreements = [];
+    preparingTable.orders = [coreOrder(4103, "INITIAL", 959, "MONTHLY", 6687.9)];
+    const preparing = await widget(preparingTable);
+    assert.equal(preparing.getAttribute("data-state"), "preparing");
+    assert.equal(one(preparing, "[data-module=\"quote-preparing\"]").getAttribute("data-state"), "preparing");
+    assert.doesNotMatch(preparing.textContent, /\d/, "a request in preparation is never counted to the customer");
+
+    const partialTable = coreTable();
+    partialTable.fail["/core/api/document/list.json"] = 500;
+    const partial = await widget(partialTable);
+    assert.equal(partial.getAttribute("data-state"), "partial");
+    assert.equal(one(partial, ".ov-lead").textContent, "3quotes1 of 2 properties decided");
+    assert.equal(one(partial, "[data-module=\"quote-decision\"] .ov-row__title").textContent, "Quotes awaiting your decision");
+    assert.equal(one(partial, "[data-module=\"contracts-partial\"]").textContent, "Part of your contracts couldn’t be loaded. Contracts shows what did.");
+
+    const brokenTable = coreTable();
+    brokenTable.fail["/core/api/document/list.json"] = 500;
+    brokenTable.fail["/core-bill/api/order/list.json"] = 500;
+    const broken = await widget(brokenTable);
+    assert.equal(broken.getAttribute("data-state"), "error");
+    assert.equal(one(broken, "[data-module=\"contracts-error\"] .ov-empty__title").textContent, "Couldn’t load your contracts");
+    assert.equal(one(broken, "[data-action=\"contracts.refresh\"]").textContent, "Try again ›");
+    state.propertyId = "prop-core-958";
+    const unreadable = one(PropertyDetail(), "[data-fact=\"contract\"]");
+    assert.equal(unreadable.getAttribute("data-state"), "unavailable");
+    assert.equal(one(unreadable, ".prop-fact__note").textContent, "Your contracts couldn’t be loaded.");
+
+    const forbiddenTable = coreTable();
+    forbiddenTable.fail["/core/api/document"] = 403;
+    forbiddenTable.fail["/core-bill/api/order/list.json"] = 403;
+    const forbidden = await widget(forbiddenTable);
+    assert.equal(forbidden.getAttribute("data-state"), "unauthorized");
+    assert.equal(all(forbidden, "[data-action]").length, 0, "an access refusal offers no retry");
+
+    state.contractCommand = { phase: "readback-failed", kind: "approve" };
+    assert.equal(one(Overview(), "[data-module=\"active-contracts\"]").getAttribute("data-state"), "error", "a lost readback never shows the stale package on the home");
+    state.contractCommand = null;
+
+    const closed = await widget(null, { portalEnabledModules: "overview,properties" });
+    assert.equal(closed.getAttribute("data-state"), "unavailable", "without the Contracts module the home says Contracts are not in the portal");
+    assert.equal(one(closed, "[data-module=\"section-unavailable\"]").textContent, "Not available yetContracts aren’t in the portal yet.");
+  } finally {
+    state.moduleData.properties = null;
+    console.restore();
+  }
+}
+
 const source = fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/contract-commands.js"), "utf8")
   + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/components/proposals/AgreementParts.js"), "utf8")
   + fs.readFileSync(path.resolve("app-templates/customer-portal/runtime/src/components/proposals/QuoteOptionCard.js"), "utf8");
 assert.doesNotMatch(source, /CUSTOMER_CHANGES_REQUESTED|QUOTE_CHANGE_REQUEST|innerHTML|html:/, "no change-request control and no markup injection in the contracts presentation");
 
-console.log("snow-contracts-live-check ok: the live Contracts module reads agreements, quotes and their lines from Core with each read's scope stated, renders partial, error, unauthorized, unavailable and loading states without fixture data, and sends one command at a time: a pre-read that refuses stale or foreign records, one generic workflow event, a readback that decides success, and distinct refused, failed, unconfirmed, readback-failed and signed-out outcomes, with view events sent in order and approving an option shown as declining its siblings only after Core did");
+console.log("snow-contracts-live-check ok: the live Contracts module reads agreements, quotes and their lines from Core with each read's scope stated, renders partial, error, unauthorized, unavailable and loading states without fixture data on the Contracts page, the home widget and the property page alike, and sends one command at a time: a pre-read that refuses stale or foreign records, one generic workflow event, a readback that decides success, and distinct refused, failed, unconfirmed, readback-failed and signed-out outcomes, with view events sent in order and approving an option shown as declining its siblings only after Core did");
 
 function createDom() {
   class Text {

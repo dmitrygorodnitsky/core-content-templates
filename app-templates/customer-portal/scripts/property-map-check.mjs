@@ -28,7 +28,7 @@ const { createPropertyForecasts } = await import(new URL("src/live-weather.js", 
 const { createXweatherAdapter } = await import(new URL("src/adapters/xweather-adapter.js", runtimeRoot));
 const { browserStorage, createGeocodeCache, createGoogleMapsAdapter } = await import(new URL("src/adapters/google-maps-adapter.js", runtimeRoot));
 const { PropertyStage, closeOnEscape, createFocusKeeper, createPropertyMap } = await import(new URL("src/components/storm/PropertyMap.js", runtimeRoot));
-const { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
+const { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherReading } = await import(new URL("src/normalizers/property-map.js", runtimeRoot));
 const { propertyStatus, propertyWeather } = await import(new URL("src/normalizers/overview.js", runtimeRoot));
 const { graniteRidgeSnowFixture } = await import(new URL("data/cases/granite-ridge-snow.js", runtimeRoot));
 const { applyPortalConfig } = await import(new URL("src/state.js", runtimeRoot));
@@ -105,6 +105,10 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   assert.equal(popupWeather(frame, "snow", "xweather", { state: "failed", days: [] }, 0).state, "failed");
   assert.equal(popupWeather(frame, "snow", "xweather", { state: "ready", days: [] }, 3).state, "area", "a forecast shorter than the timeline falls back to the area forecast for that day");
   assert.deepEqual(popupWeather(frame, "clear", undefined, null, 0), { state: "area", day: "Today Jan 15", kind: "clear", temp: frame.temp, phrase: "", note: "", source: "sample" });
+  assert.equal(popupWeather(frame, frame.kind, "xweather", null, 0).phrase, frame.label, "an area reading of the headline day uses the phrase the weather card shows");
+  assert.equal(weatherReading(frame.kind, frame, liveWeather.legend), "Storm watch", "a zone under the headline forecast reads the card's own phrase");
+  assert.equal(weatherReading("snow", frame, liveWeather.legend), "Snow", "a zone with a different reading than the headline keeps its legend label");
+  assert.equal(weatherReading("storm", Object.assign({}, frame, { label: "" }), liveWeather.legend), "Storm warning", "a day without a phrase falls back to the legend label");
 }
 
 {
@@ -408,7 +412,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   const areaWeather = popupHost.querySelector("[data-module=\"property-weather\"]");
   assert.equal(areaWeather.getAttribute("data-state"), "failed");
   assert.equal(areaWeather.getAttribute("data-weather"), liveWeather.timeline[0].zones.north, "a failed property forecast falls back to the zone forecast already loaded");
-  assert.equal(areaWeather.textContent, "Area forecast · Today Jan 15Storm warning · −6°CThis property’s own forecast is unavailable right now.");
+  assert.equal(areaWeather.textContent, "Area forecast · Today Jan 15Storm watch · −6°CThis property’s own forecast is unavailable right now.", "the area fallback reads the day the way the weather card does");
   assert.equal(areaWeather.getAttribute("data-source"), "xweather");
   stage({ selectedId: "prop-tabor" });
   assert.equal(weather.urls.length, 2, "a failed forecast is not retried on every render");
@@ -533,7 +537,7 @@ const PERIODS = Array.from({ length: 7 }, (_, index) => ({
   await flush();
   assert.equal(rerendered.querySelector("[data-module=\"property-list\"]").scrollTop, 420, "a re-render keeps the list where the customer scrolled it");
   const yarrowRow = rows.find((row) => row.getAttribute("data-id") === "prop-yarrow");
-  assert.equal(yarrowRow.textContent, "Yarrow Ridge3355 Yarrow Ridge Drive, Arvada, CO 80002Storm warningIssue Opened", "a row carries its name, address, zone weather and status");
+  assert.equal(yarrowRow.textContent, "Yarrow Ridge3355 Yarrow Ridge Drive, Arvada, CO 80002Storm watchIssue Opened", "a row carries its name, address, the weather card's reading of its zone and status");
   assert.equal(weather.urls.length, 0, "listing the properties fetches no property forecast");
 
   const expanded = PropertyStage({

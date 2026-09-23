@@ -67,6 +67,7 @@ export const portalProfiles = {
     weatherCalendar: true,
     showCart: false,
     drawerTitle: "Request service",
+    customerAccountProfile: true,
   },
   spaStaging: {
     id: "spaStaging",
@@ -128,7 +129,7 @@ export const routeRegistry = {
   products: { id: "products", path: "/products", module: "products" },
   "product.detail": { id: "product.detail", path: "/products/:id", module: "products", param: "id" },
   checkout: { id: "checkout", path: "/checkout", module: "checkout" },
-  account: { id: "account", path: "/account", module: "account" },
+  account: { id: "account", path: "/account", module: "account", ownedByProfile: true },
   "purchases.list": { id: "purchases.list", path: "/purchases", module: "purchases" },
   "purchase.detail": { id: "purchase.detail", path: "/purchases/:id", module: "purchases", param: "id" },
   plan: { id: "plan", path: "/account/plan", module: "plan" },
@@ -288,6 +289,15 @@ export function readPortalConfig(root) {
     pimCta: dataset.portalPimCta || "",
     defaultMode: allowed(dataset.portalDefaultMode, ["light", "dark"], "light"),
   };
+}
+
+export function customerAccountRequired(config) {
+  return !!config && config.dataMode === "live" && config.authMode === "required";
+}
+
+export function customerAccountProfile(config) {
+  var profile = config && portalProfiles[config.profile];
+  return !!(profile && profile.customerAccountProfile);
 }
 
 export function configuredExternalUrl(config, key) {

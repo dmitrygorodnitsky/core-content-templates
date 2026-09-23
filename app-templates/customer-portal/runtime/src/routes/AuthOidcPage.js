@@ -8,6 +8,7 @@
 import { h } from "../dom.js";
 import { state } from "../state.js";
 import { ActionButton } from "../components/primitives/ActionButton.js";
+import { LandingReturnButton } from "../components/shell/Destinations.js";
 
 export function AuthOidc() {
   var s = state.oidc || "ready-signed-out";
@@ -73,7 +74,7 @@ function OidcUnavailable() {
     h("div", { "class": "oidc-sub" }, "We couldn\u2019t reach the secure account service, so sign-in can\u2019t start right now. There\u2019s no other way to sign in here \u2014 please try again in a moment."),
     h("div", { "class": "oidc-actions" }, [
       ActionButton({ variant: "btn--primary", label: "Try again", action: "auth.retrySession", block: true, lg: true, visualId: "oidc-retry" }),
-      ActionButton({ variant: "btn--ghost", label: "Back to the catalog", action: "nav.landing", block: true, visualId: "oidc-back-catalog" })
+      LandingReturnButton({ variant: "btn--ghost", block: true, visualId: "oidc-back-catalog" })
     ])
   ]);
 }

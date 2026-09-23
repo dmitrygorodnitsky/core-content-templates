@@ -1,6 +1,7 @@
 import { h } from "../dom.js";
-import { currentFixture, currentOverview, liveOverviewStatus, quotePackage, state } from "../state.js";
+import { currentFixture, currentOverview, isModuleEnabled, liveOverviewStatus, quotePackage, state } from "../state.js";
 import { ACTIONS } from "../actions.js";
+import { configuredExternalUrl } from "../config.js";
 import { render } from "../app.js";
 import { createPropertyForecasts } from "../live-weather.js";
 import { createXweatherAdapter } from "../adapters/xweather-adapter.js";
@@ -13,6 +14,8 @@ import { SectionUnavailable } from "../components/primitives/SectionUnavailable.
 import { PageHeader } from "../components/shell/PageHeader.js";
 import { PropertyStage, WeatherAttribution, closeOnEscape, createFocusKeeper, createPropertyMap } from "../components/storm/PropertyMap.js";
 import { icon } from "../components/storm/overview-icons.js";
+import { agreementTitle, plural } from "../components/proposals/QuotePackage.js";
+import { formatDatePeriod, formatIsoDate } from "../normalizers/contracts.js";
 import { appointmentDay, clampFrameIndex, invoiceBuckets, money, propertyStatusKnown, sectionAvailable, serviceDayCount } from "../normalizers/overview.js";
 
 var propertyMapController = null;
@@ -37,15 +40,15 @@ export function Overview() {
   }
 
   var weather = model.weather;
-  var index = clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex);
-  var frame = weather.timeline[index];
+  var index = weather ? clampFrameIndex(weather.timeline, state.ovWeatherIndex == null ? weather.nowIndex : state.ovWeatherIndex) : 0;
+  var frame = weather ? weather.timeline[index] : null;
 
-  page.appendChild(h("div", { "class": "ov-head" }, [header, WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts"))]));
+  page.appendChild(h("div", { "class": "ov-head" }, [header, frame ? WeatherPanel(frame, index === weather.nowIndex, weather.source, sectionAvailable(model, "contracts")) : ForecastUnavailable(model.forecast)]));
   page.appendChild(MapPanel(model, frame, index));
   page.appendChild(InvoicesWidget(model));
 
   var grid = h("div", { "class": "ov-grid" });
-  grid.appendChild(UpcomingWidget(model, weather.timeline));
+  grid.appendChild(UpcomingWidget(model, weather ? weather.timeline : []));
   grid.appendChild(ContractsWidget(model));
   grid.appendChild(SupportWidget(model));
   page.appendChild(grid);
@@ -73,25 +76,56 @@ function OverviewUnavailable() {
     ]);
   }
   if (status === "error") {
-    return ErrorState({ title: "Couldn’t load your home screen", desc: "Your properties or the forecast didn’t load. Nothing was changed — try again." });
+    return ErrorState({ title: "Couldn’t load your home screen", desc: "Your properties didn’t load. Nothing was changed — try again." });
   }
   if (status === "unauthorized") {
     return EmptyState({
       glyph: "⚿",
       title: "You don’t have access to these properties",
       desc: "Your account doesn’t include the properties on this portal. If that seems wrong, contact us.",
-      action: { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" },
+      action: supportAction(),
     });
   }
-  return EmptyState({ glyph: "◌", title: "Your home screen isn’t set up yet", desc: "This portal has no service area or forecast configured, so there is nothing to show here yet." });
+  return EmptyState({ glyph: "◌", title: "Your home screen isn’t set up yet", desc: "This portal doesn’t list your properties yet, so there is nothing to show here." });
+}
+
+function supportAction() {
+  if (isModuleEnabled("support")) return { variant: "btn--ghost", label: "Go to support", action: "nav.go", id: "support", visualId: "overview-support" };
+  if (configuredExternalUrl(state.config, "supportUrl")) return { variant: "btn--ghost", label: "Contact support", action: "support.open", visualId: "overview-support" };
+  return null;
 }
 
 function subline(model, customer) {
-  if (!model || !state.liveWeather) return customer.subline;
+  if (!model || !model.weather || !state.liveWeather) return customer.subline || propertyCount(model);
   var frame = model.weather.timeline[model.weather.nowIndex] || model.weather.timeline[0];
+  return frame.label + " · " + propertyCount(model);
+}
+
+function propertyCount(model) {
+  if (!model) return "";
   var count = model.properties.length;
   var contracted = sectionAvailable(model, "contracts") && count > 0 && model.properties.every(function (property) { return !!property.contract; });
-  return frame.label + " · " + count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
+  return count + (count === 1 ? " property" : " properties") + (contracted ? " under contract" : "");
+}
+
+function ForecastUnavailable(forecast) {
+  var loading = forecast === "loading";
+  var failed = forecast === "failed";
+  return h("div", {
+    "class": "ov-wx", "data-module": "weather-summary", "data-visual-id": "weather-summary",
+    "data-state": loading ? "loading" : failed ? "error" : "unavailable",
+    "aria-busy": loading ? "true" : undefined, "aria-live": "polite",
+  }, [
+    h("span", { "class": "ov-wx__mark", style: "background:rgba(var(--hair),.08);color:var(--ink-3)" }, [icon("snowflake", "ov-wx__glyph")]),
+    h("div", { "class": "ov-wx__read" }, loading ? [
+      skel("width:132px;height:15px;margin:3px 0 7px"),
+      skel("width:188px;height:11px"),
+    ] : [
+      text("div", "ov-wx__label", "Forecast unavailable"),
+      text("div", "ov-wx__note", failed ? "The forecast didn’t load. Your properties are shown without it." : "The forecast isn’t set up for this portal yet."),
+      failed ? h("button", { "class": "link-action", "data-action": "overview.retryWeather", type: "button", style: "margin-top:6px" }, "Try again ›") : null,
+    ]),
+  ]);
 }
 
 function WeatherPanel(frame, isNow, source, serviceNotes) {
@@ -116,7 +150,7 @@ function WeatherPanel(frame, isNow, source, serviceNotes) {
 }
 
 function MapPanel(model, frame, index) {
-  var weather = model.weather;
+  var weather = frame ? model.weather : null;
   var statusKnown = propertyStatusKnown(model.sources);
   var stage = PropertyStage({
     properties: model.properties,
@@ -134,13 +168,13 @@ function MapPanel(model, frame, index) {
     h("div", { "class": "ov-map__head" }, [
       h("span", { "class": "ov-card__icon" }, [icon("map", "ov-icon")]),
       text("h2", "ov-card__title", "Your properties"),
-      h("div", { "class": "ov-legend" }, weather.legend.filter(function (item) { return statusKnown || item.key !== "issue"; }).map(function (item) {
+      weather ? h("div", { "class": "ov-legend" }, weather.legend.filter(function (item) { return statusKnown || item.key !== "issue"; }).map(function (item) {
         return h("span", { "class": "ov-legend__item", "data-weather": item.key }, [h("i"), text("span", "", item.label)]);
-      })),
+      })) : null,
     ]),
     stage,
-    DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")),
-    WeatherAttribution(weather.source, "ov-map__attr"),
+    weather ? DayTimeline(weather, index, model.properties, sectionAvailable(model, "appointments")) : null,
+    weather ? WeatherAttribution(weather.source, "ov-map__attr") : null,
   ]);
 }
 
@@ -310,6 +344,7 @@ function billStat(label, value, count, valueClass) {
 }
 
 function ContractsWidget(model) {
+  if (state.config.dataMode === "live" && isModuleEnabled("proposals")) return LiveContractsWidget();
   var contracts = model.contracts || [];
   var quotes = quotePackage();
   var preparing = !!(quotes && quotes.preparing);
@@ -333,6 +368,97 @@ function ContractsWidget(model) {
   });
   if (preparing) card.appendChild(QuotePreparingRow());
   card.appendChild(moreLine(null, "View all contracts", "overview.openContracts"));
+  return card;
+}
+
+function LiveContractsWidget() {
+  var card = widget("active-contracts", "Contracts", "contract");
+  var envelope = state.moduleData.proposals;
+  var readbackFailed = !!(state.contractCommand && state.contractCommand.phase === "readback-failed");
+  if (readbackFailed || (!envelope && state.moduleStatus.proposals === "error") || (envelope && envelope.state === "error")) return contractsProblem(card, "error", "Couldn’t load your contracts", "Nothing was changed. Try again in a moment.", true);
+  if (!envelope) return contractsLoading(card);
+  if (envelope.state === "unauthorized") return contractsProblem(card, "unauthorized", "No access to contracts", "Your account doesn’t include access to your contracts.", false);
+  var quotes = quotePackage();
+  if (envelope.state === "unavailable" || !quotes) return unavailableSection(card, "Contracts");
+
+  var agreements = quotes.agreements;
+  var partial = !!(quotes.partial && (quotes.partial.agreements || quotes.partial.orders));
+  card.setAttribute("data-state", partial ? "partial" : agreements.length || quotes.groups.length ? "ready" : quotes.preparing ? "preparing" : "empty");
+  if (!agreements.length && !quotes.groups.length) {
+    card.appendChild(quotes.preparing
+      ? QuotePreparingLine()
+      : emptyLine("No contracts yet", "When we send you a quote or a service agreement, it appears here."));
+    if (partial) card.appendChild(ContractsPartialLine());
+    return card;
+  }
+  if (agreements.length) {
+    card.appendChild(lead(String(agreements.length), agreements.length === 1 ? "service agreement" : "service agreements"));
+    agreements.slice(0, 3).forEach(function (row) { card.appendChild(AgreementLine(row)); });
+  } else {
+    card.appendChild(lead(String(quotes.counts.orders), quotes.counts.orders === 1 ? "quote" : "quotes",
+      quotes.counts.properties ? quotes.counts.decided + " of " + plural(quotes.counts.properties, "property", "properties") + " decided" : ""));
+    if (quotes.deciding) card.appendChild(QuotesDecisionLine(quotes));
+  }
+  if (quotes.preparing) card.appendChild(QuotePreparingRow());
+  if (partial) card.appendChild(ContractsPartialLine());
+  card.appendChild(moreLine(agreements.length > 3 ? agreements.length - 3 : null, agreements.length > 3 ? "more in Contracts" : "View all contracts", "overview.openContracts"));
+  return card;
+}
+
+function AgreementLine(row) {
+  var agreement = row.agreement;
+  var meta = agreementLineMeta(row);
+  return h("div", { "class": "ov-row", "data-module": "contract-row", "data-visual-id": "contract-row", "data-state": agreement.stage }, [
+    h("div", { style: "flex:1;min-width:0" }, [
+      text("div", "ov-row__title", agreementTitle(row)),
+      h("div", { "class": "ov-row__line", style: "margin-top:4px;flex-wrap:wrap;row-gap:4px" }, [
+        text("span", "status-badge status-badge--" + agreement.tone, agreement.label),
+        meta ? text("span", "ov-row__meta", meta) : null,
+      ]),
+    ]),
+    chevron("agreement.open", row.id, "Open the service agreement " + agreementTitle(row) + " — " + agreement.label),
+  ]);
+}
+
+function agreementLineMeta(row) {
+  var agreement = row.agreement;
+  if (agreement.stage === "review" && row.quoteCount) return plural(row.quoteCount, "quote", "quotes") + (row.propertyCount ? " for " + plural(row.propertyCount, "property", "properties") : "");
+  if (agreement.term) return formatDatePeriod(agreement.term);
+  if (agreement.effectiveDate) return "Effective " + formatIsoDate(agreement.effectiveDate);
+  return row.servicePeriod ? formatDatePeriod(row.servicePeriod) : "";
+}
+
+function QuotesDecisionLine(quotes) {
+  return h("div", { "class": "ov-row", "data-module": "quote-decision", "data-visual-id": "quote-decision", "data-tone": "info" }, [
+    h("i", { "class": "ov-dot" }),
+    h("div", { style: "flex:1;min-width:0" }, [
+      text("div", "ov-row__title", "Quotes awaiting your decision"),
+      text("div", "ov-row__meta", plural(quotes.counts.open, "option", "options") + " still open"),
+    ]),
+    chevron("overview.openContracts", "", "Go to Contracts"),
+  ]);
+}
+
+function ContractsPartialLine() {
+  return h("div", { "class": "ov-row__meta", "data-module": "contracts-partial", "data-visual-id": "contracts-partial", "data-state": "partial", role: "status" }, "Part of your contracts couldn’t be loaded. Contracts shows what did.");
+}
+
+function contractsLoading(card) {
+  card.setAttribute("data-state", "loading");
+  card.setAttribute("aria-busy", "true");
+  card.appendChild(h("div", { "class": "ov-lead", "data-module": "contracts-loading", "data-visual-id": "contracts-loading" }, [skel("width:46%;height:24px")]));
+  card.appendChild(skel("height:13px;width:82%"));
+  card.appendChild(skel("height:13px;width:64%"));
+  return card;
+}
+
+function contractsProblem(card, stateName, title, desc, retry) {
+  card.setAttribute("data-state", stateName);
+  card.appendChild(h("div", { "class": "ov-empty", "data-module": "contracts-" + stateName, "data-visual-id": "contracts-" + stateName, "data-state": stateName, role: stateName === "error" ? "alert" : "status" }, [
+    text("div", "ov-empty__title", title),
+    text("div", "ov-empty__desc", desc),
+    retry ? h("button", { "class": "link-action", "data-action": "contracts.refresh", type: "button" }, "Try again ›") : null,
+  ]));
   return card;
 }
 

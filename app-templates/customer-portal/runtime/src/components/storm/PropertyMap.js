@@ -1,6 +1,6 @@
 import { h } from "../../dom.js";
 import { OVERVIEW_STATUS as STATUS, knownPropertyStatus, propertyWeather, sourceOpened, zoneWeather } from "../../normalizers/overview.js";
-import { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherLabel } from "../../normalizers/property-map.js";
+import { addressKey, forecastPoint, geoPoint, popupDocks, popupPlacement, popupWeather, propertyPoint, weatherLabel, weatherReading } from "../../normalizers/property-map.js";
 import { icon } from "./overview-icons.js";
 
 var SINGLE_PIN_ZOOM = 14;
@@ -248,7 +248,7 @@ export function PropertyStage(props) {
     else listed.push(entry);
   });
   var chosen = placed.concat(listed).find(function (entry) { return entry.property.id === props.selectedId; }) || null;
-  var popup = chosen ? PropertyPopup(chosen.property, popupView(chosen, props), props.weather.legend, props.sources) : null;
+  var popup = chosen ? PropertyPopup(chosen.property, props.frame ? popupView(chosen, props) : null, props.weather ? props.weather.legend : null, props.sources) : null;
   var pinned = !!chosen && placed.indexOf(chosen) !== -1;
 
   if (!map) {
@@ -340,13 +340,18 @@ function popupView(entry, props) {
   return popupWeather(props.frame, zoneWeather(property, props.frame), props.weather.source, forecast, props.index, props.sources);
 }
 
+function weatherKey(property, frame, status) {
+  if (status) return propertyWeather(property, frame);
+  return frame ? zoneWeather(property, frame) : undefined;
+}
+
 function PropertyPin(property, frame, selected, sources) {
   var status = knownPropertyStatus(property, sources);
   return h("button", {
     "class": "ov-pin" + (status === "enroute" ? " ov-pin--active" : "") + (selected ? " ov-pin--on" : ""),
     "data-action": "overview.selectProperty", "data-id": property.id,
     "data-module": "property-pin", "data-visual-id": "property-pin",
-    "data-state": status || undefined, "data-weather": status ? propertyWeather(property, frame) : zoneWeather(property, frame),
+    "data-state": status || undefined, "data-weather": weatherKey(property, frame, status),
     "aria-label": status ? property.name + " — " + STATUS[status].label : property.name,
     "aria-pressed": selected ? "true" : "false",
   }, [icon("pin", "ov-pin__glyph")]);
@@ -389,7 +394,7 @@ function PropertyRow(property, props, selected, reason) {
     "class": "ov-prow" + (status === "enroute" ? " ov-prow--active" : "") + (selected ? " ov-prow--on" : ""),
     "data-action": "overview.selectProperty", "data-id": property.id,
     "data-module": "property-row", "data-visual-id": "property-row",
-    "data-state": status || undefined, "data-weather": status ? propertyWeather(property, props.frame) : zoneWeather(property, props.frame),
+    "data-state": status || undefined, "data-weather": weatherKey(property, props.frame, status),
     "data-placement": note ? reason : undefined,
     "aria-expanded": selected ? "true" : "false",
   }, [
@@ -400,7 +405,7 @@ function PropertyRow(property, props, selected, reason) {
       note ? text("span", "ov-prow__why", note) : null,
     ]),
     h("span", { "class": "ov-prow__meta" }, [
-      text("span", "ov-prow__wx", weatherLabel(zoneWeather(property, props.frame), props.weather.legend)),
+      props.frame ? text("span", "ov-prow__wx", weatherReading(zoneWeather(property, props.frame), props.frame, props.weather.legend)) : null,
       status ? text("span", "ov-tip__tag ov-tip__tag--" + status, STATUS[status].label) : null,
     ]),
   ]);
@@ -421,7 +426,7 @@ function PropertyPopup(property, weather, legend, sources) {
       text("span", "ov-tip__tag ov-tip__tag--" + status, STATUS[status].label),
     ]) : null,
     line ? text("div", "ov-tip__line", line) : null,
-    PopupWeather(weather, legend),
+    weather ? PopupWeather(weather, legend) : null,
     h("button", { "class": "link-action ov-tip__link", "data-action": "overview.openProperty", "data-id": property.id, "data-visual-id": "property-details" }, "Go to Property ›"),
   ]);
 }

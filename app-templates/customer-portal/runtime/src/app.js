@@ -2,7 +2,7 @@
 import { F } from "../data/fixtures.js";
 import { clear, h } from "./dom.js";
 import { readPortalConfig } from "./config.js";
-import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
+import { activeProfile, applyPortalConfig, cmdPhase, currentFixture, currentTheme, customerPortalAccessRequired, customerPortalGateActive, isPublic, isSpa, state } from "./state.js";
 import { loadLiveWeather } from "./live-weather.js";
 import { ACTIONS, bindActions, go, setState, toast } from "./actions.js";
 import { initRouter, renderRoute } from "./router.js";
@@ -196,10 +196,17 @@ export function retryRuntimeLoad() {
       if (continueToIntendedRoute()) return;
       render();
     })
+    .then(function () { return runtime.settled(); })
+    .then(function () { render(); })
     .finally(function () {
       liveRetryPromise = null;
     });
   return liveRetryPromise;
+}
+
+function resumeIntendedRoute() {
+  runtime.eachSettled(render);
+  if (!continueToIntendedRoute()) render();
 }
 
 function continueToIntendedRoute() {
@@ -248,6 +255,8 @@ document.addEventListener("DOMContentLoaded", function () {
   mount = document.getElementById("app");
   applyPortalConfig(readPortalConfig(mount));
   runtime = new PortalRuntime({ state: state });
+  var signingIn = customerPortalAccessRequired();
+  if (signingIn) state.oidc = "checking-session";
   var loaded = runtime.loadAllAsync();
   initRouter(render);
   bindActions(mount);
@@ -257,6 +266,14 @@ document.addEventListener("DOMContentLoaded", function () {
       if (live) render();
     });
   }
+  if (signingIn) {
+    render();
+    runtime.loadAsync("auth").then(function () {
+      render();
+      if (state.session.authenticated) return runtime.loadAsync("account").then(resumeIntendedRoute, resumeIntendedRoute);
+      return null;
+    }, render);
+  }
   loaded.then(function () {
     if (continueToIntendedRoute()) return;
     render();
@@ -264,6 +281,10 @@ document.addEventListener("DOMContentLoaded", function () {
     state.view = state.config.errorMode === "fallback" ? "fallback" : "error";
     console.error("[aircove] runtime load failed", error);
     if (continueToIntendedRoute()) return;
+    render();
+  }).then(function () {
+    return runtime.settled();
+  }).then(function () {
     render();
   });
 });

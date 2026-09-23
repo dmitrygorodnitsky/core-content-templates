@@ -6,6 +6,7 @@
 import { h } from "../../dom.js";
 import { state } from "../../state.js";
 import { ActionButton } from "./ActionButton.js";
+import { SupportContactButton } from "../shell/Destinations.js";
 import { ErrorState } from "./ErrorState.js";
 import { EmptyState } from "./EmptyState.js";
 import { skeletonRow } from "./LoadingState.js";
@@ -19,7 +20,7 @@ export function UnauthorizedState(props) {
     h("div", { "class": "state-block__title" }, "You don\u2019t have access to this page"),
     h("div", { "class": "state-block__desc" }, "Your account doesn\u2019t include access to " + (props.scope || "this area") + ". If that seems wrong, we can sort it out."),
     h("div", { style: "display:flex;gap:10px;justify-content:center;flex-wrap:wrap" }, [
-      ActionButton({ variant: "btn--primary", label: "Contact support", action: "support.email", visualId: "unauthorized-support" }),
+      SupportContactButton({ variant: "btn--primary", visualId: "unauthorized-support" }),
       ActionButton({ variant: "btn--ghost", label: "Go back", action: "nav.go", id: props.backRoute || "orders.list", visualId: "unauthorized-back" })
     ])
   ]);

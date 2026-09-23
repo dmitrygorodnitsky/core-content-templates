@@ -4,7 +4,7 @@ import { SPA_PRODUCT_CATALOG } from "../data/spa-product-catalog.js";
 import { caseFixtureFor, cloneCaseValue } from "../data/case-fixtures.js";
 import { deriveCoreBookingModel } from "./normalizers/spa-availability.js";
 import { emptyLiveBookingOptions, liveBookingQuote, normalizeLiveBookingOptions } from "./normalizers/spa-booking-options.js";
-import { portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
+import { customerAccountRequired, portalProfiles, resolveProfile, routeRegistry, verticalProfiles } from "./config.js";
 import { contractsPackage } from "./normalizers/contracts.js";
 
 export var state = {
@@ -599,13 +599,14 @@ export function currentOverview() {
 }
 
 function liveOverview() {
-  var geography = state.config.serviceGeography;
-  if (!geography || !state.liveWeather) return null;
   var envelope = state.moduleData.properties;
   if (!envelope || envelope.state !== "ready") return null;
+  var geography = state.config.serviceGeography;
+  var forecast = liveForecastState();
   return {
-    map: geography.map,
-    weather: state.liveWeather,
+    map: geography ? geography.map : null,
+    weather: forecast === "ready" ? state.liveWeather : null,
+    forecast: forecast,
     properties: envelope.items || [],
     sources: { invoices: "unavailable", appointments: "unavailable", contracts: "unavailable", support: "unavailable" },
     invoices: null,
@@ -616,12 +617,26 @@ function liveOverview() {
 }
 
 export function liveOverviewStatus() {
-  if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+  if (!isModuleEnabled("properties")) return "unconfigured";
   var envelope = state.moduleData.properties;
   if (envelope && envelope.state === "unauthorized") return "unauthorized";
-  if (state.liveWeatherState === "failed" || (envelope && envelope.state === "error")) return "error";
-  if (!state.liveWeather || !envelope || envelope.state !== "ready") return "loading";
+  if (envelope && envelope.state === "error") return "error";
+  if (!envelope || envelope.state !== "ready") return "loading";
   return "ready";
+}
+
+export function liveForecastState() {
+  if (!state.config.serviceGeography || !state.config.weatherClientId || !state.config.weatherClientSecret) return "unconfigured";
+  if (state.liveWeatherState === "ready" && state.liveWeather) return "ready";
+  if (state.liveWeatherState === "failed") return "failed";
+  return "loading";
+}
+
+export function activityUnread() {
+  if (!isModuleEnabled("activity") || state.config.dataMode === "live" || state.activityReadAll) return false;
+  return (currentFixture().activity || []).some(function (group) {
+    return (group.items || []).some(function (item) { return !!item.unread; });
+  });
 }
 
 export function currentFixture() {
@@ -877,9 +892,7 @@ export function isPublic(routeId) {
 }
 
 export function customerPortalAccessRequired() {
-  return state.config.dataMode === "live"
-    && state.config.authMode === "required"
-    && state.config.enabledModules.includes("account");
+  return customerAccountRequired(state.config);
 }
 
 export function customerPortalGateActive() {

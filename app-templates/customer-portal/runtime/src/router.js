@@ -1,7 +1,7 @@
 // customer-portal/runtime/src/router.js — production transfer module.
 import { h } from "./dom.js";
-import { isModuleEnabled, isPublic, isSpa, spaCapability, state } from "./state.js";
-import { matchRoutePath, routePath, routeRegistry } from "./config.js";
+import { activeProfile, isModuleEnabled, isPublic, isSpa, spaCapability, state } from "./state.js";
+import { customerAccountProfile, matchRoutePath, routePath, routeRegistry } from "./config.js";
 import { EmptyState } from "./components/primitives/EmptyState.js";
 import { Cabinet } from "./routes/OrdersPage.js";
 import { OrderDetail } from "./routes/OrderDetailPage.js";
@@ -17,6 +17,7 @@ import { ProposalsList } from "./routes/ProposalsPage.js";
 import { ProposalDetail } from "./routes/ProposalDetailPage.js";
 import { AgreementDetail } from "./routes/AgreementDetailPage.js";
 import { Profile } from "./routes/ProfilePage.js";
+import { AccountProfile } from "./routes/AccountProfilePage.js";
 import { Activity } from "./routes/ActivityPage.js";
 import { Calendar } from "./routes/CalendarPage.js";
 import { Support } from "./routes/SupportPage.js";
@@ -74,7 +75,7 @@ export function resolveRoute(routeId) {
     return { id: "care", reason: "disabled" };
   }
 
-  if (!activeRoute.public && !isModuleEnabled(activeRoute.module)) {
+  if (!activeRoute.public && !privateRouteOpen(activeRoute)) {
     return { id: defaultRoute, reason: "disabled" };
   }
 
@@ -90,7 +91,7 @@ function reachableDefaultRoute() {
   if (isRouteReachable("orders.list")) return "orders.list";
 
   var enabledRoute = Object.values(routeRegistry).find(function (route) {
-    return !route.public && isModuleEnabled(route.module);
+    return !route.public && privateRouteOpen(route);
   });
   return enabledRoute ? enabledRoute.id : "auth.oidc";
 }
@@ -98,7 +99,12 @@ function reachableDefaultRoute() {
 function isRouteReachable(routeId) {
   var route = routeRegistry[routeId];
   if (!route || (route.parityOnly && state.config.dataMode === "live")) return false;
-  return !!(route.public || isModuleEnabled(route.module));
+  return !!(route.public || privateRouteOpen(route));
+}
+
+function privateRouteOpen(route) {
+  if (!isModuleEnabled(route.module)) return false;
+  return !route.ownedByProfile || activeProfile().modules.includes(route.module);
 }
 
 export function routeFromLocation() {
@@ -125,23 +131,26 @@ export function routeFromLocation() {
   return match.id;
 }
 
-export function writeRouteToLocation(routeId) {
+export function writeRouteToLocation(routeId, replace) {
   scopeRouteQuery(routeId);
   if (state.config.routerMode === "memory") return;
   var path = routePath(routeId, paramsForRoute(routeId));
   var query = state.routeQuery || "";
+  var record = replace ? "replaceState" : "pushState";
   if (state.config.routerMode === "history") {
-    if (window.location.pathname + window.location.search !== path + query) window.history.pushState({}, "", path + query);
+    if (window.location.pathname + window.location.search !== path + query) window.history[record]({}, "", path + query);
     return;
   }
   var nextHash = "#" + path + query;
-  if (window.location.hash !== nextHash) window.history.pushState({}, "", nextHash);
+  if (window.location.hash !== nextHash) window.history[record]({}, "", nextHash);
 }
 
 export function initRouter(onRouteChange) {
   var applyLocation = function () {
-    var resolved = resolveRoute(routeFromLocation());
+    var requested = routeFromLocation();
+    var resolved = resolveRoute(requested);
     state.route = resolved.id;
+    if (resolved.id !== requested) writeRouteToLocation(resolved.id, true);
     onRouteChange();
   };
   if (state.config.routerMode === "history") {
@@ -180,7 +189,7 @@ export function renderRoute() {
     case "proposals.list": return ProposalsList();
     case "proposal.detail": return ProposalDetail();
     case "agreement.detail": return AgreementDetail();
-    case "profile":     return isSpa() ? SpaProfile() : Profile();
+    case "profile":     return isSpa() ? SpaProfile() : customerAccountProfile(state.config) ? AccountProfile() : Profile();
     case "activity":    return Activity();
     case "calendar":    return Calendar();
     case "support":     return Support();
