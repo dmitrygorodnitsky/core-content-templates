@@ -1139,8 +1139,8 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
 - The sign-in card keeps "By continuing you agree to our Terms & Privacy
   Policy": the user decided on 2026-09-23 to keep the line, and that the Terms
   and Privacy pages being absent on dev is acceptable.
-- **Back around sign-in** (fixed in the repository on 2026-09-23, not yet
-  uploaded; every portal). The portal adds no history entry of its own around
+- **Back around sign-in** (fixed on 2026-09-23 in every portal; live on dev-1
+  from commit `2c6154b`). The portal adds no history entry of its own around
   sign-in: the session check and the continue from `#/login` replace their
   entries. Back after the landing's Sign in returns to the landing. When a
   signed-in User with access reaches `#/login` again, from an old entry or a
@@ -1156,11 +1156,11 @@ The live snow entry is the package `CUSTOMER_PORTAL_GRANITE_RIDGE_STAGING`
   Chrome reloads the page on Back rather than restoring it. The harness proves
   a real restore with Chrome for Testing in new headless mode, once Playwright's
   `--disable-back-forward-cache` is removed; `chrome-headless-shell` never
-  restores. To publish, re-upload the portal:
-
-  ```bash
-  SERVICEWAND_API_KEY=... node app-templates/customer-portal/scripts/upsert-granite-ridge-staging-portal.mjs --base-url https://dev-1.servicewand.com/core --org SYSTEM --expected-root-id 3e57675e-c967-47b2-9501-9235830f3bc3 --require-existing --live
-  ```
+  restores. The portal template `3e57675e` was re-uploaded from `2c6154b`;
+  as with `13f191b`, `app-3-core-cms` served the old runtime until one
+  identical save was steered to it (trap 12). Both nodes then served the new
+  build, and an anonymous pass still ended `/portal` on the landing and
+  opened `portal#/login` from its Sign in.
 
 The fixture package must stay as it is: `granite-ridge-portal-manual-check`
 refuses a service base, an auth contract or live data mode in it, and that
