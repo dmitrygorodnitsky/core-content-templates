@@ -261,13 +261,20 @@ what it holds.
   one string is one revision: nothing records which wording the client
   approved, and an edit after approval replaces it silently. The executed
   instrument is still a PDF elsewhere; this is what the client reads before
-  pressing Approve. Who writes it, a template at creation or a manager, is
-  still open.
-- **The provider party fields are on the type too.** `PROVIDER_LEGAL_NAME`,
-  `PROVIDER_REPRESENTATIVE_NAME` and `PROVIDER_REPRESENTATIVE_JOB_TITLE`, all
-  optional strings, applied in the same write. The page has read them all
-  along; until something fills them the provider card falls back to the
-  organization name.
+  pressing Approve.
+- **The provider party and the terms come from the organization** (the user,
+  2026-09-23).
+  - The OPERATOR organization type carries `PROVIDER_LEGAL_NAME`,
+    `PROVIDER_REPRESENTATIVE_NAME`, `PROVIDER_REPRESENTATIVE_JOB_TITLE` and
+    `CONTRACT_TERMS`. Document type 17 has the same codes.
+  - When the contract is formed, processor V5 (script 291) copies them from the
+    agreement's own organization into the agreement, only where the agreement
+    is empty, so a manager can still edit them before internal approval.
+  - SNOWLIMITLESS holds test values: representative "Test Representative,
+    Contracts Manager (test)" and terms headed "Test terms: not a real
+    contract".
+  - `applyProviderTerms` backfilled agreements 138 and 139.
+  - The page falls back to the organization name only when nothing was copied.
 - **The portal invitation is back** (2026-09-23). The completion states
   (`CLIENT_APPROVED`, `ACTIVATION_FAILED`, `ACTIVE`) and the link closed right
   after approval explain portal access without asking `Account.user`, which the
@@ -275,11 +282,25 @@ what it holds.
   portal password receives one by email once access is ready, and an existing
   password stays the same. The page names the Account's PRIMARY email only when
   the link returns exactly one, the rule provisioning uses, and links to the
-  portal only when the CMS parameter `PORTAL_URL` is set. Through the link the
-  Account returns its contacts and addresses as ids only (dev-1, 2026-09-23),
-  so the invitation names no address and the details form pre-fills only the
-  legal name, until the grant also carries `Contact`, `ContactEntry`,
-  `AccountAddress` and `Address` records.
+  portal only when the CMS parameter `PORTAL_URL` is set.
+- **The client's own details travel as Account attributes.**
+  - **Why:** through a link an Account returns its contacts and addresses as
+    ids only. Core's generated grant ceiling keeps every association shallow,
+    and the backend confirmed on 2026-09-23 that Contact, ContactEntry and
+    AccountAddress will not become grantable.
+  - **The attributes:** SNOW_RESIDENTIAL_CUSTOMER and SNOW_COMMERCIAL_CUSTOMER
+    declare `BILLING_ADDRESS` and `REPRESENTATIVE_FIRST_NAME`, `_LAST_NAME`,
+    `_JOB_TITLE`, `_EMAIL` and `_PHONE`.
+  - **Who writes them:** quotation delivery V3 (294) and agreement delivery V2
+    (293) copy the PRIMARY contact and the BILLING address into them right
+    before issuing each grant, overwriting all six. Email and phone are
+    written only when exactly one entry exists.
+  - **The job title** comes only from an agreement's accepted details, never
+    from the contact title, which holds the form's role code until then.
+  - **What the page does:** it pre-fills the details form from these attributes
+    and names `REPRESENTATIVE_EMAIL` in the portal invitation.
+  - **Proven:** an anonymous read of Account 718 through a short-lived grant
+    returned all six.
 - **The service address is written on the Order.** A Resource cannot be
   granted, so the page cannot follow `SERVICE_PROPERTY` to the address. Since
   2026-09-23 `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260, workflow 45)
@@ -444,18 +465,30 @@ Next, in order:
    - `app-3-core-cms` does not fire the `GET_QUOTE_` form's `INITIAL` hook.
      Form 64 was submitted there at 11:55:32 UTC and stalled; the same event
      through `app-1-core-cms` ran the chain.
-   - The REST order-line save fails with "Execution error".
    - The CMS nodes do not invalidate each other's page cache after a template
      save.
-   - A grant cannot carry `Contact`, `ContactEntry`, `AccountAddress` or
-     `Address`, so the details step cannot pre-fill more than the legal name.
 2. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.
-3. **Open questions for the user.**
-   - Who writes `CONTRACT_TERMS` and the provider party fields; today the
-     agreement shows no terms and no provider representative.
-   - Whether the five-month season should cost four monthly payments, as the
-     catalog prices it.
+3. **Open question for the user:** whether the five-month season should cost
+   four monthly payments, as the catalog prices it. The seasonal prices
+   224–241 carry exactly four times the monthly amounts with a five-month
+   interval, set by `su` on 2026-09-02.
+
+Resolved on 2026-09-23 after the runs:
+- **Order lines save through REST again.** Workflow 46
+  (`GENERAL_FSM_ORDER_ITEM_LIFECYCLE`) was bound to `ORDER_UTILITIES` (script
+  164): category API, `CORE-BILL` only, package `com.pixelnation.bill.utils`.
+  It now runs `SNOW_ORDER_ITEM_UTILITIES_V1` (script 287), shaped like every
+  working utility, and a line saved on one core-bill node and updated on the
+  other answered 200.
+- **The provider party and terms** come from the organization (§9).
+- **The details form pre-fills** from Account attributes (§9).
+
+Live on workflow 53 since then:
+- workflow utility V10 (292);
+- details processor V5 (291);
+- quotation delivery V3 (294) and agreement delivery V2 (293);
+- activation V2 (269) and provisioning V2 (270).
 
 The role is staging-only until backend reads are scoped to the linked
 customer Account; browser filters alone are not a production customer

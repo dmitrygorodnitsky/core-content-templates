@@ -746,6 +746,19 @@ Things that already cost time here and will again:
     own hook context (utility V7 and later send `CLIENT_DETAILS_RECEIVED-DRAFT`)
     or as a service identity: the system user holding an in-memory role, as
     activation V2 and provisioning V2 do.
+14. **A workflow utility must be shaped like one.** A Java workflow whose bound
+    script is category API, lacks `CORE`, or sits outside
+    `com.pixelnation.<service>.generated` fails its hooks with "Execution
+    error". This broke every REST order-line save until workflow 46 was
+    rebound on 2026-09-23. The organization workflow's script 166 has the
+    same shape: SNOWLIMITLESS attribute values saved only under its parent's
+    header, `SERVICE_WAND_WINTER_SERVICES_CANADA`, and under SYSTEM they
+    answered "Execution error".
+15. **`snowTypes.json` is behind dev-1 for the snow Account types.** It
+    declares types 5 and 6 without the six prefill attributes, and with a
+    `CUSTOMER_STATUS` that dev-1 lacks. A `snow-types` re-apply would drop the
+    prefill attributes: re-apply `snowResidentialCustomerPrefillPatch.json` and
+    `snowCommercialCustomerPrefillPatch.json` after it, or align the seed first.
 
 The fixture root is no longer parameter-free: it may declare codes on the
 `DEPLOYMENT_PARAMETERS` allow-list in `scripts/export-fixture-portal-manual.mjs`,
@@ -996,8 +1009,9 @@ transition. Where the whole flow stands is
      marked.
    - The details sent from the page passed the checking state into `DRAFT`.
    - The grant was then revoked.
-   - Through the link the Account returns contacts and addresses as ids only,
-     so only the legal name pre-fills.
+   - Through the link the Account returns contacts and addresses as ids only.
+     Since the end of that day the details form pre-fills from Account
+     attributes instead (trap 15, `QUOTATION-PACKAGE-FLOW.md` §9).
 5. **Then:** finish the agreement side of
    `QUOTATION-PACKAGE-FLOW.md` §5. The details, delivery and Account activation
    hooks are complete. Workflow 53 validates in
@@ -1029,7 +1043,16 @@ transition. Where the whole flow stands is
 
    Trap 13 is the lesson. A second run the same day (form 64, agreement 139)
    proved that an anonymous approval activates the Account and provisions the
-   User without an operator. Next here are the three client forms.
+   User without an operator.
+
+   Also on 2026-09-23:
+   - order lines save through REST again (trap 14);
+   - agreements take the provider party and the terms from their organization,
+     with test values on SNOWLIMITLESS;
+   - each client link carries the representative and billing details as
+     Account attributes, from which the review page pre-fills (trap 15).
+
+   Workflow 53 runs utility V10 (292). Next here are the three client forms.
 
    The role remains staging-only until customer Account scoping is enforced by
    the backend.
