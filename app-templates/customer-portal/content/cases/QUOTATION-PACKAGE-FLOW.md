@@ -163,7 +163,7 @@ approved.
 | Agreement enters `INTERNALLY_APPROVED` | sends it on to `SENT_TO_CLIENT` (spec §13) | |
 | Agreement enters `SENT_TO_CLIENT` | issues the agreement link; emails the primary contact | `AGREEMENT_SEND_FAILED` |
 | Agreement enters `CLIENT_APPROVED` | revokes the agreement link; `PROSPECT-ACTIVE` or `INACTIVE-ACTIVE` on the account | |
-| Agreement approval activates the Account | creates or reuses the User from the Account's primary email, links `Account.user`, assigns the staging customer role; onboarding email remains to be added | `ACTIVATION_FAILED` and retry |
+| Agreement approval activates the Account | creates or reuses the User from the Account's primary email, links `Account.user`, assigns the staging customer role, then invokes Core's existing password-reset email after commit for a new User or one still without a local password | `ACTIVATION_FAILED` and retry |
 
 Every lifecycle change of another record is an event on that record's workflow,
 never a direct state write (spec §2.2).
@@ -334,7 +334,7 @@ what it holds.
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event |
 | `DRAFT` → `SENT_TO_CLIENT`, the agreement link and email | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 133 moved through management approval, automatically entered `SENT_TO_CLIENT`, and `SNOW_SERVICE_AGREEMENT_DELIVERY_V1` (script 252) issued grant 51 over Account, Document, Order, OrderItem, ProductPrice and Product records. Only `AGREEMENT_GRANT_ID` was persisted; the one-time token was placed in the email link rendered by template 253. Failure compensation revokes the grant, clears the stored ID and sends `SENT_TO_CLIENT-AGREEMENT_SEND_FAILED`; retry re-enters `SENT_TO_CLIENT`. `npm run service-agreement-delivery-check` guards both delivery paths, six entity types, writable permissions and compensation |
-| approval → Account `ACTIVE` → portal User | *Verified on dev-1* 2026-09-22: anonymous approval of agreement 134 revoked its grant and activated Account 694. `SNOW_PORTAL_USER_PROVISION_V1` (script 258) is now called after `SNOW_SERVICE_AGREEMENT_ACTIVATION_V1` (254) by workflow utility 255. It creates or reuses a User from the one PRIMARY email, assigns `SW_FS_WS_CUSTOMER_PORTAL` (75) in `SNOWLIMITLESS`, and writes `Account.user`; failure enters retryable `ACTIVATION_FAILED`. Account 694 links to User 35. A separate ACTIVE smoke Account 714 created User 43, assigned the role and linked it; rerun changed nothing. For an end-to-end retry, role 75 was removed from User 35, agreement 134 ran `ACTIVATION_FAILED` → `CLIENT_APPROVED`, and the workflow restored the role. The retry also exposed and fixed a null read of already-cleared `AGREEMENT_GRANT_ID` in activation script 254. The portal flag is deferred. Onboarding email and a real customer OIDC login remain unverified |
+| approval → Account `ACTIVE` → portal User | *Verified on dev-1* 2026-09-22: anonymous approval of agreement 134 revoked its grant and activated Account 694. `SNOW_PORTAL_USER_PROVISION_V1` (script 258) is called after activation script 254 by workflow utility 255. It creates or reuses a User using the PRIMARY email as login, assigns `SW_FS_WS_CUSTOMER_PORTAL` (75) in `SNOWLIMITLESS`, and writes `Account.user`; failure enters retryable `ACTIVATION_FAILED`. Account 694 links to User 35. ACTIVE smoke Account 714 created User 43, assigned the role and linked it; an approval retry on agreement 134 restored an intentionally removed role on User 35. Activation script 254 handles a cleared `AGREEMENT_GRANT_ID`. The portal flag remains deferred. An admin password reset for User 43 returned `200/[true]`; a reachable test mailbox supplied the password, and Core OIDC accepted the login. Calm Harbor correctly denied that SNOWLIMITLESS user access to its own organization. Script 258 now calls Core `UserService.generateNewPassword` after the User transaction commits. ACTIVE smoke Account 715 created User 49 with `credentialsIssued: true`; rerun returned `created: false`, `credentialsIssued: false`. ACTIVE smoke Account 716 created User 50 with the same result, and the user confirmed receipt of the automatically generated password email at a reachable mailbox. The operator `snow-portal-user plan` now resolves by login, not non-unique email. Login to a live snow portal remains unverified |
 
 Failure visibility was completed on 2026-09-22. A validation failure is
 retryable through `VALIDATION_FAILED`; Account or Property creation failure is
@@ -357,10 +357,11 @@ the automation inventing a size.
 
 Next, in order:
 
-1. **Verify customer sign-in and onboarding.** Use an OIDC identity matching a
-   provisioned User, check the live `overview` and `properties` modules, and
-   add the onboarding email. The role is staging-only until backend reads are
-   scoped to the linked customer Account; browser filters alone are not a
-   production customer boundary.
+1. **Verify the live snow portal.** Publish its live entry, use an OIDC identity
+   matching a provisioned User, and check `overview` and `properties`. The
+   automated password email was received in a reachable test mailbox.
+   The role is staging-only until backend reads are scoped to the linked
+   customer Account; browser filters alone are not a production customer
+   boundary.
 2. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.

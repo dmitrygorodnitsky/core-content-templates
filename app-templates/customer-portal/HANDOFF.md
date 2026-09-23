@@ -927,8 +927,17 @@ transition. Where the whole flow stands is
    `SNOW_PORTAL_USER_PROVISION_V1` (258): Account 714 created User 43 with the
    role and Account link; an approval retry on agreement 134 restored the
    intentionally removed role on User 35. The retry fix in activation script
-   254 treats a cleared agreement grant as absent. Left: customer OIDC sign-in,
-   onboarding email, and the three client forms.
+   254 treats a cleared agreement grant as absent. On 2026-09-22 the existing
+   admin reset sent a test password to a reachable mailbox, and Core OIDC
+   accepted User 43; Calm Harbor correctly refused its SNOWLIMITLESS session.
+   Script 258 now calls Core's password generation and email path after a new
+   User commits. ACTIVE smoke Account 715 created User 49 with
+   `credentialsIssued: true`; rerun returned `credentialsIssued: false`.
+   ACTIVE smoke Account 716 created User 50 the same way using a reachable
+   mailbox; the user confirmed receipt of the automatically generated password
+   email. The operator plan now resolves a User by login because email is not
+   unique. Left: publish and test the live snow portal and build the three
+   client forms.
 4. **Backend read contract and live page verified:** a freshly issued combined
    link reads the exact `Document`, `Account`, `Order`, `OrderItem`,
    `ProductPrice` and `Product` records anonymously. It returns Order totals and
@@ -967,7 +976,7 @@ transition. Where the whole flow stands is
    Account activation through script 258 and assigns `SW_FS_WS_CUSTOMER_PORTAL`
    (75 on dev-1); new-User and retry paths were checked on Accounts 714 and
    694. The portal flag remains intentionally deferred. Next here are a real
-   customer OIDC sign-in, onboarding email and the three client forms. The role
+   live snow-portal sign-in and the three client forms. The role
    remains staging-only until customer Account scoping is enforced by the
    backend.
 
