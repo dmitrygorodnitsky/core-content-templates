@@ -285,7 +285,7 @@ const N = loadRuntime().CR.normalizer;
   assert.equal(normalizer.propertyStatus([]), "unknown");
 
   const EXPECTED_KIND = {
-    QUOTATION: "preparing", QUOTATION_SENT: "quote-review", QUOTATION_SEND_FAILED: "unavailable",
+    QUOTATION: "preparing", QUOTATION_SENT: "quote-review", QUOTATION_UPDATE: "unavailable", QUOTATION_SEND_FAILED: "unavailable",
     AWAITING_CLIENT_DETAILS: "contract-details", CLIENT_DETAILS_RECEIVED: "checking", DRAFT: "preparing",
     PENDING_MANAGEMENT_APPROVAL: "preparing",
     INTERNALLY_APPROVED: "preparing", SENT_TO_CLIENT: "agreement-review", AGREEMENT_SEND_FAILED: "unavailable",

@@ -43,6 +43,12 @@ Agreement QUOTATION_SENT ──► Orders → QUOTE_SENT, Account DRAFT → PROS
                                    │
 client, per option: view / approve / decline / request changes (event on the Order)
                                    │
+changes requested ──► manager revises the Order and approves it internally again
+                      (it stays in the same agreement), then Send Updated Quotation:
+                      Agreement QUOTATION_UPDATE ──► QUOTATION_SENT, the same delivery:
+                      previous link revoked, revised Orders → QUOTE_SENT, a new link,
+                      an email saying the quotation was updated
+                                   │
 every property decided ──► Agreement AWAITING_CLIENT_DETAILS
                                    │
 client submits contract details (event on the agreement, with attributes)
@@ -90,22 +96,24 @@ We add:
 ### 4.2 Service agreement — `SERVICE_AGREEMENT_LIFECYCLE`
 
 Seed: `core-ui` `scripts/dev/seeds/serviceAgreementWorkflows.json`, applied to
-dev-1 as workflow 53 and extended on 2026-09-22 to 17 states and 33 events.
+dev-1 as workflow 53, extended on 2026-09-22 to 17 states and 33 events, and on
+2026-09-23 to 18 states and 36 events with the quotation update below.
 `workflows.ts` enumerates generated workflow permissions in the SYSTEM
 deployment context, preserves their `SERVICE_WAND_WINTER_SERVICES` ownership,
 and saves each role permission as the backend's link-only `{ id }` identifier.
 The deployer removes stale permissions of this workflow before adding the exact
-seed set. Live readback from the `SERVICEWAND`-owned roles found 33 permissions
-on `SW_FS_WS_COMPANY_ADMIN`, 6 on `SW_FS_WS_SALES`, 2 on
+seed set. Live readback on 2026-09-23 from the `SERVICEWAND`-owned roles found
+36 permissions on `SW_FS_WS_COMPANY_ADMIN`, 7 on `SW_FS_WS_SALES`, 2 on
 `SW_FS_WS_OPERATIONS_MANAGER` and 4 on `SW_FS_WS_BILLING_FINANCE`, with no
-missing or extra workflow permission. Four states stand in front of `DRAFT`,
-one of them transient, and two failure states beside it:
+missing or extra workflow permission. Five states stand in front of `DRAFT`,
+two of them transient, and two failure states beside it:
 
 | state | meaning | leaves by |
 | --- | --- | --- |
 | `QUOTATION` (initial) | quotes are being collected | `Send Quotation` (manager) → `QUOTATION_SENT`; cancel → `CANCELED` |
-| `QUOTATION_SENT` | the client is deciding | package complete → `AWAITING_CLIENT_DETAILS`; nothing approved → `CANCELED` |
-| `QUOTATION_SEND_FAILED` | sending failed after the manager's click | retry → `QUOTATION_SENT` |
+| `QUOTATION_SENT` | the client is deciding | package complete → `AWAITING_CLIENT_DETAILS`; nothing approved → `CANCELED`; `Send Updated Quotation` (manager) → `QUOTATION_UPDATE` |
+| `QUOTATION_UPDATE` | transient: an updated quotation is on its way | our hook forwards it → `QUOTATION_SENT`; a forward that cannot happen → `QUOTATION_SEND_FAILED` |
+| `QUOTATION_SEND_FAILED` | sending failed after the manager's click, first or updated | retry → `QUOTATION_SENT` |
 | `AWAITING_CLIENT_DETAILS` | approved quotes are known; Party B details missing | client submits details → `CLIENT_DETAILS_RECEIVED` |
 | `CLIENT_DETAILS_RECEIVED` | transient: our hook is checking the details | complete → `DRAFT`; incomplete → back to `AWAITING_CLIENT_DETAILS` |
 | `DRAFT` … `ARCHIVED` | as seeded, following spec §11–15 | |
@@ -144,6 +152,29 @@ details, or `DRAFT` and later states.
 `EFFECTIVE_DATE` is optional, because it cannot be known while the agreement is
 still a package.
 
+**A revised quote goes back to the client through the same agreement**
+(decided with the user on 2026-09-23; live on dev-1 the same day). When the
+client requests changes on an option, the manager:
+
+1. takes the Order back with `CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED`;
+2. changes its lines or reprices it;
+3. approves it again with `QUOTE_PREPARED-QUOTE_APPROVED_INTERNALLY`, which
+   keeps it in the agreement already listing it (§5);
+4. presses `Send Updated Quotation` on the agreement:
+   `QUOTATION_SENT-QUOTATION_UPDATE`.
+
+The event is granted to exactly the roles that hold `Send Quotation`:
+`SW_FS_WS_COMPANY_ADMIN` and `SW_FS_WS_SALES`. `QUOTATION_UPDATE` is transient.
+Its hook only forwards `QUOTATION_UPDATE-QUOTATION_SENT` after the commit, with
+the same wait for the committed state as `INTERNALLY_APPROVED → SENT_TO_CLIENT`,
+and records `QUOTATION_UPDATE-QUOTATION_SEND_FAILED` when the agreement does not
+move on within 15 s. Re-entering `QUOTATION_SENT` runs the one delivery of §5,
+which also serves the first send and the retry from `QUOTATION_SEND_FAILED`.
+With nothing revised the same button re-sends the link, for a client who lost
+the email. A decision the client sends during the half second the agreement
+spends in `QUOTATION_UPDATE` is not evaluated, because §6 runs only in
+`QUOTATION_SENT`.
+
 ### 4.3 Account — workflow 14
 
 Events, *verified*: `DRAFT-PROSPECT`, `DRAFT-ARCHIVED`, `PROSPECT-ACTIVE`,
@@ -158,7 +189,8 @@ approved.
 | trigger | does | if it cannot |
 | --- | --- | --- |
 | Order enters `QUOTE_APPROVED_INTERNALLY` | requires `SERVICE_PROPERTY`; adds the Order to the agreement already listing it, else to the client's agreement in `QUOTATION`, else to a new one | cannot refuse the transition (§9); what it does instead is decided with the Order hooks |
-| Agreement enters `QUOTATION_SENT` | sends `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` to each listed Order still there; `DRAFT-PROSPECT` on the account; issues the quotation link; emails the primary contact | `QUOTATION_SEND_FAILED` |
+| Agreement enters `QUOTATION_SENT`, first, on retry or after `QUOTATION_UPDATE` | quotation delivery V4: accepts listed Orders in any state; revokes the previous quotation link and clears `QUOTATION_GRANT_ID`; sends `QUOTE_APPROVED_INTERNALLY-QUOTE_SENT` only to Orders in `QUOTE_APPROVED_INTERNALLY` and leaves decided and pending ones as they are; `DRAFT-PROSPECT` only from `DRAFT`; refreshes the Account pre-fill; issues the new quotation link over the current lines; emails the primary contact, saying the quotation was updated when a previous link existed and an Order was just sent again, otherwise the ready email | `QUOTATION_SEND_FAILED`; a previous link that cannot be revoked stops the delivery before anything moves, and a new link whose storage or email fails is revoked |
+| Agreement enters `QUOTATION_UPDATE` | forwards `QUOTATION_UPDATE-QUOTATION_SENT` once the transition is committed | `QUOTATION_UPDATE-QUOTATION_SEND_FAILED` |
 | Order enters `CLIENT_APPROVED` | declines the other options for the same property in the same agreement; evaluates the package | |
 | Order enters `DECLINED` | evaluates the package | |
 | Order enters `CUSTOMER_CHANGES_REQUESTED` | notifies `QUOTATION_MANAGER` with `MESSAGE` | |
@@ -210,11 +242,15 @@ link carries, and the service that grants each, are in
 
 | link | issued | entries | page | revoked |
 | --- | --- | --- | --- | --- |
-| quotation | agreement enters `QUOTATION_SENT`, and again when a changed quote is re-sent | Account `P_ACCT_R`; each Order `P_ORDER_R` and `P_WF:GENERAL_FSM_ORDER:` `QUOTE_SENT-QUOTE_VIEWED`, `QUOTE_VIEWED-CLIENT_APPROVED`, `QUOTE_VIEWED-DECLINED`, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`; each Order's `OrderItem` records with their `ProductPrice` and `Product`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` | quote review | details submitted, re-issue, or cancel |
+| quotation | each time the agreement enters `QUOTATION_SENT`: the first send, a retry, and every `Send Updated Quotation`, which re-issues it over the current lines after revoking the previous one | Account `P_ACCT_R`; each Order `P_ORDER_R` and `P_WF:GENERAL_FSM_ORDER:` `QUOTE_SENT-QUOTE_VIEWED`, `QUOTE_VIEWED-CLIENT_APPROVED`, `QUOTE_VIEWED-DECLINED`, `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED`; each Order's `OrderItem` records with their `ProductPrice` and `Product`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` | quote review | details submitted, re-issue, or cancel |
 | agreement | agreement enters `SENT_TO_CLIENT` | Account `P_ACCT_R`; agreement `P_DOCUMENT_R` and `P_WF:SERVICE_AGREEMENT_LIFECYCLE:SENT_TO_CLIENT-CLIENT_APPROVED`; each Order and OrderItem `P_ORDER_R`; each ProductPrice `P_PRICE_R`; each Product `P_PRODUCT_R` | agreement review | client approval |
 
 The token is never stored; the agreement keeps the grant ids so a hook can
-revoke them.
+revoke them. A grant is a snapshot of its entries at issue, so a link issued
+before a revision cannot read a line added after it; the re-issued link can.
+The review page answers a revoked or expired link with "This link has expired
+or was withdrawn" and, live since 2026-09-23, sends the client to the link in
+the provider's newest email.
 
 ## 8. Pages
 
@@ -370,7 +406,8 @@ what it holds.
 | Order hooks of §5 on workflow 45 | *verified* 2026-09-22: workflow 45 is bound to SYSTEM-owned `SNOW_QUOTATION_ORDER_UTILITIES_V1` (script 238); Orders entering `QUOTE_APPROVED_INTERNALLY` join the agreement, client approval declines sibling options for the same property, terminal decisions evaluate the package, and requested changes require `MESSAGE` and notify `QUOTATION_MANAGER`. Since 2026-09-23 the binding is `SNOW_QUOTATION_ORDER_UTILITIES_V2` (script 260), which also writes `SERVICE_ADDRESS` (§9); its hook path is proven by the next end-to-end run |
 | quotation delivery on `QUOTATION_SENT` | *verified* 2026-09-22: workflow 53 is bound to `SNOW_SERVICE_AGREEMENT_WORKFLOW_UTILITIES_V5` (script 255). Agreement 136 automatically sent Orders 41–42, issued combined grant 58 across Account, Document, Order, OrderItem, ProductPrice and Product, persisted `QUOTATION_GRANT_ID`, and completed the email call through processor 256 and template 257. Incomplete agreement 137 entered `QUOTATION_SEND_FAILED` without a grant ID and without moving Order 50 or Account 712. **Defect found 2026-09-23:** the grant carries `P_WF:SERVICE_AGREEMENT_LIFECYCLE:QUOTATION_SENT-AWAITING_CLIENT_DETAILS` instead of `…:AWAITING_CLIENT_DETAILS-CLIENT_DETAILS_RECEIVED` (`SNOW_SERVICE_QUOTATION_DELIVERY_V1`), so a link from the email cannot send the contract details; every live details pass so far used a hand-issued grant. Fixed the same day by `SNOW_SERVICE_QUOTATION_DELIVERY_V2` (script 263); grant 60 of the end-to-end run below carried the details event, and the client sent the details through the emailed link |
 | Send Quotation as a bulk action | outside this stream; owned as a separate task |
-| quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser. On 2026-09-23 the version with the checking state, returned details, portal invitation and numbered terms was uploaded: the four hashes match, and `REVIEW_API_BASE_URL` and PageContext 21 were kept. The version live since the end of that day follows the last decision and the details check on its own, words a return on a reopened link, and holds every accepted command until a read shows it; `PORTAL_URL` points at the published portal. The CMS nodes do not invalidate each other's page cache, so each upload was followed by one identical save steered to the node still serving the old page |
+| a revised quote back to the client | *verified* 2026-09-23: `Send Updated Quotation` (`QUOTATION_SENT-QUOTATION_UPDATE`), the transient `QUOTATION_UPDATE`, workflow utility V11 (script 297) and quotation delivery V4 (script 298) with email template 299. On agreement 140 the old emailed link answered 401, the new one read the added line anonymously, and the client's approval through it moved the agreement to `AWAITING_CLIENT_DETAILS` (the quotation update run below) |
+| quote review page | *verified* 2026-09-22: the regenerated package is live at `/pages/SNOWLIMITLESS/review`; all four live template hashes match the repository. Read-only grant 50 over 19 exact records rendered three quote cards, six product lines, states and server totals in the browser. On 2026-09-23 the version with the checking state, returned details, portal invitation and numbered terms was uploaded: the four hashes match, and `REVIEW_API_BASE_URL` and PageContext 21 were kept. The version live since the end of that day follows the last decision and the details check on its own, words a return on a reopened link, and holds every accepted command until a read shows it; `PORTAL_URL` points at the published portal. Since the evening of 2026-09-23 it also knows `QUOTATION_UPDATE` and sends a client with a closed link to the provider's newest email. The CMS nodes do not invalidate each other's page cache, so each upload was followed by one identical save steered to the node still serving the old page |
 | client decisions through a link | *verified in the live browser* 2026-09-22 with combined grant 57 over agreement 135 and Orders 39–40. Opening each option sent `QUOTE_SENT-QUOTE_VIEWED`; Order 39 then reached `CLIENT_APPROVED`. The page refused an empty change request for Order 40, sent the supplied `MESSAGE`, and reached `CUSTOMER_CHANGES_REQUESTED`; its summary showed one approved and one changes-requested property. The test grant was revoked, `QUOTATION_GRANT_ID` cleared and the token returned `401` after the proof |
 | package evaluation → `AWAITING_CLIENT_DETAILS` | *verified* 2026-09-22: Orders 53–55 joined agreement 134; approving 53 moved it to `CLIENT_APPROVED`, automatically declined 54 and 55, and moved agreement 134 from `QUOTATION_SENT` to `AWAITING_CLIENT_DETAILS` |
 | details → `CLIENT_DETAILS_RECEIVED` → `DRAFT` | *verified* 2026-09-22: workflow 53, utility script 249 and processor script 250 moved agreement 133 automatically through the transient state to `DRAFT`; Party B was written to Account 694 and the agreement, `ORDERS` retained only approved Order 38, and the live review template now sends the new event. *Verified in the live browser* 2026-09-23 with hand-issued grant 59 over agreement 136: after Orders 41 and 42 were approved on the page, a details event without phone and authority came back with both fields marked, and the details sent from the page passed the checking state into `DRAFT`. Two defects of processor V2 surfaced: it revokes the quotation grant without clearing `QUOTATION_GRANT_ID`, and it adds another `BILLING` address to the Account on every submission. Both are fixed: processor V4 (script 267) only validates and persists and keeps one `BILLING` address, and the workflow utility (V7, now V8) sends `CLIENT_DETAILS_RECEIVED-DRAFT` itself, then dispatches the revoke, the clear and the contract-manager email, whose failures are only logged. The end-to-end run below proved it through the emailed link |
@@ -459,6 +496,63 @@ The only manual step was the form's first event. The anonymous submit landed on
 `app-3-core-cms`, whose `INITIAL` hook does not fire, and the event was sent
 through `app-1-core-cms`.
 
+### The quotation update run, 2026-09-23
+
+The run used Account 717 and Property 963 (75,000 sq ft). The Account's primary
+email is a plus-alias of the user's mailbox.
+
+1. **Order.** Order 76 (`PER_SERVICE`, Property 963) was created through REST.
+   Its first `INITIAL-QUOTE_PREPARED` answered 200 and was not applied; the
+   same event two minutes later was. The hook priced it from the area: line 91
+   (snow removal, 1,528.48) and line 92 (de-icing, 916.24), 2,444.72 in total.
+2. **First send, as before.** `QUOTE_APPROVED_INTERNALLY` created agreement
+   140. `Send Quotation` put Order 76 in `QUOTE_SENT` within 3.5 s and stored
+   grant 69 within 6.6 s. Grant 69 carries the entries of V3: Account 717,
+   Document 140 with the details event, Order 76 with its four events, lines 91
+   and 92, prices 28 and 36, products 25 and 28. Account 717 stayed `ACTIVE`.
+3. **Change request.** A link's token cannot be read back from Core, so the
+   client's first round went through a two-hour hand-issued grant (70) over
+   Order 76: `QUOTE_SENT-QUOTE_VIEWED`, then
+   `QUOTE_VIEWED-CUSTOMER_CHANGES_REQUESTED` with a `MESSAGE`. Grant 70 was
+   revoked right after, and its token then answered 401.
+4. **Revision.** `CUSTOMER_CHANGES_REQUESTED-QUOTE_PREPARED` kept the lines. A
+   quantity change on line 91 failed (see Next), so the revision is a new line
+   94, Manual Shovel, 2 × 60, which makes the total 2,564.72.
+   `QUOTE_PREPARED-QUOTE_APPROVED_INTERNALLY` kept the Order in agreement 140.
+5. **Send Updated Quotation.** The agreement's transition log reads
+   `QUOTATION_SENT` → `QUOTATION_UPDATE` → `QUOTATION_SENT`, 0.46 s apart. Order
+   76 was `QUOTE_SENT` again within 2.5 s of the event, and `QUOTATION_GRANT_ID`
+   held grant 72 within 5.4 s. Grant 72 adds line 94, price 49 and product 31
+   to the entries of grant 69. Grant 69 left the list of live grants on
+   `core-bill` and `core`.
+6. **The emails.** The user received both and forwarded their links. The
+   heading they saw in the first was "Review quotation options", and in the
+   second "Review the updated quotation": the link texts of the ready template
+   (257) and of the updated one (299).
+7. **The client, through the emailed links.**
+   - The link of the ready email (grant 69) answered 401, to the introspection
+     and to an Order read alike.
+   - The link of the updated email (grant 72) read, anonymously, agreement 140,
+     Account 717, Order 76 at 2,564.72 and lines 91, 92 and 94 with their
+     prices and products, Manual Shovel included.
+   - Through it Order 76 went `QUOTE_VIEWED`, then `CLIENT_APPROVED`, and
+     agreement 140 was `AWAITING_CLIENT_DETAILS` 1.3 s after the approval.
+     The first attempt at the view event was lost to a socket error on our
+     side and never reached Core; the Order was still `QUOTE_SENT`, and the
+     event was sent again.
+8. **Closed.** Grant 72 was still live once the package completed, because
+   the details step that revokes it did not run, and it was revoked by hand;
+   its link then answered 401. Agreement 140 stays in `AWAITING_CLIENT_DETAILS`
+   with `QUOTATION_GRANT_ID` still naming grant 72.
+
+Revoking a grant that had already expired answered 200; revoking one twice
+answered 404 the second time.
+
+The review document was uploaded the same evening (§10 table, "quote review
+page"). Opened with the revoked link of the ready email, the live page on both
+CMS nodes shows "This link has expired or was withdrawn" with the new line
+pointing to the provider's newest email, and the portal invitation.
+
 Next, in order:
 
 1. **Backend.**
@@ -467,9 +561,15 @@ Next, in order:
      through `app-1-core-cms` ran the chain.
    - The CMS nodes do not invalidate each other's page cache after a template
      save.
-2. **Build the three client forms** specified for the portal. Bulk Send
+2. **Let the manager edit a priced line.** The draft pricer creates lines
+   without a workflow. A REST update of line 91 on 2026-09-23 failed on both
+   core-bill nodes: without a workflow the save tried to create a default
+   workflow and broke its not-null organization, and with workflow 46 it
+   answered "Execution error". A line created through REST with workflow 46
+   saves. The pricer should give its lines workflow 46.
+3. **Build the three client forms** specified for the portal. Bulk Send
    Quotation is owned outside this stream.
-3. **Price by the founder's model.** Received from the user on 2026-09-23.
+4. **Price by the founder's model.** Received from the user on 2026-09-23.
    - A visit of snow removal and a visit of de-icing each have a price set by
      the serviced area. It is not a fixed rate per square foot.
    - The season total is de-icing × 28 plus snow removal × 4.
@@ -500,14 +600,16 @@ Resolved on 2026-09-23 after the runs:
   164): category API, `CORE-BILL` only, package `com.pixelnation.bill.utils`.
   It now runs `SNOW_ORDER_ITEM_UTILITIES_V1` (script 287), shaped like every
   working utility, and a line saved on one core-bill node and updated on the
-  other answered 200.
+  other answered 200. That holds for a line created through REST; a line the
+  draft pricer created still cannot be updated (Next, item 2).
 - **The provider party and terms** come from the organization (§9).
 - **The details form pre-fills** from Account attributes (§9).
 
-Live on workflow 53 since then:
-- workflow utility V10 (292);
+Live on workflow 53 since the evening of 2026-09-23:
+- workflow utility V11 (297), which adds the `QUOTATION_UPDATE` forward;
 - details processor V5 (291);
-- quotation delivery V3 (294) and agreement delivery V2 (293);
+- quotation delivery V4 (298), with the ready email (template 257) and the
+  updated one (template 299), and agreement delivery V2 (293);
 - activation V2 (269) and provisioning V2 (270).
 
 The role is staging-only until backend reads are scoped to the linked

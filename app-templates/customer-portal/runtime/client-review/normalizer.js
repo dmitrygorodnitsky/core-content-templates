@@ -20,6 +20,7 @@
   var AGREEMENT_DISPOSITION = {
     QUOTATION: { kind: "preparing" },
     QUOTATION_SENT: { kind: "quote-review" },
+    QUOTATION_UPDATE: { kind: "unavailable", reason: "updating" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },

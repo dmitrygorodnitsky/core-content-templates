@@ -163,7 +163,7 @@
     ["LINK_MISSING_TITLE", "linkMissingTitle", "This link is incomplete"],
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
-    ["LINK_CLOSED_BODY", "linkClosedBody", "Ask the provider to send you a new link."],
+    ["LINK_CLOSED_BODY", "linkClosedBody", "Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."],
     ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
     ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
     ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
@@ -260,7 +260,7 @@
       "QUOTE_SENT", "QUOTE_VIEWED", "CLIENT_APPROVED", "DECLINED", "CUSTOMER_CHANGES_REQUESTED",
     ],
     agreementStates: [
-      "QUOTATION", "QUOTATION_SENT", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
+      "QUOTATION", "QUOTATION_SENT", "QUOTATION_UPDATE", "QUOTATION_SEND_FAILED", "AWAITING_CLIENT_DETAILS",
       "CLIENT_DETAILS_RECEIVED", "DRAFT",
       "PENDING_MANAGEMENT_APPROVAL", "INTERNALLY_APPROVED", "SENT_TO_CLIENT", "AGREEMENT_SEND_FAILED",
       "CLIENT_APPROVED", "ACTIVATION_FAILED", "ACTIVE", "SUSPENDED", "EXPIRED", "ARCHIVED", "CANCELED",
@@ -593,6 +593,7 @@
   var AGREEMENT_DISPOSITION = {
     QUOTATION: { kind: "preparing" },
     QUOTATION_SENT: { kind: "quote-review" },
+    QUOTATION_UPDATE: { kind: "unavailable", reason: "updating" },
     QUOTATION_SEND_FAILED: { kind: "unavailable", reason: "send-failed" },
     AWAITING_CLIENT_DETAILS: { kind: "contract-details" },
     CLIENT_DETAILS_RECEIVED: { kind: "checking" },

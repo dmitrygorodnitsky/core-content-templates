@@ -2033,7 +2033,7 @@
       }
     },
     "value": {
-      "en": "Ask the provider to send you a new link."
+      "en": "Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."
     }
   },
   {

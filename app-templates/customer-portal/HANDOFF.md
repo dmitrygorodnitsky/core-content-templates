@@ -917,8 +917,16 @@ transition. Where the whole flow stands is
    template the same way; the four hashes match and PageContext 21 is
    unchanged. `app-3-core-cms` still served the previous one (trap 12), and the
    backend is asked to evict it. The next version, which follows the last
-   decision on its own and words a return on a reopened link, is not uploaded
-   yet.
+   decision on its own and words a return on a reopened link, was uploaded
+   later: on the evening of 2026-09-23 both CMS nodes served the script of
+   commit `2765479`. The version that knows `QUOTATION_UPDATE` and sends a
+   closed link to the provider's newest email was uploaded to the same
+   template the same evening, with the user's approval:
+   - the dry run named only `7f4ded3f`, and only `LINK_CLOSED_BODY` and the
+     script changed;
+   - `PORTAL_URL`, `REVIEW_API_BASE_URL` and PageContext 21 kept their values;
+   - `app-1-core-cms` served the previous script until one identical save was
+     steered to it (trap 12), after which both nodes served the new one.
 3. **In `core-ui`.** Applied on 2026-09-16: workflow 49 with its failure state,
    its retry and the `script` binding; a property per address; quote orders per
    property restructured but still not called; `COORD_LAT` and `COORD_LNG` on
@@ -1054,12 +1062,39 @@ transition. Where the whole flow stands is
    - each client link carries the representative and billing details as
      Account attributes, from which the review page pre-fills (trap 15).
 
-   Workflow 53 runs utility V10 (292). Workflow 45 runs order utilities V3
-   (296): a draft entering `QUOTE_PREPARED` is priced from its property's
-   `SERVICE_AREA_SQFT`, which the manager fills. The founder's pricing model
-   (per-visit prices by area; monthly and seasonal derived from them) waits
-   for its per-visit price table (`QUOTATION-PACKAGE-FLOW.md` §10). Next here
-   are the three client forms.
+   Workflow 45 runs order utilities V3 (296): a draft entering
+   `QUOTE_PREPARED` is priced from its property's `SERVICE_AREA_SQFT`, which
+   the manager fills. The founder's pricing model (per-visit prices by area;
+   monthly and seasonal derived from them) waits for its per-visit price table
+   (`QUOTATION-PACKAGE-FLOW.md` §10).
+
+   **A revised quote goes back to the client** (live on dev-1 since the
+   evening of 2026-09-23; `QUOTATION-PACKAGE-FLOW.md` §4.2 and §10, "The
+   quotation update run"). The manager's `Send Updated Quotation`
+   (`QUOTATION_SENT-QUOTATION_UPDATE`, held by `SW_FS_WS_COMPANY_ADMIN` and
+   `SW_FS_WS_SALES`) passes the transient `QUOTATION_UPDATE` back into
+   `QUOTATION_SENT`, whose one delivery revokes the previous link, sends the
+   revised Orders again and emails a new link. Live on workflow 53 (18 states,
+   36 events):
+   - workflow utility V11 (297), bound on 2026-09-23 with states 264, 290,
+     287, 269, 270 and 272 re-saved;
+   - quotation delivery V4 (298), with the ready email (template 257) and the
+     updated one (template 299);
+   - details processor V5 (291) and agreement delivery V2 (293);
+   - activation V2 (269) and provisioning V2 (270).
+
+   Agreement 140 proved it end to end on 2026-09-23:
+   - the link of the first email stopped working;
+   - the link of the updated email read the added line anonymously;
+   - the client's approval through it moved the package to
+     `AWAITING_CLIENT_DETAILS`.
+
+   The user saw the headings "Review quotation options" and "Review the
+   updated quotation" in the two emails. The review page that knows
+   `QUOTATION_UPDATE` and points a closed link to the newest email is live. A
+   line the draft pricer created cannot be updated through REST yet
+   (`QUOTATION-PACKAGE-FLOW.md` §10, Next). After that come the three client
+   forms.
 
    The role remains staging-only until customer Account scoping is enforced by
    the backend.

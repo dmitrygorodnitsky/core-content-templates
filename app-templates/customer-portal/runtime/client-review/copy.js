@@ -163,7 +163,7 @@
     ["LINK_MISSING_TITLE", "linkMissingTitle", "This link is incomplete"],
     ["LINK_MISSING_BODY", "linkMissingBody", "Open the full link from your email. Nothing can be shown without it."],
     ["LINK_CLOSED_TITLE", "linkClosedTitle", "This link has expired or was withdrawn"],
-    ["LINK_CLOSED_BODY", "linkClosedBody", "Ask the provider to send you a new link."],
+    ["LINK_CLOSED_BODY", "linkClosedBody", "Use the link in the provider's newest email. If that link does not work either, ask them to send you a new one."],
     ["LINK_CLOSED_PORTAL", "linkClosedPortal", "If you already have customer portal access, you can sign in there."],
     ["CLOSED_AFTER_TITLE", "closedAfterTitle", "This link is now closed"],
     ["CLOSED_AFTER_DETAILS_BODY", "closedAfterDetailsBody", "It closed after your details were sent. The provider closes it when the details step ends."],
